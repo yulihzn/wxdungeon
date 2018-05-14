@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "1.9.1",
 	"appid": "wx3bca918cd0bd315f",
-	"projectname": "redpoint",
+	"projectname": "wxdungeon",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
