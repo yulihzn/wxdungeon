@@ -1,0 +1,7 @@
+{
+  "usingComponents":{
+    "talk-dialog":"/components/talk-dialog/talk-dialog",
+    "battle-view":"/components/battle-view/battle-view"
+  },
+  "disableScroll":true
+}

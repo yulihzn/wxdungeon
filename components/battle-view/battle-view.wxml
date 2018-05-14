@@ -1,0 +1,8 @@
+<!--components/battle-view/battle-view.wxml-->
+<view class='battle-container' hidden="{{isHidden}}">
+  <text class='battle-title'>{{title}}</text>
+  <scroll-view scroll-y="true" class='battle-scroll' enable-back-to-top="true" scroll-top="{{scrollTop}}">
+    <text class='battle-info'>{{content}}</text>
+  </scroll-view>
+  <canvas canvas-id='battle' class='canvas' bindtouchstart='tapBattle'></canvas>
+</view>
