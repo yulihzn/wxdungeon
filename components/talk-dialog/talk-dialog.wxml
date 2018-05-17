@@ -1,8 +1,0 @@
-<!--components/talk-dialog/talk-dialog.wxml-->
-<view class='talk-container' hidden="{{isHidden}}">
-  <text class='talk-title'>{{title}}</text>
-  <text class='talk-text'>{{content}}</text>
-  <view class='talk-button-container'>
-    <button wx:for="{{options}}" style="font-size:{{item.text.length>10?'small':'medium'}}" wx:key="id" class='talk-button' bindtap='buttonTap' data-index="{{index}}">{{item.text}}</button>
-  </view>
-</view>
