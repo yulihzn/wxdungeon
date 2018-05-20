@@ -15,6 +15,7 @@ class Dungeon extends egret.Stage {
 
 	private successNumber: number = 50;
 	private level: number = 1;
+	private isReseting: boolean = false;
 	public constructor() {
 		super();
 		this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -55,8 +56,13 @@ class Dungeon extends egret.Stage {
 
 	}
 	private resetGame(level: number): void {
+
 		this.level = level;
-		this.successNumber-=2;
+		if (level == 1) {
+			this.successNumber = 50;
+		} else {
+			this.successNumber -= 2;
+		}
 		if (this.successNumber < 1) {
 			this.successNumber = 1;
 		}
@@ -179,9 +185,7 @@ class Dungeon extends egret.Stage {
 		if (this.randomArr.length <= this.successNumber) {
 			console.log('finish')
 			if (this.randomArr.length == this.successNumber) {
-				egret.Tween.get(this).wait(1000).call(() => {
-					this.resetGame(++this.level);
-				})
+				egret.setTimeout(() => { this.resetGame(++this.level); }, this, 1000)
 			}
 
 			return;
@@ -219,9 +223,8 @@ class Dungeon extends egret.Stage {
 		this.timer.stop();
 		this.secondsCounter.stop();
 		this.player.die();
-		egret.Tween.get(this).wait(3000).call(() => {
-			this.resetGame(1);
-		})
+		egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
+
 	}
 	private addSecondsText(): void {
 		this.secondsCount = 0;

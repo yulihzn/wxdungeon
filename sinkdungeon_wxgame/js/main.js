@@ -54,6 +54,7 @@ var Dungeon = (function (_super) {
         _this.secondsCount = 0;
         _this.successNumber = 50;
         _this.level = 1;
+        _this.isReseting = false;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
     }
@@ -91,7 +92,12 @@ var Dungeon = (function (_super) {
     };
     Dungeon.prototype.resetGame = function (level) {
         this.level = level;
-        this.successNumber -= 2;
+        if (level == 1) {
+            this.successNumber = 50;
+        }
+        else {
+            this.successNumber -= 2;
+        }
         if (this.successNumber < 1) {
             this.successNumber = 1;
         }
@@ -216,9 +222,7 @@ var Dungeon = (function (_super) {
         if (this.randomArr.length <= this.successNumber) {
             console.log('finish');
             if (this.randomArr.length == this.successNumber) {
-                egret.Tween.get(this).wait(1000).call(function () {
-                    _this.resetGame(++_this.level);
-                });
+                egret.setTimeout(function () { _this.resetGame(++_this.level); }, this, 1000);
             }
             return;
         }
@@ -252,9 +256,7 @@ var Dungeon = (function (_super) {
         this.timer.stop();
         this.secondsCounter.stop();
         this.player.die();
-        egret.Tween.get(this).wait(3000).call(function () {
-            _this.resetGame(1);
-        });
+        egret.setTimeout(function () { _this.resetGame(1); }, this, 3000);
     };
     Dungeon.prototype.addSecondsText = function () {
         this.secondsCount = 0;
