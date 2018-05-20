@@ -51,6 +51,9 @@ var Dungeon = (function (_super) {
         _this.map = new Array();
         _this.playerPos = new egret.Point();
         _this.dirs = new Array(4);
+        _this.secondsCount = 0;
+        _this.successNumber = 50;
+        _this.level = 1;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
     }
@@ -59,8 +62,11 @@ var Dungeon = (function (_super) {
         this.drawMap();
         this.addPlayer();
         this.addController();
+        this.addSecondsText();
+        this.addTimer();
     };
     Dungeon.prototype.drawMap = function () {
+        this.randomArr = new Array();
         this.map = new Array();
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
@@ -72,21 +78,55 @@ var Dungeon = (function (_super) {
             for (var j = 0; j < this.SIZE; j++) {
                 var t = new egret.Bitmap(RES.getRes("tile_png"));
                 t.anchorOffsetX = t.width / 2;
-                t.$anchorOffsetY = t.height / 2;
+                t.anchorOffsetY = t.height / 2;
+                t.scaleX = 1;
+                t.scaleY = 1;
                 t.x = this.originX + i * t.width;
                 t.y = this.originY + j * t.height;
                 this.map[i][j] = t;
                 this.addChild(this.map[i][j]);
+                this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
             }
         }
     };
+    Dungeon.prototype.resetGame = function (level) {
+        this.level = level;
+        this.successNumber -= 2;
+        if (this.successNumber < 1) {
+            this.successNumber = 1;
+        }
+        for (var i = 0; i < this.SIZE; i++) {
+            for (var j = 0; j < this.SIZE; j++) {
+                var t = this.map[i][j];
+                t.scaleX = 1;
+                t.scaleY = 1;
+                t.alpha = 1;
+                t.visible = true;
+                t.x = this.originX + i * t.width;
+                t.y = this.originY + j * t.height;
+                egret.Tween.removeTweens(t);
+                this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
+            }
+        }
+        var index = Math.floor(this.SIZE / 2);
+        this.player.resetPlayer();
+        this.playerPos.x = index;
+        this.playerPos.y = index;
+        this.player.x = this.map[this.playerPos.x][this.playerPos.y].x;
+        this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
+        this.secondsText.text = 'Target:' + this.successNumber + '    LV.:' + this.level;
+        this.timer.delay = 500 - level * 10;
+        this.timer.reset();
+        this.timer.start();
+        // this.secondsCounter.reset();
+        this.secondsCount = 0;
+        // this.secondsCounter.start();
+    };
     Dungeon.prototype.addPlayer = function () {
-        this.player = new egret.Bitmap(RES.getRes("player_png"));
+        this.player = new Player();
         var index = Math.floor(this.SIZE / 2);
         this.playerPos.x = index;
         this.playerPos.y = index;
-        this.player.anchorOffsetX = this.player.width / 2;
-        this.player.anchorOffsetY = this.player.height;
         this.player.x = this.map[this.playerPos.x][this.playerPos.y].x;
         this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
         this.addChild(this.player);
@@ -127,6 +167,10 @@ var Dungeon = (function (_super) {
         this.dirs[3].y = cy + 128;
     };
     Dungeon.prototype.movePlayer = function (dir) {
+        if (this.player.isWalking() || this.player.isDying()) {
+            return;
+        }
+        console.log('walking');
         switch (dir) {
             case 0:
                 if (this.playerPos.y - 1 >= 0) {
@@ -149,8 +193,80 @@ var Dungeon = (function (_super) {
                 }
                 break;
         }
-        this.player.x = this.map[this.playerPos.x][this.playerPos.y].x;
-        this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
+        if (!this.map[this.playerPos.x][this.playerPos.y].visible) {
+            this.gameOver();
+        }
+        var px = this.map[this.playerPos.x][this.playerPos.y].x;
+        var py = this.map[this.playerPos.x][this.playerPos.y].y;
+        this.player.walk(px, py, dir);
+    };
+    Dungeon.prototype.addTimer = function () {
+        this.timer = new egret.Timer(500 - this.level * 10, this.SIZE * this.SIZE);
+        this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
+        this.timer.start();
+        this.secondsCounter = new egret.Timer(1000, this.SIZE * this.SIZE);
+        this.secondsCounter.addEventListener(egret.TimerEvent.TIMER, this.textCount, this);
+        // this.secondsCounter.start();
+    };
+    Dungeon.prototype.textCount = function () {
+        this.secondsText.text = 'TIME:' + (this.secondsCount++) + '         LV.:' + this.level;
+    };
+    Dungeon.prototype.breakTile = function () {
+        var _this = this;
+        if (this.randomArr.length <= this.successNumber) {
+            console.log('finish');
+            if (this.randomArr.length == this.successNumber) {
+                egret.Tween.get(this).wait(1000).call(function () {
+                    _this.resetGame(++_this.level);
+                });
+            }
+            return;
+        }
+        this.secondsText.text = 'Target:' + this.successNumber + '         LV.:' + this.level;
+        var index = this.getRandomNum(0, this.randomArr.length - 1);
+        var p = this.randomArr[index];
+        var tile = this.map[p.x][p.y];
+        var y = tile.y;
+        egret.Tween.get(tile, { loop: true })
+            .to({ y: y + 5 }, 25)
+            .to({ y: y }, 25)
+            .to({ y: y - 5 }, 25)
+            .to({ y: y }, 25);
+        egret.Tween.get(tile).wait(2000).call(function () {
+            egret.Tween.removeTweens(tile);
+            egret.Tween.get(tile).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(function () {
+                _this.map[p.x][p.y].visible = false;
+                if (!_this.map[_this.playerPos.x][_this.playerPos.y].visible) {
+                    _this.gameOver();
+                }
+            });
+        });
+        this.randomArr.splice(index, 1);
+    };
+    Dungeon.prototype.getRandomNum = function (min, max) {
+        return min + Math.round(Math.random() * (max - min));
+    };
+    Dungeon.prototype.gameOver = function () {
+        var _this = this;
+        console.log('gameover');
+        this.timer.stop();
+        this.secondsCounter.stop();
+        this.player.die();
+        egret.Tween.get(this).wait(3000).call(function () {
+            _this.resetGame(1);
+        });
+    };
+    Dungeon.prototype.addSecondsText = function () {
+        this.secondsCount = 0;
+        this.secondsText = new egret.TextField();
+        this.addChild(this.secondsText);
+        this.secondsText.alpha = 1;
+        this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
+        this.secondsText.size = 40;
+        this.secondsText.textColor = 0xffd700;
+        this.secondsText.x = 50;
+        this.secondsText.y = 50;
+        this.secondsText.text = 'TIME:' + this.secondsCount + '    LV.:' + this.level;
     };
     return Dungeon;
 }(egret.Stage));
@@ -425,4 +541,87 @@ __reflect(DebugPlatform.prototype, "DebugPlatform", ["Platform"]);
 if (!window.platform) {
     window.platform = new DebugPlatform();
 }
+var Player = (function (_super) {
+    __extends(Player, _super);
+    function Player() {
+        var _this = _super.call(this) || this;
+        _this.walking = false;
+        _this.isdead = false;
+        _this.init();
+        return _this;
+    }
+    Player.prototype.init = function () {
+        this.player = new egret.Bitmap(RES.getRes("player_png"));
+        this.playerShadow = new egret.Bitmap(RES.getRes("shadow_png"));
+        var index = 0;
+        this.player.anchorOffsetX = this.player.width / 2;
+        this.player.anchorOffsetY = this.player.height;
+        this.player.x = 0;
+        this.player.y = 0;
+        this.playerShadow.anchorOffsetX = this.playerShadow.width / 2;
+        this.playerShadow.anchorOffsetY = this.playerShadow.height / 2;
+        this.playerShadow.x = 0;
+        this.playerShadow.y = 0;
+        this.playerShadow.alpha = 0.3;
+        this.playerShadow.scaleX = 2;
+        this.playerShadow.scaleY = 2;
+        this.addChild(this.player);
+        this.addChild(this.playerShadow);
+    };
+    Player.prototype.isWalking = function () {
+        return this.walking;
+    };
+    Player.prototype.isDying = function () {
+        return this.isdead;
+    };
+    Player.prototype.resetPlayer = function () {
+        egret.Tween.removeTweens(this.player);
+        egret.Tween.removeTweens(this);
+        this.parent.setChildIndex(this, 100);
+        this.player.scaleX = 1;
+        this.player.scaleY = 1;
+        this.player.visible = true;
+        this.player.alpha = 1;
+        this.player.x = 0;
+        this.player.y = 0;
+        this.playerShadow.visible = true;
+        this.isdead = false;
+        this.walking = false;
+    };
+    Player.prototype.die = function () {
+        var _this = this;
+        this.isdead = true;
+        this.playerShadow.visible = false;
+        egret.Tween.get(this.player).to({ y: 32, scaleX: 0.5, scaleY: 0.5 }, 200).call(function () {
+            _this.parent.setChildIndex(_this, 0);
+        }).to({ scaleX: 0.2, scaleY: 0.2, y: 100 }, 100).call(function () { _this.player.alpha = 0; });
+    };
+    Player.prototype.walk = function (px, py, dir) {
+        var _this = this;
+        if (this.walking) {
+            console.log("cant");
+            return;
+        }
+        this.walking = true;
+        var offsetY = 10;
+        var ro = 10;
+        if (dir == 1 || dir == 3) {
+            offsetY = -offsetY;
+            ro = -ro;
+        }
+        egret.Tween.get(this.player, { loop: true })
+            .to({ rotation: ro, y: this.player.y + offsetY }, 25)
+            .to({ rotation: 0, y: 0 }, 25)
+            .to({ rotation: -ro, y: this.player.y - offsetY }, 25)
+            .to({ rotation: 0, y: 0 }, 25);
+        egret.Tween.get(this, { onChange: function () { } }).to({ x: px, y: py }, 200).call(function () {
+            egret.Tween.removeTweens(_this.player);
+            _this.player.rotation = 0;
+            _this.player.y = 0;
+            _this.walking = false;
+        });
+    };
+    return Player;
+}(egret.DisplayObjectContainer));
+__reflect(Player.prototype, "Player");
 ;window.Main = Main;

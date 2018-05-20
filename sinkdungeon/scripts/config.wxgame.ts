@@ -2,7 +2,7 @@
 ///<reference path="api.d.ts"/>
 //UglifyPlugin, 
 import * as path from 'path';
-import { CompilePlugin, ManifestPlugin, ExmlPlugin, EmitResConfigFilePlugin, TextureMergerPlugin, CleanPlugin } from 'built-in';
+import { UglifyPlugin,CompilePlugin, ManifestPlugin, ExmlPlugin, EmitResConfigFilePlugin, TextureMergerPlugin, CleanPlugin } from 'built-in';
 import { WxgamePlugin } from './wxgame/wxgame';
 import { CustomPlugin } from './myplugin';
 import * as defaultConfig from './config';

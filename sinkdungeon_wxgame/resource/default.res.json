@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "description_json,tile_png,player_png,controller_png",
+			"keys": "description_json,tile_png,player_png,controller_png,shadow_png",
 			"name": "preload"
 		}
 	],
@@ -25,6 +25,11 @@
 			"name": "controller_png",
 			"type": "image",
 			"url": "assets/controller.png"
+		},
+		{
+			"name": "shadow_png",
+			"type": "image",
+			"url": "assets/shadow.png"
 		}
 	]
 }
