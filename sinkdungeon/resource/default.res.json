@@ -1,0 +1,30 @@
+{
+	"groups": [
+		{
+			"keys": "description_json,tile_png,player_png,controller_png",
+			"name": "preload"
+		}
+	],
+	"resources": [
+		{
+			"name": "description_json",
+			"type": "json",
+			"url": "config/description.json"
+		},
+		{
+			"name": "tile_png",
+			"type": "image",
+			"url": "assets/tile.png"
+		},
+		{
+			"name": "player_png",
+			"type": "image",
+			"url": "assets/player.png"
+		},
+		{
+			"name": "controller_png",
+			"type": "image",
+			"url": "assets/controller.png"
+		}
+	]
+}
