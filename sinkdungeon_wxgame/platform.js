@@ -5,7 +5,7 @@
 class WxgamePlatform {
 
     name = 'wxgame'
-
+ 
     login() {
         return new Promise((resolve, reject) => {
             wx.login({

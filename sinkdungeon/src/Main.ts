@@ -93,19 +93,20 @@ class Main extends egret.DisplayObjectContainer {
      * Create a game scene
      */
     private createGameScene() {
-        // let sky = this.createBitmapByName("bg_jpg");
-        // this.addChild(sky);
+        let sky = new egret.Shape();
         let stageW = this.stage.stageWidth;
         let stageH = this.stage.stageHeight;
-        // sky.width = stageW;
-        // sky.height = stageH;
+        sky.graphics.beginFill(0x333333, 1);
+        sky.graphics.drawRect(0, 0, stageW, stageH);
+        sky.graphics.endFill();
+         this.addChild(sky);
 
-        let topMask = new egret.Shape();
-        topMask.graphics.beginFill(0x333333, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW, 100);
-        topMask.graphics.endFill();
-        topMask.y = 33;
-        this.addChild(topMask);
+        // let topMask = new egret.Shape();
+        // topMask.graphics.beginFill(0x333333, 0.5);
+        // topMask.graphics.drawRect(0, 0, stageW, 100);
+        // topMask.graphics.endFill();
+        // topMask.y = 33;
+        // this.addChild(topMask);
 
         // let icon = this.createBitmapByName("egret_icon_png");
         // this.addChild(icon);
@@ -142,13 +143,14 @@ class Main extends egret.DisplayObjectContainer {
         // textfield.x = 172;
         // textfield.y = 135;
         // this.textfield = textfield;
-        let dungeon = new Dungeon();
-        this.addChild(dungeon);
+        
         // let player = this.createBitmapByName("player_png");
         // this.addChild(player);
         // let index = Math.floor(dungeon.SIZE/2)
         // player.x = dungeon.map[index][index].x;
         // player.y = dungeon.map[index][index].y;
+        let logic = new Logic(this);
+        this.addChild(logic);
 
     }
 

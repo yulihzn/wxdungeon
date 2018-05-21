@@ -24,20 +24,38 @@ class Dungeon extends egret.Stage {
 	}
 	private onAddToStage(): void {
 		this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
-		this.drawMap();
-		this.addPlayer();
-		this.addController();
-		this.addSecondsText();
-		this.addTimer();
-	}
-	private drawMap(): void {
-		this.randomArr = new Array();
-		this.map = new Array();
+
 		let stageW = this.stage.stageWidth;
 		let stageH = this.stage.stageHeight;
 		let tile = new egret.Bitmap(RES.getRes("tile_png"));
 		this.originX = stageW / 2 - Math.floor(this.SIZE / 2) * tile.width;
 		this.originY = 200;
+
+		this.drawBg();
+		this.drawMap();
+		this.addPlayer();
+		this.addSecondsText();
+		this.addTimer();
+	}
+	private drawBg(): void {
+		let tile = new egret.Bitmap(RES.getRes("tile_png"));
+		let bg = new egret.Shape();
+		bg.graphics.beginFill(0x000000, 0.90);
+		bg.graphics.drawRect(this.originX - tile.width / 2, this.originY - tile.height / 2, tile.width * this.SIZE, tile.width * this.SIZE);
+		bg.graphics.endFill();
+		this.addChild(bg);
+		let shadow = new egret.Bitmap(RES.getRes("shadow_png"));
+		shadow.x = this.originX - tile.width / 2;
+		shadow.y = this.originY - tile.height / 2;
+		shadow.width = tile.width * this.SIZE;
+		shadow.height = tile.width * this.SIZE;
+		shadow.alpha = 0.9;
+		this.addChild(shadow);
+	}
+	private drawMap(): void {
+		this.randomArr = new Array();
+		this.map = new Array();
+
 		for (let i = 0; i < this.SIZE; i++) {
 			this.map[i] = new Array(i);
 			for (let j = 0; j < this.SIZE; j++) {
@@ -109,39 +127,10 @@ class Dungeon extends egret.Stage {
 		this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
 		this.addChild(this.player);
 	}
-	private addController(): void {
-		//0:top,1:bottom,2:left,3:right
-		let top = new egret.Bitmap(RES.getRes("controller_png"));
-		let bottom = new egret.Bitmap(RES.getRes("controller_png"));
-		let left = new egret.Bitmap(RES.getRes("controller_png"));
-		let right = new egret.Bitmap(RES.getRes("controller_png"));
-		for (let i = 0; i < this.dirs.length; i++) {
-			this.dirs[i] = new egret.Bitmap(RES.getRes("controller_png"));
-			this.dirs[i].touchEnabled = true;
-			this.dirs[i].alpha = 0.5;
-			this.dirs[i].anchorOffsetX = this.dirs[i].width / 2;
-			this.dirs[i].anchorOffsetY = this.dirs[i].height / 2;
-			this.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, () => { this.movePlayer(i) }, this)
-			this.addChild(this.dirs[i]);
-		}
-		this.dirs[0].rotation = -90;
-		this.dirs[1].rotation = 90;
-		this.dirs[2].rotation = 180;
-
-		let index = Math.floor(this.SIZE / 2)
-		let cx = this.map[index][index].x;
-		let cy = this.map[this.SIZE - 1][this.SIZE - 1].y + 96;
-		this.dirs[0].x = cx;
-		this.dirs[0].y = cy;
-		this.dirs[1].x = cx;
-		this.dirs[1].y = cy + 256;
-		this.dirs[2].x = cx - 128;
-		this.dirs[2].y = cy + 128;
-		this.dirs[3].x = cx + 128;
-		this.dirs[3].y = cy + 128;
-
-	}
-	private movePlayer(dir: number) {
+	/**
+	 *  移动玩家
+	 */
+	public movePlayer(dir: number) {
 		if (this.player.isWalking() || this.player.isDying()) {
 			return;
 		}

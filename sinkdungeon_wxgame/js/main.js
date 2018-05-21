@@ -43,6 +43,56 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var ControllerPad = (function (_super) {
+    __extends(ControllerPad, _super);
+    function ControllerPad() {
+        var _this = _super.call(this) || this;
+        _this.dirs = new Array(4);
+        _this.init();
+        return _this;
+    }
+    ControllerPad.prototype.init = function () {
+        var _this = this;
+        //0:top,1:bottom,2:left,3:right
+        var top = new egret.Bitmap(RES.getRes("controller_png"));
+        var bottom = new egret.Bitmap(RES.getRes("controller_png"));
+        var left = new egret.Bitmap(RES.getRes("controller_png"));
+        var right = new egret.Bitmap(RES.getRes("controller_png"));
+        var _loop_1 = function (i) {
+            this_1.dirs[i] = new egret.Bitmap(RES.getRes("controller_png"));
+            this_1.dirs[i].touchEnabled = true;
+            this_1.dirs[i].alpha = 0.5;
+            this_1.dirs[i].anchorOffsetX = this_1.dirs[i].width / 2;
+            this_1.dirs[i].anchorOffsetY = this_1.dirs[i].height / 2;
+            this_1.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(i); }, this_1);
+            this_1.addChild(this_1.dirs[i]);
+        };
+        var this_1 = this;
+        for (var i = 0; i < this.dirs.length; i++) {
+            _loop_1(i);
+        }
+        this.dirs[0].rotation = -90;
+        this.dirs[1].rotation = 90;
+        this.dirs[2].rotation = 180;
+        var cx = 0;
+        var cy = 0;
+        this.dirs[0].x = cx;
+        this.dirs[0].y = cy;
+        this.dirs[1].x = cx;
+        this.dirs[1].y = cy + 256;
+        this.dirs[2].x = cx - 128;
+        this.dirs[2].y = cy + 128;
+        this.dirs[3].x = cx + 128;
+        this.dirs[3].y = cy + 128;
+    };
+    ControllerPad.prototype.tapPad = function (dir) {
+        var padtapEvent = new PadtapEvent(PadtapEvent.PADTAP);
+        padtapEvent.dir = dir;
+        this.dispatchEvent(padtapEvent);
+    };
+    return ControllerPad;
+}(egret.DisplayObjectContainer));
+__reflect(ControllerPad.prototype, "ControllerPad");
 var Dungeon = (function (_super) {
     __extends(Dungeon, _super);
     function Dungeon() {
@@ -61,20 +111,36 @@ var Dungeon = (function (_super) {
     }
     Dungeon.prototype.onAddToStage = function () {
         this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
-        this.drawMap();
-        this.addPlayer();
-        this.addController();
-        this.addSecondsText();
-        this.addTimer();
-    };
-    Dungeon.prototype.drawMap = function () {
-        this.randomArr = new Array();
-        this.map = new Array();
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
         var tile = new egret.Bitmap(RES.getRes("tile_png"));
         this.originX = stageW / 2 - Math.floor(this.SIZE / 2) * tile.width;
         this.originY = 200;
+        this.drawBg();
+        this.drawMap();
+        this.addPlayer();
+        // this.addController();
+        this.addSecondsText();
+        this.addTimer();
+    };
+    Dungeon.prototype.drawBg = function () {
+        var tile = new egret.Bitmap(RES.getRes("tile_png"));
+        var bg = new egret.Shape();
+        bg.graphics.beginFill(0x000000, 0.90);
+        bg.graphics.drawRect(this.originX - tile.width / 2, this.originY - tile.height / 2, tile.width * this.SIZE, tile.width * this.SIZE);
+        bg.graphics.endFill();
+        this.addChild(bg);
+        var shadow = new egret.Bitmap(RES.getRes("shadow_png"));
+        shadow.x = this.originX - tile.width / 2;
+        shadow.y = this.originY - tile.height / 2;
+        shadow.width = tile.width * this.SIZE;
+        shadow.height = tile.width * this.SIZE;
+        shadow.alpha = 0.9;
+        this.addChild(shadow);
+    };
+    Dungeon.prototype.drawMap = function () {
+        this.randomArr = new Array();
+        this.map = new Array();
         for (var i = 0; i < this.SIZE; i++) {
             this.map[i] = new Array(i);
             for (var j = 0; j < this.SIZE; j++) {
@@ -150,18 +216,18 @@ var Dungeon = (function (_super) {
         var bottom = new egret.Bitmap(RES.getRes("controller_png"));
         var left = new egret.Bitmap(RES.getRes("controller_png"));
         var right = new egret.Bitmap(RES.getRes("controller_png"));
-        var _loop_1 = function (i) {
-            this_1.dirs[i] = new egret.Bitmap(RES.getRes("controller_png"));
-            this_1.dirs[i].touchEnabled = true;
-            this_1.dirs[i].alpha = 0.5;
-            this_1.dirs[i].anchorOffsetX = this_1.dirs[i].width / 2;
-            this_1.dirs[i].anchorOffsetY = this_1.dirs[i].height / 2;
-            this_1.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.movePlayer(i); }, this_1);
-            this_1.addChild(this_1.dirs[i]);
+        var _loop_2 = function (i) {
+            this_2.dirs[i] = new egret.Bitmap(RES.getRes("controller_png"));
+            this_2.dirs[i].touchEnabled = true;
+            this_2.dirs[i].alpha = 0.5;
+            this_2.dirs[i].anchorOffsetX = this_2.dirs[i].width / 2;
+            this_2.dirs[i].anchorOffsetY = this_2.dirs[i].height / 2;
+            this_2.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.movePlayer(i); }, this_2);
+            this_2.addChild(this_2.dirs[i]);
         };
-        var this_1 = this;
+        var this_2 = this;
         for (var i = 0; i < this.dirs.length; i++) {
-            _loop_1(i);
+            _loop_2(i);
         }
         this.dirs[0].rotation = -90;
         this.dirs[1].rotation = 90;
@@ -331,6 +397,29 @@ var LoadingUI = (function (_super) {
     return LoadingUI;
 }(egret.Sprite));
 __reflect(LoadingUI.prototype, "LoadingUI", ["RES.PromiseTaskReporter"]);
+var Logic = (function (_super) {
+    __extends(Logic, _super);
+    function Logic(main) {
+        var _this = _super.call(this) || this;
+        _this.main = main;
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+        return _this;
+    }
+    Logic.prototype.onAddToStage = function () {
+        this.dungeon = new Dungeon();
+        this.addChild(this.dungeon);
+        this.controllerPad = new ControllerPad();
+        this.controllerPad.x = this.stage.width / 2;
+        this.controllerPad.y = 800;
+        this.addChild(this.controllerPad);
+        this.controllerPad.addEventListener(PadtapEvent.PADTAP, this.tapPad, this);
+    };
+    Logic.prototype.tapPad = function (evt) {
+        this.dungeon.movePlayer(evt.dir);
+    };
+    return Logic;
+}(egret.DisplayObjectContainer));
+__reflect(Logic.prototype, "Logic");
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (c) 2014-present, Egret Technology.
@@ -438,18 +527,19 @@ var Main = (function (_super) {
      * Create a game scene
      */
     Main.prototype.createGameScene = function () {
-        // let sky = this.createBitmapByName("bg_jpg");
-        // this.addChild(sky);
+        var sky = new egret.Shape();
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
-        // sky.width = stageW;
-        // sky.height = stageH;
-        var topMask = new egret.Shape();
-        topMask.graphics.beginFill(0x333333, 0.5);
-        topMask.graphics.drawRect(0, 0, stageW, 100);
-        topMask.graphics.endFill();
-        topMask.y = 33;
-        this.addChild(topMask);
+        sky.graphics.beginFill(0x333333, 1);
+        sky.graphics.drawRect(0, 0, stageW, stageH);
+        sky.graphics.endFill();
+        this.addChild(sky);
+        // let topMask = new egret.Shape();
+        // topMask.graphics.beginFill(0x333333, 0.5);
+        // topMask.graphics.drawRect(0, 0, stageW, 100);
+        // topMask.graphics.endFill();
+        // topMask.y = 33;
+        // this.addChild(topMask);
         // let icon = this.createBitmapByName("egret_icon_png");
         // this.addChild(icon);
         // icon.x = 26;
@@ -481,13 +571,13 @@ var Main = (function (_super) {
         // textfield.x = 172;
         // textfield.y = 135;
         // this.textfield = textfield;
-        var dungeon = new Dungeon();
-        this.addChild(dungeon);
         // let player = this.createBitmapByName("player_png");
         // this.addChild(player);
         // let index = Math.floor(dungeon.SIZE/2)
         // player.x = dungeon.map[index][index].x;
         // player.y = dungeon.map[index][index].y;
+        var logic = new Logic(this);
+        this.addChild(logic);
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -641,4 +731,18 @@ var Player = (function (_super) {
     return Player;
 }(egret.DisplayObjectContainer));
 __reflect(Player.prototype, "Player");
+/**
+ * 方向键点击事件
+ */
+var PadtapEvent = (function (_super) {
+    __extends(PadtapEvent, _super);
+    function PadtapEvent(type, bubbles, cancelable, data) {
+        var _this = _super.call(this, type, bubbles, cancelable, data) || this;
+        _this.dir = -1;
+        return _this;
+    }
+    PadtapEvent.PADTAP = "padtap";
+    return PadtapEvent;
+}(egret.Event));
+__reflect(PadtapEvent.prototype, "PadtapEvent");
 ;window.Main = Main;
