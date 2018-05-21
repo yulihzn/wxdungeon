@@ -47,13 +47,16 @@ class Player extends egret.DisplayObjectContainer{
 		this.walking = false;
 	}
 	public die():void{
+		if(this.isdead){
+			return;
+		}
 		this.isdead = true;
 		this.playerShadow.visible = false;
 		egret.Tween.get(this.player).to({y:32,scaleX:0.5,scaleY:0.5},200).call(()=>{
 			this.parent.setChildIndex(this,0);
 		}).to({scaleX:0.2,scaleY:0.2,y:100},100).call(()=>{this.player.alpha=0;});
 	}
-	public walk(px:number,py:number,dir:number):void{
+	public walk(px:number,py:number,dir:number,reachable:boolean):void{
 		if(this.walking){
 			console.log("cant")
 			return;
@@ -76,6 +79,9 @@ class Player extends egret.DisplayObjectContainer{
 				this.player.rotation = 0;
 				this.player.y = 0;
 				this.walking = false;
+				if(!reachable){
+					this.die();
+				}
 			});
 	}
 }

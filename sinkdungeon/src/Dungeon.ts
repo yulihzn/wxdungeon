@@ -1,5 +1,6 @@
 class Dungeon extends egret.Stage {
-	public SIZE: number = 9;
+	public readonly SIZE: number = 9;
+	public readonly SUCCESS_NUMBER: number = 30;
 	public map: egret.Bitmap[][] = new Array();
 	public player: Player;
 	private originX: number;
@@ -13,7 +14,7 @@ class Dungeon extends egret.Stage {
 	private secondsText: egret.TextField;
 	private secondsCount: number = 0;
 
-	private successNumber: number = 50;
+	private successNumber: number = this.SUCCESS_NUMBER;
 	private level: number = 1;
 	private isReseting: boolean = false;
 	public constructor() {
@@ -59,12 +60,12 @@ class Dungeon extends egret.Stage {
 
 		this.level = level;
 		if (level == 1) {
-			this.successNumber = 50;
+			this.successNumber = this.SUCCESS_NUMBER;
 		} else {
-			this.successNumber -= 2;
+			this.successNumber -= 1;
 		}
-		if (this.successNumber < 1) {
-			this.successNumber = 1;
+		if (this.successNumber < 5) {
+			this.successNumber = 5;
 		}
 		for (let i = 0; i < this.SIZE; i++) {
 			for (let j = 0; j < this.SIZE; j++) {
@@ -86,8 +87,13 @@ class Dungeon extends egret.Stage {
 		this.player.x = this.map[this.playerPos.x][this.playerPos.y].x;
 		this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
 
-		this.secondsText.text = 'Target:' + this.successNumber + '    LV.:' + this.level;
-		this.timer.delay = 500 - level * 10
+		this.secondsText.text = 'Target:' + this.successNumber + this.randomArr.length + '    LV.' + this.level;
+		let delay = 300 - level * 10;
+		if (delay < 100) {
+			delay = 100;
+		}
+		this.timer.delay = delay;
+		this.isReseting = false;
 		this.timer.reset();
 		this.timer.start();
 		// this.secondsCounter.reset();
@@ -160,16 +166,18 @@ class Dungeon extends egret.Stage {
 				this.playerPos.x++;
 			}
 				break;
-		}
-		if (!this.map[this.playerPos.x][this.playerPos.y].visible) {
-			this.gameOver();
+			default: break;
+
 		}
 		let px = this.map[this.playerPos.x][this.playerPos.y].x;
 		let py = this.map[this.playerPos.x][this.playerPos.y].y;
-		this.player.walk(px, py, dir);
+		this.player.walk(px, py, dir, this.map[this.playerPos.x][this.playerPos.y].visible);
+		if (!this.map[this.playerPos.x][this.playerPos.y].visible) {
+			this.gameOver();
+		}
 	}
 	private addTimer(): void {
-		this.timer = new egret.Timer(500 - this.level * 10, this.SIZE * this.SIZE);
+		this.timer = new egret.Timer(300 - this.level * 10, this.SIZE * this.SIZE);
 		this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
 		this.timer.start();
 		this.secondsCounter = new egret.Timer(1000, this.SIZE * this.SIZE);
@@ -179,18 +187,19 @@ class Dungeon extends egret.Stage {
 
 	}
 	private textCount(): void {
-		this.secondsText.text = 'TIME:' + (this.secondsCount++) + '         LV.:' + this.level;
+		// this.secondsText.text = 'TIME:' + (this.secondsCount++) + '         LV.' + this.level;
 	}
 	private breakTile(): void {
 		if (this.randomArr.length <= this.successNumber) {
 			console.log('finish')
-			if (this.randomArr.length == this.successNumber) {
+			if (!this.isReseting) {
+				this.isReseting = true;
 				egret.setTimeout(() => { this.resetGame(++this.level); }, this, 1000)
 			}
 
 			return;
 		}
-		this.secondsText.text = 'Target:' + this.successNumber + '         LV.:' + this.level;
+		this.secondsText.text = 'Target:' + this.successNumber + '    Tiles:' + this.randomArr.length + '    LV.' + this.level;
 		let index = this.getRandomNum(0, this.randomArr.length - 1);
 		let p = this.randomArr[index];
 		let tile = this.map[p.x][p.y];
@@ -204,7 +213,7 @@ class Dungeon extends egret.Stage {
 			egret.Tween.removeTweens(tile);
 			egret.Tween.get(tile).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(() => {
 				this.map[p.x][p.y].visible = false;
-				if (!this.map[this.playerPos.x][this.playerPos.y].visible) {
+				if (this.playerPos.x == p.x && this.playerPos.y == p.y) {
 					this.gameOver();
 				}
 			})
@@ -222,7 +231,8 @@ class Dungeon extends egret.Stage {
 		console.log('gameover');
 		this.timer.stop();
 		this.secondsCounter.stop();
-		this.player.die();
+		//让角色原地走一步触发死亡,防止走路清空动画
+		this.movePlayer(-1);
 		egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
 
 	}
@@ -232,10 +242,10 @@ class Dungeon extends egret.Stage {
 		this.addChild(this.secondsText);
 		this.secondsText.alpha = 1;
 		this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
-		this.secondsText.size = 40;
+		this.secondsText.size = 30;
 		this.secondsText.textColor = 0xffd700;
 		this.secondsText.x = 50;
-		this.secondsText.y = 50;
-		this.secondsText.text = 'TIME:' + this.secondsCount + '    LV.:' + this.level;
+		this.secondsText.y = 60;
+		this.secondsText.text = 'TIME:' + this.secondsCount + this.randomArr.length + '    LV.:' + this.level;
 	}
 }

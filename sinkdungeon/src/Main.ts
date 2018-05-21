@@ -100,12 +100,12 @@ class Main extends egret.DisplayObjectContainer {
         // sky.width = stageW;
         // sky.height = stageH;
 
-        // let topMask = new egret.Shape();
-        // topMask.graphics.beginFill(0x000000, 0.5);
-        // topMask.graphics.drawRect(0, 0, stageW, 172);
-        // topMask.graphics.endFill();
-        // topMask.y = 33;
-        // this.addChild(topMask);
+        let topMask = new egret.Shape();
+        topMask.graphics.beginFill(0x333333, 0.5);
+        topMask.graphics.drawRect(0, 0, stageW, 100);
+        topMask.graphics.endFill();
+        topMask.y = 33;
+        this.addChild(topMask);
 
         // let icon = this.createBitmapByName("egret_icon_png");
         // this.addChild(icon);

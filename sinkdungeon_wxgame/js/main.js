@@ -48,11 +48,12 @@ var Dungeon = (function (_super) {
     function Dungeon() {
         var _this = _super.call(this) || this;
         _this.SIZE = 9;
+        _this.SUCCESS_NUMBER = 30;
         _this.map = new Array();
         _this.playerPos = new egret.Point();
         _this.dirs = new Array(4);
         _this.secondsCount = 0;
-        _this.successNumber = 50;
+        _this.successNumber = _this.SUCCESS_NUMBER;
         _this.level = 1;
         _this.isReseting = false;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
@@ -93,13 +94,13 @@ var Dungeon = (function (_super) {
     Dungeon.prototype.resetGame = function (level) {
         this.level = level;
         if (level == 1) {
-            this.successNumber = 50;
+            this.successNumber = this.SUCCESS_NUMBER;
         }
         else {
-            this.successNumber -= 2;
+            this.successNumber -= 1;
         }
-        if (this.successNumber < 1) {
-            this.successNumber = 1;
+        if (this.successNumber < 5) {
+            this.successNumber = 5;
         }
         for (var i = 0; i < this.SIZE; i++) {
             for (var j = 0; j < this.SIZE; j++) {
@@ -120,8 +121,13 @@ var Dungeon = (function (_super) {
         this.playerPos.y = index;
         this.player.x = this.map[this.playerPos.x][this.playerPos.y].x;
         this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
-        this.secondsText.text = 'Target:' + this.successNumber + '    LV.:' + this.level;
-        this.timer.delay = 500 - level * 10;
+        this.secondsText.text = 'Target:' + this.successNumber + this.randomArr.length + '    LV.' + this.level;
+        var delay = 300 - level * 10;
+        if (delay < 100) {
+            delay = 100;
+        }
+        this.timer.delay = delay;
+        this.isReseting = false;
         this.timer.reset();
         this.timer.start();
         // this.secondsCounter.reset();
@@ -198,16 +204,17 @@ var Dungeon = (function (_super) {
                     this.playerPos.x++;
                 }
                 break;
-        }
-        if (!this.map[this.playerPos.x][this.playerPos.y].visible) {
-            this.gameOver();
+            default: break;
         }
         var px = this.map[this.playerPos.x][this.playerPos.y].x;
         var py = this.map[this.playerPos.x][this.playerPos.y].y;
-        this.player.walk(px, py, dir);
+        this.player.walk(px, py, dir, this.map[this.playerPos.x][this.playerPos.y].visible);
+        if (!this.map[this.playerPos.x][this.playerPos.y].visible) {
+            this.gameOver();
+        }
     };
     Dungeon.prototype.addTimer = function () {
-        this.timer = new egret.Timer(500 - this.level * 10, this.SIZE * this.SIZE);
+        this.timer = new egret.Timer(300 - this.level * 10, this.SIZE * this.SIZE);
         this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
         this.timer.start();
         this.secondsCounter = new egret.Timer(1000, this.SIZE * this.SIZE);
@@ -215,18 +222,19 @@ var Dungeon = (function (_super) {
         // this.secondsCounter.start();
     };
     Dungeon.prototype.textCount = function () {
-        this.secondsText.text = 'TIME:' + (this.secondsCount++) + '         LV.:' + this.level;
+        // this.secondsText.text = 'TIME:' + (this.secondsCount++) + '         LV.' + this.level;
     };
     Dungeon.prototype.breakTile = function () {
         var _this = this;
         if (this.randomArr.length <= this.successNumber) {
             console.log('finish');
-            if (this.randomArr.length == this.successNumber) {
+            if (!this.isReseting) {
+                this.isReseting = true;
                 egret.setTimeout(function () { _this.resetGame(++_this.level); }, this, 1000);
             }
             return;
         }
-        this.secondsText.text = 'Target:' + this.successNumber + '         LV.:' + this.level;
+        this.secondsText.text = 'Target:' + this.successNumber + '    Tiles:' + this.randomArr.length + '    LV.' + this.level;
         var index = this.getRandomNum(0, this.randomArr.length - 1);
         var p = this.randomArr[index];
         var tile = this.map[p.x][p.y];
@@ -240,7 +248,7 @@ var Dungeon = (function (_super) {
             egret.Tween.removeTweens(tile);
             egret.Tween.get(tile).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(function () {
                 _this.map[p.x][p.y].visible = false;
-                if (!_this.map[_this.playerPos.x][_this.playerPos.y].visible) {
+                if (_this.playerPos.x == p.x && _this.playerPos.y == p.y) {
                     _this.gameOver();
                 }
             });
@@ -255,7 +263,8 @@ var Dungeon = (function (_super) {
         console.log('gameover');
         this.timer.stop();
         this.secondsCounter.stop();
-        this.player.die();
+        //让角色原地走一步触发死亡,防止走路清空动画
+        this.movePlayer(-1);
         egret.setTimeout(function () { _this.resetGame(1); }, this, 3000);
     };
     Dungeon.prototype.addSecondsText = function () {
@@ -264,11 +273,11 @@ var Dungeon = (function (_super) {
         this.addChild(this.secondsText);
         this.secondsText.alpha = 1;
         this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
-        this.secondsText.size = 40;
+        this.secondsText.size = 30;
         this.secondsText.textColor = 0xffd700;
         this.secondsText.x = 50;
-        this.secondsText.y = 50;
-        this.secondsText.text = 'TIME:' + this.secondsCount + '    LV.:' + this.level;
+        this.secondsText.y = 60;
+        this.secondsText.text = 'TIME:' + this.secondsCount + this.randomArr.length + '    LV.:' + this.level;
     };
     return Dungeon;
 }(egret.Stage));
@@ -435,12 +444,12 @@ var Main = (function (_super) {
         var stageH = this.stage.stageHeight;
         // sky.width = stageW;
         // sky.height = stageH;
-        // let topMask = new egret.Shape();
-        // topMask.graphics.beginFill(0x000000, 0.5);
-        // topMask.graphics.drawRect(0, 0, stageW, 172);
-        // topMask.graphics.endFill();
-        // topMask.y = 33;
-        // this.addChild(topMask);
+        var topMask = new egret.Shape();
+        topMask.graphics.beginFill(0x333333, 0.5);
+        topMask.graphics.drawRect(0, 0, stageW, 100);
+        topMask.graphics.endFill();
+        topMask.y = 33;
+        this.addChild(topMask);
         // let icon = this.createBitmapByName("egret_icon_png");
         // this.addChild(icon);
         // icon.x = 26;
@@ -592,13 +601,16 @@ var Player = (function (_super) {
     };
     Player.prototype.die = function () {
         var _this = this;
+        if (this.isdead) {
+            return;
+        }
         this.isdead = true;
         this.playerShadow.visible = false;
         egret.Tween.get(this.player).to({ y: 32, scaleX: 0.5, scaleY: 0.5 }, 200).call(function () {
             _this.parent.setChildIndex(_this, 0);
         }).to({ scaleX: 0.2, scaleY: 0.2, y: 100 }, 100).call(function () { _this.player.alpha = 0; });
     };
-    Player.prototype.walk = function (px, py, dir) {
+    Player.prototype.walk = function (px, py, dir, reachable) {
         var _this = this;
         if (this.walking) {
             console.log("cant");
@@ -621,6 +633,9 @@ var Player = (function (_super) {
             _this.player.rotation = 0;
             _this.player.y = 0;
             _this.walking = false;
+            if (!reachable) {
+                _this.die();
+            }
         });
     };
     return Player;
