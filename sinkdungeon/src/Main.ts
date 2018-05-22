@@ -87,71 +87,40 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     private textfield: egret.TextField;
-
+    //顶部文字
+    private secondsText: egret.TextField;
     /**
      * 创建游戏场景
      * Create a game scene
      */
     private createGameScene() {
-        let sky = new egret.Shape();
+        let bg = new egret.Shape();
         let stageW = this.stage.stageWidth;
         let stageH = this.stage.stageHeight;
-        sky.graphics.beginFill(0x333333, 1);
-        sky.graphics.drawRect(0, 0, stageW, stageH);
-        sky.graphics.endFill();
-         this.addChild(sky);
+        bg.graphics.beginFill(0x333333, 1);
+        bg.graphics.drawRect(0, 0, stageW, stageH);
+        bg.graphics.endFill();
+        this.addChild(bg);
 
-        // let topMask = new egret.Shape();
-        // topMask.graphics.beginFill(0x333333, 0.5);
-        // topMask.graphics.drawRect(0, 0, stageW, 100);
-        // topMask.graphics.endFill();
-        // topMask.y = 33;
-        // this.addChild(topMask);
-
-        // let icon = this.createBitmapByName("egret_icon_png");
-        // this.addChild(icon);
-        // icon.x = 26;
-        // icon.y = 33;
-
-        // let line = new egret.Shape();
-        // line.graphics.lineStyle(2, 0xffffff);
-        // line.graphics.moveTo(0, 0);
-        // line.graphics.lineTo(0, 117);
-        // line.graphics.endFill();
-        // line.x = 172;
-        // line.y = 61;
-        // this.addChild(line);
-
-
-        // let colorLabel = new egret.TextField();
-        // colorLabel.textColor = 0xffffff;
-        // colorLabel.width = stageW - 172;
-        // colorLabel.textAlign = "center";
-        // colorLabel.text = "Hello Egret";
-        // colorLabel.size = 24;
-        // colorLabel.x = 172;
-        // colorLabel.y = 80;
-        // this.addChild(colorLabel);
-
-        // let textfield = new egret.TextField();
-        // this.addChild(textfield);
-        // textfield.alpha = 0;
-        // textfield.width = stageW - 172;
-        // textfield.textAlign = egret.HorizontalAlign.CENTER;
-        // textfield.size = 24;
-        // textfield.textColor = 0xffffff;
-        // textfield.x = 172;
-        // textfield.y = 135;
-        // this.textfield = textfield;
-        
-        // let player = this.createBitmapByName("player_png");
-        // this.addChild(player);
-        // let index = Math.floor(dungeon.SIZE/2)
-        // player.x = dungeon.map[index][index].x;
-        // player.y = dungeon.map[index][index].y;
         let logic = new Logic(this);
         this.addChild(logic);
 
+        this.addSecondsText();
+
+    }
+
+    private addSecondsText(): void {
+        this.secondsText = new egret.TextField();
+        this.addChild(this.secondsText);
+        this.secondsText.alpha = 1;
+        this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
+        this.secondsText.size = 30;
+        this.secondsText.textColor = 0xffd700;
+        this.secondsText.x = 50;
+        this.secondsText.y = 60;
+    }
+    public refreshSecondsText(text:string):void{
+        this.secondsText.text = text;
     }
 
     /**

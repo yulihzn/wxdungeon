@@ -102,7 +102,7 @@ var Dungeon = (function (_super) {
         _this.map = new Array();
         _this.playerPos = new egret.Point();
         _this.dirs = new Array(4);
-        _this.secondsCount = 0;
+        // private secondsText: egret.TextField;
         _this.successNumber = _this.SUCCESS_NUMBER;
         _this.level = 1;
         _this.isReseting = false;
@@ -119,8 +119,7 @@ var Dungeon = (function (_super) {
         this.drawBg();
         this.drawMap();
         this.addPlayer();
-        // this.addController();
-        this.addSecondsText();
+        // this.addSecondsText();
         this.addTimer();
     };
     Dungeon.prototype.drawBg = function () {
@@ -187,7 +186,7 @@ var Dungeon = (function (_super) {
         this.playerPos.y = index;
         this.player.x = this.map[this.playerPos.x][this.playerPos.y].x;
         this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
-        this.secondsText.text = 'Target:' + this.successNumber + this.randomArr.length + '    LV.' + this.level;
+        // this.secondsText.text = 'Target:' + this.successNumber + this.randomArr.length + '    LV.' + this.level;
         var delay = 300 - level * 10;
         if (delay < 100) {
             delay = 100;
@@ -196,9 +195,7 @@ var Dungeon = (function (_super) {
         this.isReseting = false;
         this.timer.reset();
         this.timer.start();
-        // this.secondsCounter.reset();
-        this.secondsCount = 0;
-        // this.secondsCounter.start();
+        this.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL, false, this.randomArr.length);
     };
     Dungeon.prototype.addPlayer = function () {
         this.player = new Player();
@@ -209,41 +206,9 @@ var Dungeon = (function (_super) {
         this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
         this.addChild(this.player);
     };
-    Dungeon.prototype.addController = function () {
-        var _this = this;
-        //0:top,1:bottom,2:left,3:right
-        var top = new egret.Bitmap(RES.getRes("controller_png"));
-        var bottom = new egret.Bitmap(RES.getRes("controller_png"));
-        var left = new egret.Bitmap(RES.getRes("controller_png"));
-        var right = new egret.Bitmap(RES.getRes("controller_png"));
-        var _loop_2 = function (i) {
-            this_2.dirs[i] = new egret.Bitmap(RES.getRes("controller_png"));
-            this_2.dirs[i].touchEnabled = true;
-            this_2.dirs[i].alpha = 0.5;
-            this_2.dirs[i].anchorOffsetX = this_2.dirs[i].width / 2;
-            this_2.dirs[i].anchorOffsetY = this_2.dirs[i].height / 2;
-            this_2.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.movePlayer(i); }, this_2);
-            this_2.addChild(this_2.dirs[i]);
-        };
-        var this_2 = this;
-        for (var i = 0; i < this.dirs.length; i++) {
-            _loop_2(i);
-        }
-        this.dirs[0].rotation = -90;
-        this.dirs[1].rotation = 90;
-        this.dirs[2].rotation = 180;
-        var index = Math.floor(this.SIZE / 2);
-        var cx = this.map[index][index].x;
-        var cy = this.map[this.SIZE - 1][this.SIZE - 1].y + 96;
-        this.dirs[0].x = cx;
-        this.dirs[0].y = cy;
-        this.dirs[1].x = cx;
-        this.dirs[1].y = cy + 256;
-        this.dirs[2].x = cx - 128;
-        this.dirs[2].y = cy + 128;
-        this.dirs[3].x = cx + 128;
-        this.dirs[3].y = cy + 128;
-    };
+    /**
+     *  移动玩家
+     */
     Dungeon.prototype.movePlayer = function (dir) {
         if (this.player.isWalking() || this.player.isDying()) {
             return;
@@ -283,12 +248,6 @@ var Dungeon = (function (_super) {
         this.timer = new egret.Timer(300 - this.level * 10, this.SIZE * this.SIZE);
         this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
         this.timer.start();
-        this.secondsCounter = new egret.Timer(1000, this.SIZE * this.SIZE);
-        this.secondsCounter.addEventListener(egret.TimerEvent.TIMER, this.textCount, this);
-        // this.secondsCounter.start();
-    };
-    Dungeon.prototype.textCount = function () {
-        // this.secondsText.text = 'TIME:' + (this.secondsCount++) + '         LV.' + this.level;
     };
     Dungeon.prototype.breakTile = function () {
         var _this = this;
@@ -300,7 +259,9 @@ var Dungeon = (function (_super) {
             }
             return;
         }
-        this.secondsText.text = 'Target:' + this.successNumber + '    Tiles:' + this.randomArr.length + '    LV.' + this.level;
+        //发送breaktile消息
+        this.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, this.randomArr.length);
+        // this.secondsText.text = 'Target:' + this.successNumber + '    Tiles:' + this.randomArr.length + '    LV.' + this.level;
         var index = this.getRandomNum(0, this.randomArr.length - 1);
         var p = this.randomArr[index];
         var tile = this.map[p.x][p.y];
@@ -328,22 +289,9 @@ var Dungeon = (function (_super) {
         var _this = this;
         console.log('gameover');
         this.timer.stop();
-        this.secondsCounter.stop();
         //让角色原地走一步触发死亡,防止走路清空动画
         this.movePlayer(-1);
         egret.setTimeout(function () { _this.resetGame(1); }, this, 3000);
-    };
-    Dungeon.prototype.addSecondsText = function () {
-        this.secondsCount = 0;
-        this.secondsText = new egret.TextField();
-        this.addChild(this.secondsText);
-        this.secondsText.alpha = 1;
-        this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
-        this.secondsText.size = 30;
-        this.secondsText.textColor = 0xffd700;
-        this.secondsText.x = 50;
-        this.secondsText.y = 60;
-        this.secondsText.text = 'TIME:' + this.secondsCount + this.randomArr.length + '    LV.:' + this.level;
     };
     return Dungeon;
 }(egret.Stage));
@@ -401,6 +349,7 @@ var Logic = (function (_super) {
     __extends(Logic, _super);
     function Logic(main) {
         var _this = _super.call(this) || this;
+        _this.level = 1;
         _this.main = main;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
@@ -413,6 +362,11 @@ var Logic = (function (_super) {
         this.controllerPad.y = 800;
         this.addChild(this.controllerPad);
         this.controllerPad.addEventListener(PadtapEvent.PADTAP, this.tapPad, this);
+        this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.refreshText, this);
+        this.dungeon.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.refreshText, this);
+    };
+    Logic.prototype.refreshText = function (evt) {
+        this.main.refreshSecondsText('Target:' + this.dungeon.successNumber + '    Tiles:' + evt.data + '    LV.' + this.dungeon.level);
     };
     Logic.prototype.tapPad = function (evt) {
         this.dungeon.movePlayer(evt.dir);
@@ -527,57 +481,29 @@ var Main = (function (_super) {
      * Create a game scene
      */
     Main.prototype.createGameScene = function () {
-        var sky = new egret.Shape();
+        var bg = new egret.Shape();
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
-        sky.graphics.beginFill(0x333333, 1);
-        sky.graphics.drawRect(0, 0, stageW, stageH);
-        sky.graphics.endFill();
-        this.addChild(sky);
-        // let topMask = new egret.Shape();
-        // topMask.graphics.beginFill(0x333333, 0.5);
-        // topMask.graphics.drawRect(0, 0, stageW, 100);
-        // topMask.graphics.endFill();
-        // topMask.y = 33;
-        // this.addChild(topMask);
-        // let icon = this.createBitmapByName("egret_icon_png");
-        // this.addChild(icon);
-        // icon.x = 26;
-        // icon.y = 33;
-        // let line = new egret.Shape();
-        // line.graphics.lineStyle(2, 0xffffff);
-        // line.graphics.moveTo(0, 0);
-        // line.graphics.lineTo(0, 117);
-        // line.graphics.endFill();
-        // line.x = 172;
-        // line.y = 61;
-        // this.addChild(line);
-        // let colorLabel = new egret.TextField();
-        // colorLabel.textColor = 0xffffff;
-        // colorLabel.width = stageW - 172;
-        // colorLabel.textAlign = "center";
-        // colorLabel.text = "Hello Egret";
-        // colorLabel.size = 24;
-        // colorLabel.x = 172;
-        // colorLabel.y = 80;
-        // this.addChild(colorLabel);
-        // let textfield = new egret.TextField();
-        // this.addChild(textfield);
-        // textfield.alpha = 0;
-        // textfield.width = stageW - 172;
-        // textfield.textAlign = egret.HorizontalAlign.CENTER;
-        // textfield.size = 24;
-        // textfield.textColor = 0xffffff;
-        // textfield.x = 172;
-        // textfield.y = 135;
-        // this.textfield = textfield;
-        // let player = this.createBitmapByName("player_png");
-        // this.addChild(player);
-        // let index = Math.floor(dungeon.SIZE/2)
-        // player.x = dungeon.map[index][index].x;
-        // player.y = dungeon.map[index][index].y;
+        bg.graphics.beginFill(0x333333, 1);
+        bg.graphics.drawRect(0, 0, stageW, stageH);
+        bg.graphics.endFill();
+        this.addChild(bg);
         var logic = new Logic(this);
         this.addChild(logic);
+        this.addSecondsText();
+    };
+    Main.prototype.addSecondsText = function () {
+        this.secondsText = new egret.TextField();
+        this.addChild(this.secondsText);
+        this.secondsText.alpha = 1;
+        this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
+        this.secondsText.size = 30;
+        this.secondsText.textColor = 0xffd700;
+        this.secondsText.x = 50;
+        this.secondsText.y = 60;
+    };
+    Main.prototype.refreshSecondsText = function (text) {
+        this.secondsText.text = text;
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -731,6 +657,18 @@ var Player = (function (_super) {
     return Player;
 }(egret.DisplayObjectContainer));
 __reflect(Player.prototype, "Player");
+var LogicEvent = (function (_super) {
+    __extends(LogicEvent, _super);
+    function LogicEvent(type, bubbles, cancelable, data) {
+        return _super.call(this, type, bubbles, cancelable, data) || this;
+    }
+    LogicEvent.LOGIC = "LOGIC";
+    LogicEvent.GAMEOVER = "LOGIC_GAMEOVER";
+    LogicEvent.DUNGEON_BREAKTILE = "DUNGEON_BREAKTILE";
+    LogicEvent.DUNGEON_NEXTLEVEL = "DUNGEON_NEXTLEVEL";
+    return LogicEvent;
+}(egret.Event));
+__reflect(LogicEvent.prototype, "LogicEvent");
 /**
  * 方向键点击事件
  */
