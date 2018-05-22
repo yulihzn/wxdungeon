@@ -90,7 +90,6 @@ class Main extends egret.DisplayObjectContainer {
     //顶部文字
     private secondsText: egret.TextField;
     /**
-     * 创建游戏场景
      * Create a game scene
      */
     private createGameScene() {
