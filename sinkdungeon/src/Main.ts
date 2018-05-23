@@ -89,6 +89,7 @@ class Main extends egret.DisplayObjectContainer {
     private textfield: egret.TextField;
     //顶部文字
     private secondsText: egret.TextField;
+    public gameoverDialog:GameoverDialog;
     /**
      * Create a game scene
      */
@@ -105,6 +106,8 @@ class Main extends egret.DisplayObjectContainer {
         this.addChild(logic);
 
         this.addSecondsText();
+        this.gameoverDialog = new GameoverDialog();
+        this.addChild(this.gameoverDialog);
 
     }
 

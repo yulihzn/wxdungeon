@@ -70,7 +70,7 @@ class Dungeon extends egret.Stage {
 		}
 
 	}
-	private resetGame(level: number): void {
+	public resetGame(level: number): void {
 
 		this.level = level;
 		if (level == 1) {
@@ -109,7 +109,7 @@ class Dungeon extends egret.Stage {
 		this.isReseting = false;
 		this.timer.reset();
 		this.timer.start();
-		this.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL,false,this.randomArr.length);
+		this.dispatchEventWith(LogicEvent.UI_REFRESHTEXT,false,{tileNum:this.randomArr.length});
 	}
 	private addPlayer(): void {
 		this.player = new Player();
@@ -175,7 +175,7 @@ class Dungeon extends egret.Stage {
 			return;
 		}
 		//发送breaktile消息
-		this.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE,false,this.randomArr.length);
+		this.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE,false,{tileNum:this.randomArr.length});
 		let index = this.getRandomNum(0, this.randomArr.length - 1);
 		let p = this.randomArr[index];
 		let tile = this.map[p.x][p.y];
@@ -208,7 +208,8 @@ class Dungeon extends egret.Stage {
 		this.timer.stop();
 		//让角色原地走一步触发死亡,防止走路清空动画
 		this.movePlayer(-1);
-		egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
+		// egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
+		this.dispatchEventWith(LogicEvent.GAMEOVER);
 
 	}
 }
