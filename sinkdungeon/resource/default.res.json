@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "description_json,tile_png,player_png,controller_png,shadow_png",
+			"keys": "description_json,tile_png,player_png,controller_png,shadow_png,gem01_png,gem02_png,gem03_png,gem04_png",
 			"name": "preload"
 		}
 	],
@@ -30,6 +30,26 @@
 			"name": "shadow_png",
 			"type": "image",
 			"url": "assets/shadow.png"
+		},
+		{
+			"name": "gem01_png",
+			"type": "image",
+			"url": "assets/gem01.png"
+		},
+		{
+			"name": "gem02_png",
+			"type": "image",
+			"url": "assets/gem02.png"
+		},
+		{
+			"name": "gem03_png",
+			"type": "image",
+			"url": "assets/gem03.png"
+		},
+		{
+			"name": "gem04_png",
+			"type": "image",
+			"url": "assets/gem04.png"
 		}
 	]
 }

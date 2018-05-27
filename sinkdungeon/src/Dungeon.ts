@@ -1,7 +1,7 @@
 class Dungeon extends egret.Stage {
 	public readonly SIZE: number = 9;
-	public readonly SUCCESS_NUMBER: number = 30;
-	public map: egret.Bitmap[][] = new Array();
+	public readonly SUCCESS_NUMBER: number = 15;
+	public map: egret.Bitmap[][] = new Array();4
 	public player: Player;
 	private originX: number;
 	private originY: number;
@@ -10,6 +10,7 @@ class Dungeon extends egret.Stage {
 	private playerShadow: egret.Bitmap;
 	private randomArr: egret.Point[];
 	private timer: egret.Timer;
+	private gems:Gem[];
 
 	public successNumber: number = this.SUCCESS_NUMBER;
 	public level: number = 1;
@@ -32,6 +33,7 @@ class Dungeon extends egret.Stage {
 		this.drawMap();
 		this.addPlayer();
 		this.addTimer();
+		this.addGems();
 	}
 	private drawBg(): void {
 		let tile = new egret.Bitmap(RES.getRes("tile_png"));
@@ -101,7 +103,7 @@ class Dungeon extends egret.Stage {
 		this.player.x = this.map[this.playerPos.x][this.playerPos.y].x;
 		this.player.y = this.map[this.playerPos.x][this.playerPos.y].y;
 
-		let delay = 300 - level * 10;
+		let delay = 200 - level * 10;
 		if (delay < 100) {
 			delay = 100;
 		}
@@ -159,7 +161,7 @@ class Dungeon extends egret.Stage {
 		}
 	}
 	private addTimer(): void {
-		this.timer = new egret.Timer(300 - this.level * 10, this.SIZE * this.SIZE);
+		this.timer = new egret.Timer(200 - this.level * 10, this.SIZE * this.SIZE);
 		this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
 		this.timer.start();
 	}
@@ -180,6 +182,10 @@ class Dungeon extends egret.Stage {
 		let p = this.randomArr[index];
 		let tile = this.map[p.x][p.y];
 		let y = tile.y;
+		this.randomArr.splice(index, 1);
+		if(p.x==Math.floor(this.SIZE / 2)&&p.y==Math.floor(this.SIZE / 2)){
+			return;
+		}
 		egret.Tween.get(tile, { loop: true })
 			.to({ y: y + 5 }, 25)
 			.to({ y: y }, 25)
@@ -195,7 +201,6 @@ class Dungeon extends egret.Stage {
 			})
 		});
 
-		this.randomArr.splice(index, 1);
 
 	}
 
@@ -211,5 +216,13 @@ class Dungeon extends egret.Stage {
 		// egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
 		this.dispatchEventWith(LogicEvent.GAMEOVER);
 
+	}
+
+	private addGems():void{
+		let gem = new Gem('01')
+		let index = Math.floor(this.SIZE / 2)
+		gem.x = this.map[index+1][index].x;
+		gem.y = this.map[index+1][index].y;
+		this.addChild(gem);
 	}
 }
