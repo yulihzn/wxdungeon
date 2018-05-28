@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "description_json,tile_png,player_png,controller_png,shadow_png,gem01_png,gem02_png,gem03_png,gem04_png",
+			"keys": "description_json,tile_png,player_png,controller_png,shadow_png,gem01_png,gem02_png,gem03_png,gem04_png,portal_png,portallight_png",
 			"name": "preload"
 		}
 	],
@@ -50,6 +50,16 @@
 			"name": "gem04_png",
 			"type": "image",
 			"url": "assets/gem04.png"
+		},
+		{
+			"name": "portal_png",
+			"type": "image",
+			"url": "assets/portal.png"
+		},
+		{
+			"name": "portallight_png",
+			"type": "image",
+			"url": "assets/portallight.png"
 		}
 	]
 }

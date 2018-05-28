@@ -1,7 +1,7 @@
 class Dungeon extends egret.Stage {
 	public readonly SIZE: number = 9;
 	public readonly SUCCESS_NUMBER: number = 15;
-	public map: egret.Bitmap[][] = new Array();4
+	public map: Tile[][] = new Array();4
 	public player: Player;
 	private originX: number;
 	private originY: number;
@@ -10,11 +10,13 @@ class Dungeon extends egret.Stage {
 	private playerShadow: egret.Bitmap;
 	private randomArr: egret.Point[];
 	private timer: egret.Timer;
-	private gems:Gem[];
 
 	public successNumber: number = this.SUCCESS_NUMBER;
 	public level: number = 1;
 	private isReseting: boolean = false;
+
+	private portal:Portal;
+
 	public constructor() {
 		super();
 		this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -31,9 +33,9 @@ class Dungeon extends egret.Stage {
 
 		this.drawBg();
 		this.drawMap();
+		this.addPortal();
 		this.addPlayer();
 		this.addTimer();
-		this.addGems();
 	}
 	private drawBg(): void {
 		let tile = new egret.Bitmap(RES.getRes("tile_png"));
@@ -57,11 +59,7 @@ class Dungeon extends egret.Stage {
 		for (let i = 0; i < this.SIZE; i++) {
 			this.map[i] = new Array(i);
 			for (let j = 0; j < this.SIZE; j++) {
-				let t = new egret.Bitmap(RES.getRes("tile_png"));
-				t.anchorOffsetX = t.width / 2;
-				t.anchorOffsetY = t.height / 2;
-				t.scaleX = 1;
-				t.scaleY = 1;
+				let t = new Tile();
 				t.x = this.originX + i * t.width;
 				t.y = this.originY + j * t.height;
 				this.map[i][j] = t;
@@ -71,6 +69,12 @@ class Dungeon extends egret.Stage {
 			}
 		}
 
+	}
+	private addPortal():void{
+		this.portal = new Portal();
+		this.addChild(this.portal);
+		let index = Math.floor(this.SIZE / 2)
+		this.portal.show(this.map[index][index].x,this.map[index][index].y);
 	}
 	public resetGame(level: number): void {
 
@@ -86,13 +90,13 @@ class Dungeon extends egret.Stage {
 		for (let i = 0; i < this.SIZE; i++) {
 			for (let j = 0; j < this.SIZE; j++) {
 				let t = this.map[i][j];
-				t.scaleX = 1;
-				t.scaleY = 1;
-				t.alpha = 1;
-				t.visible = true;
-				t.x = this.originX + i * t.width;
-				t.y = this.originY + j * t.height;
-				egret.Tween.removeTweens(t);
+				t.floor.scaleX = 1;
+				t.floor.scaleY = 1;
+				t.floor.alpha = 1;
+				t.floor.visible = true;
+				t.floor.x = 0;
+				t.floor.y = 0;
+				egret.Tween.removeTweens(t.floor);
 				this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
 			}
 		}
@@ -135,11 +139,13 @@ class Dungeon extends egret.Stage {
 				if (this.playerPos.y - 1 >= 0) {
 					this.playerPos.y--;
 				}
+				this.portal.openGate();
 				break;
 			case 1:
 				if (this.playerPos.y + 1 < this.SIZE) {
 					this.playerPos.y++;
 				}
+				this.portal.closeGate();
 				break;
 			case 2:
 				if (this.playerPos.x - 1 >= 0) {
@@ -155,8 +161,8 @@ class Dungeon extends egret.Stage {
 		}
 		let px = this.map[this.playerPos.x][this.playerPos.y].x;
 		let py = this.map[this.playerPos.x][this.playerPos.y].y;
-		this.player.walk(px, py, dir, this.map[this.playerPos.x][this.playerPos.y].visible);
-		if (!this.map[this.playerPos.x][this.playerPos.y].visible) {
+		this.player.walk(px, py, dir, this.map[this.playerPos.x][this.playerPos.y].floor.visible);
+		if (!this.map[this.playerPos.x][this.playerPos.y].floor.visible) {
 			this.gameOver();
 		}
 	}
@@ -181,20 +187,20 @@ class Dungeon extends egret.Stage {
 		let index = this.getRandomNum(0, this.randomArr.length - 1);
 		let p = this.randomArr[index];
 		let tile = this.map[p.x][p.y];
-		let y = tile.y;
+		let y = tile.floor.y;
 		this.randomArr.splice(index, 1);
 		if(p.x==Math.floor(this.SIZE / 2)&&p.y==Math.floor(this.SIZE / 2)){
 			return;
 		}
-		egret.Tween.get(tile, { loop: true })
+		egret.Tween.get(tile.floor, { loop: true })
 			.to({ y: y + 5 }, 25)
 			.to({ y: y }, 25)
 			.to({ y: y - 5 }, 25)
 			.to({ y: y }, 25);
-		egret.Tween.get(tile).wait(2000).call(() => {
-			egret.Tween.removeTweens(tile);
-			egret.Tween.get(tile).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(() => {
-				this.map[p.x][p.y].visible = false;
+		egret.Tween.get(tile.floor).wait(2000).call(() => {
+			egret.Tween.removeTweens(tile.floor);
+			egret.Tween.get(tile.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(() => {
+				this.map[p.x][p.y].floor.visible = false;
 				if (this.playerPos.x == p.x && this.playerPos.y == p.y) {
 					this.gameOver();
 				}
@@ -218,11 +224,5 @@ class Dungeon extends egret.Stage {
 
 	}
 
-	private addGems():void{
-		let gem = new Gem('01')
-		let index = Math.floor(this.SIZE / 2)
-		gem.x = this.map[index+1][index].x;
-		gem.y = this.map[index+1][index].y;
-		this.addChild(gem);
-	}
+	
 }

@@ -3,6 +3,8 @@ class Logic extends egret.Stage {
 	private controllerPad: ControllerPad;
 	private dungeon: Dungeon;
 	private level: number = 1;
+	private gemManager:GemManager = new GemManager();
+	private score:number = 0;
 
 	public constructor(main: Main) {
 		super();
@@ -21,8 +23,11 @@ class Logic extends egret.Stage {
 		this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
 		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
+		this.addEventListener(LogicEvent.GET_GEM,this.getGem,this);
+		this.addGems();
 	}
 	private refreshText(evt: LogicEvent): void {
+		this.main.refreshScoreText(""+this.score);
 		this.main.refreshSecondsText('Target:' + this.dungeon.successNumber + '    Tiles:' + evt.data.tileNum + '    LV.' + this.dungeon.level)
 	}
 	private tapPad(evt: PadtapEvent): void {
@@ -33,6 +38,19 @@ class Logic extends egret.Stage {
 		this.dungeon.resetGame(this.level)
 	}
 	private gameOver(): void {
+		this.score = 0;
 		this.main.gameoverDialog.show(this.dungeon.level);
+	}
+	private addGems():void{
+		let gem = this.gemManager.getGem(GemManager.GEM01)
+		this.addChild(gem);
+		let index = Math.floor(this.dungeon.SIZE / 2)
+		gem.show(this.dungeon.map[index+1][index].x,this.dungeon.map[index+1][index].y)
+	}
+	private getGem():void{
+		this.main.refreshScoreText(""+this.score);
+		egret.setTimeout(()=>{
+			this.addGems();
+		},this,2000)
 	}
 }

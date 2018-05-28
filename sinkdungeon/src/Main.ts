@@ -89,7 +89,8 @@ class Main extends egret.DisplayObjectContainer {
     private textfield: egret.TextField;
     //顶部文字
     private secondsText: egret.TextField;
-    public gameoverDialog:GameoverDialog;
+    private scoreText: egret.TextField;
+    public gameoverDialog: GameoverDialog;
     /**
      * Create a game scene
      */
@@ -106,6 +107,7 @@ class Main extends egret.DisplayObjectContainer {
         this.addChild(logic);
 
         this.addSecondsText();
+        this.addScoreText();
         this.gameoverDialog = new GameoverDialog();
         this.addChild(this.gameoverDialog);
 
@@ -117,14 +119,26 @@ class Main extends egret.DisplayObjectContainer {
         this.secondsText.alpha = 1;
         this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
         this.secondsText.size = 30;
-        this.secondsText.textColor = 0xffd700;
+        this.secondsText.textColor = 0x66ccff;
         this.secondsText.x = 50;
         this.secondsText.y = 60;
     }
-    public refreshSecondsText(text:string):void{
+    private addScoreText(): void {
+        this.scoreText = new egret.TextField();
+        this.addChild(this.scoreText);
+        this.scoreText.alpha = 1;
+        this.scoreText.textAlign = egret.HorizontalAlign.CENTER;
+        this.scoreText.size = 40;
+        this.scoreText.textColor = 0xffd700;
+        this.scoreText.x = 50;
+        this.scoreText.y = 100;
+    }
+    public refreshSecondsText(text: string): void {
         this.secondsText.text = text;
     }
-
+    public refreshScoreText(text: string): void {
+        this.scoreText.text = text;
+    }
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
      * Create a Bitmap object according to name keyword.As for the property of name please refer to the configuration file of resources/resource.json.
