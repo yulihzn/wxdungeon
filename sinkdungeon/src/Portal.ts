@@ -26,8 +26,8 @@ class Portal extends Building {
 		this.light.anchorOffsetX = this.light.width / 2;
 		this.light.anchorOffsetY = this.light.height / 2;
 		this.light.x = this.width/2;
-		this.light.y = this.width/2;
-		this.light.alpha = 0.5;
+		this.light.y = 0;
+		this.light.alpha = 0.75;
 		this.light.scaleX = 1;
 		this.light.scaleY = 1;
 		this.addChild(this.gate);
@@ -35,28 +35,28 @@ class Portal extends Building {
 		this.isOpen = false;
 		this.visible = false;
 		egret.Tween.get(this.light, { loop: true })
-			.to({ skewX: 2,skewY:-2}, 1000)
+			.to({ skewX: 5,skewY:-2}, 1000)
 			.to({ skewX: 0,skewY:0}, 1000)
-			.to({ skewX: -2,skewY:2}, 1000)
+			.to({ skewX: -5,skewY:2}, 1000)
 			.to({ skewX: 0,skewY:0}, 1000);
 	}
-	public show(x: number, y: number): void {
+	public show(): void {
 		this.alpha = 0;
 		this.scaleX = 0.1;
 		this.scaleY = 0.1;
+		this.light.scaleX = 0.1;
+		this.light.scaleY = 0.1;
 		this.visible = true;
-		this.x = x;
-		this.y = y;
 		this.isOpen = false;
 		egret.Tween.get(this)
 			.to({alpha: 1,scaleX:1,scaleY:1}, 500).call(() => {
-				egret.Tween.get(this.light).to({scaleX:10},1000);
+				
 			});
 	}
 	public closeGate():void{
 		this.isOpen = false;
 		egret.Tween.get(this.light)
-			.to({scaleY:1}, 1000).call(() => {
+			.to({scaleY:0.1}, 500).to({scaleX:0.1}, 200).call(() => {
 				
 			});
 	}
@@ -65,9 +65,8 @@ class Portal extends Building {
 		if(!this.visible){
 			return;
 		}
-		egret.Tween.get(this.light)
-			.to({ scaleY: 20}, 500).call(() => {
-				
-			});
+		egret.Tween.get(this.light).to({scaleX:1},500).to({scaleY:1},200).call(()=>{
+
+		});
 	}
 }

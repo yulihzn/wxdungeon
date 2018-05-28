@@ -17,4 +17,14 @@ class Tile extends egret.DisplayObjectContainer {
 		this.floor = t;
 		this.addChild(this.floor);
 	}
+	public addItem(item:Item):Tile{
+		this.item = item;
+		this.addChild(this.item);
+		return this;
+	}
+	public addBuilding(building:Building):Tile{
+		this.building = building;
+		this.addChild(this.building);
+		return this;
+	}
 }

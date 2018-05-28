@@ -1,4 +1,5 @@
 class Logic extends egret.Stage {
+	public static readonly SIZE: number = 9;
 	private main: Main;
 	private controllerPad: ControllerPad;
 	private dungeon: Dungeon;
@@ -24,7 +25,6 @@ class Logic extends egret.Stage {
 		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
 		this.addEventListener(LogicEvent.GET_GEM,this.getGem,this);
-		this.addGems();
 	}
 	private refreshText(evt: LogicEvent): void {
 		this.main.refreshScoreText(""+this.score);
@@ -41,16 +41,10 @@ class Logic extends egret.Stage {
 		this.score = 0;
 		this.main.gameoverDialog.show(this.dungeon.level);
 	}
-	private addGems():void{
-		let gem = this.gemManager.getGem(GemManager.GEM01)
-		this.addChild(gem);
-		let index = Math.floor(this.dungeon.SIZE / 2)
-		gem.show(this.dungeon.map[index+1][index].x,this.dungeon.map[index+1][index].y)
-	}
-	private getGem():void{
+
+	private getGem(evt:LogicEvent):void{
+		this.score+=evt.data.score;
 		this.main.refreshScoreText(""+this.score);
-		egret.setTimeout(()=>{
-			this.addGems();
-		},this,2000)
+		
 	}
 }

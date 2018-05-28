@@ -137,7 +137,6 @@ var Dungeon = (function (_super) {
         this.originY = 200;
         this.drawBg();
         this.drawMap();
-        this.addPortal();
         this.addPlayer();
         this.addTimer();
     };
@@ -165,17 +164,19 @@ var Dungeon = (function (_super) {
                 var t = new Tile();
                 t.x = this.originX + i * t.width;
                 t.y = this.originY + j * t.height;
+                var index = Math.floor(this.SIZE / 2);
+                if (index == i && index == j) {
+                    this.portal = new Portal();
+                    t.addBuilding(this.portal);
+                    this.portal.show();
+                }
+                t.addItem(new Gem(1));
+                t.item.show();
                 this.map[i][j] = t;
                 this.addChild(this.map[i][j]);
                 this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
             }
         }
-    };
-    Dungeon.prototype.addPortal = function () {
-        this.portal = new Portal();
-        this.addChild(this.portal);
-        var index = Math.floor(this.SIZE / 2);
-        this.portal.show(this.map[index][index].x, this.map[index][index].y);
     };
     Dungeon.prototype.resetGame = function (level) {
         this.level = level;
@@ -195,8 +196,9 @@ var Dungeon = (function (_super) {
                 t.floor.scaleY = 1;
                 t.floor.alpha = 1;
                 t.floor.visible = true;
-                t.x = this.originX + i * t.width;
-                t.y = this.originY + j * t.height;
+                t.floor.x = 0;
+                t.floor.y = 0;
+                t.item.show();
                 egret.Tween.removeTweens(t.floor);
                 this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
             }
@@ -265,6 +267,9 @@ var Dungeon = (function (_super) {
         if (!this.map[this.playerPos.x][this.playerPos.y].floor.visible) {
             this.gameOver();
         }
+        if (this.map[this.playerPos.x][this.playerPos.y].item) {
+            this.map[this.playerPos.x][this.playerPos.y].item.taken();
+        }
     };
     Dungeon.prototype.addTimer = function () {
         this.timer = new egret.Timer(200 - this.level * 10, this.SIZE * this.SIZE);
@@ -324,6 +329,7 @@ var Gem = (function (_super) {
     __extends(Gem, _super);
     function Gem(type) {
         var _this = _super.call(this) || this;
+        _this.canTaken = false;
         _this.type = type;
         _this.init();
         return _this;
@@ -363,18 +369,25 @@ var Gem = (function (_super) {
             .to({ scaleX: 0.5, y: y + 8 }, 1000)
             .to({ scaleX: 1, y: y }, 1000);
     };
-    Gem.prototype.show = function (x, y) {
+    Gem.prototype.show = function () {
+        egret.Tween.removeTweens(this.item);
         this.item.x = 32;
         this.item.y = 16;
         this.item.scaleX = 1;
         this.item.scaleY = 1;
         this.item.alpha = 1;
         this.visible = true;
-        this.x = x;
-        this.y = y;
+        this.canTaken = true;
+        var y = this.item.y;
+        egret.Tween.get(this.item, { loop: true })
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 0, y: y }, 1000)
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 1, y: y }, 1000);
     };
     Gem.prototype.hide = function () {
         var _this = this;
+        this.canTaken = false;
         egret.Tween.removeTweens(this.item);
         this.item.scaleX = 1;
         egret.Tween.get(this.item)
@@ -384,15 +397,16 @@ var Gem = (function (_super) {
     };
     Gem.prototype.taken = function () {
         var _this = this;
-        if (!this.visible) {
+        if (!this.visible || !this.canTaken) {
             return;
         }
+        this.canTaken = false;
         this.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: this.type * 10 });
         egret.Tween.removeTweens(this.item);
         this.item.scaleX = 1;
         this.item.alpha = 1;
         egret.Tween.get(this.item)
-            .to({ scaleX: 2, scaleY: 2, y: this.item.y - 32 }, 500)
+            .to({ scaleX: 2, scaleY: 2, y: this.item.y - 128 }, 500)
             .to({ alpha: 0 }, 100).call(function () {
             _this.visible = false;
         });
@@ -481,7 +495,6 @@ var Logic = (function (_super) {
         this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
         this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
         this.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
-        this.addGems();
     };
     Logic.prototype.refreshText = function (evt) {
         this.main.refreshScoreText("" + this.score);
@@ -498,19 +511,11 @@ var Logic = (function (_super) {
         this.score = 0;
         this.main.gameoverDialog.show(this.dungeon.level);
     };
-    Logic.prototype.addGems = function () {
-        var gem = this.gemManager.getGem(GemManager.GEM01);
-        this.addChild(gem);
-        var index = Math.floor(this.dungeon.SIZE / 2);
-        gem.show(this.dungeon.map[index + 1][index].x, this.dungeon.map[index + 1][index].y);
-    };
-    Logic.prototype.getGem = function () {
-        var _this = this;
+    Logic.prototype.getGem = function (evt) {
+        this.score += evt.data.score;
         this.main.refreshScoreText("" + this.score);
-        egret.setTimeout(function () {
-            _this.addGems();
-        }, this, 2000);
     };
+    Logic.SIZE = 9;
     return Logic;
 }(egret.Stage));
 __reflect(Logic.prototype, "Logic");
@@ -865,8 +870,8 @@ var Portal = (function (_super) {
         this.light.anchorOffsetX = this.light.width / 2;
         this.light.anchorOffsetY = this.light.height / 2;
         this.light.x = this.width / 2;
-        this.light.y = this.width / 2;
-        this.light.alpha = 0.5;
+        this.light.y = 0;
+        this.light.alpha = 0.75;
         this.light.scaleX = 1;
         this.light.scaleY = 1;
         this.addChild(this.gate);
@@ -874,29 +879,27 @@ var Portal = (function (_super) {
         this.isOpen = false;
         this.visible = false;
         egret.Tween.get(this.light, { loop: true })
-            .to({ skewX: 2, skewY: -2 }, 1000)
+            .to({ skewX: 5, skewY: -2 }, 1000)
             .to({ skewX: 0, skewY: 0 }, 1000)
-            .to({ skewX: -2, skewY: 2 }, 1000)
+            .to({ skewX: -5, skewY: 2 }, 1000)
             .to({ skewX: 0, skewY: 0 }, 1000);
     };
-    Portal.prototype.show = function (x, y) {
-        var _this = this;
+    Portal.prototype.show = function () {
         this.alpha = 0;
         this.scaleX = 0.1;
         this.scaleY = 0.1;
+        this.light.scaleX = 0.1;
+        this.light.scaleY = 0.1;
         this.visible = true;
-        this.x = x;
-        this.y = y;
         this.isOpen = false;
         egret.Tween.get(this)
             .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 500).call(function () {
-            egret.Tween.get(_this.light).to({ scaleX: 10 }, 1000);
         });
     };
     Portal.prototype.closeGate = function () {
         this.isOpen = false;
         egret.Tween.get(this.light)
-            .to({ scaleY: 1 }, 1000).call(function () {
+            .to({ scaleY: 0.1 }, 500).to({ scaleX: 0.1 }, 200).call(function () {
         });
     };
     Portal.prototype.openGate = function () {
@@ -904,8 +907,7 @@ var Portal = (function (_super) {
         if (!this.visible) {
             return;
         }
-        egret.Tween.get(this.light)
-            .to({ scaleY: 20 }, 500).call(function () {
+        egret.Tween.get(this.light).to({ scaleX: 1 }, 500).to({ scaleY: 1 }, 200).call(function () {
         });
     };
     return Portal;
@@ -928,6 +930,16 @@ var Tile = (function (_super) {
         t.scaleY = 1;
         this.floor = t;
         this.addChild(this.floor);
+    };
+    Tile.prototype.addItem = function (item) {
+        this.item = item;
+        this.addChild(this.item);
+        return this;
+    };
+    Tile.prototype.addBuilding = function (building) {
+        this.building = building;
+        this.addChild(this.building);
+        return this;
     };
     return Tile;
 }(egret.DisplayObjectContainer));
