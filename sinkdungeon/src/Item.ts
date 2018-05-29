@@ -5,4 +5,5 @@ abstract class Item extends egret.DisplayObjectContainer{
 	public abstract taken():void;
 	public abstract show():void;
 	public abstract hide():void;
+	public abstract setId(type:number):void;
 }

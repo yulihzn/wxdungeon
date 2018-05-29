@@ -3,8 +3,10 @@ class Portal extends Building {
 	private light: egret.Bitmap;
 	private type:number;
 	private isOpen:boolean = false;
-	public constructor() {
+	public posIndex:egret.Point;
+	public constructor(x:number,y:number) {
 		super()
+		this.posIndex = new egret.Point(x,y);
 		this.init();
 	}
 	
@@ -54,6 +56,9 @@ class Portal extends Building {
 			});
 	}
 	public closeGate():void{
+		if(!this.visible||!this.isOpen){
+			return;
+		}
 		this.isOpen = false;
 		egret.Tween.get(this.light)
 			.to({scaleY:0.1}, 500).to({scaleX:0.1}, 200).call(() => {
@@ -61,12 +66,15 @@ class Portal extends Building {
 			});
 	}
 	public openGate(): void {
-		this.isOpen = true;
-		if(!this.visible){
+		if(!this.visible||this.isOpen){
 			return;
 		}
+		this.isOpen = true;
 		egret.Tween.get(this.light).to({scaleX:1},500).to({scaleY:1},200).call(()=>{
 
 		});
+	}
+	public isGateOpen():boolean{
+		return this.isOpen;
 	}
 }

@@ -91,6 +91,7 @@ class Main extends egret.DisplayObjectContainer {
     private secondsText: egret.TextField;
     private scoreText: egret.TextField;
     public gameoverDialog: GameoverDialog;
+    public loadingNextDialog:LoadingNextDialog;
     /**
      * Create a game scene
      */
@@ -108,6 +109,8 @@ class Main extends egret.DisplayObjectContainer {
 
         this.addSecondsText();
         this.addScoreText();
+        this.loadingNextDialog = new LoadingNextDialog();
+        this.addChild(this.loadingNextDialog);
         this.gameoverDialog = new GameoverDialog();
         this.addChild(this.gameoverDialog);
 
@@ -119,7 +122,7 @@ class Main extends egret.DisplayObjectContainer {
         this.secondsText.alpha = 1;
         this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
         this.secondsText.size = 30;
-        this.secondsText.textColor = 0x66ccff;
+        this.secondsText.textColor = 0xffffff;
         this.secondsText.x = 50;
         this.secondsText.y = 60;
     }

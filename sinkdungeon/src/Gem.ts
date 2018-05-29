@@ -1,8 +1,8 @@
 class Gem extends egret.DisplayObjectContainer {
 	private item: egret.Bitmap;
 	private shadow: egret.Bitmap;
-	private type:number;
-	private canTaken:boolean = false;
+	private type: number;
+	private canTaken: boolean = false;
 	public constructor(type: number) {
 		super();
 		this.type = type;
@@ -12,9 +12,10 @@ class Gem extends egret.DisplayObjectContainer {
 		this.type = type;
 		this.item.texture = RES.getRes("gem0" + this.type + "_png")
 	}
-	public getType():number{
+	public getType(): number {
 		return this.type;
 	}
+	
 	private init(): void {
 		this.width = 64;
 		this.height = 64;
@@ -42,6 +43,7 @@ class Gem extends egret.DisplayObjectContainer {
 			.to({ scaleX: 0, y: y }, 1000)
 			.to({ scaleX: 0.5, y: y + 8 }, 1000)
 			.to({ scaleX: 1, y: y }, 1000);
+		this.visible = false;
 	}
 	public show(): void {
 		egret.Tween.removeTweens(this.item);
@@ -59,22 +61,22 @@ class Gem extends egret.DisplayObjectContainer {
 			.to({ scaleX: 0.5, y: y + 8 }, 1000)
 			.to({ scaleX: 1, y: y }, 1000);
 	}
-	public hide():void{
+	public hide(): void {
 		this.canTaken = false;
 		egret.Tween.removeTweens(this.item)
 		this.item.scaleX = 1;
 		egret.Tween.get(this.item)
-			.to({alpha: 0}, 1000).call(() => {
+			.to({ alpha: 0 }, 1000).call(() => {
 				this.visible = false;
 			});
 	}
-	
+
 	public taken(): void {
-		if(!this.visible||!this.canTaken){
+		if (!this.visible || !this.canTaken) {
 			return;
 		}
 		this.canTaken = false;
-		this.parent.dispatchEventWith(LogicEvent.GET_GEM,false,{score: this.type*10});
+		this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: this.type * 10 });
 		egret.Tween.removeTweens(this.item)
 		this.item.scaleX = 1;
 		this.item.alpha = 1;

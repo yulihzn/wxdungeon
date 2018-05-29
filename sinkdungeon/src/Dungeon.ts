@@ -9,13 +9,15 @@ class Dungeon extends egret.Stage {
 	private dirs: egret.Bitmap[] = new Array(4);
 	private playerShadow: egret.Bitmap;
 	private randomArr: egret.Point[];
+	//地板定时器
 	private timer: egret.Timer;
+	private gemTimer: egret.Timer;
 
 	public successNumber: number = this.SUCCESS_NUMBER;
 	public level: number = 1;
 	private isReseting: boolean = false;
 
-	private portal: Portal;
+	public portal: Portal;
 
 	public constructor() {
 		super();
@@ -58,20 +60,23 @@ class Dungeon extends egret.Stage {
 		for (let i = 0; i < this.SIZE; i++) {
 			this.map[i] = new Array(i);
 			for (let j = 0; j < this.SIZE; j++) {
-				let t = new Tile();
+				let t = new Tile(i, j);
 				t.x = this.originX + i * t.width;
 				t.y = this.originY + j * t.height;
+				this.map[i][j] = t;
+				this.addChild(this.map[i][j]);
 				let index = Math.floor(this.SIZE / 2)
 				if (index == i && index == j) {
-					this.portal = new Portal();
+					this.portal = new Portal(i, j);
 					t.addBuilding(this.portal);
 					this.portal.show();
 				}
-				t.addItem(new Gem(1));
-				t.item.show();
-				this.map[i][j] = t;
-				this.addChild(this.map[i][j]);
-
+				t.addItem(new Gem(this.getRandomNum(1, 4)));
+				if (!(index == i && index == j)) {
+					if (this.getRandomNum(0, 10) > 5) {
+						t.item.show();
+					}
+				}
 				this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
 			}
 		}
@@ -89,21 +94,22 @@ class Dungeon extends egret.Stage {
 		if (this.successNumber < 5) {
 			this.successNumber = 5;
 		}
+		let index = Math.floor(this.SIZE / 2)
 		for (let i = 0; i < this.SIZE; i++) {
 			for (let j = 0; j < this.SIZE; j++) {
 				let t = this.map[i][j];
-				t.floor.scaleX = 1;
-				t.floor.scaleY = 1;
-				t.floor.alpha = 1;
-				t.floor.visible = true;
-				t.floor.x = 0;
-				t.floor.y = 0;
-				t.item.show();
 				egret.Tween.removeTweens(t.floor);
+				t.showTile();
+				if (!(index == i && index == j)) {
+					if (this.getRandomNum(0, 10) > 5) {
+						t.item.setId(this.getRandomNum(1, 4));
+						t.item.show();
+					}
+				}
 				this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
 			}
 		}
-		let index = Math.floor(this.SIZE / 2)
+		this.portal.closeGate();
 		this.player.resetPlayer();
 		this.playerPos.x = index;
 		this.playerPos.y = index;
@@ -118,6 +124,8 @@ class Dungeon extends egret.Stage {
 		this.isReseting = false;
 		this.timer.reset();
 		this.timer.start();
+		this.gemTimer.reset();
+		this.gemTimer.start();
 		this.dispatchEventWith(LogicEvent.UI_REFRESHTEXT, false, { tileNum: this.randomArr.length });
 	}
 	private addPlayer(): void {
@@ -142,13 +150,11 @@ class Dungeon extends egret.Stage {
 				if (this.playerPos.y - 1 >= 0) {
 					this.playerPos.y--;
 				}
-				this.portal.openGate();
 				break;
 			case 1:
 				if (this.playerPos.y + 1 < this.SIZE) {
 					this.playerPos.y++;
 				}
-				this.portal.closeGate();
 				break;
 			case 2:
 				if (this.playerPos.x - 1 >= 0) {
@@ -168,51 +174,54 @@ class Dungeon extends egret.Stage {
 		if (!this.map[this.playerPos.x][this.playerPos.y].floor.visible) {
 			this.gameOver();
 		}
-		if(this.map[this.playerPos.x][this.playerPos.y].item){
+		if (this.map[this.playerPos.x][this.playerPos.y].item) {
 			this.map[this.playerPos.x][this.playerPos.y].item.taken();
 		}
-
-	}
-	private addTimer(): void {
-		this.timer = new egret.Timer(200 - this.level * 10, this.SIZE * this.SIZE);
-		this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
-		this.timer.start();
-	}
-
-	private breakTile(): void {
-		if (this.randomArr.length <= this.successNumber) {
-			console.log('finish')
+		if (this.playerPos.x == this.portal.posIndex.x && this.playerPos.y == this.portal.posIndex.y && this.portal.isGateOpen()) {
 			if (!this.isReseting) {
 				this.isReseting = true;
 				egret.setTimeout(() => { this.resetGame(++this.level); }, this, 1000)
 			}
-
-			return;
 		}
-		//发送breaktile消息
-		this.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, { tileNum: this.randomArr.length });
+
+	}
+	private addTimer(): void {
+		this.timer = new egret.Timer(200 - this.level * 10);
+		this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
+		this.timer.start();
+		this.gemTimer = new egret.Timer(5000);
+		this.gemTimer.addEventListener(egret.TimerEvent.TIMER, this.addGem, this);
+		this.gemTimer.start();
+	}
+	private addGem(): void {
 		let index = this.getRandomNum(0, this.randomArr.length - 1);
 		let p = this.randomArr[index];
 		let tile = this.map[p.x][p.y];
-		let y = tile.floor.y;
-		this.randomArr.splice(index, 1);
-		if (p.x == Math.floor(this.SIZE / 2) && p.y == Math.floor(this.SIZE / 2)) {
-			return;
+		if (tile.item && !tile.item.visible) {
+			tile.item.setId(this.getRandomNum(1, 4));
+			tile.item.show();
 		}
-		egret.Tween.get(tile.floor, { loop: true })
-			.to({ y: y + 5 }, 25)
-			.to({ y: y }, 25)
-			.to({ y: y - 5 }, 25)
-			.to({ y: y }, 25);
-		egret.Tween.get(tile.floor).wait(2000).call(() => {
-			egret.Tween.removeTweens(tile.floor);
-			egret.Tween.get(tile.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(() => {
-				this.map[p.x][p.y].floor.visible = false;
+	}
+
+	private breakTile(): void {
+
+		//发送breaktile消息
+		let index = this.getRandomNum(0, this.randomArr.length - 1);
+		let p = this.randomArr[index];
+		let tile = this.map[p.x][p.y];
+		// this.randomArr.splice(index, 1);
+		if (tile.floor.visible) {
+			this.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, { tileNum: this.randomArr.length });
+			tile.breakTile(() => {
 				if (this.playerPos.x == p.x && this.playerPos.y == p.y) {
 					this.gameOver();
 				}
-			})
-		});
+			});
+		} else {
+			egret.setTimeout(() => {
+				tile.showTile();
+			}, this, this.getRandomNum(500, 1000))
+		}
 
 
 	}

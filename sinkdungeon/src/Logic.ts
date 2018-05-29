@@ -1,11 +1,12 @@
 class Logic extends egret.Stage {
 	public static readonly SIZE: number = 9;
+	public static readonly SCORE_BASE: number = 500;
 	private main: Main;
 	private controllerPad: ControllerPad;
 	private dungeon: Dungeon;
 	private level: number = 1;
-	private gemManager:GemManager = new GemManager();
-	private score:number = 0;
+	private gemManager: GemManager = new GemManager();
+	private score: number = 0;
 
 	public constructor(main: Main) {
 		super();
@@ -23,28 +24,33 @@ class Logic extends egret.Stage {
 		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.refreshText, this);
 		this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
 		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
+		this.dungeon.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
-		this.addEventListener(LogicEvent.GET_GEM,this.getGem,this);
+		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
 	}
 	private refreshText(evt: LogicEvent): void {
-		this.main.refreshScoreText(""+this.score);
-		this.main.refreshSecondsText('Target:' + this.dungeon.successNumber + '    Tiles:' + evt.data.tileNum + '    LV.' + this.dungeon.level)
+		this.main.refreshScoreText("" + this.score);
+		this.main.refreshSecondsText('Target:' + this.dungeon.level*Logic.SCORE_BASE  +'        Lv.'+ this.dungeon.level)
 	}
 	private tapPad(evt: PadtapEvent): void {
 		this.dungeon.movePlayer(evt.dir)
 	}
-	private loadNextLevel(evt:LogicEvent):void{
+	private loadNextLevel(evt: LogicEvent): void {
 		this.level = evt.data.level;
-		this.dungeon.resetGame(this.level)
+		this.main.loadingNextDialog.show(this.level, () => {
+			this.dungeon.resetGame(this.level)
+		})
 	}
 	private gameOver(): void {
 		this.score = 0;
 		this.main.gameoverDialog.show(this.dungeon.level);
 	}
 
-	private getGem(evt:LogicEvent):void{
-		this.score+=evt.data.score;
-		this.main.refreshScoreText(""+this.score);
-		
+	private getGem(evt: LogicEvent): void {
+		this.score += evt.data.score;
+		this.main.refreshScoreText("" + this.score);
+		if (this.score / 500 >= this.dungeon.level) {
+			this.dungeon.portal.openGate();
+		}
 	}
 }
