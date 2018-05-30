@@ -10,7 +10,7 @@ class Gem extends egret.DisplayObjectContainer {
 	}
 	public setId(type: number): void {
 		this.type = type;
-		this.item.texture = RES.getRes("gem0" + this.type + "_png")
+		this.item.texture = RES.getRes("gem0" + this.type)
 	}
 	public getType(): number {
 		return this.type;
@@ -21,8 +21,8 @@ class Gem extends egret.DisplayObjectContainer {
 		this.height = 64;
 		this.anchorOffsetX = 32;
 		this.anchorOffsetY = 32;
-		this.item = new egret.Bitmap(RES.getRes("gem0" + this.type + "_png"));
-		this.shadow = new egret.Bitmap(RES.getRes("shadow_png"));
+		this.item = new egret.Bitmap(RES.getRes("gem0" + this.type));
+		this.shadow = new egret.Bitmap(RES.getRes("shadow"));
 		let index = 0
 		this.item.anchorOffsetX = this.item.width / 2;
 		this.item.anchorOffsetY = this.item.height / 2;
@@ -65,10 +65,7 @@ class Gem extends egret.DisplayObjectContainer {
 		this.canTaken = false;
 		egret.Tween.removeTweens(this.item)
 		this.item.scaleX = 1;
-		egret.Tween.get(this.item)
-			.to({ alpha: 0 }, 1000).call(() => {
-				this.visible = false;
-			});
+		this.visible = false;
 	}
 
 	public taken(): void {

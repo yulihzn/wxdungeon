@@ -23,13 +23,13 @@ class LoadingNextDialog extends egret.DisplayObjectContainer {
 		this.textTips.textColor = 0xffffff;
 		this.textTips.x = 0;
 		this.textTips.y = this.stage.height / 2 - 200;
-		this.textTips.text = 'Level';
+		this.textTips.text = 'Level ';
 
 	}
 	public show(level: number, finish): void {
 		this.alpha = 1;
 		this.bg.alpha = 0;
-		this.textTips.text = 'Level' + level;
+		this.textTips.text = 'Level ' + level;
 		this.textTips.scaleX = 1;
 		this.textTips.scaleY = 1;
 		this.textTips.y = this.stage.height / 2 - 200;

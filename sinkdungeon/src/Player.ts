@@ -3,14 +3,15 @@ class Player extends egret.DisplayObjectContainer{
 	private playerShadow:egret.Bitmap;
 	private walking:boolean = false;
 	private isdead:boolean = false;
+	public pos: egret.Point = new egret.Point();
 	public constructor() {
 		super();
 		this.init();
 	}
 
 	private init(): void {
-		this.player = new egret.Bitmap(RES.getRes("player_png"));
-		this.playerShadow = new egret.Bitmap(RES.getRes("shadow_png"));
+		this.player = new egret.Bitmap(RES.getRes("player"));
+		this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
 		let index = 0
 		this.player.anchorOffsetX = this.player.width/2;
 		this.player.anchorOffsetY = this.player.height;

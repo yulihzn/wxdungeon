@@ -1,0 +1,23 @@
+{
+    "options": {
+        "layoutMath": "3",
+        "sizeMode": "2n",
+        "useExtension": 0,
+        "layoutGap": 1,
+        "extend": 0
+    },
+    "projectName": "dungeon",
+    "files": [
+        "./controller.png",
+        "./tile.png",
+        "./shadow.png",
+        "./portallight.png",
+        "./portal.png",
+        "./player.png",
+        "./gem04.png",
+        "./gem03.png",
+        "./gem02.png",
+        "./gem01.png"
+    ],
+    "version": 5
+}

@@ -6,12 +6,9 @@ class ControllerPad extends egret.DisplayObjectContainer{
 	}
 	private init():void{
 		//0:top,1:bottom,2:left,3:right
-		let top = new egret.Bitmap(RES.getRes("controller_png"));
-		let bottom = new egret.Bitmap(RES.getRes("controller_png"));
-		let left = new egret.Bitmap(RES.getRes("controller_png"));
-		let right = new egret.Bitmap(RES.getRes("controller_png"));
+		
 		for (let i = 0; i < this.dirs.length; i++) {
-			this.dirs[i] = new egret.Bitmap(RES.getRes("controller_png"));
+			this.dirs[i] = new egret.Bitmap(RES.getRes("controller"));
 			this.dirs[i].touchEnabled = true;
 			this.dirs[i].alpha = 0.5;
 			this.dirs[i].anchorOffsetX = this.dirs[i].width / 2;

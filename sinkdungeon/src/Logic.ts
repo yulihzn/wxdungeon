@@ -1,6 +1,6 @@
 class Logic extends egret.Stage {
 	public static readonly SIZE: number = 9;
-	public static readonly SCORE_BASE: number = 500;
+	public static readonly SCORE_BASE: number = 200;
 	private main: Main;
 	private controllerPad: ControllerPad;
 	private dungeon: Dungeon;
@@ -21,16 +21,16 @@ class Logic extends egret.Stage {
 		this.controllerPad.y = 800;
 		this.addChild(this.controllerPad);
 		this.controllerPad.addEventListener(PadtapEvent.PADTAP, this.tapPad, this);
-		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.refreshText, this);
 		this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
 		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.dungeon.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
 		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
+		
 	}
 	private refreshText(evt: LogicEvent): void {
-		this.main.refreshScoreText("" + this.score);
-		this.main.refreshSecondsText('Target:' + this.dungeon.level*Logic.SCORE_BASE  +'        Lv.'+ this.dungeon.level)
+		this.main.refreshScoreText(`${this.score}`);
+		this.main.refreshSecondsText(`Target:${this.dungeon.level*Logic.SCORE_BASE}        Lv.${this.dungeon.level}`)
 	}
 	private tapPad(evt: PadtapEvent): void {
 		this.dungeon.movePlayer(evt.dir)
@@ -48,9 +48,10 @@ class Logic extends egret.Stage {
 
 	private getGem(evt: LogicEvent): void {
 		this.score += evt.data.score;
-		this.main.refreshScoreText("" + this.score);
-		if (this.score / 500 >= this.dungeon.level) {
+		if (this.score / Logic.SCORE_BASE >= this.dungeon.level) {
+			this.score = Logic.SCORE_BASE*this.dungeon.level;
 			this.dungeon.portal.openGate();
 		}
+		this.main.refreshScoreText("" + this.score);
 	}
 }

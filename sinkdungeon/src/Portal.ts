@@ -18,8 +18,8 @@ class Portal extends Building {
 		this.height = 64;
 		this.anchorOffsetX = 32;
 		this.anchorOffsetY = 32;
-		this.gate = new egret.Bitmap(RES.getRes("portal_png"));
-		this.light = new egret.Bitmap(RES.getRes("portallight_png"));
+		this.gate = new egret.Bitmap(RES.getRes("portal"));
+		this.light = new egret.Bitmap(RES.getRes("portallight"));
 		let index = 0
 		this.gate.anchorOffsetX = this.gate.width / 2;
 		this.gate.anchorOffsetY = this.gate.height / 2;

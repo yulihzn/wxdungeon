@@ -1,4 +1,4 @@
-class Building extends egret.DisplayObjectContainer {
+abstract class Building extends egret.DisplayObjectContainer {
 	public constructor() {
 		super();
 	}
