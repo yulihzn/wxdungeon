@@ -1,6 +1,9 @@
 class Logic extends egret.Stage {
 	public static readonly SIZE: number = 9;
 	public static readonly SCORE_BASE: number = 200;
+	//地图左上角坐标
+	public static mapX = 0;
+	public static mapY = 0;
 	private main: Main;
 	private controllerPad: ControllerPad;
 	private dungeon: Dungeon;
@@ -14,6 +17,10 @@ class Logic extends egret.Stage {
 		this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
 	}
 	private onAddToStage(): void {
+		let stageW = this.stage.stageWidth;
+		let stageH = this.stage.stageHeight;
+		Logic.mapX = stageW / 2 - Math.floor(Logic.SIZE / 2) * Tile.WIDTH;
+		Logic.mapY = 200;
 		this.dungeon = new Dungeon();
 		this.addChild(this.dungeon);
 		this.controllerPad = new ControllerPad();
@@ -27,6 +34,11 @@ class Logic extends egret.Stage {
 		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
 		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
 		
+	}
+	public static getInMapPos(pos: egret.Point): egret.Point {
+		let x = Logic.mapX + pos.x * Tile.WIDTH;
+		let y =Logic.mapY+ pos.y * Tile.WIDTH;
+		return new egret.Point(x, y);
 	}
 	private refreshText(evt: LogicEvent): void {
 		this.main.refreshScoreText(`${this.score}`);

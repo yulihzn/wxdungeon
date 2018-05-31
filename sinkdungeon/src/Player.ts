@@ -85,4 +85,37 @@ class Player extends egret.DisplayObjectContainer{
 				}
 			});
 	}
+
+	public movePlayer(dir: number) {
+		if (this.isWalking() || this.isDying()) {
+			return;
+		}
+		console.log('walking')
+		switch (dir) {
+			case 0:
+				if (this.pos.y - 1 >= 0) {
+					this.pos.y--;
+				}
+				break;
+			case 1:
+				if (this.pos.y + 1 < Logic.SIZE) {
+					this.pos.y++;
+				}
+				break;
+			case 2:
+				if (this.pos.x - 1 >= 0) {
+					this.pos.x--;
+				}
+				break;
+			case 3: if (this.pos.x + 1 < Logic.SIZE) {
+				this.pos.x++;
+			}
+				break;
+			default: break;
+
+		}
+		let p = Logic.getInMapPos(this.pos);
+		this.walk(p.x, p.y, dir, true);
+		
+	}
 }

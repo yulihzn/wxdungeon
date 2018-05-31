@@ -1,10 +1,7 @@
 class Dungeon extends egret.Stage {
-	public readonly SIZE: number = 9;
 	public readonly SUCCESS_NUMBER: number = 15;
 	public map: Tile[][] = new Array();
 	public player: Player;
-	private originX: number;
-	private originY: number;
 	private dirs: egret.Bitmap[] = new Array(4);
 	private playerShadow: egret.Bitmap;
 	private randomArr: egret.Point[];
@@ -29,8 +26,6 @@ class Dungeon extends egret.Stage {
 
 		let stageW = this.stage.stageWidth;
 		let stageH = this.stage.stageHeight;
-		this.originX = stageW / 2 - Math.floor(this.SIZE / 2) * Tile.WIDTH;
-		this.originY = 200;
 
 		this.drawBg();
 		this.drawMap();
@@ -39,22 +34,18 @@ class Dungeon extends egret.Stage {
 		this.resetGame(this.level);
 
 	}
-	private getInMapPos(pos: egret.Point): egret.Point {
-		let x = this.originX + pos.x * Tile.WIDTH;
-		let y = this.originY + pos.y * Tile.WIDTH;
-		return new egret.Point(x, y);
-	}
+	
 	private drawBg(): void {
 		let bg = new egret.Shape();
 		bg.graphics.beginFill(0x000000, 0.90);
-		bg.graphics.drawRect(this.originX - Tile.WIDTH / 2, this.originY - Tile.HEIGHT / 2,Tile.WIDTH * this.SIZE, Tile.WIDTH * this.SIZE);
+		bg.graphics.drawRect(Logic.mapX - Tile.WIDTH / 2, Logic.mapY - Tile.HEIGHT / 2,Tile.WIDTH * Logic.SIZE, Tile.WIDTH * Logic.SIZE);
 		bg.graphics.endFill();
 		this.addChild(bg);
 		let shadow = new egret.Bitmap(RES.getRes("shadow"));
-		shadow.x = this.originX - Tile.WIDTH / 2;
-		shadow.y = this.originY - Tile.WIDTH / 2;
-		shadow.width = Tile.WIDTH * this.SIZE;
-		shadow.height = Tile.WIDTH * this.SIZE;
+		shadow.x = Logic.mapX - Tile.WIDTH / 2;
+		shadow.y = Logic.mapY - Tile.WIDTH / 2;
+		shadow.width = Tile.WIDTH * Logic.SIZE;
+		shadow.height = Tile.WIDTH * Logic.SIZE;
 		shadow.alpha = 0.9;
 		this.addChild(shadow);
 	}
@@ -62,15 +53,15 @@ class Dungeon extends egret.Stage {
 		this.randomArr = new Array();
 		this.map = new Array();
 
-		for (let i = 0; i < this.SIZE; i++) {
+		for (let i = 0; i < Logic.SIZE; i++) {
 			this.map[i] = new Array(i);
-			for (let j = 0; j < this.SIZE; j++) {
+			for (let j = 0; j < Logic.SIZE; j++) {
 				let t = new Tile(i, j);
-				t.x = this.originX + i * Tile.WIDTH;
-				t.y = this.originY + j * Tile.HEIGHT;
+				t.x = Logic.mapX + i * Tile.WIDTH;
+				t.y = Logic.mapY + j * Tile.HEIGHT;
 				this.map[i][j] = t;
 				this.addChild(this.map[i][j]);
-				let index = Math.floor(this.SIZE / 2)
+				let index = Math.floor(Logic.SIZE / 2)
 				if (index == i && index == j) {
 					this.portal = new Portal(i, j);
 					t.addBuilding(this.portal);
@@ -82,16 +73,16 @@ class Dungeon extends egret.Stage {
 						t.item.show();
 					}
 				}
-				this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
+				this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
 			}
 		}
 	}
 
 	public resetGame(level: number): void {
 		this.level = level;
-		let index = Math.floor(this.SIZE / 2)
-		for (let i = 0; i < this.SIZE; i++) {
-			for (let j = 0; j < this.SIZE; j++) {
+		let index = Math.floor(Logic.SIZE / 2)
+		for (let i = 0; i < Logic.SIZE; i++) {
+			for (let j = 0; j < Logic.SIZE; j++) {
 				let t = this.map[i][j];
 				egret.Tween.removeTweens(t.floor);
 				t.isLooping = false;
@@ -103,14 +94,14 @@ class Dungeon extends egret.Stage {
 						t.item.show();
 					}
 				}
-				this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
+				this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
 			}
 		}
 		this.portal.closeGate();
 		this.player.resetPlayer();
 		this.player.pos.x = index;
 		this.player.pos.y = index;
-		let p = this.getInMapPos(this.player.pos);
+		let p = Logic.getInMapPos(this.player.pos);
 		this.player.x = p.x;
 		this.player.y = p.y;
 
@@ -128,10 +119,10 @@ class Dungeon extends egret.Stage {
 	}
 	private addPlayer(): void {
 		this.player = new Player();
-		let index = Math.floor(this.SIZE / 2)
+		let index = Math.floor(Logic.SIZE / 2)
 		this.player.pos.x = index;
 		this.player.pos.y = index;
-		let p = this.getInMapPos(this.player.pos);
+		let p = Logic.getInMapPos(this.player.pos);
 		this.player.x = p.x;
 		this.player.y = p.y;
 		this.addChild(this.player);
@@ -151,7 +142,7 @@ class Dungeon extends egret.Stage {
 				}
 				break;
 			case 1:
-				if (this.player.pos.y + 1 < this.SIZE) {
+				if (this.player.pos.y + 1 < Logic.SIZE) {
 					this.player.pos.y++;
 				}
 				break;
@@ -160,7 +151,7 @@ class Dungeon extends egret.Stage {
 					this.player.pos.x--;
 				}
 				break;
-			case 3: if (this.player.pos.x + 1 < this.SIZE) {
+			case 3: if (this.player.pos.x + 1 < Logic.SIZE) {
 				this.player.pos.x++;
 			}
 				break;
@@ -168,7 +159,7 @@ class Dungeon extends egret.Stage {
 
 		}
 		let tile = this.map[this.player.pos.x][this.player.pos.y];
-		let p = this.getInMapPos(this.player.pos);
+		let p = Logic.getInMapPos(this.player.pos);
 		this.player.walk(p.x, p.y, dir, tile.floor.visible);
 		if (!tile.floor.visible) {
 			this.gameOver();
@@ -190,8 +181,8 @@ class Dungeon extends egret.Stage {
 		this.gemTimer.addEventListener(egret.TimerEvent.TIMER, this.addGem, this);
 	}
 	private addGem(): void {
-		let x = this.getRandomNum(0, this.SIZE - 1);
-		let y = this.getRandomNum(0, this.SIZE - 1);
+		let x = this.getRandomNum(0, Logic.SIZE - 1);
+		let y = this.getRandomNum(0, Logic.SIZE - 1);
 		let tile = this.map[x][y];
 		if (tile.item && !tile.item.visible) {
 			tile.item.setId(this.getRandomNum(1, 4));

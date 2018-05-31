@@ -102,7 +102,6 @@ var Dungeon = (function (_super) {
     __extends(Dungeon, _super);
     function Dungeon() {
         var _this = _super.call(this) || this;
-        _this.SIZE = 9;
         _this.SUCCESS_NUMBER = 15;
         _this.map = new Array();
         _this.dirs = new Array(4);
@@ -116,45 +115,38 @@ var Dungeon = (function (_super) {
         this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
-        this.originX = stageW / 2 - Math.floor(this.SIZE / 2) * Tile.WIDTH;
-        this.originY = 200;
         this.drawBg();
         this.drawMap();
         this.addPlayer();
         this.addTimer();
         this.resetGame(this.level);
     };
-    Dungeon.prototype.getInMapPos = function (pos) {
-        var x = this.originX + pos.x * Tile.WIDTH;
-        var y = this.originY + pos.y * Tile.WIDTH;
-        return new egret.Point(x, y);
-    };
     Dungeon.prototype.drawBg = function () {
         var bg = new egret.Shape();
         bg.graphics.beginFill(0x000000, 0.90);
-        bg.graphics.drawRect(this.originX - Tile.WIDTH / 2, this.originY - Tile.HEIGHT / 2, Tile.WIDTH * this.SIZE, Tile.WIDTH * this.SIZE);
+        bg.graphics.drawRect(Logic.mapX - Tile.WIDTH / 2, Logic.mapY - Tile.HEIGHT / 2, Tile.WIDTH * Logic.SIZE, Tile.WIDTH * Logic.SIZE);
         bg.graphics.endFill();
         this.addChild(bg);
         var shadow = new egret.Bitmap(RES.getRes("shadow"));
-        shadow.x = this.originX - Tile.WIDTH / 2;
-        shadow.y = this.originY - Tile.WIDTH / 2;
-        shadow.width = Tile.WIDTH * this.SIZE;
-        shadow.height = Tile.WIDTH * this.SIZE;
+        shadow.x = Logic.mapX - Tile.WIDTH / 2;
+        shadow.y = Logic.mapY - Tile.WIDTH / 2;
+        shadow.width = Tile.WIDTH * Logic.SIZE;
+        shadow.height = Tile.WIDTH * Logic.SIZE;
         shadow.alpha = 0.9;
         this.addChild(shadow);
     };
     Dungeon.prototype.drawMap = function () {
         this.randomArr = new Array();
         this.map = new Array();
-        for (var i = 0; i < this.SIZE; i++) {
+        for (var i = 0; i < Logic.SIZE; i++) {
             this.map[i] = new Array(i);
-            for (var j = 0; j < this.SIZE; j++) {
+            for (var j = 0; j < Logic.SIZE; j++) {
                 var t = new Tile(i, j);
-                t.x = this.originX + i * Tile.WIDTH;
-                t.y = this.originY + j * Tile.HEIGHT;
+                t.x = Logic.mapX + i * Tile.WIDTH;
+                t.y = Logic.mapY + j * Tile.HEIGHT;
                 this.map[i][j] = t;
                 this.addChild(this.map[i][j]);
-                var index = Math.floor(this.SIZE / 2);
+                var index = Math.floor(Logic.SIZE / 2);
                 if (index == i && index == j) {
                     this.portal = new Portal(i, j);
                     t.addBuilding(this.portal);
@@ -166,15 +158,15 @@ var Dungeon = (function (_super) {
                         t.item.show();
                     }
                 }
-                this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
+                this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
             }
         }
     };
     Dungeon.prototype.resetGame = function (level) {
         this.level = level;
-        var index = Math.floor(this.SIZE / 2);
-        for (var i = 0; i < this.SIZE; i++) {
-            for (var j = 0; j < this.SIZE; j++) {
+        var index = Math.floor(Logic.SIZE / 2);
+        for (var i = 0; i < Logic.SIZE; i++) {
+            for (var j = 0; j < Logic.SIZE; j++) {
                 var t = this.map[i][j];
                 egret.Tween.removeTweens(t.floor);
                 t.isLooping = false;
@@ -186,14 +178,14 @@ var Dungeon = (function (_super) {
                         t.item.show();
                     }
                 }
-                this.randomArr[i * this.SIZE + j] = new egret.Point(i, j);
+                this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
             }
         }
         this.portal.closeGate();
         this.player.resetPlayer();
         this.player.pos.x = index;
         this.player.pos.y = index;
-        var p = this.getInMapPos(this.player.pos);
+        var p = Logic.getInMapPos(this.player.pos);
         this.player.x = p.x;
         this.player.y = p.y;
         var delay = 200 - level * 10;
@@ -210,10 +202,10 @@ var Dungeon = (function (_super) {
     };
     Dungeon.prototype.addPlayer = function () {
         this.player = new Player();
-        var index = Math.floor(this.SIZE / 2);
+        var index = Math.floor(Logic.SIZE / 2);
         this.player.pos.x = index;
         this.player.pos.y = index;
-        var p = this.getInMapPos(this.player.pos);
+        var p = Logic.getInMapPos(this.player.pos);
         this.player.x = p.x;
         this.player.y = p.y;
         this.addChild(this.player);
@@ -233,7 +225,7 @@ var Dungeon = (function (_super) {
                 }
                 break;
             case 1:
-                if (this.player.pos.y + 1 < this.SIZE) {
+                if (this.player.pos.y + 1 < Logic.SIZE) {
                     this.player.pos.y++;
                 }
                 break;
@@ -243,14 +235,14 @@ var Dungeon = (function (_super) {
                 }
                 break;
             case 3:
-                if (this.player.pos.x + 1 < this.SIZE) {
+                if (this.player.pos.x + 1 < Logic.SIZE) {
                     this.player.pos.x++;
                 }
                 break;
             default: break;
         }
         var tile = this.map[this.player.pos.x][this.player.pos.y];
-        var p = this.getInMapPos(this.player.pos);
+        var p = Logic.getInMapPos(this.player.pos);
         this.player.walk(p.x, p.y, dir, tile.floor.visible);
         if (!tile.floor.visible) {
             this.gameOver();
@@ -271,8 +263,8 @@ var Dungeon = (function (_super) {
         this.gemTimer.addEventListener(egret.TimerEvent.TIMER, this.addGem, this);
     };
     Dungeon.prototype.addGem = function () {
-        var x = this.getRandomNum(0, this.SIZE - 1);
-        var y = this.getRandomNum(0, this.SIZE - 1);
+        var x = this.getRandomNum(0, Logic.SIZE - 1);
+        var y = this.getRandomNum(0, Logic.SIZE - 1);
         var tile = this.map[x][y];
         if (tile.item && !tile.item.visible) {
             tile.item.setId(this.getRandomNum(1, 4));
@@ -468,6 +460,10 @@ var Logic = (function (_super) {
         return _this;
     }
     Logic.prototype.onAddToStage = function () {
+        var stageW = this.stage.stageWidth;
+        var stageH = this.stage.stageHeight;
+        Logic.mapX = stageW / 2 - Math.floor(Logic.SIZE / 2) * Tile.WIDTH;
+        Logic.mapY = 200;
         this.dungeon = new Dungeon();
         this.addChild(this.dungeon);
         this.controllerPad = new ControllerPad();
@@ -480,6 +476,11 @@ var Logic = (function (_super) {
         this.dungeon.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
         this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
         this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
+    };
+    Logic.getInMapPos = function (pos) {
+        var x = Logic.mapX + pos.x * Tile.WIDTH;
+        var y = Logic.mapY + pos.y * Tile.WIDTH;
+        return new egret.Point(x, y);
     };
     Logic.prototype.refreshText = function (evt) {
         this.main.refreshScoreText("" + this.score);
@@ -509,6 +510,9 @@ var Logic = (function (_super) {
     };
     Logic.SIZE = 9;
     Logic.SCORE_BASE = 200;
+    //地图左上角坐标
+    Logic.mapX = 0;
+    Logic.mapY = 0;
     return Logic;
 }(egret.Stage));
 __reflect(Logic.prototype, "Logic");
