@@ -108,7 +108,6 @@ var Dungeon = (function (_super) {
         _this.level = 1;
         _this.isGameover = false;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
-        _this.addEventListener(LogicEvent.DUNGEON_BREAKTILE, _this.breakTileFinish, _this);
         return _this;
     }
     Dungeon.prototype.onAddToStage = function () {
@@ -210,52 +209,6 @@ var Dungeon = (function (_super) {
         this.player.y = p.y;
         this.addChild(this.player);
     };
-    /**
-     *  移动玩家
-     */
-    Dungeon.prototype.movePlayer = function (dir) {
-        if (this.player.isWalking() || this.player.isDying()) {
-            return;
-        }
-        console.log('walking');
-        switch (dir) {
-            case 0:
-                if (this.player.pos.y - 1 >= 0) {
-                    this.player.pos.y--;
-                }
-                break;
-            case 1:
-                if (this.player.pos.y + 1 < Logic.SIZE) {
-                    this.player.pos.y++;
-                }
-                break;
-            case 2:
-                if (this.player.pos.x - 1 >= 0) {
-                    this.player.pos.x--;
-                }
-                break;
-            case 3:
-                if (this.player.pos.x + 1 < Logic.SIZE) {
-                    this.player.pos.x++;
-                }
-                break;
-            default: break;
-        }
-        var tile = this.map[this.player.pos.x][this.player.pos.y];
-        var p = Logic.getInMapPos(this.player.pos);
-        this.player.walk(p.x, p.y, dir, tile.floor.visible);
-        if (!tile.floor.visible) {
-            this.gameOver();
-        }
-        if (tile.item) {
-            tile.item.taken();
-        }
-        if (this.player.pos.x == this.portal.posIndex.x
-            && this.player.pos.y == this.portal.posIndex.y
-            && this.portal.isGateOpen()) {
-            this.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL, false, { level: ++this.level });
-        }
-    };
     Dungeon.prototype.addTimer = function () {
         this.timer = new egret.Timer(200 - this.level * 10);
         this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
@@ -271,12 +224,13 @@ var Dungeon = (function (_super) {
             tile.item.show();
         }
     };
-    Dungeon.prototype.breakTileFinish = function (evt) {
-        if (this.player.pos.x == evt.data.x && this.player.pos.y == evt.data.y) {
-            this.gameOver();
-        }
-    };
+    // private breakTileFinish(evt: LogicEvent): void {
+    // 	if (this.player.pos.x == evt.data.x && this.player.pos.y == evt.data.y) {
+    // 		this.gameOver();
+    // 	}
+    // }
     Dungeon.prototype.breakTile = function () {
+        var _this = this;
         if (this.randomArr.length < 1) {
             return;
         }
@@ -286,7 +240,11 @@ var Dungeon = (function (_super) {
         var tile = this.map[p.x][p.y];
         this.randomArr.splice(index, 1);
         tile.isLooping = true;
-        tile.breakTile();
+        tile.breakTile().then(function (posIndex) {
+            if (_this.player.pos.x == posIndex.x && posIndex.y == posIndex.y) {
+                _this.gameOver();
+            }
+        });
     };
     Dungeon.prototype.getRandomNum = function (min, max) {
         return min + Math.round(Math.random() * (max - min));
@@ -297,7 +255,7 @@ var Dungeon = (function (_super) {
             return;
         }
         //让角色原地走一步触发死亡,防止走路清空动画
-        this.movePlayer(-1);
+        this.player.move(-1, this);
         // egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
         this.dispatchEventWith(LogicEvent.GAMEOVER);
         this.isGameover = true;
@@ -487,7 +445,7 @@ var Logic = (function (_super) {
         this.main.refreshSecondsText("Target:" + this.dungeon.level * Logic.SCORE_BASE + "        Lv." + this.dungeon.level);
     };
     Logic.prototype.tapPad = function (evt) {
-        this.dungeon.movePlayer(evt.dir);
+        this.dungeon.player.move(evt.dir, this.dungeon);
     };
     Logic.prototype.loadNextLevel = function (evt) {
         var _this = this;
@@ -758,6 +716,7 @@ var Player = (function (_super) {
         var _this = _super.call(this) || this;
         _this.walking = false;
         _this.isdead = false;
+        _this.health = 1;
         _this.pos = new egret.Point();
         _this.init();
         return _this;
@@ -829,7 +788,9 @@ var Player = (function (_super) {
             .to({ rotation: 0, y: 0 }, 25)
             .to({ rotation: -ro, y: this.player.y - offsetY }, 25)
             .to({ rotation: 0, y: 0 }, 25);
-        egret.Tween.get(this, { onChange: function () { } }).to({ x: px, y: py }, 200).call(function () {
+        egret.Tween.get(this, { onChange: function () { } }).to({
+            x: px, y: py
+        }, 200).call(function () {
             egret.Tween.removeTweens(_this.player);
             _this.player.rotation = 0;
             _this.player.y = 0;
@@ -838,6 +799,55 @@ var Player = (function (_super) {
                 _this.die();
             }
         });
+    };
+    Player.prototype.takeDamage = function (damage) {
+        this.health -= damage;
+        if (this.health < 0) {
+            this.die();
+        }
+    };
+    Player.prototype.move = function (dir, dungeon) {
+        if (this.isWalking() || this.isDying()) {
+            return;
+        }
+        console.log('walking');
+        switch (dir) {
+            case 0:
+                if (this.pos.y - 1 >= 0) {
+                    this.pos.y--;
+                }
+                break;
+            case 1:
+                if (this.pos.y + 1 < Logic.SIZE) {
+                    this.pos.y++;
+                }
+                break;
+            case 2:
+                if (this.pos.x - 1 >= 0) {
+                    this.pos.x--;
+                }
+                break;
+            case 3:
+                if (this.pos.x + 1 < Logic.SIZE) {
+                    this.pos.x++;
+                }
+                break;
+            default: break;
+        }
+        var tile = dungeon.map[this.pos.x][this.pos.y];
+        var p = Logic.getInMapPos(this.pos);
+        this.walk(p.x, p.y, dir, tile.floor.visible);
+        if (!tile.floor.visible) {
+            dungeon.gameOver();
+        }
+        if (tile.item) {
+            tile.item.taken();
+        }
+        if (this.pos.x == dungeon.portal.posIndex.x
+            && this.pos.y == dungeon.portal.posIndex.y
+            && dungeon.portal.isGateOpen()) {
+            this.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL, false, { level: ++dungeon.level });
+        }
     };
     return Player;
 }(egret.DisplayObjectContainer));
@@ -964,24 +974,26 @@ var Tile = (function (_super) {
     };
     Tile.prototype.breakTile = function () {
         var _this = this;
-        var y = this.floor.y;
-        if (this.posIndex.x == Math.floor(Logic.SIZE / 2) && this.posIndex.y == Math.floor(Logic.SIZE / 2)) {
-            return;
-        }
-        egret.Tween.get(this.floor, { loop: true })
-            .to({ y: y + 5 }, 25)
-            .to({ y: y }, 25)
-            .to({ y: y - 5 }, 25)
-            .to({ y: y }, 25);
-        egret.Tween.get(this.floor).wait(2000).call(function () {
-            egret.Tween.removeTweens(_this.floor);
-            egret.Tween.get(_this.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(function () {
-                _this.floor.visible = false;
-                _this.parent.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, _this.posIndex);
-            }).wait(1000).call(function () {
-                if (_this.isLooping) {
-                    _this.showTile();
-                }
+        return new Promise(function (resolve, reject) {
+            var y = _this.floor.y;
+            if (_this.posIndex.x == Math.floor(Logic.SIZE / 2) && _this.posIndex.y == Math.floor(Logic.SIZE / 2)) {
+                return;
+            }
+            egret.Tween.get(_this.floor, { loop: true })
+                .to({ y: y + 5 }, 25)
+                .to({ y: y }, 25)
+                .to({ y: y - 5 }, 25)
+                .to({ y: y }, 25);
+            egret.Tween.get(_this.floor).wait(2000).call(function () {
+                egret.Tween.removeTweens(_this.floor);
+                egret.Tween.get(_this.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(function () {
+                    _this.floor.visible = false;
+                    resolve(_this.posIndex);
+                }).wait(1000).call(function () {
+                    if (_this.isLooping) {
+                        _this.showTile();
+                    }
+                });
             });
         });
     };
@@ -997,10 +1009,10 @@ var LogicEvent = (function (_super) {
     }
     LogicEvent.LOGIC = "LOGIC";
     LogicEvent.GAMEOVER = "LOGIC_GAMEOVER";
-    LogicEvent.DUNGEON_BREAKTILE = "DUNGEON_BREAKTILE";
     LogicEvent.DUNGEON_NEXTLEVEL = "DUNGEON_NEXTLEVEL";
     LogicEvent.UI_REFRESHTEXT = "UI_REFRESHTEXT";
     LogicEvent.GET_GEM = "GET_GEM";
+    LogicEvent.PLAYER_MOVE = "PLAYER_MOVE";
     return LogicEvent;
 }(egret.Event));
 __reflect(LogicEvent.prototype, "LogicEvent");

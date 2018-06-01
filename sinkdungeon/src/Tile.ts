@@ -47,8 +47,9 @@ class Tile extends egret.DisplayObjectContainer {
 		})
 	}
 
-	public breakTile(): void {
-		let y = this.floor.y;
+	public breakTile(): Promise<egret.Point> {
+		return new Promise((resolve, reject)=>{
+			let y = this.floor.y;
 		if (this.posIndex.x == Math.floor(Logic.SIZE / 2) && this.posIndex.y == Math.floor(Logic.SIZE / 2)) {
 			return;
 		}
@@ -61,14 +62,14 @@ class Tile extends egret.DisplayObjectContainer {
 			egret.Tween.removeTweens(this.floor);
 			egret.Tween.get(this.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(() => {
 				this.floor.visible = false;
-				this.parent.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, this.posIndex);
+				resolve(this.posIndex);
 			}).wait(1000).call(() => {
 				if (this.isLooping) {
 					this.showTile();
 				}
 			})
 		});
-
+		})
 
 	}
 }

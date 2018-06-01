@@ -45,7 +45,7 @@ class Logic extends egret.Stage {
 		this.main.refreshSecondsText(`Target:${this.dungeon.level*Logic.SCORE_BASE}        Lv.${this.dungeon.level}`)
 	}
 	private tapPad(evt: PadtapEvent): void {
-		this.dungeon.movePlayer(evt.dir)
+		this.dungeon.player.move(evt.dir,this.dungeon)
 	}
 	private loadNextLevel(evt: LogicEvent): void {
 		this.level = evt.data.level;
