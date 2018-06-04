@@ -1,25 +1,25 @@
 {
-  "engineVersion": "5.1.11",
-  "compilerVersion": "5.1.11",
-  "template": {},
-  "target": {
-    "current": "wxgame"
-  },
-  "modules": [
-    {
-      "name": "egret"
-    },
-    {
-      "name": "game"
-    },
-    {
-      "name": "tween"
-    },
-    {
-      "name": "assetsmanager"
-    },
-    {
-      "name": "promise"
-    }
-  ]
+	"engineVersion": "5.2.1",
+	"compilerVersion": "5.2.1",
+	"template": {},
+	"target": {
+		"current": "wxgame"
+	},
+	"modules": [
+		{
+			"name": "egret"
+		},
+		{
+			"name": "game"
+		},
+		{
+			"name": "tween"
+		},
+		{
+			"name": "assetsmanager"
+		},
+		{
+			"name": "promise"
+		}
+	]
 }

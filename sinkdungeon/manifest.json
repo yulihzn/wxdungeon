@@ -8,9 +8,22 @@
 		"libs/modules/promise/promise.js"
 	],
 	"game": [
+		"bin-debug/Building.js",
+		"bin-debug/ui/LoadingNextDialog.js",
 		"bin-debug/Dungeon.js",
+		"bin-debug/Gem.js",
+		"bin-debug/Item.js",
 		"bin-debug/LoadingUI.js",
+		"bin-debug/Logic.js",
 		"bin-debug/Main.js",
+		"bin-debug/ControllerPad.js",
+		"bin-debug/Player.js",
+		"bin-debug/Portal.js",
+		"bin-debug/Tile.js",
+		"bin-debug/events/LogicEvent.js",
+		"bin-debug/events/PadtapEvent.js",
+		"bin-debug/manager/GemManager.js",
+		"bin-debug/ui/GameoverDialog.js",
 		"bin-debug/Platform.js"
 	]
 }

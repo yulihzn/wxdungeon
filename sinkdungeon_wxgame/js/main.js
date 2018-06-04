@@ -241,7 +241,7 @@ var Dungeon = (function (_super) {
         this.randomArr.splice(index, 1);
         tile.isLooping = true;
         tile.breakTile().then(function (posIndex) {
-            if (_this.player.pos.x == posIndex.x && posIndex.y == posIndex.y) {
+            if (_this.player.pos.x == posIndex.x && _this.player.pos.y == posIndex.y) {
                 _this.gameOver();
             }
         });
@@ -465,6 +465,9 @@ var Logic = (function (_super) {
             this.dungeon.portal.openGate();
         }
         this.main.refreshScoreText("" + this.score);
+    };
+    Logic.getRandomNum = function (min, max) {
+        return min + Math.round(Math.random() * (max - min));
     };
     Logic.SIZE = 9;
     Logic.SCORE_BASE = 200;
@@ -701,11 +704,28 @@ var ControllerPad = (function (_super) {
         this.dirs[2].y = cy + 128;
         this.dirs[3].x = cx + 128;
         this.dirs[3].y = cy + 128;
+        this.centerButton = new egret.Bitmap(RES.getRes("controllerbuttonnormal"));
+        this.centerButton.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(4); }, this);
+        this.centerButton.touchEnabled = true;
+        this.centerButton.alpha = 0.5;
+        this.centerButton.anchorOffsetX = this.centerButton.width / 2;
+        this.centerButton.anchorOffsetY = this.centerButton.height / 2;
+        this.centerButton.x = cx;
+        this.centerButton.y = cy + 128;
+        this.addChild(this.centerButton);
     };
     ControllerPad.prototype.tapPad = function (dir) {
+        var _this = this;
         var padtapEvent = new PadtapEvent(PadtapEvent.PADTAP);
         padtapEvent.dir = dir;
         this.dispatchEvent(padtapEvent);
+        if (dir == 4) {
+            egret.Tween.get(this.centerButton).call(function () {
+                _this.centerButton.texture = RES.getRes("controllerbuttonpress");
+            }).wait(100).call(function () {
+                _this.centerButton.texture = RES.getRes("controllerbuttonnormal");
+            });
+        }
     };
     return ControllerPad;
 }(egret.DisplayObjectContainer));
@@ -722,7 +742,7 @@ var Player = (function (_super) {
         return _this;
     }
     Player.prototype.init = function () {
-        this.player = new egret.Bitmap(RES.getRes("player"));
+        this.player = new egret.Bitmap(RES.getRes("player00" + Logic.getRandomNum(1, 6)));
         this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
         var index = 0;
         this.player.anchorOffsetX = this.player.width / 2;
@@ -746,6 +766,7 @@ var Player = (function (_super) {
         return this.isdead;
     };
     Player.prototype.resetPlayer = function () {
+        this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 6));
         egret.Tween.removeTweens(this.player);
         egret.Tween.removeTweens(this);
         this.parent.setChildIndex(this, 100);

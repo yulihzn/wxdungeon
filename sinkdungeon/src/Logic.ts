@@ -66,4 +66,7 @@ class Logic extends egret.Stage {
 		}
 		this.main.refreshScoreText("" + this.score);
 	}
+	public static getRandomNum(min, max): number {//生成一个随机数从[min,max]
+		return min + Math.round(Math.random() * (max - min));
+	}
 }

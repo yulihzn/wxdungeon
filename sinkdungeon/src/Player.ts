@@ -11,7 +11,7 @@ class Player extends egret.DisplayObjectContainer {
 	}
 
 	private init(): void {
-		this.player = new egret.Bitmap(RES.getRes("player"));
+		this.player = new egret.Bitmap(RES.getRes("player00"+Logic.getRandomNum(1,6)));
 		this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
 		let index = 0
 		this.player.anchorOffsetX = this.player.width / 2;
@@ -35,6 +35,7 @@ class Player extends egret.DisplayObjectContainer {
 		return this.isdead;
 	}
 	public resetPlayer(): void {
+		this.player.texture=RES.getRes("player00"+Logic.getRandomNum(1,6));
 		egret.Tween.removeTweens(this.player);
 		egret.Tween.removeTweens(this);
 		this.parent.setChildIndex(this, 100);

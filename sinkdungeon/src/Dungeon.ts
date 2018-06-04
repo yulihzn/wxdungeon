@@ -157,7 +157,7 @@ class Dungeon extends egret.Stage {
 		this.randomArr.splice(index, 1);
 		tile.isLooping = true;
 		tile.breakTile().then((posIndex)=>{
-			if (this.player.pos.x == posIndex.x && posIndex.y == posIndex.y) {
+			if (this.player.pos.x == posIndex.x && this.player.pos.y == posIndex.y) {
 			this.gameOver();
 		}
 		});

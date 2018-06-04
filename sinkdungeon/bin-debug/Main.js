@@ -146,60 +146,52 @@ var Main = (function (_super) {
         });
     };
     /**
-     * 创建游戏场景
      * Create a game scene
      */
     Main.prototype.createGameScene = function () {
-        // let sky = this.createBitmapByName("bg_jpg");
-        // this.addChild(sky);
+        var bg = new egret.Shape();
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
-        // sky.width = stageW;
-        // sky.height = stageH;
-        // let topMask = new egret.Shape();
-        // topMask.graphics.beginFill(0x000000, 0.5);
-        // topMask.graphics.drawRect(0, 0, stageW, 172);
-        // topMask.graphics.endFill();
-        // topMask.y = 33;
-        // this.addChild(topMask);
-        // let icon = this.createBitmapByName("egret_icon_png");
-        // this.addChild(icon);
-        // icon.x = 26;
-        // icon.y = 33;
-        // let line = new egret.Shape();
-        // line.graphics.lineStyle(2, 0xffffff);
-        // line.graphics.moveTo(0, 0);
-        // line.graphics.lineTo(0, 117);
-        // line.graphics.endFill();
-        // line.x = 172;
-        // line.y = 61;
-        // this.addChild(line);
-        // let colorLabel = new egret.TextField();
-        // colorLabel.textColor = 0xffffff;
-        // colorLabel.width = stageW - 172;
-        // colorLabel.textAlign = "center";
-        // colorLabel.text = "Hello Egret";
-        // colorLabel.size = 24;
-        // colorLabel.x = 172;
-        // colorLabel.y = 80;
-        // this.addChild(colorLabel);
-        // let textfield = new egret.TextField();
-        // this.addChild(textfield);
-        // textfield.alpha = 0;
-        // textfield.width = stageW - 172;
-        // textfield.textAlign = egret.HorizontalAlign.CENTER;
-        // textfield.size = 24;
-        // textfield.textColor = 0xffffff;
-        // textfield.x = 172;
-        // textfield.y = 135;
-        // this.textfield = textfield;
-        var dungeon = new Dungeon();
-        this.addChild(dungeon);
-        var player = this.createBitmapByName("player_png");
-        this.addChild(player);
-        var index = Math.floor(dungeon.SIZE / 2);
-        player.x = dungeon.map[index][index].x;
-        player.y = dungeon.map[index][index].y;
+        bg.graphics.beginFill(0x333333, 1);
+        bg.graphics.drawRect(0, 0, stageW, stageH);
+        bg.graphics.endFill();
+        this.addChild(bg);
+        var logic = new Logic(this);
+        this.addChild(logic);
+        this.addSecondsText();
+        this.addScoreText();
+        this.loadingNextDialog = new LoadingNextDialog();
+        this.addChild(this.loadingNextDialog);
+        this.gameoverDialog = new GameoverDialog();
+        this.addChild(this.gameoverDialog);
+    };
+    Main.prototype.addSecondsText = function () {
+        this.secondsText = new egret.TextField();
+        this.addChild(this.secondsText);
+        this.secondsText.alpha = 1;
+        this.secondsText.textAlign = egret.HorizontalAlign.CENTER;
+        this.secondsText.size = 30;
+        this.secondsText.textColor = 0xffffff;
+        this.secondsText.x = 50;
+        this.secondsText.y = 60;
+        this.secondsText.text = "Target:" + Logic.SCORE_BASE + "        Lv.1";
+    };
+    Main.prototype.addScoreText = function () {
+        this.scoreText = new egret.TextField();
+        this.addChild(this.scoreText);
+        this.scoreText.alpha = 1;
+        this.scoreText.textAlign = egret.HorizontalAlign.CENTER;
+        this.scoreText.size = 40;
+        this.scoreText.textColor = 0xffd700;
+        this.scoreText.x = 50;
+        this.scoreText.y = 100;
+        this.scoreText.text = "0";
+    };
+    Main.prototype.refreshSecondsText = function (text) {
+        this.secondsText.text = text;
+    };
+    Main.prototype.refreshScoreText = function (text) {
+        this.scoreText.text = text;
     };
     /**
      * 根据name关键字创建一个Bitmap对象。name属性请参考resources/resource.json配置文件的内容。
@@ -241,4 +233,3 @@ var Main = (function (_super) {
     return Main;
 }(egret.DisplayObjectContainer));
 __reflect(Main.prototype, "Main");
-//# sourceMappingURL=Main.js.map

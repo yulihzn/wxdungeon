@@ -640,17 +640,6 @@ if (window['HTMLVideoElement'] == undefined) {
                 _this.audio = null;
                 //声音是否已经播放完成
                 _this.isStopped = false;
-                _this.canPlay = function () {
-                    _this.audio.removeEventListener("canplay", _this.canPlay);
-                    try {
-                        _this.audio.currentTime = _this.$startTime;
-                    }
-                    catch (e) {
-                    }
-                    finally {
-                        _this.audio.play();
-                    }
-                };
                 /**
                  * @private
                  */
@@ -680,16 +669,9 @@ if (window['HTMLVideoElement'] == undefined) {
                     egret.$error(1036);
                     return;
                 }
-                try {
-                    //this.audio.pause();
-                    this.audio.volume = this._volume;
-                    this.audio.currentTime = this.$startTime;
-                }
-                catch (e) {
-                    this.audio.addEventListener("canplay", this.canPlay);
-                    return;
-                }
                 this.audio.play();
+                this.audio.volume = this._volume;
+                this.audio.currentTime = this.$startTime;
             };
             /**
              * @private
@@ -2048,6 +2030,9 @@ if (window['HTMLVideoElement'] == undefined) {
                     return;
                 }
                 this.data = new egret.BitmapData(image);
+                if (egret.wxgame.preUploadTexture && egret.Capabilities.renderMode == "webgl") {
+                    wxapp.WebGLRenderContext.getInstance(null, null).getWebGLTexture(this.data);
+                }
                 var self = this;
                 window.setTimeout(function () {
                     self.dispatchEventWith(egret.Event.COMPLETE);
@@ -3046,11 +3031,15 @@ if (window['HTMLVideoElement'] == undefined) {
         /**
          * 微信小游戏支持库版本号
          */
-        wxgame.version = "1.0.16";
+        wxgame.version = "1.1.1";
         /**
          * 运行环境是否为子域
          */
         wxgame.isSubContext = false;
+        /**
+         * 解决提交纹理异常临时方案
+         */
+        wxgame.preUploadTexture = false;
     })(wxgame = egret.wxgame || (egret.wxgame = {}));
 })(egret || (egret = {}));
 (function (egret) {
@@ -3184,11 +3173,6 @@ if (window['HTMLVideoElement'] == undefined) {
                 requestAnimationFrame(onTick);
             }
         }
-        //覆盖原生的isNaN()方法实现，在不同浏览器上有2~10倍性能提升。
-        window["isNaN"] = function (value) {
-            value = +value;
-            return value !== value;
-        };
         egret.runEgret = runEgret;
         egret.updateAllScreens = updateAllScreens;
         var resizeTimer = NaN;

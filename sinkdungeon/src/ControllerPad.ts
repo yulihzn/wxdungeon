@@ -1,12 +1,13 @@
-class ControllerPad extends egret.DisplayObjectContainer{
+class ControllerPad extends egret.DisplayObjectContainer {
 	private dirs: egret.Bitmap[] = new Array(4);
+	private centerButton: egret.Bitmap;
 	public constructor() {
 		super();
 		this.init();
 	}
-	private init():void{
+	private init(): void {
 		//0:top,1:bottom,2:left,3:right
-		
+
 		for (let i = 0; i < this.dirs.length; i++) {
 			this.dirs[i] = new egret.Bitmap(RES.getRes("controller"));
 			this.dirs[i].touchEnabled = true;
@@ -30,10 +31,26 @@ class ControllerPad extends egret.DisplayObjectContainer{
 		this.dirs[2].y = cy + 128;
 		this.dirs[3].x = cx + 128;
 		this.dirs[3].y = cy + 128;
+		this.centerButton = new egret.Bitmap(RES.getRes("controllerbuttonnormal"));
+		this.centerButton.addEventListener(egret.TouchEvent.TOUCH_TAP, () => { this.tapPad(4) }, this);
+		this.centerButton.touchEnabled = true;
+		this.centerButton.alpha = 0.5;
+		this.centerButton.anchorOffsetX = this.centerButton.width / 2;
+		this.centerButton.anchorOffsetY = this.centerButton.height / 2;
+		this.centerButton.x = cx;
+		this.centerButton.y = cy+128;
+		this.addChild(this.centerButton);
 	}
-	private tapPad(dir:number):void{
+	private tapPad(dir: number): void {
 		let padtapEvent = new PadtapEvent(PadtapEvent.PADTAP);
 		padtapEvent.dir = dir;
 		this.dispatchEvent(padtapEvent);
+		if(dir == 4){
+			egret.Tween.get(this.centerButton).call(()=>{
+				this.centerButton.texture = RES.getRes("controllerbuttonpress");
+			}).wait(100).call(()=>{
+				this.centerButton.texture = RES.getRes("controllerbuttonnormal");
+			})
+		}
 	}
 }
