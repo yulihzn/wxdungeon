@@ -135,7 +135,7 @@ class Player extends egret.DisplayObjectContainer {
 		if (this.pos.x == dungeon.portal.posIndex.x
 			&& this.pos.y == dungeon.portal.posIndex.y
 			&& dungeon.portal.isGateOpen()) {
-			this.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL, false, { level: ++dungeon.level });
+			this.parent.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL, false, { level: ++dungeon.level });
 		}
 	}
 }
