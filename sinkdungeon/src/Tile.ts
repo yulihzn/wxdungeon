@@ -5,7 +5,7 @@ class Tile extends egret.DisplayObjectContainer {
 	public building: Building;
 	public item: Item;
 	public posIndex: egret.Point;
-	public isLooping = false;
+	private isLooping = false;
 	public constructor(x: number, y: number) {
 		super()
 		this.posIndex = new egret.Point(x, y);
@@ -33,7 +33,8 @@ class Tile extends egret.DisplayObjectContainer {
 		return this;
 	}
 
-	public showTile(): void {
+	public showTile(isLooping:boolean): void {
+		this.isLooping = isLooping;
 		this.floor.alpha = 0;
 		this.floor.scaleX = 1;
 		this.floor.scaleY = 1;
@@ -42,14 +43,14 @@ class Tile extends egret.DisplayObjectContainer {
 		this.floor.visible = true;
 		egret.Tween.get(this.floor).to({ alpha: 1 }, 200).wait(1000).call(() => {
 			if (this.isLooping) {
-				this.breakTile();
+				this.breakTile(this.isLooping);
 			}
 		})
 	}
 
-	public breakTile(): Promise<egret.Point> {
-		return new Promise((resolve, reject)=>{
-			let y = this.floor.y;
+	public breakTile(isLooping:boolean): Promise<egret.Point> {
+		this.isLooping = isLooping;
+		let y = this.floor.y;
 		if (this.posIndex.x == Math.floor(Logic.SIZE / 2) && this.posIndex.y == Math.floor(Logic.SIZE / 2)) {
 			return;
 		}
@@ -62,14 +63,13 @@ class Tile extends egret.DisplayObjectContainer {
 			egret.Tween.removeTweens(this.floor);
 			egret.Tween.get(this.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(() => {
 				this.floor.visible = false;
-				resolve(this.posIndex);
+				this.parent.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE,false,this.posIndex)
 			}).wait(1000).call(() => {
 				if (this.isLooping) {
-					this.showTile();
+					this.showTile(this.isLooping);
 				}
 			})
 		});
-		})
 
 	}
 }

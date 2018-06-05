@@ -1,7 +1,7 @@
 class Dungeon extends egret.Stage {
 	public readonly SUCCESS_NUMBER: number = 15;
 	public map: Tile[][] = new Array();
-	public player: Player;
+	// public player: Player;
 	private dirs: egret.Bitmap[] = new Array(4);
 	private randomArr: egret.Point[];
 	//地板定时器
@@ -16,7 +16,6 @@ class Dungeon extends egret.Stage {
 	public constructor() {
 		super();
 		this.addEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
-
 	}
 	private onAddToStage(): void {
 		this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
@@ -26,7 +25,7 @@ class Dungeon extends egret.Stage {
 
 		this.drawBg();
 		this.drawMap();
-		this.addPlayer();
+		// this.addPlayer();
 		this.addTimer();
 		this.resetGame(this.level);
 
@@ -77,13 +76,12 @@ class Dungeon extends egret.Stage {
 
 	public resetGame(level: number): void {
 		this.level = level;
-		let index = Math.floor(Logic.SIZE / 2)
+		let index = Math.floor(Logic.SIZE / 2);
 		for (let i = 0; i < Logic.SIZE; i++) {
 			for (let j = 0; j < Logic.SIZE; j++) {
 				let t = this.map[i][j];
 				egret.Tween.removeTweens(t.floor);
-				t.isLooping = false;
-				t.showTile();
+				t.showTile(false);
 				t.item.hide();
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
@@ -95,12 +93,12 @@ class Dungeon extends egret.Stage {
 			}
 		}
 		this.portal.closeGate();
-		this.player.resetPlayer();
-		this.player.pos.x = index;
-		this.player.pos.y = index;
-		let p = Logic.getInMapPos(this.player.pos);
-		this.player.x = p.x;
-		this.player.y = p.y;
+		// this.player.resetPlayer();
+		// this.player.pos.x = index;
+		// this.player.pos.y = index;
+		// let p = Logic.getInMapPos(this.player.pos);
+		// this.player.x = p.x;
+		// this.player.y = p.y;
 
 		let delay = 200 - level * 10;
 		if (delay < 100) {
@@ -114,16 +112,16 @@ class Dungeon extends egret.Stage {
 		this.gemTimer.start();
 		this.dispatchEventWith(LogicEvent.UI_REFRESHTEXT);
 	}
-	private addPlayer(): void {
-		this.player = new Player();
-		let index = Math.floor(Logic.SIZE / 2)
-		this.player.pos.x = index;
-		this.player.pos.y = index;
-		let p = Logic.getInMapPos(this.player.pos);
-		this.player.x = p.x;
-		this.player.y = p.y;
-		this.addChild(this.player);
-	}
+	// private addPlayer(): void {
+	// 	this.player = new Player();
+	// 	let index = Math.floor(Logic.SIZE / 2)
+	// 	this.player.pos.x = index;
+	// 	this.player.pos.y = index;
+	// 	let p = Logic.getInMapPos(this.player.pos);
+	// 	this.player.x = p.x;
+	// 	this.player.y = p.y;
+	// 	this.addChild(this.player);
+	// }
 	
 	private addTimer(): void {
 		this.timer = new egret.Timer(200 - this.level * 10);
@@ -140,11 +138,7 @@ class Dungeon extends egret.Stage {
 			tile.item.show();
 		}
 	}
-	// private breakTileFinish(evt: LogicEvent): void {
-	// 	if (this.player.pos.x == evt.data.x && this.player.pos.y == evt.data.y) {
-	// 		this.gameOver();
-	// 	}
-	// }
+	
 	private breakTile(): void {
 		if (this.randomArr.length < 1) {
 			return;
@@ -155,12 +149,7 @@ class Dungeon extends egret.Stage {
 		let p = this.randomArr[index];
 		let tile = this.map[p.x][p.y];
 		this.randomArr.splice(index, 1);
-		tile.isLooping = true;
-		tile.breakTile().then((posIndex)=>{
-			if (this.player.pos.x == posIndex.x && this.player.pos.y == posIndex.y) {
-			this.gameOver();
-		}
-		});
+		tile.breakTile(true);
 
 
 	}
@@ -175,7 +164,7 @@ class Dungeon extends egret.Stage {
 			return;
 		}
 		//让角色原地走一步触发死亡,防止走路清空动画
-		this.player.move(-1,this);
+		// this.player.move(-1,this);
 		// egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
 		this.dispatchEventWith(LogicEvent.GAMEOVER);
 		this.isGameover = true;

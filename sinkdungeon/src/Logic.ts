@@ -10,6 +10,7 @@ class Logic extends egret.Stage {
 	private level: number = 1;
 	private gemManager: GemManager = new GemManager();
 	private score: number = 0;
+	public player: Player;
 
 	public constructor(main: Main) {
 		super();
@@ -33,28 +34,47 @@ class Logic extends egret.Stage {
 		this.dungeon.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
 		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
-		
+		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE,this.breakTileFinish,this);
+		this.addPlayer();
+	}
+	private addPlayer(): void {
+		this.player = new Player();
+		let index = Math.floor(Logic.SIZE / 2)
+		this.player.pos.x = index;
+		this.player.pos.y = index;
+		let p = Logic.getInMapPos(this.player.pos);
+		this.player.x = p.x;
+		this.player.y = p.y;
+		this.addChild(this.player);
 	}
 	public static getInMapPos(pos: egret.Point): egret.Point {
 		let x = Logic.mapX + pos.x * Tile.WIDTH;
 		let y =Logic.mapY+ pos.y * Tile.WIDTH;
 		return new egret.Point(x, y);
 	}
+	private breakTileFinish(evt: LogicEvent): void {
+		if (this.player.pos.x == evt.data.x && this.player.pos.y == evt.data.y) {
+			this.gameOver();
+		}
+	}
 	private refreshText(evt: LogicEvent): void {
 		this.main.refreshScoreText(`${this.score}`);
 		this.main.refreshSecondsText(`Target:${this.dungeon.level*Logic.SCORE_BASE}        Lv.${this.dungeon.level}`)
 	}
 	private tapPad(evt: PadtapEvent): void {
-		this.dungeon.player.move(evt.dir,this.dungeon)
+		this.player.move(evt.dir,this.dungeon)
 	}
 	private loadNextLevel(evt: LogicEvent): void {
 		this.level = evt.data.level;
 		this.main.loadingNextDialog.show(this.level, () => {
-			this.dungeon.resetGame(this.level)
+			this.player.resetPlayer();
+			this.dungeon.resetGame(this.level);
 		})
 	}
 	private gameOver(): void {
 		this.score = 0;
+		//让角色原地走一步触发死亡,防止走路清空动画
+		this.player.move(-1,this.dungeon);
 		this.main.gameoverDialog.show(this.dungeon.level);
 	}
 

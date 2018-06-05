@@ -11,7 +11,7 @@ class Player extends egret.DisplayObjectContainer {
 	}
 
 	private init(): void {
-		this.player = new egret.Bitmap(RES.getRes("player00"+Logic.getRandomNum(1,6)));
+		this.player = new egret.Bitmap(RES.getRes("player00" + Logic.getRandomNum(1, 6)));
 		this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
 		let index = 0
 		this.player.anchorOffsetX = this.player.width / 2;
@@ -35,7 +35,6 @@ class Player extends egret.DisplayObjectContainer {
 		return this.isdead;
 	}
 	public resetPlayer(): void {
-		this.player.texture=RES.getRes("player00"+Logic.getRandomNum(1,6));
 		egret.Tween.removeTweens(this.player);
 		egret.Tween.removeTweens(this);
 		this.parent.setChildIndex(this, 100);
@@ -48,6 +47,13 @@ class Player extends egret.DisplayObjectContainer {
 		this.playerShadow.visible = true;
 		this.isdead = false;
 		this.walking = false;
+
+		let index = Math.floor(Logic.SIZE / 2);
+		this.pos.x = index;
+		this.pos.y = index;
+		let p = Logic.getInMapPos(this.pos);
+		this.x = p.x;
+		this.y = p.y;
 	}
 	public die(): void {
 		if (this.isdead) {
@@ -57,7 +63,11 @@ class Player extends egret.DisplayObjectContainer {
 		this.playerShadow.visible = false;
 		egret.Tween.get(this.player).to({ y: 32, scaleX: 0.5, scaleY: 0.5 }, 200).call(() => {
 			this.parent.setChildIndex(this, 0);
-		}).to({ scaleX: 0.2, scaleY: 0.2, y: 100 }, 100).call(() => { this.player.alpha = 0; });
+		}).to({ scaleX: 0.2, scaleY: 0.2, y: 100 }, 100).call(() => {
+			this.player.alpha = 0;
+			this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 6));
+
+		});
 	}
 	private walk(px: number, py: number, dir: number, reachable: boolean): void {
 		if (this.walking) {
@@ -95,7 +105,7 @@ class Player extends egret.DisplayObjectContainer {
 			this.die()
 		}
 	}
-	public move(dir: number,dungeon:Dungeon) {
+	public move(dir: number, dungeon: Dungeon) {
 		if (this.isWalking() || this.isDying()) {
 			return;
 		}
