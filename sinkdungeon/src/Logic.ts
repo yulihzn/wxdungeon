@@ -31,7 +31,7 @@ class Logic extends egret.Stage {
 		this.controllerPad.addEventListener(PadtapEvent.PADTAP, this.tapPad, this);
 		this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
 		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
-		this.dungeon.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
+		this.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
 		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
 		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE,this.breakTileFinish,this);
