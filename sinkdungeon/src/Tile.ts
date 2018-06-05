@@ -1,6 +1,6 @@
 class Tile extends egret.DisplayObjectContainer {
-	public static readonly WIDTH:number = 64;
-	public static readonly HEIGHT:number = 64;
+	public static readonly WIDTH: number = 64;
+	public static readonly HEIGHT: number = 64;
 	public floor: egret.Bitmap;
 	public building: Building;
 	public item: Item;
@@ -13,12 +13,13 @@ class Tile extends egret.DisplayObjectContainer {
 	}
 	private init(): void {
 		let t = new egret.Bitmap(RES.getRes("tile"));
+		t.smoothing = false;
 		this.width = Tile.WIDTH;
 		this.height = Tile.WIDTH;
-		t.anchorOffsetX = Tile.WIDTH / 2;
-		t.anchorOffsetY = Tile.WIDTH / 2;
-		t.scaleX = 1;
-		t.scaleY = 1;
+		t.anchorOffsetX = t.width / 2;
+		t.anchorOffsetY = t.height / 2;
+		t.scaleX = 4;
+		t.scaleY = 4;
 		this.floor = t;
 		this.addChild(this.floor);
 	}
@@ -33,11 +34,11 @@ class Tile extends egret.DisplayObjectContainer {
 		return this;
 	}
 
-	public showTile(isLooping:boolean): void {
+	public showTile(isLooping: boolean): void {
 		this.isLooping = isLooping;
 		this.floor.alpha = 0;
-		this.floor.scaleX = 1;
-		this.floor.scaleY = 1;
+		this.floor.scaleX = 4;
+		this.floor.scaleY = 4;
 		this.floor.x = 0;
 		this.floor.y = 0;
 		this.floor.visible = true;
@@ -48,7 +49,7 @@ class Tile extends egret.DisplayObjectContainer {
 		})
 	}
 
-	public breakTile(isLooping:boolean): Promise<egret.Point> {
+	public breakTile(isLooping: boolean): Promise<egret.Point> {
 		this.isLooping = isLooping;
 		let y = this.floor.y;
 		if (this.posIndex.x == Math.floor(Logic.SIZE / 2) && this.posIndex.y == Math.floor(Logic.SIZE / 2)) {
@@ -61,9 +62,9 @@ class Tile extends egret.DisplayObjectContainer {
 			.to({ y: y }, 25);
 		egret.Tween.get(this.floor).wait(2000).call(() => {
 			egret.Tween.removeTweens(this.floor);
-			egret.Tween.get(this.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(() => {
+			egret.Tween.get(this.floor).to({ scaleX: 3, scaleY: 3 }, 700).to({ alpha: 0 }, 300).call(() => {
 				this.floor.visible = false;
-				this.parent.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE,false,this.posIndex)
+				this.parent.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, this.posIndex)
 			}).wait(1000).call(() => {
 				if (this.isLooping) {
 					this.showTile(this.isLooping);

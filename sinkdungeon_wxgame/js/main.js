@@ -689,10 +689,13 @@ var ControllerPad = (function (_super) {
         var _this = this;
         var _loop_1 = function (i) {
             this_1.dirs[i] = new egret.Bitmap(RES.getRes("controller"));
+            this_1.dirs[i].smoothing = false;
             this_1.dirs[i].touchEnabled = true;
             this_1.dirs[i].alpha = 0.5;
             this_1.dirs[i].anchorOffsetX = this_1.dirs[i].width / 2;
             this_1.dirs[i].anchorOffsetY = this_1.dirs[i].height / 2;
+            this_1.dirs[i].scaleX = 8;
+            this_1.dirs[i].scaleY = 8;
             this_1.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(i); }, this_1);
             this_1.addChild(this_1.dirs[i]);
         };
@@ -709,16 +712,19 @@ var ControllerPad = (function (_super) {
         this.dirs[0].y = cy;
         this.dirs[1].x = cx;
         this.dirs[1].y = cy + 256;
-        this.dirs[2].x = cx - 128;
+        this.dirs[2].x = cx - 128 - 32;
         this.dirs[2].y = cy + 128;
-        this.dirs[3].x = cx + 128;
+        this.dirs[3].x = cx + 128 + 32;
         this.dirs[3].y = cy + 128;
         this.centerButton = new egret.Bitmap(RES.getRes("controllerbuttonnormal"));
+        this.centerButton.smoothing = false;
         this.centerButton.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(4); }, this);
         this.centerButton.touchEnabled = true;
         this.centerButton.alpha = 0.5;
         this.centerButton.anchorOffsetX = this.centerButton.width / 2;
         this.centerButton.anchorOffsetY = this.centerButton.height / 2;
+        this.centerButton.scaleX = 8;
+        this.centerButton.scaleY = 8;
         this.centerButton.x = cx;
         this.centerButton.y = cy + 128;
         this.addChild(this.centerButton);
@@ -752,12 +758,15 @@ var Player = (function (_super) {
     }
     Player.prototype.init = function () {
         this.player = new egret.Bitmap(RES.getRes("player00" + Logic.getRandomNum(1, 6)));
+        this.player.smoothing = false;
         this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
         var index = 0;
         this.player.anchorOffsetX = this.player.width / 2;
         this.player.anchorOffsetY = this.player.height;
         this.player.x = 0;
         this.player.y = 0;
+        this.player.scaleX = 5;
+        this.player.scaleY = 5;
         this.playerShadow.anchorOffsetX = this.playerShadow.width / 2;
         this.playerShadow.anchorOffsetY = this.playerShadow.height / 2;
         this.playerShadow.x = 0;
@@ -778,8 +787,8 @@ var Player = (function (_super) {
         egret.Tween.removeTweens(this.player);
         egret.Tween.removeTweens(this);
         this.parent.setChildIndex(this, 100);
-        this.player.scaleX = 1;
-        this.player.scaleY = 1;
+        this.player.scaleX = 5;
+        this.player.scaleY = 5;
         this.player.visible = true;
         this.player.alpha = 1;
         this.player.x = 0;
@@ -801,9 +810,9 @@ var Player = (function (_super) {
         }
         this.isdead = true;
         this.playerShadow.visible = false;
-        egret.Tween.get(this.player).to({ y: 32, scaleX: 0.5, scaleY: 0.5 }, 200).call(function () {
+        egret.Tween.get(this.player).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(function () {
             _this.parent.setChildIndex(_this, 0);
-        }).to({ scaleX: 0.2, scaleY: 0.2, y: 100 }, 100).call(function () {
+        }).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(function () {
             _this.player.alpha = 0;
             _this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 6));
         });
@@ -908,7 +917,9 @@ var Portal = (function (_super) {
         this.anchorOffsetX = 32;
         this.anchorOffsetY = 32;
         this.gate = new egret.Bitmap(RES.getRes("portal"));
+        this.gate.smoothing = false;
         this.light = new egret.Bitmap(RES.getRes("portallight"));
+        this.light.smoothing = false;
         var index = 0;
         this.gate.anchorOffsetX = this.gate.width / 2;
         this.gate.anchorOffsetY = this.gate.height / 2;
@@ -919,8 +930,8 @@ var Portal = (function (_super) {
         this.light.x = this.width / 2;
         this.light.y = 0;
         this.light.alpha = 0.75;
-        this.light.scaleX = 1;
-        this.light.scaleY = 1;
+        this.light.scaleX = 4;
+        this.light.scaleY = 4;
         this.addChild(this.gate);
         this.addChild(this.light);
         this.isOpen = false;
@@ -940,7 +951,7 @@ var Portal = (function (_super) {
         this.visible = true;
         this.isOpen = false;
         egret.Tween.get(this)
-            .to({ alpha: 1, scaleX: 1, scaleY: 1 }, 500).call(function () {
+            .to({ alpha: 1, scaleX: 4, scaleY: 4 }, 500).call(function () {
         });
     };
     Portal.prototype.closeGate = function () {
@@ -957,7 +968,7 @@ var Portal = (function (_super) {
             return;
         }
         this.isOpen = true;
-        egret.Tween.get(this.light).to({ scaleX: 1 }, 500).to({ scaleY: 1 }, 200).call(function () {
+        egret.Tween.get(this.light).to({ scaleX: 4 }, 500).to({ scaleY: 4 }, 200).call(function () {
         });
     };
     Portal.prototype.isGateOpen = function () {
@@ -977,12 +988,13 @@ var Tile = (function (_super) {
     }
     Tile.prototype.init = function () {
         var t = new egret.Bitmap(RES.getRes("tile"));
+        t.smoothing = false;
         this.width = Tile.WIDTH;
         this.height = Tile.WIDTH;
-        t.anchorOffsetX = Tile.WIDTH / 2;
-        t.anchorOffsetY = Tile.WIDTH / 2;
-        t.scaleX = 1;
-        t.scaleY = 1;
+        t.anchorOffsetX = t.width / 2;
+        t.anchorOffsetY = t.height / 2;
+        t.scaleX = 4;
+        t.scaleY = 4;
         this.floor = t;
         this.addChild(this.floor);
     };
@@ -1000,8 +1012,8 @@ var Tile = (function (_super) {
         var _this = this;
         this.isLooping = isLooping;
         this.floor.alpha = 0;
-        this.floor.scaleX = 1;
-        this.floor.scaleY = 1;
+        this.floor.scaleX = 4;
+        this.floor.scaleY = 4;
         this.floor.x = 0;
         this.floor.y = 0;
         this.floor.visible = true;
@@ -1025,7 +1037,7 @@ var Tile = (function (_super) {
             .to({ y: y }, 25);
         egret.Tween.get(this.floor).wait(2000).call(function () {
             egret.Tween.removeTweens(_this.floor);
-            egret.Tween.get(_this.floor).to({ scaleX: 0.7, scaleY: 0.7 }, 700).to({ alpha: 0 }, 300).call(function () {
+            egret.Tween.get(_this.floor).to({ scaleX: 3, scaleY: 3 }, 700).to({ alpha: 0 }, 300).call(function () {
                 _this.floor.visible = false;
                 _this.parent.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, _this.posIndex);
             }).wait(1000).call(function () {

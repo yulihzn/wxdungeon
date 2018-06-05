@@ -12,12 +12,15 @@ class Player extends egret.DisplayObjectContainer {
 
 	private init(): void {
 		this.player = new egret.Bitmap(RES.getRes("player00" + Logic.getRandomNum(1, 6)));
+		this.player.smoothing = false;
 		this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
 		let index = 0
 		this.player.anchorOffsetX = this.player.width / 2;
 		this.player.anchorOffsetY = this.player.height;
 		this.player.x = 0;
 		this.player.y = 0;
+		this.player.scaleX = 5;
+		this.player.scaleY = 5;
 		this.playerShadow.anchorOffsetX = this.playerShadow.width / 2;
 		this.playerShadow.anchorOffsetY = this.playerShadow.height / 2;
 		this.playerShadow.x = 0;
@@ -38,8 +41,8 @@ class Player extends egret.DisplayObjectContainer {
 		egret.Tween.removeTweens(this.player);
 		egret.Tween.removeTweens(this);
 		this.parent.setChildIndex(this, 100);
-		this.player.scaleX = 1;
-		this.player.scaleY = 1;
+		this.player.scaleX = 5;
+		this.player.scaleY = 5;
 		this.player.visible = true;
 		this.player.alpha = 1;
 		this.player.x = 0;
@@ -61,9 +64,9 @@ class Player extends egret.DisplayObjectContainer {
 		}
 		this.isdead = true;
 		this.playerShadow.visible = false;
-		egret.Tween.get(this.player).to({ y: 32, scaleX: 0.5, scaleY: 0.5 }, 200).call(() => {
+		egret.Tween.get(this.player).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
 			this.parent.setChildIndex(this, 0);
-		}).to({ scaleX: 0.2, scaleY: 0.2, y: 100 }, 100).call(() => {
+		}).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(() => {
 			this.player.alpha = 0;
 			this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 6));
 

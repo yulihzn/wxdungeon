@@ -10,10 +10,13 @@ class ControllerPad extends egret.DisplayObjectContainer {
 
 		for (let i = 0; i < this.dirs.length; i++) {
 			this.dirs[i] = new egret.Bitmap(RES.getRes("controller"));
+			this.dirs[i].smoothing = false;
 			this.dirs[i].touchEnabled = true;
 			this.dirs[i].alpha = 0.5;
 			this.dirs[i].anchorOffsetX = this.dirs[i].width / 2;
 			this.dirs[i].anchorOffsetY = this.dirs[i].height / 2;
+			this.dirs[i].scaleX = 8;
+			this.dirs[i].scaleY = 8;
 			this.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, () => { this.tapPad(i) }, this)
 			this.addChild(this.dirs[i]);
 		}
@@ -27,16 +30,19 @@ class ControllerPad extends egret.DisplayObjectContainer {
 		this.dirs[0].y = cy;
 		this.dirs[1].x = cx;
 		this.dirs[1].y = cy + 256;
-		this.dirs[2].x = cx - 128;
+		this.dirs[2].x = cx - 128-32;
 		this.dirs[2].y = cy + 128;
-		this.dirs[3].x = cx + 128;
+		this.dirs[3].x = cx + 128+32;
 		this.dirs[3].y = cy + 128;
 		this.centerButton = new egret.Bitmap(RES.getRes("controllerbuttonnormal"));
+		this.centerButton.smoothing = false;
 		this.centerButton.addEventListener(egret.TouchEvent.TOUCH_TAP, () => { this.tapPad(4) }, this);
 		this.centerButton.touchEnabled = true;
 		this.centerButton.alpha = 0.5;
 		this.centerButton.anchorOffsetX = this.centerButton.width / 2;
 		this.centerButton.anchorOffsetY = this.centerButton.height / 2;
+		this.centerButton.scaleX=8;
+		this.centerButton.scaleY=8;
 		this.centerButton.x = cx;
 		this.centerButton.y = cy+128;
 		this.addChild(this.centerButton);
