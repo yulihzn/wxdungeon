@@ -912,10 +912,10 @@ var Portal = (function (_super) {
         return this.type;
     };
     Portal.prototype.init = function () {
-        this.width = 64;
-        this.height = 64;
-        this.anchorOffsetX = 32;
-        this.anchorOffsetY = 32;
+        this.width = 16;
+        this.height = 16;
+        this.anchorOffsetX = 8;
+        this.anchorOffsetY = 8;
         this.gate = new egret.Bitmap(RES.getRes("portal"));
         this.gate.smoothing = false;
         this.light = new egret.Bitmap(RES.getRes("portallight"));
@@ -930,8 +930,8 @@ var Portal = (function (_super) {
         this.light.x = this.width / 2;
         this.light.y = 0;
         this.light.alpha = 0.75;
-        this.light.scaleX = 4;
-        this.light.scaleY = 4;
+        this.light.scaleX = 1;
+        this.light.scaleY = 1;
         this.addChild(this.gate);
         this.addChild(this.light);
         this.isOpen = false;
@@ -968,7 +968,7 @@ var Portal = (function (_super) {
             return;
         }
         this.isOpen = true;
-        egret.Tween.get(this.light).to({ scaleX: 4 }, 500).to({ scaleY: 4 }, 200).call(function () {
+        egret.Tween.get(this.light).to({ scaleX: 1 }, 500).to({ scaleY: 1 }, 200).call(function () {
         });
     };
     Portal.prototype.isGateOpen = function () {
