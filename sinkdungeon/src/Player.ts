@@ -108,6 +108,7 @@ class Player extends egret.DisplayObjectContainer {
 			this.die()
 		}
 	}
+	//01234 top bottom left right middle
 	public move(dir: number, dungeon: Dungeon) {
 		if (this.isWalking() || this.isDying()) {
 			return;
@@ -133,6 +134,8 @@ class Player extends egret.DisplayObjectContainer {
 				this.pos.x++;
 			}
 				break;
+			case 4:
+				break;
 			default: break;
 
 		}
@@ -140,9 +143,9 @@ class Player extends egret.DisplayObjectContainer {
 		let p = Logic.getInMapPos(this.pos);
 		this.walk(p.x, p.y, dir, tile.floor.visible);
 		if (!tile.floor.visible) {
-			dungeon.gameOver();
+			this.parent.dispatchEventWith(LogicEvent.GAMEOVER);
 		}
-		if (tile.item) {
+		if (tile.item && (tile.item.isAutoPicking()||dir==4)) {
 			tile.item.taken();
 		}
 		if (this.pos.x == dungeon.portal.posIndex.x

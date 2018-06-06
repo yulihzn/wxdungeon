@@ -51,53 +51,85 @@ var Building = (function (_super) {
     return Building;
 }(egret.DisplayObjectContainer));
 __reflect(Building.prototype, "Building");
-var LoadingNextDialog = (function (_super) {
-    __extends(LoadingNextDialog, _super);
-    function LoadingNextDialog() {
+var Item = (function (_super) {
+    __extends(Item, _super);
+    function Item(type) {
         var _this = _super.call(this) || this;
-        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+        _this.canTaken = false;
+        _this.type = type;
+        _this.init();
         return _this;
     }
-    LoadingNextDialog.prototype.onAddToStage = function () {
-        this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
-        this.bg = new egret.Shape();
-        this.addChild(this.bg);
-        this.bg.alpha = 0;
-        this.bg.graphics.beginFill(0x000000, 1);
-        this.bg.graphics.drawRect(0, 0, this.stage.width, this.stage.height);
-        this.bg.graphics.endFill();
-        this.textTips = new egret.TextField();
-        this.addChild(this.textTips);
-        this.textTips.alpha = 0;
-        this.textTips.textAlign = egret.HorizontalAlign.CENTER;
-        this.textTips.size = 70;
-        this.textTips.width = this.stage.width;
-        this.textTips.textColor = 0xffffff;
-        this.textTips.x = 0;
-        this.textTips.y = this.stage.height / 2 - 200;
-        this.textTips.text = 'Level ';
+    Item.prototype.init = function () {
+        this.width = 64;
+        this.height = 64;
+        this.anchorOffsetX = 32;
+        this.anchorOffsetY = 32;
+        this.item = new egret.Bitmap(RES.getRes("gem0" + this.type));
+        this.shadow = new egret.Bitmap(RES.getRes("shadow"));
+        var index = 0;
+        this.item.anchorOffsetX = this.item.width / 2;
+        this.item.anchorOffsetY = this.item.height / 2;
+        this.item.x = 32;
+        this.item.y = 16;
+        this.shadow.anchorOffsetX = this.shadow.width / 2;
+        this.shadow.anchorOffsetY = this.shadow.height / 2;
+        this.shadow.x = 32;
+        this.shadow.y = 32;
+        this.shadow.alpha = 0.3;
+        this.shadow.scaleX = 1;
+        this.shadow.scaleY = 1;
+        this.addChild(this.shadow);
+        this.addChild(this.item);
+        var y = this.item.y;
+        egret.Tween.get(this.item, { loop: true })
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 0, y: y }, 1000)
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 1, y: y }, 1000);
+        this.visible = false;
     };
-    LoadingNextDialog.prototype.show = function (level, finish) {
+    Item.prototype.taken = function () {
         var _this = this;
-        this.alpha = 1;
-        this.bg.alpha = 0;
-        this.textTips.text = 'Level ' + level;
-        this.textTips.scaleX = 1;
-        this.textTips.scaleY = 1;
-        this.textTips.y = this.stage.height / 2 - 200;
-        this.textTips.alpha = 0;
-        this.visible = true;
-        egret.Tween.get(this.bg).to({ alpha: 1 }, 500);
-        egret.Tween.get(this.textTips).wait(200).to({ y: this.textTips.y + 20, alpha: 1 }, 500).wait(200).call(function () {
-            egret.Tween.get(_this).to({ alpha: 0 }, 200);
-            if (finish) {
-                finish();
-            }
+        if (!this.visible || !this.canTaken) {
+            return false;
+        }
+        this.canTaken = false;
+        egret.Tween.removeTweens(this.item);
+        this.item.scaleX = 1;
+        this.item.alpha = 1;
+        egret.Tween.get(this.item)
+            .to({ scaleX: 2, scaleY: 2, y: this.item.y - 128 }, 500)
+            .to({ alpha: 0 }, 100).call(function () {
+            _this.visible = false;
         });
+        return true;
     };
-    return LoadingNextDialog;
+    Item.prototype.show = function () {
+        egret.Tween.removeTweens(this.item);
+        this.item.x = 32;
+        this.item.y = 16;
+        this.item.scaleX = 1;
+        this.item.scaleY = 1;
+        this.item.alpha = 1;
+        this.visible = true;
+        this.canTaken = true;
+        var y = this.item.y;
+        egret.Tween.get(this.item, { loop: true })
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 0, y: y }, 1000)
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 1, y: y }, 1000);
+    };
+    Item.prototype.hide = function () {
+        this.canTaken = false;
+        egret.Tween.removeTweens(this.item);
+        this.item.scaleX = 1;
+        this.visible = false;
+    };
+    return Item;
 }(egret.DisplayObjectContainer));
-__reflect(LoadingNextDialog.prototype, "LoadingNextDialog");
+__reflect(Item.prototype, "Item");
 var Dungeon = (function (_super) {
     __extends(Dungeon, _super);
     function Dungeon() {
@@ -107,7 +139,6 @@ var Dungeon = (function (_super) {
         // public player: Player;
         _this.dirs = new Array(4);
         _this.level = 1;
-        _this.isGameover = false;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
     }
@@ -173,7 +204,7 @@ var Dungeon = (function (_super) {
                 t.item.hide();
                 if (!(index == i && index == j)) {
                     if (this.getRandomNum(0, 10) > 5) {
-                        t.item.setId(this.getRandomNum(1, 4));
+                        t.item.changeRes(this.getRandomNum(1, 4));
                         t.item.show();
                     }
                 }
@@ -192,7 +223,6 @@ var Dungeon = (function (_super) {
             delay = 100;
         }
         this.timer.delay = delay;
-        this.isGameover = false;
         this.timer.reset();
         this.timer.start();
         this.gemTimer.reset();
@@ -220,7 +250,7 @@ var Dungeon = (function (_super) {
         var y = this.getRandomNum(0, Logic.SIZE - 1);
         var tile = this.map[x][y];
         if (tile.item && !tile.item.visible) {
-            tile.item.setId(this.getRandomNum(1, 4));
+            tile.item.changeRes(this.getRandomNum(1, 4));
             tile.item.show();
         }
     };
@@ -238,114 +268,9 @@ var Dungeon = (function (_super) {
     Dungeon.prototype.getRandomNum = function (min, max) {
         return min + Math.round(Math.random() * (max - min));
     };
-    Dungeon.prototype.gameOver = function () {
-        console.log('gameover');
-        if (this.isGameover) {
-            return;
-        }
-        //让角色原地走一步触发死亡,防止走路清空动画
-        // this.player.move(-1,this);
-        // egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
-        this.dispatchEventWith(LogicEvent.GAMEOVER);
-        this.isGameover = true;
-    };
     return Dungeon;
 }(egret.Stage));
 __reflect(Dungeon.prototype, "Dungeon");
-var Gem = (function (_super) {
-    __extends(Gem, _super);
-    function Gem(type) {
-        var _this = _super.call(this) || this;
-        _this.canTaken = false;
-        _this.type = type;
-        _this.init();
-        return _this;
-    }
-    Gem.prototype.setId = function (type) {
-        this.type = type;
-        this.item.texture = RES.getRes("gem0" + this.type);
-    };
-    Gem.prototype.getType = function () {
-        return this.type;
-    };
-    Gem.prototype.init = function () {
-        this.width = 64;
-        this.height = 64;
-        this.anchorOffsetX = 32;
-        this.anchorOffsetY = 32;
-        this.item = new egret.Bitmap(RES.getRes("gem0" + this.type));
-        this.shadow = new egret.Bitmap(RES.getRes("shadow"));
-        var index = 0;
-        this.item.anchorOffsetX = this.item.width / 2;
-        this.item.anchorOffsetY = this.item.height / 2;
-        this.item.x = 32;
-        this.item.y = 16;
-        this.shadow.anchorOffsetX = this.shadow.width / 2;
-        this.shadow.anchorOffsetY = this.shadow.height / 2;
-        this.shadow.x = 32;
-        this.shadow.y = 32;
-        this.shadow.alpha = 0.3;
-        this.shadow.scaleX = 1;
-        this.shadow.scaleY = 1;
-        this.addChild(this.shadow);
-        this.addChild(this.item);
-        var y = this.item.y;
-        egret.Tween.get(this.item, { loop: true })
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 0, y: y }, 1000)
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 1, y: y }, 1000);
-        this.visible = false;
-    };
-    Gem.prototype.show = function () {
-        egret.Tween.removeTweens(this.item);
-        this.item.x = 32;
-        this.item.y = 16;
-        this.item.scaleX = 1;
-        this.item.scaleY = 1;
-        this.item.alpha = 1;
-        this.visible = true;
-        this.canTaken = true;
-        var y = this.item.y;
-        egret.Tween.get(this.item, { loop: true })
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 0, y: y }, 1000)
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 1, y: y }, 1000);
-    };
-    Gem.prototype.hide = function () {
-        this.canTaken = false;
-        egret.Tween.removeTweens(this.item);
-        this.item.scaleX = 1;
-        this.visible = false;
-    };
-    Gem.prototype.taken = function () {
-        var _this = this;
-        if (!this.visible || !this.canTaken) {
-            return;
-        }
-        this.canTaken = false;
-        this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: this.type * 10 });
-        egret.Tween.removeTweens(this.item);
-        this.item.scaleX = 1;
-        this.item.alpha = 1;
-        egret.Tween.get(this.item)
-            .to({ scaleX: 2, scaleY: 2, y: this.item.y - 128 }, 500)
-            .to({ alpha: 0 }, 100).call(function () {
-            _this.visible = false;
-        });
-    };
-    return Gem;
-}(egret.DisplayObjectContainer));
-__reflect(Gem.prototype, "Gem");
-var Item = (function (_super) {
-    __extends(Item, _super);
-    function Item() {
-        return _super.call(this) || this;
-    }
-    return Item;
-}(egret.DisplayObjectContainer));
-__reflect(Item.prototype, "Item");
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (c) 2014-present, Egret Technology.
@@ -400,8 +325,8 @@ var Logic = (function (_super) {
     function Logic(main) {
         var _this = _super.call(this) || this;
         _this.level = 1;
-        _this.gemManager = new GemManager();
         _this.score = 0;
+        _this.isGameover = false;
         _this.main = main;
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
@@ -421,7 +346,7 @@ var Logic = (function (_super) {
         this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
         this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
         this.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
-        this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
+        this.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
         this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
         this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinish, this);
         this.addPlayer();
@@ -457,11 +382,16 @@ var Logic = (function (_super) {
         var _this = this;
         this.level = evt.data.level;
         this.main.loadingNextDialog.show(this.level, function () {
+            _this.isGameover = false;
             _this.player.resetPlayer();
             _this.dungeon.resetGame(_this.level);
         });
     };
     Logic.prototype.gameOver = function () {
+        if (this.isGameover) {
+            return;
+        }
+        this.isGameover = true;
         this.score = 0;
         //让角色原地走一步触发死亡,防止走路清空动画
         this.player.move(-1, this.dungeon);
@@ -676,75 +606,29 @@ var Main = (function (_super) {
     return Main;
 }(egret.DisplayObjectContainer));
 __reflect(Main.prototype, "Main");
-var ControllerPad = (function (_super) {
-    __extends(ControllerPad, _super);
-    function ControllerPad() {
-        var _this = _super.call(this) || this;
-        _this.dirs = new Array(4);
-        _this.init();
-        return _this;
+var DebugPlatform = (function () {
+    function DebugPlatform() {
     }
-    ControllerPad.prototype.init = function () {
-        //0:top,1:bottom,2:left,3:right
-        var _this = this;
-        var _loop_1 = function (i) {
-            this_1.dirs[i] = new egret.Bitmap(RES.getRes("controller"));
-            this_1.dirs[i].smoothing = false;
-            this_1.dirs[i].touchEnabled = true;
-            this_1.dirs[i].alpha = 0.5;
-            this_1.dirs[i].anchorOffsetX = this_1.dirs[i].width / 2;
-            this_1.dirs[i].anchorOffsetY = this_1.dirs[i].height / 2;
-            this_1.dirs[i].scaleX = 8;
-            this_1.dirs[i].scaleY = 8;
-            this_1.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(i); }, this_1);
-            this_1.addChild(this_1.dirs[i]);
-        };
-        var this_1 = this;
-        for (var i = 0; i < this.dirs.length; i++) {
-            _loop_1(i);
-        }
-        this.dirs[0].rotation = -90;
-        this.dirs[1].rotation = 90;
-        this.dirs[2].rotation = 180;
-        var cx = 0;
-        var cy = 0;
-        this.dirs[0].x = cx;
-        this.dirs[0].y = cy;
-        this.dirs[1].x = cx;
-        this.dirs[1].y = cy + 256;
-        this.dirs[2].x = cx - 128 - 32;
-        this.dirs[2].y = cy + 128;
-        this.dirs[3].x = cx + 128 + 32;
-        this.dirs[3].y = cy + 128;
-        this.centerButton = new egret.Bitmap(RES.getRes("controllerbuttonnormal"));
-        this.centerButton.smoothing = false;
-        this.centerButton.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(4); }, this);
-        this.centerButton.touchEnabled = true;
-        this.centerButton.alpha = 0.5;
-        this.centerButton.anchorOffsetX = this.centerButton.width / 2;
-        this.centerButton.anchorOffsetY = this.centerButton.height / 2;
-        this.centerButton.scaleX = 8;
-        this.centerButton.scaleY = 8;
-        this.centerButton.x = cx;
-        this.centerButton.y = cy + 128;
-        this.addChild(this.centerButton);
-    };
-    ControllerPad.prototype.tapPad = function (dir) {
-        var _this = this;
-        var padtapEvent = new PadtapEvent(PadtapEvent.PADTAP);
-        padtapEvent.dir = dir;
-        this.dispatchEvent(padtapEvent);
-        if (dir == 4) {
-            egret.Tween.get(this.centerButton).call(function () {
-                _this.centerButton.texture = RES.getRes("controllerbuttonpress");
-            }).wait(100).call(function () {
-                _this.centerButton.texture = RES.getRes("controllerbuttonnormal");
+    DebugPlatform.prototype.getUserInfo = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, { nickName: "username" }];
             });
-        }
+        });
     };
-    return ControllerPad;
-}(egret.DisplayObjectContainer));
-__reflect(ControllerPad.prototype, "ControllerPad");
+    DebugPlatform.prototype.login = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    };
+    return DebugPlatform;
+}());
+__reflect(DebugPlatform.prototype, "DebugPlatform", ["Platform"]);
+if (!window.platform) {
+    window.platform = new DebugPlatform();
+}
 var Player = (function (_super) {
     __extends(Player, _super);
     function Player() {
@@ -885,7 +769,7 @@ var Player = (function (_super) {
         var p = Logic.getInMapPos(this.pos);
         this.walk(p.x, p.y, dir, tile.floor.visible);
         if (!tile.floor.visible) {
-            dungeon.gameOver();
+            this.parent.dispatchEventWith(LogicEvent.GAMEOVER);
         }
         if (tile.item) {
             tile.item.taken();
@@ -899,84 +783,75 @@ var Player = (function (_super) {
     return Player;
 }(egret.DisplayObjectContainer));
 __reflect(Player.prototype, "Player");
-var Portal = (function (_super) {
-    __extends(Portal, _super);
-    function Portal(x, y) {
+var ControllerPad = (function (_super) {
+    __extends(ControllerPad, _super);
+    function ControllerPad() {
         var _this = _super.call(this) || this;
-        _this.isOpen = false;
-        _this.posIndex = new egret.Point(x, y);
+        _this.dirs = new Array(4);
         _this.init();
         return _this;
     }
-    Portal.prototype.getType = function () {
-        return this.type;
-    };
-    Portal.prototype.init = function () {
-        this.width = 16;
-        this.height = 16;
-        this.anchorOffsetX = 8;
-        this.anchorOffsetY = 8;
-        this.gate = new egret.Bitmap(RES.getRes("portal"));
-        this.gate.smoothing = false;
-        this.light = new egret.Bitmap(RES.getRes("portallight"));
-        this.light.smoothing = false;
-        var index = 0;
-        this.gate.anchorOffsetX = this.gate.width / 2;
-        this.gate.anchorOffsetY = this.gate.height / 2;
-        this.gate.x = this.width / 2;
-        this.gate.y = this.height / 2;
-        this.light.anchorOffsetX = this.light.width / 2;
-        this.light.anchorOffsetY = this.light.height / 2;
-        this.light.x = this.width / 2;
-        this.light.y = 0;
-        this.light.alpha = 0.75;
-        this.light.scaleX = 1;
-        this.light.scaleY = 1;
-        this.addChild(this.gate);
-        this.addChild(this.light);
-        this.isOpen = false;
-        this.visible = false;
-        egret.Tween.get(this.light, { loop: true })
-            .to({ skewX: 5, skewY: -2 }, 1000)
-            .to({ skewX: 0, skewY: 0 }, 1000)
-            .to({ skewX: -5, skewY: 2 }, 1000)
-            .to({ skewX: 0, skewY: 0 }, 1000);
-    };
-    Portal.prototype.show = function () {
-        this.alpha = 0;
-        this.scaleX = 0.1;
-        this.scaleY = 0.1;
-        this.light.scaleX = 0.1;
-        this.light.scaleY = 0.1;
-        this.visible = true;
-        this.isOpen = false;
-        egret.Tween.get(this)
-            .to({ alpha: 1, scaleX: 4, scaleY: 4 }, 500).call(function () {
-        });
-    };
-    Portal.prototype.closeGate = function () {
-        if (!this.visible || !this.isOpen) {
-            return;
+    ControllerPad.prototype.init = function () {
+        //0:top,1:bottom,2:left,3:right
+        var _this = this;
+        var _loop_1 = function (i) {
+            this_1.dirs[i] = new egret.Bitmap(RES.getRes("controller"));
+            this_1.dirs[i].smoothing = false;
+            this_1.dirs[i].touchEnabled = true;
+            this_1.dirs[i].alpha = 0.5;
+            this_1.dirs[i].anchorOffsetX = this_1.dirs[i].width / 2;
+            this_1.dirs[i].anchorOffsetY = this_1.dirs[i].height / 2;
+            this_1.dirs[i].scaleX = 8;
+            this_1.dirs[i].scaleY = 8;
+            this_1.dirs[i].addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(i); }, this_1);
+            this_1.addChild(this_1.dirs[i]);
+        };
+        var this_1 = this;
+        for (var i = 0; i < this.dirs.length; i++) {
+            _loop_1(i);
         }
-        this.isOpen = false;
-        egret.Tween.get(this.light)
-            .to({ scaleY: 0.1 }, 500).to({ scaleX: 0.1 }, 200).call(function () {
-        });
+        this.dirs[0].rotation = -90;
+        this.dirs[1].rotation = 90;
+        this.dirs[2].rotation = 180;
+        var cx = 0;
+        var cy = 0;
+        this.dirs[0].x = cx;
+        this.dirs[0].y = cy;
+        this.dirs[1].x = cx;
+        this.dirs[1].y = cy + 256;
+        this.dirs[2].x = cx - 128 - 32;
+        this.dirs[2].y = cy + 128;
+        this.dirs[3].x = cx + 128 + 32;
+        this.dirs[3].y = cy + 128;
+        this.centerButton = new egret.Bitmap(RES.getRes("controllerbuttonnormal"));
+        this.centerButton.smoothing = false;
+        this.centerButton.addEventListener(egret.TouchEvent.TOUCH_TAP, function () { _this.tapPad(4); }, this);
+        this.centerButton.touchEnabled = true;
+        this.centerButton.alpha = 0.5;
+        this.centerButton.anchorOffsetX = this.centerButton.width / 2;
+        this.centerButton.anchorOffsetY = this.centerButton.height / 2;
+        this.centerButton.scaleX = 8;
+        this.centerButton.scaleY = 8;
+        this.centerButton.x = cx;
+        this.centerButton.y = cy + 128;
+        this.addChild(this.centerButton);
     };
-    Portal.prototype.openGate = function () {
-        if (!this.visible || this.isOpen) {
-            return;
+    ControllerPad.prototype.tapPad = function (dir) {
+        var _this = this;
+        var padtapEvent = new PadtapEvent(PadtapEvent.PADTAP);
+        padtapEvent.dir = dir;
+        this.dispatchEvent(padtapEvent);
+        if (dir == 4) {
+            egret.Tween.get(this.centerButton).call(function () {
+                _this.centerButton.texture = RES.getRes("controllerbuttonpress");
+            }).wait(100).call(function () {
+                _this.centerButton.texture = RES.getRes("controllerbuttonnormal");
+            });
         }
-        this.isOpen = true;
-        egret.Tween.get(this.light).to({ scaleX: 1 }, 500).to({ scaleY: 1 }, 200).call(function () {
-        });
     };
-    Portal.prototype.isGateOpen = function () {
-        return this.isOpen;
-    };
-    return Portal;
-}(Building));
-__reflect(Portal.prototype, "Portal");
+    return ControllerPad;
+}(egret.DisplayObjectContainer));
+__reflect(ControllerPad.prototype, "ControllerPad");
 var Tile = (function (_super) {
     __extends(Tile, _super);
     function Tile(x, y) {
@@ -1081,30 +956,85 @@ var PadtapEvent = (function (_super) {
     return PadtapEvent;
 }(egret.Event));
 __reflect(PadtapEvent.prototype, "PadtapEvent");
-var GemManager = (function () {
-    function GemManager() {
-        this.list = new Array();
+var Capsule = (function () {
+    function Capsule() {
     }
-    GemManager.prototype.getGem = function (type) {
-        var gem;
-        for (var i = 0; i < this.list.length; i++) {
-            gem = this.list[i];
-            if (!gem.visible) {
-                gem.setId(type);
-                return gem;
-            }
-        }
-        gem = new Gem(type);
-        this.list.push(gem);
-        return gem;
-    };
-    GemManager.GEM01 = 1;
-    GemManager.GEM02 = 2;
-    GemManager.GEM03 = 3;
-    GemManager.GEM04 = 4;
-    return GemManager;
+    return Capsule;
 }());
-__reflect(GemManager.prototype, "GemManager");
+__reflect(Capsule.prototype, "Capsule");
+var Gem = (function (_super) {
+    __extends(Gem, _super);
+    function Gem(type) {
+        return _super.call(this, type) || this;
+    }
+    Gem.prototype.changeRes = function (type) {
+        this.type = type;
+        this.item.texture = RES.getRes("gem0" + this.type);
+    };
+    Gem.prototype.getType = function () {
+        return this.type;
+    };
+    Gem.prototype.isAutoPicking = function () {
+        return true;
+    };
+    Gem.prototype.taken = function () {
+        if (_super.prototype.taken.call(this)) {
+            //tile所在的dungeon发消息
+            this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: this.type * 10 });
+            return true;
+        }
+        return false;
+    };
+    return Gem;
+}(Item));
+__reflect(Gem.prototype, "Gem");
+var LoadingNextDialog = (function (_super) {
+    __extends(LoadingNextDialog, _super);
+    function LoadingNextDialog() {
+        var _this = _super.call(this) || this;
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+        return _this;
+    }
+    LoadingNextDialog.prototype.onAddToStage = function () {
+        this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+        this.bg = new egret.Shape();
+        this.addChild(this.bg);
+        this.bg.alpha = 0;
+        this.bg.graphics.beginFill(0x000000, 1);
+        this.bg.graphics.drawRect(0, 0, this.stage.width, this.stage.height);
+        this.bg.graphics.endFill();
+        this.textTips = new egret.TextField();
+        this.addChild(this.textTips);
+        this.textTips.alpha = 0;
+        this.textTips.textAlign = egret.HorizontalAlign.CENTER;
+        this.textTips.size = 70;
+        this.textTips.width = this.stage.width;
+        this.textTips.textColor = 0xffffff;
+        this.textTips.x = 0;
+        this.textTips.y = this.stage.height / 2 - 200;
+        this.textTips.text = 'Level ';
+    };
+    LoadingNextDialog.prototype.show = function (level, finish) {
+        var _this = this;
+        this.alpha = 1;
+        this.bg.alpha = 0;
+        this.textTips.text = 'Level ' + level;
+        this.textTips.scaleX = 1;
+        this.textTips.scaleY = 1;
+        this.textTips.y = this.stage.height / 2 - 200;
+        this.textTips.alpha = 0;
+        this.visible = true;
+        egret.Tween.get(this.bg).to({ alpha: 1 }, 500);
+        egret.Tween.get(this.textTips).wait(200).to({ y: this.textTips.y + 20, alpha: 1 }, 500).wait(200).call(function () {
+            egret.Tween.get(_this).to({ alpha: 0 }, 200);
+            if (finish) {
+                finish();
+            }
+        });
+    };
+    return LoadingNextDialog;
+}(egret.DisplayObjectContainer));
+__reflect(LoadingNextDialog.prototype, "LoadingNextDialog");
 var GameoverDialog = (function (_super) {
     __extends(GameoverDialog, _super);
     function GameoverDialog() {
@@ -1167,27 +1097,82 @@ var GameoverDialog = (function (_super) {
     return GameoverDialog;
 }(egret.DisplayObjectContainer));
 __reflect(GameoverDialog.prototype, "GameoverDialog");
-var DebugPlatform = (function () {
-    function DebugPlatform() {
+var Portal = (function (_super) {
+    __extends(Portal, _super);
+    function Portal(x, y) {
+        var _this = _super.call(this) || this;
+        _this.isOpen = false;
+        _this.posIndex = new egret.Point(x, y);
+        _this.init();
+        return _this;
     }
-    DebugPlatform.prototype.getUserInfo = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, { nickName: "username" }];
-            });
+    Portal.prototype.getType = function () {
+        return this.type;
+    };
+    Portal.prototype.init = function () {
+        this.width = 16;
+        this.height = 16;
+        this.anchorOffsetX = 8;
+        this.anchorOffsetY = 8;
+        this.gate = new egret.Bitmap(RES.getRes("portal"));
+        this.gate.smoothing = false;
+        this.light = new egret.Bitmap(RES.getRes("portallight"));
+        this.light.smoothing = false;
+        var index = 0;
+        this.gate.anchorOffsetX = this.gate.width / 2;
+        this.gate.anchorOffsetY = this.gate.height / 2;
+        this.gate.x = this.width / 2;
+        this.gate.y = this.height / 2;
+        this.light.anchorOffsetX = this.light.width / 2;
+        this.light.anchorOffsetY = this.light.height / 2;
+        this.light.x = this.width / 2;
+        this.light.y = 0;
+        this.light.alpha = 0.75;
+        this.light.scaleX = 1;
+        this.light.scaleY = 1;
+        this.addChild(this.gate);
+        this.addChild(this.light);
+        this.isOpen = false;
+        this.visible = false;
+        egret.Tween.get(this.light, { loop: true })
+            .to({ skewX: 5, skewY: -2 }, 1000)
+            .to({ skewX: 0, skewY: 0 }, 1000)
+            .to({ skewX: -5, skewY: 2 }, 1000)
+            .to({ skewX: 0, skewY: 0 }, 1000);
+    };
+    Portal.prototype.show = function () {
+        this.alpha = 0;
+        this.scaleX = 0.1;
+        this.scaleY = 0.1;
+        this.light.scaleX = 0.1;
+        this.light.scaleY = 0.1;
+        this.visible = true;
+        this.isOpen = false;
+        egret.Tween.get(this)
+            .to({ alpha: 1, scaleX: 4, scaleY: 4 }, 500).call(function () {
         });
     };
-    DebugPlatform.prototype.login = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
+    Portal.prototype.closeGate = function () {
+        if (!this.visible || !this.isOpen) {
+            return;
+        }
+        this.isOpen = false;
+        egret.Tween.get(this.light)
+            .to({ scaleY: 0.1 }, 500).to({ scaleX: 0.1 }, 200).call(function () {
         });
     };
-    return DebugPlatform;
-}());
-__reflect(DebugPlatform.prototype, "DebugPlatform", ["Platform"]);
-if (!window.platform) {
-    window.platform = new DebugPlatform();
-}
+    Portal.prototype.openGate = function () {
+        if (!this.visible || this.isOpen) {
+            return;
+        }
+        this.isOpen = true;
+        egret.Tween.get(this.light).to({ scaleX: 1 }, 500).to({ scaleY: 1 }, 200).call(function () {
+        });
+    };
+    Portal.prototype.isGateOpen = function () {
+        return this.isOpen;
+    };
+    return Portal;
+}(Building));
+__reflect(Portal.prototype, "Portal");
 ;window.Main = Main;

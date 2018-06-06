@@ -1,22 +1,14 @@
-class Gem extends egret.DisplayObjectContainer {
-	private item: egret.Bitmap;
-	private shadow: egret.Bitmap;
-	private type: number;
-	private canTaken: boolean = false;
+abstract class Item extends egret.DisplayObjectContainer {
+	protected item: egret.Bitmap;
+	protected shadow: egret.Bitmap;
+	protected type: number;
+	protected canTaken: boolean = false;
 	public constructor(type: number) {
 		super();
 		this.type = type;
 		this.init();
 	}
-	public setId(type: number): void {
-		this.type = type;
-		this.item.texture = RES.getRes("gem0" + this.type)
-	}
-	public getType(): number {
-		return this.type;
-	}
-	
-	private init(): void {
+	protected init(): void {
 		this.width = 64;
 		this.height = 64;
 		this.anchorOffsetX = 32;
@@ -45,6 +37,21 @@ class Gem extends egret.DisplayObjectContainer {
 			.to({ scaleX: 1, y: y }, 1000);
 		this.visible = false;
 	}
+	public taken(): boolean {
+		if (!this.visible || !this.canTaken) {
+			return false;
+		}
+		this.canTaken = false;
+		egret.Tween.removeTweens(this.item)
+		this.item.scaleX = 1;
+		this.item.alpha = 1;
+		egret.Tween.get(this.item)
+			.to({ scaleX: 2, scaleY: 2, y: this.item.y - 128 }, 500)
+			.to({ alpha: 0 }, 100).call(() => {
+				this.visible = false;
+			});
+		return true;
+	}
 	public show(): void {
 		egret.Tween.removeTweens(this.item);
 		this.item.x = 32;
@@ -67,20 +74,6 @@ class Gem extends egret.DisplayObjectContainer {
 		this.item.scaleX = 1;
 		this.visible = false;
 	}
-
-	public taken(): void {
-		if (!this.visible || !this.canTaken) {
-			return;
-		}
-		this.canTaken = false;
-		this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: this.type * 10 });
-		egret.Tween.removeTweens(this.item)
-		this.item.scaleX = 1;
-		this.item.alpha = 1;
-		egret.Tween.get(this.item)
-			.to({ scaleX: 2, scaleY: 2, y: this.item.y - 128 }, 500)
-			.to({ alpha: 0 }, 100).call(() => {
-				this.visible = false;
-			});
-	}
+	public abstract changeRes(type: number): void;
+	public abstract isAutoPicking(): boolean;
 }

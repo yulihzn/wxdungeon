@@ -9,7 +9,6 @@ class Dungeon extends egret.Stage {
 	private gemTimer: egret.Timer;
 
 	public level: number = 1;
-	private isGameover: boolean = false;
 
 	public portal: Portal;
 
@@ -85,7 +84,7 @@ class Dungeon extends egret.Stage {
 				t.item.hide();
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
-						t.item.setId(this.getRandomNum(1, 4));
+						t.item.changeRes(this.getRandomNum(1, 4));
 						t.item.show();
 					}
 				}
@@ -105,7 +104,6 @@ class Dungeon extends egret.Stage {
 			delay = 100;
 		}
 		this.timer.delay = delay;
-		this.isGameover = false;
 		this.timer.reset();
 		this.timer.start();
 		this.gemTimer.reset();
@@ -134,7 +132,7 @@ class Dungeon extends egret.Stage {
 		let y = this.getRandomNum(0, Logic.SIZE - 1);
 		let tile = this.map[x][y];
 		if (tile.item && !tile.item.visible) {
-			tile.item.setId(this.getRandomNum(1, 4));
+			tile.item.changeRes(this.getRandomNum(1, 4));
 			tile.item.show();
 		}
 	}
@@ -157,19 +155,5 @@ class Dungeon extends egret.Stage {
 	private getRandomNum(min, max): number {//生成一个随机数从[min,max]
 		return min + Math.round(Math.random() * (max - min));
 	}
-
-	public gameOver(): void {
-		console.log('gameover');
-		if (this.isGameover) {
-			return;
-		}
-		//让角色原地走一步触发死亡,防止走路清空动画
-		// this.player.move(-1,this);
-		// egret.setTimeout(() => { this.resetGame(1); }, this, 3000)
-		this.dispatchEventWith(LogicEvent.GAMEOVER);
-		this.isGameover = true;
-
-	}
-
 
 }

@@ -8,9 +8,9 @@ class Logic extends egret.Stage {
 	private controllerPad: ControllerPad;
 	private dungeon: Dungeon;
 	private level: number = 1;
-	private gemManager: GemManager = new GemManager();
 	private score: number = 0;
-	public player: Player;
+	private player: Player;
+	private isGameover: boolean = false;
 
 	public constructor(main: Main) {
 		super();
@@ -32,7 +32,7 @@ class Logic extends egret.Stage {
 		this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
 		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
 		this.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
-		this.dungeon.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
+		this.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
 		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
 		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE,this.breakTileFinish,this);
 		this.addPlayer();
@@ -67,11 +67,16 @@ class Logic extends egret.Stage {
 	private loadNextLevel(evt: LogicEvent): void {
 		this.level = evt.data.level;
 		this.main.loadingNextDialog.show(this.level, () => {
+			this.isGameover = false;
 			this.player.resetPlayer();
 			this.dungeon.resetGame(this.level);
 		})
 	}
 	private gameOver(): void {
+		if (this.isGameover) {
+			return;
+		}
+		this.isGameover = true;
 		this.score = 0;
 		//让角色原地走一步触发死亡,防止走路清空动画
 		this.player.move(-1,this.dungeon);
