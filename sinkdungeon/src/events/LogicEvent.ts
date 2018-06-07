@@ -6,6 +6,7 @@ class LogicEvent extends egret.Event{
 	public static readonly UI_REFRESHTEXT:string = "UI_REFRESHTEXT"
 	public static readonly GET_GEM:string = "GET_GEM"
 	public static readonly PLAYER_MOVE:string = "PLAYER_MOVE"
+	public static readonly GET_ITEM:string = "GET_ITEM"
 	public constructor(type: string, bubbles?: boolean, cancelable?: boolean, data?: any) {
 		super(type, bubbles, cancelable, data);
 	}

@@ -5,7 +5,7 @@ class Dungeon extends egret.Stage {
 	private dirs: egret.Bitmap[] = new Array(4);
 	private randomArr: egret.Point[];
 	//地板定时器
-	private timer: egret.Timer;
+	// private timer: egret.Timer;
 	private gemTimer: egret.Timer;
 
 	public level: number = 1;
@@ -36,12 +36,14 @@ class Dungeon extends egret.Stage {
 		bg.graphics.drawRect(Logic.mapX - Tile.WIDTH / 2, Logic.mapY - Tile.HEIGHT / 2,Tile.WIDTH * Logic.SIZE, Tile.WIDTH * Logic.SIZE);
 		bg.graphics.endFill();
 		this.addChild(bg);
-		let shadow = new egret.Bitmap(RES.getRes("shadow"));
+		let shadow = new egret.Shape();
 		shadow.x = Logic.mapX - Tile.WIDTH / 2;
 		shadow.y = Logic.mapY - Tile.WIDTH / 2;
 		shadow.width = Tile.WIDTH * Logic.SIZE;
 		shadow.height = Tile.WIDTH * Logic.SIZE;
-		shadow.alpha = 0.9;
+		shadow.graphics.beginFill(0x000000, 1);
+        shadow.graphics.drawRect(0, 0, shadow.width, shadow.height);
+        shadow.graphics.endFill();
 		this.addChild(shadow);
 	}
 	private drawMap(): void {
@@ -80,7 +82,7 @@ class Dungeon extends egret.Stage {
 			for (let j = 0; j < Logic.SIZE; j++) {
 				let t = this.map[i][j];
 				egret.Tween.removeTweens(t.floor);
-				t.showTile(false);
+				t.showTile();
 				t.item.hide();
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
@@ -103,9 +105,9 @@ class Dungeon extends egret.Stage {
 		if (delay < 100) {
 			delay = 100;
 		}
-		this.timer.delay = delay;
-		this.timer.reset();
-		this.timer.start();
+		// this.timer.delay = delay;
+		// this.timer.reset();
+		// this.timer.start();
 		this.gemTimer.reset();
 		this.gemTimer.start();
 		this.dispatchEventWith(LogicEvent.UI_REFRESHTEXT);
@@ -122,8 +124,8 @@ class Dungeon extends egret.Stage {
 	// }
 	
 	private addTimer(): void {
-		this.timer = new egret.Timer(200 - this.level * 10);
-		this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
+		// this.timer = new egret.Timer(200 - this.level * 10);
+		// this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
 		this.gemTimer = new egret.Timer(5000);
 		this.gemTimer.addEventListener(egret.TimerEvent.TIMER, this.addGem, this);
 	}
@@ -147,7 +149,7 @@ class Dungeon extends egret.Stage {
 		let p = this.randomArr[index];
 		let tile = this.map[p.x][p.y];
 		this.randomArr.splice(index, 1);
-		tile.breakTile(true);
+		tile.breakTile();
 
 
 	}

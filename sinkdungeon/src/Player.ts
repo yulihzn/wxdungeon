@@ -11,9 +11,10 @@ class Player extends egret.DisplayObjectContainer {
 	}
 
 	private init(): void {
-		this.player = new egret.Bitmap(RES.getRes("player00" + Logic.getRandomNum(1, 6)));
+		this.player = new egret.Bitmap(RES.getRes("player00" + Logic.getRandomNum(1, 3)));
 		this.player.smoothing = false;
 		this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
+		this.playerShadow.smoothing =false;
 		let index = 0
 		this.player.anchorOffsetX = this.player.width / 2;
 		this.player.anchorOffsetY = this.player.height;
@@ -68,7 +69,7 @@ class Player extends egret.DisplayObjectContainer {
 			this.parent.setChildIndex(this, 0);
 		}).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(() => {
 			this.player.alpha = 0;
-			this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 6));
+			this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 3));
 
 		});
 	}
@@ -142,10 +143,16 @@ class Player extends egret.DisplayObjectContainer {
 		let tile = dungeon.map[this.pos.x][this.pos.y];
 		let p = Logic.getInMapPos(this.pos);
 		this.walk(p.x, p.y, dir, tile.floor.visible);
+		let index = Math.floor(Logic.SIZE / 2);
 		if (!tile.floor.visible) {
 			this.parent.dispatchEventWith(LogicEvent.GAMEOVER);
 		}
-		if (tile.item && (tile.item.isAutoPicking()||dir==4)) {
+		if (tile.floor.visible) {
+			egret.setTimeout(() => {
+				tile.breakTile();
+			}, this, 1000)
+		}
+		if (tile.item && (tile.item.isAutoPicking() || dir == 4)) {
 			tile.item.taken();
 		}
 		if (this.pos.x == dungeon.portal.posIndex.x
