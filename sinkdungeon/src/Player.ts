@@ -1,9 +1,13 @@
 class Player extends egret.DisplayObjectContainer {
+	public tag: string = 'player';
 	private player: egret.Bitmap;
 	private playerShadow: egret.Bitmap;
+	private item: egret.Bitmap;
 	private walking: boolean = false;
 	private isdead: boolean = false;
-	private health: number = 1;
+	public currentHealth: number = 3;
+	public maxHealth: number = 3;
+	public attackNumber: number = 1;
 	public pos: egret.Point = new egret.Point();
 	public constructor() {
 		super();
@@ -14,8 +18,9 @@ class Player extends egret.DisplayObjectContainer {
 		this.player = new egret.Bitmap(RES.getRes("player00" + Logic.getRandomNum(1, 3)));
 		this.player.smoothing = false;
 		this.playerShadow = new egret.Bitmap(RES.getRes("shadow"));
-		this.playerShadow.smoothing =false;
-		let index = 0
+		this.playerShadow.smoothing = false;
+		this.item = new egret.Bitmap();
+		this.item.smoothing = false;
 		this.player.anchorOffsetX = this.player.width / 2;
 		this.player.anchorOffsetY = this.player.height;
 		this.player.x = 0;
@@ -31,7 +36,16 @@ class Player extends egret.DisplayObjectContainer {
 		this.playerShadow.scaleY = 2;
 		this.addChild(this.player);
 		this.addChild(this.playerShadow);
+		this.addChild(this.item);
 	}
+	public changeItemRes(tex:egret.Texture):void{
+		this.item.texture = tex;
+		this.item.anchorOffsetX = this.item.width / 2;
+		this.item.anchorOffsetY = this.item.height;
+		this.item.x = -this.player.width*5/2;
+		this.item.y = -40;
+	}
+	
 	public isWalking(): boolean {
 		return this.walking;
 	}
@@ -48,10 +62,16 @@ class Player extends egret.DisplayObjectContainer {
 		this.player.alpha = 1;
 		this.player.x = 0;
 		this.player.y = 0;
+		this.item.alpha = 1;
+		this.item.x = -this.player.width/2;
+		this.item.y = -50;
+		this.player.rotation = 0;
 		this.playerShadow.visible = true;
 		this.isdead = false;
 		this.walking = false;
-
+		if (this.currentHealth < 1) {
+			this.currentHealth = this.maxHealth;
+		}
 		let index = Math.floor(Logic.SIZE / 2);
 		this.pos.x = index;
 		this.pos.y = index;
@@ -59,20 +79,30 @@ class Player extends egret.DisplayObjectContainer {
 		this.x = p.x;
 		this.y = p.y;
 	}
-	public die(): void {
+	public die(isFall: boolean): void {
 		if (this.isdead) {
 			return;
 		}
 		this.isdead = true;
 		this.playerShadow.visible = false;
-		egret.Tween.get(this.player).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
-			this.parent.setChildIndex(this, 0);
-		}).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(() => {
-			this.player.alpha = 0;
-			this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 3));
+		if (isFall) {
+			egret.Tween.get(this.player).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
+				this.parent.setChildIndex(this, 0);
+			}).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(() => {
+				this.player.alpha = 0;
+				this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 3));
 
-		});
+			});
+		} else {
+			egret.Tween.get(this.item).to({ rotation: 90,y:-100}, 100).to({ alpha: 0 }, 200);
+			egret.Tween.get(this.player).to({ rotation: 90 }, 100).to({ rotation: 70 }, 50).to({ rotation: 90 }, 100).to({ alpha: 0 }, 100).call(() => {
+				this.player.alpha = 0;
+				this.player.texture = RES.getRes("player00" + Logic.getRandomNum(1, 3));
+			});
+		}
+
 	}
+
 	private walk(px: number, py: number, dir: number, reachable: boolean): void {
 		if (this.walking) {
 			console.log("cant")
@@ -90,24 +120,42 @@ class Player extends egret.DisplayObjectContainer {
 			.to({ rotation: 0, y: 0 }, 25)
 			.to({ rotation: -ro, y: this.player.y - offsetY }, 25)
 			.to({ rotation: 0, y: 0 }, 25);
-		egret.Tween.get(this, { onChange: () => { } }).to({
-			x:
-			px, y: py
-		}, 200).call(() => {
+		egret.Tween.get(this, { onChange: () => { } }).to({ x: px, y: py }, 200).call(() => {
 			egret.Tween.removeTweens(this.player);
 			this.player.rotation = 0;
 			this.player.y = 0;
 			this.walking = false;
 			if (!reachable) {
-				this.die();
+				this.die(true);
 			}
 		});
 	}
 	public takeDamage(damage: number): void {
-		this.health -= damage;
-		if (this.health < 0) {
-			this.die()
+		this.currentHealth -= damage;
+		if (this.currentHealth > this.maxHealth) {
+			this.currentHealth = this.maxHealth;
 		}
+		if (this.currentHealth < 1) {
+			this.die(false);
+			this.parent.dispatchEventWith(LogicEvent.GAMEOVER);
+		}
+	}
+	public attack(dir, finish): void {
+		let x = 0;
+		let y = 0;
+		switch (dir) {
+			case 0: y -= 40; break;
+			case 1: y += 40; break;
+			case 2: x -= 40; break;
+			case 3: x += 40; break;
+			case 4: break;
+		}
+		egret.Tween.get(this.player).to({ x: x, y: y }, 100).call(() => {
+			if (finish) {
+				finish();
+			}
+		}).to({ x: 0, y: 0 }, 100);
+
 	}
 	//01234 top bottom left right middle
 	public move(dir: number, dungeon: Dungeon) {
@@ -152,7 +200,7 @@ class Player extends egret.DisplayObjectContainer {
 				tile.breakTile();
 			}, this, 1000)
 		}
-		if (tile.item && (tile.item.isAutoPicking() || dir == 4)) {
+		if (tile.item && (tile.item.isAutoPicking())) {
 			tile.item.taken();
 		}
 		if (this.pos.x == dungeon.portal.posIndex.x

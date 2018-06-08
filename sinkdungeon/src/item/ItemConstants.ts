@@ -1,6 +1,7 @@
 class ItemConstants {
-	public static readonly CAPSULE_RED = 'CAPSULE_RED'
-	public static readonly CAPSULE_BLUE = 'CAPSULE_BLUE'
+	public static readonly EMPTY = 'empty';
+	public static readonly CAPSULE_RED = 'capsule001';
+	public static readonly CAPSULE_BLUE = 'capsule002';
 	public constructor() {
 	}
 }

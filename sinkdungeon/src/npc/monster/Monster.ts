@@ -1,9 +1,12 @@
 class Monster extends egret.DisplayObjectContainer {
+	public tag: string = 'monster';
 	private character: egret.Bitmap;
 	private characterShadow: egret.Bitmap;
 	private walking: boolean = false;
 	private isdead: boolean = false;
-	private health: number = 1;
+	private healthBar: HealthBar;
+	private currentHealth: number = 2;
+	private maxHealth: number = 2;
 	public posIndex: egret.Point = new egret.Point();
 	public constructor() {
 		super();
@@ -31,6 +34,27 @@ class Monster extends egret.DisplayObjectContainer {
 		this.characterShadow.scaleY = 2;
 		this.addChild(this.character);
 		this.addChild(this.characterShadow);
+		this.healthBar = new HealthBar();
+		this.addChild(this.healthBar);
+		this.healthBar.x = 0;
+		this.healthBar.y = -103;
+	}
+	public attack(dir, finish): void {
+		let x = 0;
+		let y = 0;
+		switch (dir) {
+			case 0: y -= 40; break;
+			case 1: y += 40; break;
+			case 2: x -= 40; break;
+			case 3: x += 40; break;
+			case 4: break;
+		}
+		egret.Tween.get(this.character).to({ x: x, y: y }, 100).call(() => {
+			if (finish) {
+				finish();
+			}
+		}).to({ x: 0, y: 0 }, 100);
+
 	}
 	public isWalking(): boolean {
 		return this.walking;
@@ -38,7 +62,7 @@ class Monster extends egret.DisplayObjectContainer {
 	public isDying(): boolean {
 		return this.isdead;
 	}
-	public resetCharacter(indexX:number,indexY:number): void {
+	public resetCharacter(indexX: number, indexY: number): void {
 		egret.Tween.removeTweens(this.character);
 		egret.Tween.removeTweens(this);
 		this.parent.setChildIndex(this, 100);
@@ -48,31 +72,44 @@ class Monster extends egret.DisplayObjectContainer {
 		this.character.alpha = 1;
 		this.character.x = 0;
 		this.character.y = 0;
+		this.character.rotation = 0;
 		this.characterShadow.visible = true;
 		this.isdead = false;
 		this.walking = false;
-
+		this.currentHealth = 2;
+		this.maxHealth = 2;
+		this.healthBar.visible = true;
+		this.healthBar.refreshHealth(this.currentHealth,this.maxHealth);
 		this.posIndex.x = indexX;
 		this.posIndex.y = indexY;
 		let p = Logic.getInMapPos(this.posIndex);
 		this.x = p.x;
 		this.y = p.y;
 	}
-	public die(): void {
+	public die(isFall: boolean): void {
 		if (this.isdead) {
 			return;
 		}
 		this.isdead = true;
 		this.characterShadow.visible = false;
-		egret.Tween.get(this.character).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
-			this.parent.setChildIndex(this, 0);
-		}).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(() => {
-			this.character.alpha = 0;
-			this.character.texture = RES.getRes("monster00" + Logic.getRandomNum(1, 3));
+		if (isFall) {
+			egret.Tween.get(this.character).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
+				this.parent.setChildIndex(this, 0);
+			}).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(() => {
+				this.character.alpha = 0;
+				this.character.texture = RES.getRes("monster00" + Logic.getRandomNum(1, 3));
 
-		});
+			});
+		} else {
+			egret.Tween.get(this.character).to({ rotation: 90 }, 100).to({ rotation: 70 }, 50).to({ rotation: 90 }, 100).to({ alpha: 0 }, 100).call(() => {
+				this.character.alpha = 0;
+				this.healthBar.visible = false;
+				this.character.texture = RES.getRes("monster00" + Logic.getRandomNum(1, 3));
+			});
+		}
+
 	}
-	private walk(px: number, py: number , reachable: boolean): void {
+	private walk(px: number, py: number, reachable: boolean): void {
 		if (this.walking) {
 			console.log("cant")
 			return;
@@ -94,15 +131,19 @@ class Monster extends egret.DisplayObjectContainer {
 			this.character.y = 0;
 			this.walking = false;
 			if (!reachable) {
-				this.die();
+				this.die(true);
 			}
 		});
 	}
 	public takeDamage(damage: number): void {
-		this.health -= damage;
-		if (this.health < 0) {
-			this.die()
+		this.currentHealth -= damage;
+		if (this.currentHealth > this.maxHealth) {
+			this.currentHealth = this.maxHealth;
 		}
+		if (this.currentHealth < 1) {
+			this.die(false);
+		}
+		this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
 	}
 	//01234 top bottom left right middle
 	public move(target: egret.Point, dungeon: Dungeon) {
@@ -110,16 +151,16 @@ class Monster extends egret.DisplayObjectContainer {
 			return;
 		}
 		let tile = dungeon.map[target.x][target.y];
-		if (tile.building&&tile.building.visible&&tile.building.isblock) {
+		if (tile.building && tile.building.visible && tile.building.isblock) {
 			return;
 		}
-		if(tile.floor.visible)
-		this.posIndex = target;
+		if (tile.floor.visible)
+			this.posIndex = target;
 		let p = Logic.getInMapPos(target);
 		this.walk(p.x, p.y, tile.floor.visible);
 		if (!tile.floor.visible) {
-			this.move(this.posIndex,dungeon)
+			this.move(this.posIndex, dungeon)
 		}
-		
+
 	}
 }

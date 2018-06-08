@@ -92,6 +92,7 @@ class Main extends egret.DisplayObjectContainer {
     private scoreText: egret.TextField;
     public gameoverDialog: GameoverDialog;
     public loadingNextDialog:LoadingNextDialog;
+
     /**
      * Create a game scene
      */
@@ -113,7 +114,7 @@ class Main extends egret.DisplayObjectContainer {
         this.addChild(this.loadingNextDialog);
         this.gameoverDialog = new GameoverDialog();
         this.addChild(this.gameoverDialog);
-
+        
     }
 
     private addSecondsText(): void {

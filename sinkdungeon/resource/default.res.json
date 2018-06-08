@@ -15,7 +15,7 @@
 			"url": "assets/gamesource.json",
 			"type": "sheet",
 			"name": "gamesource_json",
-			"subkeys": "capsule001,capsule002,controller,controllerbuttonnormal,controllerbuttonpress,gem01,gem02,gem03,gem04,monster001,monster002,monster003,player001,player002,player003,portal,portallight,shadow,tile,wall001"
+			"subkeys": "capsule001,capsule002,controller,controllerbuttonnormal,controllerbuttonpress,gem01,gem02,gem03,gem04,heart,monster001,monster002,monster003,player001,player002,player003,portal,portallight,shadow,tabbackground,tabselect,tile"
 		}
 	]
 }

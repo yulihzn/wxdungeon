@@ -64,7 +64,7 @@ class Dungeon extends egret.Stage {
 					t.addBuilding(this.portal);
 					this.portal.show();
 				}
-				t.addItem(new Gem(this.getRandomNum(1, 4)));
+				t.addItem(new Gem("gem0"+this.getRandomNum(1, 4)));
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
 						t.item.show();
@@ -86,7 +86,7 @@ class Dungeon extends egret.Stage {
 				t.item.hide();
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
-						t.item.changeRes(this.getRandomNum(1, 4));
+						t.item.changeRes("gem0"+this.getRandomNum(1, 4));
 						t.item.show();
 					}
 				}
@@ -134,7 +134,7 @@ class Dungeon extends egret.Stage {
 		let y = this.getRandomNum(0, Logic.SIZE - 1);
 		let tile = this.map[x][y];
 		if (tile.item && !tile.item.visible) {
-			tile.item.changeRes(this.getRandomNum(1, 4));
+			tile.item.changeRes("gem0"+this.getRandomNum(1, 4));
 			tile.item.show();
 		}
 	}

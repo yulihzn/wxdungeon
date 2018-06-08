@@ -1,5 +1,5 @@
 class Gem extends Item {
-	public constructor(type: number) {
+	public constructor(type: string) {
 		super(type);
 	}
 	protected init():void{
@@ -7,7 +7,7 @@ class Gem extends Item {
 		this.height = 64;
 		this.anchorOffsetX = 32;
 		this.anchorOffsetY = 32;
-		this.item = new egret.Bitmap(RES.getRes("gem0" + this.type));
+		this.item = new egret.Bitmap(RES.getRes(this.type));
 		this.item.smoothing = false;
 		this.shadow = new egret.Bitmap(RES.getRes("shadow"));
 		this.shadow.smoothing = false;
@@ -32,13 +32,11 @@ class Gem extends Item {
 			.to({ scaleX: 1, y: y }, 1000);
 		this.visible = false;
 	}
-	public changeRes(type: number): void {
+	public changeRes(type: string): void {
 		this.type = type;
-		this.item.texture = RES.getRes("gem0" + this.type)
+		this.item.texture = RES.getRes(this.type)
 	}
-	public getType(): number {
-		return this.type;
-	}
+	
 	public isAutoPicking(): boolean {
 		return true;
 	}
@@ -46,7 +44,7 @@ class Gem extends Item {
 	public taken(): boolean {
 		if (super.taken()) {
 			//tile所在的dungeon发消息
-			this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: this.type * 10 });
+			this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: 1 * 10 });
 			return true;
 		}
 		return false;

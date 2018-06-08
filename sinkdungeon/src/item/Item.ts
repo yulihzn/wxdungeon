@@ -1,14 +1,20 @@
 abstract class Item extends egret.DisplayObjectContainer {
 	protected item: egret.Bitmap;
 	protected shadow: egret.Bitmap;
-	protected type: number;
+	protected type: string = ItemConstants.EMPTY;
 	protected canTaken: boolean = false;
-	public constructor(type: number) {
+	public constructor(type: string) {
 		super();
 		this.type = type;
 		this.init();
 	}
 	protected abstract init(): void;
+	public getType(): string {
+		return this.type;
+	}
+	public getItem():egret.Bitmap{
+		return this.item;
+	}
 	public taken(): boolean {
 		if (!this.visible || !this.canTaken) {
 			return false;
@@ -46,6 +52,6 @@ abstract class Item extends egret.DisplayObjectContainer {
 		this.item.scaleX = 1;
 		this.visible = false;
 	}
-	public abstract changeRes(type: number): void;
+	public abstract changeRes(type: string): void;
 	public abstract isAutoPicking(): boolean;
 }

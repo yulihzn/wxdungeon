@@ -5,7 +5,7 @@ class Tile extends egret.DisplayObjectContainer {
 	public building: Building;
 	public item: Item;
 	public posIndex: egret.Point;
-	private isBreakingNow = false;
+	public isBreakingNow = false;
 	public constructor(x: number, y: number) {
 		super()
 		this.posIndex = new egret.Point(x, y);
