@@ -66,7 +66,7 @@ class Logic extends egret.Stage {
 		this.player.changeItemRes(RES.getRes(this.inventoryBar.CurrentStrRes));
 	}
 	private addTimer(): void {
-		this.monsterTimer = new egret.Timer(10000);
+		this.monsterTimer = new egret.Timer(1000);
 		this.monsterTimer.addEventListener(egret.TimerEvent.TIMER, this.monsterAction, this);
 		this.monsterTimer.start();
 	}
@@ -187,9 +187,10 @@ class Logic extends egret.Stage {
 		if (evt.dir == 4) {
 			let tile = this.dungeon.map[pos.x][pos.y];
 			if (tile.item && !tile.item.isAutoPicking()) {
-				tile.item.taken();
-				this.player.changeItemRes(tile.item.getItem().texture);
-				this.inventoryBar.changeItem(this.inventoryBar.CurrentIndex,tile.item.getType())
+				if(tile.item.taken()){
+					this.player.changeItemRes(tile.item.getItem().texture);
+					this.inventoryBar.changeItem(this.inventoryBar.CurrentIndex,tile.item.getType())
+				}
 			}
 		}
 		if (pos.x == this.monster.posIndex.x && pos.y == this.monster.posIndex.y && !this.monster.isDying()) {

@@ -24,6 +24,9 @@ class Tile extends egret.DisplayObjectContainer {
 		this.addChild(this.floor);
 	}
 	public addItem(item: Item): Tile {
+		if(this.item){
+			this.removeChild(this.item)
+		}
 		this.item = item;
 		this.addChildAt(this.item, 1000);
 		return this;

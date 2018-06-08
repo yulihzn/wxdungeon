@@ -44,7 +44,8 @@ class Gem extends Item {
 	public taken(): boolean {
 		if (super.taken()) {
 			//tile所在的dungeon发消息
-			this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: 1 * 10 });
+			let score = parseInt(this.type.substring(this.type.length-2,this.type.length));
+			this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: score * 10 });
 			return true;
 		}
 		return false;

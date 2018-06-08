@@ -175,7 +175,7 @@ var Logic = (function (_super) {
         this.player.changeItemRes(RES.getRes(this.inventoryBar.CurrentStrRes));
     };
     Logic.prototype.addTimer = function () {
-        this.monsterTimer = new egret.Timer(10000);
+        this.monsterTimer = new egret.Timer(1000);
         this.monsterTimer.addEventListener(egret.TimerEvent.TIMER, this.monsterAction, this);
         this.monsterTimer.start();
     };
@@ -298,9 +298,10 @@ var Logic = (function (_super) {
         if (evt.dir == 4) {
             var tile = this.dungeon.map[pos.x][pos.y];
             if (tile.item && !tile.item.isAutoPicking()) {
-                tile.item.taken();
-                this.player.changeItemRes(tile.item.getItem().texture);
-                this.inventoryBar.changeItem(this.inventoryBar.CurrentIndex, tile.item.getType());
+                if (tile.item.taken()) {
+                    this.player.changeItemRes(tile.item.getItem().texture);
+                    this.inventoryBar.changeItem(this.inventoryBar.CurrentIndex, tile.item.getType());
+                }
             }
         }
         if (pos.x == this.monster.posIndex.x && pos.y == this.monster.posIndex.y && !this.monster.isDying()) {
@@ -635,8 +636,10 @@ var Player = (function (_super) {
         this.player.x = 0;
         this.player.y = 0;
         this.item.alpha = 1;
-        this.item.x = -this.player.width / 2;
-        this.item.y = -50;
+        this.item.anchorOffsetX = this.item.width / 2;
+        this.item.anchorOffsetY = this.item.height;
+        this.item.x = -this.player.width * 5 / 2;
+        this.item.y = -40;
         this.player.rotation = 0;
         this.playerShadow.visible = true;
         this.isdead = false;
@@ -813,6 +816,9 @@ var Tile = (function (_super) {
         this.addChild(this.floor);
     };
     Tile.prototype.addItem = function (item) {
+        if (this.item) {
+            this.removeChild(this.item);
+        }
         this.item = item;
         this.addChildAt(this.item, 1000);
         return this;
@@ -1114,7 +1120,7 @@ var Dungeon = (function (_super) {
                 t.item.hide();
                 if (!(index == i && index == j)) {
                     if (this.getRandomNum(0, 10) > 5) {
-                        t.item.changeRes("gem0" + this.getRandomNum(1, 4));
+                        t.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
                         t.item.show();
                     }
                 }
@@ -1160,7 +1166,12 @@ var Dungeon = (function (_super) {
         var y = this.getRandomNum(0, Logic.SIZE - 1);
         var tile = this.map[x][y];
         if (tile.item && !tile.item.visible) {
-            tile.item.changeRes("gem0" + this.getRandomNum(1, 4));
+            if (Math.random() > 0.8) {
+                tile.addItem(new Capsule(ItemConstants.CAPSULE_RED));
+            }
+            else {
+                tile.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
+            }
             tile.item.show();
         }
     };
@@ -1282,7 +1293,8 @@ var Gem = (function (_super) {
     Gem.prototype.taken = function () {
         if (_super.prototype.taken.call(this)) {
             //tile所在的dungeon发消息
-            this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: 1 * 10 });
+            var score = parseInt(this.type.substring(this.type.length - 2, this.type.length));
+            this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: score * 10 });
             return true;
         }
         return false;

@@ -29,11 +29,11 @@ class Dungeon extends egret.Stage {
 		this.resetGame(this.level);
 
 	}
-	
+
 	private drawBg(): void {
 		let bg = new egret.Shape();
 		bg.graphics.beginFill(0x000000, 0.90);
-		bg.graphics.drawRect(Logic.mapX - Tile.WIDTH / 2, Logic.mapY - Tile.HEIGHT / 2,Tile.WIDTH * Logic.SIZE, Tile.WIDTH * Logic.SIZE);
+		bg.graphics.drawRect(Logic.mapX - Tile.WIDTH / 2, Logic.mapY - Tile.HEIGHT / 2, Tile.WIDTH * Logic.SIZE, Tile.WIDTH * Logic.SIZE);
 		bg.graphics.endFill();
 		this.addChild(bg);
 		let shadow = new egret.Shape();
@@ -42,8 +42,8 @@ class Dungeon extends egret.Stage {
 		shadow.width = Tile.WIDTH * Logic.SIZE;
 		shadow.height = Tile.WIDTH * Logic.SIZE;
 		shadow.graphics.beginFill(0x000000, 1);
-        shadow.graphics.drawRect(0, 0, shadow.width, shadow.height);
-        shadow.graphics.endFill();
+		shadow.graphics.drawRect(0, 0, shadow.width, shadow.height);
+		shadow.graphics.endFill();
 		this.addChild(shadow);
 	}
 	private drawMap(): void {
@@ -64,7 +64,7 @@ class Dungeon extends egret.Stage {
 					t.addBuilding(this.portal);
 					this.portal.show();
 				}
-				t.addItem(new Gem("gem0"+this.getRandomNum(1, 4)));
+				t.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
 						t.item.show();
@@ -86,7 +86,7 @@ class Dungeon extends egret.Stage {
 				t.item.hide();
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
-						t.item.changeRes("gem0"+this.getRandomNum(1, 4));
+						t.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
 						t.item.show();
 					}
 				}
@@ -122,7 +122,7 @@ class Dungeon extends egret.Stage {
 	// 	this.player.y = p.y;
 	// 	this.addChild(this.player);
 	// }
-	
+
 	private addTimer(): void {
 		// this.timer = new egret.Timer(200 - this.level * 10);
 		// this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
@@ -134,11 +134,15 @@ class Dungeon extends egret.Stage {
 		let y = this.getRandomNum(0, Logic.SIZE - 1);
 		let tile = this.map[x][y];
 		if (tile.item && !tile.item.visible) {
-			tile.item.changeRes("gem0"+this.getRandomNum(1, 4));
+			if (Math.random() > 0.8) {
+				tile.addItem(new Capsule(ItemConstants.CAPSULE_RED));
+			} else {
+				tile.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
+			}
 			tile.item.show();
 		}
 	}
-	
+
 	private breakTile(): void {
 		if (this.randomArr.length < 1) {
 			return;

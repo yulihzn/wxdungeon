@@ -63,8 +63,10 @@ class Player extends egret.DisplayObjectContainer {
 		this.player.x = 0;
 		this.player.y = 0;
 		this.item.alpha = 1;
-		this.item.x = -this.player.width/2;
-		this.item.y = -50;
+		this.item.anchorOffsetX = this.item.width / 2;
+		this.item.anchorOffsetY = this.item.height;
+		this.item.x = -this.player.width*5/2;
+		this.item.y = -40;
 		this.player.rotation = 0;
 		this.playerShadow.visible = true;
 		this.isdead = false;
