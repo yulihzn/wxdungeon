@@ -11,6 +11,7 @@ class Dungeon extends egret.Stage {
 	public level: number = 1;
 
 	public portal: Portal;
+	public itemManager: ItemManager
 
 	public constructor() {
 		super();
@@ -23,7 +24,10 @@ class Dungeon extends egret.Stage {
 		let stageH = this.stage.stageHeight;
 
 		this.drawBg();
+		this.itemManager = new ItemManager();
+		this.addChild(this.itemManager);
 		this.drawMap();
+		this.setChildIndex(this.itemManager, 1000);
 		// this.addPlayer();
 		this.addTimer();
 		this.resetGame(this.level);
@@ -64,10 +68,10 @@ class Dungeon extends egret.Stage {
 					t.addBuilding(this.portal);
 					this.portal.show();
 				}
-				t.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
-						t.item.show();
+						let item = this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(i, j))
+						item.show();
 					}
 				}
 				this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
@@ -78,16 +82,16 @@ class Dungeon extends egret.Stage {
 	public resetGame(level: number): void {
 		this.level = level;
 		let index = Math.floor(Logic.SIZE / 2);
+		this.itemManager.removeAllItems();
 		for (let i = 0; i < Logic.SIZE; i++) {
 			for (let j = 0; j < Logic.SIZE; j++) {
 				let t = this.map[i][j];
 				egret.Tween.removeTweens(t.floor);
 				t.showTile();
-				t.item.hide();
 				if (!(index == i && index == j)) {
 					if (this.getRandomNum(0, 10) > 5) {
-						t.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
-						t.item.show();
+						let item = this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(i, j))
+						item.show();
 					}
 				}
 				this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
@@ -133,13 +137,13 @@ class Dungeon extends egret.Stage {
 		let x = this.getRandomNum(0, Logic.SIZE - 1);
 		let y = this.getRandomNum(0, Logic.SIZE - 1);
 		let tile = this.map[x][y];
-		if (tile.item && !tile.item.visible) {
-			if (Math.random() > 0.8) {
-				tile.addItem(new Capsule(ItemConstants.CAPSULE_RED));
+		let olditem = this.itemManager.getItem(new egret.Point(x,y));
+		if (!(olditem && olditem.visible)) {
+			if (Math.random() > 0.5) {
+				this.itemManager.addItem(ItemConstants.CAPSULE_RED, new egret.Point(x, y)).show();
 			} else {
-				tile.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
+				this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(x, y)).show();
 			}
-			tile.item.show();
 		}
 	}
 

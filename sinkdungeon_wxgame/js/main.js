@@ -59,10 +59,43 @@ var Item = (function (_super) {
         var _this = _super.call(this) || this;
         _this.type = ItemConstants.EMPTY;
         _this.canTaken = false;
+        _this.posIndex = new egret.Point();
+        //使用次数为-1代表无限
+        _this.useCount = -1;
         _this.type = type;
         _this.init();
         return _this;
     }
+    Item.prototype.init = function () {
+        this.width = 64;
+        this.height = 64;
+        this.anchorOffsetX = 32;
+        this.anchorOffsetY = 32;
+        this.item = new egret.Bitmap(RES.getRes(this.type));
+        this.item.smoothing = false;
+        this.shadow = new egret.Bitmap(RES.getRes("shadow"));
+        this.shadow.smoothing = false;
+        this.item.anchorOffsetX = this.item.width / 2;
+        this.item.anchorOffsetY = this.item.height / 2;
+        this.item.x = 32;
+        this.item.y = 16;
+        this.shadow.anchorOffsetX = this.shadow.width / 2;
+        this.shadow.anchorOffsetY = this.shadow.height / 2;
+        this.shadow.x = 32;
+        this.shadow.y = 32;
+        this.shadow.alpha = 0.3;
+        this.shadow.scaleX = 1;
+        this.shadow.scaleY = 1;
+        this.addChild(this.shadow);
+        this.addChild(this.item);
+        var y = this.item.y;
+        egret.Tween.get(this.item, { loop: true })
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 0, y: y }, 1000)
+            .to({ scaleX: 0.5, y: y + 8 }, 1000)
+            .to({ scaleX: 1, y: y }, 1000);
+        this.visible = false;
+    };
     Item.prototype.getType = function () {
         return this.type;
     };
@@ -107,23 +140,51 @@ var Item = (function (_super) {
         this.item.scaleX = 1;
         this.visible = false;
     };
+    Item.prototype.use = function () {
+        if (this.useCount == -1) {
+        }
+        else if (this.useCount > 1) {
+            this.useCount--;
+        }
+        if (this.useCount == 0) {
+            return false;
+        }
+        return true;
+    };
+    Item.prototype.changeRes = function (type) {
+        this.type = type;
+        this.item.texture = RES.getRes(this.type);
+    };
     return Item;
 }(egret.DisplayObjectContainer));
 __reflect(Item.prototype, "Item");
-/**
- * 方向键点击事件
- */
-var PadtapEvent = (function (_super) {
-    __extends(PadtapEvent, _super);
-    function PadtapEvent(type, bubbles, cancelable, data) {
-        var _this = _super.call(this, type, bubbles, cancelable, data) || this;
-        _this.dir = -1;
+var Capsule = (function (_super) {
+    __extends(Capsule, _super);
+    function Capsule(type) {
+        var _this = _super.call(this, type) || this;
+        _this.useCount = 1;
         return _this;
     }
-    PadtapEvent.PADTAP = "padtap";
-    return PadtapEvent;
-}(egret.Event));
-__reflect(PadtapEvent.prototype, "PadtapEvent");
+    Capsule.prototype.isAutoPicking = function () {
+        return false;
+    };
+    Capsule.prototype.use = function () {
+        if (_super.prototype.use.call(this)) {
+            this.parent.parent.dispatchEventWith(LogicEvent.DAMAGE_PLAYER, false, { damage: -1 });
+            return true;
+        }
+        return false;
+    };
+    Capsule.prototype.taken = function () {
+        if (_super.prototype.taken.call(this)) {
+            //tile所在的dungeon发消息
+            return true;
+        }
+        return false;
+    };
+    return Capsule;
+}(Item));
+__reflect(Capsule.prototype, "Capsule");
 var Logic = (function (_super) {
     __extends(Logic, _super);
     function Logic(main) {
@@ -155,6 +216,7 @@ var Logic = (function (_super) {
         this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
         this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinish, this);
         this.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayer, this);
+        this.dungeon.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayer, this);
         this.inventoryBar = new InventoryBar();
         this.addChild(this.inventoryBar);
         this.inventoryBar.x = 50;
@@ -172,7 +234,6 @@ var Logic = (function (_super) {
         this.addPlayer();
         this.addMonster();
         this.addTimer();
-        this.player.changeItemRes(RES.getRes(this.inventoryBar.CurrentStrRes));
     };
     Logic.prototype.addTimer = function () {
         this.monsterTimer = new egret.Timer(1000);
@@ -264,8 +325,10 @@ var Logic = (function (_super) {
         this.main.refreshScoreText("" + this.score);
         this.main.refreshSecondsText("Target:" + this.dungeon.level * Logic.SCORE_BASE + "        Lv." + this.dungeon.level);
     };
+    /**造成伤害 */
     Logic.prototype.damagePlayer = function (evt) {
         this.player.takeDamage(evt.data.damage);
+        this.healthBar.refreshHealth(this.player.currentHealth, this.player.maxHealth);
     };
     Logic.prototype.tapPad = function (evt) {
         var _this = this;
@@ -297,10 +360,23 @@ var Logic = (function (_super) {
         }
         if (evt.dir == 4) {
             var tile = this.dungeon.map[pos.x][pos.y];
-            if (tile.item && !tile.item.isAutoPicking()) {
-                if (tile.item.taken()) {
-                    this.player.changeItemRes(tile.item.getItem().texture);
-                    this.inventoryBar.changeItem(this.inventoryBar.CurrentIndex, tile.item.getType());
+            var olditem = this.dungeon.itemManager.getItem(pos);
+            if (olditem && !olditem.isAutoPicking()) {
+                if (olditem.taken()) {
+                    this.player.changeItemRes(olditem.getType());
+                    this.dungeon.itemManager.addItem(this.inventoryBar.CurrentItemRes, pos);
+                    this.dungeon.itemManager.getItem(pos).show();
+                    this.inventoryBar.changeItem(olditem.getType());
+                }
+            }
+            if (!olditem || !olditem.visible) {
+                var itemRes = this.inventoryBar.CurrentItemRes;
+                var p = new egret.Point(-1, -1);
+                this.dungeon.itemManager.addItem(itemRes, p);
+                var item = this.dungeon.itemManager.getItem(p);
+                if (item && item.use()) {
+                    this.inventoryBar.changeItem(ItemConstants.EMPTY);
+                    this.player.useItem();
                 }
             }
         }
@@ -333,6 +409,7 @@ var Logic = (function (_super) {
         }
         this.isGameover = true;
         this.score = 0;
+        this.inventoryBar.clearItems();
         //让角色原地走一步触发死亡,防止走路清空动画
         this.player.move(-1, this.dungeon);
         this.main.gameoverDialog.show(this.dungeon.level);
@@ -347,8 +424,7 @@ var Logic = (function (_super) {
         this.main.refreshScoreText("" + this.score);
     };
     Logic.prototype.tapInventory = function (evt) {
-        var resStr = evt.resStr;
-        this.player.changeItemRes(RES.getRes(resStr));
+        this.player.changeItemRes(this.inventoryBar.CurrentItemRes);
     };
     Logic.getRandomNum = function (min, max) {
         return min + Math.round(Math.random() * (max - min));
@@ -581,7 +657,7 @@ var Player = (function (_super) {
         _this.tag = 'player';
         _this.walking = false;
         _this.isdead = false;
-        _this.currentHealth = 3;
+        _this.currentHealth = 1;
         _this.maxHealth = 3;
         _this.attackNumber = 1;
         _this.pos = new egret.Point();
@@ -612,10 +688,16 @@ var Player = (function (_super) {
         this.addChild(this.playerShadow);
         this.addChild(this.item);
     };
-    Player.prototype.changeItemRes = function (tex) {
-        this.item.texture = tex;
+    Player.prototype.changeItemRes = function (texRes) {
+        if (!texRes) {
+            texRes = ItemConstants.EMPTY;
+        }
+        this.item.texture = RES.getRes(texRes);
         this.item.anchorOffsetX = this.item.width / 2;
         this.item.anchorOffsetY = this.item.height;
+        this.item.rotation = 0;
+        this.item.scaleX = 1;
+        this.item.scaleY = 1;
         this.item.x = -this.player.width * 5 / 2;
         this.item.y = -40;
     };
@@ -660,6 +742,8 @@ var Player = (function (_super) {
             return;
         }
         this.isdead = true;
+        this.currentHealth = 0;
+        this.item.texture = null;
         this.playerShadow.visible = false;
         if (isFall) {
             egret.Tween.get(this.player).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(function () {
@@ -782,14 +866,21 @@ var Player = (function (_super) {
                 tile.breakTile();
             }, this, 1000);
         }
-        if (tile.item && (tile.item.isAutoPicking())) {
-            tile.item.taken();
+        var olditem = dungeon.itemManager.getItem(this.pos);
+        if (olditem && (olditem.isAutoPicking())) {
+            olditem.taken();
         }
         if (this.pos.x == dungeon.portal.posIndex.x
             && this.pos.y == dungeon.portal.posIndex.y
             && dungeon.portal.isGateOpen()) {
             this.parent.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL, false, { level: ++dungeon.level });
         }
+    };
+    Player.prototype.useItem = function () {
+        var _this = this;
+        egret.Tween.get(this.item).to({ scaleX: 2, scaleY: 2, alpha: 0 }, 1000).call(function () {
+            _this.changeItemRes(RES.getRes(ItemConstants.EMPTY));
+        });
     };
     return Player;
 }(egret.DisplayObjectContainer));
@@ -815,14 +906,14 @@ var Tile = (function (_super) {
         this.floor = t;
         this.addChild(this.floor);
     };
-    Tile.prototype.addItem = function (item) {
-        if (this.item) {
-            this.removeChild(this.item);
-        }
-        this.item = item;
-        this.addChildAt(this.item, 1000);
-        return this;
-    };
+    // public addItem(item: Item): Tile {
+    // 	if(this.item){
+    // 		this.removeChild(this.item)
+    // 	}
+    // 	this.item = item;
+    // 	this.addChildAt(this.item, 1000);
+    // 	return this;
+    // }
     Tile.prototype.addBuilding = function (building) {
         this.building = building;
         this.addChild(this.building);
@@ -1020,7 +1111,6 @@ var InventoryEvent = (function (_super) {
     function InventoryEvent(type, bubbles, cancelable, data) {
         var _this = _super.call(this, type, bubbles, cancelable, data) || this;
         _this.index = 0;
-        _this.resStr = '';
         return _this;
     }
     InventoryEvent.TABTAP = "TABTAP";
@@ -1044,6 +1134,20 @@ var LogicEvent = (function (_super) {
     return LogicEvent;
 }(egret.Event));
 __reflect(LogicEvent.prototype, "LogicEvent");
+/**
+ * 方向键点击事件
+ */
+var PadtapEvent = (function (_super) {
+    __extends(PadtapEvent, _super);
+    function PadtapEvent(type, bubbles, cancelable, data) {
+        var _this = _super.call(this, type, bubbles, cancelable, data) || this;
+        _this.dir = -1;
+        return _this;
+    }
+    PadtapEvent.PADTAP = "padtap";
+    return PadtapEvent;
+}(egret.Event));
+__reflect(PadtapEvent.prototype, "PadtapEvent");
 var Dungeon = (function (_super) {
     __extends(Dungeon, _super);
     function Dungeon() {
@@ -1061,7 +1165,10 @@ var Dungeon = (function (_super) {
         var stageW = this.stage.stageWidth;
         var stageH = this.stage.stageHeight;
         this.drawBg();
+        this.itemManager = new ItemManager();
+        this.addChild(this.itemManager);
         this.drawMap();
+        this.setChildIndex(this.itemManager, 1000);
         // this.addPlayer();
         this.addTimer();
         this.resetGame(this.level);
@@ -1099,10 +1206,10 @@ var Dungeon = (function (_super) {
                     t.addBuilding(this.portal);
                     this.portal.show();
                 }
-                t.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
                 if (!(index == i && index == j)) {
                     if (this.getRandomNum(0, 10) > 5) {
-                        t.item.show();
+                        var item = this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(i, j));
+                        item.show();
                     }
                 }
                 this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
@@ -1112,16 +1219,16 @@ var Dungeon = (function (_super) {
     Dungeon.prototype.resetGame = function (level) {
         this.level = level;
         var index = Math.floor(Logic.SIZE / 2);
+        this.itemManager.removeAllItems();
         for (var i = 0; i < Logic.SIZE; i++) {
             for (var j = 0; j < Logic.SIZE; j++) {
                 var t = this.map[i][j];
                 egret.Tween.removeTweens(t.floor);
                 t.showTile();
-                t.item.hide();
                 if (!(index == i && index == j)) {
                     if (this.getRandomNum(0, 10) > 5) {
-                        t.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
-                        t.item.show();
+                        var item = this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(i, j));
+                        item.show();
                     }
                 }
                 this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
@@ -1165,14 +1272,14 @@ var Dungeon = (function (_super) {
         var x = this.getRandomNum(0, Logic.SIZE - 1);
         var y = this.getRandomNum(0, Logic.SIZE - 1);
         var tile = this.map[x][y];
-        if (tile.item && !tile.item.visible) {
-            if (Math.random() > 0.8) {
-                tile.addItem(new Capsule(ItemConstants.CAPSULE_RED));
+        var olditem = this.itemManager.getItem(new egret.Point(x, y));
+        if (!(olditem && olditem.visible)) {
+            if (Math.random() > 0.5) {
+                this.itemManager.addItem(ItemConstants.CAPSULE_RED, new egret.Point(x, y)).show();
             }
             else {
-                tile.addItem(new Gem("gem0" + this.getRandomNum(1, 4)));
+                this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(x, y)).show();
             }
-            tile.item.show();
         }
     };
     Dungeon.prototype.breakTile = function () {
@@ -1192,109 +1299,28 @@ var Dungeon = (function (_super) {
     return Dungeon;
 }(egret.Stage));
 __reflect(Dungeon.prototype, "Dungeon");
-var Capsule = (function (_super) {
-    __extends(Capsule, _super);
-    function Capsule(type) {
-        return _super.call(this, type) || this;
+var Gem = (function (_super) {
+    __extends(Gem, _super);
+    function Gem(type) {
+        var _this = _super.call(this, type) || this;
+        _this.useCount = 1;
+        return _this;
     }
-    Capsule.prototype.init = function () {
-        this.width = 64;
-        this.height = 64;
-        this.anchorOffsetX = 32;
-        this.anchorOffsetY = 32;
-        this.item = new egret.Bitmap(RES.getRes(this.type));
-        this.item.smoothing = false;
-        this.shadow = new egret.Bitmap(RES.getRes("shadow"));
-        this.shadow.smoothing = false;
-        this.item.anchorOffsetX = this.item.width / 2;
-        this.item.anchorOffsetY = this.item.height / 2;
-        this.item.x = 32;
-        this.item.y = 16;
-        this.shadow.anchorOffsetX = this.shadow.width / 2;
-        this.shadow.anchorOffsetY = this.shadow.height / 2;
-        this.shadow.x = 32;
-        this.shadow.y = 32;
-        this.shadow.alpha = 0.3;
-        this.shadow.scaleX = 1;
-        this.shadow.scaleY = 1;
-        this.addChild(this.shadow);
-        this.addChild(this.item);
-        var y = this.item.y;
-        egret.Tween.get(this.item, { loop: true })
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 0, y: y }, 1000)
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 1, y: y }, 1000);
-        this.visible = false;
+    Gem.prototype.isAutoPicking = function () {
+        return true;
     };
-    Capsule.prototype.changeRes = function (type) {
-        this.type = type;
-        this.item.texture = RES.getRes(this.type);
-    };
-    Capsule.prototype.getType = function () {
-        return this.type;
-    };
-    Capsule.prototype.isAutoPicking = function () {
-        return false;
-    };
-    Capsule.prototype.taken = function () {
-        if (_super.prototype.taken.call(this)) {
-            //tile所在的dungeon发消息
-            this.parent.parent.dispatchEventWith(LogicEvent.GET_ITEM, false, { itemtype: this.type });
+    Gem.prototype.use = function () {
+        if (_super.prototype.use.call(this)) {
+            var score = parseInt(this.type.substring(this.type.length - 2, this.type.length));
+            this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: score * 10 });
             return true;
         }
         return false;
     };
-    return Capsule;
-}(Item));
-__reflect(Capsule.prototype, "Capsule");
-var Gem = (function (_super) {
-    __extends(Gem, _super);
-    function Gem(type) {
-        return _super.call(this, type) || this;
-    }
-    Gem.prototype.init = function () {
-        this.width = 64;
-        this.height = 64;
-        this.anchorOffsetX = 32;
-        this.anchorOffsetY = 32;
-        this.item = new egret.Bitmap(RES.getRes(this.type));
-        this.item.smoothing = false;
-        this.shadow = new egret.Bitmap(RES.getRes("shadow"));
-        this.shadow.smoothing = false;
-        this.item.anchorOffsetX = this.item.width / 2;
-        this.item.anchorOffsetY = this.item.height / 2;
-        this.item.x = 32;
-        this.item.y = 16;
-        this.shadow.anchorOffsetX = this.shadow.width / 2;
-        this.shadow.anchorOffsetY = this.shadow.height / 2;
-        this.shadow.x = 32;
-        this.shadow.y = 32;
-        this.shadow.alpha = 0.3;
-        this.shadow.scaleX = 1;
-        this.shadow.scaleY = 1;
-        this.addChild(this.shadow);
-        this.addChild(this.item);
-        var y = this.item.y;
-        egret.Tween.get(this.item, { loop: true })
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 0, y: y }, 1000)
-            .to({ scaleX: 0.5, y: y + 8 }, 1000)
-            .to({ scaleX: 1, y: y }, 1000);
-        this.visible = false;
-    };
-    Gem.prototype.changeRes = function (type) {
-        this.type = type;
-        this.item.texture = RES.getRes(this.type);
-    };
-    Gem.prototype.isAutoPicking = function () {
-        return true;
-    };
     Gem.prototype.taken = function () {
         if (_super.prototype.taken.call(this)) {
             //tile所在的dungeon发消息
-            var score = parseInt(this.type.substring(this.type.length - 2, this.type.length));
-            this.parent.parent.dispatchEventWith(LogicEvent.GET_GEM, false, { score: score * 10 });
+            this.use();
             return true;
         }
         return false;
@@ -1357,9 +1383,74 @@ var ItemConstants = (function () {
     ItemConstants.EMPTY = 'empty';
     ItemConstants.CAPSULE_RED = 'capsule001';
     ItemConstants.CAPSULE_BLUE = 'capsule002';
+    ItemConstants.GEM_GREEN = 'gem01';
+    ItemConstants.GEM_YELLOW = 'gem02';
+    ItemConstants.GEM_PURPLE = 'gem03';
+    ItemConstants.GEM_RED = 'gem04';
     return ItemConstants;
 }());
 __reflect(ItemConstants.prototype, "ItemConstants");
+var ItemManager = (function (_super) {
+    __extends(ItemManager, _super);
+    function ItemManager() {
+        var _this = _super.call(this) || this;
+        _this.itemMap = {};
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+        return _this;
+    }
+    ItemManager.prototype.onAddToStage = function () {
+        this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+    };
+    ItemManager.getItem = function (resName) {
+        var item;
+        switch (resName) {
+            case ItemConstants.GEM_GREEN:
+            case ItemConstants.GEM_YELLOW:
+            case ItemConstants.GEM_PURPLE:
+            case ItemConstants.GEM_RED:
+                item = new Gem(resName);
+                break;
+            case ItemConstants.CAPSULE_RED:
+                item = new Capsule(resName);
+                break;
+            case ItemConstants.CAPSULE_BLUE:
+                item = new Capsule(resName);
+                break;
+        }
+        return item;
+    };
+    ItemManager.prototype.addItem = function (resName, posIndex) {
+        var item = ItemManager.getItem(resName);
+        if (!item) {
+            return item;
+        }
+        item.posIndex = new egret.Point(posIndex.x, posIndex.y);
+        item.x = Logic.mapX + posIndex.x * Tile.WIDTH;
+        item.y = Logic.mapY + posIndex.y * Tile.HEIGHT;
+        var old = this.itemMap["x=" + posIndex.x + "y=" + posIndex.y];
+        if (old) {
+            this.removeChild(old);
+            old = null;
+        }
+        this.itemMap["x=" + posIndex.x + "y=" + posIndex.y] = item;
+        this.addChild(item);
+        return item;
+    };
+    ItemManager.prototype.getItem = function (posIndex) {
+        return this.itemMap["x=" + posIndex.x + "y=" + posIndex.y];
+    };
+    ItemManager.prototype.removeAllItems = function () {
+        for (var key in this.itemMap) {
+            var item = this.itemMap[key];
+            if (item) {
+                this.removeChild(item);
+            }
+            this.itemMap[key] = null;
+        }
+    };
+    return ItemManager;
+}(egret.DisplayObjectContainer));
+__reflect(ItemManager.prototype, "ItemManager");
 var Monster = (function (_super) {
     __extends(Monster, _super);
     function Monster() {
@@ -1636,7 +1727,7 @@ var InventoryBar = (function (_super) {
         _this.SIZE = 4;
         _this.items = new Array();
         _this.currentIndex = 0;
-        _this.itemStrs = new Array();
+        _this.inventoryItems = new Array(4);
         _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
         return _this;
     }
@@ -1672,36 +1763,34 @@ var InventoryBar = (function (_super) {
         this.tabselect.anchorOffsetY = this.tabselect.height / 2;
         this.tabselect.y = this.tabselect.height * this.currentIndex + 10;
         this.addChild(this.tabselect);
-        this.itemStrs = [ItemConstants.CAPSULE_BLUE, ItemConstants.CAPSULE_RED, ItemConstants.CAPSULE_BLUE, ItemConstants.EMPTY];
-        for (var i = 0; i < this.itemStrs.length; i++) {
-            this.items[i].texture = RES.getRes(this.itemStrs[i]);
-            this.items[i].scaleX = 0.25;
-            this.items[i].scaleY = 0.25;
+    };
+    InventoryBar.prototype.clearItems = function () {
+        this.inventoryItems = new Array(4);
+        for (var i = 0; i < this.SIZE; i++) {
+            this.items[i].texture = null;
         }
     };
-    InventoryBar.prototype.changeItem = function (index, resStr) {
-        if (!resStr) {
-            resStr = "ItemConstants.EMPTY";
+    InventoryBar.prototype.changeItem = function (itemRes) {
+        this.inventoryItems[this.currentIndex] = itemRes;
+        var item = ItemManager.getItem(itemRes);
+        var tex = null;
+        if (item) {
+            tex = item.getItem().texture;
         }
-        if (!index || index < 0 || index >= this.SIZE) {
-            return;
-        }
-        this.itemStrs[index] = resStr;
-        this.items[index].texture = RES.getRes(resStr);
-        this.items[index].scaleX = 0.25;
-        this.items[index].scaleY = 0.25;
+        this.items[this.currentIndex].texture = tex;
+        this.items[this.currentIndex].scaleX = 0.25;
+        this.items[this.currentIndex].scaleY = 0.25;
     };
     InventoryBar.prototype.tapTab = function (index) {
         this.currentIndex = index;
         this.tabselect.y = this.tabselect.height * this.currentIndex + 10;
         var inventoryEvent = new InventoryEvent(InventoryEvent.TABTAP);
         inventoryEvent.index = index;
-        inventoryEvent.resStr = this.itemStrs[index];
         this.dispatchEvent(inventoryEvent);
     };
-    Object.defineProperty(InventoryBar.prototype, "CurrentStrRes", {
+    Object.defineProperty(InventoryBar.prototype, "CurrentItemRes", {
         get: function () {
-            return this.itemStrs[this.currentIndex];
+            return this.inventoryItems[this.currentIndex];
         },
         enumerable: true,
         configurable: true

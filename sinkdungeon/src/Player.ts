@@ -5,7 +5,7 @@ class Player extends egret.DisplayObjectContainer {
 	private item: egret.Bitmap;
 	private walking: boolean = false;
 	private isdead: boolean = false;
-	public currentHealth: number = 3;
+	public currentHealth: number = 1;
 	public maxHealth: number = 3;
 	public attackNumber: number = 1;
 	public pos: egret.Point = new egret.Point();
@@ -38,10 +38,16 @@ class Player extends egret.DisplayObjectContainer {
 		this.addChild(this.playerShadow);
 		this.addChild(this.item);
 	}
-	public changeItemRes(tex:egret.Texture):void{
-		this.item.texture = tex;
+	public changeItemRes(texRes:string):void{
+		if(!texRes){
+			texRes = ItemConstants.EMPTY;
+		}
+		this.item.texture = RES.getRes(texRes);
 		this.item.anchorOffsetX = this.item.width / 2;
 		this.item.anchorOffsetY = this.item.height;
+		this.item.rotation = 0;
+		this.item.scaleX = 1;
+		this.item.scaleY = 1;
 		this.item.x = -this.player.width*5/2;
 		this.item.y = -40;
 	}
@@ -86,6 +92,8 @@ class Player extends egret.DisplayObjectContainer {
 			return;
 		}
 		this.isdead = true;
+		this.currentHealth = 0;
+		this.item.texture = null;
 		this.playerShadow.visible = false;
 		if (isFall) {
 			egret.Tween.get(this.player).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
@@ -202,8 +210,9 @@ class Player extends egret.DisplayObjectContainer {
 				tile.breakTile();
 			}, this, 1000)
 		}
-		if (tile.item && (tile.item.isAutoPicking())) {
-			tile.item.taken();
+		let olditem = dungeon.itemManager.getItem(this.pos);
+		if (olditem && (olditem.isAutoPicking())) {
+			olditem.taken();
 		}
 		if (this.pos.x == dungeon.portal.posIndex.x
 			&& this.pos.y == dungeon.portal.posIndex.y
@@ -211,4 +220,11 @@ class Player extends egret.DisplayObjectContainer {
 			this.parent.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL, false, { level: ++dungeon.level });
 		}
 	}
+
+	public useItem():void{
+		egret.Tween.get(this.item).to({scaleX:2,scaleY:2,alpha:0},1000).call(()=>{
+			this.changeItemRes(RES.getRes(ItemConstants.EMPTY));
+		});
+	}
+	
 }

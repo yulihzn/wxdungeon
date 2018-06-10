@@ -3,7 +3,8 @@ class InventoryBar extends egret.DisplayObjectContainer {
 	private items: egret.Bitmap[] = new Array();
 	private currentIndex: number = 0;
 	private tabselect: egret.Bitmap;
-	private itemStrs: string[] = new Array();
+	private inventoryItems: string[] = new Array(4);
+
 
 	public constructor() {
 		super();
@@ -36,35 +37,35 @@ class InventoryBar extends egret.DisplayObjectContainer {
 		this.tabselect.anchorOffsetY = this.tabselect.height / 2;
 		this.tabselect.y = this.tabselect.height * this.currentIndex + 10;
 		this.addChild(this.tabselect);
-		this.itemStrs = [ItemConstants.CAPSULE_BLUE, ItemConstants.CAPSULE_RED, ItemConstants.CAPSULE_BLUE, ItemConstants.EMPTY];
-		for (let i = 0; i < this.itemStrs.length; i++) {
-			this.items[i].texture = RES.getRes(this.itemStrs[i]);
-			this.items[i].scaleX = 0.25;
-			this.items[i].scaleY = 0.25;
+
+	}
+	public clearItems():void{
+		this.inventoryItems = new Array(4);
+		for(let i=0;i<this.SIZE;i++){
+			this.items[i].texture = null;
 		}
 	}
-	public changeItem(index?: number, resStr?: string): void {
-		if (!resStr) {
-			resStr = "ItemConstants.EMPTY";
+	public changeItem(itemRes?: string): void {
+		this.inventoryItems[this.currentIndex] = itemRes;
+		let item = ItemManager.getItem(itemRes);
+		let tex = null;
+		if (item) {
+			tex = item.getItem().texture;
 		}
-		if (!index || index < 0 || index >= this.SIZE) {
-			return;
-		}
-		this.itemStrs[index] = resStr;
-		this.items[index].texture = RES.getRes(resStr);
-		this.items[index].scaleX = 0.25;
-		this.items[index].scaleY = 0.25;
+		this.items[this.currentIndex].texture = tex;
+		this.items[this.currentIndex].scaleX = 0.25;
+		this.items[this.currentIndex].scaleY = 0.25;
+
 	}
 	private tapTab(index: number) {
 		this.currentIndex = index;
 		this.tabselect.y = this.tabselect.height * this.currentIndex + 10;
 		let inventoryEvent = new InventoryEvent(InventoryEvent.TABTAP);
 		inventoryEvent.index = index;
-		inventoryEvent.resStr = this.itemStrs[index];
 		this.dispatchEvent(inventoryEvent);
 	}
-	public get CurrentStrRes(): string {
-		return this.itemStrs[this.currentIndex];
+	public get CurrentItemRes(): string {
+		return this.inventoryItems[this.currentIndex];
 	}
 	public get CurrentIndex(): number {
 		return this.currentIndex;

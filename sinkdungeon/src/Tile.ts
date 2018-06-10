@@ -3,7 +3,7 @@ class Tile extends egret.DisplayObjectContainer {
 	public static readonly HEIGHT: number = 64;
 	public floor: egret.Bitmap;
 	public building: Building;
-	public item: Item;
+	// public item: Item;
 	public posIndex: egret.Point;
 	public isBreakingNow = false;
 	public constructor(x: number, y: number) {
@@ -23,14 +23,14 @@ class Tile extends egret.DisplayObjectContainer {
 		this.floor = t;
 		this.addChild(this.floor);
 	}
-	public addItem(item: Item): Tile {
-		if(this.item){
-			this.removeChild(this.item)
-		}
-		this.item = item;
-		this.addChildAt(this.item, 1000);
-		return this;
-	}
+	// public addItem(item: Item): Tile {
+	// 	if(this.item){
+	// 		this.removeChild(this.item)
+	// 	}
+	// 	this.item = item;
+	// 	this.addChildAt(this.item, 1000);
+	// 	return this;
+	// }
 	public addBuilding(building: Building): Tile {
 		this.building = building;
 		this.addChild(this.building);
