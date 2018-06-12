@@ -1,6 +1,6 @@
 class InventoryBar extends egret.DisplayObjectContainer {
 	private readonly SIZE: number = 4;
-	private items: egret.Bitmap[] = new Array();
+	private itemBitmaps: egret.Bitmap[] = new Array();
 	private currentIndex: number = 0;
 	private tabselect: egret.Bitmap;
 	private inventoryItems: string[] = new Array(4);
@@ -28,7 +28,7 @@ class InventoryBar extends egret.DisplayObjectContainer {
 			item.anchorOffsetX = item.width / 2;
 			item.anchorOffsetY = item.height / 2;
 			item.y = item.height * i + 10;
-			this.items.push(item);
+			this.itemBitmaps.push(item);
 			this.addChild(item);
 		}
 		this.tabselect = new egret.Bitmap(RES.getRes("tabselect"));
@@ -39,23 +39,38 @@ class InventoryBar extends egret.DisplayObjectContainer {
 		this.addChild(this.tabselect);
 
 	}
-	public clearItems():void{
+	public clearItems(): void {
 		this.inventoryItems = new Array(4);
-		for(let i=0;i<this.SIZE;i++){
-			this.items[i].texture = null;
+		for (let i = 0; i < this.SIZE; i++) {
+			this.itemBitmaps[i].texture = null;
 		}
 	}
 	public changeItem(itemRes?: string): void {
-		this.inventoryItems[this.currentIndex] = itemRes;
+
 		let item = ItemManager.getItem(itemRes);
 		let tex = null;
 		if (item) {
 			tex = item.getItem().texture;
 		}
-		this.items[this.currentIndex].texture = tex;
-		this.items[this.currentIndex].scaleX = 0.25;
-		this.items[this.currentIndex].scaleY = 0.25;
+		let belowindex = -1;//除去当前格子，是否还有空余格子
+		for (let i = 0; i < this.inventoryItems.length; i++) {
+			if (i != this.currentIndex && (!this.inventoryItems[i] || this.inventoryItems[i] == ItemConstants.EMPTY)) {
+				belowindex = i;
+				break;
+			}
+		}
+		if (belowindex == -1) {
+			this.refreshItem(this.currentIndex, itemRes);
+		} else {
+			this.refreshItem(belowindex, itemRes);
+		}
 
+	}
+	private refreshItem(index: number, itemRes: string): void {
+		this.itemBitmaps[index].texture = RES.getRes(itemRes);
+		this.itemBitmaps[index].scaleX = 0.25;
+		this.itemBitmaps[index].scaleY = 0.25;
+		this.inventoryItems[index] = itemRes;
 	}
 	private tapTab(index: number) {
 		this.currentIndex = index;

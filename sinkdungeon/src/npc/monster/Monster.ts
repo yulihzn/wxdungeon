@@ -1,20 +1,23 @@
-class Monster extends egret.DisplayObjectContainer {
+abstract class Monster extends egret.DisplayObjectContainer {
 	public tag: string = 'monster';
-	private character: egret.Bitmap;
-	private characterShadow: egret.Bitmap;
-	private walking: boolean = false;
-	private isdead: boolean = false;
-	private healthBar: HealthBar;
-	private currentHealth: number = 2;
-	private maxHealth: number = 2;
+	protected character: egret.Bitmap;
+	protected characterShadow: egret.Bitmap;
+	protected walking: boolean = false;
+	protected isdead: boolean = false;
+	protected healthBar: HealthBar;
+	protected currentHealth: number = 2;
+	protected maxHealth: number = 2;
 	public posIndex: egret.Point = new egret.Point();
-	public constructor() {
+	protected astarGrid: AstarGrid;
+	protected type:string = 'empty'
+	public constructor(type:string) {
 		super();
+		this.type = type;
 		this.init();
 	}
 
-	private init(): void {
-		this.character = new egret.Bitmap(RES.getRes("monster00" + Logic.getRandomNum(1, 3)));
+	protected init(): void {
+		this.character = new egret.Bitmap(RES.getRes(this.type));
 		this.character.smoothing = false;
 		this.characterShadow = new egret.Bitmap(RES.getRes("shadow"));
 		this.characterShadow.smoothing = false;
@@ -38,6 +41,7 @@ class Monster extends egret.DisplayObjectContainer {
 		this.addChild(this.healthBar);
 		this.healthBar.x = 0;
 		this.healthBar.y = -103;
+		this.astarGrid = new AstarGrid(Logic.SIZE, Logic.SIZE);
 	}
 	public attack(dir, finish): void {
 		let x = 0;
@@ -76,10 +80,9 @@ class Monster extends egret.DisplayObjectContainer {
 		this.characterShadow.visible = true;
 		this.isdead = false;
 		this.walking = false;
-		this.currentHealth = 2;
-		this.maxHealth = 2;
+		this.currentHealth = this.maxHealth;
 		this.healthBar.visible = true;
-		this.healthBar.refreshHealth(this.currentHealth,this.maxHealth);
+		this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
 		this.posIndex.x = indexX;
 		this.posIndex.y = indexY;
 		let p = Logic.getInMapPos(this.posIndex);
@@ -109,7 +112,7 @@ class Monster extends egret.DisplayObjectContainer {
 		}
 
 	}
-	private walk(px: number, py: number, reachable: boolean): void {
+	protected walk(px: number, py: number, reachable: boolean): void {
 		if (this.walking) {
 			console.log("cant")
 			return;
@@ -162,5 +165,56 @@ class Monster extends egret.DisplayObjectContainer {
 			this.move(this.posIndex, dungeon)
 		}
 
+	}
+	public monsterAction(monsters: Monster[], player: Player, dungeon: Dungeon): void {
+		if (this.isDying()) {
+			return;
+		}
+		let endIndex = new egret.Point(player.pos.x, player.pos.y);
+		if (Math.abs(player.pos.x - this.posIndex.x) > 1 && Math.abs(player.pos.y - this.posIndex.y) > 1) {
+			endIndex.x = Logic.getRandomNum(0, 8);
+			endIndex.y = Logic.getRandomNum(0, 8);
+		}
+		let targetPos = this.getNextStep(this.posIndex, endIndex);
+		let dir = 4;
+		if (targetPos.y != this.posIndex.y) {
+			dir = targetPos.y - this.posIndex.y < 0 ? 0 : 1;
+		}
+		if (targetPos.x != this.posIndex.x) {
+			dir = targetPos.x - this.posIndex.x < 0 ? 2 : 3;
+		}
+		if (Logic.isPointEquals(targetPos, player.pos)) {
+			this.attack(dir, () => {
+				if (targetPos.x == player.pos.x && targetPos.y == player.pos.y) {
+					this.parent.dispatchEventWith(LogicEvent.DAMAGE_PLAYER, false, { damage: 1 });
+				}
+			});
+		} else if (!dungeon.map[targetPos.x][targetPos.y].isBreakingNow) {
+			let hasOther = false;
+			for (let m of monsters) {
+				if (Logic.isPointEquals(m.posIndex, targetPos)) {
+					hasOther = true;
+					break;
+				}
+			}
+			if (!hasOther) {
+				this.move(targetPos, dungeon);
+			}
+		}
+
+	}
+	protected getNextStep(startIndex: egret.Point, endIndex: egret.Point): egret.Point {
+		let p = new egret.Point(startIndex.x, startIndex.y);
+		this.astarGrid.setStartNode(startIndex.x, startIndex.y);
+		this.astarGrid.setEndNode(endIndex.x, endIndex.y);
+		let aStar: AstarMap = new AstarMap();
+		if (aStar.findPath(this.astarGrid)) {
+			let path = aStar.path;
+			if (path.length > 1) {
+				p.x = path[1].x;
+				p.y = path[1].y;
+			}
+		}
+		return p;
 	}
 }

@@ -1,6 +1,7 @@
 class GameoverDialog extends egret.DisplayObjectContainer {
 	private bg:egret.Shape;
 	private textTips:egret.TextField;
+	private textScore:egret.TextField;
 	private textRetry:egret.TextField;
 	public constructor() {
 		super();
@@ -26,6 +27,17 @@ class GameoverDialog extends egret.DisplayObjectContainer {
         this.textTips.y = this.stage.height/2-200;
 		this.textTips.text = 'you die';
 
+		this.textScore = new egret.TextField();
+        this.addChild(this.textScore);
+        this.textScore.alpha = 0;
+        this.textScore.textAlign = egret.HorizontalAlign.CENTER;
+        this.textScore.size = 70;
+		this.textScore.width = this.stage.width;
+        this.textScore.textColor = 0xffd700;
+        this.textScore.x = 0;
+        this.textScore.y = this.stage.height/2-400;
+		this.textScore.text = '0';
+
 		this.textRetry = new egret.TextField();
         this.addChild(this.textRetry);
         this.textRetry.alpha = 0;
@@ -38,19 +50,25 @@ class GameoverDialog extends egret.DisplayObjectContainer {
 		this.textRetry.bold = true;
 		
 	}
-	public show(level:number):void{
+	public show(level:number,score:number):void{
 		this.bg.alpha = 0;
 		this.textTips.text = ' you die\n Lv.' + level;
 		this.textTips.scaleX = 1;
 		this.textTips.scaleY =1;
 		this.textTips.y =this.stage.height/2-200;
 		this.textTips.alpha = 0;
+		this.textScore.text = `score:${score}`;
+		this.textScore.scaleX = 1;
+		this.textScore.scaleY =1;
+		this.textScore.y =this.stage.height/2-400;
+		this.textScore.alpha = 0;
 		this.textRetry.alpha = 0;
 		this.textRetry.touchEnabled = true;
 		
 		this.visible = true;
 		egret.Tween.get(this.bg).to({ alpha: 1 }, 1000);
 		egret.Tween.get(this.textTips).wait(200).to({y:this.textTips.y+20,alpha:1},1000);
+		egret.Tween.get(this.textScore).wait(200).to({y:this.textScore.y+20,alpha:1},1000);
 		egret.Tween.get(this.textRetry).wait(1000).to({alpha:1},1000).call(()=>{
 			this.textRetry.addEventListener(egret.TouchEvent.TOUCH_TAP,this.retry,this);
 		});

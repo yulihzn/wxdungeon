@@ -11,12 +11,11 @@ class Logic extends egret.Stage {
 	private score: number = 0;
 	private player: Player;
 	private isGameover: boolean = false;
-	private monster: Monster;
-	private astarGrid: AstarGrid;
+	private monsters: Monster[];
 	private monsterTimer: egret.Timer;
 	private inventoryBar: InventoryBar;
 	private healthBar: HealthBar;
-
+	public monsterReswpanPoints: { [key: string]: string } = {}
 	public constructor(main: Main) {
 		super();
 		this.main = main;
@@ -36,13 +35,13 @@ class Logic extends egret.Stage {
 		this.addChild(this.controllerPad);
 		this.controllerPad.addEventListener(PadtapEvent.PADTAP, this.tapPad, this);
 		this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
-		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
-		this.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevel, this);
+		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevelEvent, this);
+		this.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevelEvent, this);
 		this.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
-		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGem, this);
-		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinish, this);
-		this.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayer, this);
-		this.dungeon.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayer, this);
+		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGemEvent, this);
+		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinishEvent, this);
+		this.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayerEvent, this);
+		this.dungeon.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayerEvent, this);
 
 		this.inventoryBar = new InventoryBar();
 		this.addChild(this.inventoryBar);
@@ -59,63 +58,29 @@ class Logic extends egret.Stage {
 		this.healthBar.scaleX = 2;
 		this.healthBar.scaleY = 2;
 
-		this.addAstar();
 		this.addPlayer();
-		this.addMonster();
+		this.addMonsters();
 		this.addTimer();
 	}
 
 	private addTimer(): void {
-		this.monsterTimer = new egret.Timer(1000);
-		this.monsterTimer.addEventListener(egret.TimerEvent.TIMER, this.monsterAction, this);
+		this.monsterTimer = new egret.Timer(10000);
+		this.monsterTimer.addEventListener(egret.TimerEvent.TIMER, this.monsterActions, this);
 		this.monsterTimer.start();
 	}
-	private monsterAction() {
-		if (this.monster.isDying()) {
-			return;
-		}
-		let endIndex = new egret.Point(this.player.pos.x, this.player.pos.y);
-		if (Math.abs(this.player.pos.x - this.monster.posIndex.x) > 1 && Math.abs(this.player.pos.y - this.monster.posIndex.y) > 1) {
-			endIndex.x = Logic.getRandomNum(0, 8);
-			endIndex.y = Logic.getRandomNum(0, 8);
-		}
-		let targetPos = this.getNextStep(this.monster.posIndex, endIndex);
-		let dir = 4;
-		if (targetPos.y != this.monster.posIndex.y) {
-			dir = targetPos.y - this.monster.posIndex.y < 0 ? 0 : 1;
-		}
-		if (targetPos.x != this.monster.posIndex.x) {
-			dir = targetPos.x - this.monster.posIndex.x < 0 ? 2 : 3;
-		}
-		if (targetPos.x == this.player.pos.x && targetPos.y == this.player.pos.y) {
-			this.monster.attack(dir, () => {
-				if (targetPos.x == this.player.pos.x && targetPos.y == this.player.pos.y) {
-					this.player.takeDamage(1);
-					this.healthBar.refreshHealth(this.player.currentHealth, this.player.maxHealth);
-				}
-			});
-		} else if (!this.dungeon.map[targetPos.x][targetPos.y].isBreakingNow) {
-			this.monster.move(targetPos, this.dungeon);
-		}
-	}
-	private addAstar(): void {
-		this.astarGrid = new AstarGrid(Logic.SIZE, Logic.SIZE);
-
-	}
-	private getNextStep(startIndex: egret.Point, endIndex: egret.Point): egret.Point {
-		let p = new egret.Point(startIndex.x, startIndex.y);
-		this.astarGrid.setStartNode(startIndex.x, startIndex.y);
-		this.astarGrid.setEndNode(endIndex.x, endIndex.y);
-		let aStar: AstarMap = new AstarMap();
-		if (aStar.findPath(this.astarGrid)) {
-			let path = aStar.path;
-			if (path.length > 1) {
-				p.x = path[1].x;
-				p.y = path[1].y;
+	private monsterActions() {
+		let count = 0;
+		for (let monster of this.monsters) {
+			monster.monsterAction(this.monsters, this.player, this.dungeon);
+			if (monster.isDying()) {
+				count++;
 			}
 		}
-		return p;
+		if (this.monsters.length > 0 && count >= this.monsters.length) {
+			this.dungeon.portal.openGate();
+		}
 	}
+
 	private addPlayer(): void {
 		this.player = new Player();
 		let index = Math.floor(Logic.SIZE / 2)
@@ -125,38 +90,64 @@ class Logic extends egret.Stage {
 		this.player.x = p.x;
 		this.player.y = p.y;
 		this.addChild(this.player);
+		this.healthBar.refreshHealth(this.player.currentHealth, this.player.maxHealth);
 	}
-	private addMonster(): void {
-		this.monster = new Monster();
-		let x = 7;
-		let y = 4;
-		this.monster.posIndex.x = x;
-		this.monster.posIndex.y = y;
-		let p = Logic.getInMapPos(this.monster.posIndex);
-		this.monster.x = p.x;
-		this.monster.y = p.y;
-		this.addChild(this.monster);
+	private addMonsters(): void {
+		this.monsters = new Array();
+		let levelcount = 1;
+		this.monsterReswpanPoints['0,0'] = NpcConstants.MONSTER_GOBLIN;
+		this.monsterReswpanPoints['0,8'] = NpcConstants.MONSTER_GOBLIN;
+		this.monsterReswpanPoints['8,0'] = NpcConstants.MONSTER_MUMMY;
+		this.monsterReswpanPoints['8,8'] = NpcConstants.MONSTER_ANUBIS;
+		this.monsterReswpanPoints['0,4'] = NpcConstants.MONSTER_GOBLIN;
+		this.monsterReswpanPoints['4,0'] = NpcConstants.MONSTER_GOBLIN;
+		this.monsterReswpanPoints['8,4'] = NpcConstants.MONSTER_MUMMY;
+		this.monsterReswpanPoints['4,8'] = NpcConstants.MONSTER_ANUBIS;
+		for (let p in this.monsterReswpanPoints) {
+			if (levelcount++ > this.level) {
+				break;
+			}
+			let arr = p.split(',');
+			this.addMonster(NpcManager.getNpc(this.monsterReswpanPoints[p]), new egret.Point(parseInt(arr[0]), parseInt(arr[1])));
+		}
+	}
+	private addMonster(monster: Monster, pos: egret.Point) {
+		monster.posIndex.x = pos.x;
+		monster.posIndex.y = pos.y;
+		let p = Logic.getInMapPos(monster.posIndex);
+		monster.x = p.x;
+		monster.y = p.y;
+		this.addChild(monster);
+		this.monsters.push(monster);
 	}
 	public static getInMapPos(pos: egret.Point): egret.Point {
 		let x = Logic.mapX + pos.x * Tile.WIDTH;
 		let y = Logic.mapY + pos.y * Tile.WIDTH;
 		return new egret.Point(x, y);
 	}
-	private breakTileFinish(evt: LogicEvent): void {
+	private breakTileFinishEvent(evt: LogicEvent): void {
 		if (this.player.pos.x == evt.data.x && this.player.pos.y == evt.data.y) {
 			this.gameOver();
 		}
-		if (this.monster.posIndex.x == evt.data.x && this.monster.posIndex.y == evt.data.y) {
-			this.monster.move(this.monster.posIndex, this.dungeon);
+
+		for (let monster of this.monsters) {
+			if (monster.posIndex.x == evt.data.x && monster.posIndex.y == evt.data.y) {
+				monster.move(monster.posIndex, this.dungeon);
+			}
 		}
 	}
 	private refreshText(evt: LogicEvent): void {
 		this.main.refreshScoreText(`${this.score}`);
-		this.main.refreshSecondsText(`Target:${this.dungeon.level * Logic.SCORE_BASE}        Lv.${this.dungeon.level}`)
+		// this.main.refreshSecondsText(`Target:${this.dungeon.level * Logic.SCORE_BASE}        Lv.${this.dungeon.level}`)
+		this.main.refreshSecondsText(`Lv.${this.dungeon.level}`);
+	}
+	/**造成伤害事件 */
+	private damagePlayerEvent(evt: LogicEvent): void {
+		this.damagePlayer(evt.data.damage);
 	}
 	/**造成伤害 */
-	private damagePlayer(evt: LogicEvent): void {
-		this.player.takeDamage(evt.data.damage);
+	private damagePlayer(damage: number): void {
+		this.player.takeDamage(damage);
 		this.healthBar.refreshHealth(this.player.currentHealth, this.player.maxHealth);
 	}
 	private tapPad(evt: PadtapEvent): void {
@@ -191,13 +182,12 @@ class Logic extends egret.Stage {
 			let olditem = this.dungeon.itemManager.getItem(pos);
 			if (olditem && !olditem.isAutoPicking()) {
 				if (olditem.taken()) {
+					this.dungeon.itemManager.addItem(this.inventoryBar.CurrentItemRes, pos)
 					this.player.changeItemRes(olditem.getType());
-					this.dungeon.itemManager.addItem(this.inventoryBar.CurrentItemRes,pos)
-					this.dungeon.itemManager.getItem(pos).show();
 					this.inventoryBar.changeItem(olditem.getType());
+					this.dungeon.itemManager.getItem(pos).show();
 				}
-			}
-			if (!olditem || !olditem.visible) {
+			}else if (!olditem || !olditem.visible) {
 				let itemRes = this.inventoryBar.CurrentItemRes;
 				let p = new egret.Point(-1, -1);
 				this.dungeon.itemManager.addItem(itemRes, p)
@@ -208,22 +198,35 @@ class Logic extends egret.Stage {
 				}
 			}
 		}
-		if (pos.x == this.monster.posIndex.x && pos.y == this.monster.posIndex.y && !this.monster.isDying()) {
-			this.player.attack(evt.dir, () => {
-				if (pos.x == this.monster.posIndex.x && pos.y == this.monster.posIndex.y) {
-					this.monster.takeDamage(this.player.attackNumber);
-				}
-			});
-		} else {
-			this.player.move(evt.dir, this.dungeon)
+		let isAttack = false;
+		for (let monster of this.monsters) {
+			isAttack = Logic.isPointEquals(pos, monster.posIndex) && !monster.isDying();
+			if (isAttack) {
+				this.player.attack(evt.dir, () => {
+					if (pos.x == monster.posIndex.x && pos.y == monster.posIndex.y) {
+						monster.takeDamage(this.player.attackNumber);
+					}
+				});
+				break;
+			}
 		}
+		if (!isAttack) {
+			this.player.move(evt.dir, this.dungeon)
+
+		}
+
 	}
-	private loadNextLevel(evt: LogicEvent): void {
+	private loadNextLevelEvent(evt: LogicEvent): void {
 		this.level = evt.data.level;
 		this.main.loadingNextDialog.show(this.level, () => {
 			this.isGameover = false;
 			this.player.resetPlayer();
-			this.monster.resetCharacter(Logic.getRandomNum(0, 8), Logic.getRandomNum(0, 8));
+			for (let monster of this.monsters) {
+				if (monster.parent) {
+					monster.parent.removeChild(monster);
+				}
+			}
+			this.addMonsters();
 			this.dungeon.resetGame(this.level);
 			this.healthBar.refreshHealth(this.player.currentHealth, this.player.maxHealth);
 			this.monsterTimer.start();
@@ -234,20 +237,20 @@ class Logic extends egret.Stage {
 			return;
 		}
 		this.isGameover = true;
-		this.score = 0;
 		this.inventoryBar.clearItems();
 		//让角色原地走一步触发死亡,防止走路清空动画
 		this.player.move(-1, this.dungeon);
-		this.main.gameoverDialog.show(this.dungeon.level);
+		this.main.gameoverDialog.show(this.dungeon.level, this.score);
 		this.monsterTimer.stop();
+		this.score = 0;
 	}
 
-	private getGem(evt: LogicEvent): void {
+	private getGemEvent(evt: LogicEvent): void {
 		this.score += evt.data.score;
-		if (this.score / Logic.SCORE_BASE >= this.dungeon.level) {
-			this.score = Logic.SCORE_BASE * this.dungeon.level;
-			this.dungeon.portal.openGate();
-		}
+		// if (this.score / Logic.SCORE_BASE >= this.dungeon.level) {
+		// 	this.score = Logic.SCORE_BASE * this.dungeon.level;
+		// 	this.dungeon.portal.openGate();
+		// }
 		this.main.refreshScoreText("" + this.score);
 	}
 	private tapInventory(evt: InventoryEvent): void {
@@ -255,5 +258,8 @@ class Logic extends egret.Stage {
 	}
 	public static getRandomNum(min, max): number {//生成一个随机数从[min,max]
 		return min + Math.round(Math.random() * (max - min));
+	}
+	public static isPointEquals(p1: egret.Point, p2: egret.Point): boolean {
+		return p1.x == p2.x && p1.y == p2.y;
 	}
 }

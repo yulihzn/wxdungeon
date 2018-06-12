@@ -139,9 +139,9 @@ class Dungeon extends egret.Stage {
 		let tile = this.map[x][y];
 		let olditem = this.itemManager.getItem(new egret.Point(x,y));
 		if (!(olditem && olditem.visible)) {
-			if (Math.random() > 0.5) {
+			if (Math.random() > 0.2) {
 				this.itemManager.addItem(ItemConstants.CAPSULE_RED, new egret.Point(x, y)).show();
-			} else {
+			} else if (Math.random() < 0.2) {
 				this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(x, y)).show();
 			}
 		}

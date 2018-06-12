@@ -126,7 +126,7 @@ class Main extends egret.DisplayObjectContainer {
         this.secondsText.textColor = 0xffffff;
         this.secondsText.x = 50;
         this.secondsText.y = 60;
-        this.secondsText.text = `Target:${Logic.SCORE_BASE}        Lv.1`;
+        this.secondsText.text = `Lv.1`;
     }
     private addScoreText(): void {
         this.scoreText = new egret.TextField();
