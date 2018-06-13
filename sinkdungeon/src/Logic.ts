@@ -209,19 +209,12 @@ class Logic extends egret.Stage {
 			default: break;
 
 		}
+		//使用
 		if (evt.dir == 4) {
 			let tile = this.dungeon.map[pos.x][pos.y];
 			let olditem = this.dungeon.itemManager.getItem(pos);
 			if (olditem && !olditem.isAutoPicking()) {
-				olditem.taken(() => {
-					this.dungeon.itemManager.addItem(this.inventoryBar.getItemRes(this.inventoryBar.getEmptyIndex()), pos)
-					this.inventoryBar.changeItem(olditem.getType());
-					this.player.changeItemRes(this.inventoryBar.CurrentItemRes);
-					if (this.dungeon.itemManager.getItem(pos)) {
-						this.dungeon.itemManager.getItem(pos).show();
-					}
-				});
-
+				this.takeItem(olditem, pos);
 			} else if (!olditem || !olditem.visible) {
 				let itemRes = this.inventoryBar.CurrentItemRes;
 				let p = new egret.Point(-1, -1);
@@ -237,6 +230,7 @@ class Logic extends egret.Stage {
 				}
 			}
 		}
+		//攻击
 		let isAttack = false;
 		for (let monster of this.monsters) {
 			isAttack = Logic.isPointEquals(pos, monster.posIndex) && !monster.isDying();
@@ -254,17 +248,28 @@ class Logic extends egret.Stage {
 				break;
 			}
 		}
+		//行走
 		if (!isAttack) {
 			if (this.player.move(evt.dir, this.dungeon)) {
+				this.sortNpcLayer();
 				let olditem = this.dungeon.itemManager.getItem(this.player.pos);
 				if (olditem && (olditem.isAutoPicking())) {
 					olditem.taken(() => { });
 				}
 			}
 
-			this.sortNpcLayer();
 		}
 
+	}
+	private takeItem(item: Item, pos: egret.Point): void {
+		item.taken(() => {
+			this.dungeon.itemManager.addItem(this.inventoryBar.getItemRes(this.inventoryBar.getEmptyIndex()), pos)
+			this.inventoryBar.changeItem(item.getType());
+			this.player.changeItemRes(this.inventoryBar.CurrentItemRes);
+			if (this.dungeon.itemManager.getItem(pos)) {
+				this.dungeon.itemManager.getItem(pos).show();
+			}
+		});
 	}
 	private loadNextLevelEvent(evt: LogicEvent): void {
 		this.level = evt.data.level;
