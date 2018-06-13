@@ -216,10 +216,7 @@ class Logic extends egret.Stage {
 			if (olditem && !olditem.isAutoPicking()) {
 				this.takeItem(olditem, pos);
 			} else if (!olditem || !olditem.visible) {
-				let itemRes = this.inventoryBar.CurrentItemRes;
-				let p = new egret.Point(-1, -1);
-				this.dungeon.itemManager.addItem(itemRes, p)
-				let item = this.dungeon.itemManager.getItem(p)
+				let item = ItemManager.getItem(this.inventoryBar.CurrentItemRes)
 				//使用物品次数为0的时候消失
 				if (item) {
 					item.use();

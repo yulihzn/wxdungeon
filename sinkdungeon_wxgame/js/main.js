@@ -308,7 +308,10 @@ var Monster = (function (_super) {
         egret.Tween.get(this, { onChange: function () { } }).to({
             x: px, y: py
         }, 200).call(function () {
-            // egret.Tween.removeTweens(this.character);
+            if (_this.isdead) {
+                _this.visible = false;
+            }
+            egret.Tween.removeTweens(_this.character);
             _this.character.rotation = 0;
             _this.character.y = 0;
             _this.walking = false;
@@ -1731,24 +1734,15 @@ var Logic = (function (_super) {
                 break;
             default: break;
         }
+        //使用
         if (evt.dir == 4) {
             var tile = this.dungeon.map[pos.x][pos.y];
-            var olditem_1 = this.dungeon.itemManager.getItem(pos);
-            if (olditem_1 && !olditem_1.isAutoPicking()) {
-                olditem_1.taken(function () {
-                    _this.dungeon.itemManager.addItem(_this.inventoryBar.getItemRes(_this.inventoryBar.getEmptyIndex()), pos);
-                    _this.inventoryBar.changeItem(olditem_1.getType());
-                    _this.player.changeItemRes(_this.inventoryBar.CurrentItemRes);
-                    if (_this.dungeon.itemManager.getItem(pos)) {
-                        _this.dungeon.itemManager.getItem(pos).show();
-                    }
-                });
+            var olditem = this.dungeon.itemManager.getItem(pos);
+            if (olditem && !olditem.isAutoPicking()) {
+                this.takeItem(olditem, pos);
             }
-            else if (!olditem_1 || !olditem_1.visible) {
-                var itemRes = this.inventoryBar.CurrentItemRes;
-                var p = new egret.Point(-1, -1);
-                this.dungeon.itemManager.addItem(itemRes, p);
-                var item = this.dungeon.itemManager.getItem(p);
+            else if (!olditem || !olditem.visible) {
+                var item = ItemManager.getItem(this.inventoryBar.CurrentItemRes);
                 //使用物品次数为0的时候消失
                 if (item) {
                     item.use();
@@ -1759,6 +1753,7 @@ var Logic = (function (_super) {
                 }
             }
         }
+        //攻击
         var isAttack = false;
         var _loop_2 = function (monster) {
             isAttack = Logic.isPointEquals(pos, monster.posIndex) && !monster.isDying();
@@ -1783,15 +1778,27 @@ var Logic = (function (_super) {
             if (state_1 === "break")
                 break;
         }
+        //行走
         if (!isAttack) {
             if (this.player.move(evt.dir, this.dungeon)) {
+                this.sortNpcLayer();
                 var olditem = this.dungeon.itemManager.getItem(this.player.pos);
                 if (olditem && (olditem.isAutoPicking())) {
                     olditem.taken(function () { });
                 }
             }
-            this.sortNpcLayer();
         }
+    };
+    Logic.prototype.takeItem = function (item, pos) {
+        var _this = this;
+        item.taken(function () {
+            _this.dungeon.itemManager.addItem(_this.inventoryBar.getItemRes(_this.inventoryBar.getEmptyIndex()), pos);
+            _this.inventoryBar.changeItem(item.getType());
+            _this.player.changeItemRes(_this.inventoryBar.CurrentItemRes);
+            if (_this.dungeon.itemManager.getItem(pos)) {
+                _this.dungeon.itemManager.getItem(pos).show();
+            }
+        });
     };
     Logic.prototype.loadNextLevelEvent = function (evt) {
         var _this = this;

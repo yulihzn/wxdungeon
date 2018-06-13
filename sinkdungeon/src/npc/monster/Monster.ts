@@ -96,7 +96,7 @@ abstract class Monster extends egret.DisplayObjectContainer {
 		}
 		this.isdead = true;
 		this.characterShadow.visible = false;
-		
+
 		if (isFall) {
 			egret.Tween.get(this.character).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
 				this.parent.setChildIndex(this, 0);
@@ -128,11 +128,11 @@ abstract class Monster extends egret.DisplayObjectContainer {
 			.to({ rotation: 0, y: 0 }, 25)
 			.to({ rotation: -ro, y: this.character.y - offsetY }, 25)
 			.to({ rotation: 0, y: 0 }, 25);
-		egret.Tween.get(this, { onChange: () => { } }).to({
-			x:
-			px, y: py
-		}, 200).call(() => {
-			// egret.Tween.removeTweens(this.character);
+		egret.Tween.get(this, { onChange: () => { } }).to({x:px, y: py}, 200).call(() => {
+			if (this.isdead) {
+				this.visible = false;
+			}
+			egret.Tween.removeTweens(this.character);
 			this.character.rotation = 0;
 			this.character.y = 0;
 			this.walking = false;
