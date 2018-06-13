@@ -66,7 +66,7 @@ class Tile extends egret.DisplayObjectContainer {
 			egret.Tween.removeTweens(this.floor);
 			egret.Tween.get(this.floor).to({ scaleX: 3, scaleY: 3 }, 700).to({ alpha: 0 }, 300).call(() => {
 				this.floor.visible = false;
-				this.parent.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, this.posIndex)
+				Logic.eventHandler.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, this.posIndex)
 			}).wait(1000).call(() => {
 				this.showTile();
 			})

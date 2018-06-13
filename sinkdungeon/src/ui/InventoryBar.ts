@@ -45,25 +45,27 @@ class InventoryBar extends egret.DisplayObjectContainer {
 			this.itemBitmaps[i].texture = null;
 		}
 	}
-	public changeItem(itemRes?: string): void {
-
-		let item = ItemManager.getItem(itemRes);
-		let tex = null;
-		if (item) {
-			tex = item.getItem().texture;
+	public getEmptyIndex(): number {
+		let hasIndex = this.currentIndex;
+		if(!this.inventoryItems[hasIndex] || this.inventoryItems[hasIndex] == ItemConstants.EMPTY){
+			return hasIndex;
 		}
-		let belowindex = -1;//除去当前格子，是否还有空余格子
+		//是否还有空余格子
 		for (let i = 0; i < this.inventoryItems.length; i++) {
-			if (i != this.currentIndex && (!this.inventoryItems[i] || this.inventoryItems[i] == ItemConstants.EMPTY)) {
-				belowindex = i;
+			if (!this.inventoryItems[i] || this.inventoryItems[i] == ItemConstants.EMPTY) {
+				hasIndex = i;
 				break;
 			}
 		}
-		if (belowindex == -1) {
-			this.refreshItem(this.currentIndex, itemRes);
-		} else {
-			this.refreshItem(belowindex, itemRes);
+		return hasIndex;
+	}
+	/**true，替换道具 */
+	public changeItem(itemRes?: string, isUse?: boolean) {
+		if(!itemRes){
+			itemRes = ItemConstants.EMPTY;
 		}
+		let index = isUse?this.currentIndex:this.getEmptyIndex();
+					this.refreshItem(index, itemRes);
 
 	}
 	private refreshItem(index: number, itemRes: string): void {
@@ -81,6 +83,12 @@ class InventoryBar extends egret.DisplayObjectContainer {
 	}
 	public get CurrentItemRes(): string {
 		return this.inventoryItems[this.currentIndex];
+	}
+	public getItemRes(index: number): string {
+		if (index > this.SIZE - 1 || index < 0) {
+			return ItemConstants.EMPTY;
+		}
+		return this.inventoryItems[index];
 	}
 	public get CurrentIndex(): number {
 		return this.currentIndex;

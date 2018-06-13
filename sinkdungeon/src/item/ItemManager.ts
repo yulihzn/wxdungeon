@@ -16,6 +16,8 @@ class ItemManager extends egret.DisplayObjectContainer {
 			case ItemConstants.GEM_RED: item = new Gem(resName); break;
 			case ItemConstants.CAPSULE_RED: item = new Capsule(resName); break;
 			case ItemConstants.CAPSULE_BLUE: item = new Capsule(resName); break;
+			case ItemConstants.WEAPON_SWORD: item = new Sword(resName); break;
+			case ItemConstants.WEAPON_SHIELD: item = new Shield(resName); break;
 		}
 		return item;
 	}

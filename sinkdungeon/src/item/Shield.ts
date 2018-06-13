@@ -1,6 +1,10 @@
-class Capsule extends Item {
+class Shield extends Item {
 	public constructor(type: string) {
 		super(type);
+		this.isInfinity = true;
+		this.item.scaleX = 2;
+		this.item.scaleY = 2;
+		this.data.defence = 1;
 	}
 
 	public isAutoPicking(): boolean {

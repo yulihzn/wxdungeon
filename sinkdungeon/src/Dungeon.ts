@@ -6,7 +6,7 @@ class Dungeon extends egret.Stage {
 	private randomArr: egret.Point[];
 	//地板定时器
 	// private timer: egret.Timer;
-	private gemTimer: egret.Timer;
+	public gemTimer: egret.Timer;
 
 	public level: number = 1;
 
@@ -69,10 +69,7 @@ class Dungeon extends egret.Stage {
 					this.portal.show();
 				}
 				if (!(index == i && index == j)) {
-					if (this.getRandomNum(0, 10) > 5) {
-						let item = this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(i, j))
-						item.show();
-					}
+					this.addItem(new egret.Point(i, j));
 				}
 				this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
 			}
@@ -89,10 +86,7 @@ class Dungeon extends egret.Stage {
 				egret.Tween.removeTweens(t.floor);
 				t.showTile();
 				if (!(index == i && index == j)) {
-					if (this.getRandomNum(0, 10) > 5) {
-						let item = this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(i, j))
-						item.show();
-					}
+					this.addItem(new egret.Point(i, j));
 				}
 				this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
 			}
@@ -112,9 +106,9 @@ class Dungeon extends egret.Stage {
 		// this.timer.delay = delay;
 		// this.timer.reset();
 		// this.timer.start();
-		this.gemTimer.reset();
-		this.gemTimer.start();
-		this.dispatchEventWith(LogicEvent.UI_REFRESHTEXT);
+		// this.gemTimer.reset();
+		// this.gemTimer.start();
+		Logic.eventHandler.dispatchEventWith(LogicEvent.UI_REFRESHTEXT);
 	}
 	// private addPlayer(): void {
 	// 	this.player = new Player();
@@ -130,8 +124,8 @@ class Dungeon extends egret.Stage {
 	private addTimer(): void {
 		// this.timer = new egret.Timer(200 - this.level * 10);
 		// this.timer.addEventListener(egret.TimerEvent.TIMER, this.breakTile, this);
-		this.gemTimer = new egret.Timer(5000);
-		this.gemTimer.addEventListener(egret.TimerEvent.TIMER, this.addGem, this);
+		// this.gemTimer = new egret.Timer(5000);
+		// this.gemTimer.addEventListener(egret.TimerEvent.TIMER, this.addGem, this);
 	}
 	private addGem(): void {
 		let x = this.getRandomNum(0, Logic.SIZE - 1);
@@ -139,12 +133,20 @@ class Dungeon extends egret.Stage {
 		let tile = this.map[x][y];
 		let olditem = this.itemManager.getItem(new egret.Point(x,y));
 		if (!(olditem && olditem.visible)) {
-			if (Math.random() > 0.2) {
-				this.itemManager.addItem(ItemConstants.CAPSULE_RED, new egret.Point(x, y)).show();
-			} else if (Math.random() < 0.2) {
-				this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), new egret.Point(x, y)).show();
-			}
+			this.addItem(new egret.Point(x,y));
 		}
+	}
+	private addItem(p:egret.Point):void{
+		let rand = Math.random();
+		if (rand < 0.1) {
+				this.itemManager.addItem("gem0" + this.getRandomNum(1, 4), p).show();
+			} else if (rand>=0.1&&rand < 0.102) {
+				this.itemManager.addItem(ItemConstants.WEAPON_SHIELD, p).show();
+			}else if (rand>=0.102&&rand < 0.104) {
+				this.itemManager.addItem(ItemConstants.WEAPON_SWORD, p).show();
+			}else if (rand>=0.104&&rand < 0.11) {
+				this.itemManager.addItem(ItemConstants.CAPSULE_RED, p).show();
+			}
 	}
 
 	private breakTile(): void {

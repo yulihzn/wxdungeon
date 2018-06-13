@@ -1,6 +1,7 @@
 class Logic extends egret.Stage {
 	public static readonly SIZE: number = 9;
 	public static readonly SCORE_BASE: number = 200;
+	public static eventHandler: egret.Sprite = new egret.Sprite();
 	//地图左上角坐标
 	public static mapX = 0;
 	public static mapY = 0;
@@ -15,6 +16,7 @@ class Logic extends egret.Stage {
 	private monsterTimer: egret.Timer;
 	private inventoryBar: InventoryBar;
 	private healthBar: HealthBar;
+	private npcLayer: egret.Sprite;
 	public monsterReswpanPoints: { [key: string]: string } = {}
 	public constructor(main: Main) {
 		super();
@@ -29,19 +31,19 @@ class Logic extends egret.Stage {
 		Logic.mapY = 200;
 		this.dungeon = new Dungeon();
 		this.addChild(this.dungeon);
+		this.npcLayer = new egret.Sprite();
+		this.addChild(this.npcLayer);
 		this.controllerPad = new ControllerPad();
 		this.controllerPad.x = this.stage.width / 2;
 		this.controllerPad.y = 800;
 		this.addChild(this.controllerPad);
 		this.controllerPad.addEventListener(PadtapEvent.PADTAP, this.tapPad, this);
-		this.dungeon.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
-		this.main.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevelEvent, this);
-		this.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevelEvent, this);
-		this.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
-		this.dungeon.addEventListener(LogicEvent.GET_GEM, this.getGemEvent, this);
-		this.dungeon.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinishEvent, this);
-		this.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayerEvent, this);
-		this.dungeon.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayerEvent, this);
+		Logic.eventHandler.addEventListener(LogicEvent.UI_REFRESHTEXT, this.refreshText, this);
+		Logic.eventHandler.addEventListener(LogicEvent.DUNGEON_NEXTLEVEL, this.loadNextLevelEvent, this);
+		Logic.eventHandler.addEventListener(LogicEvent.GET_GEM, this.getGemEvent, this);
+		Logic.eventHandler.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinishEvent, this);
+		Logic.eventHandler.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
+		Logic.eventHandler.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayerEvent, this);
 
 		this.inventoryBar = new InventoryBar();
 		this.addChild(this.inventoryBar);
@@ -58,13 +60,29 @@ class Logic extends egret.Stage {
 		this.healthBar.scaleX = 2;
 		this.healthBar.scaleY = 2;
 
+
+
 		this.addPlayer();
 		this.addMonsters();
 		this.addTimer();
+		this.sortNpcLayer();
+	}
+	private sortNpcLayer(): void {
+		let num = this.npcLayer.numChildren;
+		let arr = new Array(num);
+		for (let i = 0; i < num; i++) {
+			arr[i] = this.npcLayer.getChildAt(i);
+		}
+		arr.sort((c1: egret.DisplayObject, c2: egret.DisplayObject) => {
+			return c1.y - c2.y;
+		})
+		for (let i = 0; i < num; i++) {
+			this.npcLayer.setChildIndex(arr[i], 1000);
+		}
 	}
 
 	private addTimer(): void {
-		this.monsterTimer = new egret.Timer(10000);
+		this.monsterTimer = new egret.Timer(1000);
 		this.monsterTimer.addEventListener(egret.TimerEvent.TIMER, this.monsterActions, this);
 		this.monsterTimer.start();
 	}
@@ -78,7 +96,9 @@ class Logic extends egret.Stage {
 		}
 		if (this.monsters.length > 0 && count >= this.monsters.length) {
 			this.dungeon.portal.openGate();
+			// this.dungeon.gemTimer.stop();
 		}
+		this.sortNpcLayer();
 	}
 
 	private addPlayer(): void {
@@ -89,7 +109,7 @@ class Logic extends egret.Stage {
 		let p = Logic.getInMapPos(this.player.pos);
 		this.player.x = p.x;
 		this.player.y = p.y;
-		this.addChild(this.player);
+		this.npcLayer.addChild(this.player);
 		this.healthBar.refreshHealth(this.player.currentHealth, this.player.maxHealth);
 	}
 	private addMonsters(): void {
@@ -117,7 +137,7 @@ class Logic extends egret.Stage {
 		let p = Logic.getInMapPos(monster.posIndex);
 		monster.x = p.x;
 		monster.y = p.y;
-		this.addChild(monster);
+		this.npcLayer.addChild(monster);
 		this.monsters.push(monster);
 	}
 	public static getInMapPos(pos: egret.Point): egret.Point {
@@ -126,7 +146,7 @@ class Logic extends egret.Stage {
 		return new egret.Point(x, y);
 	}
 	private breakTileFinishEvent(evt: LogicEvent): void {
-		if (this.player.pos.x == evt.data.x && this.player.pos.y == evt.data.y) {
+		if (Logic.isPointEquals(this.player.pos, evt.data)) {
 			this.gameOver();
 		}
 
@@ -147,6 +167,18 @@ class Logic extends egret.Stage {
 	}
 	/**造成伤害 */
 	private damagePlayer(damage: number): void {
+		let currentritem = ItemManager.getItem(this.inventoryBar.CurrentItemRes);
+		let defence = 0;
+		if (currentritem && damage > 0) {
+			defence = currentritem.Data.defence;
+			if (defence > 0 && defence < 1) {
+				defence = Math.random() < defence ? 1 : 0;
+			}
+			damage -= defence;
+			if (damage < 0) {
+				damage = 0;
+			}
+		}
 		this.player.takeDamage(damage);
 		this.healthBar.refreshHealth(this.player.currentHealth, this.player.maxHealth);
 	}
@@ -181,20 +213,27 @@ class Logic extends egret.Stage {
 			let tile = this.dungeon.map[pos.x][pos.y];
 			let olditem = this.dungeon.itemManager.getItem(pos);
 			if (olditem && !olditem.isAutoPicking()) {
-				if (olditem.taken()) {
-					this.dungeon.itemManager.addItem(this.inventoryBar.CurrentItemRes, pos)
-					this.player.changeItemRes(olditem.getType());
+				olditem.taken(() => {
+					this.dungeon.itemManager.addItem(this.inventoryBar.getItemRes(this.inventoryBar.getEmptyIndex()), pos)
 					this.inventoryBar.changeItem(olditem.getType());
-					this.dungeon.itemManager.getItem(pos).show();
-				}
-			}else if (!olditem || !olditem.visible) {
+					this.player.changeItemRes(this.inventoryBar.CurrentItemRes);
+					if (this.dungeon.itemManager.getItem(pos)) {
+						this.dungeon.itemManager.getItem(pos).show();
+					}
+				});
+
+			} else if (!olditem || !olditem.visible) {
 				let itemRes = this.inventoryBar.CurrentItemRes;
 				let p = new egret.Point(-1, -1);
 				this.dungeon.itemManager.addItem(itemRes, p)
 				let item = this.dungeon.itemManager.getItem(p)
-				if (item && item.use()) {
-					this.inventoryBar.changeItem(ItemConstants.EMPTY);
-					this.player.useItem();
+				//使用物品次数为0的时候消失
+				if (item) {
+					item.use();
+					if (!item.IsInfinity) {
+						this.inventoryBar.changeItem(ItemConstants.EMPTY, true);
+						this.player.useItem();
+					}
 				}
 			}
 		}
@@ -203,16 +242,27 @@ class Logic extends egret.Stage {
 			isAttack = Logic.isPointEquals(pos, monster.posIndex) && !monster.isDying();
 			if (isAttack) {
 				this.player.attack(evt.dir, () => {
-					if (pos.x == monster.posIndex.x && pos.y == monster.posIndex.y) {
-						monster.takeDamage(this.player.attackNumber);
+					if (Logic.isPointEquals(pos, monster.posIndex)) {
+						let currentritem = ItemManager.getItem(this.inventoryBar.CurrentItemRes);
+						let damage = 0;
+						if (currentritem) {
+							damage = currentritem.Data.damage;
+						}
+						monster.takeDamage(this.player.attackNumber + damage);
 					}
 				});
 				break;
 			}
 		}
 		if (!isAttack) {
-			this.player.move(evt.dir, this.dungeon)
+			if (this.player.move(evt.dir, this.dungeon)) {
+				let olditem = this.dungeon.itemManager.getItem(this.player.pos);
+				if (olditem && (olditem.isAutoPicking())) {
+					olditem.taken(() => { });
+				}
+			}
 
+			this.sortNpcLayer();
 		}
 
 	}

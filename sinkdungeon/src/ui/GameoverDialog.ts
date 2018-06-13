@@ -77,7 +77,7 @@ class GameoverDialog extends egret.DisplayObjectContainer {
 		this.visible = false;
 		this.textRetry.touchEnabled = false;
 		this.textRetry.removeEventListener(egret.TouchEvent.TOUCH_TAP,this.retry,this);
-		this.parent.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL,false,{level:1});
+		Logic.eventHandler.dispatchEventWith(LogicEvent.DUNGEON_NEXTLEVEL,false,{level:1});
 	}
 	
 }

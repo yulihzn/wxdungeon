@@ -7,10 +7,11 @@ abstract class Monster extends egret.DisplayObjectContainer {
 	protected healthBar: HealthBar;
 	protected currentHealth: number = 2;
 	protected maxHealth: number = 2;
+	protected damage: number = 1;
 	public posIndex: egret.Point = new egret.Point();
 	protected astarGrid: AstarGrid;
-	protected type:string = 'empty'
-	public constructor(type:string) {
+	protected type: string = 'empty'
+	public constructor(type: string) {
 		super();
 		this.type = type;
 		this.init();
@@ -95,11 +96,13 @@ abstract class Monster extends egret.DisplayObjectContainer {
 		}
 		this.isdead = true;
 		this.characterShadow.visible = false;
+		
 		if (isFall) {
 			egret.Tween.get(this.character).to({ y: 32, scaleX: 2.5, scaleY: 2.5 }, 200).call(() => {
 				this.parent.setChildIndex(this, 0);
 			}).to({ scaleX: 1, scaleY: 1, y: 100 }, 100).call(() => {
 				this.character.alpha = 0;
+				this.healthBar.visible = false;
 				this.character.texture = RES.getRes("monster00" + Logic.getRandomNum(1, 3));
 
 			});
@@ -129,7 +132,7 @@ abstract class Monster extends egret.DisplayObjectContainer {
 			x:
 			px, y: py
 		}, 200).call(() => {
-			egret.Tween.removeTweens(this.character);
+			// egret.Tween.removeTweens(this.character);
 			this.character.rotation = 0;
 			this.character.y = 0;
 			this.walking = false;
@@ -186,7 +189,7 @@ abstract class Monster extends egret.DisplayObjectContainer {
 		if (Logic.isPointEquals(targetPos, player.pos)) {
 			this.attack(dir, () => {
 				if (targetPos.x == player.pos.x && targetPos.y == player.pos.y) {
-					this.parent.dispatchEventWith(LogicEvent.DAMAGE_PLAYER, false, { damage: 1 });
+					Logic.eventHandler.dispatchEventWith(LogicEvent.DAMAGE_PLAYER, false, { damage: this.damage });
 				}
 			});
 		} else if (!dungeon.map[targetPos.x][targetPos.y].isBreakingNow) {
