@@ -6,6 +6,7 @@ class Tile extends egret.DisplayObjectContainer {
 	// public item: Item;
 	public posIndex: egret.Point;
 	public isBreakingNow = false;
+	public isLooping = true;
 	public constructor(x: number, y: number) {
 		super()
 		this.posIndex = new egret.Point(x, y);
@@ -44,15 +45,15 @@ class Tile extends egret.DisplayObjectContainer {
 		this.floor.x = 0;
 		this.floor.y = 0;
 		this.floor.visible = true;
-		
+
 		egret.Tween.get(this.floor).to({ alpha: 1 }, 200).wait(1000).call(() => {
 			this.isBreakingNow = false;
 		})
 	}
 
-	public breakTile(): Promise<egret.Point> {
+	public breakTile(isLooping: boolean): Promise<egret.Point> {
 		//当前tile没有建筑可见，开始塌陷
-		if(this.building&&this.building.visible || this.isBreakingNow){
+		if (this.building && this.building.visible || this.isBreakingNow) {
 			return;
 		}
 		this.isBreakingNow = true;
@@ -68,7 +69,9 @@ class Tile extends egret.DisplayObjectContainer {
 				this.floor.visible = false;
 				Logic.eventHandler.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, this.posIndex)
 			}).wait(1000).call(() => {
-				this.showTile();
+				if (isLooping) {
+					this.showTile();
+				}
 			})
 		});
 

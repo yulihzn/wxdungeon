@@ -160,9 +160,10 @@ abstract class Monster extends egret.DisplayObjectContainer {
 		if (tile.building && tile.building.visible && tile.building.isblock) {
 			return;
 		}
-		if (tile.floor.visible)
+		if (tile.floor.visible){
 			this.posIndex = target;
-		let p = Logic.getInMapPos(target);
+		}
+		let p = Logic.getInMapPos(this.posIndex);
 		this.walk(p.x, p.y, tile.floor.visible);
 		if (!tile.floor.visible) {
 			this.move(this.posIndex, dungeon)

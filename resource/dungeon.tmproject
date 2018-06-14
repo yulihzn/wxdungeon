@@ -1,13 +1,14 @@
 {
     "options": {
-        "layoutMath": "3",
-        "sizeMode": "2n",
         "useExtension": 0,
         "layoutGap": 1,
-        "extend": 0
+        "extend": 0,
+        "layoutMath": "3",
+        "sizeMode": "2n"
     },
-    "projectName": "dungeon",
     "files": [
+        "./bullet001.png",
+        "./boss001.png",
         "./weapon001.png",
         "./capsule001.png",
         "./capsule002.png",
@@ -30,7 +31,9 @@
         "./player003.png",
         "./heart.png",
         "./tabbackground.png",
-        "./tabselect.png"
+        "./tabselect.png",
+        "./weapon002.png"
     ],
-    "version": 5
+    "version": 5,
+    "projectName": "dungeon"
 }

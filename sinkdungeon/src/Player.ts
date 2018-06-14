@@ -6,8 +6,8 @@ class Player extends egret.DisplayObjectContainer {
 	private item: egret.Bitmap;
 	private walking: boolean = false;
 	private isdead: boolean = false;
-	public currentHealth: number = 3;
-	public maxHealth: number = 3;
+	public currentHealth: number = 10;
+	public maxHealth: number = 10;
 	public attackNumber: number = 1;
 	public pos: egret.Point = new egret.Point();
 	public constructor() {
@@ -224,7 +224,7 @@ class Player extends egret.DisplayObjectContainer {
 		}
 		if (tile.floor.visible) {
 			egret.setTimeout(() => {
-				tile.breakTile();
+				tile.breakTile(true);
 			}, this, 1000)
 		}
 		

@@ -2,6 +2,7 @@ class Logic extends egret.Stage {
 	public static readonly SIZE: number = 9;
 	public static readonly SCORE_BASE: number = 200;
 	public static eventHandler: egret.Sprite = new egret.Sprite();
+	public static readonly BOSS_LEVEL_1: number = 2;
 	//地图左上角坐标
 	public static mapX = 0;
 	public static mapY = 0;
@@ -44,6 +45,8 @@ class Logic extends egret.Stage {
 		Logic.eventHandler.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinishEvent, this);
 		Logic.eventHandler.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
 		Logic.eventHandler.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayerEvent, this);
+		Logic.eventHandler.addEventListener(LogicEvent.OPEN_GATE, this.openGateEvent, this);
+		Logic.eventHandler.addEventListener(LogicEvent.ADD_MONSTER, this.addMonsterEvent, this);
 
 		this.inventoryBar = new InventoryBar();
 		this.addChild(this.inventoryBar);
@@ -62,10 +65,14 @@ class Logic extends egret.Stage {
 
 
 
+
 		this.addPlayer();
 		this.addMonsters();
 		this.addTimer();
 		this.sortNpcLayer();
+	}
+	private openGateEvent(evt: LogicEvent): void {
+		this.dungeon.portal.openGate();
 	}
 	private sortNpcLayer(): void {
 		let num = this.npcLayer.numChildren;
@@ -95,10 +102,19 @@ class Logic extends egret.Stage {
 			}
 		}
 		if (this.monsters.length > 0 && count >= this.monsters.length) {
-			this.dungeon.portal.openGate();
+			if(!Logic.isBossLevel(this.level)){
+				this.dungeon.portal.openGate();
+			}
 			// this.dungeon.gemTimer.stop();
 		}
 		this.sortNpcLayer();
+		if(Logic.isBossLevel(this.level)&&this.dungeon.boss.isShow&&!this.dungeon.boss.isDead){
+			this.dungeon.boss.fire(()=>{
+				if(Logic.isPointEquals(this.dungeon.boss.bullet.posIndex,this.player.pos)){
+					this.dungeon.boss.bullet.hit();
+				}
+			});
+		}
 	}
 
 	private addPlayer(): void {
@@ -124,12 +140,18 @@ class Logic extends egret.Stage {
 		this.monsterReswpanPoints['8,4'] = NpcConstants.MONSTER_MUMMY;
 		this.monsterReswpanPoints['4,8'] = NpcConstants.MONSTER_ANUBIS;
 		for (let p in this.monsterReswpanPoints) {
-			if (levelcount++ > this.level) {
+			if (levelcount++ > this.level || Logic.isBossLevel(this.level)) {
 				break;
 			}
 			let arr = p.split(',');
 			this.addMonster(NpcManager.getNpc(this.monsterReswpanPoints[p]), new egret.Point(parseInt(arr[0]), parseInt(arr[1])));
 		}
+	}
+	public static isBossLevel(level: number): boolean {
+		return level == Logic.BOSS_LEVEL_1;
+	}
+	private addMonsterEvent(evt:LogicEvent){
+		this.addMonster(NpcManager.getNpc(evt.data.resName),evt.data.p);
 	}
 	private addMonster(monster: Monster, pos: egret.Point) {
 		monster.posIndex.x = pos.x;
@@ -245,8 +267,21 @@ class Logic extends egret.Stage {
 				break;
 			}
 		}
+		let isBossAttack = false;
+		isBossAttack = Logic.isBossLevel(this.level) && this.dungeon.boss.isBossZone(pos);
+		if (isBossAttack&&this.dungeon.boss.isShow) {
+			this.player.attack(evt.dir, () => {
+				let currentritem = ItemManager.getItem(this.inventoryBar.CurrentItemRes);
+				let damage = 0;
+				if (currentritem) {
+					damage = currentritem.Data.damage;
+				}
+				this.dungeon.boss.takeDamage(this.player.attackNumber + damage);
+			});
+
+		}
 		//行走
-		if (!isAttack) {
+		if (!isAttack&&!isBossAttack) {
 			if (this.player.move(evt.dir, this.dungeon)) {
 				this.sortNpcLayer();
 				let olditem = this.dungeon.itemManager.getItem(this.player.pos);
@@ -284,6 +319,7 @@ class Logic extends egret.Stage {
 			this.monsterTimer.start();
 		})
 	}
+
 	private gameOver(): void {
 		if (this.isGameover) {
 			return;

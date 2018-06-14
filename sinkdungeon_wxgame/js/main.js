@@ -305,9 +305,7 @@ var Monster = (function (_super) {
             .to({ rotation: 0, y: 0 }, 25)
             .to({ rotation: -ro, y: this.character.y - offsetY }, 25)
             .to({ rotation: 0, y: 0 }, 25);
-        egret.Tween.get(this, { onChange: function () { } }).to({
-            x: px, y: py
-        }, 200).call(function () {
+        egret.Tween.get(this, { onChange: function () { } }).to({ x: px, y: py }, 200).call(function () {
             if (_this.isdead) {
                 _this.visible = false;
             }
@@ -339,9 +337,10 @@ var Monster = (function (_super) {
         if (tile.building && tile.building.visible && tile.building.isblock) {
             return;
         }
-        if (tile.floor.visible)
+        if (tile.floor.visible) {
             this.posIndex = target;
-        var p = Logic.getInMapPos(target);
+        }
+        var p = Logic.getInMapPos(this.posIndex);
         this.walk(p.x, p.y, tile.floor.visible);
         if (!tile.floor.visible) {
             this.move(this.posIndex, dungeon);
@@ -403,21 +402,72 @@ var Monster = (function (_super) {
     return Monster;
 }(egret.DisplayObjectContainer));
 __reflect(Monster.prototype, "Monster");
-var ItemConstants = (function () {
-    function ItemConstants() {
+var ItemManager = (function (_super) {
+    __extends(ItemManager, _super);
+    function ItemManager() {
+        var _this = _super.call(this) || this;
+        _this.itemMap = {};
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+        return _this;
     }
-    ItemConstants.EMPTY = 'empty';
-    ItemConstants.CAPSULE_RED = 'capsule001';
-    ItemConstants.CAPSULE_BLUE = 'capsule002';
-    ItemConstants.GEM_GREEN = 'gem01';
-    ItemConstants.GEM_YELLOW = 'gem02';
-    ItemConstants.GEM_PURPLE = 'gem03';
-    ItemConstants.GEM_RED = 'gem04';
-    ItemConstants.WEAPON_SWORD = 'weapon001';
-    ItemConstants.WEAPON_SHIELD = 'weapon002';
-    return ItemConstants;
-}());
-__reflect(ItemConstants.prototype, "ItemConstants");
+    ItemManager.prototype.onAddToStage = function () {
+        this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+    };
+    ItemManager.getItem = function (resName) {
+        var item;
+        switch (resName) {
+            case ItemConstants.GEM_GREEN:
+            case ItemConstants.GEM_YELLOW:
+            case ItemConstants.GEM_PURPLE:
+            case ItemConstants.GEM_RED:
+                item = new Gem(resName);
+                break;
+            case ItemConstants.CAPSULE_RED:
+                item = new Capsule(resName);
+                break;
+            case ItemConstants.CAPSULE_BLUE:
+                item = new Capsule(resName);
+                break;
+            case ItemConstants.WEAPON_SWORD:
+                item = new Sword(resName);
+                break;
+            case ItemConstants.WEAPON_SHIELD:
+                item = new Shield(resName);
+                break;
+        }
+        return item;
+    };
+    ItemManager.prototype.addItem = function (resName, posIndex) {
+        var item = ItemManager.getItem(resName);
+        var old = this.itemMap["x=" + posIndex.x + "y=" + posIndex.y];
+        if (old && old.parent) {
+            old.parent.removeChild(old);
+            this.itemMap["x=" + posIndex.x + "y=" + posIndex.y] = null;
+        }
+        if (item) {
+            item.posIndex = new egret.Point(posIndex.x, posIndex.y);
+            item.x = Logic.mapX + posIndex.x * Tile.WIDTH;
+            item.y = Logic.mapY + posIndex.y * Tile.HEIGHT;
+            this.itemMap["x=" + posIndex.x + "y=" + posIndex.y] = item;
+            this.addChild(item);
+        }
+        return item;
+    };
+    ItemManager.prototype.getItem = function (posIndex) {
+        return this.itemMap["x=" + posIndex.x + "y=" + posIndex.y];
+    };
+    ItemManager.prototype.removeAllItems = function () {
+        for (var key in this.itemMap) {
+            var item = this.itemMap[key];
+            if (item && item.parent) {
+                item.parent.removeChild(item);
+            }
+            this.itemMap[key] = null;
+        }
+    };
+    return ItemManager;
+}(egret.DisplayObjectContainer));
+__reflect(ItemManager.prototype, "ItemManager");
 //////////////////////////////////////////////////////////////////////////////////////
 //
 //  Copyright (c) 2014-present, Egret Technology.
@@ -638,8 +688,8 @@ var Player = (function (_super) {
         _this.tag = 'player';
         _this.walking = false;
         _this.isdead = false;
-        _this.currentHealth = 3;
-        _this.maxHealth = 3;
+        _this.currentHealth = 10;
+        _this.maxHealth = 10;
         _this.attackNumber = 1;
         _this.pos = new egret.Point();
         _this.init();
@@ -858,7 +908,7 @@ var Player = (function (_super) {
         }
         if (tile.floor.visible) {
             egret.setTimeout(function () {
-                tile.breakTile();
+                tile.breakTile(true);
             }, this, 1000);
         }
         if (this.pos.x == dungeon.portal.posIndex.x
@@ -882,6 +932,7 @@ var Tile = (function (_super) {
     function Tile(x, y) {
         var _this = _super.call(this) || this;
         _this.isBreakingNow = false;
+        _this.isLooping = true;
         _this.posIndex = new egret.Point(x, y);
         _this.init();
         return _this;
@@ -923,7 +974,7 @@ var Tile = (function (_super) {
             _this.isBreakingNow = false;
         });
     };
-    Tile.prototype.breakTile = function () {
+    Tile.prototype.breakTile = function (isLooping) {
         var _this = this;
         //当前tile没有建筑可见，开始塌陷
         if (this.building && this.building.visible || this.isBreakingNow) {
@@ -942,7 +993,9 @@ var Tile = (function (_super) {
                 _this.floor.visible = false;
                 Logic.eventHandler.dispatchEventWith(LogicEvent.DUNGEON_BREAKTILE, false, _this.posIndex);
             }).wait(1000).call(function () {
-                _this.showTile();
+                if (isLooping) {
+                    _this.showTile();
+                }
             });
         });
     };
@@ -1132,6 +1185,8 @@ var LogicEvent = (function (_super) {
     LogicEvent.PLAYER_MOVE = "PLAYER_MOVE";
     LogicEvent.GET_ITEM = "GET_ITEM";
     LogicEvent.DAMAGE_PLAYER = "DAMAGE_PLAYER";
+    LogicEvent.OPEN_GATE = "OPEN_GATE";
+    LogicEvent.ADD_MONSTER = "ADD_MONSTER";
     return LogicEvent;
 }(egret.Event));
 __reflect(LogicEvent.prototype, "LogicEvent");
@@ -1242,6 +1297,21 @@ var LoadingUI = (function (_super) {
     return LoadingUI;
 }(egret.Sprite));
 __reflect(LoadingUI.prototype, "LoadingUI", ["RES.PromiseTaskReporter"]);
+var ItemConstants = (function () {
+    function ItemConstants() {
+    }
+    ItemConstants.EMPTY = 'empty';
+    ItemConstants.CAPSULE_RED = 'capsule001';
+    ItemConstants.CAPSULE_BLUE = 'capsule002';
+    ItemConstants.GEM_GREEN = 'gem01';
+    ItemConstants.GEM_YELLOW = 'gem02';
+    ItemConstants.GEM_PURPLE = 'gem03';
+    ItemConstants.GEM_RED = 'gem04';
+    ItemConstants.WEAPON_SWORD = 'weapon001';
+    ItemConstants.WEAPON_SHIELD = 'weapon002';
+    return ItemConstants;
+}());
+__reflect(ItemConstants.prototype, "ItemConstants");
 var Dungeon = (function (_super) {
     __extends(Dungeon, _super);
     function Dungeon() {
@@ -1261,6 +1331,7 @@ var Dungeon = (function (_super) {
         this.drawBg();
         this.itemManager = new ItemManager();
         this.addChild(this.itemManager);
+        this.addBoss();
         this.drawMap();
         this.setChildIndex(this.itemManager, 1000);
         // this.addPlayer();
@@ -1286,6 +1357,8 @@ var Dungeon = (function (_super) {
     Dungeon.prototype.drawMap = function () {
         this.randomArr = new Array();
         this.map = new Array();
+        this.floorLayer = new egret.Sprite();
+        this.addChild(this.floorLayer);
         for (var i = 0; i < Logic.SIZE; i++) {
             this.map[i] = new Array(i);
             for (var j = 0; j < Logic.SIZE; j++) {
@@ -1293,7 +1366,7 @@ var Dungeon = (function (_super) {
                 t.x = Logic.mapX + i * Tile.WIDTH;
                 t.y = Logic.mapY + j * Tile.HEIGHT;
                 this.map[i][j] = t;
-                this.addChild(this.map[i][j]);
+                this.floorLayer.addChild(this.map[i][j]);
                 var index = Math.floor(Logic.SIZE / 2);
                 if (index == i && index == j) {
                     this.portal = new Portal(i, j);
@@ -1304,6 +1377,48 @@ var Dungeon = (function (_super) {
                     this.addItem(new egret.Point(i, j));
                 }
                 this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
+            }
+        }
+    };
+    Dungeon.prototype.addBoss = function () {
+        this.boss = new Boss();
+        this.addChild(this.boss);
+        this.boss.resetBoss();
+    };
+    Dungeon.prototype.shakeFloor = function () {
+        egret.Tween.get(this.floorLayer, { loop: true })
+            .to({ y: 5 }, 25)
+            .to({ y: 0 }, 25)
+            .to({ y: -5 }, 25)
+            .to({ y: 0 }, 25);
+    };
+    Dungeon.prototype.showBoss = function () {
+        var _this = this;
+        if (!Logic.isBossLevel(this.level)) {
+            return;
+        }
+        egret.Tween.get(this).call(function () {
+            _this.shakeFloor();
+        }).wait(1000).call(function () {
+            egret.Tween.removeTweens(_this.floorLayer);
+        }).wait(1000).call(function () {
+            _this.shakeFloor();
+        }).wait(1000).call(function () {
+            egret.Tween.removeTweens(_this.floorLayer);
+        }).wait(1000).call(function () {
+            _this.shakeFloor();
+        }).wait(1000).call(function () {
+            egret.Tween.removeTweens(_this.floorLayer);
+        }).call(function () {
+            _this.breakHalfTiles();
+            _this.boss.showBoss();
+        });
+    };
+    Dungeon.prototype.breakHalfTiles = function () {
+        for (var i = 0; i < Logic.SIZE; i++) {
+            for (var j = 0; j < 4; j++) {
+                var t = this.map[i][j];
+                t.breakTile(false);
             }
         }
     };
@@ -1339,6 +1454,8 @@ var Dungeon = (function (_super) {
         // this.gemTimer.reset();
         // this.gemTimer.start();
         Logic.eventHandler.dispatchEventWith(LogicEvent.UI_REFRESHTEXT);
+        this.boss.resetBoss();
+        this.showBoss();
     };
     // private addPlayer(): void {
     // 	this.player = new Player();
@@ -1389,7 +1506,7 @@ var Dungeon = (function (_super) {
         var p = this.randomArr[index];
         var tile = this.map[p.x][p.y];
         this.randomArr.splice(index, 1);
-        tile.breakTile();
+        tile.breakTile(false);
     };
     Dungeon.prototype.getRandomNum = function (min, max) {
         return min + Math.round(Math.random() * (max - min));
@@ -1397,72 +1514,6 @@ var Dungeon = (function (_super) {
     return Dungeon;
 }(egret.Stage));
 __reflect(Dungeon.prototype, "Dungeon");
-var ItemManager = (function (_super) {
-    __extends(ItemManager, _super);
-    function ItemManager() {
-        var _this = _super.call(this) || this;
-        _this.itemMap = {};
-        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
-        return _this;
-    }
-    ItemManager.prototype.onAddToStage = function () {
-        this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
-    };
-    ItemManager.getItem = function (resName) {
-        var item;
-        switch (resName) {
-            case ItemConstants.GEM_GREEN:
-            case ItemConstants.GEM_YELLOW:
-            case ItemConstants.GEM_PURPLE:
-            case ItemConstants.GEM_RED:
-                item = new Gem(resName);
-                break;
-            case ItemConstants.CAPSULE_RED:
-                item = new Capsule(resName);
-                break;
-            case ItemConstants.CAPSULE_BLUE:
-                item = new Capsule(resName);
-                break;
-            case ItemConstants.WEAPON_SWORD:
-                item = new Sword(resName);
-                break;
-            case ItemConstants.WEAPON_SHIELD:
-                item = new Shield(resName);
-                break;
-        }
-        return item;
-    };
-    ItemManager.prototype.addItem = function (resName, posIndex) {
-        var item = ItemManager.getItem(resName);
-        var old = this.itemMap["x=" + posIndex.x + "y=" + posIndex.y];
-        if (old && old.parent) {
-            old.parent.removeChild(old);
-            this.itemMap["x=" + posIndex.x + "y=" + posIndex.y] = null;
-        }
-        if (item) {
-            item.posIndex = new egret.Point(posIndex.x, posIndex.y);
-            item.x = Logic.mapX + posIndex.x * Tile.WIDTH;
-            item.y = Logic.mapY + posIndex.y * Tile.HEIGHT;
-            this.itemMap["x=" + posIndex.x + "y=" + posIndex.y] = item;
-            this.addChild(item);
-        }
-        return item;
-    };
-    ItemManager.prototype.getItem = function (posIndex) {
-        return this.itemMap["x=" + posIndex.x + "y=" + posIndex.y];
-    };
-    ItemManager.prototype.removeAllItems = function () {
-        for (var key in this.itemMap) {
-            var item = this.itemMap[key];
-            if (item && item.parent) {
-                item.parent.removeChild(item);
-            }
-            this.itemMap[key] = null;
-        }
-    };
-    return ItemManager;
-}(egret.DisplayObjectContainer));
-__reflect(ItemManager.prototype, "ItemManager");
 var Shield = (function (_super) {
     __extends(Shield, _super);
     function Shield(type) {
@@ -1515,6 +1566,244 @@ var Sword = (function (_super) {
     return Sword;
 }(Item));
 __reflect(Sword.prototype, "Sword");
+var Boss = (function (_super) {
+    __extends(Boss, _super);
+    function Boss() {
+        var _this = _super.call(this) || this;
+        _this.currentHealth = 20;
+        _this.maxHealth = 20;
+        _this.damage = 1;
+        _this.isShow = false;
+        _this.isDead = false;
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.init, _this);
+        return _this;
+    }
+    Boss.prototype.init = function () {
+        this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.init, this);
+        this.bossBitmap = new egret.Bitmap(RES.getRes('boss001'));
+        this.bossBitmap.smoothing = false;
+        this.bossBitmap.anchorOffsetX = this.bossBitmap.width / 2;
+        this.bossBitmap.anchorOffsetY = this.bossBitmap.height;
+        this.bossBitmap.scaleX = 20;
+        this.bossBitmap.scaleY = 20;
+        this.hands = new Array();
+        var data = RES.getRes('bosshand_json');
+        var tex = RES.getRes('bosshand_png');
+        var fac = new egret.MovieClipDataFactory(data, tex);
+        for (var i = 0; i < 4; i++) {
+            var anim = new egret.MovieClip(fac.generateMovieClipData('bosshandswip'));
+            anim.smoothing = false;
+            anim.x = -this.bossBitmap.width / 2 * 20 + this.bossBitmap.width * i / 3 * 20;
+            anim.scaleX = 16;
+            anim.scaleY = 16;
+            if (i == 2 || i == 3) {
+                anim.skewY = 180;
+            }
+            if (i == 1 || i == 2) {
+                anim.scaleX = 15;
+                anim.scaleY = 15;
+            }
+            anim.rotation = 180;
+            this.addChild(anim);
+            anim.play(-1);
+            this.hands.push(anim);
+        }
+        this.addChild(this.bossBitmap);
+        this.healthBar = new HealthBar();
+        this.addChild(this.healthBar);
+        this.healthBar.x = -this.bossBitmap.width / 2 * 20;
+        this.healthBar.y = -this.bossBitmap.height * 20 - 32;
+        this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
+        this.bullet = new Bullet(4, 2);
+        this.parent.addChild(this.bullet);
+        this.addFrontHands();
+    };
+    Boss.prototype.addFrontHands = function () {
+        this.frontHands = new Array();
+        var index = Math.floor(Logic.SIZE / 2);
+        for (var i = 0; i < 4; i++) {
+            var hand = new egret.Bitmap(RES.getRes('boss001hand'));
+            hand.smoothing = false;
+            hand.scaleX = 4;
+            hand.scaleY = 4;
+            if (i == 0 || i == 1) {
+                hand.skewY = 180;
+            }
+            var p = Logic.getInMapPos(new egret.Point(index - 1 + i, index - 1));
+            hand.x = p.x;
+            hand.y = p.y;
+            this.parent.addChild(hand);
+            this.frontHands.push(hand);
+        }
+    };
+    /**是否是boss区域 */
+    Boss.prototype.isBossZone = function (target) {
+        return target.y < 4 && target.x != 0 && target.x != 8;
+    };
+    Boss.prototype.takeDamage = function (damage) {
+        this.currentHealth -= damage;
+        if (this.currentHealth > this.maxHealth) {
+            this.currentHealth = this.maxHealth;
+        }
+        if (this.currentHealth < 1) {
+            this.die();
+        }
+        this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
+    };
+    Boss.prototype.die = function () {
+        var _this = this;
+        this.isDead = true;
+        var index = Math.floor(Logic.SIZE / 2);
+        var p = Logic.getInMapPos(new egret.Point(index, Logic.SIZE));
+        egret.Tween.get(this).to({ y: p.y - 64, alpha: 0 }, 3000).call(function () {
+            _this.resetBoss();
+            Logic.eventHandler.dispatchEventWith(LogicEvent.OPEN_GATE);
+        });
+    };
+    Boss.prototype.resetBoss = function () {
+        var index = Math.floor(Logic.SIZE / 2);
+        var p = Logic.getInMapPos(new egret.Point(index, Logic.SIZE));
+        this.alpha = 0;
+        this.x = p.x;
+        this.y = p.y - 128;
+        this.visible = false;
+        this.isShow = false;
+        this.isDead = true;
+        this.bullet.parent.setChildIndex(this.bullet, 1000);
+    };
+    Boss.prototype.showBoss = function () {
+        var _this = this;
+        this.resetBoss();
+        var index = Math.floor(Logic.SIZE / 2);
+        var p = Logic.getInMapPos(new egret.Point(index, index - 1));
+        this.visible = true;
+        egret.Tween.get(this).to({ y: p.y, alpha: 1 }, 3000).call(function () {
+            _this.isDead = false;
+            _this.isShow = true;
+        });
+    };
+    Boss.prototype.fire = function (perMove) {
+        this.bullet.fire(1, perMove);
+    };
+    return Boss;
+}(egret.DisplayObjectContainer));
+__reflect(Boss.prototype, "Boss");
+var Bullet = (function (_super) {
+    __extends(Bullet, _super);
+    function Bullet(x, y) {
+        var _this = _super.call(this) || this;
+        //穿过一格需要的时间
+        _this.speed = 100;
+        _this.damage = 2;
+        _this.posIndex = new egret.Point(x, y);
+        _this.originIndex = new egret.Point(x, y);
+        _this.addEventListener(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+        return _this;
+    }
+    Bullet.prototype.onAddToStage = function () {
+        this.removeEventListener(egret.Event.ADDED_TO_STAGE, this.onAddToStage, this);
+        var p = Logic.getInMapPos(this.originIndex);
+        this.x = p.x;
+        this.y = p.y;
+        this.bitmap = new egret.Bitmap(RES.getRes(BulletConstants.BUBBLE));
+        this.bitmap.anchorOffsetX = this.bitmap.width / 2;
+        this.bitmap.anchorOffsetY = this.bitmap.height / 2;
+        this.bitmap.scaleX = 1;
+        this.bitmap.scaleY = 1;
+        this.addChild(this.bitmap);
+        this.visible = false;
+    };
+    Bullet.prototype.fire = function (dir, perMove) {
+        var _this = this;
+        if (this.visible) {
+            return;
+        }
+        //top bottom left right
+        var offsetX = 0;
+        var offsetY = 0;
+        switch (dir) {
+            case 0:
+                offsetY = -Tile.WIDTH;
+                break;
+            case 1:
+                offsetY = Tile.WIDTH;
+                break;
+            case 2:
+                offsetX = -Tile.HEIGHT;
+                break;
+            case 3:
+                offsetX = Tile.HEIGHT;
+                break;
+        }
+        egret.Tween.removeTweens(this);
+        egret.Tween.removeTweens(this.bitmap);
+        this.visible = true;
+        var p = Logic.getInMapPos(this.originIndex);
+        this.x = p.x;
+        this.y = p.y;
+        this.posIndex.x = this.originIndex.x;
+        this.posIndex.y = this.originIndex.y;
+        egret.Tween.get(this.bitmap, { loop: true })
+            .to({ x: 5 }, 25)
+            .to({ x: 0 }, 25)
+            .to({ x: -5 }, 25)
+            .to({ x: 0 }, 25);
+        egret.Tween.get(this.bitmap).to({ scaleX: 2, scaleY: 2 }, 500).call(function () {
+            egret.Tween.removeTweens(_this.bitmap);
+            egret.Tween.get(_this.bitmap, { loop: true })
+                .to({ scaleX: 2, scaleY: 2 }, 25)
+                .to({ scaleX: 1.5, scaleY: 1.5 }, 25)
+                .to({ scaleX: 2.5, scaleY: 2.5 }, 25)
+                .to({ scaleX: 2, scaleY: 2 }, 25);
+            _this.fly(dir, offsetX, offsetY, perMove);
+        });
+    };
+    Bullet.prototype.fly = function (dir, offsetX, offsetY, perMove) {
+        var _this = this;
+        var p1 = Logic.getInMapPos(new egret.Point(0, 0));
+        var p2 = Logic.getInMapPos(new egret.Point(8, 8));
+        egret.Tween.get(this).to({ x: this.x + offsetX, y: this.y + offsetY }, this.speed).call(function () {
+            if (_this.x < p1.x || _this.x > p2.x || _this.y < p1.y || _this.y > p2.y) {
+                _this.visible = false;
+                return;
+            }
+            switch (dir) {
+                case 0:
+                    _this.posIndex.y -= 1;
+                    break;
+                case 1:
+                    _this.posIndex.y += 1;
+                    break;
+                case 2:
+                    _this.posIndex.x -= 1;
+                    break;
+                case 3:
+                    _this.posIndex.x += 1;
+                    ;
+                    break;
+            }
+            if (perMove) {
+                perMove();
+            }
+            _this.fly(dir, offsetX, offsetY, perMove);
+        });
+    };
+    Bullet.prototype.hit = function () {
+        Logic.eventHandler.dispatchEventWith(LogicEvent.DAMAGE_PLAYER, false, { damage: this.damage });
+        this.visible = false;
+        egret.Tween.removeTweens(this);
+        egret.Tween.removeTweens(this.bitmap);
+    };
+    return Bullet;
+}(egret.Sprite));
+__reflect(Bullet.prototype, "Bullet");
+var BulletConstants = (function () {
+    function BulletConstants() {
+    }
+    BulletConstants.BUBBLE = 'bullet001';
+    return BulletConstants;
+}());
+__reflect(BulletConstants.prototype, "BulletConstants");
 var Anubis = (function (_super) {
     __extends(Anubis, _super);
     function Anubis() {
@@ -1574,6 +1863,8 @@ var Logic = (function (_super) {
         Logic.eventHandler.addEventListener(LogicEvent.DUNGEON_BREAKTILE, this.breakTileFinishEvent, this);
         Logic.eventHandler.addEventListener(LogicEvent.GAMEOVER, this.gameOver, this);
         Logic.eventHandler.addEventListener(LogicEvent.DAMAGE_PLAYER, this.damagePlayerEvent, this);
+        Logic.eventHandler.addEventListener(LogicEvent.OPEN_GATE, this.openGateEvent, this);
+        Logic.eventHandler.addEventListener(LogicEvent.ADD_MONSTER, this.addMonsterEvent, this);
         this.inventoryBar = new InventoryBar();
         this.addChild(this.inventoryBar);
         this.inventoryBar.x = 50;
@@ -1591,6 +1882,9 @@ var Logic = (function (_super) {
         this.addMonsters();
         this.addTimer();
         this.sortNpcLayer();
+    };
+    Logic.prototype.openGateEvent = function (evt) {
+        this.dungeon.portal.openGate();
     };
     Logic.prototype.sortNpcLayer = function () {
         var num = this.npcLayer.numChildren;
@@ -1611,6 +1905,7 @@ var Logic = (function (_super) {
         this.monsterTimer.start();
     };
     Logic.prototype.monsterActions = function () {
+        var _this = this;
         var count = 0;
         for (var _i = 0, _a = this.monsters; _i < _a.length; _i++) {
             var monster = _a[_i];
@@ -1620,10 +1915,19 @@ var Logic = (function (_super) {
             }
         }
         if (this.monsters.length > 0 && count >= this.monsters.length) {
-            this.dungeon.portal.openGate();
+            if (!Logic.isBossLevel(this.level)) {
+                this.dungeon.portal.openGate();
+            }
             // this.dungeon.gemTimer.stop();
         }
         this.sortNpcLayer();
+        if (Logic.isBossLevel(this.level) && this.dungeon.boss.isShow && !this.dungeon.boss.isDead) {
+            this.dungeon.boss.fire(function () {
+                if (Logic.isPointEquals(_this.dungeon.boss.bullet.posIndex, _this.player.pos)) {
+                    _this.dungeon.boss.bullet.hit();
+                }
+            });
+        }
     };
     Logic.prototype.addPlayer = function () {
         this.player = new Player();
@@ -1648,12 +1952,18 @@ var Logic = (function (_super) {
         this.monsterReswpanPoints['8,4'] = NpcConstants.MONSTER_MUMMY;
         this.monsterReswpanPoints['4,8'] = NpcConstants.MONSTER_ANUBIS;
         for (var p in this.monsterReswpanPoints) {
-            if (levelcount++ > this.level) {
+            if (levelcount++ > this.level || Logic.isBossLevel(this.level)) {
                 break;
             }
             var arr = p.split(',');
             this.addMonster(NpcManager.getNpc(this.monsterReswpanPoints[p]), new egret.Point(parseInt(arr[0]), parseInt(arr[1])));
         }
+    };
+    Logic.isBossLevel = function (level) {
+        return level == Logic.BOSS_LEVEL_1;
+    };
+    Logic.prototype.addMonsterEvent = function (evt) {
+        this.addMonster(NpcManager.getNpc(evt.data.resName), evt.data.p);
     };
     Logic.prototype.addMonster = function (monster, pos) {
         monster.posIndex.x = pos.x;
@@ -1778,8 +2088,20 @@ var Logic = (function (_super) {
             if (state_1 === "break")
                 break;
         }
+        var isBossAttack = false;
+        isBossAttack = Logic.isBossLevel(this.level) && this.dungeon.boss.isBossZone(pos);
+        if (isBossAttack && this.dungeon.boss.isShow) {
+            this.player.attack(evt.dir, function () {
+                var currentritem = ItemManager.getItem(_this.inventoryBar.CurrentItemRes);
+                var damage = 0;
+                if (currentritem) {
+                    damage = currentritem.Data.damage;
+                }
+                _this.dungeon.boss.takeDamage(_this.player.attackNumber + damage);
+            });
+        }
         //行走
-        if (!isAttack) {
+        if (!isAttack && !isBossAttack) {
             if (this.player.move(evt.dir, this.dungeon)) {
                 this.sortNpcLayer();
                 var olditem = this.dungeon.itemManager.getItem(this.player.pos);
@@ -1850,6 +2172,7 @@ var Logic = (function (_super) {
     Logic.SIZE = 9;
     Logic.SCORE_BASE = 200;
     Logic.eventHandler = new egret.Sprite();
+    Logic.BOSS_LEVEL_1 = 2;
     //地图左上角坐标
     Logic.mapX = 0;
     Logic.mapY = 0;
