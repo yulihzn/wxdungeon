@@ -151,7 +151,7 @@
   },
   "events": [
     {
-      "frame": 2.5,
+      "frame": 3,
       "func": "TileBreak",
       "params": []
     }

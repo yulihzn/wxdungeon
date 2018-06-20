@@ -1,4 +1,5 @@
 import Player from "./Player";
+import Tile from "./Tile";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -11,7 +12,6 @@ import Player from "./Player";
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
-
 @ccclass
 export default class NewClass extends cc.Component {
 
@@ -20,7 +20,7 @@ export default class NewClass extends cc.Component {
     @property(Player)
     player:Player = null;
 
-    private map: cc.Node[][] = new Array();
+    private map: Tile[][] = new Array();
     private readonly SIZE: number = 9;
     private readonly MAPX: number = 32;
     private readonly MAPY: number = 32;
@@ -38,7 +38,7 @@ export default class NewClass extends cc.Component {
                 t.x = this.MAPX + i * this.TILE_SIZE;
                 t.y = this.MAPY + j * this.TILE_SIZE;
                 t.zIndex = 100+i;
-                this.map[i][j] = t;
+                this.map[i][j] = t.getComponent('Tile');
                 let index = Math.floor(this.SIZE / 2)
                 // if (index == i && index == j) {
                 // 	this.portal = new Portal(i, j);
@@ -64,6 +64,9 @@ export default class NewClass extends cc.Component {
             this.timeDelay = 0;
         }
         let tile = this.map[this.player.posX][this.player.posY];
+        if(!tile.isBroken){
+            tile.breakTile();
+        }
         
     }
 }
