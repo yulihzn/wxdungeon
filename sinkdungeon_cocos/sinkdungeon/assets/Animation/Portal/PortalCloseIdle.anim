@@ -1,27 +1,27 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "TileShow",
+  "_name": "PortalCloseIdle",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 1.5,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
-  "wrapMode": 1,
+  "wrapMode": "2",
   "curveData": {
     "paths": {
-      "sprite": {
+      "sprite/gate": {
         "props": {
           "scale": [
             {
               "frame": 0,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 0.5,
-                "y": 0.5
+                "x": 1,
+                "y": 1
               }
             },
             {
-              "frame": 1.5,
+              "frame": 0.5,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 1,
@@ -29,25 +29,23 @@
               }
             }
           ],
-          "opacity": [
+          "y": [
             {
               "frame": 0,
-              "value": 0
+              "value": 32
             },
             {
-              "frame": 1.5,
-              "value": 255
+              "frame": 0.5,
+              "value": 40
+            },
+            {
+              "frame": 1,
+              "value": 32
             }
           ]
         }
       }
     }
   },
-  "events": [
-    {
-      "frame": 1.5,
-      "func": "TileShow",
-      "params": []
-    }
-  ]
+  "events": []
 }

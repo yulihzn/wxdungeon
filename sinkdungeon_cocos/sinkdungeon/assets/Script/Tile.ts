@@ -13,12 +13,12 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Tile extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
-
+    @property(cc.Label)
+    label:cc.Label;
     isBroken:boolean = false;
     private anim:cc.Animation;
     private timeDelay = 0;
-    private isNeedShow:boolean = false;
-
+    private isAnimPlaying:boolean = false;
     onLoad () {
         let ss = this.node.getComponentsInChildren(cc.Sprite);
         for(let i = 0;i < ss.length;i++){
@@ -30,28 +30,46 @@ export default class Tile extends cc.Component {
     start () {
 
     }
-
+    //animation
     TileBreak(){
-        this.isNeedShow = true;
+        // this.isBroken = true;
     }
+    //animation
+    TileBreakFinish(){
+        this.isBroken = true;
+        this.isAnimPlaying = false;
+        setTimeout(()=>{
+            this.showTile();
+        },2000)
+    }
+    //animation
     TileShow(){
-        this.isBroken = false;
+        
+        this.isAnimPlaying = false;
     }
     breakTile(){
-        this.isBroken = true;
+        if(this.isAnimPlaying){
+            return;
+        }
         this.anim.play('TileBreak');
+        this.isAnimPlaying = true;
     }
     showTile(){
+        if(this.isAnimPlaying){
+            return;
+        }
+        this.anim.play('TileShow');
+        this.isBroken = false;
+        this.isAnimPlaying = true;
     }
 
     update (dt) {
         this.timeDelay+=dt;
         if(this.timeDelay>1){
             this.timeDelay = 0;
-            if(this.isNeedShow){
-                this.isNeedShow = false;
-                this.anim.play('TileShow');
-            }
+        }
+        if(this.label){
+            this.label.string = ""+this.node.zIndex;
         }
     }
 }

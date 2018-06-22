@@ -1,5 +1,6 @@
 import Player from "./Player";
 import Tile from "./Tile";
+import Portal from "./Portal";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,33 +14,35 @@ import Tile from "./Tile";
 
 const { ccclass, property } = cc._decorator;
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Dungeon extends cc.Component {
 
     @property(cc.Prefab)
     tile: cc.Prefab = null;
     @property(Player)
-    player:Player = null;
+    player: Player = null;
+    @property(Portal)
+    portal: Portal = null;
 
     private map: Tile[][] = new Array();
-    private readonly SIZE: number = 9;
-    private readonly MAPX: number = 32;
-    private readonly MAPY: number = 32;
-    private readonly TILE_SIZE: number = 64;
+    static readonly SIZE: number = 9;
+    static readonly MAPX: number = 32;
+    static readonly MAPY: number = 32;
+    static readonly TILE_SIZE: number = 64;
     private timeDelay = 0;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.map = new Array();
-        for (let i = 0; i < this.SIZE; i++) {
+        for (let i = 0; i < Dungeon.SIZE; i++) {
             this.map[i] = new Array(i);
-            for (let j = 0; j < this.SIZE; j++) {
+            for (let j = 0; j < Dungeon.SIZE; j++) {
                 let t = cc.instantiate(this.tile);
                 t.parent = this.node;
-                t.x = this.MAPX + i * this.TILE_SIZE;
-                t.y = this.MAPY + j * this.TILE_SIZE;
-                t.zIndex = 100+i;
+                t.position = Dungeon.getPosInMap(cc.v2(i,j));
+                //越往下层级越高，i是行，j是列
+                t.zIndex = 1000 + (Dungeon.SIZE-j)*100;
                 this.map[i][j] = t.getComponent('Tile');
-                let index = Math.floor(this.SIZE / 2)
+                let index = Math.floor(Dungeon.SIZE / 2)
                 // if (index == i && index == j) {
                 // 	this.portal = new Portal(i, j);
                 // 	t.addBuilding(this.portal);
@@ -51,22 +54,34 @@ export default class NewClass extends cc.Component {
                 // this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
             }
         }
+        this.portal.node.parent = this.node;
+        this.portal.node.zIndex = 1000 + 5*100+1;
+        this.portal.node.setPosition(this.map[4][4].node.position);
         this.player.node.parent = this.node;
+    }
+    static getPosInMap(pos:cc.Vec2){
+        let x = Dungeon.MAPX + pos.x * Dungeon.TILE_SIZE;
+        let y = Dungeon.MAPY + pos.y * Dungeon.TILE_SIZE;
+        return cc.v2(x,y);
     }
 
     start() {
 
     }
-
-    update (dt) {
-        this.timeDelay+=dt;
-        if(this.timeDelay>1000){
+    breakTile(x:number,y:number){
+        let tile = this.map[x][y];
+        if (!tile.isBroken) {
+            tile.breakTile();
+        } else if(this.player.posX==x&&this.player.posY==y&&!this.player.isMoving){
+            this.player.fall();
+        }
+    }
+    update(dt) {
+        this.timeDelay += dt;
+        if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
         }
-        let tile = this.map[this.player.posX][this.player.posY];
-        if(!tile.isBroken){
-            tile.breakTile();
-        }
+        this.breakTile(this.player.posX,this.player.posY);
         
     }
 }

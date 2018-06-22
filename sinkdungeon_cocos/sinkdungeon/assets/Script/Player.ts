@@ -18,16 +18,20 @@ export default class Player extends cc.Component {
     posX: number = 4;
     @property()
     posY: number = 4;
+    @property(cc.Label)
+    label:cc.Label;
     private playerItemSprite: cc.Sprite;
     private playerWeaponSprite: cc.Sprite;
-    private isMoving = false;
+    isMoving = false;
     private sprite: cc.Node;
     private anim: cc.Animation;
+    isDied = false;
 
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.playerItemSprite = this.sprite.getChildByName('righthand')
@@ -58,8 +62,11 @@ export default class Player extends cc.Component {
         this.posX = x;
         this.posY = y;
     }
+    changeZIndex(){
+        this.node.zIndex = 1000 + (9-this.posY)*100+2;
+    }
     move(dir) {
-        if (this.isMoving) {
+        if (this.isMoving||this.isDied) {
             return;
         }
         this.isMoving = true;
@@ -69,15 +76,23 @@ export default class Player extends cc.Component {
             case 2: if (this.posX - 1 >= 0) { this.posX--; } break;
             case 3: if (this.posX + 1 < 9) { this.posX++; } break;
         }
+        let isDown = dir == 1;
+        if(isDown){
+            this.changeZIndex();
+        }
         let x = this.posX * 64 + 32;
         let y = this.posY * 64 + 32;
         let finish = cc.callFunc(() => {
+            this.changeZIndex();
             this.sprite.y = 0;
+            this.isDied = false;
             this.sprite.rotation = 0;
+            this.sprite.scale = 1;
+            this.sprite.opacity = 255;
             this.anim.play('PlayerIdle');
             this.isMoving = false;
         }, this);
-        let action = cc.sequence(cc.moveTo(0.2, x, y), finish);
+        let action = cc.sequence(cc.moveTo(0.1, x, y), finish);
         this.anim.play('PlayerWalk');
         this.node.runAction(action);
     }
@@ -87,6 +102,27 @@ export default class Player extends cc.Component {
         for (let i = 0; i < ss.length; i++) {
             ss[i].spriteFrame.getTexture().setAliasTexParameters();
         }
+        this.changeZIndex();
+    }
+    fall(){
+        if(this.isDied){
+            return;
+        }
+        this.isDied = true;
+        this.anim.play('PlayerFall');
+        setTimeout(()=>{
+            cc.director.loadScene('gameover');
+        },1000);
+    }
+    killed(){
+        if(this.isDied){
+            return;
+        }
+        this.isDied = true;
+        this.anim.play('PlayerDie');
+        setTimeout(()=>{
+            cc.director.loadScene('gameover');
+        },1000);
     }
 
 
@@ -95,6 +131,8 @@ export default class Player extends cc.Component {
         if (!this.isMoving) {
             this.updatePlayerPos();
         }
-        this.node.zIndex = 1000 + this.posY;
+        if(this.label){
+            this.label.string = ""+this.node.zIndex;
+        }
     }
 }

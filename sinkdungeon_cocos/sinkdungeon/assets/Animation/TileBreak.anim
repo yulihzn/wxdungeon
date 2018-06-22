@@ -151,8 +151,13 @@
   },
   "events": [
     {
-      "frame": 3,
+      "frame": 2.25,
       "func": "TileBreak",
+      "params": []
+    },
+    {
+      "frame": 3,
+      "func": "TileBreakFinish",
       "params": []
     }
   ]
