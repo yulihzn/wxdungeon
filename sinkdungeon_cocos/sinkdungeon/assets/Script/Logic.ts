@@ -13,12 +13,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class NewClass extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
-
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -26,6 +20,8 @@ export default class NewClass extends cc.Component {
     start () {
 
     }
-
+    public static getRandomNum(min, max): number {//生成一个随机数从[min,max]
+		return min + Math.round(Math.random() * (max - min));
+	}
     // update (dt) {}
 }

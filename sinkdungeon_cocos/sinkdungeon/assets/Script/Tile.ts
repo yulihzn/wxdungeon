@@ -19,6 +19,8 @@ export default class Tile extends cc.Component {
     private anim:cc.Animation;
     private timeDelay = 0;
     private isAnimPlaying:boolean = false;
+    //正在瓦解
+    isBreakingNow = false;
     onLoad () {
         let ss = this.node.getComponentsInChildren(cc.Sprite);
         for(let i = 0;i < ss.length;i++){
@@ -52,6 +54,7 @@ export default class Tile extends cc.Component {
             return;
         }
         this.anim.play('TileBreak');
+        this.isBreakingNow = true;
         this.isAnimPlaying = true;
     }
     showTile(){
@@ -60,6 +63,7 @@ export default class Tile extends cc.Component {
         }
         this.anim.play('TileShow');
         this.isBroken = false;
+        this.isBreakingNow = false;
         this.isAnimPlaying = true;
     }
 

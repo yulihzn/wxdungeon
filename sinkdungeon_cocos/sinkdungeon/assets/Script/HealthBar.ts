@@ -15,20 +15,27 @@ export default class HealthBar extends cc.Component {
 
     @property(cc.Node)
     backbar: cc.Node = null;
+    @property(cc.Label)
+    label:cc.Label = null;
 
     progressBar:cc.ProgressBar;
     private timeDelay = 0;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-       
-    }
-
-    start () {
         this.progressBar = this.getComponent(cc.ProgressBar);
         this.progressBar.progress = 0.3;
     }
 
+    start () {
+        
+    }
+    refreshHealth(currentHealth:number,maxHealth:number): void {
+        this.progressBar.progress = currentHealth/maxHealth;
+        if(this.label){
+            this.label.string=`${currentHealth}/${maxHealth}`;
+        }
+	}
     update (dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {

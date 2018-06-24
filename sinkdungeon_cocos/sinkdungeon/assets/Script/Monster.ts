@@ -11,9 +11,10 @@
 const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
 import HealthBar from './HealthBar';
+import Logic from './Logic';
 
 @ccclass
-export default class Player extends cc.Component {
+export default class Monster extends cc.Component {
 
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(0,0);
@@ -21,58 +22,40 @@ export default class Player extends cc.Component {
     label: cc.Label;
     @property(HealthBar)
     healthBar: HealthBar;
-    private playerItemSprite: cc.Sprite;
-    private playerWeaponSprite: cc.Sprite;
     isMoving = false;
     private sprite: cc.Node;
     private anim: cc.Animation;
     isDied = false;
-    isFall = false;
     currentHealth: number = 3;
     maxHealth: number = 3;
-    attackPonit:number = 1;
-
+    isFall = false;
+    private timeDelay = 0;
+    attackPonit = 1;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.pos = cc.v2(4,4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
-        this.playerItemSprite = this.sprite.getChildByName('righthand')
-            .getChildByName('item').getComponent(cc.Sprite);
-
-        this.playerWeaponSprite = this.sprite.getChildByName('lefthand')
-            .getChildByName('weapon').getComponent(cc.Sprite);
-
-        cc.director.on(EventConstant.INVENTORY_CHANGEITEM
-            , (event) => { this.changeItem(event.detail.spriteFrame) });
-
-        cc.director.on(EventConstant.INVENTORY_CHANGEITEM
-            , (event) => { this.changeItem(event.detail.spriteFrame) });
     }
-    changeItem(spriteFrame: cc.SpriteFrame) {
-        this.playerItemSprite.spriteFrame = spriteFrame;
-    }
-    changeWeapon(spriteFrame: cc.SpriteFrame) {
-        this.playerWeaponSprite.spriteFrame = spriteFrame;
-    }
+    
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
         this.node.y = this.pos.y * 64 + 32;
     }
-    transportPlayer(pos:cc.Vec2) {
+    transportPlayer(x: number, y: number) {
         this.sprite.rotation = 0;
         this.sprite.scale = 1;
         this.sprite.opacity = 255;
         this.sprite.x = 0;
         this.sprite.y = 0;
-        this.pos = pos;
-        this.changeZIndex(this.pos);
+        this.pos.x = x;
+        this.pos.y = y;
+        this.changeZIndex();
     }
-    changeZIndex(pos:cc.Vec2) {
-        this.node.zIndex = 1000 + (9 - pos.y) * 100 + 2;
+    changeZIndex() {
+        this.node.zIndex = 1000 + (9 - this.pos.y) * 100 + 2;
     }
     attack(dir,finish){
         if (this.isMoving || this.isDied) {
@@ -92,27 +75,25 @@ export default class Player extends cc.Component {
         }),cc.moveTo(0.1, 0, 0));
         this.sprite.runAction(action);
     }
-    move(dir:number) {
+    move(dir) {
         if (this.isMoving || this.isDied) {
             return;
         }
-        let newPos = cc.v2(this.pos.x,this.pos.y);
-        switch (dir) {
-            case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
-            case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
-            case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
-            case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
-        }
         this.isMoving = true;
-        this.pos = newPos;
+        switch (dir) {
+            case 0: if (this.pos.y + 1 < 9) { this.pos.y++; } break;
+            case 1: if (this.pos.y - 1 >= 0) { this.pos.y--; } break;
+            case 2: if (this.pos.x - 1 >= 0) { this.pos.x--; } break;
+            case 3: if (this.pos.x + 1 < 9) { this.pos.x++; } break;
+        }
         let isDown = dir == 1;
         if (isDown) {
-            this.changeZIndex(this.pos);
+            this.changeZIndex();
         }
         let x = this.pos.x * 64 + 32;
         let y = this.pos.y * 64 + 32;
         let finish = cc.callFunc(() => {
-            this.changeZIndex(this.pos);
+            this.changeZIndex();
             this.sprite.y = 0;
             this.isDied = false;
             this.sprite.rotation = 0;
@@ -133,7 +114,7 @@ export default class Player extends cc.Component {
                 ss[i].spriteFrame.getTexture().setAliasTexParameters();
             }
         }
-        this.changeZIndex(this.pos);
+        this.changeZIndex();
         this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
     }
     fall() {
@@ -141,13 +122,9 @@ export default class Player extends cc.Component {
             return;
         }
         this.isFall = true;
+        this.isDied = true;
         this.anim.play('PlayerFall');
-        setTimeout(() => {
-            this.transportPlayer(cc.v2(4,4));
-            this.anim.play('PlayerIdle');
-            this.takeDamage(1);
-            this.isFall = false;
-        }, 1000);
+        
     }
     takeDamage(damage: number) {
         this.currentHealth -= damage;
@@ -165,19 +142,21 @@ export default class Player extends cc.Component {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
-        setTimeout(() => {
-            cc.director.loadScene('gameover');
-        }, 1000);
     }
 
 
 
     update(dt) {
+        this.timeDelay += dt;
+        if (this.timeDelay > 1) {
+            this.timeDelay = 0;
+        }
         if (!this.isMoving) {
             this.updatePlayerPos();
         }
         if (this.label) {
             this.label.string = "" + this.node.zIndex;
         }
+        this.healthBar.node.active = !this.isDied;
     }
 }

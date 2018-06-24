@@ -53,6 +53,15 @@ export default class Portal extends cc.Component {
         if(playerPos.x==this.pos.x&&playerPos.y==this.pos.y && this.isOpen){
         }
     }
+    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+        if(other.tag == 3){
+            if(this.isOpen){
+                this.closeGate();
+            }else{
+                this.openGate();
+            }
+        }
+    }
 
     // update (dt) {}
 }
