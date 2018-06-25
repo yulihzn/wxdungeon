@@ -624,7 +624,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "8cb09f34-aca0-4a70-8cf9-7b1fe1fd77dd"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -715,7 +717,9 @@
     "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "8cb09f34-aca0-4a70-8cf9-7b1fe1fd77dd"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -858,7 +862,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "8cb09f34-aca0-4a70-8cf9-7b1fe1fd77dd"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1012,7 +1018,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "8cb09f34-aca0-4a70-8cf9-7b1fe1fd77dd"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

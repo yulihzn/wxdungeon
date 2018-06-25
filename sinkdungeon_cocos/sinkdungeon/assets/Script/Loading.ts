@@ -1,3 +1,5 @@
+import Logic from "./Logic";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -9,32 +11,29 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
-import {EventConstant} from './EventConstant';
 
 @ccclass
-export default class Controller extends cc.Component {
+export default class NewClass extends cc.Component {
 
-    @property(cc.Node)
-    player: cc.Node = null;
-
+    @property(cc.Label)
+    label: cc.Label = null;
+    private timeDelay = 0;
+    private isLoaded = false;
     // LIFE-CYCLE CALLBACKS:
-
-    onLoad () {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for(let i = 0;i < ss.length;i++){
-            ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        }
-    }
-
-    start () {
-    }
-    move(event, dir){
-        dir = parseInt(dir);
-        cc.director.emit(EventConstant.PLAYER_MOVE,{dir})
-    }
-    actionCenter(event, customEventData){
-    }
     
 
-    // update (dt) {}
+    // onLoad () {}
+
+    start () {
+        this.label.string = `Level ${Logic.level}`
+    }
+
+    update (dt) {
+        this.timeDelay += dt;
+        if (this.timeDelay > 0.016 && !this.isLoaded) {
+            this.timeDelay = 0;
+            this.isLoaded = true;
+            cc.director.loadScene('game');
+        }
+    }
 }

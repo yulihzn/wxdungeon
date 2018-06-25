@@ -12,6 +12,7 @@ const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
+import MonsterData from './Data/MonsterData';
 
 @ccclass
 export default class Monster extends cc.Component {
@@ -26,11 +27,12 @@ export default class Monster extends cc.Component {
     private sprite: cc.Node;
     private anim: cc.Animation;
     isDied = false;
-    currentHealth: number = 3;
-    maxHealth: number = 3;
+    // currentHealth: number = 3;
+    // maxHealth: number = 3;
     isFall = false;
     private timeDelay = 0;
-    attackPonit = 1;
+    // attackPonit = 1;
+    data:MonsterData = new MonsterData();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -40,6 +42,13 @@ export default class Monster extends cc.Component {
         this.sprite = this.node.getChildByName('sprite');
     }
     
+    changeBodyRes(resName:string){
+        cc.loader.loadRes('Texture/'+resName,cc.SpriteFrame,(error:Error,spriteFrame:cc.SpriteFrame)=>{
+            let body = this.sprite.getChildByName('body');
+            spriteFrame.getTexture().setAntiAliasTexParameters();
+            body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        })
+    }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
         this.node.y = this.pos.y * 64 + 32;
@@ -71,7 +80,7 @@ export default class Monster extends cc.Component {
 			case 4: break;
         }
         let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
-            if(finish){finish(this.attackPonit);}
+            if(finish){finish(this.data.attackPoint);}
         }),cc.moveTo(0.1, 0, 0));
         this.sprite.runAction(action);
     }
@@ -115,7 +124,7 @@ export default class Monster extends cc.Component {
             }
         }
         this.changeZIndex();
-        this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
     }
     fall() {
         if (this.isFall) {
@@ -124,15 +133,14 @@ export default class Monster extends cc.Component {
         this.isFall = true;
         this.isDied = true;
         this.anim.play('PlayerFall');
-        
     }
     takeDamage(damage: number) {
-        this.currentHealth -= damage;
-        if (this.currentHealth > this.maxHealth) {
-            this.currentHealth = this.maxHealth;
+        this.data.currentHealth -= damage;
+        if (this.data.currentHealth > this.data.maxHealth) {
+            this.data.currentHealth = this.data.maxHealth;
         }
-        this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
-        if (this.currentHealth < 1) {
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        if (this.data.currentHealth < 1) {
             this.killed();
         }
     }

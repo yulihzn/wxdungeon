@@ -1,5 +1,6 @@
 import Player from "./Player";
 import Dungeon from "./Dungeon";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,7 +29,7 @@ export default class Portal extends cc.Component {
     start () {
         this.setPos(cc.v2(4,4));
         this.anim = this.getComponent(cc.Animation);
-        this.closeGate();
+        this.anim.play('PortalCloseIdle');
     }
     setPos(pos:cc.Vec2){
         this.pos = pos;
@@ -41,10 +42,16 @@ export default class Portal extends cc.Component {
         this.anim.play('PortalOpenIdle');
     }
     openGate(){
+        if(this.isOpen){
+            return;
+        }
         this.isOpen = true;
         this.anim.play('PortalOpen');
     }
     closeGate(){
+        if(!this.isOpen){
+            return;
+        }
         this.isOpen = false;
         this.anim.play('PortalClose');
     }
@@ -57,8 +64,7 @@ export default class Portal extends cc.Component {
         if(other.tag == 3){
             if(this.isOpen){
                 this.closeGate();
-            }else{
-                this.openGate();
+                cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
             }
         }
     }

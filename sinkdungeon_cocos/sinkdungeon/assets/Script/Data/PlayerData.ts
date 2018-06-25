@@ -9,32 +9,18 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
-import {EventConstant} from './EventConstant';
 
 @ccclass
-export default class Controller extends cc.Component {
+export default class PlayerData {
 
-    @property(cc.Node)
-    player: cc.Node = null;
-
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad () {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for(let i = 0;i < ss.length;i++){
-            ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        }
+    name:string = '';
+    currentHealth:number=0;
+    maxHealth:number=0;
+    attackPoint:number=0;
+    pos:cc.Vec2 = cc.v2(0,0);
+    updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
+        this.currentHealth = currentHealth;
+        this.maxHealth = maxHealth;
+        this.attackPoint = attackPoint;
     }
-
-    start () {
-    }
-    move(event, dir){
-        dir = parseInt(dir);
-        cc.director.emit(EventConstant.PLAYER_MOVE,{dir})
-    }
-    actionCenter(event, customEventData){
-    }
-    
-
-    // update (dt) {}
 }

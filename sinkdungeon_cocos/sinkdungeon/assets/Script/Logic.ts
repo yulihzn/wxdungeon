@@ -1,3 +1,6 @@
+import PlayerData from "./Data/PlayerData";
+import { EventConstant } from "./EventConstant";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -11,15 +14,33 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
-
+export default class Logic extends cc.Component {
+    public static readonly BOSS_LEVEL_1: number = 200;
+    public static level = 1;
+    playerData:PlayerData;
+    
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        //关闭调试
+        cc.director.setDisplayStats(false);
+        cc.game.addPersistRootNode(this.node);
+        this.playerData = new PlayerData();
+        cc.director.on(EventConstant.LOADINGNEXTLEVEL,(event)=>{
+            this.loadingNextLevel();
+        });
+    }
 
     start () {
 
     }
+    loadingNextLevel(){
+        Logic.level++;
+        cc.director.loadScene('loading');
+    }
+    public static isBossLevel(level: number): boolean {
+		return level == Logic.BOSS_LEVEL_1;
+	}
     public static getRandomNum(min, max): number {//生成一个随机数从[min,max]
 		return min + Math.round(Math.random() * (max - min));
 	}

@@ -58,7 +58,7 @@ export default class Tile extends cc.Component {
         this.isAnimPlaying = true;
     }
     showTile(){
-        if(this.isAnimPlaying){
+        if(this.isAnimPlaying||!this.anim){
             return;
         }
         this.anim.play('TileShow');

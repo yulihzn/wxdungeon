@@ -28,14 +28,16 @@ export default class Player extends cc.Component {
     private anim: cc.Animation;
     isDied = false;
     isFall = false;
-    currentHealth: number = 3;
-    maxHealth: number = 3;
+    currentHealth: number = 30;
+    maxHealth: number = 30;
     attackPonit:number = 1;
 
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.currentHealth = 30;
+        this.maxHealth = 30;
         this.pos = cc.v2(4,4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);

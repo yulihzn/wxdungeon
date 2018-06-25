@@ -13,6 +13,6 @@ export default class Helloworld extends cc.Component {
         // init logic
     }
     startGame(){
-        cc.director.loadScene('game');
+        cc.director.loadScene('loading');
     }
 }

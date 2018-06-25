@@ -24,7 +24,7 @@ export default class GameOver extends cc.Component {
 
     }
     retry(){
-        cc.director.loadScene('game');
+        cc.director.loadScene('loading');
     }
     home(){
         cc.director.loadScene('start');
