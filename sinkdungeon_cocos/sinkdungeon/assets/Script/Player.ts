@@ -18,9 +18,9 @@ export default class Player extends cc.Component {
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(0,0);
     @property(cc.Label)
-    label: cc.Label;
+    label: cc.Label = null;
     @property(HealthBar)
-    healthBar: HealthBar;
+    healthBar: HealthBar = null;
     private playerItemSprite: cc.Sprite;
     private playerWeaponSprite: cc.Sprite;
     isMoving = false;
@@ -53,6 +53,8 @@ export default class Player extends cc.Component {
 
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
             , (event) => { this.changeItem(event.detail.spriteFrame) });
+        cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
+            , (event) => { this.takeDamage(event.detail.damage) });
     }
     changeItem(spriteFrame: cc.SpriteFrame) {
         this.playerItemSprite.spriteFrame = spriteFrame;
@@ -152,6 +154,9 @@ export default class Player extends cc.Component {
         }, 1000);
     }
     takeDamage(damage: number) {
+        if(!this.healthBar){
+            return;
+        }
         this.currentHealth -= damage;
         if (this.currentHealth > this.maxHealth) {
             this.currentHealth = this.maxHealth;

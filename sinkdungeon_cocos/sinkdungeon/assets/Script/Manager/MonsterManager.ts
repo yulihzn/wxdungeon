@@ -1,5 +1,6 @@
 import Monster from "../Monster";
 import MonsterData from "../Data/MonsterData";
+import Kraken from "../Boss/Kraken";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,18 +18,20 @@ const {ccclass, property} = cc._decorator;
 export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_GOBLIN = 'monster001';
 	public static readonly MONSTER_MUMMY = 'monster002';
-	public static readonly MONSTER_ANUBIS = 'monster003';
+    public static readonly MONSTER_ANUBIS = 'monster003';
+    
+    public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN';
 
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
 
     // LIFE-CYCLE CALLBACKS:
-    @property(Monster)
-    monster: Monster = null;
-
+    @property(cc.Prefab)
+    monster: cc.Prefab = null;
+    @property(cc.Prefab)
+    kraken: cc.Prefab = null;
     onLoad () {
-        
     }
     /**
      * 
@@ -36,9 +39,9 @@ export default class MonsterManager extends cc.Component {
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    static getMonster(resName:string,monsterNode:cc.Node,parent:cc.Node):Monster{
+    getMonster(resName:string,parent:cc.Node):Monster{
         let monsterPrefab:cc.Node = null;
-        monsterPrefab = cc.instantiate(monsterNode);
+        monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;
         monsterPrefab.parent = parent;
         let monster = monsterPrefab.getComponent(Monster);
@@ -52,6 +55,19 @@ export default class MonsterManager extends cc.Component {
         monster.data = data;
         return monster;
         
+    }
+    getKraken(parent:cc.Node):Kraken{
+        let krakenPrefab:cc.Node = null;
+        krakenPrefab = cc.instantiate(this.kraken);
+        krakenPrefab.active = false;
+        krakenPrefab.parent = parent;
+        let kraken = krakenPrefab.getComponent(Kraken);
+        let data = new MonsterData();
+        data.updateHA(20,20,2);
+        kraken.data = data;
+        kraken.transportPlayer(4,5);
+        kraken.node.active = true;
+        return kraken;
     }
 
     start () {

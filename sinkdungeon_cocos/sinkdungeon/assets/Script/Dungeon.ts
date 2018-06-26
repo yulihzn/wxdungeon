@@ -1,10 +1,11 @@
 import Player from "./Player";
 import Tile from "./Tile";
-import Portal from "./Portal";
 import Monster from "./Monster";
 import Logic from "./Logic";
 import { EventConstant } from "./EventConstant";
 import MonsterManager from "./Manager/MonsterManager";
+import Kraken from "./Boss/Kraken";
+import Portal from "./Building/Portal";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,8 +27,6 @@ export default class Dungeon extends cc.Component {
     player: Player = null;
     @property(Portal)
     portal: Portal = null;
-    @property(Monster)
-    monster: Monster = null;
 
     private map: Tile[][] = new Array();
     static readonly SIZE: number = 9;
@@ -39,10 +38,17 @@ export default class Dungeon extends cc.Component {
 
     private monsters: Monster[];
     public monsterReswpanPoints: { [key: string]: string } = {};
+    monsterManager: MonsterManager = null;
+    anim: cc.Animation;
+
+    bossKraken: Kraken;
+
     onLoad() {
+        this.anim = this.getComponent(cc.Animation);
         cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir) });
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
+        // manager.enabledDebugDraw = true;
         this.map = new Array();
         for (let i = 0; i < Dungeon.SIZE; i++) {
             this.map[i] = new Array(i);
@@ -68,9 +74,9 @@ export default class Dungeon extends cc.Component {
         this.portal.node.parent = this.node;
         this.portal.node.zIndex = 1000 + 5 * 100 + 1;
         this.portal.node.setPosition(this.map[4][4].node.position);
-        this.monster.node.parent = this.node;
-        this.monster.node.active = false;
+
         this.player.node.parent = this.node;
+        this.monsterManager = this.getComponent(MonsterManager);
 
         this.addMonsters();
     }
@@ -90,8 +96,28 @@ export default class Dungeon extends cc.Component {
                 break;
             }
             let arr = p.split(',');
-            this.addMonster(MonsterManager.getMonster(this.monsterReswpanPoints[p], this.monster.node, this.node)
+            this.addMonster(this.monsterManager.getMonster(this.monsterReswpanPoints[p], this.node)
                 , cc.v2(parseInt(arr[0]), parseInt(arr[1])));
+        }
+        this.addkraken();
+    }
+    private breakHalfTiles(): void {
+        for (let i = 0; i < Dungeon.SIZE; i++) {
+            for (let j = 6; j < Dungeon.SIZE; j++) {
+                this.map[i][j].isAutoShow = false;
+                this.breakTile(cc.v2(i, j));
+            }
+        }
+    }
+    private addkraken() {
+        if (Logic.isBossLevel(Logic.level)) {
+            this.anim.play('DungeonShake');
+            this.breakHalfTiles();
+            setTimeout(() => {
+                this.bossKraken = this.monsterManager.getKraken(this.node);
+                this.bossKraken.showBoss();
+            }, 5000)
+
         }
     }
     private addMonster(monster: Monster, pos: cc.Vec2) {
@@ -137,7 +163,7 @@ export default class Dungeon extends cc.Component {
             case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
         }
         let isAttack = false;
-        for(let monster of this.monsters){
+        for (let monster of this.monsters) {
             if (newPos.equals(monster.pos) && !monster.isDied) {
                 isAttack = true;
                 this.player.attack(dir, (damage: number) => {
@@ -145,16 +171,23 @@ export default class Dungeon extends cc.Component {
                 });
             }
         }
-        if (!isAttack) {
+        let isBossAttack = false;
+        isBossAttack = Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isBossZone(newPos);
+        if (isBossAttack && this.bossKraken && this.bossKraken.isShow && !this.bossKraken.isDied) {
+            this.player.attack(dir, (damage: number) => {
+                this.bossKraken.takeDamage(damage,newPos);
+            });
+        }
+        if (!isAttack && !isBossAttack) {
             this.player.move(dir);
-        } 
+        }
     }
     checkPlayerPos() {
         this.breakTile(this.player.pos);
     }
     checkMonstersPos() {
-        for(let monster of this.monsters){
-            if(monster.isDied){
+        for (let monster of this.monsters) {
+            if (monster.isDied) {
                 return;
             }
             let tile = this.map[monster.pos.x][monster.pos.y];
@@ -162,10 +195,10 @@ export default class Dungeon extends cc.Component {
                 monster.fall();
             }
         }
-        
+
     }
-    monstersAction(monster:Monster) {
-        if(!monster||monster.isDied){
+    monstersAction(monster: Monster) {
+        if (!monster || monster.isDied) {
             return;
         }
         let dir = this.getMonsterBestDir(monster.pos);
@@ -253,13 +286,18 @@ export default class Dungeon extends cc.Component {
         if (this.npcTimeDelay > 1) {
             this.npcTimeDelay = 0;
             let count = 0;
-            for(let monster of this.monsters){
-                if(monster.isDied){
+            for (let monster of this.monsters) {
+                if (monster.isDied) {
                     count++;
                 }
                 this.monstersAction(monster);
             }
             if (this.monsters.length > 0 && count >= this.monsters.length) {
+                if (!Logic.isBossLevel(Logic.level)) {
+                    this.portal.openGate();
+                }
+            }
+            if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied) {
                 this.portal.openGate();
             }
         }

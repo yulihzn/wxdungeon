@@ -1,0 +1,83 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "KrakenSwingLeft",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 3.5166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "1",
+  "curveData": {
+    "paths": {
+      "sprite/bighand04": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": -18,
+                "y": -18
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": -18,
+                "y": -10
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": -18,
+                "y": -18
+              }
+            },
+            {
+              "frame": 3.0166666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": -18,
+                "y": -10
+              }
+            },
+            {
+              "frame": 3.5166666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": -18,
+                "y": -18
+              }
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -60
+            },
+            {
+              "frame": 0.5,
+              "value": -90
+            },
+            {
+              "frame": 2,
+              "value": -180
+            },
+            {
+              "frame": 3.0166666666666666,
+              "value": -90
+            },
+            {
+              "frame": 3.5166666666666666,
+              "value": -60
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

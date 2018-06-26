@@ -16,12 +16,14 @@ export default class Tile extends cc.Component {
     @property(cc.Label)
     label:cc.Label;
     isBroken:boolean = false;
+    isAutoShow = true;
     private anim:cc.Animation;
     private timeDelay = 0;
     private isAnimPlaying:boolean = false;
     //正在瓦解
     isBreakingNow = false;
     onLoad () {
+        this.isAutoShow = true;
         let ss = this.node.getComponentsInChildren(cc.Sprite);
         for(let i = 0;i < ss.length;i++){
             ss[i].spriteFrame.getTexture().setAliasTexParameters();
@@ -40,9 +42,12 @@ export default class Tile extends cc.Component {
     TileBreakFinish(){
         this.isBroken = true;
         this.isAnimPlaying = false;
-        setTimeout(()=>{
-            this.showTile();
-        },2000)
+        if(this.isAutoShow){
+            setTimeout(()=>{
+                this.showTile();
+            },2000)
+        }
+        
     }
     //animation
     TileShow(){

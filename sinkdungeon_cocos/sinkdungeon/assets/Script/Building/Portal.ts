@@ -1,6 +1,6 @@
-import Player from "./Player";
-import Dungeon from "./Dungeon";
-import { EventConstant } from "./EventConstant";
+import Dungeon from "../Dungeon";
+import { EventConstant } from "../EventConstant";
+
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

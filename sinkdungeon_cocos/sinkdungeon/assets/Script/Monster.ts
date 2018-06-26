@@ -20,9 +20,9 @@ export default class Monster extends cc.Component {
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(0,0);
     @property(cc.Label)
-    label: cc.Label;
+    label: cc.Label = null;
     @property(HealthBar)
-    healthBar: HealthBar;
+    healthBar: HealthBar = null;
     isMoving = false;
     private sprite: cc.Node;
     private anim: cc.Animation;
@@ -45,7 +45,7 @@ export default class Monster extends cc.Component {
     changeBodyRes(resName:string){
         cc.loader.loadRes('Texture/'+resName,cc.SpriteFrame,(error:Error,spriteFrame:cc.SpriteFrame)=>{
             let body = this.sprite.getChildByName('body');
-            spriteFrame.getTexture().setAntiAliasTexParameters();
+            spriteFrame.getTexture().setAliasTexParameters();
             body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         })
     }
