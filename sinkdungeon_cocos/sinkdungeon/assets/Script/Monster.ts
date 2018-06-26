@@ -64,7 +64,7 @@ export default class Monster extends cc.Component {
         this.changeZIndex();
     }
     changeZIndex() {
-        this.node.zIndex = 1000 + (9 - this.pos.y) * 100 + 2;
+        this.node.zIndex = 3000 + (9 - this.pos.y) * 100 + 2;
     }
     attack(dir,finish){
         if (this.isMoving || this.isDied) {

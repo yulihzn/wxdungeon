@@ -251,13 +251,22 @@ export default class Dungeon extends cc.Component {
         dirArr.sort(() => {
             return 0.5 - Math.random();
         })
-        //获取没有塌陷的tile
+        //获取没有塌陷且没有其他怪物的tile
         let goodArr = new Array();
         for (let i = 0; i < dirArr.length; i++) {
             let newPos = dirArr[i];
             let tile = this.map[newPos.x][newPos.y];
             if (!tile.isBroken) {
-                goodArr.push(newPos);
+                let hasOther = false;
+                for(let other of this.monsters){
+                    if(other.pos.equals(newPos)){
+                        hasOther = true;
+                        break;
+                    }
+                }
+                if(!hasOther){
+                    goodArr.push(newPos);
+                }
             }
         }
         for (let i = 0; i < goodArr.length; i++) {

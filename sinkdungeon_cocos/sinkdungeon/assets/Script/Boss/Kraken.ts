@@ -2,6 +2,7 @@ import HealthBar from "../HealthBar";
 import MonsterData from "../Data/MonsterData";
 import Shooter from "../Building/Shooter";
 import { EventConstant } from "../EventConstant";
+import KrakenSwingHand from "./KrakenSwingHand";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -73,7 +74,7 @@ export default class Kraken extends cc.Component {
     changeZIndex() {
         this.node.zIndex = 1000 + (9 - this.pos.y - 1) * 100 + 2;
         if(this.isShow&&!this.isDied){
-            this.node.zIndex = 1000 + 9 * 100 + 2;
+            this.node.zIndex = 3000 + (9 - this.pos.y - 1) * 100 + 2;
         }
     }
     attack(dir, finish) {
@@ -136,6 +137,10 @@ export default class Kraken extends cc.Component {
     //Animation
     BossShow() {
         this.isShow = true;
+       let hands = this.getComponentsInChildren(KrakenSwingHand);
+       for(let hand of hands){
+           hand.isShow = true;
+       }
         this.anim.play('KrakenIdle');
         if(this.shooter){
             this.shooter.auto = true;
@@ -171,13 +176,5 @@ export default class Kraken extends cc.Component {
             this.shooter.auto = this.isShow&&!this.isDied;
         }
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3 && self.tag == 5 && this.isShow && !this.isDied){
-            if(this.node.active){
-                this.node.stopAllActions();
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:2});
-            }
-        }
-        
-    }
+    
 }

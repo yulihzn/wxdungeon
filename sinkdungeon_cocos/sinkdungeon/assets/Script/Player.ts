@@ -11,6 +11,7 @@
 const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
 import HealthBar from './HealthBar';
+import Logic from './Logic';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -28,16 +29,17 @@ export default class Player extends cc.Component {
     private anim: cc.Animation;
     isDied = false;
     isFall = false;
-    currentHealth: number = 30;
-    maxHealth: number = 30;
+    currentHealth: number = 0;
+    maxHealth: number = 0;
     attackPonit:number = 1;
 
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.currentHealth = 30;
-        this.maxHealth = 30;
+        cc.game.addPersistRootNode(this.node);
+        this.currentHealth = Logic.playerData.currentHealth;
+        this.maxHealth = Logic.playerData.maxHealth;
         this.pos = cc.v2(4,4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
@@ -76,7 +78,7 @@ export default class Player extends cc.Component {
         this.changeZIndex(this.pos);
     }
     changeZIndex(pos:cc.Vec2) {
-        this.node.zIndex = 1000 + (9 - pos.y) * 100 + 2;
+        this.node.zIndex = 3000 + (9 - pos.y) * 100 + 2;
     }
     attack(dir,finish){
         if (this.isMoving || this.isDied) {
@@ -162,6 +164,7 @@ export default class Player extends cc.Component {
             this.currentHealth = this.maxHealth;
         }
         this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
+        Logic.playerData.updateHA(this.currentHealth,this.maxHealth,this.attackPonit);
         if (this.currentHealth < 1) {
             this.killed();
         }
@@ -172,6 +175,7 @@ export default class Player extends cc.Component {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
+        cc.game.removePersistRootNode(this.node);
         setTimeout(() => {
             cc.director.loadScene('gameover');
         }, 1000);

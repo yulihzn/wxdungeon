@@ -1,3 +1,6 @@
+import Logic from "./Logic";
+import PlayerData from "./Data/PlayerData";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -24,6 +27,8 @@ export default class GameOver extends cc.Component {
 
     }
     retry(){
+        Logic.level = 1;
+        Logic.playerData = new PlayerData();
         cc.director.loadScene('loading');
     }
     home(){

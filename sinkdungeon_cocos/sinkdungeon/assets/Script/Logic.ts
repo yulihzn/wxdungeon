@@ -17,7 +17,7 @@ const {ccclass, property} = cc._decorator;
 export default class Logic extends cc.Component {
     public static readonly BOSS_LEVEL_1: number = 2;
     public static level = 1;
-    playerData:PlayerData;
+    public static playerData:PlayerData = new PlayerData();
     
     // LIFE-CYCLE CALLBACKS:
 
@@ -25,7 +25,6 @@ export default class Logic extends cc.Component {
         //关闭调试
         cc.director.setDisplayStats(false);
         cc.game.addPersistRootNode(this.node);
-        this.playerData = new PlayerData();
         cc.director.on(EventConstant.LOADINGNEXTLEVEL,(event)=>{
             this.loadingNextLevel();
         });
@@ -44,5 +43,6 @@ export default class Logic extends cc.Component {
     public static getRandomNum(min, max): number {//生成一个随机数从[min,max]
 		return min + Math.round(Math.random() * (max - min));
 	}
-    // update (dt) {}
+    // update (dt) {
+    // }
 }

@@ -47,10 +47,10 @@ export default class Bullet extends cc.Component {
         let x = 0;
 		let y = 0;
 		switch (dir) {
-			case 0: y += 1000; break;
-			case 1: y -= 1000; break;
-			case 2: x -= 1000; break;
-			case 3: x += 1000; break;
+			case 0: y += 1500; break;
+			case 1: y -= 1500; break;
+			case 2: x -= 1500; break;
+			case 3: x += 1500; break;
 			case 4: break;
         }
         this.tagetPos = cc.v2(x,y);

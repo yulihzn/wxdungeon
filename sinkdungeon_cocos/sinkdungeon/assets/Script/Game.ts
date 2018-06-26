@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import Logic from "./Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,24 +13,23 @@ import { EventConstant } from "../EventConstant";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class KrakenSwingHand extends cc.Component {
-    @property
-    damage = 2;
+export default class Game extends cc.Component {
+
+    @property(cc.Label)
+    label: cc.Label = null;
+
+
     // LIFE-CYCLE CALLBACKS:
-    isShow = false;
 
     // onLoad () {}
 
     start () {
-        this.isShow = false;
+
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3 && this.isShow){
-            if(this.node.active){
-                this.node.stopAllActions();
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
-            }
+
+    update (dt) {
+        if(this.label){
+            this.label.string = `Level ${Logic.level}`;
         }
     }
-    // update (dt) {}
 }
