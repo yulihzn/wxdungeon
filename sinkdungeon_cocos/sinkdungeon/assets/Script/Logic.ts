@@ -15,7 +15,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Logic extends cc.Component {
-    public static readonly BOSS_LEVEL_1: number = 2;
+    public static readonly BOSS_LEVEL_1: number = 10;
     public static level = 1;
     public static playerData:PlayerData = new PlayerData();
     

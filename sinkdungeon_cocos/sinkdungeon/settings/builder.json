@@ -27,11 +27,11 @@
   },
   "renderMode": "0",
   "startScene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
-  "title": "hello_world",
+  "title": "cocossinkdungeon",
   "webOrientation": "portrait",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
-    "appid": "wx6ac3f5090a6b99c5",
+    "appid": "wx48c583ff7f015fb6",
     "isSubdomain": false,
     "orientation": "portrait",
     "subContext": ""
