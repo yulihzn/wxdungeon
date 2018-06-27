@@ -67,6 +67,12 @@ export default class Bullet extends cc.Component {
                 cc.director.emit('destorybullet',{bulletNode:this.node});
             }
         }
+        if(other.tag == 6){
+            if(this.node.active){
+                this.node.stopAllActions();
+                cc.director.emit('destorybullet',{bulletNode:this.node});
+            }
+        }
     }
     update (dt) {
         this.node.position =  cc.pLerp(this.node.position,this.tagetPos,dt*this.speed);

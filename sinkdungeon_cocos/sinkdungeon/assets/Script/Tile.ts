@@ -14,7 +14,7 @@ const {ccclass, property} = cc._decorator;
 export default class Tile extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     @property(cc.Label)
-    label:cc.Label;
+    label:cc.Label = null;
     isBroken:boolean = false;
     isAutoShow = true;
     private anim:cc.Animation;

@@ -6,6 +6,8 @@ import { EventConstant } from "./EventConstant";
 import MonsterManager from "./Manager/MonsterManager";
 import Kraken from "./Boss/Kraken";
 import Portal from "./Building/Portal";
+import Wall from "./Building/Wall";
+import Trap from "./Building/Trap";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,12 +25,18 @@ export default class Dungeon extends cc.Component {
 
     @property(cc.Prefab)
     tile: cc.Prefab = null;
+    @property(cc.Prefab)
+    wall: cc.Prefab = null;
+    @property(cc.Prefab)
+    trap: cc.Prefab = null;
     @property(Player)
     player: Player = null;
     @property(Portal)
     portal: Portal = null;
 
-    private map: Tile[][] = new Array();
+    map: Tile[][] = new Array();
+    wallmap: Wall[][] = new Array();
+    trapmap: Trap[][] = new Array();
     static readonly SIZE: number = 9;
     static readonly MAPX: number = 32;
     static readonly MAPY: number = 32;
@@ -36,7 +44,7 @@ export default class Dungeon extends cc.Component {
     private timeDelay = 0;
     private npcTimeDelay = 0;
 
-    private monsters: Monster[];
+    monsters: Monster[];
     public monsterReswpanPoints: { [key: string]: string } = {};
     monsterManager: MonsterManager = null;
     anim: cc.Animation;
@@ -50,25 +58,40 @@ export default class Dungeon extends cc.Component {
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
         this.map = new Array();
+        this.wallmap = new Array();
+        this.trapmap = new Array();
         for (let i = 0; i < Dungeon.SIZE; i++) {
             this.map[i] = new Array(i);
+            this.wallmap[i] = new Array(i);
+            this.trapmap[i] = new Array(i);
             for (let j = 0; j < Dungeon.SIZE; j++) {
                 let t = cc.instantiate(this.tile);
                 t.parent = this.node;
                 t.position = Dungeon.getPosInMap(cc.v2(i, j));
                 //越往下层级越高，i是行，j是列
                 t.zIndex = 1000 + (Dungeon.SIZE - j) * 100;
-                this.map[i][j] = t.getComponent('Tile');
-                // let index = Math.floor(Dungeon.SIZE / 2)
-                // if (index == i && index == j) {
-                // 	this.portal = new Portal(i, j);
-                // 	t.addBuilding(this.portal);
-                // 	this.portal.show();
-                // }
-                // if (!(index == i && index == j)) {
-                // 	this.addItem(new egret.Point(i, j));
-                // }
-                // this.randomArr[i * Logic.SIZE + j] = new egret.Point(i, j);
+                this.map[i][j] = t.getComponent(Tile);
+                //生成墙
+                if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
+                    && !this.monsterReswpanPoints[`${i},${j}`]) {
+                    let w = cc.instantiate(this.wall);
+                    w.parent = this.node;
+                    w.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    w.zIndex = 3000 + (Dungeon.SIZE - j) * 100;
+                    w.opacity = 255;
+                    this.wallmap[i][j] = w.getComponent(Wall);
+                }
+                //生成陷阱
+                if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
+                    && !this.wallmap[i][j] && !this.monsterReswpanPoints[`${i},${j}`]) {
+                    let trap = cc.instantiate(this.trap);
+                    trap.parent = this.node;
+                    trap.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    trap.zIndex = 3000 + (Dungeon.SIZE - j) * 100;
+                    this.trapmap[i][j] = trap.getComponent(Trap);
+                    //关闭踩踏掉落
+                    this.map[i][j].isAutoShow = false;
+                }
             }
         }
         this.portal.node.parent = this.node;
@@ -83,14 +106,14 @@ export default class Dungeon extends cc.Component {
     addMonsters(): void {
         this.monsters = new Array();
         let levelcount = 1;
-        this.monsterReswpanPoints['0,0'] = MonsterManager.MONSTER_GOBLIN;
-        this.monsterReswpanPoints['0,8'] = MonsterManager.MONSTER_GOBLIN;
-        this.monsterReswpanPoints['8,0'] = MonsterManager.MONSTER_MUMMY;
-        this.monsterReswpanPoints['8,8'] = MonsterManager.MONSTER_ANUBIS;
-        this.monsterReswpanPoints['0,4'] = MonsterManager.MONSTER_GOBLIN;
-        this.monsterReswpanPoints['4,0'] = MonsterManager.MONSTER_GOBLIN;
-        this.monsterReswpanPoints['8,4'] = MonsterManager.MONSTER_MUMMY;
-        this.monsterReswpanPoints['4,8'] = MonsterManager.MONSTER_ANUBIS;
+        this.monsterReswpanPoints['0,0'] = MonsterManager.MONSTER_SAILOR;
+        this.monsterReswpanPoints['0,8'] = MonsterManager.MONSTER_SAILOR;
+        this.monsterReswpanPoints['8,0'] = MonsterManager.MONSTER_SAILOR;
+        this.monsterReswpanPoints['8,8'] = MonsterManager.MONSTER_PIRATE;
+        this.monsterReswpanPoints['0,4'] = MonsterManager.MONSTER_SAILOR;
+        this.monsterReswpanPoints['4,0'] = MonsterManager.MONSTER_PIRATE;
+        this.monsterReswpanPoints['8,4'] = MonsterManager.MONSTER_SAILOR;
+        this.monsterReswpanPoints['4,8'] = MonsterManager.MONSTER_PIRATE;;
         for (let p in this.monsterReswpanPoints) {
             if (levelcount++ > Logic.level || Logic.isBossLevel(Logic.level)) {
                 break;
@@ -116,7 +139,7 @@ export default class Dungeon extends cc.Component {
             setTimeout(() => {
                 this.bossKraken = this.monsterManager.getKraken(this.node);
                 this.bossKraken.showBoss();
-            }, 5000)
+            }, 4000)
 
         }
     }
@@ -142,12 +165,6 @@ export default class Dungeon extends cc.Component {
         let tile = this.map[pos.x][pos.y];
         if (!tile.isBroken) {
             tile.breakTile();
-        }
-        if (tile.isBroken) {
-            if (this.player.pos.equals(pos) && !this.player.isMoving) {
-                this.player.fall();
-            }
-
         }
     }
     playerAction(dir: number) {
@@ -175,15 +192,27 @@ export default class Dungeon extends cc.Component {
         isBossAttack = Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isBossZone(newPos);
         if (isBossAttack && this.bossKraken && this.bossKraken.isShow && !this.bossKraken.isDied) {
             this.player.attack(dir, (damage: number) => {
-                this.bossKraken.takeDamage(damage,newPos);
+                this.bossKraken.takeDamage(damage, newPos);
             });
         }
         if (!isAttack && !isBossAttack) {
+            let w = this.wallmap[newPos.x][newPos.y]
+            if (w && w.node.active) {
+                dir = 4;
+            }
             this.player.move(dir);
         }
     }
     checkPlayerPos() {
-        this.breakTile(this.player.pos);
+        let tile = this.map[this.player.pos.x][this.player.pos.y];
+        if (tile.isBroken) {
+            if (!this.player.isMoving) {
+                this.player.fall();
+            }
+        }
+        if (tile.isAutoShow) {
+            this.breakTile(this.player.pos);
+        }
     }
     checkMonstersPos() {
         for (let monster of this.monsters) {
@@ -197,93 +226,7 @@ export default class Dungeon extends cc.Component {
         }
 
     }
-    monstersAction(monster: Monster) {
-        if (!monster || monster.isDied) {
-            return;
-        }
-        let dir = this.getMonsterBestDir(monster.pos);
-        let newPos = cc.v2(monster.pos.x, monster.pos.y);
-        switch (dir) {
-            case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
-            case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
-            case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
-            case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
-        }
-        if (newPos.equals(this.player.pos) && !this.player.isDied) {
-            monster.attack(dir, (damage: number) => {
-                this.player.takeDamage(damage);
-            });
-        } else {
-            monster.move(dir);
-        }
 
-    }
-    getPosDir(oldPos: cc.Vec2, newPos: cc.Vec2): number {
-        let dir = 4;
-        if (newPos.x == oldPos.x) {
-            dir = newPos.y > oldPos.y ? 0 : 1;
-        }
-        if (newPos.y == oldPos.y) {
-            dir = newPos.x > oldPos.x ? 3 : 2;
-        }
-        if (newPos.equals(oldPos)) {
-            dir = 4;
-        }
-        return dir;
-    }
-    getMonsterBestDir(pos: cc.Vec2): number {
-        let bestPos = cc.v2(pos.x, pos.y);
-        //获取9个点并打乱顺序
-        let dirArr = new Array();
-        if (pos.y + 1 < 9) {
-            dirArr.push(cc.v2(pos.x, pos.y + 1));
-        }
-        if (pos.y - 1 >= 0) {
-            dirArr.push(cc.v2(pos.x, pos.y - 1));
-        }
-        if (pos.x - 1 >= 0) {
-            dirArr.push(cc.v2(pos.x - 1, pos.y));
-        }
-        if (pos.x + 1 < 9) {
-            dirArr.push(cc.v2(pos.x + 1, pos.y));
-        }
-
-        dirArr.sort(() => {
-            return 0.5 - Math.random();
-        })
-        //获取没有塌陷且没有其他怪物的tile
-        let goodArr = new Array();
-        for (let i = 0; i < dirArr.length; i++) {
-            let newPos = dirArr[i];
-            let tile = this.map[newPos.x][newPos.y];
-            if (!tile.isBroken) {
-                let hasOther = false;
-                for(let other of this.monsters){
-                    if(other.pos.equals(newPos)){
-                        hasOther = true;
-                        break;
-                    }
-                }
-                if(!hasOther){
-                    goodArr.push(newPos);
-                }
-            }
-        }
-        for (let i = 0; i < goodArr.length; i++) {
-            let newPos = goodArr[i];
-            if (newPos.equals(this.player.pos)) {
-                bestPos = newPos;
-                break;
-            }
-            let tile = this.map[newPos.x][newPos.y];
-            if (!tile.isBreakingNow) {
-                bestPos = newPos;
-            }
-
-        }
-        let dir = this.getPosDir(pos, bestPos);
-        return dir;
-    }
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
@@ -299,7 +242,7 @@ export default class Dungeon extends cc.Component {
                 if (monster.isDied) {
                     count++;
                 }
-                this.monstersAction(monster);
+                monster.monsterAction(this);
             }
             if (this.monsters.length > 0 && count >= this.monsters.length) {
                 if (!Logic.isBossLevel(Logic.level)) {

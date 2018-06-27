@@ -13,6 +13,7 @@ import { EventConstant } from './EventConstant';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
 import MonsterData from './Data/MonsterData';
+import Dungeon from './Dungeon';
 
 @ccclass
 export default class Monster extends cc.Component {
@@ -150,6 +151,102 @@ export default class Monster extends cc.Component {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
+    }
+
+    monsterAction(dungeon:Dungeon) {
+        if (this.isDied) {
+            return;
+        }
+        let dir = this.getMonsterBestDir(this.pos,dungeon);
+        let newPos = cc.v2(this.pos.x, this.pos.y);
+        switch (dir) {
+            case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
+            case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
+            case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
+            case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
+        }
+        if (newPos.equals(dungeon.player.pos) && !dungeon.player.isDied) {
+            this.attack(dir, (damage: number) => {
+                dungeon.player.takeDamage(damage);
+            });
+        } else {
+            this.move(dir);
+        }
+
+    }
+    getPosDir(oldPos: cc.Vec2, newPos: cc.Vec2): number {
+        let dir = 4;
+        if (newPos.x == oldPos.x) {
+            dir = newPos.y > oldPos.y ? 0 : 1;
+        }
+        if (newPos.y == oldPos.y) {
+            dir = newPos.x > oldPos.x ? 3 : 2;
+        }
+        if (newPos.equals(oldPos)) {
+            dir = 4;
+        }
+        return dir;
+    }
+    getMonsterBestDir(pos: cc.Vec2,dungeon:Dungeon): number {
+        let bestPos = cc.v2(pos.x, pos.y);
+        //获取9个点并打乱顺序
+        let dirArr = new Array();
+        if (pos.y + 1 < 9) {
+            dirArr.push(cc.v2(pos.x, pos.y + 1));
+        }
+        if (pos.y - 1 >= 0) {
+            dirArr.push(cc.v2(pos.x, pos.y - 1));
+        }
+        if (pos.x - 1 >= 0) {
+            dirArr.push(cc.v2(pos.x - 1, pos.y));
+        }
+        if (pos.x + 1 < 9) {
+            dirArr.push(cc.v2(pos.x + 1, pos.y));
+        }
+
+        dirArr.sort(() => {
+            return 0.5 - Math.random();
+        })
+        //获取没有塌陷且没有其他怪物和障碍的tile
+        let goodArr = new Array();
+        for (let i = 0; i < dirArr.length; i++) {
+            let newPos = dirArr[i];
+            let tile = dungeon.map[newPos.x][newPos.y];
+            if (!tile.isBroken) {
+                let hasOther = false;
+                for (let other of dungeon.monsters) {
+                    if (other.pos.equals(newPos)) {
+                        hasOther = true;
+                        break;
+                    }
+                }
+                let w = dungeon.wallmap[newPos.x][newPos.y]
+                if (w && w.node.active) {
+                    hasOther = true;
+                }
+                let trap = dungeon.trapmap[newPos.x][newPos.y]
+                if (trap && trap.node.active) {
+                    hasOther = true;
+                }
+                if (!hasOther) {
+                    goodArr.push(newPos);
+                }
+            }
+        }
+        for (let i = 0; i < goodArr.length; i++) {
+            let newPos = goodArr[i];
+            if (newPos.equals(dungeon.player.pos)) {
+                bestPos = newPos;
+                break;
+            }
+            let tile = dungeon.map[newPos.x][newPos.y];
+            if (!tile.isBreakingNow) {
+                bestPos = newPos;
+            }
+
+        }
+        let dir = this.getPosDir(pos, bestPos);
+        return dir;
     }
 
 

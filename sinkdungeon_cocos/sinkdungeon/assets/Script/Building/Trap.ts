@@ -15,60 +15,60 @@ import { EventConstant } from "../EventConstant";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Portal extends cc.Component {
+export default class Trap extends cc.Component {
 
-
-    anim:cc.Animation;
+    @property(cc.SpriteFrame)
+    openSpriteFrame:cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    closeSpriteFrame:cc.SpriteFrame = null;
     isOpen:boolean = false;
-    pos:cc.Vec2;
-
+    pos:cc.Vec2 = cc.v2(0,0);
+    private sprite: cc.Node;
+    private timeDelay = 0;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.sprite = this.node.getChildByName('sprite');
+    }
 
     start () {
-        this.setPos(cc.v2(4,4));
-        this.anim = this.getComponent(cc.Animation);
-        this.anim.play('PortalCloseIdle');
+        
     }
+    
     setPos(pos:cc.Vec2){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = 3000 + (Dungeon.SIZE - pos.y) * 100+1;
     }
-    AnimGateClose(){
-        this.anim.play('PortalCloseIdle');
-    }
-    AnimGateOpen(){
-        this.anim.play('PortalOpenIdle');
-    }
-    openGate(){
+    
+    openTrap(){
         if(this.isOpen){
             return;
         }
         this.isOpen = true;
-        this.anim.play('PortalOpen');
+        this.openSpriteFrame.getTexture().setAliasTexParameters();
+        this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame;
+        setTimeout(() => {
+            this.closeSpriteFrame.getTexture().setAliasTexParameters();
+            this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
+            this.isOpen = false;
+        }, 500);
     }
-    closeGate(){
-        if(!this.isOpen){
-            return;
-        }
-        this.isOpen = false;
-        this.anim.play('PortalClose');
-    }
-
-    transportPlayer(playerPos:cc.Vec2){
-        if(playerPos.x==this.pos.x&&playerPos.y==this.pos.y && this.isOpen){
-        }
-    }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    
+    onCollisionStay(other:cc.Collider,self:cc.Collider){
         if(other.tag == 3){
             if(this.isOpen){
-                this.closeGate();
-                cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
+                this.isOpen = false;
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:1});
             }
         }
     }
 
-    // update (dt) {}
+    update (dt) {
+        this.timeDelay += dt;
+        if (this.timeDelay > 2) {
+            this.openTrap();
+            this.timeDelay = 0;
+        }
+    }
 }

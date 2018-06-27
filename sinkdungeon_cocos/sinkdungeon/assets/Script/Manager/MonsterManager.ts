@@ -19,6 +19,8 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_GOBLIN = 'monster001';
 	public static readonly MONSTER_MUMMY = 'monster002';
     public static readonly MONSTER_ANUBIS = 'monster003';
+    public static readonly MONSTER_PIRATE = 'monster004';
+    public static readonly MONSTER_SAILOR = 'monster005';
     
     public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN';
 
@@ -49,7 +51,9 @@ export default class MonsterManager extends cc.Component {
         switch (resName) {
 			case MonsterManager.MONSTER_GOBLIN: data.updateHA(1,1,1); break;
 			case MonsterManager.MONSTER_MUMMY: data.updateHA(2,2,2); break;
-			case MonsterManager.MONSTER_ANUBIS: data.updateHA(3,3,3); break;
+            case MonsterManager.MONSTER_ANUBIS: data.updateHA(3,3,3); break;
+            case MonsterManager.MONSTER_PIRATE: data.updateHA(2,2,2); break;
+            case MonsterManager.MONSTER_SAILOR: data.updateHA(1,1,1); break;
         }
         monster.changeBodyRes(resName);
         monster.data = data;

@@ -99,7 +99,7 @@ export default class Player extends cc.Component {
         this.sprite.runAction(action);
     }
     move(dir:number) {
-        if (this.isMoving || this.isDied) {
+        if (this.isMoving || this.isDied || this.isFall) {
             return;
         }
         let newPos = cc.v2(this.pos.x,this.pos.y);
@@ -153,7 +153,7 @@ export default class Player extends cc.Component {
             this.anim.play('PlayerIdle');
             this.takeDamage(1);
             this.isFall = false;
-        }, 1000);
+        }, 2000);
     }
     takeDamage(damage: number) {
         if(!this.healthBar){
