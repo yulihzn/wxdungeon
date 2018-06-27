@@ -57,6 +57,7 @@ export default class Dungeon extends cc.Component {
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
+        
         this.map = new Array();
         this.wallmap = new Array();
         this.trapmap = new Array();

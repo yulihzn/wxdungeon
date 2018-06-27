@@ -1,5 +1,6 @@
 import PlayerData from "./Data/PlayerData";
 import { EventConstant } from "./EventConstant";
+import MapData from "./Data/MapData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,6 +19,7 @@ export default class Logic extends cc.Component {
     public static readonly BOSS_LEVEL_1: number = 10;
     public static level = 1;
     public static playerData:PlayerData = new PlayerData();
+    public static rooms:MapData[] = new Array();
     
     // LIFE-CYCLE CALLBACKS:
 
@@ -28,6 +30,22 @@ export default class Logic extends cc.Component {
         cc.director.on(EventConstant.LOADINGNEXTLEVEL,(event)=>{
             this.loadingNextLevel();
         });
+        cc.loader.loadRes('Rooms/chapter01',(err:Error,resource)=>{
+            if(err){
+				cc.error(err);
+			}else{
+                let strs:string= resource;
+                let arr = strs.split('level');
+                Logic.rooms = new Array();
+                for(let str of arr){
+                    if(str){
+                        str = str.substring(str.indexOf('=')+1,str.length)
+                        Logic.rooms.push(new MapData(str));
+                    }
+                }
+                Logic.rooms
+			}
+        })
     }
 
     start () {

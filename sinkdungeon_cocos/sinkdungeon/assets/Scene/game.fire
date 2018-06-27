@@ -7775,6 +7775,9 @@
     "_clips": [
       {
         "__uuid__": "727e2d63-57e9-40b8-bc0c-ce24c7e7dd8d"
+      },
+      {
+        "__uuid__": "b9e95bfc-9bde-4d4d-9904-3aafe9755a35"
       }
     ],
     "playOnLoad": false

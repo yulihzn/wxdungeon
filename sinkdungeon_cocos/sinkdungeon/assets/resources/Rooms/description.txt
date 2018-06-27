@@ -1,0 +1,6 @@
+description：
+p:pirate
+s:sailor
+P:Portal
+W:wall
+T:trap
