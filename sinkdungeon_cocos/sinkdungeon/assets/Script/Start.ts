@@ -16,8 +16,6 @@ export default class Helloworld extends cc.Component {
         // init logic
     }
     startGame(){
-        Logic.level = 1;
-        Logic.playerData = new PlayerData();
-        cc.director.loadScene('loading');
+        cc.director.loadScene('chapter');
     }
 }

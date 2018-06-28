@@ -8,6 +8,8 @@ import Kraken from "./Boss/Kraken";
 import Portal from "./Building/Portal";
 import Wall from "./Building/Wall";
 import Trap from "./Building/Trap";
+import MapData from "./Data/MapData";
+import Item from "./Item/Item";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,6 +31,8 @@ export default class Dungeon extends cc.Component {
     wall: cc.Prefab = null;
     @property(cc.Prefab)
     trap: cc.Prefab = null;
+    @property(cc.Prefab)
+    heart: cc.Prefab = null;
     @property(Player)
     player: Player = null;
     @property(Portal)
@@ -37,6 +41,7 @@ export default class Dungeon extends cc.Component {
     map: Tile[][] = new Array();
     wallmap: Wall[][] = new Array();
     trapmap: Trap[][] = new Array();
+    itemmap: Item[][] = new Array();
     static readonly SIZE: number = 9;
     static readonly MAPX: number = 32;
     static readonly MAPY: number = 32;
@@ -57,14 +62,19 @@ export default class Dungeon extends cc.Component {
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
-        
+        this.monsterManager = this.getComponent(MonsterManager);
+        this.player.node.parent = this.node;
+        let mapData: string[][] = Logic.getCurrentMapData().map;
+        this.monsters = new Array();
         this.map = new Array();
         this.wallmap = new Array();
         this.trapmap = new Array();
+        this.itemmap = new Array();
         for (let i = 0; i < Dungeon.SIZE; i++) {
             this.map[i] = new Array(i);
             this.wallmap[i] = new Array(i);
             this.trapmap[i] = new Array(i);
+            this.itemmap[i] = new Array(i);
             for (let j = 0; j < Dungeon.SIZE; j++) {
                 let t = cc.instantiate(this.tile);
                 t.parent = this.node;
@@ -73,8 +83,9 @@ export default class Dungeon extends cc.Component {
                 t.zIndex = 1000 + (Dungeon.SIZE - j) * 100;
                 this.map[i][j] = t.getComponent(Tile);
                 //生成墙
-                if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
-                    && !this.monsterReswpanPoints[`${i},${j}`]) {
+                // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
+                //     && !this.monsterReswpanPoints[`${i},${j}`])
+                if (mapData[i][j] == 'W') {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
                     w.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -83,8 +94,9 @@ export default class Dungeon extends cc.Component {
                     this.wallmap[i][j] = w.getComponent(Wall);
                 }
                 //生成陷阱
-                if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
-                    && !this.wallmap[i][j] && !this.monsterReswpanPoints[`${i},${j}`]) {
+                // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
+                //     && !this.wallmap[i][j] && !this.monsterReswpanPoints[`${i},${j}`])
+                if (mapData[i][j] == 'T') {
                     let trap = cc.instantiate(this.trap);
                     trap.parent = this.node;
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -93,38 +105,54 @@ export default class Dungeon extends cc.Component {
                     //关闭踩踏掉落
                     this.map[i][j].isAutoShow = false;
                 }
+                //生成心
+                if (mapData[i][j] == 'H') {
+                    let heart = cc.instantiate(this.heart);
+                    heart.parent = this.node;
+                    heart.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    heart.zIndex = 3000 + (Dungeon.SIZE - j) * 100+3;
+                    this.itemmap[i][j] = heart.getComponent(Item);
+                }
+                if (mapData[i][j] == 's') {
+                    this.addMonsterFromData(MonsterManager.MONSTER_SAILOR, i, j);
+                }
+                if (mapData[i][j] == 'p') {
+                    this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
+                }
+                if (mapData[i][j] == 'P') {
+                    this.portal.node.parent = this.node;
+                    this.portal.node.zIndex = 1000 + 5 * 100 + 1;
+                    this.portal.node.setPosition(this.map[i][j].node.position);
+                }
             }
         }
-        this.portal.node.parent = this.node;
-        this.portal.node.zIndex = 1000 + 5 * 100 + 1;
-        this.portal.node.setPosition(this.map[4][4].node.position);
-
-        this.player.node.parent = this.node;
-        this.monsterManager = this.getComponent(MonsterManager);
-
-        this.addMonsters();
-    }
-    addMonsters(): void {
-        this.monsters = new Array();
-        let levelcount = 1;
-        this.monsterReswpanPoints['0,0'] = MonsterManager.MONSTER_SAILOR;
-        this.monsterReswpanPoints['0,8'] = MonsterManager.MONSTER_SAILOR;
-        this.monsterReswpanPoints['8,0'] = MonsterManager.MONSTER_SAILOR;
-        this.monsterReswpanPoints['8,8'] = MonsterManager.MONSTER_PIRATE;
-        this.monsterReswpanPoints['0,4'] = MonsterManager.MONSTER_SAILOR;
-        this.monsterReswpanPoints['4,0'] = MonsterManager.MONSTER_PIRATE;
-        this.monsterReswpanPoints['8,4'] = MonsterManager.MONSTER_SAILOR;
-        this.monsterReswpanPoints['4,8'] = MonsterManager.MONSTER_PIRATE;;
-        for (let p in this.monsterReswpanPoints) {
-            if (levelcount++ > Logic.level || Logic.isBossLevel(Logic.level)) {
-                break;
-            }
-            let arr = p.split(',');
-            this.addMonster(this.monsterManager.getMonster(this.monsterReswpanPoints[p], this.node)
-                , cc.v2(parseInt(arr[0]), parseInt(arr[1])));
-        }
+        // this.addMonsters();
         this.addkraken();
     }
+    addMonsterFromData(resName: string, i: number, j: number) {
+        this.addMonster(this.monsterManager.getMonster(resName, this.node)
+            , cc.v2(i, j));
+    }
+    // //随机用
+    // addMonsters(): void {
+    //     let levelcount = 1;
+    //     this.monsterReswpanPoints['0,0'] = MonsterManager.MONSTER_SAILOR;
+    //     this.monsterReswpanPoints['0,8'] = MonsterManager.MONSTER_SAILOR;
+    //     this.monsterReswpanPoints['8,0'] = MonsterManager.MONSTER_SAILOR;
+    //     this.monsterReswpanPoints['8,8'] = MonsterManager.MONSTER_PIRATE;
+    //     this.monsterReswpanPoints['0,4'] = MonsterManager.MONSTER_SAILOR;
+    //     this.monsterReswpanPoints['4,0'] = MonsterManager.MONSTER_PIRATE;
+    //     this.monsterReswpanPoints['8,4'] = MonsterManager.MONSTER_SAILOR;
+    //     this.monsterReswpanPoints['4,8'] = MonsterManager.MONSTER_PIRATE;;
+    //     for (let p in this.monsterReswpanPoints) {
+    //         if (levelcount++ > Logic.level || Logic.isBossLevel(Logic.level)) {
+    //             break;
+    //         }
+    //         let arr = p.split(',');
+    //         this.addMonster(this.monsterManager.getMonster(this.monsterReswpanPoints[p], this.node)
+    //             , cc.v2(parseInt(arr[0]), parseInt(arr[1])));
+    //     }
+    // }
     private breakHalfTiles(): void {
         for (let i = 0; i < Dungeon.SIZE; i++) {
             for (let j = 6; j < Dungeon.SIZE; j++) {

@@ -20,6 +20,7 @@ export default class Logic extends cc.Component {
     public static level = 1;
     public static playerData:PlayerData = new PlayerData();
     public static rooms:MapData[] = new Array();
+    public static chapterName = 'chapter01';
     
     // LIFE-CYCLE CALLBACKS:
 
@@ -30,22 +31,7 @@ export default class Logic extends cc.Component {
         cc.director.on(EventConstant.LOADINGNEXTLEVEL,(event)=>{
             this.loadingNextLevel();
         });
-        cc.loader.loadRes('Rooms/chapter01',(err:Error,resource)=>{
-            if(err){
-				cc.error(err);
-			}else{
-                let strs:string= resource;
-                let arr = strs.split('level');
-                Logic.rooms = new Array();
-                for(let str of arr){
-                    if(str){
-                        str = str.substring(str.indexOf('=')+1,str.length)
-                        Logic.rooms.push(new MapData(str));
-                    }
-                }
-                Logic.rooms
-			}
-        })
+        
     }
 
     start () {
@@ -53,7 +39,17 @@ export default class Logic extends cc.Component {
     }
     loadingNextLevel(){
         Logic.level++;
-        cc.director.loadScene('loading');
+        if(Logic.level>Logic.rooms.length){
+            cc.director.loadScene('gamefinish')
+        }else{
+            cc.director.loadScene('loading');
+        }
+    }
+    public static getCurrentMapData():MapData{
+        if(Logic.rooms.length>Logic.level-1){
+            return Logic.rooms[Logic.level-1]
+        }
+        return null;
     }
     public static isBossLevel(level: number): boolean {
 		return level == Logic.BOSS_LEVEL_1;

@@ -1,4 +1,5 @@
 import Logic from "./Logic";
+import MapData from "./Data/MapData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,13 +27,37 @@ export default class NewClass extends cc.Component {
 
     start () {
         this.label.string = `Level ${Logic.level}`
+        this.isLoaded = false;
+        this.loadMap();
+    }
+    loadMap(){
+        if(Logic.rooms&&Logic.rooms.length>0){
+            this.isLoaded = true;
+            return;
+        }
+        cc.loader.loadRes('Rooms/'+Logic.chapterName,(err:Error,resource)=>{
+            if(err){
+				cc.error(err);
+			}else{
+                let strs:string= resource;
+                let arr = strs.split('level');
+                Logic.rooms = new Array();
+                for(let str of arr){
+                    if(str){
+                        str = str.substring(str.indexOf('=')+1,str.length)
+                        Logic.rooms.push(new MapData(str));
+                    }
+                }
+                this.isLoaded = true;
+			}
+        })
     }
 
     update (dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 0.016 && !this.isLoaded) {
+        if (this.timeDelay > 0.016 && this.isLoaded) {
             this.timeDelay = 0;
-            this.isLoaded = true;
+            this.isLoaded = false;
             cc.director.loadScene('game');
         }
     }
