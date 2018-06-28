@@ -1,0 +1,55 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "DungeonWave",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 3,
+  "sample": 60,
+  "speed": 0.25,
+  "wrapMode": "2",
+  "curveData": {
+    "paths": {
+      "background01": {
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": -76
+            },
+            {
+              "frame": 1.5,
+              "value": -500
+            },
+            {
+              "frame": 3,
+              "value": -76
+            }
+          ]
+        }
+      },
+      "background02": {
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": -500
+            },
+            {
+              "frame": 0.016666666666666666,
+              "value": -500
+            },
+            {
+              "frame": 1.5,
+              "value": -76
+            },
+            {
+              "frame": 3,
+              "value": -500
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

@@ -70,6 +70,9 @@
       },
       {
         "__id__": 9
+      },
+      {
+        "__id__": 10
       }
     ],
     "_prefab": null,
@@ -218,7 +221,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "InfoLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -317,5 +320,23 @@
     "label": {
       "__id__": 7
     }
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "35bed1cf-3fa1-4370-8c66-63c8e834b19e"
+    },
+    "_clips": [
+      {
+        "__uuid__": "35bed1cf-3fa1-4370-8c66-63c8e834b19e"
+      }
+    ],
+    "playOnLoad": true
   }
 ]

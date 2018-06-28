@@ -168,11 +168,12 @@ export default class Dungeon extends cc.Component {
     }
     private addkraken() {
         if (Logic.isBossLevel(Logic.level)) {
-            this.anim.play('DungeonShake');
+            this.anim.playAdditive('DungeonShake');
             this.breakHalfTiles();
             setTimeout(() => {
                 this.bossKraken = this.monsterManager.getKraken(this.node);
                 this.bossKraken.showBoss();
+                this.anim.play('DungeonWave');
             }, 4000)
 
         }
@@ -190,7 +191,12 @@ export default class Dungeon extends cc.Component {
     }
 
     start() {
-
+        let ss = this.node.getComponentsInChildren(cc.Sprite);
+        for (let i = 0; i < ss.length; i++) {
+            if(ss[i].spriteFrame){
+                ss[i].spriteFrame.getTexture().setAliasTexParameters();
+            }
+        }
     }
     breakTile(pos: cc.Vec2) {
         if (pos.x == 4 && pos.y == 4) {
