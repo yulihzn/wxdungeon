@@ -92,6 +92,8 @@ export default class Dungeon extends cc.Component {
                     w.zIndex = 3000 + (Dungeon.SIZE - j) * 100;
                     w.opacity = 255;
                     this.wallmap[i][j] = w.getComponent(Wall);
+                    //关闭踩踏掉落
+                    this.map[i][j].isAutoShow = false;
                 }
                 //生成陷阱
                 // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
@@ -118,6 +120,9 @@ export default class Dungeon extends cc.Component {
                 }
                 if (mapData[i][j] == 'p') {
                     this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
+                }
+                if (mapData[i][j] == 'o') {
+                    this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
                 }
                 if (mapData[i][j] == 'P') {
                     this.portal.node.parent = this.node;
@@ -196,40 +201,26 @@ export default class Dungeon extends cc.Component {
             tile.breakTile();
         }
     }
-    playerAction(dir: number) {
-        //事件执行脚本引入的对象有可能为空
-        if (!this.player) {
-            return;
+    playerAction(dir:number){
+        if(this.player){
+            this.player.playerAction(dir,this)
         }
-        let newPos = cc.v2(this.player.pos.x, this.player.pos.y);
-        switch (dir) {
-            case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
-            case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
-            case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
-            case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
-        }
-        let isAttack = false;
+    }
+    monstersAction(){
+        let count = 0;
         for (let monster of this.monsters) {
-            if (newPos.equals(monster.pos) && !monster.isDied) {
-                isAttack = true;
-                this.player.attack(dir, (damage: number) => {
-                    monster.takeDamage(damage);
-                });
+            if (monster.isDied) {
+                count++;
+            }
+            monster.monsterAction(this);
+        }
+        if (this.monsters.length > 0 && count >= this.monsters.length) {
+            if (!Logic.isBossLevel(Logic.level)) {
+                this.portal.openGate();
             }
         }
-        let isBossAttack = false;
-        isBossAttack = Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isBossZone(newPos);
-        if (isBossAttack && this.bossKraken && this.bossKraken.isShow && !this.bossKraken.isDied) {
-            this.player.attack(dir, (damage: number) => {
-                this.bossKraken.takeDamage(damage, newPos);
-            });
-        }
-        if (!isAttack && !isBossAttack) {
-            let w = this.wallmap[newPos.x][newPos.y]
-            if (w && w.node.active) {
-                dir = 4;
-            }
-            this.player.move(dir);
+        if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied) {
+            this.portal.openGate();
         }
     }
     checkPlayerPos() {
@@ -255,32 +246,30 @@ export default class Dungeon extends cc.Component {
         }
 
     }
-
-    update(dt) {
+    isTimeDelay(dt:number):boolean{
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
-            this.checkPlayerPos();
-            this.checkMonstersPos();
+            return true;
         }
+        return false;
+    }
+    isNpcTimeDelay(dt:number):boolean{
         this.npcTimeDelay += dt;
         if (this.npcTimeDelay > 1) {
             this.npcTimeDelay = 0;
-            let count = 0;
-            for (let monster of this.monsters) {
-                if (monster.isDied) {
-                    count++;
-                }
-                monster.monsterAction(this);
-            }
-            if (this.monsters.length > 0 && count >= this.monsters.length) {
-                if (!Logic.isBossLevel(Logic.level)) {
-                    this.portal.openGate();
-                }
-            }
-            if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied) {
-                this.portal.openGate();
-            }
+            return true;
+        }
+        return false;
+    }
+
+    update(dt) {
+        if (this.isTimeDelay(dt)) {
+            this.checkPlayerPos();
+            this.checkMonstersPos();
+        }
+        if (this.isNpcTimeDelay(dt)) {
+            this.monstersAction();
         }
     }
 }

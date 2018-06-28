@@ -48,6 +48,8 @@ export default class Monster extends cc.Component {
             let body = this.sprite.getChildByName('body');
             spriteFrame.getTexture().setAliasTexParameters();
             body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            body.width = spriteFrame.getTexture().width;
+            body.height = spriteFrame.getTexture().height;
         })
     }
     updatePlayerPos() {

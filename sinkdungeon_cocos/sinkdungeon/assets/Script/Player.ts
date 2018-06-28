@@ -12,6 +12,7 @@ const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
+import Dungeon from './Dungeon';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -37,7 +38,6 @@ export default class Player extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        cc.game.addPersistRootNode(this.node);
         this.currentHealth = Logic.playerData.currentHealth;
         this.maxHealth = Logic.playerData.maxHealth;
         this.pos = cc.v2(4,4);
@@ -175,13 +175,43 @@ export default class Player extends cc.Component {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
-        cc.game.removePersistRootNode(this.node);
         setTimeout(() => {
             cc.director.loadScene('gameover');
         }, 1000);
     }
-
-
+    //玩家行动
+    playerAction(dir: number,dungeon:Dungeon) {
+        let newPos = cc.v2(this.pos.x, this.pos.y);
+        switch (dir) {
+            case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
+            case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
+            case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
+            case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
+        }
+        let isAttack = false;
+        for (let monster of dungeon.monsters) {
+            if (newPos.equals(monster.pos) && !monster.isDied) {
+                isAttack = true;
+                this.attack(dir, (damage: number) => {
+                    monster.takeDamage(damage);
+                });
+            }
+        }
+        let isBossAttack = false;
+        isBossAttack = Logic.isBossLevel(Logic.level) && dungeon.bossKraken && dungeon.bossKraken.isBossZone(newPos);
+        if (isBossAttack && dungeon.bossKraken && dungeon.bossKraken.isShow && !dungeon.bossKraken.isDied) {
+            this.attack(dir, (damage: number) => {
+                dungeon.bossKraken.takeDamage(damage, newPos);
+            });
+        }
+        if (!isAttack && !isBossAttack) {
+            let w = dungeon.wallmap[newPos.x][newPos.y]
+            if (w && w.node.active) {
+                dir = 4;
+            }
+            this.move(dir);
+        }
+    }
 
     update(dt) {
         if (!this.isMoving) {
