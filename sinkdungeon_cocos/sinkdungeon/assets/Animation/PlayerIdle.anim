@@ -9,7 +9,8 @@
   "wrapMode": "2",
   "curveData": {
     "paths": {
-      "sprire": {
+      "sprite": {
+        "comps": {},
         "props": {
           "scaleY": [
             {

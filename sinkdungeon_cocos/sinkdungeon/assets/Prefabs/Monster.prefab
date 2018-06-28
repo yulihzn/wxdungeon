@@ -1194,6 +1194,7 @@
       "x": 1,
       "y": 1
     },
+    "label": null,
     "healthBar": {
       "__id__": 14
     }
