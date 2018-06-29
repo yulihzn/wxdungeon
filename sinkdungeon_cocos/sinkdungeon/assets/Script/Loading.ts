@@ -55,7 +55,7 @@ export default class NewClass extends cc.Component {
 
     update (dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 1 && this.isLoaded) {
+        if (this.timeDelay > 0.5 && this.isLoaded) {
             this.timeDelay = 0;
             this.isLoaded = false;
             cc.director.loadScene('game');

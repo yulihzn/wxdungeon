@@ -20,21 +20,20 @@ export default class Portal extends cc.Component {
 
     anim:cc.Animation;
     isOpen:boolean = false;
-    pos:cc.Vec2;
+    pos:cc.Vec2 = cc.v2(4,4);
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
     start () {
-        this.setPos(cc.v2(4,4));
         this.anim = this.getComponent(cc.Animation);
         this.anim.play('PortalCloseIdle');
     }
     setPos(pos:cc.Vec2){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = 3000 + (Dungeon.SIZE - pos.y) * 100+1;
+        this.node.zIndex = 1000 + (Dungeon.SIZE - pos.y) * 100+1;
     }
     AnimGateClose(){
         this.anim.play('PortalCloseIdle');

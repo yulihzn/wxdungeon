@@ -16,6 +16,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class MonsterManager extends cc.Component {
+    public static readonly MONSTER_SLIME = 'monster000';
     public static readonly MONSTER_GOBLIN = 'monster001';
 	public static readonly MONSTER_MUMMY = 'monster002';
     public static readonly MONSTER_ANUBIS = 'monster003';
@@ -50,6 +51,7 @@ export default class MonsterManager extends cc.Component {
         let monster = monsterPrefab.getComponent(Monster);
         let data = new MonsterData();
         switch (resName) {
+            case MonsterManager.MONSTER_SLIME: data.updateHA(3,3,1); break;
 			case MonsterManager.MONSTER_GOBLIN: data.updateHA(1,1,1); break;
 			case MonsterManager.MONSTER_MUMMY: data.updateHA(2,2,2); break;
             case MonsterManager.MONSTER_ANUBIS: data.updateHA(3,3,3); break;

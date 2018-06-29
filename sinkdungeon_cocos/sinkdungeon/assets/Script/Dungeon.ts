@@ -82,6 +82,10 @@ export default class Dungeon extends cc.Component {
                 //越往下层级越高，i是行，j是列
                 t.zIndex = 1000 + (Dungeon.SIZE - j) * 100;
                 this.map[i][j] = t.getComponent(Tile);
+                if (mapData[i][j] == '*') {
+                    //关闭踩踏掉落
+                    this.map[i][j].isAutoShow = false;
+                }
                 //生成墙
                 // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
                 //     && !this.monsterReswpanPoints[`${i},${j}`])
@@ -124,10 +128,12 @@ export default class Dungeon extends cc.Component {
                 if (mapData[i][j] == 'o') {
                     this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
                 }
+                if (mapData[i][j] == 'a') {
+                    this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
+                }
                 if (mapData[i][j] == 'P') {
                     this.portal.node.parent = this.node;
-                    this.portal.node.zIndex = 1000 + 5 * 100 + 1;
-                    this.portal.node.setPosition(this.map[i][j].node.position);
+                    this.portal.setPos(cc.v2(i,j));
                 }
             }
         }
@@ -199,7 +205,7 @@ export default class Dungeon extends cc.Component {
         }
     }
     breakTile(pos: cc.Vec2) {
-        if (pos.x == 4 && pos.y == 4) {
+        if (pos.equals(this.portal.pos)) {
             return;
         }
         let tile = this.map[pos.x][pos.y];
@@ -220,10 +226,8 @@ export default class Dungeon extends cc.Component {
             }
             monster.monsterAction(this);
         }
-        if (this.monsters.length > 0 && count >= this.monsters.length) {
-            if (!Logic.isBossLevel(Logic.level)) {
-                this.portal.openGate();
-            }
+        if (!Logic.isBossLevel(Logic.level) && count >= this.monsters.length) {
+            this.portal.openGate();
         }
         if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied) {
             this.portal.openGate();

@@ -44,7 +44,7 @@ export default class Monster extends cc.Component {
     }
     
     changeBodyRes(resName:string){
-        cc.loader.loadRes('Texture/'+resName,cc.SpriteFrame,(error:Error,spriteFrame:cc.SpriteFrame)=>{
+        cc.loader.loadRes('Texture/Monster/'+resName,cc.SpriteFrame,(error:Error,spriteFrame:cc.SpriteFrame)=>{
             let body = this.sprite.getChildByName('body');
             spriteFrame.getTexture().setAliasTexParameters();
             body.getComponent(cc.Sprite).spriteFrame = spriteFrame;

@@ -56,7 +56,15 @@ export default class Logic extends cc.Component {
 	}
     public static getRandomNum(min, max): number {//生成一个随机数从[min,max]
 		return min + Math.round(Math.random() * (max - min));
-	}
+    }
+    public static setAlias(node:cc.Node){
+        let ss = node.getComponentsInChildren(cc.Sprite);
+            for (let i = 0; i < ss.length; i++) {
+                if (ss[i].spriteFrame) {
+                    ss[i].spriteFrame.getTexture().setAliasTexParameters();
+                }
+            }
+    }
     // update (dt) {
     // }
 }

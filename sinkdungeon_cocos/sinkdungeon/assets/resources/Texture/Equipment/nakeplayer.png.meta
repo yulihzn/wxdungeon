@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "6325fd23-a57d-4915-b345-e8b59ce98965",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "subMetas": {
+    "nakeplayer": {
+      "ver": "1.0.3",
+      "uuid": "ad0e0ffa-be7d-4e0f-9aff-60b1675201ee",
+      "rawTextureUuid": "6325fd23-a57d-4915-b345-e8b59ce98965",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 13,
+      "height": 19,
+      "rawWidth": 13,
+      "rawHeight": 19,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -15,21 +15,43 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Chapter extends cc.Component {
+    @property(cc.Button)
+    chapter00:cc.Button = null;
+    @property(cc.Button)
+    chapter01:cc.Button = null;
     // LIFE-CYCLE CALLBACKS:
+    timeDelay = 0;
 
     // onLoad () {}
 
     start () {
-
+        Logic.setAlias(this.chapter00.node);
+        Logic.setAlias(this.chapter01.node);
     }
+    
     clickChapter(event,chapter){
         if(chapter){
             Logic.chapterName = chapter;
         }
         Logic.level = 1;
         Logic.playerData = new PlayerData();
+        if(chapter=='chapter00'){
+            Logic.playerData.updateHA(999,999,1);
+        }
         cc.director.loadScene('loading');
     }
-
-    // update (dt) {}
+    isTimeDelay(dt:number):boolean{
+        this.timeDelay += dt;
+        if (this.timeDelay > 0.016) {
+            this.timeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    update (dt) {
+        if(this.isTimeDelay(dt)){
+            Logic.setAlias(this.chapter00.node);
+            Logic.setAlias(this.chapter01.node);
+        }
+    }
 }
