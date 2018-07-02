@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "a4269582-54ff-4eaa-867e-226e4dcf9252",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "trousers002": {
+      "ver": "1.0.3",
+      "uuid": "5fd6fe49-7df5-4600-a1ee-ace4e46fea53",
+      "rawTextureUuid": "a4269582-54ff-4eaa-867e-226e4dcf9252",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 13,
+      "height": 19,
+      "rawWidth": 13,
+      "rawHeight": 19,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

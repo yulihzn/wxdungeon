@@ -1,5 +1,6 @@
 import Equipment from "./Equipment";
 import Logic from "../Logic";
+import EquipmentData from "../Data/EquipmentData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,8 +48,8 @@ export default class EquipmentDialog extends cc.Component {
         this.node.opacity = 0;
         this.showSpeed = 30;
     }
-    refreshDialog(equipment: Equipment) {
-        this.nametag.string = equipment.nametag + equipment.equipmetTags + equipment.postfix;
+    refreshDialog(equipment: EquipmentData) {
+        this.nametag.string = equipment.prefix + equipment.nameCn+'\n'+equipment.equipmetType;
         this.desc.string = equipment.desc;
         this.damage.string = equipment.damageMin + '-' + equipment.damageMax;
         this.attackSpeed.string = equipment.attackSpeed + '%';

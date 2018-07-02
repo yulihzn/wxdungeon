@@ -33,6 +33,7 @@ export default class Controller extends cc.Component {
         cc.director.emit(EventConstant.PLAYER_MOVE,{dir})
     }
     actionCenter(event, customEventData){
+        cc.director.emit(EventConstant.PLAYER_USEITEM);
     }
     
 

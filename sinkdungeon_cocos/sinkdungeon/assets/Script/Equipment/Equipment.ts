@@ -1,5 +1,8 @@
 import Logic from "../Logic";
 import EquipmentDialog from "./EquipmentDialog";
+import EquipmentData from "../Data/EquipmentData";
+import EquipmentManager from "./EquipmentManager";
+import { EventConstant } from "../EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,33 +18,45 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Equipment extends cc.Component {
-    equipmetTags: string = '';
-    nametag: string = '';
-    postfix:string = '';
-    desc: string = '';
-    damageMin: number = 0;
-    damageMax: number = 0;
-    criticalStrikeRate: number = 0;
-    defence: number = 0;
-    lifeDrain: number = 0;
-    moveSpeed: number = 0;
-    attackSpeed: number = 0;
-    dodge: number = 0;
-    health: number = 0;
-
+    data:EquipmentData = new EquipmentData();
     anim:cc.Animation;
+    private sprite: cc.Node;
     @property(EquipmentDialog)
     equipmentDialog:EquipmentDialog = null;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.sprite = this.node.getChildByName('sprite');
+    }
+    refresh(data:EquipmentData){
+        this.data = data;
+        this.equipmentDialog.refreshDialog(this.data);
+        cc.loader.loadRes('Texture/Equipment/'+this.data.img,cc.SpriteFrame,(eror:Error,spriteFrame:cc.SpriteFrame)=>{
+            spriteFrame.getTexture().setAliasTexParameters();
+            this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            this.sprite.width = spriteFrame.getRect().width;
+            this.sprite.height = spriteFrame.getRect().height;
+        })
+    }
 
     start () {
         Logic.setAlias(this.node);
         this.anim = this.getComponent(cc.Animation);
     }
     onEnable(){
-        this.equipmentDialog.refreshDialog(this);
+        
+    }
+    taken(){
+        this.anim.play('EquipmentTaken');
+        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT,{equipData:this.data})
+        this.node.getChildByName('shadow').active = false;
+        this.equipmentDialog.node.active = false;
+        setTimeout(()=>{
+            if(this.node){
+                this.destroy();
+            }
+        },1000);
+        
     }
     onCollisionStay(other:cc.Collider,self:cc.Collider){
         if(other.tag == 3){

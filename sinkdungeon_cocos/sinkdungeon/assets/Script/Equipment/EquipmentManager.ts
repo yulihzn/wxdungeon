@@ -1,3 +1,7 @@
+import Equipment from "./Equipment";
+import Dungeon from "../Dungeon";
+import Logic from "../Logic";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -12,8 +16,11 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class EquipmentManager extends cc.Component {
-
-    public static readonly WEAPON_KNIFE = "Weapon_Knife"
+    public static readonly EMPTY = "emptyequipment";
+    public static readonly WEAPON_KNIFE = "weapon001";
+    public static readonly CLOTHES_VEST = "clothes001";
+    public static readonly CLOTHES_SHIRT = "clothes002";
+    public static readonly HELMET_BUCKETHAT = "helmet002";
 
     //暴击的(15%以上的暴击)
     public static readonly DESC_CRITICALSTRIKE = "criticalstrike";
@@ -31,11 +38,23 @@ export default class EquipmentManager extends cc.Component {
     public static readonly DESC_HEALTHY = "criticalstrike";
     //邪恶的(1点以上的生命汲取)
     public static readonly DESC_LIFEDRAIN = "criticalstrike";
+    @property(cc.Prefab)
+    equipment: cc.Prefab = null;
+    
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-
+    getEquipment(equipType:string,pos:cc.Vec2,parent:cc.Node):Equipment{
+        let equipmentPrefab = cc.instantiate(this.equipment);
+        equipmentPrefab.parent = parent;
+        equipmentPrefab.position = Dungeon.getPosInMap(pos);
+        equipmentPrefab.zIndex = 3000 + (Dungeon.SIZE - pos.y) * 100+3;
+        let equipment = equipmentPrefab.getComponent(Equipment);
+        equipment.refresh(Logic.equipments[equipType]);
+        return equipment;
+        
+    }
     start () {
 
     }

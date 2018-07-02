@@ -8,7 +8,9 @@ export class EventConstant extends cc.Component{
     public static readonly PLAYER_TAKEDAMAGE= 'PLAYER_TAKEDAMAGE';
     public static readonly INVENTORY_CHANGEITEM = 'INVENTORY_CHANGEITEM';
     public static readonly PLAYER_CHANGEWEAPON= 'PLAYER_CHANGEWEAPON';
+    public static readonly PLAYER_CHANGEEQUIPMENT= 'PLAYER_CHANGEEQUIPMENT';
     public static readonly LOADINGNEXTLEVEL= 'LOADINGNEXTLEVEL';
+    public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static eventHandler:cc.Node = new cc.Node();
     // LIFE-CYCLE CALLBACKS:
 

@@ -1,6 +1,8 @@
 import PlayerData from "./Data/PlayerData";
 import { EventConstant } from "./EventConstant";
 import MapData from "./Data/MapData";
+import EquipmentData from "./Data/EquipmentData";
+import InventoryData from "./Data/InventoryData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,8 +21,10 @@ export default class Logic extends cc.Component {
     public static readonly BOSS_LEVEL_1: number = 10;
     public static level = 1;
     public static playerData:PlayerData = new PlayerData();
+    public static inventoryData:InventoryData = new InventoryData();
     public static rooms:MapData[] = new Array();
     public static chapterName = 'chapter01';
+    public static equipments: { [key: string]: EquipmentData } = null;
     
     // LIFE-CYCLE CALLBACKS:
 

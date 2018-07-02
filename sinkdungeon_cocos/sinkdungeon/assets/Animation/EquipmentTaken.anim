@@ -14,11 +14,11 @@
           "y": [
             {
               "frame": 0,
-              "value": 0
+              "value": 24
             },
             {
               "frame": 0.5,
-              "value": 32
+              "value": 64
             }
           ],
           "rotation": [

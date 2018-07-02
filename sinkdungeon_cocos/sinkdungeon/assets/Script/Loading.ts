@@ -1,5 +1,6 @@
 import Logic from "./Logic";
 import MapData from "./Data/MapData";
+import EquipmentData from "./Data/EquipmentData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +20,8 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
     private timeDelay = 0;
-    private isLoaded = false;
+    private isLevelLoaded = false;
+    private isEquipmentLoaded = false;
     // LIFE-CYCLE CALLBACKS:
     
 
@@ -27,15 +29,17 @@ export default class NewClass extends cc.Component {
 
     start () {
         this.label.string = `Level ${Logic.level}`
-        this.isLoaded = false;
+        this.isLevelLoaded = false;
+        this.isEquipmentLoaded = false;
         this.loadMap();
+        this.loadEquipment();
     }
     loadMap(){
         if(Logic.rooms&&Logic.rooms.length>0){
-            this.isLoaded = true;
+            this.isLevelLoaded = true;
             return;
         }
-        cc.loader.loadRes('Rooms/'+Logic.chapterName,(err:Error,resource)=>{
+        cc.loader.loadRes('Data/Rooms/'+Logic.chapterName,(err:Error,resource)=>{
             if(err){
 				cc.error(err);
 			}else{
@@ -48,16 +52,32 @@ export default class NewClass extends cc.Component {
                         Logic.rooms.push(new MapData(str));
                     }
                 }
-                this.isLoaded = true;
+                this.isLevelLoaded = true;
+			}
+        })
+        
+    }
+    loadEquipment(){
+        if(Logic.equipments){
+            this.isEquipmentLoaded = true;
+            return;
+        }
+        cc.loader.loadRes('Data/Equipment/equipment',(err:Error,resource)=>{
+            if(err){
+				cc.error(err);
+			}else{
+                Logic.equipments = resource;
+                this.isEquipmentLoaded = true;
 			}
         })
     }
 
     update (dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 0.5 && this.isLoaded) {
+        if (this.timeDelay > 0.16 && this.isLevelLoaded&&this.isEquipmentLoaded) {
             this.timeDelay = 0;
-            this.isLoaded = false;
+            this.isLevelLoaded = false;
+            this.isEquipmentLoaded = false;
             cc.director.loadScene('game');
         }
     }

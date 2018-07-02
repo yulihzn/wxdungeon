@@ -10,6 +10,8 @@ import Wall from "./Building/Wall";
 import Trap from "./Building/Trap";
 import MapData from "./Data/MapData";
 import Item from "./Item/Item";
+import EquipmentManager from "./Equipment/EquipmentManager";
+import EquipmentData from "./Data/EquipmentData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,6 +54,7 @@ export default class Dungeon extends cc.Component {
     monsters: Monster[];
     public monsterReswpanPoints: { [key: string]: string } = {};
     monsterManager: MonsterManager = null;
+    equipmentManager:EquipmentManager = null;
     anim: cc.Animation;
 
     bossKraken: Kraken;
@@ -59,10 +62,12 @@ export default class Dungeon extends cc.Component {
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir) });
+        cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => { this.addEquipment(event.detail.equipmentData.img,event.detail.pos) });
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
         this.monsterManager = this.getComponent(MonsterManager);
+        this.equipmentManager = this.getComponent(EquipmentManager);
         this.player.node.parent = this.node;
         let mapData: string[][] = Logic.getCurrentMapData().map;
         this.monsters = new Array();
@@ -137,8 +142,16 @@ export default class Dungeon extends cc.Component {
                 }
             }
         }
+        this.addEquipment(EquipmentManager.WEAPON_KNIFE,cc.v2(6,4));
+        this.addEquipment(EquipmentManager.CLOTHES_SHIRT,cc.v2(6,4));
+        this.addEquipment(EquipmentManager.CLOTHES_VEST,cc.v2(6,4));
+        this.addEquipment(EquipmentManager.HELMET_BUCKETHAT,cc.v2(6,4));
+
         // this.addMonsters();
         this.addkraken();
+    }
+    addEquipment(equipType:string,pos:cc.Vec2){
+        this.equipmentManager.getEquipment(equipType,pos,this.node);
     }
     addMonsterFromData(resName: string, i: number, j: number) {
         this.addMonster(this.monsterManager.getMonster(resName, this.node)
