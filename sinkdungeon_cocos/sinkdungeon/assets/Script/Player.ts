@@ -260,22 +260,22 @@ export default class Player extends cc.Component {
             this.touchedEquipment = null;
         }
     }
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == 6) {
-            let e = other.getComponent(Equipment);
-            if(e){
-                this.touchedEquipment = e;
-            }
-        }
-    }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == 6) {
-            this.touchedEquipment = null;
-        }
-    }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == 6) {
-            this.touchedEquipment = null;
-        }
-    }
+    // onCollisionStay(other: cc.Collider, self: cc.Collider) {
+    //     if (other.tag == 6) {
+    //         let e = other.getComponent(Equipment);
+    //         if(e){
+    //             this.touchedEquipment = e;
+    //         }
+    //     }
+    // }
+    // onCollisionExit(other: cc.Collider, self: cc.Collider) {
+    //     if (other.tag == 6) {
+    //         this.touchedEquipment = null;
+    //     }
+    // }
+    // onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    //     if (other.tag == 6) {
+    //         this.touchedEquipment = null;
+    //     }
+    // }
 }

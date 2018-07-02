@@ -31,6 +31,9 @@ export default class Chapter extends cc.Component {
     
     clickChapter(event,chapter){
         if(chapter){
+            if(Logic.chapterName != chapter){
+                Logic.rooms = null;
+            }
             Logic.chapterName = chapter;
         }
         Logic.level = 1;

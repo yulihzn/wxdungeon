@@ -49,7 +49,7 @@ export default class EquipmentDialog extends cc.Component {
         this.showSpeed = 30;
     }
     refreshDialog(equipment: EquipmentData) {
-        this.nametag.string = equipment.prefix + equipment.nameCn+'\n'+equipment.equipmetType;
+        this.nametag.string = equipment.prefix + equipment.nameCn;
         this.desc.string = equipment.desc;
         this.damage.string = equipment.damageMin + '-' + equipment.damageMax;
         this.attackSpeed.string = equipment.attackSpeed + '%';
@@ -62,15 +62,15 @@ export default class EquipmentDialog extends cc.Component {
     }
     showDialog() {
         this.showSpeed = 3;
-        this.alpha = 255;
+        this.node.opacity = 255;
     }
     hideDialog() {
         this.showSpeed = 30;
-        this.alpha = 0;
+        this.node.opacity = 0;
     }
 
     update(dt) {
-        this.node.opacity = this.lerp(this.node.opacity, this.alpha, dt * this.showSpeed);
+        // this.node.opacity = this.lerp(this.node.opacity, this.alpha, dt * this.showSpeed);
     }
     lerp(a, b, r) {
         return a + (b - a) * r;

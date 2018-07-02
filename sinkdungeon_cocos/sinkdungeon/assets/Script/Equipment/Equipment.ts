@@ -23,6 +23,7 @@ export default class Equipment extends cc.Component {
     private sprite: cc.Node;
     @property(EquipmentDialog)
     equipmentDialog:EquipmentDialog = null;
+    pos:cc.Vec2 = cc.v2(0,0);
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -58,11 +59,7 @@ export default class Equipment extends cc.Component {
         },1000);
         
     }
-    onCollisionStay(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3){
-            this.equipmentDialog.showDialog();
-        }
-    }
+    
     onCollisionExit(other:cc.Collider,self:cc.Collider){
         if(other.tag == 3){
             this.equipmentDialog.hideDialog();
@@ -70,7 +67,7 @@ export default class Equipment extends cc.Component {
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         if(other.tag == 3){
-            this.equipmentDialog.hideDialog();
+            this.equipmentDialog.showDialog();
         }
     }
     // update (dt) {}

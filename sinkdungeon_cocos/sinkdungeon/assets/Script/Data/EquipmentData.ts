@@ -14,6 +14,7 @@ const {ccclass, property} = cc._decorator;
 export default class EquipmentData{
     nameCn: string = '';
     equipmetType: string = 'empty';
+    equipmetTypeCn:string  ='';
     prefix:string = '';
     desc: string = '';
     damageMin: number = 0;

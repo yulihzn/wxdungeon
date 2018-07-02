@@ -15,7 +15,7 @@ import EquipmentData from "./Data/EquipmentData";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Loading extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;

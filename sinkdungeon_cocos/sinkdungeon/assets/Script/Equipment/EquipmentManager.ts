@@ -51,6 +51,7 @@ export default class EquipmentManager extends cc.Component {
         equipmentPrefab.position = Dungeon.getPosInMap(pos);
         equipmentPrefab.zIndex = 3000 + (Dungeon.SIZE - pos.y) * 100+3;
         let equipment = equipmentPrefab.getComponent(Equipment);
+        equipment.pos = pos;
         equipment.refresh(Logic.equipments[equipType]);
         return equipment;
         

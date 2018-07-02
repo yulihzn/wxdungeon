@@ -142,10 +142,12 @@ export default class Dungeon extends cc.Component {
                 }
             }
         }
-        this.addEquipment(EquipmentManager.WEAPON_KNIFE,cc.v2(6,4));
-        this.addEquipment(EquipmentManager.CLOTHES_SHIRT,cc.v2(6,4));
-        this.addEquipment(EquipmentManager.CLOTHES_VEST,cc.v2(6,4));
-        this.addEquipment(EquipmentManager.HELMET_BUCKETHAT,cc.v2(6,4));
+        if(Logic.chapterName=='chapter00'){
+            this.addEquipment(EquipmentManager.WEAPON_KNIFE,cc.v2(6,4));
+            this.addEquipment(EquipmentManager.CLOTHES_SHIRT,cc.v2(6,4));
+            this.addEquipment(EquipmentManager.CLOTHES_VEST,cc.v2(6,4));
+            this.addEquipment(EquipmentManager.HELMET_BUCKETHAT,cc.v2(6,4));
+        }
 
         // this.addMonsters();
         this.addkraken();
