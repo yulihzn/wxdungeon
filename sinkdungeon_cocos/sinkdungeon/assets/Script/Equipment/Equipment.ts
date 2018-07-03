@@ -24,9 +24,11 @@ export default class Equipment extends cc.Component {
     @property(EquipmentDialog)
     equipmentDialog:EquipmentDialog = null;
     pos:cc.Vec2 = cc.v2(0,0);
+    isTaken = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.isTaken = false;
         this.sprite = this.node.getChildByName('sprite');
     }
     refresh(data:EquipmentData){
@@ -48,6 +50,7 @@ export default class Equipment extends cc.Component {
         
     }
     taken(){
+        this.isTaken = true;
         this.anim.play('EquipmentTaken');
         cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT,{equipData:this.data})
         this.node.getChildByName('shadow').active = false;

@@ -14,13 +14,12 @@ const {ccclass, property} = cc._decorator;
 export default class PlayerData {
     static DEFAULT_HEALTH = 5;
     name:string = '';
-    currentHealth:number=PlayerData.DEFAULT_HEALTH;
-    maxHealth:number=PlayerData.DEFAULT_HEALTH;
+    //x=current y=max
+    health:cc.Vec2=cc.v2(PlayerData.DEFAULT_HEALTH,PlayerData.DEFAULT_HEALTH);
     attackPoint:number=1;
     pos:cc.Vec2 = cc.v2(0,0);
-    updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
-        this.currentHealth = currentHealth;
-        this.maxHealth = maxHealth;
+    updateHA(health:cc.Vec2,attackPoint:number){
+        this.health = health;
         this.attackPoint = attackPoint;
         return this;
     }

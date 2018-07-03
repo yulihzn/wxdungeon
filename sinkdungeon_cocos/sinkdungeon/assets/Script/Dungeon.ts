@@ -54,7 +54,7 @@ export default class Dungeon extends cc.Component {
     monsters: Monster[];
     public monsterReswpanPoints: { [key: string]: string } = {};
     monsterManager: MonsterManager = null;
-    equipmentManager:EquipmentManager = null;
+    equipmentManager: EquipmentManager = null;
     anim: cc.Animation;
 
     bossKraken: Kraken;
@@ -62,7 +62,9 @@ export default class Dungeon extends cc.Component {
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir) });
-        cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => { this.addEquipment(event.detail.equipmentData.img,event.detail.pos) });
+        cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => {
+            this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
+        });
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
@@ -121,7 +123,7 @@ export default class Dungeon extends cc.Component {
                     let heart = cc.instantiate(this.heart);
                     heart.parent = this.node;
                     heart.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    heart.zIndex = 3000 + (Dungeon.SIZE - j) * 100+3;
+                    heart.zIndex = 3000 + (Dungeon.SIZE - j) * 100 + 3;
                     this.itemmap[i][j] = heart.getComponent(Item);
                 }
                 if (mapData[i][j] == 's') {
@@ -138,22 +140,22 @@ export default class Dungeon extends cc.Component {
                 }
                 if (mapData[i][j] == 'P') {
                     this.portal.node.parent = this.node;
-                    this.portal.setPos(cc.v2(i,j));
+                    this.portal.setPos(cc.v2(i, j));
                 }
             }
         }
-        if(Logic.chapterName=='chapter00'){
-            this.addEquipment(EquipmentManager.WEAPON_KNIFE,cc.v2(6,4));
-            this.addEquipment(EquipmentManager.CLOTHES_SHIRT,cc.v2(6,4));
-            this.addEquipment(EquipmentManager.CLOTHES_VEST,cc.v2(6,4));
-            this.addEquipment(EquipmentManager.HELMET_BUCKETHAT,cc.v2(6,4));
+        if (Logic.chapterName == 'chapter00') {
+            this.addEquipment(EquipmentManager.WEAPON_KNIFE, cc.v2(6, 4));
+            this.addEquipment(EquipmentManager.CLOTHES_SHIRT, cc.v2(6, 4));
+            this.addEquipment(EquipmentManager.CLOTHES_VEST, cc.v2(6, 4));
+            this.addEquipment(EquipmentManager.HELMET_BUCKETHAT, cc.v2(6, 4));
         }
 
         // this.addMonsters();
         this.addkraken();
     }
-    addEquipment(equipType:string,pos:cc.Vec2){
-        this.equipmentManager.getEquipment(equipType,pos,this.node);
+    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData) {
+        this.equipmentManager.getEquipment(equipType, pos, this.node, equipData);
     }
     addMonsterFromData(resName: string, i: number, j: number) {
         this.addMonster(this.monsterManager.getMonster(resName, this.node)
@@ -214,7 +216,7 @@ export default class Dungeon extends cc.Component {
     start() {
         let ss = this.node.getComponentsInChildren(cc.Sprite);
         for (let i = 0; i < ss.length; i++) {
-            if(ss[i].spriteFrame){
+            if (ss[i].spriteFrame) {
                 ss[i].spriteFrame.getTexture().setAliasTexParameters();
             }
         }
@@ -228,12 +230,12 @@ export default class Dungeon extends cc.Component {
             tile.breakTile();
         }
     }
-    playerAction(dir:number){
-        if(this.player){
-            this.player.playerAction(dir,this)
+    playerAction(dir: number) {
+        if (this.player) {
+            this.player.playerAction(dir, this)
         }
     }
-    monstersAction(){
+    monstersAction() {
         let count = 0;
         for (let monster of this.monsters) {
             if (monster.isDied) {
@@ -271,7 +273,7 @@ export default class Dungeon extends cc.Component {
         }
 
     }
-    isTimeDelay(dt:number):boolean{
+    isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
@@ -279,7 +281,7 @@ export default class Dungeon extends cc.Component {
         }
         return false;
     }
-    isNpcTimeDelay(dt:number):boolean{
+    isNpcTimeDelay(dt: number): boolean {
         this.npcTimeDelay += dt;
         if (this.npcTimeDelay > 1) {
             this.npcTimeDelay = 0;

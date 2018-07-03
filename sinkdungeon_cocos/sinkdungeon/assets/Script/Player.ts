@@ -36,29 +36,30 @@ export default class Player extends cc.Component {
     glovesSprite: cc.Sprite = null;
     shoesSprite: cc.Sprite = null;
     isMoving = false;
+    isAttacking = false;
     private sprite: cc.Node;
     private anim: cc.Animation;
     isDied = false;
     isFall = false;
-    currentHealth: number = 0;
-    maxHealth: number = 0;
-    attackPonit: number = 1;
+    health: cc.Vec2 = cc.v2(1,1);
+    baseAttackPoint: number = 1;
 
     touchedEquipment: Equipment;
+    inventoryData:InventoryData;
 
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.currentHealth = Logic.playerData.currentHealth;
-        this.maxHealth = Logic.playerData.maxHealth;
+        this.inventoryData = Logic.inventoryData;
+        this.health = this.inventoryData.getHealth(Logic.playerData.health);
         this.pos = cc.v2(4, 4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.playerItemSprite = this.sprite.getChildByName('righthand')
             .getChildByName('item').getComponent(cc.Sprite);
-        this.helmetSprite = this.sprite.getChildByName('body')
+        this.hairSprite = this.sprite.getChildByName('body')
             .getChildByName('hair').getComponent(cc.Sprite);
         this.weaponSprite = this.sprite.getChildByName('lefthand')
             .getChildByName('weapon').getComponent(cc.Sprite);
@@ -89,13 +90,14 @@ export default class Player extends cc.Component {
         switch (equipType) {
             case 'weapon': this.weaponSprite.spriteFrame = spriteFrame;break;
             case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
-                this.helmetSprite.node.opacity = spriteFrame ? 0 : 255;break;
+                this.hairSprite.node.opacity = spriteFrame ? 0 : 255;break;
             case 'clothes': this.clothesSprite.spriteFrame = spriteFrame;break;
             case 'trousers': this.trousersSprite.spriteFrame = spriteFrame;break;
             case 'gloves': this.glovesSprite.spriteFrame = spriteFrame;break;
             case 'shoes': this.shoesSprite.spriteFrame = spriteFrame;break;
         }
-
+        this.health = this.inventoryData.getHealth(this.health);
+        this.healthBar.refreshHealth(this.health.x, this.health.y);
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
@@ -114,7 +116,7 @@ export default class Player extends cc.Component {
         this.node.zIndex = 3000 + (9 - pos.y) * 100 + 2;
     }
     attack(dir, finish) {
-        if (this.isMoving || this.isDied) {
+        if (this.isMoving || this.isDied || this.isAttacking) {
             return;
         }
         let x = 0;
@@ -126,9 +128,14 @@ export default class Player extends cc.Component {
             case 3: x += 32; break;
             case 4: break;
         }
-        let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
-            if (finish) { finish(this.attackPonit); }
-        }), cc.moveTo(0.1, 0, 0));
+        this.isAttacking = true;
+        let baseSpeed = 0.2;
+        let attackPoint = this.inventoryData.getAttackPoint(this.baseAttackPoint);
+        let action = cc.sequence(cc.moveBy(this.inventoryData.getAttackSpeed(baseSpeed), x, y), cc.callFunc(() => {
+            if (finish) { finish(this.inventoryData.getFinalAttackPoint(this.baseAttackPoint)); }
+        }), cc.moveTo(baseSpeed, 0, 0),cc.callFunc(() => {
+            this.isAttacking = false;
+        }));
         this.sprite.runAction(action);
     }
     move(dir: number) {
@@ -143,6 +150,7 @@ export default class Player extends cc.Component {
             case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
         }
         this.isMoving = true;
+        this.isAttacking = false;//取消攻击后摇
         this.pos = newPos;
         let isDown = dir == 1;
         if (isDown) {
@@ -160,7 +168,9 @@ export default class Player extends cc.Component {
             this.anim.play('PlayerIdle');
             this.isMoving = false;
         }, this);
-        let action = cc.sequence(cc.moveTo(0.1, x, y), finish);
+        //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
+        let baseSpeed = 0.2;
+        let action = cc.sequence(cc.moveTo(this.inventoryData.getMoveSpeed(baseSpeed), x, y), finish);
         this.anim.play('PlayerWalk');
         this.node.runAction(action);
     }
@@ -173,7 +183,8 @@ export default class Player extends cc.Component {
             }
         }
         this.changeZIndex(this.pos);
-        this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
+        this.health = this.inventoryData.getHealth(this.health);
+        this.healthBar.refreshHealth(this.health.x, this.health.y);
     }
     fall() {
         if (this.isFall) {
@@ -192,13 +203,15 @@ export default class Player extends cc.Component {
         if (!this.healthBar) {
             return;
         }
-        this.currentHealth -= damage;
-        if (this.currentHealth > this.maxHealth) {
-            this.currentHealth = this.maxHealth;
+        let d = this.inventoryData.getDamage(damage);
+        this.health = this.inventoryData.getHealth(this.health);
+        this.health.x -= d;
+        if (this.health.x > this.health.y) {
+            this.health.x = this.health.y;
         }
-        this.healthBar.refreshHealth(this.currentHealth, this.maxHealth);
-        Logic.playerData.updateHA(this.currentHealth, this.maxHealth, this.attackPonit);
-        if (this.currentHealth < 1) {
+        this.healthBar.refreshHealth(this.health.x, this.health.y);
+        Logic.playerData.updateHA(this.health, this.baseAttackPoint);
+        if (this.health.x < 1) {
             this.killed();
         }
     }
@@ -255,27 +268,27 @@ export default class Player extends cc.Component {
         }
     }
     UseItem() {
-        if (this.touchedEquipment) {
+        if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             this.touchedEquipment.taken();
             this.touchedEquipment = null;
         }
     }
-    // onCollisionStay(other: cc.Collider, self: cc.Collider) {
-    //     if (other.tag == 6) {
-    //         let e = other.getComponent(Equipment);
-    //         if(e){
-    //             this.touchedEquipment = e;
-    //         }
-    //     }
-    // }
-    // onCollisionExit(other: cc.Collider, self: cc.Collider) {
-    //     if (other.tag == 6) {
-    //         this.touchedEquipment = null;
-    //     }
-    // }
-    // onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-    //     if (other.tag == 6) {
-    //         this.touchedEquipment = null;
-    //     }
-    // }
+    onCollisionStay(other: cc.Collider, self: cc.Collider) {
+        if (other.tag == 6) {
+            let e = other.getComponent(Equipment);
+            if(e){
+                this.touchedEquipment = e;
+            }
+        }
+    }
+    onCollisionExit(other: cc.Collider, self: cc.Collider) {
+        if (other.tag == 6) {
+            this.touchedEquipment = null;
+        }
+    }
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        if (other.tag == 6) {
+            this.touchedEquipment = null;
+        }
+    }
 }

@@ -13,6 +13,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class EquipmentData{
     nameCn: string = '';
+    nameEn: string = '';
     equipmetType: string = 'empty';
     equipmetTypeCn:string  ='';
     prefix:string = '';

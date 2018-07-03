@@ -1,6 +1,7 @@
 import Equipment from "./Equipment";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
+import EquipmentData from "../Data/EquipmentData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,14 +46,20 @@ export default class EquipmentManager extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
-    getEquipment(equipType:string,pos:cc.Vec2,parent:cc.Node):Equipment{
+    getEquipment(equipType:string,pos:cc.Vec2,parent:cc.Node,equipData?:EquipmentData):Equipment{
         let equipmentPrefab = cc.instantiate(this.equipment);
         equipmentPrefab.parent = parent;
         equipmentPrefab.position = Dungeon.getPosInMap(pos);
         equipmentPrefab.zIndex = 3000 + (Dungeon.SIZE - pos.y) * 100+3;
         let equipment = equipmentPrefab.getComponent(Equipment);
         equipment.pos = pos;
-        equipment.refresh(Logic.equipments[equipType]);
+        if(equipData){
+            //复制已有装备
+            equipment.refresh(equipData);
+        }else{
+            //添加新装备
+            equipment.refresh(Logic.equipments[equipType]);
+        }
         return equipment;
         
     }

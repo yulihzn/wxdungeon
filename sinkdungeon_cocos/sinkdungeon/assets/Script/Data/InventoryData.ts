@@ -20,4 +20,87 @@ export default class InventoryData {
     trousers:EquipmentData = new EquipmentData();
     gloves:EquipmentData = new EquipmentData();
     shoes:EquipmentData = new EquipmentData();
+    //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
+    getMoveSpeed(baseSpeed:number):number{
+        let speed = 0;
+        speed = this.weapon.moveSpeed+this.helmet.moveSpeed+this.clothes.moveSpeed
+        +this.trousers.moveSpeed+this.gloves.moveSpeed+this.shoes.moveSpeed;
+        if(speed>300){speed = 300}
+        if(speed<-10000){speed = -1000}
+        return baseSpeed-speed/100*0.05;
+    }
+    //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
+    getAttackSpeed(baseSpeed:number):number{
+        let speed = 0;
+        speed = this.weapon.attackSpeed+this.helmet.attackSpeed+this.clothes.attackSpeed
+        +this.trousers.attackSpeed+this.gloves.attackSpeed+this.shoes.attackSpeed;
+        if(speed>300){speed = 300}
+        if(speed<-10000){speed = -1000}
+        return baseSpeed-speed/100*0.05;
+    }
+    //获取最大最小攻击力
+    getAttackPoint(baseAttackPoint:number):cc.Vec2{
+        let attackPoint = cc.v2(baseAttackPoint,baseAttackPoint);
+        attackPoint.x += this.weapon.damageMin+this.helmet.damageMin+this.clothes.damageMin
+        +this.trousers.damageMin+this.gloves.damageMin+this.shoes.damageMin;
+        attackPoint.y += this.weapon.damageMax+this.helmet.damageMax+this.clothes.damageMax
+        +this.trousers.damageMax+this.gloves.damageMax+this.shoes.damageMax;
+        return attackPoint;
+    }
+    //计算攻击的最终结果  
+    //5% 6% 20% 1-0.95x0.94X0.8 = 0.16951
+    getFinalAttackPoint(baseAttackPoint:number):number{
+        let attackPoint = this.getAttackPoint(baseAttackPoint);
+        let chance = this.getCriticalStrikeRate();
+        return Math.random()>chance?attackPoint.x:attackPoint.y;
+    }
+    //获取暴击率
+    getCriticalStrikeRate():number{
+        let chance = 1-(1-this.weapon.criticalStrikeRate/100)*(1-this.helmet.criticalStrikeRate/100)
+        *(1-this.clothes.criticalStrikeRate/100)*(1-this.trousers.criticalStrikeRate/100)
+        *(1-this.gloves.criticalStrikeRate/100)*(1-this.shoes.criticalStrikeRate/100);
+        return chance;
+    }
+    //伤害减免
+    getDamage(damage:number):number{
+        let finalDamage = damage;
+        let defence = this.getDefence();
+        //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
+        if(defence>0){
+            finalDamage = finalDamage*(1-defence*0.06/(defence*0.06+1));
+        }
+        let chance = this.getDodge();
+        return Math.random()>chance?finalDamage:0;
+    }
+    //闪避
+    getDodge():number{
+        let chance = 1-(1-this.weapon.dodge/100)*(1-this.helmet.dodge/100)
+        *(1-this.clothes.dodge/100)*(1-this.trousers.dodge/100)
+        *(1-this.gloves.dodge/100)*(1-this.shoes.dodge/100);
+        return chance;
+    }
+    //防御
+    getDefence():number{
+        let defence = this.weapon.defence+this.helmet.defence+this.clothes.defence
+        +this.trousers.defence+this.gloves.defence+this.shoes.defence;
+        return defence;
+    }
+    //汲取为暴击时最大攻击的一半
+    getLifeDrain(baseAttackPoint):number{
+        let attackPoint = this.getAttackPoint(baseAttackPoint);
+        let chance = this.getCriticalStrikeRate();
+        return Math.random()>chance?0:attackPoint.y/2;
+    }
+
+    //生命值
+    getHealth(baseHealth:cc.Vec2):cc.Vec2{
+        let rate = 1;
+        if(baseHealth.y>0){
+            rate = baseHealth.x/baseHealth.y;
+        }
+        let maxHealth = baseHealth.y + this.weapon.health+this.helmet.health+this.clothes.health
+        +this.trousers.health+this.gloves.health+this.shoes.health;
+        let currentHealth = baseHealth.x;
+        return cc.v2(maxHealth*rate,maxHealth);
+    }
 }

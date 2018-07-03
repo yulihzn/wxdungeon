@@ -14,6 +14,7 @@ import Logic from './Logic';
 import EquipmentData from './Data/EquipmentData';
 import InventoryData from './Data/InventoryData';
 import Player from './Player';
+import EquipmentDialog from './Equipment/EquipmentDialog';
 @ccclass
 export default class NewClass extends cc.Component {
 
@@ -36,6 +37,9 @@ export default class NewClass extends cc.Component {
     @property(cc.Sprite)
     shoes:cc.Sprite = null;
 
+    @property(EquipmentDialog)
+    equipmentDialog:EquipmentDialog = null;
+
     inventoryData:InventoryData;
 
     // LIFE-CYCLE CALLBACKS:
@@ -55,6 +59,12 @@ export default class NewClass extends cc.Component {
         this.trousers.spriteFrame = null;
         this.gloves.spriteFrame = null;
         this.shoes.spriteFrame = null;
+        this.addSpriteTouchEvent(this.weapon,'weapon');
+        this.addSpriteTouchEvent(this.helmet,'helmet');
+        this.addSpriteTouchEvent(this.clothes,'clothes');
+        this.addSpriteTouchEvent(this.trousers,'trousers');
+        this.addSpriteTouchEvent(this.gloves,'gloves');
+        this.addSpriteTouchEvent(this.shoes,'shoes');
         this.refreshEquipment(this.inventoryData.weapon);
         this.refreshEquipment(this.inventoryData.helmet);
         this.refreshEquipment(this.inventoryData.clothes);
@@ -62,6 +72,30 @@ export default class NewClass extends cc.Component {
         this.refreshEquipment(this.inventoryData.gloves);
         this.refreshEquipment(this.inventoryData.shoes);
         
+    }
+    addSpriteTouchEvent(sprite:cc.Sprite,equipmetType:string){
+        sprite.node.on(cc.Node.EventType.TOUCH_START,()=>{
+            if(sprite.spriteFrame == null){
+                return;
+            }
+            let equipData = new EquipmentData();
+            switch(equipmetType){
+                case 'weapon':equipData = this.inventoryData.weapon;break;
+                case 'helmet':equipData = this.inventoryData.helmet;break;
+                case 'clothes':equipData = this.inventoryData.clothes;break;
+                case 'trousers':equipData = this.inventoryData.trousers;break;
+                case 'gloves':equipData = this.inventoryData.gloves;break;
+                case 'shoes':equipData = this.inventoryData.shoes;break;
+            }
+            this.equipmentDialog.refreshDialog(equipData)
+            this.equipmentDialog.showDialog();
+        })
+        sprite.node.on(cc.Node.EventType.TOUCH_END,()=>{
+            this.equipmentDialog.hideDialog();
+        })
+        sprite.node.on(cc.Node.EventType.TOUCH_CANCEL,()=>{
+            this.equipmentDialog.hideDialog();
+        })
     }
     select(event, customEventData){
         let index = parseInt(customEventData);
@@ -73,8 +107,15 @@ export default class NewClass extends cc.Component {
     }
     setEquipment(equipDataNew: EquipmentData,equipmentData:EquipmentData){
         if (equipmentData.equipmetType == equipDataNew.equipmetType) {
+            let p = this.player.getComponent(Player).pos;
+            let pos = cc.v2(p.x,p.y);
+            if(pos.y>=8){
+                pos.y -= 1;
+            }else{
+                pos.y+=1;
+            }
             cc.director.emit(EventConstant.DUNGEON_SETEQUIPMENT
-                , { pos: this.player.getComponent(Player).pos, equipmentData: equipmentData })
+                , { pos: pos, equipmentData: equipmentData })
         }
     }
     refreshEquipment(equipmentDataNew:EquipmentData){
@@ -110,6 +151,7 @@ export default class NewClass extends cc.Component {
                 break;
             }
             if(this.player){
+                this.player.getComponent(Player).inventoryData = this.inventoryData;
                 this.player.getComponent(Player).changeEquipment(equipmentDataNew.equipmetType,spriteFrame)
             }
         })

@@ -33,7 +33,7 @@ export default class HealthBar extends cc.Component {
     refreshHealth(currentHealth:number,maxHealth:number): void {
         this.progressBar.progress = currentHealth/maxHealth;
         if(this.label){
-            this.label.string=`${currentHealth}/${maxHealth}`;
+            this.label.string=`${parseFloat(currentHealth.toFixed(1))}/${maxHealth}`;
         }
 	}
     update (dt) {

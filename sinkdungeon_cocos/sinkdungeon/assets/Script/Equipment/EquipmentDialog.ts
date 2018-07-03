@@ -49,7 +49,7 @@ export default class EquipmentDialog extends cc.Component {
         this.showSpeed = 30;
     }
     refreshDialog(equipment: EquipmentData) {
-        this.nametag.string = equipment.prefix + equipment.nameCn;
+        this.nametag.string = equipment.prefix + equipment.nameEn;
         this.desc.string = equipment.desc;
         this.damage.string = equipment.damageMin + '-' + equipment.damageMax;
         this.attackSpeed.string = equipment.attackSpeed + '%';
