@@ -69,8 +69,7 @@ export default class InventoryData {
         if(defence>0){
             finalDamage = finalDamage*(1-defence*0.06/(defence*0.06+1));
         }
-        let chance = this.getDodge();
-        return Math.random()>chance?finalDamage:0;
+        return finalDamage;
     }
     //闪避
     getDodge():number{

@@ -95,23 +95,23 @@ export default class Player extends cc.Component {
                 break;
             case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
                 this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
-                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryData.helmet.color);
                 this.helmetSprite.node.color = color2;
                 break;
             case 'clothes': this.clothesSprite.spriteFrame = spriteFrame;
-                let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryData.clothes.color);
                 this.clothesSprite.node.color = color3;
                 break;
             case 'trousers': this.trousersSprite.spriteFrame = spriteFrame;
-                let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryData.trousers.color);
                 this.trousersSprite.node.color = color4;
                 break;
             case 'gloves': this.glovesSprite.spriteFrame = spriteFrame;
-                let color5 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                let color5 = cc.color(255, 255, 255).fromHEX(this.inventoryData.gloves.color);
                 this.glovesSprite.node.color = color5;
                 break;
             case 'shoes': this.shoesSprite.spriteFrame = spriteFrame;
-                let color6 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                let color6 = cc.color(255, 255, 255).fromHEX(this.inventoryData.shoes.color);
                 this.shoesSprite.node.color = color6;
                 break;
         }
@@ -228,6 +228,9 @@ export default class Player extends cc.Component {
             return;
         }
         let d = this.inventoryData.getDamage(damage);
+        let dodge = this.inventoryData.getDodge();
+        let isDodge = Math.random()<=dodge;
+        d = isDodge?0:d;
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.health.x -= d;
         if (this.health.x > this.health.y) {
@@ -239,6 +242,10 @@ export default class Player extends cc.Component {
             this.label.node.opacity = 255;
             this.label.node.color = damage > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
             this.label.string = `${parseFloat((-damage).toFixed(1))}`;
+            if(isDodge){
+                this.label.node.color = cc.color(255,255,255);
+                this.label.string = `miss`;
+            }
             this.label.getComponent(cc.Animation).play('FontFloating');
         }
         if (this.health.x < 1) {

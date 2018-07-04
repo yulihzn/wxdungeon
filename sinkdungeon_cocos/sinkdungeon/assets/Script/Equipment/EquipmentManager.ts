@@ -51,7 +51,7 @@ export default class EquipmentManager extends cc.Component {
 
     onLoad() {
     }
-    //灰色（粗糙）→白色（普通）→绿色（优秀）→蓝色（精良）→紫色（史诗）→橙色（传说）
+    /*灰色（粗糙）→白色（普通）→绿色（优秀）→蓝色（精良）→紫色（史诗）→橙色（传说）*/
     getRandomDesc(data: EquipmentData): EquipmentDescData {
         let desc = new EquipmentDescData();
         let arr = ['rough', 'normal', 'good', 'excellent', 'epic', 'legend']
@@ -171,7 +171,7 @@ export default class EquipmentManager extends cc.Component {
             //添加新装备
             let data = Logic.equipments[equipType];
             let desc = this.getRandomDesc(data);
-            desc.criticalStrikeRate = desc.criticalStrikeRate;
+            data.criticalStrikeRate = desc.criticalStrikeRate;
             data.damageMin += desc.damageMin;
             data.damageMax += desc.damageMax;
             data.defence += desc.defence;
