@@ -15,11 +15,11 @@ export default class PlayerData {
     static DEFAULT_HEALTH = 5;
     name:string = '';
     //x=current y=max
-    health:cc.Vec2=cc.v2(PlayerData.DEFAULT_HEALTH,PlayerData.DEFAULT_HEALTH);
+    basehealth:cc.Vec2=cc.v2(PlayerData.DEFAULT_HEALTH,PlayerData.DEFAULT_HEALTH);
     attackPoint:number=1;
     pos:cc.Vec2 = cc.v2(0,0);
     updateHA(health:cc.Vec2,attackPoint:number){
-        this.health = health;
+        this.basehealth = health;
         this.attackPoint = attackPoint;
         return this;
     }

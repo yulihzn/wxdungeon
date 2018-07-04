@@ -11,13 +11,9 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class EquipmentData{
+export default class EquipmentDescData{
     nameCn: string = '';
     nameEn: string = '';
-    equipmetType: string = 'empty';
-    equipmetTypeCn:string  ='';
-    prefix:string = '';
-    desc: string = '';
     damageMin: number = 0;
     damageMax: number = 0;
     criticalStrikeRate: number = 0;
@@ -28,8 +24,35 @@ export default class EquipmentData{
     attackSpeed: number = 0;
     dodge: number = 0;
     health: number = 0;
-    color:string  ='#ffffff';
-    titlecolor:string = '#ffffff';
-    img:string = 'emptyequipment';
-    
+    titlecolor:string  ='#ffffff';
+    color:string = '#ffffff'
+    prefix:string = '';
+
+    // constructor(nameCn: string,
+    // nameEn: string,
+    // damageMin: number,
+    // damageMax: number,
+    // criticalStrikeRate: number,
+    // defence: number,
+    // lifeDrain: number,
+    // lifeRecovery:number,
+    // moveSpeed: number,
+    // attackSpeed: number,
+    // dodge: number,
+    // health: number,
+    // desccolor:string){
+    //     this.nameCn= nameCn;
+    //     this.nameEn= nameEn;
+    //     this.damageMin = damageMin;
+    //     this.damageMax = damageMax;
+    //     this.criticalStrikeRate = criticalStrikeRate;
+    //     this.defence = defence;
+    //     this.lifeDrain = lifeDrain;
+    //     this.lifeRecovery = lifeRecovery;
+    //     this.moveSpeed = moveSpeed;
+    //     this.attackSpeed = attackSpeed;
+    //     this.dodge = dodge;
+    //     this.health = health;
+    //     this.desccolor ='#ffffff';
+    // }
 }

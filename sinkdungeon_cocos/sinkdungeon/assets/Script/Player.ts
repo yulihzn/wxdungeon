@@ -41,18 +41,19 @@ export default class Player extends cc.Component {
     private anim: cc.Animation;
     isDied = false;
     isFall = false;
-    health: cc.Vec2 = cc.v2(1,1);
+    health: cc.Vec2 = cc.v2(1, 1);
     baseAttackPoint: number = 1;
 
     touchedEquipment: Equipment;
-    inventoryData:InventoryData;
+    inventoryData: InventoryData;
+    recoveryTimeDelay = 0;
 
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.inventoryData = Logic.inventoryData;
-        this.health = this.inventoryData.getHealth(Logic.playerData.health);
+        this.health = this.inventoryData.getHealth(Logic.playerData.basehealth, Logic.playerData.basehealth.y);
         this.pos = cc.v2(4, 4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
@@ -85,18 +86,36 @@ export default class Player extends cc.Component {
     changeItem(spriteFrame: cc.SpriteFrame) {
         this.playerItemSprite.spriteFrame = spriteFrame;
     }
-   
+
     changeEquipment(equipType: string, spriteFrame: cc.SpriteFrame) {
         switch (equipType) {
-            case 'weapon': this.weaponSprite.spriteFrame = spriteFrame;break;
+            case 'weapon': this.weaponSprite.spriteFrame = spriteFrame;
+                let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                this.weaponSprite.node.color = color1;
+                break;
             case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
-                this.hairSprite.node.opacity = spriteFrame ? 0 : 255;break;
-            case 'clothes': this.clothesSprite.spriteFrame = spriteFrame;break;
-            case 'trousers': this.trousersSprite.spriteFrame = spriteFrame;break;
-            case 'gloves': this.glovesSprite.spriteFrame = spriteFrame;break;
-            case 'shoes': this.shoesSprite.spriteFrame = spriteFrame;break;
+                this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
+                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                this.helmetSprite.node.color = color2;
+                break;
+            case 'clothes': this.clothesSprite.spriteFrame = spriteFrame;
+                let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                this.clothesSprite.node.color = color3;
+                break;
+            case 'trousers': this.trousersSprite.spriteFrame = spriteFrame;
+                let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                this.trousersSprite.node.color = color4;
+                break;
+            case 'gloves': this.glovesSprite.spriteFrame = spriteFrame;
+                let color5 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                this.glovesSprite.node.color = color5;
+                break;
+            case 'shoes': this.shoesSprite.spriteFrame = spriteFrame;
+                let color6 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                this.shoesSprite.node.color = color6;
+                break;
         }
-        this.health = this.inventoryData.getHealth(this.health);
+        this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.healthBar.refreshHealth(this.health.x, this.health.y);
     }
     updatePlayerPos() {
@@ -133,7 +152,12 @@ export default class Player extends cc.Component {
         let attackPoint = this.inventoryData.getAttackPoint(this.baseAttackPoint);
         let action = cc.sequence(cc.moveBy(this.inventoryData.getAttackSpeed(baseSpeed), x, y), cc.callFunc(() => {
             if (finish) { finish(this.inventoryData.getFinalAttackPoint(this.baseAttackPoint)); }
-        }), cc.moveTo(baseSpeed, 0, 0),cc.callFunc(() => {
+            //生命汲取
+            let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);
+            if (drain > 0) {
+                this.takeDamage(-drain);
+            }
+        }), cc.moveTo(baseSpeed, 0, 0), cc.callFunc(() => {
             this.isAttacking = false;
         }));
         this.sprite.runAction(action);
@@ -183,7 +207,7 @@ export default class Player extends cc.Component {
             }
         }
         this.changeZIndex(this.pos);
-        this.health = this.inventoryData.getHealth(this.health);
+        this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.healthBar.refreshHealth(this.health.x, this.health.y);
     }
     fall() {
@@ -204,13 +228,19 @@ export default class Player extends cc.Component {
             return;
         }
         let d = this.inventoryData.getDamage(damage);
-        this.health = this.inventoryData.getHealth(this.health);
+        this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.health.x -= d;
         if (this.health.x > this.health.y) {
             this.health.x = this.health.y;
         }
         this.healthBar.refreshHealth(this.health.x, this.health.y);
-        Logic.playerData.updateHA(this.health, this.baseAttackPoint);
+        Logic.playerData.basehealth.x = this.health.x;
+        if (this.label) {
+            this.label.node.opacity = 255;
+            this.label.node.color = damage > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
+            this.label.string = `${parseFloat((-damage).toFixed(1))}`;
+            this.label.getComponent(cc.Animation).play('FontFloating');
+        }
         if (this.health.x < 1) {
             this.killed();
         }
@@ -258,13 +288,24 @@ export default class Player extends cc.Component {
             this.move(dir);
         }
     }
-
+    //30秒回复一次
+    isRecoveryTimeDelay(dt: number): boolean {
+        this.recoveryTimeDelay += dt;
+        if (this.recoveryTimeDelay > 30) {
+            this.recoveryTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     update(dt) {
         if (!this.isMoving) {
             this.updatePlayerPos();
         }
-        if (this.label) {
-            this.label.string = "" + this.node.zIndex;
+        if (this.isRecoveryTimeDelay(dt)) {
+            let re = this.inventoryData.getRecovery();
+            if (re > 0) {
+                this.takeDamage(-re);
+            }
         }
     }
     UseItem() {
@@ -276,7 +317,7 @@ export default class Player extends cc.Component {
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         if (other.tag == 6) {
             let e = other.getComponent(Equipment);
-            if(e){
+            if (e) {
                 this.touchedEquipment = e;
             }
         }

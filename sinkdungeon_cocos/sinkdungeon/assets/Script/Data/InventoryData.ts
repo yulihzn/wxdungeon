@@ -85,22 +85,30 @@ export default class InventoryData {
         +this.trousers.defence+this.gloves.defence+this.shoes.defence;
         return defence;
     }
-    //汲取为暴击时最大攻击的一半
+    //生命恢复
+    getRecovery():number{
+        let recovery = this.weapon.lifeRecovery+this.helmet.lifeRecovery+this.clothes.lifeRecovery
+        +this.trousers.lifeRecovery+this.gloves.lifeRecovery+this.shoes.lifeRecovery;
+        return recovery;
+    }
+    //暴击时取最大攻击
     getLifeDrain(baseAttackPoint):number{
         let attackPoint = this.getAttackPoint(baseAttackPoint);
         let chance = this.getCriticalStrikeRate();
-        return Math.random()>chance?0:attackPoint.y/2;
+        let drainRate = 1-(1-this.weapon.lifeDrain/100)*(1-this.helmet.lifeDrain/100)
+        *(1-this.clothes.lifeDrain/100)*(1-this.trousers.lifeDrain/100)
+        *(1-this.gloves.lifeDrain/100)*(1-this.shoes.lifeDrain/100);
+        return Math.random()>chance?attackPoint.x*drainRate:attackPoint.y*drainRate;
     }
 
     //生命值
-    getHealth(baseHealth:cc.Vec2):cc.Vec2{
+    getHealth(health:cc.Vec2,baseMaxHealth:number):cc.Vec2{
         let rate = 1;
-        if(baseHealth.y>0){
-            rate = baseHealth.x/baseHealth.y;
+        if(health.y>0){
+            rate = health.x/health.y;
         }
-        let maxHealth = baseHealth.y + this.weapon.health+this.helmet.health+this.clothes.health
+        let maxHealth = baseMaxHealth + this.weapon.health+this.helmet.health+this.clothes.health
         +this.trousers.health+this.gloves.health+this.shoes.health;
-        let currentHealth = baseHealth.x;
         return cc.v2(maxHealth*rate,maxHealth);
     }
 }

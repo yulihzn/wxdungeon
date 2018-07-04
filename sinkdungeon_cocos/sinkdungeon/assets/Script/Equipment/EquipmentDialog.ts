@@ -36,6 +36,8 @@ export default class EquipmentDialog extends cc.Component {
     dodge: cc.Label = null;
     @property(cc.Label)
     health: cc.Label = null;
+    @property(cc.Label)
+    lifeRecovery:cc.Label = null;
     alpha = 0;
     showSpeed = 3;
     // LIFE-CYCLE CALLBACKS:
@@ -49,13 +51,15 @@ export default class EquipmentDialog extends cc.Component {
         this.showSpeed = 30;
     }
     refreshDialog(equipment: EquipmentData) {
-        this.nametag.string = equipment.prefix + equipment.nameEn;
+        this.nametag.string = equipment.prefix + " " + equipment.nameEn;
+        this.nametag.node.color=this.nametag.node.color.fromHEX(equipment.titlecolor);
         this.desc.string = equipment.desc;
         this.damage.string = equipment.damageMin + '-' + equipment.damageMax;
         this.attackSpeed.string = equipment.attackSpeed + '%';
         this.moveSpeed.string = equipment.moveSpeed + '%';
         this.dodge.string = equipment.dodge + '%';
         this.lifeDrain.string = equipment.lifeDrain + '%';
+        this.lifeRecovery.string = equipment.lifeRecovery+'';
         this.health.string = equipment.health + '';
         this.defence.string = equipment.defence + '';
         this.criticalStrikeRate.string = equipment.criticalStrikeRate + '%';

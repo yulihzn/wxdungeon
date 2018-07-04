@@ -51,7 +51,7 @@ export default class MonsterManager extends cc.Component {
         let monster = monsterPrefab.getComponent(Monster);
         let data = new MonsterData();
         switch (resName) {
-            case MonsterManager.MONSTER_SLIME: data.updateHA(999,999,1); break;
+            case MonsterManager.MONSTER_SLIME: data.updateHA(3,3,1); break;
 			case MonsterManager.MONSTER_GOBLIN: data.updateHA(1,1,1); break;
 			case MonsterManager.MONSTER_MUMMY: data.updateHA(2,2,2); break;
             case MonsterManager.MONSTER_ANUBIS: data.updateHA(3,3,3); break;
