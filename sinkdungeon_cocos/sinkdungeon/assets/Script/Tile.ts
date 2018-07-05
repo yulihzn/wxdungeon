@@ -1,3 +1,5 @@
+import Logic from "./Logic";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -22,6 +24,7 @@ export default class Tile extends cc.Component {
     private isAnimPlaying:boolean = false;
     //正在瓦解
     isBreakingNow = false;
+    floor:cc.Sprite;
     onLoad () {
         this.isAutoShow = true;
         let ss = this.node.getComponentsInChildren(cc.Sprite);
@@ -29,9 +32,19 @@ export default class Tile extends cc.Component {
             ss[i].spriteFrame.getTexture().setAliasTexParameters();
         }
         this.anim = this.getComponent(cc.Animation);
+        this.floor = this.node.getChildByName('sprite').getChildByName('floor').getComponent(cc.Sprite);
     }
 
     start () {
+        //休息区 轮船 丛林 金字塔 地牢
+        switch(Logic.chapterName){
+            case 'chapter00':this.changeRes('tile000');break;
+            case 'chapter01':this.changeRes('tile001');break;
+            case 'chapter02':this.changeRes('tile002');break;
+            case 'chapter03':this.changeRes('tile003');break;
+            case 'chapter04':this.changeRes('tile004');break;
+        }
+        Logic.setAlias(this.node);
 
     }
     //animation
@@ -80,5 +93,8 @@ export default class Tile extends cc.Component {
         if(this.label){
             this.label.string = ""+this.node.zIndex;
         }
+    }
+    changeRes(resName:string){
+        this.floor.spriteFrame = Logic.spriteFrames[resName];
     }
 }

@@ -1,5 +1,6 @@
 import Logic from "./Logic";
 import PlayerData from "./Data/PlayerData";
+import InventoryData from "./Data/InventoryData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,6 +30,7 @@ export default class GameOver extends cc.Component {
     retry(){
         Logic.level = 1;
         Logic.playerData = new PlayerData();
+        Logic.inventoryData = new InventoryData();
         cc.director.loadScene('loading');
     }
     home(){

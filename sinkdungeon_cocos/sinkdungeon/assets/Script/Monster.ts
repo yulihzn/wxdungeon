@@ -19,7 +19,7 @@ import Dungeon from './Dungeon';
 export default class Monster extends cc.Component {
 
     @property(cc.Vec2)
-    pos: cc.Vec2 = cc.v2(0,0);
+    pos: cc.Vec2 = cc.v2(0, 0);
     @property(cc.Label)
     label: cc.Label = null;
     @property(HealthBar)
@@ -33,7 +33,7 @@ export default class Monster extends cc.Component {
     isFall = false;
     private timeDelay = 0;
     // attackPonit = 1;
-    data:MonsterData = new MonsterData();
+    data: MonsterData = new MonsterData();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -42,15 +42,23 @@ export default class Monster extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
     }
-    
-    changeBodyRes(resName:string){
-        cc.loader.loadRes('Texture/Monster/'+resName,cc.SpriteFrame,(error:Error,spriteFrame:cc.SpriteFrame)=>{
-            let body = this.sprite.getChildByName('body');
-            spriteFrame.getTexture().setAliasTexParameters();
-            body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            body.width = spriteFrame.getRect().width;
-            body.height = spriteFrame.getRect().height;
-        })
+
+    changeBodyRes(resName: string) {
+        if(!this.sprite){
+            this.sprite = this.node.getChildByName('sprite');
+        }
+        let body = this.sprite.getChildByName('body');
+        let spriteFrame = Logic.spriteFrames[resName];
+        body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        body.width = spriteFrame.getRect().width;
+        body.height = spriteFrame.getRect().height;
+        // cc.loader.loadRes('Texture/Monster/'+resName,cc.SpriteFrame,(error:Error,spriteFrame:cc.SpriteFrame)=>{
+        //     let body = this.sprite.getChildByName('body');
+        //     spriteFrame.getTexture().setAliasTexParameters();
+        //     body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        //     body.width = spriteFrame.getRect().width;
+        //     body.height = spriteFrame.getRect().height;
+        // })
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
@@ -69,22 +77,22 @@ export default class Monster extends cc.Component {
     changeZIndex() {
         this.node.zIndex = 3000 + (9 - this.pos.y) * 100 + 2;
     }
-    attack(dir,finish){
+    attack(dir, finish) {
         if (this.isMoving || this.isDied) {
             return;
         }
         let x = 0;
-		let y = 0;
-		switch (dir) {
-			case 0: y += 32; break;
-			case 1: y -= 32; break;
-			case 2: x -= 32; break;
-			case 3: x += 32; break;
-			case 4: break;
+        let y = 0;
+        switch (dir) {
+            case 0: y += 32; break;
+            case 1: y -= 32; break;
+            case 2: x -= 32; break;
+            case 3: x += 32; break;
+            case 4: break;
         }
         let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
-            if(finish){finish(this.data.attackPoint);}
-        }),cc.moveTo(0.1, 0, 0));
+            if (finish) { finish(this.data.attackPoint); }
+        }), cc.moveTo(0.1, 0, 0));
         this.sprite.runAction(action);
     }
     move(dir) {
@@ -122,7 +130,7 @@ export default class Monster extends cc.Component {
     start() {
         let ss = this.node.getComponentsInChildren(cc.Sprite);
         for (let i = 0; i < ss.length; i++) {
-            if(ss[i].spriteFrame){
+            if (ss[i].spriteFrame) {
                 ss[i].spriteFrame.getTexture().setAliasTexParameters();
             }
         }
@@ -155,11 +163,11 @@ export default class Monster extends cc.Component {
         this.anim.play('PlayerDie');
     }
 
-    monsterAction(dungeon:Dungeon) {
+    monsterAction(dungeon: Dungeon) {
         if (this.isDied) {
             return;
         }
-        let dir = this.getMonsterBestDir(this.pos,dungeon);
+        let dir = this.getMonsterBestDir(this.pos, dungeon);
         let newPos = cc.v2(this.pos.x, this.pos.y);
         switch (dir) {
             case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
@@ -189,7 +197,7 @@ export default class Monster extends cc.Component {
         }
         return dir;
     }
-    getMonsterBestDir(pos: cc.Vec2,dungeon:Dungeon): number {
+    getMonsterBestDir(pos: cc.Vec2, dungeon: Dungeon): number {
         let bestPos = cc.v2(pos.x, pos.y);
         //获取9个点并打乱顺序
         let dirArr = new Array();

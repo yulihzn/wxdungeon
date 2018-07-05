@@ -25,6 +25,7 @@ export default class Logic extends cc.Component {
     public static rooms:MapData[] = new Array();
     public static chapterName = 'chapter01';
     public static equipments: { [key: string]: EquipmentData } = null;
+    public static spriteFrames:{ [key: string]: cc.SpriteFrame } = null;
     
     // LIFE-CYCLE CALLBACKS:
 

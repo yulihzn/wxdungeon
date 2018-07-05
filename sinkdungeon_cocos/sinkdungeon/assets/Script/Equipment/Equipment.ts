@@ -1,7 +1,7 @@
 import Logic from "../Logic";
 import EquipmentDialog from "./EquipmentDialog";
 import EquipmentData from "../Data/EquipmentData";
-import EquipmentManager from "./EquipmentManager";
+import EquipmentManager from "../Manager/EquipmentManager";
 import { EventConstant } from "../EventConstant";
 
 // Learn TypeScript:

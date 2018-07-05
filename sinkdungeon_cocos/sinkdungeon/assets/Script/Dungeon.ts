@@ -10,7 +10,7 @@ import Wall from "./Building/Wall";
 import Trap from "./Building/Trap";
 import MapData from "./Data/MapData";
 import Item from "./Item/Item";
-import EquipmentManager from "./Equipment/EquipmentManager";
+import EquipmentManager from "./Manager/EquipmentManager";
 import EquipmentData from "./Data/EquipmentData";
 
 // Learn TypeScript:
@@ -37,7 +37,8 @@ export default class Dungeon extends cc.Component {
     heart: cc.Prefab = null;
     @property(Player)
     player: Player = null;
-    @property(Portal)
+    @property(cc.Prefab)
+    portalPrefab: cc.Prefab = null;
     portal: Portal = null;
 
     map: Tile[][] = new Array();
@@ -139,7 +140,11 @@ export default class Dungeon extends cc.Component {
                     this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
                 }
                 if (mapData[i][j] == 'P') {
-                    this.portal.node.parent = this.node;
+                    let portalP = cc.instantiate(this.portalPrefab);
+                    portalP.parent = this.node;
+                    this.portal = portalP.getComponent(Portal);
+                    //关闭踩踏掉落
+                    this.map[i][j].isAutoShow = false;
                     this.portal.setPos(cc.v2(i, j));
                 }
             }
@@ -222,9 +227,6 @@ export default class Dungeon extends cc.Component {
         }
     }
     breakTile(pos: cc.Vec2) {
-        if (pos.equals(this.portal.pos)) {
-            return;
-        }
         let tile = this.map[pos.x][pos.y];
         if (!tile.isBroken) {
             tile.breakTile();

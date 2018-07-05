@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "5df65559-edfd-427e-80b8-c270a8c8e6e2",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "dungeondoor": {
+      "ver": "1.0.3",
+      "uuid": "edf816b2-31c1-4e88-b54a-afe75b8269e8",
+      "rawTextureUuid": "5df65559-edfd-427e-80b8-c270a8c8e6e2",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 16,
+      "height": 32,
+      "rawWidth": 16,
+      "rawHeight": 32,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,8 +1,8 @@
-import Equipment from "./Equipment";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import EquipmentData from "../Data/EquipmentData";
 import EquipmentDescData from "../Data/EquipmentDescData";
+import Equipment from "../Equipment/Equipment";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

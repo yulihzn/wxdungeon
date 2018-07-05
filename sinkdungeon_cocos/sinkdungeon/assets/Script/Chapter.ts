@@ -19,6 +19,12 @@ export default class Chapter extends cc.Component {
     chapter00:cc.Button = null;
     @property(cc.Button)
     chapter01:cc.Button = null;
+    @property(cc.Button)
+    chapter02:cc.Button = null;
+    @property(cc.Button)
+    chapter03:cc.Button = null;
+    @property(cc.Button)
+    chapter04:cc.Button = null;
     // LIFE-CYCLE CALLBACKS:
     timeDelay = 0;
 
@@ -27,6 +33,9 @@ export default class Chapter extends cc.Component {
     start () {
         Logic.setAlias(this.chapter00.node);
         Logic.setAlias(this.chapter01.node);
+        Logic.setAlias(this.chapter02.node);
+        Logic.setAlias(this.chapter03.node);
+        Logic.setAlias(this.chapter04.node);
     }
     
     clickChapter(event,chapter){
@@ -53,8 +62,8 @@ export default class Chapter extends cc.Component {
     }
     update (dt) {
         if(this.isTimeDelay(dt)){
-            Logic.setAlias(this.chapter00.node);
-            Logic.setAlias(this.chapter01.node);
+            // Logic.setAlias(this.chapter00.node);
+            // Logic.setAlias(this.chapter01.node);
         }
     }
 }

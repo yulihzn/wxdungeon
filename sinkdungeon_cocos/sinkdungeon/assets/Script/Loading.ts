@@ -22,6 +22,7 @@ export default class Loading extends cc.Component {
     private timeDelay = 0;
     private isLevelLoaded = false;
     private isEquipmentLoaded = false;
+    private isSpriteFramesLoaded = false;
     // LIFE-CYCLE CALLBACKS:
     
 
@@ -33,6 +34,7 @@ export default class Loading extends cc.Component {
         this.isEquipmentLoaded = false;
         this.loadMap();
         this.loadEquipment();
+        this.loadSpriteFrames();
     }
     loadMap(){
         if(Logic.rooms&&Logic.rooms.length>0){
@@ -71,13 +73,28 @@ export default class Loading extends cc.Component {
 			}
         })
     }
+    loadSpriteFrames(){
+        if(Logic.spriteFrames){
+            this.isSpriteFramesLoaded = true;
+            return;
+        }
+        cc.loader.loadResDir('Texture',cc.SpriteFrame,(err:Error,assert:cc.SpriteFrame[])=>{
+            Logic.spriteFrames = {};
+            for(let frame of assert){
+                frame.getTexture().setAliasTexParameters();
+                Logic.spriteFrames[frame.name] = frame;
+            }
+            this.isSpriteFramesLoaded = true;
+        })
+    }
 
     update (dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 0.16 && this.isLevelLoaded&&this.isEquipmentLoaded) {
+        if (this.timeDelay > 0.16 && this.isLevelLoaded&&this.isEquipmentLoaded&&this.isSpriteFramesLoaded) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
+            this.isSpriteFramesLoaded = false;
             cc.director.loadScene('game');
         }
     }

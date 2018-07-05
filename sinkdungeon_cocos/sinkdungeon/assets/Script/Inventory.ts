@@ -123,45 +123,43 @@ export default class NewClass extends cc.Component {
             return;
         }
         let color = cc.color(255,255,255).fromHEX(equipmentDataNew.color);
-        cc.loader.loadRes('Texture/Equipment/'+equipmentDataNew.img,cc.SpriteFrame,(eror:Error,spriteFrame:cc.SpriteFrame)=>{
-            spriteFrame.getTexture().setAliasTexParameters();
-            switch(equipmentDataNew.equipmetType){
-                case 'weapon':this.weapon.spriteFrame = spriteFrame;
-                this.weapon.node.color = color;
-                this.setEquipment(equipmentDataNew,this.inventoryData.weapon);
-                this.inventoryData.weapon = equipmentDataNew;
-                break;
-                case 'helmet':this.helmet.spriteFrame = spriteFrame;
-                this.helmet.node.color = color;
-                this.setEquipment(equipmentDataNew,this.inventoryData.helmet);
-                this.inventoryData.helmet = equipmentDataNew;
-                break;
-                case 'clothes':this.clothes.spriteFrame = spriteFrame;
-                this.clothes.node.color = color;
-                this.setEquipment(equipmentDataNew,this.inventoryData.clothes);
-                this.inventoryData.clothes = equipmentDataNew;
-                break;
-                case 'trousers':this.trousers.spriteFrame = spriteFrame;
-                this.trousers.node.color = color;
-                this.setEquipment(equipmentDataNew,this.inventoryData.trousers);
-                this.inventoryData.trousers = equipmentDataNew;
-                break;
-                case 'gloves':this.gloves.spriteFrame = spriteFrame;
-                this.gloves.node.color = color;
-                this.setEquipment(equipmentDataNew,this.inventoryData.gloves);
-                this.inventoryData.gloves = equipmentDataNew;
-                break;
-                case 'shoes':this.shoes.spriteFrame = spriteFrame;
-                this.shoes.node.color = color;
-                this.setEquipment(equipmentDataNew,this.inventoryData.shoes);
-                this.inventoryData.shoes = equipmentDataNew;
-                break;
-            }
-            if(this.player){
-                this.player.getComponent(Player).inventoryData = this.inventoryData;
-                this.player.getComponent(Player).changeEquipment(equipmentDataNew.equipmetType,spriteFrame)
-            }
-        })
+        let spriteFrame = Logic.spriteFrames[equipmentDataNew.img];
+        switch(equipmentDataNew.equipmetType){
+            case 'weapon':this.weapon.spriteFrame = spriteFrame;
+            this.weapon.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryData.weapon);
+            this.inventoryData.weapon = equipmentDataNew;
+            break;
+            case 'helmet':this.helmet.spriteFrame = spriteFrame;
+            this.helmet.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryData.helmet);
+            this.inventoryData.helmet = equipmentDataNew;
+            break;
+            case 'clothes':this.clothes.spriteFrame = spriteFrame;
+            this.clothes.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryData.clothes);
+            this.inventoryData.clothes = equipmentDataNew;
+            break;
+            case 'trousers':this.trousers.spriteFrame = spriteFrame;
+            this.trousers.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryData.trousers);
+            this.inventoryData.trousers = equipmentDataNew;
+            break;
+            case 'gloves':this.gloves.spriteFrame = spriteFrame;
+            this.gloves.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryData.gloves);
+            this.inventoryData.gloves = equipmentDataNew;
+            break;
+            case 'shoes':this.shoes.spriteFrame = spriteFrame;
+            this.shoes.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryData.shoes);
+            this.inventoryData.shoes = equipmentDataNew;
+            break;
+        }
+        if(this.player){
+            this.player.getComponent(Player).inventoryData = this.inventoryData;
+            this.player.getComponent(Player).changeEquipment(equipmentDataNew.equipmetType,spriteFrame)
+        }
     }
 
     // update (dt) {}
