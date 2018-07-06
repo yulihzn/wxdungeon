@@ -16,6 +16,8 @@ import Dungeon from './Dungeon';
 import InventoryData from './Data/InventoryData';
 import Equipment from './Equipment/Equipment';
 import EquipmentData from './Data/EquipmentData';
+import Monster from './Monster';
+import Kraken from './Boss/Kraken';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -47,6 +49,10 @@ export default class Player extends cc.Component {
     touchedEquipment: Equipment;
     inventoryData: InventoryData;
     recoveryTimeDelay = 0;
+
+    isFaceRight = false;
+
+    attackTarget: cc.Collider;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -80,8 +86,12 @@ export default class Player extends cc.Component {
         cc.director.on(EventConstant.PLAYER_USEITEM
             , (event) => { this.UseItem() });
 
+        cc.director.on(EventConstant.PLAYER_ATTACK
+            , (event) => { this.meleeAttack() });
+
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage) });
+        
     }
     changeItem(spriteFrame: cc.SpriteFrame) {
         this.playerItemSprite.spriteFrame = spriteFrame;
@@ -134,70 +144,105 @@ export default class Player extends cc.Component {
     changeZIndex(pos: cc.Vec2) {
         this.node.zIndex = 3000 + (9 - pos.y) * 100 + 2;
     }
-    attack(dir, finish) {
-        if (this.isMoving || this.isDied || this.isAttacking) {
+
+    meleeAttack() {
+        if (this.isAttacking || this.isDied) {
             return;
-        }
-        let x = 0;
-        let y = 0;
-        switch (dir) {
-            case 0: y += 32; break;
-            case 1: y -= 32; break;
-            case 2: x -= 32; break;
-            case 3: x += 32; break;
-            case 4: break;
         }
         this.isAttacking = true;
-        let baseSpeed = 0.2;
-        let attackPoint = this.inventoryData.getAttackPoint(this.baseAttackPoint);
-        let action = cc.sequence(cc.moveBy(this.inventoryData.getAttackSpeed(baseSpeed), x, y), cc.callFunc(() => {
-            if (finish) { finish(this.inventoryData.getFinalAttackPoint(this.baseAttackPoint)); }
-            //生命汲取
-            let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);
-            if (drain > 0) {
-                this.takeDamage(-drain);
-            }
-        }), cc.moveTo(baseSpeed, 0, 0), cc.callFunc(() => {
-            this.isAttacking = false;
-        }));
-        this.sprite.runAction(action);
+        if (this.anim) {
+            let animState = this.anim.playAdditive('PlayerMeleeAttack');
+            animState.speed = this.inventoryData.getAttackSpeed();
+        }
     }
-    move(dir: number) {
-        if (this.isMoving || this.isDied || this.isFall) {
+    move(dir:number,pos: cc.Vec2,dt:number) {
+        if (this.isDied || this.isFall) {
             return;
         }
+        
+        let h = pos.x;
+		let v = pos.y;
+		let absh = Math.abs (h);
+        let absv = Math.abs (v);
+        
+		let mul = absh > absv ? absh : absv;
+		mul = mul == 0 ? 1 : mul;
+        let movement = cc.v2(h,v);
+        let speed = 5;
+        movement = movement.mul(speed);
+        
+		this.node.setPosition(this.node.getPosition().add(movement));
         let newPos = cc.v2(this.pos.x, this.pos.y);
         switch (dir) {
             case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
             case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
-            case 2: if (newPos.x - 1 >= 0) { newPos.x--;this.node.scaleX=1; } break;
-            case 3: if (newPos.x + 1 < 9) { newPos.x++;this.node.scaleX=-1; } break;
+            case 2: if (newPos.x - 1 >= 0) { newPos.x--; this.isFaceRight = false; } break;
+            case 3: if (newPos.x + 1 < 9) { newPos.x++; this.isFaceRight = true; } break;
         }
-        this.isMoving = true;
-        this.isAttacking = false;//取消攻击后摇
-        this.pos = newPos;
+        this.isMoving = h!=0||v!=0;
+        if(this.isMoving){
+            this.anim.play('PlayerWalk');
+        }else{
+            this.anim.play('PlayerIdle');
+        }
+        
+        // this.pos = newPos;
         let isDown = dir == 1;
         if (isDown) {
             this.changeZIndex(this.pos);
         }
-        let x = this.pos.x * 64 + 32;
-        let y = this.pos.y * 64 + 32;
-        let finish = cc.callFunc(() => {
-            this.changeZIndex(this.pos);
-            this.sprite.y = 0;
-            this.isDied = false;
-            this.sprite.rotation = 0;
-            this.sprite.scale = 1;
-            this.sprite.opacity = 255;
-            this.anim.play('PlayerIdle');
-            this.isMoving = false;
-        }, this);
+        // let finish = cc.callFunc(() => {
+        //     this.changeZIndex(this.pos);
+        //     this.sprite.y = 0;
+        //     this.isDied = false;
+        //     this.sprite.rotation = 0;
+        //     this.sprite.scale = 1;
+        //     this.sprite.opacity = 255;
+        //     this.anim.play('PlayerIdle');
+        //     this.isMoving = false;
+        // }, this);
         //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
-        let baseSpeed = 0.2;
-        let action = cc.sequence(cc.moveTo(this.inventoryData.getMoveSpeed(baseSpeed), x, y), finish);
-        this.anim.play('PlayerWalk');
-        this.node.runAction(action);
+        // let baseSpeed = 0.2;
+        // let action = cc.sequence(cc.moveTo(this.inventoryData.getMoveSpeed(baseSpeed), x, y), finish);
+        // this.anim.play('PlayerWalk');
+        // this.node.runAction(action);
     }
+    // move(dir: number) {
+    //     if (this.isMoving || this.isDied || this.isFall) {
+    //         return;
+    //     }
+    //     let newPos = cc.v2(this.pos.x, this.pos.y);
+    //     switch (dir) {
+    //         case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
+    //         case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
+    //         case 2: if (newPos.x - 1 >= 0) { newPos.x--; this.isFaceRight = false; } break;
+    //         case 3: if (newPos.x + 1 < 9) { newPos.x++; this.isFaceRight = true; } break;
+    //     }
+    //     this.isMoving = true;
+    //     this.isAttacking = false;//取消攻击后摇
+    //     this.pos = newPos;
+    //     let isDown = dir == 1;
+    //     if (isDown) {
+    //         this.changeZIndex(this.pos);
+    //     }
+    //     let x = this.pos.x * 64 + 32;
+    //     let y = this.pos.y * 64 + 32;
+    //     let finish = cc.callFunc(() => {
+    //         this.changeZIndex(this.pos);
+    //         this.sprite.y = 0;
+    //         this.isDied = false;
+    //         this.sprite.rotation = 0;
+    //         this.sprite.scale = 1;
+    //         this.sprite.opacity = 255;
+    //         this.anim.play('PlayerIdle');
+    //         this.isMoving = false;
+    //     }, this);
+    //     //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
+    //     let baseSpeed = 0.2;
+    //     let action = cc.sequence(cc.moveTo(this.inventoryData.getMoveSpeed(baseSpeed), x, y), finish);
+    //     this.anim.play('PlayerWalk');
+    //     this.node.runAction(action);
+    // }
 
     start() {
         let ss = this.node.getComponentsInChildren(cc.Sprite);
@@ -229,8 +274,8 @@ export default class Player extends cc.Component {
         }
         let d = this.inventoryData.getDamage(damage);
         let dodge = this.inventoryData.getDodge();
-        let isDodge = Math.random()<=dodge;
-        d = isDodge?0:d;
+        let isDodge = Math.random() <= dodge;
+        d = isDodge ? 0 : d;
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.health.x -= d;
         if (this.health.x > this.health.y) {
@@ -242,8 +287,8 @@ export default class Player extends cc.Component {
             this.label.node.opacity = 255;
             this.label.node.color = damage > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
             this.label.string = `${parseFloat((-damage).toFixed(1))}`;
-            if(isDodge){
-                this.label.node.color = cc.color(255,255,255);
+            if (isDodge) {
+                this.label.node.color = cc.color(255, 255, 255);
                 this.label.string = `miss`;
             }
             this.label.getComponent(cc.Animation).play('FontFloating');
@@ -263,7 +308,7 @@ export default class Player extends cc.Component {
         }, 1000);
     }
     //玩家行动
-    playerAction(dir: number, dungeon: Dungeon) {
+    playerAction(dir:number,pos: cc.Vec2,dt:number, dungeon: Dungeon) {
         let newPos = cc.v2(this.pos.x, this.pos.y);
         switch (dir) {
             case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
@@ -271,28 +316,34 @@ export default class Player extends cc.Component {
             case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
             case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
         }
-        let isAttack = false;
+        // let isAttack = false;
+        // for (let monster of dungeon.monsters) {
+        //     if (newPos.equals(monster.pos) && !monster.isDied) {
+        //         isAttack = true;
+        //         // this.attack(dir, (damage: number) => {
+        //         //     monster.takeDamage(damage);
+        //         // });
+        //     }
+        // }
+        // let isBossAttack = false;
+        // isBossAttack = Logic.isBossLevel(Logic.level) && dungeon.bossKraken && dungeon.bossKraken.isBossZone(newPos);
+        // if (isBossAttack && dungeon.bossKraken && dungeon.bossKraken.isShow && !dungeon.bossKraken.isDied) {
+        //     this.attack(dir, (damage: number) => {
+        //         dungeon.bossKraken.takeDamage(damage, newPos);
+        //     });
+        // }
+        let isOther = false;
         for (let monster of dungeon.monsters) {
             if (newPos.equals(monster.pos) && !monster.isDied) {
-                isAttack = true;
-                this.attack(dir, (damage: number) => {
-                    monster.takeDamage(damage);
-                });
+                isOther = true;
             }
         }
-        let isBossAttack = false;
-        isBossAttack = Logic.isBossLevel(Logic.level) && dungeon.bossKraken && dungeon.bossKraken.isBossZone(newPos);
-        if (isBossAttack && dungeon.bossKraken && dungeon.bossKraken.isShow && !dungeon.bossKraken.isDied) {
-            this.attack(dir, (damage: number) => {
-                dungeon.bossKraken.takeDamage(damage, newPos);
-            });
+        let w = dungeon.wallmap[newPos.x][newPos.y]
+        if (w && w.node.active) {
+            dir = 4;
         }
-        if (!isAttack && !isBossAttack) {
-            let w = dungeon.wallmap[newPos.x][newPos.y]
-            if (w && w.node.active) {
-                dir = 4;
-            }
-            this.move(dir);
+        if (!isOther) {
+            this.move(dir,pos,dt);
         }
     }
     //30秒回复一次
@@ -306,7 +357,7 @@ export default class Player extends cc.Component {
     }
     update(dt) {
         if (!this.isMoving) {
-            this.updatePlayerPos();
+            // this.updatePlayerPos();
         }
         if (this.isRecoveryTimeDelay(dt)) {
             let re = this.inventoryData.getRecovery();
@@ -314,11 +365,38 @@ export default class Player extends cc.Component {
                 this.takeDamage(-re);
             }
         }
+
+        this.node.scaleX = this.isFaceRight ? -1 : 1;
     }
     UseItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             this.touchedEquipment.taken();
             this.touchedEquipment = null;
+        }
+    }
+    //anim
+    AttackFinish() {
+        this.isAttacking = false;
+
+    }
+    Attacking() {
+        if (!this.attackTarget) {
+            return;
+        }
+        let attackPoint = this.inventoryData.getAttackPoint(this.baseAttackPoint);
+        let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
+        //生命汲取
+        let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);
+        if (drain > 0) {
+            this.takeDamage(-drain);
+        }
+        let monster = this.attackTarget.node.getComponent(Monster);
+        if (monster && !monster.isDied) {
+            monster.takeDamage(damage);
+        }
+        let kraken = this.attackTarget.node.getComponent(Kraken);
+        if (kraken && !kraken.isDied) {
+            kraken.takeDamage(damage, cc.v2(this.pos.x, this.pos.y + 1));
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
@@ -328,15 +406,24 @@ export default class Player extends cc.Component {
                 this.touchedEquipment = e;
             }
         }
+        if (self.tag == 31 && other.tag == 4) {
+            this.attackTarget = other;
+        }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         if (other.tag == 6) {
             this.touchedEquipment = null;
         }
+        if (self.tag == 31 && other.tag == 4) {
+            this.attackTarget = null;
+        }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         if (other.tag == 6) {
             this.touchedEquipment = null;
+        }
+        if (self.tag == 31 && other.tag == 4) {
+            this.attackTarget = null;
         }
     }
 }

@@ -62,13 +62,13 @@ export default class Dungeon extends cc.Component {
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
-        cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir) });
+        cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir,event.detail.pos,event.detail.dt) });
         cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => {
             this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
         });
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-        // manager.enabledDebugDraw = true;
+        manager.enabledDebugDraw = true;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
         this.player.node.parent = this.node;
@@ -234,9 +234,9 @@ export default class Dungeon extends cc.Component {
             tile.breakTile();
         }
     }
-    playerAction(dir: number) {
+    playerAction(dir:number,pos: cc.Vec2,dt:number) {
         if (this.player) {
-            this.player.playerAction(dir, this)
+            this.player.playerAction(dir,pos,dt, this)
         }
     }
     monstersAction() {

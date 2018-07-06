@@ -29,14 +29,14 @@ export default class InventoryData {
         if(speed<-10000){speed = -1000}
         return baseSpeed-speed/100*0.05;
     }
-    //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
-    getAttackSpeed(baseSpeed:number):number{
+    //初始速度1,最大速度3 最大300%
+    getAttackSpeed():number{
         let speed = 0;
         speed = this.weapon.attackSpeed+this.helmet.attackSpeed+this.clothes.attackSpeed
         +this.trousers.attackSpeed+this.gloves.attackSpeed+this.shoes.attackSpeed;
         if(speed>300){speed = 300}
         if(speed<-10000){speed = -1000}
-        return baseSpeed-speed/100*0.05;
+        return 1+speed/100;
     }
     //获取最大最小攻击力
     getAttackPoint(baseAttackPoint:number):cc.Vec2{

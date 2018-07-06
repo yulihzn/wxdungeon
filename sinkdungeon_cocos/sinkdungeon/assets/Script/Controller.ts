@@ -16,6 +16,9 @@ export default class Controller extends cc.Component {
 
     @property(cc.Node)
     player: cc.Node = null;
+    @property(cc.Node)
+    mainAction:cc.Node = null;
+    mainActionTouched = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -24,6 +27,17 @@ export default class Controller extends cc.Component {
         for(let i = 0;i < ss.length;i++){
             ss[i].spriteFrame.getTexture().setAliasTexParameters();
         }
+        this.mainAction.on(cc.Node.EventType.TOUCH_START, function (event:cc.Event.EventTouch) {
+            this.mainActionTouched = true;
+        }, this)
+      
+        this.mainAction.on(cc.Node.EventType.TOUCH_END, function (event) {
+            this.mainActionTouched = false;
+        }, this)
+ 
+        this.mainAction.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
+            this.mainActionTouched = false;
+        }, this)
     }
 
     start () {
@@ -32,10 +46,21 @@ export default class Controller extends cc.Component {
         dir = parseInt(dir);
         cc.director.emit(EventConstant.PLAYER_MOVE,{dir})
     }
-    actionCenter(event, customEventData){
-        cc.director.emit(EventConstant.PLAYER_USEITEM);
-    }
     
-
-    // update (dt) {}
+    timeDelay = 0;
+    isTimeDelay(dt: number): boolean {
+        this.timeDelay += dt;
+        if (this.timeDelay > 0.016) {
+            this.timeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    update (dt) {
+        if(this.isTimeDelay(dt)){
+            if(this.mainActionTouched){
+                cc.director.emit(EventConstant.PLAYER_ATTACK);
+            }
+        }
+    }
 }

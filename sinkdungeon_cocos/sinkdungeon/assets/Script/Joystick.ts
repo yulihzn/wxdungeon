@@ -240,12 +240,10 @@ export default class NewClass extends cc.Component {
         }
     }
 
-    sendMoveMessageToPlayer(){
+    sendMoveMessageToPlayer(dt:number){
         let v = this.getInputQuadrantDir();
-        if(v.equals(cc.Vec2.ZERO)){
-            return;
-        }
-        let dir = -1;
+        
+        let dir = 4;
         if(Math.abs(v.x)<Math.abs(v.y)){
             if(v.y>0.8){
                 dir = 0;
@@ -263,9 +261,9 @@ export default class NewClass extends cc.Component {
                 dir = 3;
             }
         }
-        if(dir != -1){
-            cc.director.emit(EventConstant.PLAYER_MOVE,{dir})
-        }
+        let pos = this.getInputDir();
+        cc.director.emit(EventConstant.PLAYER_MOVE,{dir:dir,pos:pos,dt:dt})
+        
     }
     timeDelay = 0;
     isTimeDelay(dt: number): boolean {
@@ -278,7 +276,7 @@ export default class NewClass extends cc.Component {
     }
     update(dt){
         if(this.isTimeDelay(dt)){
-            this.sendMoveMessageToPlayer();
+            this.sendMoveMessageToPlayer(dt);
         }
     }
 
