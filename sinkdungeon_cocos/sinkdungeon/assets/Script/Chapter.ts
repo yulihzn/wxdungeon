@@ -1,5 +1,6 @@
 import Logic from "./Logic";
 import PlayerData from "./Data/PlayerData";
+import InventoryData from "./Data/InventoryData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,6 +48,7 @@ export default class Chapter extends cc.Component {
         }
         Logic.level = 1;
         Logic.playerData = new PlayerData();
+        Logic.inventoryData = new InventoryData();
         if(chapter=='chapter00'){
             Logic.playerData.updateHA(cc.v2(100,100),1);
         }

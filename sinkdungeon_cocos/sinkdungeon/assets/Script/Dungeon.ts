@@ -160,7 +160,9 @@ export default class Dungeon extends cc.Component {
         this.addkraken();
     }
     addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData) {
-        this.equipmentManager.getEquipment(equipType, pos, this.node, equipData);
+        if(this.equipmentManager){
+            this.equipmentManager.getEquipment(equipType, pos, this.node, equipData);
+        }
     }
     addMonsterFromData(resName: string, i: number, j: number) {
         this.addMonster(this.monsterManager.getMonster(resName, this.node)

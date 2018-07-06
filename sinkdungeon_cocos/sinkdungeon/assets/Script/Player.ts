@@ -170,8 +170,8 @@ export default class Player extends cc.Component {
         switch (dir) {
             case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
             case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
-            case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
-            case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
+            case 2: if (newPos.x - 1 >= 0) { newPos.x--;this.node.scaleX=1; } break;
+            case 3: if (newPos.x + 1 < 9) { newPos.x++;this.node.scaleX=-1; } break;
         }
         this.isMoving = true;
         this.isAttacking = false;//取消攻击后摇
