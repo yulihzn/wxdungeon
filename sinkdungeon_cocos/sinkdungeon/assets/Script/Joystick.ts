@@ -245,19 +245,19 @@ export default class NewClass extends cc.Component {
         
         let dir = 4;
         if(Math.abs(v.x)<Math.abs(v.y)){
-            if(v.y>0.8){
+            if(v.y>0.3){
                 dir = 0;
             }
-            if(v.y<-0.8){
+            if(v.y<-0.3){
                 dir = 1;
             }
             
         }
         if(Math.abs(v.x)>Math.abs(v.y)){
-            if(v.x<-0.8){
+            if(v.x<-0.3){
                 dir = 2;
             }
-            if(v.x>0.8){
+            if(v.x>0.3){
                 dir = 3;
             }
         }
