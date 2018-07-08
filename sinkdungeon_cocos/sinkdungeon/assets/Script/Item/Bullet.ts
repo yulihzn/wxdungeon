@@ -26,14 +26,17 @@ export default class Bullet extends cc.Component {
     anim:cc.Animation;
     dir = 0;
     tagetPos = cc.v2(0,0);
+    rigidBody:cc.RigidBody;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.anim = this.getComponent(cc.Animation);
+        this.rigidBody = this.getComponent(cc.RigidBody);
     }
     onEnable(){
         this.tagetPos = cc.v2(0,0);
+        this.rigidBody.linearVelocity = cc.v2(0,0);
     }
     //animation
     BulletShow(){
@@ -44,20 +47,14 @@ export default class Bullet extends cc.Component {
         this.anim.play(this.node.name+'Show');
     }
     fire(dir){
-        let x = 0;
-		let y = 0;
-		switch (dir) {
-			case 0: y += 1500; break;
-			case 1: y -= 1500; break;
-			case 2: x -= 1500; break;
-			case 3: x += 1500; break;
-			case 4: break;
-        }
-        this.tagetPos = cc.v2(x,y);
+        this.rigidBody.linearVelocity = cc.v2(-500,0);
     }
 
     start () {
 
+    }
+    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider) {
+        cc.director.emit('destorybullet',{bulletNode:this.node});
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         if(other.tag == 3){
@@ -75,10 +72,10 @@ export default class Bullet extends cc.Component {
         }
     }
     update (dt) {
-        this.node.position =  cc.pLerp(this.node.position,this.tagetPos,dt*this.speed);
-        if(this.tagetPos.x!=0&&this.tagetPos.y!=0&&this.node.position.equals(this.tagetPos)){
-            cc.director.emit('destorybullet',{bulletNode:this.node});
-        }
+        // this.node.position =  cc.pLerp(this.node.position,this.tagetPos,dt*this.speed);
+        // if(this.tagetPos.x!=0&&this.tagetPos.y!=0&&this.node.position.equals(this.tagetPos)){
+        //     cc.director.emit('destorybullet',{bulletNode:this.node});
+        // }
     }
     
 }
