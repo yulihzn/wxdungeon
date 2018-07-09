@@ -1,5 +1,6 @@
 import Dungeon from "../Dungeon";
 import { EventConstant } from "../EventConstant";
+import Player from "../Player";
 
 
 // Learn TypeScript:
@@ -60,14 +61,23 @@ export default class Portal extends cc.Component {
         if(playerPos.x==this.pos.x&&playerPos.y==this.pos.y && this.isOpen){
         }
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3){
+    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+        let player = otherCollider.body.node.getComponent(Player);
+        if(player){
             if(this.isOpen){
                 this.closeGate();
                 cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
             }
         }
     }
+    // onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    //     if(other.tag == 3){
+    //         if(this.isOpen){
+    //             this.closeGate();
+    //             cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
+    //         }
+    //     }
+    // }
 
     // update (dt) {}
 }

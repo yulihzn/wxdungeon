@@ -3,6 +3,7 @@ import EquipmentDialog from "./EquipmentDialog";
 import EquipmentData from "../Data/EquipmentData";
 import EquipmentManager from "../Manager/EquipmentManager";
 import { EventConstant } from "../EventConstant";
+import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -65,16 +66,27 @@ export default class Equipment extends cc.Component {
         },1000);
         
     }
-    
-    onCollisionExit(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3){
-            this.equipmentDialog.hideDialog();
-        }
-    }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3){
+    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+        let player = otherCollider.body.node.getComponent(Player);
+        if(player){
             this.equipmentDialog.showDialog();
         }
     }
+    onEndContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+        let player = otherCollider.body.node.getComponent(Player);
+        if(player){
+            this.equipmentDialog.hideDialog();
+        }
+    }
+    // onCollisionExit(other:cc.Collider,self:cc.Collider){
+    //     if(other.tag == 3){
+    //         this.equipmentDialog.hideDialog();
+    //     }
+    // }
+    // onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    //     if(other.tag == 3){
+    //         this.equipmentDialog.showDialog();
+    //     }
+    // }
     // update (dt) {}
 }

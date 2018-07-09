@@ -1,4 +1,6 @@
 import Bullet from "../Item/Bullet";
+import Dungeon from "../Dungeon";
+import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,14 +28,24 @@ export default class Shooter extends cc.Component {
     @property
     auto:boolean = false;
     @property
+    isAI:boolean = false;
+    @property
     frequency:number = 1;
+    @property(Dungeon)
+    dungeon:Dungeon = null;
+
+    player:Player;
+
+    hv:cc.Vec2 = cc.v2(1,0);
 
     onLoad () {
         this.bulletPool = new cc.NodePool();
         cc.director.on('destorybullet',(event)=>{
             this.destroyBullet(event.detail.bulletNode);
         })
+        this.player = this.node.parent.getComponent(Player);
     }
+    
 
     fireBullet(){
         let bulletPrefab:cc.Node = null;
@@ -45,11 +57,21 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(this.bullet);
         }
         bulletPrefab.parent = this.node;
-        bulletPrefab.position = cc.v2(0,0);
+        let pos = this.node.convertToWorldSpace(cc.v2(10,0));
+        pos = this.dungeon.node.convertToNodeSpace(pos);
+        bulletPrefab.parent = this.dungeon.node;
+        bulletPrefab.position = pos;
         bulletPrefab.scale = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
-        bullet.showBullet(this.dir)
+        bullet.node.rotation = this.node.scaleX == -1?-this.node.rotation:this.node.rotation;
+        bullet.node.scaleY = this.node.scaleX;
+        bullet.node.zIndex = 4000;
+        bullet.isFromPlayer = !this.isAI; 
+        if(bullet.isFromPlayer && bullet.isMelee && this.player){
+            bullet.damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
+        }
+        bullet.showBullet(this.hv);
     }
     destroyBullet(bullet:cc.Node) {
         // enemy 应该是一个 cc.Node
@@ -72,5 +94,23 @@ export default class Shooter extends cc.Component {
             this.timeDelay = 0;
             this.fireBullet();
         }
+        if (this.hv.x != 0 || this.hv.y != 0) {
+            let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
+            this.rotateColliderManager(olderTarget);
+        }
     }
+    rotateColliderManager(target:cc.Vec2){
+		// 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
+		// 物体坐标默认就是世界坐标
+		// 两者取差得到方向向量
+		let direction = target.sub(this.node.position);
+        // 方向向量转换为角度值
+        let Rad2Deg = 360 / (Math.PI * 2);
+		let angle:number =360-Math.atan2(direction.x, direction.y) * Rad2Deg;
+		let offsetAngle = 90;
+        this.node.scaleX = this.node.parent.scaleX;
+		angle += offsetAngle;
+		// 将当前物体的角度设置为对应角度
+		this.node.rotation = this.node.scaleX == -1?angle:-angle;
+	}
 }

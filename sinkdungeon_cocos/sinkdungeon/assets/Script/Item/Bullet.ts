@@ -1,4 +1,7 @@
 import { EventConstant } from "../EventConstant";
+import Monster from "../Monster";
+import Player from "../Player";
+import Kraken from "../Boss/Kraken";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,12 +24,17 @@ export default class Bullet extends cc.Component {
     @property
     damage: number = 1;
     @property
-    speed: number = 0.5;
+    speed: number = 500;
+    @property
+    isMelee:boolean = false;
 
     anim:cc.Animation;
     dir = 0;
     tagetPos = cc.v2(0,0);
     rigidBody:cc.RigidBody;
+    hv = cc.v2(0,0);
+    isFromPlayer = false;
+    
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -39,43 +47,62 @@ export default class Bullet extends cc.Component {
         this.rigidBody.linearVelocity = cc.v2(0,0);
     }
     //animation
-    BulletShow(){
-        this.fire(this.dir);
+    MeleeFinish(){
+        cc.director.emit('destorybullet',{bulletNode:this.node});
     }
-    showBullet(dir){
-        this.dir = dir;
-        this.anim.play(this.node.name+'Show');
+    //animation
+    showBullet(hv:cc.Vec2){
+        this.hv = hv;
+        if(this.isMelee){
+            this.anim.play(this.node.name+'Show');
+        }
+        this.fire(this.hv);
     }
-    fire(dir){
-        this.rigidBody.linearVelocity = cc.v2(-500,0);
+    fire(hv){
+        if(!this.rigidBody){
+            this.rigidBody = this.getComponent(cc.RigidBody);
+        }
+        this.rigidBody.linearVelocity = cc.v2(this.speed*hv.x,this.speed*hv.y);
     }
 
     start () {
 
     }
     onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider) {
-        cc.director.emit('destorybullet',{bulletNode:this.node});
-    }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3){
-            if(this.node.active){
-                this.node.stopAllActions();
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
-                cc.director.emit('destorybullet',{bulletNode:this.node});
-            }
+        let isDestory = true;
+        if(selfCollider.body.node.name==otherCollider.body.node.name){
+            isDestory = false;
         }
-        if(other.tag == 6){
-            if(this.node.active){
-                this.node.stopAllActions();
-                cc.director.emit('destorybullet',{bulletNode:this.node});
-            }
+        if(this.isFromPlayer && otherCollider.body.node.name == 'Player'){
+            isDestory = false;
+        }
+        if(isDestory){
+            this.attacking(otherCollider);
+            cc.director.emit('destorybullet',{bulletNode:this.node});
         }
     }
+    attacking(attackTarget:cc.PhysicsCollider) {
+        if (!attackTarget) {
+            return;
+        }
+        let damage = this.damage;
+        
+        let monster = attackTarget.body.node.getComponent(Monster);
+        if (monster && !monster.isDied) {
+            monster.takeDamage(damage);
+        }
+        let player = attackTarget.body.node.getComponent(Player);
+        if (player && !player.isDied) {
+            player.takeDamage(damage);
+        }
+        let kraken = attackTarget.body.node.getComponent(Kraken);
+        if (kraken && !kraken.isDied) {
+            kraken.takeDamage(damage, cc.v2(0, 0));
+        }
+    }
+  
     update (dt) {
-        // this.node.position =  cc.pLerp(this.node.position,this.tagetPos,dt*this.speed);
-        // if(this.tagetPos.x!=0&&this.tagetPos.y!=0&&this.node.position.equals(this.tagetPos)){
-        //     cc.director.emit('destorybullet',{bulletNode:this.node});
-        // }
+        
     }
     
 }

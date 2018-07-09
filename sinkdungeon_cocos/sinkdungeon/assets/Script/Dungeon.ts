@@ -214,10 +214,21 @@ export default class Dungeon extends cc.Component {
         monster.pos = pos;
         this.monsters.push(monster);
     }
+    //获取地图里下标的坐标
     static getPosInMap(pos: cc.Vec2) {
         let x = Dungeon.MAPX + pos.x * Dungeon.TILE_SIZE;
         let y = Dungeon.MAPY + pos.y * Dungeon.TILE_SIZE;
-        return cc.v2(x, y);
+        return cc.v2(x,y);
+    }
+    //获取坐标在地图里的下标
+    static getIndexInMap(pos: cc.Vec2) {
+        let x = (pos.x-Dungeon.MAPX)/Dungeon.TILE_SIZE;
+        let y = (pos.y-Dungeon.MAPY)/Dungeon.TILE_SIZE;
+        x = Math.round(x);
+        y = Math.round(y);
+        if(x<0){x = 0};if(x>=Dungeon.SIZE){x = Dungeon.SIZE-1};
+        if(y<0){y = 0};if(y>=Dungeon.SIZE){y = Dungeon.SIZE-1};
+        return cc.v2(x,y);
     }
 
     start() {
@@ -255,14 +266,15 @@ export default class Dungeon extends cc.Component {
         }
     }
     checkPlayerPos() {
-        let tile = this.map[this.player.pos.x][this.player.pos.y];
+        let pos = Dungeon.getIndexInMap(this.player.node.position);
+        let tile = this.map[pos.x][pos.y];
         if (tile.isBroken) {
             if (!this.player.isMoving) {
                 this.player.fall();
             }
         }
         if (tile.isAutoShow) {
-            this.breakTile(this.player.pos);
+            this.breakTile(pos);
         }
     }
     checkMonstersPos() {

@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Melee",
+    "_name": "Bullet002",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -54,8 +54,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 31,
+      "height": 7
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -63,8 +63,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 347,
-      "y": -193
+      "x": 428.2,
+      "y": -389.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -103,13 +103,13 @@
     "_cascadeOpacityEnabled": true,
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 0.5,
+      "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 31,
+      "height": 7
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -136,7 +136,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c6323fff-940f-4668-a737-989c5dd1d780"
+      "__uuid__": "fc7d0fcb-e11c-4930-a9c8-69b9fffb708f"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -159,9 +159,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "93afc79c-21b2-482c-b5a1-9d242bbabb0b"
+      "__uuid__": "ffdaa1c1-442d-4dc3-b4dd-c8f552324544"
     },
-    "fileId": "d7aAEWAi1DA4JXm/6UbzJo",
+    "fileId": "cfAqC+eS5IGIAxU6k066pQ",
     "sync": false
   },
   {
@@ -175,7 +175,10 @@
     "_defaultClip": null,
     "_clips": [
       {
-        "__uuid__": "3668153a-7d55-4e95-96e6-2eda06c0a49e"
+        "__uuid__": "e0752042-191f-44d8-8cd4-2c4c6224a095"
+      },
+      {
+        "__uuid__": "70f3f838-f541-484b-a0ca-455b386dd0f4"
       }
     ],
     "playOnLoad": false
@@ -190,8 +193,8 @@
     "_enabled": true,
     "label": null,
     "damage": 1,
-    "speed": 50,
-    "isMelee": true
+    "speed": 1000,
+    "isMelee": false
   },
   {
     "__type__": "cc.RigidBody",
@@ -213,7 +216,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": true,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": true
   },
   {
@@ -232,13 +235,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 32,
+      "x": 0,
       "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 40
+      "width": 32,
+      "height": 14
     }
   },
   {
@@ -247,9 +250,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "93afc79c-21b2-482c-b5a1-9d242bbabb0b"
+      "__uuid__": "ffdaa1c1-442d-4dc3-b4dd-c8f552324544"
     },
-    "fileId": "abx5O1BZBEJ56ekykzY5jE",
+    "fileId": "3ajphcQodHxbGfY6hwfb7q",
     "sync": false
   }
 ]
