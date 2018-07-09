@@ -76,9 +76,14 @@ export default class Bullet extends cc.Component {
         if(this.isFromPlayer && otherCollider.body.node.name == 'Player'){
             isDestory = false;
         }
+        if(otherCollider.sensor){
+            isDestory = false;
+        }
         if(isDestory){
             this.attacking(otherCollider);
-            cc.director.emit('destorybullet',{bulletNode:this.node});
+            if(!this.isMelee){
+                cc.director.emit('destorybullet',{bulletNode:this.node});
+            }
         }
     }
     attacking(attackTarget:cc.PhysicsCollider) {

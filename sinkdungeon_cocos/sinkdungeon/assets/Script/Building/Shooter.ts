@@ -1,6 +1,7 @@
 import Bullet from "../Item/Bullet";
 import Dungeon from "../Dungeon";
 import Player from "../Player";
+import Monster from "../Monster";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,15 +58,17 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(this.bullet);
         }
         bulletPrefab.parent = this.node;
-        let pos = this.node.convertToWorldSpace(cc.v2(10,0));
+        let pos = this.node.convertToWorldSpace(cc.v2(30,0));
         pos = this.dungeon.node.convertToNodeSpace(pos);
         bulletPrefab.parent = this.dungeon.node;
         bulletPrefab.position = pos;
         bulletPrefab.scale = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
-        bullet.node.rotation = this.node.scaleX == -1?-this.node.rotation:this.node.rotation;
-        bullet.node.scaleY = this.node.scaleX;
+        // bullet.node.rotation = this.node.scaleX == -1?-this.node.rotation:this.node.rotation;
+        // bullet.node.scaleY = this.node.scaleX;
+        bulletPrefab.rotation = this.node.rotation;
+        bulletPrefab.scaleX = this.node.scaleX;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI; 
         if(bullet.isFromPlayer && bullet.isMelee && this.player){
@@ -98,7 +101,28 @@ export default class Shooter extends cc.Component {
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
+        // let pos = this.hasNearEnemy();
+        // if(!pos.equals(cc.Vec2.ZERO)){
+        //     this.rotateColliderManager(pos);
+        // }
     }
+    hasNearEnemy(){
+        let olddis = 1000;
+        let pos = cc.v2(0,0);
+        for(let monster of this.dungeon.monsters){
+            let dis = cc.pDistance(this.player.node.position,monster.node.position);
+            if(dis<150&&dis<olddis){
+                olddis = dis;
+                pos = monster.node.position;
+            }
+        }
+        if(olddis!=1000){
+            pos = pos.subSelf(this.player.node.position);
+            pos = pos.normalizeSelf();
+            return pos;
+        }
+		return pos;
+	}
     rotateColliderManager(target:cc.Vec2){
 		// 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
 		// 物体坐标默认就是世界坐标
@@ -109,8 +133,9 @@ export default class Shooter extends cc.Component {
 		let angle:number =360-Math.atan2(direction.x, direction.y) * Rad2Deg;
 		let offsetAngle = 90;
         this.node.scaleX = this.node.parent.scaleX;
+        offsetAngle = this.node.scaleX == -1?-offsetAngle:offsetAngle
 		angle += offsetAngle;
 		// 将当前物体的角度设置为对应角度
-		this.node.rotation = this.node.scaleX == -1?angle:-angle;
+		this.node.rotation = angle;
 	}
 }

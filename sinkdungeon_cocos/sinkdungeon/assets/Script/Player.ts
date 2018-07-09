@@ -158,7 +158,6 @@ export default class Player extends cc.Component {
             return;
         }
         this.isAttacking = true;
-        this.shooter.fireBullet();
         if (this.anim) {
             let animState = this.anim.play('PlayerMeleeAttack');
             animState.speed = this.inventoryData.getAttackSpeed();
@@ -170,6 +169,7 @@ export default class Player extends cc.Component {
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.hv = cc.v2(pos.x, pos.y);
+            this.pos = Dungeon.getIndexInMap(this.node.position);
         }
 
         let h = pos.x;
@@ -345,15 +345,16 @@ export default class Player extends cc.Component {
 
     }
     Attacking() {
-        if (!this.attackTarget) {
-            return;
-        }
-        let attackPoint = this.inventoryData.getAttackPoint(this.baseAttackPoint);
+        this.shooter.fireBullet();
+       
         let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
         //生命汲取
         let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);
         if (drain > 0) {
             this.takeDamage(-drain);
+        }
+        if (!this.attackTarget) {
+            return;
         }
         let monster = this.attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied) {
