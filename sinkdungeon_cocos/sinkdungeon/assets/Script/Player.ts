@@ -168,7 +168,7 @@ export default class Player extends cc.Component {
             return;
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
-            this.shooter.hv = cc.v2(pos.x, pos.y);
+            this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
 
@@ -261,6 +261,7 @@ export default class Player extends cc.Component {
         }
         this.isFall = true;
         this.anim.play('PlayerFall');
+        this.isAttacking = false;
         setTimeout(() => {
             this.transportPlayer(cc.v2(4, 4));
             this.anim.play('PlayerIdle');

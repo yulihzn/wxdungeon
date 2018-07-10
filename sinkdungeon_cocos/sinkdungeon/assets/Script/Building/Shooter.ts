@@ -37,7 +37,7 @@ export default class Shooter extends cc.Component {
 
     player:Player;
 
-    hv:cc.Vec2 = cc.v2(1,0);
+    private hv:cc.Vec2 = cc.v2(1,0);
 
     onLoad () {
         this.bulletPool = new cc.NodePool();
@@ -46,7 +46,15 @@ export default class Shooter extends cc.Component {
         })
         this.player = this.node.parent.getComponent(Player);
     }
-    
+    setHv(hv:cc.Vec2){
+        let pos = this.hasNearEnemy();
+        if(!pos.equals(cc.Vec2.ZERO)){
+            this.rotateColliderManager(cc.v2(this.node.position.x+pos.x,this.node.position.y+pos.y));
+            this.hv = pos;
+        }else{
+            this.hv = hv;
+        }
+    }
 
     fireBullet(){
         let bulletPrefab:cc.Node = null;
@@ -65,10 +73,8 @@ export default class Shooter extends cc.Component {
         bulletPrefab.scale = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
-        // bullet.node.rotation = this.node.scaleX == -1?-this.node.rotation:this.node.rotation;
-        // bullet.node.scaleY = this.node.scaleX;
-        bulletPrefab.rotation = this.node.rotation;
-        bulletPrefab.scaleX = this.node.scaleX;
+        bullet.node.rotation = this.node.scaleX == -1?-this.node.rotation:this.node.rotation;
+        bullet.node.scaleY = this.node.scaleX;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI; 
         if(bullet.isFromPlayer && bullet.isMelee && this.player){
@@ -97,27 +103,27 @@ export default class Shooter extends cc.Component {
             this.timeDelay = 0;
             this.fireBullet();
         }
-        if (this.hv.x != 0 || this.hv.y != 0) {
+        
+        let pos = this.hasNearEnemy();
+        if(!pos.equals(cc.Vec2.ZERO)){
+            this.rotateColliderManager(cc.v2(this.node.position.x+pos.x,this.node.position.y+pos.y));
+            this.hv = pos;
+        }else if (this.hv.x != 0 || this.hv.y != 0) {
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
-        // let pos = this.hasNearEnemy();
-        // if(!pos.equals(cc.Vec2.ZERO)){
-        //     this.rotateColliderManager(pos);
-        // }
     }
     hasNearEnemy(){
         let olddis = 1000;
         let pos = cc.v2(0,0);
         for(let monster of this.dungeon.monsters){
             let dis = cc.pDistance(this.player.node.position,monster.node.position);
-            if(dis<150&&dis<olddis){
+            if(dis<300&&dis<olddis){
                 olddis = dis;
-                pos = monster.node.position;
+                pos = monster.node.position.sub(this.node.parent.position);
             }
         }
         if(olddis!=1000){
-            pos = pos.subSelf(this.player.node.position);
             pos = pos.normalizeSelf();
             return pos;
         }
@@ -133,9 +139,9 @@ export default class Shooter extends cc.Component {
 		let angle:number =360-Math.atan2(direction.x, direction.y) * Rad2Deg;
 		let offsetAngle = 90;
         this.node.scaleX = this.node.parent.scaleX;
-        offsetAngle = this.node.scaleX == -1?-offsetAngle:offsetAngle
 		angle += offsetAngle;
 		// 将当前物体的角度设置为对应角度
-		this.node.rotation = angle;
+        this.node.rotation = this.node.scaleX == -1?angle:-angle;
+        
 	}
 }

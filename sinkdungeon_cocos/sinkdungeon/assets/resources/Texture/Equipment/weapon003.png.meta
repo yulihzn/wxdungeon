@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "1021ab29-6f3c-4689-9fea-b157a42ca2cc",
+  "uuid": "64d2fff0-5c73-44c1-90ee-24c2d25b5914",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "weapon001": {
+    "weapon003": {
       "ver": "1.0.3",
-      "uuid": "ff481cf9-571e-413b-b71e-125e9034ec91",
-      "rawTextureUuid": "1021ab29-6f3c-4689-9fea-b157a42ca2cc",
+      "uuid": "f3d9d14a-49bd-40b0-903c-c75352283cdb",
+      "rawTextureUuid": "64d2fff0-5c73-44c1-90ee-24c2d25b5914",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
