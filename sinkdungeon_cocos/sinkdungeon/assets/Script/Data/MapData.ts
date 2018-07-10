@@ -28,9 +28,17 @@ export default class MapData {
             //y的反向在txt里是相反的
             let row = arr[arr.length-1-i].split('');
             for (let j = 0; j < row.length; j++) {
-                //对应行列在txt里是反过来的
-                this.map[j][i] = row[j];
+                this.map[i][j] = row[j];
             }
         }
+        //对应行列在txt里是反过来的
+        let turnArr = new Array();
+        for (let i = 0; i < this.map[0].length; i++) {
+            turnArr[i] = new Array();
+            for (let j = 0; j < this.map.length; j++) {
+                turnArr[i][j] = this.map[j][i];
+            }
+        }
+        this.map = turnArr;
     }
 }

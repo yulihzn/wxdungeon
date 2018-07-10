@@ -40,12 +40,15 @@ export default class Dungeon extends cc.Component {
     @property(cc.Prefab)
     portalPrefab: cc.Prefab = null;
     portal: Portal = null;
+    @property(cc.Node)
+    fog:cc.Node = null;
 
     map: Tile[][] = new Array();
     wallmap: Wall[][] = new Array();
     trapmap: Trap[][] = new Array();
     itemmap: Item[][] = new Array();
-    static readonly SIZE: number = 9;
+    static readonly WIDTH_SIZE: number = 16;
+    static readonly HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
     static readonly MAPY: number = 32;
     static readonly TILE_SIZE: number = 64;
@@ -78,17 +81,17 @@ export default class Dungeon extends cc.Component {
         this.wallmap = new Array();
         this.trapmap = new Array();
         this.itemmap = new Array();
-        for (let i = 0; i < Dungeon.SIZE; i++) {
+        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             this.wallmap[i] = new Array(i);
             this.trapmap[i] = new Array(i);
             this.itemmap[i] = new Array(i);
-            for (let j = 0; j < Dungeon.SIZE; j++) {
+            for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 let t = cc.instantiate(this.tile);
                 t.parent = this.node;
                 t.position = Dungeon.getPosInMap(cc.v2(i, j));
-                //越往下层级越高，i是行，j是列
-                t.zIndex = 1000 + (Dungeon.SIZE - j) * 100;
+                //越往下层级越高，j是行，i是列
+                t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 this.map[i][j] = t.getComponent(Tile);
                 if (mapData[i][j] == '*') {
                     //关闭踩踏掉落
@@ -101,7 +104,7 @@ export default class Dungeon extends cc.Component {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
                     w.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    w.zIndex = 3000 + (Dungeon.SIZE - j) * 100;
+                    w.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     w.opacity = 255;
                     this.wallmap[i][j] = w.getComponent(Wall);
                     //关闭踩踏掉落
@@ -114,7 +117,7 @@ export default class Dungeon extends cc.Component {
                     let trap = cc.instantiate(this.trap);
                     trap.parent = this.node;
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    trap.zIndex = 3000 + (Dungeon.SIZE - j) * 100;
+                    trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.trapmap[i][j] = trap.getComponent(Trap);
                     //关闭踩踏掉落
                     this.map[i][j].isAutoShow = false;
@@ -124,7 +127,7 @@ export default class Dungeon extends cc.Component {
                     let heart = cc.instantiate(this.heart);
                     heart.parent = this.node;
                     heart.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    heart.zIndex = 3000 + (Dungeon.SIZE - j) * 100 + 3;
+                    heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
                     this.itemmap[i][j] = heart.getComponent(Item);
                 }
                 if (mapData[i][j] == 's') {
@@ -189,8 +192,8 @@ export default class Dungeon extends cc.Component {
     //     }
     // }
     private breakHalfTiles(): void {
-        for (let i = 0; i < Dungeon.SIZE; i++) {
-            for (let j = 6; j < Dungeon.SIZE; j++) {
+        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
+            for (let j = 6; j < Dungeon.HEIGHT_SIZE; j++) {
                 this.map[i][j].isAutoShow = false;
                 this.breakTile(cc.v2(i, j));
             }
@@ -226,8 +229,8 @@ export default class Dungeon extends cc.Component {
         let y = (pos.y-Dungeon.MAPY)/Dungeon.TILE_SIZE;
         x = Math.round(x);
         y = Math.round(y);
-        if(x<0){x = 0};if(x>=Dungeon.SIZE){x = Dungeon.SIZE-1};
-        if(y<0){y = 0};if(y>=Dungeon.SIZE){y = Dungeon.SIZE-1};
+        if(x<0){x = 0};if(x>=Dungeon.WIDTH_SIZE){x = Dungeon.WIDTH_SIZE-1};
+        if(y<0){y = 0};if(y>=Dungeon.HEIGHT_SIZE){y = Dungeon.HEIGHT_SIZE-1};
         return cc.v2(x,y);
     }
 
@@ -266,6 +269,7 @@ export default class Dungeon extends cc.Component {
         }
     }
     checkPlayerPos() {
+        this.fog.setPosition(this.player.node.position);
         let pos = Dungeon.getIndexInMap(this.player.node.position);
         let tile = this.map[pos.x][pos.y];
         if (tile.isBroken) {
