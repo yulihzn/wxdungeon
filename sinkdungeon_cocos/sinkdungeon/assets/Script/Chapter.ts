@@ -1,6 +1,7 @@
 import Logic from "./Logic";
 import PlayerData from "./Data/PlayerData";
 import InventoryData from "./Data/InventoryData";
+import RectDungeon from "./Rect/RectDungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,6 +38,8 @@ export default class Chapter extends cc.Component {
         Logic.setAlias(this.chapter02.node);
         Logic.setAlias(this.chapter03.node);
         Logic.setAlias(this.chapter04.node);
+        let rectDungeon = new RectDungeon(RectDungeon.LEVEL_5);
+        cc.log (rectDungeon.getDisPlay());
     }
     
     clickChapter(event,chapter){

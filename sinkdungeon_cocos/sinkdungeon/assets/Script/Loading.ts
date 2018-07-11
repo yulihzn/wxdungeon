@@ -1,6 +1,7 @@
 import Logic from "./Logic";
 import MapData from "./Data/MapData";
 import EquipmentData from "./Data/EquipmentData";
+import RectDungeon from "./Rect/RectDungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,6 +33,7 @@ export default class Loading extends cc.Component {
         this.label.string = `Level ${Logic.level}`
         this.isLevelLoaded = false;
         this.isEquipmentLoaded = false;
+        
         this.loadMap();
         this.loadEquipment();
         this.loadSpriteFrames();
@@ -46,7 +48,7 @@ export default class Loading extends cc.Component {
 				cc.error(err);
 			}else{
                 let strs:string= resource;
-                let arr = strs.split('level');
+                let arr = strs.split('room');
                 Logic.rooms = new Array();
                 for(let str of arr){
                     if(str){

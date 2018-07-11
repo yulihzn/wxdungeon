@@ -47,7 +47,7 @@ export default class Dungeon extends cc.Component {
     wallmap: Wall[][] = new Array();
     trapmap: Trap[][] = new Array();
     itemmap: Item[][] = new Array();
-    static readonly WIDTH_SIZE: number = 16;
+    static readonly WIDTH_SIZE: number = 15;
     static readonly HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
     static readonly MAPY: number = 32;
@@ -72,6 +72,7 @@ export default class Dungeon extends cc.Component {
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         manager.enabledDebugDraw = true;
+        this.fog.zIndex = 9000;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
         this.player.node.parent = this.node;
@@ -268,8 +269,8 @@ export default class Dungeon extends cc.Component {
             this.portal.openGate();
         }
     }
-    checkPlayerPos() {
-        this.fog.setPosition(this.player.node.position);
+    checkPlayerPos(dt:number) {
+        this.fog.setPosition(cc.pLerp(this.fog.position,this.player.node.position,dt*3));
         let pos = Dungeon.getIndexInMap(this.player.node.position);
         let tile = this.map[pos.x][pos.y];
         if (tile.isBroken) {
@@ -312,7 +313,7 @@ export default class Dungeon extends cc.Component {
 
     update(dt) {
         if (this.isTimeDelay(dt)) {
-            this.checkPlayerPos();
+            this.checkPlayerPos(dt);
             this.checkMonstersPos();
         }
         if (this.isNpcTimeDelay(dt)) {
