@@ -23,6 +23,8 @@ export default class Door extends cc.Component {
     //0top1bottom2left3right
     @property
     dir = 0;
+    @property(cc.Node)
+    wall:cc.Node=null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -35,8 +37,10 @@ export default class Door extends cc.Component {
     }
     setOpen(isOpen:boolean){
         if(!this.isDoor){
+            this.wall.active=true;
             return;
         }
+        this.wall.active=false;
         if(isOpen){
             this.openGate();
         }else{

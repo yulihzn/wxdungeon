@@ -251,7 +251,7 @@ export default class Dungeon extends cc.Component {
         }
         cc.director.emit(EventConstant.CHANGE_MIMIMAP,{x:Logic.currentRectRoom.x,y:Logic.currentRectRoom.y});
         for(let door of Logic.currentRectRoom.doors){
-            this.dungeonStyleManager.setDoor(door.dir,door.isDoor,true);
+            this.dungeonStyleManager.setDoor(door.dir,door.isDoor,false);
         }
     }
     breakTile(pos: cc.Vec2) {
@@ -273,8 +273,13 @@ export default class Dungeon extends cc.Component {
             }
             monster.monsterAction(this);
         }
-        if (!Logic.isBossLevel(Logic.level) && count >= this.monsters.length && this.portal) {
-            this.portal.openGate();
+        if (!Logic.isBossLevel(Logic.level) && count >= this.monsters.length) {
+            if(this.portal){
+                this.portal.openGate();
+            }
+            for(let door of Logic.currentRectRoom.doors){
+                this.dungeonStyleManager.setDoor(door.dir,door.isDoor,true);
+            }
         }
         if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied && this.portal) {
             this.portal.openGate();

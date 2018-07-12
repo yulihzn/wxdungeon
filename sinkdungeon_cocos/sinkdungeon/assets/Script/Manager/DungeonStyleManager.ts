@@ -35,8 +35,6 @@ export default class DungeonStyleManager extends cc.Component {
     wallDecoration02: cc.Node = null;
 
     doorRes:string = null;
-    topwallRes:string = null;
-    sidewallRes:string = null;
     
 
     // LIFE-CYCLE CALLBACKS:
@@ -59,8 +57,6 @@ export default class DungeonStyleManager extends cc.Component {
     
     setStyle(background:string,topwall:string,sidewall:string,door:string,d1:string,d2:string){
         this.doorRes = door;
-        this.topwallRes = topwall;
-        this.sidewallRes = sidewall;
         this.background01.getComponent(cc.Sprite).spriteFrame = background?Logic.spriteFrames[background]:null;
         this.background02.getComponent(cc.Sprite).spriteFrame = background?Logic.spriteFrames[background]:null;
         this.setWall(this.wallTop,topwall,door);
@@ -73,6 +69,7 @@ export default class DungeonStyleManager extends cc.Component {
     setWall(wallNode:cc.Node,wall:string,door:string){
         wallNode.getChildByName('wallleft').getComponent(cc.Sprite).spriteFrame = wall?Logic.spriteFrames[wall]:null;
         wallNode.getChildByName('wallright').getComponent(cc.Sprite).spriteFrame = wall?Logic.spriteFrames[wall]:null;
+        wallNode.getChildByName('wallcenter').getComponent(cc.Sprite).spriteFrame = wall?Logic.spriteFrames[wall]:null;
         wallNode.getChildByName('door').getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door?Logic.spriteFrames[door]:null;
     }
     setDoor(dir:number,isDoor:boolean,isOpen:boolean){
@@ -86,18 +83,8 @@ export default class DungeonStyleManager extends cc.Component {
         if(!wallNode){
             return;
         }
-        let door = null;
-        if(isDoor){
-            door = this.doorRes;
-        }else{
-            if(dir == 0||dir==1){
-                door = this.topwallRes;
-            }else{
-                door = this.sidewallRes;
-            }
-        }
+        let door = this.doorRes;
         wallNode.getChildByName('door').getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door?Logic.spriteFrames[door]:null;
-
         let theDoor:Door = wallNode.getChildByName('door').getComponent(Door);
         if(theDoor){
             theDoor.isDoor = isDoor;
