@@ -12,6 +12,8 @@ import MapData from "./Data/MapData";
 import Item from "./Item/Item";
 import EquipmentManager from "./Manager/EquipmentManager";
 import EquipmentData from "./Data/EquipmentData";
+import DungeonStyleManager from "./Manager/DungeonStyleManager";
+import RectDoor from "./Rect/RectDoor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -59,6 +61,7 @@ export default class Dungeon extends cc.Component {
     public monsterReswpanPoints: { [key: string]: string } = {};
     monsterManager: MonsterManager = null;
     equipmentManager: EquipmentManager = null;
+    dungeonStyleManager:DungeonStyleManager = null;
     anim: cc.Animation;
 
     bossKraken: Kraken;
@@ -75,8 +78,10 @@ export default class Dungeon extends cc.Component {
         this.fog.zIndex = 9000;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
+        this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.player.node.parent = this.node;
         let mapData: string[][] = Logic.getCurrentMapData().map;
+        
         this.monsters = new Array();
         this.map = new Array();
         this.wallmap = new Array();
@@ -149,7 +154,9 @@ export default class Dungeon extends cc.Component {
                     this.portal = portalP.getComponent(Portal);
                     //关闭踩踏掉落
                     this.map[i][j].isAutoShow = false;
-                    this.portal.setPos(cc.v2(i, j));
+                    if(this.portal){
+                        this.portal.setPos(cc.v2(i, j));
+                    }
                 }
             }
         }
@@ -242,6 +249,10 @@ export default class Dungeon extends cc.Component {
                 ss[i].spriteFrame.getTexture().setAliasTexParameters();
             }
         }
+        cc.director.emit(EventConstant.CHANGE_MIMIMAP,{x:Logic.currentRectRoom.x,y:Logic.currentRectRoom.y});
+        for(let door of Logic.currentRectRoom.doors){
+            this.dungeonStyleManager.setDoor(door.dir,door.isDoor,true);
+        }
     }
     breakTile(pos: cc.Vec2) {
         let tile = this.map[pos.x][pos.y];
@@ -262,10 +273,10 @@ export default class Dungeon extends cc.Component {
             }
             monster.monsterAction(this);
         }
-        if (!Logic.isBossLevel(Logic.level) && count >= this.monsters.length) {
+        if (!Logic.isBossLevel(Logic.level) && count >= this.monsters.length && this.portal) {
             this.portal.openGate();
         }
-        if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied) {
+        if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied && this.portal) {
             this.portal.openGate();
         }
     }

@@ -1,5 +1,4 @@
 import RectRoom from "./RectRoom";
-import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -146,10 +145,10 @@ export default class RectDungeon {
     buildPrimaryRoomsType(): void {
         let roomType:number[] = [RectDungeon.TRAP_ROOM, RectDungeon.DANGER_ROOM];
         for(let room of this.primaryRooms) {
-            let randomtype = roomType[Logic.getRandomNum(0,roomType.length-1)];
+            let randomtype = roomType[this.getRandomNum(0,roomType.length-1)];
             room.roomType = randomtype;
         }
-        let startIndex = Logic.getRandomNum(0,this.primaryRooms.length-1);
+        let startIndex = this.getRandomNum(0,this.primaryRooms.length-1);
         let endIndex = startIndex - 1;
         if (endIndex < 0) {
             endIndex = this.primaryRooms.length - 1;
@@ -160,19 +159,20 @@ export default class RectDungeon {
         this.primaryRooms[startIndex].roomType = RectDungeon.START_ROOM;
         this.startRoom = this.primaryRooms[startIndex];
         this.startRoom.lockAllDoors(false);
+        this.startRoom.isFound = true;
 
     }
     buildSecondaryRoomsType(): void {
         let roomType:number[] = [RectDungeon.TRAP_ROOM, RectDungeon.DANGER_ROOM];
         for(let room of this.secondaryRooms) {
-            let randomtype = roomType[Logic.getRandomNum(0,roomType.length-1)];
+            let randomtype = roomType[this.getRandomNum(0,roomType.length-1)];
             if (this.level == RectDungeon.LEVEL_1) {
                 room.roomType = randomtype;
-            } else if (Logic.getHalfChance()) {
+            } else if (this.getHalfChance()) {
                 room.roomType = randomtype;
             }
         }
-        let endIndex = Logic.getRandomNum(0,this.secondaryRooms.length-1);
+        let endIndex = this.getRandomNum(0,this.secondaryRooms.length-1);
         if (this.level == RectDungeon.LEVEL_1) {
             this.secondaryRooms[endIndex].roomType = RectDungeon.END_ROOM;
             this.endRoom = this.secondaryRooms[endIndex];
@@ -186,7 +186,7 @@ export default class RectDungeon {
             this.map[3][3].roomType = RectDungeon.BOSS_ROOM;
             if (this.map[3][4].roomType == RectDungeon.EMPTY_ROOM && this.map[3][2].roomType == RectDungeon.EMPTY_ROOM
                 && this.map[2][3].roomType == RectDungeon.EMPTY_ROOM && this.map[4][3].roomType == RectDungeon.EMPTY_ROOM) {
-                    this.map[3][4].roomType = Logic.getHalfChance() ? RectDungeon.DANGER_ROOM : RectDungeon.TRAP_ROOM;
+                    this.map[3][4].roomType = this.getHalfChance() ? RectDungeon.DANGER_ROOM : RectDungeon.TRAP_ROOM;
             }
             //one more loot
             this.addLootRoom();
@@ -198,7 +198,7 @@ export default class RectDungeon {
 
     }
     addPuzzleRoom(): void {
-        let index = Logic.getRandomNum(0,this.secondaryRooms.length-1);
+        let index = this.getRandomNum(0,this.secondaryRooms.length-1);
         let flag = this.secondaryRooms[index].roomType == RectDungeon.TRAP_ROOM
             || this.secondaryRooms[index].roomType == RectDungeon.DANGER_ROOM
             || this.secondaryRooms[index].roomType == RectDungeon.EMPTY_ROOM;
@@ -221,7 +221,7 @@ export default class RectDungeon {
         }
         //loot的数目不能超过DTP的总和
         if (dteRooms.length > 1 && lootCount < dteRooms.length + 1) {
-            let index = Logic.getRandomNum(0,dteRooms.length-1);
+            let index = this.getRandomNum(0,dteRooms.length-1);
             dteRooms[index].roomType = RectDungeon.LOOT_ROOM;
             dteRooms[index].lockAllDoors(true);
         }
@@ -243,7 +243,7 @@ export default class RectDungeon {
         }
         for (let i = 0; i < lootCount; i++) {
             if (dtRooms.length > 0) {
-                let index = Logic.getRandomNum(0,dtRooms.length-1);
+                let index = this.getRandomNum(0,dtRooms.length-1);
                 dtRooms[index].hasKey = true;
                 dtRooms.splice(index,1);
             }
@@ -310,7 +310,7 @@ export default class RectDungeon {
     }
     public getDisPlay(): string {
         let str ='';
-        for (let j = 0; j < this.size; j++) {
+        for (let j = this.size-1; j >=0; j--) {
             for (let i = 0; i < this.size; i++) {
                 str+=this.getTypeStringLog(this.map[i][j].roomType);
             }
@@ -388,5 +388,10 @@ export default class RectDungeon {
         }
         return "　";
     }
-
+    getRandomNum(min, max): number {//生成一个随机数从[min,max]
+		return min + Math.round(Math.random() * (max - min));
+    }
+    getHalfChance(): boolean {
+		return Math.random()>0.5;
+    }
 }

@@ -25,9 +25,7 @@ export default class NewClass extends cc.Component {
 
     }
     retry(){
-        Logic.level = 1;
-        Logic.playerData = new PlayerData();
-        Logic.inventoryData = new InventoryData();
+        Logic.resetData();
         cc.director.loadScene('loading');
     }
     home(){

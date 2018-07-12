@@ -4,6 +4,7 @@ import MapData from "./Data/MapData";
 import EquipmentData from "./Data/EquipmentData";
 import InventoryData from "./Data/InventoryData";
 import RectDungeon from "./Rect/RectDungeon";
+import RectRoom from "./Rect/RectRoom";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,8 +28,8 @@ export default class Logic extends cc.Component {
     public static chapterName = 'chapter01';
     public static equipments: { [key: string]: EquipmentData } = null;
     public static spriteFrames:{ [key: string]: cc.SpriteFrame } = null;
-    public static rectDungeon:RectDungeon=null;
-    public static currentMapIndex:cc.Vec2 = cc.v2(0,0);
+    public static rectDungeon:RectDungeon= new RectDungeon(Logic.level);
+    public static currentRectRoom:RectRoom = null;
     public static currentDir:number=0;
     // LIFE-CYCLE CALLBACKS:
 
@@ -47,7 +48,7 @@ export default class Logic extends cc.Component {
             this.loadingNextLevel();
         });
         cc.director.on(EventConstant.LOADINGROOM,(event)=>{
-            this.loadingNextRoom();
+            this.loadingNextRoom(event.detail.dir);
         });
         
     }
@@ -55,9 +56,20 @@ export default class Logic extends cc.Component {
     start () {
 
     }
-    loadingNextRoom(){
-        // Logic.rectDungeon.getNeighborRoomType(Logic.currentMapIndex.x,Logic.currentMapIndex.y,Logic.dir)
-        cc.director.loadScene('loading');
+    static resetData(){
+        Logic.level = 1;
+        Logic.playerData = new PlayerData();
+        Logic.inventoryData = new InventoryData();
+        Logic.rectDungeon = new RectDungeon(Logic.level);
+        cc.log (Logic.rectDungeon.getDisPlay());
+    }
+    loadingNextRoom(dir:number){
+        let room = Logic.rectDungeon.getNeighborRoomType(Logic.currentRectRoom.x,Logic.currentRectRoom.y,dir)
+        if(room&&room.roomType!=0){
+            Logic.currentRectRoom = room;
+            room.isFound = true;
+            cc.director.loadScene('loading');
+        }
     }
     loadingNextLevel(){
         Logic.level++;
@@ -66,15 +78,13 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('gamefinish')
         }else{
             Logic.rectDungeon = new RectDungeon(Logic.level);
-            Logic.currentMapIndex = cc.v2(Logic.rectDungeon.startRoom.x,Logic.rectDungeon.startRoom.y)
+            cc.log (Logic.rectDungeon.getDisPlay());
+            Logic.currentRectRoom = Logic.rectDungeon.startRoom;
             cc.director.loadScene('loading');
         }
     }
     public static getCurrentMapData():MapData{
-        if(Logic.rooms.length>Logic.level-1){
-            return Logic.rooms[Logic.level-1]
-        }
-        return null;
+        return Logic.rooms[Logic.currentRectRoom.roomType-1]
     }
     public static isBossLevel(level: number): boolean {
 		return level == Logic.BOSS_LEVEL_1;

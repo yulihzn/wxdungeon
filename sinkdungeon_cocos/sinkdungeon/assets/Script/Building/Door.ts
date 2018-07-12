@@ -19,24 +19,31 @@ export default class Door extends cc.Component {
 
     anim:cc.Animation;
     isOpen:boolean = false;
+    isDoor:boolean = true;
     //0top1bottom2left3right
     @property
     dir = 0;
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.anim = this.getComponent(cc.Animation);
+    }
 
     start () {
-        this.anim = this.getComponent(cc.Animation);
-        this.anim.play('DoorCloseIdle');
+        
     }
-    AnimGateClose(){
-        this.anim.play('DoorCloseIdle');
+    setOpen(isOpen:boolean){
+        if(!this.isDoor){
+            return;
+        }
+        if(isOpen){
+            this.openGate();
+        }else{
+            this.closeGate();
+        }
     }
-    AnimGateOpen(){
-        this.anim.play('DoorOpenIdle');
-    }
+    
     openGate(){
         if(this.isOpen){
             return;
@@ -52,12 +59,11 @@ export default class Door extends cc.Component {
         this.anim.play('DoorClose');
     }
 
-    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
-        let player = otherCollider.body.node.getComponent(Player);
+    onCollisionEnter(other:cc.Collider,self:cc.Collider) {
+        let player = other.node.getComponent(Player);
         if(player){
             if(this.isOpen){
-                this.closeGate();
-                cc.director.emit(EventConstant.LOADINGROOM);
+                cc.director.emit(EventConstant.LOADINGROOM,{dir:this.dir});
             }
         }
     }

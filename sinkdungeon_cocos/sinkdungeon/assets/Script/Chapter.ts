@@ -38,8 +38,8 @@ export default class Chapter extends cc.Component {
         Logic.setAlias(this.chapter02.node);
         Logic.setAlias(this.chapter03.node);
         Logic.setAlias(this.chapter04.node);
-        let rectDungeon = new RectDungeon(RectDungeon.LEVEL_5);
-        cc.log (rectDungeon.getDisPlay());
+        
+        
     }
     
     clickChapter(event,chapter){
@@ -49,9 +49,8 @@ export default class Chapter extends cc.Component {
             }
             Logic.chapterName = chapter;
         }
-        Logic.level = 1;
-        Logic.playerData = new PlayerData();
-        Logic.inventoryData = new InventoryData();
+        Logic.resetData();
+        Logic.currentRectRoom = Logic.rectDungeon.startRoom;
         if(chapter=='chapter00'){
             Logic.playerData.updateHA(cc.v2(100,100),1);
         }

@@ -43,7 +43,7 @@ export default class RectRoom {
     /// The state.房间状态
     state: number = RectRoom.STATE_SLEEP;
     /// The is found.是否被发现
-    isFound: boolean;
+    isFound: boolean = false;
     //用来取随机tile的列表
     randomTiles: cc.Vec2[];
     /// The is init.是否是初始化

@@ -50,9 +50,11 @@ export default class Trap extends cc.Component {
         this.openSpriteFrame.getTexture().setAliasTexParameters();
         this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame;
         setTimeout(() => {
-            this.closeSpriteFrame.getTexture().setAliasTexParameters();
-            this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
-            this.isOpen = false;
+            if(this.closeSpriteFrame){
+                this.closeSpriteFrame.getTexture().setAliasTexParameters();
+                this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
+                this.isOpen = false;
+            }
         }, 500);
     }
     

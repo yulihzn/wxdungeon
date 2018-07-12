@@ -1,4 +1,5 @@
 import Logic from "../Logic";
+import Door from "../Building/Door";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,11 +28,16 @@ export default class DungeonStyleManager extends cc.Component {
     @property(cc.Node)
     wallRight: cc.Node = null;
     @property(cc.Node)
+    wallBottom: cc.Node = null;
+    @property(cc.Node)
     wallDecoration01: cc.Node = null;
     @property(cc.Node)
     wallDecoration02: cc.Node = null;
-    @property(cc.Node)
-    wallDecoration03: cc.Node = null;
+
+    doorRes:string = null;
+    topwallRes:string = null;
+    sidewallRes:string = null;
+    
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -41,8 +47,8 @@ export default class DungeonStyleManager extends cc.Component {
         switch(Logic.chapterName){
             case 'chapter00':this.setStyle(null,'restwall','restsides','restdoor','restdecoration01',null);break;
             case 'chapter01':this.setStyle('sea','shipwall','handrail','shipdoor','swimring','swimring');break;
-            case 'chapter02':this.setStyle('sea','junglewall','junglesides',null,null,null);break;
-            case 'chapter03':this.setStyle('sandsea','pyramidwall','pyramidsides',null,null,null);break;
+            case 'chapter02':this.setStyle('sea','junglewall','junglesides','dungeondoor',null,null);break;
+            case 'chapter03':this.setStyle('sandsea','pyramidwall','pyramidsides','dungeondoor',null,null);break;
             case 'chapter04':this.setStyle('magmasea','dungeonwall','dungeonsides','dungeondoor',null,null);break;
         }
     }
@@ -51,15 +57,53 @@ export default class DungeonStyleManager extends cc.Component {
 
     }
     
-    setStyle(background:string,topwall:string,sidewall:string,d1:string,d2:string,d3:string){
+    setStyle(background:string,topwall:string,sidewall:string,door:string,d1:string,d2:string){
+        this.doorRes = door;
+        this.topwallRes = topwall;
+        this.sidewallRes = sidewall;
         this.background01.getComponent(cc.Sprite).spriteFrame = background?Logic.spriteFrames[background]:null;
         this.background02.getComponent(cc.Sprite).spriteFrame = background?Logic.spriteFrames[background]:null;
-        this.wallTop.getComponent(cc.Sprite).spriteFrame = topwall?Logic.spriteFrames[topwall]:null;
-        this.wallLeft.getComponent(cc.Sprite).spriteFrame = sidewall?Logic.spriteFrames[sidewall]:null;
-        this.wallRight.getComponent(cc.Sprite).spriteFrame = sidewall?Logic.spriteFrames[sidewall]:null;
+        this.setWall(this.wallTop,topwall,door);
+        this.setWall(this.wallBottom,topwall,door);
+        this.setWall(this.wallLeft,sidewall,door);
+        this.setWall(this.wallRight,sidewall,door);
         this.wallDecoration01.getComponent(cc.Sprite).spriteFrame = d1?Logic.spriteFrames[d1]:null;
         this.wallDecoration02.getComponent(cc.Sprite).spriteFrame = d2?Logic.spriteFrames[d2]:null;
-        this.wallDecoration03.getComponent(cc.Sprite).spriteFrame = d3?Logic.spriteFrames[d3]:null;
+    }
+    setWall(wallNode:cc.Node,wall:string,door:string){
+        wallNode.getChildByName('wallleft').getComponent(cc.Sprite).spriteFrame = wall?Logic.spriteFrames[wall]:null;
+        wallNode.getChildByName('wallright').getComponent(cc.Sprite).spriteFrame = wall?Logic.spriteFrames[wall]:null;
+        wallNode.getChildByName('door').getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door?Logic.spriteFrames[door]:null;
+    }
+    setDoor(dir:number,isDoor:boolean,isOpen:boolean){
+        let wallNode = null;
+        switch(dir){
+            case 0:wallNode=this.wallTop;break;
+            case 1:wallNode=this.wallBottom;break;
+            case 2:wallNode=this.wallLeft;break;
+            case 3:wallNode=this.wallRight;break;
+        }
+        if(!wallNode){
+            return;
+        }
+        let door = null;
+        if(isDoor){
+            door = this.doorRes;
+        }else{
+            if(dir == 0||dir==1){
+                door = this.topwallRes;
+            }else{
+                door = this.sidewallRes;
+            }
+        }
+        wallNode.getChildByName('door').getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door?Logic.spriteFrames[door]:null;
+
+        let theDoor:Door = wallNode.getChildByName('door').getComponent(Door);
+        if(theDoor){
+            theDoor.isDoor = isDoor;
+            theDoor.setOpen(isOpen);
+        }
+
     }
 
     // update (dt) {}
