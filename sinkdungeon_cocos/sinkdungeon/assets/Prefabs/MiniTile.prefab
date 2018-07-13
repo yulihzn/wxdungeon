@@ -41,8 +41,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 16,
-      "height": 16
+      "width": 24,
+      "height": 24
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -92,7 +92,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "11986288-9a7f-4e9a-bd7b-c2f45e085878"
     },
     "fileId": "e5qsimjg9Jy505843OMq0r",
     "sync": false

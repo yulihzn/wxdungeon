@@ -136,6 +136,8 @@ export default class Monster extends cc.Component {
         }
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        let collider:cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        collider.sensor = false;
     }
     fall() {
         if (this.isFall) {
@@ -143,6 +145,8 @@ export default class Monster extends cc.Component {
         }
         this.isFall = true;
         this.isDied = true;
+        let collider:cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        collider.sensor = true;
         this.anim.play('PlayerFall');
     }
     takeDamage(damage: number) {
@@ -161,6 +165,8 @@ export default class Monster extends cc.Component {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
+        let collider:cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        collider.sensor = true;
     }
 
     monsterAction(dungeon: Dungeon) {
@@ -273,5 +279,8 @@ export default class Monster extends cc.Component {
             this.label.string = "" + this.node.zIndex;
         }
         this.healthBar.node.active = !this.isDied;
+        if (this.data.currentHealth < 1) {
+            this.killed();
+        }
     }
 }

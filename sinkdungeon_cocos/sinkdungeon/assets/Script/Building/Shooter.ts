@@ -118,7 +118,7 @@ export default class Shooter extends cc.Component {
         let pos = cc.v2(0,0);
         for(let monster of this.dungeon.monsters){
             let dis = cc.pDistance(this.player.node.position,monster.node.position);
-            if(dis<300&&dis<olddis){
+            if(dis<300&&dis<olddis&&!monster.isDied){
                 olddis = dis;
                 pos = monster.node.position.sub(this.node.parent.position);
             }

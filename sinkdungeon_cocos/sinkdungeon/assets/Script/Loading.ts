@@ -2,6 +2,7 @@ import Logic from "./Logic";
 import MapData from "./Data/MapData";
 import EquipmentData from "./Data/EquipmentData";
 import RectDungeon from "./Rect/RectDungeon";
+import MapManager from "./Manager/MapManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,8 +22,8 @@ export default class Loading extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
     private timeDelay = 0;
-    private isLevelLoaded = false;
     private isEquipmentLoaded = false;
+    private isLevelLoaded = false;
     private isSpriteFramesLoaded = false;
     // LIFE-CYCLE CALLBACKS:
     
@@ -38,28 +39,9 @@ export default class Loading extends cc.Component {
         this.loadEquipment();
         this.loadSpriteFrames();
     }
-    loadMap(){
-        if(Logic.rooms&&Logic.rooms.length>0){
-            this.isLevelLoaded = true;
-            return;
-        }
-        cc.loader.loadRes('Data/Rooms/'+Logic.chapterName,(err:Error,resource)=>{
-            if(err){
-				cc.error(err);
-			}else{
-                let strs:string= resource;
-                let arr = strs.split('room');
-                Logic.rooms = new Array();
-                for(let str of arr){
-                    if(str){
-                        str = str.substring(str.indexOf('=')+1,str.length)
-                        Logic.rooms.push(new MapData(str));
-                    }
-                }
-                this.isLevelLoaded = true;
-			}
-        })
-        
+    loadMap() {
+        Logic.mapManger.isloaded = false;
+        Logic.mapManger.loadMap();
     }
     loadEquipment(){
         if(Logic.equipments){
@@ -92,6 +74,7 @@ export default class Loading extends cc.Component {
 
     update (dt) {
         this.timeDelay += dt;
+        this.isLevelLoaded = Logic.mapManger.isloaded;
         if (this.timeDelay > 0.16 && this.isLevelLoaded&&this.isEquipmentLoaded&&this.isSpriteFramesLoaded) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;

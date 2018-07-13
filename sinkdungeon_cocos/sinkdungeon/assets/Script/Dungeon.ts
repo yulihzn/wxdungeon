@@ -14,6 +14,7 @@ import EquipmentManager from "./Manager/EquipmentManager";
 import EquipmentData from "./Data/EquipmentData";
 import DungeonStyleManager from "./Manager/DungeonStyleManager";
 import RectDoor from "./Rect/RectDoor";
+import RectRoom from "./Rect/RectRoom";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -74,7 +75,7 @@ export default class Dungeon extends cc.Component {
         });
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-        manager.enabledDebugDraw = true;
+        // manager.enabledDebugDraw = true;
         this.fog.zIndex = 9000;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
@@ -249,8 +250,8 @@ export default class Dungeon extends cc.Component {
                 ss[i].spriteFrame.getTexture().setAliasTexParameters();
             }
         }
-        cc.director.emit(EventConstant.CHANGE_MIMIMAP,{x:Logic.currentRectRoom.x,y:Logic.currentRectRoom.y});
-        for(let door of Logic.currentRectRoom.doors){
+        cc.director.emit(EventConstant.CHANGE_MIMIMAP,{x:Logic.mapManger.currentRectRoom.x,y:Logic.mapManger.currentRectRoom.y});
+        for(let door of Logic.mapManger.currentRectRoom.doors){
             this.dungeonStyleManager.setDoor(door.dir,door.isDoor,false);
         }
     }
@@ -277,7 +278,8 @@ export default class Dungeon extends cc.Component {
             if(this.portal){
                 this.portal.openGate();
             }
-            for(let door of Logic.currentRectRoom.doors){
+            for(let door of Logic.mapManger.currentRectRoom.doors){
+                Logic.mapManger.currentRectRoom.state = RectRoom.STATE_CLEAR;
                 this.dungeonStyleManager.setDoor(door.dir,door.isDoor,true);
             }
         }

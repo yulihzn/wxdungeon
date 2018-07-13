@@ -338,6 +338,14 @@ export default class RectDungeon {
         }
         return this.map[x][y];
     }
+    public changeRoomIsFound(x:number,y:number):void{
+        if (x >= this.size || x < 0 || y >= this.size || y < 0) {
+            return;
+        }
+		if (this.map [x][y].roomType!=RectDungeon.EMPTY_ROOM) {
+			this.map [x][y].isFound = true;
+		}
+	}
 
     public static getTypeString(type: number): string {
         if (type !=RectDungeon.EMPTY_ROOM) {

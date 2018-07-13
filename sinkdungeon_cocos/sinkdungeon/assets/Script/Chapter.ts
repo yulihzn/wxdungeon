@@ -44,13 +44,9 @@ export default class Chapter extends cc.Component {
     
     clickChapter(event,chapter){
         if(chapter){
-            if(Logic.chapterName != chapter){
-                Logic.rooms = null;
-            }
             Logic.chapterName = chapter;
+            Logic.resetData();
         }
-        Logic.resetData();
-        Logic.currentRectRoom = Logic.rectDungeon.startRoom;
         if(chapter=='chapter00'){
             Logic.playerData.updateHA(cc.v2(100,100),1);
         }

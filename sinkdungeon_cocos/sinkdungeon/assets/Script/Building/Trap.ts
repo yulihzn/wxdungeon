@@ -58,19 +58,12 @@ export default class Trap extends cc.Component {
         }, 500);
     }
     
-    // onCollisionStay(other:cc.Collider,self:cc.Collider){
-    //     if(other.tag == 3){
-    //         if(this.isOpen){
-    //             this.isOpen = false;
-    //             cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:1});
-    //         }
-    //     }
-    // }
-    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
-        let player = otherCollider.body.node.getComponent(Player);
-        if(player){
-            this.isOpen = false;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:1});
+    onCollisionStay(other:cc.Collider,self:cc.Collider){
+        if(other.tag == 3){
+            if(this.isOpen){
+                this.isOpen = false;
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:1});
+            }
         }
     }
 

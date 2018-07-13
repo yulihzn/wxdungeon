@@ -99,7 +99,7 @@ export default class NewClass extends cc.Component {
     }
     select(event, customEventData){
         let index = parseInt(customEventData);
-        this.tabselect.x = index*64;
+        this.tabselect.y = index*64;
         let tab:cc.Node = event.currentTarget;
         cc.director.emit(EventConstant.INVENTORY_CHANGEITEM
             ,{spriteFrame:tab.getComponentInChildren(cc.Sprite).spriteFrame})

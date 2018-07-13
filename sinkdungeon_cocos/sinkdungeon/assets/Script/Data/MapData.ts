@@ -17,8 +17,8 @@ export default class MapData {
         this.init(str);
     }
     private init(str: string) {
-        //去掉第一个回车和最后2个回车
-        str = str.substring(2, str.length - 4);
+        //去掉第一个回车和最后1个回车
+        str = str.substring(2, str.length - 2);
         let arr = str.split('\r\n')
         this.map = new Array();
         for (let i = 0; i < arr.length; i++) {
