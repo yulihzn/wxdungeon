@@ -345,7 +345,11 @@ export default class RectDungeon {
 		if (this.map [x][y].roomType!=RectDungeon.EMPTY_ROOM) {
 			this.map [x][y].isFound = true;
 		}
-	}
+    }
+    
+    static isRoomEqual(room1:RectRoom,room2:RectRoom):boolean{
+        return room1.x==room2.x&&room1.y==room2.y;
+    }
 
     public static getTypeString(type: number): string {
         if (type !=RectDungeon.EMPTY_ROOM) {

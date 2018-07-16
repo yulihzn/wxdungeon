@@ -20,14 +20,13 @@ export default class InventoryData {
     trousers:EquipmentData = new EquipmentData();
     gloves:EquipmentData = new EquipmentData();
     shoes:EquipmentData = new EquipmentData();
-    //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
+    //初始速度200,最大速度500 跨度300
     getMoveSpeed(baseSpeed:number):number{
         let speed = 0;
         speed = this.weapon.moveSpeed+this.helmet.moveSpeed+this.clothes.moveSpeed
         +this.trousers.moveSpeed+this.gloves.moveSpeed+this.shoes.moveSpeed;
         if(speed>300){speed = 300}
-        if(speed<-10000){speed = -1000}
-        return baseSpeed-speed/100*0.05;
+        return baseSpeed+speed;
     }
     //初始速度1,最大速度3 最大300%
     getAttackSpeed():number{

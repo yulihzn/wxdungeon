@@ -61,6 +61,7 @@ export default class MapManager {
     getCurrentMapData():MapData{
         return this.rooms[this.currentRectRoom.roomType-1]
     }
+    
 
     loadMap() {
         if (this.rooms&&this.rooms.length>0) {

@@ -79,6 +79,9 @@ export default class Bullet extends cc.Component {
         if(otherCollider.sensor){
             isDestory = false;
         }
+        if(otherCollider.tag==2){
+            isDestory = false;
+        }
         if(isDestory){
             this.attacking(otherCollider);
             if(!this.isMelee){

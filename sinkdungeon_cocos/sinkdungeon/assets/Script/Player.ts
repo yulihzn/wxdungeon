@@ -10,6 +10,7 @@
 
 const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
+import Shooter from './Shooter';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
 import Dungeon from './Dungeon';
@@ -18,7 +19,6 @@ import Equipment from './Equipment/Equipment';
 import EquipmentData from './Data/EquipmentData';
 import Monster from './Monster';
 import Kraken from './Boss/Kraken';
-import Shooter from './Building/Shooter';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -29,9 +29,13 @@ export default class Player extends cc.Component {
     label: cc.Label = null;
     @property(HealthBar)
     healthBar: HealthBar = null;
-    @property(Shooter)
-    shooter: Shooter = null;
 
+    @property(cc.Node)
+    meleeShooterNode: cc.Node = null;
+    meleeShooter:Shooter = null;
+    @property(cc.Node)
+    remoteShooterNode: cc.Node = null;
+    remoteShooter:Shooter = null;
     private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
@@ -94,10 +98,17 @@ export default class Player extends cc.Component {
 
         cc.director.on(EventConstant.PLAYER_ATTACK
             , (event) => { this.meleeAttack() });
+        cc.director.on(EventConstant.PLAYER_REMOTEATTACK
+            , (event) => { this.remoteAttack() });
 
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage) });
+
+        this.pos = Logic.playerData.pos;
         this.updatePlayerPos();
+        this.meleeShooter = this.meleeShooterNode.getComponent(Shooter);
+        this.remoteShooter = this.remoteShooterNode.getComponent(Shooter);
+        this.meleeShooter.isAutoAim = false;
 
     }
     changeItem(spriteFrame: cc.SpriteFrame) {
@@ -163,13 +174,28 @@ export default class Player extends cc.Component {
             animState.speed = this.inventoryData.getAttackSpeed();
         }
     }
+    remoteRate = 0;
+    remoteAttack() {
+        let currentTime = Date.now();
+        if (currentTime - this.remoteRate > 1000) {
+            this.remoteRate = currentTime;
+            this.remoteShooter.fireBullet();
+        }
+
+    }
     move(dir: number, pos: cc.Vec2, dt: number) {
         if (this.isDied || this.isFall) {
             return;
         }
-        if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
-            this.shooter.setHv(cc.v2(pos.x, pos.y));
+        if (this.isAttacking) {
+            pos = cc.Vec2.ZERO;
+        }
+        if (this.remoteShooter && !pos.equals(cc.Vec2.ZERO)) {
+            this.remoteShooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
+        }
+        if (this.meleeShooter && !pos.equals(cc.Vec2.ZERO)) {
+            this.meleeShooter.setHv(cc.v2(pos.x, pos.y));
         }
 
         let h = pos.x;
@@ -180,12 +206,12 @@ export default class Player extends cc.Component {
         let mul = absh > absv ? absh : absv;
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
-        let speed = 500;
+        let speed = this.inventoryData.getMoveSpeed(200);
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
-        if(this.isMoving){
-            this.isFaceRight = h>0;
+        if (this.isMoving) {
+            this.isFaceRight = h > 0;
         }
         if (this.isMoving) {
             if (!this.anim.getAnimationState('PlayerWalk').isPlaying) {
@@ -199,13 +225,10 @@ export default class Player extends cc.Component {
             }
         }
 
-        let isDown = dir == 1;
-        if (isDown) {
+        let isUpDown = dir == 1 || dir == 0;
+        if (isUpDown) {
             this.changeZIndex(this.pos);
         }
-        //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
-        // let baseSpeed = 0.2;
-        // let action = cc.sequence(cc.moveTo(this.inventoryData.getMoveSpeed(baseSpeed), x, y), finish);
     }
     // move(dir: number) {
     //     if (this.isMoving || this.isDied || this.isFall) {
@@ -346,8 +369,8 @@ export default class Player extends cc.Component {
 
     }
     Attacking() {
-        this.shooter.fireBullet();
-       
+        this.meleeShooter.fireMelee();
+
         let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
         //生命汲取
         let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);

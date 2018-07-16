@@ -6,6 +6,7 @@ import InventoryData from "./Data/InventoryData";
 import RectDungeon from "./Rect/RectDungeon";
 import RectRoom from "./Rect/RectRoom";
 import MapManager from "./Manager/MapManager";
+import Dungeon from "./Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -67,6 +68,12 @@ export default class Logic extends cc.Component {
     loadingNextRoom(dir:number){
         let room = Logic.mapManger.loadingNextRoom(dir);
         if(room){
+            switch(dir){
+                case 0:Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),0);break;
+                case 1:Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),Dungeon.HEIGHT_SIZE-1);break;
+                case 2:Logic.playerData.pos=cc.v2(Dungeon.WIDTH_SIZE-1,Math.round(Dungeon.HEIGHT_SIZE/2-1));break;
+                case 3:Logic.playerData.pos=cc.v2(0,Math.round(Dungeon.HEIGHT_SIZE/2-1));break;
+            }
             cc.director.loadScene('loading');
         }
     }

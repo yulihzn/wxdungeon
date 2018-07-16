@@ -190,7 +190,7 @@
     "_enabled": true,
     "label": null,
     "damage": 1,
-    "speed": 50,
+    "speed": 100,
     "isMelee": true
   },
   {

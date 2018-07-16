@@ -1,6 +1,6 @@
 import HealthBar from "../HealthBar";
 import MonsterData from "../Data/MonsterData";
-import Shooter from "../Building/Shooter";
+import Shooter from "../Shooter";
 import { EventConstant } from "../EventConstant";
 import KrakenSwingHand from "./KrakenSwingHand";
 
