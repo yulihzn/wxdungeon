@@ -19,6 +19,7 @@ import Equipment from './Equipment/Equipment';
 import EquipmentData from './Data/EquipmentData';
 import Monster from './Monster';
 import Kraken from './Boss/Kraken';
+import MeleeWeapon from './MeleeWeapon';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -31,11 +32,11 @@ export default class Player extends cc.Component {
     healthBar: HealthBar = null;
 
     @property(cc.Node)
-    meleeShooterNode: cc.Node = null;
-    meleeShooter:Shooter = null;
+    meleeWeaponNode: cc.Node = null;
+    meleeWeapon:MeleeWeapon = null;
     @property(cc.Node)
-    remoteShooterNode: cc.Node = null;
-    remoteShooter:Shooter = null;
+    shooterNode: cc.Node = null;
+    shooter:Shooter = null;
     private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
@@ -106,9 +107,8 @@ export default class Player extends cc.Component {
 
         this.pos = Logic.playerData.pos;
         this.updatePlayerPos();
-        this.meleeShooter = this.meleeShooterNode.getComponent(Shooter);
-        this.remoteShooter = this.remoteShooterNode.getComponent(Shooter);
-        this.meleeShooter.isAutoAim = false;
+        this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
+        this.shooter = this.shooterNode.getComponent(Shooter);
 
     }
     changeItem(spriteFrame: cc.SpriteFrame) {
@@ -165,21 +165,22 @@ export default class Player extends cc.Component {
     }
 
     meleeAttack() {
-        if (this.isAttacking || this.isDied) {
-            return;
-        }
-        this.isAttacking = true;
-        if (this.anim) {
-            let animState = this.anim.play('PlayerMeleeAttack');
-            animState.speed = this.inventoryData.getAttackSpeed();
-        }
+        this.meleeWeapon.attack();
+        // if (this.isAttacking || this.isDied) {
+        //     return;
+        // }
+        // this.isAttacking = true;
+        // if (this.anim) {
+        //     let animState = this.anim.play('PlayerMeleeAttack');
+        //     animState.speed = this.inventoryData.getAttackSpeed();
+        // }
     }
     remoteRate = 0;
     remoteAttack() {
         let currentTime = Date.now();
         if (currentTime - this.remoteRate > 1000) {
             this.remoteRate = currentTime;
-            this.remoteShooter.fireBullet();
+            this.shooter.fireBullet();
         }
 
     }
@@ -190,12 +191,12 @@ export default class Player extends cc.Component {
         if (this.isAttacking) {
             pos = cc.Vec2.ZERO;
         }
-        if (this.remoteShooter && !pos.equals(cc.Vec2.ZERO)) {
-            this.remoteShooter.setHv(cc.v2(pos.x, pos.y));
+        if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
+            this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
-        if (this.meleeShooter && !pos.equals(cc.Vec2.ZERO)) {
-            this.meleeShooter.setHv(cc.v2(pos.x, pos.y));
+        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
+            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
         }
 
         let h = pos.x;
@@ -369,7 +370,7 @@ export default class Player extends cc.Component {
 
     }
     Attacking() {
-        this.meleeShooter.fireMelee();
+        
 
         let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
         //生命汲取

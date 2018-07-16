@@ -1,0 +1,73 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "MeleeAttackReverse",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.25,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "1",
+  "curveData": {
+    "paths": {
+      "sprite/weapon": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 210
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -30
+            }
+          ]
+        }
+      },
+      "sprite/meleelight": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "318bed80-b551-4eef-8d2d-84c8ce9fe3e8"
+                }
+              },
+              {
+                "frame": 0.16666666666666666,
+                "value": {
+                  "__uuid__": "05310cce-3ed7-4f3b-b7b9-c6eee0289955"
+                }
+              }
+            ]
+          }
+        },
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.08333333333333333,
+              "value": 255
+            },
+            {
+              "frame": 0.25,
+              "value": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 0.25,
+      "func": "MeleeAttackFinish",
+      "params": [
+        true
+      ]
+    }
+  ]
+}

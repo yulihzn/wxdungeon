@@ -2,6 +2,7 @@ import Bullet from "./Item/Bullet";
 import Dungeon from "./Dungeon";
 import Player from "./Player";
 import Monster from "./Monster";
+import Kraken from "./Boss/Kraken";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,100 +19,37 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class MeleeWeapon extends cc.Component {
 
-    @property(cc.Prefab)
-    bullet: cc.Prefab = null;
-    @property(cc.Prefab)
-    meleeBullet: cc.Prefab = null;
-    @property
-    auto: boolean = false;
-    @property
-    isAI: boolean = false;
-    @property
-    frequency: number = 1;
-    @property(Dungeon)
-    dungeon: Dungeon = null;
     @property(cc.Node)
-    shooterParent: cc.Node = null;
-    @property(Player)
+    playerNode: cc.Node = null;
     player: Player = null;
-    
-    private bulletPool: cc.NodePool;
-    private meleeBulletPool: cc.NodePool;
-    private timeDelay = 0;
-    private anim:cc.Animation;
-    isAutoAim = true;
 
-
+    private isReverse = false;
+    private anim: cc.Animation;
+    private isAttacking:boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
-        this.bulletPool = new cc.NodePool();
-        this.meleeBulletPool = new cc.NodePool();
-        cc.director.on('destorybullet', (event) => {
-            this.destroyBullet(event.detail.bulletNode);
-        })
+        this.player = this.playerNode.getComponent(Player);
     }
     setHv(hv: cc.Vec2) {
-        let pos = this.hasNearEnemy();
-        if (!pos.equals(cc.Vec2.ZERO)) {
-            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
-            this.hv = pos;
-        } else {
-            this.hv = hv;
-        }
-    }
-    fireBullet(){
-        if(this.anim){
-            this.anim.play();
-        }
-        this.fire(this.bullet,this.bulletPool);
-    }
-    fireMelee(){
-        this.fire(this.meleeBullet,this.meleeBulletPool);
+        this.hv = hv;
     }
 
-    private fire(prefab:cc.Prefab,pool:cc.NodePool) {
+    attack() {
+        if(this.isAttacking){
+            return;
+        }
+        this.isAttacking = true;
+        if (this.anim) {
+            this.isReverse?this.anim.play("MeleeAttackReverse"):this.anim.play("MeleeAttack");
+        }
         
-        let bulletPrefab: cc.Node = null;
-        if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
-            bulletPrefab = pool.get();
-        }
-        // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
-        if (!bulletPrefab || bulletPrefab.active) {
-            bulletPrefab = cc.instantiate(prefab);
-        }
-        bulletPrefab.parent = this.node;
-        let pos = this.node.convertToWorldSpace(cc.v2(30, 0));
-        pos = this.dungeon.node.convertToNodeSpace(pos);
-        bulletPrefab.parent = this.dungeon.node;
-        bulletPrefab.position = pos;
-        bulletPrefab.scale = 1;
-        bulletPrefab.active = true;
-        let bullet = bulletPrefab.getComponent(Bullet);
-        bullet.node.rotation = this.node.scaleX == -1 ? -this.node.rotation : this.node.rotation;
-        bullet.node.scaleY = this.node.scaleX;
-        bullet.node.zIndex = 4000;
-        bullet.isFromPlayer = !this.isAI;
-        if (bullet.isFromPlayer && bullet.isMelee && this.player) {
-            bullet.damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
-        }
-        bullet.showBullet(this.hv);
     }
-    destroyBullet(bulletNode: cc.Node) {
-        // enemy 应该是一个 cc.Node
-        bulletNode.active = false;
-        let bullet = bulletNode.getComponent(Bullet);
-        if(bullet.isMelee){
-            if (this.meleeBulletPool) {
-                this.meleeBulletPool.put(bulletNode); // 和初始化时的方法一样，将节点放进对象池，这个方法会同时调用节点的 removeFromParent
-            }
-            
-        }else{
-            if (this.bulletPool) {
-                this.bulletPool.put(bulletNode); 
-            }
-        }
+    //Anim
+    MeleeAttackFinish(reverse:boolean){
+        this.isAttacking = false;
+        this.isReverse=!reverse;
     }
 
     start() {
@@ -122,43 +60,14 @@ export default class MeleeWeapon extends cc.Component {
     }
 
     update(dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > this.frequency && this.auto) {
-            this.timeDelay = 0;
-            this.fireBullet();
-        }
 
-        let pos = this.hasNearEnemy();
-        if (!pos.equals(cc.Vec2.ZERO)) {
-            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
-            this.hv = pos;
-        } else if (this.hv.x != 0 || this.hv.y != 0) {
+        if (this.hv.x != 0 || this.hv.y != 0) {
+            this.node.position = cc.v2(21,43);
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
     }
-    hasNearEnemy() {
-        if(!this.isAutoAim){
-            return cc.Vec2.ZERO;
-        }
-        let olddis = 1000;
-        let pos = cc.v2(0, 0);
-        if (this.isAI) {
-            pos = this.player.node.position.sub(this.shooterParent.position.add(this.node.position));
-        } else {
-            for (let monster of this.dungeon.monsters) {
-                let dis = cc.pDistance(this.shooterParent.position, monster.node.position);
-                if (dis < 500 && dis < olddis && !monster.isDied) {
-                    olddis = dis;
-                    pos = monster.node.position.sub(this.shooterParent.position.add(this.node.position));
-                }
-            }
-            if (olddis != 1000) {
-                pos = pos.normalizeSelf();
-            }
-        }
-        return pos;
-    }
+
     rotateColliderManager(target: cc.Vec2) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
@@ -173,5 +82,30 @@ export default class MeleeWeapon extends cc.Component {
         // 将当前物体的角度设置为对应角度
         this.node.rotation = this.node.scaleX == -1 ? angle : -angle;
 
+    }
+    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider) {
+        this.attacking(otherCollider);
+    }
+    attacking(attackTarget:cc.PhysicsCollider) {
+        if (!attackTarget||!this.isAttacking) {
+            return;
+        }
+        let damage = 0;
+        if (this.player) {
+            damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
+        }
+        
+        let monster = attackTarget.body.node.getComponent(Monster);
+        if (monster && !monster.isDied) {
+            monster.takeDamage(damage);
+        }
+        let player = attackTarget.body.node.getComponent(Player);
+        if (player && !player.isDied) {
+            player.takeDamage(damage);
+        }
+        let kraken = attackTarget.body.node.getComponent(Kraken);
+        if (kraken && !kraken.isDied) {
+            kraken.takeDamage(damage, cc.v2(0, 0));
+        }
     }
 }
