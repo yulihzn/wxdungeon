@@ -40,6 +40,7 @@ export default class Player extends cc.Component {
     private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
+    weaponLightSprite: cc.Sprite = null;
     helmetSprite: cc.Sprite = null;
     clothesSprite: cc.Sprite = null;
     trousersSprite: cc.Sprite = null;
@@ -79,8 +80,10 @@ export default class Player extends cc.Component {
             .getChildByName('item').getComponent(cc.Sprite);
         this.hairSprite = this.sprite.getChildByName('body')
             .getChildByName('hair').getComponent(cc.Sprite);
-        this.weaponSprite = this.sprite.getChildByName('lefthand')
+        this.weaponSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
             .getChildByName('weapon').getComponent(cc.Sprite);
+            this.weaponLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
+            .getChildByName('meleelight').getComponent(cc.Sprite);
         this.helmetSprite = this.sprite.getChildByName('body')
             .getChildByName('helmet').getComponent(cc.Sprite);
         this.clothesSprite = this.sprite.getChildByName('body')
@@ -120,6 +123,7 @@ export default class Player extends cc.Component {
             case 'weapon': this.weaponSprite.spriteFrame = spriteFrame;
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
                 this.weaponSprite.node.color = color1;
+                this.weaponLightSprite.node.color = color1;
                 break;
             case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
                 this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
@@ -165,6 +169,20 @@ export default class Player extends cc.Component {
     }
 
     meleeAttack() {
+        if(this.isAttacking||!this.meleeWeapon){
+            return;
+        }
+        this.isAttacking = true;
+        let pos = this.meleeWeapon.getHv().clone();
+        if(pos.equals(cc.Vec2.ZERO)){
+            pos = cc.v2(1,0);
+        }
+        pos = pos.normalizeSelf().mul(5);
+        let speed = this.inventoryData.getAttackSpeed();
+        let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y),cc.callFunc(()=>{
+            setTimeout(()=>{this.isAttacking = false;},speed);
+        },this));
+        this.node.runAction(action);
         this.meleeWeapon.attack();
         // if (this.isAttacking || this.isDied) {
         //     return;
@@ -180,7 +198,9 @@ export default class Player extends cc.Component {
         let currentTime = Date.now();
         if (currentTime - this.remoteRate > 1000) {
             this.remoteRate = currentTime;
-            this.shooter.fireBullet();
+            if(this.shooter){
+                this.shooter.fireBullet();
+            }
         }
 
     }
@@ -188,8 +208,8 @@ export default class Player extends cc.Component {
         if (this.isDied || this.isFall) {
             return;
         }
-        if (this.isAttacking) {
-            pos = cc.Vec2.ZERO;
+        if (this.isAttacking&& !pos.equals(cc.Vec2.ZERO)) {
+            pos = pos.mul(0.5);
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
@@ -219,9 +239,7 @@ export default class Player extends cc.Component {
                 this.anim.playAdditive('PlayerWalk');
             }
         } else {
-            if (this.anim.getAnimationState('PlayerWalk').isPlaying
-                && !this.anim.getAnimationState('PlayerMeleeAttack').isPlaying) {
-                this.sprite.rotation = 0;
+            if (this.anim.getAnimationState('PlayerWalk').isPlaying) {
                 this.anim.play('PlayerIdle');
             }
         }
@@ -310,6 +328,7 @@ export default class Player extends cc.Component {
         Logic.playerData.basehealth.x = this.health.x;
         if (this.label) {
             this.label.node.opacity = 255;
+            this.label.node.scaleX = this.node.scaleX;
             this.label.node.color = damage > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
             this.label.string = `${parseFloat((-damage).toFixed(1))}`;
             if (isDodge) {
@@ -346,9 +365,7 @@ export default class Player extends cc.Component {
         return false;
     }
     update(dt) {
-        if (!this.isMoving) {
-            // this.updatePlayerPos();
-        }
+        
         if (this.isRecoveryTimeDelay(dt)) {
             let re = this.inventoryData.getRecovery();
             if (re > 0) {

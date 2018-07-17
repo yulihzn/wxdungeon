@@ -24,27 +24,30 @@ export default class Monster extends cc.Component {
     label: cc.Label = null;
     @property(HealthBar)
     healthBar: HealthBar = null;
-    isMoving = false;
     private sprite: cc.Node;
     private anim: cc.Animation;
+    rigidbody: cc.RigidBody;
+    isFaceRight = true;
+    isMoving = false;
+    isAttacking = false;
     isDied = false;
-    // currentHealth: number = 3;
-    // maxHealth: number = 3;
     isFall = false;
     private timeDelay = 0;
-    // attackPonit = 1;
     data: MonsterData = new MonsterData();
+    dungeon: Dungeon;
 
-    // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.isAttacking = false;
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
+        this.rigidbody = this.getComponent(cc.RigidBody);
+        this.updatePlayerPos();
     }
 
     changeBodyRes(resName: string) {
-        if(!this.sprite){
+        if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
         }
         let body = this.sprite.getChildByName('body');
@@ -73,58 +76,89 @@ export default class Monster extends cc.Component {
         this.pos.x = x;
         this.pos.y = y;
         this.changeZIndex();
+        this.updatePlayerPos();
     }
     changeZIndex() {
         this.node.zIndex = 3000 + (9 - this.pos.y) * 100 + 2;
     }
-    attack(dir, finish) {
-        if (this.isMoving || this.isDied) {
+    meleeAttack(pos: cc.Vec2, finish) {
+        if (this.isAttacking) {
             return;
         }
-        let x = 0;
-        let y = 0;
-        switch (dir) {
-            case 0: y += 32; break;
-            case 1: y -= 32; break;
-            case 2: x -= 32; break;
-            case 3: x += 32; break;
-            case 4: break;
+        this.isAttacking = true;
+        this.anim.pause();
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
         }
-        let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
+        pos = pos.normalizeSelf().mul(32);
+        let action = cc.sequence(cc.moveBy(0.1, -pos.x/2, -pos.y/2),cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
+            this.isAttacking = false;
+            this.anim.resume();
             if (finish) { finish(this.data.attackPoint); }
         }), cc.moveTo(0.1, 0, 0));
         this.sprite.runAction(action);
     }
-    move(dir) {
-        if (this.isMoving || this.isDied) {
+    getNearPlayerDistance(playerNode: cc.Node): number {
+        let dis = cc.pDistance(this.node.position, playerNode.position);
+        return dis;
+    }
+    // attack(dir, finish) {
+    //     if (this.isMoving || this.isDied) {
+    //         return;
+    //     }
+    //     let x = 0;
+    //     let y = 0;
+    //     switch (dir) {
+    //         case 0: y += 32; break;
+    //         case 1: y -= 32; break;
+    //         case 2: x -= 32; break;
+    //         case 3: x += 32; break;
+    //         case 4: break;
+    //     }
+    //     let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
+    //         if (finish) { finish(this.data.attackPoint); }
+    //     }), cc.moveTo(0.1, 0, 0));
+    //     this.sprite.runAction(action);
+    // }
+    move(dir: number, pos: cc.Vec2) {
+        if (this.isDied || this.isFall) {
             return;
         }
-        this.isMoving = true;
-        switch (dir) {
-            case 0: if (this.pos.y + 1 < 9) { this.pos.y++; } break;
-            case 1: if (this.pos.y - 1 >= 0) { this.pos.y--; } break;
-            case 2: if (this.pos.x - 1 >= 0) { this.pos.x--; } break;
-            case 3: if (this.pos.x + 1 < 9) { this.pos.x++; } break;
+        if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
+            pos = pos.mul(0.5);
         }
-        let isDown = dir == 1;
-        if (isDown) {
+        if (!pos.equals(cc.Vec2.ZERO)) {
+            this.pos = Dungeon.getIndexInMap(this.node.position);
+        }
+        let h = pos.x;
+        let v = pos.y;
+        let absh = Math.abs(h);
+        let absv = Math.abs(v);
+
+        let mul = absh > absv ? absh : absv;
+        mul = mul == 0 ? 1 : mul;
+        let movement = cc.v2(h, v);
+        let speed = 100;
+        movement = movement.mul(speed);
+        this.rigidbody.linearVelocity = movement;
+        this.isMoving = h != 0 || v != 0;
+        if (this.isMoving) {
+            this.isFaceRight = h > 0;
+        }
+        if (this.isMoving) {
+            if (!this.anim.getAnimationState('PlayerWalk').isPlaying) {
+                this.anim.playAdditive('PlayerWalk');
+            }
+        } else {
+            if (this.anim.getAnimationState('PlayerWalk').isPlaying) {
+                this.anim.play('PlayerIdle');
+            }
+        }
+
+        let isUpDown = dir == 1 || dir == 0;
+        if (isUpDown) {
             this.changeZIndex();
         }
-        let x = this.pos.x * 64 + 32;
-        let y = this.pos.y * 64 + 32;
-        let finish = cc.callFunc(() => {
-            this.changeZIndex();
-            this.sprite.y = 0;
-            this.isDied = false;
-            this.sprite.rotation = 0;
-            this.sprite.scale = 1;
-            this.sprite.opacity = 255;
-            this.anim.play('PlayerIdle');
-            this.isMoving = false;
-        }, this);
-        let action = cc.sequence(cc.moveTo(0.1, x, y), finish);
-        this.anim.play('PlayerWalk');
-        this.node.runAction(action);
     }
 
     start() {
@@ -136,7 +170,7 @@ export default class Monster extends cc.Component {
         }
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
-        let collider:cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = false;
     }
     fall() {
@@ -145,7 +179,7 @@ export default class Monster extends cc.Component {
         }
         this.isFall = true;
         this.isDied = true;
-        let collider:cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
         this.anim.play('PlayerFall');
     }
@@ -165,7 +199,7 @@ export default class Monster extends cc.Component {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
-        let collider:cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
     }
 
@@ -173,20 +207,36 @@ export default class Monster extends cc.Component {
         if (this.isDied) {
             return;
         }
+        this.node.position = Dungeon.fixOuterMap(this.node.position);
+        this.dungeon = dungeon;
+        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.rigidbody.linearVelocity = cc.v2(0, 0);
         let dir = this.getMonsterBestDir(this.pos, dungeon);
         let newPos = cc.v2(this.pos.x, this.pos.y);
         switch (dir) {
             case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
             case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
             case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
-            case 3: if (newPos.x + 1 < 9) { newPos.x++; } break;
+            case 3: if (newPos.x + 1 < 15) { newPos.x++; } break;
         }
-        if (newPos.equals(dungeon.player.pos) && !dungeon.player.isDied) {
-            this.attack(dir, (damage: number) => {
+        let playerDis = this.getNearPlayerDistance(dungeon.player.node);
+        if (playerDis < 64 && !dungeon.player.isDied) {
+            let pos = dungeon.player.node.position.sub(this.node.position);
+            if (!pos.equals(cc.Vec2.ZERO)) {
+                pos = pos.normalizeSelf();
+            }
+            this.meleeAttack(pos, (damage: number) => {
                 dungeon.player.takeDamage(damage);
             });
         } else {
-            this.move(dir);
+            let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
+            if (playerDis < 200) {
+                pos = dungeon.player.node.position.sub(this.node.position);
+            }
+            if (!pos.equals(cc.Vec2.ZERO)) {
+                pos = pos.normalizeSelf();
+                this.move(dir, pos);
+            }
         }
 
     }
@@ -272,8 +322,14 @@ export default class Monster extends cc.Component {
         if (this.timeDelay > 1) {
             this.timeDelay = 0;
         }
-        if (!this.isMoving) {
-            this.updatePlayerPos();
+        if (this.dungeon) {
+            let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
+            if (playerDis < 64) {
+                this.rigidbody.linearVelocity = cc.v2(0, 0);
+            }
+        }
+        if(this.isDied){
+            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
         if (this.label) {
             this.label.string = "" + this.node.zIndex;
@@ -282,5 +338,6 @@ export default class Monster extends cc.Component {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
+        this.sprite.scaleX = this.isFaceRight ? 1 : -1;
     }
 }

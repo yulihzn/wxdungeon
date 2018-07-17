@@ -25,7 +25,7 @@ export default class MeleeWeapon extends cc.Component {
 
     private isReverse = false;
     private anim: cc.Animation;
-    private isAttacking:boolean = false;
+    private isAttacking: boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);
 
     onLoad() {
@@ -35,21 +35,24 @@ export default class MeleeWeapon extends cc.Component {
     setHv(hv: cc.Vec2) {
         this.hv = hv;
     }
+    getHv(): cc.Vec2 {
+        return this.hv;
+    }
 
     attack() {
-        if(this.isAttacking){
+        if (this.isAttacking) {
             return;
         }
         this.isAttacking = true;
         if (this.anim) {
-            this.isReverse?this.anim.play("MeleeAttackReverse"):this.anim.play("MeleeAttack");
+            this.isReverse ? this.anim.play("MeleeAttackReverse") : this.anim.play("MeleeAttack");
         }
-        
+
     }
     //Anim
-    MeleeAttackFinish(reverse:boolean){
+    MeleeAttackFinish(reverse: boolean) {
         this.isAttacking = false;
-        this.isReverse=!reverse;
+        this.isReverse = !reverse;
     }
 
     start() {
@@ -62,7 +65,7 @@ export default class MeleeWeapon extends cc.Component {
     update(dt) {
 
         if (this.hv.x != 0 || this.hv.y != 0) {
-            this.node.position = cc.v2(21,43);
+            this.node.position = cc.v2(21, 43);
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
@@ -83,27 +86,43 @@ export default class MeleeWeapon extends cc.Component {
         this.node.rotation = this.node.scaleX == -1 ? angle : -angle;
 
     }
-    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider) {
-        this.attacking(otherCollider);
+    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+        // this.attacking(otherCollider);
     }
-    attacking(attackTarget:cc.PhysicsCollider) {
-        if (!attackTarget||!this.isAttacking) {
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        this.attacking(other);
+    }
+    beatBack(node: cc.Node) {
+        let pos = this.getHv().clone();
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
+        }
+        pos = pos.normalizeSelf().mul(64);
+        let action = cc.moveBy(0.1, pos.x, pos.y);
+        node.runAction(action);
+
+    }
+    attacking(attackTarget: cc.Collider) {
+        if (!attackTarget || !this.isAttacking) {
             return;
         }
         let damage = 0;
         if (this.player) {
             damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
         }
-        
-        let monster = attackTarget.body.node.getComponent(Monster);
+
+        let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied) {
             monster.takeDamage(damage);
+            this.beatBack(monster.node);
+            //生命汲取
+            let drain = this.player.inventoryData.getLifeDrain(this.player.baseAttackPoint);
+            if (drain > 0) {
+                this.player.takeDamage(-drain);
+            }
         }
-        let player = attackTarget.body.node.getComponent(Player);
-        if (player && !player.isDied) {
-            player.takeDamage(damage);
-        }
-        let kraken = attackTarget.body.node.getComponent(Kraken);
+
+        let kraken = attackTarget.node.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
             kraken.takeDamage(damage, cc.v2(0, 0));
         }

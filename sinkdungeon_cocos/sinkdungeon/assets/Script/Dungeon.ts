@@ -16,6 +16,7 @@ import DungeonStyleManager from "./Manager/DungeonStyleManager";
 import RectDoor from "./Rect/RectDoor";
 import RectRoom from "./Rect/RectRoom";
 import RectDungeon from "./Rect/RectDungeon";
+import Chest from "./Building/Chest";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,6 +38,8 @@ export default class Dungeon extends cc.Component {
     wall: cc.Prefab = null;
     @property(cc.Prefab)
     trap: cc.Prefab = null;
+    @property(cc.Prefab)
+    chest: cc.Prefab = null;
     @property(cc.Prefab)
     heart: cc.Prefab = null;
     @property(Player)
@@ -101,9 +104,11 @@ export default class Dungeon extends cc.Component {
                 //越往下层级越高，j是行，i是列
                 t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 this.map[i][j] = t.getComponent(Tile);
-                if (mapData[i][j] == '*') {
-                    //关闭踩踏掉落
-                    this.map[i][j].isAutoShow = false;
+                //默认关闭踩踏掉落
+                this.map[i][j].isAutoShow = false;
+                if (mapData[i][j] == '#') {
+                    //开启踩踏掉落
+                    this.map[i][j].isAutoShow = true;
                 }
                 //生成墙
                 // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
@@ -115,8 +120,6 @@ export default class Dungeon extends cc.Component {
                     w.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     w.opacity = 255;
                     this.wallmap[i][j] = w.getComponent(Wall);
-                    //关闭踩踏掉落
-                    this.map[i][j].isAutoShow = false;
                 }
                 //生成陷阱
                 // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
@@ -127,8 +130,15 @@ export default class Dungeon extends cc.Component {
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.trapmap[i][j] = trap.getComponent(Trap);
-                    //关闭踩踏掉落
-                    this.map[i][j].isAutoShow = false;
+                }
+                //生成宝箱
+                if (mapData[i][j] == 'C') {
+                    let chest = cc.instantiate(this.chest);
+                    chest.parent = this.node;
+                    let c = chest.getComponent(Chest)
+                    c.setPos(cc.v2(i, j));
+                    c.setQuality(Logic.getRandomNum(1,3),Logic.mapManger.currentRectRoom.state == RectRoom.STATE_CLEAR);
+                    
                 }
                 //生成心
                 if (mapData[i][j] == 'H') {
@@ -156,27 +166,25 @@ export default class Dungeon extends cc.Component {
                     let portalP = cc.instantiate(this.portalPrefab);
                     portalP.parent = this.node;
                     this.portal = portalP.getComponent(Portal);
-                    //关闭踩踏掉落
-                    this.map[i][j].isAutoShow = false;
                     if (this.portal) {
                         this.portal.setPos(cc.v2(i, j));
                     }
                 }
             }
         }
-        if (Logic.chapterName == 'chapter00') {
-            this.addEquipment(EquipmentManager.WEAPON_KNIFE, cc.v2(4, 6));
-            this.addEquipment(EquipmentManager.CLOTHES_SHIRT, cc.v2(5, 6));
-            this.addEquipment(EquipmentManager.CLOTHES_VEST, cc.v2(6, 6));
-            this.addEquipment(EquipmentManager.HELMET_BUCKETHAT, cc.v2(7, 6));
-        }
+        // if (Logic.chapterName == 'chapter00') {
+        //     this.addEquipment(EquipmentManager.WEAPON_KNIFE, cc.v2(4, 6));
+        //     this.addEquipment(EquipmentManager.CLOTHES_SHIRT, cc.v2(5, 6));
+        //     this.addEquipment(EquipmentManager.CLOTHES_VEST, cc.v2(6, 6));
+        //     this.addEquipment(EquipmentManager.HELMET_BUCKETHAT, cc.v2(7, 6));
+        // }
 
         // this.addMonsters();
         this.addkraken();
     }
-    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData) {
+    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData,chestQuality?:number) {
         if (this.equipmentManager) {
-            this.equipmentManager.getEquipment(equipType, pos, this.node, equipData);
+            this.equipmentManager.getEquipment(equipType, pos, this.node, equipData,chestQuality);
         }
     }
     addMonsterFromData(resName: string, i: number, j: number) {
@@ -245,6 +253,23 @@ export default class Dungeon extends cc.Component {
         if (y < 0) { y = 0 }; if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1 };
         return cc.v2(x, y);
     }
+    //获取不超出地图的坐标
+    static fixOuterMap(pos: cc.Vec2):cc.Vec2{
+        let x = (pos.x - Dungeon.MAPX) / Dungeon.TILE_SIZE;
+        let y = (pos.y - Dungeon.MAPY) / Dungeon.TILE_SIZE;
+        x = Math.round(x);
+        y = Math.round(y);
+        let isOuter = false;
+        if (x < 0) { x = 0;isOuter=true;}
+         if (x >= Dungeon.WIDTH_SIZE) { x = Dungeon.WIDTH_SIZE - 1;isOuter=true; }
+        if (y < 0) { y = 0;isOuter=true; }
+         if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1;isOuter=true; }
+         if(isOuter){
+             return Dungeon.getPosInMap(cc.v2(x, y));
+         }else{
+             return pos;
+         }
+    }
 
     start() {
         let ss = this.node.getComponentsInChildren(cc.Sprite);
@@ -292,6 +317,9 @@ export default class Dungeon extends cc.Component {
                         }
                     }
                 }
+                if(Logic.level==1){
+                    needClose = false;
+                }
                 if (!needClose) {
                     this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true);
                 }
@@ -320,9 +348,12 @@ export default class Dungeon extends cc.Component {
                 return;
             }
             let tile = this.map[monster.pos.x][monster.pos.y];
-            if (tile.isBroken && !monster.isMoving) {
+            if (tile.isBroken) {
                 monster.fall();
             }
+            // if (tile.isBroken && !monster.isMoving) {
+            //     monster.fall();
+            // }
         }
 
     }

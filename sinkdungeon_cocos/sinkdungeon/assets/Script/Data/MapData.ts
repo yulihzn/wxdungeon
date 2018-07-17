@@ -12,7 +12,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MapData {
-    map: string[][]
+    map: string[][] = new Array();
     constructor(str: string) {
         this.init(str);
     }

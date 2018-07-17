@@ -47,7 +47,7 @@ export default class NewClass extends cc.Component {
     onLoad () {
         this.inventoryData = Logic.inventoryData;
         cc.director.on(EventConstant.PLAYER_CHANGEEQUIPMENT
-            , (event) => { this.refreshEquipment(event.detail.equipData) });
+            , (event) => { this.refreshEquipment(event.detail.equipData,true) });
     }
 
     start () {
@@ -65,12 +65,12 @@ export default class NewClass extends cc.Component {
         this.addSpriteTouchEvent(this.trousers,'trousers');
         this.addSpriteTouchEvent(this.gloves,'gloves');
         this.addSpriteTouchEvent(this.shoes,'shoes');
-        this.refreshEquipment(this.inventoryData.weapon);
-        this.refreshEquipment(this.inventoryData.helmet);
-        this.refreshEquipment(this.inventoryData.clothes);
-        this.refreshEquipment(this.inventoryData.trousers);
-        this.refreshEquipment(this.inventoryData.gloves);
-        this.refreshEquipment(this.inventoryData.shoes);
+        this.refreshEquipment(this.inventoryData.weapon,false);
+        this.refreshEquipment(this.inventoryData.helmet,false);
+        this.refreshEquipment(this.inventoryData.clothes,false);
+        this.refreshEquipment(this.inventoryData.trousers,false);
+        this.refreshEquipment(this.inventoryData.gloves,false);
+        this.refreshEquipment(this.inventoryData.shoes,false);
         
     }
     addSpriteTouchEvent(sprite:cc.Sprite,equipmetType:string){
@@ -105,7 +105,7 @@ export default class NewClass extends cc.Component {
             ,{spriteFrame:tab.getComponentInChildren(cc.Sprite).spriteFrame})
 
     }
-    setEquipment(equipDataNew: EquipmentData,equipmentData:EquipmentData){
+    setEquipment(equipDataNew: EquipmentData,equipmentData:EquipmentData,isChange:boolean){
         if (equipmentData.equipmetType == equipDataNew.equipmetType) {
             let p = this.player.getComponent(Player).pos;
             let pos = cc.v2(p.x,p.y);
@@ -114,12 +114,14 @@ export default class NewClass extends cc.Component {
             }else{
                 pos.y+=1;
             }
-            cc.director.emit(EventConstant.DUNGEON_SETEQUIPMENT
-                , { pos: pos, equipmentData: equipmentData })
+            if(isChange){
+                cc.director.emit(EventConstant.DUNGEON_SETEQUIPMENT
+                    , { pos: pos, equipmentData: equipmentData })
+            }
         }
     }
-    refreshEquipment(equipmentDataNew:EquipmentData){
-        if(!equipmentDataNew){
+    refreshEquipment(equipmentDataNew:EquipmentData,isChange:boolean){
+        if(!equipmentDataNew||!this.weapon){
             return;
         }
         let color = cc.color(255,255,255).fromHEX(equipmentDataNew.color);
@@ -127,32 +129,32 @@ export default class NewClass extends cc.Component {
         switch(equipmentDataNew.equipmetType){
             case 'weapon':this.weapon.spriteFrame = spriteFrame;
             this.weapon.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.weapon);
+            this.setEquipment(equipmentDataNew,this.inventoryData.weapon,isChange);
             this.inventoryData.weapon = equipmentDataNew;
             break;
             case 'helmet':this.helmet.spriteFrame = spriteFrame;
             this.helmet.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.helmet);
+            this.setEquipment(equipmentDataNew,this.inventoryData.helmet,isChange);
             this.inventoryData.helmet = equipmentDataNew;
             break;
             case 'clothes':this.clothes.spriteFrame = spriteFrame;
             this.clothes.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.clothes);
+            this.setEquipment(equipmentDataNew,this.inventoryData.clothes,isChange);
             this.inventoryData.clothes = equipmentDataNew;
             break;
             case 'trousers':this.trousers.spriteFrame = spriteFrame;
             this.trousers.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.trousers);
+            this.setEquipment(equipmentDataNew,this.inventoryData.trousers,isChange);
             this.inventoryData.trousers = equipmentDataNew;
             break;
             case 'gloves':this.gloves.spriteFrame = spriteFrame;
             this.gloves.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.gloves);
+            this.setEquipment(equipmentDataNew,this.inventoryData.gloves,isChange);
             this.inventoryData.gloves = equipmentDataNew;
             break;
             case 'shoes':this.shoes.spriteFrame = spriteFrame;
             this.shoes.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.shoes);
+            this.setEquipment(equipmentDataNew,this.inventoryData.shoes,isChange);
             this.inventoryData.shoes = equipmentDataNew;
             break;
         }

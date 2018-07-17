@@ -57,7 +57,7 @@ export default class MonsterManager extends cc.Component {
             case MonsterManager.MONSTER_ANUBIS: data.updateHA(3,3,3); break;
             case MonsterManager.MONSTER_PIRATE: data.updateHA(2,2,2); break;
             case MonsterManager.MONSTER_SAILOR: data.updateHA(1,1,1); break;
-            case MonsterManager.MONSTER_OCTOPUS: data.updateHA(10,10,0); break;
+            case MonsterManager.MONSTER_OCTOPUS: data.updateHA(10,10,2); break;
         }
         monster.changeBodyRes(resName);
         monster.data = data;
