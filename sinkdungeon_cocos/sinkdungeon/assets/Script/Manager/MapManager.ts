@@ -21,10 +21,10 @@ export default class MapManager {
     private allfileRooms: { [key: string]: MapData[] } = {};
     private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'puzzleroom', 'merchantroom', 'bossroom'];
     isloaded: boolean = false;
-    rooms:MapData[] = new Array();
-    rectDungeon:RectDungeon= new RectDungeon(1);
-    currentRectRoom:RectRoom = null;
-    constructor(){
+    // rooms:MapData[] = new Array();
+    rectDungeon: RectDungeon = new RectDungeon(1);
+    currentRectRoom: RectRoom = null;
+    constructor() {
         this.init();
     }
     // LIFE-CYCLE CALLBACKS:
@@ -33,38 +33,38 @@ export default class MapManager {
     init() {
         this.isloaded = false;
     }
-    reset(level:number){
+    reset(level: number) {
         this.rectDungeon = new RectDungeon(level);
-        cc.log (this.rectDungeon.getDisPlay());
+        cc.log(this.rectDungeon.getDisPlay());
         this.resetRooms();
         this.currentRectRoom = this.rectDungeon.startRoom;
-        this.changeRoomsIsFound (this.currentRectRoom.x, this.currentRectRoom.y);
+        this.changeRoomsIsFound(this.currentRectRoom.x, this.currentRectRoom.y);
     }
 
-    loadingNextRoom(dir:number):RectRoom{
-        let room = this.rectDungeon.getNeighborRoomType(this.currentRectRoom.x,this.currentRectRoom.y,dir)
-        if(room&&room.roomType!=0){
+    loadingNextRoom(dir: number): RectRoom {
+        let room = this.rectDungeon.getNeighborRoomType(this.currentRectRoom.x, this.currentRectRoom.y, dir)
+        if (room && room.roomType != 0) {
             this.currentRectRoom = room;
-            this.changeRoomsIsFound (room.x, room.y);
+            this.changeRoomsIsFound(room.x, room.y);
         }
         return room;
     }
-    changeRoomsIsFound(x:number,y:number){
-        this.rectDungeon.changeRoomIsFound (x, y);
-        this.rectDungeon.changeRoomIsFound (x + 1, y);
-        this.rectDungeon.changeRoomIsFound (x - 1, y);
-        this.rectDungeon.changeRoomIsFound (x, y + 1);
-        this.rectDungeon.changeRoomIsFound (x, y - 1);
+    changeRoomsIsFound(x: number, y: number) {
+        this.rectDungeon.changeRoomIsFound(x, y);
+        this.rectDungeon.changeRoomIsFound(x + 1, y);
+        this.rectDungeon.changeRoomIsFound(x - 1, y);
+        this.rectDungeon.changeRoomIsFound(x, y + 1);
+        this.rectDungeon.changeRoomIsFound(x, y - 1);
     }
-    
-    
-    getCurrentMapData():MapData{
-        return this.rooms[this.currentRectRoom.roomType-1]
+
+
+    getCurrentMapData(): MapData {
+        return this.currentRectRoom.map;
     }
-    
+
 
     loadMap() {
-        if (this.rooms&&this.rooms.length>0) {
+        if (this.rectDungeon.startRoom.map) {
             this.isloaded = true;
             return;
         }
@@ -83,7 +83,7 @@ export default class MapManager {
                         temparr = str.split('$');
                     }
                     if (temparr) {
-                        let a:MapData[] = new Array();
+                        let a: MapData[] = new Array();
                         for (let j = 0; j < temparr.length; j++) {
                             let tempstr = temparr[j];
                             a.push(new MapData(tempstr));
@@ -98,12 +98,17 @@ export default class MapManager {
         })
 
     }
-    resetRooms(){
-        if(this.allfileRooms&&this.allfileRooms[this.roomStrs[0]]){
-            this.rooms = new Array();
-            for(let i =0;i<this.roomStrs.length;i++){
-                let r = this.allfileRooms[this.roomStrs[i]]
-                this.rooms.push(r[Logic.getRandomNum(0,r.length-1)]);
+    resetRooms() {
+        if (this.allfileRooms && this.allfileRooms[this.roomStrs[0]]) {
+            for (let i = 0; i < this.rectDungeon.map.length; i++) {
+                for (let j = 0; j < this.rectDungeon.map[0].length; j++) {
+                    let room = this.rectDungeon.map[i][j];
+                    let index = room.roomType - 1;
+                    if (index >= 0) {
+                        let r = this.allfileRooms[this.roomStrs[index]]
+                        room.map = r[Logic.getRandomNum(0, r.length - 1)];
+                    }
+                }
             }
         }
     }

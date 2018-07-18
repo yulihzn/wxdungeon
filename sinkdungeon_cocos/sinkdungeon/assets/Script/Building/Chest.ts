@@ -20,6 +20,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Chest extends cc.Component {
 
+    rewards:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.CLOTHES_SHIRT,EquipmentManager.CLOTHES_VEST,EquipmentManager.HELMET_BUCKETHAT];
+
     @property(cc.SpriteFrame)
     openSpriteFrame: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
@@ -73,14 +75,14 @@ export default class Chest extends cc.Component {
         }
         this.isOpen = true;
 
-        let action = cc.sequence(cc.moveTo(0.1, 5, 0)
+        let action = cc.sequence(cc.moveTo(0.1, 5, 16)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 0, 0), cc.callFunc(() => {
                 this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.pos,null,this.quality);
+                        dungeon.addEquipment(this.rewards[Logic.getRandomNum(0,this.rewards.length-1)], this.pos,null,this.quality);
                     }
                 }
             }));

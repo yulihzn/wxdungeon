@@ -1,42 +1,50 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MeleeAttackReverse",
+  "_name": "MeleeAttackStab",
   "_objFlags": 0,
   "_rawFiles": null,
   "_duration": 0.25,
   "sample": 60,
-  "speed": 2,
+  "speed": 1,
   "wrapMode": "1",
   "curveData": {
     "paths": {
-      "sprite/weapon": {
+      "sprite/stabweapon": {
         "props": {
-          "rotation": [
+          "x": [
             {
               "frame": 0,
-              "value": 210
+              "value": 0
+            },
+            {
+              "frame": 0.08333333333333333,
+              "value": -16
             },
             {
               "frame": 0.16666666666666666,
-              "value": -30
+              "value": 8
+            },
+            {
+              "frame": 0.25,
+              "value": 0
             }
           ]
         }
       },
-      "sprite/meleelight": {
+      "sprite/stablight": {
         "comps": {
           "cc.Sprite": {
             "spriteFrame": [
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "318bed80-b551-4eef-8d2d-84c8ce9fe3e8"
+                  "__uuid__": "afaeccbf-4ccd-41ee-b5e6-8d077fb156dd"
                 }
               },
               {
-                "frame": 0.16666666666666666,
+                "frame": 0.18333333333333332,
                 "value": {
-                  "__uuid__": "05310cce-3ed7-4f3b-b7b9-c6eee0289955"
+                  "__uuid__": "45b01108-3018-4e61-9410-8e86c1c0aeed"
                 }
               }
             ]
@@ -50,11 +58,29 @@
             },
             {
               "frame": 0.08333333333333333,
-              "value": 255
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 128
             },
             {
               "frame": 0.25,
               "value": 0
+            }
+          ],
+          "x": [
+            {
+              "frame": 0,
+              "value": 32
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 48
+            },
+            {
+              "frame": 0.25,
+              "value": 48
             }
           ]
         }
@@ -69,7 +95,7 @@
           },
           {
             "frame": 0.16666666666666666,
-            "value": 70
+            "value": 40
           },
           {
             "frame": 0.25,
@@ -84,7 +110,7 @@
       "frame": 0.25,
       "func": "MeleeAttackFinish",
       "params": [
-        true
+        false
       ]
     }
   ]

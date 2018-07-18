@@ -20,7 +20,7 @@ export default class InventoryData {
     trousers:EquipmentData = new EquipmentData();
     gloves:EquipmentData = new EquipmentData();
     shoes:EquipmentData = new EquipmentData();
-    //初始速度200,最大速度500 跨度300
+    //初始速度300,最大速度600 跨度300
     getMoveSpeed(baseSpeed:number):number{
         let speed = 0;
         speed = this.weapon.moveSpeed+this.helmet.moveSpeed+this.clothes.moveSpeed

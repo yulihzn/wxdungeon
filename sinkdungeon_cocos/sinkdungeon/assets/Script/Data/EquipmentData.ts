@@ -31,5 +31,50 @@ export default class EquipmentData{
     color:string  ='#ffffff';
     titlecolor:string = '#ffffff';
     img:string = 'emptyequipment';
-    
+    public valueCopy(data:EquipmentData):EquipmentData{
+        let e = new EquipmentData();
+        this.nameCn = data.nameCn;
+        this.nameEn = data.nameEn;
+        this.equipmetType = data.equipmetType;
+        this.equipmetTypeCn  =data.equipmetTypeCn;
+        this.prefix = data.prefix;
+        this.desc = data.desc;
+        this.damageMin = data.damageMin;
+        this.damageMax = data.damageMax;
+        this.criticalStrikeRate = data.criticalStrikeRate;
+        this.defence = data.defence;
+        this.lifeDrain = data.lifeDrain;
+        this.lifeRecovery = data.lifeRecovery;
+        this.moveSpeed = data.moveSpeed;
+        this.attackSpeed = data.attackSpeed;
+        this.dodge = data.dodge;
+        this.health = data.health;
+        this.color  =data.color;
+        this.titlecolor = data.titlecolor;
+        this.img = data.img;
+        return e;
+    }
+    public clone():EquipmentData{
+        let e = new EquipmentData();
+        e.nameCn = this.nameCn;
+        e.nameEn = this.nameEn;
+        e.equipmetType = this.equipmetType;
+        e.equipmetTypeCn  =this.equipmetTypeCn;
+        e.prefix = this.prefix;
+        e.desc = this.desc;
+        e.damageMin = this.damageMin;
+        e.damageMax = this.damageMax;
+        e.criticalStrikeRate = this.criticalStrikeRate;
+        e.defence = this.defence;
+        e.lifeDrain = this.lifeDrain;
+        e.lifeRecovery = this.lifeRecovery;
+        e.moveSpeed = this.moveSpeed;
+        e.attackSpeed = this.attackSpeed;
+        e.dodge = this.dodge;
+        e.health = this.health;
+        e.color  =this.color;
+        e.titlecolor = this.titlecolor;
+        e.img = this.img;
+        return e;
+    }
 }

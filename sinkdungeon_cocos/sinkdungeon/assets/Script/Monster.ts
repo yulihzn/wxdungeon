@@ -273,7 +273,7 @@ export default class Monster extends cc.Component {
         dirArr.sort(() => {
             return 0.5 - Math.random();
         })
-        //获取没有塌陷且没有其他怪物和障碍的tile
+        //获取没有塌陷且没有其他怪物的tile
         let goodArr = new Array();
         for (let i = 0; i < dirArr.length; i++) {
             let newPos = dirArr[i];
@@ -290,10 +290,10 @@ export default class Monster extends cc.Component {
                 if (w && w.node.active) {
                     hasOther = true;
                 }
-                let trap = dungeon.trapmap[newPos.x][newPos.y]
-                if (trap && trap.node.active) {
-                    hasOther = true;
-                }
+                // let trap = dungeon.trapmap[newPos.x][newPos.y]
+                // if (trap && trap.node.active) {
+                //     hasOther = true;
+                // }
                 if (!hasOther) {
                     goodArr.push(newPos);
                 }

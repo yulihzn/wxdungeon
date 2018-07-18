@@ -178,7 +178,8 @@ export default class EquipmentManager extends cc.Component {
             equipment.refresh(equipData);
         } else {
             //添加新装备
-            let data = Logic.equipments[equipType];
+            let data = new EquipmentData();
+            data.valueCopy(Logic.equipments[equipType]);
             let desc = this.getRandomDesc(data,chestQuality);
             data.criticalStrikeRate = desc.criticalStrikeRate;
             data.damageMin += desc.damageMin;

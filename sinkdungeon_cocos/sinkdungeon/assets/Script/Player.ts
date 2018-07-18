@@ -33,14 +33,16 @@ export default class Player extends cc.Component {
 
     @property(cc.Node)
     meleeWeaponNode: cc.Node = null;
-    meleeWeapon:MeleeWeapon = null;
+    meleeWeapon: MeleeWeapon = null;
     @property(cc.Node)
     shooterNode: cc.Node = null;
-    shooter:Shooter = null;
+    shooter: Shooter = null;
     private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
     weaponLightSprite: cc.Sprite = null;
+    weaponStabSprite: cc.Sprite = null;
+    weaponStabLightSprite: cc.Sprite = null;
     helmetSprite: cc.Sprite = null;
     clothesSprite: cc.Sprite = null;
     trousersSprite: cc.Sprite = null;
@@ -64,6 +66,8 @@ export default class Player extends cc.Component {
     attackTarget: cc.Collider;
     rigidbody: cc.RigidBody;
 
+    defaultPos = cc.v2(0, 0);
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -82,8 +86,12 @@ export default class Player extends cc.Component {
             .getChildByName('hair').getComponent(cc.Sprite);
         this.weaponSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
             .getChildByName('weapon').getComponent(cc.Sprite);
-            this.weaponLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
+        this.weaponLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
             .getChildByName('meleelight').getComponent(cc.Sprite);
+        this.weaponStabSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
+            .getChildByName('stabweapon').getComponent(cc.Sprite);
+        this.weaponStabLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
+            .getChildByName('stablight').getComponent(cc.Sprite);
         this.helmetSprite = this.sprite.getChildByName('body')
             .getChildByName('helmet').getComponent(cc.Sprite);
         this.clothesSprite = this.sprite.getChildByName('body')
@@ -109,6 +117,7 @@ export default class Player extends cc.Component {
             , (event) => { this.takeDamage(event.detail.damage) });
 
         this.pos = Logic.playerData.pos;
+        this.defaultPos = Logic.playerData.pos.clone();
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);
@@ -120,10 +129,14 @@ export default class Player extends cc.Component {
 
     changeEquipment(equipType: string, spriteFrame: cc.SpriteFrame) {
         switch (equipType) {
-            case 'weapon': this.weaponSprite.spriteFrame = spriteFrame;
+            case 'weapon':
+                this.weaponSprite.spriteFrame = spriteFrame;
+                this.weaponStabSprite.spriteFrame = null;
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
                 this.weaponSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color1;
+                this.weaponStabSprite.node.color = color1;
+                this.weaponStabLightSprite.node.color = color1;
                 break;
             case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
                 this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
@@ -169,19 +182,19 @@ export default class Player extends cc.Component {
     }
 
     meleeAttack() {
-        if(this.isAttacking||!this.meleeWeapon){
+        if (this.isAttacking || !this.meleeWeapon) {
             return;
         }
         this.isAttacking = true;
         let pos = this.meleeWeapon.getHv().clone();
-        if(pos.equals(cc.Vec2.ZERO)){
-            pos = cc.v2(1,0);
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
         }
         pos = pos.normalizeSelf().mul(5);
         let speed = this.inventoryData.getAttackSpeed();
-        let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y),cc.callFunc(()=>{
-            setTimeout(()=>{this.isAttacking = false;},speed);
-        },this));
+        let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
+            setTimeout(() => { this.isAttacking = false; }, speed);
+        }, this));
         this.node.runAction(action);
         this.meleeWeapon.attack();
         // if (this.isAttacking || this.isDied) {
@@ -198,7 +211,7 @@ export default class Player extends cc.Component {
         let currentTime = Date.now();
         if (currentTime - this.remoteRate > 1000) {
             this.remoteRate = currentTime;
-            if(this.shooter){
+            if (this.shooter) {
                 this.shooter.fireBullet();
             }
         }
@@ -208,7 +221,7 @@ export default class Player extends cc.Component {
         if (this.isDied || this.isFall) {
             return;
         }
-        if (this.isAttacking&& !pos.equals(cc.Vec2.ZERO)) {
+        if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
@@ -227,7 +240,7 @@ export default class Player extends cc.Component {
         let mul = absh > absv ? absh : absv;
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
-        let speed = this.inventoryData.getMoveSpeed(200);
+        let speed = this.inventoryData.getMoveSpeed(300);
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
@@ -241,6 +254,7 @@ export default class Player extends cc.Component {
         } else {
             if (this.anim.getAnimationState('PlayerWalk').isPlaying) {
                 this.anim.play('PlayerIdle');
+                this.trousersSprite.spriteFrame = Logic.spriteFrames['trousers002'];
             }
         }
 
@@ -305,7 +319,7 @@ export default class Player extends cc.Component {
         this.anim.play('PlayerFall');
         this.isAttacking = false;
         setTimeout(() => {
-            this.transportPlayer(cc.v2(4, 4));
+            this.transportPlayer(this.defaultPos);
             this.anim.play('PlayerIdle');
             this.takeDamage(1);
             this.isFall = false;
@@ -365,7 +379,7 @@ export default class Player extends cc.Component {
         return false;
     }
     update(dt) {
-        
+
         if (this.isRecoveryTimeDelay(dt)) {
             let re = this.inventoryData.getRecovery();
             if (re > 0) {
@@ -387,7 +401,7 @@ export default class Player extends cc.Component {
 
     }
     Attacking() {
-        
+
 
         let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
         //生命汲取

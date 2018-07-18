@@ -27,6 +27,7 @@ export default class MeleeWeapon extends cc.Component {
     private anim: cc.Animation;
     private isAttacking: boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);
+    isStab = true;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -45,7 +46,11 @@ export default class MeleeWeapon extends cc.Component {
         }
         this.isAttacking = true;
         if (this.anim) {
-            this.isReverse ? this.anim.play("MeleeAttackReverse") : this.anim.play("MeleeAttack");
+            if(this.isStab){
+                this.anim.play("MeleeAttackStab");
+            }else{
+                this.isReverse ? this.anim.play("MeleeAttackReverse") : this.anim.play("MeleeAttack");
+            }
         }
 
     }
@@ -64,7 +69,7 @@ export default class MeleeWeapon extends cc.Component {
 
     update(dt) {
 
-        if (this.hv.x != 0 || this.hv.y != 0) {
+        if ((this.hv.x != 0 || this.hv.y != 0)&&!this.isAttacking) {
             this.node.position = cc.v2(21, 43);
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);

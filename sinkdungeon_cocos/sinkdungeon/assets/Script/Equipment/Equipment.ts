@@ -33,7 +33,7 @@ export default class Equipment extends cc.Component {
         this.sprite = this.node.getChildByName('sprite');
     }
     refresh(data:EquipmentData){
-        this.data = data;
+        this.data.valueCopy(data);
         this.equipmentDialog.refreshDialog(this.data);
         cc.loader.loadRes('Texture/Equipment/'+this.data.img,cc.SpriteFrame,(eror:Error,spriteFrame:cc.SpriteFrame)=>{
             spriteFrame.getTexture().setAliasTexParameters();

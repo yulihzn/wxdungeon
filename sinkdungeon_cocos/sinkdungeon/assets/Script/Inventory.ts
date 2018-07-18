@@ -109,10 +109,10 @@ export default class NewClass extends cc.Component {
         if (equipmentData.equipmetType == equipDataNew.equipmetType) {
             let p = this.player.getComponent(Player).pos;
             let pos = cc.v2(p.x,p.y);
-            if(pos.y>=8){
-                pos.y -= 1;
+            if(pos.y<0){
+                pos.y += 1;
             }else{
-                pos.y+=1;
+                pos.y-=1;
             }
             if(isChange){
                 cc.director.emit(EventConstant.DUNGEON_SETEQUIPMENT
@@ -130,32 +130,32 @@ export default class NewClass extends cc.Component {
             case 'weapon':this.weapon.spriteFrame = spriteFrame;
             this.weapon.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.weapon,isChange);
-            this.inventoryData.weapon = equipmentDataNew;
+            this.inventoryData.weapon.valueCopy(equipmentDataNew);
             break;
             case 'helmet':this.helmet.spriteFrame = spriteFrame;
             this.helmet.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.helmet,isChange);
-            this.inventoryData.helmet = equipmentDataNew;
+            this.inventoryData.helmet.valueCopy(equipmentDataNew);
             break;
             case 'clothes':this.clothes.spriteFrame = spriteFrame;
             this.clothes.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.clothes,isChange);
-            this.inventoryData.clothes = equipmentDataNew;
+            this.inventoryData.clothes.valueCopy(equipmentDataNew);
             break;
             case 'trousers':this.trousers.spriteFrame = spriteFrame;
             this.trousers.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.trousers,isChange);
-            this.inventoryData.trousers = equipmentDataNew;
+            this.inventoryData.trousers.valueCopy(equipmentDataNew);
             break;
             case 'gloves':this.gloves.spriteFrame = spriteFrame;
             this.gloves.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.gloves,isChange);
-            this.inventoryData.gloves = equipmentDataNew;
+            this.inventoryData.gloves.valueCopy(equipmentDataNew);
             break;
             case 'shoes':this.shoes.spriteFrame = spriteFrame;
             this.shoes.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.shoes,isChange);
-            this.inventoryData.shoes = equipmentDataNew;
+            this.inventoryData.shoes.valueCopy(equipmentDataNew);
             break;
         }
         if(this.player){

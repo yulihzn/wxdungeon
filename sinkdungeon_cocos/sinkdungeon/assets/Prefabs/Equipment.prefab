@@ -3169,8 +3169,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 5,
-      "height": 22
+      "width": 32,
+      "height": 32
     },
     "_rotationX": 45,
     "_rotationY": 45,
@@ -3393,8 +3393,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 48,
+      "height": 48
     }
   },
   {

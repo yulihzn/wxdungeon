@@ -1,5 +1,6 @@
 import RectDoor from "./RectDoor";
 import Logic from "../Logic";
+import MapData from "../Data/MapData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,7 +37,8 @@ export default class RectRoom {
     isPrimary: boolean = false;
     x: number;
     y: number;
-    map: number[][];
+    // map: number[][];
+    map:MapData;
     enemyCount: number = 0;
     /// The Key 是否包含钥匙
     hasKey: boolean;
@@ -60,9 +62,9 @@ export default class RectRoom {
 
     private init(): void {
         this.state = RectRoom.STATE_SLEEP;
-        if (this.map == null) {
-            this.map = new Array();
-        }
+        // if (this.map == null) {
+        //     this.map = new Array();
+        // }
         if (this.doors == null) {
             this.doors = new Array(4);
             for (let i = 0; i < 4; i++) {
@@ -71,10 +73,10 @@ export default class RectRoom {
         }
         this.randomTiles = new Array();
         for (let i = 0; i < RectRoom.ROOM_WIDTH; i++) {
-            this.map[i] = new Array(i);
+            // this.map[i] = new Array(i);
             this.randomTiles = new Array(i);
             for (let j = 0; j < RectRoom.ROOM_HEIGHT; j++) {
-                this.map[i][j] = 0;
+                // this.map[i][j] = 0;
                 this.randomTiles.push(cc.v2(i, j));
             }
         }
