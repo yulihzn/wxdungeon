@@ -40,6 +40,9 @@ export default class Logic extends cc.Component {
         //关闭调试
         cc.director.setDisplayStats(false);
         cc.game.addPersistRootNode(this.node);
+        let manager = cc.director.getCollisionManager();
+        manager.enabled = true;
+        manager.enabledDebugDraw = true;
         cc.director.getPhysicsManager().enabled = true;
     //     cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
     // cc.PhysicsManager.DrawBits.e_pairBit |

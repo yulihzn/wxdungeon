@@ -14,10 +14,12 @@ import HealthBar from './HealthBar';
 import Logic from './Logic';
 import MonsterData from './Data/MonsterData';
 import Dungeon from './Dungeon';
+import MonsterManager from './Manager/MonsterManager';
+import Shooter from './Shooter';
 
 @ccclass
 export default class Monster extends cc.Component {
-
+    
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(0, 0);
     @property(cc.Label)
@@ -35,7 +37,7 @@ export default class Monster extends cc.Component {
     private timeDelay = 0;
     data: MonsterData = new MonsterData();
     dungeon: Dungeon;
-
+    shooter: Shooter = null;
 
     onLoad() {
         this.isAttacking = false;
@@ -43,6 +45,7 @@ export default class Monster extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.rigidbody = this.getComponent(cc.RigidBody);
+        this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.updatePlayerPos();
     }
 
@@ -102,31 +105,15 @@ export default class Monster extends cc.Component {
         let dis = cc.pDistance(this.node.position, playerNode.position);
         return dis;
     }
-    // attack(dir, finish) {
-    //     if (this.isMoving || this.isDied) {
-    //         return;
-    //     }
-    //     let x = 0;
-    //     let y = 0;
-    //     switch (dir) {
-    //         case 0: y += 32; break;
-    //         case 1: y -= 32; break;
-    //         case 2: x -= 32; break;
-    //         case 3: x += 32; break;
-    //         case 4: break;
-    //     }
-    //     let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
-    //         if (finish) { finish(this.data.attackPoint); }
-    //     }), cc.moveTo(0.1, 0, 0));
-    //     this.sprite.runAction(action);
-    // }
-    move(dir: number, pos: cc.Vec2) {
+    
+    move(dir: number, pos: cc.Vec2,speed:number) {
         if (this.isDied || this.isFall) {
             return;
         }
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
+        
         if (!pos.equals(cc.Vec2.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
@@ -138,7 +125,6 @@ export default class Monster extends cc.Component {
         let mul = absh > absv ? absh : absv;
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
-        let speed = 100;
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
@@ -210,6 +196,7 @@ export default class Monster extends cc.Component {
         this.node.position = Dungeon.fixOuterMap(this.node.position);
         this.dungeon = dungeon;
         this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.changeZIndex();
         this.rigidbody.linearVelocity = cc.v2(0, 0);
         let dir = this.getMonsterBestDir(this.pos, dungeon);
         let newPos = cc.v2(this.pos.x, this.pos.y);
@@ -230,12 +217,26 @@ export default class Monster extends cc.Component {
             });
         } else {
             let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
+            let speed = 100;
             if (playerDis < 200) {
                 pos = dungeon.player.node.position.sub(this.node.position);
+                if(this.data.monsterType==MonsterManager.TYPE_DASH){
+                    speed = 500;
+                }
             }
+            if (playerDis < 400&&this.data.monsterType==MonsterManager.TYPE_REMOTE) {
+                let hv = dungeon.player.node.position.sub(this.node.position);
+                if (this.shooter && !hv.equals(cc.Vec2.ZERO)) {
+                    hv = hv.normalizeSelf();
+                    this.shooter.setHv(hv);
+                    this.shooter.dungeon = dungeon;
+                    this.shooter.fireBullet();
+                }
+            }
+            
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
-                this.move(dir, pos);
+                this.move(dir, pos,speed);
             }
         }
 

@@ -4515,8 +4515,8 @@
     },
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": 1.5,
+    "_scaleY": 1.5,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 450,
@@ -5004,7 +5004,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 750
+      "y": 748
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6620,17 +6620,11 @@
     "bullet": {
       "__uuid__": "9b7e3d95-b29c-4799-b1e8-03d2f32dba55"
     },
-    "meleeBullet": {
-      "__uuid__": "93afc79c-21b2-482c-b5a1-9d242bbabb0b"
-    },
     "auto": false,
     "isAI": false,
     "frequency": 1,
     "dungeon": {
       "__id__": 168
-    },
-    "shooterParent": {
-      "__id__": 170
     },
     "player": {
       "__id__": 169
@@ -7033,7 +7027,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "26014ee2-fcc5-4d75-ab94-3678d4423eda"
+      "__uuid__": "76f67806-5fed-4c01-b48c-3bc2e3ea3e77"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -7124,7 +7118,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "afaeccbf-4ccd-41ee-b5e6-8d077fb156dd"
+      "__uuid__": "45b01108-3018-4e61-9410-8e86c1c0aeed"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -7319,7 +7313,7 @@
     "_size": {
       "__type__": "cc.Size",
       "width": 32,
-      "height": 16
+      "height": 32
     }
   },
   {

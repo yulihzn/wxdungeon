@@ -20,7 +20,9 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Chest extends cc.Component {
 
-    rewards:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.CLOTHES_SHIRT,EquipmentManager.CLOTHES_VEST,EquipmentManager.HELMET_BUCKETHAT];
+    rewards:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.CLOTHES_SHIRT
+        ,EquipmentManager.CLOTHES_VEST,EquipmentManager.HELMET_BUCKETHAT
+    ,EquipmentManager.WEAPON_PITCHFORK];
 
     @property(cc.SpriteFrame)
     openSpriteFrame: cc.SpriteFrame = null;

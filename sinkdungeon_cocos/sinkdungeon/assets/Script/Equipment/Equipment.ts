@@ -15,66 +15,65 @@ import Player from "../Player";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Equipment extends cc.Component {
-    data:EquipmentData = new EquipmentData();
-    anim:cc.Animation;
+    data: EquipmentData = new EquipmentData();
+    anim: cc.Animation;
     private sprite: cc.Node;
     @property(EquipmentDialog)
-    equipmentDialog:EquipmentDialog = null;
-    pos:cc.Vec2 = cc.v2(0,0);
+    equipmentDialog: EquipmentDialog = null;
+    pos: cc.Vec2 = cc.v2(0, 0);
     isTaken = false;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.isTaken = false;
         this.sprite = this.node.getChildByName('sprite');
     }
-    refresh(data:EquipmentData){
+    refresh(data: EquipmentData) {
         this.data.valueCopy(data);
         this.equipmentDialog.refreshDialog(this.data);
-        cc.loader.loadRes('Texture/Equipment/'+this.data.img,cc.SpriteFrame,(eror:Error,spriteFrame:cc.SpriteFrame)=>{
-            spriteFrame.getTexture().setAliasTexParameters();
-            this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            this.sprite.width = spriteFrame.getRect().width;
-            this.sprite.height = spriteFrame.getRect().height;
-            let color = cc.color(255,255,255).fromHEX(this.data.color);
-            this.sprite.color = color;
+        let spriteFrame = Logic.spriteFrames[this.data.img];
+        this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        this.sprite.width = spriteFrame.getRect().width;
+        this.sprite.height = spriteFrame.getRect().height;
+        let color = cc.color(255, 255, 255).fromHEX(this.data.color);
+        this.sprite.color = color;
 
-        })
+
     }
 
-    start () {
+    start() {
         Logic.setAlias(this.node);
         this.anim = this.getComponent(cc.Animation);
     }
-    onEnable(){
-        
+    onEnable() {
+
     }
-    taken(){
+    taken() {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
-        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT,{equipData:this.data})
+        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT, { equipData: this.data })
         this.node.getChildByName('shadow').active = false;
         this.equipmentDialog.node.active = false;
-        setTimeout(()=>{
-            if(this.node){
+        setTimeout(() => {
+            if (this.node) {
                 this.destroy();
             }
-        },1000);
-        
+        }, 1000);
+
     }
-    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         let player = otherCollider.body.node.getComponent(Player);
-        if(player){
+        if (player) {
             this.equipmentDialog.showDialog();
         }
     }
-    onEndContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+    onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         let player = otherCollider.body.node.getComponent(Player);
-        if(player){
+        if (player) {
             this.equipmentDialog.hideDialog();
         }
     }

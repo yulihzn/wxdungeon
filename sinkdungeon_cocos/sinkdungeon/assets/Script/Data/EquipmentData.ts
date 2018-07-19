@@ -31,6 +31,7 @@ export default class EquipmentData{
     color:string  ='#ffffff';
     titlecolor:string = '#ffffff';
     img:string = 'emptyequipment';
+    stab = 0;
     public valueCopy(data:EquipmentData):EquipmentData{
         let e = new EquipmentData();
         this.nameCn = data.nameCn;
@@ -52,6 +53,7 @@ export default class EquipmentData{
         this.color  =data.color;
         this.titlecolor = data.titlecolor;
         this.img = data.img;
+        this.stab = data.stab;
         return e;
     }
     public clone():EquipmentData{
@@ -75,6 +77,7 @@ export default class EquipmentData{
         e.color  =this.color;
         e.titlecolor = this.titlecolor;
         e.img = this.img;
+        e.stab = this.stab;
         return e;
     }
 }

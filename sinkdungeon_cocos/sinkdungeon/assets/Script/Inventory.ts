@@ -160,7 +160,7 @@ export default class NewClass extends cc.Component {
         }
         if(this.player){
             this.player.getComponent(Player).inventoryData = this.inventoryData;
-            this.player.getComponent(Player).changeEquipment(equipmentDataNew.equipmetType,spriteFrame)
+            this.player.getComponent(Player).changeEquipment(equipmentDataNew,spriteFrame)
         }
     }
 

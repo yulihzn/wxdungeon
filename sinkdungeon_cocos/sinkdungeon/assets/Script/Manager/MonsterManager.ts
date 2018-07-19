@@ -16,6 +16,10 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class MonsterManager extends cc.Component {
+    static readonly TYPE_COMBAT = 0;//近战
+    static readonly TYPE_REMOTE = 1;//远程
+    static readonly TYPE_DASH = 2;//冲刺
+    static readonly TYPE_BOSS = 3;//Boss
     public static readonly MONSTER_SLIME = 'monster000';
     public static readonly MONSTER_GOBLIN = 'monster001';
 	public static readonly MONSTER_MUMMY = 'monster002';
@@ -51,13 +55,13 @@ export default class MonsterManager extends cc.Component {
         let monster = monsterPrefab.getComponent(Monster);
         let data = new MonsterData();
         switch (resName) {
-            case MonsterManager.MONSTER_SLIME: data.updateHA(666,666,1); break;
-			case MonsterManager.MONSTER_GOBLIN: data.updateHA(1,1,1); break;
-			case MonsterManager.MONSTER_MUMMY: data.updateHA(2,2,2); break;
-            case MonsterManager.MONSTER_ANUBIS: data.updateHA(3,3,3); break;
-            case MonsterManager.MONSTER_PIRATE: data.updateHA(2,2,2); break;
-            case MonsterManager.MONSTER_SAILOR: data.updateHA(1,1,1); break;
-            case MonsterManager.MONSTER_OCTOPUS: data.updateHA(10,10,2); break;
+            case MonsterManager.MONSTER_SLIME: data.updateHAT(5,5,1,MonsterManager.TYPE_DASH); break;
+			case MonsterManager.MONSTER_GOBLIN: data.updateHAT(1,1,1,MonsterManager.TYPE_COMBAT); break;
+			case MonsterManager.MONSTER_MUMMY: data.updateHAT(2,2,2,MonsterManager.TYPE_COMBAT); break;
+            case MonsterManager.MONSTER_ANUBIS: data.updateHAT(3,3,3,MonsterManager.TYPE_COMBAT); break;
+            case MonsterManager.MONSTER_PIRATE: data.updateHAT(2,2,2,MonsterManager.TYPE_COMBAT); break;
+            case MonsterManager.MONSTER_SAILOR: data.updateHAT(1,1,1,MonsterManager.TYPE_COMBAT); break;
+            case MonsterManager.MONSTER_OCTOPUS: data.updateHAT(10,10,2,MonsterManager.TYPE_REMOTE); break;
         }
         monster.changeBodyRes(resName);
         monster.data = data;
@@ -71,7 +75,7 @@ export default class MonsterManager extends cc.Component {
         krakenPrefab.parent = parent;
         let kraken = krakenPrefab.getComponent(Kraken);
         let data = new MonsterData();
-        data.updateHA(20,20,2);
+        data.updateHAT(20,20,2,MonsterManager.TYPE_BOSS);
         kraken.data = data;
         kraken.transportPlayer(4,5);
         kraken.node.active = true;

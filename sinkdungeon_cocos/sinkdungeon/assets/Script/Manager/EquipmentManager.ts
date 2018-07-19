@@ -20,6 +20,7 @@ const { ccclass, property } = cc._decorator;
 export default class EquipmentManager extends cc.Component {
     public static readonly EMPTY = "emptyequipment";
     public static readonly WEAPON_KNIFE = "weapon001";
+    public static readonly WEAPON_PITCHFORK = "weapon004";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
     public static readonly HELMET_BUCKETHAT = "helmet002";

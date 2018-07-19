@@ -32,24 +32,6 @@
         }
       },
       "sprite/stablight": {
-        "comps": {
-          "cc.Sprite": {
-            "spriteFrame": [
-              {
-                "frame": 0,
-                "value": {
-                  "__uuid__": "afaeccbf-4ccd-41ee-b5e6-8d077fb156dd"
-                }
-              },
-              {
-                "frame": 0.18333333333333332,
-                "value": {
-                  "__uuid__": "45b01108-3018-4e61-9410-8e86c1c0aeed"
-                }
-              }
-            ]
-          }
-        },
         "props": {
           "opacity": [
             {

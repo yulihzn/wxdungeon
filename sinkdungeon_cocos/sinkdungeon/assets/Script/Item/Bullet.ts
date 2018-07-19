@@ -76,6 +76,9 @@ export default class Bullet extends cc.Component {
         if(this.isFromPlayer && otherCollider.body.node.name == 'Player'){
             isDestory = false;
         }
+        if(!this.isFromPlayer && otherCollider.body.node.name == 'Monster'){
+            isDestory = false;
+        }
         if(otherCollider.sensor){
             isDestory = false;
         }
@@ -83,29 +86,44 @@ export default class Bullet extends cc.Component {
             isDestory = false;
         }
         if(isDestory){
-            this.attacking(otherCollider);
-            if(!this.isMelee){
-                cc.director.emit('destorybullet',{bulletNode:this.node});
-            }
+            cc.director.emit('destorybullet',{bulletNode:this.node});
         }
     }
-    attacking(attackTarget:cc.PhysicsCollider) {
+    onCollisionEnter(other:cc.Collider,self:cc.Collider) {
+        let isAttack = true;
+        if(this.isFromPlayer && other.node.name == 'Player'){
+            isAttack = false;
+        }
+        if(!this.isFromPlayer && other.node.name == 'Monster'){
+            isAttack = false;
+        }
+        if(isAttack){
+            this.attacking(other.node);
+        }
+    }
+    attacking(attackTarget:cc.Node) {
         if (!attackTarget) {
             return;
         }
         let damage = this.damage;
-        
-        let monster = attackTarget.body.node.getComponent(Monster);
+        let isDestory = false;
+        let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             monster.takeDamage(damage);
+            isDestory = true;
         }
-        let player = attackTarget.body.node.getComponent(Player);
+        let player = attackTarget.getComponent(Player);
         if (player && !player.isDied) {
             player.takeDamage(damage);
+            isDestory = true;
         }
-        let kraken = attackTarget.body.node.getComponent(Kraken);
+        let kraken = attackTarget.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
             kraken.takeDamage(damage, cc.v2(0, 0));
+            isDestory = true;
+        }
+        if(isDestory){
+            cc.director.emit('destorybullet',{bulletNode:this.node});
         }
     }
   

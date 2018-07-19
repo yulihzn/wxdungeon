@@ -127,11 +127,18 @@ export default class Player extends cc.Component {
         this.playerItemSprite.spriteFrame = spriteFrame;
     }
 
-    changeEquipment(equipType: string, spriteFrame: cc.SpriteFrame) {
-        switch (equipType) {
+    changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+        switch (equipData.equipmetType) {
             case 'weapon':
+            this.meleeWeapon.isStab = equipData.stab==1;
+            if(equipData.stab==1){
+                this.weaponSprite.spriteFrame = null;
+                this.weaponStabSprite.spriteFrame = spriteFrame;
+                this.weaponStabLightSprite.spriteFrame = Logic.spriteFrames['stablight'];
+            }else{
                 this.weaponSprite.spriteFrame = spriteFrame;
                 this.weaponStabSprite.spriteFrame = null;
+            }
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
                 this.weaponSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color1;

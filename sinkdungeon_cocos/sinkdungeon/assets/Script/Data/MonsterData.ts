@@ -17,9 +17,11 @@ export default class MonsterData{
     maxHealth:number=0;
     attackPoint:number=0;
     pos:cc.Vec2 = cc.v2(0,0);
-    updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
+    monsterType:number = 0;
+    updateHAT(currentHealth:number,maxHealth:number,attackPoint:number,monsterType:number){
         this.currentHealth = currentHealth;
         this.maxHealth = maxHealth;
         this.attackPoint = attackPoint;
+        this.monsterType = monsterType;
     }
 }
