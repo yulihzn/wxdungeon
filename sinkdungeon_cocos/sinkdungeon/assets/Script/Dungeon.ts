@@ -233,6 +233,7 @@ export default class Dungeon extends cc.Component {
         //激活
         monster.node.active = true;
         monster.pos = pos;
+        monster.node.position = Dungeon.getPosInMap(pos);
         this.monsters.push(monster);
     }
     //获取地图里下标的坐标

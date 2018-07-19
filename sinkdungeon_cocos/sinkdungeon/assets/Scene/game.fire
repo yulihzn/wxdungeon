@@ -7308,12 +7308,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 8
+      "y": 32
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 32,
-      "height": 32
+      "height": 64
     }
   },
   {

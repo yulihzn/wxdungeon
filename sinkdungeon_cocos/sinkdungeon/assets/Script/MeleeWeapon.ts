@@ -25,7 +25,7 @@ export default class MeleeWeapon extends cc.Component {
 
     private isReverse = false;
     private anim: cc.Animation;
-    private isAttacking: boolean = false;
+    isAttacking: boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);
     isStab = true;
 
@@ -98,13 +98,15 @@ export default class MeleeWeapon extends cc.Component {
         this.attacking(other);
     }
     beatBack(node: cc.Node) {
+        let rigidBody:cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.getHv().clone();
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        pos = pos.normalizeSelf().mul(64);
+        pos = pos.normalizeSelf().mul(640);
         let action = cc.moveBy(0.1, pos.x, pos.y);
-        node.runAction(action);
+        // node.runAction(action);
+        rigidBody.applyLinearImpulse(pos,rigidBody.getLocalCenter(),true);
 
     }
     attacking(attackTarget: cc.Collider) {

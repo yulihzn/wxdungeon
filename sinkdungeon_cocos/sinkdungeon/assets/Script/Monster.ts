@@ -38,6 +38,7 @@ export default class Monster extends cc.Component {
     data: MonsterData = new MonsterData();
     dungeon: Dungeon;
     shooter: Shooter = null;
+    isHurt = false;
 
     onLoad() {
         this.isAttacking = false;
@@ -107,7 +108,8 @@ export default class Monster extends cc.Component {
     }
     
     move(dir: number, pos: cc.Vec2,speed:number) {
-        if (this.isDied || this.isFall) {
+        if (this.isDied || this.isFall || this.isHurt) {
+            this.isHurt = false;
             return;
         }
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
@@ -170,6 +172,7 @@ export default class Monster extends cc.Component {
         this.anim.play('PlayerFall');
     }
     takeDamage(damage: number) {
+        this.isHurt = true;
         this.data.currentHealth -= damage;
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
@@ -197,7 +200,6 @@ export default class Monster extends cc.Component {
         this.dungeon = dungeon;
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
-        this.rigidbody.linearVelocity = cc.v2(0, 0);
         let dir = this.getMonsterBestDir(this.pos, dungeon);
         let newPos = cc.v2(this.pos.x, this.pos.y);
         switch (dir) {
@@ -217,7 +219,7 @@ export default class Monster extends cc.Component {
             });
         } else {
             let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
-            let speed = 100;
+            let speed = 200;
             if (playerDis < 200) {
                 pos = dungeon.player.node.position.sub(this.node.position);
                 if(this.data.monsterType==MonsterManager.TYPE_DASH){
@@ -325,7 +327,7 @@ export default class Monster extends cc.Component {
         }
         if (this.dungeon) {
             let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-            if (playerDis < 64) {
+            if (playerDis < 64 && !this.isHurt) {
                 this.rigidbody.linearVelocity = cc.v2(0, 0);
             }
         }

@@ -2,6 +2,7 @@ import { EventConstant } from "../EventConstant";
 import Monster from "../Monster";
 import Player from "../Player";
 import Kraken from "../Boss/Kraken";
+import MeleeWeapon from "../MeleeWeapon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -120,6 +121,10 @@ export default class Bullet extends cc.Component {
         let kraken = attackTarget.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
             kraken.takeDamage(damage, cc.v2(0, 0));
+            isDestory = true;
+        }
+        let meleeWeapon:MeleeWeapon = attackTarget.getComponent(MeleeWeapon);
+        if(meleeWeapon&&meleeWeapon.isAttacking){
             isDestory = true;
         }
         if(isDestory){

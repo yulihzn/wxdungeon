@@ -26,6 +26,7 @@ export default class Trap extends cc.Component {
     pos:cc.Vec2 = cc.v2(0,0);
     private sprite: cc.Node;
     private timeDelay = 0;
+    isPlayerIn = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -60,10 +61,22 @@ export default class Trap extends cc.Component {
     
     onCollisionStay(other:cc.Collider,self:cc.Collider){
         if(other.tag == 3){
-            if(this.isOpen){
+            if(this.isOpen && this.isPlayerIn){
                 this.isOpen = false;
                 cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:1});
             }
+        }
+    }
+    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+        let player = otherCollider.body.node.getComponent(Player);
+        if(player){
+            this.isPlayerIn = true;
+        }
+    }
+    onEndContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+        let player = otherCollider.body.node.getComponent(Player);
+        if(player){
+            this.isPlayerIn = false;
         }
     }
 
