@@ -7885,7 +7885,7 @@
       }
     ],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": null,
     "_id": "0eQaUGghZBHrs9/7zSPLaX",
@@ -8971,7 +8971,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -592,
+      "x": 592,
       "y": 289
     },
     "_skewX": 0,
@@ -13484,6 +13484,9 @@
       },
       {
         "__uuid__": "67016970-41b3-477a-b3be-127fd9685d21"
+      },
+      {
+        "__uuid__": "7a1c0460-713f-4d33-a6ad-89ad427d662b"
       }
     ],
     "playOnLoad": true

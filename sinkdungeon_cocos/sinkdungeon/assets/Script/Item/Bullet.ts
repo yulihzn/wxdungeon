@@ -35,17 +35,24 @@ export default class Bullet extends cc.Component {
     rigidBody:cc.RigidBody;
     hv = cc.v2(0,0);
     isFromPlayer = false;
-    
+
+    sprite:cc.Node;
+    light:cc.Node;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
+        
     }
     onEnable(){
         this.tagetPos = cc.v2(0,0);
         this.rigidBody.linearVelocity = cc.v2(0,0);
+        this.sprite = this.node.getChildByName('sprite');
+        this.sprite.opacity = 255;
+        this.light = this.node.getChildByName('light');
+        this.light.opacity = 0;
     }
     //animation
     MeleeFinish(){
@@ -58,6 +65,10 @@ export default class Bullet extends cc.Component {
             this.anim.play(this.node.name+'Show');
         }
         this.fire(this.hv);
+    }
+    //animation
+    BulletDestory(){
+        cc.director.emit('destorybullet',{bulletNode:this.node});
     }
     fire(hv){
         if(!this.rigidBody){
@@ -74,10 +85,10 @@ export default class Bullet extends cc.Component {
         if(selfCollider.body.node.name==otherCollider.body.node.name){
             isDestory = false;
         }
-        if(this.isFromPlayer && otherCollider.body.node.name == 'Player'){
+        if(otherCollider.body.node.name == 'Player'){
             isDestory = false;
         }
-        if(!this.isFromPlayer && otherCollider.body.node.name == 'Monster'){
+        if(otherCollider.body.node.name == 'Monster'){
             isDestory = false;
         }
         if(otherCollider.sensor){
@@ -86,8 +97,9 @@ export default class Bullet extends cc.Component {
         if(otherCollider.tag==2){
             isDestory = false;
         }
-        if(isDestory){
-            cc.director.emit('destorybullet',{bulletNode:this.node});
+        if(isDestory&&this.anim){
+            this.rigidBody.linearVelocity = cc.v2(0,0);
+            this.anim.play("Bullet001Hit");
         }
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider) {
@@ -127,8 +139,9 @@ export default class Bullet extends cc.Component {
         if(meleeWeapon&&meleeWeapon.isAttacking){
             isDestory = true;
         }
-        if(isDestory){
-            cc.director.emit('destorybullet',{bulletNode:this.node});
+        if(isDestory&&this.anim){
+            this.rigidBody.linearVelocity = cc.v2(0,0);
+            this.anim.play("Bullet001Hit");
         }
     }
   

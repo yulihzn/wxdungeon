@@ -358,6 +358,9 @@ export default class Player extends cc.Component {
             }
             this.label.getComponent(cc.Animation).play('FontFloating');
         }
+        if(damage>0){
+            cc.director.emit(EventConstant.DUNGEON_SHAKEONCE);
+        }
         if (this.health.x < 1) {
             this.killed();
         }

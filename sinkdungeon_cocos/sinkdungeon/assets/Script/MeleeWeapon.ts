@@ -3,6 +3,7 @@ import Dungeon from "./Dungeon";
 import Player from "./Player";
 import Monster from "./Monster";
 import Kraken from "./Boss/Kraken";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -107,6 +108,7 @@ export default class MeleeWeapon extends cc.Component {
         let action = cc.moveBy(0.1, pos.x, pos.y);
         // node.runAction(action);
         rigidBody.applyLinearImpulse(pos,rigidBody.getLocalCenter(),true);
+        cc.director.emit(EventConstant.DUNGEON_SHAKEONCE);
 
     }
     attacking(attackTarget: cc.Collider) {

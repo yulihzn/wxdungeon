@@ -219,14 +219,14 @@ export default class Monster extends cc.Component {
             });
         } else {
             let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
-            let speed = 200;
+            let speed = 300;
             if (playerDis < 200) {
                 pos = dungeon.player.node.position.sub(this.node.position);
                 if(this.data.monsterType==MonsterManager.TYPE_DASH){
-                    speed = 500;
+                    speed = 600;
                 }
             }
-            if (playerDis < 400&&this.data.monsterType==MonsterManager.TYPE_REMOTE) {
+            if (playerDis < 600&&this.data.monsterType==MonsterManager.TYPE_REMOTE) {
                 let hv = dungeon.player.node.position.sub(this.node.position);
                 if (this.shooter && !hv.equals(cc.Vec2.ZERO)) {
                     hv = hv.normalizeSelf();

@@ -11,34 +11,50 @@
     "paths": {
       "sprite": {
         "props": {
-          "x": [
+          "opacity": [
             {
               "frame": 0,
               "value": 0
             }
-          ],
+          ]
+        }
+      },
+      "light": {
+        "props": {
           "scale": [
             {
               "frame": 0,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 5,
-                "y": 5
+                "x": 0,
+                "y": 0
               }
             },
             {
-              "frame": 0.5,
+              "frame": 0.16666666666666666,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 8,
-                "y": 8
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.5,
+                "y": 1.5
               }
             }
           ],
           "opacity": [
             {
               "frame": 0,
-              "value": 128
+              "value": 255
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 255
             },
             {
               "frame": 0.5,
@@ -49,5 +65,11 @@
       }
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 0.5,
+      "func": "BulletDestory",
+      "params": []
+    }
+  ]
 }

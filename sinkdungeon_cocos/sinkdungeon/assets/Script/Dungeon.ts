@@ -77,6 +77,11 @@ export default class Dungeon extends cc.Component {
         cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => {
             this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
         });
+        cc.director.on(EventConstant.DUNGEON_SHAKEONCE, (event) => {
+            if(this.anim){
+                this.anim.play('DungeonShakeOnce');
+            }
+        });
         
         this.fog.zIndex = 9000;
         this.monsterManager = this.getComponent(MonsterManager);
