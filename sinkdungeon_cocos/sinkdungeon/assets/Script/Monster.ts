@@ -158,8 +158,6 @@ export default class Monster extends cc.Component {
         }
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
-        let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
-        collider.sensor = false;
     }
     fall() {
         if (this.isFall) {
@@ -190,6 +188,13 @@ export default class Monster extends cc.Component {
         this.anim.play('PlayerDie');
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
+        if(Math.random()>0.8){
+            cc.director.emit(EventConstant.DUNGEON_ADD_COIN,{pos:this.node.position,count:Logic.getRandomNum(1,10)});
+        }else{
+            cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{pos:this.node.position});
+        }
+        setTimeout(()=>{this.node.active = false;},5000);
+        
     }
 
     monsterAction(dungeon: Dungeon) {

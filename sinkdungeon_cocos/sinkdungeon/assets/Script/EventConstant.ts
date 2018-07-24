@@ -16,6 +16,9 @@ export class EventConstant extends cc.Component{
     public static readonly LOADINGROOM= 'LOADINGROOM';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';
+    public static readonly HUD_ADD_COIN = 'HUD_ADD_COIN';
+    public static readonly DUNGEON_ADD_COIN = 'DUNGEON_ADD_COIN';
+    public static readonly DUNGEON_ADD_HEART = 'DUNGEON_ADD_HEART';
     public static eventHandler:cc.Node = new cc.Node();
     // LIFE-CYCLE CALLBACKS:
 

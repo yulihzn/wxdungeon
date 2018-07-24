@@ -17,6 +17,8 @@ import RectDoor from "./Rect/RectDoor";
 import RectRoom from "./Rect/RectRoom";
 import RectDungeon from "./Rect/RectDungeon";
 import Chest from "./Building/Chest";
+import ShopTable from "./Building/ShopTable";
+import CoinManger from "./Manager/CoinManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,6 +44,10 @@ export default class Dungeon extends cc.Component {
     chest: cc.Prefab = null;
     @property(cc.Prefab)
     heart: cc.Prefab = null;
+    @property(cc.Prefab)
+    shop: cc.Prefab = null;
+    @property(cc.Prefab)
+    shoptable: cc.Prefab = null;
     @property(Player)
     player: Player = null;
     @property(cc.Prefab)
@@ -53,7 +59,6 @@ export default class Dungeon extends cc.Component {
     map: Tile[][] = new Array();
     wallmap: Wall[][] = new Array();
     trapmap: Trap[][] = new Array();
-    itemmap: Item[][] = new Array();
     static readonly WIDTH_SIZE: number = 15;
     static readonly HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
@@ -67,6 +72,7 @@ export default class Dungeon extends cc.Component {
     monsterManager: MonsterManager = null;
     equipmentManager: EquipmentManager = null;
     dungeonStyleManager: DungeonStyleManager = null;
+    coinManager: CoinManger = null;
     anim: cc.Animation;
 
     bossKraken: Kraken;
@@ -77,15 +83,22 @@ export default class Dungeon extends cc.Component {
         cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => {
             this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
         });
+        cc.director.on(EventConstant.DUNGEON_ADD_COIN, (event) => {
+            this.addCoin(event.detail.pos, event.detail.count);
+        })
+        cc.director.on(EventConstant.DUNGEON_ADD_COIN, (event) => {
+            this.addHeart(event.detail.pos);
+        })
         cc.director.on(EventConstant.DUNGEON_SHAKEONCE, (event) => {
-            if(this.anim){
+            if (this.anim) {
                 this.anim.play('DungeonShakeOnce');
             }
         });
-        
+
         this.fog.zIndex = 9000;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
+        this.coinManager = this.getComponent(CoinManger);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.player.node.parent = this.node;
         let mapData: string[][] = Logic.getCurrentMapData().map;
@@ -94,12 +107,10 @@ export default class Dungeon extends cc.Component {
         this.map = new Array();
         this.wallmap = new Array();
         this.trapmap = new Array();
-        this.itemmap = new Array();
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             this.wallmap[i] = new Array(i);
             this.trapmap[i] = new Array(i);
-            this.itemmap[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 let t = cc.instantiate(this.tile);
                 t.parent = this.node;
@@ -140,8 +151,8 @@ export default class Dungeon extends cc.Component {
                     chest.parent = this.node;
                     let c = chest.getComponent(Chest)
                     c.setPos(cc.v2(i, j));
-                    c.setQuality(Logic.getRandomNum(1,3),Logic.mapManger.currentRectRoom.state == RectRoom.STATE_CLEAR);
-                    
+                    c.setQuality(Logic.getRandomNum(1, 3), Logic.mapManger.currentRectRoom.state == RectRoom.STATE_CLEAR);
+
                 }
                 //生成心
                 if (mapData[i][j] == 'H') {
@@ -149,7 +160,19 @@ export default class Dungeon extends cc.Component {
                     heart.parent = this.node;
                     heart.position = Dungeon.getPosInMap(cc.v2(i, j));
                     heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
-                    this.itemmap[i][j] = heart.getComponent(Item);
+                }
+                //生成商店
+                if (mapData[i][j] == 'M') {
+                    let table = cc.instantiate(this.shoptable);
+                    table.parent = this.node;
+                    let ta = table.getComponent(ShopTable);
+                    ta.setPos(cc.v2(i, j));
+                }
+                if (mapData[i][j] == 'S') {
+                    let shop = cc.instantiate(this.shop);
+                    shop.parent = this.node;
+                    shop.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 1;
                 }
                 if (Logic.mapManger.currentRectRoom.state != RectRoom.STATE_CLEAR) {
                     if (mapData[i][j] == 's') {
@@ -185,9 +208,21 @@ export default class Dungeon extends cc.Component {
         // this.addMonsters();
         this.addkraken();
     }
-    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData,chestQuality?:number) {
+    addHeart(pos: cc.Vec2) {
+        let heart = cc.instantiate(this.heart);
+        heart.parent = this.node;
+        heart.position = Dungeon.getPosInMap(pos);
+        let indexpos = Dungeon.getIndexInMap(pos);
+        heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+    }
+    addCoin(pos: cc.Vec2, count: number) {
+        if (this.coinManager) {
+            this.coinManager.getValueCoin(count, pos, this.node);
+        }
+    }
+    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData, chestQuality?: number) {
         if (this.equipmentManager) {
-            this.equipmentManager.getEquipment(equipType, pos, this.node, equipData,chestQuality);
+            this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality);
         }
     }
     addMonsterFromData(resName: string, i: number, j: number) {
@@ -258,21 +293,21 @@ export default class Dungeon extends cc.Component {
         return cc.v2(x, y);
     }
     //获取不超出地图的坐标
-    static fixOuterMap(pos: cc.Vec2):cc.Vec2{
+    static fixOuterMap(pos: cc.Vec2): cc.Vec2 {
         let x = (pos.x - Dungeon.MAPX) / Dungeon.TILE_SIZE;
         let y = (pos.y - Dungeon.MAPY) / Dungeon.TILE_SIZE;
         x = Math.round(x);
         y = Math.round(y);
         let isOuter = false;
-        if (x < 0) { x = 0;isOuter=true;}
-         if (x >= Dungeon.WIDTH_SIZE) { x = Dungeon.WIDTH_SIZE - 1;isOuter=true; }
-        if (y < 0) { y = 0;isOuter=true; }
-         if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1;isOuter=true; }
-         if(isOuter){
-             return Dungeon.getPosInMap(cc.v2(x, y));
-         }else{
-             return pos;
-         }
+        if (x < 0) { x = 0; isOuter = true; }
+        if (x >= Dungeon.WIDTH_SIZE) { x = Dungeon.WIDTH_SIZE - 1; isOuter = true; }
+        if (y < 0) { y = 0; isOuter = true; }
+        if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1; isOuter = true; }
+        if (isOuter) {
+            return Dungeon.getPosInMap(cc.v2(x, y));
+        } else {
+            return pos;
+        }
     }
 
     start() {
@@ -321,7 +356,7 @@ export default class Dungeon extends cc.Component {
                         }
                     }
                 }
-                if(Logic.level==1){
+                if (Logic.level == 1) {
                     needClose = false;
                 }
                 if (!needClose) {

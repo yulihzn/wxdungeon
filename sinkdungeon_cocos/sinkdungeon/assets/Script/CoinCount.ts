@@ -1,5 +1,5 @@
-import { EventConstant } from "../EventConstant";
-import Player from "../Player";
+import Logic from "./Logic";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -10,39 +10,37 @@ import Player from "../Player";
 // Learn life-cycle callbacks:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
-//物品
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Item extends cc.Component {
+export default class NewClass extends cc.Component {
 
-    label: cc.Label = null;
-
-    @property
-    damage: number = -1;
     anim:cc.Animation;
-    isTaken = false;
-
+    @property(cc.Label)
+    label:cc.Label;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.anim = this.getComponent(cc.Animation);
+        cc.director.on(EventConstant.HUD_ADD_COIN, (event) => {
+            this.addCount(event.detail.count);
+        })
+    }
 
     start () {
-        this.anim = this.getComponent(cc.Animation);
     }
-    taken():void{
-        if(this.damage!=0 && !this.isTaken){
-            this.isTaken = true;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
-            setTimeout(()=>{this.node.active = false;},3000);
+    addCount(value){
+        if(this.anim){
+            this.anim.play();
         }
+        Logic.coins+=value;
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let player = other.node.getComponent(Player);
-        if(player){
-            this.anim.play('ItemTaken');
-            this.taken();
+
+    update (dt) {
+        if(this.label){
+            this.label.string = `${Logic.coins}`;
         }
+        
     }
-    // update (dt) {}
 }

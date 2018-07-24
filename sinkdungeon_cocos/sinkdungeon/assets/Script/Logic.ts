@@ -34,6 +34,7 @@ export default class Logic extends cc.Component {
     static spriteFrames:{ [key: string]: cc.SpriteFrame } = null;
     // static currentRectRoom:RectRoom = null;
     static currentDir:number=0;
+    static coins = 0;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -42,14 +43,14 @@ export default class Logic extends cc.Component {
         cc.game.addPersistRootNode(this.node);
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-        // manager.enabledDebugDraw = true;
+    //     manager.enabledDebugDraw = true;
         cc.director.getPhysicsManager().enabled = true;
     //     cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
     // cc.PhysicsManager.DrawBits.e_pairBit |
     // cc.PhysicsManager.DrawBits.e_centerOfMassBit |
     // cc.PhysicsManager.DrawBits.e_jointBit |
     // cc.PhysicsManager.DrawBits.e_shapeBit
-    // ;
+    ;
         cc.director.on(EventConstant.LOADINGNEXTLEVEL,(event)=>{
             this.loadingNextLevel();
         });
@@ -67,6 +68,7 @@ export default class Logic extends cc.Component {
         Logic.playerData = new PlayerData();
         Logic.inventoryData = new InventoryData();
         Logic.mapManger.reset(Logic.level);
+        Logic.coins = 0;
     }
     loadingNextRoom(dir:number){
         let room = Logic.mapManger.loadingNextRoom(dir);
