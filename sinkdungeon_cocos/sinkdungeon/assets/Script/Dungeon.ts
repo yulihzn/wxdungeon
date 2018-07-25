@@ -76,6 +76,7 @@ export default class Dungeon extends cc.Component {
     anim: cc.Animation;
 
     bossKraken: Kraken;
+    bossIndex: cc.Vec2;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -86,7 +87,7 @@ export default class Dungeon extends cc.Component {
         cc.director.on(EventConstant.DUNGEON_ADD_COIN, (event) => {
             this.addCoin(event.detail.pos, event.detail.count);
         })
-        cc.director.on(EventConstant.DUNGEON_ADD_COIN, (event) => {
+        cc.director.on(EventConstant.DUNGEON_ADD_HEART, (event) => {
             this.addHeart(event.detail.pos);
         })
         cc.director.on(EventConstant.DUNGEON_SHAKEONCE, (event) => {
@@ -125,8 +126,6 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].isAutoShow = true;
                 }
                 //生成墙
-                // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
-                //     && !this.monsterReswpanPoints[`${i},${j}`])
                 if (mapData[i][j] == 'W') {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
@@ -136,8 +135,6 @@ export default class Dungeon extends cc.Component {
                     this.wallmap[i][j] = w.getComponent(Wall);
                 }
                 //生成陷阱
-                // if (!(i == 4 && j == 4) && Math.random() < 0.1 && !Logic.isBossLevel(Logic.level)
-                //     && !this.wallmap[i][j] && !this.monsterReswpanPoints[`${i},${j}`])
                 if (mapData[i][j] == 'T') {
                     let trap = cc.instantiate(this.trap);
                     trap.parent = this.node;
@@ -187,6 +184,10 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'a') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
                     }
+                    if (mapData[i][j] == 'b') {
+                        this.bossIndex = cc.v2(i, j);
+
+                    }
                 }
                 if (mapData[i][j] == 'P') {
                     let portalP = cc.instantiate(this.portalPrefab);
@@ -198,23 +199,17 @@ export default class Dungeon extends cc.Component {
                 }
             }
         }
-        // if (Logic.chapterName == 'chapter00') {
-        //     this.addEquipment(EquipmentManager.WEAPON_KNIFE, cc.v2(4, 6));
-        //     this.addEquipment(EquipmentManager.CLOTHES_SHIRT, cc.v2(5, 6));
-        //     this.addEquipment(EquipmentManager.CLOTHES_VEST, cc.v2(6, 6));
-        //     this.addEquipment(EquipmentManager.HELMET_BUCKETHAT, cc.v2(7, 6));
-        // }
-
-        // this.addMonsters();
-        this.addkraken();
+        this.addBoss();
     }
+    /**掉落心 */
     addHeart(pos: cc.Vec2) {
         let heart = cc.instantiate(this.heart);
         heart.parent = this.node;
-        heart.position = Dungeon.getPosInMap(pos);
+        heart.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
     }
+    /**掉落金币 */
     addCoin(pos: cc.Vec2, count: number) {
         if (this.coinManager) {
             this.coinManager.getValueCoin(count, pos, this.node);
@@ -225,49 +220,36 @@ export default class Dungeon extends cc.Component {
             this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality);
         }
     }
+    /**添加怪物 */
     addMonsterFromData(resName: string, i: number, j: number) {
         this.addMonster(this.monsterManager.getMonster(resName, this.node)
             , cc.v2(i, j));
     }
-    // //随机用
-    // addMonsters(): void {
-    //     let levelcount = 1;
-    //     this.monsterReswpanPoints['0,0'] = MonsterManager.MONSTER_SAILOR;
-    //     this.monsterReswpanPoints['0,8'] = MonsterManager.MONSTER_SAILOR;
-    //     this.monsterReswpanPoints['8,0'] = MonsterManager.MONSTER_SAILOR;
-    //     this.monsterReswpanPoints['8,8'] = MonsterManager.MONSTER_PIRATE;
-    //     this.monsterReswpanPoints['0,4'] = MonsterManager.MONSTER_SAILOR;
-    //     this.monsterReswpanPoints['4,0'] = MonsterManager.MONSTER_PIRATE;
-    //     this.monsterReswpanPoints['8,4'] = MonsterManager.MONSTER_SAILOR;
-    //     this.monsterReswpanPoints['4,8'] = MonsterManager.MONSTER_PIRATE;;
-    //     for (let p in this.monsterReswpanPoints) {
-    //         if (levelcount++ > Logic.level || Logic.isBossLevel(Logic.level)) {
-    //             break;
-    //         }
-    //         let arr = p.split(',');
-    //         this.addMonster(this.monsterManager.getMonster(this.monsterReswpanPoints[p], this.node)
-    //             , cc.v2(parseInt(arr[0]), parseInt(arr[1])));
-    //     }
-    // }
+
     private breakHalfTiles(): void {
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             for (let j = 6; j < Dungeon.HEIGHT_SIZE; j++) {
                 this.map[i][j].isAutoShow = false;
                 this.breakTile(cc.v2(i, j));
+                setTimeout(() => {
+                    this.breakTile(cc.v2(i, j));
+                }, 100*Math.random())
             }
         }
     }
-    private addkraken() {
-        if (Logic.isBossLevel(Logic.level)) {
-            this.anim.playAdditive('DungeonShake');
-            this.breakHalfTiles();
-            setTimeout(() => {
-                this.bossKraken = this.monsterManager.getKraken(this.node);
-                this.bossKraken.showBoss();
-                this.anim.play('DungeonWave');
-            }, 4000)
-
+    private addBoss() {
+        if (!this.bossIndex) {
+            return;
         }
+        this.bossKraken = this.monsterManager.getKraken(this.node, this.bossIndex);
+        this.anim.playAdditive('DungeonShakeOnce');
+        setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},1000);
+        setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},2000);
+        this.breakHalfTiles();
+        setTimeout(() => {
+            this.bossKraken.showBoss();
+            this.anim.play('DungeonWave');
+        }, 3500)
     }
     private addMonster(monster: Monster, pos: cc.Vec2) {
         //激活
@@ -334,6 +316,7 @@ export default class Dungeon extends cc.Component {
         }
     }
     monstersAction() {
+        let isClear = false;
         let count = 0;
         for (let monster of this.monsters) {
             if (monster.isDied) {
@@ -341,31 +324,36 @@ export default class Dungeon extends cc.Component {
             }
             monster.monsterAction(this);
         }
-        if (!Logic.isBossLevel(Logic.level) && count >= this.monsters.length) {
+        isClear = count >= this.monsters.length;
+        if (this.bossKraken && !this.bossKraken.isDied) {
+            isClear = false;
+        }
+        if (isClear) {
             if (this.portal) {
                 this.portal.openGate();
             }
-            for (let door of Logic.mapManger.currentRectRoom.doors) {
-                Logic.mapManger.currentRectRoom.state = RectRoom.STATE_CLEAR;
-                let needClose = false;
-                if (RectDungeon.isRoomEqual(Logic.mapManger.currentRectRoom, Logic.mapManger.rectDungeon.startRoom)) {
-                    if (Logic.mapManger.rectDungeon.endRoom.state != RectRoom.STATE_CLEAR) {
-                        let t = Logic.mapManger.rectDungeon.getNeighborRoomType(Logic.mapManger.currentRectRoom.x, Logic.mapManger.currentRectRoom.y, door.dir);
-                        if (t.roomType == RectDungeon.END_ROOM) {
-                            needClose = true;
-                        }
+            this.openDoors();
+        }
+
+    }
+    openDoors() {
+        for (let door of Logic.mapManger.currentRectRoom.doors) {
+            Logic.mapManger.currentRectRoom.state = RectRoom.STATE_CLEAR;
+            let needClose = false;
+            if (RectDungeon.isRoomEqual(Logic.mapManger.currentRectRoom, Logic.mapManger.rectDungeon.startRoom)) {
+                if (Logic.mapManger.rectDungeon.endRoom.state != RectRoom.STATE_CLEAR) {
+                    let t = Logic.mapManger.rectDungeon.getNeighborRoomType(Logic.mapManger.currentRectRoom.x, Logic.mapManger.currentRectRoom.y, door.dir);
+                    if (t.roomType == RectDungeon.END_ROOM) {
+                        needClose = true;
                     }
                 }
-                if (Logic.level == 1) {
-                    needClose = false;
-                }
-                if (!needClose) {
-                    this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true);
-                }
             }
-        }
-        if (Logic.isBossLevel(Logic.level) && this.bossKraken && this.bossKraken.isDied && this.portal) {
-            this.portal.openGate();
+            if (Logic.level == 1) {
+                needClose = false;
+            }
+            if (!needClose) {
+                this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true);
+            }
         }
     }
     checkPlayerPos(dt: number) {
@@ -373,9 +361,7 @@ export default class Dungeon extends cc.Component {
         let pos = Dungeon.getIndexInMap(this.player.node.position);
         let tile = this.map[pos.x][pos.y];
         if (tile.isBroken) {
-            if (!this.player.isMoving) {
-                this.player.fall();
-            }
+            this.player.fall();
         }
         if (tile.isAutoShow) {
             this.breakTile(pos);
@@ -420,6 +406,7 @@ export default class Dungeon extends cc.Component {
         }
         if (this.isNpcTimeDelay(dt)) {
             this.monstersAction();
+            this.bossKraken.bossAction(this);
         }
     }
 }

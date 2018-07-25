@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Bullet001",
+    "_name": "Bullet004",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -114,8 +114,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 48,
+      "height": 48
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -165,7 +165,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0d5c5b93-f6fa-46ed-bfae-610a21bdb89a"
+      "__uuid__": "847cd28a-cd7d-4cb5-ad08-2660031543ea"
     },
     "fileId": "cfAqC+eS5IGIAxU6k066pQ",
     "sync": false
@@ -205,8 +205,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
+      "width": 48,
+      "height": 48
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -256,7 +256,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0d5c5b93-f6fa-46ed-bfae-610a21bdb89a"
+      "__uuid__": "847cd28a-cd7d-4cb5-ad08-2660031543ea"
     },
     "fileId": "c7JNL8KsJBha59e4T0JsfH",
     "sync": false
@@ -290,7 +290,7 @@
     "_enabled": true,
     "label": null,
     "damage": 1,
-    "speed": 200,
+    "speed": 150,
     "isMelee": false
   },
   {
@@ -335,7 +335,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 16
+    "_radius": 24
   },
   {
     "__type__": "cc.CircleCollider",
@@ -351,7 +351,7 @@
       "x": 0,
       "y": 0
     },
-    "_radius": 16
+    "_radius": 24
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -359,7 +359,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "0d5c5b93-f6fa-46ed-bfae-610a21bdb89a"
+      "__uuid__": "847cd28a-cd7d-4cb5-ad08-2660031543ea"
     },
     "fileId": "3ajphcQodHxbGfY6hwfb7q",
     "sync": false

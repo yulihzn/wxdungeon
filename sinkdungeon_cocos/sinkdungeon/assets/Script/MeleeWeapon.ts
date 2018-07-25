@@ -133,7 +133,7 @@ export default class MeleeWeapon extends cc.Component {
 
         let kraken = attackTarget.node.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
-            kraken.takeDamage(damage, cc.v2(0, 0));
+            kraken.takeDamage(damage);
         }
     }
 }

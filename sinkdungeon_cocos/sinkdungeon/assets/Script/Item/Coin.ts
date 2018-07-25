@@ -60,7 +60,7 @@ export default class Coin extends cc.Component {
             let pos = p.sub(this.node.position);
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
-                pos = pos.mul(200);
+                pos = pos.mul(400);
                 this.rigidBody.linearVelocity = pos;
             }
         }

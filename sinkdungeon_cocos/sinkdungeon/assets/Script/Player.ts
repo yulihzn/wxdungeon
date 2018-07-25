@@ -199,10 +199,10 @@ export default class Player extends cc.Component {
         }
         pos = pos.normalizeSelf().mul(5);
         let speed = this.inventoryData.getAttackSpeed();
-        let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
-            setTimeout(() => { this.isAttacking = false; }, speed);
+        let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y),cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
+            setTimeout(() => { this.sprite.position=cc.v2(0,0);this.isAttacking = false; }, speed);
         }, this));
-        this.node.runAction(action);
+        this.sprite.runAction(action);
         this.meleeWeapon.attack();
         // if (this.isAttacking || this.isDied) {
         //     return;
@@ -410,35 +410,47 @@ export default class Player extends cc.Component {
         this.isAttacking = false;
 
     }
-    Attacking() {
+    // Attacking() {
 
 
-        let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
-        //生命汲取
-        let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);
-        if (drain > 0) {
-            this.takeDamage(-drain);
-        }
-        if (!this.attackTarget) {
-            return;
-        }
-        let monster = this.attackTarget.node.getComponent(Monster);
-        if (monster && !monster.isDied) {
-            monster.takeDamage(damage);
-        }
-        let kraken = this.attackTarget.node.getComponent(Kraken);
-        if (kraken && !kraken.isDied) {
-            kraken.takeDamage(damage, cc.v2(this.pos.x, this.pos.y + 1));
-        }
+    //     let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
+    //     //生命汲取
+    //     let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);
+    //     if (drain > 0) {
+    //         this.takeDamage(-drain);
+    //     }
+    //     if (!this.attackTarget) {
+    //         return;
+    //     }
+    //     let monster = this.attackTarget.node.getComponent(Monster);
+    //     if (monster && !monster.isDied) {
+    //         monster.takeDamage(damage);
+    //     }
+    //     let kraken = this.attackTarget.node.getComponent(Kraken);
+    //     if (kraken && !kraken.isDied) {
+    //         kraken.takeDamage(damage);
+    //     }
+    // }
+    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    //     let equipment = otherCollider.body.node.getComponent(Equipment);
+    //     if (equipment) {
+    //         this.touchedEquipment = equipment;
+    //     }
+    // }
+    // onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    //     this.touchedEquipment = null;
+    // }
+    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+        this.touchedEquipment = null;
     }
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        let equipment = otherCollider.body.node.getComponent(Equipment);
+    onCollisionExit(other:cc.Collider,self:cc.Collider){
+        this.touchedEquipment = null;
+    }
+    onCollisionStay(other:cc.Collider,self:cc.Collider){
+        let equipment = other.node.getComponent(Equipment);
         if (equipment) {
             this.touchedEquipment = equipment;
         }
-    }
-    onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        this.touchedEquipment = null;
     }
 
 }

@@ -32,6 +32,7 @@ export default class Item extends cc.Component {
     }
     taken():void{
         if(this.damage!=0 && !this.isTaken){
+            this.anim.play('ItemTaken');
             this.isTaken = true;
             cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
             setTimeout(()=>{this.node.active = false;},3000);
@@ -40,7 +41,6 @@ export default class Item extends cc.Component {
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let player = other.node.getComponent(Player);
         if(player){
-            this.anim.play('ItemTaken');
             this.taken();
         }
     }

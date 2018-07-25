@@ -64,16 +64,16 @@ export default class EquipmentManager extends cc.Component {
         desc.color = this.getMixColor('#000000'
             , criticalStrikeRate.y > 2 ? EquipmentManager.COLOR_CRITICALSTRIKE : '#000000');
 
-        let damageMin = this.getRandomQuality(0, 10,chestQuality);
+        let damageMin = this.getRandomQuality(0, 5,chestQuality);
         level = damageMin.y > level ? damageMin.y : level;
 
-        let damageMax = this.getRandomQuality(damageMin.x, damageMin.x + 10,chestQuality);
+        let damageMax = this.getRandomQuality(damageMin.x, damageMin.x + 5,chestQuality);
         level = damageMax.y > level ? damageMax.y : level;
         desc.prefix += damageMax.y > 2 ? 'strong ' : '';
         desc.color = this.getMixColor(desc.color
             , damageMax.y > 2 ? EquipmentManager.COLOR_POWERFUL : '#000000');
 
-        let defence = this.getRandomQuality(0, 10,chestQuality);
+        let defence = this.getRandomQuality(0, 5,chestQuality);
         level = defence.y > level ? defence.y : level;
         desc.prefix += defence.y > 2 ? 'stable ' : '';
         desc.color = this.getMixColor(desc.color
@@ -110,7 +110,7 @@ export default class EquipmentManager extends cc.Component {
         desc.color = this.getMixColor(desc.color
             , dodge.y > 2 ? EquipmentManager.COLOR_DODGE : '#000000');
 
-        let health = this.getRandomQuality(0, 50,chestQuality);
+        let health = this.getRandomQuality(0, 5,chestQuality);
         level = health.y > level ? health.y : level;
         desc.prefix += health.y > 2 ? 'healthy ' : '';
         desc.color = this.getMixColor(desc.color

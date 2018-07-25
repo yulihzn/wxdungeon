@@ -68,7 +68,7 @@ export default class MonsterManager extends cc.Component {
         return monster;
         
     }
-    getKraken(parent:cc.Node):Kraken{
+    getKraken(parent:cc.Node,posIndex:cc.Vec2):Kraken{
         let krakenPrefab:cc.Node = null;
         krakenPrefab = cc.instantiate(this.kraken);
         krakenPrefab.active = false;
@@ -77,7 +77,7 @@ export default class MonsterManager extends cc.Component {
         let data = new MonsterData();
         data.updateHAT(20,20,2,MonsterManager.TYPE_BOSS);
         kraken.data = data;
-        kraken.transportPlayer(4,5);
+        kraken.transportPlayer(posIndex.x,posIndex.y);
         kraken.node.active = true;
         return kraken;
     }

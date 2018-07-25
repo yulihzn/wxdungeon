@@ -38,19 +38,16 @@ export default class ShopTable extends cc.Component {
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
-            this.info.opacity = 255;
         }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
-            this.info.opacity = 0;
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
-            this.info.opacity = 0;
         }
     }
 }

@@ -91,6 +91,9 @@ export default class Bullet extends cc.Component {
         if(otherCollider.body.node.name == 'Monster'){
             isDestory = false;
         }
+        if(otherCollider.body.node.name == 'Kraken'){
+            isDestory = false;
+        }
         if(otherCollider.sensor){
             isDestory = false;
         }
@@ -108,6 +111,9 @@ export default class Bullet extends cc.Component {
             isAttack = false;
         }
         if(!this.isFromPlayer && other.node.name == 'Monster'){
+            isAttack = false;
+        }
+        if(!this.isFromPlayer && other.node.name == 'Kraken'){
             isAttack = false;
         }
         if(isAttack){
@@ -132,7 +138,7 @@ export default class Bullet extends cc.Component {
         }
         let kraken = attackTarget.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
-            kraken.takeDamage(damage, cc.v2(0, 0));
+            kraken.takeDamage(damage);
             isDestory = true;
         }
         let meleeWeapon:MeleeWeapon = attackTarget.getComponent(MeleeWeapon);

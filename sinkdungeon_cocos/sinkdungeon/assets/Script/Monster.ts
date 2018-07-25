@@ -59,13 +59,7 @@ export default class Monster extends cc.Component {
         body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         body.width = spriteFrame.getRect().width;
         body.height = spriteFrame.getRect().height;
-        // cc.loader.loadRes('Texture/Monster/'+resName,cc.SpriteFrame,(error:Error,spriteFrame:cc.SpriteFrame)=>{
-        //     let body = this.sprite.getChildByName('body');
-        //     spriteFrame.getTexture().setAliasTexParameters();
-        //     body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-        //     body.width = spriteFrame.getRect().width;
-        //     body.height = spriteFrame.getRect().height;
-        // })
+        
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
@@ -176,9 +170,6 @@ export default class Monster extends cc.Component {
             this.data.currentHealth = this.data.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
-        if (this.data.currentHealth < 1) {
-            this.killed();
-        }
     }
     killed() {
         if (this.isDied) {
@@ -188,7 +179,7 @@ export default class Monster extends cc.Component {
         this.anim.play('PlayerDie');
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
-        if(Math.random()>0.8){
+        if(Math.random()<0.9){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN,{pos:this.node.position,count:Logic.getRandomNum(1,10)});
         }else{
             cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{pos:this.node.position});

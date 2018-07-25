@@ -3,6 +3,7 @@ import MonsterData from "../Data/MonsterData";
 import Shooter from "../Shooter";
 import { EventConstant } from "../EventConstant";
 import KrakenSwingHand from "./KrakenSwingHand";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,12 +30,10 @@ export default class Kraken extends cc.Component {
     private anim: cc.Animation;
     isDied = false;
     isShow = false;
-    // currentHealth: number = 3;
-    // maxHealth: number = 3;
     private timeDelay = 0;
-    // attackPonit = 1;
     data: MonsterData = new MonsterData();
-    shooter:Shooter;
+    shooter: Shooter;
+    dungeon: Dungeon;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -48,32 +47,21 @@ export default class Kraken extends cc.Component {
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 0;
         this.shooter = this.getComponentInChildren(Shooter);
-        // let shootNode = this.node.getChildByName('Shooter');
-        // shootNode.parent = this.node.parent;
-        // shootNode.position = cc.v2(288,460);
-        // shootNode.zIndex = 9000;
-        
+
     }
-    public isBossZone(target: cc.Vec2): boolean {
-        return target.y > this.pos.y && target.x > this.pos.x - 3 && target.x < this.pos.x + 3;
-    }
+
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
         this.node.y = this.pos.y * 64 + 70;
     }
     transportPlayer(x: number, y: number) {
-        // this.sprite.rotation = 0;
-        // this.sprite.scale = 1;
-        // this.sprite.opacity = 255;
-        // this.sprite.x = 0;
-        // this.sprite.y = 0;
         this.pos.x = x;
         this.pos.y = y;
         this.changeZIndex();
     }
     changeZIndex() {
         this.node.zIndex = 1000 + (9 - this.pos.y - 1) * 100 + 2;
-        if(this.isShow&&!this.isDied){
+        if (this.isShow && !this.isDied) {
             this.node.zIndex = 3000 + (9 - this.pos.y - 1) * 100 + 2;
         }
     }
@@ -107,28 +95,25 @@ export default class Kraken extends cc.Component {
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
     }
 
-    takeDamage(damage: number,pos:cc.Vec2) {
+    takeDamage(damage: number) {
         this.data.currentHealth -= damage;
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
         }
         this.anim.playAdditive('KrakenHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
-        if (this.data.currentHealth < 1) {
-            this.killed();
-        }
-        if(pos.x>this.pos.x){
-            this.anim.playAdditive('KrakenSwingRight');
-        }else if(pos.x<this.pos.x){
-            this.anim.playAdditive('KrakenSwingLeft');
+        if(this.dungeon){
+            let pos = this.dungeon.player.pos;
+            if (pos.x > this.pos.x) {
+                this.anim.playAdditive('KrakenSwingRight');
+            } else if (pos.x < this.pos.x) {
+                this.anim.playAdditive('KrakenSwingLeft');
+            }
         }
     }
     killed() {
         if (this.isDied) {
             return;
-        }
-        if(this.shooter){
-            this.shooter.auto = false;
         }
         this.isDied = true;
         this.changeZIndex();
@@ -137,19 +122,16 @@ export default class Kraken extends cc.Component {
     //Animation
     BossShow() {
         this.isShow = true;
-       let hands = this.getComponentsInChildren(KrakenSwingHand);
-       for(let hand of hands){
-           hand.isShow = true;
-       }
-        this.anim.play('KrakenIdle');
-        if(this.shooter){
-            this.shooter.auto = true;
+        let hands = this.getComponentsInChildren(KrakenSwingHand);
+        for (let hand of hands) {
+            hand.isShow = true;
         }
+        this.anim.play('KrakenIdle');
         this.changeZIndex();
     }
     //Animation
-    BossHit(){
-        
+    BossHit() {
+
     }
     showBoss() {
         this.anim.play('KrakenShow');
@@ -167,14 +149,31 @@ export default class Kraken extends cc.Component {
                 }
             }
         }
-
+        if (this.data.currentHealth < 1) {
+            this.killed();
+        }
         if (this.label) {
             this.label.string = "" + this.node.zIndex;
         }
         this.healthBar.node.active = !this.isDied;
-        if(this.shooter){
-            this.shooter.auto = this.isShow&&!this.isDied;
-        }
     }
-    
+    bossAction(dungeon: Dungeon) {
+        if (this.isDied||!this.isShow) {
+            return;
+        }
+        this.dungeon = dungeon;
+        this.changeZIndex();
+        if(this.shooter&&dungeon){
+            let pos  = this.node.position.clone().add(this.shooter.node.position);
+            let hv = dungeon.player.node.position.sub(pos);
+            if(!hv.equals(cc.Vec2.ZERO)){
+                hv = hv.normalizeSelf();
+                this.shooter.setHv(hv);
+                this.shooter.dungeon = dungeon;
+                this.shooter.fireBullet();
+            }
+
+        }
+
+    }
 }

@@ -1,4 +1,5 @@
 import { EventConstant } from "../EventConstant";
+import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,11 +26,10 @@ export default class KrakenSwingHand extends cc.Component {
         this.isShow = false;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        if(other.tag == 3 && this.isShow){
-            if(this.node.active){
-                this.node.stopAllActions();
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
-            }
+        let player = other.node.getComponent(Player);
+        if(player && this.isShow && this.node.active){
+            this.node.stopAllActions();
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
         }
     }
     // update (dt) {}

@@ -107,16 +107,15 @@ export default class NewClass extends cc.Component {
     }
     setEquipment(equipDataNew: EquipmentData,equipmentData:EquipmentData,isChange:boolean){
         if (equipmentData.equipmetType == equipDataNew.equipmetType) {
-            let p = this.player.getComponent(Player).pos;
-            let pos = cc.v2(p.x,p.y);
-            if(pos.y<0){
-                pos.y += 1;
+            let p = this.player.getComponent(Player).pos.clone();
+            if(p.y<1){
+                p.y += 1;
             }else{
-                pos.y-=1;
+                p.y-=1;
             }
             if(isChange){
                 cc.director.emit(EventConstant.DUNGEON_SETEQUIPMENT
-                    , { pos: pos, equipmentData: equipmentData })
+                    , { pos: p, equipmentData: equipmentData })
             }
         }
     }

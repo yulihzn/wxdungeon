@@ -41,10 +41,16 @@
       },
       {
         "__id__": 58
+      },
+      {
+        "__id__": 59
+      },
+      {
+        "__id__": 60
       }
     ],
     "_prefab": {
-      "__id__": 59
+      "__id__": 61
     },
     "_id": "",
     "_opacity": 255,
@@ -1506,13 +1512,13 @@
     },
     "_enabled": true,
     "bullet": {
-      "__uuid__": "0d5c5b93-f6fa-46ed-bfae-610a21bdb89a"
+      "__uuid__": "847cd28a-cd7d-4cb5-ad08-2660031543ea"
     },
-    "dir": 1,
     "auto": false,
-    "isAI": false,
+    "isAI": true,
     "frequency": 2,
-    "dungeon": null
+    "dungeon": null,
+    "player": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1701,12 +1707,52 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 100
+      "y": 135
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 280,
-      "height": 200
+      "height": 270
+    }
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 183
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 280,
+      "height": 168
+    }
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 135
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 280,
+      "height": 270
     }
   },
   {
