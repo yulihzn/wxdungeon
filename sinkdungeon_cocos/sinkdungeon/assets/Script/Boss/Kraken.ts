@@ -85,12 +85,12 @@ export default class Kraken extends cc.Component {
     }
 
     start() {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for (let i = 0; i < ss.length; i++) {
-            if (ss[i].spriteFrame) {
-                ss[i].spriteFrame.getTexture().setAliasTexParameters();
-            }
-        }
+        // let ss = this.node.getComponentsInChildren(cc.Sprite);
+        // for (let i = 0; i < ss.length; i++) {
+        //     if (ss[i].spriteFrame) {
+        //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
+        //     }
+        // }
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
     }
@@ -142,12 +142,12 @@ export default class Kraken extends cc.Component {
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
             this.updatePlayerPos();
-            let ss = this.node.getComponentsInChildren(cc.Sprite);
-            for (let i = 0; i < ss.length; i++) {
-                if (ss[i].spriteFrame) {
-                    ss[i].spriteFrame.getTexture().setAliasTexParameters();
-                }
-            }
+            // let ss = this.node.getComponentsInChildren(cc.Sprite);
+            // for (let i = 0; i < ss.length; i++) {
+            //     if (ss[i].spriteFrame) {
+            //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
+            //     }
+            // }
         }
         if (this.data.currentHealth < 1) {
             this.killed();

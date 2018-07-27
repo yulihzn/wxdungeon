@@ -144,12 +144,12 @@ export default class Monster extends cc.Component {
     }
 
     start() {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for (let i = 0; i < ss.length; i++) {
-            if (ss[i].spriteFrame) {
-                ss[i].spriteFrame.getTexture().setAliasTexParameters();
-            }
-        }
+        // let ss = this.node.getComponentsInChildren(cc.Sprite);
+        // for (let i = 0; i < ss.length; i++) {
+        //     if (ss[i].spriteFrame) {
+        //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
+        //     }
+        // }
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
     }

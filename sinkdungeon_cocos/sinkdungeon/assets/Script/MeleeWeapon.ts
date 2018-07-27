@@ -4,6 +4,7 @@ import Player from "./Player";
 import Monster from "./Monster";
 import Kraken from "./Boss/Kraken";
 import { EventConstant } from "./EventConstant";
+import Box from "./Building/Box";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -134,6 +135,10 @@ export default class MeleeWeapon extends cc.Component {
         let kraken = attackTarget.node.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
             kraken.takeDamage(damage);
+        }
+        let box = attackTarget.node.getComponent(Box);
+        if(box){
+            box.breakBox();
         }
     }
 }

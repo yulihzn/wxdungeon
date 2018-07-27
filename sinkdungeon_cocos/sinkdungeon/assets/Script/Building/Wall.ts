@@ -21,12 +21,12 @@ export default class Wall extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-            for (let i = 0; i < ss.length; i++) {
-                if (ss[i].spriteFrame) {
-                    ss[i].spriteFrame.getTexture().setAliasTexParameters();
-                }
-            }
+        // let ss = this.node.getComponentsInChildren(cc.Sprite);
+        //     for (let i = 0; i < ss.length; i++) {
+        //         if (ss[i].spriteFrame) {
+        //             ss[i].spriteFrame.getTexture().setAliasTexParameters();
+        //         }
+        //     }
     }
     setPos(pos:cc.Vec2){
         this.pos = pos;

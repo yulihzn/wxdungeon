@@ -45,7 +45,7 @@ export default class EquipmentDialog extends cc.Component {
     // onLoad () {}
 
     start() {
-        Logic.setAlias(this.node);
+        // Logic.setAlias(this.node);
         this.alpha = 0;
         this.node.opacity = 0;
         this.showSpeed = 30;

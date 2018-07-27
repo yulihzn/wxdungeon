@@ -10,9 +10,7 @@ import EquipmentData from "./EquipmentData";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
 
-@ccclass
 export default class InventoryData {
     weapon:EquipmentData = new EquipmentData();
     helmet:EquipmentData = new EquipmentData();

@@ -26,10 +26,10 @@ export default class Controller extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for (let i = 0; i < ss.length; i++) {
-            ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        }
+        // let ss = this.node.getComponentsInChildren(cc.Sprite);
+        // for (let i = 0; i < ss.length; i++) {
+        //     ss[i].spriteFrame.getTexture().setAliasTexParameters();
+        // }
         this.mainAction.on(cc.Node.EventType.TOUCH_START, function (event: cc.Event.EventTouch) {
             this.mainActionTouched = true;
         }, this)

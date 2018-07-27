@@ -27,10 +27,10 @@ export default class Tile extends cc.Component {
     floor:cc.Sprite;
     onLoad () {
         this.isAutoShow = true;
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for(let i = 0;i < ss.length;i++){
-            ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        }
+        // let ss = this.node.getComponentsInChildren(cc.Sprite);
+        // for(let i = 0;i < ss.length;i++){
+        //     ss[i].spriteFrame.getTexture().setAliasTexParameters();
+        // }
         this.anim = this.getComponent(cc.Animation);
         this.floor = this.node.getChildByName('sprite').getChildByName('floor').getComponent(cc.Sprite);
     }
@@ -44,7 +44,7 @@ export default class Tile extends cc.Component {
             case 'chapter03':this.changeRes('tile003');break;
             case 'chapter04':this.changeRes('tile004');break;
         }
-        Logic.setAlias(this.node);
+        // Logic.setAlias(this.node);
 
     }
     //animation

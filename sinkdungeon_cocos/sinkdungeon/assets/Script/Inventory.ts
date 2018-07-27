@@ -51,7 +51,7 @@ export default class NewClass extends cc.Component {
     }
 
     start () {
-        Logic.setAlias(this.node);
+        // Logic.setAlias(this.node);
         this.tabselect.x = 0;
         this.weapon.spriteFrame = null;
         this.helmet.spriteFrame = null;

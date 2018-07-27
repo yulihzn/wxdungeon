@@ -46,7 +46,7 @@ export default class Equipment extends cc.Component {
     }
 
     start() {
-        Logic.setAlias(this.node);
+        // Logic.setAlias(this.node);
         this.anim = this.getComponent(cc.Animation);
     }
     onEnable() {

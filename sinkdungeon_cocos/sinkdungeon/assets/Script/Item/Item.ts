@@ -16,8 +16,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Item extends cc.Component {
 
-    label: cc.Label = null;
-
     @property
     damage: number = -1;
     anim:cc.Animation;

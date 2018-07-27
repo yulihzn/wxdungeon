@@ -19,6 +19,9 @@ import RectDungeon from "./Rect/RectDungeon";
 import Chest from "./Building/Chest";
 import ShopTable from "./Building/ShopTable";
 import CoinManger from "./Manager/CoinManager";
+import Box from "./Building/Box";
+import FootBoard from "./Building/FootBoard";
+import BoxData from "./Data/BoxData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +44,11 @@ export default class Dungeon extends cc.Component {
     @property(cc.Prefab)
     trap: cc.Prefab = null;
     @property(cc.Prefab)
+    footboard: cc.Prefab = null;
+    @property(cc.Prefab)
     chest: cc.Prefab = null;
+    @property(cc.Prefab)
+    box: cc.Prefab = null;
     @property(cc.Prefab)
     heart: cc.Prefab = null;
     @property(cc.Prefab)
@@ -59,6 +66,7 @@ export default class Dungeon extends cc.Component {
     map: Tile[][] = new Array();
     wallmap: Wall[][] = new Array();
     trapmap: Trap[][] = new Array();
+    footboards:FootBoard[] = new Array();
     static readonly WIDTH_SIZE: number = 15;
     static readonly HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
@@ -108,6 +116,8 @@ export default class Dungeon extends cc.Component {
         this.map = new Array();
         this.wallmap = new Array();
         this.trapmap = new Array();
+        this.footboards = new Array();
+        let boxes:BoxData[] = new Array();
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             this.wallmap[i] = new Array(i);
@@ -142,6 +152,14 @@ export default class Dungeon extends cc.Component {
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.trapmap[i][j] = trap.getComponent(Trap);
                 }
+                //生成踏板
+                if (mapData[i][j] == 'F') {
+                    let foot = cc.instantiate(this.footboard);
+                    foot.parent = this.node;
+                    foot.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    foot.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    this.footboards.push(foot.getComponent(FootBoard));
+                }
                 //生成宝箱
                 if (mapData[i][j] == 'C') {
                     let chest = cc.instantiate(this.chest);
@@ -150,6 +168,25 @@ export default class Dungeon extends cc.Component {
                     c.setPos(cc.v2(i, j));
                     c.setQuality(Logic.getRandomNum(1, 3), Logic.mapManger.currentRectRoom.state == RectRoom.STATE_CLEAR);
 
+                }
+                //生成普通箱子
+                if (mapData[i][j] == 'B') {
+                    let box = cc.instantiate(this.box);
+                    box.parent = this.node;
+                    let b = box.getComponent(Box)
+                    b.data.defaultPos = cc.v2(i, j);
+                    b.setPos(cc.v2(i, j));
+                    let currboxes =  Logic.getCurrentMapBoxes();
+                    if(currboxes){
+                       for(let tempbox of currboxes){
+                           if(tempbox.defaultPos.equals(b.data.defaultPos)){
+                               b.setPos(tempbox.pos);
+                           }
+                       } 
+                    }else{
+                        boxes.push(b.data);
+                        
+                    }
                 }
                 //生成心
                 if (mapData[i][j] == 'H') {
@@ -184,6 +221,15 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'a') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
                     }
+                    if (mapData[i][j] == 'g') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
+                    }
+                    if (mapData[i][j] == 'd') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
+                    }
+                    if (mapData[i][j] == 'm') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
+                    }
                     if (mapData[i][j] == 'b') {
                         this.bossIndex = cc.v2(i, j);
 
@@ -198,6 +244,10 @@ export default class Dungeon extends cc.Component {
                     }
                 }
             }
+        }
+        let currbs =  Logic.getCurrentMapBoxes();
+        if(!currbs && boxes.length>0){
+            Logic.mapManger.setCurrentBoxesArr(boxes);
         }
         this.addBoss();
     }
@@ -293,12 +343,12 @@ export default class Dungeon extends cc.Component {
     }
 
     start() {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for (let i = 0; i < ss.length; i++) {
-            if (ss[i].spriteFrame) {
-                ss[i].spriteFrame.getTexture().setAliasTexParameters();
-            }
-        }
+        // let ss = this.node.getComponentsInChildren(cc.Sprite);
+        // for (let i = 0; i < ss.length; i++) {
+        //     if (ss[i].spriteFrame) {
+        //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
+        //     }
+        // }
         cc.director.emit(EventConstant.CHANGE_MIMIMAP, { x: Logic.mapManger.currentRectRoom.x, y: Logic.mapManger.currentRectRoom.y });
         for (let door of Logic.mapManger.currentRectRoom.doors) {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false);
@@ -327,6 +377,11 @@ export default class Dungeon extends cc.Component {
         isClear = count >= this.monsters.length;
         if (this.bossKraken && !this.bossKraken.isDied) {
             isClear = false;
+        }
+        for (let footboard of this.footboards) {
+            if (!footboard.isOpen) {
+                isClear = false;
+            }
         }
         if (isClear) {
             if (this.portal) {
@@ -406,7 +461,9 @@ export default class Dungeon extends cc.Component {
         }
         if (this.isNpcTimeDelay(dt)) {
             this.monstersAction();
-            this.bossKraken.bossAction(this);
+            if(this.bossKraken){
+                this.bossKraken.bossAction(this);
+            }
         }
     }
 }

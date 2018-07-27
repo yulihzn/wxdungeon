@@ -23,7 +23,15 @@ export default class EquipmentManager extends cc.Component {
     public static readonly WEAPON_PITCHFORK = "weapon004";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
+    public static readonly CLOTHES_NAVY = "clothes003";
+    public static readonly CLOTHES_PIRATE = "clothes004";
+    public static readonly CLOTHES_BUCKET = "clothes005";
+    public static readonly CLOTHES_REDROBE = "clothes006";
+    public static readonly CLOTHES_WHITEROBE = "clothes007";
     public static readonly HELMET_BUCKETHAT = "helmet002";
+    public static readonly HELMET_PIRATEHAT = "helmet003";
+    public static readonly HELMET_REDHAT = "helmet004";
+    public static readonly HELMET_WHITEHAT = "helmet005";
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红

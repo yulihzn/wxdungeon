@@ -45,7 +45,7 @@ export default class DungeonStyleManager extends cc.Component {
         switch(Logic.chapterName){
             case 'chapter00':this.setStyle(null,'restwall','restsides','restdoor','restdecoration01',null);break;
             case 'chapter01':this.setStyle('sea','shipwall','handrail','shipdoor','swimring','swimring');break;
-            case 'chapter02':this.setStyle('sea','junglewall','junglesides','dungeondoor',null,null);break;
+            case 'chapter02':this.setStyle('sea','junglewall','junglesides','jungledoor',null,null);break;
             case 'chapter03':this.setStyle('sandsea','pyramidwall','pyramidsides','dungeondoor',null,null);break;
             case 'chapter04':this.setStyle('magmasea','dungeonwall','dungeonsides','dungeondoor',null,null);break;
         }

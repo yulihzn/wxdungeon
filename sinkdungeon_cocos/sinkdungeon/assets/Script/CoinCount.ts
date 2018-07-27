@@ -11,36 +11,36 @@ import { EventConstant } from "./EventConstant";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class CoinCount extends cc.Component {
 
-    anim:cc.Animation;
+    anim: cc.Animation;
     @property(cc.Label)
-    label:cc.Label;
+    label: cc.Label = null;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.anim = this.getComponent(cc.Animation);
         cc.director.on(EventConstant.HUD_ADD_COIN, (event) => {
             this.addCount(event.detail.count);
         })
     }
 
-    start () {
+    start() {
     }
-    addCount(value){
-        if(this.anim){
+    addCount(value) {
+        if (this.anim) {
             this.anim.play();
         }
-        Logic.coins+=value;
+        Logic.coins += value;
     }
 
-    update (dt) {
-        if(this.label){
+    update(dt) {
+        if (this.label) {
             this.label.string = `${Logic.coins}`;
         }
-        
+
     }
 }

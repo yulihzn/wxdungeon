@@ -2,6 +2,8 @@ import MapData from "../Data/MapData";
 import RectRoom from "../Rect/RectRoom";
 import RectDungeon from "../Rect/RectDungeon";
 import Logic from "../Logic";
+import Box from "../Building/Box";
+import BoxData from "../Data/BoxData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,9 +15,7 @@ import Logic from "../Logic";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
 
-@ccclass
 export default class MapManager {
     //读取文件的数据
     private allfileRooms: { [key: string]: MapData[] } = {};
@@ -24,6 +24,7 @@ export default class MapManager {
     // rooms:MapData[] = new Array();
     rectDungeon: RectDungeon = new RectDungeon(1);
     currentRectRoom: RectRoom = null;
+    boxes: { [key: string]: BoxData[] } = {};
     constructor() {
         this.init();
     }
@@ -61,7 +62,12 @@ export default class MapManager {
     getCurrentMapData(): MapData {
         return this.currentRectRoom.map;
     }
-
+    getCurrentMapBoxes(): BoxData[] {
+        return this.boxes[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`];
+    }
+    setCurrentBoxesArr(arr:BoxData[]){
+        this.boxes[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`] = arr;
+    }
 
     loadMap() {
         if (this.rectDungeon.startRoom.map) {

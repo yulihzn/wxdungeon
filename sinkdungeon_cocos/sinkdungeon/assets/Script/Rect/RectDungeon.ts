@@ -10,9 +10,7 @@ import RectRoom from "./RectRoom";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
 
-@ccclass
 export default class RectDungeon {
     public static readonly LEVEL_1 = 1;
     public static readonly LEVEL_2 = 2;

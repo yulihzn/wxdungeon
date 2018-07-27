@@ -65,7 +65,7 @@ export default class Loading extends cc.Component {
         cc.loader.loadResDir('Texture',cc.SpriteFrame,(err:Error,assert:cc.SpriteFrame[])=>{
             Logic.spriteFrames = {};
             for(let frame of assert){
-                frame.getTexture().setAliasTexParameters();
+                // frame.getTexture().setAliasTexParameters();
                 Logic.spriteFrames[frame.name] = frame;
             }
             this.isSpriteFramesLoaded = true;

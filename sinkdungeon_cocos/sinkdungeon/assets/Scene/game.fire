@@ -5110,8 +5110,14 @@
     "trap": {
       "__uuid__": "51ca6a17-d4b5-4276-93c2-56e8cdc00e43"
     },
+    "footboard": {
+      "__uuid__": "8ec37d33-b479-4a33-994f-04aea4665301"
+    },
     "chest": {
       "__uuid__": "b885c951-6a0a-4f47-9811-d9e95a385a73"
+    },
+    "box": {
+      "__uuid__": "79fce857-c111-4014-a0bc-f17997f9453e"
     },
     "heart": {
       "__uuid__": "558d3f33-1d7d-4d42-bb48-db7bd56c97fa"
@@ -7289,7 +7295,7 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 1,
+    "_density": 100,
     "_sensor": false,
     "_friction": 0.2,
     "_restitution": 0,

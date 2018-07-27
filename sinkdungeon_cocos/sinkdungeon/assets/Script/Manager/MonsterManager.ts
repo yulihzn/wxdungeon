@@ -56,11 +56,11 @@ export default class MonsterManager extends cc.Component {
         let data = new MonsterData();
         switch (resName) {
             case MonsterManager.MONSTER_SLIME: data.updateHAT(500,500,1,MonsterManager.TYPE_DASH); break;
-			case MonsterManager.MONSTER_GOBLIN: data.updateHAT(1,1,1,MonsterManager.TYPE_COMBAT); break;
+			case MonsterManager.MONSTER_GOBLIN: data.updateHAT(2,2,1,MonsterManager.TYPE_COMBAT); break;
 			case MonsterManager.MONSTER_MUMMY: data.updateHAT(2,2,2,MonsterManager.TYPE_COMBAT); break;
-            case MonsterManager.MONSTER_ANUBIS: data.updateHAT(3,3,3,MonsterManager.TYPE_COMBAT); break;
-            case MonsterManager.MONSTER_PIRATE: data.updateHAT(2,2,2,MonsterManager.TYPE_COMBAT); break;
-            case MonsterManager.MONSTER_SAILOR: data.updateHAT(1,1,1,MonsterManager.TYPE_COMBAT); break;
+            case MonsterManager.MONSTER_ANUBIS: data.updateHAT(10,10,3,MonsterManager.TYPE_DASH); break;
+            case MonsterManager.MONSTER_PIRATE: data.updateHAT(5,5,2,MonsterManager.TYPE_COMBAT); break;
+            case MonsterManager.MONSTER_SAILOR: data.updateHAT(2,2,1,MonsterManager.TYPE_COMBAT); break;
             case MonsterManager.MONSTER_OCTOPUS: data.updateHAT(10,10,2,MonsterManager.TYPE_REMOTE); break;
         }
         monster.changeBodyRes(resName);
@@ -75,7 +75,7 @@ export default class MonsterManager extends cc.Component {
         krakenPrefab.parent = parent;
         let kraken = krakenPrefab.getComponent(Kraken);
         let data = new MonsterData();
-        data.updateHAT(20,20,2,MonsterManager.TYPE_BOSS);
+        data.updateHAT(50,50,2,MonsterManager.TYPE_BOSS);
         kraken.data = data;
         kraken.transportPlayer(posIndex.x,posIndex.y);
         kraken.node.active = true;

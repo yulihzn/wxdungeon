@@ -216,7 +216,7 @@ export default class Player extends cc.Component {
     remoteRate = 0;
     remoteAttack() {
         let currentTime = Date.now();
-        if (currentTime - this.remoteRate > 1000) {
+        if (currentTime - this.remoteRate > 400) {
             this.remoteRate = currentTime;
             if (this.shooter) {
                 this.shooter.fireBullet();
@@ -308,12 +308,12 @@ export default class Player extends cc.Component {
     // }
 
     start() {
-        let ss = this.node.getComponentsInChildren(cc.Sprite);
-        for (let i = 0; i < ss.length; i++) {
-            if (ss[i].spriteFrame) {
-                ss[i].spriteFrame.getTexture().setAliasTexParameters();
-            }
-        }
+        // let ss = this.node.getComponentsInChildren(cc.Sprite);
+        // for (let i = 0; i < ss.length; i++) {
+        //     if (ss[i].spriteFrame) {
+        //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
+        //     }
+        // }
         this.changeZIndex(this.pos);
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.healthBar.refreshHealth(this.health.x, this.health.y);
@@ -358,9 +358,7 @@ export default class Player extends cc.Component {
             }
             this.label.getComponent(cc.Animation).play('FontFloating');
         }
-        if(damage>0){
-            cc.director.emit(EventConstant.DUNGEON_SHAKEONCE);
-        }
+        
         if (this.health.x < 1) {
             this.killed();
         }

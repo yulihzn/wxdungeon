@@ -33,11 +33,12 @@ export default class Chapter extends cc.Component {
     // onLoad () {}
 
     start () {
-        Logic.setAlias(this.chapter00.node);
-        Logic.setAlias(this.chapter01.node);
-        Logic.setAlias(this.chapter02.node);
-        Logic.setAlias(this.chapter03.node);
-        Logic.setAlias(this.chapter04.node);
+        cc.view.enableAntiAlias(false);
+        // Logic.setAlias(this.chapter00.node);
+        // Logic.setAlias(this.chapter01.node);
+        // Logic.setAlias(this.chapter02.node);
+        // Logic.setAlias(this.chapter03.node);
+        // Logic.setAlias(this.chapter04.node);
         
         
     }

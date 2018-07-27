@@ -7,6 +7,9 @@ import RectDungeon from "./Rect/RectDungeon";
 import RectRoom from "./Rect/RectRoom";
 import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
+import FootBoard from "./Building/FootBoard";
+import Box from "./Building/Box";
+import BoxData from "./Data/BoxData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,9 +44,10 @@ export default class Logic extends cc.Component {
         //关闭调试
         cc.director.setDisplayStats(false);
         cc.game.addPersistRootNode(this.node);
+        cc.view.enableAntiAlias(false);
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-    //     manager.enabledDebugDraw = true;
+        manager.enabledDebugDraw = true;
         cc.director.getPhysicsManager().enabled = true;
     //     cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
     // cc.PhysicsManager.DrawBits.e_pairBit |
@@ -95,6 +99,9 @@ export default class Logic extends cc.Component {
     static getCurrentMapData():MapData{
         return Logic.mapManger.getCurrentMapData();
     }
+    static getCurrentMapBoxes():BoxData[]{
+        return Logic.mapManger.getCurrentMapBoxes();
+    }
     static isBossLevel(level: number): boolean {
 		return level == Logic.BOSS_LEVEL_1;
 	}
@@ -104,14 +111,14 @@ export default class Logic extends cc.Component {
     static getHalfChance(): boolean {
 		return Math.random()>0.5;
     }
-    static setAlias(node:cc.Node){
-        let ss = node.getComponentsInChildren(cc.Sprite);
-            for (let i = 0; i < ss.length; i++) {
-                if (ss[i].spriteFrame) {
-                    ss[i].spriteFrame.getTexture().setAliasTexParameters();
-                }
-            }
-    }
+    // static setAlias(node:cc.Node){
+    //     let ss = node.getComponentsInChildren(cc.Sprite);
+    //         for (let i = 0; i < ss.length; i++) {
+    //             if (ss[i].spriteFrame) {
+    //                 ss[i].spriteFrame.getTexture().setAliasTexParameters();
+    //             }
+    //         }
+    // }
     // update (dt) {
     // }
 }

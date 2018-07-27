@@ -30,7 +30,7 @@ export default class Coin extends cc.Component {
     onEnable(){
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
-        let speed = 500;
+        let speed = 800;
         let x = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
         let y = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
         this.rigidBody.linearVelocity = cc.v2(x,y);
