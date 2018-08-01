@@ -78,7 +78,7 @@ export default class MapManager {
             if (err) {
                 cc.error(err);
             } else {
-                let strs: string = resource;
+                let strs: string = resource.text;
                 let arr = strs.split('room');
                 let index = 0;
                 for (let i = 0; i < arr.length; i++) {

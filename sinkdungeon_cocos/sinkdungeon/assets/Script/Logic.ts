@@ -42,7 +42,7 @@ export default class Logic extends cc.Component {
 
     onLoad () {
         //关闭调试
-        cc.director.setDisplayStats(false);
+        // cc.director.setDisplayStats(false);
         cc.game.addPersistRootNode(this.node);
         cc.view.enableAntiAlias(false);
         let manager = cc.director.getCollisionManager();

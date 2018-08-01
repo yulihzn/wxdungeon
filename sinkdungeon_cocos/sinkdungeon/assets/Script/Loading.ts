@@ -52,7 +52,7 @@ export default class Loading extends cc.Component {
             if(err){
 				cc.error(err);
 			}else{
-                Logic.equipments = resource;
+                Logic.equipments = resource.json;
                 this.isEquipmentLoaded = true;
 			}
         })
