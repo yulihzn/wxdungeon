@@ -8,11 +8,18 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+const {ccclass, property} = cc._decorator;
 
-export default class BoxData {
+@ccclass
+export default class WalkSmoke extends cc.Component {
 
-    pos:cc.Vec2;
-    defaultPos:cc.Vec2;
-    position:cc.Vec2;
-    
+    // LIFE-CYCLE CALLBACKS:
+
+    // onLoad () {}
+
+    start () {
+        setTimeout(()=>{cc.director.emit('destorysmoke',{coinNode:this.node});},300);
+    }
+
+    // update (dt) {}
 }

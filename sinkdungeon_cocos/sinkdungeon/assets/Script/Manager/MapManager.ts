@@ -4,6 +4,8 @@ import RectDungeon from "../Rect/RectDungeon";
 import Logic from "../Logic";
 import Box from "../Building/Box";
 import BoxData from "../Data/BoxData";
+import EquipmentData from "../Data/EquipmentData";
+import ShopTableData from "../Data/ShopTableData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,6 +27,7 @@ export default class MapManager {
     rectDungeon: RectDungeon = new RectDungeon(1);
     currentRectRoom: RectRoom = null;
     boxes: { [key: string]: BoxData[] } = {};
+    shopTables:{[key:string]:ShopTableData[]} = {};
     constructor() {
         this.init();
     }
@@ -67,6 +70,12 @@ export default class MapManager {
     }
     setCurrentBoxesArr(arr:BoxData[]){
         this.boxes[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`] = arr;
+    }
+    getCurrentMapShopTables(): ShopTableData[] {
+        return this.shopTables[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`];
+    }
+    setCurrentShopTableArr(arr:ShopTableData[]){
+        this.shopTables[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`] = arr;
     }
 
     loadMap() {

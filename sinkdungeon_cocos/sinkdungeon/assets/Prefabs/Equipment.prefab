@@ -3,10 +3,12 @@
     "__type__": "cc.Prefab",
     "_name": "",
     "_objFlags": 0,
-    "_rawFiles": null,
+    "_native": "",
     "data": {
       "__id__": 1
-    }
+    },
+    "optimizationPolicy": 0,
+    "asyncLoadAssets": false
   },
   {
     "__type__": "cc.Node",
@@ -3392,12 +3394,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -32
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 48,
-      "height": 48
+      "height": 96
     }
   },
   {
@@ -3417,7 +3419,7 @@
     "_size": {
       "__type__": "cc.Size",
       "width": 48,
-      "height": 48
+      "height": 64
     }
   },
   {

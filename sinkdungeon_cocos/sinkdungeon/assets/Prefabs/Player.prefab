@@ -3,10 +3,12 @@
     "__type__": "cc.Prefab",
     "_name": "",
     "_objFlags": 0,
-    "_rawFiles": null,
+    "_native": "",
     "data": {
       "__id__": 1
-    }
+    },
+    "optimizationPolicy": 0,
+    "asyncLoadAssets": false
   },
   {
     "__type__": "cc.Node",
@@ -34,20 +36,20 @@
         "__id__": 47
       },
       {
-        "__id__": 64
+        "__id__": 69
       },
       {
-        "__id__": 65
+        "__id__": 70
       },
       {
-        "__id__": 66
+        "__id__": 71
       },
       {
-        "__id__": 67
+        "__id__": 72
       }
     ],
     "_prefab": {
-      "__id__": 68
+      "__id__": 73
     },
     "_id": "",
     "_opacity": 255,
@@ -75,8 +77,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -311,
-      "y": -600
+      "x": 199,
+      "y": -674
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -555,7 +557,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "59ed9e6c-fe2c-4439-84ff-aade8590f7ce"
+      "__uuid__": "5fd6fe49-7df5-4600-a1ee-ace4e46fea53"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -859,7 +861,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "ad0e0ffa-be7d-4e0f-9aff-60b1675201ee"
+      "__uuid__": "18a5cd67-36d0-4365-84d4-da63074ab1c3"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -1335,11 +1337,11 @@
         "__id__": 46
       },
       {
-        "__id__": 62
+        "__id__": 67
       }
     ],
     "_prefab": {
-      "__id__": 63
+      "__id__": 68
     },
     "_id": "",
     "_opacity": 255,
@@ -1477,16 +1479,10 @@
     "bullet": {
       "__uuid__": "9b7e3d95-b29c-4799-b1e8-03d2f32dba55"
     },
-    "meleeBullet": {
-      "__uuid__": "93afc79c-21b2-482c-b5a1-9d242bbabb0b"
-    },
     "auto": false,
     "isAI": false,
     "frequency": 1,
     "dungeon": null,
-    "shooterParent": {
-      "__id__": 1
-    },
     "player": {
       "__id__": 47
     }
@@ -1531,20 +1527,17 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 57
+        "__id__": 63
       },
       {
-        "__id__": 58
+        "__id__": 64
       },
       {
-        "__id__": 59
-      },
-      {
-        "__id__": 60
+        "__id__": 65
       }
     ],
     "_prefab": {
-      "__id__": 61
+      "__id__": 66
     },
     "_id": "",
     "_opacity": 255,
@@ -1595,13 +1588,19 @@
       },
       {
         "__id__": 53
+      },
+      {
+        "__id__": 56
+      },
+      {
+        "__id__": 59
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 56
+      "__id__": 62
     },
     "_id": "",
     "_opacity": 255,
@@ -1701,9 +1700,7 @@
       "__id__": 50
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "ff481cf9-571e-413b-b71e-125e9034ec91"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -1749,7 +1746,7 @@
       "__id__": 55
     },
     "_id": "",
-    "_opacity": 255,
+    "_opacity": 0,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1822,6 +1819,188 @@
     "sync": false
   },
   {
+    "__type__": "cc.Node",
+    "_name": "stabweapon",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 49
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 57
+      }
+    ],
+    "_prefab": {
+      "__id__": 58
+    },
+    "_id": "",
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.2
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 32,
+      "height": 32
+    },
+    "_rotationX": 90,
+    "_rotationY": 90,
+    "_scaleX": 3,
+    "_scaleY": 3,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 56
+    },
+    "_enabled": true,
+    "_spriteFrame": {
+      "__uuid__": "76f67806-5fed-4c01-b48c-3bc2e3ea3e77"
+    },
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": null
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "c0c182eb-1a34-4189-98f2-37c2b9b9353f"
+    },
+    "fileId": "cdizcB3JlLzZbMF2l20v9e",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "stablight",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 49
+    },
+    "_children": [],
+    "_tag": -1,
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 60
+      }
+    ],
+    "_prefab": {
+      "__id__": 61
+    },
+    "_id": "",
+    "_opacity": 0,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.2,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 32,
+      "height": 32
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 2,
+    "_scaleY": 2,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 48,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_opacityModifyRGB": false,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 59
+    },
+    "_enabled": true,
+    "_spriteFrame": {
+      "__uuid__": "45b01108-3018-4e61-9410-8e86c1c0aeed"
+    },
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": null
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "c0c182eb-1a34-4189-98f2-37c2b9b9353f"
+    },
+    "fileId": "95igojb+pO87VkIiqbT9h/",
+    "sync": false
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -1847,6 +2026,9 @@
       },
       {
         "__uuid__": "fcc57dcd-9d2c-4f6e-8825-cfd9d782eaf1"
+      },
+      {
+        "__uuid__": "48012127-89ce-427c-92fc-0f68d8aec822"
       }
     ],
     "playOnLoad": false
@@ -1859,35 +2041,12 @@
       "__id__": 48
     },
     "_enabled": true,
-    "dungeon": null,
-    "shooterParent": null,
-    "player": null
+    "playerNode": {
+      "__id__": 1
+    }
   },
   {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 48
-    },
-    "_enabled": true,
-    "_type": 2,
-    "_allowSleep": true,
-    "_gravityScale": 0,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": true,
-    "bullet": false
-  },
-  {
-    "__type__": "cc.PhysicsCircleCollider",
+    "__type__": "cc.CircleCollider",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -1895,17 +2054,12 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 1,
-    "_sensor": true,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 60,
       "y": 0
     },
-    "_radius": 0
+    "_radius": 70
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2007,7 +2161,7 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 1,
+    "_density": 100,
     "_sensor": false,
     "_friction": 0.2,
     "_restitution": 0,
@@ -2015,7 +2169,7 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 8
     },
     "_size": {
       "__type__": "cc.Size",
@@ -2035,12 +2189,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 32
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 32,
-      "height": 16
+      "height": 64
     }
   },
   {

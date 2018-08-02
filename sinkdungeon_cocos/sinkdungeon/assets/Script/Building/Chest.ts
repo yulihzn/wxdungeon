@@ -20,13 +20,6 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Chest extends cc.Component {
 
-    rewards:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.CLOTHES_SHIRT
-        ,EquipmentManager.CLOTHES_VEST,EquipmentManager.CLOTHES_NAVY,EquipmentManager.CLOTHES_PIRATE,
-        EquipmentManager.CLOTHES_BUCKET,EquipmentManager.CLOTHES_REDROBE,
-        EquipmentManager.CLOTHES_WHITEROBE,EquipmentManager.HELMET_BUCKETHAT,
-        EquipmentManager.HELMET_PIRATEHAT,EquipmentManager.HELMET_REDHAT,
-        EquipmentManager.HELMET_WHITEHAT,EquipmentManager.WEAPON_PITCHFORK];
-
     @property(cc.SpriteFrame)
     openSpriteFrame: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
@@ -87,7 +80,7 @@ export default class Chest extends cc.Component {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        dungeon.addEquipment(this.rewards[Logic.getRandomNum(0,this.rewards.length-1)], this.pos,null,this.quality);
+                        dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
                     }
                 }
             }));

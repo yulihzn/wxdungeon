@@ -3,6 +3,7 @@ import Logic from "../Logic";
 import EquipmentData from "../Data/EquipmentData";
 import EquipmentDescData from "../Data/EquipmentDescData";
 import Equipment from "../Equipment/Equipment";
+import ShopTable from "../Building/ShopTable";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,6 +33,12 @@ export default class EquipmentManager extends cc.Component {
     public static readonly HELMET_PIRATEHAT = "helmet003";
     public static readonly HELMET_REDHAT = "helmet004";
     public static readonly HELMET_WHITEHAT = "helmet005";
+    public static readonly equipments:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.CLOTHES_SHIRT
+        ,EquipmentManager.CLOTHES_VEST,EquipmentManager.CLOTHES_NAVY,EquipmentManager.CLOTHES_PIRATE,
+        EquipmentManager.CLOTHES_BUCKET,EquipmentManager.CLOTHES_REDROBE,
+        EquipmentManager.CLOTHES_WHITEROBE,EquipmentManager.HELMET_BUCKETHAT,
+        EquipmentManager.HELMET_PIRATEHAT,EquipmentManager.HELMET_REDHAT,
+        EquipmentManager.HELMET_WHITEHAT,EquipmentManager.WEAPON_PITCHFORK];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红
@@ -126,6 +133,7 @@ export default class EquipmentManager extends cc.Component {
 
         desc.prefix = arr[level] + ' ' + desc.prefix;
         desc.titlecolor = colors[level];
+        desc.level = level;
         desc.color = desc.color=='#000000'?'#ffffff':desc.color;
         
 
@@ -175,7 +183,7 @@ export default class EquipmentManager extends cc.Component {
         data.x = parseFloat(data.x.toFixed(0));
         return data;
     }
-    getEquipment(equipType: string, pos: cc.Vec2, parent: cc.Node, equipData?: EquipmentData,chestQuality?:number): Equipment {
+    getEquipment(equipType: string, pos: cc.Vec2, parent: cc.Node, equipData?: EquipmentData,chestQuality?:number,shopTable?:ShopTable): Equipment {
         let equipmentPrefab = cc.instantiate(this.equipment);
         equipmentPrefab.parent = parent;
         equipmentPrefab.position = Dungeon.getPosInMap(pos);
@@ -203,6 +211,11 @@ export default class EquipmentManager extends cc.Component {
             data.prefix = desc.prefix;
             data.titlecolor = desc.titlecolor;
             data.color = desc.color;
+            if(shopTable){
+                equipment.shopTable = shopTable;
+                shopTable.data.equipdata = data.clone();
+                shopTable.data.price = 20*(desc.level+1);
+            }
             equipment.refresh(data);
         }
         return equipment;

@@ -20,6 +20,7 @@ import EquipmentData from './Data/EquipmentData';
 import Monster from './Monster';
 import Kraken from './Boss/Kraken';
 import MeleeWeapon from './MeleeWeapon';
+import WalkSmoke from './WalkSmoke';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -30,7 +31,9 @@ export default class Player extends cc.Component {
     label: cc.Label = null;
     @property(HealthBar)
     healthBar: HealthBar = null;
-
+    @property(cc.Prefab)
+    walksmoke: cc.Prefab = null;
+    private smokePool: cc.NodePool;
     @property(cc.Node)
     meleeWeaponNode: cc.Node = null;
     meleeWeapon: MeleeWeapon = null;
@@ -121,7 +124,32 @@ export default class Player extends cc.Component {
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);
+        this.smokePool = new cc.NodePool();
+        cc.director.on('destorysmoke', (event) => {
+            this.destroySmoke(event.detail.coinNode);
+        })
 
+    }
+    private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
+        let smokePrefab: cc.Node = null;
+        if (this.smokePool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+            smokePrefab = this.smokePool.get();
+        }
+        // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+        if (!smokePrefab || smokePrefab.active) {
+            smokePrefab = cc.instantiate(this.walksmoke);
+        }
+        smokePrefab.parent = parentNode;
+        smokePrefab.position = pos;
+        smokePrefab.zIndex = 4000;
+        smokePrefab.opacity = 255;
+        smokePrefab.active = true;
+    }
+    destroySmoke(smokeNode: cc.Node) {
+        smokeNode.active = false;
+        if (this.smokePool) {
+            this.smokePool.put(smokeNode);
+        }
     }
     changeItem(spriteFrame: cc.SpriteFrame) {
         this.playerItemSprite.spriteFrame = spriteFrame;
@@ -130,15 +158,15 @@ export default class Player extends cc.Component {
     changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         switch (equipData.equipmetType) {
             case 'weapon':
-            this.meleeWeapon.isStab = equipData.stab==1;
-            if(equipData.stab==1){
-                this.weaponSprite.spriteFrame = null;
-                this.weaponStabSprite.spriteFrame = spriteFrame;
-                this.weaponStabLightSprite.spriteFrame = Logic.spriteFrames['stablight'];
-            }else{
-                this.weaponSprite.spriteFrame = spriteFrame;
-                this.weaponStabSprite.spriteFrame = null;
-            }
+                this.meleeWeapon.isStab = equipData.stab == 1;
+                if (equipData.stab == 1) {
+                    this.weaponSprite.spriteFrame = null;
+                    this.weaponStabSprite.spriteFrame = spriteFrame;
+                    this.weaponStabLightSprite.spriteFrame = Logic.spriteFrames['stablight'];
+                } else {
+                    this.weaponSprite.spriteFrame = spriteFrame;
+                    this.weaponStabSprite.spriteFrame = null;
+                }
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
                 this.weaponSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color1;
@@ -199,8 +227,8 @@ export default class Player extends cc.Component {
         }
         pos = pos.normalizeSelf().mul(5);
         let speed = this.inventoryData.getAttackSpeed();
-        let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y),cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
-            setTimeout(() => { this.sprite.position=cc.v2(0,0);this.isAttacking = false; }, speed);
+        let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
+            setTimeout(() => { this.sprite.position = cc.v2(0, 0); this.isAttacking = false; }, speed);
         }, this));
         this.sprite.runAction(action);
         this.meleeWeapon.attack();
@@ -358,7 +386,7 @@ export default class Player extends cc.Component {
             }
             this.label.getComponent(cc.Animation).play('FontFloating');
         }
-        
+
         if (this.health.x < 1) {
             this.killed();
         }
@@ -386,6 +414,15 @@ export default class Player extends cc.Component {
         }
         return false;
     }
+    smokeTimeDelay = 0;
+    isSmokeTimeDelay(dt: number): boolean {
+        this.smokeTimeDelay += dt;
+        if (this.smokeTimeDelay > 0.4) {
+            this.smokeTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     update(dt) {
 
         if (this.isRecoveryTimeDelay(dt)) {
@@ -394,13 +431,28 @@ export default class Player extends cc.Component {
                 this.takeDamage(-re);
             }
         }
+        if (this.isSmokeTimeDelay(dt)&&this.isMoving) {
+            this.getWalkSmoke(this.node.parent, this.node.position);
+            setTimeout(() => {
+                this.getWalkSmoke(this.node.parent, this.node.position);
+            }, 200);
+        }
 
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
     UseItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
-            this.touchedEquipment.taken();
-            this.touchedEquipment = null;
+            if (this.touchedEquipment.shopTable) {
+                if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {
+                    cc.director.emit(EventConstant.HUD_ADD_COIN, { count: -this.touchedEquipment.shopTable.data.price });
+                    this.touchedEquipment.taken();
+                    this.touchedEquipment.shopTable.data.isSaled = true;
+                    this.touchedEquipment = null;
+                }
+            } else {
+                this.touchedEquipment.taken();
+                this.touchedEquipment = null;
+            }
         }
     }
     //anim
@@ -438,13 +490,13 @@ export default class Player extends cc.Component {
     // onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
     //     this.touchedEquipment = null;
     // }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         this.touchedEquipment = null;
     }
-    onCollisionExit(other:cc.Collider,self:cc.Collider){
+    onCollisionExit(other: cc.Collider, self: cc.Collider) {
         this.touchedEquipment = null;
     }
-    onCollisionStay(other:cc.Collider,self:cc.Collider){
+    onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let equipment = other.node.getComponent(Equipment);
         if (equipment) {
             this.touchedEquipment = equipment;

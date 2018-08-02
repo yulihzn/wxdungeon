@@ -4,6 +4,7 @@ import EquipmentData from "../Data/EquipmentData";
 import EquipmentManager from "../Manager/EquipmentManager";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
+import ShopTable from "../Building/ShopTable";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,6 +27,7 @@ export default class Equipment extends cc.Component {
     equipmentDialog: EquipmentDialog = null;
     pos: cc.Vec2 = cc.v2(0, 0);
     isTaken = false;
+    shopTable:ShopTable;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {

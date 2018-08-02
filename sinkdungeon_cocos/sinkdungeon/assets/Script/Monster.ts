@@ -101,7 +101,7 @@ export default class Monster extends cc.Component {
         return dis;
     }
     
-    move(dir: number, pos: cc.Vec2,speed:number) {
+    move(pos: cc.Vec2,speed:number) {
         if (this.isDied || this.isFall || this.isHurt) {
             this.isHurt = false;
             return;
@@ -136,11 +136,7 @@ export default class Monster extends cc.Component {
                 this.anim.play('PlayerIdle');
             }
         }
-
-        let isUpDown = dir == 1 || dir == 0;
-        if (isUpDown) {
-            this.changeZIndex();
-        }
+        this.changeZIndex();
     }
 
     start() {
@@ -222,7 +218,7 @@ export default class Monster extends cc.Component {
                     speed = 600;
                 }
             }
-            if (playerDis < 600&&this.data.monsterType==MonsterManager.TYPE_REMOTE) {
+            if (playerDis < 600&&this.data.monsterType==MonsterManager.TYPE_REMOTE &&Logic.getHalfChance()) {
                 let hv = dungeon.player.node.position.sub(this.node.position);
                 if (this.shooter && !hv.equals(cc.Vec2.ZERO)) {
                     hv = hv.normalizeSelf();
@@ -234,7 +230,7 @@ export default class Monster extends cc.Component {
             
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
-                this.move(dir, pos,speed);
+                this.move(pos,speed);
             }
         }
 
@@ -279,12 +275,12 @@ export default class Monster extends cc.Component {
             let tile = dungeon.map[newPos.x][newPos.y];
             if (!tile.isBroken) {
                 let hasOther = false;
-                for (let other of dungeon.monsters) {
-                    if (other.pos.equals(newPos)) {
-                        hasOther = true;
-                        break;
-                    }
-                }
+                // for (let other of dungeon.monsters) {
+                //     if (other.pos.equals(newPos)) {
+                //         hasOther = true;
+                //         break;
+                //     }
+                // }
                 let w = dungeon.wallmap[newPos.x][newPos.y]
                 if (w && w.node.active) {
                     hasOther = true;

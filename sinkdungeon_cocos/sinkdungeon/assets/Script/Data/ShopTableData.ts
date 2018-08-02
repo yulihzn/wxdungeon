@@ -1,3 +1,5 @@
+import EquipmentData from "./EquipmentData";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -9,10 +11,10 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 
-export default class BoxData {
-
+export default class ShopTableData {
     pos:cc.Vec2;
-    defaultPos:cc.Vec2;
-    position:cc.Vec2;
+    equipdata:EquipmentData;
+    price = 80;
+    isSaled = false;//是否卖出
     
 }

@@ -29,7 +29,8 @@ export default class EquipmentData{
     color:string  ='#ffffff';
     titlecolor:string = '#ffffff';
     img:string = 'emptyequipment';
-    stab = 0;
+    stab = 0;//是否突刺
+    isLocked = 0;//是否锁定
     public valueCopy(data:EquipmentData):EquipmentData{
         let e = new EquipmentData();
         this.nameCn = data.nameCn;
@@ -52,6 +53,7 @@ export default class EquipmentData{
         this.titlecolor = data.titlecolor;
         this.img = data.img;
         this.stab = data.stab;
+        this.isLocked = this.isLocked;
         return e;
     }
     public clone():EquipmentData{
@@ -76,6 +78,7 @@ export default class EquipmentData{
         e.titlecolor = this.titlecolor;
         e.img = this.img;
         e.stab = this.stab;
+        e.isLocked = this.isLocked;
         return e;
     }
 }

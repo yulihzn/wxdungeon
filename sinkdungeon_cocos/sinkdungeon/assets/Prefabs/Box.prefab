@@ -3,10 +3,12 @@
     "__type__": "cc.Prefab",
     "_name": "",
     "_objFlags": 0,
-    "_rawFiles": null,
+    "_native": "",
     "data": {
       "__id__": 1
-    }
+    },
+    "optimizationPolicy": 0,
+    "asyncLoadAssets": false
   },
   {
     "__type__": "cc.Node",
@@ -308,8 +310,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 60,
+      "height": 60
     }
   },
   {
@@ -337,8 +339,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 16,
+      "height": 16
     }
   },
   {
@@ -350,14 +352,17 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "ed837194-7365-43c2-8ba4-7b4e2dfff637"
+      "__uuid__": "fcc62512-4940-4495-886c-1715e9a597c2"
     },
     "_clips": [
+      {
+        "__uuid__": "fcc62512-4940-4495-886c-1715e9a597c2"
+      },
       {
         "__uuid__": "ed837194-7365-43c2-8ba4-7b4e2dfff637"
       }
     ],
-    "playOnLoad": false
+    "playOnLoad": true
   },
   {
     "__type__": "cc.BoxCollider",

@@ -1,5 +1,9 @@
 import Player from "../Player";
 import Dungeon from "../Dungeon";
+import EquipmentManager from "../Manager/EquipmentManager";
+import Logic from "../Logic";
+import { EventConstant } from "../EventConstant";
+import ShopTableData from "../Data/ShopTableData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,22 +23,47 @@ export default class ShopTable extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     info: cc.Node;
     label: cc.Label;
-    pos: cc.Vec2;
+    data: ShopTableData = new ShopTableData();
+
+
     onLoad() {
         this.info = this.node.getChildByName('info');
-        this.label = this.info.getComponent(cc.Label);
-        this.info.opacity = 0;
+        this.label = this.info.getComponentInChildren(cc.Label);
     }
 
     start() {
 
     }
+    showItem() {
+        if (this.node.parent && !this.data.isSaled) {
+            let dungeon = this.node.parent.getComponent(Dungeon);
+            if (dungeon) {
+                dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0, EquipmentManager.equipments.length - 1)], this.data.pos, this.data.equipdata, 3, this);
+            }
+        }
+    }
     setPos(pos: cc.Vec2) {
-        this.pos = pos;
+        this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
     }
-    // update (dt) {}
+    timeDelay = 0;
+    update(dt) {
+        this.timeDelay += dt;
+        if (this.timeDelay > 0.2) {
+            this.label.string = `${this.data.price}`;
+            this.info.opacity = this.data.isSaled ? 0 : 255;
+            let currtables = Logic.getCurrentMapShopTables();
+            if (currtables) {
+                for (let temptable of currtables) {
+                    if (temptable.pos.equals(this.data.pos)) {
+                        temptable.isSaled = this.data.isSaled;
+                        temptable.price = this.data.price;
+                    }
+                }
+            }
+        }
+    }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {

@@ -25,6 +25,7 @@ export default class EquipmentDescData{
     titlecolor:string  ='#ffffff';
     color:string = '#ffffff'
     prefix:string = '';
+    level:number = 0;
 
     // constructor(nameCn: string,
     // nameEn: string,

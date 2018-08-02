@@ -10,6 +10,7 @@ import Dungeon from "./Dungeon";
 import FootBoard from "./Building/FootBoard";
 import Box from "./Building/Box";
 import BoxData from "./Data/BoxData";
+import ShopTableData from "./Data/ShopTableData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,7 +48,7 @@ export default class Logic extends cc.Component {
         cc.view.enableAntiAlias(false);
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-        manager.enabledDebugDraw = true;
+        // manager.enabledDebugDraw = true;
         cc.director.getPhysicsManager().enabled = true;
     //     cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
     // cc.PhysicsManager.DrawBits.e_pairBit |
@@ -101,6 +102,9 @@ export default class Logic extends cc.Component {
     }
     static getCurrentMapBoxes():BoxData[]{
         return Logic.mapManger.getCurrentMapBoxes();
+    }
+    static getCurrentMapShopTables():ShopTableData[]{
+        return Logic.mapManger.getCurrentMapShopTables();
     }
     static isBossLevel(level: number): boolean {
 		return level == Logic.BOSS_LEVEL_1;

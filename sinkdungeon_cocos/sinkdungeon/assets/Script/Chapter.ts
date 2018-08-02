@@ -34,13 +34,6 @@ export default class Chapter extends cc.Component {
 
     start () {
         cc.view.enableAntiAlias(false);
-        // Logic.setAlias(this.chapter00.node);
-        // Logic.setAlias(this.chapter01.node);
-        // Logic.setAlias(this.chapter02.node);
-        // Logic.setAlias(this.chapter03.node);
-        // Logic.setAlias(this.chapter04.node);
-        
-        
     }
     
     clickChapter(event,chapter){
@@ -49,7 +42,7 @@ export default class Chapter extends cc.Component {
             Logic.resetData();
         }
         if(chapter=='chapter00'){
-            Logic.playerData.updateHA(cc.v2(100,100),1);
+            // Logic.playerData.updateHA(cc.v2(100,100),1);
         }
         cc.director.loadScene('loading');
     }

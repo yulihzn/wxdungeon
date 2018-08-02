@@ -13,6 +13,7 @@ export default class Helloworld extends cc.Component {
     text: string = 'hello';
 
     start () {
+        cc.view.enableAntiAlias(false)
         // init logic
     }
     startGame(){

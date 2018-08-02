@@ -22,6 +22,7 @@ export default class Box extends cc.Component {
     private timeDelay = 0;
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
+        this.anim.play('BoxShow');
     }
     data: BoxData = new BoxData();
 
@@ -41,7 +42,7 @@ export default class Box extends cc.Component {
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation);
         }
-        this.anim.play();
+        this.anim.play('BoxBroken');
     }
     reset() {
         this.node.position = Dungeon.getPosInMap(this.data.defaultPos);
@@ -51,11 +52,13 @@ export default class Box extends cc.Component {
         this.timeDelay += dt;
         if (this.timeDelay > 0.2) {
             this.data.pos = Dungeon.getIndexInMap(this.node.position);
+            this.data.position = this.node.position;
             let currboxes = Logic.getCurrentMapBoxes();
             if (currboxes) {
                 for (let tempbox of currboxes) {
                     if (tempbox.defaultPos.equals(this.data.defaultPos)) {
                         tempbox.pos = this.data.pos;
+                        tempbox.position = this.data.position;
                     }
                 }
             }

@@ -3,10 +3,12 @@
     "__type__": "cc.Prefab",
     "_name": "",
     "_objFlags": 0,
-    "_rawFiles": null,
+    "_native": "",
     "data": {
       "__id__": 1
-    }
+    },
+    "optimizationPolicy": 0,
+    "asyncLoadAssets": false
   },
   {
     "__type__": "cc.Node",
@@ -142,7 +144,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0911a341-0960-450f-8d92-cbf797817677"
+      "__uuid__": "4586ab58-d214-4f5e-8bb5-8550d72eb768"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -233,7 +235,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "ceb3977a-160e-46c6-a9ce-af7f2d7cdc6d"
+      "__uuid__": "6caf5a4b-1414-4b1f-b5bc-681fe349862b"
     },
     "_type": 0,
     "_sizeMode": 0,

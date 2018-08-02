@@ -109,8 +109,6 @@ export default class MeleeWeapon extends cc.Component {
         let action = cc.moveBy(0.1, pos.x, pos.y);
         // node.runAction(action);
         rigidBody.applyLinearImpulse(pos,rigidBody.getLocalCenter(),true);
-        cc.director.emit(EventConstant.DUNGEON_SHAKEONCE);
-
     }
     attacking(attackTarget: cc.Collider) {
         if (!attackTarget || !this.isAttacking) {

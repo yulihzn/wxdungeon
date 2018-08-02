@@ -1,0 +1,35 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "BoxShow",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.08333333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.BoxCollider": {
+        "size": [
+          {
+            "frame": 0,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 16,
+              "height": 16
+            }
+          },
+          {
+            "frame": 0.08333333333333333,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 64,
+              "height": 64
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

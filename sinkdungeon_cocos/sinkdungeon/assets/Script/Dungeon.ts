@@ -22,6 +22,7 @@ import CoinManger from "./Manager/CoinManager";
 import Box from "./Building/Box";
 import FootBoard from "./Building/FootBoard";
 import BoxData from "./Data/BoxData";
+import ShopTableData from "./Data/ShopTableData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -118,6 +119,7 @@ export default class Dungeon extends cc.Component {
         this.trapmap = new Array();
         this.footboards = new Array();
         let boxes:BoxData[] = new Array();
+        let shopTables:ShopTableData[] = new Array();
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             this.wallmap[i] = new Array(i);
@@ -181,11 +183,11 @@ export default class Dungeon extends cc.Component {
                        for(let tempbox of currboxes){
                            if(tempbox.defaultPos.equals(b.data.defaultPos)){
                                b.setPos(tempbox.pos);
+                               b.node.position = tempbox.position.clone();
                            }
                        } 
                     }else{
                         boxes.push(b.data);
-                        
                     }
                 }
                 //生成心
@@ -201,6 +203,19 @@ export default class Dungeon extends cc.Component {
                     table.parent = this.node;
                     let ta = table.getComponent(ShopTable);
                     ta.setPos(cc.v2(i, j));
+                    let currshoptables =  Logic.getCurrentMapShopTables();
+                    if(currshoptables){
+                       for(let temptable of currshoptables){
+                           if(temptable.pos.equals(ta.data.pos)){
+                               ta.data.equipdata = temptable.equipdata.clone();
+                               ta.data.isSaled = temptable.isSaled;
+                               ta.data.price = temptable.price;
+                           }
+                       } 
+                    }else{
+                        shopTables.push(ta.data);
+                    }
+                    ta.showItem();
                 }
                 if (mapData[i][j] == 'S') {
                     let shop = cc.instantiate(this.shop);
@@ -249,6 +264,10 @@ export default class Dungeon extends cc.Component {
         if(!currbs && boxes.length>0){
             Logic.mapManger.setCurrentBoxesArr(boxes);
         }
+        let currts =  Logic.getCurrentMapShopTables();
+        if(!currts && shopTables.length>0){
+            Logic.mapManger.setCurrentShopTableArr(shopTables);
+        }
         this.addBoss();
     }
     /**掉落心 */
@@ -265,9 +284,9 @@ export default class Dungeon extends cc.Component {
             this.coinManager.getValueCoin(count, pos, this.node);
         }
     }
-    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData, chestQuality?: number) {
+    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData, chestQuality?: number,shopTable?:ShopTable) {
         if (this.equipmentManager) {
-            this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality);
+            this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality ,shopTable);
         }
     }
     /**添加怪物 */
