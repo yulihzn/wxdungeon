@@ -251,11 +251,17 @@ export default class Dungeon extends cc.Component {
                     }
                 }
                 if (mapData[i][j] == 'P') {
-                    let portalP = cc.instantiate(this.portalPrefab);
-                    portalP.parent = this.node;
-                    this.portal = portalP.getComponent(Portal);
-                    if (this.portal) {
-                        this.portal.setPos(cc.v2(i, j));
+                    let needAdd = true;
+                    if(Logic.level==RectDungeon.LEVEL_5&&Logic.mapManger.currentRectRoom.roomType == RectDungeon.END_ROOM){
+                        needAdd = false;
+                    }
+                    if(needAdd){
+                        let portalP = cc.instantiate(this.portalPrefab);
+                        portalP.parent = this.node;
+                        this.portal = portalP.getComponent(Portal);
+                        if (this.portal) {
+                            this.portal.setPos(cc.v2(i, j));
+                        }
                     }
                 }
             }

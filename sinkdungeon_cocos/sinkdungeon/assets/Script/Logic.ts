@@ -44,6 +44,7 @@ export default class Logic extends cc.Component {
     onLoad () {
         //关闭调试
         // cc.director.setDisplayStats(false);
+        cc.game.setFrameRate(60);
         cc.game.addPersistRootNode(this.node);
         cc.view.enableAntiAlias(false);
         let manager = cc.director.getCollisionManager();
@@ -115,14 +116,5 @@ export default class Logic extends cc.Component {
     static getHalfChance(): boolean {
 		return Math.random()>0.5;
     }
-    // static setAlias(node:cc.Node){
-    //     let ss = node.getComponentsInChildren(cc.Sprite);
-    //         for (let i = 0; i < ss.length; i++) {
-    //             if (ss[i].spriteFrame) {
-    //                 ss[i].spriteFrame.getTexture().setAliasTexParameters();
-    //             }
-    //         }
-    // }
-    // update (dt) {
-    // }
+    
 }

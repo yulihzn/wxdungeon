@@ -21,6 +21,7 @@ import Monster from './Monster';
 import Kraken from './Boss/Kraken';
 import MeleeWeapon from './MeleeWeapon';
 import WalkSmoke from './WalkSmoke';
+import RectDungeon from './Rect/RectDungeon';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -120,6 +121,9 @@ export default class Player extends cc.Component {
             , (event) => { this.takeDamage(event.detail.damage) });
 
         this.pos = Logic.playerData.pos;
+        if(Logic.mapManger.currentRectRoom.roomType==RectDungeon.BOSS_ROOM){
+            this.pos = cc.v2(7,4);
+        }
         this.defaultPos = Logic.playerData.pos.clone();
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
@@ -146,6 +150,9 @@ export default class Player extends cc.Component {
         smokePrefab.active = true;
     }
     destroySmoke(smokeNode: cc.Node) {
+        if(!smokeNode){
+            return;
+        }
         smokeNode.active = false;
         if (this.smokePool) {
             this.smokePool.put(smokeNode);
@@ -417,7 +424,7 @@ export default class Player extends cc.Component {
     smokeTimeDelay = 0;
     isSmokeTimeDelay(dt: number): boolean {
         this.smokeTimeDelay += dt;
-        if (this.smokeTimeDelay > 0.4) {
+        if (this.smokeTimeDelay > 0.2) {
             this.smokeTimeDelay = 0;
             return true;
         }
@@ -433,9 +440,6 @@ export default class Player extends cc.Component {
         }
         if (this.isSmokeTimeDelay(dt)&&this.isMoving) {
             this.getWalkSmoke(this.node.parent, this.node.position);
-            setTimeout(() => {
-                this.getWalkSmoke(this.node.parent, this.node.position);
-            }, 200);
         }
 
         this.node.scaleX = this.isFaceRight ? 1 : -1;

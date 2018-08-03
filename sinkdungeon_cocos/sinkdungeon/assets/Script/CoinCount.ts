@@ -31,10 +31,11 @@ export default class CoinCount extends cc.Component {
     start() {
     }
     addCount(value) {
-        if (this.anim) {
-            this.anim.play();
+        if (!this.anim) {
+            return;
         }
         Logic.coins += value;
+        cc.log(Logic.coins);
     }
 
     update(dt) {

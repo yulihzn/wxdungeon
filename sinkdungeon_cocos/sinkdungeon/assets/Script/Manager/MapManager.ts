@@ -43,6 +43,8 @@ export default class MapManager {
         this.resetRooms();
         this.currentRectRoom = this.rectDungeon.startRoom;
         this.changeRoomsIsFound(this.currentRectRoom.x, this.currentRectRoom.y);
+        this.boxes = {};
+        this.shopTables = {};
     }
 
     loadingNextRoom(dir: number): RectRoom {
