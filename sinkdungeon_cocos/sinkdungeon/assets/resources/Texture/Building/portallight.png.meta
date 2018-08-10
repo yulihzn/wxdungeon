@@ -1,9 +1,10 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.2.0",
   "uuid": "9f48bdbf-3f29-46d2-b67e-33e4b89d448d",
   "type": "sprite",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
   "subMetas": {
     "portallight": {
       "ver": "1.0.3",

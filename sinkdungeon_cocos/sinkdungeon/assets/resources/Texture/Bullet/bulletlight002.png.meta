@@ -1,9 +1,10 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.2.0",
   "uuid": "80deacfb-b081-41d7-a54f-7963eac509d7",
   "type": "sprite",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
   "subMetas": {
     "bulletlight002": {
       "ver": "1.0.3",

@@ -29,7 +29,7 @@ export default class KrakenSwingHand extends cc.Component {
         let player = other.node.getComponent(Player);
         if(player && this.isShow && this.node.active){
             this.node.stopAllActions();
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:this.damage}});
         }
     }
     // update (dt) {}

@@ -1,9 +1,10 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.2.0",
   "uuid": "63206da7-116e-41fc-ba94-ddd2b2e2a4e8",
   "type": "sprite",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
   "subMetas": {
     "jungledoor": {
       "ver": "1.0.3",

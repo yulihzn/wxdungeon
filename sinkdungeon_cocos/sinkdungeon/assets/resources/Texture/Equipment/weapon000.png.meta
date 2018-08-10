@@ -1,9 +1,10 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.2.0",
   "uuid": "b21708e3-6285-4b69-877f-92a543e67851",
   "type": "sprite",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
   "subMetas": {
     "weapon000": {
       "ver": "1.0.3",

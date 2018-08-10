@@ -1,9 +1,10 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.2.0",
   "uuid": "834253b8-be09-40d7-b699-ca6ce8d93292",
   "type": "sprite",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
   "subMetas": {
     "btn_normal": {
       "ver": "1.0.3",

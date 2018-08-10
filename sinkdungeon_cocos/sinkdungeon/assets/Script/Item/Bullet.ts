@@ -56,7 +56,7 @@ export default class Bullet extends cc.Component {
     }
     //animation
     MeleeFinish(){
-        cc.director.emit('destorybullet',{bulletNode:this.node});
+        cc.director.emit('destorybullet',{detail:{bulletNode:this.node}});
     }
     //animation
     showBullet(hv:cc.Vec2){
@@ -68,7 +68,7 @@ export default class Bullet extends cc.Component {
     }
     //animation
     BulletDestory(){
-        cc.director.emit('destorybullet',{bulletNode:this.node});
+        cc.director.emit('destorybullet',{detail:{bulletNode:this.node}});
     }
     fire(hv){
         if(!this.rigidBody){

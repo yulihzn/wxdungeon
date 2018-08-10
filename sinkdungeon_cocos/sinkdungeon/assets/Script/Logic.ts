@@ -46,7 +46,7 @@ export default class Logic extends cc.Component {
         // cc.director.setDisplayStats(false);
         cc.game.setFrameRate(60);
         cc.game.addPersistRootNode(this.node);
-        cc.view.enableAntiAlias(false);
+        // cc.view.enableAntiAlias(false);
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
@@ -115,6 +115,12 @@ export default class Logic extends cc.Component {
     }
     static getHalfChance(): boolean {
 		return Math.random()>0.5;
+    }
+
+    static getDistance(v1, v2) {
+        let x = v1.x - v2.x;
+        let y = v1.y - v2.y;
+        return Math.sqrt(x*x+y*y);
     }
     
 }

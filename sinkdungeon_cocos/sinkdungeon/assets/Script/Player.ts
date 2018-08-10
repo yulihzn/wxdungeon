@@ -448,7 +448,7 @@ export default class Player extends cc.Component {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {
                 if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {
-                    cc.director.emit(EventConstant.HUD_ADD_COIN, { count: -this.touchedEquipment.shopTable.data.price });
+                    cc.director.emit(EventConstant.HUD_ADD_COIN, {detail:{ count: -this.touchedEquipment.shopTable.data.price }});
                     this.touchedEquipment.taken();
                     this.touchedEquipment.shopTable.data.isSaled = true;
                     this.touchedEquipment = null;

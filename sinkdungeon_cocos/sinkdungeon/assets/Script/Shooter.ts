@@ -2,6 +2,7 @@ import Dungeon from "./Dungeon";
 import Player from "./Player";
 import Bullet from "./Item/Bullet";
 import Monster from "./Monster";
+import Logic from "./Logic";
 
 
 // Learn TypeScript:
@@ -135,7 +136,7 @@ export default class Shooter extends cc.Component {
         if (this.isAI) {
         } else if(this.dungeon) {
             for (let monster of this.dungeon.monsters) {
-                let dis = cc.pDistance(this.node.parent.position, monster.node.position);
+                let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
                 if (dis < 500 && dis < olddis && !monster.isDied) {
                     olddis = dis;
                     pos = monster.node.position.sub(this.node.parent.position.add(this.node.position));

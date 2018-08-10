@@ -262,7 +262,7 @@ export default class NewClass extends cc.Component {
             }
         }
         let pos = this.getInputDir();
-        cc.director.emit(EventConstant.PLAYER_MOVE,{dir:dir,pos:pos,dt:dt})
+        cc.director.emit(EventConstant.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
         
     }
     timeDelay = 0;

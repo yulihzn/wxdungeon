@@ -60,7 +60,7 @@ export default class Controller extends cc.Component {
     }
     move(event, dir) {
         dir = parseInt(dir);
-        cc.director.emit(EventConstant.PLAYER_MOVE, { dir })
+        cc.director.emit(EventConstant.PLAYER_MOVE, {detail:{ dir }})
     }
 
     timeDelay = 0;

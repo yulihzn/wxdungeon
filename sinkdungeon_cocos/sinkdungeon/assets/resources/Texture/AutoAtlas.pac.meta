@@ -1,10 +1,10 @@
 {
   "ver": "1.1.0",
-  "uuid": "8cb09f34-aca0-4a70-8cf9-7b1fe1fd77dd",
+  "uuid": "2875e95f-3ffa-4ee7-88f6-5a3485863dbf",
   "maxWidth": 1024,
   "maxHeight": 1024,
   "padding": 1,
-  "allowRotation": true,
+  "allowRotation": false,
   "forceSquared": false,
   "powerOfTwo": true,
   "heuristices": "BestAreaFit",

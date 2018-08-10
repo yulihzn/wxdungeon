@@ -97,7 +97,7 @@ export default class Monster extends cc.Component {
         this.sprite.runAction(action);
     }
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = cc.pDistance(this.node.position, playerNode.position);
+        let dis = Logic.getDistance(this.node.position, playerNode.position);
         return dis;
     }
     
@@ -176,9 +176,9 @@ export default class Monster extends cc.Component {
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
         if(Math.random()<0.9){
-            cc.director.emit(EventConstant.DUNGEON_ADD_COIN,{pos:this.node.position,count:Logic.getRandomNum(1,10)});
+            cc.director.emit(EventConstant.DUNGEON_ADD_COIN,{detail:{pos:this.node.position,count:Logic.getRandomNum(1,10)}});
         }else{
-            cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{pos:this.node.position});
+            cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{detail:{pos:this.node.position}});
         }
         setTimeout(()=>{this.node.active = false;},5000);
         

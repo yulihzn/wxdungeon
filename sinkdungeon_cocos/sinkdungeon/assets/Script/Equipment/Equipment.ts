@@ -57,7 +57,7 @@ export default class Equipment extends cc.Component {
     taken() {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
-        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT, { equipData: this.data })
+        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT, {detail:{ equipData: this.data }})
         this.node.getChildByName('shadow').active = false;
         this.equipmentDialog.node.active = false;
         setTimeout(() => {

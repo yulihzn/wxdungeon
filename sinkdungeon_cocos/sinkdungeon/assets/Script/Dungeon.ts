@@ -374,7 +374,7 @@ export default class Dungeon extends cc.Component {
         //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
         //     }
         // }
-        cc.director.emit(EventConstant.CHANGE_MIMIMAP, { x: Logic.mapManger.currentRectRoom.x, y: Logic.mapManger.currentRectRoom.y });
+        cc.director.emit(EventConstant.CHANGE_MIMIMAP, {detail:{ x: Logic.mapManger.currentRectRoom.x, y: Logic.mapManger.currentRectRoom.y }});
         for (let door of Logic.mapManger.currentRectRoom.doors) {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false);
         }
@@ -437,7 +437,7 @@ export default class Dungeon extends cc.Component {
         }
     }
     checkPlayerPos(dt: number) {
-        this.fog.setPosition(cc.pLerp(this.fog.position, this.player.node.position, dt * 3));
+        this.fog.setPosition(this.lerp(this.fog.position, this.player.node.position, dt * 3));
         let pos = Dungeon.getIndexInMap(this.player.node.position);
         let tile = this.map[pos.x][pos.y];
         if (tile.isBroken) {
@@ -446,6 +446,14 @@ export default class Dungeon extends cc.Component {
         if (tile.isAutoShow) {
             this.breakTile(pos);
         }
+    }
+    lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
+        let out = cc.v2(0,0);
+        let x = self.x;
+        let y = self.y;
+        out.x = x + (to.x - x) * ratio;
+        out.y = y + (to.y - y) * ratio;
+        return out;
     }
     checkMonstersPos() {
         for (let monster of this.monsters) {

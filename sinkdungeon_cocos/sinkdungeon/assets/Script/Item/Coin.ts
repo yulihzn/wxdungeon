@@ -67,8 +67,8 @@ export default class Coin extends cc.Component {
         if (self.tag == 1&&player&&this.node.active && this.isReady) {
             if(player&&this.node.active && this.isReady){
                 this.isReady =false;
-                cc.director.emit(EventConstant.HUD_ADD_COIN,{count:this.value});
-                cc.director.emit('destorycoin',{coinNode:this.node});
+                cc.director.emit(EventConstant.HUD_ADD_COIN,{detail:{count:this.value}});
+                cc.director.emit('destorycoin',{detail:{coinNode:this.node}});
             }
         }
         

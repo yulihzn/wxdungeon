@@ -63,7 +63,7 @@ export default class Trap extends cc.Component {
         if(other.tag == 3){
             if(this.isOpen && this.isPlayerIn){
                 this.isOpen = false;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:1});
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:1}});
             }
         }
     }

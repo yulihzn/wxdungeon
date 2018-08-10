@@ -102,7 +102,7 @@ export default class NewClass extends cc.Component {
         this.tabselect.y = index*64;
         let tab:cc.Node = event.currentTarget;
         cc.director.emit(EventConstant.INVENTORY_CHANGEITEM
-            ,{spriteFrame:tab.getComponentInChildren(cc.Sprite).spriteFrame})
+            ,{detail:{spriteFrame:tab.getComponentInChildren(cc.Sprite).spriteFrame}})
 
     }
     setEquipment(equipDataNew: EquipmentData,equipmentData:EquipmentData,isChange:boolean){
@@ -115,7 +115,7 @@ export default class NewClass extends cc.Component {
             }
             if(isChange){
                 cc.director.emit(EventConstant.DUNGEON_SETEQUIPMENT
-                    , { pos: p, equipmentData: equipmentData })
+                    , {detail:{ pos: p, equipmentData: equipmentData }})
             }
         }
     }

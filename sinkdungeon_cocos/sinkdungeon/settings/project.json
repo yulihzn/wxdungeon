@@ -29,6 +29,13 @@
       false,
       true,
       false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1280,
@@ -40,14 +47,15 @@
     "default",
     "floor",
     "actor",
-    "building"
+    "building",
+    "ui"
   ],
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
     "width": 960
   },
+  "start-scene": "69a24851-cb3a-468b-ab15-db9272165855",
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

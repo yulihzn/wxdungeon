@@ -1,9 +1,10 @@
 {
-  "ver": "2.0.0",
+  "ver": "2.2.0",
   "uuid": "133c8ed0-68f3-4485-b93a-a646c5c456f5",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
+  "premultiplyAlpha": false,
   "subMetas": {
     "monster006": {
       "ver": "1.0.3",

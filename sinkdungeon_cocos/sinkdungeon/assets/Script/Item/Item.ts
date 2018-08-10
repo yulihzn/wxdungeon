@@ -32,7 +32,7 @@ export default class Item extends cc.Component {
         if(this.damage!=0 && !this.isTaken){
             this.anim.play('ItemTaken');
             this.isTaken = true;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{damage:this.damage});
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:this.damage}});
             setTimeout(()=>{this.node.active = false;},3000);
         }
     }

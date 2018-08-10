@@ -67,7 +67,7 @@ export default class Door extends cc.Component {
         let player = other.node.getComponent(Player);
         if(player){
             if(this.isOpen){
-                cc.director.emit(EventConstant.LOADINGROOM,{dir:this.dir});
+                cc.director.emit(EventConstant.LOADINGROOM,{detail:{dir:this.dir}});
             }
         }
     }
