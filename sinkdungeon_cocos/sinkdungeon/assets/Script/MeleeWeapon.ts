@@ -30,6 +30,7 @@ export default class MeleeWeapon extends cc.Component {
     isAttacking: boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);
     isStab = true;
+    isFist = true;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -48,8 +49,10 @@ export default class MeleeWeapon extends cc.Component {
         }
         this.isAttacking = true;
         if (this.anim) {
-            if(this.isStab){
+            if(this.isFist){
                 this.anim.play("MeleeAttackStab");
+            }else if(this.isStab){
+                this.anim.play("MeleeAttackStabFar");
             }else{
                 this.isReverse ? this.anim.play("MeleeAttackReverse") : this.anim.play("MeleeAttack");
             }

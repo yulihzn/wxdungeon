@@ -13,7 +13,7 @@ import { EventConstant } from "./EventConstant";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class JoyController extends cc.Component {
 
     @property(cc.Integer)
     anglePreDirQuadrant:number = 23;//每个象限的大小
@@ -48,7 +48,7 @@ export default class NewClass extends cc.Component {
  
  
         //固定点位置范围
-        this.fixedPointMoveCenterPos = this.touchArea.div(0,this.touchArea);
+        this.fixedPointMoveCenterPos = cc.v2(0,0);
         this.fixedPointMoveRadius = this.touchArea.x/2 - this.movePointMoveRadius;
  
  
@@ -65,7 +65,7 @@ export default class NewClass extends cc.Component {
                 this.movePointMoveCenterPos = pos;
                 //设置固定点位置
                 this.setFixedPointPos(pos)
-                this.setMovePointPos(pos)
+                // this.setMovePointPos(pos)
                 this.touchID = event.getID()
             }
         }, this)
@@ -81,6 +81,7 @@ export default class NewClass extends cc.Component {
  
                 //控制位置
                 let pos = this.clampPos(_pos,this.movePointMoveCenterPos,this.movePointMoveRadius)
+                console.log(pos);
                 //设置固定点位置
                 this.setMovePointPos(pos)
             }
@@ -88,12 +89,14 @@ export default class NewClass extends cc.Component {
  
  
         this.node.on(cc.Node.EventType.TOUCH_END, function (event) {
-            this.init()
+            this.init();
+            cc.director.emit(EventConstant.PLAYER_ATTACK);
         }, this)
  
  
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
-            this.init()
+            this.init();
+            cc.director.emit(EventConstant.PLAYER_ATTACK);
         }, this)
  
  
@@ -117,7 +120,7 @@ export default class NewClass extends cc.Component {
      * 设置固定点位置
      */
     public setFixedPointPos(pos:cc.Vec2){
-        this.fixedPoint.setPosition(pos)
+        this.fixedPoint.setPosition(cc.v2(0,0));//固定位置
     }
  
  
@@ -165,10 +168,7 @@ export default class NewClass extends cc.Component {
      * 获取摇杆输入方向
      */
     public getInputDir():cc.Vec2{
-        let dir = this.movePoint.getPosition().sub(this.fixedPoint.getPosition());
-        if(isNaN(dir.x)||isNaN(dir.y)){
-            dir = cc.v2(0,0);
-        }
+        let dir = this.movePoint.getPosition().sub(this.fixedPoint.getPosition())
         if (dir.mag()>0){
             dir.normalizeSelf()
         }
@@ -265,7 +265,7 @@ export default class NewClass extends cc.Component {
             }
         }
         let pos = this.getInputDir();
-        cc.director.emit(EventConstant.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
+        cc.director.emit(EventConstant.PLAYER_ROTATE,{detail:{dir:dir,pos:pos,dt:dt}})
         
     }
     timeDelay = 0;

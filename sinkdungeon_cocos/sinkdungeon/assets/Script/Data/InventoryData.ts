@@ -31,8 +31,8 @@ export default class InventoryData {
         let speed = 0;
         speed = this.weapon.attackSpeed+this.helmet.attackSpeed+this.clothes.attackSpeed
         +this.trousers.attackSpeed+this.gloves.attackSpeed+this.shoes.attackSpeed;
-        if(speed>400){speed = 400}
-        return 500-speed;
+        if(speed>200){speed = 200}
+        return 300-speed;
     }
     //获取最大最小攻击力
     getAttackPoint(baseAttackPoint:number):cc.Vec2{

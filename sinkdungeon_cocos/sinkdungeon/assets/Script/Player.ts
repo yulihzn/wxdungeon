@@ -119,7 +119,8 @@ export default class Player extends cc.Component {
 
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage) });
-
+            cc.director.on(EventConstant.PLAYER_ROTATE
+                , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
         this.pos = Logic.playerData.pos;
         if(Logic.mapManger.currentRectRoom.roomType==RectDungeon.BOSS_ROOM){
             this.pos = cc.v2(7,4);
@@ -166,6 +167,7 @@ export default class Player extends cc.Component {
         switch (equipData.equipmetType) {
             case 'weapon':
                 this.meleeWeapon.isStab = equipData.stab == 1;
+                this.meleeWeapon.isFist = false;
                 if (equipData.stab == 1) {
                     this.weaponSprite.spriteFrame = null;
                     this.weaponStabSprite.spriteFrame = spriteFrame;
@@ -224,7 +226,7 @@ export default class Player extends cc.Component {
     }
 
     meleeAttack() {
-        if (this.isAttacking || !this.meleeWeapon) {
+        if (!this.meleeWeapon||this.isAttacking) {
             return;
         }
         this.isAttacking = true;
@@ -259,6 +261,17 @@ export default class Player extends cc.Component {
         }
 
     }
+    rotatePlayer(dir: number, pos: cc.Vec2, dt: number){
+        if (!this.node || this.isDied || this.isFall) {
+            return;
+        }
+        // if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
+        //     this.shooter.setHv(cc.v2(pos.x, pos.y));
+        // }
+        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
+            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
+        }
+    }
     move(dir: number, pos: cc.Vec2, dt: number) {
         if (this.isDied || this.isFall) {
             return;
@@ -270,9 +283,9 @@ export default class Player extends cc.Component {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
-        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
-            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
-        }
+        // if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
+        //     this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
+        // }
 
         let h = pos.x;
         let v = pos.y;

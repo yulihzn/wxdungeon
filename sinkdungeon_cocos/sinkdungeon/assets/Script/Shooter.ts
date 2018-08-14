@@ -139,7 +139,9 @@ export default class Shooter extends cc.Component {
                 let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
                 if (dis < 500 && dis < olddis && !monster.isDied) {
                     olddis = dis;
-                    pos = monster.node.position.sub(this.node.parent.position.add(this.node.position));
+                    let p = this.node.position.clone();
+                    p.x = this.node.scaleX==1?p.x:-p.x;
+                    pos = monster.node.position.sub(this.node.parent.position.add(p));
                 }
             }
             if (olddis != 1000) {

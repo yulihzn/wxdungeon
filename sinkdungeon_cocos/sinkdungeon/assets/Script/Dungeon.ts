@@ -278,11 +278,15 @@ export default class Dungeon extends cc.Component {
     }
     /**掉落心 */
     addHeart(pos: cc.Vec2) {
+        if(!this.heart){
+            return;
+        }
         let heart = cc.instantiate(this.heart);
         heart.parent = this.node;
         heart.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+        
     }
     /**掉落金币 */
     addCoin(pos: cc.Vec2, count: number) {

@@ -180,7 +180,7 @@ export default class Monster extends cc.Component {
         }else{
             cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{detail:{pos:this.node.position}});
         }
-        setTimeout(()=>{this.node.active = false;},5000);
+        setTimeout(()=>{if(this.node){this.node.active = false;}},5000);
         
     }
 
