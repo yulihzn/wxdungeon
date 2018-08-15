@@ -1,4 +1,5 @@
-import EquipmentData from "./EquipmentData";
+import Logic from "./Logic";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -10,11 +11,27 @@ import EquipmentData from "./EquipmentData";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+const { ccclass, property } = cc._decorator;
 
-export default class ShopTableData {
-    pos:cc.Vec2;
-    equipdata:EquipmentData;
-    price = 60;
-    isSaled = false;//是否卖出
+@ccclass
+export default class AmmoCount extends cc.Component {
+
+    @property(cc.Label)
+    label: cc.Label = null;
+    // LIFE-CYCLE CALLBACKS:
+
+    onLoad() {
+        
+    }
+
+    start() {
+    }
     
+
+    update(dt) {
+        if (this.label) {
+            this.label.string = `${Logic.ammo}`;
+        }
+
+    }
 }

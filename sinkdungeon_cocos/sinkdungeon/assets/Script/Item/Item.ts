@@ -1,5 +1,6 @@
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,6 +19,8 @@ export default class Item extends cc.Component {
 
     @property
     damage: number = -1;
+    @property
+    ammo:number = 0;
     anim:cc.Animation;
     isTaken = false;
 
@@ -29,12 +32,18 @@ export default class Item extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
     }
     taken():void{
-        if(this.damage!=0 && !this.isTaken){
+        if(!this.isTaken){
             this.anim.play('ItemTaken');
             this.isTaken = true;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:this.damage}});
+            if(this.damage!=0){
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:this.damage}});
+            }
+            if(this.ammo != 0){
+                Logic.ammo+=this.ammo;
+            }
             setTimeout(()=>{this.node.active = false;},3000);
         }
+        
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let player = other.node.getComponent(Player);

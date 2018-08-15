@@ -5,6 +5,7 @@ import Monster from "./Monster";
 import Kraken from "./Boss/Kraken";
 import { EventConstant } from "./EventConstant";
 import Box from "./Building/Box";
+import Logic from "./Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,13 +32,20 @@ export default class MeleeWeapon extends cc.Component {
     private hv: cc.Vec2 = cc.v2(1, 0);
     isStab = true;
     isFist = true;
+    dungeon: Dungeon;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
     }
     setHv(hv: cc.Vec2) {
-        this.hv = hv;
+        let pos = this.hasNearEnemy();
+        if (!pos.equals(cc.Vec2.ZERO)) {
+            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+            this.hv = pos;
+        } else {
+            this.hv = hv;
+        }
     }
     getHv(): cc.Vec2 {
         return this.hv;
@@ -74,13 +82,36 @@ export default class MeleeWeapon extends cc.Component {
 
     update(dt) {
 
-        if ((this.hv.x != 0 || this.hv.y != 0)&&!this.isAttacking) {
+        let pos = this.hasNearEnemy();
+        if (!pos.equals(cc.Vec2.ZERO)) {
+            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+            this.hv = pos;
+        } else if ((this.hv.x != 0 || this.hv.y != 0)&&!this.isAttacking) {
             this.node.position = cc.v2(21, 43);
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
     }
-
+    hasNearEnemy() {
+        
+        let olddis = 1000;
+        let pos = cc.v2(0, 0);
+        if(this.dungeon) {
+            for (let monster of this.dungeon.monsters) {
+                let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
+                if (dis < 200 && dis < olddis && !monster.isDied) {
+                    olddis = dis;
+                    let p = this.node.position.clone();
+                    p.x = this.node.scaleX==1?p.x:-p.x;
+                    pos = monster.node.position.sub(this.node.parent.position.add(p));
+                }
+            }
+            if (olddis != 1000) {
+                pos = pos.normalizeSelf();
+            }
+        }
+        return pos;
+    }
     rotateColliderManager(target: cc.Vec2) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标

@@ -214,7 +214,7 @@ export default class EquipmentManager extends cc.Component {
             if(shopTable){
                 equipment.shopTable = shopTable;
                 shopTable.data.equipdata = data.clone();
-                shopTable.data.price = 20*(desc.level+1);
+                shopTable.data.price = 15*(desc.level+1);
             }
             equipment.refresh(data);
         }

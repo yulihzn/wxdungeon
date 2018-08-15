@@ -175,10 +175,13 @@ export default class Monster extends cc.Component {
         this.anim.play('PlayerDie');
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
-        if(Math.random()<0.9){
+        let rand = Math.random();
+        if(rand<0.9){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN,{detail:{pos:this.node.position,count:Logic.getRandomNum(1,10)}});
-        }else{
+        }else if(rand>=0.9&&rand<0.97){
             cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{detail:{pos:this.node.position}});
+        }else{
+            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO,{detail:{pos:this.node.position}});
         }
         setTimeout(()=>{if(this.node){this.node.active = false;}},5000);
         
@@ -212,7 +215,7 @@ export default class Monster extends cc.Component {
         } else {
             let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
             let speed = 300;
-            if (playerDis < 200) {
+            if (playerDis < 400) {
                 pos = dungeon.player.node.position.sub(this.node.position);
                 if(this.data.monsterType==MonsterManager.TYPE_DASH){
                     speed = 600;

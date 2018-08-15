@@ -29,6 +29,7 @@ export default class NewClass extends cc.Component {
     @property
     movePointMoveRadius:number=100;
  
+    private stopCount = 0;//当不操作的时候是否需要停止发送移动事件
  
     private touchID:number;//触摸事件ID（多点触控）
     private touchArea:cc.Vec2;//触摸区域大小
@@ -265,7 +266,14 @@ export default class NewClass extends cc.Component {
             }
         }
         let pos = this.getInputDir();
-        cc.director.emit(EventConstant.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
+        if(!pos.equals(cc.Vec2.ZERO)){
+            this.stopCount = 0;
+        }else{
+            this.stopCount++;
+        }
+        if(this.stopCount<2){
+            cc.director.emit(EventConstant.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
+        }
         
     }
     timeDelay = 0;

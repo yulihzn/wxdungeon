@@ -53,6 +53,8 @@ export default class Dungeon extends cc.Component {
     @property(cc.Prefab)
     heart: cc.Prefab = null;
     @property(cc.Prefab)
+    ammo: cc.Prefab = null;
+    @property(cc.Prefab)
     shop: cc.Prefab = null;
     @property(cc.Prefab)
     shoptable: cc.Prefab = null;
@@ -98,6 +100,9 @@ export default class Dungeon extends cc.Component {
         })
         cc.director.on(EventConstant.DUNGEON_ADD_HEART, (event) => {
             this.addHeart(event.detail.pos);
+        })
+        cc.director.on(EventConstant.DUNGEON_ADD_AMMO, (event) => {
+            this.addAmmo(event.detail.pos);
         })
         cc.director.on(EventConstant.DUNGEON_SHAKEONCE, (event) => {
             if (this.anim) {
@@ -197,6 +202,13 @@ export default class Dungeon extends cc.Component {
                     heart.position = Dungeon.getPosInMap(cc.v2(i, j));
                     heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
                 }
+                //生成弹药
+                if (mapData[i][j] == 'A') {
+                    let ammo = cc.instantiate(this.ammo);
+                    ammo.parent = this.node;
+                    ammo.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    ammo.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
+                }
                 //生成商店
                 if (mapData[i][j] == 'M') {
                     let table = cc.instantiate(this.shoptable);
@@ -286,6 +298,18 @@ export default class Dungeon extends cc.Component {
         heart.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+        
+    }
+    /**掉落弹药 */
+    addAmmo(pos: cc.Vec2) {
+        if(!this.ammo){
+            return;
+        }
+        let ammo = cc.instantiate(this.ammo);
+        ammo.parent = this.node;
+        ammo.position = pos;
+        let indexpos = Dungeon.getIndexInMap(pos);
+        ammo.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
         
     }
     /**掉落金币 */

@@ -39,6 +39,7 @@ export default class Logic extends cc.Component {
     // static currentRectRoom:RectRoom = null;
     static currentDir:number=0;
     static coins = 0;
+    static ammo = 30;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -75,6 +76,7 @@ export default class Logic extends cc.Component {
         Logic.inventoryData = new InventoryData();
         Logic.mapManger.reset(Logic.level);
         Logic.coins = 0;
+        Logic.ammo = 30;
     }
     loadingNextRoom(dir:number){
         let room = Logic.mapManger.loadingNextRoom(dir);

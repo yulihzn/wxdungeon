@@ -82,6 +82,9 @@ export default class Player extends cc.Component {
         this.pos = cc.v2(4, 4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
+        if(this.anim){
+            this.anim.play('PlayerWalk');
+        }
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite');
         this.playerItemSprite = this.sprite.getChildByName('righthand')
@@ -283,9 +286,9 @@ export default class Player extends cc.Component {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
-        // if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
-        //     this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
-        // }
+        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
+            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
+        }
 
         let h = pos.x;
         let v = pos.y;
@@ -362,6 +365,9 @@ export default class Player extends cc.Component {
         //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
         //     }
         // }
+        if(!this.node){
+            return;
+        }
         this.changeZIndex(this.pos);
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.healthBar.refreshHealth(this.health.x, this.health.y);
@@ -423,6 +429,9 @@ export default class Player extends cc.Component {
     }
     //玩家行动
     playerAction(dir: number, pos: cc.Vec2, dt: number, dungeon: Dungeon) {
+        if(this.meleeWeapon && !this.meleeWeapon.dungeon){
+            this.meleeWeapon.dungeon = dungeon;
+        }
         this.move(dir, pos, dt);
     }
     //30秒回复一次

@@ -39,7 +39,6 @@ export default class Shooter extends cc.Component {
     isAutoAim = true;
     bulletName:string = '';
 
-
     private hv: cc.Vec2 = cc.v2(1, 0);
 
     onLoad() {
@@ -59,6 +58,7 @@ export default class Shooter extends cc.Component {
         }
     }
     fireBullet(){
+        
         if(this.anim){
             this.anim.play();
         }
@@ -68,6 +68,12 @@ export default class Shooter extends cc.Component {
     private fire(prefab:cc.Prefab,pool:cc.NodePool) {
         if(!this.dungeon){
             return;
+        }
+        if(!this.isAI && Logic.ammo<=0){
+            return;
+        }
+        if(Logic.ammo > 0){
+            Logic.ammo--;
         }
         let bulletPrefab: cc.Node = null;
         if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
