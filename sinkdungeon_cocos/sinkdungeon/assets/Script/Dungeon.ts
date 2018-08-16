@@ -58,6 +58,8 @@ export default class Dungeon extends cc.Component {
     shop: cc.Prefab = null;
     @property(cc.Prefab)
     shoptable: cc.Prefab = null;
+    @property(cc.Prefab)
+    floorDecoration: cc.Prefab = null;
     @property(Player)
     player: Player = null;
     @property(cc.Prefab)
@@ -70,8 +72,8 @@ export default class Dungeon extends cc.Component {
     wallmap: Wall[][] = new Array();
     trapmap: Trap[][] = new Array();
     footboards:FootBoard[] = new Array();
-    static readonly WIDTH_SIZE: number = 15;
-    static readonly HEIGHT_SIZE: number = 9;
+    static WIDTH_SIZE: number = 15;
+    static HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
     static readonly MAPY: number = 32;
     static readonly TILE_SIZE: number = 64;
@@ -111,12 +113,13 @@ export default class Dungeon extends cc.Component {
         });
 
         this.fog.zIndex = 9000;
+        let mapData: string[][] = Logic.getCurrentMapData().map;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
         this.coinManager = this.getComponent(CoinManger);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
+        this.dungeonStyleManager.addDecorations();
         this.player.node.parent = this.node;
-        let mapData: string[][] = Logic.getCurrentMapData().map;
 
         this.monsters = new Array();
         this.map = new Array();
@@ -158,6 +161,13 @@ export default class Dungeon extends cc.Component {
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.trapmap[i][j] = trap.getComponent(Trap);
+                }
+                //生成装饰
+                if (mapData[i][j] == '+') {
+                    let fd = cc.instantiate(this.floorDecoration);
+                    fd.parent = this.node;
+                    fd.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 }
                 //生成踏板
                 if (mapData[i][j] == 'F') {
@@ -256,6 +266,9 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 'm') {
                         this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
+                    }
+                    if (mapData[i][j] == 'k') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
                     }
                     if (mapData[i][j] == 'b') {
                         this.bossIndex = cc.v2(i, j);
@@ -367,14 +380,16 @@ export default class Dungeon extends cc.Component {
         let y = Dungeon.MAPY + pos.y * Dungeon.TILE_SIZE;
         return cc.v2(x, y);
     }
-    //获取坐标在地图里的下标
-    static getIndexInMap(pos: cc.Vec2) {
+    //获取坐标在地图里的下标,canOuter:是否可以超出
+    static getIndexInMap(pos: cc.Vec2,canOuter?:boolean) {
         let x = (pos.x - Dungeon.MAPX) / Dungeon.TILE_SIZE;
         let y = (pos.y - Dungeon.MAPY) / Dungeon.TILE_SIZE;
         x = Math.round(x);
         y = Math.round(y);
-        if (x < 0) { x = 0 }; if (x >= Dungeon.WIDTH_SIZE) { x = Dungeon.WIDTH_SIZE - 1 };
-        if (y < 0) { y = 0 }; if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1 };
+        if(!canOuter){
+            if (x < 0) { x = 0 }; if (x >= Dungeon.WIDTH_SIZE) { x = Dungeon.WIDTH_SIZE - 1 };
+            if (y < 0) { y = 0 }; if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1 };
+        }
         return cc.v2(x, y);
     }
     //获取不超出地图的坐标

@@ -27,6 +27,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_PIRATE = 'monster004';
     public static readonly MONSTER_SAILOR = 'monster005';
     public static readonly MONSTER_OCTOPUS = 'monster006';
+    public static readonly MONSTER_KILLER = 'monster007';
     
     public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN';
 
@@ -62,6 +63,7 @@ export default class MonsterManager extends cc.Component {
             case MonsterManager.MONSTER_PIRATE: data.updateHAT(5,5,2,MonsterManager.TYPE_COMBAT); break;
             case MonsterManager.MONSTER_SAILOR: data.updateHAT(2,2,1,MonsterManager.TYPE_COMBAT); break;
             case MonsterManager.MONSTER_OCTOPUS: data.updateHAT(10,10,2,MonsterManager.TYPE_REMOTE); break;
+            case MonsterManager.MONSTER_KILLER: data.updateHAT(5,5,2,MonsterManager.TYPE_REMOTE); break;
         }
         monster.changeBodyRes(resName);
         monster.data = data;

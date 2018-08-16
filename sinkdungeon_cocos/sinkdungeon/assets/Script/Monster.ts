@@ -77,7 +77,7 @@ export default class Monster extends cc.Component {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = 3000 + (9 - this.pos.y) * 100 + 2;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y) * 100 + 2;
     }
     meleeAttack(pos: cc.Vec2, finish) {
         if (this.isAttacking) {
@@ -178,7 +178,7 @@ export default class Monster extends cc.Component {
         let rand = Math.random();
         if(rand<0.9){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN,{detail:{pos:this.node.position,count:Logic.getRandomNum(1,10)}});
-        }else if(rand>=0.9&&rand<0.97){
+        }else if(rand>=0.9&&rand<0.98){
             cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{detail:{pos:this.node.position}});
         }else{
             cc.director.emit(EventConstant.DUNGEON_ADD_AMMO,{detail:{pos:this.node.position}});
@@ -255,7 +255,7 @@ export default class Monster extends cc.Component {
         let bestPos = cc.v2(pos.x, pos.y);
         //获取9个点并打乱顺序
         let dirArr = new Array();
-        if (pos.y + 1 < 9) {
+        if (pos.y + 1 < Dungeon.HEIGHT_SIZE) {
             dirArr.push(cc.v2(pos.x, pos.y + 1));
         }
         if (pos.y - 1 >= 0) {
@@ -264,7 +264,7 @@ export default class Monster extends cc.Component {
         if (pos.x - 1 >= 0) {
             dirArr.push(cc.v2(pos.x - 1, pos.y));
         }
-        if (pos.x + 1 < 9) {
+        if (pos.x + 1 < Dungeon.WIDTH_SIZE) {
             dirArr.push(cc.v2(pos.x + 1, pos.y));
         }
 
@@ -336,6 +336,9 @@ export default class Monster extends cc.Component {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        this.sprite.scaleX = this.isFaceRight ? 1 : -1;
+        this.node.scaleX = this.isFaceRight ? 1 : -1;
+        this.healthBar.node.scaleX = this.node.scaleX;
+        //防止错位
+        this.healthBar.node.x = -30*this.node.scaleX;
     }
 }

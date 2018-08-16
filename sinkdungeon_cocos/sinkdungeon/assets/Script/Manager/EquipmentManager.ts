@@ -192,6 +192,11 @@ export default class EquipmentManager extends cc.Component {
         equipment.pos = pos;
         if (equipData) {
             //复制已有装备
+            if(shopTable){
+                equipment.shopTable = shopTable;
+                shopTable.data.equipdata = equipData.clone();
+                shopTable.data.price = 15*(equipData.level+1);
+            }
             equipment.refresh(equipData);
         } else {
             //添加新装备
@@ -211,6 +216,7 @@ export default class EquipmentManager extends cc.Component {
             data.prefix = desc.prefix;
             data.titlecolor = desc.titlecolor;
             data.color = desc.color;
+            data.level = desc.level;
             if(shopTable){
                 equipment.shopTable = shopTable;
                 shopTable.data.equipdata = data.clone();

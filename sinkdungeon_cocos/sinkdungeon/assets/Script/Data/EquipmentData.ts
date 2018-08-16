@@ -29,32 +29,32 @@ export default class EquipmentData{
     color:string  ='#ffffff';
     titlecolor:string = '#ffffff';
     img:string = 'emptyequipment';
+    level:number = 0;
     stab = 0;//是否突刺
     isLocked = 0;//是否锁定
-    public valueCopy(data:EquipmentData):EquipmentData{
-        let e = new EquipmentData();
-        this.nameCn = data.nameCn;
-        this.nameEn = data.nameEn;
-        this.equipmetType = data.equipmetType;
-        this.equipmetTypeCn  =data.equipmetTypeCn;
-        this.prefix = data.prefix;
-        this.desc = data.desc;
-        this.damageMin = data.damageMin;
-        this.damageMax = data.damageMax;
-        this.criticalStrikeRate = data.criticalStrikeRate;
-        this.defence = data.defence;
-        this.lifeDrain = data.lifeDrain;
-        this.lifeRecovery = data.lifeRecovery;
-        this.moveSpeed = data.moveSpeed;
-        this.attackSpeed = data.attackSpeed;
-        this.dodge = data.dodge;
-        this.health = data.health;
-        this.color  =data.color;
-        this.titlecolor = data.titlecolor;
-        this.img = data.img;
-        this.stab = data.stab;
-        this.isLocked = this.isLocked;
-        return e;
+    public valueCopy(data:EquipmentData):void{
+        this.nameCn = data.nameCn?data.nameCn:this.nameCn;
+        this.nameEn = data.nameEn?data.nameEn:this.nameEn;
+        this.equipmetType = data.equipmetType?data.equipmetType:this.equipmetType;
+        this.equipmetTypeCn  =data.equipmetTypeCn?data.equipmetTypeCn:this.equipmetTypeCn;
+        this.prefix = data.prefix?data.prefix:this.prefix;
+        this.desc = data.desc?data.desc:this.desc;
+        this.damageMin = data.damageMin?data.damageMin:this.damageMin;
+        this.damageMax = data.damageMax?data.damageMax:this.damageMax;
+        this.criticalStrikeRate = data.criticalStrikeRate?data.criticalStrikeRate:this.criticalStrikeRate;
+        this.defence = data.defence?data.defence:this.defence;
+        this.lifeDrain = data.lifeDrain?data.lifeDrain:this.lifeDrain;
+        this.lifeRecovery = data.lifeRecovery?data.lifeRecovery:this.lifeRecovery;
+        this.moveSpeed = data.moveSpeed?data.moveSpeed:this.moveSpeed;
+        this.attackSpeed = data.attackSpeed?data.attackSpeed:this.attackSpeed;
+        this.dodge = data.dodge?data.dodge:this.dodge;
+        this.health = data.health?data.health:this.health;
+        this.color  =data.color?data.color:this.color;
+        this.titlecolor = data.titlecolor?data.titlecolor:this.titlecolor;
+        this.img = data.img?data.img:this.img;
+        this.stab = data.stab?data.stab:this.stab;
+        this.isLocked = data.isLocked?data.isLocked:this.isLocked;
+        this.level = data.level?data.level:this.level;
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -79,6 +79,7 @@ export default class EquipmentData{
         e.img = this.img;
         e.stab = this.stab;
         e.isLocked = this.isLocked;
+        e.level = this.level;
         return e;
     }
 }

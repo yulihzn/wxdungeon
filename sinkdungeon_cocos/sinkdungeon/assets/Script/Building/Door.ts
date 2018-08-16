@@ -33,7 +33,7 @@ export default class Door extends cc.Component {
     }
 
     start () {
-        
+        this.anim = this.getComponent(cc.Animation);
     }
     setOpen(isOpen:boolean){
         if(!this.isDoor){
@@ -53,6 +53,9 @@ export default class Door extends cc.Component {
             return;
         }
         this.isOpen = true;
+        if(!this.anim){
+            this.anim = this.getComponent(cc.Animation);
+        }
         this.anim.play('DoorOpen');
     }
     closeGate(){
@@ -60,6 +63,9 @@ export default class Door extends cc.Component {
             return;
         }
         this.isOpen = false;
+        if(!this.anim){
+            this.anim = this.getComponent(cc.Animation);
+        }
         this.anim.play('DoorClose');
     }
 

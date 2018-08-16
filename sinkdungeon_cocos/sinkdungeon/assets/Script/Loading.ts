@@ -3,6 +3,7 @@ import MapData from "./Data/MapData";
 import EquipmentData from "./Data/EquipmentData";
 import RectDungeon from "./Rect/RectDungeon";
 import MapManager from "./Manager/MapManager";
+import Dungeon from "./Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,7 +15,7 @@ import MapManager from "./Manager/MapManager";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Loading extends cc.Component {
@@ -26,15 +27,15 @@ export default class Loading extends cc.Component {
     private isLevelLoaded = false;
     private isSpriteFramesLoaded = false;
     // LIFE-CYCLE CALLBACKS:
-    
+
 
     // onLoad () {}
 
-    start () {
+    start() {
         this.label.string = `Level ${Logic.level}`
         this.isLevelLoaded = false;
         this.isEquipmentLoaded = false;
-        
+
         this.loadMap();
         this.loadEquipment();
         this.loadSpriteFrames();
@@ -43,28 +44,28 @@ export default class Loading extends cc.Component {
         Logic.mapManger.isloaded = false;
         Logic.mapManger.loadMap();
     }
-    loadEquipment(){
-        if(Logic.equipments){
+    loadEquipment() {
+        if (Logic.equipments) {
             this.isEquipmentLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/Equipment/equipment',(err:Error,resource)=>{
-            if(err){
-				cc.error(err);
-			}else{
+        cc.loader.loadRes('Data/Equipment/equipment', (err: Error, resource) => {
+            if (err) {
+                cc.error(err);
+            } else {
                 Logic.equipments = resource.json;
                 this.isEquipmentLoaded = true;
-			}
+            }
         })
     }
-    loadSpriteFrames(){
-        if(Logic.spriteFrames){
+    loadSpriteFrames() {
+        if (Logic.spriteFrames) {
             this.isSpriteFramesLoaded = true;
             return;
         }
-        cc.loader.loadResDir('Texture',cc.SpriteFrame,(err:Error,assert:cc.SpriteFrame[])=>{
+        cc.loader.loadResDir('Texture', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
             Logic.spriteFrames = {};
-            for(let frame of assert){
+            for (let frame of assert) {
                 // frame.getTexture().setAliasTexParameters();
                 Logic.spriteFrames[frame.name] = frame;
             }
@@ -72,14 +73,20 @@ export default class Loading extends cc.Component {
         })
     }
 
-    update (dt) {
+    update(dt) {
         this.timeDelay += dt;
         this.isLevelLoaded = Logic.mapManger.isloaded;
-        if (this.timeDelay > 0.16 && this.isLevelLoaded&&this.isEquipmentLoaded&&this.isSpriteFramesLoaded) {
+        if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded && this.isSpriteFramesLoaded) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
+            let mapData: string[][] = Logic.getCurrentMapData().map;
+            if (mapData && mapData.length > 0) {
+                Dungeon.WIDTH_SIZE = mapData.length;
+                Dungeon.HEIGHT_SIZE = mapData[0].length;
+
+            }
             cc.director.loadScene('game');
         }
     }

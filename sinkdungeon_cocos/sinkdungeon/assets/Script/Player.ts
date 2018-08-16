@@ -225,7 +225,7 @@ export default class Player extends cc.Component {
         this.updatePlayerPos();
     }
     changeZIndex(pos: cc.Vec2) {
-        this.node.zIndex = 3000 + (9 - pos.y) * 100 + 2;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 2;
     }
 
     meleeAttack() {
@@ -413,7 +413,7 @@ export default class Player extends cc.Component {
             this.label.getComponent(cc.Animation).play('FontFloating');
         }
 
-        if (this.health.x < 1) {
+        if (this.health.x <= 0) {
             this.killed();
         }
     }

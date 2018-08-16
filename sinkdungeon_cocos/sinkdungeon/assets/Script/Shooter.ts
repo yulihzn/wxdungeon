@@ -72,7 +72,7 @@ export default class Shooter extends cc.Component {
         if(!this.isAI && Logic.ammo<=0){
             return;
         }
-        if(Logic.ammo > 0){
+        if(!this.isAI && Logic.ammo > 0){
             Logic.ammo--;
         }
         let bulletPrefab: cc.Node = null;

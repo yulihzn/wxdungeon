@@ -26,6 +26,10 @@ export default class Kraken extends cc.Component {
     label: cc.Label = null;
     @property(HealthBar)
     healthBar: HealthBar = null;
+    @property(KrakenSwingHand)
+    hand1:KrakenSwingHand = null;
+    @property(KrakenSwingHand)
+    hand2:KrakenSwingHand = null;
     private sprite: cc.Node;
     private anim: cc.Animation;
     isDied = false;
@@ -40,8 +44,8 @@ export default class Kraken extends cc.Component {
     onLoad() {
         this.isDied = false;
         this.isShow = false;
-        this.data.currentHealth = 20;
-        this.data.maxHealth = 20;
+        this.data.currentHealth = 100;
+        this.data.maxHealth = 100;
         this.data.attackPoint = 1;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
@@ -60,9 +64,9 @@ export default class Kraken extends cc.Component {
         this.changeZIndex();
     }
     changeZIndex() {
-        this.node.zIndex = 1000 + (9 - this.pos.y - 1) * 100 + 2;
+        this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 100 + 2;
         if (this.isShow && !this.isDied) {
-            this.node.zIndex = 3000 + (9 - this.pos.y - 1) * 100 + 2;
+            this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 100 + 2;
         }
     }
     attack(dir, finish) {
@@ -96,6 +100,9 @@ export default class Kraken extends cc.Component {
     }
 
     takeDamage(damage: number) {
+        if(this.isDied||!this.isShow){
+            return;
+        }
         this.data.currentHealth -= damage;
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
@@ -151,6 +158,8 @@ export default class Kraken extends cc.Component {
         }
         if (this.data.currentHealth < 1) {
             this.killed();
+            this.hand1.isShow = false;
+            this.hand2.isShow = false;
         }
         if (this.label) {
             this.label.string = "" + this.node.zIndex;

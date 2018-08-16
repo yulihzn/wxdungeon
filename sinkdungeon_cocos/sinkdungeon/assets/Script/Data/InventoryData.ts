@@ -99,10 +99,10 @@ export default class InventoryData {
     //生命值
     getHealth(health:cc.Vec2,baseMaxHealth:number):cc.Vec2{
         let rate = 1;
-        if(health.y>0){
-            rate = health.x/health.y;
-        }
         let maxHealth = baseMaxHealth + this.weapon.health+this.helmet.health+this.clothes.health
+        if(maxHealth>0){
+            rate = health.x/maxHealth;
+        }
         +this.trousers.health+this.gloves.health+this.shoes.health;
         return cc.v2(maxHealth*rate,maxHealth);
     }

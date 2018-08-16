@@ -1,6 +1,7 @@
 import RectDoor from "./RectDoor";
 import Logic from "../Logic";
 import MapData from "../Data/MapData";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,8 +22,8 @@ export default class RectRoom {
     //已清理
     public static readonly STATE_CLEAR = 2;
 
-    public static readonly ROOM_WIDTH = 15;
-    public static readonly ROOM_HEIGHT = 9;
+    public static ROOM_WIDTH = Dungeon.WIDTH_SIZE;
+    public static ROOM_HEIGHT = Dungeon.HEIGHT_SIZE;
     public static readonly TOPDOOR = 0;
     public static readonly BOTTOMDOOR = 1;
     public static readonly LEFTDOOR = 2;

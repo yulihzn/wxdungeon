@@ -97,6 +97,7 @@ export default class Bullet extends cc.Component {
         if(otherCollider.sensor){
             isDestory = false;
         }
+        //上面的墙
         if(otherCollider.tag==2){
             isDestory = false;
         }
@@ -145,7 +146,7 @@ export default class Bullet extends cc.Component {
         if(meleeWeapon&&meleeWeapon.isAttacking){
             isDestory = true;
         }
-        if(isDestory&&this.anim){
+        if(isDestory&&this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying){
             this.rigidBody.linearVelocity = cc.v2(0,0);
             this.anim.play("Bullet001Hit");
         }
