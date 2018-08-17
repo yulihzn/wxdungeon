@@ -78,15 +78,18 @@ export default class Logic extends cc.Component {
         Logic.coins = 0;
         Logic.ammo = 30;
     }
-    loadingNextRoom(dir:number){
-        let room = Logic.mapManger.loadingNextRoom(dir);
-        if(room){
-            let mapData: string[][] = Logic.getCurrentMapData().map;
+    static changeDungeonSize(){
+        let mapData: string[][] = Logic.getCurrentMapData().map;
             if (mapData && mapData.length > 0) {
                 Dungeon.WIDTH_SIZE = mapData.length;
                 Dungeon.HEIGHT_SIZE = mapData[0].length;
-
+                Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),Math.round(Dungeon.HEIGHT_SIZE/2-1));
             }
+    }
+    loadingNextRoom(dir:number){
+        let room = Logic.mapManger.loadingNextRoom(dir);
+        if(room){
+            Logic.changeDungeonSize();
             switch(dir){
                 case 0:Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),0);break;
                 case 1:Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),Dungeon.HEIGHT_SIZE-1);break;

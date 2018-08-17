@@ -240,7 +240,10 @@ export default class Player extends cc.Component {
         pos = pos.normalizeSelf().mul(5);
         let speed = this.inventoryData.getAttackSpeed();
         let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
-            setTimeout(() => { this.sprite.position = cc.v2(0, 0); this.isAttacking = false; }, speed);
+            setTimeout(() => {
+                 this.sprite.position = cc.v2(0, 0);
+                 this.isAttacking = false;
+                 }, speed);
         }, this));
         this.sprite.runAction(action);
         this.meleeWeapon.attack();

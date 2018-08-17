@@ -3,7 +3,7 @@
   "uuid": "6315d384-1dce-48b1-90b3-e2c0ce17dd15",
   "type": "sprite",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
     "meleelight1": {

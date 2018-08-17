@@ -92,7 +92,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 468,
+    "_zIndex": 0,
     "groupIndex": 2,
     "_id": ""
   },
@@ -162,7 +162,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -225,7 +225,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -253,7 +253,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "1e2iM/jndOz6Rdn692HnPT"
+    "_id": "5fQliX6v1DBYJrGzZJTHrO"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -282,7 +282,7 @@
     "frequency": 1,
     "dungeon": null,
     "player": null,
-    "_id": "6cLh6fxA1Ds7FZUYa1cjNH"
+    "_id": "57ipRGsX1Dj5qzcH0Iq9yL"
   },
   {
     "__type__": "cc.Animation",
@@ -301,7 +301,7 @@
       }
     ],
     "playOnLoad": false,
-    "_id": "1bFJcOaaVMbrp+4VQed6H1"
+    "_id": "04URDfCK5MR6FlE3VvFSri"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -389,7 +389,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -452,7 +452,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -482,7 +482,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "b6jBorq2tKq6NVN5M39+6M"
+    "_id": "fbTCpbcBpHPJeLHrvXr9m2"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -554,7 +554,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -584,7 +584,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "16s4p6RmdP17f1+z0kexG8"
+    "_id": "15/DrlBTtIP7WWM5gKL7Y8"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -656,7 +656,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -685,7 +685,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
-    "_id": "2eKEjyll5NZrjv3Mv87Y2L"
+    "_id": "18iUiHrYlBCa+S5oExOBJo"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -724,7 +724,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "cd+sc4uylI0YKvve0aZbWl"
+    "_id": "afmAnMNI1BTKbFDhLl7k/X"
   },
   {
     "__type__": "cc.ProgressBar",
@@ -741,7 +741,7 @@
     "_N$mode": 0,
     "_N$progress": 0.9,
     "_N$reverse": false,
-    "_id": "beXwne7Q5PiqC6kgg3N4AA"
+    "_id": "35aXA/7tFL24QB25xz9OsE"
   },
   {
     "__type__": "4298eVZsIJFhKykTJYXRBP0",
@@ -757,7 +757,7 @@
     "label": {
       "__id__": 17
     },
-    "_id": "dc/NSRV6xFF7Tw8oL585hs"
+    "_id": "f5ViVbKClPFbzf2DpkM18w"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -838,7 +838,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -901,7 +901,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -931,7 +931,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "13aeIA4HpHZpA7gFTY7s3+"
+    "_id": "26jEPrjxpN14G+zkHliAh4"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1003,7 +1003,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -1033,7 +1033,7 @@
     "_isTrimmedMode": false,
     "_state": 0,
     "_atlas": null,
-    "_id": "63lZC7ZvZH/LIW2F90Au5g"
+    "_id": "44bkNbX21P5bxrAe14rIQ9"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1105,7 +1105,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -1168,7 +1168,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -1196,7 +1196,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "a60LskyHdPdbjDhjRYFZcB"
+    "_id": "82RRG1PohPJJy81OGCONnv"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1279,7 +1279,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -1342,7 +1342,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -1370,7 +1370,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "13W3JnqQ1ChpMJbItUPW7X"
+    "_id": "74LpO/KE5NmqDNzjRoeNOV"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1464,7 +1464,7 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_localZOrder": 0,
+    "_zIndex": 0,
     "groupIndex": 0,
     "_id": ""
   },
@@ -1491,7 +1491,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
-    "_id": "d2kXY6xGpCv4QhNvEqaPL0"
+    "_id": "c2NzVQRmREhr1hEyYrVApK"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1530,7 +1530,7 @@
       }
     ],
     "playOnLoad": true,
-    "_id": "22pNVossZLd7TdQsoQIn3y"
+    "_id": "79hiRDwMlJK7LWaAlHJDDE"
   },
   {
     "__type__": "cc.BoxCollider",
@@ -1551,7 +1551,7 @@
       "width": 32,
       "height": 64
     },
-    "_id": "cbhgD1cnFF7L/oreG5ain+"
+    "_id": "b1yMBignNCE4Fxk4z3US71"
   },
   {
     "__type__": "b7513vXKLpHGrSf+utaohLs",
@@ -1570,7 +1570,7 @@
     "healthBar": {
       "__id__": 21
     },
-    "_id": "f1BUkauHpFirMulMaH7McM"
+    "_id": "b18FHvlwtNaJzh8A6vz9Ov"
   },
   {
     "__type__": "cc.RigidBody",
@@ -1594,7 +1594,7 @@
     "_fixedRotation": true,
     "enabledContactListener": true,
     "bullet": false,
-    "_id": "0baqvD3gVB/6gCH2J5P8tu"
+    "_id": "fbvlZJng5LOYZJwOMRhNaz"
   },
   {
     "__type__": "cc.PhysicsBoxCollider",
@@ -1620,7 +1620,7 @@
       "width": 32,
       "height": 32
     },
-    "_id": "a9SpA7G6xD3KPTuHU5L+Su"
+    "_id": "7fcNWWxapFQLymv9YdNkoA"
   },
   {
     "__type__": "cc.PrefabInfo",

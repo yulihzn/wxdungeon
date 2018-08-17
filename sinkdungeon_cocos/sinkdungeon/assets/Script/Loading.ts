@@ -68,7 +68,6 @@ export default class Loading extends cc.Component {
             for (let frame of assert) {
                 // frame.getTexture().setAliasTexParameters();
                 Logic.spriteFrames[frame.name] = frame;
-                console.log('loadres');
             }
             this.isSpriteFramesLoaded = true;
         })
@@ -82,7 +81,7 @@ export default class Loading extends cc.Component {
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
-            
+            Logic.changeDungeonSize();
             cc.director.loadScene('game');
         }
     }

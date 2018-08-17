@@ -6,6 +6,7 @@ import Kraken from "./Boss/Kraken";
 import { EventConstant } from "./EventConstant";
 import Box from "./Building/Box";
 import Logic from "./Logic";
+import MeleeWeaponChild from "./MeleeWeaponChild";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,6 +27,11 @@ export default class MeleeWeapon extends cc.Component {
     playerNode: cc.Node = null;
     player: Player = null;
 
+    @property(MeleeWeaponChild)
+    stabWeapon:MeleeWeaponChild;
+    @property(MeleeWeaponChild)
+    waveWeapon:MeleeWeaponChild;
+
     private isReverse = false;
     private anim: cc.Animation;
     isAttacking: boolean = false;
@@ -37,6 +43,8 @@ export default class MeleeWeapon extends cc.Component {
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
+        // this.stabWeapon.meleeWeapon = this;
+        // this.waveWeapon.meleeWeapon = this;
     }
     setHv(hv: cc.Vec2) {
         let pos = this.hasNearEnemy();
@@ -58,10 +66,16 @@ export default class MeleeWeapon extends cc.Component {
         this.isAttacking = true;
         if (this.anim) {
             if(this.isFist){
+                // this.stabWeapon.node.active = true;
+                // this.waveWeapon.node.active = false;
                 this.anim.play("MeleeAttackStab");
             }else if(this.isStab){
+                // this.stabWeapon.node.active = true;
+                // this.waveWeapon.node.active = false;
                 this.anim.play("MeleeAttackStabFar");
             }else{
+                // this.stabWeapon.node.active = false;
+                // this.waveWeapon.node.active = true;
                 this.isReverse ? this.anim.play("MeleeAttackReverse") : this.anim.play("MeleeAttack");
             }
         }
@@ -71,6 +85,8 @@ export default class MeleeWeapon extends cc.Component {
     MeleeAttackFinish(reverse: boolean) {
         this.isAttacking = false;
         this.isReverse = !reverse;
+        // this.waveWeapon.isAttacking = false;
+        // this.stabWeapon.isAttacking = false;
     }
 
     start() {
@@ -148,6 +164,8 @@ export default class MeleeWeapon extends cc.Component {
         if (!attackTarget || !this.isAttacking) {
             return;
         }
+        // this.waveWeapon.isAttacking = true;
+        // this.stabWeapon.isAttacking = true;
         let damage = 0;
         if (this.player) {
             damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
