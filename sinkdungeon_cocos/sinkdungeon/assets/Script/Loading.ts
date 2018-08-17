@@ -68,6 +68,7 @@ export default class Loading extends cc.Component {
             for (let frame of assert) {
                 // frame.getTexture().setAliasTexParameters();
                 Logic.spriteFrames[frame.name] = frame;
+                console.log('loadres');
             }
             this.isSpriteFramesLoaded = true;
         })
@@ -81,12 +82,7 @@ export default class Loading extends cc.Component {
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
-            let mapData: string[][] = Logic.getCurrentMapData().map;
-            if (mapData && mapData.length > 0) {
-                Dungeon.WIDTH_SIZE = mapData.length;
-                Dungeon.HEIGHT_SIZE = mapData[0].length;
-
-            }
+            
             cc.director.loadScene('game');
         }
     }

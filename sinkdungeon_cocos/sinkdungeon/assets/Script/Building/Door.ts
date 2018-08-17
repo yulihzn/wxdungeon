@@ -21,7 +21,6 @@ export default class Door extends cc.Component {
     isOpen:boolean = false;
     isDoor:boolean = true;
     //0top1bottom2left3right
-    @property
     dir = 0;
     @property(cc.Node)
     wall:cc.Node=null;
@@ -56,6 +55,7 @@ export default class Door extends cc.Component {
         if(!this.anim){
             this.anim = this.getComponent(cc.Animation);
         }
+        this.getComponent('cc.PhysicsBoxCollider').enabled = false;
         this.anim.play('DoorOpen');
     }
     closeGate(){
@@ -66,6 +66,7 @@ export default class Door extends cc.Component {
         if(!this.anim){
             this.anim = this.getComponent(cc.Animation);
         }
+        this.getComponent('cc.PhysicsBoxCollider').enabled = true;
         this.anim.play('DoorClose');
     }
 

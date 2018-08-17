@@ -35,7 +35,6 @@ export default class CoinCount extends cc.Component {
             return;
         }
         Logic.coins += value;
-        cc.log(Logic.coins);
     }
 
     update(dt) {
