@@ -83,7 +83,7 @@ export default class Logic extends cc.Component {
             if (mapData && mapData.length > 0) {
                 Dungeon.WIDTH_SIZE = mapData.length;
                 Dungeon.HEIGHT_SIZE = mapData[0].length;
-                Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),Math.round(Dungeon.HEIGHT_SIZE/2-1));
+                // Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),Math.round(Dungeon.HEIGHT_SIZE/2-1));
             }
     }
     loadingNextRoom(dir:number){

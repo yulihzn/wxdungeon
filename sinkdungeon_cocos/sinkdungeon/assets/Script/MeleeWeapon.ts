@@ -28,9 +28,9 @@ export default class MeleeWeapon extends cc.Component {
     player: Player = null;
 
     @property(MeleeWeaponChild)
-    stabWeapon:MeleeWeaponChild;
+    stabWeapon:MeleeWeaponChild = null;
     @property(MeleeWeaponChild)
-    waveWeapon:MeleeWeaponChild;
+    waveWeapon:MeleeWeaponChild = null;
 
     private isReverse = false;
     private anim: cc.Animation;

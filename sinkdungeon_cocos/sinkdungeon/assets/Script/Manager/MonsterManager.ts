@@ -57,7 +57,7 @@ export default class MonsterManager extends cc.Component {
         let monster = monsterPrefab.getComponent(Monster);
         let data = new MonsterData();
         switch (resName) {
-            case MonsterManager.MONSTER_SLIME: data.updateHAT(500,500,0,MonsterManager.TYPE_DASH); break;
+            case MonsterManager.MONSTER_SLIME: data.updateHAT(5,5,0,MonsterManager.TYPE_DASH); break;
 			case MonsterManager.MONSTER_GOBLIN: data.updateHAT(2,2,1,MonsterManager.TYPE_COMBAT); break;
 			case MonsterManager.MONSTER_MUMMY: data.updateHAT(2,2,2,MonsterManager.TYPE_COMBAT); break;
             case MonsterManager.MONSTER_ANUBIS: data.updateHAT(10,10,3,MonsterManager.TYPE_DASH); break;

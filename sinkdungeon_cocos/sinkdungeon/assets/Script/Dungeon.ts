@@ -247,7 +247,8 @@ export default class Dungeon extends cc.Component {
                 }
                 if (Logic.mapManger.currentRectRoom.state != RectRoom.STATE_CLEAR) {
                     if (mapData[i][j] == 's') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SAILOR, i, j);
+                        let sailor = Logic.getHalfChance()?MonsterManager.MONSTER_SAILOR:MonsterManager.MONSTER_STRONGSAILOR;
+                        this.addMonsterFromData(sailor, i, j);
                     }
                     if (mapData[i][j] == 'p') {
                         this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);

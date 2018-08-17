@@ -15,7 +15,7 @@ export default class PlayerData {
     //x=current y=max
     basehealth:cc.Vec2=cc.v2(PlayerData.DEFAULT_HEALTH,PlayerData.DEFAULT_HEALTH);
     attackPoint:number=1;
-    pos:cc.Vec2 = cc.v2(4,4);
+    pos:cc.Vec2 = cc.v2(7,4);
     updateHA(health:cc.Vec2,attackPoint:number){
         this.basehealth = health;
         this.attackPoint = attackPoint;
