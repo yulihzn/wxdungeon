@@ -23,18 +23,7 @@ export default class DungeonStyleManager extends cc.Component {
     background01: cc.Node = null;
     @property(cc.Node)
     background02: cc.Node = null;
-    @property(cc.Node)
-    wallTop: cc.Node = null;
-    @property(cc.Node)
-    wallLeft: cc.Node = null;
-    @property(cc.Node)
-    wallRight: cc.Node = null;
-    @property(cc.Node)
-    wallBottom: cc.Node = null;
-    @property(cc.Node)
-    wallDecoration01: cc.Node = null;
-    @property(cc.Node)
-    wallDecoration02: cc.Node = null;
+    
 
     @property(cc.Prefab)
     wallTopDecoration: cc.Prefab = null;
@@ -91,6 +80,7 @@ export default class DungeonStyleManager extends cc.Component {
             wallbottom.setScale(4, 2);
             wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
             wallbottom.zIndex = 2500;
+            wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
             wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
             if (i == Math.floor(Dungeon.WIDTH_SIZE / 2)) {
                 this.doors[0] = cc.instantiate(this.doorDecoration);

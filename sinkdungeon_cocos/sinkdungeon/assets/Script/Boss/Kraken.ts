@@ -124,6 +124,10 @@ export default class Kraken extends cc.Component {
         }
         this.isDied = true;
         this.changeZIndex();
+        let hands = this.getComponentsInChildren(KrakenSwingHand);
+        for (let hand of hands) {
+            hand.isShow = false;
+        }
         this.anim.play('KrakenDie');
     }
     //Animation

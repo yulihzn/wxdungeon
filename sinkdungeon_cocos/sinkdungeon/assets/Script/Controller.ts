@@ -23,6 +23,8 @@ export default class Controller extends cc.Component {
     secondAction: cc.Node = null;
     secondActionTouched = false;
 
+    thirdActionTouched = false;
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -56,7 +58,10 @@ export default class Controller extends cc.Component {
 
 
     thirdAction() {
-        cc.director.emit(EventConstant.PLAYER_USEITEM);
+        if(!this.thirdActionTouched){
+            this.thirdActionTouched = true;
+            cc.director.emit(EventConstant.PLAYER_USEITEM);
+        }
     }
     move(event, dir) {
         dir = parseInt(dir);
@@ -72,7 +77,18 @@ export default class Controller extends cc.Component {
         }
         return false;
     }
+    thirdTimeDelay = 0;
+    isThirdTimeDelay(dt: number): boolean {
+        this.thirdTimeDelay += dt;
+        if (this.thirdTimeDelay > 0.2) {
+            this.thirdTimeDelay = 0;
+            this.thirdActionTouched = false;
+            return true;
+        }
+        return false;
+    }
     update(dt) {
+        this.isThirdTimeDelay(dt);
         if (this.isTimeDelay(dt)) {
             if (this.mainActionTouched) {
                 cc.director.emit(EventConstant.PLAYER_ATTACK);
