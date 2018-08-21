@@ -45,6 +45,8 @@ export default class Dungeon extends cc.Component {
     @property(cc.Prefab)
     trap: cc.Prefab = null;
     @property(cc.Prefab)
+    fallStone: cc.Prefab = null;
+    @property(cc.Prefab)
     footboard: cc.Prefab = null;
     @property(cc.Prefab)
     chest: cc.Prefab = null;
@@ -102,6 +104,9 @@ export default class Dungeon extends cc.Component {
         })
         cc.director.on(EventConstant.DUNGEON_ADD_HEART, (event) => {
             this.addHeart(event.detail.pos);
+        })
+        cc.director.on(EventConstant.DUNGEON_ADD_FALLSTONE, (event) => {
+            this.addFallStone(event.detail.pos);
         })
         cc.director.on(EventConstant.DUNGEON_ADD_AMMO, (event) => {
             this.addAmmo(event.detail.pos);
@@ -161,6 +166,10 @@ export default class Dungeon extends cc.Component {
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.trapmap[i][j] = trap.getComponent(Trap);
+                }
+                //生成落石
+                if (mapData[i][j] == 'D') {
+                    this.addFallStone(Dungeon.getPosInMap(cc.v2(i, j)));
                 }
                 //生成装饰
                 if (mapData[i][j] == '+') {
@@ -312,6 +321,18 @@ export default class Dungeon extends cc.Component {
         heart.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+        
+    }
+    /**掉落石头 */
+    addFallStone(pos: cc.Vec2) {
+        if(!this.fallStone){
+            return;
+        }
+        let stone = cc.instantiate(this.fallStone);
+        stone.parent = this.node;
+        stone.position = pos;
+        let indexpos = Dungeon.getIndexInMap(pos);
+        stone.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
         
     }
     /**掉落弹药 */

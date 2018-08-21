@@ -121,6 +121,14 @@ $
 ***************
 $
 room_danger=
+*B*o**B*B**o*B*
+$
+*B*k**B*B**k*B*
+$
+W**sWWW*Wk**WWW
+**W*W**oW*W*W**
+WWW**kW***Ws**W
+$
 ***************
 ***TT*****TT***
 ***T***aa**T***

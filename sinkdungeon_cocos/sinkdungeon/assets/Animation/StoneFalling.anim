@@ -1,0 +1,103 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "StoneFalling",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2.5166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "stone": {
+        "props": {
+          "y": [
+            {
+              "frame": 2.1666666666666665,
+              "value": 200
+            },
+            {
+              "frame": 2.3333333333333335,
+              "value": 0
+            }
+          ],
+          "scale": [
+            {
+              "frame": 2.1666666666666665,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2.3333333333333335,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 2.1666666666666665,
+                "value": {
+                  "__uuid__": "10104886-4ea4-4606-bdae-b94c3375ca2c"
+                }
+              },
+              {
+                "frame": 2.5,
+                "value": {
+                  "__uuid__": "08d30f4e-b5ae-4f9e-b905-bb6d54ab5b09"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "dangerzone": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 128
+            },
+            {
+              "frame": 2.3333333333333335,
+              "value": 200
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.2,
+                "y": 0.2
+              }
+            },
+            {
+              "frame": 2.3333333333333335,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 2.3333333333333335,
+      "func": "FallFinish",
+      "params": []
+    }
+  ]
+}

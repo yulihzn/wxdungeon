@@ -4,6 +4,7 @@ import Shooter from "../Shooter";
 import { EventConstant } from "../EventConstant";
 import KrakenSwingHand from "./KrakenSwingHand";
 import Dungeon from "../Dungeon";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,8 +45,6 @@ export default class Kraken extends cc.Component {
     onLoad() {
         this.isDied = false;
         this.isShow = false;
-        this.data.currentHealth = 100;
-        this.data.maxHealth = 100;
         this.data.attackPoint = 1;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
@@ -186,6 +185,9 @@ export default class Kraken extends cc.Component {
                 this.shooter.fireBullet();
             }
 
+        }
+        if(dungeon&&this.data.currentHealth<this.data.maxHealth/2){
+            dungeon.addFallStone(dungeon.player.node.position);
         }
 
     }

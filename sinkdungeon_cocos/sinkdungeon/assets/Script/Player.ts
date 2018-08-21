@@ -124,11 +124,12 @@ export default class Player extends cc.Component {
             , (event) => { this.takeDamage(event.detail.damage) });
             cc.director.on(EventConstant.PLAYER_ROTATE
                 , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
-        this.pos = Logic.playerData.pos;
         if(Logic.mapManger.currentRectRoom.roomType==RectDungeon.BOSS_ROOM){
-            this.pos = cc.v2(7,4);
+            Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
         }
+        this.pos = Logic.playerData.pos;
         this.defaultPos = Logic.playerData.pos.clone();
+        this.baseAttackPoint = Logic.playerData.attackPoint;
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);

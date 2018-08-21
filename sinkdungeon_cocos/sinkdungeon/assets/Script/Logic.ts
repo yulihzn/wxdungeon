@@ -38,8 +38,9 @@ export default class Logic extends cc.Component {
     static spriteFrames:{ [key: string]: cc.SpriteFrame } = null;
     // static currentRectRoom:RectRoom = null;
     static currentDir:number=0;
-    static coins = 0;
-    static ammo = 30;
+    static coins = 0;//金币
+    static ammo = 30;//子弹
+    static killCount = 0;//杀敌数
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
