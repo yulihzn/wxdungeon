@@ -34,7 +34,11 @@ export default class FallStone extends cc.Component {
     FallFinish() {
         this.isFall = true;
         setTimeout(() => { this.isFall = false; }, 100);
-        setTimeout(() => { this.node.destroy()}, 2000);
+        setTimeout(() => {
+            if(this.node){
+                this.node.destroy();
+            }
+            }, 2000);
         
     }
     start() {

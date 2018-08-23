@@ -396,7 +396,7 @@ export default class Player extends cc.Component {
         }
         let d = this.inventoryData.getDamage(damage);
         let dodge = this.inventoryData.getDodge();
-        let isDodge = Math.random() <= dodge;
+        let isDodge = Math.random() <= dodge && d > 0;
         d = isDodge ? 0 : d;
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
         this.health.x -= d;

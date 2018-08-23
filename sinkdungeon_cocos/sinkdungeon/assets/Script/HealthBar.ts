@@ -24,16 +24,18 @@ export default class HealthBar extends cc.Component {
 
     onLoad () {
         this.progressBar = this.getComponent(cc.ProgressBar);
-        this.progressBar.progress = 0.3;
+        this.progressBar.progress = 1;
     }
 
     start () {
         
     }
     refreshHealth(currentHealth:number,maxHealth:number): void {
-        this.progressBar.progress = currentHealth/maxHealth;
-        if(this.label){
-            this.label.string=`${parseFloat(currentHealth.toFixed(1))}/${maxHealth}`;
+        if(this.progressBar){
+            this.progressBar.progress = currentHealth/maxHealth;
+            if(this.label){
+                this.label.string=`${parseFloat(currentHealth.toFixed(1))}/${maxHealth}`;
+            }
         }
 	}
     update (dt) {

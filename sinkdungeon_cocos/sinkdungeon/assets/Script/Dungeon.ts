@@ -23,6 +23,7 @@ import Box from "./Building/Box";
 import FootBoard from "./Building/FootBoard";
 import BoxData from "./Data/BoxData";
 import ShopTableData from "./Data/ShopTableData";
+import HealthBar from "./HealthBar";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -69,6 +70,8 @@ export default class Dungeon extends cc.Component {
     portal: Portal = null;
     @property(cc.Node)
     fog: cc.Node = null;
+    @property(HealthBar)
+    bossHealthBar:HealthBar = null;
 
     map: Tile[][] = new Array();
     wallmap: Wall[][] = new Array();
@@ -213,6 +216,15 @@ export default class Dungeon extends cc.Component {
                     }else{
                         boxes.push(b.data);
                     }
+                }
+                //生成植物
+                if (mapData[i][j] == 'G') {
+                    let box = cc.instantiate(this.box);
+                    box.parent = this.node;
+                    let b:Box = box.getComponent(Box);
+                    b.data.defaultPos = cc.v2(i, j);
+                    b.setPos(cc.v2(i, j));
+                    b.changeRes('plant');
                 }
                 //生成心
                 if (mapData[i][j] == 'H') {
@@ -379,7 +391,7 @@ export default class Dungeon extends cc.Component {
         if (!this.bossIndex) {
             return;
         }
-        this.bossKraken = this.monsterManager.getKraken(this.node, this.bossIndex);
+        this.bossKraken = this.monsterManager.getKraken(this, this.bossIndex);
         this.anim.playAdditive('DungeonShakeOnce');
         setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},1000);
         setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},2000);

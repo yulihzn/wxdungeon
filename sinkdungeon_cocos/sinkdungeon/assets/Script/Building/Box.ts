@@ -29,6 +29,11 @@ export default class Box extends cc.Component {
     start() {
 
     }
+    changeRes(resName: string) {
+        let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        let spriteFrame = Logic.spriteFrames[resName];
+        sprite.spriteFrame = spriteFrame;
+    }
     setPos(pos: cc.Vec2) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(this.data.pos);

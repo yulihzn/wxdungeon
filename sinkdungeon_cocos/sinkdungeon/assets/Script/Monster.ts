@@ -19,7 +19,7 @@ import Shooter from './Shooter';
 
 @ccclass
 export default class Monster extends cc.Component {
-    
+
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(0, 0);
     @property(cc.Label)
@@ -59,7 +59,7 @@ export default class Monster extends cc.Component {
         body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         body.width = spriteFrame.getRect().width;
         body.height = spriteFrame.getRect().height;
-        
+
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
@@ -89,7 +89,7 @@ export default class Monster extends cc.Component {
             pos = cc.v2(1, 0);
         }
         pos = pos.normalizeSelf().mul(32);
-        let action = cc.sequence(cc.moveBy(0.1, -pos.x/2, -pos.y/2),cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
+        let action = cc.sequence(cc.moveBy(0.1, -pos.x / 2, -pos.y / 2), cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
             this.isAttacking = false;
             this.anim.resume();
             if (finish) { finish(this.data.attackPoint); }
@@ -100,8 +100,8 @@ export default class Monster extends cc.Component {
         let dis = Logic.getDistance(this.node.position, playerNode.position);
         return dis;
     }
-    
-    move(pos: cc.Vec2,speed:number) {
+
+    move(pos: cc.Vec2, speed: number) {
         if (this.isDied || this.isFall || this.isHurt) {
             this.isHurt = false;
             return;
@@ -109,7 +109,7 @@ export default class Monster extends cc.Component {
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
-        
+
         if (!pos.equals(cc.Vec2.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
@@ -176,15 +176,15 @@ export default class Monster extends cc.Component {
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
         let rand = Math.random();
-        if(rand<0.9){
-            cc.director.emit(EventConstant.DUNGEON_ADD_COIN,{detail:{pos:this.node.position,count:Logic.getRandomNum(1,10)}});
-        }else if(rand>=0.9&&rand<0.98){
-            cc.director.emit(EventConstant.DUNGEON_ADD_HEART,{detail:{pos:this.node.position}});
-        }else{
-            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO,{detail:{pos:this.node.position}});
+        if (rand < 0.9) {
+            cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+        } else if (rand >= 0.9 && rand < 0.98) {
+            cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
+        } else {
+            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
         }
-        setTimeout(()=>{if(this.node){this.node.active = false;}},5000);
-        
+        setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
+
     }
 
     monsterAction(dungeon: Dungeon) {
@@ -210,30 +210,34 @@ export default class Monster extends cc.Component {
                 pos = pos.normalizeSelf();
             }
             this.meleeAttack(pos, (damage: number) => {
-                dungeon.player.takeDamage(damage);
+                let newdis = this.getNearPlayerDistance(dungeon.player.node);
+                if (newdis < 64) { dungeon.player.takeDamage(damage); }
             });
         } else {
             let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
-            let speed = 300;
+            let speed = 400;
             if (playerDis < 400) {
                 pos = dungeon.player.node.position.sub(this.node.position);
-                if(this.data.monsterType==MonsterManager.TYPE_DASH){
-                    speed = 600;
+                if (this.data.monsterType == MonsterManager.TYPE_DASH) {
+                    speed = 800;
                 }
             }
-            if (playerDis < 600&&this.data.monsterType==MonsterManager.TYPE_REMOTE &&Logic.getHalfChance()) {
-                let hv = dungeon.player.node.position.sub(this.node.position);
-                if (this.shooter && !hv.equals(cc.Vec2.ZERO)) {
-                    hv = hv.normalizeSelf();
-                    this.shooter.setHv(hv);
-                    this.shooter.dungeon = dungeon;
-                    this.shooter.fireBullet();
+            if (this.data.monsterType == MonsterManager.TYPE_REMOTE && Logic.getHalfChance()) {
+                speed = 200;
+                if (playerDis < 600 && this.shooter) {
+                    let hv = dungeon.player.node.position.sub(this.node.position);
+                    if (!hv.equals(cc.Vec2.ZERO)) {
+                        hv = hv.normalizeSelf();
+                        this.shooter.setHv(hv);
+                        this.shooter.dungeon = dungeon;
+                        this.shooter.fireBullet();
+                    }
                 }
             }
-            
+
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
-                this.move(pos,speed);
+                this.move(pos, speed);
             }
         }
 
@@ -326,7 +330,7 @@ export default class Monster extends cc.Component {
                 this.rigidbody.linearVelocity = cc.v2(0, 0);
             }
         }
-        if(this.isDied){
+        if (this.isDied) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
         if (this.label) {
@@ -339,6 +343,6 @@ export default class Monster extends cc.Component {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
         this.healthBar.node.scaleX = this.node.scaleX;
         //防止错位
-        this.healthBar.node.x = -30*this.node.scaleX;
+        this.healthBar.node.x = -30 * this.node.scaleX;
     }
 }

@@ -1,6 +1,7 @@
 import Monster from "../Monster";
 import MonsterData from "../Data/MonsterData";
 import Kraken from "../Boss/Kraken";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,7 +58,7 @@ export default class MonsterManager extends cc.Component {
         let monster = monsterPrefab.getComponent(Monster);
         let data = new MonsterData();
         switch (resName) {
-            case MonsterManager.MONSTER_SLIME: data.updateHAT(5,5,0,MonsterManager.TYPE_DASH); break;
+            case MonsterManager.MONSTER_SLIME: data.updateHAT(5,5,1,MonsterManager.TYPE_DASH); break;
 			case MonsterManager.MONSTER_GOBLIN: data.updateHAT(2,2,1,MonsterManager.TYPE_COMBAT); break;
 			case MonsterManager.MONSTER_MUMMY: data.updateHAT(2,2,2,MonsterManager.TYPE_COMBAT); break;
             case MonsterManager.MONSTER_ANUBIS: data.updateHAT(10,10,3,MonsterManager.TYPE_DASH); break;
@@ -72,16 +73,17 @@ export default class MonsterManager extends cc.Component {
         return monster;
         
     }
-    getKraken(parent:cc.Node,posIndex:cc.Vec2):Kraken{
+    getKraken(dungeon:Dungeon,posIndex:cc.Vec2):Kraken{
         let krakenPrefab:cc.Node = null;
         krakenPrefab = cc.instantiate(this.kraken);
         krakenPrefab.active = false;
-        krakenPrefab.parent = parent;
+        krakenPrefab.parent = dungeon.node;
         let kraken = krakenPrefab.getComponent(Kraken);
         let data = new MonsterData();
         data.updateHAT(100,100,2,MonsterManager.TYPE_BOSS);
         kraken.data = data;
         kraken.transportPlayer(posIndex.x,posIndex.y);
+        kraken.healthBar = dungeon.bossHealthBar;
         kraken.node.active = true;
         return kraken;
     }

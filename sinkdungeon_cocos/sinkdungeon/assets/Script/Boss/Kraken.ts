@@ -95,7 +95,9 @@ export default class Kraken extends cc.Component {
         //     }
         // }
         this.changeZIndex();
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        if(this.healthBar){
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        }
     }
 
     takeDamage(damage: number) {
@@ -145,6 +147,10 @@ export default class Kraken extends cc.Component {
     }
     showBoss() {
         this.anim.play('KrakenShow');
+        if(this.healthBar){
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+            this.healthBar.node.active = !this.isDied;
+        }
     }
 
     update(dt) {
