@@ -1,0 +1,267 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "CaptainJump",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 3.3333333333333335,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "1",
+  "curveData": {
+    "paths": {
+      "sprite/body": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.1,
+                "y": 1.1
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 3,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 3.1666666666666665,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.1,
+                "y": 1.1
+              }
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -3
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 3,
+              "value": 0
+            },
+            {
+              "frame": 3.1666666666666665,
+              "value": -3
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/head": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 12
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 15
+            },
+            {
+              "frame": 3,
+              "value": 15
+            },
+            {
+              "frame": 3.1666666666666665,
+              "value": 12
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/rightarm": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -30
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 3,
+              "value": 0
+            },
+            {
+              "frame": 3.1666666666666665,
+              "value": -30
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/leftarm": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -15
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 3,
+              "value": 0
+            },
+            {
+              "frame": 3.1666666666666665,
+              "value": -15
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/rightleg": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -15
+            },
+            {
+              "frame": 3,
+              "value": -15
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/leftleg": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -5
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 10
+            },
+            {
+              "frame": 3,
+              "value": 10
+            },
+            {
+              "frame": 3.3333333333333335,
+              "value": -5
+            }
+          ]
+        }
+      },
+      "sprite": {
+        "props": {
+          "y": [
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 300
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": 300
+            },
+            {
+              "frame": 3,
+              "value": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 0.6666666666666666,
+      "func": "JumpBegin",
+      "params": []
+    },
+    {
+      "frame": 3,
+      "func": "JumpDown",
+      "params": []
+    },
+    {
+      "frame": 3.3333333333333335,
+      "func": "JumpFinish",
+      "params": []
+    }
+  ]
+}

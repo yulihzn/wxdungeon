@@ -2,6 +2,7 @@ import Monster from "../Monster";
 import MonsterData from "../Data/MonsterData";
 import Kraken from "../Boss/Kraken";
 import Dungeon from "../Dungeon";
+import Captain from "../Boss/Captain";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,6 +43,8 @@ export default class MonsterManager extends cc.Component {
     monster: cc.Prefab = null;
     @property(cc.Prefab)
     kraken: cc.Prefab = null;
+    @property(cc.Prefab)
+    captain: cc.Prefab = null;
     onLoad () {
     }
     /**
@@ -87,7 +90,20 @@ export default class MonsterManager extends cc.Component {
         kraken.node.active = true;
         return kraken;
     }
-
+    getCaptain(dungeon:Dungeon,posIndex:cc.Vec2):Captain{
+        let captainPrefab:cc.Node = null;
+        captainPrefab = cc.instantiate(this.captain);
+        captainPrefab.active = false;
+        captainPrefab.parent = dungeon.node;
+        let captain = captainPrefab.getComponent(Captain);
+        let data = new MonsterData();
+        data.updateHAT(100,100,2,MonsterManager.TYPE_BOSS);
+        captain.data = data;
+        captain.transportPlayer(posIndex.x,posIndex.y);
+        captain.healthBar = dungeon.bossHealthBar;
+        captain.node.active = true;
+        return captain;
+    }
     start () {
     }
     

@@ -24,6 +24,7 @@ import FootBoard from "./Building/FootBoard";
 import BoxData from "./Data/BoxData";
 import ShopTableData from "./Data/ShopTableData";
 import HealthBar from "./HealthBar";
+import Captain from "./Boss/Captain";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -95,6 +96,7 @@ export default class Dungeon extends cc.Component {
 
     bossKraken: Kraken;
     bossIndex: cc.Vec2;
+    bossCaptain:Captain;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -391,6 +393,16 @@ export default class Dungeon extends cc.Component {
         if (!this.bossIndex) {
             return;
         }
+        if(Logic.chapterName == 'chapter01'){
+            this.addBossCaptain();
+        }else{
+            this.addBossKraken();
+        }
+    }
+    private addBossCaptain(){
+        this.bossCaptain = this.monsterManager.getCaptain(this, this.bossIndex);
+    }
+    private addBossKraken(){
         this.bossKraken = this.monsterManager.getKraken(this, this.bossIndex);
         this.anim.playAdditive('DungeonShakeOnce');
         setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},1000);
@@ -399,7 +411,7 @@ export default class Dungeon extends cc.Component {
         setTimeout(() => {
             this.bossKraken.showBoss();
             this.anim.play('DungeonWave');
-        }, 3500)
+        }, 3500);
     }
     private addMonster(monster: Monster, pos: cc.Vec2) {
         //激活
@@ -478,6 +490,9 @@ export default class Dungeon extends cc.Component {
         }
         isClear = count >= this.monsters.length;
         if (this.bossKraken && !this.bossKraken.isDied) {
+            isClear = false;
+        }
+        if (this.bossCaptain && !this.bossCaptain.isDied) {
             isClear = false;
         }
         for (let footboard of this.footboards) {
