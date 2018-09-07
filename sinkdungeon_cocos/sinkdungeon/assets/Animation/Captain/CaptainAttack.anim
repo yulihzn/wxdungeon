@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "CaptainMeleeAttack",
+  "_name": "CaptainAttack",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.6666666666666666,
@@ -66,7 +66,7 @@
             },
             {
               "frame": 0.3333333333333333,
-              "value": -30
+              "value": -5
             },
             {
               "frame": 0.6666666666666666,
@@ -83,12 +83,12 @@
               "value": 0
             },
             {
-              "frame": 0.16666666666666666,
-              "value": 180
+              "frame": 0.3333333333333333,
+              "value": -220
             },
             {
-              "frame": 0.3333333333333333,
-              "value": 50
+              "frame": 0.5,
+              "value": -15
             },
             {
               "frame": 0.6666666666666666,
@@ -106,11 +106,53 @@
             },
             {
               "frame": 0.3333333333333333,
-              "value": -120
+              "value": 45
+            },
+            {
+              "frame": 0.5,
+              "value": 121
             },
             {
               "frame": 0.6666666666666666,
               "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/rightleg": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                8,
+                -5
+              ]
+            }
+          ]
+        }
+      },
+      "sprite/leftleg": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -5,
+                -5
+              ]
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 5
             }
           ]
         }
@@ -119,18 +161,13 @@
   },
   "events": [
     {
-      "frame": 0.16666666666666666,
-      "func": "MeleeBegin",
-      "params": []
-    },
-    {
       "frame": 0.3333333333333333,
-      "func": "MeleeMiddle",
+      "func": "AttackStart",
       "params": []
     },
     {
-      "frame": 0.6666666666666666,
-      "func": "MeleeFinish",
+      "frame": 0.5833333333333334,
+      "func": "AttackFinish",
       "params": []
     }
   ]

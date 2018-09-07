@@ -28,6 +28,7 @@ export default class CaptainSword extends cc.Component {
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let player = other.node.getComponent(Player);
         if(player && this.isShow && this.node.active){
+            this.isShow = false;
             cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:this.damage}});
         }
     }

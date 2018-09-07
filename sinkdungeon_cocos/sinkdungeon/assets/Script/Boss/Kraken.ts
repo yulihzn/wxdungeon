@@ -45,7 +45,6 @@ export default class Kraken extends cc.Component {
     onLoad() {
         this.isDied = false;
         this.isShow = false;
-        this.data.attackPoint = 1;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 0;
@@ -112,9 +111,9 @@ export default class Kraken extends cc.Component {
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
         if(this.dungeon){
             let pos = this.dungeon.player.pos;
-            if (pos.x > this.pos.x) {
+            if (pos.x > this.pos.x && !this.anim.getAnimationState("KrakenSwingRight").isPlaying) {
                 this.anim.playAdditive('KrakenSwingRight');
-            } else if (pos.x < this.pos.x) {
+            } else if (pos.x < this.pos.x && !this.anim.getAnimationState("KrakenSwingLeft").isPlaying) {
                 this.anim.playAdditive('KrakenSwingLeft');
             }
         }

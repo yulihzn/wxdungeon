@@ -7,6 +7,7 @@ import { EventConstant } from "./EventConstant";
 import Box from "./Building/Box";
 import Logic from "./Logic";
 import MeleeWeaponChild from "./MeleeWeaponChild";
+import Captain from "./Boss/Captain";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -192,6 +193,10 @@ export default class MeleeWeapon extends cc.Component {
         let kraken = attackTarget.node.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
             kraken.takeDamage(damage);
+        }
+        let captain = attackTarget.node.getComponent(Captain);
+        if (captain && !captain.isDied) {
+            captain.takeDamage(damage);
         }
         let box = attackTarget.node.getComponent(Box);
         if(box){

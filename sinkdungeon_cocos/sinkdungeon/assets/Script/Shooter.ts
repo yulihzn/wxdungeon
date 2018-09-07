@@ -57,15 +57,18 @@ export default class Shooter extends cc.Component {
             this.hv = hv;
         }
     }
-    fireBullet(){
+    fireBullet(angleOffset?:number){
         
         if(this.anim){
             this.anim.play();
         }
-        this.fire(this.bullet,this.bulletPool);
+        if(!angleOffset){
+            angleOffset = 0;
+        }
+        this.fire(this.bullet,this.bulletPool,angleOffset);
     }
 
-    private fire(prefab:cc.Prefab,pool:cc.NodePool) {
+    private fire(prefab:cc.Prefab,pool:cc.NodePool,angleOffset:number) {
         if(!this.dungeon){
             return;
         }
@@ -99,7 +102,7 @@ export default class Shooter extends cc.Component {
         if (bullet.isFromPlayer && bullet.isMelee && this.player) {
             bullet.damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
         }
-        bullet.showBullet(this.hv);
+        bullet.showBullet(this.hv.clone().rotateSelf(angleOffset*Math.PI/180));
     }
     destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node

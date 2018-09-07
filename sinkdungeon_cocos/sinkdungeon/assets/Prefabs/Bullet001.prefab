@@ -179,7 +179,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "3cAy1jARhDkoJppi4hRlU+"
+    "_id": "f97R5zlYpJIZNgbZaQeSyT"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -281,7 +281,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "51PJySlvVGJao1fE7Q0O8h"
+    "_id": "93PFHT4adCIrGrjkjPd1T5"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -312,7 +312,7 @@
       }
     ],
     "playOnLoad": false,
-    "_id": "3diIzc2p5Fl7YZC2pmKPq3"
+    "_id": "557t/RI+tFhpeVPACGmcLB"
   },
   {
     "__type__": "d243aeNu+tEJJbz1ng6i61f",
@@ -326,7 +326,7 @@
     "damage": 1,
     "speed": 200,
     "isMelee": false,
-    "_id": "a5/jxqXOdGwLSOfBmJKCa1"
+    "_id": "6er2ynomNH44Iq1+aZCs4E"
   },
   {
     "__type__": "cc.RigidBody",
@@ -350,7 +350,7 @@
     "_fixedRotation": true,
     "enabledContactListener": true,
     "bullet": true,
-    "_id": "fbQqq0H4hEnYY/zMLjqwDW"
+    "_id": "34KUsCqRZLhL3KjM4E3Kli"
   },
   {
     "__type__": "cc.PhysicsCircleCollider",
@@ -372,7 +372,7 @@
       "y": 0
     },
     "_radius": 16,
-    "_id": "25i1bJqp1D6qVsdmTxtMWG"
+    "_id": "2aHFnE4txN27aPMm8SEnId"
   },
   {
     "__type__": "cc.CircleCollider",
@@ -389,7 +389,7 @@
       "y": 0
     },
     "_radius": 16,
-    "_id": "4fZu0jnltBU686QrLaIGz2"
+    "_id": "edUDl2yJNJ4IsiuzWHhdjU"
   },
   {
     "__type__": "cc.PrefabInfo",

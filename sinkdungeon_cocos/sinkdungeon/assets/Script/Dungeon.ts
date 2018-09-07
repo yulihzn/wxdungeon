@@ -301,9 +301,10 @@ export default class Dungeon extends cc.Component {
                 }
                 if (mapData[i][j] == 'P') {
                     let needAdd = true;
-                    if(Logic.level==RectDungeon.LEVEL_5&&Logic.mapManger.currentRectRoom.roomType == RectDungeon.END_ROOM){
+                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3)&&Logic.mapManger.currentRectRoom.roomType == RectDungeon.END_ROOM){
                         needAdd = false;
                     }
+                    
                     if(needAdd){
                         let portalP = cc.instantiate(this.portalPrefab);
                         portalP.parent = this.node;
@@ -393,10 +394,10 @@ export default class Dungeon extends cc.Component {
         if (!this.bossIndex) {
             return;
         }
-        if(Logic.chapterName == 'chapter01'){
-            this.addBossCaptain();
-        }else{
+        if(Logic.mapManger.currentRectRoom.roomType == RectDungeon.BOSS_ROOM){
             this.addBossKraken();
+        }else{
+            this.addBossCaptain();
         }
     }
     private addBossCaptain(){
@@ -515,7 +516,7 @@ export default class Dungeon extends cc.Component {
             if (RectDungeon.isRoomEqual(Logic.mapManger.currentRectRoom, Logic.mapManger.rectDungeon.startRoom)) {
                 if (Logic.mapManger.rectDungeon.endRoom.state != RectRoom.STATE_CLEAR) {
                     let t = Logic.mapManger.rectDungeon.getNeighborRoomType(Logic.mapManger.currentRectRoom.x, Logic.mapManger.currentRectRoom.y, door.dir);
-                    if (t.roomType == RectDungeon.END_ROOM) {
+                    if (t.roomType == RectDungeon.END_ROOM&&Logic.level!=RectDungeon.LEVEL_5&&Logic.level!=RectDungeon.LEVEL_3) {
                         needClose = true;
                     }
                 }
@@ -588,6 +589,9 @@ export default class Dungeon extends cc.Component {
             this.monstersAction();
             if(this.bossKraken){
                 this.bossKraken.bossAction(this);
+            }
+            if(this.bossCaptain){
+                this.bossCaptain.bossAction(this);
             }
         }
     }

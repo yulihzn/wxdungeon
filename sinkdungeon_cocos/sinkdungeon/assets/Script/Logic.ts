@@ -107,6 +107,8 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('gamefinish')
         }else{
             Logic.mapManger.reset(Logic.level);
+            Logic.changeDungeonSize();
+            Logic.playerData.pos=cc.v2(Math.round(Dungeon.WIDTH_SIZE/2-1),Math.round(Dungeon.HEIGHT_SIZE/2-1));
             cc.director.loadScene('loading');
         }
     }

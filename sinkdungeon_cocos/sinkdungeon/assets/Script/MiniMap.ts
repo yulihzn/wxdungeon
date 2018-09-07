@@ -75,7 +75,7 @@ export default class MiniMap extends cc.Component {
 						if (roomType == RectDungeon.LOOT_ROOM) {
 							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_LOOT);
 						}
-						if (roomType == RectDungeon.END_ROOM) {
+						if (roomType == RectDungeon.END_ROOM && Logic.level!=RectDungeon.LEVEL_3 && Logic.level!=RectDungeon.LEVEL_5) {
 							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_END);
 						}
 					}
@@ -90,7 +90,7 @@ export default class MiniMap extends cc.Component {
 						if (roomType == RectDungeon.BOSS_ROOM) {
 							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.CLEAR_BOSS);
 						}
-						if (roomType == RectDungeon.END_ROOM) {
+						if (roomType == RectDungeon.END_ROOM&& Logic.level!=RectDungeon.LEVEL_3&& Logic.level!=RectDungeon.LEVEL_5) {
 							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.CLEAR_END);
 						}
 						if (roomType == RectDungeon.LOOT_ROOM) {

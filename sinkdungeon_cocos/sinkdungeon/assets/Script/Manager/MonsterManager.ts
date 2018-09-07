@@ -83,7 +83,7 @@ export default class MonsterManager extends cc.Component {
         krakenPrefab.parent = dungeon.node;
         let kraken = krakenPrefab.getComponent(Kraken);
         let data = new MonsterData();
-        data.updateHAT(100,100,2,MonsterManager.TYPE_BOSS);
+        data.updateHAT(200,200,2,MonsterManager.TYPE_BOSS);
         kraken.data = data;
         kraken.transportPlayer(posIndex.x,posIndex.y);
         kraken.healthBar = dungeon.bossHealthBar;

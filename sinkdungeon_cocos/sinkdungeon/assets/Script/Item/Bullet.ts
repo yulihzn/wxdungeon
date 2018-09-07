@@ -3,6 +3,7 @@ import Monster from "../Monster";
 import Player from "../Player";
 import Kraken from "../Boss/Kraken";
 import MeleeWeapon from "../MeleeWeapon";
+import Captain from "../Boss/Captain";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,6 +39,7 @@ export default class Bullet extends cc.Component {
 
     sprite:cc.Node;
     light:cc.Node;
+    readonly KEEP_LIST = ['Player','Monster','Kraken','Captain'];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -85,14 +87,10 @@ export default class Bullet extends cc.Component {
         if(selfCollider.body.node.name==otherCollider.body.node.name){
             isDestory = false;
         }
-        if(otherCollider.body.node.name == 'Player'){
-            isDestory = false;
-        }
-        if(otherCollider.body.node.name == 'Monster'){
-            isDestory = false;
-        }
-        if(otherCollider.body.node.name == 'Kraken'){
-            isDestory = false;
+        for(let name of this.KEEP_LIST){
+            if(otherCollider.body.node.name == name){
+                isDestory = false;
+            }
         }
         if(otherCollider.sensor){
             isDestory = false;
@@ -108,13 +106,12 @@ export default class Bullet extends cc.Component {
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider) {
         let isAttack = true;
+        for(let name of this.KEEP_LIST){
+            if(!this.isFromPlayer && other.node.name == name){
+                isAttack = false;
+            }
+        }
         if(this.isFromPlayer && other.node.name == 'Player'){
-            isAttack = false;
-        }
-        if(!this.isFromPlayer && other.node.name == 'Monster'){
-            isAttack = false;
-        }
-        if(!this.isFromPlayer && other.node.name == 'Kraken'){
             isAttack = false;
         }
         if(isAttack){
@@ -140,6 +137,11 @@ export default class Bullet extends cc.Component {
         let kraken = attackTarget.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
             kraken.takeDamage(damage);
+            isDestory = true;
+        }
+        let captain = attackTarget.getComponent(Captain);
+        if (captain && !captain.isDied) {
+            captain.takeDamage(damage);
             isDestory = true;
         }
         let meleeWeapon:MeleeWeapon = attackTarget.getComponent(MeleeWeapon);
