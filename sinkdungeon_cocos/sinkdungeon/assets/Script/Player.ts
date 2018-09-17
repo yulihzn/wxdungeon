@@ -133,6 +133,7 @@ export default class Player extends cc.Component {
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);
+        this.shooter.player = this;
         this.smokePool = new cc.NodePool();
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
@@ -209,7 +210,9 @@ export default class Player extends cc.Component {
                 break;
         }
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
-        this.healthBar.refreshHealth(this.health.x, this.health.y);
+        if(this.healthBar){
+            this.healthBar.refreshHealth(this.health.x, this.health.y);
+        }
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
@@ -263,7 +266,7 @@ export default class Player extends cc.Component {
         if (currentTime - this.remoteRate > 400) {
             this.remoteRate = currentTime;
             if (this.shooter) {
-                this.shooter.fireBullet();
+                this.shooter.fireBullet(0);
             }
         }
 
@@ -374,7 +377,9 @@ export default class Player extends cc.Component {
         }
         this.changeZIndex(this.pos);
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
-        this.healthBar.refreshHealth(this.health.x, this.health.y);
+        if(this.healthBar){
+            this.healthBar.refreshHealth(this.health.x, this.health.y);
+        }
     }
     fall() {
         if (this.isFall) {
@@ -435,6 +440,9 @@ export default class Player extends cc.Component {
     playerAction(dir: number, pos: cc.Vec2, dt: number, dungeon: Dungeon) {
         if(this.meleeWeapon && !this.meleeWeapon.dungeon){
             this.meleeWeapon.dungeon = dungeon;
+        }
+        if(this.shooter && !this.shooter.dungeon){
+            this.shooter.dungeon = dungeon;
         }
         this.move(dir, pos, dt);
     }

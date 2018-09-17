@@ -192,7 +192,7 @@ export default class Kraken extends cc.Component {
 
         }
         if(dungeon&&this.data.currentHealth<this.data.maxHealth/2){
-            dungeon.addFallStone(dungeon.player.node.position);
+            dungeon.addFallStone(dungeon.player.node.position,true);
         }
 
     }

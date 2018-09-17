@@ -20,6 +20,7 @@ export default class Box extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     anim: cc.Animation;
     private timeDelay = 0;
+    private isBreaking = false;
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.anim.play('BoxShow');
@@ -44,13 +45,18 @@ export default class Box extends cc.Component {
         this.reset();
     }
     breakBox() {
+        if(this.isBreaking){
+            return;
+        }
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation);
         }
         this.anim.play('BoxBroken');
+        this.isBreaking = true;
     }
     reset() {
         this.node.position = Dungeon.getPosInMap(this.data.defaultPos);
+        this.isBreaking = false;
     }
 
     update(dt) {

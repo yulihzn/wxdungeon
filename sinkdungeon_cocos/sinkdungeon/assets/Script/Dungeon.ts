@@ -25,6 +25,7 @@ import BoxData from "./Data/BoxData";
 import ShopTableData from "./Data/ShopTableData";
 import HealthBar from "./HealthBar";
 import Captain from "./Boss/Captain";
+import FallStone from "./Building/FallStone";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -111,7 +112,7 @@ export default class Dungeon extends cc.Component {
             this.addHeart(event.detail.pos);
         })
         cc.director.on(EventConstant.DUNGEON_ADD_FALLSTONE, (event) => {
-            this.addFallStone(event.detail.pos);
+            this.addFallStone(event.detail.pos,event.detail.isAuto);
         })
         cc.director.on(EventConstant.DUNGEON_ADD_AMMO, (event) => {
             this.addAmmo(event.detail.pos);
@@ -174,7 +175,7 @@ export default class Dungeon extends cc.Component {
                 }
                 //生成落石
                 if (mapData[i][j] == 'D') {
-                    this.addFallStone(Dungeon.getPosInMap(cc.v2(i, j)));
+                    this.addFallStone(Dungeon.getPosInMap(cc.v2(i, j)),false);
                 }
                 //生成装饰
                 if (mapData[i][j] == '+') {
@@ -339,15 +340,20 @@ export default class Dungeon extends cc.Component {
         
     }
     /**掉落石头 */
-    addFallStone(pos: cc.Vec2) {
+    addFallStone(pos: cc.Vec2,isAuto:boolean) {
         if(!this.fallStone){
             return;
         }
         let stone = cc.instantiate(this.fallStone);
+        let stoneScript = stone.getComponent(FallStone);
+        stoneScript.isAuto = isAuto;
         stone.parent = this.node;
         stone.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         stone.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+        if(stoneScript.isAuto){
+            stoneScript.fall();
+        }
         
     }
     /**掉落弹药 */
@@ -394,7 +400,7 @@ export default class Dungeon extends cc.Component {
         if (!this.bossIndex) {
             return;
         }
-        if(Logic.mapManger.currentRectRoom.roomType == RectDungeon.BOSS_ROOM){
+        if(Logic.mapManger.currentRectRoom.roomType != RectDungeon.BOSS_ROOM){
             this.addBossKraken();
         }else{
             this.addBossCaptain();

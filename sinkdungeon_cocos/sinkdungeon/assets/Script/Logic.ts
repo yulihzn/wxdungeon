@@ -52,6 +52,7 @@ export default class Logic extends cc.Component {
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         // manager.enabledDebugDraw = true;
+        cc.game.setFrameRate(59);
         cc.director.getPhysicsManager().enabled = true;
     //     cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
     // cc.PhysicsManager.DrawBits.e_pairBit |
@@ -78,6 +79,7 @@ export default class Logic extends cc.Component {
         Logic.mapManger.reset(Logic.level);
         Logic.coins = 0;
         Logic.ammo = 30;
+        // Logic.playerData.updateHA(cc.v2(999,999),20);
     }
     static changeDungeonSize(){
         let mapData: string[][] = Logic.getCurrentMapData().map;

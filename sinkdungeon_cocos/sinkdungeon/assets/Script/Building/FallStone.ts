@@ -19,16 +19,18 @@ export default class FallStone extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    isFall = false;
+    isFall = false;//是否已经下落
     anim: cc.Animation;
+    isAuto = true;//是否自动下落
+    isFalling = false;//是否下落中
 
     onLoad() {
         this.isFall = false;
-        this.fall();
     }
     fall() {
-        // this.anim = this.getComponent(cc.Animation);
-        // this.anim.play();
+        this.anim = this.getComponent(cc.Animation);
+        this.anim.play();
+        this.isFalling = true;
     }
     //anim
     FallFinish() {
@@ -44,6 +46,12 @@ export default class FallStone extends cc.Component {
     start() {
 
     }
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        let player = other.getComponent(Player);
+        if(player && !this.isAuto && !this.isFalling){
+            this.fall();
+        }
+    }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let player = other.getComponent(Player);
         if (player) {
@@ -51,6 +59,7 @@ export default class FallStone extends cc.Component {
                 this.isFall = false;
                 cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: 2 } });
             }
+            
         }
     }
     // update (dt) {}

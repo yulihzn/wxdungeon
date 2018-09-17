@@ -39,7 +39,7 @@ export default class Bullet extends cc.Component {
 
     sprite:cc.Node;
     light:cc.Node;
-    readonly KEEP_LIST = ['Player','Monster','Kraken','Captain'];
+    readonly KEEP_LIST = ['Monster','Kraken','Captain'];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -91,6 +91,9 @@ export default class Bullet extends cc.Component {
             if(otherCollider.body.node.name == name){
                 isDestory = false;
             }
+        }
+        if(otherCollider.body.node.name == 'Player'){
+            isDestory = false;
         }
         if(otherCollider.sensor){
             isDestory = false;

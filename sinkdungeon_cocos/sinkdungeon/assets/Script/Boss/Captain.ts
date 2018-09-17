@@ -83,6 +83,25 @@ export default class Captain extends cc.Component {
         setTimeout(()=>{this.isFall = false;},100);
         this.getComponent(cc.PhysicsBoxCollider).sensor = false;
         this.getComponent(cc.PhysicsBoxCollider).apply();
+        if(!this.dungeon || !this.shooter){
+            return;
+        }
+        let angles = [0,45,90,135,180,225,270,315];
+        this.fireWithAngles(angles);
+    }
+    fireWithAngles(angles:number[]){
+        if(!this.dungeon || !this.shooter){
+            return;
+        }
+        let hv = this.dungeon.player.node.position.sub(this.node.position);
+        if (!hv.equals(cc.Vec2.ZERO)) {
+            hv = hv.normalizeSelf();
+            this.shooter.setHv(hv);
+            this.shooter.dungeon = this.dungeon;
+            for(let angle of angles){
+                this.shooter.fireBullet(angle);
+            }
+        }
     }
     //Animation
     OpenFire(){
@@ -92,27 +111,11 @@ export default class Captain extends cc.Component {
         let angles1 = [0,15,-15,-30,30];
         let angles2 = [5,10,-10,-20,20];
         let angles3 = [-5,20,-20,-40,40];
-        let hv = this.dungeon.player.node.position.sub(this.node.position);
-        if (!hv.equals(cc.Vec2.ZERO)) {
-            hv = hv.normalizeSelf();
-            this.shooter.setHv(hv);
-            this.shooter.dungeon = this.dungeon;
-            for(let angle of angles1){
-                this.shooter.fireBullet(angle);
-            }
-            if(this.data.currentHealth<this.data.maxHealth/2){
-                setTimeout(()=>{
-                    for(let angle of angles2){
-                        this.shooter.fireBullet(angle);
-                    }
-                },100);
-                setTimeout(()=>{
-                    for(let angle of angles3){
-                        this.shooter.fireBullet(angle);
-                    }
-                },200);
-                
-            }
+        this.fireWithAngles(angles1);
+        if(this.data.currentHealth<this.data.maxHealth/2){
+            setTimeout(()=>{this.fireWithAngles(angles2);},100);
+            setTimeout(()=>{this.fireWithAngles(angles3);},200);
+            
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
