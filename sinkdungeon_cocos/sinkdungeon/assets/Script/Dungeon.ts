@@ -400,7 +400,7 @@ export default class Dungeon extends cc.Component {
         if (!this.bossIndex) {
             return;
         }
-        if(Logic.mapManger.currentRectRoom.roomType != RectDungeon.BOSS_ROOM){
+        if(Logic.mapManger.currentRectRoom.roomType == RectDungeon.BOSS_ROOM){
             this.addBossKraken();
         }else{
             this.addBossCaptain();
