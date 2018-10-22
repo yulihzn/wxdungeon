@@ -46,8 +46,8 @@ export default class MapManager {
         this.changeRoomsIsFound(this.currentRectRoom.x, this.currentRectRoom.y);
         this.boxes = {};
         this.shopTables = {};
-        let oillake:OilLake = new OilLake();
-        cc.log(oillake.getDisPlay());
+        // let oillake:OilLake = new OilLake();
+        // cc.log(oillake.getDisPlay());
     }
 
     loadingNextRoom(dir: number): RectRoom {

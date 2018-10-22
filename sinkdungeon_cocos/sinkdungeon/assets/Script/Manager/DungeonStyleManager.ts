@@ -28,6 +28,8 @@ export default class DungeonStyleManager extends cc.Component {
     @property(cc.Prefab)
     wallTopDecoration: cc.Prefab = null;
     @property(cc.Prefab)
+    wallBottomDecoration: cc.Prefab = null;
+    @property(cc.Prefab)
     wallLeftDecoration: cc.Prefab = null;
     @property(cc.Prefab)
     doorDecoration: cc.Prefab = null;
@@ -56,11 +58,11 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case 'chapter00': this.styleData = new DungeonStyleData(null, 'restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
-            case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
-            case 'chapter02': this.styleData = new DungeonStyleData('sea', 'junglewall', 'junglesides', 'jungledoor', null, null); break;
-            case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
-            case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', null, null); break;
+            case 'chapter00': this.styleData = new DungeonStyleData(null, 'restwall','restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
+            case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall','shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
+            case 'chapter02': this.styleData = new DungeonStyleData('sea', 'junglewall1','junglewall', 'junglesides', 'jungledoor', null, null); break;
+            case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall','pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
+            case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall','dungeonwall', 'dungeonsides', 'dungeondoor', null, null); break;
         }
         if(!this.styleData){
             return;
@@ -74,14 +76,14 @@ export default class DungeonStyleManager extends cc.Component {
             walltop.zIndex = 2500;
             walltop.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
 
-            let wallbottom = cc.instantiate(this.wallTopDecoration);
+            let wallbottom = cc.instantiate(this.wallBottomDecoration);
             wallbottom.parent = this.node;
             let posbottom = Dungeon.getPosInMap(cc.v2(i, -1));
             wallbottom.setScale(4, 2);
             wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
             wallbottom.zIndex = 2500;
             wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
-            wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
+            wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.bottomwall] : null;
             if (i == Math.floor(Dungeon.WIDTH_SIZE / 2)) {
                 this.doors[0] = cc.instantiate(this.doorDecoration);
                 this.doors[0].parent = this.node;

@@ -14,13 +14,14 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class OilLake {
-    static readonly WIDTH: number = 128;
-    static readonly HEIGHT: number = 128;
+    static readonly WIDTH: number = 64;
+    static readonly HEIGHT: number = 64;
     map: string[][] = new Array();
     constructor(){
         let threshold = .14, threshold2 = -.14;
         let x0 = 0, y0 = 0, dx = 20, dy = 20;
-        let perlin:PerlinNoise2D = new PerlinNoise2D(0.2,3);
+        let perlin:PerlinNoise2D = new PerlinNoise2D();
+        perlin.seed(Math.random())
         //噪声建立地形
 		dx = 20+this.getRandomNum(20);
 		dy = 20+this.getRandomNum(20);
@@ -32,10 +33,10 @@ export default class OilLake {
 		for(let i = 0;i < w;i++){
             this.map[i] = new Array();
 			for(let j = 0;j < h;j++){
-				this.map[i][j] = '-';
+				this.map[i][j] = '.';
 				let x = dx * i / w + x0,
                         y = dy * j / h + y0;
-                        let p = perlin.perlinNoise(x, y);
+                        let p = perlin.simplex2(x, y);
                 if (p > threshold){
                 	this.map[i][j] = 'Y';
                 }else if (p < threshold2){

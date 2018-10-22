@@ -41,7 +41,11 @@ export default class Item extends cc.Component {
             if(this.ammo != 0){
                 Logic.ammo+=this.ammo;
             }
-            setTimeout(()=>{this.node.active = false;},3000);
+            setTimeout(()=>{
+                if(this.node){
+                    this.node.active = false;
+                }
+            },3000);
         }
         
     }

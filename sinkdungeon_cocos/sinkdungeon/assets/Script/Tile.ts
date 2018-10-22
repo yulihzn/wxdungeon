@@ -40,12 +40,22 @@ export default class Tile extends cc.Component {
         switch(Logic.chapterName){
             case 'chapter00':this.changeRes('tile000');break;
             case 'chapter01':this.changeRes('tile001');break;
-            case 'chapter02':this.changeRes('tile002');break;
+            case 'chapter02':this.changeRes(this.getGrassRes());break;
             case 'chapter03':this.changeRes('tile003');break;
             case 'chapter04':this.changeRes('tile004');break;
         }
         // Logic.setAlias(this.node);
 
+    }
+    getGrassRes():string{
+       let r =  Logic.getRandomNum(0,2);
+       let s = 'tile_grass001';
+       switch(r){
+           case 0:s = 'tile_grass001';break;
+           case 1:s = 'tile_grass002';break;
+           case 2:s = 'tile_grass003';break;
+       }
+       return s;
     }
     //animation
     TileBreak(){

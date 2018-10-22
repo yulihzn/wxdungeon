@@ -219,6 +219,9 @@ export default class Player extends cc.Component {
         this.node.y = this.pos.y * 64 + 32;
     }
     transportPlayer(pos: cc.Vec2) {
+        if(!this.sprite){
+            return;
+        }
         this.sprite.rotation = 0;
         this.sprite.scale = 1;
         this.sprite.opacity = 255;
