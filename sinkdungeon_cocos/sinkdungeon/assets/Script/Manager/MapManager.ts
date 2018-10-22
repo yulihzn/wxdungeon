@@ -6,6 +6,7 @@ import Box from "../Building/Box";
 import BoxData from "../Data/BoxData";
 import EquipmentData from "../Data/EquipmentData";
 import ShopTableData from "../Data/ShopTableData";
+import OilLake from "../Oil/OilLake";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,6 +46,8 @@ export default class MapManager {
         this.changeRoomsIsFound(this.currentRectRoom.x, this.currentRectRoom.y);
         this.boxes = {};
         this.shopTables = {};
+        let oillake:OilLake = new OilLake();
+        cc.log(oillake.getDisPlay());
     }
 
     loadingNextRoom(dir: number): RectRoom {
