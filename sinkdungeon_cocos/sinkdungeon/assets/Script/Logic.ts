@@ -80,7 +80,7 @@ export default class Logic extends cc.Component {
         Logic.mapManger.reset(Logic.level);
         Logic.coins = 0;
         Logic.ammo = 30;
-        Logic.playerData.updateHA(cc.v2(999,999),1);
+        // Logic.playerData.updateHA(cc.v2(999,999),1);
     }
     static changeDungeonSize(){
         let mapData: string[][] = Logic.getCurrentMapData().map;

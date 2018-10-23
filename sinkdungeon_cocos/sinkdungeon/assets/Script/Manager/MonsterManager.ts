@@ -82,6 +82,7 @@ export default class MonsterManager extends cc.Component {
         captainPrefab.active = false;
         captainPrefab.parent = dungeon.node;
         let captain = captainPrefab.getComponent(Captain);
+        captain.dungeon = dungeon;
         let data = new MonsterData();
         data.updateHA(100,100,2);
         captain.data = data;

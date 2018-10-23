@@ -63,12 +63,20 @@ export default class Captain extends cc.Component {
         
     }
     //Animation
-    AttackStart(){
+    AttackDamageStart(){
         this.sword.isShow = true;
     }
     //Animation
-    AttackFinish(){
+    AttackDamageFinish(){
         this.sword.isShow = false;
+    }
+    //Animation
+    AttackStart(){
+        this.isAttacking = true;
+    }
+    //Animation
+    AttackFinish(){
+        this.isAttacking = false;
     }
     //Animation
     JumpStart(){
@@ -108,8 +116,8 @@ export default class Captain extends cc.Component {
         if(!this.dungeon || !this.shooter){
             return;
         }
-        let angles1 = [0,15,-15,-30,30];
-        let angles2 = [5,10,-10,-20,20];
+        let angles1 = [0,-30,30];
+        let angles2 = [5,10,-10];
         let angles3 = [-5,20,-20,-40,40];
         this.fireWithAngles(angles1);
         if(this.data.currentHealth<this.data.maxHealth/2){
@@ -145,6 +153,7 @@ export default class Captain extends cc.Component {
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
+            this.bossAction();
             this.JumpMove();
         }
         if (this.dungeon) {
@@ -171,19 +180,12 @@ export default class Captain extends cc.Component {
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
         }
-        let isPlayAttack = this.anim.getAnimationState("CaptainAttack").isPlaying;
-        if(!isPlayAttack){
-            this.anim.play('CaptainHit');
-        }
+        // if(!this.isAttacking){
+        // }
+        this.anim.play('CaptainHit');
+        this.isAttacking = false;
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
-        if(this.dungeon){
-            let pos = this.dungeon.player.pos;
-            if (pos.x > this.pos.x) {
-                this.anim.playAdditive('KrakenSwingRight');
-            } else if (pos.x < this.pos.x) {
-                this.anim.playAdditive('KrakenSwingLeft');
-            }
-        }
+        
     }
     killed() {
         if (this.isDied) {
@@ -202,17 +204,16 @@ export default class Captain extends cc.Component {
         }
 
     }
-    bossAction(dungeon: Dungeon) {
-        if (this.isDied) {
+    bossAction() {
+        if (this.isDied || !this.dungeon) {
             return;
         }
         this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.dungeon = dungeon;
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
-        let newPos = dungeon.player.pos.clone();
+        let newPos = this.dungeon.player.pos.clone();
         let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
-        let playerDis = this.getNearPlayerDistance(dungeon.player.node);
+        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
         let isPlayJump = this.anim.getAnimationState("CaptainJump").isPlaying;
         let isPlayFire = this.anim.getAnimationState("CaptainFire").isPlaying;
         let h = pos.x;
@@ -223,12 +224,12 @@ export default class Captain extends cc.Component {
         if(isPlayJump||isPlayFire){
             return;
         }
-        if (playerDis < 140 && !dungeon.player.isDied) {
-            if(!this.anim.getAnimationState("CaptainAttack").isPlaying ){
+        if (playerDis < 140 && !this.dungeon.player.isDied) {
+            if(!this.isAttacking){
                 this.anim.play("CaptainAttack");
             }
         }else{
-            let speed = 400;
+            let speed = 200;
             if(playerDis > 300){
                 if(Logic.getHalfChance()){
                     this.anim.play("CaptainJump");
@@ -242,7 +243,7 @@ export default class Captain extends cc.Component {
             //     speed = 50;
             //     this.anim.play("CaptainFire");
             // }
-            if (!pos.equals(cc.Vec2.ZERO)&&!isPlayJump) {
+            if (!pos.equals(cc.Vec2.ZERO)&&!isPlayJump && !this.isAttacking) {
                 pos = pos.normalizeSelf();
                 this.move(pos, speed);
             }

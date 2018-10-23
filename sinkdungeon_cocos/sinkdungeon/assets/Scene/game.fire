@@ -50,8 +50,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.46256534353945983,
-      "y": 0.46256534353945983,
+      "x": 0.4722222222222222,
+      "y": 0.4722222222222222,
       "z": 1
     },
     "_quat": {
@@ -1997,8 +1997,6 @@
     "auto": false,
     "isAI": false,
     "frequency": 1,
-    "dungeon": null,
-    "player": null,
     "_id": "b8Up6wPc5CLIr92GVvA0Wi"
   },
   {

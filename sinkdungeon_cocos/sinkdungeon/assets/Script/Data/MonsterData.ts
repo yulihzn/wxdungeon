@@ -23,6 +23,7 @@ export default class MonsterData{
     melee:number=0;//是否近战 近战会接近目标
     dash:number=0;//是否冲刺 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击
     remoterate:number=0;//远程攻击概率0-100
+    meleerate:number=0;//近战攻击概率0-100
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
@@ -46,6 +47,7 @@ export default class MonsterData{
         this.dash = data.dash;
         this.pos = data.pos;
         this.remoterate = data.remoterate;
+        this.meleerate = data.meleerate;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -64,6 +66,7 @@ export default class MonsterData{
         e.dash = this.dash;
         e.pos = this.pos;
         e.remoterate = this.remoterate;
+        e.meleerate = this.meleerate;
         return e;
     }
 }

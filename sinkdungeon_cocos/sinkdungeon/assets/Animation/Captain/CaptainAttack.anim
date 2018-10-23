@@ -161,12 +161,22 @@
   },
   "events": [
     {
-      "frame": 0.3333333333333333,
+      "frame": 0,
       "func": "AttackStart",
       "params": []
     },
     {
+      "frame": 0.3333333333333333,
+      "func": "AttackDamageStart",
+      "params": []
+    },
+    {
       "frame": 0.5833333333333334,
+      "func": "AttackDamageFinish",
+      "params": []
+    },
+    {
+      "frame": 0.6666666666666666,
       "func": "AttackFinish",
       "params": []
     }

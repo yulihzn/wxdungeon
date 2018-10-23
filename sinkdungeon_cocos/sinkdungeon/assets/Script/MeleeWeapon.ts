@@ -194,7 +194,9 @@ export default class MeleeWeapon extends cc.Component {
         let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied) {
             damageSuccess = monster.takeDamage(damage);
-            this.beatBack(monster.node);
+            if(damageSuccess){
+                this.beatBack(monster.node);
+            }
         }
 
         let kraken = attackTarget.node.getComponent(Kraken);
@@ -213,7 +215,7 @@ export default class MeleeWeapon extends cc.Component {
         }
         //生命汲取
         let drain = this.player.inventoryData.getLifeDrain();
-        if (drain > 0) {
+        if (drain > 0 && damageSuccess) {
             this.player.takeDamage(-drain);
         }
     }

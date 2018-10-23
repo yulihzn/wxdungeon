@@ -90,11 +90,11 @@ export default class Monster extends cc.Component {
             pos = cc.v2(1, 0);
         }
         pos = pos.normalizeSelf().mul(32);
-        let action = cc.sequence(cc.moveBy(0.1, -pos.x / 2, -pos.y / 2), cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
+        let action = cc.sequence(cc.moveBy(0.2, -pos.x / 2, -pos.y / 2), cc.moveBy(0.2, pos.x, pos.y), cc.callFunc(() => {
             this.isAttacking = false;
             this.anim.resume();
             if (finish) { finish(this.data.attackPoint); }
-        }), cc.moveTo(0.1, 0, 0));
+        }), cc.moveTo(0.2, 0, 0));
         this.sprite.runAction(action);
     }
     getNearPlayerDistance(playerNode: cc.Node): number {
@@ -164,7 +164,7 @@ export default class Monster extends cc.Component {
         this.anim.play('PlayerFall');
     }
     takeDamage(damage: number):boolean {
-        if(this.data.invisible && this.sprite.opacity<128 && Logic.getHalfChance()){
+        if(this.data.invisible && this.sprite.opacity<200 && Logic.getHalfChance()){
             return false;
         }
         this.isHurt = true;
@@ -238,7 +238,7 @@ export default class Monster extends cc.Component {
         }
         //冲刺
         let speed = this.data.movespeed;
-        if (playerDis < 600 && playerDis > 200 && !this.dungeon.player.isDied && this.data.dash == 1 && !this.isDashing) {
+        if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && this.data.dash == 1 && !this.isDashing) {
             pos = this.dungeon.player.node.position.sub(this.node.position);
             this.move(pos, speed*2);
             this.isDashing = true;

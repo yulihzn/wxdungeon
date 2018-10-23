@@ -28,9 +28,7 @@ export default class Shooter extends cc.Component {
     isAI: boolean = false;
     @property
     frequency: number = 1;
-    @property(Dungeon)
     dungeon: Dungeon = null;
-    @property(Player)
     player: Player = null;
     
     private bulletPool: cc.NodePool;

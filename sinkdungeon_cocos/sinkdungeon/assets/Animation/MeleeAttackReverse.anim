@@ -74,6 +74,12 @@
               "frame": 0,
               "value": 0
             }
+          ],
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 4
+            }
           ]
         }
       }

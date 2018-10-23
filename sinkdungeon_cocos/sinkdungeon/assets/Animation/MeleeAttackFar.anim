@@ -66,13 +66,19 @@
           "scaleY": [
             {
               "frame": 0,
-              "value": 4
+              "value": 5
             }
           ],
           "x": [
             {
               "frame": 0,
               "value": 50
+            }
+          ],
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 5
             }
           ]
         }
@@ -107,7 +113,7 @@
             "frame": 0.25,
             "value": {
               "__type__": "cc.Vec2",
-              "x": 100,
+              "x": 150,
               "y": 0
             }
           }

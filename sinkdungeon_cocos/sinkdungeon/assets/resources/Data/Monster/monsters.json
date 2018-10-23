@@ -13,6 +13,7 @@
         "remote":0,
         "remoterate":0,
         "melee":0,
+        "meleerate":0,
         "dash":1
     },
     "monster001":{
@@ -29,6 +30,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
+        "meleerate":20,
         "dash":1
     },
     "monster002":{
@@ -37,15 +39,16 @@
         "resName":"monster002",
         "chapter":0,
         "stageLevel":0,
-        "movespeed":200,
+        "movespeed":100,
         "maxHealth":5,
         "currentHealth":5,
         "attackPoint":3,
         "invisible":0,
         "remote":0,
         "remoterate":0,
-        "melee":0,
-        "dash":0
+        "melee":1,
+        "meleerate":40,
+        "dash":1
     },
     "monster003":{
         "nameCn":"阿努比斯",
@@ -61,6 +64,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
+        "meleerate":20,
         "dash":0
     },
     "monster004":{
@@ -77,6 +81,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
+        "meleerate":20,
         "dash":0
     },
     "monster005":{
@@ -93,6 +98,7 @@
         "remote":0,
         "remoterate":0,
         "melee":0,
+        "meleerate":0,
         "dash":1
     },
     "monster006":{
@@ -109,6 +115,7 @@
         "remote":1,
         "remoterate":30,
         "melee":0,
+        "meleerate":0,
         "dash":0
     },
     "monster007":{
@@ -125,6 +132,7 @@
         "remote":1,
         "remoterate":50,
         "melee":1,
+        "meleerate":20,
         "dash":0
     },
     "monster008":{
@@ -141,6 +149,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
+        "meleerate":30,
         "dash":1
     }
 }
