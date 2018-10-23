@@ -52,6 +52,7 @@ export default class Player extends cc.Component {
     trousersSprite: cc.Sprite = null;
     glovesSprite: cc.Sprite = null;
     shoesSprite: cc.Sprite = null;
+    cloakSprite: cc.Sprite = null;
     isMoving = false;
     isAttacking = false;
     private sprite: cc.Node;
@@ -109,6 +110,7 @@ export default class Player extends cc.Component {
             .getChildByName('gloves').getComponent(cc.Sprite);
         this.shoesSprite = this.sprite.getChildByName('body')
             .getChildByName('shoes').getComponent(cc.Sprite);
+        this.cloakSprite = this.sprite.getChildByName('cloak').getComponent(cc.Sprite);
 
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
             , (event) => { this.changeItem(event.detail.spriteFrame) });
@@ -207,6 +209,10 @@ export default class Player extends cc.Component {
             case 'shoes': this.shoesSprite.spriteFrame = spriteFrame;
                 let color6 = cc.color(255, 255, 255).fromHEX(this.inventoryData.shoes.color);
                 this.shoesSprite.node.color = color6;
+                break;
+            case 'cloak': this.cloakSprite.spriteFrame = spriteFrame;
+                let color7 = cc.color(255, 255, 255).fromHEX(this.inventoryData.cloak.color);
+                this.cloakSprite.node.color = color7;
                 break;
         }
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);

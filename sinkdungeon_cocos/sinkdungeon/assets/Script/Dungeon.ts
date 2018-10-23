@@ -595,9 +595,6 @@ export default class Dungeon extends cc.Component {
             if(this.bossKraken){
                 this.bossKraken.bossAction(this);
             }
-            if(this.bossCaptain){
-                this.bossCaptain.bossAction(this);
-            }
         }
     }
 }

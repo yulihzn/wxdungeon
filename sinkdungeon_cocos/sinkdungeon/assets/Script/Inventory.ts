@@ -36,6 +36,8 @@ export default class NewClass extends cc.Component {
     gloves:cc.Sprite = null;
     @property(cc.Sprite)
     shoes:cc.Sprite = null;
+    @property(cc.Sprite)
+    cloak:cc.Sprite = null;
 
     @property(EquipmentDialog)
     equipmentDialog:EquipmentDialog = null;
@@ -59,19 +61,21 @@ export default class NewClass extends cc.Component {
         this.trousers.spriteFrame = null;
         this.gloves.spriteFrame = null;
         this.shoes.spriteFrame = null;
+        this.cloak.spriteFrame = null;
         this.addSpriteTouchEvent(this.weapon,'weapon');
         this.addSpriteTouchEvent(this.helmet,'helmet');
         this.addSpriteTouchEvent(this.clothes,'clothes');
         this.addSpriteTouchEvent(this.trousers,'trousers');
         this.addSpriteTouchEvent(this.gloves,'gloves');
         this.addSpriteTouchEvent(this.shoes,'shoes');
+        this.addSpriteTouchEvent(this.weapon,'cloak');
         this.refreshEquipment(this.inventoryData.weapon,false);
         this.refreshEquipment(this.inventoryData.helmet,false);
         this.refreshEquipment(this.inventoryData.clothes,false);
         this.refreshEquipment(this.inventoryData.trousers,false);
         this.refreshEquipment(this.inventoryData.gloves,false);
         this.refreshEquipment(this.inventoryData.shoes,false);
-        
+        this.refreshEquipment(this.inventoryData.cloak,false);
     }
     addSpriteTouchEvent(sprite:cc.Sprite,equipmetType:string){
         sprite.node.on(cc.Node.EventType.TOUCH_START,()=>{
@@ -86,6 +90,7 @@ export default class NewClass extends cc.Component {
                 case 'trousers':equipData = this.inventoryData.trousers;break;
                 case 'gloves':equipData = this.inventoryData.gloves;break;
                 case 'shoes':equipData = this.inventoryData.shoes;break;
+                case 'cloak':equipData = this.inventoryData.cloak;break;
             }
             this.equipmentDialog.refreshDialog(equipData)
             this.equipmentDialog.showDialog();
@@ -155,6 +160,11 @@ export default class NewClass extends cc.Component {
             this.shoes.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.shoes,isChange);
             this.inventoryData.shoes.valueCopy(equipmentDataNew);
+            break;
+            case 'cloak':this.shoes.spriteFrame = spriteFrame;
+            this.cloak.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryData.cloak,isChange);
+            this.inventoryData.cloak.valueCopy(equipmentDataNew);
             break;
         }
         if(this.player){

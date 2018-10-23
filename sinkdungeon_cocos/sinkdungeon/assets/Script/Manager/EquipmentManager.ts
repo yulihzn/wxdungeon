@@ -35,13 +35,14 @@ export default class EquipmentManager extends cc.Component {
     public static readonly HELMET_PIRATEHAT = "helmet003";
     public static readonly HELMET_REDHAT = "helmet004";
     public static readonly HELMET_WHITEHAT = "helmet005";
+    public static readonly CLOAK_WARRIOR = "cloak001";
     public static readonly equipments:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.WEAPON_CHOPPER,
         EquipmentManager.WEAPON_HUGEBLADE,EquipmentManager.CLOTHES_SHIRT
         ,EquipmentManager.CLOTHES_VEST,EquipmentManager.CLOTHES_NAVY,EquipmentManager.CLOTHES_PIRATE,
         EquipmentManager.CLOTHES_BUCKET,EquipmentManager.CLOTHES_REDROBE,
         EquipmentManager.CLOTHES_WHITEROBE,EquipmentManager.HELMET_BUCKETHAT,
         EquipmentManager.HELMET_PIRATEHAT,EquipmentManager.HELMET_REDHAT,
-        EquipmentManager.HELMET_WHITEHAT,EquipmentManager.WEAPON_PITCHFORK];
+        EquipmentManager.HELMET_WHITEHAT,EquipmentManager.WEAPON_PITCHFORK,EquipmentManager.CLOAK_WARRIOR];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红

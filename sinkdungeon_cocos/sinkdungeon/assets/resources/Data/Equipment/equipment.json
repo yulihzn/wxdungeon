@@ -325,5 +325,25 @@
         "dodge": 10,
         "health": 1,
         "desc": "you are not Gandalf"
+    },
+    "cloak001": {
+        "nameCn": "战袍",
+        "nameEn": "Warrior Cloak",
+        "equipmetType": "cloak",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "cloak001",
+        "damageMin": 0,
+        "damageMax": 0,
+        "criticalStrikeRate": 0,
+        "defence": 1,
+        "lifeDrain": 0,
+        "lifeRecovery": 0,
+        "moveSpeed": 100,
+        "attackSpeed": 0,
+        "dodge": 0,
+        "health": 0,
+        "desc": "Warrior needs a cloak"
     }
 }
