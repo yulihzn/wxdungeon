@@ -381,7 +381,7 @@ export default class Dungeon extends cc.Component {
     }
     /**添加怪物 */
     addMonsterFromData(resName: string, i: number, j: number) {
-        this.addMonster(this.monsterManager.getMonster(resName, this.node)
+        this.addMonster(this.monsterManager.getMonster(resName, this)
             , cc.v2(i, j));
     }
 
@@ -493,7 +493,6 @@ export default class Dungeon extends cc.Component {
             if (monster.isDied) {
                 count++;
             }
-            monster.monsterAction(this);
         }
         isClear = count >= this.monsters.length;
         if (this.bossKraken && !this.bossKraken.isDied) {
@@ -589,7 +588,7 @@ export default class Dungeon extends cc.Component {
     update(dt) {
         if (this.isTimeDelay(dt)) {
             this.checkPlayerPos(dt);
-            this.checkMonstersPos();
+            // this.checkMonstersPos();
         }
         if (this.isNpcTimeDelay(dt)) {
             this.monstersAction();

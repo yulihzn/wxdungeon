@@ -253,7 +253,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "5fQliX6v1DBYJrGzZJTHrO"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -282,7 +282,7 @@
     "frequency": 1,
     "dungeon": null,
     "player": null,
-    "_id": "57ipRGsX1Dj5qzcH0Iq9yL"
+    "_id": ""
   },
   {
     "__type__": "cc.Animation",
@@ -301,7 +301,7 @@
       }
     ],
     "playOnLoad": false,
-    "_id": "04URDfCK5MR6FlE3VvFSri"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -482,7 +482,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "fbTCpbcBpHPJeLHrvXr9m2"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -584,7 +584,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "15/DrlBTtIP7WWM5gKL7Y8"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -685,7 +685,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
-    "_id": "18iUiHrYlBCa+S5oExOBJo"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -724,7 +724,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "afmAnMNI1BTKbFDhLl7k/X"
+    "_id": ""
   },
   {
     "__type__": "cc.ProgressBar",
@@ -741,7 +741,7 @@
     "_N$mode": 0,
     "_N$progress": 0.9,
     "_N$reverse": false,
-    "_id": "35aXA/7tFL24QB25xz9OsE"
+    "_id": ""
   },
   {
     "__type__": "4298eVZsIJFhKykTJYXRBP0",
@@ -757,7 +757,7 @@
     "label": {
       "__id__": 17
     },
-    "_id": "f5ViVbKClPFbzf2DpkM18w"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -931,7 +931,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "26jEPrjxpN14G+zkHliAh4"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1033,7 +1033,7 @@
     "_isTrimmedMode": false,
     "_state": 0,
     "_atlas": null,
-    "_id": "44bkNbX21P5bxrAe14rIQ9"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1196,7 +1196,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "82RRG1PohPJJy81OGCONnv"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1370,7 +1370,7 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
-    "_id": "74LpO/KE5NmqDNzjRoeNOV"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1491,7 +1491,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
-    "_id": "c2NzVQRmREhr1hEyYrVApK"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1530,7 +1530,7 @@
       }
     ],
     "playOnLoad": true,
-    "_id": "79hiRDwMlJK7LWaAlHJDDE"
+    "_id": ""
   },
   {
     "__type__": "cc.BoxCollider",
@@ -1551,7 +1551,7 @@
       "width": 32,
       "height": 64
     },
-    "_id": "b1yMBignNCE4Fxk4z3US71"
+    "_id": ""
   },
   {
     "__type__": "b7513vXKLpHGrSf+utaohLs",
@@ -1570,7 +1570,7 @@
     "healthBar": {
       "__id__": 21
     },
-    "_id": "b18FHvlwtNaJzh8A6vz9Ov"
+    "_id": ""
   },
   {
     "__type__": "cc.RigidBody",
@@ -1594,7 +1594,7 @@
     "_fixedRotation": true,
     "enabledContactListener": true,
     "bullet": false,
-    "_id": "fbvlZJng5LOYZJwOMRhNaz"
+    "_id": ""
   },
   {
     "__type__": "cc.PhysicsBoxCollider",
@@ -1620,7 +1620,7 @@
       "width": 32,
       "height": 32
     },
-    "_id": "7fcNWWxapFQLymv9YdNkoA"
+    "_id": ""
   },
   {
     "__type__": "cc.PrefabInfo",

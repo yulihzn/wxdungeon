@@ -80,10 +80,11 @@
         "attackSpeed": 0,
         "dodge": 0,
         "health": 0,
-        "desc": "It's awesome!'"
+        "desc": "It's awesome!'",
+        "far":1
     },
     "weapon004": {
-        "nameCn": "叉子",
+        "nameCn": "粪叉",
         "nameEn": "Pitchfork",
         "equipmetType": "weapon",
         "equipmetTypeCn": "",
@@ -102,7 +103,8 @@
         "stab": 1,
         "dodge": 0,
         "health": 0,
-        "desc": "stab!!!"
+        "desc": "stab!!!",
+        "far":1
     },
     "helmet002": {
         "nameCn": "渔夫帽",

@@ -3,6 +3,7 @@ import MonsterData from "../Data/MonsterData";
 import Kraken from "../Boss/Kraken";
 import Dungeon from "../Dungeon";
 import Captain from "../Boss/Captain";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,10 +19,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class MonsterManager extends cc.Component {
-    static readonly TYPE_COMBAT = 0;//近战
-    static readonly TYPE_REMOTE = 1;//远程
-    static readonly TYPE_DASH = 2;//冲刺
-    static readonly TYPE_BOSS = 3;//Boss
+    public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN';
     public static readonly MONSTER_SLIME = 'monster000';
     public static readonly MONSTER_GOBLIN = 'monster001';
 	public static readonly MONSTER_MUMMY = 'monster002';
@@ -31,9 +29,6 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_OCTOPUS = 'monster006';
     public static readonly MONSTER_KILLER = 'monster007';
     public static readonly MONSTER_STRONGSAILOR = 'monster008';
-    
-    public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN';
-
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -53,24 +48,15 @@ export default class MonsterManager extends cc.Component {
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    getMonster(resName:string,parent:cc.Node):Monster{
+    getMonster(resName:string,dungeon:Dungeon):Monster{
         let monsterPrefab:cc.Node = null;
         monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;
-        monsterPrefab.parent = parent;
+        monsterPrefab.parent = dungeon.node;
         let monster = monsterPrefab.getComponent(Monster);
+        monster.dungeon = dungeon;
         let data = new MonsterData();
-        switch (resName) {
-            case MonsterManager.MONSTER_SLIME: data.updateHAT(5,5,1,MonsterManager.TYPE_DASH); break;
-			case MonsterManager.MONSTER_GOBLIN: data.updateHAT(2,2,1,MonsterManager.TYPE_COMBAT); break;
-			case MonsterManager.MONSTER_MUMMY: data.updateHAT(2,2,2,MonsterManager.TYPE_COMBAT); break;
-            case MonsterManager.MONSTER_ANUBIS: data.updateHAT(10,10,3,MonsterManager.TYPE_DASH); break;
-            case MonsterManager.MONSTER_PIRATE: data.updateHAT(5,5,2,MonsterManager.TYPE_COMBAT); break;
-            case MonsterManager.MONSTER_SAILOR: data.updateHAT(2,2,1,MonsterManager.TYPE_COMBAT); break;
-            case MonsterManager.MONSTER_STRONGSAILOR: data.updateHAT(10,10,1,MonsterManager.TYPE_COMBAT); break;
-            case MonsterManager.MONSTER_OCTOPUS: data.updateHAT(10,10,2,MonsterManager.TYPE_REMOTE); break;
-            case MonsterManager.MONSTER_KILLER: data.updateHAT(5,5,2,MonsterManager.TYPE_REMOTE); break;
-        }
+        data.valueCopy(Logic.monsters[resName]);
         monster.changeBodyRes(resName);
         monster.data = data;
         return monster;
@@ -83,7 +69,7 @@ export default class MonsterManager extends cc.Component {
         krakenPrefab.parent = dungeon.node;
         let kraken = krakenPrefab.getComponent(Kraken);
         let data = new MonsterData();
-        data.updateHAT(200,200,2,MonsterManager.TYPE_BOSS);
+        data.updateHA(200,200,2);
         kraken.data = data;
         kraken.transportPlayer(posIndex.x,posIndex.y);
         kraken.healthBar = dungeon.bossHealthBar;
@@ -97,7 +83,7 @@ export default class MonsterManager extends cc.Component {
         captainPrefab.parent = dungeon.node;
         let captain = captainPrefab.getComponent(Captain);
         let data = new MonsterData();
-        data.updateHAT(100,100,2,MonsterManager.TYPE_BOSS);
+        data.updateHA(100,100,2);
         captain.data = data;
         captain.transportPlayer(posIndex.x,posIndex.y);
         captain.healthBar = dungeon.bossHealthBar;

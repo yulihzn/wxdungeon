@@ -172,7 +172,7 @@ export default class Player extends cc.Component {
         switch (equipData.equipmetType) {
             case 'weapon':
                 this.meleeWeapon.isStab = equipData.stab == 1;
-                this.meleeWeapon.isFist = false;
+                this.meleeWeapon.isFar = equipData.far == 1;
                 if (equipData.stab == 1) {
                     this.weaponSprite.spriteFrame = null;
                     this.weaponStabSprite.spriteFrame = spriteFrame;
@@ -245,7 +245,9 @@ export default class Player extends cc.Component {
             pos = cc.v2(1, 0);
         }
         pos = pos.normalizeSelf().mul(5);
-        let speed = this.inventoryData.getAttackSpeed();
+        let speed = 300 - this.inventoryData.getAttackSpeed();
+        if(speed < 0){speed = 0}
+        if(speed > 3000){speed = 3000}
         let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
             setTimeout(() => {
                  this.sprite.position = cc.v2(0, 0);
@@ -253,15 +255,8 @@ export default class Player extends cc.Component {
                  }, speed);
         }, this));
         this.sprite.runAction(action);
-        this.meleeWeapon.attack();
-        // if (this.isAttacking || this.isDied) {
-        //     return;
-        // }
-        // this.isAttacking = true;
-        // if (this.anim) {
-        //     let animState = this.anim.play('PlayerMeleeAttack');
-        //     animState.speed = this.inventoryData.getAttackSpeed();
-        // }
+        this.meleeWeapon.attack(this.inventoryData.getAttackSpeed());
+        
     }
     remoteRate = 0;
     remoteAttack() {

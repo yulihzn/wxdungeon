@@ -37,8 +37,8 @@ export default class MeleeWeapon extends cc.Component {
     private anim: cc.Animation;
     isAttacking: boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);
-    isStab = true;
-    isFist = true;
+    isStab = true;//刺
+    isFar = false;//近程
     dungeon: Dungeon;
 
     onLoad() {
@@ -60,27 +60,36 @@ export default class MeleeWeapon extends cc.Component {
         return this.hv;
     }
 
-    attack() {
+    attack(speed:number) {
         if (this.isAttacking) {
             return;
         }
         this.isAttacking = true;
+        let animSpeed = 1+speed/1000;
+        if(animSpeed<0.2){
+            animSpeed = 0.2;
+        }
+        if(animSpeed > 3){
+            animSpeed = 3;
+        }
         if (this.anim) {
-            if(this.isFist){
-                // this.stabWeapon.node.active = true;
-                // this.waveWeapon.node.active = false;
-                this.anim.play("MeleeAttackStab");
-            }else if(this.isStab){
-                // this.stabWeapon.node.active = true;
-                // this.waveWeapon.node.active = false;
-                this.anim.play("MeleeAttackStabFar");
-            }else{
-                // this.stabWeapon.node.active = false;
-                // this.waveWeapon.node.active = true;
-                this.isReverse ? this.anim.play("MeleeAttackReverse") : this.anim.play("MeleeAttack");
-            }
+            this.anim.play(this.getAttackAnimName());
+            this.anim.getAnimationState(this.getAttackAnimName()).speed = animSpeed;
         }
 
+    }
+    private getAttackAnimName():string{
+        let name = "MeleeAttackStab";
+        if(!this.isFar && this.isStab){
+            name = "MeleeAttackStab";
+        }else if(this.isFar && this.isStab){
+            name = "MeleeAttackStabFar";
+        }else if(this.isFar && !this.isStab){
+            this.isReverse ? name= "MeleeAttackFarReverse" : name= "MeleeAttackFar";
+        }else{
+            this.isReverse ? name= "MeleeAttackReverse" : name= "MeleeAttack";
+        }
+        return name;
     }
     //Anim
     MeleeAttackFinish(reverse: boolean) {
@@ -157,11 +166,14 @@ export default class MeleeWeapon extends cc.Component {
             pos = cc.v2(1, 0);
         }
         let power = 640;
-        if(this.isStab){
-            power = 960;
-        }
-        if(this.isFist){
+        if(!this.isFar && this.isStab){
             power = 320;
+        }else if(this.isFar && this.isStab){
+            power = 960;
+        }else if(!this.isFar && !this.isStab){
+            power = 640;
+        }else{
+            power = 640;
         }
         pos = pos.normalizeSelf().mul(640);
         let action = cc.moveBy(0.1, pos.x, pos.y);
@@ -178,29 +190,31 @@ export default class MeleeWeapon extends cc.Component {
         if (this.player) {
             damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
         }
-
+        let damageSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied) {
-            monster.takeDamage(damage);
+            damageSuccess = monster.takeDamage(damage);
             this.beatBack(monster.node);
-            //生命汲取
-            let drain = this.player.inventoryData.getLifeDrain(this.player.baseAttackPoint);
-            if (drain > 0) {
-                this.player.takeDamage(-drain);
-            }
         }
 
         let kraken = attackTarget.node.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
             kraken.takeDamage(damage);
+            damageSuccess = true;
         }
         let captain = attackTarget.node.getComponent(Captain);
         if (captain && !captain.isDied) {
             captain.takeDamage(damage);
+            damageSuccess = true;
         }
         let box = attackTarget.node.getComponent(Box);
         if(box){
             box.breakBox();
+        }
+        //生命汲取
+        let drain = this.player.inventoryData.getLifeDrain();
+        if (drain > 0) {
+            this.player.takeDamage(-drain);
         }
     }
 }

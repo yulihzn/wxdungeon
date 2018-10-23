@@ -31,6 +31,7 @@ export default class EquipmentData{
     img:string = 'emptyequipment';
     level:number = 0;
     stab = 0;//是否突刺
+    far = 0; //是否远距离
     isLocked = 0;//是否锁定
     public valueCopy(data:EquipmentData):void{
         this.nameCn = data.nameCn?data.nameCn:this.nameCn;
@@ -53,6 +54,7 @@ export default class EquipmentData{
         this.titlecolor = data.titlecolor;
         this.img = data.img;
         this.stab = data.stab;
+        this.far = data.far;
         this.isLocked = data.isLocked;
         this.level = data.level;
     }
@@ -78,6 +80,7 @@ export default class EquipmentData{
         e.titlecolor = this.titlecolor;
         e.img = this.img;
         e.stab = this.stab;
+        e.far = this.far;
         e.isLocked = this.isLocked;
         e.level = this.level;
         return e;

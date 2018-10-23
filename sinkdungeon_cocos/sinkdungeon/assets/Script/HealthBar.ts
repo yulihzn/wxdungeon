@@ -43,7 +43,7 @@ export default class HealthBar extends cc.Component {
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
         }
-        this.backbar.width = this.lerp(this.backbar.width,this.progressBar.barSprite.node.width,dt*3);
+        this.backbar.width = this.lerp(this.backbar.width,this.progressBar.barSprite.node.width,dt*5);
     }
     lerp(a, b, r) {
         return a + (b - a) * r;

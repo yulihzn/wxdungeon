@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MeleeAttack",
+  "_name": "MeleeAttackFar",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.25,
@@ -72,7 +72,7 @@
           "x": [
             {
               "frame": 0,
-              "value": 0
+              "value": 50
             }
           ]
         }
@@ -87,7 +87,7 @@
           },
           {
             "frame": 0.16666666666666666,
-            "value": 70
+            "value": 100
           },
           {
             "frame": 0.25,

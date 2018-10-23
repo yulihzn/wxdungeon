@@ -38,7 +38,8 @@ export default class Monster extends cc.Component {
     data: MonsterData = new MonsterData();
     dungeon: Dungeon;
     shooter: Shooter = null;
-    isHurt = false;
+    isHurt = false;//是否受到伤害
+    isDashing = false;//是否正在冲刺
 
     onLoad() {
         this.isAttacking = false;
@@ -102,10 +103,13 @@ export default class Monster extends cc.Component {
     }
 
     move(pos: cc.Vec2, speed: number) {
-        if (this.isDied || this.isFall || this.isHurt) {
-            this.isHurt = false;
+        if (this.isDied || this.isFall || this.isHurt || this.isDashing) {
             return;
         }
+        if (pos.equals(cc.Vec2.ZERO)) {
+            return;
+        }
+        pos = pos.normalizeSelf();
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
@@ -159,13 +163,20 @@ export default class Monster extends cc.Component {
         collider.sensor = true;
         this.anim.play('PlayerFall');
     }
-    takeDamage(damage: number) {
+    takeDamage(damage: number):boolean {
+        if(this.data.invisible && this.sprite.opacity<128 && Logic.getHalfChance()){
+            return false;
+        }
         this.isHurt = true;
+        //1s后修改受伤
+        setTimeout(() => { if (this.node) { this.isHurt = false; } }, 1000);
+        this.sprite.opacity = 255;
         this.data.currentHealth -= damage;
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        return true;
     }
     killed() {
         if (this.isDied) {
@@ -187,61 +198,60 @@ export default class Monster extends cc.Component {
 
     }
 
-    monsterAction(dungeon: Dungeon) {
-        if (this.isDied) {
+    monsterAction() {
+        if (this.isDied || !this.dungeon || this.isHurt) {
             return;
         }
         this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.dungeon = dungeon;
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
-        let dir = this.getMonsterBestDir(this.pos, dungeon);
-        let newPos = cc.v2(this.pos.x, this.pos.y);
-        switch (dir) {
-            case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
-            case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
-            case 2: if (newPos.x - 1 >= 0) { newPos.x--; } break;
-            case 3: if (newPos.x + 1 < 15) { newPos.x++; } break;
-        }
-        let playerDis = this.getNearPlayerDistance(dungeon.player.node);
-        if (playerDis < 64 && !dungeon.player.isDied) {
-            let pos = dungeon.player.node.position.sub(this.node.position);
+        let newPos = cc.v2(0,0);
+        newPos.x+=Logic.getRandomNum(0,200)-100;
+        newPos.y+=Logic.getRandomNum(0,200)-100;
+        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
+        let pos = newPos.clone();
+        
+        //近战
+        if (playerDis < 64 && !this.dungeon.player.isDied && this.data.melee == 1 && !this.isDashing) {
+            pos = this.dungeon.player.node.position.sub(this.node.position);
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
             }
             this.meleeAttack(pos, (damage: number) => {
-                let newdis = this.getNearPlayerDistance(dungeon.player.node);
-                if (newdis < 64) { dungeon.player.takeDamage(damage); }
+                let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
+                if (newdis < 64) { this.dungeon.player.takeDamage(damage); }
             });
-        } else {
-            let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
-            let speed = 400;
-            if (playerDis < 400) {
-                pos = dungeon.player.node.position.sub(this.node.position);
-                if (this.data.monsterType == MonsterManager.TYPE_DASH) {
-                    speed = 800;
-                }
-            }
-            if (this.data.monsterType == MonsterManager.TYPE_REMOTE && Logic.getHalfChance()) {
-                speed = 200;
-                if (playerDis < 600 && this.shooter) {
-                    let hv = dungeon.player.node.position.sub(this.node.position);
-                    if (!hv.equals(cc.Vec2.ZERO)) {
-                        hv = hv.normalizeSelf();
-                        this.shooter.setHv(hv);
-                        this.shooter.dungeon = dungeon;
-                        this.shooter.fireBullet();
-                    }
-                }
-            }
-
-            if (!pos.equals(cc.Vec2.ZERO)) {
-                pos = pos.normalizeSelf();
-                this.move(pos, speed);
-            }
+            this.sprite.opacity = 255;
         }
+        if(this.data.melee == 1){
+            pos = this.dungeon.player.node.position.sub(this.node.position);
+        }
+        //远程
+        if ( playerDis < 600 && this.data.remote == 1 && Logic.getRandomNum(0,100) < this.data.remoterate  && this.shooter) {
+            let hv = this.dungeon.player.node.position.sub(this.node.position);
+                if (!hv.equals(cc.Vec2.ZERO)) {
+                    hv = hv.normalizeSelf();
+                    this.shooter.setHv(hv);
+                    this.shooter.dungeon = this.dungeon;
+                    this.shooter.fireBullet();
+                }
+        }
+        //冲刺
+        let speed = this.data.movespeed;
+        if (playerDis < 600 && playerDis > 200 && !this.dungeon.player.isDied && this.data.dash == 1 && !this.isDashing) {
+            pos = this.dungeon.player.node.position.sub(this.node.position);
+            this.move(pos, speed*2);
+            this.isDashing = true;
+            setTimeout(() => { if (this.node) { this.isDashing = false; } }, 2000);
+        }
+        
+
+        this.move(pos, speed);
 
     }
+    lerp(a, b, r) {
+        return a + (b - a) * r;
+    };
     getPosDir(oldPos: cc.Vec2, newPos: cc.Vec2): number {
         let dir = 4;
         if (newPos.x == oldPos.x) {
@@ -303,13 +313,14 @@ export default class Monster extends cc.Component {
         }
         for (let i = 0; i < goodArr.length; i++) {
             let newPos = goodArr[i];
-            if (newPos.equals(dungeon.player.pos)) {
-                bestPos = newPos;
-                break;
-            }
+            // if (newPos.equals(dungeon.player.pos)) {
+            //     bestPos = newPos;
+            //     break;
+            // }
             let tile = dungeon.map[newPos.x][newPos.y];
             if (!tile.isBreakingNow) {
                 bestPos = newPos;
+                break;
             }
 
         }
@@ -321,13 +332,22 @@ export default class Monster extends cc.Component {
 
     update(dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 1) {
+        if (this.timeDelay > 0.2) {
             this.timeDelay = 0;
+            this.monsterAction();
+        }
+        //隐匿
+        if(this.data.invisible==1 && this.sprite.opacity != 0){
+            this.sprite.opacity = this.lerp(this.sprite.opacity,0,dt*3);
         }
         if (this.dungeon) {
             let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
             if (playerDis < 64 && !this.isHurt) {
-                this.rigidbody.linearVelocity = cc.v2(0, 0);
+                if(this.isDashing){
+                    this.isDashing = false;
+                    this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+                    this.dungeon.player.takeDamage(this.data.attackPoint);
+                }
             }
         }
         if (this.isDied) {

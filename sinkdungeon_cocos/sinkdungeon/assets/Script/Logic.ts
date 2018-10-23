@@ -11,6 +11,7 @@ import FootBoard from "./Building/FootBoard";
 import Box from "./Building/Box";
 import BoxData from "./Data/BoxData";
 import ShopTableData from "./Data/ShopTableData";
+import MonsterData from "./Data/MonsterData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +36,7 @@ export default class Logic extends cc.Component {
     static mapManger:MapManager = new MapManager();
     static chapterName = 'chapter01';
     static equipments: { [key: string]: EquipmentData } = null;
+    static monsters:{[key:string]:MonsterData} = null;
     static spriteFrames:{ [key: string]: cc.SpriteFrame } = null;
     // static currentRectRoom:RectRoom = null;
     static currentDir:number=0;
@@ -78,7 +80,7 @@ export default class Logic extends cc.Component {
         Logic.mapManger.reset(Logic.level);
         Logic.coins = 0;
         Logic.ammo = 30;
-        // Logic.playerData.updateHA(cc.v2(999,999),20);
+        Logic.playerData.updateHA(cc.v2(999,999),1);
     }
     static changeDungeonSize(){
         let mapData: string[][] = Logic.getCurrentMapData().map;
