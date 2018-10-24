@@ -35,8 +35,6 @@ export default class InventoryData {
         let speed = 0;
         speed = this.weapon.attackSpeed+this.helmet.attackSpeed+this.clothes.attackSpeed
         +this.trousers.attackSpeed+this.gloves.attackSpeed+this.shoes.attackSpeed+this.cloak.attackSpeed+this.buffer.attackSpeed;
-        if(speed>300){speed = 300}
-        if(speed<-300){speed = -300}
         return speed;
     }
     //获取最大最小攻击力

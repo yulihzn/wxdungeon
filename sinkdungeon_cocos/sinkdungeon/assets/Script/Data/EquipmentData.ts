@@ -33,6 +33,7 @@ export default class EquipmentData{
     stab = 0;//是否突刺
     far = 0; //是否远距离
     isLocked = 0;//是否锁定
+    trouserslong = 0;//是否长裤
     public valueCopy(data:EquipmentData):void{
         this.nameCn = data.nameCn?data.nameCn:this.nameCn;
         this.nameEn = data.nameEn;
@@ -57,6 +58,7 @@ export default class EquipmentData{
         this.far = data.far;
         this.isLocked = data.isLocked;
         this.level = data.level;
+        this.trouserslong = data.trouserslong;
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -83,6 +85,7 @@ export default class EquipmentData{
         e.far = this.far;
         e.isLocked = this.isLocked;
         e.level = this.level;
+        e.trouserslong = this.trouserslong;
         return e;
     }
 }

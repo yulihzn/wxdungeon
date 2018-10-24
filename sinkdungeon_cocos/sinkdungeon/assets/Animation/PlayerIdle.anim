@@ -63,6 +63,44 @@
             }
           ]
         }
+      },
+      "sprite/body/shoesright": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -2,
+                2
+              ]
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/body/shoesleft": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                2.5,
+                2
+              ]
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
       }
     }
   },

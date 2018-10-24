@@ -50,8 +50,10 @@ export default class Player extends cc.Component {
     helmetSprite: cc.Sprite = null;
     clothesSprite: cc.Sprite = null;
     trousersSprite: cc.Sprite = null;
-    glovesSprite: cc.Sprite = null;
-    shoesSprite: cc.Sprite = null;
+    glovesLeftSprite: cc.Sprite = null;
+    glovesRightSprite: cc.Sprite = null;
+    shoesLeftSprite: cc.Sprite = null;
+    shoesRightSprite: cc.Sprite = null;
     cloakSprite: cc.Sprite = null;
     isMoving = false;
     isAttacking = false;
@@ -83,8 +85,12 @@ export default class Player extends cc.Component {
         this.pos = cc.v2(4, 4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
+        let walkName = "PlayerWalkShort";
+        if(this.inventoryData.trousers.trouserslong == 1){
+            walkName = "PlayerWalk";
+        }
         if(this.anim){
-            this.anim.play('PlayerWalk');
+            this.anim.play(walkName);
         }
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite');
@@ -106,10 +112,14 @@ export default class Player extends cc.Component {
             .getChildByName('clothes').getComponent(cc.Sprite);
         this.trousersSprite = this.sprite.getChildByName('body')
             .getChildByName('trousers').getComponent(cc.Sprite);
-        this.glovesSprite = this.sprite.getChildByName('body')
-            .getChildByName('gloves').getComponent(cc.Sprite);
-        this.shoesSprite = this.sprite.getChildByName('body')
-            .getChildByName('shoes').getComponent(cc.Sprite);
+        this.glovesLeftSprite = this.sprite.getChildByName('body')
+            .getChildByName('glovesleft').getComponent(cc.Sprite);
+            this.glovesRightSprite = this.sprite.getChildByName('body')
+            .getChildByName('glovesright').getComponent(cc.Sprite);
+        this.shoesLeftSprite = this.sprite.getChildByName('body')
+            .getChildByName('shoesleft').getComponent(cc.Sprite);
+        this.shoesRightSprite = this.sprite.getChildByName('body')
+            .getChildByName('shoesright').getComponent(cc.Sprite);
         this.cloakSprite = this.sprite.getChildByName('cloak').getComponent(cc.Sprite);
 
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
@@ -198,17 +208,26 @@ export default class Player extends cc.Component {
                 let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryData.clothes.color);
                 this.clothesSprite.node.color = color3;
                 break;
-            case 'trousers': this.trousersSprite.spriteFrame = spriteFrame;
+            case 'trousers': 
+                this.trousersSprite.spriteFrame = equipData.trouserslong==1?Logic.spriteFrames['idle002']:Logic.spriteFrames['idle001'];
                 let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryData.trousers.color);
                 this.trousersSprite.node.color = color4;
                 break;
-            case 'gloves': this.glovesSprite.spriteFrame = spriteFrame;
-                let color5 = cc.color(255, 255, 255).fromHEX(this.inventoryData.gloves.color);
-                this.glovesSprite.node.color = color5;
+            case 'gloves': 
+                this.glovesLeftSprite.spriteFrame = spriteFrame;
+                let color5l = cc.color(255, 255, 255).fromHEX(this.inventoryData.gloves.color);
+                this.glovesLeftSprite.node.color = color5l;
+                this.glovesRightSprite.spriteFrame = spriteFrame;
+                let color5r = cc.color(255, 255, 255).fromHEX(this.inventoryData.gloves.color);
+                this.glovesRightSprite.node.color = color5r;
                 break;
-            case 'shoes': this.shoesSprite.spriteFrame = spriteFrame;
-                let color6 = cc.color(255, 255, 255).fromHEX(this.inventoryData.shoes.color);
-                this.shoesSprite.node.color = color6;
+            case 'shoes': 
+                this.shoesLeftSprite.spriteFrame = spriteFrame;
+                let color6l = cc.color(255, 255, 255).fromHEX(this.inventoryData.shoes.color);
+                this.shoesLeftSprite.node.color = color6l;
+                this.shoesRightSprite.spriteFrame = spriteFrame;
+                let color6r = cc.color(255, 255, 255).fromHEX(this.inventoryData.shoes.color);
+                this.shoesRightSprite.node.color = color6r;
                 break;
             case 'cloak': this.cloakSprite.spriteFrame = spriteFrame;
                 let color7 = cc.color(255, 255, 255).fromHEX(this.inventoryData.cloak.color);
@@ -316,14 +335,20 @@ export default class Player extends cc.Component {
         if (this.isMoving) {
             this.isFaceRight = h > 0;
         }
+        let walkName = "PlayerWalkShort";
+        let idleName = "idle001";
+        if(this.inventoryData.trousers.trouserslong == 1){
+            walkName = "PlayerWalk";
+            idleName = "idle002";
+        }
         if (this.isMoving) {
-            if (!this.anim.getAnimationState('PlayerWalk').isPlaying) {
-                this.anim.playAdditive('PlayerWalk');
+            if (!this.anim.getAnimationState(walkName).isPlaying) {
+                this.anim.playAdditive(walkName);
             }
         } else {
-            if (this.anim.getAnimationState('PlayerWalk').isPlaying) {
+            if (this.anim.getAnimationState(walkName).isPlaying) {
                 this.anim.play('PlayerIdle');
-                this.trousersSprite.spriteFrame = Logic.spriteFrames['trousers002'];
+                this.trousersSprite.spriteFrame = Logic.spriteFrames[idleName];
             }
         }
 

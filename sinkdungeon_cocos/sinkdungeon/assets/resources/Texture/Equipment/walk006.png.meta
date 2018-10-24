@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "f59d48ff-e65a-4c90-a1c5-d0b1a2974fa3",
+  "uuid": "b0ef66d7-eb01-4411-9079-fed2175e0bd0",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "trousers005": {
+    "walk006": {
       "ver": "1.0.3",
-      "uuid": "3787e215-142d-4c6b-b546-1fc894628739",
-      "rawTextureUuid": "f59d48ff-e65a-4c90-a1c5-d0b1a2974fa3",
+      "uuid": "a9abd48f-09ff-4990-bb97-4a2d2eb658ef",
+      "rawTextureUuid": "b0ef66d7-eb01-4411-9079-fed2175e0bd0",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

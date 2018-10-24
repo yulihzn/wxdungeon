@@ -68,7 +68,7 @@ export default class NewClass extends cc.Component {
         this.addSpriteTouchEvent(this.trousers,'trousers');
         this.addSpriteTouchEvent(this.gloves,'gloves');
         this.addSpriteTouchEvent(this.shoes,'shoes');
-        this.addSpriteTouchEvent(this.weapon,'cloak');
+        this.addSpriteTouchEvent(this.cloak,'cloak');
         this.refreshEquipment(this.inventoryData.weapon,false);
         this.refreshEquipment(this.inventoryData.helmet,false);
         this.refreshEquipment(this.inventoryData.clothes,false);
@@ -84,13 +84,13 @@ export default class NewClass extends cc.Component {
             }
             let equipData = new EquipmentData();
             switch(equipmetType){
-                case 'weapon':equipData = this.inventoryData.weapon;break;
-                case 'helmet':equipData = this.inventoryData.helmet;break;
-                case 'clothes':equipData = this.inventoryData.clothes;break;
-                case 'trousers':equipData = this.inventoryData.trousers;break;
-                case 'gloves':equipData = this.inventoryData.gloves;break;
-                case 'shoes':equipData = this.inventoryData.shoes;break;
-                case 'cloak':equipData = this.inventoryData.cloak;break;
+                case 'weapon':equipData = this.inventoryData.weapon.clone();break;
+                case 'helmet':equipData = this.inventoryData.helmet.clone();break;
+                case 'clothes':equipData = this.inventoryData.clothes.clone();break;
+                case 'trousers':equipData = this.inventoryData.trousers.clone();break;
+                case 'gloves':equipData = this.inventoryData.gloves.clone();break;
+                case 'shoes':equipData = this.inventoryData.shoes.clone();break;
+                case 'cloak':equipData = this.inventoryData.cloak.clone();break;
             }
             this.equipmentDialog.refreshDialog(equipData)
             this.equipmentDialog.showDialog();
@@ -146,7 +146,8 @@ export default class NewClass extends cc.Component {
             this.setEquipment(equipmentDataNew,this.inventoryData.clothes,isChange);
             this.inventoryData.clothes.valueCopy(equipmentDataNew);
             break;
-            case 'trousers':this.trousers.spriteFrame = spriteFrame;
+            case 'trousers':
+            this.trousers.spriteFrame = equipmentDataNew.trouserslong==1?Logic.spriteFrames['idle002']:Logic.spriteFrames['idle001'];
             this.trousers.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.trousers,isChange);
             this.inventoryData.trousers.valueCopy(equipmentDataNew);

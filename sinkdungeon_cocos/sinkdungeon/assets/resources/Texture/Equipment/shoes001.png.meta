@@ -1,6 +1,6 @@
 {
   "ver": "2.2.0",
-  "uuid": "4fd0720c-c6df-4e03-9407-e595f3f10b71",
+  "uuid": "3adeb738-e2a3-4219-be49-e1a06d20a6d3",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -8,8 +8,8 @@
   "subMetas": {
     "shoes001": {
       "ver": "1.0.3",
-      "uuid": "07f33ea5-8227-4a18-a0bd-bf15cc402e21",
-      "rawTextureUuid": "4fd0720c-c6df-4e03-9407-e595f3f10b71",
+      "uuid": "022f51f9-0d5f-4f74-98c7-9c42ecbb71bb",
+      "rawTextureUuid": "3adeb738-e2a3-4219-be49-e1a06d20a6d3",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
@@ -17,10 +17,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 13,
-      "height": 19,
-      "rawWidth": 13,
-      "rawHeight": 19,
+      "width": 8,
+      "height": 8,
+      "rawWidth": 8,
+      "rawHeight": 8,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

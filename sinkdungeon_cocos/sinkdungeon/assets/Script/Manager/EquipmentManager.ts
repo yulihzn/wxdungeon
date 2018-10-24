@@ -36,13 +36,24 @@ export default class EquipmentManager extends cc.Component {
     public static readonly HELMET_REDHAT = "helmet004";
     public static readonly HELMET_WHITEHAT = "helmet005";
     public static readonly CLOAK_WARRIOR = "cloak001";
+    public static readonly TROUSERS_LONG = "trousers001";
+    public static readonly TROUSERS_SHORT = "trousers002";
+    public static readonly GLOVES_WARRIOR = "gloves001";
+    public static readonly GLOVES_DEMON = "gloves002";
+    public static readonly GLOVES_BLOODCRAW = "gloves003";
+    public static readonly SHOES_WARRIOR = "shoes001";
+    public static readonly SHOES_SKATEBOARD = "shoes002";
+    public static readonly SHOES_DEMON = "shoes003";
     public static readonly equipments:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.WEAPON_CHOPPER,
         EquipmentManager.WEAPON_HUGEBLADE,EquipmentManager.CLOTHES_SHIRT
         ,EquipmentManager.CLOTHES_VEST,EquipmentManager.CLOTHES_NAVY,EquipmentManager.CLOTHES_PIRATE,
         EquipmentManager.CLOTHES_BUCKET,EquipmentManager.CLOTHES_REDROBE,
         EquipmentManager.CLOTHES_WHITEROBE,EquipmentManager.HELMET_BUCKETHAT,
         EquipmentManager.HELMET_PIRATEHAT,EquipmentManager.HELMET_REDHAT,
-        EquipmentManager.HELMET_WHITEHAT,EquipmentManager.WEAPON_PITCHFORK,EquipmentManager.CLOAK_WARRIOR];
+        EquipmentManager.HELMET_WHITEHAT,EquipmentManager.WEAPON_PITCHFORK,EquipmentManager.CLOAK_WARRIOR,
+        EquipmentManager.TROUSERS_LONG,EquipmentManager.TROUSERS_SHORT,EquipmentManager.GLOVES_WARRIOR,
+        EquipmentManager.SHOES_WARRIOR,EquipmentManager.SHOES_DEMON,EquipmentManager.SHOES_SKATEBOARD,
+        EquipmentManager.GLOVES_BLOODCRAW,EquipmentManager.GLOVES_DEMON];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红
@@ -219,7 +230,9 @@ export default class EquipmentManager extends cc.Component {
             data.health += desc.health;
             data.prefix = desc.prefix;
             data.titlecolor = desc.titlecolor;
-            data.color = desc.color;
+            if(desc.color != "#ffffff"){
+                data.color = desc.color;
+            }
             data.level = desc.level;
             if(shopTable){
                 equipment.shopTable = shopTable;
