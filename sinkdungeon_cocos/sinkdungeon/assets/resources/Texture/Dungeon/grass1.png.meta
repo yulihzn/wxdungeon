@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "12339f36-fce4-403c-91c0-998362245390",
+  "uuid": "969a8dcf-96f7-48f3-9cf0-4eba26352ca1",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "magmasea": {
+    "grass1": {
       "ver": "1.0.3",
-      "uuid": "d1e9f4f1-9c2c-4763-b820-635c373da5ec",
-      "rawTextureUuid": "12339f36-fce4-403c-91c0-998362245390",
+      "uuid": "d6416821-3a94-4515-ae1e-8d03edf1e2ce",
+      "rawTextureUuid": "969a8dcf-96f7-48f3-9cf0-4eba26352ca1",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

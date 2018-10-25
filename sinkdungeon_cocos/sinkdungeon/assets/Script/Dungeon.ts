@@ -423,7 +423,7 @@ export default class Dungeon extends cc.Component {
         this.breakHalfTiles();
         setTimeout(() => {
             this.bossKraken.showBoss();
-            this.anim.play('DungeonWave');
+            // this.anim.play('DungeonWave');
         }, 3500);
     }
     private addMonster(monster: Monster, pos: cc.Vec2) {

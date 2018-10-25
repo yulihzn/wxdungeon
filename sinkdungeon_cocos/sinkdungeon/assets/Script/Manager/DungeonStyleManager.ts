@@ -21,8 +21,6 @@ export default class DungeonStyleManager extends cc.Component {
 
     @property(cc.Node)
     background01: cc.Node = null;
-    @property(cc.Node)
-    background02: cc.Node = null;
     
 
     @property(cc.Prefab)
@@ -56,11 +54,29 @@ export default class DungeonStyleManager extends cc.Component {
     start() {
 
     }
+    runBackgroundAnim(resName:string) {
+        if (!this.background01) {
+            return;
+        }
+        let spf1=Logic.spriteFrames[resName];
+        let spf2=Logic.spriteFrames[resName+'1'];
+        if(!spf2){spf2=Logic.spriteFrames[resName];}
+        if(!spf1){
+            return;
+        }
+        this.background01.stopAllActions();
+        let sprite = this.background01.getComponent(cc.Sprite);
+        let action = cc.repeatForever(cc.sequence(
+            cc.moveBy(0.4, 0, 0), cc.callFunc(() => { sprite.spriteFrame = spf1; }),
+            cc.moveBy(0.4, 0, 0), cc.callFunc(() => { sprite.spriteFrame = spf2; })));
+        this.background01.runAction(action);
+       
+    }
     addDecorations() {
         switch (Logic.chapterName) {
-            case 'chapter00': this.styleData = new DungeonStyleData(null, 'restwall','restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
+            case 'chapter00': this.styleData = new DungeonStyleData(null, 'restwall1','restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
             case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall','shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
-            case 'chapter02': this.styleData = new DungeonStyleData('sea', 'junglewall1','junglewall', 'junglesides', 'jungledoor', null, null); break;
+            case 'chapter02': this.styleData = new DungeonStyleData('grass', 'junglewall1','junglewall', 'junglesides', 'jungledoor', null, null); break;
             case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall','pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
             case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall','dungeonwall', 'dungeonsides', 'dungeondoor', null, null); break;
         }
@@ -139,7 +155,7 @@ export default class DungeonStyleManager extends cc.Component {
             }
         }
         this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
-        this.background02.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
+        this.runBackgroundAnim(this.styleData.background);
     }
 
     // setStyle(background: string, topwall: string, sidewall: string, door: string, d1: string, d2: string) {
