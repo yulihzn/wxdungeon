@@ -29,6 +29,8 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_OCTOPUS = 'monster006';
     public static readonly MONSTER_KILLER = 'monster007';
     public static readonly MONSTER_STRONGSAILOR = 'monster008';
+    public static readonly MONSTER_CHEST = 'monster009';
+    public static readonly MONSTER_GARGOYLE = 'monster010';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -54,10 +56,15 @@ export default class MonsterManager extends cc.Component {
         monsterPrefab.active = false;
         monsterPrefab.parent = dungeon.node;
         let monster = monsterPrefab.getComponent(Monster);
-        monster.dungeon = dungeon;
         let data = new MonsterData();
+        monster.dungeon = dungeon;
         data.valueCopy(Logic.monsters[resName]);
-        monster.changeBodyRes(resName);
+        monster.isDisguising = data.disguise > 0;
+        if(monster.isDisguising){
+            monster.changeBodyRes(data.resName,Monster.RES_DISGUISE);
+        }else{
+            monster.changeBodyRes(resName);
+        }
         monster.data = data;
         return monster;
         

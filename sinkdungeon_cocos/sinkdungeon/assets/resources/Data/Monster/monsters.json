@@ -30,7 +30,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
-        "meleerate":20,
+        "meleerate":70,
         "dash":1
     },
     "monster002":{
@@ -47,7 +47,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
-        "meleerate":40,
+        "meleerate":70,
         "dash":1
     },
     "monster003":{
@@ -64,7 +64,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
-        "meleerate":20,
+        "meleerate":90,
         "dash":0
     },
     "monster004":{
@@ -81,7 +81,7 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
-        "meleerate":20,
+        "meleerate":80,
         "dash":0
     },
     "monster005":{
@@ -97,8 +97,8 @@
         "invisible":0,
         "remote":0,
         "remoterate":0,
-        "melee":0,
-        "meleerate":0,
+        "melee":1,
+        "meleerate":80,
         "dash":1
     },
     "monster006":{
@@ -132,7 +132,7 @@
         "remote":1,
         "remoterate":50,
         "melee":1,
-        "meleerate":20,
+        "meleerate":60,
         "dash":0
     },
     "monster008":{
@@ -149,7 +149,43 @@
         "remote":0,
         "remoterate":0,
         "melee":1,
-        "meleerate":30,
+        "meleerate":80,
         "dash":1
+    },
+    "monster009":{
+        "nameCn":"宝箱怪",
+        "nameEn":"ChestMonster",
+        "resName":"monster009",
+        "chapter":0,
+        "stageLevel":0,
+        "movespeed":400,
+        "maxHealth":10,
+        "currentHealth":10,
+        "attackPoint":1,
+        "invisible":0,
+        "remote":0,
+        "remoterate":0,
+        "melee":1,
+        "meleerate":80,
+        "dash":0,
+        "disguise":80
+    },
+    "monster010":{
+        "nameCn":"石像鬼",
+        "nameEn":"Gargoyle",
+        "resName":"monster010",
+        "chapter":0,
+        "stageLevel":0,
+        "movespeed":400,
+        "maxHealth":10,
+        "currentHealth":10,
+        "attackPoint":1,
+        "invisible":0,
+        "remote":0,
+        "remoterate":0,
+        "melee":1,
+        "meleerate":80,
+        "dash":0,
+        "disguise":200
     }
 }

@@ -295,6 +295,12 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'k') {
                         this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
                     }
+                    if (mapData[i][j] == 'c') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
+                    }
+                    if (mapData[i][j] == 'y') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
+                    }
                     if (mapData[i][j] == 'b') {
                         this.bossIndex = cc.v2(i, j);
 

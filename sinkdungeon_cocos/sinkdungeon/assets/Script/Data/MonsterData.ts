@@ -24,6 +24,7 @@ export default class MonsterData{
     dash:number=0;//是否冲刺 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击
     remoterate:number=0;//远程攻击概率0-100
     meleerate:number=0;//近战攻击概率0-100
+    disguise:number=0;//是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
@@ -48,6 +49,7 @@ export default class MonsterData{
         this.pos = data.pos;
         this.remoterate = data.remoterate;
         this.meleerate = data.meleerate;
+        this.disguise = data.disguise;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -67,6 +69,7 @@ export default class MonsterData{
         e.pos = this.pos;
         e.remoterate = this.remoterate;
         e.meleerate = this.meleerate;
+        e.disguise = this.disguise;
         return e;
     }
 }

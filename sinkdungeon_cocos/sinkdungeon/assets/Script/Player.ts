@@ -269,13 +269,15 @@ export default class Player extends cc.Component {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        pos = pos.normalizeSelf().mul(5);
+        pos = pos.normalizeSelf().mul(15);
+        pos.x = this.isFaceRight?pos.x:-pos.x;
         let speed = 300 - this.inventoryData.getAttackSpeed();
-        if(speed < 0){speed = 0}
+        if(speed < 1){speed = 1}
         if(speed > 3000){speed = 3000}
+        let spritePos = this.sprite.position.clone();
         let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
             setTimeout(() => {
-                 this.sprite.position = cc.v2(0, 0);
+                 this.sprite.position = spritePos.clone();
                  this.isAttacking = false;
                  }, speed);
         }, this));

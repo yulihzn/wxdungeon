@@ -144,7 +144,7 @@ export default class Shooter extends cc.Component {
         } else if(this.dungeon) {
             for (let monster of this.dungeon.monsters) {
                 let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
-                if (dis < 500 && dis < olddis && !monster.isDied) {
+                if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX==1?p.x:-p.x;
