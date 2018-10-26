@@ -1,0 +1,59 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "EmplaceFire",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0166666666666666,
+  "sample": 60,
+  "speed": 0.5,
+  "wrapMode": "2",
+  "curveData": {
+    "paths": {
+      "sprite": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "4d4c17a7-3fbd-4516-919e-fd8e175271bf"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "777e7763-e411-4ccc-ac63-5a82409eb9e5"
+                }
+              },
+              {
+                "frame": 0.36666666666666664,
+                "value": {
+                  "__uuid__": "0f2dab3e-0742-471b-ad7f-e36380bdf033"
+                }
+              },
+              {
+                "frame": 0.4,
+                "value": {
+                  "__uuid__": "4d4c17a7-3fbd-4516-919e-fd8e175271bf"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "4d4c17a7-3fbd-4516-919e-fd8e175271bf"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 0.3333333333333333,
+      "func": "OpenFire",
+      "params": []
+    }
+  ]
+}

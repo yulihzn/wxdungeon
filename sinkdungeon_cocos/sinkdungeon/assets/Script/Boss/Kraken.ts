@@ -99,9 +99,9 @@ export default class Kraken extends cc.Component {
         }
     }
 
-    takeDamage(damage: number) {
+    takeDamage(damage: number):boolean {
         if(this.isDied||!this.isShow){
-            return;
+            return false;
         }
         this.data.currentHealth -= damage;
         if (this.data.currentHealth > this.data.maxHealth) {
@@ -117,6 +117,7 @@ export default class Kraken extends cc.Component {
                 this.anim.playAdditive('KrakenSwingLeft');
             }
         }
+        return true;
     }
     killed() {
         if (this.isDied) {
@@ -188,12 +189,15 @@ export default class Kraken extends cc.Component {
                 this.shooter.setHv(hv);
                 this.shooter.dungeon = dungeon;
                 this.shooter.fireBullet();
+                
             }
-
+            if(this.data.currentHealth<this.data.maxHealth/2){
+                dungeon.addFallStone(dungeon.player.node.position,true);
+                this.shooter.fireBullet(30);
+                this.shooter.fireBullet(-30);
+            }
         }
-        if(dungeon&&this.data.currentHealth<this.data.maxHealth/2){
-            dungeon.addFallStone(dungeon.player.node.position,true);
-        }
+        
 
     }
 }

@@ -65,6 +65,17 @@ export default class MonsterManager extends cc.Component {
         }else{
             monster.changeBodyRes(resName);
         }
+        //5%的几率变异
+        monster.isVariation =  Logic.getRandomNum(0,100)<5;
+        if(monster.isVariation){
+            data.maxHealth=data.maxHealth*2;
+            data.attackPoint=data.attackPoint*2;
+            data.currentHealth=data.currentHealth*2;
+            data.melee = data.melee>0?data.melee+20:0;
+            data.remote = data.remote>0?data.remote+20:0;
+            data.dash = data.dash>0?data.dash+20:0;
+            data.movespeed = data.movespeed + 100;
+        }
         monster.data = data;
         return monster;
         
@@ -76,7 +87,7 @@ export default class MonsterManager extends cc.Component {
         krakenPrefab.parent = dungeon.node;
         let kraken = krakenPrefab.getComponent(Kraken);
         let data = new MonsterData();
-        data.updateHA(200,200,2);
+        data.updateHA(400,400,2);
         kraken.data = data;
         kraken.transportPlayer(posIndex.x,posIndex.y);
         kraken.healthBar = dungeon.bossHealthBar;
@@ -91,7 +102,7 @@ export default class MonsterManager extends cc.Component {
         let captain = captainPrefab.getComponent(Captain);
         captain.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(100,100,2);
+        data.updateHA(200,200,2);
         captain.data = data;
         captain.transportPlayer(posIndex.x,posIndex.y);
         captain.healthBar = dungeon.bossHealthBar;

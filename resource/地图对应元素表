@@ -13,7 +13,7 @@ A 弹药
 B 普通可推箱子
 C 宝箱
 D 落石
-E (temp)
+E 炮台
 F 开启门的踏板
 G 绿色植物
 H 爱心
@@ -36,8 +36,8 @@ X (temp)
 Y (temp)
 Z (temp)
 a 史莱姆
-b 大章鱼boss
-c (temp)
+b Boss
+c 宝箱怪
 d 阿努比斯
 e (temp)
 f (temp)
@@ -56,8 +56,8 @@ r (temp)
 s 水手或者骷髅水手
 t (temp)
 u (temp)
-v (temp)
-w (temp)
+v 毒蛇(temp)
+w 狼人(temp) 
 x (temp)
-y (temp)
+y 石像鬼
 z (temp)

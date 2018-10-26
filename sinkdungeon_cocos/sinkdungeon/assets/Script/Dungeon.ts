@@ -26,6 +26,7 @@ import ShopTableData from "./Data/ShopTableData";
 import HealthBar from "./HealthBar";
 import Captain from "./Boss/Captain";
 import FallStone from "./Building/FallStone";
+import Emplacement from "./Building/Emplacement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,6 +50,8 @@ export default class Dungeon extends cc.Component {
     trap: cc.Prefab = null;
     @property(cc.Prefab)
     fallStone: cc.Prefab = null;
+    @property(cc.Prefab)
+    emplacement: cc.Prefab = null;
     @property(cc.Prefab)
     footboard: cc.Prefab = null;
     @property(cc.Prefab)
@@ -172,6 +175,15 @@ export default class Dungeon extends cc.Component {
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.trapmap[i][j] = trap.getComponent(Trap);
+                }
+                //生成炮台
+                if (mapData[i][j] == 'E') {
+                    let emplacement = cc.instantiate(this.emplacement);
+                    emplacement.parent = this.node;
+                    emplacement.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    emplacement.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    let em = emplacement.getComponent(Emplacement);
+                    em.dungeon = this;
                 }
                 //生成落石
                 if (mapData[i][j] == 'D') {

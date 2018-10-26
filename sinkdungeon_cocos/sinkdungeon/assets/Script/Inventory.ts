@@ -78,7 +78,7 @@ export default class NewClass extends cc.Component {
         this.refreshEquipment(this.inventoryData.cloak,false);
     }
     addSpriteTouchEvent(sprite:cc.Sprite,equipmetType:string){
-        sprite.node.parent.on(cc.Node.EventType.TOUCH_START,()=>{
+        sprite.node.on(cc.Node.EventType.TOUCH_START,()=>{
             if(sprite.spriteFrame == null){
                 return;
             }
@@ -95,10 +95,10 @@ export default class NewClass extends cc.Component {
             this.equipmentDialog.refreshDialog(equipData)
             this.equipmentDialog.showDialog();
         })
-        sprite.node.parent.on(cc.Node.EventType.TOUCH_END,()=>{
+        sprite.node.on(cc.Node.EventType.TOUCH_END,()=>{
             this.equipmentDialog.hideDialog();
         })
-        sprite.node.parent.on(cc.Node.EventType.TOUCH_CANCEL,()=>{
+        sprite.node.on(cc.Node.EventType.TOUCH_CANCEL,()=>{
             this.equipmentDialog.hideDialog();
         })
     }
@@ -162,7 +162,7 @@ export default class NewClass extends cc.Component {
             this.setEquipment(equipmentDataNew,this.inventoryData.shoes,isChange);
             this.inventoryData.shoes.valueCopy(equipmentDataNew);
             break;
-            case 'cloak':this.shoes.spriteFrame = spriteFrame;
+            case 'cloak':this.cloak.spriteFrame = spriteFrame;
             this.cloak.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryData.cloak,isChange);
             this.inventoryData.cloak.valueCopy(equipmentDataNew);

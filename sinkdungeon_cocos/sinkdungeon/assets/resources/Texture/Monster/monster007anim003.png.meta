@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "74a1ddd2-b6fd-49d9-92be-cbc3a39102de",
+  "uuid": "75ded12e-1ebd-4209-8387-188bc9718519",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "monster010anim003": {
+    "monster007anim003": {
       "ver": "1.0.3",
-      "uuid": "4b13d5ba-6b22-43d0-bf71-93a6a4936c62",
-      "rawTextureUuid": "74a1ddd2-b6fd-49d9-92be-cbc3a39102de",
+      "uuid": "ca78c1a7-c19d-46fc-85ac-7790407a64ac",
+      "rawTextureUuid": "75ded12e-1ebd-4209-8387-188bc9718519",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

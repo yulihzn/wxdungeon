@@ -128,7 +128,7 @@ export default class MeleeWeapon extends cc.Component {
                 if (dis < 200 && dis < olddis && !monster.isDied) {
                     olddis = dis;
                     let p = this.node.position.clone();
-                    p.x = this.node.scaleX==1?p.x:-p.x;
+                    p.x = this.node.scaleX>0?p.x:-p.x;
                     pos = monster.node.position.sub(this.node.parent.position.add(p));
                 }
             }
@@ -150,7 +150,7 @@ export default class MeleeWeapon extends cc.Component {
         this.node.scaleX = this.node.parent.scaleX;
         angle += offsetAngle;
         // 将当前物体的角度设置为对应角度
-        this.node.rotation = this.node.scaleX == -1 ? angle : -angle;
+        this.node.rotation = this.node.scaleX < 0 ? angle : -angle;
 
     }
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
@@ -201,13 +201,11 @@ export default class MeleeWeapon extends cc.Component {
 
         let kraken = attackTarget.node.getComponent(Kraken);
         if (kraken && !kraken.isDied) {
-            kraken.takeDamage(damage);
-            damageSuccess = true;
+            damageSuccess = kraken.takeDamage(damage);
         }
         let captain = attackTarget.node.getComponent(Captain);
         if (captain && !captain.isDied) {
-            captain.takeDamage(damage);
-            damageSuccess = true;
+            damageSuccess = captain.takeDamage(damage);
         }
         let box = attackTarget.node.getComponent(Box);
         if(box){

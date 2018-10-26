@@ -116,7 +116,7 @@ export default class Captain extends cc.Component {
         if(!this.dungeon || !this.shooter){
             return;
         }
-        let angles1 = [0,-30,30];
+        let angles1 = [0,15,-30,-15,30];
         let angles2 = [5,10,-10];
         let angles3 = [-5,20,-20,-40,40];
         this.fireWithAngles(angles1);
@@ -171,10 +171,10 @@ export default class Captain extends cc.Component {
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
-    takeDamage(damage: number) {
+    takeDamage(damage: number):boolean {
         let isPlayJump = this.anim.getAnimationState("CaptainJump").isPlaying;
         if(this.isDied||isPlayJump){
-            return;
+            return false;
         }
         this.data.currentHealth -= damage;
         if (this.data.currentHealth > this.data.maxHealth) {
@@ -182,10 +182,11 @@ export default class Captain extends cc.Component {
         }
         // if(!this.isAttacking){
         // }
+        this.isHurt = true;
         this.anim.play('CaptainHit');
         this.isAttacking = false;
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
-        
+        return true;
     }
     killed() {
         if (this.isDied) {

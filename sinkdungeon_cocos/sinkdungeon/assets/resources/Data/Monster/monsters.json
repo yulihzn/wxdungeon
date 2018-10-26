@@ -11,10 +11,8 @@
         "attackPoint":1,
         "invisible":0,
         "remote":0,
-        "remoterate":0,
         "melee":0,
-        "meleerate":0,
-        "dash":1
+        "dash":20
     },
     "monster001":{
         "nameCn":"哥布林",
@@ -28,10 +26,8 @@
         "attackPoint":1,
         "invisible":0,
         "remote":0,
-        "remoterate":0,
-        "melee":1,
-        "meleerate":70,
-        "dash":1
+        "melee":70,
+        "dash":0
     },
     "monster002":{
         "nameCn":"木乃伊",
@@ -45,10 +41,8 @@
         "attackPoint":3,
         "invisible":0,
         "remote":0,
-        "remoterate":0,
-        "melee":1,
-        "meleerate":70,
-        "dash":1
+        "melee":70,
+        "dash":10
     },
     "monster003":{
         "nameCn":"阿努比斯",
@@ -62,9 +56,7 @@
         "attackPoint":3,
         "invisible":1,
         "remote":0,
-        "remoterate":0,
-        "melee":1,
-        "meleerate":90,
+        "melee":90,
         "dash":0
     },
     "monster004":{
@@ -79,9 +71,7 @@
         "attackPoint":1,
         "invisible":0,
         "remote":0,
-        "remoterate":0,
-        "melee":1,
-        "meleerate":80,
+        "melee":80,
         "dash":0
     },
     "monster005":{
@@ -96,10 +86,8 @@
         "attackPoint":1,
         "invisible":0,
         "remote":0,
-        "remoterate":0,
-        "melee":1,
-        "meleerate":80,
-        "dash":1
+        "melee":80,
+        "dash":20
     },
     "monster006":{
         "nameCn":"章鱼",
@@ -112,10 +100,8 @@
         "currentHealth":10,
         "attackPoint":1,
         "invisible":0,
-        "remote":1,
-        "remoterate":30,
+        "remote":30,
         "melee":0,
-        "meleerate":0,
         "dash":0
     },
     "monster007":{
@@ -129,10 +115,8 @@
         "currentHealth":5,
         "attackPoint":1,
         "invisible":0,
-        "remote":1,
-        "remoterate":50,
-        "melee":1,
-        "meleerate":60,
+        "remote":50,
+        "melee":60,
         "dash":0
     },
     "monster008":{
@@ -147,10 +131,8 @@
         "attackPoint":1,
         "invisible":0,
         "remote":0,
-        "remoterate":0,
-        "melee":1,
-        "meleerate":80,
-        "dash":1
+        "melee":80,
+        "dash":20
     },
     "monster009":{
         "nameCn":"宝箱怪",
@@ -165,8 +147,7 @@
         "invisible":0,
         "remote":0,
         "remoterate":0,
-        "melee":1,
-        "meleerate":80,
+        "melee":80,
         "dash":0,
         "disguise":80
     },
@@ -176,15 +157,13 @@
         "resName":"monster010",
         "chapter":0,
         "stageLevel":0,
-        "movespeed":400,
-        "maxHealth":10,
-        "currentHealth":10,
+        "movespeed":450,
+        "maxHealth":5,
+        "currentHealth":5,
         "attackPoint":1,
         "invisible":0,
         "remote":0,
-        "remoterate":0,
-        "melee":1,
-        "meleerate":80,
+        "melee":80,
         "dash":0,
         "disguise":200
     }

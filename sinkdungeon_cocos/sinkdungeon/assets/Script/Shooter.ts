@@ -93,8 +93,8 @@ export default class Shooter extends cc.Component {
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
         this.bulletName = bullet.name;
-        bullet.node.rotation = this.node.scaleX == -1 ? -this.node.rotation : this.node.rotation;
-        bullet.node.scaleY = this.node.scaleX;
+        bullet.node.rotation = this.node.scaleX < 0? -this.node.rotation : this.node.rotation;
+        bullet.node.scaleY = this.node.scaleX>0?1:-1;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
         if (bullet.isFromPlayer && bullet.isMelee && this.player) {
@@ -124,7 +124,6 @@ export default class Shooter extends cc.Component {
             this.timeDelay = 0;
             this.fireBullet();
         }
-        
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec2.ZERO)) {
             this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
@@ -147,7 +146,7 @@ export default class Shooter extends cc.Component {
                 if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
-                    p.x = this.node.scaleX==1?p.x:-p.x;
+                    p.x = this.node.scaleX>0?p.x:-p.x;
                     pos = monster.node.position.sub(this.node.parent.position.add(p));
                 }
             }
@@ -166,7 +165,7 @@ export default class Shooter extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        this.node.scaleX = this.node.parent.scaleX;
+        this.node.scaleX = this.node.parent.scaleX>0?1:-1;
         angle += offsetAngle;
         // 将当前物体的角度设置为对应角度
         this.node.rotation = this.node.scaleX == -1 ? angle : -angle;
