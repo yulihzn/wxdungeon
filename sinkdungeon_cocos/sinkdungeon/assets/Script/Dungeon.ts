@@ -73,6 +73,8 @@ export default class Dungeon extends cc.Component {
     @property(cc.Prefab)
     portalPrefab: cc.Prefab = null;
     portal: Portal = null;
+    @property(cc.Prefab)
+    bed:cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -195,6 +197,18 @@ export default class Dungeon extends cc.Component {
                     fd.parent = this.node;
                     fd.position = Dungeon.getPosInMap(cc.v2(i, j));
                     fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                }
+                //生成床
+                if (mapData[i][j] == '-') {
+                    let bed = cc.instantiate(this.bed);
+                    bed.parent = this.node;
+                    bed.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    bed.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    let front = bed.getChildByName('front');
+                    front.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    front.position = cc.v2(front.position.x,front.position.y+40);
+                    front.parent = this.node;
+                    front.zIndex = 5000;
                 }
                 //生成踏板
                 if (mapData[i][j] == 'F') {

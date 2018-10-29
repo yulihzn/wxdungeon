@@ -1,0 +1,54 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "SlimeCrownFall",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite/crown": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                12
+              ],
+              "curve": "quadOut"
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                -36.1,
+                32
+              ],
+              "curve": "linear"
+            },
+            {
+              "frame": 1,
+              "value": [
+                -64.4,
+                -2
+              ]
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": -90
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
