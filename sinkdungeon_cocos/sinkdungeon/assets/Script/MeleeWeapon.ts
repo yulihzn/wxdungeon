@@ -148,8 +148,17 @@ export default class MeleeWeapon extends cc.Component {
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
         this.node.scaleX = this.node.parent.scaleX;
+        let sy = Math.abs(this.node.scaleY);
+        this.node.scaleY = this.node.scaleX<0?-sy:sy;
         angle += offsetAngle;
+        if(angle >= 360){
+            angle-=360;
+        }
+        if(angle<=-360){
+            angle+=360;
+        }
         // 将当前物体的角度设置为对应角度
+        // this.node.rotation = this.node.scaleX < 0 ? angle : -angle;
         this.node.rotation = this.node.scaleX < 0 ? angle : -angle;
 
     }

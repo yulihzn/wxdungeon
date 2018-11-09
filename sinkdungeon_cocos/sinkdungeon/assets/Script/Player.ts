@@ -35,6 +35,8 @@ export default class Player extends cc.Component {
     @property(cc.Prefab)
     walksmoke: cc.Prefab = null;
     private smokePool: cc.NodePool;
+    @property(cc.Prefab)
+    swordFireLight: cc.Prefab = null;
     @property(cc.Node)
     meleeWeaponNode: cc.Node = null;
     meleeWeapon: MeleeWeapon = null;
@@ -75,6 +77,10 @@ export default class Player extends cc.Component {
 
     defaultPos = cc.v2(0, 0);
 
+    weaponStabFire:cc.ParticleSystem;
+    weaponFire:cc.ParticleSystem;
+    weaponFirePoint:cc.Node;
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -100,10 +106,15 @@ export default class Player extends cc.Component {
             .getChildByName('hair').getComponent(cc.Sprite);
         this.weaponSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
             .getChildByName('weapon').getComponent(cc.Sprite);
+        this.weaponFire = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
+            .getChildByName('weapon').getChildByName('firesword').getComponent(cc.ParticleSystem);
+        this.weaponFirePoint = this.node.getChildByName('MeleeWeapon').getChildByName('firepoint');
         this.weaponLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
             .getChildByName('meleelight').getComponent(cc.Sprite);
         this.weaponStabSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
             .getChildByName('stabweapon').getComponent(cc.Sprite);
+        this.weaponStabFire = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
+            .getChildByName('stabweapon').getChildByName('fire').getComponent(cc.ParticleSystem);;
         this.weaponStabLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
             .getChildByName('stablight').getComponent(cc.Sprite);
         this.helmetSprite = this.sprite.getChildByName('body')
@@ -150,6 +161,9 @@ export default class Player extends cc.Component {
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
+        this.weaponStabFire.sourcePos = cc.v2(10,0);
+        this.weaponStabFire.stopSystem();
+        this.weaponFire.stopSystem();
 
     }
     private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
@@ -166,6 +180,18 @@ export default class Player extends cc.Component {
         smokePrefab.zIndex = 4000;
         smokePrefab.opacity = 255;
         smokePrefab.active = true;
+    }
+    private getSwordFireLight(parentNode: cc.Node, pos: cc.Vec2) {
+        let firePrefab: cc.Node = null;
+        // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+        if (!firePrefab || firePrefab.active) {
+            firePrefab = cc.instantiate(this.swordFireLight);
+        }
+        firePrefab.parent = parentNode;
+        firePrefab.position = pos;
+        firePrefab.zIndex = 4000;
+        firePrefab.opacity = 255;
+        firePrefab.active = true;
     }
     destroySmoke(smokeNode: cc.Node) {
         if(!smokeNode){
@@ -189,9 +215,13 @@ export default class Player extends cc.Component {
                     this.weaponSprite.spriteFrame = null;
                     this.weaponStabSprite.spriteFrame = spriteFrame;
                     this.weaponStabLightSprite.spriteFrame = Logic.spriteFrames['stablight'];
+                    this.weaponStabFire.resetSystem();
+                    this.weaponFire.stopSystem();
                 } else {
                     this.weaponSprite.spriteFrame = spriteFrame;
                     this.weaponStabSprite.spriteFrame = null;
+                    this.weaponStabFire.stopSystem();
+                    this.weaponFire.resetSystem();
                 }
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
                 this.weaponSprite.node.color = color1;
@@ -283,6 +313,19 @@ export default class Player extends cc.Component {
         }, this));
         this.sprite.runAction(action);
         this.meleeWeapon.attack(this.inventoryData.getAttackSpeed());
+        if(!this.meleeWeapon.isStab){
+            // this.weaponFirePoint.resetSystem();
+            let p = this.weaponFirePoint.position.clone();
+            let ps = [cc.v2(p.x,p.y+50),cc.v2(p.x+40,p.y+30),cc.v2(p.x+50,p.y),cc.v2(p.x+40,-p.y-30),cc.v2(p.x,-p.y-60)]
+            for(let i = 0;i < ps.length;i++){
+                let psp = ps[i];
+                psp = this.meleeWeaponNode.convertToWorldSpace(psp);
+                psp = this.node.parent.convertToNodeSpace(psp);
+                this.getSwordFireLight(this.node.parent,psp);
+                
+            }
+          
+        }
         
     }
     remoteRate = 0;
@@ -495,6 +538,7 @@ export default class Player extends cc.Component {
         }
         return false;
     }
+   
     update(dt) {
 
         if (this.isRecoveryTimeDelay(dt)) {
@@ -506,9 +550,10 @@ export default class Player extends cc.Component {
         if (this.isSmokeTimeDelay(dt)&&this.isMoving) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
-
+        
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
+    
     UseItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {
