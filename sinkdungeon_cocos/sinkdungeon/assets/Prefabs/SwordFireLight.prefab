@@ -90,7 +90,7 @@
     "playOnLoad": true,
     "autoRemoveOnFinish": true,
     "totalParticles": 100,
-    "duration": 1,
+    "duration": 0.5,
     "emissionRate": 100,
     "life": 0.5,
     "lifeVar": 0.25,

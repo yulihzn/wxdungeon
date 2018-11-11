@@ -33,7 +33,7 @@ export default class MeleeWeapon extends cc.Component {
     @property(MeleeWeaponChild)
     waveWeapon:MeleeWeaponChild = null;
 
-    private isReverse = false;
+    isReverse = false;
     private anim: cc.Animation;
     isAttacking: boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);

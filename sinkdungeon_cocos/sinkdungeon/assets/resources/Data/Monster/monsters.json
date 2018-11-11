@@ -166,5 +166,21 @@
         "melee":80,
         "dash":0,
         "disguise":200
+    },
+    "monster011":{
+        "nameCn":"小鸡",
+        "nameEn":"Chicken",
+        "resName":"monster011",
+        "chapter":0,
+        "stageLevel":0,
+        "movespeed":100,
+        "maxHealth":1,
+        "currentHealth":1,
+        "attackPoint":1,
+        "invisible":0,
+        "remote":0,
+        "melee":0,
+        "dash":0,
+        "disguise":0
     }
 }

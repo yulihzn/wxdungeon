@@ -68,6 +68,7 @@ export default class Monster extends cc.Component {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.updatePlayerPos();
+        this.actionSpriteFrameIdle();
     }
 
     changeBodyRes(resName: string, suffix?: string) {

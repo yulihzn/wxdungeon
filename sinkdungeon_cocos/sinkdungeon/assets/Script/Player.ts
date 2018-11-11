@@ -181,17 +181,30 @@ export default class Player extends cc.Component {
         smokePrefab.opacity = 255;
         smokePrefab.active = true;
     }
-    private getSwordFireLight(parentNode: cc.Node, pos: cc.Vec2) {
+    private getSwordFireLight(parentNode: cc.Node, p: cc.Vec2,isReverse?:boolean) {
         let firePrefab: cc.Node = null;
         // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
         if (!firePrefab || firePrefab.active) {
             firePrefab = cc.instantiate(this.swordFireLight);
         }
+        let ps = [];
+        let ps1 = [cc.v2(p.x,-p.y-60),cc.v2(p.x+40,-p.y-30),cc.v2(p.x+50,p.y),cc.v2(p.x+40,p.y+30),cc.v2(p.x,p.y+60)];
+        let ps2 = [cc.v2(p.x,p.y+60),cc.v2(p.x+40,p.y+30),cc.v2(p.x+50,p.y),cc.v2(p.x+40,-p.y-30),cc.v2(p.x,-p.y-60)];
+        ps = isReverse?ps1:ps2;
+        for(let i = 0;i < ps.length;i++){
+            let psp = ps[i];
+            psp = this.meleeWeaponNode.convertToWorldSpace(psp);
+            psp = this.node.parent.convertToNodeSpace(psp);
+            ps[i] = psp.clone();
+        }
         firePrefab.parent = parentNode;
-        firePrefab.position = pos;
+        firePrefab.position = ps[0];
         firePrefab.zIndex = 4000;
         firePrefab.opacity = 255;
         firePrefab.active = true;
+        let action = cc.sequence(cc.moveTo(0.025, ps[1]), cc.moveTo(0.05, ps[2]),cc.moveTo(0.075, ps[3]),cc.moveTo(0.1, ps[4]));
+        firePrefab.runAction(action);
+            
     }
     destroySmoke(smokeNode: cc.Node) {
         if(!smokeNode){
@@ -316,15 +329,15 @@ export default class Player extends cc.Component {
         if(!this.meleeWeapon.isStab){
             // this.weaponFirePoint.resetSystem();
             let p = this.weaponFirePoint.position.clone();
-            let ps = [cc.v2(p.x,p.y+50),cc.v2(p.x+40,p.y+30),cc.v2(p.x+50,p.y),cc.v2(p.x+40,-p.y-30),cc.v2(p.x,-p.y-60)]
-            for(let i = 0;i < ps.length;i++){
-                let psp = ps[i];
-                psp = this.meleeWeaponNode.convertToWorldSpace(psp);
-                psp = this.node.parent.convertToNodeSpace(psp);
-                this.getSwordFireLight(this.node.parent,psp);
+            // let ps = [cc.v2(p.x,p.y+50),cc.v2(p.x+40,p.y+30),cc.v2(p.x+50,p.y),cc.v2(p.x+40,-p.y-30),cc.v2(p.x,-p.y-60)]
+            // for(let i = 0;i < ps.length;i++){
+            //     let psp = ps[i];
+            //     psp = this.meleeWeaponNode.convertToWorldSpace(psp);
+            //     psp = this.node.parent.convertToNodeSpace(psp);
+            //     this.getSwordFireLight(this.node.parent,psp);
                 
-            }
-          
+            // }
+          this.getSwordFireLight(this.node.parent,p,this.meleeWeapon.isReverse);
         }
         
     }

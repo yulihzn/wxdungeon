@@ -31,6 +31,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_STRONGSAILOR = 'monster008';
     public static readonly MONSTER_CHEST = 'monster009';
     public static readonly MONSTER_GARGOYLE = 'monster010';
+    public static readonly MONSTER_CHICKEN = 'monster011';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
