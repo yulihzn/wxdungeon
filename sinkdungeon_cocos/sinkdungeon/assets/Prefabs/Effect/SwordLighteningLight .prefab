@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "SwordFireLight",
+    "_name": "SwordLighteningLight ",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -79,41 +79,41 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
+    "_srcBlendFactor": 1,
     "_dstBlendFactor": 1,
     "_custom": true,
     "_file": {
-      "__uuid__": "ae8e633b-f9c4-4edf-ac6b-9e1ea20523f1"
+      "__uuid__": "3adccb9d-aa8b-4f52-a7ea-f23314c3091a"
     },
     "_spriteFrame": null,
     "_stopped": true,
     "playOnLoad": true,
     "autoRemoveOnFinish": true,
-    "totalParticles": 100,
+    "totalParticles": 220,
     "duration": 0.5,
-    "emissionRate": 100,
-    "life": 0.5,
-    "lifeVar": 0.25,
+    "emissionRate": 99.99999999999999,
+    "life": 1,
+    "lifeVar": 0.5,
     "_startColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 102,
-      "b": 51,
+      "r": 153,
+      "g": 204,
+      "b": 255,
       "a": 255
     },
     "_startColorVar": {
       "__type__": "cc.Color",
       "r": 0,
       "g": 0,
-      "b": 0,
-      "a": 0
+      "b": 51,
+      "a": 25
     },
     "_endColor": {
       "__type__": "cc.Color",
-      "r": 0,
-      "g": 0,
-      "b": 0,
-      "a": 255
+      "r": 100,
+      "g": 100,
+      "b": 100,
+      "a": 99
     },
     "_endColorVar": {
       "__type__": "cc.Color",
@@ -122,14 +122,14 @@
       "b": 0,
       "a": 0
     },
-    "angle": 90,
-    "angleVar": 10,
-    "startSize": 54,
-    "startSizeVar": 10,
-    "endSize": -1,
+    "angle": -180,
+    "angleVar": 180,
+    "startSize": 131,
+    "startSizeVar": 120,
+    "endSize": 32,
     "endSizeVar": 0,
-    "startSpin": 0,
-    "startSpinVar": 0,
+    "startSpin": -207,
+    "startSpinVar": 982,
     "endSpin": 0,
     "endSpinVar": 0,
     "sourcePos": {
@@ -139,8 +139,8 @@
     },
     "posVar": {
       "__type__": "cc.Vec2",
-      "x": 20,
-      "y": 20
+      "x": 5,
+      "y": 10
     },
     "positionType": 0,
     "emitterMode": 0,
@@ -149,10 +149,10 @@
       "x": 0,
       "y": 0
     },
-    "speed": 60,
-    "speedVar": 20,
-    "tangentialAccel": 0,
-    "tangentialAccelVar": 0,
+    "speed": 60.5,
+    "speedVar": 51,
+    "tangentialAccel": 10,
+    "tangentialAccelVar": 20,
     "radialAccel": 0,
     "radialAccelVar": 0,
     "rotationIsDir": false,
@@ -171,7 +171,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "a0aa9f75-f356-4db7-a414-3b463f7e71db"
+      "__uuid__": "ec9b5338-b461-4736-bbf3-e1d0f89bd351"
     },
     "fileId": "e4Zno+yVFOX5Yn0IwAofWG",
     "sync": false

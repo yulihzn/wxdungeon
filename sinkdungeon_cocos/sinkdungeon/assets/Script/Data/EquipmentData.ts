@@ -34,6 +34,21 @@ export default class EquipmentData{
     far = 0; //是否远距离
     isLocked = 0;//是否锁定
     trouserslong = 0;//是否长裤
+    iceDamage = 0;//冰元素伤害
+    iceDefence = 0;//冰元素抗性
+    iceRate = 0;//冰元素几率
+    fireDamage = 0;//火元素伤害
+    fireDefence = 0;//火元素抗性
+    fireRate = 0;//火元素几率
+    lighteningDamage = 0;//雷元素伤害
+    lighteningDefence = 0;//雷元素抗性
+    lighteningRate = 0;//雷元素几率
+    toxicDamage = 0;//毒元素伤害
+    toxicDefence = 0;//毒元素抗性
+    toxicRate = 0;//毒元素几率
+    curseDamage = 0;//诅咒元素伤害
+    curseDefence = 0;//诅咒元素抗性
+    curseRate = 0;//诅咒元素几率
     public valueCopy(data:EquipmentData):void{
         this.nameCn = data.nameCn?data.nameCn:this.nameCn;
         this.nameEn = data.nameEn;
@@ -59,6 +74,21 @@ export default class EquipmentData{
         this.isLocked = data.isLocked;
         this.level = data.level;
         this.trouserslong = data.trouserslong;
+        this.iceDamage = data.iceDamage;
+        this.iceDefence = data.iceDefence;
+        this.iceRate = data.iceRate;
+        this.fireDamage = data.fireDamage;
+        this.fireDefence = data.fireDefence;
+        this.fireRate = data.fireRate;
+        this.lighteningDamage = data.lighteningDamage;
+        this.lighteningDefence = data.lighteningDefence;
+        this.lighteningRate = data.lighteningRate;
+        this.toxicDamage = data.toxicDamage;
+        this.toxicDefence = data.toxicDefence;
+        this.toxicRate = data.toxicRate;
+        this.curseDamage = data.curseDamage;
+        this.curseDefence = data.curseDefence;
+        this.curseRate = data.curseRate;
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -86,6 +116,21 @@ export default class EquipmentData{
         e.isLocked = this.isLocked;
         e.level = this.level;
         e.trouserslong = this.trouserslong;
+        e.iceDamage = this.iceDamage;
+        e.iceDefence = this.iceDefence;
+        e.iceRate = this.iceRate;
+        e.fireDamage = this.fireDamage;
+        e.fireDefence = this.fireDefence;
+        e.fireRate = this.fireRate;
+        e.lighteningDamage = this.lighteningDamage;
+        e.lighteningDefence = this.lighteningDefence;
+        e.lighteningRate = this.lighteningRate;
+        e.toxicDamage = this.toxicDamage;
+        e.toxicDefence = this.toxicDefence;
+        e.toxicRate = this.toxicRate;
+        e.curseDamage = this.curseDamage;
+        e.curseDefence = this.curseDefence;
+        e.curseRate = this.curseRate;
         return e;
     }
 }

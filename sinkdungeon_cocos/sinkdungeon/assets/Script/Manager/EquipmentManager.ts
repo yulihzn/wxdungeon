@@ -20,6 +20,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class EquipmentManager extends cc.Component {
     public static readonly EMPTY = "emptyequipment";
+    public static readonly WEAPON_DINNERFORK = "weapon000";
     public static readonly WEAPON_KNIFE = "weapon001";
     public static readonly WEAPON_CHOPPER = "weapon002";
     public static readonly WEAPON_HUGEBLADE = "weapon003";
@@ -44,7 +45,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly SHOES_WARRIOR = "shoes001";
     public static readonly SHOES_SKATEBOARD = "shoes002";
     public static readonly SHOES_DEMON = "shoes003";
-    public static readonly equipments:string[]=[EquipmentManager.WEAPON_KNIFE,EquipmentManager.WEAPON_CHOPPER,
+    public static readonly equipments:string[]=[EquipmentManager.WEAPON_DINNERFORK,EquipmentManager.WEAPON_KNIFE,EquipmentManager.WEAPON_CHOPPER,
         EquipmentManager.WEAPON_HUGEBLADE,EquipmentManager.CLOTHES_SHIRT
         ,EquipmentManager.CLOTHES_VEST,EquipmentManager.CLOTHES_NAVY,EquipmentManager.CLOTHES_PIRATE,
         EquipmentManager.CLOTHES_BUCKET,EquipmentManager.CLOTHES_REDROBE,

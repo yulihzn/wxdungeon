@@ -19,6 +19,30 @@
         "health": 0,
         "desc": "nothing is here"
     },
+    "weapon000": {
+        "nameCn": "餐叉",
+        "nameEn": "dinner fork",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon000",
+        "damageMin": 1,
+        "damageMax": 2,
+        "criticalStrikeRate": 0,
+        "defence": 0,
+        "lifeDrain": 0,
+        "lifeRecovery": 0,
+        "moveSpeed": 0,
+        "attackSpeed": 0,
+        "dodge": 0,
+        "stab": 1,
+        "health": 0,
+        "curseRate":100,
+        "curseDamage":1,
+        "desc": "It's just a fork"
+    },
     "weapon001": {
         "nameCn": "餐刀",
         "nameEn": "dinner knife",
@@ -38,6 +62,8 @@
         "attackSpeed": 0,
         "dodge": 0,
         "health": 0,
+        "iceRate":100,
+        "iceDamage":1,
         "desc": "It seems good"
     },
     "weapon002": {
@@ -59,6 +85,8 @@
         "attackSpeed": 0,
         "dodge": 0,
         "health": 0,
+        "fireRate":100,
+        "fireDamage":1,
         "desc": "It smells good"
     },
     "weapon003": {
@@ -80,6 +108,8 @@
         "attackSpeed": -200,
         "dodge": 0,
         "health": 0,
+        "lighteningRate":100,
+        "lighteningDamage":1,
         "desc": "It's awesome!'",
         "far": 1
     },
@@ -104,6 +134,8 @@
         "dodge": 0,
         "health": 0,
         "desc": "stab!!!",
+        "toxicRate":100,
+        "toxicDamage":1,
         "far": 1
     },
     "helmet002": {
