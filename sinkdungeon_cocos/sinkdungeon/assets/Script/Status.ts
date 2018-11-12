@@ -17,12 +17,12 @@ export default class Status extends cc.Component {
     public static readonly DIZZ = 3;
     public static readonly TOXIC = 4;
     public static readonly CURSE = 5;
-    public static readonly BLEED = 5;
+    public static readonly BLEED = 6;
 
     anim:cc.Animation;
     label:cc.Label;
     duration:number = 0;
-    isRunning:boolean = false;
+    stateRunning:boolean = false;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -37,7 +37,7 @@ export default class Status extends cc.Component {
     showStatus(duration:number){
         if(!this.anim){return;}
         this.anim.playAdditive('StatusShow');
-        this.duration = duration;
+        this.duration += duration;
     }
     delayTime = 0;
     private isTimeDelay(dt: number): boolean {
@@ -49,7 +49,7 @@ export default class Status extends cc.Component {
         return false;
     }
     update (dt) {
-        this.isRunning = this.duration>0;
+        this.stateRunning = this.duration>0;
         this.label.string = `${this.duration}`;
         if(this.isTimeDelay(dt)){
             if(this.duration > 0){

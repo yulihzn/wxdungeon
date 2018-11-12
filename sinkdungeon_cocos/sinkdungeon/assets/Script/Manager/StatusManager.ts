@@ -21,9 +21,6 @@ export default class StatusManager extends cc.Component {
     curseStatus: Status = null;
     bleedStatus: Status = null;
 
-    @property
-    text: string = 'hello';
-
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -55,5 +52,9 @@ export default class StatusManager extends cc.Component {
         }
     }
 
-    // update (dt) {}
+    update (dt) {
+        if(this.node.parent){
+            this.node.scaleX = this.node.parent.scaleX;
+        }
+    }
 }

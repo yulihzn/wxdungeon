@@ -17,6 +17,7 @@ import Dungeon from './Dungeon';
 import MonsterManager from './Manager/MonsterManager';
 import Shooter from './Shooter';
 import Player from './Player';
+import StatusManager from './Manager/StatusManager';
 
 @ccclass
 export default class Monster extends cc.Component {
@@ -31,6 +32,8 @@ export default class Monster extends cc.Component {
     label: cc.Label = null;
     @property(HealthBar)
     healthBar: HealthBar = null;
+    @property(StatusManager)
+    statusManager:StatusManager = null;
     private sprite: cc.Node;
     private shadow: cc.Node;
     private dashlight: cc.Node;
@@ -226,6 +229,7 @@ export default class Monster extends cc.Component {
         this.isAttacking = false;
         this.sprite.stopAllActions();
         this.idleAction = null;
+        this.statusManager.addStatus(1,3);
         //100ms后修改受伤
         setTimeout(() => { if (this.node) { this.isHurt = false; } }, 200);
         this.sprite.opacity = 255;
@@ -313,7 +317,9 @@ export default class Monster extends cc.Component {
             this.changeBodyRes(this.data.resName);
             this.isDisguising = false;
         }
-        this.move(pos, speed);
+        Logic.getHalfChance(){
+            this.move(pos, speed);
+        }
         
     }
     lerp(a, b, r) {

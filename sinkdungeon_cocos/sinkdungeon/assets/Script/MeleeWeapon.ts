@@ -125,17 +125,22 @@ export default class MeleeWeapon extends cc.Component {
             return;
         }
         let firePrefab: cc.Node = cc.instantiate(lights[elementType - 1]);
-        let xoffset = 50;
-        let xoffset1 = 40;
+        let xoffset = 60;
         let yoffset = 60;
-        if (isFar) {
-            xoffset = 70;
-            xoffset1 = 60;
-            yoffset = 70;
+        if(isStab){
+            xoffset = 10;
         }
-        let notStab1 = [cc.v2(p.x, -p.y - yoffset), cc.v2(p.x + xoffset1, -p.y - yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset1, p.y + yoffset / 2), cc.v2(p.x, p.y + yoffset)];
-        let notStab2 = [cc.v2(p.x, p.y + yoffset), cc.v2(p.x + xoffset1, p.y + yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset1, -p.y - yoffset / 2), cc.v2(p.x, -p.y - yoffset)];
-        let ps = [cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset, p.y)];
+        if (isFar) {
+            if(isStab){
+                xoffset += 20;
+            }else{
+                xoffset += 80;
+            }
+            yoffset += 10;
+        }
+        let notStab1 = [cc.v2(p.x, -p.y - yoffset), cc.v2(p.x + xoffset*0.9, -p.y - yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset*0.9, p.y + yoffset / 2), cc.v2(p.x, p.y + yoffset)];
+        let notStab2 = [cc.v2(p.x, p.y + yoffset), cc.v2(p.x + xoffset*0.9, p.y + yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset*0.9, -p.y - yoffset / 2), cc.v2(p.x, -p.y - yoffset)];
+        let ps = [cc.v2(p.x-xoffset*2, p.y), cc.v2(p.x - xoffset*0.5, p.y), cc.v2(p.x , p.y), cc.v2(p.x + xoffset*0.5, p.y), cc.v2(p.x + xoffset, p.y)];
         if (!isStab) {
             ps = isReverse ? notStab1 : notStab2;
         }

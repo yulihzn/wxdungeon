@@ -52,8 +52,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
+      "x": 0.2,
+      "y": 0.2,
       "z": 1
     },
     "_rotationX": 0,
@@ -86,7 +86,7 @@
       "__uuid__": "f1f830a8-c30c-4836-9078-77852bc13481"
     },
     "_spriteFrame": null,
-    "_stopped": false,
+    "_stopped": true,
     "playOnLoad": true,
     "autoRemoveOnFinish": true,
     "totalParticles": 100,
