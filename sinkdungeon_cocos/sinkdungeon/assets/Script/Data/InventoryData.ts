@@ -91,11 +91,11 @@ export default class InventoryData {
         +this.trousers.defence+this.gloves.defence+this.shoes.defence+this.cloak.defence+this.buffer.lifeRecovery;
         return defence;
     }
-    //30s生命恢复可以为负数
+    //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
     getRecovery():number{
         let recovery = this.weapon.lifeRecovery+this.helmet.lifeRecovery+this.clothes.lifeRecovery
         +this.trousers.lifeRecovery+this.gloves.lifeRecovery+this.shoes.lifeRecovery+this.cloak.lifeRecovery+this.buffer.lifeRecovery;
-        return recovery;
+        return recovery>0?recovery:0;
     }
     //吸血默认是1暴击时吸血翻倍
     getLifeDrain():number{
