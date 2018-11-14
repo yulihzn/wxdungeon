@@ -1,5 +1,6 @@
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
+import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,7 +30,9 @@ export default class CaptainSword extends cc.Component {
         let player = other.node.getComponent(Player);
         if(player && this.isShow && this.node.active){
             this.isShow = false;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:this.damage}});
+            let dd = new DamageData();
+            dd.physicalDamage = this.damage;
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});
         }
     }
     // update (dt) {}

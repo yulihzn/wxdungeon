@@ -1,5 +1,6 @@
 import Player from "../Player";
 import { EventConstant } from "../EventConstant";
+import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,7 +58,7 @@ export default class FallStone extends cc.Component {
         if (player) {
             if (this.isFall&&this.isValid) {
                 this.isFall = false;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: 2 } });
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: new DamageData(2) } });
             }
             
         }

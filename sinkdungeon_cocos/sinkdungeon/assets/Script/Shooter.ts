@@ -98,7 +98,7 @@ export default class Shooter extends cc.Component {
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
         if (bullet.isFromPlayer && bullet.isMelee && this.player) {
-            bullet.damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
+            // bullet.damage = this.player.baseAttackPoint;
         }
         bullet.showBullet(this.hv.clone().rotateSelf(angleOffset*Math.PI/180));
     }

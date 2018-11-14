@@ -5,6 +5,8 @@ import { EventConstant } from "../EventConstant";
 import KrakenSwingHand from "./KrakenSwingHand";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
+import DamageData from "../Data/DamageData";
+import StatusManager from "../Manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,6 +33,8 @@ export default class Kraken extends cc.Component {
     hand1:KrakenSwingHand = null;
     @property(KrakenSwingHand)
     hand2:KrakenSwingHand = null;
+    @property(StatusManager)
+    statusManager: StatusManager = null;
     private sprite: cc.Node;
     private anim: cc.Animation;
     isDied = false;
@@ -99,11 +103,11 @@ export default class Kraken extends cc.Component {
         }
     }
 
-    takeDamage(damage: number):boolean {
+    takeDamage(damage: DamageData):boolean {
         if(this.isDied||!this.isShow){
             return false;
         }
-        this.data.currentHealth -= damage;
+        this.data.currentHealth -= this.data.getDamage(damage).getTotalDamge();
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
         }
@@ -118,6 +122,9 @@ export default class Kraken extends cc.Component {
             }
         }
         return true;
+    }
+    addStatus(statusType:string){
+        this.statusManager.addStatus(statusType);
     }
     killed() {
         if (this.isDied) {

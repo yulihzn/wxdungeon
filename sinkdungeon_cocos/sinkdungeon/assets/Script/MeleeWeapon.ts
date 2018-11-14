@@ -9,6 +9,8 @@ import Logic from "./Logic";
 import MeleeWeaponChild from "./MeleeWeaponChild";
 import Captain from "./Boss/Captain";
 import EquipmentData from "./Data/EquipmentData";
+import DamageData from "./Data/DamageData";
+import StatusManager from "./Manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -263,7 +265,7 @@ export default class MeleeWeapon extends cc.Component {
         }
         // this.waveWeapon.isAttacking = true;
         // this.stabWeapon.isAttacking = true;
-        let damage = 0;
+        let damage = new DamageData();
         if (this.player) {
             damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
         }
@@ -273,6 +275,11 @@ export default class MeleeWeapon extends cc.Component {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(monster.node);
+                this.addMonsterStatus(this.player.inventoryData.getIceRate(),monster,StatusManager.FROZEN);
+                this.addMonsterStatus(this.player.inventoryData.getFireRate(),monster,StatusManager.BURNING);
+                this.addMonsterStatus(this.player.inventoryData.getLighteningRate(),monster,StatusManager.DIZZ);
+                this.addMonsterStatus(this.player.inventoryData.getToxicRate(),monster,StatusManager.TOXICOSIS);
+                this.addMonsterStatus(this.player.inventoryData.getCurseRate(),monster,StatusManager.CURSING);
             }
         }
 
@@ -291,7 +298,16 @@ export default class MeleeWeapon extends cc.Component {
         //生命汲取
         let drain = this.player.inventoryData.getLifeDrain();
         if (drain > 0 && damageSuccess) {
-            this.player.takeDamage(-drain);
+            this.player.takeDamage(new DamageData(-drain));
         }
     }
+   addMonsterStatus(rate:number,monster:Monster,statusType){
+    if(Logic.getRandomNum(0,100)<rate){monster.addStatus(statusType);}
+   }
+   addKrakenStatus(rate:number,boss:Kraken,statusType){
+    if(Logic.getRandomNum(0,100)<rate){boss.addStatus(statusType);}
+   }
+   addCaptainStatus(rate:number,boss:Captain,statusType){
+    if(Logic.getRandomNum(0,100)<rate){boss.addStatus(statusType);}
+   }
 }

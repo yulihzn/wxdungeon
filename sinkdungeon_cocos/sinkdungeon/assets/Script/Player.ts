@@ -24,6 +24,7 @@ import WalkSmoke from './WalkSmoke';
 import RectDungeon from './Rect/RectDungeon';
 import StatusManager from './Manager/StatusManager';
 import Status from './Status';
+import DamageData from './Data/DamageData';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -287,7 +288,6 @@ export default class Player extends cc.Component {
         }, this));
         this.sprite.runAction(action);
         this.meleeWeapon.attack(this.inventoryData.getAttackSpeed(),this.inventoryData.weapon);
-        this.statusManager.addStatus(Logic.getRandomNum(1,6),Logic.getRandomNum(1,6));
     }
     remoteRate = 0;
     remoteAttack() {
@@ -426,20 +426,22 @@ export default class Player extends cc.Component {
         setTimeout(() => {
             this.transportPlayer(this.defaultPos);
             this.anim.play('PlayerIdle');
-            this.takeDamage(1);
+            let dd = new DamageData();
+            dd.realDamge =1;
+            this.takeDamage(dd);
             this.isFall = false;
         }, 2000);
     }
-    takeDamage(damage: number) {
+    takeDamage(damageData: DamageData) {
         if (!this.healthBar) {
             return;
         }
-        let d = this.inventoryData.getDamage(damage);
+        let dd = this.inventoryData.getDamage(damageData);
         let dodge = this.inventoryData.getDodge();
-        let isDodge = Math.random() <= dodge && d > 0;
-        d = isDodge ? 0 : d;
+        let isDodge = Math.random() <= dodge && dd.getTotalDamge() > 0;
+        dd = isDodge ? new DamageData() : dd;
         this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
-        this.health.x -= d;
+        this.health.x -= dd.getTotalDamge();
         if (this.health.x > this.health.y) {
             this.health.x = this.health.y;
         }
@@ -448,8 +450,8 @@ export default class Player extends cc.Component {
         if (this.label) {
             this.label.node.opacity = 255;
             this.label.node.scaleX = this.node.scaleX;
-            this.label.node.color = damage > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
-            this.label.string = `${parseFloat((-damage).toFixed(1))}`;
+            this.label.node.color = dd.getTotalDamge() > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
+            this.label.string = `${parseFloat((-dd.getTotalDamge()).toFixed(1))}`;
             if (isDodge) {
                 this.label.node.color = cc.color(255, 255, 255);
                 this.label.string = `miss`;
@@ -505,7 +507,9 @@ export default class Player extends cc.Component {
         if (this.isRecoveryTimeDelay(dt)) {
             let re = this.inventoryData.getRecovery();
             if (re > 0) {
-                this.takeDamage(-re);
+                let dd = new DamageData();
+                dd.realDamge = -re;
+                this.takeDamage(dd);
             }
         }
         if (this.isSmokeTimeDelay(dt)&&this.isMoving) {

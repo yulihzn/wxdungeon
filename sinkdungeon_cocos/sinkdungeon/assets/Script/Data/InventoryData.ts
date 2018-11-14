@@ -1,4 +1,5 @@
 import EquipmentData from "./EquipmentData";
+import DamageData from "./DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -48,14 +49,22 @@ export default class InventoryData {
     }
     //计算攻击的最终结果  
     //5% 6% 20% 1-0.95x0.94X0.8 = 0.16951
-    getFinalAttackPoint(baseAttackPoint:number):number{
+    getFinalAttackPoint(baseAttackPoint:number):DamageData{
+        let dd = new DamageData();
         let attackPoint = this.getAttackPoint(baseAttackPoint);
         let chance = this.getCriticalStrikeRate();
         let attack = Math.random()>chance?attackPoint.x:attackPoint.x+attackPoint.y;
         if(attack < 0){
             attack = 0;
         }
-        return attack;
+        dd.physicalDamage = attack;
+        dd.realDamge = this.getRealDamge();
+        dd.iceDamage = this.getIceDamge();
+        dd.fireDamage = this.getFireDamge();
+        dd.lighteningDamage = this.getLighteningDamge();
+        dd.toxicDamage = this.getToxicDamge();
+        dd.curseDamage = this.getCurseDamge();
+        return dd;
     }
     //获取暴击率
     getCriticalStrikeRate():number{
@@ -68,12 +77,22 @@ export default class InventoryData {
         return chance;
     }
     //伤害减免
-    getDamage(damage:number):number{
-        let finalDamage = damage;
+    getDamage(damageData:DamageData):DamageData{
+        let finalDamageData = damageData.clone();
         let defence = this.getDefence();
+        let defenceIce = this.getIceDefence();
+        let defenceFire = this.getFireDefence();
+        let defenceLightening = this.getLighteningDefence();
+        let defenceToxic = this.getToxicDefence();
+        let defenceCurse = this.getCurseDefence();
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))可以为负
-        finalDamage = finalDamage*(1-defence*0.06/(defence*0.06+1));
-        return finalDamage;
+        finalDamageData.physicalDamage = finalDamageData.physicalDamage*(1-defence*0.06/(defence*0.06+1));
+        finalDamageData.iceDamage = finalDamageData.iceDamage*(1-defenceIce/100);
+        finalDamageData.fireDamage = finalDamageData.fireDamage*(1-defenceFire/100);
+        finalDamageData.lighteningDamage = finalDamageData.lighteningDamage*(1-defenceLightening/100);
+        finalDamageData.toxicDamage = finalDamageData.toxicDamage*(1-defenceToxic/100);
+        finalDamageData.curseDamage = finalDamageData.curseDamage*(1-defenceCurse/100);
+        return finalDamageData;
     }
     //闪避
     getDodge():number{
@@ -90,6 +109,136 @@ export default class InventoryData {
         let defence = this.weapon.defence+this.helmet.defence+this.clothes.defence
         +this.trousers.defence+this.gloves.defence+this.shoes.defence+this.cloak.defence+this.buffer.lifeRecovery;
         return defence;
+    }
+    getIceDefence():number{
+        let defence = this.weapon.iceDefence+this.helmet.iceDefence+this.clothes.iceDefence
+        +this.trousers.iceDefence+this.gloves.iceDefence+this.shoes.iceDefence+this.cloak.iceDefence+this.buffer.iceDefence;
+        if(defence>100){
+            defence = 100;
+        }
+        return defence;
+    }
+    getFireDefence():number{
+        let defence = this.weapon.fireDefence+this.helmet.fireDefence+this.clothes.fireDefence
+        +this.trousers.fireDefence+this.gloves.fireDefence+this.shoes.fireDefence+this.cloak.fireDefence+this.buffer.fireDefence;
+        if(defence>100){
+            defence = 100;
+        }
+        return defence;
+    }
+    getLighteningDefence():number{
+        let defence = this.weapon.lighteningDefence+this.helmet.lighteningDefence+this.clothes.lighteningDefence
+        +this.trousers.lighteningDefence+this.gloves.lighteningDefence+this.shoes.lighteningDefence+this.cloak.lighteningDefence+this.buffer.lighteningDefence;
+        if(defence>100){
+            defence = 100;
+        }
+        return defence;
+    }
+    getToxicDefence():number{
+        let defence = this.weapon.toxicDefence+this.helmet.toxicDefence+this.clothes.toxicDefence
+        +this.trousers.toxicDefence+this.gloves.toxicDefence+this.shoes.toxicDefence+this.cloak.toxicDefence+this.buffer.toxicDefence;
+        if(defence>100){
+            defence = 100;
+        }
+        return defence;
+    }
+    getCurseDefence():number{
+        let defence = this.weapon.curseDefence+this.helmet.curseDefence+this.clothes.curseDefence
+        +this.trousers.curseDefence+this.gloves.curseDefence+this.shoes.curseDefence+this.cloak.curseDefence+this.buffer.curseDefence;
+        if(defence>100){
+            defence = 100;
+        }
+        return defence;
+    }
+    getRealDamge():number{
+        let damge = this.weapon.realDamge+this.helmet.realDamge+this.clothes.realDamge
+        +this.trousers.realDamge+this.gloves.realDamge+this.shoes.realDamge+this.cloak.realDamge+this.buffer.realDamge;
+        if(damge < 0){
+            damge = 0;
+        }
+        return damge;
+    }
+    getIceDamge():number{
+        let damge = this.weapon.iceDamage+this.helmet.iceDamage+this.clothes.iceDamage
+        +this.trousers.iceDamage+this.gloves.iceDamage+this.shoes.iceDamage+this.cloak.iceDamage+this.buffer.iceDamage;
+        if(damge < 0){
+            damge = 0;
+        }
+        return damge;
+    }
+    getFireDamge():number{
+        let damge = this.weapon.fireDamage+this.helmet.fireDamage+this.clothes.fireDamage
+        +this.trousers.fireDamage+this.gloves.fireDamage+this.shoes.fireDamage+this.cloak.fireDamage+this.buffer.fireDamage;
+        if(damge < 0){
+            damge = 0;
+        }
+        return damge;
+    }
+    getLighteningDamge():number{
+        let damge = this.weapon.lighteningDamage+this.helmet.lighteningDamage+this.clothes.lighteningDamage
+        +this.trousers.lighteningDamage+this.gloves.lighteningDamage+this.shoes.lighteningDamage+this.cloak.lighteningDamage+this.buffer.lighteningDamage;
+        if(damge < 0){
+            damge = 0;
+        }
+        return damge;
+    }
+    getToxicDamge():number{
+        let damge = this.weapon.toxicDamage+this.helmet.toxicDamage+this.clothes.toxicDamage
+        +this.trousers.toxicDamage+this.gloves.toxicDamage+this.shoes.toxicDamage+this.cloak.toxicDamage+this.buffer.toxicDamage;
+        if(damge < 0){
+            damge = 0;
+        }
+        return damge;
+    }
+    getCurseDamge():number{
+        let damge = this.weapon.curseDamage+this.helmet.curseDamage+this.clothes.curseDamage
+        +this.trousers.curseDamage+this.gloves.curseDamage+this.shoes.curseDamage+this.cloak.curseDamage+this.buffer.curseDamage;
+        if(damge < 0){
+            damge = 0;
+        }
+        return damge;
+    }
+    getRealRate():number{
+        let rate = this.weapon.realRate+this.helmet.realRate+this.clothes.realRate
+        +this.trousers.realRate+this.gloves.realRate+this.shoes.realRate+this.cloak.realRate+this.buffer.realRate;
+        rate = rate < 0?0:rate;
+        rate = rate > 100?100:rate;
+        return rate;
+    }
+    getIceRate():number{
+        let rate = this.weapon.iceRate+this.helmet.iceRate+this.clothes.iceRate
+        +this.trousers.iceRate+this.gloves.iceRate+this.shoes.iceRate+this.cloak.iceRate+this.buffer.iceRate;
+        rate = rate < 0?0:rate;
+        rate = rate > 100?100:rate;
+        return rate;
+    }
+    getFireRate():number{
+        let rate = this.weapon.fireRate+this.helmet.fireRate+this.clothes.fireRate
+        +this.trousers.fireRate+this.gloves.fireRate+this.shoes.fireRate+this.cloak.fireRate+this.buffer.fireRate;
+        rate = rate < 0?0:rate;
+        rate = rate > 100?100:rate;
+        return rate;
+    }
+    getLighteningRate():number{
+        let rate = this.weapon.lighteningRate+this.helmet.lighteningRate+this.clothes.lighteningRate
+        +this.trousers.lighteningRate+this.gloves.lighteningRate+this.shoes.lighteningRate+this.cloak.lighteningRate+this.buffer.lighteningRate;
+        rate = rate < 0?0:rate;
+        rate = rate > 100?100:rate;
+        return rate;
+    }
+    getToxicRate():number{
+        let rate = this.weapon.toxicRate+this.helmet.toxicRate+this.clothes.toxicRate
+        +this.trousers.toxicRate+this.gloves.toxicRate+this.shoes.toxicRate+this.cloak.toxicRate+this.buffer.toxicRate;
+        rate = rate < 0?0:rate;
+        rate = rate > 100?100:rate;
+        return rate;
+    }
+    getCurseRate():number{
+        let rate = this.weapon.curseRate+this.helmet.curseRate+this.clothes.curseRate
+        +this.trousers.curseRate+this.gloves.curseRate+this.shoes.curseRate+this.cloak.curseRate+this.buffer.curseRate;
+        rate = rate < 0?0:rate;
+        rate = rate > 100?100:rate;
+        return rate;
     }
     //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
     getRecovery():number{

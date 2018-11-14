@@ -1,6 +1,7 @@
 import Dungeon from "../Dungeon";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
+import DamageData from "../Data/DamageData";
 
 
 // Learn TypeScript:
@@ -63,7 +64,7 @@ export default class Trap extends cc.Component {
         if(other.tag == 3){
             if(this.isOpen && this.isPlayerIn){
                 this.isOpen = false;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:1}});
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:new DamageData(1)}});
             }
         }
     }

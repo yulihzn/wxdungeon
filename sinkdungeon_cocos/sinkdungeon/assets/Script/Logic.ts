@@ -12,6 +12,7 @@ import Box from "./Building/Box";
 import BoxData from "./Data/BoxData";
 import ShopTableData from "./Data/ShopTableData";
 import MonsterData from "./Data/MonsterData";
+import StatusData from "./Data/StatusData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,6 +39,7 @@ export default class Logic extends cc.Component {
     static equipments: { [key: string]: EquipmentData } = null;
     static monsters:{[key:string]:MonsterData} = null;
     static spriteFrames:{ [key: string]: cc.SpriteFrame } = null;
+    static debuffs:{[key:string]:StatusData} = null;
     // static currentRectRoom:RectRoom = null;
     static currentDir:number=0;
     static coins = 0;//金币

@@ -27,6 +27,7 @@ export default class Loading extends cc.Component {
     private isMonsterLoaded = false;
     private isLevelLoaded = false;
     private isSpriteFramesLoaded = false;
+    private isDebuffsLoaded = false;
     // LIFE-CYCLE CALLBACKS:
 
 
@@ -42,6 +43,7 @@ export default class Loading extends cc.Component {
         this.loadEquipment();
         this.loadSpriteFrames();
         this.loadMonsters();
+        this.loadDebuffs();
     }
     loadMap() {
         Logic.mapManger.isloaded = false;
@@ -58,6 +60,20 @@ export default class Loading extends cc.Component {
             } else {
                 Logic.equipments = resource.json;
                 this.isEquipmentLoaded = true;
+            }
+        })
+    }
+    loadDebuffs() {
+        if (Logic.debuffs) {
+            this.isDebuffsLoaded = true;
+            return;
+        }
+        cc.loader.loadRes('Data/Status/status', (err: Error, resource) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.debuffs = resource.json;
+                this.isDebuffsLoaded = true;
             }
         })
     }
@@ -93,11 +109,13 @@ export default class Loading extends cc.Component {
     update(dt) {
         this.timeDelay += dt;
         this.isLevelLoaded = Logic.mapManger.isloaded;
-        if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded && this.isSpriteFramesLoaded && this.isMonsterLoaded) {
+        if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded 
+            && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
+            this.isDebuffsLoaded = false;
             cc.director.loadScene('game');
         }
     }

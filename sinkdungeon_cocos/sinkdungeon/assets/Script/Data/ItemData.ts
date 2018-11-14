@@ -13,7 +13,7 @@
  * 负面：冰冻、燃烧、减速、中毒、诅咒、流血、道具
  * 正面：祝福、道具、天赋
  */
-export default class StatusData {
+export default class ItemData {
     statusType: number = 0;//状态类型
     nameCn: string = '';
     nameEn: string = '';
@@ -37,7 +37,6 @@ export default class StatusData {
 
     realDamgeDirect:number= 0;//瞬间真实伤害
     realDamgeOvertime: number = 0;//持续真实伤害
-    realRate = 0;//真实伤害几率
 
     iceDamageDirect = 0;//瞬间冰元素伤害
     iceDamageOvertime = 0;//持续冰元素伤害
@@ -69,7 +68,7 @@ export default class StatusData {
     curseDefence = 0;//诅咒元素抗性
     curseRate = 0;//诅咒元素释放几率
 
-    public valueCopy(data: StatusData): void {
+    public valueCopy(data: ItemData): void {
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
         this.statusType = data.statusType;
@@ -90,7 +89,6 @@ export default class StatusData {
         this.maxHealth = data.maxHealth;
         this.realDamgeDirect = data.realDamgeDirect;
         this.realDamgeOvertime = data.realDamgeOvertime;
-        this.realRate = data.realRate;
         this.iceDamageDirect = data.iceDamageDirect;
         this.iceDamageOvertime = data.iceDamageOvertime;
         this.iceDamageDecrease = data.iceDamageDecrease;
@@ -117,8 +115,8 @@ export default class StatusData {
         this.curseDefence = data.curseDefence;
         this.curseRate = data.curseRate;
     }
-    public clone(): StatusData {
-        let e = new StatusData();
+    public clone(): ItemData {
+        let e = new ItemData();
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
         e.statusType = this.statusType;
@@ -138,7 +136,6 @@ export default class StatusData {
         e.maxHealth = this.maxHealth;
         e.realDamgeDirect = this.realDamgeDirect;
         e.realDamgeOvertime = this.realDamgeDirect;
-        e.realRate = this.realRate;
         e.iceDamageDirect = this.iceDamageDirect;
         e.iceDamageOvertime = this.iceDamageOvertime;
         e.iceDamageDecrease = this.iceDamageDecrease;

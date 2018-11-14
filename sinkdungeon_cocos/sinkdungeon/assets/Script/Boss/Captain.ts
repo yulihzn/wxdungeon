@@ -7,6 +7,8 @@ import Player from "../Player";
 import { EventConstant } from "../EventConstant";
 import Shooter from "../Shooter";
 import EquipmentManager from "../Manager/EquipmentManager";
+import DamageData from "../Data/DamageData";
+import StatusManager from "../Manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,6 +28,8 @@ export default class Captain extends cc.Component {
 
     @property(CaptainSword)
     sword: CaptainSword = null;
+    @property(StatusManager)
+    statusManager: StatusManager = null;
     healthBar: HealthBar = null;
     // LIFE-CYCLE CALLBACKS:
     data: MonsterData = new MonsterData();
@@ -131,7 +135,9 @@ export default class Captain extends cc.Component {
         if (player && self.tag == 1) {
             if (this.isFall) {
                 this.isFall = false;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: 2 } });
+                let dd = new DamageData();
+                dd.physicalDamage = 2;
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: dd } });
             }
         }
     }
@@ -171,12 +177,12 @@ export default class Captain extends cc.Component {
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
-    takeDamage(damage: number):boolean {
+    takeDamage(damage: DamageData):boolean {
         let isPlayJump = this.anim.getAnimationState("CaptainJump").isPlaying;
         if(this.isDied||isPlayJump){
             return false;
         }
-        this.data.currentHealth -= damage;
+        this.data.currentHealth -= this.data.getDamage(damage).getTotalDamge();
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
         }
@@ -187,6 +193,9 @@ export default class Captain extends cc.Component {
         this.isAttacking = false;
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
         return true;
+    }
+    addStatus(statusType:string){
+        this.statusManager.addStatus(statusType);
     }
     killed() {
         if (this.isDied) {

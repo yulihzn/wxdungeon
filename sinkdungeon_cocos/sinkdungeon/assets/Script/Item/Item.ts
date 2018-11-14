@@ -1,6 +1,7 @@
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import Logic from "../Logic";
+import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,7 +37,7 @@ export default class Item extends cc.Component {
             this.anim.play('ItemTaken');
             this.isTaken = true;
             if(this.damage!=0){
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:this.damage}});
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:new DamageData(this.damage)}});
             }
             if(this.ammo != 0){
                 Logic.ammo+=this.ammo;

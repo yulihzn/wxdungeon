@@ -4,6 +4,7 @@ import Player from "../Player";
 import Kraken from "../Boss/Kraken";
 import MeleeWeapon from "../MeleeWeapon";
 import Captain from "../Boss/Captain";
+import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,13 +23,25 @@ export default class Bullet extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;
-
     @property
-    damage: number = 1;
+    realDamge:number = 0;//真实伤害
+    @property
+    physicalDamage: number = 0;//物理伤害
+    @property
+    iceDamage = 0;//冰元素伤害
+    @property
+    fireDamage = 0;//火元素伤害
+    @property
+    lighteningDamage = 0;//雷元素伤害
+    @property
+    toxicDamage = 0;//毒元素伤害
+    @property
+    curseDamage = 0;//诅咒元素伤害
     @property
     speed: number = 500;
     @property
     isMelee:boolean = false;
+    damageData:DamageData = new DamageData();
 
     anim:cc.Animation;
     dir = 0;
@@ -41,11 +54,24 @@ export default class Bullet extends cc.Component {
     light:cc.Node;
     readonly KEEP_LIST = ['Monster','Kraken','Captain'];
 
+    particleIce:cc.ParticleSystem;
+    particleFire:cc.ParticleSystem;
+    particleLightening:cc.ParticleSystem;
+    particleToxic:cc.ParticleSystem;
+    particleCurse:cc.ParticleSystem;
+
+    
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
+        this.particleIce = this.node.getChildByName('effect').getChildByName('ice').getComponent(cc.ParticleSystem);
+        this.particleFire = this.node.getChildByName('effect').getChildByName('fire').getComponent(cc.ParticleSystem);
+        this.particleLightening = this.node.getChildByName('effect').getChildByName('lightening').getComponent(cc.ParticleSystem);
+        this.particleToxic = this.node.getChildByName('effect').getChildByName('toxic').getComponent(cc.ParticleSystem);
+        this.particleCurse = this.node.getChildByName('effect').getChildByName('curse').getComponent(cc.ParticleSystem);
         
     }
     onEnable(){
@@ -55,6 +81,18 @@ export default class Bullet extends cc.Component {
         this.sprite.opacity = 255;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
+        this.damageData.realDamge = this.realDamge;
+        this.damageData.physicalDamage = this.physicalDamage;
+        this.damageData.iceDamage = this.iceDamage;
+        this.damageData.fireDamage = this.fireDamage;
+        this.damageData.lighteningDamage = this.lighteningDamage;
+        this.damageData.toxicDamage = this.toxicDamage;
+        this.damageData.curseDamage = this.curseDamage;
+        this.iceDamage>0?this.particleIce.resetSystem():this.particleIce.stopSystem();
+        this.fireDamage>0?this.particleFire.resetSystem():this.particleFire.stopSystem();
+        this.lighteningDamage>0?this.particleLightening.resetSystem():this.particleLightening.stopSystem();
+        this.toxicDamage>0?this.particleToxic.resetSystem():this.particleToxic.stopSystem();
+        this.curseDamage>0?this.particleCurse.resetSystem():this.particleCurse.stopSystem();
     }
     //animation
     MeleeFinish(){
@@ -71,6 +109,11 @@ export default class Bullet extends cc.Component {
     //animation
     BulletDestory(){
         cc.director.emit('destorybullet',{detail:{bulletNode:this.node}});
+        this.particleIce.stopSystem();
+        this.particleFire.stopSystem();
+        this.particleLightening.stopSystem();
+        this.particleToxic.stopSystem();
+        this.particleCurse.stopSystem();
     }
     fire(hv){
         if(!this.rigidBody){
@@ -125,7 +168,8 @@ export default class Bullet extends cc.Component {
         if (!attackTarget) {
             return;
         }
-        let damage = this.damage;
+        let damage = new DamageData();
+        damage.valueCopy(this.damageData);
         let isDestory = false;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {

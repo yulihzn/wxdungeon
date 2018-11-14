@@ -1,4 +1,7 @@
 import Status from "../Status";
+import StatusData from "../Data/StatusData";
+import Logic from "../Logic";
+import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,44 +17,47 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class StatusManager extends cc.Component {
-    iceStatus: Status = null;
-    fireStatus: Status = null;
-    dizzStatus: Status = null;
-    toxicStatus: Status = null;
-    curseStatus: Status = null;
-    bleedStatus: Status = null;
+    public static readonly FROZEN = "status001";
+    public static readonly BURNING = "status002";
+    public static readonly DIZZ = "status003";
+    public static readonly TOXICOSIS = "status004";
+    public static readonly CURSING = "status005";
+    public static readonly BLEEDING = "status006";
+
+
+    @property(cc.Prefab)
+    statusPrefab:cc.Prefab = null;
+    private statusList:Status[];
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.iceStatus = this.node.getChildByName('ice').getComponent(Status);
-        this.fireStatus = this.node.getChildByName('fire').getComponent(Status);
-        this.dizzStatus = this.node.getChildByName('dizz').getComponent(Status);
-        this.toxicStatus = this.node.getChildByName('toxic').getComponent(Status);
-        this.curseStatus = this.node.getChildByName('curse').getComponent(Status);
-        this.bleedStatus = this.node.getChildByName('bleed').getComponent(Status);
-        this.iceStatus.node.active = false;
-        this.fireStatus.node.active = false;
-        this.dizzStatus.node.active = false;
-        this.toxicStatus.node.active = false;
-        this.curseStatus.node.active = false;
-        this.bleedStatus.node.active = false;
+        this.statusList = new Array();
     }
 
     start () {
 
     }
-    addStatus(type:number,duration:number){
-        switch(type){
-            case Status.ICE:this.iceStatus.node.active = true;this.iceStatus.showStatus(duration);break;
-            case Status.FIRE:this.fireStatus.node.active = true;this.fireStatus.showStatus(duration);break;
-            case Status.DIZZ:this.dizzStatus.node.active = true;this.dizzStatus.showStatus(duration);break;
-            case Status.TOXIC:this.toxicStatus.node.active = true;this.toxicStatus.showStatus(duration);break;
-            case Status.CURSE:this.curseStatus.node.active = true;this.curseStatus.showStatus(duration);break;
-            case Status.BLEED:this.bleedStatus.node.active = true;this.bleedStatus.showStatus(duration);break;
-        }
+    addStatus(resName){
+        let sd = new StatusData();
+        sd.valueCopy(Logic.debuffs[resName]) 
+        this.showStatus(sd);
     }
-
+    private showStatus(data:StatusData) {
+        for(let i = this.statusList.length-1;i>=0;i--){
+            let s = this.statusList[i];
+            if(!s||!s.node||!s.isValid||!s.isStatusRunning()){
+                this.statusList.splice(i,1);
+            }
+        }
+        console.log(this.statusList.length);
+        let statusNode: cc.Node = cc.instantiate(this.statusPrefab);
+        statusNode.parent = this.node;
+        statusNode.active = true;
+        let status = statusNode.getComponent(Status);
+        this.statusList.push(status);
+        status.showStatus(this.node.parent,data);
+    }
     update (dt) {
         if(this.node.parent){
             this.node.scaleX = this.node.parent.scaleX;
