@@ -51,6 +51,15 @@ export default class EquipmentData{
     curseDamage = 0;//诅咒元素伤害
     curseDefence = 0;//诅咒元素抗性
     curseRate = 0;//诅咒元素几率
+
+    info1:string = '';
+    info2:string = '';
+    info3:string = '';
+    suit1:string = '';
+    suit2:string = '';
+    suit3:string = '';
+    infobase:string = '';
+
     public valueCopy(data:EquipmentData):void{
         this.nameCn = data.nameCn?data.nameCn:'';
         this.nameEn = data.nameEn?data.nameEn:'';
@@ -93,6 +102,13 @@ export default class EquipmentData{
         this.curseDamage = data.curseDamage?data.curseDamage:0;
         this.curseDefence = data.curseDefence?data.curseDefence:0;
         this.curseRate = data.curseRate?data.curseRate:0;
+        this.info1 = data.info1?data.info1:'';
+        this.info2 = data.info2?data.info2:'';
+        this.info3 = data.info3?data.info3:'';
+        this.suit1 = data.suit1?data.suit1:'';
+        this.suit2 = data.suit2?data.suit2:'';
+        this.suit3 = data.suit3?data.suit3:'';
+        this.infobase = data.infobase?data.infobase:'';
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -137,6 +153,13 @@ export default class EquipmentData{
         e.curseDamage = this.curseDamage;
         e.curseDefence = this.curseDefence;
         e.curseRate = this.curseRate;
+        e.info1 = this.info1;
+        e.info2 = this.info2;
+        e.info3 = this.info3;
+        e.suit1 = this.suit1;
+        e.suit2 = this.suit2;
+        e.suit3 = this.suit3;
+        e.infobase = this.infobase;
         return e;
     }
 }

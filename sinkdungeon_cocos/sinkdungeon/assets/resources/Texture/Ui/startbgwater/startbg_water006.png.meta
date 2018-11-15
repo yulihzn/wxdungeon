@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "485dce0a-1825-42b6-a43d-6e39c9666e7c",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "startbg_water006": {
+      "ver": "1.0.3",
+      "uuid": "4be5931b-27be-46f1-a93e-535882c1ebf9",
+      "rawTextureUuid": "485dce0a-1825-42b6-a43d-6e39c9666e7c",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 18,
+      "height": 9,
+      "rawWidth": 18,
+      "rawHeight": 9,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

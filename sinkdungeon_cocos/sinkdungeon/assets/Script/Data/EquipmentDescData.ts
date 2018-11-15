@@ -27,31 +27,29 @@ export default class EquipmentDescData{
     prefix:string = '';
     level:number = 0;
 
-    // constructor(nameCn: string,
-    // nameEn: string,
-    // damageMin: number,
-    // damageMax: number,
-    // criticalStrikeRate: number,
-    // defence: number,
-    // lifeDrain: number,
-    // lifeRecovery:number,
-    // moveSpeed: number,
-    // attackSpeed: number,
-    // dodge: number,
-    // health: number,
-    // desccolor:string){
-    //     this.nameCn= nameCn;
-    //     this.nameEn= nameEn;
-    //     this.damageMin = damageMin;
-    //     this.damageMax = damageMax;
-    //     this.criticalStrikeRate = criticalStrikeRate;
-    //     this.defence = defence;
-    //     this.lifeDrain = lifeDrain;
-    //     this.lifeRecovery = lifeRecovery;
-    //     this.moveSpeed = moveSpeed;
-    //     this.attackSpeed = attackSpeed;
-    //     this.dodge = dodge;
-    //     this.health = health;
-    //     this.desccolor ='#ffffff';
-    // }
+    realDamge = 0;//真实伤害
+    realRate = 0//真实伤害几率
+    iceDamage = 0;//冰元素伤害
+    iceDefence = 0;//冰元素抗性
+    iceRate = 0;//冰元素几率
+    fireDamage = 0;//火元素伤害
+    fireDefence = 0;//火元素抗性
+    fireRate = 0;//火元素几率
+    lighteningDamage = 0;//雷元素伤害
+    lighteningDefence = 0;//雷元素抗性
+    lighteningRate = 0;//雷元素几率
+    toxicDamage = 0;//毒元素伤害
+    toxicDefence = 0;//毒元素抗性
+    toxicRate = 0;//毒元素几率
+    curseDamage = 0;//诅咒元素伤害
+    curseDefence = 0;//诅咒元素抗性
+    curseRate = 0;//诅咒元素几率
+
+    info1:string = '';
+    info2:string = '';
+    info3:string = '';
+    suit1:string = '';
+    suit2:string = '';
+    suit3:string = '';
+    infobase:string = '';
 }

@@ -80,10 +80,10 @@ export default class Dungeon extends cc.Component {
     @property(HealthBar)
     bossHealthBar:HealthBar = null;
 
-    map: Tile[][] = new Array();
-    wallmap: Wall[][] = new Array();
-    trapmap: Trap[][] = new Array();
-    footboards:FootBoard[] = new Array();
+    map: Tile[][] = new Array();//地图列表
+    wallmap: Wall[][] = new Array();//墙列表
+    trapmap: Trap[][] = new Array();//陷阱列表
+    footboards:FootBoard[] = new Array();//踏板列表
     static WIDTH_SIZE: number = 15;
     static HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
@@ -92,12 +92,12 @@ export default class Dungeon extends cc.Component {
     private timeDelay = 0;
     private npcTimeDelay = 0;
 
-    monsters: Monster[];
-    public monsterReswpanPoints: { [key: string]: string } = {};
-    monsterManager: MonsterManager = null;
-    equipmentManager: EquipmentManager = null;
-    dungeonStyleManager: DungeonStyleManager = null;
-    coinManager: CoinManger = null;
+    monsters: Monster[];//房间怪物列表
+    // public monsterReswpanPoints: { [key: string]: string } = {};//怪物重生点
+    monsterManager: MonsterManager = null;//怪物管理
+    equipmentManager: EquipmentManager = null;//装备管理
+    dungeonStyleManager: DungeonStyleManager = null;//装饰管理
+    coinManager: CoinManger = null;//金币管理
     anim: cc.Animation;
 
     bossKraken: Kraken;
@@ -105,7 +105,9 @@ export default class Dungeon extends cc.Component {
     bossCaptain:Captain;
 
     onLoad() {
+        //初始化动画
         this.anim = this.getComponent(cc.Animation);
+        //初始化监听
         cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir, event.detail.pos, event.detail.dt) });
         cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => {
             this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
@@ -127,7 +129,7 @@ export default class Dungeon extends cc.Component {
                 this.anim.play('DungeonShakeOnce');
             }
         });
-
+        //设置雾气层级
         this.fog.zIndex = 9000;
         let mapData: string[][] = Logic.getCurrentMapData().map;
         this.monsterManager = this.getComponent(MonsterManager);
@@ -218,7 +220,7 @@ export default class Dungeon extends cc.Component {
                     foot.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.footboards.push(foot.getComponent(FootBoard));
                 }
-                //生成宝箱
+                //生成宝箱 房间清理的情况下箱子是打开的
                 if (mapData[i][j] == 'C') {
                     let chest = cc.instantiate(this.chest);
                     chest.parent = this.node;
@@ -227,7 +229,7 @@ export default class Dungeon extends cc.Component {
                     c.setQuality(Logic.getRandomNum(1, 3), Logic.mapManger.currentRectRoom.state == RectRoom.STATE_CLEAR);
 
                 }
-                //生成普通箱子
+                //生成普通箱子 并且根据之前记录的位置放置
                 if (mapData[i][j] == 'B') {
                     let box = cc.instantiate(this.box);
                     box.parent = this.node;
@@ -289,12 +291,30 @@ export default class Dungeon extends cc.Component {
                     }
                     ta.showItem();
                 }
+                //生成下一层传送门
+                if (mapData[i][j] == 'P') {
+                    let needAdd = true;
+                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3)&&Logic.mapManger.currentRectRoom.roomType == RectDungeon.END_ROOM){
+                        needAdd = false;
+                    }
+                    
+                    if(needAdd){
+                        let portalP = cc.instantiate(this.portalPrefab);
+                        portalP.parent = this.node;
+                        this.portal = portalP.getComponent(Portal);
+                        if (this.portal) {
+                            this.portal.setPos(cc.v2(i, j));
+                        }
+                    }
+                }
+                //生成店主
                 if (mapData[i][j] == 'S') {
                     let shop = cc.instantiate(this.shop);
                     shop.parent = this.node;
                     shop.position = Dungeon.getPosInMap(cc.v2(i, j));
                     shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 1;
                 }
+                //房间未清理时加载怪物
                 if (Logic.mapManger.currentRectRoom.state != RectRoom.STATE_CLEAR) {
                     if (mapData[i][j] == 's') {
                         let sailor = Logic.getHalfChance()?MonsterManager.MONSTER_SAILOR:MonsterManager.MONSTER_STRONGSAILOR;
@@ -335,27 +355,15 @@ export default class Dungeon extends cc.Component {
 
                     }
                 }
-                if (mapData[i][j] == 'P') {
-                    let needAdd = true;
-                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3)&&Logic.mapManger.currentRectRoom.roomType == RectDungeon.END_ROOM){
-                        needAdd = false;
-                    }
-                    
-                    if(needAdd){
-                        let portalP = cc.instantiate(this.portalPrefab);
-                        portalP.parent = this.node;
-                        this.portal = portalP.getComponent(Portal);
-                        if (this.portal) {
-                            this.portal.setPos(cc.v2(i, j));
-                        }
-                    }
-                }
+                
             }
         }
+        //保存当前箱子位置
         let currbs =  Logic.getCurrentMapBoxes();
         if(!currbs && boxes.length>0){
             Logic.mapManger.setCurrentBoxesArr(boxes);
         }
+        //保存当前商店状态
         let currts =  Logic.getCurrentMapShopTables();
         if(!currts && shopTables.length>0){
             Logic.mapManger.setCurrentShopTableArr(shopTables);
@@ -409,6 +417,7 @@ export default class Dungeon extends cc.Component {
             this.coinManager.getValueCoin(count, pos, this.node);
         }
     }
+    /**添加装备 */
     addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData, chestQuality?: number,shopTable?:ShopTable) {
         if (this.equipmentManager) {
             this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality ,shopTable);
@@ -516,12 +525,14 @@ export default class Dungeon extends cc.Component {
             tile.breakTile();
         }
     }
+    /** 玩家在地牢移动 */
     playerAction(dir: number, pos: cc.Vec2, dt: number) {
         if (this.player) {
             this.player.playerAction(dir, pos, dt, this)
         }
     }
-    monstersAction() {
+    /**检查房间是否清理 */
+    checkRoomClear() {
         let isClear = false;
         let count = 0;
         for (let monster of this.monsters) {
@@ -549,6 +560,7 @@ export default class Dungeon extends cc.Component {
         }
 
     }
+    /**开门 */
     openDoors() {
         for (let door of Logic.mapManger.currentRectRoom.doors) {
             Logic.mapManger.currentRectRoom.state = RectRoom.STATE_CLEAR;
@@ -626,7 +638,7 @@ export default class Dungeon extends cc.Component {
             // this.checkMonstersPos();
         }
         if (this.isNpcTimeDelay(dt)) {
-            this.monstersAction();
+            this.checkRoomClear();
             if(this.bossKraken){
                 this.bossKraken.bossAction(this);
             }

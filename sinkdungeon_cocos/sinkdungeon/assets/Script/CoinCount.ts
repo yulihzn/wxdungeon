@@ -35,6 +35,7 @@ export default class CoinCount extends cc.Component {
             return;
         }
         Logic.coins += value;
+        cc.sys.localStorage.setItem("coin",Logic.coins);
     }
 
     update(dt) {

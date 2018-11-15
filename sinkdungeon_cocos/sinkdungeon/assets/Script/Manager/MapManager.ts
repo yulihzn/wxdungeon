@@ -24,11 +24,10 @@ export default class MapManager {
     private allfileRooms: { [key: string]: MapData[] } = {};
     private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'puzzleroom', 'merchantroom', 'bossroom'];
     isloaded: boolean = false;
-    // rooms:MapData[] = new Array();
     rectDungeon: RectDungeon = new RectDungeon(1);
     currentRectRoom: RectRoom = null;
     boxes: { [key: string]: BoxData[] } = {};
-    shopTables:{[key:string]:ShopTableData[]} = {};
+    shopTables: { [key: string]: ShopTableData[] } = {};
     constructor() {
         this.init();
     }
@@ -58,6 +57,7 @@ export default class MapManager {
         }
         return room;
     }
+    /**设置当前房间和周围四个房间为发现状态 */
     changeRoomsIsFound(x: number, y: number) {
         this.rectDungeon.changeRoomIsFound(x, y);
         this.rectDungeon.changeRoomIsFound(x + 1, y);
@@ -67,23 +67,23 @@ export default class MapManager {
     }
 
 
-    getCurrentMapData(): MapData {
+    public getCurrentMapData(): MapData {
         return this.currentRectRoom.map;
     }
-    getCurrentMapBoxes(): BoxData[] {
+    public getCurrentMapBoxes(): BoxData[] {
         return this.boxes[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`];
     }
-    setCurrentBoxesArr(arr:BoxData[]){
+    public setCurrentBoxesArr(arr: BoxData[]) {
         this.boxes[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`] = arr;
     }
-    getCurrentMapShopTables(): ShopTableData[] {
+    public getCurrentMapShopTables(): ShopTableData[] {
         return this.shopTables[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`];
     }
-    setCurrentShopTableArr(arr:ShopTableData[]){
+    public setCurrentShopTableArr(arr: ShopTableData[]) {
         this.shopTables[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`] = arr;
     }
 
-    loadMap() {
+    public loadMap() {
         if (this.rectDungeon.startRoom.map) {
             this.isloaded = true;
             return;
@@ -118,7 +118,7 @@ export default class MapManager {
         })
 
     }
-    resetRooms() {
+    private resetRooms() {
         if (this.allfileRooms && this.allfileRooms[this.roomStrs[0]]) {
             for (let i = 0; i < this.rectDungeon.map.length; i++) {
                 for (let j = 0; j < this.rectDungeon.map[0].length; j++) {
@@ -126,12 +126,11 @@ export default class MapManager {
                     let index = room.roomType - 1;
                     if (index >= 0) {
                         let r = this.allfileRooms[this.roomStrs[index]]
+                        //随机取出一个该类型的房间数据
                         room.map = r[Logic.getRandomNum(0, r.length - 1)];
                     }
                 }
             }
         }
     }
-
-    // }
 }
