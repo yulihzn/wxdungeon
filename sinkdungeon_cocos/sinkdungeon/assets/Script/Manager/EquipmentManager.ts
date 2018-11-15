@@ -45,16 +45,16 @@ export default class EquipmentManager extends cc.Component {
     public static readonly SHOES_WARRIOR = "shoes001";
     public static readonly SHOES_SKATEBOARD = "shoes002";
     public static readonly SHOES_DEMON = "shoes003";
-    public static readonly equipments:string[]=[EquipmentManager.WEAPON_DINNERFORK,EquipmentManager.WEAPON_KNIFE,EquipmentManager.WEAPON_CHOPPER,
-        EquipmentManager.WEAPON_HUGEBLADE,EquipmentManager.CLOTHES_SHIRT
-        ,EquipmentManager.CLOTHES_VEST,EquipmentManager.CLOTHES_NAVY,EquipmentManager.CLOTHES_PIRATE,
-        EquipmentManager.CLOTHES_BUCKET,EquipmentManager.CLOTHES_REDROBE,
-        EquipmentManager.CLOTHES_WHITEROBE,EquipmentManager.HELMET_BUCKETHAT,
-        EquipmentManager.HELMET_PIRATEHAT,EquipmentManager.HELMET_REDHAT,
-        EquipmentManager.HELMET_WHITEHAT,EquipmentManager.WEAPON_PITCHFORK,EquipmentManager.CLOAK_WARRIOR,
-        EquipmentManager.TROUSERS_LONG,EquipmentManager.TROUSERS_SHORT,EquipmentManager.GLOVES_WARRIOR,
-        EquipmentManager.SHOES_WARRIOR,EquipmentManager.SHOES_DEMON,EquipmentManager.SHOES_SKATEBOARD,
-        EquipmentManager.GLOVES_BLOODCRAW,EquipmentManager.GLOVES_DEMON];
+    public static readonly equipments: string[] = [EquipmentManager.WEAPON_DINNERFORK, EquipmentManager.WEAPON_KNIFE, EquipmentManager.WEAPON_CHOPPER,
+    EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.CLOTHES_SHIRT
+        , EquipmentManager.CLOTHES_VEST, EquipmentManager.CLOTHES_NAVY, EquipmentManager.CLOTHES_PIRATE,
+    EquipmentManager.CLOTHES_BUCKET, EquipmentManager.CLOTHES_REDROBE,
+    EquipmentManager.CLOTHES_WHITEROBE, EquipmentManager.HELMET_BUCKETHAT,
+    EquipmentManager.HELMET_PIRATEHAT, EquipmentManager.HELMET_REDHAT,
+    EquipmentManager.HELMET_WHITEHAT, EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
+    EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT, EquipmentManager.GLOVES_WARRIOR,
+    EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
+    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红
@@ -83,75 +83,138 @@ export default class EquipmentManager extends cc.Component {
 
     onLoad() {
     }
-    /*灰色（粗糙）→白色（普通）→绿色（优秀）→蓝色（精良）→紫色（史诗）→橙色（传说）*/
-    getRandomDesc(data: EquipmentData,chestQuality?:number): EquipmentDescData {
+    /*灰色（粗糙）→白色（普通）→绿色（精良）→蓝色（优秀）→紫色（史诗）→橙色（传说）
+    箱子的等级1,2,3越来越高*/
+    //criticalstrike strong stable drain recovery fast quick agile healthy 
+    getRandomDesc(data: EquipmentData, chestQuality?: number): EquipmentDescData {
         let desc = new EquipmentDescData();
-        let arr = ['rough', 'normal', 'good', 'excellent', 'epic', 'legend']
+        // let arr = ['rough', 'normal', 'good', 'excellent', 'epic', 'legend']
+        let arr = ['粗糙的', '普通的', '精良的', '优秀的', '史诗的', '传说的']
         let colors = ['#dcdcdc', '#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500']
         let level = 0;
-        let criticalStrikeRate = this.getRandomQuality(0, 100 - data.criticalStrikeRate,chestQuality);
+        let criticalStrikeRate = this.getRandomQuality(0, 100 - data.criticalStrikeRate, chestQuality);
         level = criticalStrikeRate.y > level ? criticalStrikeRate.y : level;
-        desc.prefix += criticalStrikeRate.y > 2 ? 'criticalstrike ' : '';
+        desc.prefix += criticalStrikeRate.y > 2 ? '暴击' : '';
         desc.color = this.getMixColor('#000000'
             , criticalStrikeRate.y > 2 ? EquipmentManager.COLOR_CRITICALSTRIKE : '#000000');
 
-        let damageMin = this.getRandomQuality(0, 5,chestQuality);
+        //基础攻击0-5
+        let damageMin = this.getRandomQuality(0, 5, chestQuality);
         level = damageMin.y > level ? damageMin.y : level;
-
-        let damageMax = this.getRandomQuality(damageMin.x, damageMin.x + 5,chestQuality);
+        //最大攻击0-5
+        let damageMax = this.getRandomQuality(damageMin.x, damageMin.x + 5, chestQuality);
         level = damageMax.y > level ? damageMax.y : level;
-        desc.prefix += damageMax.y > 2 ? 'strong ' : '';
+        desc.prefix += damageMax.y > 2 ? '强力' : '';
         desc.color = this.getMixColor(desc.color
             , damageMax.y > 2 ? EquipmentManager.COLOR_POWERFUL : '#000000');
-
-        let defence = this.getRandomQuality(0, 5,chestQuality);
+        //物理防御0-5
+        let defence = this.getRandomQuality(0, 5, chestQuality);
         level = defence.y > level ? defence.y : level;
-        desc.prefix += defence.y > 2 ? 'stable ' : '';
+        desc.prefix += defence.y > 2 ? '坚固' : '';
         desc.color = this.getMixColor(desc.color
             , defence.y > 2 ? EquipmentManager.COLOR_STABLE : '#000000');
-
-        let lifeDrain = this.getRandomQuality(0, 100,chestQuality);
+        //吸血0%-100%
+        let lifeDrain = this.getRandomQuality(0, 100, chestQuality);
         level = lifeDrain.y > level ? lifeDrain.y : level;
-        desc.prefix += lifeDrain.y > 2 ? 'drain ' : '';
+        desc.prefix += lifeDrain.y > 2 ? '邪恶' : '';
         desc.color = this.getMixColor(desc.color
             , lifeDrain.y > 2 ? EquipmentManager.COLOR_LIFEDRAIN : '#000000');
-
+        //生命回复10% 0-5
         //为了防止过于imba只有1/10的可能回血
-        let lifeRecovery = Math.random() < 0.1 ? this.getRandomQuality(0, 5,chestQuality) : cc.v2(0, 0);
+        let lifeRecovery = Math.random() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
         level = lifeRecovery.y > level ? lifeRecovery.y : level;
-        desc.prefix += lifeRecovery.y > 2 ? 'recovery ' : '';
+        desc.prefix += lifeRecovery.y > 2 ? '温暖' : '';
         desc.color = this.getMixColor(desc.color
             , lifeRecovery.y > 2 ? EquipmentManager.COLOR_RECOVERY : '#000000');
-
-        let moveSpeed = this.getRandomQuality(0, 300 - data.moveSpeed,chestQuality);
+        //移动速度0-300
+        let moveSpeed = this.getRandomQuality(0, 300 - data.moveSpeed, chestQuality);
         level = moveSpeed.y > level ? moveSpeed.y : level;
-        desc.prefix += moveSpeed.y > 2 ? 'fast ' : '';
+        desc.prefix += moveSpeed.y > 2 ? '灵动' : '';
         desc.color = this.getMixColor(desc.color
             , moveSpeed.y > 2 ? EquipmentManager.COLOR_MOVESPEED : '#000000');
-
-        let attackSpeed = this.getRandomQuality(0, 400 - data.attackSpeed,chestQuality);
+        //攻击速度0-400减去装备自带攻速
+        let attackSpeed = this.getRandomQuality(0, 400 - data.attackSpeed, chestQuality);
         level = attackSpeed.y > level ? attackSpeed.y : level;
-        desc.prefix += attackSpeed.y > 2 ? 'quick ' : '';
+        desc.prefix += attackSpeed.y > 2 ? '迅捷' : '';
         desc.color = this.getMixColor(desc.color
             , attackSpeed.y > 2 ? EquipmentManager.COLOR_ATTACKSPPED : '#000000');
-
-        let dodge = this.getRandomQuality(0, 60 - data.dodge,chestQuality);
+        //闪避0-60减去装备自带闪避
+        let dodge = this.getRandomQuality(0, 60 - data.dodge, chestQuality);
         level = dodge.y > level ? dodge.y : level;
-        desc.prefix += dodge.y > 2 ? 'agile ' : '';
+        desc.prefix += dodge.y > 2 ? '飘逸' : '';
         desc.color = this.getMixColor(desc.color
             , dodge.y > 2 ? EquipmentManager.COLOR_DODGE : '#000000');
-
-        let health = this.getRandomQuality(0, 5,chestQuality);
+        //生命值0-5
+        let health = this.getRandomQuality(0, 5, chestQuality);
         level = health.y > level ? health.y : level;
-        desc.prefix += health.y > 2 ? 'healthy ' : '';
+        desc.prefix += health.y > 2 ? '健康' : '';
         desc.color = this.getMixColor(desc.color
             , health.y > 2 ? EquipmentManager.COLOR_HEALTHY : '#000000');
+        //流血伤害0-5
+        let realDamage = Math.random() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        level = realDamage.y > level ? realDamage.y : level;
+        desc.prefix += realDamage.y > 2 ? '锋利' : '';
+        //冰伤害0-5
+        let iceDamage = Math.random() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        level = iceDamage.y > level ? iceDamage.y : level;
+        desc.prefix += iceDamage.y > 2 ? '寒冷' : '';
+        //火伤害0-5
+        let fireDamage = Math.random() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        level = fireDamage.y > level ? fireDamage.y : level;
+        desc.prefix += fireDamage.y > 2 ? '炎热' : '';
+        //雷伤害0-5
+        let lighteningDamage = Math.random() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        level = lighteningDamage.y > level ? lighteningDamage.y : level;
+        desc.prefix += lighteningDamage.y > 2 ? '闪电' : '';
+        //毒伤害0-5
+        let toxicDamage = Math.random() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        level = toxicDamage.y > level ? toxicDamage.y : level;
+        desc.prefix += toxicDamage.y > 2 ? '毒素' : '';
+        //诅咒伤害0-5
+        let curseDamage = Math.random() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        level = curseDamage.y > level ? curseDamage.y : level;
+        desc.prefix += curseDamage.y > 2 ? '诅咒' : '';
+
+        //冰抗性0-30
+        let iceDefence = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = iceDefence.y > level ? iceDefence.y : level;
+        //火抗性0-30
+        let fireDefence = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = fireDefence.y > level ? fireDefence.y : level;
+        //雷抗性0-30
+        let lighteningDefence = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = lighteningDefence.y > level ? lighteningDefence.y : level;
+        //毒抗性0-30
+        let toxicDefence = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = toxicDefence.y > level ? toxicDefence.y : level;
+        //诅咒抗性0-30
+        let curseDefence = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = curseDefence.y > level ? curseDefence.y : level;
+
+        //冰几率0-30
+        let realRate = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = realRate.y > level ? realRate.y : level;
+        //冰几率0-30
+        let iceRate = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = iceRate.y > level ? iceRate.y : level;
+        //火几率0-30
+        let fireRate = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = fireRate.y > level ? fireRate.y : level;
+        //雷几率0-30
+        let lighteningRate = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = lighteningRate.y > level ? lighteningRate.y : level;
+        //毒几率0-30
+        let toxicRate = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = toxicRate.y > level ? toxicRate.y : level;
+        //诅咒几率0-30
+        let curseRate = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
+        level = curseRate.y > level ? curseRate.y : level;
 
         desc.prefix = arr[level] + ' ' + desc.prefix;
         desc.titlecolor = colors[level];
         desc.level = level;
-        desc.color = desc.color=='#000000'?'#ffffff':desc.color;
-        
+        desc.color = desc.color == '#000000' ? '#ffffff' : desc.color;
+
 
         desc.criticalStrikeRate = criticalStrikeRate.x;
         desc.damageMin = damageMin.x;
@@ -163,20 +226,37 @@ export default class EquipmentManager extends cc.Component {
         desc.attackSpeed = attackSpeed.x;
         desc.dodge = dodge.x;
         desc.health = health.x;
+        desc.realDamage = realDamage.x;
+        desc.iceDamage = iceDamage.x;
+        desc.fireDamage = fireDamage.x;
+        desc.lighteningDamage = lighteningDamage.x;
+        desc.toxicDamage = toxicDamage.x;
+        desc.curseDamage = curseDamage.x;
+        desc.iceDefence = iceDefence.x;
+        desc.fireDefence = fireDefence.x;
+        desc.lighteningDefence = lighteningDefence.x;
+        desc.toxicDefence = toxicDefence.x;
+        desc.curseDefence = curseDefence.x;
+        desc.realRate = realRate.x;
+        desc.iceRate = iceRate.x;
+        desc.fireRate = fireRate.x;
+        desc.lighteningRate = lighteningRate.x;
+        desc.toxicRate = toxicRate.x;
+        desc.curseRate = curseRate.x;
         return desc;
     }
     //0.5% 0.25% 0.1% 0.05% 0.01%
     //white 0-0.05 green 0.05-0.075 blue 0.075-0.085 purple 0.085-0.009 orange 0.09-0.0091
-    //x:qulity y:level 
-    getRandomQuality(min: number, max: number,chestQuality:number): cc.Vec2 {
+    //x:qulity y:level 1-5
+    getRandomQuality(min: number, max: number, chestQuality: number): cc.Vec2 {
         let per = (max - min) / 5;
         let quality = Math.random();
         //箱子出来的物品有10%的几率生成和箱子属性相关的优质属性
-        if(chestQuality && quality>0.9){
-            switch(chestQuality){
-                case 1: quality=Math.random()>0.7?0.5:0.004; break;
-                case 2: quality=Math.random()>0.7?0.06:0.08; break;
-                case 3: quality=Math.random()>0.7?0.086:0.09; break;
+        if (chestQuality && quality > 0.9) {
+            switch (chestQuality) {
+                case 1: quality = Math.random() > 0.8 ? 0.5 : 0.004; break;
+                case 2: quality = Math.random() > 0.8 ? 0.06 : 0.08; break;
+                case 3: quality = Math.random() > 0.8 ? 0.086 : 0.09; break;
             }
         }
         let data = cc.v2(0, 0);
@@ -199,7 +279,7 @@ export default class EquipmentManager extends cc.Component {
         data.x = parseFloat(data.x.toFixed(0));
         return data;
     }
-    getEquipment(equipType: string, pos: cc.Vec2, parent: cc.Node, equipData?: EquipmentData,chestQuality?:number,shopTable?:ShopTable): Equipment {
+    getEquipment(equipType: string, pos: cc.Vec2, parent: cc.Node, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable): Equipment {
         let equipmentPrefab = cc.instantiate(this.equipment);
         equipmentPrefab.parent = parent;
         equipmentPrefab.position = Dungeon.getPosInMap(pos);
@@ -208,17 +288,25 @@ export default class EquipmentManager extends cc.Component {
         equipment.pos = pos;
         if (equipData) {
             //复制已有装备
-            if(shopTable){
+            if (shopTable) {
                 equipment.shopTable = shopTable;
                 shopTable.data.equipdata = equipData.clone();
-                shopTable.data.price = 15*(equipData.level+1);
+                shopTable.data.price = 15 * (equipData.level + 1);
             }
             equipment.refresh(equipData);
         } else {
             //添加新装备
             let data = new EquipmentData();
             data.valueCopy(Logic.equipments[equipType]);
-            let desc = this.getRandomDesc(data,chestQuality);
+            let desc = this.getRandomDesc(data, chestQuality);
+            data.infobase = this.getEquipmentInfoBase(desc, data);
+            data.info1 = this.getEquipmentInfo1(desc, data);
+            data.info2 = this.getEquipmentInfo2(desc, data);
+            data.info3 = this.getEquipmentInfo3(desc, data);
+            data.infobasecolor = '#fffff0';//象牙
+            data.infocolor1 = '#98FB98';//苍白的绿色
+            data.infocolor2 = '#87CEFA';//淡蓝色
+            data.infocolor3 = '#9370DB';//适中的紫色
             data.criticalStrikeRate = desc.criticalStrikeRate;
             data.damageMin += desc.damageMin;
             data.damageMax += desc.damageMax;
@@ -229,22 +317,96 @@ export default class EquipmentManager extends cc.Component {
             data.attackSpeed += desc.attackSpeed;
             data.dodge += desc.dodge;
             data.health += desc.health;
+            data.realDamage += desc.realDamage;
+            data.iceDamage += desc.iceDamage;
+            data.fireDamage += desc.fireDamage;
+            data.lighteningDamage += desc.lighteningDamage;
+            data.toxicDamage += desc.toxicDamage;
+            data.curseDamage += desc.curseDamage;
+            data.iceDefence += desc.iceDefence;
+            data.fireDefence += desc.fireDefence;
+            data.lighteningDefence += desc.lighteningDefence;
+            data.toxicDefence += desc.toxicDefence;
+            data.curseDefence += desc.curseDefence;
+            data.realRate += desc.realRate;
+            data.iceRate += desc.iceRate;
+            data.fireRate += desc.fireRate;
+            data.lighteningRate += desc.lighteningRate;
+            data.toxicRate += desc.toxicRate;
+            data.curseRate += desc.curseRate;
             data.prefix = desc.prefix;
             data.titlecolor = desc.titlecolor;
-            if(desc.color != "#ffffff"){
+            if (desc.color != "#ffffff") {
                 data.color = desc.color;
             }
             data.level = desc.level;
-            if(shopTable){
+            if (shopTable) {
                 equipment.shopTable = shopTable;
                 shopTable.data.equipdata = data.clone();
-                shopTable.data.price = 15*(desc.level+1);
+                shopTable.data.price = 15 * (desc.level + 1);
             }
             equipment.refresh(data);
         }
         return equipment;
 
     }
+    getEquipmentInfoBase(desc: EquipmentDescData, data: EquipmentData): string {
+        let info = ``;
+        info += data.damageMin == 0 ? `` : `攻击${data.damageMin}${desc.damageMin == 0 ? '' : '+' + desc.damageMin} 最大攻击力${data.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n`;
+        info += data.damageMin == 0 && data.damageMax != 0 ? `最大攻击力${data.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n` : ``
+        info += data.defence == 0 ? `` : `防御${data.defence}${desc.defence == 0 ? '' : '+' + desc.defence}\n`;
+        info += data.health == 0 ? `` : `生命${data.health}${desc.health == 0 ? '' : '+' + desc.health}\n`;
+        info += data.lifeDrain == 0 ? `` : `吸血${data.lifeDrain}${desc.lifeDrain == 0 ? '' : '+' + desc.lifeDrain}%\n`;
+        info += data.lifeRecovery == 0 ? `` : `回复${data.lifeRecovery}${desc.lifeRecovery == 0 ? '' : '+' + desc.lifeRecovery}\n`;
+        info += data.moveSpeed == 0 ? `` : `移速${data.moveSpeed}${desc.moveSpeed == 0 ? '' : '+' + desc.moveSpeed}\n`;
+        info += data.attackSpeed == 0 ? `` : `攻速${data.attackSpeed}${desc.attackSpeed == 0 ? '' : '+' + desc.attackSpeed}\n`;
+        info += data.dodge == 0 ? `` : `闪避${data.dodge}${desc.dodge == 0 ? '' : '+' + desc.dodge}%\n`;
+        return info;
+    }
+    getEquipmentInfo1(desc: EquipmentDescData, data: EquipmentData): string {
+        let info = ``;
+        info += data.lifeDrain == 0 ? `` : `吸血${data.lifeDrain}${desc.lifeDrain == 0 ? '' : '+' + desc.lifeDrain}%\n`;
+        info += data.lifeRecovery == 0 ? `` : `回复${data.lifeRecovery}${desc.lifeRecovery == 0 ? '' : '+' + desc.lifeRecovery}\n`;
+        info += data.moveSpeed == 0 ? `` : `移速${data.moveSpeed}${desc.moveSpeed == 0 ? '' : '+' + desc.moveSpeed}\n`;
+        info += data.attackSpeed == 0 ? `` : `攻速${data.attackSpeed}${desc.attackSpeed == 0 ? '' : '+' + desc.attackSpeed}\n`;
+        info += data.dodge == 0 ? `` : `闪避${data.dodge}${desc.dodge == 0 ? '' : '+' + desc.dodge}%\n`;
+        if(info.length>0&&info.charAt(info.length-1)=='n'){
+            info = info.substring(0,info.length-2);
+        }
+        return info;
+    }
+    getEquipmentInfo2(desc: EquipmentDescData, data: EquipmentData): string {
+        let info = ``;
+        info += data.realDamage == 0 ? `` : `攻击附加${data.realDamage}${desc.realDamage == 0 ? '' : '+' + desc.realDamage}点流血伤害\n`;
+        info += data.realRate == 0 ? `` : `攻击有${data.realRate}${desc.realRate == 0 ? '' : '+' + desc.realRate}%几率释放流血\n`;
+        info += data.iceDamage == 0 ? `` : `攻击附加${data.iceDamage}${desc.iceDamage == 0 ? '' : '+' + desc.iceDamage}点冰伤害\n`;
+        info += data.iceRate == 0 ? `` : `攻击有${data.iceRate}${desc.iceRate == 0 ? '' : '+' + desc.iceRate}%几率释放冰冻\n`;
+        info += data.fireDamage == 0 ? `` : `攻击附加${data.fireDamage}${desc.fireDamage == 0 ? '' : '+' + desc.fireDamage}点火伤害\n`;
+        info += data.fireRate == 0 ? `` : `攻击有${data.fireRate}${desc.fireRate == 0 ? '' : '+' + desc.fireRate}%几率释放燃烧\n`;
+        info += data.lighteningDamage == 0 ? `` : `攻击附加${data.lighteningDamage}${desc.lighteningDamage == 0 ? '' : '+' + desc.lighteningDamage}点雷伤害\n`;
+        info += data.lighteningRate == 0 ? `` : `攻击有${data.lighteningRate}${desc.lighteningRate == 0 ? '' : '+' + desc.lighteningRate}%几率释放闪电\n`;
+        info += data.toxicDamage == 0 ? `` : `攻击附加${data.toxicDamage}${desc.toxicDamage == 0 ? '' : '+' + desc.toxicDamage}点毒伤害\n`;
+        info += data.toxicRate == 0 ? `` : `毒攻击有${data.toxicRate}${desc.toxicRate == 0 ? '' : '+' + desc.toxicRate}%几率释放毒素\n`;
+        info += data.curseDamage == 0 ? `` : `攻击附加 ${data.curseDamage}${desc.curseDamage == 0 ? '' : '+' + desc.curseDamage}点诅咒伤害\n`;
+        info += data.curseRate == 0 ? `` : `攻击有${data.curseRate}${desc.curseRate == 0 ? '' : '+' + desc.curseRate}%几率释放诅咒\n`;
+        if(info.length>0&&info.charAt(info.length-1)=='n'){
+            info = info.substring(0,info.length-2);
+        }
+        return info;
+    }
+    getEquipmentInfo3(desc: EquipmentDescData, data: EquipmentData): string {
+        let info = ``;
+        info += data.iceDefence == 0 ? `` : `冰抗性${data.iceDefence}${desc.iceDefence == 0 ? '' : '+' + desc.iceDefence}%\n`;
+        info += data.fireDefence == 0 ? `` : `火抗性${data.fireDefence}${desc.fireDefence == 0 ? '' : '+' + desc.fireDefence}%\n`;
+        info += data.lighteningDefence == 0 ? `` : `雷抗性${data.lighteningDefence}${desc.lighteningDefence == 0 ? '' : '+' + desc.lighteningDefence}%\n`;
+        info += data.toxicDefence == 0 ? `` : `毒抗性${data.toxicDefence}${desc.toxicDefence == 0 ? '' : '+' + desc.toxicDefence}%\n`;
+        info += data.curseDefence == 0 ? `` : `诅咒抗性${data.curseDefence}${desc.curseDefence == 0 ? '' : '+' + desc.curseDefence}%\n`;
+        if(info.length>0&&info.charAt(info.length-1)=='n'){
+            info = info.substring(0,info.length-2);
+        }
+        return info;
+    }
+
     start() {
 
     }
@@ -260,7 +422,7 @@ export default class EquipmentManager extends cc.Component {
         c3.setR(r > 255 ? 255 : r);
         c3.setG(g > 255 ? 255 : g);
         c3.setB(b > 255 ? 255 : b);
-        return '#'+c3.toHEX('#rrggbb');
+        return '#' + c3.toHEX('#rrggbb');
     }
 
     // update (dt) {}

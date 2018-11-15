@@ -34,7 +34,7 @@ export default class EquipmentData{
     far = 0; //是否远距离
     isLocked = 0;//是否锁定
     trouserslong = 0;//是否长裤
-    realDamge = 0;//真实伤害
+    realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
     iceDamage = 0;//冰元素伤害
     iceDefence = 0;//冰元素抗性
@@ -59,6 +59,13 @@ export default class EquipmentData{
     suit2:string = '';
     suit3:string = '';
     infobase:string = '';
+    infocolor1:string = '#ffffff';
+    infocolor2:string = '#ffffff';
+    infocolor3:string = '#ffffff';
+    suitcolor1:string = '#ffffff';
+    suitcolor2:string = '#ffffff';
+    suitcolor3:string = '#ffffff';
+    infobasecolor:string = '#ffffff';
 
     public valueCopy(data:EquipmentData):void{
         this.nameCn = data.nameCn?data.nameCn:'';
@@ -85,7 +92,7 @@ export default class EquipmentData{
         this.isLocked = data.isLocked?data.isLocked:0;
         this.level = data.level?data.level:0;
         this.trouserslong = data.trouserslong?data.trouserslong:0;
-        this.realDamge = this.realDamge?data.realDamge:0;
+        this.realDamage = this.realDamage?data.realDamage:0;
         this.realRate = this.realRate?data.realRate:0;
         this.iceDamage = data.iceDamage?data.iceDamage:0;
         this.iceDefence = data.iceDefence?data.iceDefence:0;
@@ -109,6 +116,13 @@ export default class EquipmentData{
         this.suit2 = data.suit2?data.suit2:'';
         this.suit3 = data.suit3?data.suit3:'';
         this.infobase = data.infobase?data.infobase:'';
+        this.infocolor1 = data.infocolor1?data.infocolor1:'#ffffff';
+        this.infocolor2 = data.infocolor2?data.infocolor2:'#ffffff';
+        this.infocolor3 = data.infocolor3?data.infocolor3:'#ffffff';
+        this.suitcolor1 = data.suitcolor1?data.suitcolor1:'#ffffff';
+        this.suitcolor2 = data.suitcolor2?data.suitcolor2:'#ffffff';
+        this.suitcolor3 = data.suitcolor3?data.suitcolor3:'#ffffff';
+        this.infobasecolor = data.infobasecolor?data.infobasecolor:'#ffffff';
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -136,7 +150,7 @@ export default class EquipmentData{
         e.isLocked = this.isLocked;
         e.level = this.level;
         e.trouserslong = this.trouserslong;
-        e.realDamge = this.realDamge;
+        e.realDamage = this.realDamage;
         e.realRate = this.realRate;
         e.iceDamage = this.iceDamage;
         e.iceDefence = this.iceDefence;
@@ -160,6 +174,13 @@ export default class EquipmentData{
         e.suit2 = this.suit2;
         e.suit3 = this.suit3;
         e.infobase = this.infobase;
+        e.infocolor1 = this.infocolor1;
+        e.infocolor2 = this.infocolor2;
+        e.infocolor3 = this.infocolor3;
+        e.suitcolor1 = this.suitcolor1;
+        e.suitcolor2 = this.suitcolor2;
+        e.suitcolor3 = this.suitcolor3;
+        e.infobasecolor = this.infobasecolor;
         return e;
     }
 }

@@ -15,34 +15,31 @@ import EquipmentData from "../Data/EquipmentData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class EquipmentDialog extends cc.Component {
+export default class EquipmentDialogNew extends cc.Component {
     @property(cc.Label)
-    nametag: cc.Label = null;
+    labelTile: cc.Label = null;
     @property(cc.Label)
-    desc: cc.Label = null;
+    infoBase: cc.Label = null;//基础属性
     @property(cc.Label)
-    damage: cc.Label = null;
+    info1: cc.Label = null;//附加词条1
     @property(cc.Label)
-    criticalStrikeRate: cc.Label = null;
+    info2: cc.Label = null;//附加词条2
     @property(cc.Label)
-    defence: cc.Label = null;
+    info3: cc.Label = null;//附加词条3
     @property(cc.Label)
-    lifeDrain: cc.Label = null;
+    infoSuit1: cc.Label = null;//套装附加词条1
     @property(cc.Label)
-    moveSpeed: cc.Label = null;
+    infoSuit2: cc.Label = null;//套装附加词条2
     @property(cc.Label)
-    attackSpeed: cc.Label = null;
+    infoSuit3: cc.Label = null;//套装附加词条3
     @property(cc.Label)
-    dodge: cc.Label = null;
-    @property(cc.Label)
-    health: cc.Label = null;
-    @property(cc.Label)
-    lifeRecovery:cc.Label = null;
+    infoDesc: cc.Label = null;//描述
     alpha = 0;
     showSpeed = 3;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+    }
 
     start() {
         // Logic.setAlias(this.node);
@@ -51,18 +48,30 @@ export default class EquipmentDialog extends cc.Component {
         this.showSpeed = 30;
     }
     refreshDialog(equipment: EquipmentData) {
-        this.nametag.string = equipment.prefix + " " + equipment.nameEn;
-        this.nametag.node.color=this.nametag.node.color.fromHEX(equipment.titlecolor);
-        this.desc.string = equipment.desc;
-        this.damage.string = equipment.damageMin + '-' + equipment.damageMax;
-        this.attackSpeed.string = equipment.attackSpeed + '%';
-        this.moveSpeed.string = equipment.moveSpeed + '%';
-        this.dodge.string = equipment.dodge + '%';
-        this.lifeDrain.string = equipment.lifeDrain + '%';
-        this.lifeRecovery.string = equipment.lifeRecovery+'';
-        this.health.string = equipment.health + '';
-        this.defence.string = equipment.defence + '';
-        this.criticalStrikeRate.string = equipment.criticalStrikeRate + '%';
+        this.labelTile.string = equipment.prefix + " " + equipment.nameEn;
+        this.labelTile.node.color=this.labelTile.node.color.fromHEX(equipment.titlecolor);
+        this.infoBase.string = equipment.infobase;
+        this.infoBase.node.color=this.infoBase.node.color.fromHEX(equipment.infobasecolor);
+        this.info1.string = equipment.info1;
+        this.info1.node.color=this.info1.node.color.fromHEX(equipment.infocolor1);
+        this.info2.string = equipment.info2;
+        this.info2.node.color=this.info2.node.color.fromHEX(equipment.infocolor2);
+        this.info3.string = equipment.info3;
+        this.info3.node.color=this.info3.node.color.fromHEX(equipment.infocolor3);
+        this.infoSuit1.string = equipment.suit1;
+        this.infoSuit1.node.color=this.infoSuit1.node.color.fromHEX(equipment.suitcolor1);
+        this.infoSuit2.string = equipment.suit2;
+        this.infoSuit2.node.color=this.infoSuit2.node.color.fromHEX(equipment.suitcolor2);
+        this.infoSuit3.string = equipment.suit3;
+        this.infoSuit3.node.color=this.infoSuit3.node.color.fromHEX(equipment.suitcolor3);
+        this.infoDesc.string = equipment.desc;
+        this.infoBase.node.active = this.infoBase.string.length>0;
+        this.info1.node.active = this.info1.string.length>0;
+        this.info2.node.active = this.info2.string.length>0;
+        this.info3.node.active = this.info3.string.length>0;
+        this.infoSuit1.node.active = this.infoSuit1.string.length>0;
+        this.infoSuit2.node.active = this.infoSuit2.string.length>0;
+        this.infoSuit3.node.active = this.infoSuit3.string.length>0;
     }
     showDialog() {
         this.showSpeed = 3;

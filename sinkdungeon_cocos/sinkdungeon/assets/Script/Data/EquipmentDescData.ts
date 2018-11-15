@@ -27,7 +27,7 @@ export default class EquipmentDescData{
     prefix:string = '';
     level:number = 0;
 
-    realDamge = 0;//真实伤害
+    realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
     iceDamage = 0;//冰元素伤害
     iceDefence = 0;//冰元素抗性
@@ -52,4 +52,11 @@ export default class EquipmentDescData{
     suit2:string = '';
     suit3:string = '';
     infobase:string = '';
+    infocolor1:string = '#ffffff';
+    infocolor2:string = '#ffffff';
+    infocolor3:string = '#ffffff';
+    suitcolor1:string = '#ffffff';
+    suitcolor2:string = '#ffffff';
+    suitcolor3:string = '#ffffff';
+    infobasecolor:string = '#ffffff';
 }
