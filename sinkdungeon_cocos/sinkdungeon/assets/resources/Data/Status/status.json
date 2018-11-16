@@ -15,7 +15,7 @@
         "spriteFrameName":"status002",
         "statusType":2,
         "desc":"",
-        "physicalDamageDecrease":5,
+        "physicalDamage":-5,
         "duration":3
     },
     "status003":{

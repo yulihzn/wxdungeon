@@ -1,6 +1,4 @@
 import Logic from "./Logic";
-import PlayerData from "./Data/PlayerData";
-import InventoryData from "./Data/InventoryData";
 import RectDungeon from "./Rect/RectDungeon";
 
 // Learn TypeScript:

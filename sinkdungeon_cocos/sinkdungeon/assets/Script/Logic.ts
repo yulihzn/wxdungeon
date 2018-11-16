@@ -2,7 +2,6 @@ import PlayerData from "./Data/PlayerData";
 import { EventConstant } from "./EventConstant";
 import MapData from "./Data/MapData";
 import EquipmentData from "./Data/EquipmentData";
-import InventoryData from "./Data/InventoryData";
 import RectDungeon from "./Rect/RectDungeon";
 import RectRoom from "./Rect/RectRoom";
 import MapManager from "./Manager/MapManager";
@@ -13,6 +12,7 @@ import BoxData from "./Data/BoxData";
 import ShopTableData from "./Data/ShopTableData";
 import MonsterData from "./Data/MonsterData";
 import StatusData from "./Data/StatusData";
+import InventoryManager from "./Manager/InventoryManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,7 +31,7 @@ export default class Logic extends cc.Component {
     static readonly BOSS_LEVEL_1: number = 10;
     static level = 1;
     static playerData:PlayerData = new PlayerData();
-    static inventoryData:InventoryData = new InventoryData();
+    static inventoryManager:InventoryManager = new InventoryManager();
     static roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'puzzleroom', 'merchantroom', 'bossroom'];
     
     static mapManger:MapManager = new MapManager();
@@ -78,7 +78,7 @@ export default class Logic extends cc.Component {
     static resetData(){
         Logic.level = 1;
         Logic.playerData = new PlayerData();
-        Logic.inventoryData = new InventoryData();
+        Logic.inventoryManager = new InventoryManager();
         Logic.mapManger.reset(Logic.level);
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c?c:0;

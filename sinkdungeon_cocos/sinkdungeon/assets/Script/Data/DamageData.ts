@@ -14,7 +14,7 @@
  * 正面：祝福、道具、天赋
  */
 export default class DamageData {
-    realDamge:number = 0;//真实伤害
+    realDamage:number = 0;//真实伤害
     physicalDamage: number = 0;//物理伤害
     iceDamage = 0;//冰元素伤害
     fireDamage = 0;//火元素伤害
@@ -29,12 +29,12 @@ export default class DamageData {
     toxicRate = 0;//毒元素释放几率
     curseRate = 0;//诅咒元素释放几率
 
-    constructor(realDamge?:number){
-        this.realDamge = realDamge?realDamge:0;
+    constructor(realDamage?:number){
+        this.realDamage = realDamage?realDamage:0;
     }
 
     public valueCopy(data: DamageData): void {
-        this.realDamge = data.realDamge?data.realDamge:0;
+        this.realDamage = data.realDamage?data.realDamage:0;
         this.physicalDamage = data.physicalDamage?data.physicalDamage:0;
         this.iceDamage = data.iceDamage?data.iceDamage:0;
         this.fireDamage = data.fireDamage?data.fireDamage:0;
@@ -51,7 +51,7 @@ export default class DamageData {
    
     public clone(): DamageData {
         let e = new DamageData();
-        e.realDamge = this.realDamge;
+        e.realDamage = this.realDamage;
         e.physicalDamage = this.physicalDamage;
         e.iceDamage = this.iceDamage;
         e.fireDamage = this.fireDamage;
@@ -66,7 +66,11 @@ export default class DamageData {
         e.curseRate = this.curseRate;
         return e;
     }
-    public getTotalDamge():number{
-        return this.physicalDamage+this.iceDamage+this.fireDamage+this.lighteningDamage+this.toxicDamage+this.curseDamage;
+    public getTotalDamage():number{
+        let d = this.physicalDamage+this.iceDamage+this.fireDamage+this.lighteningDamage+this.toxicDamage+this.curseDamage+this.realDamage;
+        if(d == NaN){
+            console.log(d);
+        }
+        return d;
     }
 }

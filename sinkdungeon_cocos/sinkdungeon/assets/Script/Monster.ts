@@ -233,7 +233,7 @@ export default class Monster extends cc.Component {
         //100ms后修改受伤
         setTimeout(() => { if (this.node) { this.isHurt = false; } }, 200);
         this.sprite.opacity = 255;
-        this.data.currentHealth -= this.data.getDamage(damageData).getTotalDamge();
+        this.data.currentHealth -= this.data.getDamage(damageData).getTotalDamage();
         if (this.data.currentHealth > this.data.maxHealth) {
             this.data.currentHealth = this.data.maxHealth;
         }

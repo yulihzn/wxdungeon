@@ -48,7 +48,7 @@ export default class EquipmentDialogNew extends cc.Component {
         this.showSpeed = 30;
     }
     refreshDialog(equipment: EquipmentData) {
-        this.labelTile.string = equipment.prefix + " " + equipment.nameEn;
+        this.labelTile.string = equipment.prefix  + equipment.nameCn;
         this.labelTile.node.color=this.labelTile.node.color.fromHEX(equipment.titlecolor);
         this.infoBase.string = equipment.infobase;
         this.infoBase.node.color=this.infoBase.node.color.fromHEX(equipment.infobasecolor);

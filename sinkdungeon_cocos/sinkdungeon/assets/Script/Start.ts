@@ -1,5 +1,4 @@
 import Logic from "./Logic";
-import PlayerData from "./Data/PlayerData";
 
 const {ccclass, property} = cc._decorator;
 

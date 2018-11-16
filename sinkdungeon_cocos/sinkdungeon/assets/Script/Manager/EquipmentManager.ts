@@ -210,7 +210,7 @@ export default class EquipmentManager extends cc.Component {
         let curseRate = Math.random() < 0.1 ? this.getRandomQuality(0, 30, chestQuality) : cc.v2(0, 0);
         level = curseRate.y > level ? curseRate.y : level;
 
-        desc.prefix = arr[level] + ' ' + desc.prefix;
+        desc.prefix = arr[level] + desc.prefix;
         desc.titlecolor = colors[level];
         desc.level = level;
         desc.color = desc.color == '#000000' ? '#ffffff' : desc.color;
@@ -361,6 +361,10 @@ export default class EquipmentManager extends cc.Component {
         info += data.moveSpeed == 0 ? `` : `移速${data.moveSpeed}${desc.moveSpeed == 0 ? '' : '+' + desc.moveSpeed}\n`;
         info += data.attackSpeed == 0 ? `` : `攻速${data.attackSpeed}${desc.attackSpeed == 0 ? '' : '+' + desc.attackSpeed}\n`;
         info += data.dodge == 0 ? `` : `闪避${data.dodge}${desc.dodge == 0 ? '' : '+' + desc.dodge}%\n`;
+        if(info.length>0&&info.lastIndexOf('\n')!=-1){
+            info = info.substring(0,info.lastIndexOf('\n'));
+        }
+        info = info.replace('+-','-');
         return info;
     }
     getEquipmentInfo1(desc: EquipmentDescData, data: EquipmentData): string {
@@ -370,9 +374,10 @@ export default class EquipmentManager extends cc.Component {
         info += data.moveSpeed == 0 ? `` : `移速${data.moveSpeed}${desc.moveSpeed == 0 ? '' : '+' + desc.moveSpeed}\n`;
         info += data.attackSpeed == 0 ? `` : `攻速${data.attackSpeed}${desc.attackSpeed == 0 ? '' : '+' + desc.attackSpeed}\n`;
         info += data.dodge == 0 ? `` : `闪避${data.dodge}${desc.dodge == 0 ? '' : '+' + desc.dodge}%\n`;
-        if(info.length>0&&info.charAt(info.length-1)=='n'){
-            info = info.substring(0,info.length-2);
+        if(info.length>0&&info.lastIndexOf('\n')!=-1){
+            info = info.substring(0,info.lastIndexOf('\n'));
         }
+        info = info.replace('+-','-');
         return info;
     }
     getEquipmentInfo2(desc: EquipmentDescData, data: EquipmentData): string {
@@ -389,9 +394,10 @@ export default class EquipmentManager extends cc.Component {
         info += data.toxicRate == 0 ? `` : `毒攻击有${data.toxicRate}${desc.toxicRate == 0 ? '' : '+' + desc.toxicRate}%几率释放毒素\n`;
         info += data.curseDamage == 0 ? `` : `攻击附加 ${data.curseDamage}${desc.curseDamage == 0 ? '' : '+' + desc.curseDamage}点诅咒伤害\n`;
         info += data.curseRate == 0 ? `` : `攻击有${data.curseRate}${desc.curseRate == 0 ? '' : '+' + desc.curseRate}%几率释放诅咒\n`;
-        if(info.length>0&&info.charAt(info.length-1)=='n'){
-            info = info.substring(0,info.length-2);
+        if(info.length>0&&info.lastIndexOf('\n')!=-1){
+            info = info.substring(0,info.lastIndexOf('\n'));
         }
+        info = info.replace('+-','-');
         return info;
     }
     getEquipmentInfo3(desc: EquipmentDescData, data: EquipmentData): string {
@@ -401,9 +407,10 @@ export default class EquipmentManager extends cc.Component {
         info += data.lighteningDefence == 0 ? `` : `雷抗性${data.lighteningDefence}${desc.lighteningDefence == 0 ? '' : '+' + desc.lighteningDefence}%\n`;
         info += data.toxicDefence == 0 ? `` : `毒抗性${data.toxicDefence}${desc.toxicDefence == 0 ? '' : '+' + desc.toxicDefence}%\n`;
         info += data.curseDefence == 0 ? `` : `诅咒抗性${data.curseDefence}${desc.curseDefence == 0 ? '' : '+' + desc.curseDefence}%\n`;
-        if(info.length>0&&info.charAt(info.length-1)=='n'){
-            info = info.substring(0,info.length-2);
+        if(info.length>0&&info.lastIndexOf('\n')!=-1){
+            info = info.substring(0,info.lastIndexOf('\n'));
         }
+        info = info.replace('+-','-');
         return info;
     }
 

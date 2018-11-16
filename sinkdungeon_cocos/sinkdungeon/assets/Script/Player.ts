@@ -14,7 +14,6 @@ import Shooter from './Shooter';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
 import Dungeon from './Dungeon';
-import InventoryData from './Data/InventoryData';
 import Equipment from './Equipment/Equipment';
 import EquipmentData from './Data/EquipmentData';
 import Monster from './Monster';
@@ -25,6 +24,9 @@ import RectDungeon from './Rect/RectDungeon';
 import StatusManager from './Manager/StatusManager';
 import Status from './Status';
 import DamageData from './Data/DamageData';
+import InventoryManager from './Manager/InventoryManager';
+import PlayerData from './Data/PlayerData';
+import PlayerInfoDialog from './UI/PlayerInfoDialog';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -46,6 +48,8 @@ export default class Player extends cc.Component {
     shooter: Shooter = null;
     @property(StatusManager)
     statusManager:StatusManager = null;
+    @property(PlayerInfoDialog)
+    playerInfoDialog:PlayerInfoDialog = null;
     private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
@@ -66,11 +70,11 @@ export default class Player extends cc.Component {
     private anim: cc.Animation;
     isDied = false;
     isFall = false;
-    health: cc.Vec2 = cc.v2(1, 1);
     baseAttackPoint: number = 1;
 
     touchedEquipment: Equipment;
-    inventoryData: InventoryData;
+    inventoryManager: InventoryManager;
+    data:PlayerData;
     recoveryTimeDelay = 0;
 
     isFaceRight = true;
@@ -85,13 +89,14 @@ export default class Player extends cc.Component {
 
     onLoad() {
         this.isAttacking = false;
-        this.inventoryData = Logic.inventoryData;
-        this.health = this.inventoryData.getHealth(Logic.playerData.basehealth, Logic.playerData.basehealth.y);
+        this.inventoryManager = Logic.inventoryManager;
+        this.data = Logic.playerData;
+        this.statusUpdate();
         this.pos = cc.v2(4, 4);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         let walkName = "PlayerWalkShort";
-        if(this.inventoryData.trousers.trouserslong == 1){
+        if(this.inventoryManager.trousers.trouserslong == 1){
             walkName = "PlayerWalk";
         }
         if(this.anim){
@@ -136,7 +141,8 @@ export default class Player extends cc.Component {
             , (event) => { this.meleeAttack() });
         cc.director.on(EventConstant.PLAYER_REMOTEATTACK
             , (event) => { this.remoteAttack() });
-
+            cc.director.on(EventConstant.PLAYER_STATUSUPDATE
+                , (event) => { this.statusUpdate() });
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage) });
             cc.director.on(EventConstant.PLAYER_ROTATE
@@ -146,7 +152,7 @@ export default class Player extends cc.Component {
         }
         this.pos = Logic.playerData.pos;
         this.defaultPos = Logic.playerData.pos.clone();
-        this.baseAttackPoint = Logic.playerData.attackPoint;
+        this.baseAttackPoint = Logic.playerData.damageMin;
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);
@@ -155,6 +161,13 @@ export default class Player extends cc.Component {
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
+    }
+    private statusUpdate(){
+        if(!this.inventoryManager||!this.playerInfoDialog){
+            return;
+        }
+        this.data.equipmentTotalData = this.inventoryManager.getTotalEquipmentData();
+        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData);
     }
     private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
         let smokePrefab: cc.Node = null;
@@ -198,7 +211,7 @@ export default class Player extends cc.Component {
                     this.weaponSprite.spriteFrame = spriteFrame;
                     this.weaponStabSprite.spriteFrame = null;
                 }
-                let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryData.weapon.color);
+                let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.color);
                 this.weaponSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color1;
                 this.weaponStabSprite.node.color = color1;
@@ -206,42 +219,44 @@ export default class Player extends cc.Component {
                 break;
             case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
                 this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
-                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryData.helmet.color);
+                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.helmet.color);
                 this.helmetSprite.node.color = color2;
                 break;
             case 'clothes': this.clothesSprite.spriteFrame = spriteFrame;
-                let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryData.clothes.color);
+                let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.clothes.color);
                 this.clothesSprite.node.color = color3;
                 break;
             case 'trousers': 
                 this.trousersSprite.spriteFrame = equipData.trouserslong==1?Logic.spriteFrames['idle002']:Logic.spriteFrames['idle001'];
-                let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryData.trousers.color);
+                let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.trousers.color);
                 this.trousersSprite.node.color = color4;
                 break;
             case 'gloves': 
                 this.glovesLeftSprite.spriteFrame = spriteFrame;
-                let color5l = cc.color(255, 255, 255).fromHEX(this.inventoryData.gloves.color);
+                let color5l = cc.color(255, 255, 255).fromHEX(this.inventoryManager.gloves.color);
                 this.glovesLeftSprite.node.color = color5l;
                 this.glovesRightSprite.spriteFrame = spriteFrame;
-                let color5r = cc.color(255, 255, 255).fromHEX(this.inventoryData.gloves.color);
+                let color5r = cc.color(255, 255, 255).fromHEX(this.inventoryManager.gloves.color);
                 this.glovesRightSprite.node.color = color5r;
                 break;
             case 'shoes': 
                 this.shoesLeftSprite.spriteFrame = spriteFrame;
-                let color6l = cc.color(255, 255, 255).fromHEX(this.inventoryData.shoes.color);
+                let color6l = cc.color(255, 255, 255).fromHEX(this.inventoryManager.shoes.color);
                 this.shoesLeftSprite.node.color = color6l;
                 this.shoesRightSprite.spriteFrame = spriteFrame;
-                let color6r = cc.color(255, 255, 255).fromHEX(this.inventoryData.shoes.color);
+                let color6r = cc.color(255, 255, 255).fromHEX(this.inventoryManager.shoes.color);
                 this.shoesRightSprite.node.color = color6r;
                 break;
             case 'cloak': this.cloakSprite.spriteFrame = spriteFrame;
-                let color7 = cc.color(255, 255, 255).fromHEX(this.inventoryData.cloak.color);
+                let color7 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.cloak.color);
                 this.cloakSprite.node.color = color7;
                 break;
         }
-        this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
+        this.data.equipmentTotalData = this.inventoryManager.getTotalEquipmentData();
+        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData);
+        let health = this.data.getHealth();
         if(this.healthBar){
-            this.healthBar.refreshHealth(this.health.x, this.health.y);
+            this.healthBar.refreshHealth(health.x, health.y);
         }
     }
     updatePlayerPos() {
@@ -276,7 +291,7 @@ export default class Player extends cc.Component {
         }
         pos = pos.normalizeSelf().mul(15);
         pos.x = this.isFaceRight?pos.x:-pos.x;
-        let speed = 300 - this.inventoryData.getAttackSpeed();
+        let speed = 300 - this.data.getAttackSpeed();
         if(speed < 1){speed = 1}
         if(speed > 3000){speed = 3000}
         let spritePos = this.sprite.position.clone();
@@ -287,7 +302,7 @@ export default class Player extends cc.Component {
                  }, speed);
         }, this));
         this.sprite.runAction(action);
-        this.meleeWeapon.attack(this.inventoryData.getAttackSpeed(),this.inventoryData.weapon);
+        this.meleeWeapon.attack(this.data.getAttackSpeed(),this.inventoryManager.weapon);
     }
     remoteRate = 0;
     remoteAttack() {
@@ -334,7 +349,7 @@ export default class Player extends cc.Component {
         let mul = absh > absv ? absh : absv;
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
-        let speed = this.inventoryData.getMoveSpeed(300);
+        let speed = this.data.getMoveSpeed();
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
@@ -343,7 +358,7 @@ export default class Player extends cc.Component {
         }
         let walkName = "PlayerWalkShort";
         let idleName = "idle001";
-        if(this.inventoryData.trousers.trouserslong == 1){
+        if(this.inventoryManager.trousers.trouserslong == 1){
             walkName = "PlayerWalk";
             idleName = "idle002";
         }
@@ -363,42 +378,6 @@ export default class Player extends cc.Component {
             this.changeZIndex(this.pos);
         }
     }
-    // move(dir: number) {
-    //     if (this.isMoving || this.isDied || this.isFall) {
-    //         return;
-    //     }
-    //     let newPos = cc.v2(this.pos.x, this.pos.y);
-    //     switch (dir) {
-    //         case 0: if (newPos.y + 1 < 9) { newPos.y++; } break;
-    //         case 1: if (newPos.y - 1 >= 0) { newPos.y--; } break;
-    //         case 2: if (newPos.x - 1 >= 0) { newPos.x--; this.isFaceRight = false; } break;
-    //         case 3: if (newPos.x + 1 < 9) { newPos.x++; this.isFaceRight = true; } break;
-    //     }
-    //     this.isMoving = true;
-    //     this.isAttacking = false;//取消攻击后摇
-    //     this.pos = newPos;
-    //     let isDown = dir == 1;
-    //     if (isDown) {
-    //         this.changeZIndex(this.pos);
-    //     }
-    //     let x = this.pos.x * 64 + 32;
-    //     let y = this.pos.y * 64 + 32;
-    //     let finish = cc.callFunc(() => {
-    //         this.changeZIndex(this.pos);
-    //         this.sprite.y = 0;
-    //         this.isDied = false;
-    //         this.sprite.rotation = 0;
-    //         this.sprite.scale = 1;
-    //         this.sprite.opacity = 255;
-    //         this.anim.play('PlayerIdle');
-    //         this.isMoving = false;
-    //     }, this);
-    //     //初始速度0.2,最大速度0.05 跨度0.15， 0.05减，最大300%
-    //     let baseSpeed = 0.2;
-    //     let action = cc.sequence(cc.moveTo(this.inventoryData.getMoveSpeed(baseSpeed), x, y), finish);
-    //     this.anim.play('PlayerWalk');
-    //     this.node.runAction(action);
-    // }
 
     start() {
         // let ss = this.node.getComponentsInChildren(cc.Sprite);
@@ -411,9 +390,9 @@ export default class Player extends cc.Component {
             return;
         }
         this.changeZIndex(this.pos);
-        this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
+        let health = this.data.getHealth();
         if(this.healthBar){
-            this.healthBar.refreshHealth(this.health.x, this.health.y);
+            this.healthBar.refreshHealth(health.x, health.y);
         }
     }
     fall() {
@@ -427,7 +406,7 @@ export default class Player extends cc.Component {
             this.transportPlayer(this.defaultPos);
             this.anim.play('PlayerIdle');
             let dd = new DamageData();
-            dd.realDamge =1;
+            dd.realDamage =1;
             this.takeDamage(dd);
             this.isFall = false;
         }, 2000);
@@ -436,22 +415,22 @@ export default class Player extends cc.Component {
         if (!this.healthBar) {
             return;
         }
-        let dd = this.inventoryData.getDamage(damageData);
-        let dodge = this.inventoryData.getDodge();
-        let isDodge = Math.random() <= dodge && dd.getTotalDamge() > 0;
+        let dd = this.data.getDamage(damageData);
+        let dodge = this.data.getDodge();
+        let isDodge = Math.random() <= dodge && dd.getTotalDamage() > 0;
         dd = isDodge ? new DamageData() : dd;
-        this.health = this.inventoryData.getHealth(this.health, Logic.playerData.basehealth.y);
-        this.health.x -= dd.getTotalDamge();
-        if (this.health.x > this.health.y) {
-            this.health.x = this.health.y;
+        let health = this.data.getHealth();
+        health.x -= dd.getTotalDamage();
+        if (health.x > health.y) {
+            health.x = health.y;
         }
-        this.healthBar.refreshHealth(this.health.x, this.health.y);
-        Logic.playerData.basehealth.x = this.health.x;
+        this.healthBar.refreshHealth(health.x, health.y);
+        Logic.playerData.currentHealth = health.x;
         if (this.label) {
             this.label.node.opacity = 255;
             this.label.node.scaleX = this.node.scaleX;
-            this.label.node.color = dd.getTotalDamge() > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
-            this.label.string = `${parseFloat((-dd.getTotalDamge()).toFixed(1))}`;
+            this.label.node.color = dd.getTotalDamage() > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
+            this.label.string = `${parseFloat((-dd.getTotalDamage()).toFixed(1))}`;
             if (isDodge) {
                 this.label.node.color = cc.color(255, 255, 255);
                 this.label.string = `miss`;
@@ -459,7 +438,7 @@ export default class Player extends cc.Component {
             this.label.getComponent(cc.Animation).play('FontFloating');
         }
 
-        if (this.health.x <= 0) {
+        if (Logic.playerData.currentHealth <= 0) {
             this.killed();
         }
     }
@@ -505,10 +484,10 @@ export default class Player extends cc.Component {
     update(dt) {
 
         if (this.isRecoveryTimeDelay(dt)) {
-            let re = this.inventoryData.getRecovery();
+            let re = this.data.getRecovery();
             if (re > 0) {
                 let dd = new DamageData();
-                dd.realDamge = -re;
+                dd.realDamage = -re;
                 this.takeDamage(dd);
             }
         }
@@ -533,6 +512,10 @@ export default class Player extends cc.Component {
                 this.touchedEquipment = null;
             }
         }
+        if(this.statusManager){
+            this.statusManager.addStatus(StatusManager.FROZEN);
+        }
+        
     }
     //anim
     AttackFinish() {
@@ -542,9 +525,9 @@ export default class Player extends cc.Component {
     // Attacking() {
 
 
-    //     let damage = this.inventoryData.getFinalAttackPoint(this.baseAttackPoint);
+    //     let damage = this.inventoryManager.getFinalAttackPoint(this.baseAttackPoint);
     //     //生命汲取
-    //     let drain = this.inventoryData.getLifeDrain(this.baseAttackPoint);
+    //     let drain = this.inventoryManager.getLifeDrain(this.baseAttackPoint);
     //     if (drain > 0) {
     //         this.takeDamage(-drain);
     //     }

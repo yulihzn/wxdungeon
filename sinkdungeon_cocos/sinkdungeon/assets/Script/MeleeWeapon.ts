@@ -267,7 +267,7 @@ export default class MeleeWeapon extends cc.Component {
         // this.stabWeapon.isAttacking = true;
         let damage = new DamageData();
         if (this.player) {
-            damage = this.player.inventoryData.getFinalAttackPoint(this.player.baseAttackPoint);
+            damage = this.player.data.getFinalAttackPoint();
         }
         let damageSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
@@ -275,11 +275,11 @@ export default class MeleeWeapon extends cc.Component {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(monster.node);
-                this.addMonsterStatus(this.player.inventoryData.getIceRate(),monster,StatusManager.FROZEN);
-                this.addMonsterStatus(this.player.inventoryData.getFireRate(),monster,StatusManager.BURNING);
-                this.addMonsterStatus(this.player.inventoryData.getLighteningRate(),monster,StatusManager.DIZZ);
-                this.addMonsterStatus(this.player.inventoryData.getToxicRate(),monster,StatusManager.TOXICOSIS);
-                this.addMonsterStatus(this.player.inventoryData.getCurseRate(),monster,StatusManager.CURSING);
+                this.addMonsterStatus(this.player.data.getIceRate(),monster,StatusManager.FROZEN);
+                this.addMonsterStatus(this.player.data.getFireRate(),monster,StatusManager.BURNING);
+                this.addMonsterStatus(this.player.data.getLighteningRate(),monster,StatusManager.DIZZ);
+                this.addMonsterStatus(this.player.data.getToxicRate(),monster,StatusManager.TOXICOSIS);
+                this.addMonsterStatus(this.player.data.getCurseRate(),monster,StatusManager.CURSING);
             }
         }
 
@@ -296,7 +296,7 @@ export default class MeleeWeapon extends cc.Component {
             box.breakBox();
         }
         //生命汲取
-        let drain = this.player.inventoryData.getLifeDrain();
+        let drain = this.player.data.getLifeDrain();
         if (drain > 0 && damageSuccess) {
             this.player.takeDamage(new DamageData(-drain));
         }

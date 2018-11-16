@@ -12,9 +12,9 @@ const {ccclass, property} = cc._decorator;
 import {EventConstant} from './EventConstant';
 import Logic from './Logic';
 import EquipmentData from './Data/EquipmentData';
-import InventoryData from './Data/InventoryData';
 import Player from './Player';
 import EquipmentDialog from './Equipment/EquipmentDialog';
+import InventoryManager from './Manager/InventoryManager';
 @ccclass
 export default class NewClass extends cc.Component {
 
@@ -42,12 +42,12 @@ export default class NewClass extends cc.Component {
     @property(EquipmentDialog)
     equipmentDialog:EquipmentDialog = null;
 
-    inventoryData:InventoryData;
+    inventoryManager:InventoryManager;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.inventoryData = Logic.inventoryData;
+        this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventConstant.PLAYER_CHANGEEQUIPMENT
             , (event) => { this.refreshEquipment(event.detail.equipData,true) });
     }
@@ -69,13 +69,13 @@ export default class NewClass extends cc.Component {
         this.addSpriteTouchEvent(this.gloves,'gloves');
         this.addSpriteTouchEvent(this.shoes,'shoes');
         this.addSpriteTouchEvent(this.cloak,'cloak');
-        this.refreshEquipment(this.inventoryData.weapon,false);
-        this.refreshEquipment(this.inventoryData.helmet,false);
-        this.refreshEquipment(this.inventoryData.clothes,false);
-        this.refreshEquipment(this.inventoryData.trousers,false);
-        this.refreshEquipment(this.inventoryData.gloves,false);
-        this.refreshEquipment(this.inventoryData.shoes,false);
-        this.refreshEquipment(this.inventoryData.cloak,false);
+        this.refreshEquipment(this.inventoryManager.weapon,false);
+        this.refreshEquipment(this.inventoryManager.helmet,false);
+        this.refreshEquipment(this.inventoryManager.clothes,false);
+        this.refreshEquipment(this.inventoryManager.trousers,false);
+        this.refreshEquipment(this.inventoryManager.gloves,false);
+        this.refreshEquipment(this.inventoryManager.shoes,false);
+        this.refreshEquipment(this.inventoryManager.cloak,false);
     }
     addSpriteTouchEvent(sprite:cc.Sprite,equipmetType:string){
         sprite.node.on(cc.Node.EventType.TOUCH_START,()=>{
@@ -84,13 +84,13 @@ export default class NewClass extends cc.Component {
             }
             let equipData = new EquipmentData();
             switch(equipmetType){
-                case 'weapon':equipData = this.inventoryData.weapon.clone();break;
-                case 'helmet':equipData = this.inventoryData.helmet.clone();break;
-                case 'clothes':equipData = this.inventoryData.clothes.clone();break;
-                case 'trousers':equipData = this.inventoryData.trousers.clone();break;
-                case 'gloves':equipData = this.inventoryData.gloves.clone();break;
-                case 'shoes':equipData = this.inventoryData.shoes.clone();break;
-                case 'cloak':equipData = this.inventoryData.cloak.clone();break;
+                case 'weapon':equipData = this.inventoryManager.weapon.clone();break;
+                case 'helmet':equipData = this.inventoryManager.helmet.clone();break;
+                case 'clothes':equipData = this.inventoryManager.clothes.clone();break;
+                case 'trousers':equipData = this.inventoryManager.trousers.clone();break;
+                case 'gloves':equipData = this.inventoryManager.gloves.clone();break;
+                case 'shoes':equipData = this.inventoryManager.shoes.clone();break;
+                case 'cloak':equipData = this.inventoryManager.cloak.clone();break;
             }
             this.equipmentDialog.refreshDialog(equipData)
             this.equipmentDialog.showDialog();
@@ -133,43 +133,43 @@ export default class NewClass extends cc.Component {
         switch(equipmentDataNew.equipmetType){
             case 'weapon':this.weapon.spriteFrame = spriteFrame;
             this.weapon.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.weapon,isChange);
-            this.inventoryData.weapon.valueCopy(equipmentDataNew);
+            this.setEquipment(equipmentDataNew,this.inventoryManager.weapon,isChange);
+            this.inventoryManager.weapon.valueCopy(equipmentDataNew);
             break;
             case 'helmet':this.helmet.spriteFrame = spriteFrame;
             this.helmet.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.helmet,isChange);
-            this.inventoryData.helmet.valueCopy(equipmentDataNew);
+            this.setEquipment(equipmentDataNew,this.inventoryManager.helmet,isChange);
+            this.inventoryManager.helmet.valueCopy(equipmentDataNew);
             break;
             case 'clothes':this.clothes.spriteFrame = spriteFrame;
             this.clothes.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.clothes,isChange);
-            this.inventoryData.clothes.valueCopy(equipmentDataNew);
+            this.setEquipment(equipmentDataNew,this.inventoryManager.clothes,isChange);
+            this.inventoryManager.clothes.valueCopy(equipmentDataNew);
             break;
             case 'trousers':
             this.trousers.spriteFrame = equipmentDataNew.trouserslong==1?Logic.spriteFrames['idle002']:Logic.spriteFrames['idle001'];
             this.trousers.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.trousers,isChange);
-            this.inventoryData.trousers.valueCopy(equipmentDataNew);
+            this.setEquipment(equipmentDataNew,this.inventoryManager.trousers,isChange);
+            this.inventoryManager.trousers.valueCopy(equipmentDataNew);
             break;
             case 'gloves':this.gloves.spriteFrame = spriteFrame;
             this.gloves.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.gloves,isChange);
-            this.inventoryData.gloves.valueCopy(equipmentDataNew);
+            this.setEquipment(equipmentDataNew,this.inventoryManager.gloves,isChange);
+            this.inventoryManager.gloves.valueCopy(equipmentDataNew);
             break;
             case 'shoes':this.shoes.spriteFrame = spriteFrame;
             this.shoes.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.shoes,isChange);
-            this.inventoryData.shoes.valueCopy(equipmentDataNew);
+            this.setEquipment(equipmentDataNew,this.inventoryManager.shoes,isChange);
+            this.inventoryManager.shoes.valueCopy(equipmentDataNew);
             break;
             case 'cloak':this.cloak.spriteFrame = spriteFrame;
             this.cloak.node.color = color;
-            this.setEquipment(equipmentDataNew,this.inventoryData.cloak,isChange);
-            this.inventoryData.cloak.valueCopy(equipmentDataNew);
+            this.setEquipment(equipmentDataNew,this.inventoryManager.cloak,isChange);
+            this.inventoryManager.cloak.valueCopy(equipmentDataNew);
             break;
         }
         if(this.player){
-            this.player.getComponent(Player).inventoryData = this.inventoryData;
+            this.player.getComponent(Player).inventoryManager = this.inventoryManager;
             this.player.getComponent(Player).changeEquipment(equipmentDataNew,spriteFrame)
         }
     }
