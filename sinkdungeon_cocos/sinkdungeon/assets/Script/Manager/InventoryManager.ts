@@ -29,7 +29,7 @@ export default class InventoryManager {
         +this.trousers.moveSpeed+this.gloves.moveSpeed+this.shoes.moveSpeed+this.cloak.moveSpeed+this.buffer.moveSpeed;
         return speed;
     }
-    //初始延迟是300,最低延迟为0 最大400
+    //初始延迟是300,最低延迟为0 最大3000
     getAttackSpeed():number{
         let speed = 0;
         speed = this.weapon.attackSpeed+this.helmet.attackSpeed+this.clothes.attackSpeed
@@ -48,14 +48,14 @@ export default class InventoryManager {
     
     //获取暴击率
     getCriticalStrikeRate():number{
-        return (1-this.weapon.criticalStrikeRate/100)*(1-this.helmet.criticalStrikeRate/100)
+        return 1-(1-this.weapon.criticalStrikeRate/100)*(1-this.helmet.criticalStrikeRate/100)
         *(1-this.clothes.criticalStrikeRate/100)*(1-this.trousers.criticalStrikeRate/100)
         *(1-this.gloves.criticalStrikeRate/100)*(1-this.shoes.criticalStrikeRate/100)*(1-this.buffer.criticalStrikeRate/100);
     }
     
     //闪避
     getDodge():number{
-        return (1-this.weapon.dodge/100)*(1-this.helmet.dodge/100)
+        return 1-(1-this.weapon.dodge/100)*(1-this.helmet.dodge/100)
         *(1-this.clothes.dodge/100)*(1-this.trousers.dodge/100)
         *(1-this.gloves.dodge/100)*(1-this.shoes.dodge/100)*(1-this.cloak.dodge/100)*(1-this.buffer.dodge/100);
     }
@@ -139,7 +139,7 @@ export default class InventoryManager {
         +this.trousers.lifeRecovery+this.gloves.lifeRecovery+this.shoes.lifeRecovery+this.cloak.lifeRecovery+this.buffer.lifeRecovery;
     }
     getLifeDrainRate():number{
-        return (1-this.weapon.lifeDrain/100)*(1-this.helmet.lifeDrain/100)
+        return 1-(1-this.weapon.lifeDrain/100)*(1-this.helmet.lifeDrain/100)
         *(1-this.clothes.lifeDrain/100)*(1-this.trousers.lifeDrain/100)
         *(1-this.gloves.lifeDrain/100)*(1-this.shoes.lifeDrain/100)*(1-this.cloak.lifeDrain/100)*(1-this.buffer.lifeDrain/100);
         

@@ -56,8 +56,8 @@ export default class StatusManager extends cc.Component {
         statusNode.parent = this.node;
         statusNode.active = true;
         let status = statusNode.getComponent(Status);
-        this.statusList.push(status);
         status.showStatus(this.node.parent, data);
+        this.statusList.push(status);
     }
     update(dt) {
         if (this.node.parent) {
@@ -84,33 +84,33 @@ export default class StatusManager extends cc.Component {
             if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
                 continue;
             }
-            e.physicalDamage += s.data.physicalDamage;
-            e.defence += s.data.defence;
-            e.missRate += s.data.missRate;
-            e.criticalStrikeRate *= (1-s.data.criticalStrikeRate/100);
-            e.lifeDrain *= (1-s.data.lifeDrain/100);;
-            e.lifeRecovery += s.data.lifeRecovery;
-            e.moveSpeed += s.data.moveSpeed;
-            e.attackSpeed += s.data.attackSpeed;
-            e.dodge *= (1-s.data.dodge/100);
-            e.maxHealth += s.data.maxHealth;
-            e.realDamage += s.data.realDamage;
-            e.realRate += s.data.realRate;
-            e.iceDamage += s.data.iceDamage;
-            e.iceDefence += s.data.iceDefence;
-            e.iceRate += s.data.iceRate;
-            e.fireDamage += s.data.fireDamage;
-            e.fireDefence += s.data.fireDefence;
-            e.fireRate += s.data.fireRate;
-            e.lighteningDamage += s.data.lighteningDamage;
-            e.lighteningDefence += s.data.lighteningDefence;
-            e.lighteningRate += s.data.lighteningRate;
-            e.toxicDamage += s.data.toxicDamage;
-            e.toxicDefence += s.data.toxicDefence;
-            e.toxicRate += s.data.toxicRate;
-            e.curseDamage += s.data.curseDamage;
-            e.curseDefence += s.data.curseDefence;
-            e.curseRate += s.data.curseRate;
+            e.physicalDamage += s.data.physicalDamage?s.data.physicalDamage:0;
+            e.defence += s.data.defence?s.data.defence:0;
+            e.missRate += s.data.missRate?s.data.missRate:0;
+            e.criticalStrikeRate *= s.data.criticalStrikeRate?(1-s.data.criticalStrikeRate/100):1;
+            e.lifeDrain *= s.data.lifeDrain?(1-s.data.lifeDrain/100):1;
+            e.lifeRecovery += s.data.lifeRecovery?s.data.lifeRecovery:0;
+            e.moveSpeed += s.data.moveSpeed?s.data.moveSpeed:0;
+            e.attackSpeed += s.data.attackSpeed?s.data.attackSpeed:0;
+            e.dodge *= s.data.dodge?(1-s.data.dodge/100):1;
+            e.maxHealth += s.data.maxHealth?s.data.maxHealth:0;
+            e.realDamage += s.data.realDamage?s.data.realDamage:0;
+            e.realRate += s.data.realRate?s.data.realRate:0;
+            e.iceDamage += s.data.iceDamage?s.data.iceDamage:0;
+            e.iceDefence += s.data.iceDefence?s.data.iceDefence:0;
+            e.iceRate += s.data.iceRate?s.data.iceRate:0;
+            e.fireDamage += s.data.fireDamage?s.data.fireDamage:0;
+            e.fireDefence += s.data.fireDefence?s.data.fireDefence:0;
+            e.fireRate += s.data.fireRate?s.data.fireRate:0;
+            e.lighteningDamage += s.data.lighteningDamage?s.data.lighteningDamage:0;
+            e.lighteningDefence += s.data.lighteningDefence?s.data.lighteningDefence:0;
+            e.lighteningRate += s.data.lighteningRate?s.data.lighteningRate:0;
+            e.toxicDamage += s.data.toxicDamage?s.data.toxicDamage:0;
+            e.toxicDefence += s.data.toxicDefence?s.data.toxicDefence:0;
+            e.toxicRate += s.data.toxicRate?s.data.toxicRate:0;
+            e.curseDamage += s.data.curseDamage?s.data.curseDamage:0;
+            e.curseDefence += s.data.curseDefence?s.data.curseDefence:0;
+            e.curseRate += s.data.curseRate?s.data.curseRate:0;
         }
         return e;
     }

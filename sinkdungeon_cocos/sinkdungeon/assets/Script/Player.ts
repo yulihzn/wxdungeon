@@ -167,7 +167,7 @@ export default class Player extends cc.Component {
             return;
         }
         this.data.equipmentTotalData = this.inventoryManager.getTotalEquipmentData();
-        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData);
+        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData,this.data.statusTotalData);
     }
     private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
         let smokePrefab: cc.Node = null;
@@ -253,7 +253,7 @@ export default class Player extends cc.Component {
                 break;
         }
         this.data.equipmentTotalData = this.inventoryManager.getTotalEquipmentData();
-        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData);
+        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData,this.data.statusTotalData);
         let health = this.data.getHealth();
         if(this.healthBar){
             this.healthBar.refreshHealth(health.x, health.y);
@@ -291,9 +291,9 @@ export default class Player extends cc.Component {
         }
         pos = pos.normalizeSelf().mul(15);
         pos.x = this.isFaceRight?pos.x:-pos.x;
-        let speed = 300 - this.data.getAttackSpeed();
+        let speed = PlayerData.DefAULT_SPEED - this.data.getAttackSpeed();
         if(speed < 1){speed = 1}
-        if(speed > 3000){speed = 3000}
+        if(speed > PlayerData.DefAULT_SPEED*10){speed = PlayerData.DefAULT_SPEED*10;}
         let spritePos = this.sprite.position.clone();
         let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
             setTimeout(() => {

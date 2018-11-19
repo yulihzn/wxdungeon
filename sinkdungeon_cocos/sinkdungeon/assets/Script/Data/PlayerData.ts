@@ -15,6 +15,7 @@ import StatusData from "./StatusData";
 
 export default class PlayerData {
     static DEFAULT_HEALTH = 5;
+    static DefAULT_SPEED = 300;
     name: string = '';
     //x=current y=max
     // basehealth:cc.Vec2=cc.v2(PlayerData.DEFAULT_HEALTH,PlayerData.DEFAULT_HEALTH);
@@ -139,8 +140,8 @@ export default class PlayerData {
     getMoveSpeed(): number {
         let speed = 0;
         speed = this.equipmentTotalData.moveSpeed + this.statusTotalData.moveSpeed;
-        if (speed > 300) { speed = 300 }
-        if (speed < -290) { speed = -290 }
+        if (speed > PlayerData.DefAULT_SPEED) { speed = PlayerData.DefAULT_SPEED }
+        if (speed < -PlayerData.DefAULT_SPEED) { speed = -PlayerData.DefAULT_SPEED; }
         return this.moveSpeed + speed;
     }
     //初始延迟是300,最低延迟为0 最大400

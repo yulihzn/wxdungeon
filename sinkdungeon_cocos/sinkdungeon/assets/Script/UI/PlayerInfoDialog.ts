@@ -1,5 +1,6 @@
 import PlayerData from "../Data/PlayerData";
 import EquipmentData from "../Data/EquipmentData";
+import StatusData from "../Data/StatusData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -81,37 +82,55 @@ export default class PlayerInfoDialog extends cc.Component {
     start() {
 
     }
-    refreshDialog(playerData: PlayerData, equipmentData: EquipmentData) {
+    refreshDialog(playerData: PlayerData, equipmentData: EquipmentData,statusData:StatusData) {
         if(!this.attack){return;}
-        this.attack.string = this.getInfo(playerData.damageMin,equipmentData.damageMin)+'-'+this.getInfo(playerData.damageMax,equipmentData.damageMax);
-        this.criticalStrikeRate.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.defence.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.lifeDrain.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.lifeRecovery.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.moveSpeed.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.attackSpeed.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.dodge.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.health.string = this.getInfo(playerData.criticalStrikeRate,equipmentData.criticalStrikeRate);
-        this.realDamage.string = this.getInfo(playerData.realDamage,equipmentData.realDamage);
-        this.realRate.string = this.getInfo(playerData.realRate,equipmentData.realRate);
-        this.iceDamage.string = this.getInfo(playerData.iceDamage,equipmentData.iceDamage);
-        this.iceDefence.string = this.getInfo(playerData.iceDefence,equipmentData.iceDefence);
-        this.iceRate.string = this.getInfo(playerData.iceRate,equipmentData.iceRate);
-        this.fireDamage.string = this.getInfo(playerData.fireDamage,equipmentData.fireDamage);
-        this.fireDefence.string = this.getInfo(playerData.fireDefence,equipmentData.fireDefence);
-        this.fireRate.string = this.getInfo(playerData.fireRate,equipmentData.fireRate);
-        this.lighteningDamage.string = this.getInfo(playerData.lighteningDamage,equipmentData.lighteningDamage);
-        this.lighteningDefence.string = this.getInfo(playerData.lighteningDefence,equipmentData.lighteningDefence);
-        this.lighteningRate.string = this.getInfo(playerData.lighteningRate,equipmentData.lighteningRate);
-        this.toxicDamage.string = this.getInfo(playerData.toxicDamage,equipmentData.toxicDamage);
-        this.toxicDefence.string = this.getInfo(playerData.toxicDefence,equipmentData.toxicDefence);
-        this.toxicRate.string = this.getInfo(playerData.toxicRate,equipmentData.toxicRate);
-        this.curseDamage.string = this.getInfo(playerData.curseDamage,equipmentData.curseDamage);
-        this.curseDefence.string = this.getInfo(playerData.curseDefence,equipmentData.curseDefence);
-        this.curseRate.string = this.getInfo(playerData.curseRate,equipmentData.curseRate);
+        this.attack.string = this.getInfo(playerData.damageMin,equipmentData.damageMin,statusData.physicalDamage)+'->'+this.getInfo(playerData.damageMax,equipmentData.damageMax,0);
+        this.criticalStrikeRate.string = this.getInfo(playerData.criticalStrikeRate*100,equipmentData.criticalStrikeRate*100,statusData.criticalStrikeRate*100,true);
+        this.defence.string = this.getInfo(playerData.defence,equipmentData.defence,statusData.defence);
+        this.lifeDrain.string = this.getInfo(playerData.lifeDrain*100,equipmentData.lifeDrain*100,statusData.lifeDrain*100,true);
+        this.lifeRecovery.string = this.getInfo(playerData.lifeRecovery,equipmentData.lifeRecovery,statusData.lifeRecovery);
+        this.moveSpeed.string = this.getInfo(playerData.moveSpeed,equipmentData.moveSpeed,statusData.moveSpeed);
+        this.attackSpeed.string = this.getInfo(playerData.attackSpeed,equipmentData.attackSpeed,statusData.attackSpeed,true);
+        this.dodge.string = this.getInfo(playerData.dodge*100,equipmentData.dodge*100,statusData.dodge*100,true);
+        this.health.string = playerData.currentHealth+'/'+this.getInfo(playerData.maxHealth,equipmentData.health,statusData.maxHealth);
+        this.realDamage.string = this.getInfo(playerData.realDamage,equipmentData.realDamage,statusData.realDamage);
+        this.realRate.string = this.getInfo(playerData.realRate,equipmentData.realRate,statusData.realRate,true);
+        this.iceDamage.string = this.getInfo(playerData.iceDamage,equipmentData.iceDamage,statusData.iceDamage);
+        this.iceDefence.string = this.getInfo(playerData.iceDefence,equipmentData.iceDefence,statusData.iceDefence,true);
+        this.iceRate.string = this.getInfo(playerData.iceRate,equipmentData.iceRate,statusData.iceRate,true);
+        this.fireDamage.string = this.getInfo(playerData.fireDamage,equipmentData.fireDamage,statusData.fireDamage);
+        this.fireDefence.string = this.getInfo(playerData.fireDefence,equipmentData.fireDefence,statusData.fireDefence,true);
+        this.fireRate.string = this.getInfo(playerData.fireRate,equipmentData.fireRate,statusData.fireRate,true);
+        this.lighteningDamage.string = this.getInfo(playerData.lighteningDamage,equipmentData.lighteningDamage,statusData.lighteningDamage);
+        this.lighteningDefence.string = this.getInfo(playerData.lighteningDefence,equipmentData.lighteningDefence,statusData.lighteningDefence,true);
+        this.lighteningRate.string = this.getInfo(playerData.lighteningRate,equipmentData.lighteningRate,statusData.lighteningRate,true);
+        this.toxicDamage.string = this.getInfo(playerData.toxicDamage,equipmentData.toxicDamage,statusData.toxicDamage);
+        this.toxicDefence.string = this.getInfo(playerData.toxicDefence,equipmentData.toxicDefence,statusData.toxicDefence,true);
+        this.toxicRate.string = this.getInfo(playerData.toxicRate,equipmentData.toxicRate,statusData.toxicRate,true);
+        this.curseDamage.string = this.getInfo(playerData.curseDamage,equipmentData.curseDamage,statusData.curseDamage);
+        this.curseDefence.string = this.getInfo(playerData.curseDefence,equipmentData.curseDefence,statusData.curseDefence,true);
+        this.curseRate.string = this.getInfo(playerData.curseRate,equipmentData.curseRate,statusData.curseRate,true);
     }
-    private getInfo(base:number,equip:number):string{
-        return `${(base+equip).toFixed(1)}(${equip>0?'+':''}${equip.toFixed(1)})`;
+    private getInfo(base:number,equip:number,status:number,isPercent?:boolean):string{
+        let s = `${(base+equip+status).toFixed(1).replace('.0','')}`;
+        if(isPercent){
+            s+='%';
+        }
+        if(equip>0){
+            s+=' E:+'+ equip.toFixed(1).replace('.0','');
+            if(isPercent){s+='%';}
+        }else if(equip < 0){
+            s+=' E:'+ equip.toFixed(1).replace('.0','');
+            if(isPercent){s+='%';}
+        }
+        if(status>0){
+            s+=' S:+'+ status.toFixed(1).replace('.0','');
+            if(isPercent){s+='%';}
+        }else if(status < 0){
+            s+=' S:'+ status.toFixed(1).replace('.0','');
+            if(isPercent){s+='%';}
+        }
+        return s;
     }
     addSpriteTouchEvent(){
         this.node.on(cc.Node.EventType.TOUCH_START,()=>{

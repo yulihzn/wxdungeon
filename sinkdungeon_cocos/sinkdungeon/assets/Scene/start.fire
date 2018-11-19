@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.11063246741888243,
-      "y": 0.11063246741888243,
+      "x": 0.6586289535543579,
+      "y": 0.6586289535543579,
       "z": 1
     },
     "_quat": {
@@ -1297,7 +1297,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 600,
+      "width": 650,
       "height": 120
     },
     "_anchorPoint": {
@@ -1389,7 +1389,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 512.5,
+      "width": 612.5,
       "height": 0
     },
     "_anchorPoint": {
