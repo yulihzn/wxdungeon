@@ -61,7 +61,7 @@ export default class Captain extends cc.Component {
         
         setTimeout(()=>{
             if(this.healthBar){
-                this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+                this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             }
         },100);
         
@@ -124,7 +124,7 @@ export default class Captain extends cc.Component {
         let angles2 = [5,10,-10];
         let angles3 = [-5,20,-20,-40,40];
         this.fireWithAngles(angles1);
-        if(this.data.currentHealth<this.data.maxHealth/2){
+        if(this.data.currentHealth<this.data.Common.maxHealth/2){
             setTimeout(()=>{this.fireWithAngles(angles2);},100);
             setTimeout(()=>{this.fireWithAngles(angles3);},200);
             
@@ -182,16 +182,16 @@ export default class Captain extends cc.Component {
         if(this.isDied||isPlayJump){
             return false;
         }
-        this.data.currentHealth -= this.data.getDamage(damage).getTotalDamge();
-        if (this.data.currentHealth > this.data.maxHealth) {
-            this.data.currentHealth = this.data.maxHealth;
+        this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
+        if (this.data.currentHealth > this.data.Common.maxHealth) {
+            this.data.currentHealth = this.data.Common.maxHealth;
         }
         // if(!this.isAttacking){
         // }
         this.isHurt = true;
         this.anim.play('CaptainHit');
         this.isAttacking = false;
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         return true;
     }
     addStatus(statusType:string){

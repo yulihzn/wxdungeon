@@ -5,6 +5,7 @@ import Kraken from "../Boss/Kraken";
 import MeleeWeapon from "../MeleeWeapon";
 import Captain from "../Boss/Captain";
 import DamageData from "../Data/DamageData";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -59,6 +60,7 @@ export default class Bullet extends cc.Component {
     particleLightening:cc.ParticleSystem;
     particleToxic:cc.ParticleSystem;
     particleCurse:cc.ParticleSystem;
+    effect:cc.Node;
 
     
 
@@ -67,11 +69,12 @@ export default class Bullet extends cc.Component {
     onLoad () {
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
-        this.particleIce = this.node.getChildByName('effect').getChildByName('ice').getComponent(cc.ParticleSystem);
-        this.particleFire = this.node.getChildByName('effect').getChildByName('fire').getComponent(cc.ParticleSystem);
-        this.particleLightening = this.node.getChildByName('effect').getChildByName('lightening').getComponent(cc.ParticleSystem);
-        this.particleToxic = this.node.getChildByName('effect').getChildByName('toxic').getComponent(cc.ParticleSystem);
-        this.particleCurse = this.node.getChildByName('effect').getChildByName('curse').getComponent(cc.ParticleSystem);
+        this.effect = this.node.getChildByName('effect');
+        this.particleIce = this.effect.getChildByName('ice').getComponent(cc.ParticleSystem);
+        this.particleFire = this.effect.getChildByName('fire').getComponent(cc.ParticleSystem);
+        this.particleLightening = this.effect.getChildByName('lightening').getComponent(cc.ParticleSystem);
+        this.particleToxic = this.effect.getChildByName('toxic').getComponent(cc.ParticleSystem);
+        this.particleCurse = this.effect.getChildByName('curse').getComponent(cc.ParticleSystem);
         
     }
     onEnable(){
@@ -88,11 +91,19 @@ export default class Bullet extends cc.Component {
         this.damageData.lighteningDamage = this.lighteningDamage;
         this.damageData.toxicDamage = this.toxicDamage;
         this.damageData.curseDamage = this.curseDamage;
-        this.iceDamage>0?this.particleIce.resetSystem():this.particleIce.stopSystem();
-        this.fireDamage>0?this.particleFire.resetSystem():this.particleFire.stopSystem();
-        this.lighteningDamage>0?this.particleLightening.resetSystem():this.particleLightening.stopSystem();
-        this.toxicDamage>0?this.particleToxic.resetSystem():this.particleToxic.stopSystem();
-        this.curseDamage>0?this.particleCurse.resetSystem():this.particleCurse.stopSystem();
+        this.activePartcleSystem(this.iceDamage,this.particleIce);
+        this.activePartcleSystem(this.fireDamage,this.particleFire);
+        this.activePartcleSystem(this.lighteningDamage,this.particleLightening);
+        this.activePartcleSystem(this.toxicDamage,this.particleToxic);
+        this.activePartcleSystem(this.curseDamage,this.particleCurse);
+    }
+    activePartcleSystem(damage:number,particle:cc.ParticleSystem){
+        if(damage>0){
+            if(particle&&!particle.node.active){
+                particle.node.active = true;
+            }
+            particle.resetSystem();
+        }
     }
     //animation
     MeleeFinish(){
@@ -109,11 +120,14 @@ export default class Bullet extends cc.Component {
     //animation
     BulletDestory(){
         cc.director.emit('destorybullet',{detail:{bulletNode:this.node}});
-        this.particleIce.stopSystem();
-        this.particleFire.stopSystem();
-        this.particleLightening.stopSystem();
-        this.particleToxic.stopSystem();
-        this.particleCurse.stopSystem();
+        if(this.particleIce&&this.particleIce.active){
+            if(this.particleIce){this.particleIce.node.active=false;this.particleIce.stopSystem();}
+            if(this.particleFire){this.particleFire.node.active=false;this.particleFire.stopSystem();}
+            if(this.particleLightening){this.particleLightening.node.active=false;this.particleLightening.stopSystem();}
+            if(this.particleToxic){this.particleToxic.node.active=false;this.particleToxic.stopSystem();}
+            if(this.particleCurse){this.particleCurse.node.active=false;this.particleCurse.stopSystem();}
+        }
+        
     }
     fire(hv){
         if(!this.rigidBody){

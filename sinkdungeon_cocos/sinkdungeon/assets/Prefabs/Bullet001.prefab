@@ -380,7 +380,7 @@
       "__id__": 8
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
@@ -450,7 +450,7 @@
       "__uuid__": "6af196a6-2ffd-4bbb-8def-7cfb262abc40"
     },
     "_spriteFrame": null,
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": false,
     "autoRemoveOnFinish": false,
     "totalParticles": 100,
@@ -548,7 +548,7 @@
       "__id__": 8
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
@@ -716,7 +716,7 @@
       "__id__": 8
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
@@ -884,7 +884,7 @@
       "__id__": 8
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
@@ -1052,7 +1052,7 @@
       "__id__": 8
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_level": 3,
     "_components": [
       {
@@ -1122,7 +1122,7 @@
       "__uuid__": "b6acce27-a378-4794-94c7-d63e327ade42"
     },
     "_spriteFrame": null,
-    "_stopped": false,
+    "_stopped": true,
     "playOnLoad": false,
     "autoRemoveOnFinish": false,
     "totalParticles": 100,
@@ -1252,7 +1252,7 @@
     },
     "_enabled": true,
     "label": null,
-    "realDamge": 0,
+    "realDamage": 0,
     "physicalDamage": 1,
     "iceDamage": 0,
     "fireDamage": 0,

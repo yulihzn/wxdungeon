@@ -85,7 +85,7 @@ export default class Kraken extends cc.Component {
             case 4: break;
         }
         let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
-            if (finish) { finish(this.data.attackPoint); }
+            if (finish) { finish(this.data.Common.damageMin); }
         }), cc.moveTo(0.1, 0, 0));
         this.sprite.runAction(action);
     }
@@ -99,7 +99,7 @@ export default class Kraken extends cc.Component {
         // }
         this.changeZIndex();
         if(this.healthBar){
-            this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         }
     }
 
@@ -107,12 +107,12 @@ export default class Kraken extends cc.Component {
         if(this.isDied||!this.isShow){
             return false;
         }
-        this.data.currentHealth -= this.data.getDamage(damage).getTotalDamge();
-        if (this.data.currentHealth > this.data.maxHealth) {
-            this.data.currentHealth = this.data.maxHealth;
+        this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
+        if (this.data.currentHealth > this.data.Common.maxHealth) {
+            this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.anim.playAdditive('KrakenHit');
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         if(this.dungeon){
             let pos = this.dungeon.player.pos;
             if (pos.x > this.pos.x && !this.anim.getAnimationState("KrakenSwingRight").isPlaying) {
@@ -155,7 +155,7 @@ export default class Kraken extends cc.Component {
     showBoss() {
         this.anim.play('KrakenShow');
         if(this.healthBar){
-            this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             this.healthBar.node.active = !this.isDied;
         }
     }

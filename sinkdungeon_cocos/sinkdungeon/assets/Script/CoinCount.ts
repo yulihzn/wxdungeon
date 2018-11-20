@@ -30,11 +30,11 @@ export default class CoinCount extends cc.Component {
 
     start() {
     }
-    addCount(value) {
+    addCount(value:string) {
         if (!this.anim) {
             return;
         }
-        Logic.coins += value;
+        Logic.coins += parseInt(value) ;
         cc.sys.localStorage.setItem("coin",Logic.coins);
     }
 

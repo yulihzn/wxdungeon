@@ -364,6 +364,7 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfo1(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
+        info += data.Common.criticalStrikeRate+desc.criticalStrikeRate == 0 ? `` : `暴击${data.Common.criticalStrikeRate}${desc.criticalStrikeRate == 0 ? '' : '+' + desc.criticalStrikeRate}%\n`;
         info += data.Common.lifeDrain+desc.lifeDrain == 0 ? `` : `吸血${data.Common.lifeDrain}${desc.lifeDrain == 0 ? '' : '+' + desc.lifeDrain}%\n`;
         info += data.Common.lifeRecovery+desc.lifeRecovery == 0 ? `` : `回复${data.Common.lifeRecovery}${desc.lifeRecovery == 0 ? '' : '+' + desc.lifeRecovery}\n`;
         info += data.Common.moveSpeed+desc.moveSpeed == 0 ? `` : `移速${data.Common.moveSpeed}${desc.moveSpeed == 0 ? '' : '+' + desc.moveSpeed}\n`;

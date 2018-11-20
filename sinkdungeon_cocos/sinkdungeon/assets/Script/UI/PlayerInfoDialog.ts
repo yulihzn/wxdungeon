@@ -92,7 +92,7 @@ export default class PlayerInfoDialog extends cc.Component {
         this.moveSpeed.string = this.getInfo(playerData.Common.moveSpeed,equipmentData.Common.moveSpeed,statusData.Common.moveSpeed);
         this.attackSpeed.string = this.getInfo(playerData.Common.attackSpeed,equipmentData.Common.attackSpeed,statusData.Common.attackSpeed,true);
         this.dodge.string = this.getInfo(playerData.Common.dodge*100,equipmentData.Common.dodge*100,statusData.Common.dodge*100,true);
-        this.health.string = playerData.currentHealth+'/'+this.getInfo(playerData.Common.maxHealth,equipmentData.Common.maxHealth,statusData.Common.maxHealth);
+        this.health.string = playerData.currentHealth.toFixed(1).replace('.0','')+'/'+this.getInfo(playerData.Common.maxHealth,equipmentData.Common.maxHealth,statusData.Common.maxHealth);
         this.realDamage.string = this.getInfo(playerData.Common.realDamage,equipmentData.Common.realDamage,statusData.Common.realDamage);
         this.realRate.string = this.getInfo(playerData.Common.realRate,equipmentData.Common.realRate,statusData.Common.realRate,true);
         this.iceDamage.string = this.getInfo(playerData.Common.iceDamage,equipmentData.Common.iceDamage,statusData.Common.iceDamage);
