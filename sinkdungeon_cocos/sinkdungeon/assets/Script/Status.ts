@@ -103,7 +103,7 @@ export default class Status extends cc.Component {
     }
     getDamgeDirect():DamageData{
         let dd = new DamageData();
-        dd.realDamge = this.data.realDamgeDirect?this.data.realDamgeDirect:0;
+        dd.realDamage = this.data.realDamageDirect?this.data.realDamageDirect:0;
         dd.physicalDamage = this.data.physicalDamageDirect?this.data.physicalDamageDirect:0;
         dd.iceDamage = this.data.iceDamageDirect?this.data.iceDamageDirect:0;
         dd.fireDamage = this.data.fireDamageDirect?this.data.fireDamageDirect:0;
@@ -114,7 +114,7 @@ export default class Status extends cc.Component {
     }
     getDamgeOverTime():DamageData{
         let dd = new DamageData();
-        dd.realDamge = this.data.realDamgeOvertime?this.data.realDamgeOvertime:0;
+        dd.realDamage = this.data.realDamageOvertime?this.data.realDamageOvertime:0;
         dd.physicalDamage = this.data.physicalDamageOvertime?this.data.physicalDamageOvertime:0;
         dd.iceDamage = this.data.iceDamageOvertime?this.data.iceDamageOvertime:0;
         dd.fireDamage = this.data.fireDamageOvertime?this.data.fireDamageOvertime:0;

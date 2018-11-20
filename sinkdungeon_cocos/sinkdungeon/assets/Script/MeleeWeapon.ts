@@ -11,6 +11,7 @@ import Captain from "./Boss/Captain";
 import EquipmentData from "./Data/EquipmentData";
 import DamageData from "./Data/DamageData";
 import StatusManager from "./Manager/StatusManager";
+import PlayerData from "./Data/PlayerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,6 +61,7 @@ export default class MeleeWeapon extends cc.Component {
     isFar = false;//近程
     dungeon: Dungeon;
     weaponFirePoint: cc.Node;//剑尖
+    isMiss = false;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -81,12 +83,13 @@ export default class MeleeWeapon extends cc.Component {
         return this.hv;
     }
 
-    attack(speed: number, data: EquipmentData) {
+    attack(data: PlayerData,isMiss:boolean):boolean {
         if (this.isAttacking) {
             return;
         }
+        this.isMiss = isMiss;
         this.isAttacking = true;
-        let animSpeed = 1 + speed / 1000;
+        let animSpeed = 1 + data.getAttackSpeed() / 1000;
         if (animSpeed < 0.2) {
             animSpeed = 0.2;
         }
@@ -99,14 +102,15 @@ export default class MeleeWeapon extends cc.Component {
         }
         let p = this.weaponFirePoint.position.clone();
         let ran = Logic.getRandomNum(0,100);
-        let waves = [data.iceDamage > 0&&ran<data.iceRate ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
-            , data.fireDamage > 0&&ran<data.fireRate ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
-            , data.lighteningDamage > 0&&ran<data.lighteningRate ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
-            , data.toxicDamage > 0&&ran<data.toxicRate ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
-            , data.curseDamage > 0&&ran<data.curseRate ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
+        let waves = [data.getIceDamage() > 0&&ran<data.getIceRate() ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
+            , data.getFireDamage() > 0&&ran<data.getFireRate() ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
+            , data.getLighteningDamage() > 0&&ran<data.getLighteningRate() ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
+            , data.getToxicDamage() > 0&&ran<data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
+            , data.getCurseDamage() > 0&&ran<data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
         for (let w of waves) {
             this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar, this.isReverse);
         }
+        
     }
     private getAttackAnimName(): string {
         let name = "MeleeAttackStab";
@@ -271,7 +275,7 @@ export default class MeleeWeapon extends cc.Component {
         }
         let damageSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
-        if (monster && !monster.isDied) {
+        if (monster && !monster.isDied && !this.isMiss) {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(monster.node);
@@ -284,11 +288,11 @@ export default class MeleeWeapon extends cc.Component {
         }
 
         let kraken = attackTarget.node.getComponent(Kraken);
-        if (kraken && !kraken.isDied) {
+        if (kraken && !kraken.isDied && !this.isMiss) {
             damageSuccess = kraken.takeDamage(damage);
         }
         let captain = attackTarget.node.getComponent(Captain);
-        if (captain && !captain.isDied) {
+        if (captain && !captain.isDied && !this.isMiss) {
             damageSuccess = captain.takeDamage(damage);
         }
         let box = attackTarget.node.getComponent(Box);
@@ -300,6 +304,7 @@ export default class MeleeWeapon extends cc.Component {
         if (drain > 0 && damageSuccess) {
             this.player.takeDamage(new DamageData(-drain));
         }
+        this.isMiss = false;
     }
    addMonsterStatus(rate:number,monster:Monster,statusType){
     if(Logic.getRandomNum(0,100)<rate){monster.addStatus(statusType);}

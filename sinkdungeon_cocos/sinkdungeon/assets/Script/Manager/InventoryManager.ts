@@ -22,164 +22,236 @@ export default class InventoryManager {
     cloak:EquipmentData = new EquipmentData();
     //buffer效果
     buffer:EquipmentData = new EquipmentData();
+    private list:EquipmentData[] = [];
+   
+    constructor(){
+        this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.buffer];
+    }
     //初始速度300,最大速度600 最小速度为10
     getMoveSpeed():number{
         let speed = 0;
-        speed = this.weapon.moveSpeed+this.helmet.moveSpeed+this.clothes.moveSpeed
-        +this.trousers.moveSpeed+this.gloves.moveSpeed+this.shoes.moveSpeed+this.cloak.moveSpeed+this.buffer.moveSpeed;
+        for(let data of this.list){
+            speed += data.Common.moveSpeed;
+        }
         return speed;
     }
     //初始延迟是300,最低延迟为0 最大3000
     getAttackSpeed():number{
         let speed = 0;
-        speed = this.weapon.attackSpeed+this.helmet.attackSpeed+this.clothes.attackSpeed
-        +this.trousers.attackSpeed+this.gloves.attackSpeed+this.shoes.attackSpeed+this.cloak.attackSpeed+this.buffer.attackSpeed;
+        for(let data of this.list){
+            speed += data.Common.attackSpeed;
+        }
         return speed;
     }
     //获取最大最小攻击力
     getAttackPoint():cc.Vec2{
         let attackPoint = cc.v2(0,0);
-        attackPoint.x += this.weapon.damageMin+this.helmet.damageMin+this.clothes.damageMin
-        +this.trousers.damageMin+this.gloves.damageMin+this.shoes.damageMin+this.cloak.damageMin+this.buffer.damageMin;
-        attackPoint.y += this.weapon.damageMax+this.helmet.damageMax+this.clothes.damageMax
-        +this.trousers.damageMax+this.gloves.damageMax+this.shoes.damageMax+this.cloak.damageMax+this.buffer.damageMax;
+        for(let data of this.list){
+            attackPoint.x += data.Common.damageMin;
+            attackPoint.y += data.Common.damageMax;
+        }
         return attackPoint;
     }
     
     //获取暴击率
     getCriticalStrikeRate():number{
-        return 1-(1-this.weapon.criticalStrikeRate/100)*(1-this.helmet.criticalStrikeRate/100)
-        *(1-this.clothes.criticalStrikeRate/100)*(1-this.trousers.criticalStrikeRate/100)
-        *(1-this.gloves.criticalStrikeRate/100)*(1-this.shoes.criticalStrikeRate/100)*(1-this.buffer.criticalStrikeRate/100);
+        let rate = 1;
+        for(let data of this.list){
+            rate *= (1-data.Common.criticalStrikeRate/100);
+        }
+        return 1-rate;
     }
     
     //闪避
     getDodge():number{
-        return 1-(1-this.weapon.dodge/100)*(1-this.helmet.dodge/100)
-        *(1-this.clothes.dodge/100)*(1-this.trousers.dodge/100)
-        *(1-this.gloves.dodge/100)*(1-this.shoes.dodge/100)*(1-this.cloak.dodge/100)*(1-this.buffer.dodge/100);
+        let rate = 1;
+        for(let data of this.list){
+            rate *= (1-data.Common.dodge/100);
+        }
+        return 1-rate;
     }
     //防御,可以为负数
     getDefence():number{
-        let defence = this.weapon.defence+this.helmet.defence+this.clothes.defence
-        +this.trousers.defence+this.gloves.defence+this.shoes.defence+this.cloak.defence+this.buffer.defence;
+        let defence = 0;
+        for(let data of this.list){
+            defence += data.Common.defence;
+        }
         return defence;
     }
     getIceDefence():number{
-        return this.weapon.iceDefence+this.helmet.iceDefence+this.clothes.iceDefence
-        +this.trousers.iceDefence+this.gloves.iceDefence+this.shoes.iceDefence+this.cloak.iceDefence+this.buffer.iceDefence;
+        let defence = 0;
+        for(let data of this.list){
+            defence += data.Common.iceDefence;
+        }
+        return defence;
     }
     getFireDefence():number{
-        return this.weapon.fireDefence+this.helmet.fireDefence+this.clothes.fireDefence
-        +this.trousers.fireDefence+this.gloves.fireDefence+this.shoes.fireDefence+this.cloak.fireDefence+this.buffer.fireDefence;
+        let defence = 0;
+        for(let data of this.list){
+            defence += data.Common.fireDefence;
+        }
+        return defence;
     }
     getLighteningDefence():number{
-        return this.weapon.lighteningDefence+this.helmet.lighteningDefence+this.clothes.lighteningDefence
-        +this.trousers.lighteningDefence+this.gloves.lighteningDefence+this.shoes.lighteningDefence+this.cloak.lighteningDefence+this.buffer.lighteningDefence;
+        let defence = 0;
+        for(let data of this.list){
+            defence += data.Common.lighteningDefence;
+        }
+        return defence;
     }
     getToxicDefence():number{
-        return this.weapon.toxicDefence+this.helmet.toxicDefence+this.clothes.toxicDefence
-        +this.trousers.toxicDefence+this.gloves.toxicDefence+this.shoes.toxicDefence+this.cloak.toxicDefence+this.buffer.toxicDefence;
+        let defence = 0;
+        for(let data of this.list){
+            defence += data.Common.toxicDefence;
+        }
+        return defence;
     }
     getCurseDefence():number{
-        return this.weapon.curseDefence+this.helmet.curseDefence+this.clothes.curseDefence
-        +this.trousers.curseDefence+this.gloves.curseDefence+this.shoes.curseDefence+this.cloak.curseDefence+this.buffer.curseDefence;
+        let defence = 0;
+        for(let data of this.list){
+            defence += data.Common.curseDefence;
+        }
+        return defence;
     }
     getRealDamage():number{
-        return this.weapon.realDamage+this.helmet.realDamage+this.clothes.realDamage
-        +this.trousers.realDamage+this.gloves.realDamage+this.shoes.realDamage+this.cloak.realDamage+this.buffer.realDamage;
+        let damage = 0;
+        for(let data of this.list){
+            damage += data.Common.realDamage;
+        }
+        return damage;
     }
     getIceDamage():number{
-        return this.weapon.iceDamage+this.helmet.iceDamage+this.clothes.iceDamage
-        +this.trousers.iceDamage+this.gloves.iceDamage+this.shoes.iceDamage+this.cloak.iceDamage+this.buffer.iceDamage;
+        let damage = 0;
+        for(let data of this.list){
+            damage += data.Common.iceDamage;
+        }
+        return damage;
     }
     getFireDamage():number{
-        return this.weapon.fireDamage+this.helmet.fireDamage+this.clothes.fireDamage
-        +this.trousers.fireDamage+this.gloves.fireDamage+this.shoes.fireDamage+this.cloak.fireDamage+this.buffer.fireDamage;
+        let damage = 0;
+        for(let data of this.list){
+            damage += data.Common.fireDamage;
+        }
+        return damage;
     }
     getLighteningDamage():number{
-        return this.weapon.lighteningDamage+this.helmet.lighteningDamage+this.clothes.lighteningDamage
-        +this.trousers.lighteningDamage+this.gloves.lighteningDamage+this.shoes.lighteningDamage+this.cloak.lighteningDamage+this.buffer.lighteningDamage;
+        let damage = 0;
+        for(let data of this.list){
+            damage += data.Common.lighteningDamage;
+        }
+        return damage;
     }
     getToxicDamage():number{
-        return this.weapon.toxicDamage+this.helmet.toxicDamage+this.clothes.toxicDamage
-        +this.trousers.toxicDamage+this.gloves.toxicDamage+this.shoes.toxicDamage+this.cloak.toxicDamage+this.buffer.toxicDamage;
+        let damage = 0;
+        for(let data of this.list){
+            damage += data.Common.toxicDamage;
+        }
+        return damage;
     }
     getCurseDamage():number{
-        return this.weapon.curseDamage+this.helmet.curseDamage+this.clothes.curseDamage
-        +this.trousers.curseDamage+this.gloves.curseDamage+this.shoes.curseDamage+this.cloak.curseDamage+this.buffer.curseDamage;
+        let damage = 0;
+        for(let data of this.list){
+            damage += data.Common.curseDamage;
+        }
+        return damage;
     }
     getRealRate():number{
-        return this.weapon.realRate+this.helmet.realRate+this.clothes.realRate
-        +this.trousers.realRate+this.gloves.realRate+this.shoes.realRate+this.cloak.realRate+this.buffer.realRate;
+        let rate = 0;
+        for(let data of this.list){
+            rate += data.Common.realRate;
+        }
+        return rate;
     }
     getIceRate():number{
-        return this.weapon.iceRate+this.helmet.iceRate+this.clothes.iceRate
-        +this.trousers.iceRate+this.gloves.iceRate+this.shoes.iceRate+this.cloak.iceRate+this.buffer.iceRate;
+        let rate = 0;
+        for(let data of this.list){
+            rate += data.Common.iceRate;
+        }
+        return rate;
     }
     getFireRate():number{
-        return this.weapon.fireRate+this.helmet.fireRate+this.clothes.fireRate
-        +this.trousers.fireRate+this.gloves.fireRate+this.shoes.fireRate+this.cloak.fireRate+this.buffer.fireRate;
+        let rate = 0;
+        for(let data of this.list){
+            rate += data.Common.fireRate;
+        }
+        return rate;
     }
     getLighteningRate():number{
-        return this.weapon.lighteningRate+this.helmet.lighteningRate+this.clothes.lighteningRate
-        +this.trousers.lighteningRate+this.gloves.lighteningRate+this.shoes.lighteningRate+this.cloak.lighteningRate+this.buffer.lighteningRate;
+        let rate = 0;
+        for(let data of this.list){
+            rate += data.Common.lighteningRate;
+        }
+        return rate;
     }
     getToxicRate():number{
-        return this.weapon.toxicRate+this.helmet.toxicRate+this.clothes.toxicRate
-        +this.trousers.toxicRate+this.gloves.toxicRate+this.shoes.toxicRate+this.cloak.toxicRate+this.buffer.toxicRate;
+        let rate = 0;
+        for(let data of this.list){
+            rate += data.Common.toxicRate;
+        }
+        return rate;
     }
     getCurseRate():number{
-        return this.weapon.curseRate+this.helmet.curseRate+this.clothes.curseRate
-        +this.trousers.curseRate+this.gloves.curseRate+this.shoes.curseRate+this.cloak.curseRate+this.buffer.curseRate;
+        let rate = 0;
+        for(let data of this.list){
+            rate += data.Common.curseRate;
+        }
+        return rate;
     }
     //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
     getLifeRecovery():number{
-        return this.weapon.lifeRecovery+this.helmet.lifeRecovery+this.clothes.lifeRecovery
-        +this.trousers.lifeRecovery+this.gloves.lifeRecovery+this.shoes.lifeRecovery+this.cloak.lifeRecovery+this.buffer.lifeRecovery;
+        let lifeRecovery = 0;
+        for(let data of this.list){
+            lifeRecovery += data.Common.lifeRecovery;
+        }
+        return lifeRecovery;
     }
     getLifeDrainRate():number{
-        return 1-(1-this.weapon.lifeDrain/100)*(1-this.helmet.lifeDrain/100)
-        *(1-this.clothes.lifeDrain/100)*(1-this.trousers.lifeDrain/100)
-        *(1-this.gloves.lifeDrain/100)*(1-this.shoes.lifeDrain/100)*(1-this.cloak.lifeDrain/100)*(1-this.buffer.lifeDrain/100);
+        let rate = 1;
+        for(let data of this.list){
+            rate *= (1-data.Common.lifeDrain/100);
+        }
+        return 1-rate;
         
     }
 
     //生命值
     getHealth():number{
-        return this.weapon.health+this.helmet.health+this.clothes.health
-        +this.trousers.health+this.gloves.health+this.shoes.health +this.cloak.health+this.buffer.health;;
+        let health = 0;
+        for(let data of this.list){
+            health += data.Common.maxHealth;
+        }
+        return health;
     }
 
     getTotalEquipmentData():EquipmentData{
         let e = new EquipmentData();
-        e.damageMin = this.getAttackPoint().x;
-        e.damageMax = this.getAttackPoint().y;
-        e.criticalStrikeRate = this.getCriticalStrikeRate();
-        e.defence = this.getDefence();
-        e.lifeDrain = this.getLifeDrainRate();
-        e.lifeRecovery = this.getLifeRecovery();
-        e.moveSpeed = this.getMoveSpeed();
-        e.attackSpeed = this.getAttackSpeed();
-        e.dodge = this.getDodge();
-        e.health = this.getHealth();
-        e.realDamage = this.getRealDamage();
-        e.realRate = this.getRealRate();
-        e.iceDamage = this.getIceDamage();
-        e.iceDefence = this.getIceDefence();
-        e.iceRate = this.getIceRate();
-        e.fireDamage = this.getFireDamage();
-        e.fireDefence = this.getFireDefence();
-        e.fireRate = this.getFireRate();
-        e.lighteningDamage = this.getLighteningDamage();
-        e.lighteningDefence = this.getLighteningDefence();
-        e.lighteningRate = this.getLighteningRate();
-        e.toxicDamage = this.getToxicDamage();
-        e.toxicDefence = this.getToxicDefence();
-        e.toxicRate = this.getToxicRate();
-        e.curseDamage = this.getCurseDamage();
-        e.curseDefence = this.getCurseDefence();
-        e.curseRate = this.getCurseRate();
+        e.Common.damageMin = this.getAttackPoint().x;
+        e.Common.damageMax = this.getAttackPoint().y;
+        e.Common.criticalStrikeRate = this.getCriticalStrikeRate();
+        e.Common.defence = this.getDefence();
+        e.Common.lifeDrain = this.getLifeDrainRate();
+        e.Common.lifeRecovery = this.getLifeRecovery();
+        e.Common.moveSpeed = this.getMoveSpeed();
+        e.Common.attackSpeed = this.getAttackSpeed();
+        e.Common.dodge = this.getDodge();
+        e.Common.maxHealth = this.getHealth();
+        e.Common.realDamage = this.getRealDamage();
+        e.Common.realRate = this.getRealRate();
+        e.Common.iceDamage = this.getIceDamage();
+        e.Common.iceDefence = this.getIceDefence();
+        e.Common.iceRate = this.getIceRate();
+        e.Common.fireDamage = this.getFireDamage();
+        e.Common.fireDefence = this.getFireDefence();
+        e.Common.fireRate = this.getFireRate();
+        e.Common.lighteningDamage = this.getLighteningDamage();
+        e.Common.lighteningDefence = this.getLighteningDefence();
+        e.Common.lighteningRate = this.getLighteningRate();
+        e.Common.toxicDamage = this.getToxicDamage();
+        e.Common.toxicDefence = this.getToxicDefence();
+        e.Common.toxicRate = this.getToxicRate();
+        e.Common.curseDamage = this.getCurseDamage();
+        e.Common.curseDefence = this.getCurseDefence();
+        e.Common.curseRate = this.getCurseRate();
         return e;
     }
 }

@@ -80,12 +80,12 @@ export default class Chest extends cc.Component {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        dungeon.addEquipment(EquipmentManager.WEAPON_CHOPPER, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_DINNERFORK, this.pos,null,this.quality);
-                        // dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_CHOPPER, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_DINNERFORK, this.pos,null,this.quality);
+                        dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
                     }
                 }
             }));

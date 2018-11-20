@@ -3,6 +3,8 @@ import StatusData from "../Data/StatusData";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
 import { EventConstant } from "../EventConstant";
+import Player from "../Player";
+import Monster from "../Monster";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,8 +66,13 @@ export default class StatusManager extends cc.Component {
             this.node.scaleX = this.node.parent.scaleX;
         }
         if (this.isTimeDelay(dt)) {
-            Logic.playerData.statusTotalData = this.updateStatus();
-            cc.director.emit(EventConstant.PLAYER_STATUSUPDATE);
+            let monster = this.node.parent.getComponent(Monster);
+            if(this.node.parent&&this.node.parent.getComponent(Player)){
+                Logic.playerData.StatusTotalData.valueCopy(this.updateStatus());
+                cc.director.emit(EventConstant.PLAYER_STATUSUPDATE);
+            }else if(this.node.parent&&monster){
+                monster.data.StatusTotalData.valueCopy(this.updateStatus());
+            }
         }
     }
     private timeDelay = 0;
@@ -84,33 +91,34 @@ export default class StatusManager extends cc.Component {
             if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
                 continue;
             }
-            e.physicalDamage += s.data.physicalDamage?s.data.physicalDamage:0;
-            e.defence += s.data.defence?s.data.defence:0;
             e.missRate += s.data.missRate?s.data.missRate:0;
-            e.criticalStrikeRate *= s.data.criticalStrikeRate?(1-s.data.criticalStrikeRate/100):1;
-            e.lifeDrain *= s.data.lifeDrain?(1-s.data.lifeDrain/100):1;
-            e.lifeRecovery += s.data.lifeRecovery?s.data.lifeRecovery:0;
-            e.moveSpeed += s.data.moveSpeed?s.data.moveSpeed:0;
-            e.attackSpeed += s.data.attackSpeed?s.data.attackSpeed:0;
-            e.dodge *= s.data.dodge?(1-s.data.dodge/100):1;
-            e.maxHealth += s.data.maxHealth?s.data.maxHealth:0;
-            e.realDamage += s.data.realDamage?s.data.realDamage:0;
-            e.realRate += s.data.realRate?s.data.realRate:0;
-            e.iceDamage += s.data.iceDamage?s.data.iceDamage:0;
-            e.iceDefence += s.data.iceDefence?s.data.iceDefence:0;
-            e.iceRate += s.data.iceRate?s.data.iceRate:0;
-            e.fireDamage += s.data.fireDamage?s.data.fireDamage:0;
-            e.fireDefence += s.data.fireDefence?s.data.fireDefence:0;
-            e.fireRate += s.data.fireRate?s.data.fireRate:0;
-            e.lighteningDamage += s.data.lighteningDamage?s.data.lighteningDamage:0;
-            e.lighteningDefence += s.data.lighteningDefence?s.data.lighteningDefence:0;
-            e.lighteningRate += s.data.lighteningRate?s.data.lighteningRate:0;
-            e.toxicDamage += s.data.toxicDamage?s.data.toxicDamage:0;
-            e.toxicDefence += s.data.toxicDefence?s.data.toxicDefence:0;
-            e.toxicRate += s.data.toxicRate?s.data.toxicRate:0;
-            e.curseDamage += s.data.curseDamage?s.data.curseDamage:0;
-            e.curseDefence += s.data.curseDefence?s.data.curseDefence:0;
-            e.curseRate += s.data.curseRate?s.data.curseRate:0;
+            e.Common.damageMin += s.data.Common.damageMin?s.data.Common.damageMin:0;
+            e.Common.damageMax += s.data.Common.damageMax?s.data.Common.damageMax:0;
+            e.Common.defence += s.data.Common.defence?s.data.Common.defence:0;
+            e.Common.criticalStrikeRate *= s.data.Common.criticalStrikeRate?(1-s.data.Common.criticalStrikeRate/100):1;
+            e.Common.lifeDrain *= s.data.Common.lifeDrain?(1-s.data.Common.lifeDrain/100):1;
+            e.Common.lifeRecovery += s.data.Common.lifeRecovery?s.data.Common.lifeRecovery:0;
+            e.Common.moveSpeed += s.data.Common.moveSpeed?s.data.Common.moveSpeed:0;
+            e.Common.attackSpeed += s.data.Common.attackSpeed?s.data.Common.attackSpeed:0;
+            e.Common.dodge *= s.data.Common.dodge?(1-s.data.Common.dodge/100):1;
+            e.Common.maxHealth += s.data.Common.maxHealth?s.data.Common.maxHealth:0;
+            e.Common.realDamage += s.data.Common.realDamage?s.data.Common.realDamage:0;
+            e.Common.realRate += s.data.Common.realRate?s.data.Common.realRate:0;
+            e.Common.iceDamage += s.data.Common.iceDamage?s.data.Common.iceDamage:0;
+            e.Common.iceDefence += s.data.Common.iceDefence?s.data.Common.iceDefence:0;
+            e.Common.iceRate += s.data.Common.iceRate?s.data.Common.iceRate:0;
+            e.Common.fireDamage += s.data.Common.fireDamage?s.data.Common.fireDamage:0;
+            e.Common.fireDefence += s.data.Common.fireDefence?s.data.Common.fireDefence:0;
+            e.Common.fireRate += s.data.Common.fireRate?s.data.Common.fireRate:0;
+            e.Common.lighteningDamage += s.data.Common.lighteningDamage?s.data.Common.lighteningDamage:0;
+            e.Common.lighteningDefence += s.data.Common.lighteningDefence?s.data.Common.lighteningDefence:0;
+            e.Common.lighteningRate += s.data.Common.lighteningRate?s.data.Common.lighteningRate:0;
+            e.Common.toxicDamage += s.data.Common.toxicDamage?s.data.Common.toxicDamage:0;
+            e.Common.toxicDefence += s.data.Common.toxicDefence?s.data.Common.toxicDefence:0;
+            e.Common.toxicRate += s.data.Common.toxicRate?s.data.Common.toxicRate:0;
+            e.Common.curseDamage += s.data.Common.curseDamage?s.data.Common.curseDamage:0;
+            e.Common.curseDefence += s.data.Common.curseDefence?s.data.Common.curseDefence:0;
+            e.Common.curseRate += s.data.Common.curseRate?s.data.Common.curseRate:0;
         }
         return e;
     }

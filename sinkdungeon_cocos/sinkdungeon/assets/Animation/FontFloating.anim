@@ -2,44 +2,54 @@
   "__type__": "cc.AnimationClip",
   "_name": "FontFloating",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 0.3333333333333333,
   "sample": 60,
-  "speed": 1,
+  "speed": 0.5,
   "wrapMode": "1",
   "curveData": {
-    "props": {
-      "y": [
-        {
-          "frame": 0,
-          "value": 114
-        },
-        {
-          "frame": 0.3333333333333333,
-          "value": 140
+    "paths": {
+      "label": {
+        "props": {
+          "x": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 20
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 32
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            }
+          ]
         }
-      ],
-      "opacity": [
-        {
-          "frame": 0,
-          "value": 255
-        },
-        {
-          "frame": 0.3333333333333333,
-          "value": 0
-        }
-      ],
-      "x": [
-        {
-          "frame": 0,
-          "value": 0
-        },
-        {
-          "frame": 0.3333333333333333,
-          "value": 20
-        }
-      ]
+      }
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 0.3333333333333333,
+      "func": "FloatingFinish",
+      "params": []
+    }
+  ]
 }

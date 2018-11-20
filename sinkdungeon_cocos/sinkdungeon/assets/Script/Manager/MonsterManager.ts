@@ -69,18 +69,33 @@ export default class MonsterManager extends cc.Component {
         //5%的几率变异
         monster.isVariation =  Logic.getRandomNum(0,100)<5;
         if(monster.isVariation){
-            data.maxHealth=data.maxHealth*2;
-            data.attackPoint=data.attackPoint*2;
+            data.Common.maxHealth=data.Common.maxHealth*2;
+            data.Common.damageMin=data.Common.damageMin*2;
             data.currentHealth=data.currentHealth*2;
             data.melee = data.melee>0?data.melee+20:0;
             data.remote = data.remote>0?data.remote+20:0;
             data.dash = data.dash>0?data.dash+20:0;
-            data.movespeed = data.movespeed + 100;
+            data.Common.moveSpeed = data.Common.moveSpeed + 100;
         }
+        data.Common.iceDamage = Logic.getRandomNum(0,100)<5?data.Common.iceDamage:Logic.getRandomNum(0,1);
+        data.Common.fireDamage = Logic.getRandomNum(0,100)<5?data.Common.iceDamage:Logic.getRandomNum(0,1);
+        data.Common.lighteningDamage = Logic.getRandomNum(0,100)<5?data.Common.lighteningDamage:Logic.getRandomNum(0,1);
+        data.Common.toxicDamage = Logic.getRandomNum(0,100)<5?data.Common.toxicDamage:Logic.getRandomNum(0,1);
+        data.Common.curseDamage = Logic.getRandomNum(0,100)<5?data.Common.curseDamage:Logic.getRandomNum(0,1);
+        data.Common.iceDefence = Logic.getRandomNum(0,100)<5?data.Common.iceDefence:Logic.getRandomNum(0,100);
+        data.Common.fireDefence = Logic.getRandomNum(0,100)<5?data.Common.fireDefence:Logic.getRandomNum(0,100);
+        data.Common.lighteningDefence = Logic.getRandomNum(0,100)<5?data.Common.lighteningDefence:Logic.getRandomNum(0,100);
+        data.Common.toxicDefence= Logic.getRandomNum(0,100)<5?data.Common.toxicDefence:Logic.getRandomNum(0,100);
+        data.Common.curseDefence = Logic.getRandomNum(0,100)<5?data.Common.curseDefence:Logic.getRandomNum(0,100);
+        data.Common.iceRate = Logic.getRandomNum(0,100)<5?data.Common.iceRate:Logic.getRandomNum(0,100);
+        data.Common.fireRate = Logic.getRandomNum(0,100)<5?data.Common.fireRate:Logic.getRandomNum(0,100);
+        data.Common.lighteningRate = Logic.getRandomNum(0,100)<5?data.Common.lighteningRate:Logic.getRandomNum(0,100);
+        data.Common.toxicRate= Logic.getRandomNum(0,100)<5?data.Common.toxicRate:Logic.getRandomNum(0,100);
+        data.Common.curseRate = Logic.getRandomNum(0,100)<5?data.Common.curseRate:Logic.getRandomNum(0,100);
         monster.data = data;
         return monster;
-        
     }
+   
     getKraken(dungeon:Dungeon,posIndex:cc.Vec2):Kraken{
         let krakenPrefab:cc.Node = null;
         krakenPrefab = cc.instantiate(this.kraken);

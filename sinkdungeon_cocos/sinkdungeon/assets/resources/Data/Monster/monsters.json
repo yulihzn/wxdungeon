@@ -1,186 +1,210 @@
 {
-    "monster000":{
-        "nameCn":"史莱姆",
-        "nameEn":"slime",
-        "resName":"monster000",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":400,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "melee":0,
-        "dash":20
+    "monster000": {
+        "nameCn": "史莱姆",
+        "nameEn": "slime",
+        "resName": "monster000",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 0,
+        "dash": 20
     },
-    "monster001":{
-        "nameCn":"哥布林",
-        "nameEn":"goblin",
-        "resName":"monster001",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":400,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "melee":70,
-        "dash":0
+    "monster001": {
+        "nameCn": "哥布林",
+        "nameEn": "goblin",
+        "resName": "monster001",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 70,
+        "dash": 0
     },
-    "monster002":{
-        "nameCn":"木乃伊",
-        "nameEn":"mummy",
-        "resName":"monster002",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":100,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":3,
-        "invisible":0,
-        "remote":0,
-        "melee":70,
-        "dash":10
+    "monster002": {
+        "nameCn": "木乃伊",
+        "nameEn": "mummy",
+        "resName": "monster002",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 100,
+            "maxHealth": 5,
+            "damageMin": 3
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 70,
+        "dash": 10
     },
-    "monster003":{
-        "nameCn":"阿努比斯",
-        "nameEn":"anubis",
-        "resName":"monster003",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":200,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":3,
-        "invisible":1,
-        "remote":0,
-        "melee":90,
-        "dash":0
+    "monster003": {
+        "nameCn": "阿努比斯",
+        "nameEn": "anubis",
+        "resName": "monster003",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 5,
+            "damageMin": 3
+        },
+        "currentHealth": 5,
+        "invisible": 1,
+        "remote": 0,
+        "melee": 90,
+        "dash": 0
     },
-    "monster004":{
-        "nameCn":"海盗",
-        "nameEn":"pirate",
-        "resName":"monster004",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":200,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "melee":80,
-        "dash":0
+    "monster004": {
+        "nameCn": "海盗",
+        "nameEn": "pirate",
+        "resName": "monster004",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 80,
+        "dash": 0
     },
-    "monster005":{
-        "nameCn":"水手",
-        "nameEn":"sailor",
-        "resName":"monster005",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":400,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "melee":80,
-        "dash":20
+    "monster005": {
+        "nameCn": "水手",
+        "nameEn": "sailor",
+        "resName": "monster005",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 80,
+        "dash": 20
     },
-    "monster006":{
-        "nameCn":"章鱼",
-        "nameEn":"octopus",
-        "resName":"monster006",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":200,
-        "maxHealth":10,
-        "currentHealth":10,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":30,
-        "melee":0,
-        "dash":0
+    "monster006": {
+        "nameCn": "章鱼",
+        "nameEn": "octopus",
+        "resName": "monster006",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 10,
+            "damageMin": 1
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 30,
+        "melee": 0,
+        "dash": 0
     },
-    "monster007":{
-        "nameCn":"杀手",
-        "nameEn":"killer",
-        "resName":"monster007",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":200,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":50,
-        "melee":60,
-        "dash":0
+    "monster007": {
+        "nameCn": "杀手",
+        "nameEn": "killer",
+        "resName": "monster007",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 50,
+        "melee": 60,
+        "dash": 0
     },
-    "monster008":{
-        "nameCn":"强壮的水手",
-        "nameEn":"strongsailor",
-        "resName":"monster008",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":400,
-        "maxHealth":10,
-        "currentHealth":10,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "melee":80,
-        "dash":20
+    "monster008": {
+        "nameCn": "强壮的水手",
+        "nameEn": "strongsailor",
+        "resName": "monster008",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 10,
+            "damageMin": 1
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 80,
+        "dash": 20
     },
-    "monster009":{
-        "nameCn":"宝箱怪",
-        "nameEn":"ChestMonster",
-        "resName":"monster009",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":400,
-        "maxHealth":10,
-        "currentHealth":10,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "remoterate":0,
-        "melee":80,
-        "dash":0,
-        "disguise":80
+    "monster009": {
+        "nameCn": "宝箱怪",
+        "nameEn": "ChestMonster",
+        "resName": "monster009",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 10,
+            "damageMin": 1
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 0,
+        "remoterate": 0,
+        "melee": 80,
+        "dash": 0,
+        "disguise": 80
     },
-    "monster010":{
-        "nameCn":"石像鬼",
-        "nameEn":"Gargoyle",
-        "resName":"monster010",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":450,
-        "maxHealth":5,
-        "currentHealth":5,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "melee":80,
-        "dash":0,
-        "disguise":200
+    "monster010": {
+        "nameCn": "石像鬼",
+        "nameEn": "Gargoyle",
+        "resName": "monster010",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 450,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 80,
+        "dash": 0,
+        "disguise": 200
     },
-    "monster011":{
-        "nameCn":"小鸡",
-        "nameEn":"Chicken",
-        "resName":"monster011",
-        "chapter":0,
-        "stageLevel":0,
-        "movespeed":100,
-        "maxHealth":999,
-        "currentHealth":999,
-        "attackPoint":1,
-        "invisible":0,
-        "remote":0,
-        "melee":0,
-        "dash":0,
-        "disguise":0
+    "monster011": {
+        "nameCn": "小鸡",
+        "nameEn": "Chicken",
+        "resName": "monster011",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 100,
+            "maxHealth": 999,
+            "damageMin": 1
+        },
+        "currentHealth": 999,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 0,
+        "dash": 0,
+        "disguise": 0
     }
 }

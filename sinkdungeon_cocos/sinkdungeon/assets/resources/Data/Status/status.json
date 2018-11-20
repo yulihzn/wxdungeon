@@ -1,58 +1,68 @@
 {
-    "status001":{
-        "nameCn":"冰冻",
-        "nameEn":"frozen",
-        "spriteFrameName":"status001",
-        "statusType":1,
-        "desc":"",
-        "moveSpeed":-200,
-        "attackSpeed":-200,
-        "duration":3
+    "status001": {
+        "nameCn": "冰冻",
+        "nameEn": "frozen",
+        "spriteFrameName": "status001",
+        "statusType": 1,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "moveSpeed": -20
+        }
     },
-    "status002":{
-        "nameCn":"燃烧",
-        "nameEn":"burning",
-        "spriteFrameName":"status002",
-        "statusType":2,
-        "desc":"",
-        "physicalDamage":-5,
-        "duration":3
+    "status002": {
+        "nameCn": "燃烧",
+        "nameEn": "burning",
+        "spriteFrameName": "status002",
+        "statusType": 2,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "damageMin": -5
+        }
     },
-    "status003":{
-        "nameCn":"眩晕",
-        "nameEn":"dizz",
-        "spriteFrameName":"status003",
-        "statusType":3,
-        "desc":"",
-        "duration":3
+    "status003": {
+        "nameCn": "眩晕",
+        "nameEn": "dizz",
+        "spriteFrameName": "status003",
+        "statusType": 3,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "attackSpeed": -20
+        }
     },
-    "status004":{
-        "nameCn":"中毒",
-        "nameEn":"toxicosis",
-        "spriteFrameName":"status004",
-        "statusType":4,
-        "desc":"",
-        "lifeRecovery":-99,
-        "toxicDamageOvertime":1,
-        "duration":3
+    "status004": {
+        "nameCn": "中毒",
+        "nameEn": "toxicosis",
+        "spriteFrameName": "status004",
+        "statusType": 4,
+        "desc": "",
+        "toxicDamageOvertime": 1,
+        "duration": 3,
+        "common": {
+            "lifeRecovery": -99
+        }
     },
-    "status005":{
-        "nameCn":"诅咒",
-        "nameEn":"cursing",
-        "spriteFrameName":"status005",
-        "statusType":5,
-        "desc":"",
-        "duration":5,
-        "missRate":60,
-        "maxHealth":-5
+    "status005": {
+        "nameCn": "诅咒",
+        "nameEn": "cursing",
+        "spriteFrameName": "status005",
+        "statusType": 5,
+        "desc": "",
+        "duration": 5,
+        "missRate": 100,
+        "common": {
+            "maxHealth": -5
+        }
     },
-    "status006":{
-        "nameCn":"流血",
-        "nameEn":"bleeding",
-        "spriteFrameName":"status006",
-        "statusType":6,
-        "desc":"",
-        "duration":3,
-        "physicalDamageOvertime":1
+    "status006": {
+        "nameCn": "流血",
+        "nameEn": "bleeding",
+        "spriteFrameName": "status006",
+        "statusType": 6,
+        "desc": "",
+        "duration": 3,
+        "physicalDamageOvertime": 1
     }
 }

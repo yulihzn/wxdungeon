@@ -27,14 +27,15 @@ import DamageData from './Data/DamageData';
 import InventoryManager from './Manager/InventoryManager';
 import PlayerData from './Data/PlayerData';
 import PlayerInfoDialog from './UI/PlayerInfoDialog';
+import FloatinglabelManager from './Manager/FloatingLabelManager';
 
 @ccclass
 export default class Player extends cc.Component {
 
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(4, 4);
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(FloatinglabelManager)
+    floatinglabelManager: FloatinglabelManager = null;
     @property(HealthBar)
     healthBar: HealthBar = null;
     @property(cc.Prefab)
@@ -47,9 +48,9 @@ export default class Player extends cc.Component {
     shooterNode: cc.Node = null;
     shooter: Shooter = null;
     @property(StatusManager)
-    statusManager:StatusManager = null;
+    statusManager: StatusManager = null;
     @property(PlayerInfoDialog)
-    playerInfoDialog:PlayerInfoDialog = null;
+    playerInfoDialog: PlayerInfoDialog = null;
     private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
@@ -74,7 +75,7 @@ export default class Player extends cc.Component {
 
     touchedEquipment: Equipment;
     inventoryManager: InventoryManager;
-    data:PlayerData;
+    data: PlayerData;
     recoveryTimeDelay = 0;
 
     isFaceRight = true;
@@ -96,10 +97,10 @@ export default class Player extends cc.Component {
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         let walkName = "PlayerWalkShort";
-        if(this.inventoryManager.trousers.trouserslong == 1){
+        if (this.inventoryManager.trousers.trouserslong == 1) {
             walkName = "PlayerWalk";
         }
-        if(this.anim){
+        if (this.anim) {
             this.anim.play(walkName);
         }
         this.rigidbody = this.getComponent(cc.RigidBody);
@@ -124,7 +125,7 @@ export default class Player extends cc.Component {
             .getChildByName('trousers').getComponent(cc.Sprite);
         this.glovesLeftSprite = this.sprite.getChildByName('body')
             .getChildByName('glovesleft').getComponent(cc.Sprite);
-            this.glovesRightSprite = this.sprite.getChildByName('body')
+        this.glovesRightSprite = this.sprite.getChildByName('body')
             .getChildByName('glovesright').getComponent(cc.Sprite);
         this.shoesLeftSprite = this.sprite.getChildByName('body')
             .getChildByName('shoesleft').getComponent(cc.Sprite);
@@ -141,18 +142,18 @@ export default class Player extends cc.Component {
             , (event) => { this.meleeAttack() });
         cc.director.on(EventConstant.PLAYER_REMOTEATTACK
             , (event) => { this.remoteAttack() });
-            cc.director.on(EventConstant.PLAYER_STATUSUPDATE
-                , (event) => { this.statusUpdate() });
+        cc.director.on(EventConstant.PLAYER_STATUSUPDATE
+            , (event) => { this.statusUpdate() });
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage) });
-            cc.director.on(EventConstant.PLAYER_ROTATE
-                , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
-        if(Logic.mapManger.currentRectRoom.roomType==RectDungeon.BOSS_ROOM){
-            Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
+        cc.director.on(EventConstant.PLAYER_ROTATE
+            , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
+        if (Logic.mapManger.currentRectRoom.roomType == RectDungeon.BOSS_ROOM) {
+            Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
         }
         this.pos = Logic.playerData.pos;
         this.defaultPos = Logic.playerData.pos.clone();
-        this.baseAttackPoint = Logic.playerData.damageMin;
+        this.baseAttackPoint = Logic.playerData.getDamageMin();
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);
@@ -162,12 +163,12 @@ export default class Player extends cc.Component {
             this.destroySmoke(event.detail.coinNode);
         })
     }
-    private statusUpdate(){
-        if(!this.inventoryManager||!this.playerInfoDialog){
+    private statusUpdate() {
+        if (!this.inventoryManager || !this.playerInfoDialog) {
             return;
         }
-        this.data.equipmentTotalData = this.inventoryManager.getTotalEquipmentData();
-        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData,this.data.statusTotalData);
+        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
+        this.playerInfoDialog.refreshDialog(this.data, this.data.EquipmentTotalData, this.data.StatusTotalData);
     }
     private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
         let smokePrefab: cc.Node = null;
@@ -184,9 +185,9 @@ export default class Player extends cc.Component {
         smokePrefab.opacity = 255;
         smokePrefab.active = true;
     }
-   
+
     destroySmoke(smokeNode: cc.Node) {
-        if(!smokeNode){
+        if (!smokeNode) {
             return;
         }
         smokeNode.active = false;
@@ -206,7 +207,7 @@ export default class Player extends cc.Component {
                 if (equipData.stab == 1) {
                     this.weaponSprite.spriteFrame = null;
                     this.weaponStabSprite.spriteFrame = spriteFrame;
-                    this.weaponStabLightSprite.spriteFrame = this.meleeWeapon.isFar?Logic.spriteFrames['stablight']:Logic.spriteFrames['stablight1'];
+                    this.weaponStabLightSprite.spriteFrame = this.meleeWeapon.isFar ? Logic.spriteFrames['stablight'] : Logic.spriteFrames['stablight1'];
                 } else {
                     this.weaponSprite.spriteFrame = spriteFrame;
                     this.weaponStabSprite.spriteFrame = null;
@@ -226,12 +227,12 @@ export default class Player extends cc.Component {
                 let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.clothes.color);
                 this.clothesSprite.node.color = color3;
                 break;
-            case 'trousers': 
-                this.trousersSprite.spriteFrame = equipData.trouserslong==1?Logic.spriteFrames['idle002']:Logic.spriteFrames['idle001'];
+            case 'trousers':
+                this.trousersSprite.spriteFrame = equipData.trouserslong == 1 ? Logic.spriteFrames['idle002'] : Logic.spriteFrames['idle001'];
                 let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.trousers.color);
                 this.trousersSprite.node.color = color4;
                 break;
-            case 'gloves': 
+            case 'gloves':
                 this.glovesLeftSprite.spriteFrame = spriteFrame;
                 let color5l = cc.color(255, 255, 255).fromHEX(this.inventoryManager.gloves.color);
                 this.glovesLeftSprite.node.color = color5l;
@@ -239,7 +240,7 @@ export default class Player extends cc.Component {
                 let color5r = cc.color(255, 255, 255).fromHEX(this.inventoryManager.gloves.color);
                 this.glovesRightSprite.node.color = color5r;
                 break;
-            case 'shoes': 
+            case 'shoes':
                 this.shoesLeftSprite.spriteFrame = spriteFrame;
                 let color6l = cc.color(255, 255, 255).fromHEX(this.inventoryManager.shoes.color);
                 this.shoesLeftSprite.node.color = color6l;
@@ -252,10 +253,10 @@ export default class Player extends cc.Component {
                 this.cloakSprite.node.color = color7;
                 break;
         }
-        this.data.equipmentTotalData = this.inventoryManager.getTotalEquipmentData();
-        this.playerInfoDialog.refreshDialog(this.data,this.data.equipmentTotalData,this.data.statusTotalData);
+        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
+        this.playerInfoDialog.refreshDialog(this.data, this.data.EquipmentTotalData, this.data.StatusTotalData);
         let health = this.data.getHealth();
-        if(this.healthBar){
+        if (this.healthBar) {
             this.healthBar.refreshHealth(health.x, health.y);
         }
     }
@@ -264,7 +265,7 @@ export default class Player extends cc.Component {
         this.node.y = this.pos.y * 64 + 32;
     }
     transportPlayer(pos: cc.Vec2) {
-        if(!this.sprite){
+        if (!this.sprite) {
             return;
         }
         this.sprite.rotation = 0;
@@ -279,30 +280,37 @@ export default class Player extends cc.Component {
     changeZIndex(pos: cc.Vec2) {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 2;
     }
-
+    addStatus(statusType: string) {
+        this.statusManager.addStatus(statusType);
+    }
     meleeAttack() {
-        if (!this.meleeWeapon||this.isAttacking) {
+        if (!this.meleeWeapon || this.isAttacking) {
             return;
         }
+
         this.isAttacking = true;
         let pos = this.meleeWeapon.getHv().clone();
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
         pos = pos.normalizeSelf().mul(15);
-        pos.x = this.isFaceRight?pos.x:-pos.x;
+        pos.x = this.isFaceRight ? pos.x : -pos.x;
         let speed = PlayerData.DefAULT_SPEED - this.data.getAttackSpeed();
-        if(speed < 1){speed = 1}
-        if(speed > PlayerData.DefAULT_SPEED*10){speed = PlayerData.DefAULT_SPEED*10;}
+        if (speed < 1) { speed = 1 }
+        if (speed > PlayerData.DefAULT_SPEED * 10) { speed = PlayerData.DefAULT_SPEED * 10; }
         let spritePos = this.sprite.position.clone();
         let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
             setTimeout(() => {
-                 this.sprite.position = spritePos.clone();
-                 this.isAttacking = false;
-                 }, speed);
+                this.sprite.position = spritePos.clone();
+                this.isAttacking = false;
+            }, speed);
         }, this));
         this.sprite.runAction(action);
-        this.meleeWeapon.attack(this.data.getAttackSpeed(),this.inventoryManager.weapon);
+        let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
+        if (isMiss) {
+            this.showFloatFont(this.node.parent, 0, false, true)
+        }
+        this.meleeWeapon.attack(this.data, isMiss);
     }
     remoteRate = 0;
     remoteAttack() {
@@ -315,7 +323,7 @@ export default class Player extends cc.Component {
         }
 
     }
-    rotatePlayer(dir: number, pos: cc.Vec2, dt: number){
+    rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
         if (!this.node || this.isDied || this.isFall) {
             return;
         }
@@ -358,7 +366,7 @@ export default class Player extends cc.Component {
         }
         let walkName = "PlayerWalkShort";
         let idleName = "idle001";
-        if(this.inventoryManager.trousers.trouserslong == 1){
+        if (this.inventoryManager.trousers.trouserslong == 1) {
             walkName = "PlayerWalk";
             idleName = "idle002";
         }
@@ -386,12 +394,12 @@ export default class Player extends cc.Component {
         //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
         //     }
         // }
-        if(!this.node){
+        if (!this.node) {
             return;
         }
         this.changeZIndex(this.pos);
         let health = this.data.getHealth();
-        if(this.healthBar){
+        if (this.healthBar) {
             this.healthBar.refreshHealth(health.x, health.y);
         }
     }
@@ -406,7 +414,7 @@ export default class Player extends cc.Component {
             this.transportPlayer(this.defaultPos);
             this.anim.play('PlayerIdle');
             let dd = new DamageData();
-            dd.realDamage =1;
+            dd.realDamage = 1;
             this.takeDamage(dd);
             this.isFall = false;
         }, 2000);
@@ -426,20 +434,25 @@ export default class Player extends cc.Component {
         }
         this.healthBar.refreshHealth(health.x, health.y);
         Logic.playerData.currentHealth = health.x;
-        if (this.label) {
-            this.label.node.opacity = 255;
-            this.label.node.scaleX = this.node.scaleX;
-            this.label.node.color = dd.getTotalDamage() > 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
-            this.label.string = `${parseFloat((-dd.getTotalDamage()).toFixed(1))}`;
-            if (isDodge) {
-                this.label.node.color = cc.color(255, 255, 255);
-                this.label.string = `miss`;
-            }
-            this.label.getComponent(cc.Animation).play('FontFloating');
-        }
-
+        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false);
         if (Logic.playerData.currentHealth <= 0) {
             this.killed();
+        }
+    }
+
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {
+        if(!this.floatinglabelManager){
+            return;
+        }
+        let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode);
+        if (isDodge) {
+            flabel.showDoge();
+        } else if (isMiss) {
+            flabel.showMiss();
+        } else if (d != 0) {
+            flabel.showDamage(-d)
+        }else{
+            flabel.hideLabel();
         }
     }
     killed() {
@@ -454,10 +467,10 @@ export default class Player extends cc.Component {
     }
     //玩家行动
     playerAction(dir: number, pos: cc.Vec2, dt: number, dungeon: Dungeon) {
-        if(this.meleeWeapon && !this.meleeWeapon.dungeon){
+        if (this.meleeWeapon && !this.meleeWeapon.dungeon) {
             this.meleeWeapon.dungeon = dungeon;
         }
-        if(this.shooter && !this.shooter.dungeon){
+        if (this.shooter && !this.shooter.dungeon) {
             this.shooter.dungeon = dungeon;
         }
         this.move(dir, pos, dt);
@@ -480,29 +493,29 @@ export default class Player extends cc.Component {
         }
         return false;
     }
-   
+
     update(dt) {
 
         if (this.isRecoveryTimeDelay(dt)) {
-            let re = this.data.getRecovery();
+            let re = this.data.getLifeRecovery();
             if (re > 0) {
                 let dd = new DamageData();
                 dd.realDamage = -re;
                 this.takeDamage(dd);
             }
         }
-        if (this.isSmokeTimeDelay(dt)&&this.isMoving) {
+        if (this.isSmokeTimeDelay(dt) && this.isMoving) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
-        
+
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
-    
+
     UseItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {
                 if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {
-                    cc.director.emit(EventConstant.HUD_ADD_COIN, {detail:{ count: -this.touchedEquipment.shopTable.data.price }});
+                    cc.director.emit(EventConstant.HUD_ADD_COIN, { detail: { count: -this.touchedEquipment.shopTable.data.price } });
                     this.touchedEquipment.taken();
                     this.touchedEquipment.shopTable.data.isSaled = true;
                     this.touchedEquipment = null;
@@ -512,37 +525,13 @@ export default class Player extends cc.Component {
                 this.touchedEquipment = null;
             }
         }
-        if(this.statusManager){
-            this.statusManager.addStatus(StatusManager.FROZEN);
-        }
-        
     }
     //anim
     AttackFinish() {
         this.isAttacking = false;
 
     }
-    // Attacking() {
 
-
-    //     let damage = this.inventoryManager.getFinalAttackPoint(this.baseAttackPoint);
-    //     //生命汲取
-    //     let drain = this.inventoryManager.getLifeDrain(this.baseAttackPoint);
-    //     if (drain > 0) {
-    //         this.takeDamage(-drain);
-    //     }
-    //     if (!this.attackTarget) {
-    //         return;
-    //     }
-    //     let monster = this.attackTarget.node.getComponent(Monster);
-    //     if (monster && !monster.isDied) {
-    //         monster.takeDamage(damage);
-    //     }
-    //     let kraken = this.attackTarget.node.getComponent(Kraken);
-    //     if (kraken && !kraken.isDied) {
-    //         kraken.takeDamage(damage);
-    //     }
-    // }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
     //     let equipment = otherCollider.body.node.getComponent(Equipment);
     //     if (equipment) {

@@ -19,6 +19,7 @@ import Shooter from './Shooter';
 import Player from './Player';
 import StatusManager from './Manager/StatusManager';
 import DamageData from './Data/DamageData';
+import FloatinglabelManager from './Manager/FloatingLabelManager';
 
 @ccclass
 export default class Monster extends cc.Component {
@@ -29,12 +30,13 @@ export default class Monster extends cc.Component {
     public static readonly RES_ATTACK = 'anim004';//图片资源 攻击
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(0, 0);
-    @property(cc.Label)
-    label: cc.Label = null;
+
     @property(HealthBar)
     healthBar: HealthBar = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
+    @property(FloatinglabelManager)
+    floatinglabelManager: FloatinglabelManager = null;
     private sprite: cc.Node;
     private shadow: cc.Node;
     private dashlight: cc.Node;
@@ -58,6 +60,12 @@ export default class Monster extends cc.Component {
     isVariation: boolean = false;//是否变异
     scaleNum = 1.5;
 
+    particleIce: cc.ParticleSystem;
+    particleFire: cc.ParticleSystem;
+    particleLightening: cc.ParticleSystem;
+    particleToxic: cc.ParticleSystem;
+    particleCurse: cc.ParticleSystem;
+
     onLoad() {
         this.isAttacking = false;
         this.isDied = false;
@@ -71,6 +79,11 @@ export default class Monster extends cc.Component {
         this.shadow = this.sprite.getChildByName('shadow');
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
+        this.particleIce = this.node.getChildByName('Effect').getChildByName('ice').getComponent(cc.ParticleSystem);
+        this.particleFire = this.node.getChildByName('Effect').getChildByName('fire').getComponent(cc.ParticleSystem);
+        this.particleLightening = this.node.getChildByName('Effect').getChildByName('lightening').getComponent(cc.ParticleSystem);
+        this.particleToxic = this.node.getChildByName('Effect').getChildByName('toxic').getComponent(cc.ParticleSystem);
+        this.particleCurse = this.node.getChildByName('Effect').getChildByName('curse').getComponent(cc.ParticleSystem);
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
     }
@@ -110,7 +123,26 @@ export default class Monster extends cc.Component {
     changeZIndex() {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y) * 100 + 2;
     }
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {
+        if(!this.floatinglabelManager){
+            return;
+        }
+        let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode);
+        if (isDodge) {
+            flabel.showDoge();
+        } else if (isMiss) {
+            flabel.showMiss();
+        } else if (d != 0) {
+            flabel.showDamage(-d);
+        }else{
+            flabel.hideLabel();
+        }
+    }
     meleeAttack(pos: cc.Vec2, finish) {
+        let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
+        if (isMiss) {
+            this.showFloatFont(this.dungeon.node, 0, false, true)
+        }
         if (this.isAttacking) {
             return;
         }
@@ -130,7 +162,7 @@ export default class Monster extends cc.Component {
                 this.isAttacking = false;
                 this.changeBodyRes(this.data.resName, Monster.RES_WALK03)
                 this.anim.resume();
-                if (finish) { finish(this.data.getAttackPoint()); }
+                if (finish&&!isMiss) { finish(this.data.getAttackPoint()); }
             }), cc.moveTo(0.2, 0, 0));
         this.sprite.runAction(action);
     }
@@ -206,7 +238,7 @@ export default class Monster extends cc.Component {
         //     }
         // }
         this.changeZIndex();
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
     }
     fall() {
         if (this.isFall) {
@@ -220,7 +252,16 @@ export default class Monster extends cc.Component {
     }
     takeDamage(damageData: DamageData): boolean {
         if (this.data.invisible && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 2) {
+            this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
+        }
+        let dd = this.data.getDamage(damageData);
+        let dodge = this.data.getDodge();
+        let isDodge = Math.random() <= dodge && dd.getTotalDamage() > 0;
+        dd = isDodge ? new DamageData() : dd;
+        if(isDodge){
+            this.showFloatFont(this.dungeon.node, 0, true, false);
+            return;
         }
         this.isHurt = true;
         if (this.isDisguising) {
@@ -233,15 +274,43 @@ export default class Monster extends cc.Component {
         //100ms后修改受伤
         setTimeout(() => { if (this.node) { this.isHurt = false; } }, 200);
         this.sprite.opacity = 255;
-        this.data.currentHealth -= this.data.getDamage(damageData).getTotalDamage();
-        if (this.data.currentHealth > this.data.maxHealth) {
-            this.data.currentHealth = this.data.maxHealth;
+        this.data.currentHealth -= dd.getTotalDamage();
+        if (this.data.currentHealth > this.data.getHealth().y) {
+            this.data.currentHealth = this.data.getHealth().y;
         }
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.maxHealth);
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
+        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false);
         return true;
     }
-    addStatus(statusType:string){
+    addStatus(statusType: string) {
         this.statusManager.addStatus(statusType);
+    }
+    showAttackEffect() {
+        if (!this.particleIce) {
+            return;
+        }
+        this.data.getIceDamage() > 0 ? this.particleIce.resetSystem() : this.particleIce.stopSystem();
+        this.data.getFireDamage() > 0 ? this.particleFire.resetSystem() : this.particleFire.stopSystem();
+        this.data.getLighteningDamage() > 0 ? this.particleLightening.resetSystem() : this.particleLightening.stopSystem();
+        this.data.getToxicDamage() > 0 ? this.particleToxic.resetSystem() : this.particleToxic.stopSystem();
+        this.data.getCurseDamage() > 0 ? this.particleCurse.resetSystem() : this.particleCurse.stopSystem();
+    }
+    stopAttackEffect() {
+        if (!this.particleIce) {
+            return;
+        }
+        this.particleIce.stopSystem();
+        this.particleFire.stopSystem();
+        this.particleLightening.stopSystem();
+        this.particleToxic.stopSystem();
+        this.particleCurse.stopSystem();
+    }
+    addPlayerStatus(player: Player) {
+        if (Logic.getRandomNum(0, 100) < this.data.getIceRate()) { player.addStatus(StatusManager.FROZEN); }
+        if (Logic.getRandomNum(0, 100) < this.data.getFireRate()) { player.addStatus(StatusManager.BURNING); }
+        if (Logic.getRandomNum(0, 100) < this.data.getLighteningRate()) { player.addStatus(StatusManager.DIZZ); }
+        if (Logic.getRandomNum(0, 100) < this.data.getToxicRate()) { player.addStatus(StatusManager.TOXICOSIS); }
+        if (Logic.getRandomNum(0, 100) < this.data.getCurseRate()) { player.addStatus(StatusManager.CURSING); }
     }
     killed() {
         if (this.isDied) {
@@ -289,9 +358,11 @@ export default class Monster extends cc.Component {
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
             }
+            this.showAttackEffect();
             this.meleeAttack(pos, (damage: DamageData) => {
+                this.stopAttackEffect();
                 let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-                if (newdis < 64) { this.dungeon.player.takeDamage(damage); }
+                if (newdis < 64) { this.addPlayerStatus(this.dungeon.player); this.dungeon.player.takeDamage(damage); }
             });
             this.sprite.opacity = 255;
         }
@@ -309,18 +380,19 @@ export default class Monster extends cc.Component {
             }
         }
         //冲刺
-        let speed = this.data.movespeed;
+        let speed = this.data.getMoveSpeed();
         if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && Logic.getRandomNum(0, 100) < this.data.dash && this.data.dash > 0 && !this.isDashing && !this.isDisguising) {
             pos = this.dungeon.player.node.position.sub(this.node.position);
+            this.showAttackEffect();
             this.move(pos, speed * 1.2);
             this.isDashing = true;
-            setTimeout(() => { if (this.node) { this.isDashing = false; } }, 3000);
+            setTimeout(() => { if (this.node) { this.isDashing = false; this.stopAttackEffect(); } }, 3000);
         }
         if (this.data.disguise > 0 && playerDis < this.data.disguise && !this.dungeon.player.isDied && this.isDisguising) {
             this.changeBodyRes(this.data.resName);
             this.isDisguising = false;
         }
-        if(Logic.getHalfChance()){
+        if (Logic.getHalfChance()) {
             this.move(pos, speed);
         }
 
@@ -333,6 +405,8 @@ export default class Monster extends cc.Component {
         if (player && this.isDashing && this.dungeon && !this.isHurt && !this.isDied) {
             this.isDashing = false;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.addPlayerStatus(this.dungeon.player);
+            this.stopAttackEffect();
             this.dungeon.player.takeDamage(this.data.getAttackPoint());
         }
     }
@@ -432,9 +506,6 @@ export default class Monster extends cc.Component {
         }
         if (this.isDied) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-        }
-        if (this.label) {
-            this.label.string = "" + this.node.zIndex;
         }
         this.healthBar.node.opacity = this.isDisguising ? 0 : 255;
         if (this.shadow) {

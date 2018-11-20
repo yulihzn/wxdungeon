@@ -24,7 +24,7 @@ export default class Bullet extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
     @property
-    realDamge:number = 0;//真实伤害
+    realDamage:number = 0;//真实伤害
     @property
     physicalDamage: number = 0;//物理伤害
     @property
@@ -81,7 +81,7 @@ export default class Bullet extends cc.Component {
         this.sprite.opacity = 255;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
-        this.damageData.realDamge = this.realDamge;
+        this.damageData.realDamage = this.realDamage;
         this.damageData.physicalDamage = this.physicalDamage;
         this.damageData.iceDamage = this.iceDamage;
         this.damageData.fireDamage = this.fireDamage;
