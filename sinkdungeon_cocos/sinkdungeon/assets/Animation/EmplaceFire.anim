@@ -3,10 +3,10 @@
   "_name": "EmplaceFire",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.0166666666666666,
+  "_duration": 0.43333333333333335,
   "sample": 60,
   "speed": 0.5,
-  "wrapMode": "2",
+  "wrapMode": "1",
   "curveData": {
     "paths": {
       "sprite": {
@@ -38,7 +38,7 @@
                 }
               },
               {
-                "frame": 1,
+                "frame": 0.4166666666666667,
                 "value": {
                   "__uuid__": "4d4c17a7-3fbd-4516-919e-fd8e175271bf"
                 }

@@ -6,6 +6,7 @@ import KrakenSwingHand from "./KrakenSwingHand";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
+import Boss from "./Boss";
 import StatusManager from "../Manager/StatusManager";
 
 // Learn TypeScript:
@@ -21,28 +22,17 @@ import StatusManager from "../Manager/StatusManager";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Kraken extends cc.Component {
-
-    @property(cc.Vec2)
-    pos: cc.Vec2 = cc.v2(0, 0);
+export default class Kraken extends Boss {
     @property(cc.Label)
     label: cc.Label = null;
-    @property(HealthBar)
-    healthBar: HealthBar = null;
     @property(KrakenSwingHand)
     hand1:KrakenSwingHand = null;
     @property(KrakenSwingHand)
     hand2:KrakenSwingHand = null;
-    @property(StatusManager)
-    statusManager: StatusManager = null;
     private sprite: cc.Node;
     private anim: cc.Animation;
-    isDied = false;
-    isShow = false;
     private timeDelay = 0;
-    data: MonsterData = new MonsterData();
     shooter: Shooter;
-    dungeon: Dungeon;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -55,16 +45,11 @@ export default class Kraken extends cc.Component {
         this.shooter = this.getComponentInChildren(Shooter);
 
     }
-
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
         this.node.y = this.pos.y * 64 + 70;
     }
-    transportPlayer(x: number, y: number) {
-        this.pos.x = x;
-        this.pos.y = y;
-        this.changeZIndex();
-    }
+    
     changeZIndex() {
         this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 100 + 2;
         if (this.isShow && !this.isDied) {
@@ -91,16 +76,7 @@ export default class Kraken extends cc.Component {
     }
 
     start() {
-        // let ss = this.node.getComponentsInChildren(cc.Sprite);
-        // for (let i = 0; i < ss.length; i++) {
-        //     if (ss[i].spriteFrame) {
-        //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        //     }
-        // }
-        this.changeZIndex();
-        if(this.healthBar){
-            this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        }
+        super.start();
     }
 
     takeDamage(damage: DamageData):boolean {
@@ -123,9 +99,7 @@ export default class Kraken extends cc.Component {
         }
         return true;
     }
-    addStatus(statusType:string){
-        this.statusManager.addStatus(statusType);
-    }
+    
     killed() {
         if (this.isDied) {
             return;
@@ -159,18 +133,23 @@ export default class Kraken extends cc.Component {
             this.healthBar.node.active = !this.isDied;
         }
     }
-
+    actionTimeDelay = 0;
+    isActionTimeDelay(dt: number): boolean {
+        this.actionTimeDelay += dt;
+        if (this.actionTimeDelay > 1) {
+            this.actionTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
             this.updatePlayerPos();
-            // let ss = this.node.getComponentsInChildren(cc.Sprite);
-            // for (let i = 0; i < ss.length; i++) {
-            //     if (ss[i].spriteFrame) {
-            //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
-            //     }
-            // }
+        }
+        if(this.isActionTimeDelay(dt)){
+            this.bossAction();
         }
         if (this.data.currentHealth < 1) {
             this.killed();
@@ -182,24 +161,22 @@ export default class Kraken extends cc.Component {
         }
         this.healthBar.node.active = !this.isDied;
     }
-    bossAction(dungeon: Dungeon) {
+    bossAction() {
         if (this.isDied||!this.isShow) {
             return;
         }
-        this.dungeon = dungeon;
         this.changeZIndex();
-        if(this.shooter&&dungeon){
+        if(this.shooter&&this.dungeon){
             let pos  = this.node.position.clone().add(this.shooter.node.position);
-            let hv = dungeon.player.node.position.sub(pos);
+            let hv = this.dungeon.player.node.position.sub(pos);
             if(!hv.equals(cc.Vec2.ZERO)){
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
-                this.shooter.dungeon = dungeon;
+                this.shooter.dungeon = this.dungeon;
                 this.shooter.fireBullet();
-                
             }
-            if(this.data.currentHealth<this.data.maxHealth/2){
-                dungeon.addFallStone(dungeon.player.node.position,true);
+            if(this.data.currentHealth<this.data.Common.maxHealth/2){
+                this.dungeon.addFallStone(this.dungeon.player.node.position,true);
                 this.shooter.fireBullet(30);
                 this.shooter.fireBullet(-30);
             }

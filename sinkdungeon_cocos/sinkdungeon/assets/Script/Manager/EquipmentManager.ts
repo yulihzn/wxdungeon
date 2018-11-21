@@ -307,7 +307,7 @@ export default class EquipmentManager extends cc.Component {
             data.infocolor1 = '#98FB98';//苍白的绿色
             data.infocolor2 = '#87CEFA';//淡蓝色
             data.infocolor3 = '#9370DB';//适中的紫色
-            data.Common.criticalStrikeRate = desc.criticalStrikeRate;
+            data.Common.criticalStrikeRate += desc.criticalStrikeRate;
             data.Common.damageMin += desc.damageMin;
             data.Common.damageMax += desc.damageMax;
             data.Common.defence += desc.defence;

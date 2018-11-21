@@ -1538,6 +1538,9 @@
       "__id__": 1
     },
     "_enabled": true,
+    "statusManager": {
+      "__id__": 39
+    },
     "sword": {
       "__id__": 25
     },

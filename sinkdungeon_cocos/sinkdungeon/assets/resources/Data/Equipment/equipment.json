@@ -33,7 +33,7 @@
         "stab": 1,
         "common": {
             "damageMin": 1,
-            "damageMax": 2,
+            "damageMax": 3,
             "criticalStrikeRate": 0,
             "defence": 0,
             "lifeDrain": 0,

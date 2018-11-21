@@ -17,7 +17,6 @@ import Dungeon from './Dungeon';
 import Equipment from './Equipment/Equipment';
 import EquipmentData from './Data/EquipmentData';
 import Monster from './Monster';
-import Kraken from './Boss/Kraken';
 import MeleeWeapon from './MeleeWeapon';
 import WalkSmoke from './WalkSmoke';
 import RectDungeon from './Rect/RectDungeon';

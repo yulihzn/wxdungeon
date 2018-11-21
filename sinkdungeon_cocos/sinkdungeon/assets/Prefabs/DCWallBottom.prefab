@@ -12,7 +12,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "DCWallTop",
+    "_name": "DCWallBottom",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -137,7 +137,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 2,
+    "tag": 0,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -161,7 +161,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21fb92ef-3676-40d7-9d4e-d618069f9c97"
+      "__uuid__": "4d62b73d-7d53-40f3-858e-93243fff3871"
     },
     "fileId": "63Y73jMdZG7qLNib2eD00l",
     "sync": false

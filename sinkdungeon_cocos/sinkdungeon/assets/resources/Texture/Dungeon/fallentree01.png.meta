@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "e7c80384-0558-4127-9bd3-a0ab47e3c46c",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "fallentree01": {
+      "ver": "1.0.3",
+      "uuid": "b08659fe-a6ba-4df1-98e4-994cdf3006e2",
+      "rawTextureUuid": "e7c80384-0558-4127-9bd3-a0ab47e3c46c",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 32,
+      "height": 16,
+      "rawWidth": 32,
+      "rawHeight": 16,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -2,16 +2,15 @@ import Bullet from "./Item/Bullet";
 import Dungeon from "./Dungeon";
 import Player from "./Player";
 import Monster from "./Monster";
-import Kraken from "./Boss/Kraken";
 import { EventConstant } from "./EventConstant";
 import Box from "./Building/Box";
 import Logic from "./Logic";
 import MeleeWeaponChild from "./MeleeWeaponChild";
-import Captain from "./Boss/Captain";
 import EquipmentData from "./Data/EquipmentData";
 import DamageData from "./Data/DamageData";
 import StatusManager from "./Manager/StatusManager";
 import PlayerData from "./Data/PlayerData";
+import Boss from "./Boss/Boss";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -206,12 +205,22 @@ export default class MeleeWeapon extends cc.Component {
                     pos = monster.node.position.sub(this.node.parent.position.add(p));
                 }
             }
+            if(pos.equals(cc.Vec2.ZERO) && this.dungeon.boss){
+                let bossdis = Logic.getDistance(this.node.parent.position, this.dungeon.boss.node.position);
+                if (bossdis < 200 && bossdis < olddis && !this.dungeon.boss.isDied) {
+                    olddis = bossdis;
+                    let p = this.node.position.clone();
+                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                    pos = this.dungeon.boss.node.position.sub(this.node.parent.position.add(p));
+                }
+            }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();
             }
         }
         return pos;
     }
+    
     rotateColliderManager(target: cc.Vec2) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
@@ -287,14 +296,18 @@ export default class MeleeWeapon extends cc.Component {
             }
         }
 
-        let kraken = attackTarget.node.getComponent(Kraken);
-        if (kraken && !kraken.isDied && !this.isMiss) {
-            damageSuccess = kraken.takeDamage(damage);
+        let boss = attackTarget.node.getComponent(Boss);
+        if (boss && !boss.isDied && !this.isMiss) {
+            damageSuccess = boss.takeDamage(damage);
+            if (damageSuccess) {
+                this.addBossStatus(this.player.data.getIceRate(),boss,StatusManager.FROZEN);
+                this.addBossStatus(this.player.data.getFireRate(),boss,StatusManager.BURNING);
+                this.addBossStatus(this.player.data.getLighteningRate(),boss,StatusManager.DIZZ);
+                this.addBossStatus(this.player.data.getToxicRate(),boss,StatusManager.TOXICOSIS);
+                this.addBossStatus(this.player.data.getCurseRate(),boss,StatusManager.CURSING);
+            }
         }
-        let captain = attackTarget.node.getComponent(Captain);
-        if (captain && !captain.isDied && !this.isMiss) {
-            damageSuccess = captain.takeDamage(damage);
-        }
+       
         let box = attackTarget.node.getComponent(Box);
         if (box) {
             box.breakBox();
@@ -309,10 +322,8 @@ export default class MeleeWeapon extends cc.Component {
    addMonsterStatus(rate:number,monster:Monster,statusType){
     if(Logic.getRandomNum(0,100)<rate){monster.addStatus(statusType);}
    }
-   addKrakenStatus(rate:number,boss:Kraken,statusType){
+   addBossStatus(rate:number,boss:Boss,statusType){
     if(Logic.getRandomNum(0,100)<rate){boss.addStatus(statusType);}
    }
-   addCaptainStatus(rate:number,boss:Captain,statusType){
-    if(Logic.getRandomNum(0,100)<rate){boss.addStatus(statusType);}
-   }
+   
 }

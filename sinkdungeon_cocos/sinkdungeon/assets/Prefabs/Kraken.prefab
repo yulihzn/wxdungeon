@@ -1925,15 +1925,10 @@
       "__id__": 1
     },
     "_enabled": true,
-    "pos": {
-      "__type__": "cc.Vec2",
-      "x": 4,
-      "y": 5
+    "statusManager": {
+      "__id__": 57
     },
     "label": null,
-    "healthBar": {
-      "__id__": 53
-    },
     "hand1": {
       "__id__": 19
     },

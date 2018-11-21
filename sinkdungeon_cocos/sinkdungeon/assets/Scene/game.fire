@@ -50,8 +50,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.11809926614295303,
-      "y": 0.11809926614295303,
+      "x": 0.1,
+      "y": 0.1,
       "z": 1
     },
     "_quat": {
@@ -2750,9 +2750,7 @@
     "_enabled": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "76f67806-5fed-4c01-b48c-3bc2e3ea3e77"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -18042,6 +18040,9 @@
     },
     "bed": {
       "__uuid__": "d25016fb-010e-41fe-9665-0c1f7089201c"
+    },
+    "campFire": {
+      "__uuid__": "c09aab52-cb44-4f91-952f-d752f65a7705"
     },
     "fog": {
       "__id__": 403

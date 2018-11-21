@@ -14,49 +14,52 @@ import Shooter from "../Shooter";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Emplacement extends cc.Component {
 
     @property(Shooter)
-    shooterTop:Shooter = null;
+    shooterTop: Shooter = null;
     @property(Shooter)
-    shooterBottom:Shooter = null;
+    shooterBottom: Shooter = null;
     @property(Shooter)
-    shooterLeft:Shooter = null;
+    shooterLeft: Shooter = null;
     @property(Shooter)
-    shooterRight:Shooter = null;
-    isOpen:boolean = false;
-    pos:cc.Vec2 = cc.v2(0,0);
+    shooterRight: Shooter = null;
+    isOpen: boolean = false;
+    pos: cc.Vec2 = cc.v2(0, 0);
     private sprite: cc.Node;
     private timeDelay = 0;
-    dungeon:Dungeon;
-    anim:cc.Animation;
+    dungeon: Dungeon;
+    anim: cc.Animation;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
-        this.setShooterHv(this.shooterTop,cc.v2(0,1));
-        this.setShooterHv(this.shooterBottom,cc.v2(0,-1));
-        this.setShooterHv(this.shooterLeft,cc.v2(-1,0));
-        this.setShooterHv(this.shooterRight,cc.v2(1,0));
+    onLoad() {
+        this.setShooterHv(this.shooterTop, cc.v2(0, 1));
+        this.setShooterHv(this.shooterBottom, cc.v2(0, -1));
+        this.setShooterHv(this.shooterLeft, cc.v2(-1, 0));
+        this.setShooterHv(this.shooterRight, cc.v2(1, 0));
     }
 
-    start () {
+    start() {
         this.anim = this.getComponent(cc.Animation);
-        if(this.anim){
-            this.anim.play();
-        }
+        setTimeout(()=>{this.fire()},1000);        
     }
-    
-    setPos(pos:cc.Vec2){
+
+    setPos(pos: cc.Vec2) {
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100+1;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
     }
     //Animation
-    OpenFire(){
-        if(!this.dungeon){
+    OpenFire() {
+    }
+    fire(){
+        if (this.anim) {
+            this.anim.play();
+        }
+        if (!this.dungeon) {
             return;
         }
         this.fireShooter(this.shooterTop);
@@ -64,14 +67,21 @@ export default class Emplacement extends cc.Component {
         this.fireShooter(this.shooterLeft);
         this.fireShooter(this.shooterRight);
     }
-    fireShooter(shooter:Shooter){
-        if(!shooter.dungeon){
+    fireShooter(shooter: Shooter) {
+        if (!shooter.dungeon) {
             shooter.dungeon = this.dungeon;
         }
         shooter.fireBullet();
     }
-    setShooterHv(shooter:Shooter,hv:cc.Vec2){
+    setShooterHv(shooter: Shooter, hv: cc.Vec2) {
         shooter.setHv(hv);
     }
-    
+    update(dt) {
+        this.timeDelay += dt;
+        if (this.timeDelay > 5) {
+            this.timeDelay = 0;
+            this.fire();
+        }
+    }
+
 }

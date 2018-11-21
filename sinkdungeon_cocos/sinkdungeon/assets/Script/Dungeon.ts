@@ -4,7 +4,6 @@ import Monster from "./Monster";
 import Logic from "./Logic";
 import { EventConstant } from "./EventConstant";
 import MonsterManager from "./Manager/MonsterManager";
-import Kraken from "./Boss/Kraken";
 import Portal from "./Building/Portal";
 import Wall from "./Building/Wall";
 import Trap from "./Building/Trap";
@@ -24,9 +23,9 @@ import FootBoard from "./Building/FootBoard";
 import BoxData from "./Data/BoxData";
 import ShopTableData from "./Data/ShopTableData";
 import HealthBar from "./HealthBar";
-import Captain from "./Boss/Captain";
 import FallStone from "./Building/FallStone";
 import Emplacement from "./Building/Emplacement";
+import Boss from "./Boss/Boss";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -75,6 +74,8 @@ export default class Dungeon extends cc.Component {
     portal: Portal = null;
     @property(cc.Prefab)
     bed:cc.Prefab = null;
+    @property(cc.Prefab)
+    campFire:cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -90,7 +91,7 @@ export default class Dungeon extends cc.Component {
     static readonly MAPY: number = 32;
     static readonly TILE_SIZE: number = 64;
     private timeDelay = 0;
-    private npcTimeDelay = 0;
+    private checkTimeDelay = 0;
 
     monsters: Monster[];//房间怪物列表
     // public monsterReswpanPoints: { [key: string]: string } = {};//怪物重生点
@@ -100,9 +101,8 @@ export default class Dungeon extends cc.Component {
     coinManager: CoinManger = null;//金币管理
     anim: cc.Animation;
 
-    bossKraken: Kraken;
+    boss: Boss;
     bossIndex: cc.Vec2;
-    bossCaptain:Captain;
 
     onLoad() {
         //初始化动画
@@ -200,17 +200,17 @@ export default class Dungeon extends cc.Component {
                     fd.position = Dungeon.getPosInMap(cc.v2(i, j));
                     fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 }
-                //生成床
+                //生成营火
                 if (mapData[i][j] == '-') {
-                    let bed = cc.instantiate(this.bed);
-                    bed.parent = this.node;
-                    bed.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    bed.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
-                    let front = bed.getChildByName('front');
-                    front.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    front.position = cc.v2(front.position.x,front.position.y+40);
-                    front.parent = this.node;
-                    front.zIndex = 5000;
+                    let camp = cc.instantiate(this.campFire);
+                    camp.parent = this.node;
+                    camp.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    camp.zIndex = 4000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    let shadow = camp.getChildByName('sprite').getChildByName('shadow');
+                    shadow.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    shadow.position = cc.v2(shadow.position.x,shadow.position.y+40);
+                    shadow.parent = this.node;
+                    shadow.zIndex = 3000;
                 }
                 //生成踏板
                 if (mapData[i][j] == 'F') {
@@ -257,19 +257,22 @@ export default class Dungeon extends cc.Component {
                     b.setPos(cc.v2(i, j));
                     b.changeRes('plant');
                 }
-                //生成心
-                if (mapData[i][j] == 'H') {
-                    let heart = cc.instantiate(this.heart);
-                    heart.parent = this.node;
-                    heart.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
-                }
-                //生成弹药
-                if (mapData[i][j] == 'A') {
-                    let ammo = cc.instantiate(this.ammo);
-                    ammo.parent = this.node;
-                    ammo.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    ammo.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
+                //房间未清理时加载物品
+                if(Logic.mapManger.currentRectRoom.state != RectRoom.STATE_CLEAR){
+                    //生成心
+                    if (mapData[i][j] == 'H') {
+                        let heart = cc.instantiate(this.heart);
+                        heart.parent = this.node;
+                        heart.position = Dungeon.getPosInMap(cc.v2(i, j));
+                        heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
+                    }
+                    //生成弹药
+                    if (mapData[i][j] == 'A') {
+                        let ammo = cc.instantiate(this.ammo);
+                        ammo.parent = this.node;
+                        ammo.position = Dungeon.getPosInMap(cc.v2(i, j));
+                        ammo.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
+                    }
                 }
                 //生成商店
                 if (mapData[i][j] == 'M') {
@@ -451,16 +454,16 @@ export default class Dungeon extends cc.Component {
         }
     }
     private addBossCaptain(){
-        this.bossCaptain = this.monsterManager.getCaptain(this, this.bossIndex);
+        this.boss = this.monsterManager.getCaptain(this, this.bossIndex);
     }
     private addBossKraken(){
-        this.bossKraken = this.monsterManager.getKraken(this, this.bossIndex);
+        this.boss = this.monsterManager.getKraken(this, this.bossIndex);
         this.anim.playAdditive('DungeonShakeOnce');
         setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},1000);
         setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},2000);
         this.breakHalfTiles();
         setTimeout(() => {
-            this.bossKraken.showBoss();
+            this.boss.showBoss();
             // this.anim.play('DungeonWave');
         }, 3500);
     }
@@ -541,10 +544,7 @@ export default class Dungeon extends cc.Component {
             }
         }
         isClear = count >= this.monsters.length;
-        if (this.bossKraken && !this.bossKraken.isDied) {
-            isClear = false;
-        }
-        if (this.bossCaptain && !this.bossCaptain.isDied) {
+        if (this.boss && !this.boss.isDied) {
             isClear = false;
         }
         for (let footboard of this.footboards) {
@@ -623,10 +623,10 @@ export default class Dungeon extends cc.Component {
         }
         return false;
     }
-    isNpcTimeDelay(dt: number): boolean {
-        this.npcTimeDelay += dt;
-        if (this.npcTimeDelay > 1) {
-            this.npcTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 1) {
+            this.checkTimeDelay = 0;
             return true;
         }
         return false;
@@ -637,11 +637,8 @@ export default class Dungeon extends cc.Component {
             this.checkPlayerPos(dt);
             // this.checkMonstersPos();
         }
-        if (this.isNpcTimeDelay(dt)) {
+        if (this.isCheckTimeDelay(dt)) {
             this.checkRoomClear();
-            if(this.bossKraken){
-                this.bossKraken.bossAction(this);
-            }
         }
     }
 }

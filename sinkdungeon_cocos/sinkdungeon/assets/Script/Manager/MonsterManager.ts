@@ -102,10 +102,11 @@ export default class MonsterManager extends cc.Component {
         krakenPrefab.active = false;
         krakenPrefab.parent = dungeon.node;
         let kraken = krakenPrefab.getComponent(Kraken);
+        kraken.dungeon = dungeon;
         let data = new MonsterData();
         data.updateHA(800,800,2);
         kraken.data = data;
-        kraken.transportPlayer(posIndex.x,posIndex.y);
+        kraken.transportBoss(posIndex.x,posIndex.y);
         kraken.healthBar = dungeon.bossHealthBar;
         kraken.node.active = true;
         return kraken;
@@ -120,7 +121,7 @@ export default class MonsterManager extends cc.Component {
         let data = new MonsterData();
         data.updateHA(400,400,2);
         captain.data = data;
-        captain.transportPlayer(posIndex.x,posIndex.y);
+        captain.transportBoss(posIndex.x,posIndex.y);
         captain.healthBar = dungeon.bossHealthBar;
         captain.node.active = true;
         return captain;

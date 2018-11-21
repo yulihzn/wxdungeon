@@ -1255,7 +1255,7 @@
     "realDamage": 0,
     "physicalDamage": 1,
     "iceDamage": 0,
-    "fireDamage": 1,
+    "fireDamage": 0,
     "lighteningDamage": 0,
     "toxicDamage": 0,
     "curseDamage": 0,

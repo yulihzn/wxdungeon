@@ -9,6 +9,7 @@ import Shooter from "../Shooter";
 import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
+import Boss from "./Boss";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,19 +24,12 @@ import StatusManager from "../Manager/StatusManager";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Captain extends cc.Component {
-
-
+export default class Captain extends Boss {
+    
     @property(CaptainSword)
     sword: CaptainSword = null;
-    @property(StatusManager)
-    statusManager: StatusManager = null;
+    
     healthBar: HealthBar = null;
-    // LIFE-CYCLE CALLBACKS:
-    data: MonsterData = new MonsterData();
-    isDied = false;
-    isShow = false;
-    pos: cc.Vec2 = cc.v2(0, 0);
     isJumping = false;
     private anim: cc.Animation;
     rigidbody: cc.RigidBody;
@@ -43,7 +37,6 @@ export default class Captain extends cc.Component {
     isMoving = false;
     isAttacking = false;
     private timeDelay = 0;
-    dungeon: Dungeon;
     isHurt = false;
     isFall = false;
     shooter: Shooter = null;
@@ -57,14 +50,7 @@ export default class Captain extends cc.Component {
     }
 
     start () {
-        this.changeZIndex();
-        
-        setTimeout(()=>{
-            if(this.healthBar){
-                this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-            }
-        },100);
-        
+        super.start();
     }
     //Animation
     AttackDamageStart(){
@@ -141,19 +127,7 @@ export default class Captain extends cc.Component {
             }
         }
     }
-    transportPlayer(x: number, y: number) {
-        this.pos.x = x;
-        this.pos.y = y;
-        this.changeZIndex();
-        this.updatePlayerPos();
-    }
-    changeZIndex() {
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 100 + 2;
-    }
-    updatePlayerPos() {
-        this.node.x = this.pos.x * 64 + 32;
-        this.node.y = this.pos.y * 64 + 32;
-    }
+    
     update (dt) {
         this.healthBar.node.active = !this.isDied;
         this.timeDelay += dt;
@@ -194,9 +168,7 @@ export default class Captain extends cc.Component {
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         return true;
     }
-    addStatus(statusType:string){
-        this.statusManager.addStatus(statusType);
-    }
+    
     killed() {
         if (this.isDied) {
             return;
@@ -261,10 +233,7 @@ export default class Captain extends cc.Component {
         
         
     }
-    getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistance(this.node.position, playerNode.position);
-        return dis;
-    }
+    
     JumpMove(){
         if(!this.dungeon || !this.isJumping){
             return;
@@ -283,7 +252,7 @@ export default class Captain extends cc.Component {
 
         let movement = cc.v2(h, v);
         let speed = 200;
-        if(this.data.currentHealth<this.data.maxHealth/2){
+        if(this.data.currentHealth<this.data.Common.maxHealth/2){
             speed = 240;
         }
         movement = movement.mul(speed);
