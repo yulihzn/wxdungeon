@@ -17,7 +17,7 @@
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
   "jailbreakPlatform": false,
-  "md5Cache": true,
+  "md5Cache": false,
   "mergeStartScene": false,
   "oauthLoginServer": "",
   "optimizeHotUpdate": false,
@@ -27,22 +27,21 @@
     "portrait": false,
     "upsideDown": false
   },
-  "packageName": "org.cocos2d.sinkdungeon",
+  "packageName": "org.cocos2d.helloworld",
   "privateKey": "",
   "qqplay": {
     "REMOTE_SERVER_ROOT": "",
     "orientation": "portrait"
   },
   "startScene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
-  "title": "cocossinkdungeon",
-  "webOrientation": "landscape",
+  "title": "wx-open-data-project",
+  "webOrientation": "auto",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
-    "appid": "wx48c583ff7f015fb6",
-    "isSubdomain": false,
+    "appid": "wx6ac3f5090a6b99c5",
     "orientation": "landscape",
-    "subContext": "wx-open-data-project"
+    "subContext": ""
   },
-  "xxteaKey": "2d1fdad3-d4ec-43",
+  "xxteaKey": "057218fd-83ac-47",
   "zipCompressJs": true
 }
