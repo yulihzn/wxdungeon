@@ -136,7 +136,7 @@ export default class WxHelper extends cc.Component {
                 console.log('score' + Logic.coins + '');
                 console.log(res);
                 // 让子域更新当前用户的最高分，因为主域无法得到getUserCloadStorage;
-                let openDataContext = Logic.wx.getOpenDataContext();
+                let openDataContext = that.wx.getOpenDataContext();
                 openDataContext.postMessage({
                     type: 'updateMaxScore',
                 });

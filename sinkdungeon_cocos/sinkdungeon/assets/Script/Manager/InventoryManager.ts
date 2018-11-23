@@ -22,7 +22,7 @@ export default class InventoryManager {
     cloak:EquipmentData = new EquipmentData();
     //buffer效果
     buffer:EquipmentData = new EquipmentData();
-    private list:EquipmentData[] = [];
+    list:EquipmentData[] = [];
    
     constructor(){
         this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.buffer];

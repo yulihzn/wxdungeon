@@ -343,6 +343,7 @@ export default class Player extends cc.Component {
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
+            Logic.playerData.pos = this.pos.clone();
         }
         if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
             this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
@@ -461,6 +462,7 @@ export default class Player extends cc.Component {
         this.isDied = true;
         this.anim.play('PlayerDie');
         setTimeout(() => {
+            Logic.profile.clearData();
             cc.director.loadScene('gameover');
         }, 1000);
     }

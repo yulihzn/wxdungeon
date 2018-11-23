@@ -13,6 +13,7 @@ import ShopTableData from "./Data/ShopTableData";
 import MonsterData from "./Data/MonsterData";
 import StatusData from "./Data/StatusData";
 import InventoryManager from "./Manager/InventoryManager";
+import ProfileData from "./Data/ProfileData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,24 +30,26 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Logic extends cc.Component {
     static readonly BOSS_LEVEL_1: number = 10;
+    static equipments: { [key: string]: EquipmentData } = null;
+    //怪物json
+    static monsters: { [key: string]: MonsterData } = null;
+    //图片资源
+    static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
+    //状态json
+    static debuffs: { [key: string]: StatusData } = null;
+
+    static profile:ProfileData = new ProfileData();
+
     static level = 1;
+    static chapterName = 'chapter00';
+
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
-    static roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'puzzleroom', 'merchantroom', 'bossroom'];
 
     static mapManger: MapManager = new MapManager();
-    static chapterName = 'chapter01';
-    static equipments: { [key: string]: EquipmentData } = null;
-    static monsters: { [key: string]: MonsterData } = null;
-    static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
-    static debuffs: { [key: string]: StatusData } = null;
-    // static currentRectRoom:RectRoom = null;
-    static currentDir: number = 0;
     static coins = 0;//金币
     static ammo = 30;//子弹
     static killCount = 0;//杀敌数
-    // LIFE-CYCLE CALLBACKS:
-    static wx;
 
     onLoad() {
         //关闭调试
@@ -70,42 +73,22 @@ export default class Logic extends cc.Component {
         cc.director.on(EventConstant.LOADINGROOM, (event) => {
             this.loadingNextRoom(event.detail.dir);
         });
-        Logic.wx = window['wx'];
     }
 
     start() {
 
     }
-    // static saveRankData() {
-    //     if (!Logic.wx) {
-    //         console.log('wx is empty')
-    //         return;
-    //     }
-    //     Logic.wx.setUserCloudStorage({
-    //         KVDataList: [{ key: 'score', value: Logic.coins + '' }],
-    //         success: res => {
-    //             console.log('score' + Logic.coins + '');
-    //             console.log(res);
-    //             // 让子域更新当前用户的最高分，因为主域无法得到getUserCloadStorage;
-    //             let openDataContext = Logic.wx.getOpenDataContext();
-    //             openDataContext.postMessage({
-    //                 type: 'updateMaxScore',
-    //             });
-    //         },
-    //         fail: res => {
-    //             console.log('failed' + Logic.coins + '');
-    //             console.log(res);
-    //         }
-    //     });
-    // }
+
     static resetData() {
-        Logic.level = 1;
-        Logic.playerData = new PlayerData();
-        Logic.inventoryManager = new InventoryManager();
+        Logic.profile = new ProfileData();
+        Logic.level = Logic.profile.level;
+        Logic.playerData = Logic.profile.playerData;
+        Logic.inventoryManager = Logic.profile.inventoryManager;
         Logic.mapManger.reset(Logic.level);
+        Logic.mapManger.loadDataFromSave();
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c ? parseInt(c) : 0;
-        Logic.ammo = 30;
+        Logic.ammo = Logic.profile.ammo;
         // Logic.playerData.updateHA(cc.v2(999,999),30);
     }
     static changeDungeonSize() {

@@ -23,10 +23,15 @@ export default class MapManager {
     //读取文件的数据
     private allfileRooms: { [key: string]: MapData[] } = {};
     private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'puzzleroom', 'merchantroom', 'bossroom'];
+    //文件是否加载成功
     isloaded: boolean = false;
+    //地图数据管理类
     rectDungeon: RectDungeon = new RectDungeon(1);
+    //当前房间
     currentRectRoom: RectRoom = null;
+    //根据下标保存普通箱子的位置
     boxes: { [key: string]: BoxData[] } = {};
+    //根据下标保存商店状态
     shopTables: { [key: string]: ShopTableData[] } = {};
     constructor() {
         this.init();
@@ -36,6 +41,16 @@ export default class MapManager {
 
     init() {
         this.isloaded = false;
+    }
+    loadDataFromSave(){
+        if(!Logic.profile.hasSaveData){
+            return;
+        }
+        this.rectDungeon = Logic.profile.rectDungeon;
+        this.currentRectRoom = new RectRoom(false,0,0,0,0).initFromSave(Logic.profile.currentRectRoom);
+        this.boxes = Logic.profile.boxes;
+        this.shopTables = Logic.profile.shopTables;
+        cc.log('load',this.rectDungeon.getDisPlay());
     }
     reset(level: number) {
         this.rectDungeon = new RectDungeon(level);
@@ -52,7 +67,7 @@ export default class MapManager {
     loadingNextRoom(dir: number): RectRoom {
         let room = this.rectDungeon.getNeighborRoomType(this.currentRectRoom.x, this.currentRectRoom.y, dir)
         if (room && room.roomType != 0) {
-            this.currentRectRoom = room;
+            this.currentRectRoom.initFromSave(room);
             this.changeRoomsIsFound(room.x, room.y);
         }
         return room;

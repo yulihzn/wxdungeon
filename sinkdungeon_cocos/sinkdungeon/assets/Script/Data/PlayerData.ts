@@ -56,8 +56,10 @@ export default class PlayerData {
 
     public valueCopy(data: PlayerData): void {
         this.common.valueCopy(data.common);
-        this.pos = data.pos ? data.pos : cc.v2(4, 7);
+        this.pos = data.pos ? cc.v2(data.pos.x,data.pos.y) : cc.v2(4, 7);
         this.name = data.name ? data.name : '';
+        this.equipmentTotalData.valueCopy(data.equipmentTotalData);
+        this.statusTotalData.valueCopy(data.statusTotalData);
         this.currentHealth = data.currentHealth ? data.currentHealth : PlayerData.DEFAULT_HEALTH;
         this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 300;

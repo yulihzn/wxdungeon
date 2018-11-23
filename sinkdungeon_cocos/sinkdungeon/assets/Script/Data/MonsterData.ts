@@ -57,7 +57,7 @@ export default class MonsterData{
         this.remote = data.remote?data.remote:0;
         this.melee = data.melee?data.melee:0;
         this.dash = data.dash?data.dash:0;
-        this.pos = data.pos;
+        this.pos = data.pos ? cc.v2(data.pos.x,data.pos.y) : cc.v2(0, 0);;
         this.disguise = data.disguise?data.disguise:0;
     }
     public clone():MonsterData{

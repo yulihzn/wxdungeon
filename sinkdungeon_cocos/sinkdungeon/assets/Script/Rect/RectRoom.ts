@@ -59,6 +59,26 @@ export default class RectRoom {
         this.init();
     }
 
+    public initFromSave(room:RectRoom):RectRoom{
+        if(!room){
+            return;
+        }
+        this.x = room.x;
+        this.y = room.y;
+        this.isPrimary = room.isPrimary;
+        this.index = room.index;
+        this.roomType = room.roomType;
+        this.isFound = room.isFound;
+        this.isInit = room.isInit;
+        this.doors = room.doors;
+        this.state = room.state;
+        this.hasKey = room.hasKey;
+        this.enemyCount = room.enemyCount;
+        this.map = room.map;
+        this.hasKey = room.hasKey;
+        this.randomTiles = room.randomTiles;
+        return this;
+    }
     private init(): void {
         this.state = RectRoom.STATE_SLEEP;
         // if (this.map == null) {

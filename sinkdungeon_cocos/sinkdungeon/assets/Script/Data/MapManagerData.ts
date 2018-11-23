@@ -1,5 +1,3 @@
-import EquipmentData from "./EquipmentData";
-
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -10,19 +8,7 @@ import EquipmentData from "./EquipmentData";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-
-export default class ShopTableData {
-    pos:cc.Vec2;
-    equipdata:EquipmentData;
-    price = 60;
-    isSaled = false;//是否卖出
-    valueCopy(data:ShopTableData){
-        this.pos = data.pos?cc.v2(data.pos.x,data.pos.y):cc.v2(0,0);
-        if(!this.equipdata){
-            this.equipdata = new EquipmentData();
-        }
-        this.equipdata.valueCopy(data.equipdata);
-        this.price = this.price;
-        this.isSaled = data.isSaled;
-    }
+//整个地图数据
+export default class MapManagerData {
+    
 }

@@ -34,7 +34,7 @@ export default class Launch extends cc.Component {
             success: (res) => {
                 console.log('user', res.data);
                 let userInfo = res.data[0];
-                that.createUserBlock(that.usercontent, userInfo);
+                that.createUserBlock(that.usercontent, userInfo,0);
             },
             fail: (res) => {
                 console.error(res);
@@ -46,12 +46,21 @@ export default class Launch extends cc.Component {
             keyList: ['score'],
             success: function (res) {
                 console.log('friend', res.data);
-                for (let i = 0; i < res.data.length; i++) {
-                    let friendInfo = res.data[i];
+                let friendlist = new Array();
+                friendlist = friendlist.concat(res.data);
+                if(friendlist.length>0){
+                    friendlist=friendlist.sort((a,b)=>{
+                        let avalue =parseInt(a.KVDataList && a.KVDataList[0]&& a.KVDataList[0].value  ? a.KVDataList[0].value : '0');
+                        let bvalue =parseInt(b.KVDataList && b.KVDataList[0]&& b.KVDataList[0].value  ? b.KVDataList[0].value : '0');
+                        return bvalue-avalue;
+                    })
+                }
+                for (let i = 0; i < friendlist.length; i++) {
+                    let friendInfo = friendlist[i];
                     if (!friendInfo) {
                         continue;
                     }
-                    that.createUserBlock(that.createPrefab(), friendInfo);
+                    that.createUserBlock(that.createPrefab(), friendInfo,i+1);
                 }
             },
             fail: function (res) {
@@ -74,7 +83,7 @@ export default class Launch extends cc.Component {
 
     }
 
-    createUserBlock(node: cc.Node, user) {
+    createUserBlock(node: cc.Node, user,rank:number) {
         // getUserInfo will return the nickName, getFriendCloudStorage will return the nickname.
         let nickName = user.nickName ? user.nickName : user.nickname;
         let avatarUrl = user.avatarUrl;
@@ -82,10 +91,12 @@ export default class Launch extends cc.Component {
         let userName = node.getChildByName('userName').getComponent(cc.Label);
         let userScore = node.getChildByName('score').getComponent(cc.Label);
         let userIcon = node.getChildByName('mask').children[0].getComponent(cc.Sprite);
+        let userRankNode = node.getChildByName('rank')
+        let userRank = userRankNode?userRankNode.getComponent(cc.Label):null;
 
         userName.string = nickName;
         userScore.string = score;
-        console.log(nickName + '\'s info has been getten.');
+        if(userRank){userRank.string = ''+rank;}
         cc.loader.load({
             url: avatarUrl, type: 'png'
         }, (err, texture) => {

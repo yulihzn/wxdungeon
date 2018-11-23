@@ -372,6 +372,12 @@ export default class Dungeon extends cc.Component {
             Logic.mapManger.setCurrentShopTableArr(shopTables);
         }
         this.addBoss();
+        //保存数据
+        Logic.profile.currentRectRoom.initFromSave(Logic.mapManger.currentRectRoom);
+        setTimeout(() => {
+            Logic.profile.saveData();
+        }, 2000);
+        
     }
     /**掉落心 */
     addHeart(pos: cc.Vec2) {
@@ -631,7 +637,15 @@ export default class Dungeon extends cc.Component {
         }
         return false;
     }
-
+    saveTimeDelay = 0;
+    isSaveTimeDelay(dt: number): boolean {
+        this.saveTimeDelay += dt;
+        if (this.saveTimeDelay > 15) {
+            this.saveTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     update(dt) {
         if (this.isTimeDelay(dt)) {
             this.checkPlayerPos(dt);
@@ -639,6 +653,9 @@ export default class Dungeon extends cc.Component {
         }
         if (this.isCheckTimeDelay(dt)) {
             this.checkRoomClear();
+        }
+        if (this.isSaveTimeDelay(dt)) {
+            Logic.profile.saveData();
         }
     }
 }
