@@ -373,7 +373,11 @@ export default class Dungeon extends cc.Component {
         }
         this.addBoss();
         //保存数据
-        Logic.profile.currentRectRoom.initFromSave(Logic.mapManger.currentRectRoom);
+        if(Logic.profile.currentRectRoom){
+            Logic.profile.currentRectRoom.initFromSave(Logic.mapManger.currentRectRoom);
+        }else{
+            Logic.profile.currentRectRoom = new RectRoom(false,0,0,0,0).initFromSave(Logic.mapManger.currentRectRoom);
+        }
         setTimeout(() => {
             Logic.profile.saveData();
         }, 2000);
