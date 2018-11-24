@@ -147,7 +147,7 @@ export default class Player extends cc.Component {
             , (event) => { this.takeDamage(event.detail.damage) });
         cc.director.on(EventConstant.PLAYER_ROTATE
             , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
-        if (Logic.mapManger.currentRectRoom.roomType == RectDungeon.BOSS_ROOM) {
+        if (Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
             Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
         }
         this.pos = Logic.playerData.pos;

@@ -19,8 +19,8 @@ import ShopTableData from "./ShopTableData";
 export default class ProfileData {
     //地图数据管理类
     rectDungeon: RectDungeon = new RectDungeon(1);
-    //当前房间
-    currentRectRoom: RectRoom = null;
+    //当前房间下标
+    currentPos: cc.Vec2 = cc.v2(0,0);
     //根据下标保存普通箱子的位置
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
@@ -43,7 +43,7 @@ export default class ProfileData {
         this.playerData = new PlayerData();
         this.inventoryManager = new InventoryManager();
         this.rectDungeon = new RectDungeon(1);
-        this.currentRectRoom = null;
+        this.currentPos = cc.v2(0,0);
         this.boxes = {};
         this.shopTables = {};
         this.hasSaveData = false;
@@ -65,7 +65,7 @@ export default class ProfileData {
             this.hasSaveData = false;
             return;
         }
-        if(!data.playerData||!data.inventoryManager||!data.rectDungeon||!data.currentRectRoom||!data.shopTables
+        if(!data.playerData||!data.inventoryManager||!data.rectDungeon||!data.currentPos||!data.shopTables
         ||!data.boxes){
             this.hasSaveData = false;
             return;
@@ -77,7 +77,7 @@ export default class ProfileData {
             this.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
         }
         this.rectDungeon = this.rectDungeon.buildMapFromSave(data.rectDungeon);
-        this.currentRectRoom = new RectRoom(false,0,0,0,0).initFromSave(data.currentRectRoom);
+        this.currentPos = data.currentPos?cc.v2(data.currentPos.x,data.currentPos.y):cc.v2(0,0);
         for(let key in data.boxes){
            let list = data.boxes[key];
            this.boxes[key] = new Array();

@@ -226,7 +226,7 @@ export default class Dungeon extends cc.Component {
                     chest.parent = this.node;
                     let c = chest.getComponent(Chest)
                     c.setPos(cc.v2(i, j));
-                    c.setQuality(Logic.getRandomNum(1, 3), Logic.mapManger.currentRectRoom.state == RectRoom.STATE_CLEAR);
+                    c.setQuality(Logic.getRandomNum(1, 3), Logic.mapManger.isCurrentRoomStateClear());
 
                 }
                 //生成普通箱子 并且根据之前记录的位置放置
@@ -258,7 +258,7 @@ export default class Dungeon extends cc.Component {
                     b.changeRes('plant');
                 }
                 //房间未清理时加载物品
-                if(Logic.mapManger.currentRectRoom.state != RectRoom.STATE_CLEAR){
+                if(!Logic.mapManger.isCurrentRoomStateClear()){
                     //生成心
                     if (mapData[i][j] == 'H') {
                         let heart = cc.instantiate(this.heart);
@@ -297,7 +297,7 @@ export default class Dungeon extends cc.Component {
                 //生成下一层传送门
                 if (mapData[i][j] == 'P') {
                     let needAdd = true;
-                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3)&&Logic.mapManger.currentRectRoom.roomType == RectDungeon.END_ROOM){
+                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3)&&Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM){
                         needAdd = false;
                     }
                     
@@ -318,7 +318,7 @@ export default class Dungeon extends cc.Component {
                     shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 1;
                 }
                 //房间未清理时加载怪物
-                if (Logic.mapManger.currentRectRoom.state != RectRoom.STATE_CLEAR) {
+                if (!Logic.mapManger.isCurrentRoomStateClear()) {
                     if (mapData[i][j] == 's') {
                         let sailor = Logic.getHalfChance()?MonsterManager.MONSTER_SAILOR:MonsterManager.MONSTER_STRONGSAILOR;
                         this.addMonsterFromData(sailor, i, j);
@@ -373,11 +373,6 @@ export default class Dungeon extends cc.Component {
         }
         this.addBoss();
         //保存数据
-        if(Logic.profile.currentRectRoom){
-            Logic.profile.currentRectRoom.initFromSave(Logic.mapManger.currentRectRoom);
-        }else{
-            Logic.profile.currentRectRoom = new RectRoom(false,0,0,0,0).initFromSave(Logic.mapManger.currentRectRoom);
-        }
         setTimeout(() => {
             Logic.profile.saveData();
         }, 2000);
@@ -457,7 +452,7 @@ export default class Dungeon extends cc.Component {
         if (!this.bossIndex) {
             return;
         }
-        if(Logic.mapManger.currentRectRoom.roomType == RectDungeon.BOSS_ROOM){
+        if(Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM){
             this.addBossKraken();
         }else{
             this.addBossCaptain();
@@ -527,8 +522,8 @@ export default class Dungeon extends cc.Component {
         //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
         //     }
         // }
-        cc.director.emit(EventConstant.CHANGE_MIMIMAP, {detail:{ x: Logic.mapManger.currentRectRoom.x, y: Logic.mapManger.currentRectRoom.y }});
-        for (let door of Logic.mapManger.currentRectRoom.doors) {
+        cc.director.emit(EventConstant.CHANGE_MIMIMAP, {detail:{ x: Logic.mapManger.currentPos.x, y: Logic.mapManger.currentPos.y }});
+        for (let door of Logic.mapManger.getCurrentRoom().doors) {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false);
         }
     }
@@ -572,13 +567,13 @@ export default class Dungeon extends cc.Component {
     }
     /**开门 */
     openDoors() {
-        for (let door of Logic.mapManger.currentRectRoom.doors) {
-            Logic.mapManger.currentRectRoom.state = RectRoom.STATE_CLEAR;
+        for (let door of Logic.mapManger.getCurrentRoom().doors) {
+            Logic.mapManger.setRoomClear(Logic.mapManger.currentPos.x,Logic.mapManger.currentPos.y);
             let needClose = false;
-            if (RectDungeon.isRoomEqual(Logic.mapManger.currentRectRoom, Logic.mapManger.rectDungeon.startRoom)) {
+            if (RectDungeon.isRoomEqual(Logic.mapManger.getCurrentRoom(), Logic.mapManger.rectDungeon.startRoom)) {
                 if (Logic.mapManger.rectDungeon.endRoom.state != RectRoom.STATE_CLEAR) {
-                    let t = Logic.mapManger.rectDungeon.getNeighborRoomType(Logic.mapManger.currentRectRoom.x, Logic.mapManger.currentRectRoom.y, door.dir);
-                    if (t.roomType == RectDungeon.END_ROOM&&Logic.level!=RectDungeon.LEVEL_5&&Logic.level!=RectDungeon.LEVEL_3) {
+                    let t = Logic.mapManger.rectDungeon.getNeighborRoomType(Logic.mapManger.currentPos.x, Logic.mapManger.currentPos.y, door.dir);
+                    if (t&&t.roomType == RectDungeon.END_ROOM&&Logic.level!=RectDungeon.LEVEL_5&&Logic.level!=RectDungeon.LEVEL_3) {
                         needClose = true;
                     }
                 }

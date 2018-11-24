@@ -14,6 +14,9 @@ export default class MapData {
         this.init(str);
     }
     private init(str: string) {
+        if(!str){
+            return;
+        }
         //去掉第一个回车和最后1个回车
         str = str.substring(2, str.length - 2);
         let arr = str.split('\r\n')
@@ -37,5 +40,10 @@ export default class MapData {
             }
         }
         this.map = turnArr;
+    }
+    clone():MapData{
+        let data = new MapData('');
+        data.map = data.map.concat(this.map);
+        return data;
     }
 }

@@ -27,8 +27,8 @@ export default class MapManager {
     isloaded: boolean = false;
     //地图数据管理类
     rectDungeon: RectDungeon = new RectDungeon(1);
-    //当前房间
-    currentRectRoom: RectRoom = null;
+    //当前房间下标
+    currentPos: cc.Vec2 = cc.v2(0, 0);
     //根据下标保存普通箱子的位置
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
@@ -42,22 +42,23 @@ export default class MapManager {
     init() {
         this.isloaded = false;
     }
-    loadDataFromSave(){
-        if(!Logic.profile.hasSaveData){
+    loadDataFromSave() {
+        if (!Logic.profile.hasSaveData) {
             return;
         }
         this.rectDungeon = Logic.profile.rectDungeon;
-        this.currentRectRoom = new RectRoom(false,0,0,0,0).initFromSave(Logic.profile.currentRectRoom);
+        this.currentPos = Logic.profile.currentPos.clone();
         this.boxes = Logic.profile.boxes;
         this.shopTables = Logic.profile.shopTables;
-        cc.log('load',this.rectDungeon.getDisPlay());
+        cc.log('load', this.rectDungeon.getDisPlay());
     }
     reset(level: number) {
         this.rectDungeon = new RectDungeon(level);
         cc.log(this.rectDungeon.getDisPlay());
         this.resetRooms();
-        this.currentRectRoom = this.rectDungeon.startRoom;
-        this.changeRoomsIsFound(this.currentRectRoom.x, this.currentRectRoom.y);
+        this.currentPos = cc.v2(this.rectDungeon.startRoom.x, this.rectDungeon.startRoom.y);
+        this.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
+        Logic.profile.currentPos = this.currentPos.clone();        
         this.boxes = {};
         this.shopTables = {};
         // let oillake:OilLake = new OilLake();
@@ -65,9 +66,10 @@ export default class MapManager {
     }
 
     loadingNextRoom(dir: number): RectRoom {
-        let room = this.rectDungeon.getNeighborRoomType(this.currentRectRoom.x, this.currentRectRoom.y, dir)
+        let room = this.rectDungeon.getNeighborRoomType(this.currentPos.x, this.currentPos.y, dir)
         if (room && room.roomType != 0) {
-            this.currentRectRoom.initFromSave(room);
+            this.currentPos = cc.v2(room.x, room.y);
+        Logic.profile.currentPos = this.currentPos.clone();            
             this.changeRoomsIsFound(room.x, room.y);
         }
         return room;
@@ -82,22 +84,46 @@ export default class MapManager {
     }
 
 
+    /** 获取当前房间地图数据copy*/
     public getCurrentMapData(): MapData {
-        return this.currentRectRoom.map;
+        return this.getCurrentRoom().map.clone();
     }
+    /** 获取当前房间*/
+    public getCurrentRoom(): RectRoom {
+        return this.rectDungeon.map[this.currentPos.x][this.currentPos.y];
+    }
+    /** 获取当前房间箱子*/
     public getCurrentMapBoxes(): BoxData[] {
-        return this.boxes[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`];
+        return this.boxes[`x=${this.currentPos.x}y=${this.currentPos.y}`];
     }
+    /** 设置当前房间箱子*/
     public setCurrentBoxesArr(arr: BoxData[]) {
-        this.boxes[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`] = arr;
+        this.boxes[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
     }
+    /** 获取当前房间商店*/
     public getCurrentMapShopTables(): ShopTableData[] {
-        return this.shopTables[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`];
+        return this.shopTables[`x=${this.currentPos.x}y=${this.currentPos.y}`];
     }
+    /** 设置当前房间商店*/
     public setCurrentShopTableArr(arr: ShopTableData[]) {
-        this.shopTables[`x=${this.currentRectRoom.x}y=${this.currentRectRoom.y}`] = arr;
+        this.shopTables[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
     }
-
+    /** 设置房间状态为清理*/
+    public setRoomClear(x: number, y: number) {
+        this.rectDungeon.map[x][y].state = RectRoom.STATE_CLEAR;
+    }
+    /** 获取当前房间状态*/
+    public getCurrentRoomState(): number {
+        return this.rectDungeon.map[this.currentPos.x][this.currentPos.y].state;
+    }
+    /** 当前房间状态是否为清理*/
+    public isCurrentRoomStateClear(): boolean {
+        return this.getCurrentRoomState() == RectRoom.STATE_CLEAR;
+    }
+    /** 获取当前房间类型*/
+    public getCurrentRoomType(): number {
+        return this.rectDungeon.map[this.currentPos.x][this.currentPos.y].roomType;
+    }
     public loadMap() {
         if (this.rectDungeon.startRoom.map) {
             this.isloaded = true;
