@@ -13,7 +13,7 @@ export class EventConstant extends cc.Component{
     public static readonly PLAYER_CHANGEWEAPON= 'PLAYER_CHANGEWEAPON';
     public static readonly PLAYER_CHANGEEQUIPMENT= 'PLAYER_CHANGEEQUIPMENT';
     public static readonly LOADINGNEXTLEVEL= 'LOADINGNEXTLEVEL';
-    public static readonly CHANGE_MIMIMAP= 'CHANGE_MIMIMAP';
+    public static readonly CHANGE_MINIMAP= 'CHANGE_MINIMAP';
     public static readonly LOADINGROOM= 'LOADINGROOM';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';

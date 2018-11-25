@@ -522,7 +522,7 @@ export default class Dungeon extends cc.Component {
         //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
         //     }
         // }
-        cc.director.emit(EventConstant.CHANGE_MIMIMAP, {detail:{ x: Logic.mapManger.currentPos.x, y: Logic.mapManger.currentPos.y }});
+        cc.director.emit(EventConstant.CHANGE_MINIMAP, {detail:{ x: Logic.mapManger.currentPos.x, y: Logic.mapManger.currentPos.y }});
         for (let door of Logic.mapManger.getCurrentRoom().doors) {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false);
         }

@@ -29,7 +29,7 @@ export default class MiniMap extends cc.Component {
 	// LIFE-CYCLE CALLBACKS:
 
 	onLoad() {
-		cc.director.on(EventConstant.CHANGE_MIMIMAP, (event) => {
+		cc.director.on(EventConstant.CHANGE_MINIMAP, (event) => {
 			this.changeMap(event.detail.x, event.detail.y);
 		});
 		this.size = Logic.level + 2;
