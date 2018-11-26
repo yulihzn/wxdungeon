@@ -4,6 +4,7 @@ import Kraken from "../Boss/Kraken";
 import Dungeon from "../Dungeon";
 import Captain from "../Boss/Captain";
 import Logic from "../Logic";
+import Slime from "../Boss/Slime";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -43,6 +44,8 @@ export default class MonsterManager extends cc.Component {
     kraken: cc.Prefab = null;
     @property(cc.Prefab)
     captain: cc.Prefab = null;
+    @property(cc.Prefab)
+    slime: cc.Prefab = null;
     onLoad () {
     }
     /**
@@ -125,6 +128,30 @@ export default class MonsterManager extends cc.Component {
         captain.healthBar = dungeon.bossHealthBar;
         captain.node.active = true;
         return captain;
+    }
+    getSlime(dungeon:Dungeon,posIndex:cc.Vec2,type:number):Slime{
+        let slimePrefab:cc.Node = null;
+        slimePrefab = cc.instantiate(this.slime);
+        slimePrefab.active = false;
+        slimePrefab.parent = dungeon.node;
+        let slime = slimePrefab.getComponent(Slime);
+        slime.dungeon = dungeon;
+        let data = new MonsterData();
+        data.Common.moveSpeed = 200;
+        switch(type){
+            case 0:data.updateHA(400,400,2);slime.scaleSize=2;break;
+            case 1:data.updateHA(200,200,2);slime.scaleSize=2.5;break;
+            case 2:data.updateHA(100,100,2);slime.scaleSize=1;break;
+            case 3:data.updateHA(50,50,2);slime.scaleSize=0.5;break;
+            case 4:data.updateHA(25,25,2);slime.scaleSize=0.3;break;
+            case 5:data.updateHA(10,10,1);slime.scaleSize=0.2;break;
+        }
+        slime.slimeType = type;
+        slime.data = data;
+        slime.transportBoss(posIndex.x,posIndex.y);
+        slime.healthBar = dungeon.bossHealthBar;
+        slime.node.active = true;
+        return slime;
     }
     start () {
     }

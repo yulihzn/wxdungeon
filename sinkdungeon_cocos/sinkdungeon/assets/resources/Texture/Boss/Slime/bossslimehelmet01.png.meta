@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "f2732993-72fb-4ca8-b14c-17ad679039ea",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "bossslimehelmet01": {
+      "ver": "1.0.3",
+      "uuid": "16f63745-3ee4-4809-a7e9-e3add081323f",
+      "rawTextureUuid": "f2732993-72fb-4ca8-b14c-17ad679039ea",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 23,
+      "height": 16,
+      "rawWidth": 23,
+      "rawHeight": 16,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

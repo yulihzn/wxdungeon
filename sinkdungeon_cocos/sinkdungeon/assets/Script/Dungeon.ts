@@ -129,6 +129,9 @@ export default class Dungeon extends cc.Component {
                 this.anim.play('DungeonShakeOnce');
             }
         });
+        cc.director.on(EventConstant.BOSS_ADDSLIME, (event) => {
+            this.addBossSlime(event.detail.slimeType,event.detail.posIndex);
+        })
         //设置雾气层级
         this.fog.zIndex = 9000;
         let mapData: string[][] = Logic.getCurrentMapData().map;
@@ -455,8 +458,16 @@ export default class Dungeon extends cc.Component {
         if(Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM){
             this.addBossKraken();
         }else{
-            this.addBossCaptain();
+            if(Logic.chapterName == 'chapter02'){
+                this.addBossSlime(0,this.bossIndex);
+            }else{
+                this.addBossCaptain();
+            }
         }
+    }
+    addBossSlime(type:number,index:cc.Vec2){
+        let posIndex = cc.v2(index.x,index.y);
+        this.boss = this.monsterManager.getSlime(this, posIndex,type);
     }
     private addBossCaptain(){
         this.boss = this.monsterManager.getCaptain(this, this.bossIndex);

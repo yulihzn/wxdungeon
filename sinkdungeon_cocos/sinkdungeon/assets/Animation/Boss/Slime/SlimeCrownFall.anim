@@ -10,40 +10,61 @@
   "curveData": {
     "paths": {
       "sprite/crown": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "0b1e998c-3fab-4e33-976f-9f6e33345d17"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "16f63745-3ee4-4809-a7e9-e3add081323f"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "8d2af569-84d5-4f55-b6af-d45171dd1369"
+                }
+              }
+            ]
+          }
+        },
         "props": {
-          "position": [
+          "y": [
             {
               "frame": 0,
-              "value": [
-                0,
-                12
-              ],
-              "curve": "quadOut"
+              "value": 12
             },
             {
-              "frame": 0.5,
-              "value": [
-                -36.1,
-                32
-              ],
-              "curve": "linear"
+              "frame": 0.3333333333333333,
+              "value": 16
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 16
             },
             {
               "frame": 1,
-              "value": [
-                -64.4,
-                -2
-              ]
+              "value": 12
             }
           ],
-          "rotation": [
+          "opacity": [
             {
               "frame": 0,
-              "value": 0
+              "value": 255
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 255
             },
             {
               "frame": 1,
-              "value": -90
+              "value": 0
             }
           ]
         }

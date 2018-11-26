@@ -271,7 +271,7 @@ export default class Monster extends cc.Component {
         this.isAttacking = false;
         this.sprite.stopAllActions();
         this.idleAction = null;
-        //100ms后修改受伤
+        //200ms后修改受伤
         setTimeout(() => { if (this.node) { this.isHurt = false; } }, 200);
         this.sprite.opacity = 255;
         this.data.currentHealth -= dd.getTotalDamage();
