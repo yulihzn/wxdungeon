@@ -16,12 +16,13 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Coin extends cc.Component {
-
+    static readonly FACE_VALUE = 10;
     anim:cc.Animation;
     rigidBody:cc.RigidBody;
     value:number = 0;
     valueRes=['gem01','gem02','gem03','gem04'];
     isReady = false;
+    player:Player;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -34,6 +35,7 @@ export default class Coin extends cc.Component {
         let x = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
         let y = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
         this.rigidBody.linearVelocity = cc.v2(x,y);
+        this.rigidBody.linearDamping = 5;
         this.isReady = false;
         setTimeout(()=>{this.isReady = true;},1000);
     }
@@ -41,10 +43,12 @@ export default class Coin extends cc.Component {
         //目前只有1和10
         this.value = value;
         let index = 1;
-        if(this.value == 10){
+        if(this.value == Coin.FACE_VALUE){
             index = 3;
+            this.node.scale = 1.2;
         }else{
             index = 1;
+            this.node.scale = 1;
         }
         this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.valueRes[index]];
     }
@@ -52,27 +56,40 @@ export default class Coin extends cc.Component {
     start () {
 
     }
-    onCollisionStay(other:cc.Collider,self:cc.Collider){
-        let player = other.node.getComponent(Player);
-        if (player&&this.node.active && this.isReady) {
-            let p = player.node.position.clone();
-            p.y+=10;
-            let pos = p.sub(this.node.position);
-            if (!pos.equals(cc.Vec2.ZERO)) {
-                pos = pos.normalizeSelf();
-                pos = pos.mul(400);
-                this.rigidBody.linearVelocity = pos;
-            }
+   
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 1) {
+            this.checkTimeDelay = 0;
+            return true;
         }
-        if (self.tag == 1&&player&&this.node.active && this.isReady) {
-            if(player&&this.node.active && this.isReady){
-                this.isReady =false;
-                cc.director.emit(EventConstant.HUD_ADD_COIN,{detail:{count:this.value}});
-                cc.director.emit('destorycoin',{detail:{coinNode:this.node}});
-            }
-        }
-        
+        return false;
+    }
+    /**获取玩家距离 */
+    getNearPlayerDistance(playerNode: cc.Node): number {
+        let dis = Logic.getDistance(this.node.position, playerNode.position);
+        return dis;
     }
     update (dt) {
+        if(this.isCheckTimeDelay(dt)){
+            if (this.player&&this.getNearPlayerDistance(this.player.node)<400&&this.node.active && this.isReady) {
+                let p = this.player.node.position.clone();
+                p.y+=10;
+                let pos = p.sub(this.node.position);
+                if (!pos.equals(cc.Vec2.ZERO)) {
+                    pos = pos.normalizeSelf();
+                    pos = pos.mul(400);
+                    this.rigidBody.linearVelocity = pos;
+                    this.rigidBody.linearDamping = 1;
+                }
+            }
+            
+        }
+        if (this.player&&this.getNearPlayerDistance(this.player.node)<64&&this.node.active && this.isReady) {
+            this.isReady =false;
+            cc.director.emit(EventConstant.HUD_ADD_COIN,{detail:{count:this.value}});
+            cc.director.emit('destorycoin',{detail:{coinNode:this.node}});
+        }
     }
 }

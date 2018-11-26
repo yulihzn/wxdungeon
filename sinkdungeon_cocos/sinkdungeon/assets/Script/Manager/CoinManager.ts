@@ -1,4 +1,5 @@
 import Coin from "../Item/Coin";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,16 +28,22 @@ export default class CoinManger extends cc.Component {
         })
     }
     getValueCoin(count:number,pos:cc.Vec2,parentNode:cc.Node){
-        let v = count%10;
+        let updateValue = Coin.FACE_VALUE;
+        let v = count%updateValue;
         for(let i = 0;i < v;i++){
             this.getCoin(1,pos,parentNode);
         }
-        let v1 = (count - v)/10;
+        let v1 = (count - v)/updateValue;
         for(let i = 0;i < v1;i++){
-            this.getCoin(10,pos,parentNode);
+            this.getCoin(updateValue,pos,parentNode);
         }
     }
     private getCoin(value:number,pos:cc.Vec2,parentNode:cc.Node){
+        let player;
+        let dungeon = parentNode.getComponent(Dungeon);
+        if(dungeon){
+            player = dungeon.player;
+        }
         let coinPrefab:cc.Node = null;
         if (this.coinPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             coinPrefab = this.coinPool.get();
@@ -48,6 +55,7 @@ export default class CoinManger extends cc.Component {
         coinPrefab.parent = parentNode;
         coinPrefab.position = pos;
         let coin = coinPrefab.getComponent(Coin);
+        coin.player = player;
         coin.changeValue(value);
         coin.node.zIndex = 4000;
         coinPrefab.active = true;
