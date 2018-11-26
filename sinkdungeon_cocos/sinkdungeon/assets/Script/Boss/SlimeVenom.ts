@@ -24,6 +24,7 @@ export default class SlimeVenom extends cc.Component {
     anim:cc.Animation;
     sprite:cc.Node;
     isHide = false;
+    isForever = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -41,13 +42,15 @@ export default class SlimeVenom extends cc.Component {
         this.venom2.rotation = Logic.getRandomNum(0,180);
         this.venom2.rotation = Logic.getRandomNum(0,180);
         this.anim.play();
-        setTimeout(()=>{
-            if(this.anim){
-                this.isHide = true;
-                this.anim.play('VenomHide');
-                setTimeout(()=>{cc.director.emit('destoryvenom',{detail:{coinNode:this.node}});},1500);
-            }
-        },3000);
+        if(!this.isForever){
+            setTimeout(()=>{
+                if(this.anim){
+                    this.isHide = true;
+                    this.anim.play('VenomHide');
+                    setTimeout(()=>{cc.director.emit('destoryvenom',{detail:{coinNode:this.node}});},1500);
+                }
+            },3000);
+        }
         this.damagePlayer();
     }
     start() {
@@ -73,7 +76,7 @@ export default class SlimeVenom extends cc.Component {
         }
     }
     damagePlayer(){
-        if (this.player&&this.getNearPlayerDistance(this.player.node)<32*this.node.scale&&this.node.active && !this.isHide) {
+        if (this.player&&this.getNearPlayerDistance(this.player.node)<60*this.node.scale&&this.node.active && !this.isHide) {
             let dd = new DamageData();
             dd.toxicDamage = 3;
             cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});

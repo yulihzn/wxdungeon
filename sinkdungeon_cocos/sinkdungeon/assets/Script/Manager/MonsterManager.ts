@@ -140,13 +140,16 @@ export default class MonsterManager extends cc.Component {
         data.Common.moveSpeed = 200;
         switch(type){
             case 0:data.updateHA(400,400,2);slime.scaleSize=2;break;
-            case 1:data.updateHA(200,200,2);slime.scaleSize=2.5;break;
+            case 1:data.updateHA(200,200,2);slime.scaleSize=1.5;break;
             case 2:data.updateHA(100,100,2);slime.scaleSize=1;break;
             case 3:data.updateHA(50,50,2);slime.scaleSize=0.5;break;
             case 4:data.updateHA(25,25,2);slime.scaleSize=0.3;break;
             case 5:data.updateHA(10,10,1);slime.scaleSize=0.2;break;
+            default:data.updateHA(5,5,1);slime.scaleSize=0.2;break;
         }
         slime.slimeType = type;
+        slime.node.scaleY = slime.scaleSize;
+        slime.node.scaleX = slime.scaleSize;
         slime.data = data;
         slime.transportBoss(posIndex.x,posIndex.y);
         slime.healthBar = dungeon.bossHealthBar;

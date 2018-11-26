@@ -26,6 +26,7 @@ import HealthBar from "./HealthBar";
 import FallStone from "./Building/FallStone";
 import Emplacement from "./Building/Emplacement";
 import Boss from "./Boss/Boss";
+import SlimeVenom from "./Boss/SlimeVenom";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -76,6 +77,8 @@ export default class Dungeon extends cc.Component {
     bed:cc.Prefab = null;
     @property(cc.Prefab)
     campFire:cc.Prefab = null;
+    @property(cc.Prefab)
+    venom:cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -101,7 +104,7 @@ export default class Dungeon extends cc.Component {
     coinManager: CoinManger = null;//金币管理
     anim: cc.Animation;
 
-    boss: Boss;
+    bosses: Boss[];
     bossIndex: cc.Vec2;
 
     onLoad() {
@@ -142,6 +145,7 @@ export default class Dungeon extends cc.Component {
         this.dungeonStyleManager.addDecorations();
         this.player.node.parent = this.node;
 
+        this.bosses = new Array();
         this.monsters = new Array();
         this.map = new Array();
         this.wallmap = new Array();
@@ -222,6 +226,15 @@ export default class Dungeon extends cc.Component {
                     foot.position = Dungeon.getPosInMap(cc.v2(i, j));
                     foot.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                     this.footboards.push(foot.getComponent(FootBoard));
+                }
+                //生成毒液
+                if (mapData[i][j] == 'V') {
+                    let venom = cc.instantiate(this.venom);
+                    venom.getComponent(SlimeVenom).player = this.player;
+                    venom.getComponent(SlimeVenom).isForever = true;
+                    venom.parent = this.node;
+                    venom.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 }
                 //生成宝箱 房间清理的情况下箱子是打开的
                 if (mapData[i][j] == 'C') {
@@ -467,19 +480,20 @@ export default class Dungeon extends cc.Component {
     }
     addBossSlime(type:number,index:cc.Vec2){
         let posIndex = cc.v2(index.x,index.y);
-        this.boss = this.monsterManager.getSlime(this, posIndex,type);
+        this.bosses.push(this.monsterManager.getSlime(this, posIndex,type));
     }
     private addBossCaptain(){
-        this.boss = this.monsterManager.getCaptain(this, this.bossIndex);
+        this.bosses.push(this.monsterManager.getCaptain(this, this.bossIndex));
     }
     private addBossKraken(){
-        this.boss = this.monsterManager.getKraken(this, this.bossIndex);
+        let boss = this.monsterManager.getKraken(this, this.bossIndex);
+        this.bosses.push(boss);
         this.anim.playAdditive('DungeonShakeOnce');
         setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},1000);
         setTimeout(()=>{this.anim.playAdditive('DungeonShakeOnce');},2000);
         this.breakHalfTiles();
         setTimeout(() => {
-            this.boss.showBoss();
+            boss.showBoss();
             // this.anim.play('DungeonWave');
         }, 3500);
     }
@@ -560,9 +574,13 @@ export default class Dungeon extends cc.Component {
             }
         }
         isClear = count >= this.monsters.length;
-        if (this.boss && !this.boss.isDied) {
-            isClear = false;
+        count = 0;
+        for (let boss of this.bosses) {
+            if (boss.isDied) {
+                count++;
+            }
         }
+        isClear = count >= this.bosses.length;
         for (let footboard of this.footboards) {
             if (!footboard.isOpen) {
                 isClear = false;

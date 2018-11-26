@@ -23,7 +23,7 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Slime extends Boss {
-
+    static readonly DIVIDE_COUNT = 4;
     @property(cc.Prefab)
     venom: cc.Prefab = null;
     private venomPool: cc.NodePool;
@@ -41,6 +41,8 @@ export default class Slime extends Boss {
     currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
     private dashlight: cc.Node;
     private sprite: cc.Node;
+    private crown:cc.Node;
+    private decorate:cc.Node;
     scaleSize = 1;
     slimeType = 0;
     onLoad () {
@@ -51,18 +53,27 @@ export default class Slime extends Boss {
         this.updatePlayerPos();
         this.venomPool = new cc.NodePool();
         this.sprite = this.node.getChildByName('sprite');
+        this.crown = this.sprite.getChildByName('crown');
+        this.decorate = this.node.getChildByName('sprite').getChildByName('body').getChildByName('decorate');
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
         cc.director.on('destoryvenom', (event) => {
             this.destroyVenom(event.detail.coinNode);
         })
+        setTimeout(()=>{this.isShow=true;},1000)
     }
 
     start () {
         super.start();
+        if(this.crown && this.slimeType != 0){
+            this.crown.opacity = 0;
+        }
+        if(this.decorate && this.slimeType > 2){
+            this.decorate.opacity = 0;
+        }
     }
     private getVenom(parentNode: cc.Node, pos: cc.Vec2) {
-        if(this.scaleSize<1){
+        if(this.scaleSize<1||this.isDied){
             return;
         }
         let venomPrefab: cc.Node = null;
@@ -75,7 +86,7 @@ export default class Slime extends Boss {
         }
         venomPrefab.parent = parentNode;
         venomPrefab.position = pos;
-        venomPrefab.scale = this.scaleSize*3;
+        venomPrefab.scale = this.slimeType==0?1.5:1;
         venomPrefab.getComponent(SlimeVenom).player = this.dungeon.player;
         venomPrefab.zIndex = 3000;
         venomPrefab.opacity = 255;
@@ -96,7 +107,7 @@ export default class Slime extends Boss {
     AnimAttacking(){
         this.isAttacking = false;
         let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-                if (newdis < 100*this.scaleSize) {this.dungeon.player.takeDamage(this.data.getAttackPoint()); }
+                if (newdis < 56*this.scaleSize) {this.dungeon.player.takeDamage(this.data.getAttackPoint()); }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.getComponent(Player);
@@ -147,7 +158,7 @@ export default class Slime extends Boss {
         }
     }
     takeDamage(damage: DamageData):boolean {
-        if(this.isDied){
+        if(this.isDied||!this.isShow){
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
@@ -160,13 +171,13 @@ export default class Slime extends Boss {
         setTimeout(() => { if (this.node) { this.isHurt = false; } }, 100);
         this.anim.play('SlimeHit');
         this.isAttacking = false;
-        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        if(this.data.currentHealth<this.data.Common.maxHealth/2&&!this.isCrownFall&&this.slimeType<6){
-            this.scaleSize = 2;
-            cc.director.emit(EventConstant.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType+1 } });
+        if(this.data.currentHealth<this.data.Common.maxHealth/2&&!this.isCrownFall&&this.slimeType==0){
             this.isCrownFall = true;
+            this.isShow = false;
+            setTimeout(()=>{this.isShow=true;this.crown.opacity = 0;},1000)
             this.anim.play('SlimeCrownFall');
         }
+        this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         return true;
     }
     
@@ -177,14 +188,20 @@ export default class Slime extends Boss {
         this.isDied = true;
         this.isDashing = false;
         this.anim.play('SlimeDie');
-        let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsBoxCollider);
         collider.sensor = true;
         setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
         if(this.dungeon){
-            cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 19 } });
-            cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
-            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
-            this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,3);
+            if(this.slimeType==0){
+                cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
+                cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
+                this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,3);
+            }
+            if(this.slimeType<Slime.DIVIDE_COUNT){
+                cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 5 } });
+                cc.director.emit(EventConstant.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType+1 } });
+                cc.director.emit(EventConstant.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType+1 } });
+            }
         }
 
     }
@@ -198,7 +215,7 @@ export default class Slime extends Boss {
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
         let pos = this.dungeon.player.node.position.sub(this.node.position);
         //近战
-        if (playerDis < 100*this.scaleSize && !this.dungeon.player.isDied   && !this.isDashing ) {
+        if (playerDis < 60*this.scaleSize && !this.dungeon.player.isDied && !this.isDashing &&this.isShow ) {
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
             }
@@ -208,11 +225,11 @@ export default class Slime extends Boss {
                 this.anim.play('SlimeAttack');
             }
         }
-       //冲刺
-       let speed = this.data.getMoveSpeed()-this.data.getMoveSpeed()*(this.scaleSize-1);
-       if (playerDis < 800 && playerDis > 200*this.scaleSize && !this.dungeon.player.isDied  &&  !this.isDashing ) {
+        let speed = 200-50*this.scaleSize;
+        //冲刺
+       if (playerDis < 800 && playerDis > 200*this.scaleSize && !this.dungeon.player.isDied  &&  !this.isDashing  &&this.isShow  ) {
            pos = this.dungeon.player.node.position.sub(this.node.position);
-           this.move(pos, speed * 2);
+           this.move(pos, speed * 1.5);
            this.isDashing = true;
            setTimeout(() => { if (this.node) { this.isDashing = false;  } }, 2000);
        }
@@ -220,7 +237,7 @@ export default class Slime extends Boss {
     }
     
     move(pos: cc.Vec2, speed: number) {
-        if (this.isDied || this.isHurt|| this.isDashing) {
+        if (this.isDied || this.isHurt|| this.isDashing||!this.isShow) {
             return;
         }
         if (pos.equals(cc.Vec2.ZERO)) {
