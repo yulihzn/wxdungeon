@@ -57,7 +57,7 @@ export default class EquipmentManager extends cc.Component {
     EquipmentManager.HELMET_WHITEHAT, EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
     EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT, EquipmentManager.GLOVES_WARRIOR,
     EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
-    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON];
+    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON,EquipmentManager.WEAPON_CROWBAR,EquipmentManager.WEAPON_FRUITKNIFE,EquipmentManager.WEAPON_KATANA];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红

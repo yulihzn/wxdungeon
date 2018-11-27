@@ -162,8 +162,8 @@
             "attackSpeed": 0,
             "dodge": 0,
             "health": 0,
-            "realDamge":1,
-            "realRate":20
+            "realDamage":1,
+            "realRate":100
         },
         "desc": "物理学圣剑!!!"
     },

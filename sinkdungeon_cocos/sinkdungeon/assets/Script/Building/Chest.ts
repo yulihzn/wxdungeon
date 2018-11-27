@@ -84,9 +84,9 @@ export default class Chest extends cc.Component {
                         // dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.pos,null,this.quality);
                         dungeon.addEquipment(EquipmentManager.WEAPON_CROWBAR, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
                     }
                 }

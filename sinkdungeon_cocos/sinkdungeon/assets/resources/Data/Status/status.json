@@ -63,6 +63,9 @@
         "statusType": 6,
         "desc": "",
         "duration": 3,
-        "physicalDamageOvertime": 1
+        "realDamageOvertime": 1,
+        "common": {
+            
+        }
     }
 }

@@ -50,8 +50,8 @@ export default class CommonData  {
         this.moveSpeed = data.moveSpeed ? data.moveSpeed : 0;
         this.attackSpeed = data.attackSpeed ? data.attackSpeed : 0;
         this.dodge = data.dodge ? data.dodge : 0;
-        this.realDamage = this.realDamage ? data.realDamage : 0;
-        this.realRate = this.realRate ? data.realRate : 0;
+        this.realDamage = data.realDamage ? data.realDamage : 0;
+        this.realRate = data.realRate ? data.realRate : 0;
         this.iceDamage = data.iceDamage ? data.iceDamage : 0;
         this.iceDefence = data.iceDefence ? data.iceDefence : 0;
         this.iceRate = data.iceRate ? data.iceRate : 0;

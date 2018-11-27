@@ -212,7 +212,7 @@ export default class Dungeon extends cc.Component {
                     let camp = cc.instantiate(this.campFire);
                     camp.parent = this.node;
                     camp.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    camp.zIndex = 4000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    camp.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100-2;
                     let shadow = camp.getChildByName('sprite').getChildByName('shadow');
                     shadow.position = Dungeon.getPosInMap(cc.v2(i, j));
                     shadow.position = cc.v2(shadow.position.x,shadow.position.y+40);

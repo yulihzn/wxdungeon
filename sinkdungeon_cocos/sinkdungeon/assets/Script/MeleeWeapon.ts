@@ -297,6 +297,7 @@ export default class MeleeWeapon extends cc.Component {
                 this.addMonsterStatus(this.player.data.getLighteningRate(),monster,StatusManager.DIZZ);
                 this.addMonsterStatus(this.player.data.getToxicRate(),monster,StatusManager.TOXICOSIS);
                 this.addMonsterStatus(this.player.data.getCurseRate(),monster,StatusManager.CURSING);
+                this.addMonsterStatus(this.player.data.getRealRate(),monster,StatusManager.BLEEDING);
             }
         }
 
@@ -309,6 +310,7 @@ export default class MeleeWeapon extends cc.Component {
                 this.addBossStatus(this.player.data.getLighteningRate(),boss,StatusManager.DIZZ);
                 this.addBossStatus(this.player.data.getToxicRate(),boss,StatusManager.TOXICOSIS);
                 this.addBossStatus(this.player.data.getCurseRate(),boss,StatusManager.CURSING);
+                this.addBossStatus(this.player.data.getRealRate(),boss,StatusManager.BLEEDING);
             }
         }
        
