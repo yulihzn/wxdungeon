@@ -195,6 +195,7 @@
         "resName": "monster011",
         "chapter": 0,
         "stageLevel": 0,
+        "sizeType":2,
         "common": {
             "moveSpeed": 100,
             "maxHealth": 999,

@@ -18,7 +18,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "damageMin": -5
+            "defence": -5
         }
     },
     "status003": {

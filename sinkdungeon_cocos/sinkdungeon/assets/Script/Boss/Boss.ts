@@ -28,6 +28,7 @@ export default abstract class Boss extends cc.Component {
     isDied = false;
     isShow = false;
     abstract takeDamage(damage: DamageData): boolean;
+    abstract killed();
     abstract bossAction(): void;
     /**添加状态 */
     addStatus(statusType: string) {

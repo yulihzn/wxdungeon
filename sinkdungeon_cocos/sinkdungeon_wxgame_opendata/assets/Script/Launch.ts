@@ -18,7 +18,11 @@ export default class Launch extends cc.Component {
         }
         this.wx.onMessage(data => {
             console.log(data.message);
-            this.updateFriend();
+            if(data.message == 'updateMaxScore'){
+                this.updateFriend();
+            }else{
+                this.content.removeAllChildren();
+            }
         });
         this.updateFriend();
 

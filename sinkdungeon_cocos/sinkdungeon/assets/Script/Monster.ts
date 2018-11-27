@@ -28,6 +28,8 @@ export default class Monster extends cc.Component {
     public static readonly RES_WALK02 = 'anim002';//图片资源 行走2
     public static readonly RES_WALK03 = 'anim003';//图片资源 行走3
     public static readonly RES_ATTACK = 'anim004';//图片资源 攻击
+
+    static readonly SCALE_NUM = 1.5;
     @property(cc.Vec2)
     pos: cc.Vec2 = cc.v2(0, 0);
 
@@ -58,7 +60,7 @@ export default class Monster extends cc.Component {
     attackAction: cc.ActionInterval;
     currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
     isVariation: boolean = false;//是否变异
-    scaleNum = 1.5;
+    scaleNum = 1;
 
     particleIce: cc.ParticleSystem;
     particleFire: cc.ParticleSystem;
@@ -71,8 +73,14 @@ export default class Monster extends cc.Component {
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
+        let s = 1;
+        switch(this.data.sizeType){
+            case 0:this.scaleNum=1;break;
+            case 1:this.scaleNum=0.5;break;
+            case 2:this.scaleNum=1.5;break;
+        }
         if (this.isVariation) {
-            this.node.scale = this.scaleNum;
+            this.node.scale = this.scaleNum*Monster.SCALE_NUM;
         }
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
@@ -519,8 +527,9 @@ export default class Monster extends cc.Component {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        let sn = this.isVariation ? this.scaleNum : 1;
+        let sn = this.isVariation ? this.scaleNum*Monster.SCALE_NUM : this.scaleNum;
         this.node.scaleX = this.isFaceRight ? sn : -sn;
+        this.node.scaleY = sn;
 
         this.healthBar.node.scaleX = this.node.scaleX > 0 ? 1 : -1;
         //防止错位

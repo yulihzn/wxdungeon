@@ -1,4 +1,5 @@
 import Logic from "./Logic";
+import WxHelper from "./WxHelper";
 
 const {ccclass, property} = cc._decorator;
 
@@ -7,7 +8,8 @@ export default class Start extends cc.Component {
 
     @property(cc.Node)
     continueButton: cc.Node = null;
-
+    @property(WxHelper)
+    wxhelper:WxHelper = null;
     start () {
         cc.view.enableAntiAlias(false)
         // init logic
@@ -16,10 +18,16 @@ export default class Start extends cc.Component {
         }
     }
     startGame(){
+        if(this.wxhelper){
+            this.wxhelper.CloseDialog();
+        }
         Logic.profile.clearData();
         cc.director.loadScene('chapter');
     }
     continueGame(){
+        if(this.wxhelper){
+            this.wxhelper.CloseDialog();
+        }
         cc.director.loadScene('chapter');
     }
 }

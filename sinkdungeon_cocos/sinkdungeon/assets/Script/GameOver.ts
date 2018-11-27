@@ -1,4 +1,5 @@
 import Logic from "./Logic";
+import WxHelper from "./WxHelper";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -14,8 +15,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class GameOver extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(WxHelper)
+    wxhelper:WxHelper = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -29,6 +30,9 @@ export default class GameOver extends cc.Component {
         cc.director.loadScene('loading');
     }
     home(){
+        if(this.wxhelper){
+            this.wxhelper.CloseDialog();
+        }
         cc.director.loadScene('start');
     }
 

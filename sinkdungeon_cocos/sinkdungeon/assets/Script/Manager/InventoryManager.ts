@@ -59,7 +59,7 @@ export default class InventoryManager {
         for(let data of this.list){
             rate *= (1-data.Common.criticalStrikeRate/100);
         }
-        return 1-rate;
+        return (1-rate)*100;
     }
     
     //闪避
@@ -68,7 +68,7 @@ export default class InventoryManager {
         for(let data of this.list){
             rate *= (1-data.Common.dodge/100);
         }
-        return 1-rate;
+        return (1-rate)*100;
     }
     //防御,可以为负数
     getDefence():number{
@@ -210,7 +210,7 @@ export default class InventoryManager {
         for(let data of this.list){
             rate *= (1-data.Common.lifeDrain/100);
         }
-        return 1-rate;
+        return (1-rate)*100;
         
     }
 

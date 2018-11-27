@@ -47,13 +47,27 @@ export default class StatusManager extends cc.Component {
         this.showStatus(sd);
     }
     private showStatus(data: StatusData) {
+        //去除已经失效的状态
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
                 this.statusList.splice(i, 1);
             }
         }
-        console.log(this.statusList.length);
+        //新的状态如果存在则附加
+        let hasStatus = false;
+        for (let i = this.statusList.length - 1; i >= 0; i--) {
+            let s = this.statusList[i];
+            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == data.statusType) {
+                s.data.duration+=data.duration;
+                hasStatus = true;
+                break;
+            }
+        }
+        if(hasStatus){
+            return;
+        }
+        
         let statusNode: cc.Node = cc.instantiate(this.statusPrefab);
         statusNode.parent = this.node;
         statusNode.active = true;
@@ -63,7 +77,7 @@ export default class StatusManager extends cc.Component {
     }
     update(dt) {
         if (this.node.parent) {
-            this.node.scaleX = this.node.parent.scaleX;
+            this.node.scaleX = this.node.parent.scaleX>0?1:-1;
         }
         if (this.isTimeDelay(dt)) {
             let monster = this.node.parent.getComponent(Monster);
@@ -120,6 +134,9 @@ export default class StatusManager extends cc.Component {
             e.Common.curseDefence += s.data.Common.curseDefence?s.data.Common.curseDefence:0;
             e.Common.curseRate += s.data.Common.curseRate?s.data.Common.curseRate:0;
         }
+        e.Common.criticalStrikeRate*=100;
+        e.Common.lifeDrain*=100;
+        e.Common.dodge*=100;
         return e;
     }
 }

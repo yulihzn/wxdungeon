@@ -15,9 +15,9 @@ import CommonData from "./CommonData";
 
 
 export default class PlayerData {
-    static DEFAULT_HEALTH = 5000;
+    static DEFAULT_HEALTH = 5;
     static DefAULT_SPEED = 300;
-    static DefAULT_ATTACK = 20;
+    static DefAULT_ATTACK = 1;
     name: string = '';
     pos: cc.Vec2 = cc.v2(7, 4);
 
@@ -105,8 +105,13 @@ export default class PlayerData {
         let defenceLightening = this.getLighteningDefence();
         let defenceToxic = this.getToxicDefence();
         let defenceCurse = this.getCurseDefence();
-        //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))可以为负
-        finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - defence * 0.06 / (defence * 0.06 + 1));
+        //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
+        //伤害 = 攻击 + 2-0.94^(-护甲)
+        if(defence>=0){
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage*(1-defence*0.06/(defence*0.06+1));
+        }else{
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (2-Math.pow(0.94,-defence));
+        }
         finalDamageData.iceDamage = finalDamageData.iceDamage * (1 - defenceIce / 100);
         finalDamageData.fireDamage = finalDamageData.fireDamage * (1 - defenceFire / 100);
         finalDamageData.lighteningDamage = finalDamageData.lighteningDamage * (1 - defenceLightening / 100);

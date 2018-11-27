@@ -24,6 +24,7 @@ export default class MonsterData{
     melee:number=0;//是否近战大于0 近战会接近目标
     dash:number=0;//是否冲刺大于0 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击
     disguise:number=0;//是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复
+    sizeType:number=0;//0正常1小一号2大一号
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     private statusTotalData: StatusData;
@@ -59,6 +60,7 @@ export default class MonsterData{
         this.dash = data.dash?data.dash:0;
         this.pos = data.pos ? cc.v2(data.pos.x,data.pos.y) : cc.v2(0, 0);;
         this.disguise = data.disguise?data.disguise:0;
+        this.sizeType = data.sizeType?data.sizeType:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -75,6 +77,7 @@ export default class MonsterData{
         e.dash = this.dash;
         e.pos = this.pos;
         e.disguise = this.disguise;
+        e.sizeType = this.sizeType;
         return e;
     }
     getAttackPoint():DamageData{
@@ -91,14 +94,19 @@ export default class MonsterData{
     //伤害减免
     getDamage(damageData:DamageData):DamageData{
         let finalDamageData = damageData.clone();
-        let defence = this.common.defence;
-        let defenceIce = this.common.iceDefence;
-        let defenceFire = this.common.fireDefence;
-        let defenceLightening = this.common.lighteningDefence;
-        let defenceToxic = this.common.toxicDefence;
-        let defenceCurse = this.common.curseDefence;
-        //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))可以为负
-        finalDamageData.physicalDamage = finalDamageData.physicalDamage*(1-defence*0.06/(defence*0.06+1));
+        let defence = this.getDefence();
+        let defenceIce = this.getIceDefence();
+        let defenceFire = this.getFireDefence();
+        let defenceLightening = this.getLighteningDefence();
+        let defenceToxic = this.getToxicDefence();
+        let defenceCurse = this.getCurseDefence();
+        //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
+        //伤害 = 攻击 + 攻击*(2-0.94^(-护甲))
+        if(defence>=0){
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage*(1-defence*0.06/(defence*0.06+1));
+        }else{
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (2-Math.pow(0.94,-defence));
+        }
         finalDamageData.iceDamage = finalDamageData.iceDamage*(1-defenceIce/100);
         finalDamageData.fireDamage = finalDamageData.fireDamage*(1-defenceFire/100);
         finalDamageData.lighteningDamage = finalDamageData.lighteningDamage*(1-defenceLightening/100);

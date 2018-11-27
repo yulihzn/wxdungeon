@@ -1,4 +1,5 @@
 import Logic from "./Logic";
+import WxHelper from "./WxHelper";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -15,7 +16,8 @@ const {ccclass, property} = cc._decorator;
 export default class NewClass extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
-
+    @property(WxHelper)
+    wxhelper:WxHelper = null;
     // onLoad () {}
 
     start () {
@@ -26,6 +28,9 @@ export default class NewClass extends cc.Component {
         cc.director.loadScene('loading');
     }
     home(){
+        if(this.wxhelper){
+            this.wxhelper.CloseDialog();
+        }
         cc.director.loadScene('start');
     }
 

@@ -30,6 +30,7 @@ export default class WxHelper extends cc.Component {
 
     start() {
         if (this.rankList) {
+            this.CloseDialog();
             this.rankList.node.active = this.rankListOpen;
         }
         if (!this.wx) {
@@ -113,13 +114,18 @@ export default class WxHelper extends cc.Component {
 
     //button close
     CloseDialog() {
-        if (this.rankList) {
+        if (this.wx&&this.node&&this.rankList&&this.rankList.node) {
             this.rankList.node.active = false;
+            let openDataContext = this.wx.getOpenDataContext();
+                openDataContext.postMessage({
+                    message: 'close',
+                });
         }
     }
     OpenDialog() {
-        if (this.rankList) {
+        if (this.wx&&this.rankList) {
             this.rankList.node.active = true;
+            this.saveRankData();
         }
     }
 
@@ -138,7 +144,7 @@ export default class WxHelper extends cc.Component {
                 // 让子域更新当前用户的最高分，因为主域无法得到getUserCloadStorage;
                 let openDataContext = that.wx.getOpenDataContext();
                 openDataContext.postMessage({
-                    type: 'updateMaxScore',
+                    message: 'updateMaxScore',
                 });
             },
             fail: res => {
@@ -147,4 +153,5 @@ export default class WxHelper extends cc.Component {
             }
         });
     }
+    
 }

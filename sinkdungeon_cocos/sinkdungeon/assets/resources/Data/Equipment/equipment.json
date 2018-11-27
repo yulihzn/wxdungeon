@@ -33,7 +33,7 @@
         "stab": 1,
         "common": {
             "damageMin": 1,
-            "damageMax": 3,
+            "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
             "lifeDrain": 0,
@@ -41,7 +41,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "health": 0
+            "health": 0,
+            "fireDamage":0,
+            "fireRate":100
         },
         "desc": "It's just a fork"
     },
@@ -133,13 +135,84 @@
             "lifeRecovery": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "stab": 1,
             "dodge": 0,
             "health": 0
         },
         "stab":1,
         "desc": "stab!!!",
         "far": 1
+    },
+    "weapon006": {
+        "nameCn": "撬棍",
+        "nameEn": "Crowbar",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon006",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 3,
+            "criticalStrikeRate": 10,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "health": 0,
+            "realDamge":1,
+            "realRate":20
+        },
+        "desc": "物理学圣剑!!!"
+    },
+    "weapon007": {
+        "nameCn": "武士刀",
+        "nameEn": "KATANA",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon007",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 2,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 20,
+            "attackSpeed": 50,
+            "dodge": 0,
+            "health": 0
+        },
+        "desc": "ninininini ninja!!!"
+    },
+    "weapon008": {
+        "nameCn": "水果刀",
+        "nameEn": "Fruit knife",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon008",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 2,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 10,
+            "dodge": 0,
+            "health": 0
+        },
+        "stab":1,
+        "desc": "十分轻巧的水果刀"
     },
     "helmet002": {
         "nameCn": "渔夫帽",
@@ -161,7 +234,7 @@
             "dodge": 0,
             "health": 1
         },
-        "desc": "You look like a fisherman"
+        "desc": "你就像一个渔夫"
     },
     "helmet003": {
         "nameCn": "海盗帽",
@@ -183,7 +256,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "A pirate!"
+        "desc": "海盗!"
     },
     "helmet004": {
         "nameCn": "红袍帽",
@@ -205,7 +278,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Hello Little Red"
+        "desc": "你好,小红帽"
     },
     "helmet005": {
         "nameCn": "白袍帽",
@@ -227,7 +300,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "like a mage"
+        "desc": "魔法帽"
     },
     "clothes001": {
         "nameCn": "背心",
@@ -249,7 +322,7 @@
             "dodge": 0,
             "health": 1
         },
-        "desc": "cool and refreshing"
+        "desc": "凉爽的小背心"
     },
     "clothes002": {
         "nameCn": "衬衫",

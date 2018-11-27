@@ -4,6 +4,7 @@ import Logic from "./Logic";
 import Player from "./Player";
 import DamageData from "./Data/DamageData";
 import Monster from "./Monster";
+import Boss from "./Boss/Boss";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -71,13 +72,21 @@ export default class Status extends cc.Component {
         }
         let dd = isDirect?this.getDamgeDirect():this.getDamgeOverTime();
         let player = this.target.getComponent(Player);
+        if(dd.getTotalDamage()== 0){
+            return;
+        }
         if(player){
-            player.takeDamage(dd)
+            player.takeDamage(dd);
             return;   
         }
         let monster = this.target.getComponent(Monster);
         if(monster){
             monster.takeDamage(dd);
+            return;
+        }
+        let boss = this.target.getComponent(Boss);
+        if(boss){
+            boss.takeDamage(dd);
             return;
         }
     }

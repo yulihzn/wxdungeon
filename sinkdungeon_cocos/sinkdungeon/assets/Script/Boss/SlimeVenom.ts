@@ -78,7 +78,7 @@ export default class SlimeVenom extends cc.Component {
     damagePlayer(){
         if (this.player&&this.getNearPlayerDistance(this.player.node)<60*this.node.scale&&this.node.active && !this.isHide) {
             let dd = new DamageData();
-            dd.toxicDamage = 3;
+            dd.toxicDamage = 1;
             cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});
         }
     }

@@ -348,11 +348,14 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'a') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
                     }
-                    if (mapData[i][j] == 'g') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
+                    if (mapData[i][j] == 'c') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
                     }
                     if (mapData[i][j] == 'd') {
                         this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
+                    }
+                    if (mapData[i][j] == 'g') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
                     }
                     if (mapData[i][j] == 'm') {
                         this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
@@ -362,9 +365,6 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 'k') {
                         this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
-                    }
-                    if (mapData[i][j] == 'c') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
                     }
                     if (mapData[i][j] == 'y') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
@@ -574,13 +574,15 @@ export default class Dungeon extends cc.Component {
             }
         }
         isClear = count >= this.monsters.length;
-        count = 0;
-        for (let boss of this.bosses) {
-            if (boss.isDied) {
-                count++;
+        if(this.bosses.length>0){
+            count = 0;
+            for (let boss of this.bosses) {
+                if (boss.isDied) {
+                    count++;
+                }
             }
+            isClear = count >= this.bosses.length;
         }
-        isClear = count >= this.bosses.length;
         for (let footboard of this.footboards) {
             if (!footboard.isOpen) {
                 isClear = false;

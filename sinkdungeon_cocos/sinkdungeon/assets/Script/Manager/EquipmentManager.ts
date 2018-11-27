@@ -25,6 +25,9 @@ export default class EquipmentManager extends cc.Component {
     public static readonly WEAPON_CHOPPER = "weapon002";
     public static readonly WEAPON_HUGEBLADE = "weapon003";
     public static readonly WEAPON_PITCHFORK = "weapon004";
+    public static readonly WEAPON_CROWBAR = "weapon006";
+    public static readonly WEAPON_KATANA = "weapon007";
+    public static readonly WEAPON_FRUITKNIFE = "weapon008";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
     public static readonly CLOTHES_NAVY = "clothes003";
