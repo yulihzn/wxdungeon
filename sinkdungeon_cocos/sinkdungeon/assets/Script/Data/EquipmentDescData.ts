@@ -27,6 +27,7 @@ export default class EquipmentDescData{
     prefix:string = '';
     level:number = 0;
 
+    damageRemote = 0;//远程伤害
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
     iceDamage = 0;//冰元素伤害

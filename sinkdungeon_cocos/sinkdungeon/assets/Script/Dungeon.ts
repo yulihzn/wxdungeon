@@ -208,7 +208,7 @@ export default class Dungeon extends cc.Component {
                     fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 }
                 //生成营火
-                if (mapData[i][j] == '-') {
+                if (mapData[i][j] == '-' && Logic.chapterName == 'chapter02') {
                     let camp = cc.instantiate(this.campFire);
                     camp.parent = this.node;
                     camp.position = Dungeon.getPosInMap(cc.v2(i, j));

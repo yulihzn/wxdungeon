@@ -41,9 +41,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "health": 0,
-            "fireDamage":0,
-            "fireRate":100
+            "health": 0
         },
         "desc": "It's just a fork"
     },
@@ -104,13 +102,13 @@
         "img": "weapon003",
         "common": {
             "damageMin": 3,
-            "damageMax": 1,
+            "damageMax": 2,
             "criticalStrikeRate": 0,
             "defence": 0,
             "lifeDrain": 0,
             "lifeRecovery": 0,
-            "moveSpeed": 0,
-            "attackSpeed": -200,
+            "moveSpeed": -50,
+            "attackSpeed": -300,
             "dodge": 0,
             "health": 0
         },
@@ -140,6 +138,30 @@
         },
         "stab":1,
         "desc": "stab!!!",
+        "far": 1
+    },
+    "weapon005": {
+        "nameCn": "巨斧",
+        "nameEn": "HugeAxe",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon005",
+        "common": {
+            "damageMin": 4,
+            "damageMax": 1,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": -50,
+            "attackSpeed": -500,
+            "dodge": 0,
+            "health": 0
+        },
+        "desc": "It's awesome!'",
         "far": 1
     },
     "weapon006": {
@@ -213,6 +235,104 @@
         },
         "stab":1,
         "desc": "十分轻巧的水果刀"
+    },
+    "weapon009": {
+        "nameCn": "火之高兴",
+        "nameEn": "Happy Fire",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon009",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 10,
+            "fireDamage": 2,
+            "fireRate":20,
+            "health": 0
+        },
+        "desc": "很高兴很开心"
+    },
+    "weapon010": {
+        "nameCn": "霜之悲伤",
+        "nameEn": "Sad Ice",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon010",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 2,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 10,
+            "iceDamage": 2,
+            "iceRate":20,
+            "health": 0
+        },
+        "desc": "这个肯定是山寨货"
+    },
+    "remote001": {
+        "nameCn": "十字弩",
+        "nameEn": "Cross Bow",
+        "equipmetType": "remote",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "remote001",
+        "damageRemote":1,
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "health": 0
+        },
+        "stab":1,
+        "desc": "猎魔人必备"
+    },
+    "remote002": {
+        "nameCn": "长弓",
+        "nameEn": "Long Bow",
+        "equipmetType": "remote",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "remote002",
+        "damageRemote":1,
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "health": 0
+        },
+        "stab":1,
+        "desc": "普通的长弓"
     },
     "helmet002": {
         "nameCn": "渔夫帽",
@@ -344,7 +464,7 @@
             "dodge": 0,
             "health": 2
         },
-        "desc": "another commuter"
+        "desc": "普通的衬衫"
     },
     "clothes003": {
         "nameCn": "海军服",
@@ -366,7 +486,7 @@
             "dodge": 0,
             "health": 3
         },
-        "desc": "Nice suit."
+        "desc": "看起来不错"
     },
     "clothes004": {
         "nameCn": "海盗服",
@@ -388,7 +508,7 @@
             "dodge": 0,
             "health": 3
         },
-        "desc": "Dying is the day worth living for."
+        "desc": "死得其所"
     },
     "clothes005": {
         "nameCn": "渔夫服",
@@ -410,7 +530,7 @@
             "dodge": 0,
             "health": 2
         },
-        "desc": "you must be a fisherman"
+        "desc": "你就像一个渔夫"
     },
     "clothes006": {
         "nameCn": "红袍",
@@ -432,7 +552,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "you are not Raistlin"
+        "desc": "你不是雷斯林"
     },
     "clothes007": {
         "nameCn": "白袍",
@@ -454,7 +574,7 @@
             "dodge": 10,
             "health": 1
         },
-        "desc": "you are not Gandalf"
+        "desc": "你不是甘道夫"
     },
     "cloak001": {
         "nameCn": "战袍",
@@ -476,7 +596,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Warrior needs a cloak"
+        "desc": "勇士需要一件战袍"
     },
     "trousers001": {
         "nameCn": "裤子",
@@ -498,7 +618,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Just trousers ",
+        "desc": "裤子而已",
         "trouserslong": 1
     },
     "trousers002": {
@@ -521,7 +641,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Just trousers ",
+        "desc": "小短裤",
         "trouserslong": 0
     },
     "gloves001": {
@@ -544,7 +664,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Warrior needs gloves ",
+        "desc": "勇士需要一双手套",
         "trouserslong": 0
     },
     "gloves002": {
@@ -567,7 +687,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Demon gloves ",
+        "desc": "恶魔手套",
         "trouserslong": 0
     },
     "gloves003": {
@@ -590,7 +710,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Clawing something ",
+        "desc": "想挠人",
         "trouserslong": 0
     },
     "shoes001": {
@@ -613,7 +733,7 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Warrior needs gloves "
+        "desc": "勇士需求一双靴子"
     },
     "shoes002": {
         "nameCn": "滑板鞋",
@@ -635,7 +755,7 @@
             "dodge": 20,
             "health": 0
         },
-        "desc": "rub rub rub rub rub ... "
+        "desc": "摩擦 摩擦 ... "
     },
     "shoes003": {
         "nameCn": "恶魔靴子",
@@ -657,6 +777,6 @@
             "dodge": 0,
             "health": 0
         },
-        "desc": "Demon gloves "
+        "desc": "恶魔靴子"
     }
 }

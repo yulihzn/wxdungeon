@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "e0c103bf-3d58-4872-88a5-bd87b99f0ec7",
+  "uuid": "70bdb713-ccc1-452c-9152-34d315275dc2",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "crossbow": {
+    "remote002anim": {
       "ver": "1.0.3",
-      "uuid": "eaf4e32e-b0bc-407e-b7b9-0eaa10e4d82a",
-      "rawTextureUuid": "e0c103bf-3d58-4872-88a5-bd87b99f0ec7",
+      "uuid": "586210c3-bc28-43db-92fe-cfe6310f7cb3",
+      "rawTextureUuid": "70bdb713-ccc1-452c-9152-34d315275dc2",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
@@ -18,9 +18,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 32,
-      "height": 15,
+      "height": 32,
       "rawWidth": 32,
-      "rawHeight": 15,
+      "rawHeight": 32,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

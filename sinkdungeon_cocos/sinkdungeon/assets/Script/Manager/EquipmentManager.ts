@@ -25,9 +25,14 @@ export default class EquipmentManager extends cc.Component {
     public static readonly WEAPON_CHOPPER = "weapon002";
     public static readonly WEAPON_HUGEBLADE = "weapon003";
     public static readonly WEAPON_PITCHFORK = "weapon004";
+    public static readonly WEAPON_HUGEAXE = "weapon005";
     public static readonly WEAPON_CROWBAR = "weapon006";
     public static readonly WEAPON_KATANA = "weapon007";
     public static readonly WEAPON_FRUITKNIFE = "weapon008";
+    public static readonly WEAPON_HAPPYFIRE = "weapon009";
+    public static readonly WEAPON_SADICE = "weapon010";
+    public static readonly REMOTE_CROSSBOW = "remote001";
+    public static readonly REMOTE_LONGBOW = "remote002";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
     public static readonly CLOTHES_NAVY = "clothes003";
@@ -57,7 +62,8 @@ export default class EquipmentManager extends cc.Component {
     EquipmentManager.HELMET_WHITEHAT, EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
     EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT, EquipmentManager.GLOVES_WARRIOR,
     EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
-    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON,EquipmentManager.WEAPON_CROWBAR,EquipmentManager.WEAPON_FRUITKNIFE,EquipmentManager.WEAPON_KATANA];
+    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON,EquipmentManager.WEAPON_CROWBAR,EquipmentManager.WEAPON_FRUITKNIFE,EquipmentManager.WEAPON_KATANA,
+    EquipmentManager.WEAPON_HUGEAXE,EquipmentManager.REMOTE_CROSSBOW,EquipmentManager.REMOTE_LONGBOW,EquipmentManager.WEAPON_HAPPYFIRE,EquipmentManager.WEAPON_SADICE];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红
@@ -91,6 +97,9 @@ export default class EquipmentManager extends cc.Component {
     //criticalstrike strong stable drain recovery fast quick agile healthy 
     getRandomDesc(data: EquipmentData, chestQuality?: number): EquipmentDescData {
         let desc = new EquipmentDescData();
+        if(data.equipmetType == 'remote'){
+            return desc;
+        }
         // let arr = ['rough', 'normal', 'good', 'excellent', 'epic', 'legend']
         let arr = ['粗糙的', '普通的', '精良的', '优秀的', '史诗的', '传说的']
         let colors = ['#dcdcdc', '#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500']
@@ -355,6 +364,7 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfoBase(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
+        info += data.damageRemote+desc.damageRemote == 0 ? `` : `远距离伤害${data.damageRemote}${desc.damageRemote == 0 ? '' : '+' + desc.damageRemote}\n`;
         info += data.Common.damageMin+desc.damageMin == 0 ? `` : `攻击${data.Common.damageMin}${desc.damageMin == 0 ? '' : '+' + desc.damageMin} 最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n`;
         info += data.Common.damageMax+desc.damageMax == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n` : ``
         info += data.Common.defence+desc.defence == 0 ? `` : `防御${data.Common.defence}${desc.defence == 0 ? '' : '+' + desc.defence}\n`;

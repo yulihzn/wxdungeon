@@ -85,21 +85,8 @@ export default class DungeonStyleManager extends cc.Component {
         }
         this.doors = new Array(4);
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
-            let walltop = cc.instantiate(this.wallTopDecoration);
-            walltop.parent = this.node;
-            let postop = Dungeon.getPosInMap(cc.v2(i, Dungeon.HEIGHT_SIZE));
-            walltop.setPosition(cc.v2(postop.x, postop.y + 32));
-            walltop.zIndex = 2500;
-            walltop.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
-
-            let wallbottom = cc.instantiate(this.wallBottomDecoration);
-            wallbottom.parent = this.node;
-            let posbottom = Dungeon.getPosInMap(cc.v2(i, -1));
-            wallbottom.setScale(4, 2);
-            wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
-            wallbottom.zIndex = 2500;
-            wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
-            wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.bottomwall] : null;
+            let walltop = this.getWallTop(i);
+            let wallbottom = this.getWallBottom(i);
             if (i == Math.floor(Dungeon.WIDTH_SIZE / 2)) {
                 this.doors[0] = cc.instantiate(this.doorDecoration);
                 this.doors[0].parent = this.node;
@@ -118,21 +105,9 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[1].getComponent(Door).dir = 1;
             }
         }
-        for (let j = -1; j < Dungeon.HEIGHT_SIZE + 2; j++) {
-            let wallleft = cc.instantiate(this.wallLeftDecoration);
-            wallleft.parent = this.node;
-            let posleft = Dungeon.getPosInMap(cc.v2(-1, j));
-            wallleft.setPosition(cc.v2(posleft.x, posleft.y));
-            wallleft.zIndex = 2500;
-            wallleft.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
-
-            let wallright = cc.instantiate(this.wallLeftDecoration);
-            wallright.parent = this.node;
-            let posright = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, j));
-            wallright.setPosition(cc.v2(posright.x, posright.y));
-            wallright.zIndex = 2500;
-            wallright.setScale(-4, 4);
-            wallright.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+        for (let j = -1; j < Dungeon.HEIGHT_SIZE + 4; j++) {
+            let wallleft = this.getWallLeft(j);
+            let wallright = this.getWallRight(j);
             if (j == Math.floor(Dungeon.HEIGHT_SIZE / 2)) {
                 this.doors[2] = cc.instantiate(this.doorDecoration);
                 this.doors[2].parent = this.node;
@@ -158,6 +133,45 @@ export default class DungeonStyleManager extends cc.Component {
         this.runBackgroundAnim(this.styleData.background);
     }
 
+    private getWallTop(posX:number):cc.Node{
+        let walltop = cc.instantiate(this.wallTopDecoration);
+            walltop.parent = this.node;
+            let postop = Dungeon.getPosInMap(cc.v2(posX, Dungeon.HEIGHT_SIZE));
+            walltop.setPosition(cc.v2(postop.x, postop.y + 32));
+            walltop.zIndex = 2500;
+            walltop.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
+            return walltop;
+    }
+    private getWallBottom(posX:number):cc.Node{
+        let wallbottom = cc.instantiate(this.wallBottomDecoration);
+            wallbottom.parent = this.node;
+            let posbottom = Dungeon.getPosInMap(cc.v2(posX, -1));
+            wallbottom.setScale(4, 2);
+            wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
+            wallbottom.zIndex = 2500;
+            wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
+            wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.bottomwall] : null;
+            return wallbottom;
+    }
+    private getWallLeft(posY:number):cc.Node{
+        let wallleft = cc.instantiate(this.wallLeftDecoration);
+            wallleft.parent = this.node;
+            let posleft = Dungeon.getPosInMap(cc.v2(-1, posY));
+            wallleft.setPosition(cc.v2(posleft.x, posleft.y));
+            wallleft.zIndex = 2500;
+            wallleft.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+            return wallleft;
+    }
+    private getWallRight(posY:number):cc.Node{
+        let wallright = cc.instantiate(this.wallLeftDecoration);
+            wallright.parent = this.node;
+            let posright = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, posY));
+            wallright.setPosition(cc.v2(posright.x, posright.y));
+            wallright.zIndex = 2500;
+            wallright.setScale(-4, 4);
+            wallright.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+            return wallright;
+    }
     // setStyle(background: string, topwall: string, sidewall: string, door: string, d1: string, d2: string) {
     //     this.doorRes = door;
     //     this.background01.getComponent(cc.Sprite).spriteFrame = background ? Logic.spriteFrames[background] : null;

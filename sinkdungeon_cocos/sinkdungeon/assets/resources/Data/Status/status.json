@@ -7,7 +7,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "moveSpeed": -20
+            "moveSpeed": -100
         }
     },
     "status002": {
@@ -29,7 +29,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "attackSpeed": -20
+            "attackSpeed": -100
         }
     },
     "status004": {
@@ -51,7 +51,7 @@
         "statusType": 5,
         "desc": "",
         "duration": 5,
-        "missRate": 100,
+        "missRate": 80,
         "common": {
             "maxHealth": -5
         }

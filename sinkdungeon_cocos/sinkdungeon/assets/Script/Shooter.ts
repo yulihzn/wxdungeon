@@ -3,6 +3,7 @@ import Player from "./Player";
 import Bullet from "./Item/Bullet";
 import Monster from "./Monster";
 import Logic from "./Logic";
+import EquipmentData from "./Data/EquipmentData";
 
 
 // Learn TypeScript:
@@ -33,18 +34,33 @@ export default class Shooter extends cc.Component {
     
     private bulletPool: cc.NodePool;
     private timeDelay = 0;
-    private anim:cc.Animation;
     isAutoAim = true;
     bulletName:string = '';
+    sprite:cc.Node;
+    data:EquipmentData = new EquipmentData();
 
     private hv: cc.Vec2 = cc.v2(1, 0);
 
     onLoad() {
-        this.anim = this.getComponent(cc.Animation);
         this.bulletPool = new cc.NodePool();
+        this.sprite = this.node.getChildByName('sprite');
         cc.director.on('destorybullet', (event) => {
             this.destroyBullet(event.detail.bulletNode);
         })
+    }
+    changeRes(resName: string, suffix?: string) {
+        if (!this.sprite) {
+            this.sprite = this.node.getChildByName('sprite');
+        }
+        let spriteFrame = this.getSpriteFrameByName(resName, suffix);
+        this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+    }
+    private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
+        let spriteFrame = Logic.spriteFrames[resName + suffix];
+        if (!spriteFrame) {
+            spriteFrame = Logic.spriteFrames[resName];
+        }
+        return spriteFrame;
     }
     setHv(hv: cc.Vec2) {
         let pos = this.hasNearEnemy();
@@ -56,10 +72,13 @@ export default class Shooter extends cc.Component {
         }
     }
     fireBullet(angleOffset?:number){
+        this.sprite.stopAllActions();
+        this.sprite.position = cc.Vec2.ZERO;
+        this.changeRes(this.data.img);
+        let action = cc.sequence(cc.moveBy(0.1, 10, 0),cc.callFunc(()=>{this.changeRes(this.data.img,'anim')},this)
+        , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0),cc.callFunc(()=>{this.changeRes(this.data.img)},this));
+        this.sprite.runAction(action);
         
-        if(this.anim){
-            this.anim.play();
-        }
         if(!angleOffset){
             angleOffset = 0;
         }
@@ -70,7 +89,7 @@ export default class Shooter extends cc.Component {
         if(!this.dungeon){
             return;
         }
-        if(!this.isAI && Logic.ammo<=0){
+        if(!this.isAI && this.player && (Logic.ammo<=0 || this.player.inventoryManager.remote.equipmetType!='remote')){
             return;
         }
         if(!this.isAI && Logic.ammo > 0){
@@ -97,8 +116,13 @@ export default class Shooter extends cc.Component {
         bullet.node.scaleY = this.node.scaleX>0?1:-1;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
-        if (bullet.isFromPlayer && bullet.isMelee && this.player) {
-            // bullet.damage = this.player.baseAttackPoint;
+        if (bullet.isFromPlayer && this.player) {
+            bullet.damageData.physicalDamage = this.data.damageRemote;
+            bullet.damageData.iceDamage = this.data.Common.iceDamage;
+            bullet.damageData.fireDamage = this.data.Common.fireDamage;
+            bullet.damageData.lighteningDamage = this.data.Common.lighteningDamage;
+            bullet.damageData.toxicDamage = this.data.Common.toxicDamage;
+            bullet.damageData.curseDamage = this.data.Common.curseDamage;
         }
         bullet.showBullet(this.hv.clone().rotateSelf(angleOffset*Math.PI/180));
     }

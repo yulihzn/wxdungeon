@@ -46,6 +46,10 @@ export default class Equipment extends cc.Component {
         this.sprite.height = spriteFrame.getRect().height;
         let color = cc.color(255, 255, 255).fromHEX(this.data.color);
         this.sprite.color = color;
+        if(data.equipmetType == 'remote'){
+            this.sprite.width = this.sprite.width/2;
+            this.sprite.height = this.sprite.height/2;
+        }
 
 
     }

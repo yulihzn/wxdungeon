@@ -32,10 +32,10 @@ export default class ProfileData {
     ammo = 30;//子弹
     level = 1;
     constructor(){
-        this.loadProfile();
+        // this.loadProfile();
     }
     saveData(){
-        cc.sys.localStorage.setItem('profileData',JSON.stringify(this));
+        // cc.sys.localStorage.setItem('profileData',JSON.stringify(this));
         console.log('save data');
     }
     clearData(){
@@ -73,7 +73,7 @@ export default class ProfileData {
         this.hasSaveData = true;
         this.playerData.valueCopy(data.playerData);
         this.chapterName = data.chapterName;
-        for(let i =0;i<this.inventoryManager.list.length;i++){
+        for(let i =0;i<data.inventoryManager.list.length;i++){
             this.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
         }
         this.rectDungeon = this.rectDungeon.buildMapFromSave(data.rectDungeon);

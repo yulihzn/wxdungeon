@@ -27,6 +27,8 @@ export default class NewClass extends cc.Component {
     @property(cc.Sprite)
     weapon:cc.Sprite = null;
     @property(cc.Sprite)
+    remote:cc.Sprite = null;
+    @property(cc.Sprite)
     helmet:cc.Sprite = null;
     @property(cc.Sprite)
     clothes:cc.Sprite = null;
@@ -56,6 +58,7 @@ export default class NewClass extends cc.Component {
         // Logic.setAlias(this.node);
         this.tabselect.x = 0;
         this.weapon.spriteFrame = null;
+        this.remote.spriteFrame = null;
         this.helmet.spriteFrame = null;
         this.clothes.spriteFrame = null;
         this.trousers.spriteFrame = null;
@@ -63,6 +66,7 @@ export default class NewClass extends cc.Component {
         this.shoes.spriteFrame = null;
         this.cloak.spriteFrame = null;
         this.addSpriteTouchEvent(this.weapon,'weapon');
+        this.addSpriteTouchEvent(this.remote,'remote');
         this.addSpriteTouchEvent(this.helmet,'helmet');
         this.addSpriteTouchEvent(this.clothes,'clothes');
         this.addSpriteTouchEvent(this.trousers,'trousers');
@@ -70,6 +74,7 @@ export default class NewClass extends cc.Component {
         this.addSpriteTouchEvent(this.shoes,'shoes');
         this.addSpriteTouchEvent(this.cloak,'cloak');
         this.refreshEquipment(this.inventoryManager.weapon,false);
+        this.refreshEquipment(this.inventoryManager.remote,false);
         this.refreshEquipment(this.inventoryManager.helmet,false);
         this.refreshEquipment(this.inventoryManager.clothes,false);
         this.refreshEquipment(this.inventoryManager.trousers,false);
@@ -85,6 +90,7 @@ export default class NewClass extends cc.Component {
             let equipData = new EquipmentData();
             switch(equipmetType){
                 case 'weapon':equipData = this.inventoryManager.weapon.clone();break;
+                case 'remote':equipData = this.inventoryManager.remote.clone();break;
                 case 'helmet':equipData = this.inventoryManager.helmet.clone();break;
                 case 'clothes':equipData = this.inventoryManager.clothes.clone();break;
                 case 'trousers':equipData = this.inventoryManager.trousers.clone();break;
@@ -135,6 +141,11 @@ export default class NewClass extends cc.Component {
             this.weapon.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryManager.weapon,isChange);
             this.inventoryManager.weapon.valueCopy(equipmentDataNew);
+            break;
+            case 'remote':this.remote.spriteFrame = spriteFrame;
+            this.remote.node.color = color;
+            this.setEquipment(equipmentDataNew,this.inventoryManager.remote,isChange);
+            this.inventoryManager.remote.valueCopy(equipmentDataNew);
             break;
             case 'helmet':this.helmet.spriteFrame = spriteFrame;
             this.helmet.node.color = color;

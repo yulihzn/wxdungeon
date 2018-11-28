@@ -217,6 +217,9 @@ export default class Player extends cc.Component {
                 this.weaponStabSprite.node.color = color1;
                 this.weaponStabLightSprite.node.color = color1;
                 break;
+            case 'remote': this.shooter.data = equipData.clone();
+                this.shooter.changeRes(this.shooter.data.img);
+                break;
             case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
                 this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
                 let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.helmet.color);
@@ -441,7 +444,7 @@ export default class Player extends cc.Component {
     }
 
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {
-        if(!this.floatinglabelManager){
+        if (!this.floatinglabelManager) {
             return;
         }
         let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode);
@@ -451,7 +454,7 @@ export default class Player extends cc.Component {
             flabel.showMiss();
         } else if (d != 0) {
             flabel.showDamage(-d)
-        }else{
+        } else {
             flabel.hideLabel();
         }
     }

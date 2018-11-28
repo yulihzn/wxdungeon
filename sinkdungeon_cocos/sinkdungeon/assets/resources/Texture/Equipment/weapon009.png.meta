@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "141bd0c1-29d7-4d46-b29c-9092c4545b5d",
+  "uuid": "a9af9bb5-7473-485a-a7d4-880f4370f75a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "weapon004": {
+    "weapon009": {
       "ver": "1.0.3",
-      "uuid": "26014ee2-fcc5-4d75-ab94-3678d4423eda",
-      "rawTextureUuid": "141bd0c1-29d7-4d46-b29c-9092c4545b5d",
+      "uuid": "8a023791-6278-4769-97ec-cd66c616754c",
+      "rawTextureUuid": "a9af9bb5-7473-485a-a7d4-880f4370f75a",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
@@ -18,9 +18,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 32,
-      "height": 48,
+      "height": 32,
       "rawWidth": 32,
-      "rawHeight": 48,
+      "rawHeight": 32,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

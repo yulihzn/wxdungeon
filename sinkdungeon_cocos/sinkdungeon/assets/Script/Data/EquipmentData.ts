@@ -26,6 +26,7 @@ export default class EquipmentData{
     far = 0; //是否远距离
     isLocked = 0;//是否锁定
     trouserslong = 0;//是否长裤
+    damageRemote = 0;//远程伤害
     private common:CommonData;
 
     info1:string = '';
@@ -65,6 +66,7 @@ export default class EquipmentData{
         this.isLocked = data.isLocked?data.isLocked:0;
         this.level = data.level?data.level:0;
         this.trouserslong = data.trouserslong?data.trouserslong:0;
+        this.damageRemote = data.damageRemote?data.damageRemote:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -99,6 +101,7 @@ export default class EquipmentData{
         e.isLocked = this.isLocked;
         e.level = this.level;
         e.trouserslong = this.trouserslong;
+        e.damageRemote = this.damageRemote;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

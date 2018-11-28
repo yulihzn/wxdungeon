@@ -60,7 +60,6 @@ export default class Monster extends cc.Component {
     attackAction: cc.ActionInterval;
     currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
     isVariation: boolean = false;//是否变异
-    scaleNum = 1;
 
     particleIce: cc.ParticleSystem;
     particleFire: cc.ParticleSystem;
@@ -73,14 +72,9 @@ export default class Monster extends cc.Component {
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
-        let s = 1;
-        switch(this.data.sizeType){
-            case 0:this.scaleNum=1;break;
-            case 1:this.scaleNum=0.5;break;
-            case 2:this.scaleNum=1.5;break;
-        }
+        
         if (this.isVariation) {
-            this.node.scale = this.scaleNum*Monster.SCALE_NUM;
+            this.node.scale = Monster.SCALE_NUM;
         }
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
@@ -105,6 +99,14 @@ export default class Monster extends cc.Component {
         body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         body.width = spriteFrame.getRect().width;
         body.height = spriteFrame.getRect().height;
+        let scaleNum = 1;
+        switch(this.data.sizeType){
+            case 0:scaleNum=1;break;
+            case 1:scaleNum=0.5;break;
+            case 2:scaleNum=1.5;break;
+        }
+        body.width = body.width*scaleNum;
+        body.height = body.height*scaleNum;
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
@@ -527,7 +529,7 @@ export default class Monster extends cc.Component {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        let sn = this.isVariation ? this.scaleNum*Monster.SCALE_NUM : this.scaleNum;
+        let sn = this.isVariation ? Monster.SCALE_NUM : 1;
         this.node.scaleX = this.isFaceRight ? sn : -sn;
         this.node.scaleY = sn;
 

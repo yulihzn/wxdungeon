@@ -14,6 +14,7 @@ import DamageData from "../Data/DamageData";
 
 export default class InventoryManager {
     weapon:EquipmentData = new EquipmentData();
+    remote:EquipmentData = new EquipmentData();
     helmet:EquipmentData = new EquipmentData();
     clothes:EquipmentData = new EquipmentData();
     trousers:EquipmentData = new EquipmentData();
@@ -25,7 +26,7 @@ export default class InventoryManager {
     list:EquipmentData[] = [];
    
     constructor(){
-        this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.buffer];
+        this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.buffer,this.remote];
     }
     //初始速度300,最大速度600 最小速度为10
     getMoveSpeed():number{
