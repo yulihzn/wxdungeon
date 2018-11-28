@@ -31,13 +31,13 @@ export default class Shooter extends cc.Component {
     frequency: number = 1;
     dungeon: Dungeon = null;
     player: Player = null;
-    
+
     private bulletPool: cc.NodePool;
     private timeDelay = 0;
     isAutoAim = true;
-    bulletName:string = '';
-    sprite:cc.Node;
-    data:EquipmentData = new EquipmentData();
+    bulletName: string = '';
+    sprite: cc.Node;
+    data: EquipmentData = new EquipmentData();
 
     private hv: cc.Vec2 = cc.v2(1, 0);
 
@@ -51,6 +51,9 @@ export default class Shooter extends cc.Component {
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
+        }
+        if (!this.sprite) {
+            return;
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
@@ -71,28 +74,30 @@ export default class Shooter extends cc.Component {
             this.hv = hv;
         }
     }
-    fireBullet(angleOffset?:number){
-        this.sprite.stopAllActions();
-        this.sprite.position = cc.Vec2.ZERO;
-        this.changeRes(this.data.img);
-        let action = cc.sequence(cc.moveBy(0.1, 10, 0),cc.callFunc(()=>{this.changeRes(this.data.img,'anim')},this)
-        , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0),cc.callFunc(()=>{this.changeRes(this.data.img)},this));
-        this.sprite.runAction(action);
-        
-        if(!angleOffset){
+    fireBullet(angleOffset?: number) {
+        if (this.sprite) {
+            this.sprite.stopAllActions();
+            this.sprite.position = cc.Vec2.ZERO;
+            this.changeRes(this.data.img);
+            let action = cc.sequence(cc.moveBy(0.1, 10, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim') }, this)
+                , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.changeRes(this.data.img) }, this));
+            this.sprite.runAction(action);
+        }
+
+        if (!angleOffset) {
             angleOffset = 0;
         }
-        this.fire(this.bullet,this.bulletPool,angleOffset);
+        this.fire(this.bullet, this.bulletPool, angleOffset);
     }
 
-    private fire(prefab:cc.Prefab,pool:cc.NodePool,angleOffset:number) {
-        if(!this.dungeon){
+    private fire(prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number) {
+        if (!this.dungeon) {
             return;
         }
-        if(!this.isAI && this.player && (Logic.ammo<=0 || this.player.inventoryManager.remote.equipmetType!='remote')){
+        if (!this.isAI && this.player && (Logic.ammo <= 0 || this.player.inventoryManager.remote.equipmetType != 'remote')) {
             return;
         }
-        if(!this.isAI && Logic.ammo > 0){
+        if (!this.isAI && Logic.ammo > 0) {
             Logic.ammo--;
         }
         let bulletPrefab: cc.Node = null;
@@ -112,8 +117,8 @@ export default class Shooter extends cc.Component {
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
         this.bulletName = bullet.name;
-        bullet.node.rotation = this.node.scaleX < 0? -this.node.rotation : this.node.rotation;
-        bullet.node.scaleY = this.node.scaleX>0?1:-1;
+        bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation : this.node.rotation;
+        bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
         if (bullet.isFromPlayer && this.player) {
@@ -124,14 +129,14 @@ export default class Shooter extends cc.Component {
             bullet.damageData.toxicDamage = this.data.Common.toxicDamage;
             bullet.damageData.curseDamage = this.data.Common.curseDamage;
         }
-        bullet.showBullet(this.hv.clone().rotateSelf(angleOffset*Math.PI/180));
+        bullet.showBullet(this.hv.clone().rotateSelf(angleOffset * Math.PI / 180));
     }
     destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
         bulletNode.active = false;
         let bullet = bulletNode.getComponent(Bullet);
-        if (this.bulletPool && bullet.name==this.bulletName) {
-            this.bulletPool.put(bulletNode); 
+        if (this.bulletPool && bullet.name == this.bulletName) {
+            this.bulletPool.put(bulletNode);
         }
     }
 
@@ -158,19 +163,19 @@ export default class Shooter extends cc.Component {
         }
     }
     hasNearEnemy() {
-        if(!this.isAutoAim){
+        if (!this.isAutoAim) {
             return cc.Vec2.ZERO;
         }
         let olddis = 1000;
         let pos = cc.v2(0, 0);
         if (this.isAI) {
-        } else if(this.dungeon) {
+        } else if (this.dungeon) {
             for (let monster of this.dungeon.monsters) {
                 let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
                 if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
-                    p.x = this.node.scaleX>0?p.x:-p.x;
+                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
                     pos = monster.node.position.sub(this.node.parent.position.add(p));
                 }
             }
@@ -189,7 +194,7 @@ export default class Shooter extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        this.node.scaleX = this.node.parent.scaleX>0?1:-1;
+        this.node.scaleX = this.node.parent.scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         // 将当前物体的角度设置为对应角度
         this.node.rotation = this.node.scaleX == -1 ? angle : -angle;

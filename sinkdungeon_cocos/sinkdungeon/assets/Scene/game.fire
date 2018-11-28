@@ -50,8 +50,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5278031643091569,
-      "y": 0.5278031643091569,
+      "x": 1,
+      "y": 1,
       "z": 1
     },
     "_quat": {
@@ -18258,6 +18258,9 @@
     },
     "doorDecoration": {
       "__uuid__": "0bb34b8e-9407-4a35-b984-6f3684ef26db"
+    },
+    "exitdoorPrefab": {
+      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
     },
     "_id": "f9nyFmsr1LRoO3+CBMDBbp"
   },

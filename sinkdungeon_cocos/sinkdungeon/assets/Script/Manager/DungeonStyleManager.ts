@@ -2,6 +2,8 @@ import Logic from "../Logic";
 import Door from "../Building/Door";
 import Dungeon from "../Dungeon";
 import DungeonStyleData from "../Data/DungeonStyleData";
+import RectDungeon from "../Rect/RectDungeon";
+import ExitDoor from "../Building/ExitDoor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,7 +23,7 @@ export default class DungeonStyleManager extends cc.Component {
 
     @property(cc.Node)
     background01: cc.Node = null;
-    
+
 
     @property(cc.Prefab)
     wallTopDecoration: cc.Prefab = null;
@@ -31,10 +33,14 @@ export default class DungeonStyleManager extends cc.Component {
     wallLeftDecoration: cc.Prefab = null;
     @property(cc.Prefab)
     doorDecoration: cc.Prefab = null;
+    @property(cc.Prefab)
+    exitdoorPrefab: cc.Prefab = null;
+
+    exitdoor: ExitDoor = null;
 
     doorRes: string = null;
     styleData: DungeonStyleData;
-    doors:cc.Node[] = new Array();
+    doors: cc.Node[] = new Array();
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -54,14 +60,14 @@ export default class DungeonStyleManager extends cc.Component {
     start() {
 
     }
-    runBackgroundAnim(resName:string) {
+    runBackgroundAnim(resName: string) {
         if (!this.background01) {
             return;
         }
-        let spf1=Logic.spriteFrames[resName];
-        let spf2=Logic.spriteFrames[resName+'1'];
-        if(!spf2){spf2=Logic.spriteFrames[resName];}
-        if(!spf1){
+        let spf1 = Logic.spriteFrames[resName];
+        let spf2 = Logic.spriteFrames[resName + '1'];
+        if (!spf2) { spf2 = Logic.spriteFrames[resName]; }
+        if (!spf1) {
             return;
         }
         this.background01.stopAllActions();
@@ -70,17 +76,17 @@ export default class DungeonStyleManager extends cc.Component {
             cc.moveBy(0.4, 0, 0), cc.callFunc(() => { sprite.spriteFrame = spf1; }),
             cc.moveBy(0.4, 0, 0), cc.callFunc(() => { sprite.spriteFrame = spf2; })));
         this.background01.runAction(action);
-       
+
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case 'chapter00': this.styleData = new DungeonStyleData(null, 'restwall1','restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
-            case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall','shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
-            case 'chapter02': this.styleData = new DungeonStyleData('grass', 'junglewall1','junglewall', 'junglesides', 'jungledoor', null, null); break;
-            case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall','pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
-            case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall','dungeonwall', 'dungeonsides', 'dungeondoor', null, null); break;
+            case 'chapter00': this.styleData = new DungeonStyleData(null, 'restwall1', 'restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
+            case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
+            case 'chapter02': this.styleData = new DungeonStyleData('grass', 'junglewall1', 'junglewall', 'junglesides', 'jungledoor', null, null); break;
+            case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
+            case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonwall', 'dungeonsides', 'dungeondoor', null, null); break;
         }
-        if(!this.styleData){
+        if (!this.styleData) {
             return;
         }
         this.doors = new Array(4);
@@ -91,7 +97,7 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[0] = cc.instantiate(this.doorDecoration);
                 this.doors[0].parent = this.node;
                 let postop = Dungeon.getPosInMap(cc.v2(i, Dungeon.HEIGHT_SIZE));
-                this.doors[0].setPosition(cc.v2(postop.x, postop.y+32));
+                this.doors[0].setPosition(cc.v2(postop.x, postop.y + 32));
                 this.doors[0].zIndex = 2000;
                 this.doors[0].getComponent(Door).wall = walltop;
                 this.doors[0].getComponent(Door).dir = 0;
@@ -99,10 +105,31 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[1].parent = this.node;
                 let posbottom = Dungeon.getPosInMap(cc.v2(i, -1));
                 this.doors[1].setPosition(cc.v2(posbottom.x, posbottom.y));
-                this.doors[1].setScale(4,2);
+                this.doors[1].setScale(4, 2);
                 this.doors[1].zIndex = 2000;
                 this.doors[1].getComponent(Door).wall = wallbottom;
                 this.doors[1].getComponent(Door).dir = 1;
+            }
+            if(i == Math.floor(Dungeon.WIDTH_SIZE / 2)+2){
+                let needAdd = Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM;
+            if ((Logic.level == RectDungeon.LEVEL_5 || Logic.level == RectDungeon.LEVEL_3) && needAdd) {
+                needAdd = false;
+            }
+            if (needAdd) {
+                let postop = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE / 2 + 2, Dungeon.HEIGHT_SIZE));
+                let exit = cc.instantiate(this.exitdoorPrefab);
+                exit.parent = this.node;
+                exit.setPosition(cc.v2(postop.x, postop.y + 32));
+                exit.zIndex = 2000;
+                this.exitdoor = exit.getComponent(ExitDoor);
+                this.exitdoor.wall1 = walltop;
+                this.exitdoor.wall2 = walltop;
+                this.exitdoor.hideWall();
+            }
+            }
+            if(i == Math.floor(Dungeon.WIDTH_SIZE / 2)+3 && this.exitdoor){
+                this.exitdoor.wall2 = walltop;
+                this.exitdoor.hideWall();
             }
         }
         for (let j = -1; j < Dungeon.HEIGHT_SIZE + 4; j++) {
@@ -115,7 +142,7 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[2].setPosition(cc.v2(posleft.x, posleft.y));
                 this.doors[2].zIndex = 2000;
                 this.doors[2].rotation = -90;
-                this.doors[2].setScale(4,2);
+                this.doors[2].setScale(4, 2);
                 this.doors[2].getComponent(Door).wall = wallleft;
                 this.doors[2].getComponent(Door).dir = 2;
                 this.doors[3] = cc.instantiate(this.doorDecoration);
@@ -123,54 +150,55 @@ export default class DungeonStyleManager extends cc.Component {
                 let posright = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, j));
                 this.doors[3].setPosition(cc.v2(posright.x, posright.y));
                 this.doors[3].zIndex = 2000;
-                this.doors[3].setScale(4,2);
+                this.doors[3].setScale(4, 2);
                 this.doors[3].rotation = 90;
                 this.doors[3].getComponent(Door).wall = wallright;
                 this.doors[3].getComponent(Door).dir = 3;
             }
         }
+        
         this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
         this.runBackgroundAnim(this.styleData.background);
     }
 
-    private getWallTop(posX:number):cc.Node{
+    private getWallTop(posX: number): cc.Node {
         let walltop = cc.instantiate(this.wallTopDecoration);
-            walltop.parent = this.node;
-            let postop = Dungeon.getPosInMap(cc.v2(posX, Dungeon.HEIGHT_SIZE));
-            walltop.setPosition(cc.v2(postop.x, postop.y + 32));
-            walltop.zIndex = 2500;
-            walltop.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
-            return walltop;
+        walltop.parent = this.node;
+        let postop = Dungeon.getPosInMap(cc.v2(posX, Dungeon.HEIGHT_SIZE));
+        walltop.setPosition(cc.v2(postop.x, postop.y + 32));
+        walltop.zIndex = 2500;
+        walltop.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
+        return walltop;
     }
-    private getWallBottom(posX:number):cc.Node{
+    private getWallBottom(posX: number): cc.Node {
         let wallbottom = cc.instantiate(this.wallBottomDecoration);
-            wallbottom.parent = this.node;
-            let posbottom = Dungeon.getPosInMap(cc.v2(posX, -1));
-            wallbottom.setScale(4, 2);
-            wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
-            wallbottom.zIndex = 2500;
-            wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
-            wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.bottomwall] : null;
-            return wallbottom;
+        wallbottom.parent = this.node;
+        let posbottom = Dungeon.getPosInMap(cc.v2(posX, -1));
+        wallbottom.setScale(4, 2);
+        wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
+        wallbottom.zIndex = 2500;
+        wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
+        wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.bottomwall] : null;
+        return wallbottom;
     }
-    private getWallLeft(posY:number):cc.Node{
+    private getWallLeft(posY: number): cc.Node {
         let wallleft = cc.instantiate(this.wallLeftDecoration);
-            wallleft.parent = this.node;
-            let posleft = Dungeon.getPosInMap(cc.v2(-1, posY));
-            wallleft.setPosition(cc.v2(posleft.x, posleft.y));
-            wallleft.zIndex = 2500;
-            wallleft.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
-            return wallleft;
+        wallleft.parent = this.node;
+        let posleft = Dungeon.getPosInMap(cc.v2(-1, posY));
+        wallleft.setPosition(cc.v2(posleft.x, posleft.y));
+        wallleft.zIndex = 2500;
+        wallleft.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+        return wallleft;
     }
-    private getWallRight(posY:number):cc.Node{
+    private getWallRight(posY: number): cc.Node {
         let wallright = cc.instantiate(this.wallLeftDecoration);
-            wallright.parent = this.node;
-            let posright = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, posY));
-            wallright.setPosition(cc.v2(posright.x, posright.y));
-            wallright.zIndex = 2500;
-            wallright.setScale(-4, 4);
-            wallright.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
-            return wallright;
+        wallright.parent = this.node;
+        let posright = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, posY));
+        wallright.setPosition(cc.v2(posright.x, posright.y));
+        wallright.zIndex = 2500;
+        wallright.setScale(-4, 4);
+        wallright.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+        return wallright;
     }
     // setStyle(background: string, topwall: string, sidewall: string, door: string, d1: string, d2: string) {
     //     this.doorRes = door;

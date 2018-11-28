@@ -104,7 +104,7 @@ export default class Dungeon extends cc.Component {
     coinManager: CoinManger = null;//金币管理
     anim: cc.Animation;
 
-    bosses: Boss[];
+    bosses: Boss[] = [];
     bossIndex: cc.Vec2;
 
     onLoad() {
@@ -479,13 +479,22 @@ export default class Dungeon extends cc.Component {
         }
     }
     addBossSlime(type:number,index:cc.Vec2){
+        if(!this.bosses){
+            return;
+        }
         let posIndex = cc.v2(index.x,index.y);
         this.bosses.push(this.monsterManager.getSlime(this, posIndex,type));
     }
     private addBossCaptain(){
+        if(!this.bosses){
+            return;
+        }
         this.bosses.push(this.monsterManager.getCaptain(this, this.bossIndex));
     }
     private addBossKraken(){
+        if(!this.bosses){
+            return;
+        }
         let boss = this.monsterManager.getKraken(this, this.bossIndex);
         this.bosses.push(boss);
         this.anim.playAdditive('DungeonShakeOnce');
@@ -591,6 +600,9 @@ export default class Dungeon extends cc.Component {
         if (isClear) {
             if (this.portal) {
                 this.portal.openGate();
+            }
+            if(this.dungeonStyleManager&&this.dungeonStyleManager.exitdoor){
+                this.dungeonStyleManager.exitdoor.openGate();
             }
             this.openDoors();
         }
