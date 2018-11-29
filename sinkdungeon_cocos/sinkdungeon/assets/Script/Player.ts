@@ -150,7 +150,7 @@ export default class Player extends cc.Component {
         if (Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
             Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
         }
-        this.pos = Logic.playerData.pos;
+        this.pos = Logic.playerData.pos.clone();
         this.defaultPos = Logic.playerData.pos.clone();
         this.baseAttackPoint = Logic.playerData.getDamageMin();
         this.updatePlayerPos();

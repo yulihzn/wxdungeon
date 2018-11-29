@@ -313,7 +313,8 @@ export default class Dungeon extends cc.Component {
                 //生成下一层传送门
                 if (mapData[i][j] == 'P') {
                     let needAdd = true;
-                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3)&&Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM){
+                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3||
+                    Logic.chapterName=='chapter00')&&Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM){
                         needAdd = false;
                     }
                     
@@ -601,7 +602,9 @@ export default class Dungeon extends cc.Component {
             if (this.portal) {
                 this.portal.openGate();
             }
-            if(this.dungeonStyleManager&&this.dungeonStyleManager.exitdoor){
+            if(this.dungeonStyleManager&&this.dungeonStyleManager.exitdoor
+                &&this.dungeonStyleManager.exitdoor 
+                &&!RectDungeon.isRoomEqual(Logic.mapManger.getCurrentRoom(), Logic.mapManger.rectDungeon.startRoom)){
                 this.dungeonStyleManager.exitdoor.openGate();
             }
             this.openDoors();

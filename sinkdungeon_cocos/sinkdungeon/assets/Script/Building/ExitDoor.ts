@@ -47,9 +47,8 @@ export default class ExitDoor extends cc.Component {
             return;
         }
         this.isOpen = true;
-        
         this.getComponent(cc.PhysicsBoxCollider).enabled = false;
-        this.closeNode.opacity = 0;
+        this.closeNode.runAction(cc.fadeOut(1));
     }
     closeGate() {
         if (!this.isOpen) {
@@ -57,13 +56,13 @@ export default class ExitDoor extends cc.Component {
         }
         this.isOpen = false;
         this.getComponent(cc.PhysicsBoxCollider).enabled = true;
-        this.closeNode.opacity = 255;
+        this.closeNode.runAction(cc.fadeIn(1));
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
             if (this.isOpen) {
-                this.closeGate();
+                this.isOpen = false;
                 cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
             }
         }

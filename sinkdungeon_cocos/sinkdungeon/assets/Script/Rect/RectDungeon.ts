@@ -25,8 +25,8 @@ export default class RectDungeon {
     public static readonly TRAP_ROOM = 3;
     public static readonly LOOT_ROOM = 4;
     public static readonly DANGER_ROOM = 5;
-    public static readonly PUZZLE_ROOM = 6;
-    public static readonly MERCHANT_ROOM = 7;
+    public static readonly MERCHANT_ROOM = 6;
+    public static readonly PUZZLE_ROOM = 7;
     public static readonly BOSS_ROOM = 8;
     public level: number = 1;
     public map: RectRoom[][];
@@ -169,6 +169,8 @@ export default class RectDungeon {
             room.roomType = randomtype;
         }
         let startIndex = this.getRandomNum(0, this.primaryRooms.length - 1);
+        //保持在横排
+        // let startIndex = this.primaryRooms.length>1?1:0;
         let endIndex = startIndex - 1;
         if (endIndex < 0) {
             endIndex = this.primaryRooms.length - 1;
@@ -191,15 +193,32 @@ export default class RectDungeon {
             } else if (this.getHalfChance()) {
                 room.roomType = randomtype;
             }
+            //去掉出口的次级房间
+            // let neighbor1 = this.getNeighborRoomType(room.x,room.y,0);
+            // let neighbor2 = this.getNeighborRoomType(room.x,room.y,1);
+            // if(neighbor1&&neighbor1.roomType==RectDungeon.END_ROOM){
+            //     room.roomType = RectDungeon.EMPTY_ROOM;
+            // }
+            // if(neighbor2&&neighbor2.roomType==RectDungeon.END_ROOM){
+            //     room.roomType = RectDungeon.EMPTY_ROOM;
+            // }
+            // if(neighbor1&&neighbor1.roomType==RectDungeon.START_ROOM && this.level != RectDungeon.LEVEL_1){
+            //     room.roomType = RectDungeon.EMPTY_ROOM;
+            // }
+            // if(neighbor2&&neighbor2.roomType==RectDungeon.START_ROOM && this.level != RectDungeon.LEVEL_1){
+            //     room.roomType = RectDungeon.EMPTY_ROOM;
+            // }
         }
         let endIndex = this.getRandomNum(0, this.secondaryRooms.length - 1);
+        //保持在横排
+        // let endIndex = 0;
         if (this.level == RectDungeon.LEVEL_1) {
             this.secondaryRooms[endIndex].roomType = RectDungeon.END_ROOM;
             this.endRoom = this.secondaryRooms[endIndex];
             this.endRoom.lockAllDoors(false);//次级的End不关门
         }
         if (this.level == RectDungeon.LEVEL_3) {
-            this.map[2][2].roomType = RectDungeon.MERCHANT_ROOM;
+            this.map[2][2].roomType = RectDungeon.PUZZLE_ROOM;
         }
         if (this.level == RectDungeon.LEVEL_5) {
             //add boss room
@@ -211,21 +230,21 @@ export default class RectDungeon {
             //one more loot
             this.addLootRoom();
         }
-        this.addPuzzleRoom();
+        this.addMerchantRoom();
         this.addLootRoom();
         this.addLootRoom();
 
 
     }
-    addPuzzleRoom(): void {
+    addMerchantRoom(): void {
         let index = this.getRandomNum(0, this.secondaryRooms.length - 1);
         let flag = this.secondaryRooms[index].roomType == RectDungeon.TRAP_ROOM
             || this.secondaryRooms[index].roomType == RectDungeon.DANGER_ROOM
             || this.secondaryRooms[index].roomType == RectDungeon.EMPTY_ROOM;
         if (flag) {
-            this.secondaryRooms[index].roomType = RectDungeon.PUZZLE_ROOM;
+            this.secondaryRooms[index].roomType = RectDungeon.MERCHANT_ROOM;
         } else {
-            this.addPuzzleRoom();
+            this.addMerchantRoom();
         }
     }
     addLootRoom(): void {
@@ -257,7 +276,7 @@ export default class RectDungeon {
             if (room.roomType == RectDungeon.LOOT_ROOM) {
                 lootCount++;
             }
-            if (room.roomType == RectDungeon.PUZZLE_ROOM) {
+            if (room.roomType == RectDungeon.MERCHANT_ROOM) {
                 room.hasKey = true;
             }
         }
@@ -338,9 +357,13 @@ export default class RectDungeon {
         }
         return str;
     }
+    /** dir为-1就是当前房间 */
     public getNeighborRoomType(i: number, j: number, dir: number): RectRoom {
         let x = i;
         let y = j;
+        if(dir == -1){
+            return this.map[x][y];
+        }
         if (dir == 0) {
             y += 1;
         }

@@ -22,7 +22,7 @@ import OilLake from "../Oil/OilLake";
 export default class MapManager {
     //读取文件的数据
     private allfileRooms: { [key: string]: MapData[] } = {};
-    private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'puzzleroom', 'merchantroom', 'bossroom'];
+    private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom',  'merchantroom', 'puzzleroom', 'bossroom'];
     //文件是否加载成功
     isloaded: boolean = false;
     //地图数据管理类
@@ -65,6 +65,7 @@ export default class MapManager {
         // cc.log(oillake.getDisPlay());
     }
 
+    /** dir为-1就是当前房间 */
     loadingNextRoom(dir: number): RectRoom {
         let room = this.rectDungeon.getNeighborRoomType(this.currentPos.x, this.currentPos.y, dir)
         if (room && room.roomType != 0) {

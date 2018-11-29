@@ -4,6 +4,8 @@ import Dungeon from "../Dungeon";
 import DungeonStyleData from "../Data/DungeonStyleData";
 import RectDungeon from "../Rect/RectDungeon";
 import ExitDoor from "../Building/ExitDoor";
+import DecorateRoom from "../Building/DecorateRoom";
+import RectRoom from "../Rect/RectRoom";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +37,8 @@ export default class DungeonStyleManager extends cc.Component {
     doorDecoration: cc.Prefab = null;
     @property(cc.Prefab)
     exitdoorPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    decorateRoom: cc.Prefab = null;
 
     exitdoor: ExitDoor = null;
 
@@ -80,7 +84,7 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case 'chapter00': this.styleData = new DungeonStyleData(null, 'restwall1', 'restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
+            case 'chapter00': this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'restwall', 'restsides', 'restdoor', 'decorate000', null); break;
             case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
             case 'chapter02': this.styleData = new DungeonStyleData('grass', 'junglewall1', 'junglewall', 'junglesides', 'jungledoor', null, null); break;
             case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
@@ -110,27 +114,7 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[1].getComponent(Door).wall = wallbottom;
                 this.doors[1].getComponent(Door).dir = 1;
             }
-            if(i == Math.floor(Dungeon.WIDTH_SIZE / 2)+2){
-                let needAdd = Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM;
-            if ((Logic.level == RectDungeon.LEVEL_5 || Logic.level == RectDungeon.LEVEL_3) && needAdd) {
-                needAdd = false;
-            }
-            if (needAdd) {
-                let postop = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE / 2 + 2, Dungeon.HEIGHT_SIZE));
-                let exit = cc.instantiate(this.exitdoorPrefab);
-                exit.parent = this.node;
-                exit.setPosition(cc.v2(postop.x, postop.y + 32));
-                exit.zIndex = 2000;
-                this.exitdoor = exit.getComponent(ExitDoor);
-                this.exitdoor.wall1 = walltop;
-                this.exitdoor.wall2 = walltop;
-                this.exitdoor.hideWall();
-            }
-            }
-            if(i == Math.floor(Dungeon.WIDTH_SIZE / 2)+3 && this.exitdoor){
-                this.exitdoor.wall2 = walltop;
-                this.exitdoor.hideWall();
-            }
+            this.addExitDoor(i, walltop);
         }
         for (let j = -1; j < Dungeon.HEIGHT_SIZE + 4; j++) {
             let wallleft = this.getWallLeft(j);
@@ -156,9 +140,48 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[3].getComponent(Door).dir = 3;
             }
         }
-        
+
         this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
         this.runBackgroundAnim(this.styleData.background);
+
+        // for(let i = 0; i < 4;i++){
+        //     let n = Logic.mapManger.rectDungeon.getNeighborRoomType(Logic.mapManger.currentPos.x,Logic.mapManger.currentPos.y,i);
+        //     if(n&&n.roomType != RectDungeon.EMPTY_ROOM){
+        //         this.getDecorateRoom(i);
+        //     }
+        // }
+    }
+    private addExitDoor(posX: number, walltop: cc.Node) {
+        let oneIndex = Dungeon.WIDTH_SIZE - 3;
+        let otherIndex = Dungeon.WIDTH_SIZE - 2;
+        if (Logic.chapterName != 'chapter00') {
+            return;
+        }
+        let isStartRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.START_ROOM;
+        let isEndRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM;
+        let isPuzzleRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
+        let isBossRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM;
+        if (isStartRoom) {
+            oneIndex = 1;
+            otherIndex = 2;
+        }
+        if (posX == oneIndex) {
+            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom;
+            if (needAdd) {
+                let postop = Dungeon.getPosInMap(cc.v2(oneIndex, Dungeon.HEIGHT_SIZE));
+                let exit = cc.instantiate(this.exitdoorPrefab);
+                exit.parent = this.node;
+                exit.setPosition(cc.v2(postop.x + 32, postop.y + 32));
+                exit.zIndex = 2000;
+                this.exitdoor = exit.getComponent(ExitDoor);
+                this.exitdoor.wall1 = walltop;
+                this.exitdoor.hideWall();
+            }
+        }
+        if (posX == otherIndex && this.exitdoor) {
+            this.exitdoor.wall2 = walltop;
+            this.exitdoor.hideWall();
+        }
     }
 
     private getWallTop(posX: number): cc.Node {
@@ -200,6 +223,22 @@ export default class DungeonStyleManager extends cc.Component {
         wallright.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
         return wallright;
     }
+
+    private getDecorateRoom(dir): cc.Node {
+        let room = cc.instantiate(this.decorateRoom);
+        room.parent = this.node;
+        let pos: cc.Vec2;
+        switch (dir) {
+            case 0: pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE / 2, Dungeon.HEIGHT_SIZE)); pos.y = pos.y + room.height / 2 * 4; break;
+            case 1: pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE / 2, 0)); pos.y = pos.y - room.height / 2 * 4; break;
+            case 2: pos = Dungeon.getPosInMap(cc.v2(0, Dungeon.HEIGHT_SIZE / 2)); pos.y = pos.x - room.width / 2 * 4; break;
+            case 3: pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, Dungeon.HEIGHT_SIZE / 2)); pos.x = pos.x + room.width / 2 * 4; break;
+        }
+        room.setPosition(pos);
+        room.zIndex = 1000;
+        room.getComponent(cc.Sprite).spriteFrame = this.styleData.d1 ? Logic.spriteFrames[this.styleData.d1] : null;
+        return room;
+    }
     // setStyle(background: string, topwall: string, sidewall: string, door: string, d1: string, d2: string) {
     //     this.doorRes = door;
     //     this.background01.getComponent(cc.Sprite).spriteFrame = background ? Logic.spriteFrames[background] : null;
@@ -218,16 +257,6 @@ export default class DungeonStyleManager extends cc.Component {
     //     wallNode.getChildByName('door').getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door ? Logic.spriteFrames[door] : null;
     // }
     setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
-        // let wallNode = null;
-        // switch (dir) {
-        //     case 0: wallNode = this.wallTop; break;
-        //     case 1: wallNode = this.wallBottom; break;
-        //     case 2: wallNode = this.wallLeft; break;
-        //     case 3: wallNode = this.wallRight; break;
-        // }
-        // if (!wallNode) {
-        //     return;
-        // }
         let door = this.styleData.door;
         this.doors[dir].getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door ? Logic.spriteFrames[door] : null;
         let theDoor: Door = this.doors[dir].getComponent(Door);
