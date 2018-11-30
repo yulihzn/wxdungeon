@@ -179,6 +179,18 @@ export default class Shooter extends cc.Component {
                     pos = monster.node.position.sub(this.node.parent.position.add(p));
                 }
             }
+            if(pos.equals(cc.Vec2.ZERO)){
+                for (let boss of this.dungeon.bosses) {
+                    let dis = Logic.getDistance(this.node.parent.position, boss.node.position);
+                    if (dis < 500 && dis < olddis && !boss.isDied) {
+                        olddis = dis;
+                        let p = this.node.position.clone();
+                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                        pos = boss.node.position.sub(this.node.parent.position.add(p));
+                    }
+                }
+                
+            }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();
             }

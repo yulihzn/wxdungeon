@@ -245,7 +245,7 @@ export default class Slime extends Boss {
         //近战
         let attackRange = 64 + 50 * this.scaleSize;
         if (playerDis < attackRange && !this.dungeon.player.isDied && !this.isDashing && this.isShow && this.scaleSize >= 1) {
-            pos = this.dungeon.player.node.position.sub(this.node.position);
+            pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
             }
@@ -260,7 +260,7 @@ export default class Slime extends Boss {
         let dashRange = 128 + 35 * this.scaleSize;
         if (playerDis > dashRange && !this.dungeon.player.isDied && !this.isDashing && this.isShow && Logic.getHalfChance()) {
             if (Logic.getHalfChance()) {
-                pos = this.dungeon.player.node.position.sub(this.node.position);
+                pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
             }
             this.move(pos, speed * 1.5);
             this.isDashing = true;

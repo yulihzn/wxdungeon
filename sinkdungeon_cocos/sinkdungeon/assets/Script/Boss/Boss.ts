@@ -38,10 +38,13 @@ export default abstract class Boss extends cc.Component {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistance(this.node.position, cc.v2(playerNode.position.x,playerNode.position.y+60));
+        let dis = Logic.getDistance(this.node.position, playerNode.position);
         return dis;
     }
-
+    /**获取中心位置 */
+    getCenterPosition(): cc.Vec2 {
+        return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
+    }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
         this.node.y = this.pos.y * 64 + 32;

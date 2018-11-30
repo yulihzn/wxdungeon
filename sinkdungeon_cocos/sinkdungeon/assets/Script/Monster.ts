@@ -72,7 +72,7 @@ export default class Monster extends cc.Component {
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
-        
+
         if (this.isVariation) {
             this.node.scale = Monster.SCALE_NUM;
         }
@@ -100,13 +100,13 @@ export default class Monster extends cc.Component {
         body.width = spriteFrame.getRect().width;
         body.height = spriteFrame.getRect().height;
         let scaleNum = 1;
-        switch(this.data.sizeType){
-            case 0:scaleNum=1;break;
-            case 1:scaleNum=0.5;break;
-            case 2:scaleNum=1.5;break;
+        switch (this.data.sizeType) {
+            case 0: scaleNum = 1; break;
+            case 1: scaleNum = 0.5; break;
+            case 2: scaleNum = 1.5; break;
         }
-        body.width = body.width*scaleNum;
-        body.height = body.height*scaleNum;
+        body.width = body.width * scaleNum;
+        body.height = body.height * scaleNum;
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
@@ -134,7 +134,7 @@ export default class Monster extends cc.Component {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y) * 100 + 2;
     }
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {
-        if(!this.floatinglabelManager){
+        if (!this.floatinglabelManager) {
             return;
         }
         let flabel = this.floatinglabelManager.getFloaingLabel(dungeonNode);
@@ -144,7 +144,7 @@ export default class Monster extends cc.Component {
             flabel.showMiss();
         } else if (d != 0) {
             flabel.showDamage(-d);
-        }else{
+        } else {
             flabel.hideLabel();
         }
     }
@@ -172,7 +172,7 @@ export default class Monster extends cc.Component {
                 this.isAttacking = false;
                 this.changeBodyRes(this.data.resName, Monster.RES_WALK03)
                 this.anim.resume();
-                if (finish&&!isMiss) { finish(this.data.getAttackPoint()); }
+                if (finish && !isMiss) { finish(this.data.getAttackPoint()); }
             }), cc.moveTo(0.2, 0, 0));
         this.sprite.runAction(action);
     }
@@ -269,7 +269,7 @@ export default class Monster extends cc.Component {
         let dodge = this.data.getDodge();
         let isDodge = Math.random() <= dodge && dd.getTotalDamage() > 0;
         dd = isDodge ? new DamageData() : dd;
-        if(isDodge){
+        if (isDodge) {
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return;
         }
@@ -348,7 +348,10 @@ export default class Monster extends cc.Component {
         setTimeout(() => { if (this.node) { this.node.active = false; } }, 2000);
 
     }
-
+    /**获取中心位置 */
+    getCenterPosition(): cc.Vec2 {
+        return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
+    }
     monsterAction() {
         if (this.isDied || !this.dungeon || this.isHurt) {
             return;
@@ -363,8 +366,8 @@ export default class Monster extends cc.Component {
         let pos = newPos.clone();
 
         //近战
-        if (playerDis < 64 && !this.dungeon.player.isDied && this.data.melee > 0 && Logic.getRandomNum(0, 100) < this.data.melee && !this.isDashing && !this.isDisguising) {
-            pos = this.dungeon.player.node.position.sub(this.node.position);
+        if (playerDis < 80 && !this.dungeon.player.isDied && this.data.melee > 0 && Logic.getRandomNum(0, 100) < this.data.melee && !this.isDashing && !this.isDisguising) {
+            pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
             if (!pos.equals(cc.Vec2.ZERO)) {
                 pos = pos.normalizeSelf();
             }
@@ -372,27 +375,29 @@ export default class Monster extends cc.Component {
             this.meleeAttack(pos, (damage: DamageData) => {
                 this.stopAttackEffect();
                 let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-                if (newdis < 64) { this.addPlayerStatus(this.dungeon.player); this.dungeon.player.takeDamage(damage); }
+                if (newdis < 80) { this.addPlayerStatus(this.dungeon.player); this.dungeon.player.takeDamage(damage); }
             });
             this.sprite.opacity = 255;
         }
         if (this.data.melee > 0) {
-            pos = this.dungeon.player.node.position.sub(this.node.position);
+            pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
         }
         //远程
         if (playerDis < 600 && this.data.remote > 0 && Logic.getRandomNum(0, 100) < this.data.remote && this.shooter && !this.isDisguising) {
-            let hv = this.dungeon.player.node.position.sub(this.node.position);
+            let p = this.shooter.node.position.clone();
+            p.x = this.shooter.node.scaleX > 0 ? p.x+30 : -p.x-30;
+            let hv = this.dungeon.player.getCenterPosition().sub(this.node.position.add(p));
             if (!hv.equals(cc.Vec2.ZERO)) {
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
                 this.shooter.dungeon = this.dungeon;
-                this.shooter.fireBullet();
+                this.shooter.fireBullet(Logic.getRandomNum(0,5)-5);
             }
         }
         //冲刺
         let speed = this.data.getMoveSpeed();
         if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && Logic.getRandomNum(0, 100) < this.data.dash && this.data.dash > 0 && !this.isDashing && !this.isDisguising) {
-            pos = this.dungeon.player.node.position.sub(this.node.position);
+            pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
             this.showAttackEffect();
             this.move(pos, speed * 1.2);
             this.isDashing = true;

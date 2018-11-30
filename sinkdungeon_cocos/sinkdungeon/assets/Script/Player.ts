@@ -262,6 +262,10 @@ export default class Player extends cc.Component {
             this.healthBar.refreshHealth(health.x, health.y);
         }
     }
+    /**获取中心位置 */
+    getCenterPosition():cc.Vec2{
+        return this.node.position.clone().addSelf(cc.v2(0,32*this.node.scaleY));
+    }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
         this.node.y = this.pos.y * 64 + 32;

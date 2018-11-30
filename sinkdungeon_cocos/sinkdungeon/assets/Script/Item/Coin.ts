@@ -68,7 +68,7 @@ export default class Coin extends cc.Component {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistance(this.node.position, playerNode.position);
+        let dis = Logic.getDistance(this.node.position, playerNode.position.clone().addSelf(cc.v2(0,32)));
         return dis;
     }
     update (dt) {

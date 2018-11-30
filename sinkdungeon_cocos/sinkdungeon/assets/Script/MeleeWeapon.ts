@@ -202,7 +202,7 @@ export default class MeleeWeapon extends cc.Component {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = monster.node.position.sub(this.node.parent.position.add(p));
+                    pos = monster.getCenterPosition().sub(this.node.parent.position.add(p));
                 }
             }
             
@@ -213,7 +213,7 @@ export default class MeleeWeapon extends cc.Component {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        pos = boss.node.position.sub(this.node.parent.position.add(p));
+                        pos = boss.getCenterPosition().sub(this.node.parent.position.add(p));
                     }
                 }
                 
