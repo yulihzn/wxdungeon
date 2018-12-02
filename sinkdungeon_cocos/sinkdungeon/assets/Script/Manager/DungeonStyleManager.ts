@@ -154,9 +154,9 @@ export default class DungeonStyleManager extends cc.Component {
     private addExitDoor(posX: number, walltop: cc.Node) {
         let oneIndex = Dungeon.WIDTH_SIZE - 3;
         let otherIndex = Dungeon.WIDTH_SIZE - 2;
-        if (Logic.chapterName != 'chapter00') {
-            return;
-        }
+        // if (Logic.chapterName != 'chapter00') {
+        //     return;
+        // }
         let isStartRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.START_ROOM;
         let isEndRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM;
         let isPuzzleRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
