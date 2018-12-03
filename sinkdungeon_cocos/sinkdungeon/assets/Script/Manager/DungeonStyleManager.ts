@@ -84,11 +84,11 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case 'chapter00': this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'restwall', 'restsides', 'restdoor', 'decorate000', null); break;
-            case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
-            case 'chapter02': this.styleData = new DungeonStyleData('grass', 'junglewall1', 'junglewall', 'junglesides', 'jungledoor', null, null); break;
-            case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
-            case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonwall', 'dungeonsides', 'dungeondoor', null, null); break;
+            case 'chapter00': this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', 'decorate000', null); break;
+            case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', 'null', 'null'); break;
+            case 'chapter02': this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', null, null); break;
+            case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', null, null); break;
+            case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', null, null); break;
         }
         if (!this.styleData) {
             return;
@@ -196,12 +196,12 @@ export default class DungeonStyleManager extends cc.Component {
     private getWallBottom(posX: number): cc.Node {
         let wallbottom = cc.instantiate(this.wallBottomDecoration);
         wallbottom.parent = this.node;
+        wallbottom.rotation = -90;
         let posbottom = Dungeon.getPosInMap(cc.v2(posX, -1));
-        wallbottom.setScale(4, 2);
         wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
         wallbottom.zIndex = 2500;
         wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
-        wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.bottomwall] : null;
+        wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.sidewall] : null;
         return wallbottom;
     }
     private getWallLeft(posY: number): cc.Node {
@@ -258,7 +258,9 @@ export default class DungeonStyleManager extends cc.Component {
     // }
     setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
         let door = this.styleData.door;
+        let frame = this.styleData.doorframe;
         this.doors[dir].getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door ? Logic.spriteFrames[door] : null;
+        this.doors[dir].getChildByName('bg').getChildByName('frame').getComponent(cc.Sprite).spriteFrame = frame ? Logic.spriteFrames[frame] : null;
         let theDoor: Door = this.doors[dir].getComponent(Door);
         if (theDoor) {
             theDoor.isDoor = isDoor;

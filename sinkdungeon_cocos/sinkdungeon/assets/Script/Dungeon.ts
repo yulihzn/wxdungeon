@@ -310,13 +310,13 @@ export default class Dungeon extends cc.Component {
                     }
                     ta.showItem();
                 }
-                //生成下一层传送门
+                //生成下一层传送门(暂时废弃)
                 if (mapData[i][j] == 'P') {
-                    let needAdd = true;
-                    if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3||
-                    Logic.chapterName=='chapter00')&&Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM){
-                        needAdd = false;
-                    }
+                    let needAdd = false;
+                    // if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3||
+                    // Logic.chapterName=='chapter00')&&Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM){
+                    //     needAdd = false;
+                    // }
                     
                     if(needAdd){
                         let portalP = cc.instantiate(this.portalPrefab);

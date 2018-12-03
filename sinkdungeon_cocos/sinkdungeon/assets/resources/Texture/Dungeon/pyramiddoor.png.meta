@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "e9d1f057-f4f3-4b6f-af2b-9996cd33f3c4",
+  "uuid": "e843ec6d-1b38-4277-836b-7c3150bffbef",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "dungeonsides": {
+    "pyramiddoor": {
       "ver": "1.0.3",
-      "uuid": "42f34309-9ba2-4167-bdd7-15dc795c2399",
-      "rawTextureUuid": "e9d1f057-f4f3-4b6f-af2b-9996cd33f3c4",
+      "uuid": "e4982a06-f9a2-4715-81da-6ad2e5bc07e5",
+      "rawTextureUuid": "e843ec6d-1b38-4277-836b-7c3150bffbef",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -18,9 +18,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 16,
-      "height": 16,
+      "height": 32,
       "rawWidth": 16,
-      "rawHeight": 16,
+      "rawHeight": 32,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

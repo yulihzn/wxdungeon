@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "e9d1f057-f4f3-4b6f-af2b-9996cd33f3c4",
+  "uuid": "320576db-a595-4476-a8fd-a4be04b044e2",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "dungeonsides": {
+    "magmasea1": {
       "ver": "1.0.3",
-      "uuid": "42f34309-9ba2-4167-bdd7-15dc795c2399",
-      "rawTextureUuid": "e9d1f057-f4f3-4b6f-af2b-9996cd33f3c4",
+      "uuid": "8629f552-e976-4de4-b057-ccb46efd4b99",
+      "rawTextureUuid": "320576db-a595-4476-a8fd-a4be04b044e2",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

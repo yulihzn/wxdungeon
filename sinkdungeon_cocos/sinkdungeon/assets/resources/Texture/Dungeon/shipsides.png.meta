@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "e9d1f057-f4f3-4b6f-af2b-9996cd33f3c4",
+  "uuid": "9d8fdd12-e8fb-4f31-8a6a-6cd0faaa16b4",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "dungeonsides": {
+    "shipsides": {
       "ver": "1.0.3",
-      "uuid": "42f34309-9ba2-4167-bdd7-15dc795c2399",
-      "rawTextureUuid": "e9d1f057-f4f3-4b6f-af2b-9996cd33f3c4",
+      "uuid": "2e6397ba-3369-4ce9-bafa-b379ef5eba3c",
+      "rawTextureUuid": "9d8fdd12-e8fb-4f31-8a6a-6cd0faaa16b4",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

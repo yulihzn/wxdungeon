@@ -12,15 +12,15 @@
 export default class DungeonStyleData {
     background: string;
     topwall: string;
-    bottomwall: string;
+    doorframe: string;
     sidewall: string;
     door: string;
     d1: string;
     d2: string;
-    constructor(background: string, topwall: string,bottomwall: string, sidewall: string, door: string, d1: string, d2: string) {
+    constructor(background: string, topwall: string,sidewall: string, door: string, doorframe: string, d1: string, d2: string) {
         this.background = background;
         this.topwall = topwall;
-        this.bottomwall = bottomwall;
+        this.doorframe = doorframe;
         this.sidewall = sidewall;
         this.door = door;
         this.d1 = d1;
