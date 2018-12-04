@@ -33,6 +33,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_CHEST = 'monster009';
     public static readonly MONSTER_GARGOYLE = 'monster010';
     public static readonly MONSTER_CHICKEN = 'monster011';
+    public static readonly MONSTER_SCARAB = 'monster012';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -80,22 +81,22 @@ export default class MonsterManager extends cc.Component {
             data.dash = data.dash>0?data.dash+20:0;
             data.Common.moveSpeed = data.Common.moveSpeed + 100;
         }
-        let rate = 2;
-        data.Common.iceDamage = Logic.getRandomNum(0,100)<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
-        data.Common.fireDamage = Logic.getRandomNum(0,100)<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
-        data.Common.lighteningDamage = Logic.getRandomNum(0,100)<rate?data.Common.lighteningDamage:Logic.getRandomNum(0,1);
-        data.Common.toxicDamage = Logic.getRandomNum(0,100)<rate?data.Common.toxicDamage:Logic.getRandomNum(0,1);
-        data.Common.curseDamage = Logic.getRandomNum(0,100)<rate?data.Common.curseDamage:Logic.getRandomNum(0,1);
-        data.Common.iceDefence = Logic.getRandomNum(0,100)<rate?data.Common.iceDefence:Logic.getRandomNum(0,100);
-        data.Common.fireDefence = Logic.getRandomNum(0,100)<rate?data.Common.fireDefence:Logic.getRandomNum(0,100);
-        data.Common.lighteningDefence = Logic.getRandomNum(0,100)<rate?data.Common.lighteningDefence:Logic.getRandomNum(0,100);
+        let rate = 0.01;
+        data.Common.iceDamage = Math.random()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
+        data.Common.fireDamage = Math.random()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
+        data.Common.lighteningDamage = Math.random()<rate?data.Common.lighteningDamage:Logic.getRandomNum(0,1);
+        data.Common.toxicDamage = Math.random()<rate?data.Common.toxicDamage:Logic.getRandomNum(0,1);
+        data.Common.curseDamage = Math.random()<rate?data.Common.curseDamage:Logic.getRandomNum(0,1);
+        data.Common.iceDefence = Math.random()<rate?data.Common.iceDefence:Logic.getRandomNum(0,100);
+        data.Common.fireDefence = Math.random()<rate?data.Common.fireDefence:Logic.getRandomNum(0,100);
+        data.Common.lighteningDefence = Math.random()<rate?data.Common.lighteningDefence:Logic.getRandomNum(0,100);
         data.Common.toxicDefence= Logic.getRandomNum(0,100)<rate?data.Common.toxicDefence:Logic.getRandomNum(0,100);
-        data.Common.curseDefence = Logic.getRandomNum(0,100)<rate?data.Common.curseDefence:Logic.getRandomNum(0,100);
-        data.Common.iceRate = Logic.getRandomNum(0,100)<rate?data.Common.iceRate:Logic.getRandomNum(0,100);
-        data.Common.fireRate = Logic.getRandomNum(0,100)<rate?data.Common.fireRate:Logic.getRandomNum(0,100);
-        data.Common.lighteningRate = Logic.getRandomNum(0,100)<rate?data.Common.lighteningRate:Logic.getRandomNum(0,100);
+        data.Common.curseDefence = Math.random()<rate?data.Common.curseDefence:Logic.getRandomNum(0,100);
+        data.Common.iceRate = Math.random()<rate?data.Common.iceRate:Logic.getRandomNum(0,100);
+        data.Common.fireRate = Math.random()<rate?data.Common.fireRate:Logic.getRandomNum(0,100);
+        data.Common.lighteningRate = Math.random()<rate?data.Common.lighteningRate:Logic.getRandomNum(0,100);
         data.Common.toxicRate= Logic.getRandomNum(0,100)<rate?data.Common.toxicRate:Logic.getRandomNum(0,100);
-        data.Common.curseRate = Logic.getRandomNum(0,100)<rate?data.Common.curseRate:Logic.getRandomNum(0,100);
+        data.Common.curseRate = Math.random()<rate?data.Common.curseRate:Logic.getRandomNum(0,100);
         monster.data = data;
         return monster;
     }

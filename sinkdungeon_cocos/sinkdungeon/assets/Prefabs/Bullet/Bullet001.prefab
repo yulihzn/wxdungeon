@@ -111,12 +111,12 @@
     "_prefab": {
       "__id__": 4
     },
-    "_opacity": 128,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 199,
+      "g": 44,
+      "b": 44,
       "a": 255
     },
     "_contentSize": {
@@ -216,9 +216,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 199,
+      "g": 44,
+      "b": 44,
       "a": 255
     },
     "_contentSize": {

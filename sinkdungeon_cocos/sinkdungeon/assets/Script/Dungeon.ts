@@ -355,6 +355,13 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'd') {
                         this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
                     }
+                    if (mapData[i][j] == 'e') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                    }
                     if (mapData[i][j] == 'g') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
                     }

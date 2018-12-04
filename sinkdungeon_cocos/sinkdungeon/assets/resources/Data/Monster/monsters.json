@@ -203,8 +203,28 @@
         },
         "currentHealth": 500,
         "invisible": 0,
-        "remote": 10,
+        "remote": 50,
         "melee": 100,
+        "dash": 0,
+        "disguise": 0
+    },
+    "monster012": {
+        "nameCn": "圣甲虫",
+        "nameEn": "Scarab",
+        "resName": "monster012",
+        "chapter": 0,
+        "stageLevel": 0,
+        "sizeType":1,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 1,
+            "damageMin": 0.1,
+            "curseRate":10
+        },
+        "currentHealth": 1,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 20,
         "dash": 0,
         "disguise": 0
     }
