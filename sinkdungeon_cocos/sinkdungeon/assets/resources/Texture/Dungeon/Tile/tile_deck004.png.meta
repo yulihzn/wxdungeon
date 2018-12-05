@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "50bbdfb2-c31a-47fb-b8cc-84811fa7f9a1",
+  "uuid": "6f293028-7e16-4184-bf88-8407201d7986",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "pyramidwall": {
+    "tile_deck004": {
       "ver": "1.0.3",
-      "uuid": "e3255c41-207d-433c-b102-506ea9c509a9",
-      "rawTextureUuid": "50bbdfb2-c31a-47fb-b8cc-84811fa7f9a1",
+      "uuid": "83866165-7e6f-402b-b677-9b92e6fb6060",
+      "rawTextureUuid": "6f293028-7e16-4184-bf88-8407201d7986",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -18,9 +18,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 16,
-      "height": 64,
+      "height": 16,
       "rawWidth": 16,
-      "rawHeight": 64,
+      "rawHeight": 16,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

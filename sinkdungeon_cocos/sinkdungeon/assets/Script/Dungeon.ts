@@ -462,8 +462,8 @@ export default class Dungeon extends cc.Component {
     }
 
     private breakHalfTiles(): void {
-        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
-            for (let j = 6; j < Dungeon.HEIGHT_SIZE; j++) {
+        for (let i = 1; i < Dungeon.WIDTH_SIZE-1; i++) {
+            for (let j = 6; j < Dungeon.HEIGHT_SIZE-1; j++) {
                 this.map[i][j].isAutoShow = false;
                 this.breakTile(cc.v2(i, j));
                 setTimeout(() => {
