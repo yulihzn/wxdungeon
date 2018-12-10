@@ -320,14 +320,22 @@ export default class Player extends cc.Component {
     }
     remoteRate = 0;
     remoteAttack() {
+        let canFire = false;
+        
+        let speed = PlayerData.DefAULT_SPEED - this.data.getRemoteSpeed();
+        if (speed < 10) { speed = 10 }
+        if (speed > Shooter.DefAULT_SPEED * 10) { speed = Shooter.DefAULT_SPEED * 10; }
         let currentTime = Date.now();
-        if (currentTime - this.remoteRate > 400) {
+        if (currentTime - this.remoteRate > speed) {
             this.remoteRate = currentTime;
-            if (this.shooter) {
-                this.shooter.fireBullet(0);
-            }
+            canFire = true;
         }
-
+        if(!canFire){
+            return;
+        }
+        if (this.shooter) {
+            this.shooter.fireBullet(0);
+        }
     }
     rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
         if (!this.node || this.isDied || this.isFall) {

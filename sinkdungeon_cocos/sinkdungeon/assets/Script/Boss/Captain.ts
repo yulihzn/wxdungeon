@@ -96,6 +96,7 @@ export default class Captain extends Boss {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.dungeon = this.dungeon;
+            this.shooter.data.bulletType = "bullet001";
             for(let angle of angles){
                 this.shooter.fireBullet(angle);
             }

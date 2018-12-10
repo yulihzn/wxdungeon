@@ -87,8 +87,8 @@ export default class Chest extends cc.Component {
                         // dungeon.addEquipment(EquipmentManager.WEAPON_SADICE, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_DINNERFORK, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEAXE, this.pos,null,this.quality);
-                        // dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
+                        dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
                     }
                 }
             }));

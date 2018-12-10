@@ -4,6 +4,7 @@ import Bullet from "./Item/Bullet";
 import Monster from "./Monster";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
+import BulletData from "./Data/BulletData";
 
 
 // Learn TypeScript:
@@ -20,15 +21,11 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Shooter extends cc.Component {
-
+    static DefAULT_SPEED = 300;
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
     @property
-    auto: boolean = false;
-    @property
     isAI: boolean = false;
-    @property
-    frequency: number = 1;
     dungeon: Dungeon = null;
     player: Player = null;
 
@@ -74,7 +71,9 @@ export default class Shooter extends cc.Component {
             this.hv = hv;
         }
     }
-    fireBullet(angleOffset?: number) {
+    remoteRate = 0;
+    fireBullet(angleOffset?: number,speed?:number) {
+        
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec2.ZERO;
@@ -116,19 +115,17 @@ export default class Shooter extends cc.Component {
         bulletPrefab.scale = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
-        this.bulletName = bullet.name;
         bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation : this.node.rotation;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
         if (bullet.isFromPlayer && this.player) {
-            bullet.damageData.physicalDamage = this.data.damageRemote;
-            bullet.damageData.iceDamage = this.data.Common.iceDamage;
-            bullet.damageData.fireDamage = this.data.Common.fireDamage;
-            bullet.damageData.lighteningDamage = this.data.Common.lighteningDamage;
-            bullet.damageData.toxicDamage = this.data.Common.toxicDamage;
-            bullet.damageData.curseDamage = this.data.Common.curseDamage;
+            bullet.data.damage.physicalDamage = this.data.damageRemote;
         }
+        let bd = new BulletData();
+        bd.valueCopy(Logic.bullets[this.data.bulletType])
+        bullet.changeBullet(bd);
+        this.bulletName = bullet.name+bd.resName;
         bullet.showBullet(this.hv.clone().rotateSelf(angleOffset * Math.PI / 180));
     }
     destroyBullet(bulletNode: cc.Node) {
@@ -148,11 +145,6 @@ export default class Shooter extends cc.Component {
     }
 
     update(dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > this.frequency && this.auto) {
-            this.timeDelay = 0;
-            this.fireBullet();
-        }
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec2.ZERO)) {
             this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
@@ -207,6 +199,7 @@ export default class Shooter extends cc.Component {
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
         this.node.scaleX = this.node.parent.scaleX > 0 ? 1 : -1;
+        this.node.scaleY = this.node.parent.scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         // 将当前物体的角度设置为对应角度
         this.node.rotation = this.node.scaleX == -1 ? angle : -angle;

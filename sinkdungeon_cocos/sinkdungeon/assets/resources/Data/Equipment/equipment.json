@@ -293,6 +293,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote001",
+        "bulletType":"bullet003",
         "damageRemote":1,
         "common": {
             "damageMin": 0,
@@ -303,6 +304,7 @@
             "lifeRecovery": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
+            "remoteSpeed":-500,
             "dodge": 0,
             "health": 0
         },
@@ -318,7 +320,35 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote002",
+        "bulletType":"bullet003",
         "damageRemote":1,
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "remoteSpeed":500,
+            "dodge": 0,
+            "health": 0
+        },
+        "stab":1,
+        "desc": "普通的长弓"
+    },
+    "remote003": {
+        "nameCn": "Wand",
+        "nameEn": "Wand",
+        "equipmetType": "remote",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "remote003",
+        "damageRemote":1,
+        "bulletType":"bullet006",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -332,7 +362,33 @@
             "health": 0
         },
         "stab":1,
-        "desc": "普通的长弓"
+        "desc": "Wand"
+    },
+    "remote004": {
+        "nameCn": "Alien Gun",
+        "nameEn": "Alien Gun",
+        "equipmetType": "remote",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "remote004",
+        "damageRemote":1,
+        "bulletType":"bullet007",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "health": 0
+        },
+        "stab":1,
+        "desc": "Alien Gun"
     },
     "helmet002": {
         "nameCn": "渔夫帽",

@@ -173,6 +173,7 @@ export default class Kraken extends Boss {
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
                 this.shooter.dungeon = this.dungeon;
+                this.shooter.data.bulletType = "bullet004";
                 this.shooter.fireBullet();
             }
             if(this.data.currentHealth<this.data.Common.maxHealth/2){

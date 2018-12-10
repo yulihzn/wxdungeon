@@ -44,6 +44,14 @@ export default class InventoryManager {
         }
         return speed;
     }
+    //初始延迟是300,最低延迟为0 最大3000
+    getRemoteSpeed():number{
+        let speed = 0;
+        for(let data of this.list){
+            speed += data.Common.remoteSpeed;
+        }
+        return speed;
+    }
     //获取最大最小攻击力
     getAttackPoint():cc.Vec2{
         let attackPoint = cc.v2(0,0);
@@ -234,6 +242,7 @@ export default class InventoryManager {
         e.Common.lifeRecovery = this.getLifeRecovery();
         e.Common.moveSpeed = this.getMoveSpeed();
         e.Common.attackSpeed = this.getAttackSpeed();
+        e.Common.remoteSpeed = this.getRemoteSpeed();
         e.Common.dodge = this.getDodge();
         e.Common.maxHealth = this.getHealth();
         e.Common.realDamage = this.getRealDamage();

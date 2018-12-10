@@ -70,6 +70,7 @@ export default class Emplacement extends cc.Component {
     fireShooter(shooter: Shooter) {
         if (!shooter.dungeon) {
             shooter.dungeon = this.dungeon;
+            shooter.data.bulletType = "bullet010";
         }
         shooter.fireBullet();
     }

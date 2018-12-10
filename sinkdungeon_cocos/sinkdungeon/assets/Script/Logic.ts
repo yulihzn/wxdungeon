@@ -14,6 +14,7 @@ import MonsterData from "./Data/MonsterData";
 import StatusData from "./Data/StatusData";
 import InventoryManager from "./Manager/InventoryManager";
 import ProfileData from "./Data/ProfileData";
+import BulletData from "./Data/BulletData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,7 +38,8 @@ export default class Logic extends cc.Component {
     static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     //状态json
     static debuffs: { [key: string]: StatusData } = null;
-
+    //子弹json
+    static bullets: { [key: string]: BulletData } = null;
     static profile:ProfileData = new ProfileData();
 
     static level = 1;

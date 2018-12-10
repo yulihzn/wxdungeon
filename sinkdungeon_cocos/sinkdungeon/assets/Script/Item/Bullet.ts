@@ -5,6 +5,7 @@ import MeleeWeapon from "../MeleeWeapon";
 import DamageData from "../Data/DamageData";
 import Logic from "../Logic";
 import Boss from "../Boss/Boss";
+import BulletData from "../Data/BulletData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,27 +22,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Bullet extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-    @property
-    realDamage:number = 0;//真实伤害
-    @property
-    physicalDamage: number = 0;//物理伤害
-    @property
-    iceDamage = 0;//冰元素伤害
-    @property
-    fireDamage = 0;//火元素伤害
-    @property
-    lighteningDamage = 0;//雷元素伤害
-    @property
-    toxicDamage = 0;//毒元素伤害
-    @property
-    curseDamage = 0;//诅咒元素伤害
-    @property
-    speed: number = 500;
-    @property
-    isMelee:boolean = false;
-    damageData:DamageData = new DamageData();
+    data:BulletData = new BulletData();
 
     anim:cc.Animation;
     dir = 0;
@@ -52,13 +33,11 @@ export default class Bullet extends cc.Component {
 
     sprite:cc.Node;
     light:cc.Node;
-    readonly KEEP_LIST = ['Monster','Kraken','Captain'];
+    circleCollider:cc.CircleCollider;
+    boxCollider:cc.BoxCollider;
+    circlePCollider:cc.PhysicsCircleCollider;
+    boxPCollider:cc.PhysicsBoxCollider;
 
-    particleIce:cc.ParticleSystem;
-    particleFire:cc.ParticleSystem;
-    particleLightening:cc.ParticleSystem;
-    particleToxic:cc.ParticleSystem;
-    particleCurse:cc.ParticleSystem;
     effect:cc.Node;
 
     
@@ -69,11 +48,10 @@ export default class Bullet extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
         this.effect = this.node.getChildByName('effect');
-        this.particleIce = this.effect.getChildByName('ice').getComponent(cc.ParticleSystem);
-        this.particleFire = this.effect.getChildByName('fire').getComponent(cc.ParticleSystem);
-        this.particleLightening = this.effect.getChildByName('lightening').getComponent(cc.ParticleSystem);
-        this.particleToxic = this.effect.getChildByName('toxic').getComponent(cc.ParticleSystem);
-        this.particleCurse = this.effect.getChildByName('curse').getComponent(cc.ParticleSystem);
+        this.circleCollider = this.getComponent(cc.CircleCollider);
+        this.boxCollider = this.getComponent(cc.BoxCollider);
+        this.circlePCollider = this.getComponent(cc.PhysicsCircleCollider);
+        this.boxPCollider = this.getComponent(cc.PhysicsBoxCollider);
         
     }
     onEnable(){
@@ -83,26 +61,43 @@ export default class Bullet extends cc.Component {
         this.sprite.opacity = 255;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
-        this.damageData.realDamage = this.realDamage;
-        this.damageData.physicalDamage = this.physicalDamage;
-        this.damageData.iceDamage = this.iceDamage;
-        this.damageData.fireDamage = this.fireDamage;
-        this.damageData.lighteningDamage = this.lighteningDamage;
-        this.damageData.toxicDamage = this.toxicDamage;
-        this.damageData.curseDamage = this.curseDamage;
-        this.activePartcleSystem(this.iceDamage,this.particleIce);
-        this.activePartcleSystem(this.fireDamage,this.particleFire);
-        this.activePartcleSystem(this.lighteningDamage,this.particleLightening);
-        this.activePartcleSystem(this.toxicDamage,this.particleToxic);
-        this.activePartcleSystem(this.curseDamage,this.particleCurse);
     }
-    activePartcleSystem(damage:number,particle:cc.ParticleSystem){
-        if(damage>0){
-            if(particle&&!particle.node.active){
-                particle.node.active = true;
-            }
-            particle.resetSystem();
+    changeBullet(data:BulletData){
+        this.data = data;
+        this.changeRes(data.resName,data.lightName,data.lightColor,data.size);
+        this.circleCollider.enabled = data.isRect==0;
+        this.boxCollider.enabled = data.isRect==1;
+        this.circlePCollider.enabled = data.isRect==0;
+        this.boxPCollider.enabled = data.isRect==1;
+        this.light.position = data.isRect?cc.v2(8,0):cc.v2(0,0);
+        this.node.scale = data.size>0?data.size:1;
+    }
+
+    private changeRes(resName: string,lightName:string,lightColor:string,size:number,suffix?: string) {
+        if (!this.sprite) {
+            this.sprite = this.node.getChildByName('sprite');
         }
+        if (!this.sprite||resName.length<1) {
+            return;
+        }
+        let s1 = this.getSpriteFrameByName(resName, suffix);
+        let s2 = this.getSpriteFrameByName(lightName, suffix);
+        
+        this.sprite.getComponent(cc.Sprite).spriteFrame = s1;
+        this.sprite.width = s1.getRect().width*size;
+        this.sprite.height = s1.getRect().height*size;
+        this.light.getComponent(cc.Sprite).spriteFrame = s2;
+        this.light.width = s2.getRect().width*size;
+        this.light.height = s2.getRect().height*size;
+        let color = cc.color(255, 255, 255).fromHEX(this.data.lightColor);
+        this.light.color = color;
+    }
+    private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
+        let spriteFrame = Logic.spriteFrames[resName + suffix];
+        if (!spriteFrame) {
+            spriteFrame = Logic.spriteFrames[resName];
+        }
+        return spriteFrame;
     }
     //animation
     MeleeFinish(){
@@ -111,28 +106,17 @@ export default class Bullet extends cc.Component {
     //animation
     showBullet(hv:cc.Vec2){
         this.hv = hv;
-        if(this.isMelee){
-            this.anim.play(this.node.name+'Show');
-        }
         this.fire(this.hv);
     }
     //animation
     BulletDestory(){
         cc.director.emit('destorybullet',{detail:{bulletNode:this.node}});
-        if(this.particleIce&&this.particleIce.active){
-            if(this.particleIce){this.particleIce.node.active=false;this.particleIce.stopSystem();}
-            if(this.particleFire){this.particleFire.node.active=false;this.particleFire.stopSystem();}
-            if(this.particleLightening){this.particleLightening.node.active=false;this.particleLightening.stopSystem();}
-            if(this.particleToxic){this.particleToxic.node.active=false;this.particleToxic.stopSystem();}
-            if(this.particleCurse){this.particleCurse.node.active=false;this.particleCurse.stopSystem();}
-        }
-        
     }
     fire(hv){
         if(!this.rigidBody){
             this.rigidBody = this.getComponent(cc.RigidBody);
         }
-        this.rigidBody.linearVelocity = cc.v2(this.speed*hv.x,this.speed*hv.y);
+        this.rigidBody.linearVelocity = cc.v2(this.data.speed*hv.x,this.data.speed*hv.y);
     }
 
     start () {
@@ -140,21 +124,20 @@ export default class Bullet extends cc.Component {
     }
     onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider) {
         let isDestory = true;
-        if(selfCollider.body.node.name==otherCollider.body.node.name){
+        let player = otherCollider.node.getComponent(Player);
+        let monster = otherCollider.node.getComponent(Monster);
+        let boss = otherCollider.node.getComponent(Boss);
+        let bullet = otherCollider.node.getComponent(Bullet);
+        
+        //子弹玩家怪物boss不销毁
+        if(player||monster||boss||bullet){
             isDestory = false;
         }
-        for(let name of this.KEEP_LIST){
-            if(otherCollider.body.node.name == name){
-                isDestory = false;
-            }
-        }
-        if(otherCollider.body.node.name == 'Player'){
-            isDestory = false;
-        }
+        //触发器不销毁
         if(otherCollider.sensor){
             isDestory = false;
         }
-        //上面的墙
+        //上面的墙不销毁
         if(otherCollider.tag==2){
             isDestory = false;
         }
@@ -165,12 +148,17 @@ export default class Bullet extends cc.Component {
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider) {
         let isAttack = true;
-        for(let name of this.KEEP_LIST){
-            if(!this.isFromPlayer && other.node.name == name){
-                isAttack = false;
-            }
+        let bullet = other.node.getComponent(Bullet);
+        let player = other.node.getComponent(Player);
+        let monster = other.node.getComponent(Monster);
+        let boss = other.node.getComponent(Boss);
+        if(!this.isFromPlayer &&(monster||boss)){
+            isAttack = false;
         }
-        if(this.isFromPlayer && other.node.name == 'Player'){
+        if(this.isFromPlayer && player){
+            isAttack = false;
+        }
+        if(bullet){
             isAttack = false;
         }
         if(isAttack){
@@ -182,7 +170,7 @@ export default class Bullet extends cc.Component {
             return;
         }
         let damage = new DamageData();
-        damage.valueCopy(this.damageData);
+        damage.valueCopy(this.data.damage);
         let isDestory = false;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {

@@ -20,6 +20,7 @@ export default class CommonData  {
     moveSpeed: number = 0;//移速
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避
+    remoteSpeed:number = 0;//远程攻速
 
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
@@ -49,6 +50,7 @@ export default class CommonData  {
         this.lifeRecovery = data.lifeRecovery ? data.lifeRecovery : 0;
         this.moveSpeed = data.moveSpeed ? data.moveSpeed : 0;
         this.attackSpeed = data.attackSpeed ? data.attackSpeed : 0;
+        this.remoteSpeed = data.remoteSpeed?data.remoteSpeed:0;
         this.dodge = data.dodge ? data.dodge : 0;
         this.realDamage = data.realDamage ? data.realDamage : 0;
         this.realRate = data.realRate ? data.realRate : 0;
@@ -79,6 +81,7 @@ export default class CommonData  {
         e.lifeRecovery = this.lifeRecovery;
         e.moveSpeed = this.moveSpeed;
         e.attackSpeed = this.attackSpeed;
+        e.remoteSpeed = this.remoteSpeed;
         e.dodge = this.dodge;
         e.realDamage = this.realDamage;
         e.realRate = this.realRate;

@@ -152,6 +152,14 @@ export default class PlayerData {
         }
         return speed;
     }
+    //初始延迟是300,最低延迟为10 最大3000
+    getRemoteSpeed(): number {
+        let speed = 0;
+        for (let data of this.list) {
+            speed += data.remoteSpeed;
+        }
+        return speed;
+    }
     //获取最小攻击力
     getDamageMin(): number {
         let d = 0;

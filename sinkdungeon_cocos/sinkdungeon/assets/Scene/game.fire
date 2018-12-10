@@ -50,8 +50,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.30837030603993265,
-      "y": 0.30837030603993265,
+      "x": 0.2210946093391042,
+      "y": 0.2210946093391042,
       "z": 1
     },
     "_quat": {
@@ -343,10 +343,10 @@
         "__id__": 57
       },
       {
-        "__id__": 64
+        "__id__": 82
       },
       {
-        "__id__": 89
+        "__id__": 86
       }
     ],
     "_active": true,
@@ -2072,218 +2072,6 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Shooter",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 8
-    },
-    "_children": [
-      {
-        "__id__": 58
-      }
-    ],
-    "_active": true,
-    "_level": 0,
-    "_components": [
-      {
-        "__id__": 61
-      },
-      {
-        "__id__": 62
-      }
-    ],
-    "_prefab": {
-      "__id__": 63
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.2,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": -20,
-      "y": 32,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_zIndex": 0,
-    "groupIndex": 0,
-    "_id": "55eCNqo+5LoZt72BsyNQYf"
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "sprite",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 57
-    },
-    "_children": [],
-    "_active": true,
-    "_level": 0,
-    "_components": [
-      {
-        "__id__": 59
-      }
-    ],
-    "_prefab": {
-      "__id__": 60
-    },
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 50,
-      "height": 50
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0.5
-    },
-    "_position": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
-    "_scale": {
-      "__type__": "cc.Vec3",
-      "x": 1,
-      "y": 1,
-      "z": 1
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_quat": {
-      "__type__": "cc.Quat",
-      "x": 0,
-      "y": 0,
-      "z": 0,
-      "w": 1
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_zIndex": 0,
-    "groupIndex": 0,
-    "_id": "39Tlg6hZxFGYZGu+P3wQ0J"
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 58
-    },
-    "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_spriteFrame": null,
-    "_type": 0,
-    "_sizeMode": 0,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_state": 0,
-    "_atlas": null,
-    "_id": "86Oc8xuG9NBKrGLLdB4lDK"
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 57
-    },
-    "asset": null,
-    "fileId": "39Tlg6hZxFGYZGu+P3wQ0J",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 57
-    },
-    "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "dd5882a4-57bc-4786-95b6-9021f568f1a1"
-    },
-    "_clips": [
-      {
-        "__uuid__": "dd5882a4-57bc-4786-95b6-9021f568f1a1"
-      }
-    ],
-    "playOnLoad": false,
-    "_id": "224HvbAw5Ij4ebKuK1R3Rc"
-  },
-  {
-    "__type__": "f9805u1Wn9OeouYmQSWcHcq",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 57
-    },
-    "_enabled": true,
-    "bullet": {
-      "__uuid__": "9b7e3d95-b29c-4799-b1e8-03d2f32dba55"
-    },
-    "auto": false,
-    "isAI": false,
-    "frequency": 1,
-    "_id": "b8Up6wPc5CLIr92GVvA0Wi"
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 57
-    },
-    "asset": null,
-    "fileId": "55eCNqo+5LoZt72BsyNQYf",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
     "_name": "MeleeWeapon",
     "_objFlags": 0,
     "_parent": {
@@ -2291,27 +2079,27 @@
     },
     "_children": [
       {
-        "__id__": 65
+        "__id__": 58
       },
       {
-        "__id__": 83
+        "__id__": 76
       }
     ],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 85
+        "__id__": 78
       },
       {
-        "__id__": 86
+        "__id__": 79
       },
       {
-        "__id__": 87
+        "__id__": 80
       }
     ],
     "_prefab": {
-      "__id__": 88
+      "__id__": 81
     },
     "_opacity": 255,
     "_color": {
@@ -2363,27 +2151,27 @@
     "_name": "sprite",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 64
+      "__id__": 57
     },
     "_children": [
       {
-        "__id__": 66
+        "__id__": 59
       },
       {
-        "__id__": 71
+        "__id__": 64
       },
       {
-        "__id__": 74
+        "__id__": 67
       },
       {
-        "__id__": 79
+        "__id__": 72
       }
     ],
     "_active": true,
     "_level": 0,
     "_components": [],
     "_prefab": {
-      "__id__": 82
+      "__id__": 75
     },
     "_opacity": 255,
     "_color": {
@@ -2435,24 +2223,24 @@
     "_name": "weapon",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 58
     },
     "_children": [],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 67
+        "__id__": 60
       },
       {
-        "__id__": 68
+        "__id__": 61
       },
       {
-        "__id__": 69
+        "__id__": 62
       }
     ],
     "_prefab": {
-      "__id__": 70
+      "__id__": 63
     },
     "_opacity": 255,
     "_color": {
@@ -2504,7 +2292,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 66
+      "__id__": 59
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -2530,7 +2318,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 66
+      "__id__": 59
     },
     "_enabled": false,
     "tag": 0,
@@ -2551,7 +2339,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 66
+      "__id__": 59
     },
     "_enabled": true,
     "_id": "f29s6QzDpPyJR3Y+WOxoHd"
@@ -2572,18 +2360,18 @@
     "_name": "meleelight",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 58
     },
     "_children": [],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 72
+        "__id__": 65
       }
     ],
     "_prefab": {
-      "__id__": 73
+      "__id__": 66
     },
     "_opacity": 0,
     "_color": {
@@ -2635,7 +2423,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 71
+      "__id__": 64
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -2674,24 +2462,24 @@
     "_name": "stabweapon",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 58
     },
     "_children": [],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 75
+        "__id__": 68
       },
       {
-        "__id__": 76
+        "__id__": 69
       },
       {
-        "__id__": 77
+        "__id__": 70
       }
     ],
     "_prefab": {
-      "__id__": 78
+      "__id__": 71
     },
     "_opacity": 255,
     "_color": {
@@ -2743,7 +2531,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 74
+      "__id__": 67
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -2769,7 +2557,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 74
+      "__id__": 67
     },
     "_enabled": false,
     "tag": 0,
@@ -2790,7 +2578,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 74
+      "__id__": 67
     },
     "_enabled": true,
     "_id": "ddi2Pi1ktEbZc7Sm5j+5Ve"
@@ -2811,18 +2599,18 @@
     "_name": "stablight",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 65
+      "__id__": 58
     },
     "_children": [],
     "_active": true,
     "_level": 0,
     "_components": [
       {
-        "__id__": 80
+        "__id__": 73
       }
     ],
     "_prefab": {
-      "__id__": 81
+      "__id__": 74
     },
     "_opacity": 0,
     "_color": {
@@ -2874,7 +2662,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 79
+      "__id__": 72
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
@@ -2924,14 +2712,14 @@
     "_name": "firepoint",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 64
+      "__id__": 57
     },
     "_children": [],
     "_active": true,
     "_level": 1,
     "_components": [],
     "_prefab": {
-      "__id__": 84
+      "__id__": 77
     },
     "_opacity": 255,
     "_color": {
@@ -2994,7 +2782,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 64
+      "__id__": 57
     },
     "_enabled": true,
     "_defaultClip": null,
@@ -3026,17 +2814,17 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 64
+      "__id__": 57
     },
     "_enabled": true,
     "playerNode": {
       "__id__": 8
     },
     "stabWeapon": {
-      "__id__": 77
+      "__id__": 70
     },
     "waveWeapon": {
-      "__id__": 69
+      "__id__": 62
     },
     "iceLight": {
       "__uuid__": "e3e8906b-61f1-48bc-a071-1599228c7309"
@@ -3060,7 +2848,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 64
+      "__id__": 57
     },
     "_enabled": true,
     "tag": 0,
@@ -3095,14 +2883,14 @@
     "_level": 2,
     "_components": [
       {
-        "__id__": 90
+        "__id__": 83
       },
       {
-        "__id__": 91
+        "__id__": 84
       }
     ],
     "_prefab": {
-      "__id__": 92
+      "__id__": 85
     },
     "_opacity": 255,
     "_color": {
@@ -3154,7 +2942,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 89
+      "__id__": 82
     },
     "_enabled": true,
     "_layoutSize": {
@@ -3186,7 +2974,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 89
+      "__id__": 82
     },
     "_enabled": true,
     "statusPrefab": {
@@ -3203,6 +2991,220 @@
       "__uuid__": "c0c182eb-1a34-4189-98f2-37c2b9b9353f"
     },
     "fileId": "12KoTeSeRE7KPw4kwXfJ4y",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "Shooter",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 8
+    },
+    "_children": [
+      {
+        "__id__": 87
+      }
+    ],
+    "_active": true,
+    "_level": 2,
+    "_components": [
+      {
+        "__id__": 90
+      },
+      {
+        "__id__": 91
+      }
+    ],
+    "_prefab": {
+      "__id__": 92
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.2,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": -20,
+      "y": 32,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_zIndex": 0,
+    "groupIndex": 0,
+    "_id": "b3Y40AxA1EYZukrsuYnozt"
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "sprite",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 86
+    },
+    "_children": [],
+    "_active": true,
+    "_level": 0,
+    "_components": [
+      {
+        "__id__": 88
+      }
+    ],
+    "_prefab": {
+      "__id__": 89
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 50,
+      "height": 50
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0.5
+    },
+    "_position": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_scale": {
+      "__type__": "cc.Vec3",
+      "x": 1,
+      "y": 1,
+      "z": 1
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_quat": {
+      "__type__": "cc.Quat",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "w": 1
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_zIndex": 0,
+    "groupIndex": 0,
+    "_id": "41BQ2l0dlHjK/iJJo5xTeS"
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 87
+    },
+    "_enabled": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": null,
+    "_type": 0,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_state": 0,
+    "_atlas": null,
+    "_id": "c0uxZBaqBMLLi/3Sx0Sh2N"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 8
+    },
+    "asset": {
+      "__uuid__": "c0c182eb-1a34-4189-98f2-37c2b9b9353f"
+    },
+    "fileId": "41BQ2l0dlHjK/iJJo5xTeS",
+    "sync": false
+  },
+  {
+    "__type__": "f9805u1Wn9OeouYmQSWcHcq",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 86
+    },
+    "_enabled": true,
+    "bullet": {
+      "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
+    },
+    "isAI": false,
+    "_id": "f5Fv+pkIxE7oNGoC41UM8O"
+  },
+  {
+    "__type__": "cc.Animation",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 86
+    },
+    "_enabled": true,
+    "_defaultClip": {
+      "__uuid__": "dd5882a4-57bc-4786-95b6-9021f568f1a1"
+    },
+    "_clips": [
+      {
+        "__uuid__": "dd5882a4-57bc-4786-95b6-9021f568f1a1"
+      }
+    ],
+    "playOnLoad": false,
+    "_id": "1chpjJeP1NrLAs43qu4VSp"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 8
+    },
+    "asset": {
+      "__uuid__": "c0c182eb-1a34-4189-98f2-37c2b9b9353f"
+    },
+    "fileId": "b3Y40AxA1EYZukrsuYnozt",
     "sync": false
   },
   {
@@ -3228,13 +3230,13 @@
       "__uuid__": "1eb51490-dada-4e90-bd23-c7ec24165a92"
     },
     "meleeWeaponNode": {
-      "__id__": 64
-    },
-    "shooterNode": {
       "__id__": 57
     },
+    "shooterNode": {
+      "__id__": 86
+    },
     "statusManager": {
-      "__id__": 91
+      "__id__": 84
     },
     "playerInfoDialog": {
       "__id__": 384

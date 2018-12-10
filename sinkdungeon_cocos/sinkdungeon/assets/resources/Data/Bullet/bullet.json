@@ -1,0 +1,132 @@
+{
+    "bullet001": {
+        "name":"普通红色圆形",
+        "resName": "bullet001",
+        "lightName": "bulletlight001",
+        "lightColor": "#ff0000",
+        "speed": 200,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1.5,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet002": {
+        "name":"金色长条子弹",
+        "resName": "bullet002",
+        "lightName": "bulletlight002",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 1,
+        "isRotate": 0,
+        "size": 1,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet003": {
+        "name":"普通箭矢",
+        "resName": "bullet003",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 1,
+        "isRotate": 0,
+        "size": 1,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet004": {
+        "name":"泡泡",
+        "resName": "bullet004",
+        "lightName": "bulletlight004",
+        "lightColor": "#ffffff",
+        "speed": 150,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 2,
+        "damage": {
+            "physicalDamage": 2
+        }
+    },
+    "bullet005": {
+        "name":"圆形冰",
+        "resName": "bullet005",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1.5,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet006": {
+        "name":"圆形火",
+        "resName": "bullet006",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1.5,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet007": {
+        "name":"圆形雷",
+        "resName": "bullet007",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1.5,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet008": {
+        "name":"圆形毒",
+        "resName": "bullet008",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1.5,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet009": {
+        "name":"圆形诅咒",
+        "resName": "bullet009",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1.5,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet010": {
+        "name":"圆形大炮子弹",
+        "resName": "bullet010",
+        "lightName": "bulletlight001",
+        "lightColor": "#333333",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 2,
+        "damage": {
+            "physicalDamage": 1
+        }
+    }
+}

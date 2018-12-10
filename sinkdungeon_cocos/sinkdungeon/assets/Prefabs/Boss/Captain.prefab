@@ -1261,11 +1261,9 @@
     },
     "_enabled": true,
     "bullet": {
-      "__uuid__": "0d5c5b93-f6fa-46ed-bfae-610a21bdb89a"
+      "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
     },
-    "auto": false,
     "isAI": true,
-    "frequency": 1,
     "_id": ""
   },
   {

@@ -28,6 +28,7 @@ export default class Loading extends cc.Component {
     private isLevelLoaded = false;
     private isSpriteFramesLoaded = false;
     private isDebuffsLoaded = false;
+    private isBulletsLoaded = false;
     // LIFE-CYCLE CALLBACKS:
 
 
@@ -38,12 +39,14 @@ export default class Loading extends cc.Component {
         this.isLevelLoaded = false;
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
+        this.isDebuffsLoaded = false;
 
         this.loadMap();
         this.loadEquipment();
         this.loadSpriteFrames();
         this.loadMonsters();
         this.loadDebuffs();
+        this.loadBullets();
     }
     loadMap() {
         Logic.mapManger.isloaded = false;
@@ -74,6 +77,20 @@ export default class Loading extends cc.Component {
             } else {
                 Logic.debuffs = resource.json;
                 this.isDebuffsLoaded = true;
+            }
+        })
+    }
+    loadBullets() {
+        if (Logic.bullets) {
+            this.isBulletsLoaded = true;
+            return;
+        }
+        cc.loader.loadRes('Data/Bullet/bullet', (err: Error, resource) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.bullets = resource.json;
+                this.isBulletsLoaded = true;
             }
         })
     }
@@ -110,12 +127,14 @@ export default class Loading extends cc.Component {
         this.timeDelay += dt;
         this.isLevelLoaded = Logic.mapManger.isloaded;
         if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded 
-            && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded) {
+            && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded
+        && this.isBulletsLoaded) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
             this.isDebuffsLoaded = false;
+            this.isBulletsLoaded = false;
             cc.director.loadScene('game');
         }
     }
