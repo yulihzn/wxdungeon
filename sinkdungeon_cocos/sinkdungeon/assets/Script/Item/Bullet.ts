@@ -52,6 +52,10 @@ export default class Bullet extends cc.Component {
         this.boxCollider = this.getComponent(cc.BoxCollider);
         this.circlePCollider = this.getComponent(cc.PhysicsCircleCollider);
         this.boxPCollider = this.getComponent(cc.PhysicsBoxCollider);
+        this.sprite = this.node.getChildByName('sprite');
+        this.sprite.opacity = 255;
+        this.light = this.node.getChildByName('light');
+        this.light.opacity = 0;
         
     }
     onEnable(){

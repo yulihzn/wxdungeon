@@ -321,7 +321,7 @@
         "titlecolor": "#ffffff",
         "img": "remote002",
         "bulletType":"bullet003",
-        "damageRemote":1,
+        "damageRemote":2,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -331,7 +331,7 @@
             "lifeRecovery": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":500,
+            "remoteSpeed":-200,
             "dodge": 0,
             "health": 0
         },
@@ -362,6 +362,7 @@
             "health": 0
         },
         "stab":1,
+        "far": 1,
         "desc": "Wand"
     },
     "remote004": {

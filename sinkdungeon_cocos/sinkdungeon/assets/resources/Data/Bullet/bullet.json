@@ -3,11 +3,11 @@
         "name":"普通红色圆形",
         "resName": "bullet001",
         "lightName": "bulletlight001",
-        "lightColor": "#ff0000",
+        "lightColor": "#C72C2C",
         "speed": 200,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.5,
+        "size": 1.2,
         "damage": {
             "physicalDamage": 1
         }
@@ -55,7 +55,7 @@
         "name":"圆形冰",
         "resName": "bullet005",
         "lightName": "bulletlight001",
-        "lightColor": "#ffffff",
+        "lightColor": "#9DCBF0",
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
@@ -68,7 +68,7 @@
         "name":"圆形火",
         "resName": "bullet006",
         "lightName": "bulletlight001",
-        "lightColor": "#ffffff",
+        "lightColor": "#C7762C",
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
@@ -81,7 +81,7 @@
         "name":"圆形雷",
         "resName": "bullet007",
         "lightName": "bulletlight001",
-        "lightColor": "#ffffff",
+        "lightColor": "#5D77B8",
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
@@ -94,7 +94,7 @@
         "name":"圆形毒",
         "resName": "bullet008",
         "lightName": "bulletlight001",
-        "lightColor": "#ffffff",
+        "lightColor": "#3EAF4C",
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
@@ -107,7 +107,7 @@
         "name":"圆形诅咒",
         "resName": "bullet009",
         "lightName": "bulletlight001",
-        "lightColor": "#ffffff",
+        "lightColor": "#623EAF",
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
@@ -124,7 +124,7 @@
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
-        "size": 2,
+        "size": 1.6,
         "damage": {
             "physicalDamage": 1
         }

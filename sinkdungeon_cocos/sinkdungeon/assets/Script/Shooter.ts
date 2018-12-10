@@ -54,6 +54,14 @@ export default class Shooter extends cc.Component {
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        this.sprite.width = spriteFrame.getRect().width*1.5;
+        this.sprite.height = spriteFrame.getRect().height*1.5;
+        this.sprite.anchorX = 0.2;
+        if(this.data.far == 1){
+            this.sprite.width = this.sprite.width*2;
+            this.sprite.height = this.sprite.height*2;
+            this.sprite.anchorX = 0.5
+        }
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];

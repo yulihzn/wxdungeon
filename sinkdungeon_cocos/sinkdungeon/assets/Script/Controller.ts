@@ -10,6 +10,7 @@
 
 const { ccclass, property } = cc._decorator;
 import { EventConstant } from './EventConstant';
+import Logic from './Logic';
 
 @ccclass
 export default class Controller extends cc.Component {
@@ -54,8 +55,21 @@ export default class Controller extends cc.Component {
         this.secondAction.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
             this.secondActionTouched = false;
         }, this)
+        cc.director.on(EventConstant.HUD_DARK_CONTROLLER
+            , (event) => { this.changeRes(event.detail.index,false) });
+        cc.director.on(EventConstant.HUD_DARK_CONTROLLER
+            , (event) => { this.changeRes(event.detail.index,true) });
     }
 
+    changeRes(actionType:number,isLight:boolean){
+        let resName = '';
+        switch(actionType){
+            case 0:resName = isLight?'uimeleelight':'uimelee';break;
+            case 1:resName = isLight?'uiremotelight':'uiremote';break;
+            case 2:resName = isLight?'uiswitchlight':'uiswitch';break;
+        }
+        this.mainAction.getComponent(cc.Button).normalSprite = Logic.spriteFrames[resName];
+    }
 
     thirdAction() {
         if(!this.thirdActionTouched){

@@ -222,9 +222,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 199,
-      "g": 44,
-      "b": 44,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
@@ -400,16 +400,7 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
-    "label": null,
-    "realDamage": 0,
-    "physicalDamage": 1,
-    "iceDamage": 0,
-    "fireDamage": 0,
-    "lighteningDamage": 0,
-    "toxicDamage": 0,
-    "curseDamage": 0,
-    "speed": 200,
+    "_enabled": false,
     "_id": ""
   },
   {
