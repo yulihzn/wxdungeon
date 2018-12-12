@@ -271,7 +271,7 @@ export default class Dungeon extends cc.Component {
                     let b:Box = box.getComponent(Box);
                     b.data.defaultPos = cc.v2(i, j);
                     b.setPos(cc.v2(i, j));
-                    b.changeRes('plant');
+                    b.boxType = Box.PLANT;
                 }
                 //房间未清理时加载物品
                 if(!Logic.mapManger.isCurrentRoomStateClear()){

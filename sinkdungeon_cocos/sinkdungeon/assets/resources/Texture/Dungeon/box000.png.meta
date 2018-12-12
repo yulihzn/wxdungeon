@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "8acb6a07-00ea-41aa-b23e-783f164c993a",
+  "uuid": "f32cc82b-aa78-4c10-835e-66ba0e37f7cd",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "wall001": {
+    "box000": {
       "ver": "1.0.3",
-      "uuid": "f2f0e547-c376-4d9b-85b3-54e865c85aa9",
-      "rawTextureUuid": "8acb6a07-00ea-41aa-b23e-783f164c993a",
+      "uuid": "cd4fe464-6cdc-43bf-8f6c-fd90be5510e9",
+      "rawTextureUuid": "f32cc82b-aa78-4c10-835e-66ba0e37f7cd",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -18,9 +18,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 16,
-      "height": 24,
+      "height": 16,
       "rawWidth": 16,
-      "rawHeight": 24,
+      "rawHeight": 16,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

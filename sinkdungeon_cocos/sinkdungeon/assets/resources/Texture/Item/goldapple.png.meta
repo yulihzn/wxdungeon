@@ -1,16 +1,16 @@
 {
   "ver": "2.2.0",
-  "uuid": "8acb6a07-00ea-41aa-b23e-783f164c993a",
+  "uuid": "504fa4a5-cacf-4291-9663-702cbd97b088",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "wall001": {
+    "goldapple": {
       "ver": "1.0.3",
-      "uuid": "f2f0e547-c376-4d9b-85b3-54e865c85aa9",
-      "rawTextureUuid": "8acb6a07-00ea-41aa-b23e-783f164c993a",
-      "trimType": "auto",
+      "uuid": "8e444fb0-523b-4d53-9b1a-bbe26100e72e",
+      "rawTextureUuid": "504fa4a5-cacf-4291-9663-702cbd97b088",
+      "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
@@ -18,9 +18,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 16,
-      "height": 24,
+      "height": 16,
       "rawWidth": 16,
-      "rawHeight": 24,
+      "rawHeight": 16,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

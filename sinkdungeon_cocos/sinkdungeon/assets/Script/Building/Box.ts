@@ -17,10 +17,13 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Box extends cc.Component {
 
+    static readonly BOX = 0;
+    static readonly PLANT = 1;
     // LIFE-CYCLE CALLBACKS:
     anim: cc.Animation;
     private timeDelay = 0;
     private isBreaking = false;
+    boxType = 0;
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.anim.play('BoxShow');
@@ -28,7 +31,18 @@ export default class Box extends cc.Component {
     data: BoxData = new BoxData();
 
     start() {
-
+        let resName = 'box';
+        switch(this.boxType){
+            case Box.BOX:resName = 'box';break;
+            case Box.PLANT:resName = 'plant';break;
+        }
+        switch(Logic.chapterName){
+            case 'chapter00':this.changeRes(`${resName}000`);break;
+            case 'chapter01':this.changeRes(`${resName}001`);break;
+            case 'chapter02':this.changeRes(`${resName}002`);break;
+            case 'chapter03':this.changeRes(`${resName}003`);break;
+            case 'chapter04':this.changeRes(`${resName}004`);break;
+        }
     }
     changeRes(resName: string) {
         let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);

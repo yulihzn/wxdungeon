@@ -1,4 +1,5 @@
 import Dungeon from "../Dungeon";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,6 +18,7 @@ export default class Wall extends cc.Component {
 
     pos:cc.Vec2;
     half = false;
+    wallsprite:cc.Sprite;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -27,6 +29,10 @@ export default class Wall extends cc.Component {
         //             ss[i].spriteFrame.getTexture().setAliasTexParameters();
         //         }
         //     }
+        this.wallsprite = this.node.getChildByName('sprite').getChildByName('wallsprite').getComponent(cc.Sprite);
+    }
+    changeRes(resName:string){
+        this.wallsprite.spriteFrame = Logic.spriteFrames[resName];
     }
     setPos(pos:cc.Vec2){
         this.pos = pos;
@@ -34,6 +40,13 @@ export default class Wall extends cc.Component {
     }
     start () {
         this.node.opacity = 255;
+        switch(Logic.chapterName){
+            case 'chapter00':this.changeRes('wall000');break;
+            case 'chapter01':this.changeRes('wall005');break;
+            case 'chapter02':this.changeRes('wall005');break;
+            case 'chapter03':this.changeRes('wall005');break;
+            case 'chapter04':this.changeRes('wall005');break;
+        }
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider) {
         this.node.opacity = 255;
