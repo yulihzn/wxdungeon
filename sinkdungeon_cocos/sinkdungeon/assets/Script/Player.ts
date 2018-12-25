@@ -318,7 +318,9 @@ export default class Player extends cc.Component {
     remoteRate = 0;
     remoteAttack() {
         let canFire = false;
-        
+        if(!this.data){
+            return;
+        }
         let speed = PlayerData.DefAULT_SPEED - this.data.getRemoteSpeed();
         if (speed < 10) { speed = 10 }
         if (speed > Shooter.DefAULT_SPEED * 10) { speed = Shooter.DefAULT_SPEED * 10; }

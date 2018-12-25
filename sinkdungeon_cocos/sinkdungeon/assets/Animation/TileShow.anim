@@ -2,7 +2,7 @@
   "__type__": "cc.AnimationClip",
   "_name": "TileShow",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 1.5,
   "sample": 60,
   "speed": 1,
@@ -11,32 +11,54 @@
     "paths": {
       "sprite": {
         "props": {
-          "scale": [
-            {
-              "frame": 0,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 0.5,
-                "y": 0.5
-              }
-            },
-            {
-              "frame": 1.5,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
-              }
-            }
-          ],
           "opacity": [
             {
               "frame": 0,
               "value": 0
             },
             {
+              "frame": 0.08333333333333333,
+              "value": 240
+            },
+            {
               "frame": 1.5,
               "value": 255
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -64
+            },
+            {
+              "frame": 1.5,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/floor": {
+        "props": {
+          "color": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Color",
+                "r": 100,
+                "g": 100,
+                "b": 100,
+                "a": 255
+              }
+            },
+            {
+              "frame": 1.5,
+              "value": {
+                "__type__": "cc.Color",
+                "r": 255,
+                "g": 255,
+                "b": 255,
+                "a": 255
+              }
             }
           ]
         }

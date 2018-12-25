@@ -175,11 +175,15 @@ export default class Kraken extends Boss {
                 this.shooter.dungeon = this.dungeon;
                 this.shooter.data.bulletType = "bullet004";
                 this.shooter.fireBullet();
+                this.shooter.fireBullet(30);
+                this.shooter.fireBullet(-30);
             }
             if(this.data.currentHealth<this.data.Common.maxHealth/2){
                 this.dungeon.addFallStone(this.dungeon.player.node.position,true);
                 this.shooter.fireBullet(30);
                 this.shooter.fireBullet(-30);
+                this.shooter.fireBullet(15);
+                this.shooter.fireBullet(-15);
             }
         }
         

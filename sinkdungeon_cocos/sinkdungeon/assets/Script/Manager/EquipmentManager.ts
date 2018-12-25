@@ -65,7 +65,7 @@ export default class EquipmentManager extends cc.Component {
     EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT, EquipmentManager.GLOVES_WARRIOR,
     EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
     EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON,EquipmentManager.WEAPON_CROWBAR,EquipmentManager.WEAPON_FRUITKNIFE,EquipmentManager.WEAPON_KATANA,
-    EquipmentManager.WEAPON_HUGEAXE,EquipmentManager.REMOTE_CROSSBOW,EquipmentManager.REMOTE_LONGBOW,EquipmentManager.WEAPON_HAPPYFIRE,EquipmentManager.WEAPON_SADICE,
+    EquipmentManager.WEAPON_HUGEAXE,EquipmentManager.WEAPON_HAPPYFIRE,EquipmentManager.WEAPON_SADICE,
     EquipmentManager.REMOTE_ALIENGUN,EquipmentManager.REMOTE_WAND];
 
     //暴击的(暴击)

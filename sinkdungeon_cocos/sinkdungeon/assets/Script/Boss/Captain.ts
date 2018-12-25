@@ -84,7 +84,7 @@ export default class Captain extends Boss {
         if(!this.dungeon || !this.shooter){
             return;
         }
-        let angles = [0,45,90,135,180,225,270,315];
+        let angles = [0,20,45,65,90,110,135,155,180,200,225,245,270,290,315];
         this.fireWithAngles(angles);
     }
     fireWithAngles(angles:number[]){
@@ -107,9 +107,9 @@ export default class Captain extends Boss {
         if(!this.dungeon || !this.shooter){
             return;
         }
-        let angles1 = [0,15,-30,-15,30];
+        let angles1 = [0,10,15,-30,-40,-10,-15,30,40];
         let angles2 = [5,10,-10];
-        let angles3 = [-5,20,-20,-40,40];
+        let angles3 = [-5,10,20,-10,-20,-30,-40,30,40];
         this.fireWithAngles(angles1);
         if(this.data.currentHealth<this.data.Common.maxHealth/2){
             setTimeout(()=>{this.fireWithAngles(angles2);},100);
