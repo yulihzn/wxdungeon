@@ -29,6 +29,7 @@ export default class EquipmentData{
     damageRemote = 0;//远程伤害
     bulletType = "";//子弹类别
     showShooter = 0;//是否显示发射器
+    isLaser = 0;//是否是激光
     private common:CommonData;
 
     info1:string = '';
@@ -71,6 +72,7 @@ export default class EquipmentData{
         this.trouserslong = data.trouserslong?data.trouserslong:0;
         this.damageRemote = data.damageRemote?data.damageRemote:0;
         this.showShooter = data.showShooter?data.showShooter:0;
+        this.isLaser = data.isLaser?data.isLaser:0;
         this.bulletType = data.bulletType?data.bulletType:'';
   
         this.info1 = data.info1?data.info1:'';
@@ -109,6 +111,7 @@ export default class EquipmentData{
         e.damageRemote = this.damageRemote;
         e.showShooter = this.showShooter;
         e.bulletType = this.bulletType;
+        e.isLaser = this.isLaser;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

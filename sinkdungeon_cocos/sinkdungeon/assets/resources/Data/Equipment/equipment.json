@@ -376,6 +376,7 @@
         "img": "remote004",
         "damageRemote":1,
         "bulletType":"bullet007",
+        "isLaser":1,
         "common": {
             "damageMin": 0,
             "damageMax": 0,

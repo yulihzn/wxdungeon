@@ -5,6 +5,7 @@ import Monster from "./Monster";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
+import Laser from "./Item/Laser";
 
 
 // Learn TypeScript:
@@ -24,15 +25,19 @@ export default class Shooter extends cc.Component {
     static DefAULT_SPEED = 300;
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
+    @property(cc.Prefab)
+    laser:cc.Prefab = null;
     @property
     isAI: boolean = false;
     dungeon: Dungeon = null;
     player: Player = null;
 
     private bulletPool: cc.NodePool;
+    private laserPool: cc.NodePool;
     private timeDelay = 0;
     isAutoAim = true;
     bulletName: string = '';
+    laserName:string = '';
     sprite: cc.Node;
     data: EquipmentData = new EquipmentData();
 
@@ -40,9 +45,13 @@ export default class Shooter extends cc.Component {
 
     onLoad() {
         this.bulletPool = new cc.NodePool();
+        this.laserPool = new cc.NodePool();
         this.sprite = this.node.getChildByName('sprite');
         cc.director.on('destorybullet', (event) => {
             this.destroyBullet(event.detail.bulletNode);
+        })
+        cc.director.on('destorylaser', (event) => {
+            this.destroyLaser(event.detail.laserNode);
         })
     }
     changeRes(resName: string, suffix?: string) {
@@ -94,10 +103,6 @@ export default class Shooter extends cc.Component {
         if (!angleOffset) {
             angleOffset = 0;
         }
-        this.fire(this.bullet, this.bulletPool, angleOffset);
-    }
-
-    private fire(prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number) {
         if (!this.dungeon) {
             return;
         }
@@ -107,6 +112,44 @@ export default class Shooter extends cc.Component {
         if (!this.isAI && Logic.ammo > 0) {
             Logic.ammo--;
         }
+        if(this.data.isLaser == 1){
+            this.fireLaser(this.laser, this.laserPool, angleOffset);
+        }else{
+            this.fire(this.bullet, this.bulletPool, angleOffset);
+        }
+    }
+    private fireLaser(prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number){
+        
+        let laserPrefab: cc.Node = null;
+        if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
+            laserPrefab = pool.get();
+        }
+        // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+        if (!laserPrefab || laserPrefab.active) {
+            laserPrefab = cc.instantiate(prefab);
+        }
+        laserPrefab.parent = this.node;
+        let pos = this.node.convertToWorldSpace(cc.v2(30, 0));
+        pos = this.dungeon.node.convertToNodeSpace(pos);
+        laserPrefab.parent = this.dungeon.node;
+        laserPrefab.position = pos;
+        laserPrefab.scale = 1;
+        laserPrefab.active = true;
+        let laser = laserPrefab.getComponent(Laser);
+        laser.node.rotation = this.node.scaleX < 0 ? -this.node.rotation : this.node.rotation;
+        laser.node.zIndex = 4000;
+        laser.isFromPlayer = !this.isAI;
+        if (laser.isFromPlayer && this.player) {
+            laser.data.damage.physicalDamage = this.data.damageRemote;
+        }
+        let bd = new BulletData();
+        bd.valueCopy(Logic.bullets[this.data.bulletType])
+        laser.changeLaser(bd);
+        this.laserName = laser.name+bd.resName;
+        laser.fire(laser.node.convertToWorldSpace(this.hv.clone().rotateSelf(angleOffset * Math.PI / 180).mul(100)));
+    }
+
+    private fire(prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number) {
         let bulletPrefab: cc.Node = null;
         if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             bulletPrefab = pool.get();
@@ -144,7 +187,14 @@ export default class Shooter extends cc.Component {
             this.bulletPool.put(bulletNode);
         }
     }
-
+    destroyLaser(laserNode: cc.Node) {
+        // enemy 应该是一个 cc.Node
+        laserNode.active = false;
+        let laser = laserNode.getComponent(Laser);
+        if (this.laserPool && laser.name == this.laserName) {
+            this.laserPool.put(laserNode);
+        }
+    }
     start() {
     }
 

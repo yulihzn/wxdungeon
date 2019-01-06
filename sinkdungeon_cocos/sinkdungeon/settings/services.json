@@ -1,0 +1,25 @@
+{
+  "services": [
+    {
+      "service_id": "7",
+      "service_name": "AnySDK",
+      "service_desc": "800+渠道、支持多平台多引擎、安全稳定的本地打包工具。技术支持：https://forum.cocos.com/c/anysdk",
+      "service_icon": "https://account.cocos.com/client/3ba1fcf9029140cf08d95813e387d04a.png",
+      "service_guide_url": "http://docs.anysdk.com",
+      "service_sample_url": "http://github.com/AnySDK",
+      "service_dev_url": "http://dev.anysdk.com",
+      "service_type": "2",
+      "service_type_zh": "仅支持公司游戏",
+      "support_platform": [
+        "Android",
+        "iOS",
+        "HTML5"
+      ],
+      "package_download_url": "http://dream2913.gitee.io/ccserviceplugins/service-anysdk/1.0.0_2.2.5.zip",
+      "service_component_name": "service-anysdk",
+      "package_versions": [
+        "1.0.0_2.2.5"
+      ]
+    }
+  ]
+}
