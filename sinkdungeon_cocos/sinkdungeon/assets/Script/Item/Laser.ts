@@ -54,7 +54,8 @@ export default class Laser extends cc.Component {
         return spriteFrame;
     }
     fire(target: cc.Vec2) {
-        let p = this.node.convertToWorldSpace(this.node.position);
+        target = this.node.convertToWorldSpaceAR(target);
+        let p = this.node.convertToWorldSpaceAR(this.node.position);
         let result = cc.director.getPhysicsManager().rayCast(p,target,cc.RayCastType.Closest);
         let c = target.clone();
         if(result.length>0){
@@ -62,7 +63,10 @@ export default class Laser extends cc.Component {
         }
         let d = Logic.getDistance(p, c);
         this.spriteNode.width = d;
+        this.spriteNode.scaleY = 0;
         this.lightSprite.node.setPosition(d-16,0);
+        let scaleAction = cc.sequence(cc.scaleTo(0.1,1),cc.scaleTo(0.1,0));
+        this.spriteNode.runAction(scaleAction);
         setTimeout(() => { cc.director.emit('destorylaser', { detail: { laserNode: this.node } }); }, 200);
 
     }

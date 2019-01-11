@@ -146,7 +146,7 @@ export default class Shooter extends cc.Component {
         bd.valueCopy(Logic.bullets[this.data.bulletType])
         laser.changeLaser(bd);
         this.laserName = laser.name+bd.resName;
-        laser.fire(laser.node.convertToWorldSpace(this.hv.clone().rotateSelf(angleOffset * Math.PI / 180).mul(100)));
+        laser.fire(this.hv.clone().rotateSelf(angleOffset * Math.PI / 180).mul(100));
     }
 
     private fire(prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number) {
