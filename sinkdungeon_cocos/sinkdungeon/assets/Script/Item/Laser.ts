@@ -1,5 +1,10 @@
 import BulletData from "../Data/BulletData";
 import Logic from "../Logic";
+import DamageData from "../Data/DamageData";
+import Monster from "../Monster";
+import Player from "../Player";
+import Boss from "../Boss/Boss";
+import MeleeWeapon from "../MeleeWeapon";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,21 +60,50 @@ export default class Laser extends cc.Component {
     }
     fire(target: cc.Vec2) {
         target = this.node.convertToWorldSpaceAR(target);
-        let p = this.node.convertToWorldSpaceAR(this.node.position);
-        let result = cc.director.getPhysicsManager().rayCast(p,target,cc.RayCastType.Closest);
+        let p = this.node.convertToWorldSpaceAR(cc.v2(0,0));
+        let results = cc.director.getPhysicsManager().rayCast(p,target,cc.RayCastType.All);
         let c = target.clone();
-        if(result.length>0){
-            c = result[0].point.clone();
+        let closestNode = null;
+        let distance = Logic.getDistance(p,target);
+       
+        for (let result of results) {
+            let d = Logic.getDistance(result.point,p);
+            if(d<distance ){
+               
+                distance = d;
+                c = result.point.clone();
+            }
+
         }
         let d = Logic.getDistance(p, c);
         this.spriteNode.width = d;
         this.spriteNode.scaleY = 0;
         this.lightSprite.node.setPosition(d-16,0);
-        let scaleAction = cc.sequence(cc.scaleTo(0.1,1),cc.scaleTo(0.1,0));
+        let scaleAction = cc.sequence(cc.scaleTo(0.05,1),cc.scaleTo(0.05,0));
         this.spriteNode.runAction(scaleAction);
-        setTimeout(() => { cc.director.emit('destorylaser', { detail: { laserNode: this.node } }); }, 200);
+        setTimeout(() => { cc.director.emit('destorylaser', { detail: { laserNode: this.node } }); }, 100);
 
     }
-
+    attacking(attackTarget:cc.Node) {
+        if (!attackTarget) {
+            return;
+        }
+        let damage = new DamageData();
+        damage.valueCopy(this.data.damage);
+        let monster = attackTarget.getComponent(Monster);
+        if (monster && !monster.isDied &&this.isFromPlayer) {
+            monster.takeDamage(damage);
+        }
+        let player = attackTarget.getComponent(Player);
+        if (player && !player.isDied&&!this.isFromPlayer) {
+            player.takeDamage(damage);
+        }
+        let boss = attackTarget.getComponent(Boss);
+        if (boss && !boss.isDied&&this.isFromPlayer) {
+            boss.takeDamage(damage);
+        }
+        
+       
+    }
     // update (dt) {}
 }

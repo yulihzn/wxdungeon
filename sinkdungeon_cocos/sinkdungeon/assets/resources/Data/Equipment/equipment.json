@@ -375,7 +375,7 @@
         "titlecolor": "#ffffff",
         "img": "remote004",
         "damageRemote":1,
-        "bulletType":"bullet007",
+        "bulletType":"bullet011",
         "isLaser":1,
         "common": {
             "damageMin": 0,

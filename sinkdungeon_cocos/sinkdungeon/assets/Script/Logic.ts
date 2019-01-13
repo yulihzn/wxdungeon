@@ -50,7 +50,7 @@ export default class Logic extends cc.Component {
 
     static mapManger: MapManager = new MapManager();
     static coins = 0;//金币
-    static ammo = 300;//子弹
+    static ammo = 30;//子弹
     static killCount = 0;//杀敌数
 
     onLoad() {

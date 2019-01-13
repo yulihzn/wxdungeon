@@ -128,5 +128,14 @@
         "damage": {
             "physicalDamage": 1
         }
+    },
+    "bullet011": {
+        "name":"红色激光",
+        "speed": 2000,
+        "isLaser":1,
+        "resNameLaser":"laser001",
+        "damage": {
+            "physicalDamage": 1
+        }
     }
 }

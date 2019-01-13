@@ -198,13 +198,13 @@
         "sizeType":0,
         "common": {
             "moveSpeed": 0,
-            "maxHealth": 5,
+            "maxHealth": 500,
             "damageMin": 1
         },
-        "currentHealth": 5,
+        "currentHealth": 500,
         "invisible": 0,
-        "remote": 50,
-        "melee": 100,
+        "remote": 0,
+        "melee": 0,
         "dash": 0,
         "disguise": 0
     },

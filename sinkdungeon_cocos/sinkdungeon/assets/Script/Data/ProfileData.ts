@@ -29,7 +29,7 @@ export default class ProfileData {
     hasSaveData:boolean = false;
     playerData:PlayerData = new PlayerData();
     inventoryManager: InventoryManager = new InventoryManager();
-    ammo = 30;//子弹
+    ammo = 300;//子弹
     level = 1;
     constructor(){
         // this.loadProfile();
