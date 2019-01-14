@@ -28,8 +28,10 @@ export default class EquipmentData{
     trouserslong = 0;//是否长裤
     damageRemote = 0;//远程伤害
     bulletType = "";//子弹类别
+    bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
+    bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     showShooter = 0;//是否显示发射器
-    isLaser = 0;//是否是激光
+    isHeavy = 0;//是否是重型武器比如激光,具体影响是开枪时候减速
     private common:CommonData;
 
     info1:string = '';
@@ -67,12 +69,13 @@ export default class EquipmentData{
         this.stab = data.stab?data.stab:0;
         this.far = data.far?data.far:0;
         this.isLocked = data.isLocked?data.isLocked:0;
-        this.showShooter = data.showShooter?data.showShooter:0;
+        this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
+        this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
         this.level = data.level?data.level:0;
         this.trouserslong = data.trouserslong?data.trouserslong:0;
         this.damageRemote = data.damageRemote?data.damageRemote:0;
         this.showShooter = data.showShooter?data.showShooter:0;
-        this.isLaser = data.isLaser?data.isLaser:0;
+        this.isHeavy = data.isHeavy?data.isHeavy:0;
         this.bulletType = data.bulletType?data.bulletType:'';
   
         this.info1 = data.info1?data.info1:'';
@@ -111,7 +114,9 @@ export default class EquipmentData{
         e.damageRemote = this.damageRemote;
         e.showShooter = this.showShooter;
         e.bulletType = this.bulletType;
-        e.isLaser = this.isLaser;
+        e.isHeavy = this.isHeavy;
+        e.bulletArcExNum = this.bulletArcExNum;
+        e.bulletLineExNum = this.bulletLineExNum;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

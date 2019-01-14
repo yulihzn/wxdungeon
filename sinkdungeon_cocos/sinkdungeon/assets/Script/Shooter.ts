@@ -34,7 +34,6 @@ export default class Shooter extends cc.Component {
     private timeDelay = 0;
     isAutoAim = true;
     bulletName: string = '';
-    laserName:string = '';
     sprite: cc.Node;
     data: EquipmentData = new EquipmentData();
 
@@ -107,7 +106,41 @@ export default class Shooter extends cc.Component {
             Logic.ammo--;
         }
         this.fire(this.bullet, this.bulletPool, angleOffset);
+        this.fireArcBullet();
+        this.fireLinecBullet(angleOffset);
 
+    }
+    private fireArcBullet():void{
+        if(this.data.bulletArcExNum == 0){
+            return;
+        }
+        let angles = [10,-10,20,-20,30,-30,40,-40,50,-50,60,-60,-70,-70,80,-80,90,-90]
+        for(let i = 0;i < this.data.bulletArcExNum;i++){
+            if(i < angles.length){
+                if (!this.isAI && Logic.ammo > 0) {
+                    Logic.ammo--;
+                }
+                this.fire(this.bullet, this.bulletPool, angles[i]);
+            }
+        }
+    }
+    private fireLinecBullet(angleOffset:number):void{
+        if(this.data.bulletLineExNum == 0){
+            return;
+        }
+        let i = 0;
+        let interval = setInterval(()=>{
+            i++;
+            if (!this.isAI && Logic.ammo > 0) {
+                Logic.ammo--;
+            }
+            this.fire(this.bullet, this.bulletPool, angleOffset);
+            this.fireArcBullet();
+            if(i>=this.data.bulletLineExNum){
+                clearInterval(interval)
+            }
+        },100);
+        
     }
    
 

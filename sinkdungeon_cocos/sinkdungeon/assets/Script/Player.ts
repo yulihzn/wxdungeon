@@ -340,7 +340,7 @@ export default class Player extends cc.Component {
         }
     }
     isHeavyRemoteShooter():boolean{
-       return this.shooter.data.isLaser == 1;
+       return this.shooter.data.isHeavy == 1;
     }
     rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
         if (!this.node || this.isDied || this.isFall) {
