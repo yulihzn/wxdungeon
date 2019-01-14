@@ -61,12 +61,13 @@ export default class Player extends cc.Component {
     shoesLeftSprite: cc.Sprite = null;
     shoesRightSprite: cc.Sprite = null;
     cloakSprite: cc.Sprite = null;
-    isMoving = false;
-    isAttacking = false;
+    isMoving = false;//是否移动中
+    isAttacking = false;//是否近战攻击中
+    isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
     private sprite: cc.Node;
     private anim: cc.Animation;
-    isDied = false;
-    isFall = false;
+    isDied = false;//是否死亡
+    isFall = false;//是否跌落
     baseAttackPoint: number = 1;
 
     touchedEquipment: Equipment;
@@ -332,9 +333,14 @@ export default class Player extends cc.Component {
         if(!canFire){
             return;
         }
+        this.isHeavyRemotoAttacking =  this.isHeavyRemoteShooter();
+        setTimeout(()=>{this.isHeavyRemotoAttacking = false},200);
         if (this.shooter) {
             this.shooter.fireBullet(0);
         }
+    }
+    isHeavyRemoteShooter():boolean{
+       return this.shooter.data.isLaser == 1;
     }
     rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
         if (!this.node || this.isDied || this.isFall) {
@@ -353,6 +359,9 @@ export default class Player extends cc.Component {
         }
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
+        }
+        if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec2.ZERO)) {
+            pos = pos.mul(0.1);
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));

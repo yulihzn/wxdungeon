@@ -95,6 +95,7 @@ export default class Bullet extends cc.Component {
 
     }
     private initLaser(): void {
+        this.laserNode.active = this.data.isLaser == 1;
         if (this.data.isLaser != 1) {
             return;
         }
@@ -102,7 +103,6 @@ export default class Bullet extends cc.Component {
             this.laserNode = this.node.getChildByName("laser");
         }
         this.sprite.opacity = 0;
-        this.laserNode.active = true;
         this.laserNode.opacity = 0;
         this.laserHeadSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.laserNode.stopAllActions();
