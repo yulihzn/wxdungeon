@@ -142,15 +142,20 @@ export default class Bullet extends cc.Component {
         }
         let s1 = this.getSpriteFrameByName(resName, suffix);
         let s2 = this.getSpriteFrameByName(lightName, suffix);
-
-        this.sprite.getComponent(cc.Sprite).spriteFrame = s1;
-        this.sprite.width = s1.getRect().width * size;
-        this.sprite.height = s1.getRect().height * size;
-        this.light.getComponent(cc.Sprite).spriteFrame = s2;
-        this.light.width = s2.getRect().width * size;
-        this.light.height = s2.getRect().height * size;
-        let color = cc.color(255, 255, 255).fromHEX(lightColor);
-        this.light.color = color;
+        
+        if(s1){
+            this.sprite.getComponent(cc.Sprite).spriteFrame = s1;
+            this.sprite.width = s1.getRect().width * size;
+            this.sprite.height = s1.getRect().height * size;
+        }
+        if(s2){
+            this.light.getComponent(cc.Sprite).spriteFrame = s2;
+            this.light.width = s2.getRect().width * size;
+            this.light.height = s2.getRect().height * size;
+            let color = cc.color(255, 255, 255).fromHEX(lightColor);
+            this.light.color = color;
+        }
+        
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];

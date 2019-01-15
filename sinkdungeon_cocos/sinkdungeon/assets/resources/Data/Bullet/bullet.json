@@ -147,6 +147,7 @@
         "name":"红色激光",
         "speed": 5000,
         "isLaser":1,
+        "resName":"bullet011",
         "resNameLaser":"laser001",
         "damage": {
             "physicalDamage": 1
