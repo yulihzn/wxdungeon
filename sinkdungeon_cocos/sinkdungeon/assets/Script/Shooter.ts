@@ -161,10 +161,11 @@ export default class Shooter extends cc.Component {
         bulletPrefab.scale = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
-        bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation : this.node.rotation;
+        bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
+        bullet.dungeon = this.dungeon;
         if (bullet.isFromPlayer && this.player) {
             bullet.data.damage.physicalDamage = this.data.damageRemote;
         }

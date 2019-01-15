@@ -197,7 +197,7 @@
         "stageLevel": 0,
         "sizeType":0,
         "common": {
-            "moveSpeed": 0,
+            "moveSpeed": 300,
             "maxHealth": 500,
             "damageMin": 1
         },

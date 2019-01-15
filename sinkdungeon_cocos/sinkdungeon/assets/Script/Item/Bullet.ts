@@ -6,6 +6,7 @@ import DamageData from "../Data/DamageData";
 import Logic from "../Logic";
 import Boss from "../Boss/Boss";
 import BulletData from "../Data/BulletData";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,8 +45,9 @@ export default class Bullet extends cc.Component {
     laserLightSprite: cc.Sprite;
     laserHeadSprite: cc.Sprite;
     laserNode: cc.Node;
+    dungeon: Dungeon;
 
-    startPos:cc.Vec2 = cc.v2(0,0);//子弹起始位置
+    startPos: cc.Vec2 = cc.v2(0, 0);//子弹起始位置
 
 
 
@@ -82,6 +84,17 @@ export default class Bullet extends cc.Component {
         this.laserHeadSprite = this.laserNode.getChildByName("head").getComponent(cc.Sprite);
 
     }
+    update(dt) {
+    }
+    private checkTraking():void{
+        if (this.data.isTracking == 1) {
+            let pos = this.hasNearEnemy();
+            if (!pos.equals(cc.Vec2.ZERO)) {
+                this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+                this.hv = pos;
+            }
+        }
+    }
     changeBullet(data: BulletData) {
         this.data = data;
         this.changeRes(data.resName, data.lightName, data.lightColor, data.size);
@@ -111,24 +124,24 @@ export default class Bullet extends cc.Component {
             cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light001'); }),
             cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light002'); }),
             cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light003'); })));
-        
+
         this.laserLightSprite.node.runAction(idleAction);
     }
     private showLaser(): void {
         if (this.data.isLaser != 1) {
             return;
         }
-        let endPos = this.node.convertToWorldSpaceAR(cc.v2(0,0));
-        let distance = Logic.getDistance(this.startPos,endPos);
+        let endPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        let distance = Logic.getDistance(this.startPos, endPos);
         let offset = 32;
-        this.laserSpriteNode.width = distance-offset;
-        this.laserSpriteNode.setPosition(cc.v2(-distance+offset,0));
-        this.laserHeadSprite.node.setPosition(cc.v2(-distance+offset,0));
+        this.laserSpriteNode.width = distance - offset;
+        this.laserSpriteNode.setPosition(cc.v2(-distance + offset, 0));
+        this.laserHeadSprite.node.setPosition(cc.v2(-distance + offset, 0));
         this.laserNode.opacity = 255;
         this.laserNode.scaleX = 1;
         this.laserNode.scaleY = 1;
-        this.laserLightSprite.node.setPosition(-16,0);
-        let scaleAction = cc.sequence(cc.scaleTo(0.1,1,1),cc.scaleTo(0.1,1,0));
+        this.laserLightSprite.node.setPosition(-16, 0);
+        let scaleAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.scaleTo(0.1, 1, 0));
         this.laserNode.runAction(scaleAction);
         setTimeout(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 200);
     }
@@ -142,20 +155,20 @@ export default class Bullet extends cc.Component {
         }
         let s1 = this.getSpriteFrameByName(resName, suffix);
         let s2 = this.getSpriteFrameByName(lightName, suffix);
-        
-        if(s1){
+
+        if (s1) {
             this.sprite.getComponent(cc.Sprite).spriteFrame = s1;
             this.sprite.width = s1.getRect().width * size;
             this.sprite.height = s1.getRect().height * size;
         }
-        if(s2){
+        if (s2) {
             this.light.getComponent(cc.Sprite).spriteFrame = s2;
             this.light.width = s2.getRect().width * size;
             this.light.height = s2.getRect().height * size;
             let color = cc.color(255, 255, 255).fromHEX(lightColor);
             this.light.color = color;
         }
-        
+
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
@@ -178,12 +191,21 @@ export default class Bullet extends cc.Component {
     BulletDestory() {
         cc.director.emit('destorybullet', { detail: { bulletNode: this.node } });
     }
-    fire(hv:cc.Vec2) {
+    fire(hv: cc.Vec2) {
         if (!this.rigidBody) {
             this.rigidBody = this.getComponent(cc.RigidBody);
         }
         this.rigidBody.linearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
-        this.startPos = this.node.convertToWorldSpaceAR(cc.v2(0,0));
+        this.startPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        this.sprite.stopAllActions();
+
+        let idleAction = cc.repeatForever(cc.sequence(
+            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
+            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
+            cc.moveBy(0.01, 0, 0), cc.callFunc(() => {this.checkTraking(); }),
+            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); })));
+
+        this.sprite.runAction(idleAction);
     }
 
     start() {
@@ -210,7 +232,7 @@ export default class Bullet extends cc.Component {
         }
         if (isDestory && this.anim) {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
-            this.data.isLaser==1?this.showLaser():this.anim.play("Bullet001Hit");
+            this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
 
         }
     }
@@ -262,11 +284,65 @@ export default class Bullet extends cc.Component {
         }
         if (isDestory && this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
-            this.data.isLaser==1?this.showLaser():this.anim.play("Bullet001Hit");
+            this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }
     }
+    hasNearEnemy() {
+        if (this.data.isTracking != 1 || this.data.isLaser == 1 || !this.dungeon) {
+            return cc.Vec2.ZERO;
+        }
+        let olddis = 1000;
+        let pos = cc.v2(0, 0);
+        if (this.isFromPlayer) {
+            for (let monster of this.dungeon.monsters) {
+                let dis = Logic.getDistance(this.node.position, monster.node.position);
+                if (dis < 300 && dis < olddis && !monster.isDied && !monster.isDisguising) {
+                    olddis = dis;
+                    let p = this.node.position.clone();
+                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                    pos = monster.node.position.sub(this.node.parent.position.add(p));
+                }
+            }
+            if (pos.equals(cc.Vec2.ZERO)) {
+                for (let boss of this.dungeon.bosses) {
+                    let dis = Logic.getDistance(this.node.position, boss.node.position);
+                    if (dis < 300 && dis < olddis && !boss.isDied) {
+                        olddis = dis;
+                        let p = this.node.position.clone();
+                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                        pos = boss.node.position.sub(this.node.parent.position.add(p));
+                    }
+                }
 
-    update(dt) {
+            }
+        } else {
+            let dis = Logic.getDistance(this.node.position, this.dungeon.player.node.position);
+            if (dis < 300 && dis < olddis && !this.dungeon.player.isDied && !this.dungeon.player.isFall) {
+                olddis = dis;
+                let p = this.node.position.clone();
+                p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                pos = this.dungeon.player.node.position.sub(this.node.parent.position.add(p));
+            }
+
+        }
+        if (olddis != 1000) {
+            pos = pos.normalizeSelf();
+        }
+        return pos;
+    }
+    
+    rotateColliderManager(target: cc.Vec2) {
+        // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
+        // 物体坐标默认就是世界坐标
+        // 两者取差得到方向向量
+        let direction = target.sub(this.node.position);
+        // 方向向量转换为角度值
+        let Rad2Deg = 360 / (Math.PI * 2);
+        let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
+        let offsetAngle = 90;
+        angle += offsetAngle;
+        // 将当前物体的角度设置为对应角度
+        this.node.rotation = this.node.scaleX < 0 ? angle : -angle;
 
     }
 

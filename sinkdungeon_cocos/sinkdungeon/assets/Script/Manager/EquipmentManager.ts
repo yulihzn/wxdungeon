@@ -36,6 +36,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly REMOTE_WAND = "remote003";
     public static readonly REMOTE_ALIENGUN = "remote004";
     public static readonly REMOTE_WINCHESTER = "remote005";
+    public static readonly REMOTE_RPG = "remote006";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
     public static readonly CLOTHES_NAVY = "clothes003";
@@ -67,7 +68,7 @@ export default class EquipmentManager extends cc.Component {
     EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
     EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON,EquipmentManager.WEAPON_CROWBAR,EquipmentManager.WEAPON_FRUITKNIFE,EquipmentManager.WEAPON_KATANA,
     EquipmentManager.WEAPON_HUGEAXE,EquipmentManager.WEAPON_HAPPYFIRE,EquipmentManager.WEAPON_SADICE,
-    EquipmentManager.REMOTE_ALIENGUN,EquipmentManager.REMOTE_WAND,EquipmentManager.REMOTE_WINCHESTER];
+    EquipmentManager.REMOTE_ALIENGUN,EquipmentManager.REMOTE_WAND,EquipmentManager.REMOTE_WINCHESTER,EquipmentManager.REMOTE_RPG];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红

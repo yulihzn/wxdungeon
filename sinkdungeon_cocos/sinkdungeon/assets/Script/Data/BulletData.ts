@@ -16,7 +16,8 @@ export default class BulletData {
     speed: number = 0;//移动速度
     isRect = 0;//碰撞体是否是矩形
     isRotate = 0;//是否旋转
-    isLaser = 0;//是否是激光
+    isLaser = 0;//是否是激光 
+    isTracking = 0;//是否跟踪 不能和激光同时存在 激光大于跟踪
     size = 1;//子弹大小
     resName = '';//子弹贴图
     lightName = '';//子弹消失的光芒
@@ -28,6 +29,7 @@ export default class BulletData {
         this.isRect = data.isRect?data.isRect:0;
         this.isRotate = data.isRotate?data.isRotate:0;
         this.isLaser = data.isLaser?data.isLaser:0;
+        this.isTracking = data.isTracking?data.isTracking:0;
         this.size = data.size?data.size:1;
         this.resName = data.resName?data.resName:'';
         this.resNameLaser = data.resNameLaser?data.resNameLaser:"";
@@ -42,6 +44,7 @@ export default class BulletData {
         e.isRotate = this.isRotate;
         e.size = this.size;
         e.isLaser = this.isLaser;
+        e.isTracking = this.isTracking;
         e.resName = this.resName;
         e.resNameLaser = this.resNameLaser;
         e.lightName = this.lightName;
