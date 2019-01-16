@@ -145,11 +145,12 @@
     },
     "bullet012": {
         "name":"追踪导弹",
-        "speed": 300,
+        "speed": 200,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
-        "size": 1.5,
+        "lifeTime":5,
+        "size": 1.2,
         "isTracking":1,
         "resName":"bullet012",
         "lightName": "bulletlight001",
@@ -162,7 +163,6 @@
         "name":"红色激光",
         "speed": 5000,
         "isLaser":1,
-        "resName":"bullet011",
         "resNameLaser":"laser001",
         "damage": {
             "physicalDamage": 1

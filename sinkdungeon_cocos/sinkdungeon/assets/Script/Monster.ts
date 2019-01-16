@@ -391,7 +391,7 @@ export default class Monster extends cc.Component {
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
                 this.shooter.dungeon = this.dungeon;
-                this.shooter.data.bulletType = "bullet001";
+                this.shooter.data.bulletType = "bullet012";
                 this.shooter.fireBullet(Logic.getRandomNum(0,5)-5);
             }
         }

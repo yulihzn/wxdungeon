@@ -84,14 +84,21 @@ export default class Bullet extends cc.Component {
         this.laserHeadSprite = this.laserNode.getChildByName("head").getComponent(cc.Sprite);
 
     }
-    update(dt) {
+    timeDelay = 0;
+    update(dt){
+        this.timeDelay += dt;
+        if (this.timeDelay > 0.5) {
+            this.checkTraking();
+            this.timeDelay = 0;
+        }
     }
     private checkTraking():void{
-        if (this.data.isTracking == 1) {
+        if (this.data.isTracking == 1 && this.data.isLaser != 1) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec2.ZERO)) {
                 this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
                 this.hv = pos;
+                this.rigidBody.linearVelocity = cc.v2(this.data.speed * this.hv.x, this.data.speed * this.hv.y);
             }
         }
     }
@@ -198,14 +205,20 @@ export default class Bullet extends cc.Component {
         this.rigidBody.linearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
         this.startPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         this.sprite.stopAllActions();
-
+        this.node.stopAllActions();
+        let ss = this.sprite.getComponent(cc.Sprite);
         let idleAction = cc.repeatForever(cc.sequence(
-            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
-            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
-            cc.moveBy(0.01, 0, 0), cc.callFunc(() => {this.checkTraking(); }),
-            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); })));
-
+            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
+            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
+            
+            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); })));
         this.sprite.runAction(idleAction);
+
+        if(this.data.lifeTime > 0){
+            let lifeTimeAction = cc.sequence(cc.delayTime(this.data.lifeTime),cc.callFunc(()=>{this.bulletHit();}));
+            this.node.runAction(lifeTimeAction);
+        }
+
     }
 
     start() {
@@ -230,9 +243,8 @@ export default class Bullet extends cc.Component {
         if (otherCollider.tag == 2) {
             isDestory = false;
         }
-        if (isDestory && this.anim) {
-            this.rigidBody.linearVelocity = cc.v2(0, 0);
-            this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
+        if (isDestory) {
+            this.bulletHit();
 
         }
     }
@@ -282,7 +294,12 @@ export default class Bullet extends cc.Component {
         if (meleeWeapon && meleeWeapon.isAttacking) {
             isDestory = true;
         }
-        if (isDestory && this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
+        if (isDestory) {
+            this.bulletHit();
+        }
+    }
+    private bulletHit():void{
+        if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }
@@ -296,32 +313,32 @@ export default class Bullet extends cc.Component {
         if (this.isFromPlayer) {
             for (let monster of this.dungeon.monsters) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
-                if (dis < 300 && dis < olddis && !monster.isDied && !monster.isDisguising) {
+                if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = monster.node.position.sub(this.node.parent.position.add(p));
+                    pos = monster.node.position.sub(p);
                 }
             }
             if (pos.equals(cc.Vec2.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
                     let dis = Logic.getDistance(this.node.position, boss.node.position);
-                    if (dis < 300 && dis < olddis && !boss.isDied) {
+                    if (dis < 500 && dis < olddis && !boss.isDied) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        pos = boss.node.position.sub(this.node.parent.position.add(p));
+                        pos = boss.node.position.sub(p);
                     }
                 }
 
             }
         } else {
             let dis = Logic.getDistance(this.node.position, this.dungeon.player.node.position);
-            if (dis < 300 && dis < olddis && !this.dungeon.player.isDied && !this.dungeon.player.isFall) {
+            if (dis < 500 && dis < olddis && !this.dungeon.player.isDied && !this.dungeon.player.isFall) {
                 olddis = dis;
                 let p = this.node.position.clone();
                 p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                pos = this.dungeon.player.node.position.sub(this.node.parent.position.add(p));
+                pos = this.dungeon.player.node.position.sub(p);
             }
 
         }

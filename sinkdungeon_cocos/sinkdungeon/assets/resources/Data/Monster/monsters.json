@@ -197,13 +197,13 @@
         "stageLevel": 0,
         "sizeType":0,
         "common": {
-            "moveSpeed": 300,
+            "moveSpeed": 0,
             "maxHealth": 500,
             "damageMin": 1
         },
         "currentHealth": 500,
         "invisible": 0,
-        "remote": 0,
+        "remote": 10,
         "melee": 0,
         "dash": 0,
         "disguise": 0

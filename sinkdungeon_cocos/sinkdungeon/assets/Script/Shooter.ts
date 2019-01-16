@@ -173,6 +173,7 @@ export default class Shooter extends cc.Component {
         bd.valueCopy(Logic.bullets[this.data.bulletType])
         bullet.changeBullet(bd);
         this.bulletName = bullet.name+bd.resName;
+        bullet.enabled = true;
         bullet.showBullet(this.hv.clone().rotateSelf(angleOffset * Math.PI / 180));
     }
     destroyBullet(bulletNode: cc.Node) {
