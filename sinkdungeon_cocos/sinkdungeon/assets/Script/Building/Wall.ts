@@ -41,11 +41,11 @@ export default class Wall extends cc.Component {
     start () {
         this.node.opacity = 255;
         switch(Logic.chapterName){
-            case 'chapter00':this.changeRes('wall000');break;
-            case 'chapter01':this.changeRes('wall005');break;
-            case 'chapter02':this.changeRes('wall005');break;
-            case 'chapter03':this.changeRes('wall005');break;
-            case 'chapter04':this.changeRes('wall005');break;
+            case Logic.CHAPTER00:this.changeRes('wall000');break;
+            case Logic.CHAPTER01:this.changeRes('wall005');break;
+            case Logic.CHAPTER02:this.changeRes('wall005');break;
+            case Logic.CHAPTER03:this.changeRes('wall005');break;
+            case Logic.CHAPTER04:this.changeRes('wall005');break;
         }
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider) {

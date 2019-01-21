@@ -208,7 +208,7 @@ export default class Dungeon extends cc.Component {
                     fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 }
                 //生成营火
-                if (mapData[i][j] == '-' && Logic.chapterName == 'chapter02') {
+                if (mapData[i][j] == '-' && Logic.chapterName == Logic.CHAPTER02) {
                     let camp = cc.instantiate(this.campFire);
                     camp.parent = this.node;
                     camp.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -479,7 +479,7 @@ export default class Dungeon extends cc.Component {
         if(Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM){
             this.addBossKraken();
         }else{
-            if(Logic.chapterName == 'chapter02'){
+            if(Logic.chapterName == Logic.CHAPTER02){
                 this.addBossSlime(0,this.bossIndex);
             }else{
                 this.addBossCaptain();
@@ -584,6 +584,7 @@ export default class Dungeon extends cc.Component {
     /**检查房间是否清理 */
     checkRoomClear() {
         let isClear = false;
+        //检查怪物是否清理
         let count = 0;
         for (let monster of this.monsters) {
             if (monster.isDied) {
@@ -600,10 +601,15 @@ export default class Dungeon extends cc.Component {
             }
             isClear = count >= this.bosses.length;
         }
+        //检查踏板是否触发
         for (let footboard of this.footboards) {
             if (!footboard.isOpen) {
                 isClear = false;
             }
+        }
+        //检查是否是测试房间，测试房间默认不关门
+        if(Logic.mapManger.getCurrentRoomType() == RectDungeon.TEST_ROOM){
+            isClear = true;
         }
         if (isClear) {
             if (this.portal) {
@@ -631,7 +637,7 @@ export default class Dungeon extends cc.Component {
                     }
                 }
             }
-            if (Logic.level == 1) {
+            if (Logic.level <= 1) {
                 needClose = false;
             }
             if (!needClose) {

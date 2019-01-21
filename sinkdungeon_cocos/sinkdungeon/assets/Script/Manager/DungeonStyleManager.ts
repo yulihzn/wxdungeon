@@ -84,11 +84,11 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case 'chapter00': this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', 'decorate000', null); break;
-            case 'chapter01': this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', 'null', 'null'); break;
-            case 'chapter02': this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', null, null); break;
-            case 'chapter03': this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', null, null); break;
-            case 'chapter04': this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', null, null); break;
+            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', 'decorate000', null); break;
+            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', 'null', 'null'); break;
+            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', null, null); break;
+            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', null, null); break;
+            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', null, null); break;
         }
         if (!this.styleData) {
             return;
@@ -158,15 +158,16 @@ export default class DungeonStyleManager extends cc.Component {
         //     return;
         // }
         let isStartRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.START_ROOM;
-        let isEndRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM;
+        let isEndRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM&&Logic.level != 3&&Logic.level != 5;
         let isPuzzleRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
         let isBossRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM;
+        let isTarotRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.TAROT_ROOM;
         if (isStartRoom) {
             oneIndex = 1;
             otherIndex = 2;
         }
         if (posX == oneIndex) {
-            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom;
+            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom || isTarotRoom;
             if (needAdd) {
                 let postop = Dungeon.getPosInMap(cc.v2(oneIndex, Dungeon.HEIGHT_SIZE));
                 let exit = cc.instantiate(this.exitdoorPrefab);

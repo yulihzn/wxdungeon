@@ -366,7 +366,8 @@ export default class Player extends cc.Component {
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
-            Logic.playerData.pos = this.pos.clone();
+            //等存档系统修正再考虑保存玩家位置
+            // Logic.playerData.pos = this.pos.clone();
         }
         if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
             this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));

@@ -22,7 +22,7 @@ import OilLake from "../Oil/OilLake";
 export default class MapManager {
     //读取文件的数据
     private allfileRooms: { [key: string]: MapData[] } = {};
-    private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom',  'merchantroom', 'puzzleroom', 'bossroom'];
+    private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom',  'merchantroom', 'puzzleroom', 'bossroom','pokerroom','tarotroom','testroom'];
     //文件是否加载成功
     isloaded: boolean = false;
     //地图数据管理类

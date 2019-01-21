@@ -25,12 +25,12 @@ export default class ProfileData {
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
     shopTables: { [key: string]: ShopTableData[] } = {};
-    chapterName:string = 'chapter00';
+    chapterName:number = 0;
     hasSaveData:boolean = false;
     playerData:PlayerData = new PlayerData();
     inventoryManager: InventoryManager = new InventoryManager();
     ammo = 9999;//子弹
-    level = 1;
+    level = 0;
     constructor(){
         // this.loadProfile();
     }
@@ -47,9 +47,9 @@ export default class ProfileData {
         this.boxes = {};
         this.shopTables = {};
         this.hasSaveData = false;
-        this.chapterName = 'chapter00';
+        this.chapterName = 0;
         this.ammo = 30;
-        this.level = 1;
+        this.level = 0;
         console.log('clear data');
     }
     getSaveData():ProfileData{

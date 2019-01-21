@@ -80,15 +80,15 @@ export default class Chest extends cc.Component {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        if(Logic.level == 1){
+                        if(Logic.level < 1){
                             dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.pos,null,this.quality);
+                            dungeon.addEquipment(EquipmentManager.WEAPON_DINNERFORK, this.pos,null,this.quality);
+                        }else{
+                            dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
                         }
                         // dungeon.addEquipment(EquipmentManager.WEAPON_HAPPYFIRE, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_SADICE, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.REMOTE_ALIENGUN, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.REMOTE_RPG, this.pos,null,this.quality);
-                        dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
                     }
                 }
             }));

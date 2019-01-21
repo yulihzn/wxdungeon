@@ -37,11 +37,11 @@ export default class Box extends cc.Component {
             case Box.PLANT:resName = 'plant';break;
         }
         switch(Logic.chapterName){
-            case 'chapter00':this.changeRes(`${resName}000`);break;
-            case 'chapter01':this.changeRes(`${resName}001`);break;
-            case 'chapter02':this.changeRes(`${resName}002`);break;
-            case 'chapter03':this.changeRes(`${resName}003`);break;
-            case 'chapter04':this.changeRes(`${resName}004`);break;
+            case Logic.CHAPTER00:this.changeRes(`${resName}000`);break;
+            case Logic.CHAPTER01:this.changeRes(`${resName}001`);break;
+            case Logic.CHAPTER02:this.changeRes(`${resName}002`);break;
+            case Logic.CHAPTER03:this.changeRes(`${resName}003`);break;
+            case Logic.CHAPTER04:this.changeRes(`${resName}004`);break;
         }
     }
     changeRes(resName: string) {

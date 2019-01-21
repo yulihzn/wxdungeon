@@ -39,7 +39,7 @@ export default class Chapter extends cc.Component {
             Logic.chapterName = chapter;
             Logic.resetData();
         }
-        if(chapter=='chapter00'){
+        if(chapter==0){
             // Logic.playerData.updateHA(cc.v2(100,100),1);
         }
         cc.director.loadScene('loading');

@@ -31,6 +31,11 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Logic extends cc.Component {
     static readonly BOSS_LEVEL_1: number = 10;
+    static readonly CHAPTER00: number = 0;
+    static readonly CHAPTER01: number = 1;
+    static readonly CHAPTER02: number = 2;
+    static readonly CHAPTER03: number = 3;
+    static readonly CHAPTER04: number = 4;
     static equipments: { [key: string]: EquipmentData } = null;
     //怪物json
     static monsters: { [key: string]: MonsterData } = null;
@@ -42,8 +47,8 @@ export default class Logic extends cc.Component {
     static bullets: { [key: string]: BulletData } = null;
     static profile:ProfileData = new ProfileData();
 
-    static level = 1;
-    static chapterName = 'chapter00';
+    static level = 0;
+    static chapterName = 0;
 
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
@@ -112,14 +117,21 @@ export default class Logic extends cc.Component {
                 case 3: Logic.playerData.pos = cc.v2(0, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
             }
             cc.director.loadScene('loading');
+            
         }
     }
     loadingNextLevel() {
         Logic.level++;
         //最多五层
-        if (Logic.level > 5) {
+        if (Logic.level > 5 && Logic.chapterName >= Logic.CHAPTER04) {
             cc.director.loadScene('gamefinish')
+            
         } else {
+            if(Logic.chapterName < Logic.CHAPTER04 && Logic.level > 5){
+                Logic.profile.chapterName++;
+                Logic.chapterName++;
+                Logic.level = 1;
+            }
             Logic.mapManger.reset(Logic.level);
             Logic.changeDungeonSize();
             Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));

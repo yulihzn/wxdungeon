@@ -36,11 +36,11 @@ export default class ExitDoor extends cc.Component {
 
     start () {
         switch(Logic.chapterName){
-            case 'chapter00':this.changeRes('exit000');break;
-            case 'chapter01':this.changeRes('exit001');break;
-            case 'chapter02':this.changeRes('exit002');break;
-            case 'chapter03':this.changeRes('exit000');break;
-            case 'chapter04':this.changeRes('exit000');break;
+            case Logic.CHAPTER00:this.changeRes('exit000');break;
+            case Logic.CHAPTER01:this.changeRes('exit001');break;
+            case Logic.CHAPTER02:this.changeRes('exit002');break;
+            case Logic.CHAPTER03:this.changeRes('exit000');break;
+            case Logic.CHAPTER04:this.changeRes('exit000');break;
         }
     }
     hideWall() {

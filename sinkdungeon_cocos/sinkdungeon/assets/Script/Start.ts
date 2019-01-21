@@ -22,13 +22,17 @@ export default class Start extends cc.Component {
             this.wxhelper.CloseDialog();
         }
         Logic.profile.clearData();
-        cc.director.loadScene('chapter');
+        Logic.chapterName = Logic.profile.chapterName;
+        Logic.resetData();
+        cc.director.loadScene('loading');
     }
     continueGame(){
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }
-        cc.director.loadScene('chapter');
+        Logic.chapterName = Logic.profile.chapterName;
+        Logic.resetData();
+        cc.director.loadScene('loading');
     }
     
 }

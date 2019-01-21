@@ -38,11 +38,11 @@ export default class Tile extends cc.Component {
     start () {
         //休息区 轮船 丛林 金字塔 地牢
         switch(Logic.chapterName){
-            case 'chapter00':this.changeRes('tile000');break;
-            case 'chapter01':this.changeRes(this.getDeckRes());break;
-            case 'chapter02':this.changeRes(this.getDirtRes());break;
-            case 'chapter03':this.changeRes('tile003');break;
-            case 'chapter04':this.changeRes('tile004');break;
+            case Logic.CHAPTER00:this.changeRes('tile000');break;
+            case Logic.CHAPTER01:this.changeRes(this.getDeckRes());break;
+            case Logic.CHAPTER02:this.changeRes(this.getDirtRes());break;
+            case Logic.CHAPTER03:this.changeRes('tile003');break;
+            case Logic.CHAPTER04:this.changeRes('tile004');break;
         }
         // Logic.setAlias(this.node);
 

@@ -28,6 +28,9 @@ export default class RectDungeon {
     public static readonly MERCHANT_ROOM = 6;
     public static readonly PUZZLE_ROOM = 7;
     public static readonly BOSS_ROOM = 8;
+    public static readonly POKER_ROOM = 9;
+    public static readonly TAROT_ROOM = 10;
+    public static readonly TEST_ROOM = 11;
     public level: number = 1;
     public map: RectRoom[][];
     public size: number;
@@ -37,10 +40,16 @@ export default class RectDungeon {
     public endRoom: RectRoom;
     public merChantRoom: RectRoom;
     public puzzleRoom: RectRoom;
+    private isLevelZero = false;
 
     public constructor(level: number) {
-        this.level = level;
-        this.size = level + 2;
+        this.isLevelZero = level == 0;
+        if(this.isLevelZero){
+            this.level = 1;
+        }else{
+            this.level = level;
+        }
+        this.size = this.level + 2;
         this.primaryRooms = new Array<RectRoom>();
         this.secondaryRooms = new Array<RectRoom>();
         this.buildMap();
@@ -85,6 +94,7 @@ export default class RectDungeon {
         this.addSecondaryRooms();
         this.buildPrimaryRoomsType();
         this.buildSecondaryRoomsType();
+        this.buildZeroRoomsType();
         this.addLootKeys();
         this.addDoors();
     }
@@ -234,6 +244,18 @@ export default class RectDungeon {
         this.addLootRoom();
         this.addLootRoom();
 
+
+    }
+    buildZeroRoomsType():void{
+        if(!this.isLevelZero){
+            return;
+        }
+        this.secondaryRooms[0].roomType = RectDungeon.POKER_ROOM;
+        this.secondaryRooms[1].roomType = RectDungeon.TAROT_ROOM;
+        this.endRoom = this.secondaryRooms[1];
+        this.secondaryRooms[2].roomType = RectDungeon.LOOT_ROOM;
+        this.secondaryRooms[3].roomType = RectDungeon.TEST_ROOM;
+        
 
     }
     addMerchantRoom(): void {
@@ -440,6 +462,12 @@ export default class RectDungeon {
                 return "Ｍ";
             case RectDungeon.BOSS_ROOM:
                 return "Ｂ";
+            case RectDungeon.POKER_ROOM:
+                return "Ｃ";
+            case RectDungeon.TAROT_ROOM:
+                return "Ｂ";
+            case RectDungeon.TEST_ROOM:
+                return "Ａ";
         }
         return "　";
     }

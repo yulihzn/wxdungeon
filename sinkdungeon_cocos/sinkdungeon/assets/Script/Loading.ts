@@ -35,18 +35,21 @@ export default class Loading extends cc.Component {
     // onLoad () {}
 
     start() {
-        this.label.string = `Level ${Logic.level}`
+        this.label.string = `Level ${Logic.chapterName+1}-${Logic.level}`
+        if (Logic.level == 0) {
+            this.label.string = `Sink Dungeon`
+        }
         this.isLevelLoaded = false;
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
         this.isDebuffsLoaded = false;
-
         this.loadMap();
         this.loadEquipment();
         this.loadSpriteFrames();
         this.loadMonsters();
         this.loadDebuffs();
         this.loadBullets();
+
     }
     loadMap() {
         Logic.mapManger.isloaded = false;
@@ -126,9 +129,9 @@ export default class Loading extends cc.Component {
     update(dt) {
         this.timeDelay += dt;
         this.isLevelLoaded = Logic.mapManger.isloaded;
-        if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded 
+        if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded
             && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded
-        && this.isBulletsLoaded) {
+            && this.isBulletsLoaded) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
