@@ -20,6 +20,8 @@
       "service_component_name": "service-analytics",
       "package_versions": [
         "1.0.0_1.0.5"
+      ],
+      "build_platform": [
       ]
     },
     {
@@ -41,6 +43,8 @@
       "package_download_url": "http://download.cocos.com/CocosServices/plugins/service-matchvs/1.0.5_3.7.7.3.zip",
       "service_component_name": "service-matchvs",
       "package_versions": [
+      ],
+      "build_platform": [
       ]
     },
     {
@@ -63,6 +67,8 @@
       "service_component_name": "service-anysdk",
       "package_versions": [
         "1.0.0_2.2.5"
+      ],
+      "build_platform": [
       ]
     }
   ]

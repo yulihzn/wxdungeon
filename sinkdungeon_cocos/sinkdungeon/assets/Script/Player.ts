@@ -24,6 +24,7 @@ import InventoryManager from './Manager/InventoryManager';
 import PlayerData from './Data/PlayerData';
 import PlayerInfoDialog from './UI/PlayerInfoDialog';
 import FloatinglabelManager from './Manager/FloatingLabelManager';
+import Tips from './UI/Tips';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -70,7 +71,10 @@ export default class Player extends cc.Component {
     isFall = false;//是否跌落
     baseAttackPoint: number = 1;
 
+    //触碰到的装备
     touchedEquipment: Equipment;
+    //触碰到的提示
+    touchedTips:Tips;
     inventoryManager: InventoryManager;
     data: PlayerData;
     recoveryTimeDelay = 0;
@@ -550,6 +554,9 @@ export default class Player extends cc.Component {
                 this.touchedEquipment = null;
             }
         }
+        if(this.touchedTips){
+            this.touchedTips.next((tips)=>{cc.director.emit(EventConstant.PLAYER_OPENTAROT)});
+        }
     }
     //anim
     AttackFinish() {
@@ -568,14 +575,20 @@ export default class Player extends cc.Component {
     // }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         this.touchedEquipment = null;
+        this.touchedTips = null;
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         this.touchedEquipment = null;
+        this.touchedTips = null;
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let equipment = other.node.getComponent(Equipment);
         if (equipment) {
             this.touchedEquipment = equipment;
+        }
+        let tips = other.node.getComponent(Tips);
+        if(tips){
+            this.touchedTips = tips;
         }
     }
 

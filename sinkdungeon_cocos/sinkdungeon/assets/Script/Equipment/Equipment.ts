@@ -74,27 +74,29 @@ export default class Equipment extends cc.Component {
         }, 1000);
 
     }
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        let player = otherCollider.body.node.getComponent(Player);
-        if (player) {
-            this.equipmentDialog.showDialog();
-        }
-    }
-    onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        let player = otherCollider.body.node.getComponent(Player);
+    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    //     let player = otherCollider.body.node.getComponent(Player);
+    //     if (player) {
+    //         this.equipmentDialog.showDialog();
+    //     }
+    // }
+    // onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    //     let player = otherCollider.body.node.getComponent(Player);
+    //     if (player) {
+    //         this.equipmentDialog.hideDialog();
+    //     }
+    // }
+    onCollisionExit(other:cc.Collider,self:cc.Collider){
+        let player = other.node.getComponent(Player);
         if (player) {
             this.equipmentDialog.hideDialog();
         }
     }
-    // onCollisionExit(other:cc.Collider,self:cc.Collider){
-    //     if(other.tag == 3){
-    //         this.equipmentDialog.hideDialog();
-    //     }
-    // }
-    // onCollisionEnter(other:cc.Collider,self:cc.Collider){
-    //     if(other.tag == 3){
-    //         this.equipmentDialog.showDialog();
-    //     }
-    // }
+    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+        let player = other.node.getComponent(Player);
+        if (player) {
+            this.equipmentDialog.showDialog();
+        }
+    }
     // update (dt) {}
 }
