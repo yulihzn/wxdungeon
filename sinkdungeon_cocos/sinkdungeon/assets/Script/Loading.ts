@@ -66,6 +66,7 @@ export default class Loading extends cc.Component {
             } else {
                 Logic.equipments = resource.json;
                 this.isEquipmentLoaded = true;
+                cc.log('equipment loaded');
             }
         })
     }
@@ -80,6 +81,7 @@ export default class Loading extends cc.Component {
             } else {
                 Logic.debuffs = resource.json;
                 this.isDebuffsLoaded = true;
+                cc.log('debuffs loaded');
             }
         })
     }
@@ -94,6 +96,7 @@ export default class Loading extends cc.Component {
             } else {
                 Logic.bullets = resource.json;
                 this.isBulletsLoaded = true;
+                cc.log('bullets loaded');
             }
         })
     }
@@ -108,6 +111,7 @@ export default class Loading extends cc.Component {
             } else {
                 Logic.monsters = resource.json;
                 this.isMonsterLoaded = true;
+                cc.log('monsters loaded');
             }
         })
     }
@@ -123,6 +127,7 @@ export default class Loading extends cc.Component {
                 Logic.spriteFrames[frame.name] = frame;
             }
             this.isSpriteFramesLoaded = true;
+            cc.log('texture loaded');
         })
     }
 

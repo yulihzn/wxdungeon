@@ -156,6 +156,7 @@ export default class MapManager {
                 }
                 this.resetRooms();
                 this.isloaded = true;
+                cc.log('maps loaded');
             }
         })
 

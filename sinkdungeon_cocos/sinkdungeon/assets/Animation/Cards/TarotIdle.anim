@@ -1,0 +1,77 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "TarotIdle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.3333333333333333,
+  "sample": 60,
+  "speed": 0.5,
+  "wrapMode": "2",
+  "curveData": {
+    "paths": {
+      "sprite/back": {
+        "props": {
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 1
+            },
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/front": {
+        "props": {
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": 1
+            }
+          ]
+        }
+      },
+      "sprite": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 45
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

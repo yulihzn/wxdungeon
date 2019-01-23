@@ -8,7 +8,7 @@ export class EventConstant extends cc.Component{
     public static readonly PLAYER_ATTACK = 'PLAYER_ATTACK';
     public static readonly PLAYER_REMOTEATTACK = 'PLAYER_REMOTEATTACK';
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM';
-    public static readonly PLAYER_OPENTAROT = 'PLAYER_OPENTAROT';
+    public static readonly PLAYER_TAPTIPS = 'PLAYER_TAPTIPS';
     public static readonly PLAYER_TAKEDAMAGE= 'PLAYER_TAKEDAMAGE';
     public static readonly PLAYER_CHANGEWEAPON= 'PLAYER_CHANGEWEAPON';
     public static readonly PLAYER_CHANGEEQUIPMENT= 'PLAYER_CHANGEEQUIPMENT';

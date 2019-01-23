@@ -555,7 +555,7 @@ export default class Player extends cc.Component {
             }
         }
         if(this.touchedTips){
-            this.touchedTips.next((tips)=>{cc.director.emit(EventConstant.PLAYER_OPENTAROT)});
+            this.touchedTips.next();
         }
     }
     //anim

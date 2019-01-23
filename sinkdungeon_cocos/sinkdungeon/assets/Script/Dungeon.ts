@@ -27,6 +27,7 @@ import FallStone from "./Building/FallStone";
 import Emplacement from "./Building/Emplacement";
 import Boss from "./Boss/Boss";
 import SlimeVenom from "./Boss/SlimeVenom";
+import TarotTable from "./Building/TarotTable";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -77,6 +78,8 @@ export default class Dungeon extends cc.Component {
     bed:cc.Prefab = null;
     @property(cc.Prefab)
     campFire:cc.Prefab = null;
+    @property(cc.Prefab)
+    tarotTable:cc.Prefab = null;
     @property(cc.Prefab)
     venom:cc.Prefab = null;
     @property(cc.Node)
@@ -235,6 +238,13 @@ export default class Dungeon extends cc.Component {
                     venom.parent = this.node;
                     venom.position = Dungeon.getPosInMap(cc.v2(i, j));
                     venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                }
+                //生成塔罗
+                if (mapData[i][j] == 'O') {
+                    let tarottable = cc.instantiate(this.tarotTable);
+                    tarottable.parent = this.node;
+                    tarottable.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    tarottable.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
                 }
                 //生成宝箱 房间清理的情况下箱子是打开的
                 if (mapData[i][j] == 'C') {

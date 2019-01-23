@@ -50,8 +50,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5168185763888888,
-      "y": 0.5168185763888888,
+      "x": 0.10839462040326063,
+      "y": 0.10839462040326063,
       "z": 1
     },
     "_quat": {
@@ -3174,9 +3174,6 @@
     "_enabled": true,
     "bullet": {
       "__uuid__": "041f388a-c474-4799-8670-41cf0d67c2f5"
-    },
-    "laser": {
-      "__uuid__": "e4c6f77a-8983-46af-9754-5549d07bc619"
     },
     "isAI": false,
     "_id": "f5Fv+pkIxE7oNGoC41UM8O"
@@ -17564,9 +17561,7 @@
     "_enabled": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "316e04d0-3f23-4b10-b0b7-01a3b61f6801"
-    },
+    "_spriteFrame": null,
     "_type": 2,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -18344,6 +18339,9 @@
     },
     "campFire": {
       "__uuid__": "c09aab52-cb44-4f91-952f-d752f65a7705"
+    },
+    "tarotTable": {
+      "__uuid__": "8b1268ac-77b2-408a-be0f-bb13fb20737e"
     },
     "venom": {
       "__uuid__": "df8c2697-7818-406f-bc5b-f29236f7a859"

@@ -1,3 +1,5 @@
+import { EventConstant } from "../EventConstant";
+
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -15,6 +17,7 @@ const {ccclass, property} = cc._decorator;
 export default class Tips extends cc.Component {
     static readonly TAROT_TABLE = "Tips.TAROT_TABLE";
     isUse = false;
+    tipsType = '';
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -23,15 +26,13 @@ export default class Tips extends cc.Component {
     start () {
 
     }
-    next(callback:Function):void{
-        if(!this.isUse){
+    next():void{
+        if(this.isUse){
             return;
         }
         this.isUse = true;
-        if(callback){
-            callback(Tips.TAROT_TABLE);
-            setTimeout(()=>{this.isUse = false;},100);
-        }
+        cc.director.emit(EventConstant.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType}});
+        setTimeout(()=>{this.isUse = false;},100);
     }
     onDestroy(){
         this.isUse = false;

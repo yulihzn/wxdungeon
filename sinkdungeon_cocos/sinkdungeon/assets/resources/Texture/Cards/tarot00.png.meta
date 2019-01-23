@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "3805660d-3b1f-4890-a6a6-75de224f73d9",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "tarot00": {
+      "ver": "1.0.3",
+      "uuid": "09e85e9b-88c6-4f36-9e01-2ee5593393af",
+      "rawTextureUuid": "3805660d-3b1f-4890-a6a6-75de224f73d9",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 32,
+      "height": 48,
+      "rawWidth": 32,
+      "rawHeight": 48,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

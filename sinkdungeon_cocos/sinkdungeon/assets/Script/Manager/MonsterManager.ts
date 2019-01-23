@@ -79,7 +79,7 @@ export default class MonsterManager extends cc.Component {
             data.melee = data.melee>0?data.melee+20:0;
             data.remote = data.remote>0?data.remote+20:0;
             data.dash = data.dash>0?data.dash+20:0;
-            data.Common.moveSpeed = data.Common.moveSpeed + 100;
+            data.Common.moveSpeed = data.Common.moveSpeed>0?(data.Common.moveSpeed + 100):0;
         }
         let rate = 0.01;
         data.Common.iceDamage = Math.random()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);

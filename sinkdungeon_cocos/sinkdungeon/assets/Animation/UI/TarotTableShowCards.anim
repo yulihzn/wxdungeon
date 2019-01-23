@@ -1,0 +1,95 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "TarotTableShowCards",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "table/tarotbackground1": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                32
+              ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "table/tarotbackground2": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                32
+              ]
+            },
+            {
+              "frame": 0.75,
+              "value": [
+                -32,
+                0
+              ]
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.75,
+              "value": 30
+            }
+          ]
+        }
+      },
+      "table/tarotbackground3": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                32
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                32,
+                0
+              ]
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": -30
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
