@@ -28,6 +28,8 @@ export class EventConstant extends cc.Component{
     public static readonly DUNGEON_ADD_FALLSTONE = 'DUNGEON_ADD_FALLSTONE';
     public static readonly MONSTER_STATUSUPDATE = 'MONSTER_STATUSUPDATE';
     public static readonly BOSS_ADDSLIME = 'BOSS_ADDSLIME';
+    public static readonly HUD_UPDATE_PLAYER_INFODIALOG = 'HUD_UPDATE_PLAYER_INFO_DIALOG';
+    public static readonly HUD_UPDATE_PLAYER_HEALTHBAR = 'HUD_UPDATE_PLAYER_HEALTHBAR';
     public static eventHandler:cc.Node = new cc.Node();
     // LIFE-CYCLE CALLBACKS:
 

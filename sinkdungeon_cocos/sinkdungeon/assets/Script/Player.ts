@@ -33,8 +33,6 @@ export default class Player extends cc.Component {
     pos: cc.Vec2 = cc.v2(4, 4);
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
-    @property(HealthBar)
-    healthBar: HealthBar = null;
     @property(cc.Prefab)
     walksmoke: cc.Prefab = null;
     private smokePool: cc.NodePool;
@@ -46,8 +44,6 @@ export default class Player extends cc.Component {
     shooter: Shooter = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
-    @property(PlayerInfoDialog)
-    playerInfoDialog: PlayerInfoDialog = null;
     private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
@@ -165,11 +161,11 @@ export default class Player extends cc.Component {
         })
     }
     private statusUpdate() {
-        if (!this.inventoryManager || !this.playerInfoDialog) {
+        if (!this.inventoryManager) {
             return;
         }
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
-        this.playerInfoDialog.refreshDialog(this.data, this.data.EquipmentTotalData, this.data.StatusTotalData);
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG,{detail:{data:this.data}});
     }
     private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
         let smokePrefab: cc.Node = null;
@@ -258,11 +254,9 @@ export default class Player extends cc.Component {
                 break;
         }
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
-        this.playerInfoDialog.refreshDialog(this.data, this.data.EquipmentTotalData, this.data.StatusTotalData);
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG,{detail:{data:this.data}});
         let health = this.data.getHealth();
-        if (this.healthBar) {
-            this.healthBar.refreshHealth(health.x, health.y);
-        }
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR,{detail:{x:health.x,y:health.y}});
     }
     /**获取中心位置 */
     getCenterPosition():cc.Vec2{
@@ -427,9 +421,7 @@ export default class Player extends cc.Component {
         }
         this.changeZIndex(this.pos);
         let health = this.data.getHealth();
-        if (this.healthBar) {
-            this.healthBar.refreshHealth(health.x, health.y);
-        }
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR,{detail:{x:health.x,y:health.y}});
     }
     fall() {
         if (this.isFall) {
@@ -448,7 +440,7 @@ export default class Player extends cc.Component {
         }, 2000);
     }
     takeDamage(damageData: DamageData) {
-        if (!this.healthBar) {
+        if(!this.data){
             return;
         }
         let dd = this.data.getDamage(damageData);
@@ -460,7 +452,7 @@ export default class Player extends cc.Component {
         if (health.x > health.y) {
             health.x = health.y;
         }
-        this.healthBar.refreshHealth(health.x, health.y);
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR,{detail:{x:health.x,y:health.y}});
         Logic.playerData.currentHealth = health.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false);
         if (Logic.playerData.currentHealth <= 0) {

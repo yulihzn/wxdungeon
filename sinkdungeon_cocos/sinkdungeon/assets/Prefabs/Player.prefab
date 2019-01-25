@@ -2907,7 +2907,6 @@
     "floatinglabelManager": {
       "__id__": 48
     },
-    "healthBar": null,
     "walksmoke": {
       "__uuid__": "1eb51490-dada-4e90-bd23-c7ec24165a92"
     },
@@ -2920,7 +2919,6 @@
     "statusManager": {
       "__id__": 77
     },
-    "playerInfoDialog": null,
     "_id": ""
   },
   {
