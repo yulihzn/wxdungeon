@@ -15,13 +15,14 @@ import EquipmentData from './Data/EquipmentData';
 import Player from './Player';
 import EquipmentDialog from './Equipment/EquipmentDialog';
 import InventoryManager from './Manager/InventoryManager';
+import Dungeon from './Dungeon';
 @ccclass
 export default class NewClass extends cc.Component {
 
     @property(cc.Node)
     tabselect: cc.Node = null;
-    @property(cc.Node)
-    player: cc.Node = null;
+    @property(Dungeon)
+    dungeon: Dungeon = null;
     private selectIndex = 0;
 
     @property(cc.Sprite)
@@ -118,7 +119,7 @@ export default class NewClass extends cc.Component {
     }
     setEquipment(equipDataNew: EquipmentData,equipmentData:EquipmentData,isChange:boolean){
         if (equipmentData.equipmetType == equipDataNew.equipmetType) {
-            let p = this.player.getComponent(Player).pos.clone();
+            let p = this.dungeon.player.getComponent(Player).pos.clone();
             if(p.y<1){
                 p.y += 1;
             }else{
@@ -179,9 +180,9 @@ export default class NewClass extends cc.Component {
             this.inventoryManager.cloak.valueCopy(equipmentDataNew);
             break;
         }
-        if(this.player){
-            this.player.getComponent(Player).inventoryManager = this.inventoryManager;
-            this.player.getComponent(Player).changeEquipment(equipmentDataNew,spriteFrame)
+        if(this.dungeon.player){
+            this.dungeon.player.getComponent(Player).inventoryManager = this.inventoryManager;
+            this.dungeon.player.getComponent(Player).changeEquipment(equipmentDataNew,spriteFrame)
         }
     }
 

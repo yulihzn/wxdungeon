@@ -1,3 +1,5 @@
+import Dungeon from "./Dungeon";
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -13,8 +15,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class CameraControl extends cc.Component {
 
-    @property(cc.Node)
-    target: cc.Node = null;
+    @property(Dungeon)
+    dungeon: Dungeon = null;
 
     camera:cc.Camera;
 
@@ -34,7 +36,7 @@ export default class CameraControl extends cc.Component {
 
     }
     lateUpdate(){
-        let targetPos = this.target.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        let targetPos = this.dungeon.player.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
         this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1)
         // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
         // let ratio = targetPos.y / cc.winSize.height;

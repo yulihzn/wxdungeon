@@ -16,8 +16,6 @@ import Logic from './Logic';
 export default class Controller extends cc.Component {
 
     @property(cc.Node)
-    player: cc.Node = null;
-    @property(cc.Node)
     mainAction: cc.Node = null;
     mainActionTouched = false;
     @property(cc.Node)

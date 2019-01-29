@@ -69,8 +69,8 @@ export default class Dungeon extends cc.Component {
     shoptable: cc.Prefab = null;
     @property(cc.Prefab)
     floorDecoration: cc.Prefab = null;
-    @property(Player)
-    player: Player = null;
+    @property(cc.Prefab)
+    playerPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     portalPrefab: cc.Prefab = null;
     portal: Portal = null;
@@ -99,6 +99,7 @@ export default class Dungeon extends cc.Component {
     private timeDelay = 0;
     private checkTimeDelay = 0;
 
+    player: Player = null;
     monsters: Monster[];//房间怪物列表
     // public monsterReswpanPoints: { [key: string]: string } = {};//怪物重生点
     monsterManager: MonsterManager = null;//怪物管理
@@ -146,6 +147,7 @@ export default class Dungeon extends cc.Component {
         this.coinManager = this.getComponent(CoinManger);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.dungeonStyleManager.addDecorations();
+        this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
 
         this.bosses = new Array();
