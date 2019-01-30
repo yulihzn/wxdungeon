@@ -1,0 +1,28 @@
+{
+    "tarot00": {
+        "nameCn": "Fool",
+        "nameEn": "Fool",
+        "resName": "tarot00",
+        "index": 0,
+        "desc": "Fool",
+        "word1": "防御加5",
+        "word2": "怪物近战伤害减半",
+        "word3": "陷阱间隔时间翻倍",
+        "word4": "无法使用远程，武器近战基础伤害转为最大伤害",
+        "word5": "怪物近战攻击欲望翻倍",
+        "word6": "陷阱间隔时间缩短一半"
+    },
+    "tarot01": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot01",
+        "index": 1,
+        "desc": "Magician",
+        "word1": "远程伤害翻倍",
+        "word2": "怪物子弹速度降低30%",
+        "word3": "陷阱间隔时间翻倍",
+        "word4": "无法使用远程，武器近战基础伤害转为最大伤害",
+        "word5": "怪物子弹速度提高30%",
+        "word6": "陷阱间隔时间缩短一半"
+    }
+}

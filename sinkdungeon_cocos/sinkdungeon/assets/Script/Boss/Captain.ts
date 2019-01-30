@@ -164,7 +164,7 @@ export default class Captain extends Boss {
         // if(!this.isAttacking){
         // }
         this.isHurt = true;
-        this.anim.play('CaptainHit');
+        this.anim.playAdditive('CaptainHit');
         this.isAttacking = false;
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         return true;

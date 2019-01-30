@@ -57,6 +57,7 @@ export default class Logic extends cc.Component {
     static coins = 0;//金币
     static ammo = 30;//子弹
     static killCount = 0;//杀敌数
+    static time = '00:00:00';
 
     onLoad() {
         //关闭调试
@@ -146,6 +147,9 @@ export default class Logic extends cc.Component {
     }
     static getCurrentMapShopTables(): ShopTableData[] {
         return Logic.mapManger.getCurrentMapShopTables();
+    }
+    static getCurrentMapMonsters(): MonsterData[] {
+        return Logic.mapManger.getCurrentMapMonsters();
     }
     static isBossLevel(level: number): boolean {
         return level == Logic.BOSS_LEVEL_1;

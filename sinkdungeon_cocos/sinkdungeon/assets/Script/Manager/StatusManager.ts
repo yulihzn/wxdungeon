@@ -54,12 +54,12 @@ export default class StatusManager extends cc.Component {
                 this.statusList.splice(i, 1);
             }
         }
-        //新的状态如果存在则附加
+        //新的状态如果存在则刷新
         let hasStatus = false;
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == data.statusType) {
-                s.data.duration+=data.duration;
+                s.data.duration=data.duration;
                 hasStatus = true;
                 break;
             }

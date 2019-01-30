@@ -481,6 +481,7 @@ export default class Player extends cc.Component {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
+        cc.director.emit(EventConstant.HUD_STOP_COUNTTIME);
         setTimeout(() => {
             Logic.profile.clearData();
             cc.director.loadScene('gameover');

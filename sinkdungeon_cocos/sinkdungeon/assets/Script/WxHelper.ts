@@ -51,7 +51,7 @@ export default class WxHelper extends cc.Component {
         // https://developers.weixin.qq.com/minigame/dev/document/open-api/user-info/wx.createUserInfoButton.html
         let button = this.wx.createUserInfoButton({
             type: 'text',
-            text: 'getUserInfo',
+            text: '',
             style: {
                 left: left,
                 top: top,

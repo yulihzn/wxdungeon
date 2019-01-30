@@ -14,6 +14,7 @@ import CommonData from "./CommonData";
 
 
 export default class MonsterData{
+    defaultPos:cc.Vec2;
     nameCn:string = '';//名字
     nameEn:string = '';
     resName:string = '';//资源名字

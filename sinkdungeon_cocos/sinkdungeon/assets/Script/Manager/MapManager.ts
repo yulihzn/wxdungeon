@@ -7,6 +7,7 @@ import BoxData from "../Data/BoxData";
 import EquipmentData from "../Data/EquipmentData";
 import ShopTableData from "../Data/ShopTableData";
 import OilLake from "../Oil/OilLake";
+import MonsterData from "../Data/MonsterData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,6 +34,8 @@ export default class MapManager {
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
     shopTables: { [key: string]: ShopTableData[] } = {};
+    //根据下标保存怪物的位置和状态
+    monsters:{[key:string]:MonsterData[]} = {};
     constructor() {
         this.init();
     }
@@ -50,6 +53,7 @@ export default class MapManager {
         this.currentPos = Logic.profile.currentPos.clone();
         this.boxes = Logic.profile.boxes;
         this.shopTables = Logic.profile.shopTables;
+        this.monsters = Logic.profile.monsters;
         cc.log('load', this.rectDungeon.getDisPlay());
     }
     reset(level: number) {
@@ -61,6 +65,7 @@ export default class MapManager {
         Logic.profile.currentPos = this.currentPos.clone();        
         this.boxes = {};
         this.shopTables = {};
+        this.monsters = {};
         // let oillake:OilLake = new OilLake();
         // cc.log(oillake.getDisPlay());
     }
@@ -108,6 +113,14 @@ export default class MapManager {
     /** 设置当前房间商店*/
     public setCurrentShopTableArr(arr: ShopTableData[]) {
         this.shopTables[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
+    }
+    /** 获取当前房间怪物*/
+    public getCurrentMapMonsters(): MonsterData[] {
+        return this.monsters[`x=${this.currentPos.x}y=${this.currentPos.y}`];
+    }
+    /** 设置当前房间怪物*/
+    public setCurrentMonstersArr(arr: MonsterData[]) {
+        this.monsters[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
     }
     /** 设置房间状态为清理*/
     public setRoomClear(x: number, y: number) {

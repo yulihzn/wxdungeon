@@ -6,7 +6,6 @@ export default class WordData {
     nameEn: string = '';
     desc: string = '';
     spriteFrameName: string = '';
-    index = 0;
 
     constructor() {
         this.common = new CommonData();
@@ -19,7 +18,6 @@ export default class WordData {
         this.common.valueCopy(data.common);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn ? data.nameEn : this.nameEn;
-        this.index = data.index ? data.index : this.index;
         this.spriteFrameName = data.spriteFrameName;
         this.desc = data.desc;
 
@@ -29,7 +27,6 @@ export default class WordData {
         e.common = this.common.clone();
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
-        e.index = this.index;
         e.spriteFrameName = this.spriteFrameName;
         e.desc = this.desc;
 

@@ -4,6 +4,7 @@ import RectDungeon from "../Rect/RectDungeon";
 import RectRoom from "../Rect/RectRoom";
 import BoxData from "./BoxData";
 import ShopTableData from "./ShopTableData";
+import MonsterData from "./MonsterData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -25,11 +26,13 @@ export default class ProfileData {
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
     shopTables: { [key: string]: ShopTableData[] } = {};
+    //根据下标保存怪物的位置和状态
+    monsters:{[key:string]:MonsterData[]} = {};
     chapterName:number = 0;
     hasSaveData:boolean = false;
     playerData:PlayerData = new PlayerData();
     inventoryManager: InventoryManager = new InventoryManager();
-    ammo = 9999;//子弹
+    ammo = 30;//子弹
     level = 0;
     constructor(){
         // this.loadProfile();
@@ -96,6 +99,15 @@ export default class ProfileData {
                 this.shopTables[key][i] = tables;
             }
          }
+        //  for(let key in data.monsters){
+        //     let list = data.monsters[key];
+        //     this.monsters[key] = new Array();
+        //     for(let i = 0;i < list.length;i++){
+        //         let monsters = new MonsterData();
+        //         monsters.valueCopy(list[i]);
+        //         this.monsters[key][i] = monsters;
+        //     }
+        //  }
         console.log('profileData',this);
         
     }

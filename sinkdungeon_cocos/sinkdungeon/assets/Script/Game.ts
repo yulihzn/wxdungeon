@@ -1,4 +1,5 @@
 import Logic from "./Logic";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,21 +16,12 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Game extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-
-
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    start () {
-
-    }
-
-    update (dt) {
-        if(this.label){
-            this.label.string = `Level ${Logic.level}`;
-        }
-    }
+    // start () {
+        
+    // }
+    
 }

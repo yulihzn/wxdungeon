@@ -2,6 +2,7 @@ import PlayerInfoDialog from "./PlayerInfoDialog";
 import HealthBar from "../HealthBar";
 import { EventConstant } from "../EventConstant";
 import PlayerData from "../Data/PlayerData";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,7 +14,7 @@ import PlayerData from "../Data/PlayerData";
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameHud extends cc.Component {
@@ -21,34 +22,90 @@ export default class GameHud extends cc.Component {
     healthBar: HealthBar = null;
     @property(PlayerInfoDialog)
     playerInfoDialog: PlayerInfoDialog = null;
+    @property(cc.Label)
+    level: cc.Label = null;
+    @property(cc.Label)
+    clock: cc.Label = null;
+    private checkTimeDelay = 0;
+    private startCountTime = true;
+
+    private hour = 0;
+    private minute = 0;
+    private second = 0;
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         cc.director.on(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, (event) => {
             let data = new PlayerData();
             data.valueCopy(event.detail.data);
             this.statusUpdate(data);
         })
         cc.director.on(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, (event) => {
-            this.healthBarUpdate(event.detail.x,event.detail.y);
+            this.healthBarUpdate(event.detail.x, event.detail.y);
         })
+        cc.director.on(EventConstant.HUD_STOP_COUNTTIME
+            , (event) => { this.startCountTime = false; });
+        if (this.clock) {
+            this.clock.string = `${Logic.time}`;
+        }
+        if (this.level) {
+            this.level.string = `Level ${Logic.chapterName + 1}-${Logic.level}`;
+        }
     }
-    private statusUpdate(data:PlayerData) {
+    private statusUpdate(data: PlayerData) {
         if (!this.playerInfoDialog) {
             return;
         }
         this.playerInfoDialog.refreshDialog(data, data.EquipmentTotalData, data.StatusTotalData);
     }
 
-    private healthBarUpdate(currentHealth,maxHealth):void{
+    private healthBarUpdate(currentHealth, maxHealth): void {
         if (this.healthBar) {
             this.healthBar.refreshHealth(currentHealth, maxHealth);
         }
     }
-    start () {
-
+    start() {
+        let arr = Logic.time.split(':');
+        this.hour = parseInt(arr[0]);
+        this.minute = parseInt(arr[1]);
+        this.second = parseInt(arr[2]);
     }
 
-    // update (dt) {}
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 1) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+
+    update(dt) {
+        if (this.isCheckTimeDelay(dt)) {
+            if (this.clock && this.startCountTime) {
+                this.changeTime();
+                this.clock.string = `${Logic.time}`;
+            }
+        }
+    }
+    changeTime() {
+        this.second = this.second + 1;
+        if (this.second >= 60) {
+            this.second = 0;
+            this.minute = this.minute + 1;
+        }
+        if (this.minute >= 60) {
+            this.minute = 0;
+            this.hour = this.hour + 1;
+        }
+        let strHour = `${this.hour}`;
+        strHour = strHour.length > 1 ? strHour : '0' + strHour;
+        let strMinute = `${this.minute}`;
+        strMinute = strMinute.length > 1 ? strMinute : '0' + strMinute;
+        let strSecond = `${this.second}`;
+        strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond;
+        Logic.time = strHour + ':' + strMinute + ':' + strSecond;
+
+    }
 }

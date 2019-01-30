@@ -18,6 +18,7 @@ export class EventConstant extends cc.Component{
     public static readonly CHANGE_MINIMAP= 'CHANGE_MINIMAP';
     public static readonly LOADINGROOM= 'LOADINGROOM';
     public static readonly HUD_ADD_COIN = 'HUD_ADD_COIN';
+    public static readonly HUD_STOP_COUNTTIME = 'HUD_STOP_COUNTTIME';
     public static readonly HUD_LIGHT_CONTROLLER = 'HUD_LIGHT_CONTROLLER';
     public static readonly HUD_DARK_CONTROLLER = 'HUD_DARK_CONTROLLER';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';

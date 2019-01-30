@@ -5,8 +5,14 @@ export default class TarotData {
     nameCn: string = '';
     nameEn: string = '';
     desc: string = '';
-    spriteFrameName: string = '';
-    index = 0;
+    resName: string = '';
+    index = 0;//下标0-21
+    word1: string = '';
+    word2: string = '';
+    word3: string = '';
+    word4: string = '';
+    word5: string = '';
+    word6: string = '';
 
     constructor() {
         this.common = new CommonData();
@@ -20,7 +26,7 @@ export default class TarotData {
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn ? data.nameEn : this.nameEn;
         this.index = data.index ? data.index : this.index;
-        this.spriteFrameName = data.spriteFrameName;
+        this.resName = data.resName?data.resName:this.resName;
         this.desc = data.desc;
 
     }
@@ -30,10 +36,8 @@ export default class TarotData {
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
         e.index = this.index;
-        e.spriteFrameName = this.spriteFrameName;
+        e.resName = this.resName;
         e.desc = this.desc;
-
-        e.spriteFrameName = this.spriteFrameName;
         return e;
     }
 }

@@ -18,16 +18,27 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     @property(WxHelper)
     wxhelper:WxHelper = null;
+    @property(cc.Label)
+    level: cc.Label = null;
+    @property(cc.Label)
+    clock: cc.Label = null;
     // onLoad () {}
 
     start () {
-
+        if (this.clock) {
+            this.clock.string = `${Logic.time}`;
+        }
+        if (this.level) {
+            this.level.string = `Level ${Logic.chapterName + 1}-${Logic.level}`;
+        }
     }
     retry(){
+        Logic.time = '00:00:00';
         Logic.resetData();
         cc.director.loadScene('loading');
     }
     home(){
+        Logic.time = '00:00:00';
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }

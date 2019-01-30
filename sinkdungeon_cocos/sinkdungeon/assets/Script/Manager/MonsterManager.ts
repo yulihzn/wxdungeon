@@ -71,7 +71,13 @@ export default class MonsterManager extends cc.Component {
             monster.changeBodyRes(resName);
         }
         //5%的几率变异
-        monster.isVariation =  Logic.getRandomNum(0,100)<5;
+        let variationRate = 5;
+        //1%几率添加元素
+        let rate = 0.01;
+        variationRate = variationRate+Logic.chapterName*5+Logic.level*2;
+        rate = rate+Logic.chapterName*0.05+Logic.level*0.02;
+        
+        monster.isVariation =  Logic.getRandomNum(0,100)<variationRate;
         if(monster.isVariation){
             data.Common.maxHealth=data.Common.maxHealth*2;
             data.Common.damageMin=data.Common.damageMin*2;
@@ -81,7 +87,6 @@ export default class MonsterManager extends cc.Component {
             data.dash = data.dash>0?data.dash+20:0;
             data.Common.moveSpeed = data.Common.moveSpeed>0?(data.Common.moveSpeed + 100):0;
         }
-        let rate = 0.01;
         data.Common.iceDamage = Math.random()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
         data.Common.fireDamage = Math.random()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
         data.Common.lighteningDamage = Math.random()<rate?data.Common.lighteningDamage:Logic.getRandomNum(0,1);

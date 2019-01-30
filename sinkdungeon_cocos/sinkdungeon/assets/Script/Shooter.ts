@@ -5,7 +5,6 @@ import Monster from "./Monster";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
-import Laser from "./Item/Laser";
 
 
 // Learn TypeScript:

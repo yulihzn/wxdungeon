@@ -251,7 +251,7 @@ export default class RectDungeon {
             return;
         }
         this.secondaryRooms[0].roomType = RectDungeon.POKER_ROOM;
-        this.secondaryRooms[1].roomType = RectDungeon.LOOT_ROOM;
+        this.secondaryRooms[1].roomType = RectDungeon.EMPTY_ROOM;
         this.secondaryRooms[2].roomType = RectDungeon.TAROT_ROOM;
         this.secondaryRooms[3].roomType = RectDungeon.TEST_ROOM;
         this.endRoom = this.secondaryRooms[2];

@@ -725,7 +725,7 @@ export default class Dungeon extends cc.Component {
             this.checkRoomClear();
         }
         if (this.isSaveTimeDelay(dt)) {
-            Logic.profile.saveData();
+            // Logic.profile.saveData();
         }
     }
 }
