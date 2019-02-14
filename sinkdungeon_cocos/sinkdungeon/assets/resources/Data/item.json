@@ -1,0 +1,21 @@
+{"item000": {
+        "nameCn": "红心",
+        "nameEn": "heart",
+        "resName": "heart"
+    },
+    "item001": {
+        "nameCn": "子弹",
+        "nameEn": "ammo",
+        "resName": "ammo"
+    },
+    "item002": {
+        "nameCn": "红色攻击药丸",
+        "nameEn": "red capsule",
+        "resName": "redcapsule"
+    },
+    "item003": {
+        "nameCn": "蓝色加速药丸",
+        "nameEn": "blue capsule",
+        "resName": "bluecapsule"
+    }
+}

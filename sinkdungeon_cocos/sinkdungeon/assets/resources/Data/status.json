@@ -67,5 +67,61 @@
         "common": {
             
         }
+    },
+    "status007": {
+        "nameCn": "攻击增加",
+        "nameEn": "attack more",
+        "spriteFrameName": "iconattack",
+        "statusType": 7,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "damageMin":5
+        }
+    },
+    "status008": {
+        "nameCn": "移动加速",
+        "nameEn": "moving faster",
+        "spriteFrameName": "iconmovespeed",
+        "statusType": 8,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "moveSpeed":200
+        }
+    },
+    "status009": {
+        "nameCn": "攻击加速",
+        "nameEn": "attacking faster",
+        "spriteFrameName": "iconattackspeed",
+        "statusType": 9,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "attackSpeed":200
+        }
+    },
+    "status010": {
+        "nameCn": "完美防御",
+        "nameEn": "defence perfect",
+        "spriteFrameName": "icondefence",
+        "statusType": 10,
+        "desc": "",
+        "duration": 10,
+        "common": {
+            "defence":9999
+        }
+    },
+    "status011": {
+        "nameCn": "恢复",
+        "nameEn": "healing",
+        "spriteFrameName": "iconhealthrecovery",
+        "statusType": 11,
+        "desc": "",
+        "duration": 0,
+        "realDamageDirect": -1,
+        "common": {
+            
+        }
     }
 }

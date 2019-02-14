@@ -19,13 +19,23 @@ import MonsterData from "../Data/MonsterData";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-
+/*地图资源
+*/
 export default class MapManager {
     //读取文件的数据
-    private allfileRooms: { [key: string]: MapData[] } = {};
-    private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom',  'merchantroom', 'puzzleroom', 'bossroom','pokerroom','tarotroom','testroom'];
+    private allfileRooms00: { [key: string]: MapData[] } = {};
+    private allfileRooms01: { [key: string]: MapData[] } = {};
+    private allfileRooms02: { [key: string]: MapData[] } = {};
+    private allfileRooms03: { [key: string]: MapData[] } = {};
+    private allfileRooms04: { [key: string]: MapData[] } = {};
+    private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'merchantroom', 'puzzleroom', 'bossroom', 'pokerroom', 'tarotroom', 'testroom'];
     //文件是否加载成功
     isloaded: boolean = false;
+    isloaded00: boolean = false;
+    isloaded01: boolean = false;
+    isloaded02: boolean = false;
+    isloaded03: boolean = false;
+    isloaded04: boolean = false;
     //地图数据管理类
     rectDungeon: RectDungeon = new RectDungeon(1);
     //当前房间下标
@@ -35,7 +45,7 @@ export default class MapManager {
     //根据下标保存商店状态
     shopTables: { [key: string]: ShopTableData[] } = {};
     //根据下标保存怪物的位置和状态
-    monsters:{[key:string]:MonsterData[]} = {};
+    monsters: { [key: string]: MonsterData[] } = {};
     constructor() {
         this.init();
     }
@@ -62,7 +72,7 @@ export default class MapManager {
         this.resetRooms();
         this.currentPos = cc.v2(this.rectDungeon.startRoom.x, this.rectDungeon.startRoom.y);
         this.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
-        Logic.profile.currentPos = this.currentPos.clone();        
+        Logic.profile.currentPos = this.currentPos.clone();
         this.boxes = {};
         this.shopTables = {};
         this.monsters = {};
@@ -75,7 +85,7 @@ export default class MapManager {
         let room = this.rectDungeon.getNeighborRoomType(this.currentPos.x, this.currentPos.y, dir)
         if (room && room.roomType != 0) {
             this.currentPos = cc.v2(room.x, room.y);
-        Logic.profile.currentPos = this.currentPos.clone();            
+            Logic.profile.currentPos = this.currentPos.clone();
             this.changeRoomsIsFound(room.x, room.y);
         }
         return room;
@@ -143,7 +153,14 @@ export default class MapManager {
             this.isloaded = true;
             return;
         }
-        cc.loader.loadRes('Data/Rooms/rooms', (err: Error, resource) => {
+        this.loadChapterMap(0, this.allfileRooms00);
+        this.loadChapterMap(1, this.allfileRooms01);
+        this.loadChapterMap(2, this.allfileRooms02);
+        this.loadChapterMap(3, this.allfileRooms03);
+        this.loadChapterMap(4, this.allfileRooms04);
+    }
+    private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
+        cc.loader.loadRes(`Data/rooms0${chapterIndex}`, (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -163,25 +180,41 @@ export default class MapManager {
                             let tempstr = temparr[j];
                             a.push(new MapData(tempstr));
                         }
-                        this.allfileRooms[this.roomStrs[index]] = a;
+                        allfileRooms[this.roomStrs[index]] = a;
                         index++;
                     }
                 }
-                this.resetRooms();
-                this.isloaded = true;
-                cc.log('maps loaded');
+                switch (chapterIndex) {
+                    case 0: this.isloaded00 = true; break;
+                    case 1: this.isloaded01 = true; break;
+                    case 2: this.isloaded02 = true; break;
+                    case 3: this.isloaded03 = true; break;
+                    case 4: this.isloaded04 = true; break;
+                }
+                if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04) {
+                    this.resetRooms();
+                    this.isloaded = true;
+                    cc.log('maps loaded');
+                }
             }
         })
-
     }
     private resetRooms() {
-        if (this.allfileRooms && this.allfileRooms[this.roomStrs[0]]) {
+        let allfileRooms = this.allfileRooms00;
+        switch(Logic.chapterName){
+            case Logic.CHAPTER00:allfileRooms = this.allfileRooms00;break;
+            case Logic.CHAPTER01:allfileRooms = this.allfileRooms01;break;
+            case Logic.CHAPTER02:allfileRooms = this.allfileRooms02;break;
+            case Logic.CHAPTER03:allfileRooms = this.allfileRooms03;break;
+            case Logic.CHAPTER04:allfileRooms = this.allfileRooms04;break;
+        }
+        if (allfileRooms && allfileRooms[this.roomStrs[0]]) {
             for (let i = 0; i < this.rectDungeon.map.length; i++) {
                 for (let j = 0; j < this.rectDungeon.map[0].length; j++) {
                     let room = this.rectDungeon.map[i][j];
                     let index = room.roomType - 1;
                     if (index >= 0) {
-                        let r = this.allfileRooms[this.roomStrs[index]]
+                        let r = allfileRooms[this.roomStrs[index]]
                         //随机取出一个该类型的房间数据
                         room.map = r[Logic.getRandomNum(0, r.length - 1)];
                     }

@@ -60,9 +60,7 @@ export default class Dungeon extends cc.Component {
     @property(cc.Prefab)
     box: cc.Prefab = null;
     @property(cc.Prefab)
-    heart: cc.Prefab = null;
-    @property(cc.Prefab)
-    ammo: cc.Prefab = null;
+    item: cc.Prefab = null;
     @property(cc.Prefab)
     shop: cc.Prefab = null;
     @property(cc.Prefab)
@@ -123,13 +121,13 @@ export default class Dungeon extends cc.Component {
             this.addCoin(event.detail.pos, event.detail.count);
         })
         cc.director.on(EventConstant.DUNGEON_ADD_HEART, (event) => {
-            this.addHeart(event.detail.pos);
+            this.addItem(event.detail.pos,Item.HEART);
         })
         cc.director.on(EventConstant.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos,event.detail.isAuto);
         })
         cc.director.on(EventConstant.DUNGEON_ADD_AMMO, (event) => {
-            this.addAmmo(event.detail.pos);
+            this.addItem(event.detail.pos,Item.AMMO);
         })
         cc.director.on(EventConstant.DUNGEON_SHAKEONCE, (event) => {
             if (this.anim) {
@@ -289,17 +287,23 @@ export default class Dungeon extends cc.Component {
                 if(!Logic.mapManger.isCurrentRoomStateClear()){
                     //生成心
                     if (mapData[i][j] == 'H') {
-                        let heart = cc.instantiate(this.heart);
-                        heart.parent = this.node;
-                        heart.position = Dungeon.getPosInMap(cc.v2(i, j));
-                        heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i,j)) ,Item.HEART);
                     }
                     //生成弹药
                     if (mapData[i][j] == 'A') {
-                        let ammo = cc.instantiate(this.ammo);
-                        ammo.parent = this.node;
-                        ammo.position = Dungeon.getPosInMap(cc.v2(i, j));
-                        ammo.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 3;
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i,j)) ,Item.AMMO);
+                    }
+                    //生成红色药丸
+                    if (mapData[i][j] == 'R') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i,j)) ,Item.REDCAPSULE);
+                    }
+                    //生成蓝色药丸
+                    if (mapData[i][j] == 'Q') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i,j)) ,Item.BLUECAPSULE);
+                    }
+                    //生成无敌盾
+                    if (mapData[i][j] == 'I') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i,j)) ,Item.SHIELD);
                     }
                 }
                 //生成商店
@@ -414,18 +418,19 @@ export default class Dungeon extends cc.Component {
         }, 2000);
         
     }
-    /**掉落心 */
-    addHeart(pos: cc.Vec2) {
-        if(!this.heart){
+    addItem(pos:cc.Vec2,resName:string){
+        if(!this.item){
             return;
         }
-        let heart = cc.instantiate(this.heart);
-        heart.parent = this.node;
-        heart.position = pos;
+        let item = cc.instantiate(this.item);
+        item.parent = this.node;
+        item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        heart.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
-        
+        item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+        item.getComponent(Item).init(resName);
+
     }
+   
     /**掉落石头 */
     addFallStone(pos: cc.Vec2,isAuto:boolean) {
         if(!this.fallStone){
@@ -443,18 +448,7 @@ export default class Dungeon extends cc.Component {
         }
         
     }
-    /**掉落弹药 */
-    addAmmo(pos: cc.Vec2) {
-        if(!this.ammo){
-            return;
-        }
-        let ammo = cc.instantiate(this.ammo);
-        ammo.parent = this.node;
-        ammo.position = pos;
-        let indexpos = Dungeon.getIndexInMap(pos);
-        ammo.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
-        
-    }
+    
     /**掉落金币 */
     addCoin(pos: cc.Vec2, count: number) {
         if (this.coinManager) {

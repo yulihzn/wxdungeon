@@ -26,6 +26,9 @@ export default class Start extends cc.Component {
         Logic.resetData();
         cc.director.loadScene('loading');
     }
+    chooseChapter(){
+        cc.director.loadScene('chapter');
+    }
     continueGame(){
         if(this.wxhelper){
             this.wxhelper.CloseDialog();

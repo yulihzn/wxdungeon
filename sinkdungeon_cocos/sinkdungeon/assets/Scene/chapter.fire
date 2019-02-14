@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.2541666666666665,
-      "y": 0.2541666666666665,
+      "x": 0.1,
+      "y": 0.1,
       "z": 1
     },
     "_quat": {
@@ -1533,6 +1533,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -1575,21 +1576,6 @@
       "__id__": 35
     },
     "_enabled": true,
-    "transition": 2,
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 2,
-      "g": 6,
-      "b": 59,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 40,
-      "g": 48,
-      "b": 141,
-      "a": 255
-    },
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
@@ -1599,11 +1585,41 @@
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
+    "_N$transition": 2,
+    "transition": 2,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 3,
       "g": 9,
       "b": 80,
+      "a": 255
+    },
+    "_N$pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "_N$hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
       "a": 255
     },
     "_N$disabledColor": {
@@ -1641,9 +1657,10 @@
     "target": {
       "__id__": 2
     },
-    "component": "Chapter",
+    "component": "",
+    "_componentId": "e966c6tQ3FASbN1WCJi24PI",
     "handler": "clickChapter",
-    "customEventData": "chapter00"
+    "customEventData": "0"
   },
   {
     "__type__": "cc.Node",
@@ -1793,6 +1810,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -1835,21 +1853,6 @@
       "__id__": 41
     },
     "_enabled": true,
-    "transition": 2,
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 2,
-      "g": 6,
-      "b": 59,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 40,
-      "g": 48,
-      "b": 141,
-      "a": 255
-    },
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
@@ -1859,11 +1862,41 @@
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
+    "_N$transition": 2,
+    "transition": 2,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 3,
       "g": 9,
       "b": 80,
+      "a": 255
+    },
+    "_N$pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "_N$hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
       "a": 255
     },
     "_N$disabledColor": {
@@ -1901,9 +1934,10 @@
     "target": {
       "__id__": 2
     },
-    "component": "Chapter",
+    "component": "",
+    "_componentId": "e966c6tQ3FASbN1WCJi24PI",
     "handler": "clickChapter",
-    "customEventData": "chapter01"
+    "customEventData": "1"
   },
   {
     "__type__": "cc.Node",
@@ -2053,6 +2087,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -2095,21 +2130,6 @@
       "__id__": 47
     },
     "_enabled": true,
-    "transition": 2,
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 2,
-      "g": 6,
-      "b": 59,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 40,
-      "g": 48,
-      "b": 141,
-      "a": 255
-    },
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
@@ -2119,11 +2139,41 @@
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
+    "_N$transition": 2,
+    "transition": 2,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 3,
       "g": 9,
       "b": 80,
+      "a": 255
+    },
+    "_N$pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "_N$hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
       "a": 255
     },
     "_N$disabledColor": {
@@ -2161,9 +2211,10 @@
     "target": {
       "__id__": 2
     },
-    "component": "Chapter",
+    "component": "",
+    "_componentId": "e966c6tQ3FASbN1WCJi24PI",
     "handler": "clickChapter",
-    "customEventData": "chapter02"
+    "customEventData": "2"
   },
   {
     "__type__": "cc.Node",
@@ -2313,6 +2364,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -2355,21 +2407,6 @@
       "__id__": 53
     },
     "_enabled": true,
-    "transition": 2,
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 2,
-      "g": 6,
-      "b": 59,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 40,
-      "g": 48,
-      "b": 141,
-      "a": 255
-    },
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
@@ -2379,11 +2416,41 @@
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
+    "_N$transition": 2,
+    "transition": 2,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 3,
       "g": 9,
       "b": 80,
+      "a": 255
+    },
+    "_N$pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "_N$hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
       "a": 255
     },
     "_N$disabledColor": {
@@ -2421,9 +2488,10 @@
     "target": {
       "__id__": 2
     },
-    "component": "Chapter",
+    "component": "",
+    "_componentId": "e966c6tQ3FASbN1WCJi24PI",
     "handler": "clickChapter",
-    "customEventData": "chapter03"
+    "customEventData": "3"
   },
   {
     "__type__": "cc.Node",
@@ -2573,6 +2641,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -2615,21 +2684,6 @@
       "__id__": 59
     },
     "_enabled": true,
-    "transition": 2,
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 2,
-      "g": 6,
-      "b": 59,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 40,
-      "g": 48,
-      "b": 141,
-      "a": 255
-    },
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
@@ -2639,11 +2693,41 @@
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
+    "_N$transition": 2,
+    "transition": 2,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 3,
       "g": 9,
       "b": 80,
+      "a": 255
+    },
+    "_N$pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 2,
+      "g": 6,
+      "b": 59,
+      "a": 255
+    },
+    "_N$hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 40,
+      "g": 48,
+      "b": 141,
       "a": 255
     },
     "_N$disabledColor": {
@@ -2681,9 +2765,10 @@
     "target": {
       "__id__": 2
     },
-    "component": "Chapter",
+    "component": "",
+    "_componentId": "e966c6tQ3FASbN1WCJi24PI",
     "handler": "clickChapter",
-    "customEventData": "chapter04"
+    "customEventData": "4"
   },
   {
     "__type__": "cc.Sprite",
@@ -2741,6 +2826,7 @@
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0,
+    "_N$affectedByScale": false,
     "_id": "06ds3bcHZFLpSiwsUrCWLy"
   },
   {

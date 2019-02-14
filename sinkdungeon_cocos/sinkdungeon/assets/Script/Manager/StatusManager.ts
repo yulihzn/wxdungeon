@@ -26,6 +26,11 @@ export default class StatusManager extends cc.Component {
     public static readonly TOXICOSIS = "status004";
     public static readonly CURSING = "status005";
     public static readonly BLEEDING = "status006";
+    public static readonly ATTACKPLUS = "status007";
+    public static readonly FASTMOVE = "status008";
+    public static readonly FASTATTACK = "status009";
+    public static readonly PERFECTDEFENCE = "status010";
+    public static readonly HEALING = "status011";
 
 
     @property(cc.Prefab)

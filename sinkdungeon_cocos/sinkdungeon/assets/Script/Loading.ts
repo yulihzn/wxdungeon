@@ -29,6 +29,7 @@ export default class Loading extends cc.Component {
     private isSpriteFramesLoaded = false;
     private isDebuffsLoaded = false;
     private isBulletsLoaded = false;
+    private isItemsLoaded = false;
     // LIFE-CYCLE CALLBACKS:
 
 
@@ -49,6 +50,7 @@ export default class Loading extends cc.Component {
         this.loadMonsters();
         this.loadDebuffs();
         this.loadBullets();
+        this.loadItems();
 
     }
     loadMap() {
@@ -60,7 +62,7 @@ export default class Loading extends cc.Component {
             this.isEquipmentLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/Equipment/equipment', (err: Error, resource) => {
+        cc.loader.loadRes('Data/equipment', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -75,7 +77,7 @@ export default class Loading extends cc.Component {
             this.isDebuffsLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/Status/status', (err: Error, resource) => {
+        cc.loader.loadRes('Data/status', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -90,7 +92,7 @@ export default class Loading extends cc.Component {
             this.isBulletsLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/Bullet/bullet', (err: Error, resource) => {
+        cc.loader.loadRes('Data/bullet', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -105,13 +107,28 @@ export default class Loading extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/Monster/monsters', (err: Error, resource) => {
+        cc.loader.loadRes('Data/monsters', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
                 Logic.monsters = resource.json;
                 this.isMonsterLoaded = true;
                 cc.log('monsters loaded');
+            }
+        })
+    }
+    loadItems() {
+        if (Logic.items) {
+            this.isItemsLoaded = true;
+            return;
+        }
+        cc.loader.loadRes('Data/item', (err: Error, resource) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.items = resource.json;
+                this.isItemsLoaded = true;
+                cc.log('items loaded');
             }
         })
     }
@@ -136,13 +153,15 @@ export default class Loading extends cc.Component {
         this.isLevelLoaded = Logic.mapManger.isloaded;
         if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded
             && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded
-            && this.isBulletsLoaded) {
+            && this.isBulletsLoaded
+            && this.isItemsLoaded) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
             this.isDebuffsLoaded = false;
             this.isBulletsLoaded = false;
+            this.isItemsLoaded = false;
             cc.director.loadScene('game');
         }
     }

@@ -2,6 +2,8 @@ import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
+import ItemData from "../Data/ItemData";
+import StatusManager from "../Manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,12 +20,14 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Item extends cc.Component {
 
-    @property
-    damage: number = -1;
-    @property
-    ammo:number = 0;
+    public static readonly HEART = 'heart';
+    public static readonly AMMO = 'ammo';
+    public static readonly REDCAPSULE = 'redcapsule';
+    public static readonly BLUECAPSULE = 'bluecapsule';
+    public static readonly SHIELD = 'shield';
     anim:cc.Animation;
-    isTaken = false;
+    data:ItemData = new ItemData();
+    private isTaken = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -32,16 +36,21 @@ export default class Item extends cc.Component {
     start () {
         this.anim = this.getComponent(cc.Animation);
     }
-    taken():void{
+    init(resName:string){
+        this.data.resName = resName;
+        let spriteFrame = Logic.spriteFrames[this.data.resName];
+        if(spriteFrame){
+            let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+            this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = spriteFrame;
+            sprite.node.width = spriteFrame.getRect().width*2;
+            sprite.node.height = spriteFrame.getRect().height*2;
+        }
+    }
+    private taken(player:Player):void{
         if(!this.isTaken){
             this.anim.play('ItemTaken');
             this.isTaken = true;
-            if(this.damage!=0){
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:new DamageData(this.damage)}});
-            }
-            if(this.ammo != 0){
-                Logic.ammo+=this.ammo;
-            }
+            this.getEffect(player);
             setTimeout(()=>{
                 if(this.node){
                     this.node.active = false;
@@ -50,10 +59,19 @@ export default class Item extends cc.Component {
         }
         
     }
+    private getEffect(player:Player){
+        switch(this.data.resName){
+            case Item.HEART:player.addStatus(StatusManager.HEALING);break;
+            case Item.AMMO:Logic.ammo+=30;break;
+            case Item.REDCAPSULE:player.addStatus(StatusManager.ATTACKPLUS);break;
+            case Item.BLUECAPSULE:player.addStatus(StatusManager.FASTMOVE);break;
+            case Item.SHIELD:player.addStatus(StatusManager.PERFECTDEFENCE);break;
+        }
+    }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let player = other.node.getComponent(Player);
         if(player){
-            this.taken();
+            this.taken(player);
         }
     }
     // update (dt) {}
