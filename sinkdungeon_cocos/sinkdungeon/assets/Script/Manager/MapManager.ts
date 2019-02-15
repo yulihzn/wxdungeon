@@ -122,6 +122,7 @@ export default class MapManager {
     /** 设置当前房间箱子*/
     public setCurrentBoxesArr(arr: BoxData[]) {
         this.boxes[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
+        Logic.profile.boxes = this.boxes;
     }
     /** 获取当前房间商店*/
     public getCurrentMapShopTables(): ShopTableData[] {
@@ -130,6 +131,7 @@ export default class MapManager {
     /** 设置当前房间商店*/
     public setCurrentShopTableArr(arr: ShopTableData[]) {
         this.shopTables[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
+        Logic.profile.shopTables = this.shopTables;
     }
     /** 获取当前房间箱子*/
     public getCurrentMapChests(): ChestData[] {
@@ -138,6 +140,7 @@ export default class MapManager {
     /** 设置当前房间箱子*/
     public setCurrentChestsArr(arr: ChestData[]) {
         this.chests[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
+        Logic.profile.chests = this.chests;
     }
     /** 获取当前房间装备*/
     public getCurrentMapEquipments(): EquipmentData[] {
@@ -146,6 +149,7 @@ export default class MapManager {
     /** 设置当前房间装备*/
     public setCurrentEquipmentsArr(arr: EquipmentData[]) {
         this.equipments[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
+        Logic.profile.equipments = this.equipments;
     }
     /** 设置房间状态为清理*/
     public setRoomClear(x: number, y: number) {

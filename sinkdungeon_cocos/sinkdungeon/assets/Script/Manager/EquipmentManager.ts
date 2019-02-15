@@ -315,6 +315,7 @@ export default class EquipmentManager extends cc.Component {
             //添加新装备
             let data = new EquipmentData();
             data.valueCopy(Logic.equipments[equipType]);
+            data.uuid = data.genNonDuplicateID();
             let desc = this.getRandomDesc(data, chestQuality);
             data.infobase = this.getEquipmentInfoBase(desc, data);
             data.info1 = this.getEquipmentInfo1(desc, data);

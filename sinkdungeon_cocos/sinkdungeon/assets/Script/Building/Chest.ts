@@ -94,6 +94,7 @@ export default class Chest extends cc.Component {
             }));
         this.sprite.runAction(action);
         let currchests = Logic.mapManager.getCurrentMapChests();
+        let newlist = new Array();
             if (currchests) {
                 for (let tempchest of currchests) {
                     if (tempchest.pos.equals(this.data.pos)) {
@@ -101,6 +102,9 @@ export default class Chest extends cc.Component {
                         tempchest.quality = this.data.quality;
                     }
                 }
+            }else{
+                newlist.push(this.data)
+                Logic.mapManager.setCurrentChestsArr(newlist);
             }
     }
 

@@ -140,4 +140,7 @@ export default class EquipmentData{
         e.infobasecolor = this.infobasecolor;
         return e;
     }
+    genNonDuplicateID():string{
+        return Number(Math.random().toString().substr(3,16) + Date.now()).toString(36);
+      }
 }

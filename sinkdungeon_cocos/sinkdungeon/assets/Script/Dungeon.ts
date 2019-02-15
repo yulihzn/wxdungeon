@@ -428,6 +428,7 @@ export default class Dungeon extends cc.Component {
             Logic.mapManager.setCurrentChestsArr(chests);
         }
         this.addBoss();
+        this.addEquipmentListOnGround();
     }
     addItem(pos: cc.Vec2, resName: string) {
         if (!this.item) {
@@ -471,14 +472,13 @@ export default class Dungeon extends cc.Component {
         let currequipments = Logic.mapManager.getCurrentMapEquipments();
         if (currequipments) {
             for (let tempequip of currequipments) {
-                this.addEquipment(tempequip.img, tempequip.pos, tempequip);
+                if (this.equipmentManager) {
+                    this.equipmentManager.getEquipment(tempequip.img, tempequip.pos, this.node, tempequip, null, null).data;
+                }
                 equipments.push(tempequip);
             }
         }
-        let curres = Logic.mapManager.getCurrentMapEquipments();
-        if (!curres && equipments.length > 0) {
-            Logic.mapManager.setCurrentEquipmentsArr(equipments);
-        }
+        
     }
     /**添加装备 */
     addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable) {
@@ -487,6 +487,10 @@ export default class Dungeon extends cc.Component {
             let currequipments = Logic.mapManager.getCurrentMapEquipments();
             if (currequipments) {
                 currequipments.push(data);
+            }else{
+                currequipments = new Array();
+                currequipments.push(data);
+                Logic.mapManager.setCurrentEquipmentsArr(currequipments);
             }
         }
     }
