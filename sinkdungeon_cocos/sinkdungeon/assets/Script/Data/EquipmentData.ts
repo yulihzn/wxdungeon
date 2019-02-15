@@ -12,6 +12,8 @@ import CommonData from "./CommonData";
 
 
 export default class EquipmentData{
+    uuid:string = '';//唯一标识，用来存档
+    pos:cc.Vec2 = cc.v2(0,0);//下标
     nameCn: string = '';
     nameEn: string = '';
     equipmetType: string = 'empty';
@@ -56,6 +58,8 @@ export default class EquipmentData{
         return this.common;
     }
     public valueCopy(data:EquipmentData):void{
+        this.uuid = data.uuid?data.uuid:'';
+        this.pos = data.pos?cc.v2(data.pos.x,data.pos.y):cc.v2(0,0);
         this.common.valueCopy(data.common);
         this.nameCn = data.nameCn?data.nameCn:'';
         this.nameEn = data.nameEn?data.nameEn:'';
@@ -95,6 +99,8 @@ export default class EquipmentData{
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
+        e.uuid = this.uuid;
+        e.pos = this.pos;
         e.common = this.common.clone();
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;

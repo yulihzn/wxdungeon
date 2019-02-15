@@ -77,6 +77,7 @@ export default class ExitDoor extends cc.Component {
         if (player) {
             if (this.isOpen) {
                 this.isOpen = false;
+                Logic.saveData();
                 cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
             }
         }

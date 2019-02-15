@@ -3,6 +3,7 @@ import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
+import ChestData from "../Data/ChestData";
 
 
 // Learn TypeScript:
@@ -24,11 +25,9 @@ export default class Chest extends cc.Component {
     openSpriteFrame: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
     closeSpriteFrame: cc.SpriteFrame = null;
-    isOpen: boolean = false;
-    pos: cc.Vec2 = cc.v2(0, 0);
     private sprite: cc.Node;
     private timeDelay = 0;
-    quality = 1;
+    data:ChestData = new ChestData();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -38,9 +37,10 @@ export default class Chest extends cc.Component {
     start() {
 
     }
+   
     setQuality(quality: number,isOpen:boolean) {
-        this.quality = quality;
-        this.isOpen = isOpen;
+        this.data.quality = quality;
+        this.data.isOpen = isOpen;
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
         }
@@ -62,16 +62,16 @@ export default class Chest extends cc.Component {
     }
 
     setPos(pos: cc.Vec2) {
-        this.pos = pos;
+        this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
     }
 
     openChest() {
-        if (this.isOpen) {
+        if (this.data.isOpen) {
             return;
         }
-        this.isOpen = true;
+        this.data.isOpen = true;
 
         let action = cc.sequence(cc.moveTo(0.1, 5, 16)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
@@ -81,10 +81,10 @@ export default class Chest extends cc.Component {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
                         if(Logic.level < 1){
-                            dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.pos,null,this.quality);
-                            dungeon.addEquipment(EquipmentManager.WEAPON_DINNERFORK, this.pos,null,this.quality);
+                            dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos,null,this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.WEAPON_DINNERFORK, this.data.pos,null,this.data.quality);
                         }else{
-                            dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,this.quality);
+                            dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.data.pos,null,this.data.quality);
                         }
                         // dungeon.addEquipment(EquipmentManager.WEAPON_HAPPYFIRE, this.pos,null,this.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_SADICE, this.pos,null,this.quality);
@@ -93,12 +93,20 @@ export default class Chest extends cc.Component {
                 }
             }));
         this.sprite.runAction(action);
-
+        let currchests = Logic.mapManager.getCurrentMapChests();
+            if (currchests) {
+                for (let tempchest of currchests) {
+                    if (tempchest.pos.equals(this.data.pos)) {
+                        tempchest.isOpen = this.data.isOpen;
+                        tempchest.quality = this.data.quality;
+                    }
+                }
+            }
     }
 
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         if (other.tag == 3) {
-            if (!this.isOpen) {
+            if (!this.data.isOpen) {
                 this.openChest();
             }
         }

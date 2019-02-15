@@ -5,6 +5,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import ShopTable from "../Building/ShopTable";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,7 +28,7 @@ export default class Equipment extends cc.Component {
     equipmentDialog: EquipmentDialog = null;
     pos: cc.Vec2 = cc.v2(0, 0);
     isTaken = false;
-    shopTable:ShopTable;
+    shopTable: ShopTable;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -38,19 +39,19 @@ export default class Equipment extends cc.Component {
         this.data.valueCopy(data);
         this.equipmentDialog.refreshDialog(this.data);
         let spriteFrame = Logic.spriteFrames[this.data.img];
-        if(data.equipmetType == 'trousers'){
-            spriteFrame = data.trouserslong==1?Logic.spriteFrames['idle002']:Logic.spriteFrames['idle001'];
+        if (data.equipmetType == 'trousers') {
+            spriteFrame = data.trouserslong == 1 ? Logic.spriteFrames['idle002'] : Logic.spriteFrames['idle001'];
         }
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         this.sprite.width = spriteFrame.getRect().width;
         this.sprite.height = spriteFrame.getRect().height;
         let color = cc.color(255, 255, 255).fromHEX(this.data.color);
         this.sprite.color = color;
-        if(data.equipmetType == 'remote'){
-            this.sprite.width = this.sprite.width/2;
-            this.sprite.height = this.sprite.height/2;
+        if (data.equipmetType == 'remote') {
+            this.sprite.width = this.sprite.width / 2;
+            this.sprite.height = this.sprite.height / 2;
         }
-
+        this.data.pos = Dungeon.getIndexInMap(this.node.position.clone());
 
     }
 
@@ -64,7 +65,7 @@ export default class Equipment extends cc.Component {
     taken() {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
-        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT, {detail:{ equipData: this.data }})
+        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
         this.node.getChildByName('shadow').active = false;
         this.equipmentDialog.node.active = false;
         setTimeout(() => {
@@ -72,7 +73,16 @@ export default class Equipment extends cc.Component {
                 this.destroy();
             }
         }, 1000);
-
+        let currequipments = Logic.mapManager.getCurrentMapEquipments();
+        let newlist: EquipmentData[] = new Array();
+        if (currequipments) {
+            for (let temp of currequipments) {
+                if (temp.uuid && temp.uuid != this.data.uuid) {
+                    newlist.push(temp);
+                }
+            }
+        }
+        Logic.mapManager.setCurrentEquipmentsArr(newlist);
     }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
     //     let player = otherCollider.body.node.getComponent(Player);
@@ -86,13 +96,13 @@ export default class Equipment extends cc.Component {
     //         this.equipmentDialog.hideDialog();
     //     }
     // }
-    onCollisionExit(other:cc.Collider,self:cc.Collider){
+    onCollisionExit(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
             this.equipmentDialog.hideDialog();
         }
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
             this.equipmentDialog.showDialog();

@@ -16,6 +16,7 @@ import InventoryManager from "./Manager/InventoryManager";
 import ProfileData from "./Data/ProfileData";
 import BulletData from "./Data/BulletData";
 import ItemData from "./Data/ItemData";
+import ChestData from "./Data/ChestData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,7 +57,7 @@ export default class Logic extends cc.Component {
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
 
-    static mapManger: MapManager = new MapManager();
+    static mapManager: MapManager = new MapManager();
     static coins = 0;//金币
     static ammo = 30;//子弹
     static killCount = 0;//杀敌数
@@ -89,21 +90,24 @@ export default class Logic extends cc.Component {
     start() {
 
     }
-
+    static saveData(){
+        Logic.profile.playerData = Logic.playerData.clone();
+        Logic.profile.saveData();
+    }
     static resetData() {
         Logic.profile = new ProfileData();
         Logic.level = Logic.profile.level;
-        Logic.playerData = Logic.profile.playerData;
+        Logic.playerData = Logic.profile.playerData.clone();
         Logic.inventoryManager = Logic.profile.inventoryManager;
-        Logic.mapManger.reset(Logic.level);
-        Logic.mapManger.loadDataFromSave();
+        Logic.mapManager.reset(Logic.level);
+        Logic.mapManager.loadDataFromSave();
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c ? parseInt(c) : 0;
         Logic.ammo = Logic.profile.ammo;
         // Logic.playerData.updateHA(cc.v2(999,999),30);
     }
     static changeDungeonSize() {
-        let mapData: string[][] = Logic.getCurrentMapData().map;
+        let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;
         if (mapData && mapData.length > 0) {
             Dungeon.WIDTH_SIZE = mapData.length;
             Dungeon.HEIGHT_SIZE = mapData[0].length;
@@ -111,7 +115,7 @@ export default class Logic extends cc.Component {
         }
     }
     loadingNextRoom(dir: number) {
-        let room = Logic.mapManger.loadingNextRoom(dir);
+        let room = Logic.mapManager.loadingNextRoom(dir);
         if (room) {
             Logic.changeDungeonSize();
             switch (dir) {
@@ -136,24 +140,14 @@ export default class Logic extends cc.Component {
                 Logic.chapterName++;
                 Logic.level = 1;
             }
-            Logic.mapManger.reset(Logic.level);
+            Logic.mapManager.reset(Logic.level);
+            Logic.profile.currentPos = Logic.mapManager.currentPos.clone();
             Logic.changeDungeonSize();
             Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
             cc.director.loadScene('loading');
         }
     }
-    static getCurrentMapData(): MapData {
-        return Logic.mapManger.getCurrentMapData();
-    }
-    static getCurrentMapBoxes(): BoxData[] {
-        return Logic.mapManger.getCurrentMapBoxes();
-    }
-    static getCurrentMapShopTables(): ShopTableData[] {
-        return Logic.mapManger.getCurrentMapShopTables();
-    }
-    static getCurrentMapMonsters(): MonsterData[] {
-        return Logic.mapManger.getCurrentMapMonsters();
-    }
+    
     static isBossLevel(level: number): boolean {
         return level == Logic.BOSS_LEVEL_1;
     }
@@ -169,5 +163,7 @@ export default class Logic extends cc.Component {
         let y = v1.y - v2.y;
         return Math.sqrt(x * x + y * y);
     }
-
+    static genNonDuplicateID():string{
+        return Number(Math.random().toString().substr(3,16) + Date.now()).toString(36);
+      }
 }

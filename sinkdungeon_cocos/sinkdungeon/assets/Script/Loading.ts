@@ -54,8 +54,8 @@ export default class Loading extends cc.Component {
 
     }
     loadMap() {
-        Logic.mapManger.isloaded = false;
-        Logic.mapManger.loadMap();
+        Logic.mapManager.isloaded = false;
+        Logic.mapManager.loadMap();
     }
     loadEquipment() {
         if (Logic.equipments) {
@@ -150,7 +150,7 @@ export default class Loading extends cc.Component {
 
     update(dt) {
         this.timeDelay += dt;
-        this.isLevelLoaded = Logic.mapManger.isloaded;
+        this.isLevelLoaded = Logic.mapManager.isloaded;
         if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded
             && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded
             && this.isBulletsLoaded

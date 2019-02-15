@@ -145,7 +145,7 @@ export default class Player extends cc.Component {
             , (event) => { this.takeDamage(event.detail.damage) });
         cc.director.on(EventConstant.PLAYER_ROTATE
             , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
-        if (Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
+        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
             Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
         }
         this.pos = Logic.playerData.pos.clone();
@@ -364,8 +364,8 @@ export default class Player extends cc.Component {
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
-            //等存档系统修正再考虑保存玩家位置
-            // Logic.playerData.pos = this.pos.clone();
+            //存档系统保存玩家位置
+            Logic.profile.playerData.pos = this.pos.clone();
         }
         if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
             this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));

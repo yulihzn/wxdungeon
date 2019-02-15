@@ -64,10 +64,10 @@ export default class MiniMap extends cc.Component {
 		}
 		for (let j = 0; j < this.size; j++) {
 			for (let i = 0; i < this.size; i++) {
-				let isFound = Logic.mapManger.rectDungeon.map[i][j].isFound;
-				let state = Logic.mapManger.rectDungeon.map[i][j].state;
-				let roomType = Logic.mapManger.rectDungeon.map[i][j].roomType;
-				let primary = Logic.mapManger.rectDungeon.map[i][j].isPrimary;
+				let isFound = Logic.mapManager.rectDungeon.map[i][j].isFound;
+				let state = Logic.mapManager.rectDungeon.map[i][j].state;
+				let roomType = Logic.mapManager.rectDungeon.map[i][j].roomType;
+				let primary = Logic.mapManager.rectDungeon.map[i][j].isPrimary;
 				this.map[i][j].color = this.getColor(MiniMap.ColorLevel.HIDE);
 				if (isFound) {
 					this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL);

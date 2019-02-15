@@ -78,7 +78,7 @@ export default class Box extends cc.Component {
         if (this.timeDelay > 0.2) {
             this.data.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.position = this.node.position;
-            let currboxes = Logic.getCurrentMapBoxes();
+            let currboxes = Logic.mapManager.getCurrentMapBoxes();
             if (currboxes) {
                 for (let tempbox of currboxes) {
                     if (tempbox.defaultPos.equals(this.data.defaultPos)) {

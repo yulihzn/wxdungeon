@@ -53,7 +53,7 @@ export default class ShopTable extends cc.Component {
         if (this.timeDelay > 0.2) {
             this.label.string = `${this.data.price}`;
             this.info.opacity = this.data.isSaled ? 0 : 255;
-            let currtables = Logic.getCurrentMapShopTables();
+            let currtables = Logic.mapManager.getCurrentMapShopTables();
             if (currtables) {
                 for (let temptable of currtables) {
                     if (temptable.pos.equals(this.data.pos)) {

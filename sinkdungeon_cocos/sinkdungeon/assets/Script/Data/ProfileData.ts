@@ -5,6 +5,8 @@ import RectRoom from "../Rect/RectRoom";
 import BoxData from "./BoxData";
 import ShopTableData from "./ShopTableData";
 import MonsterData from "./MonsterData";
+import ChestData from "./ChestData";
+import EquipmentData from "./EquipmentData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -12,22 +14,23 @@ import MonsterData from "./MonsterData";
  * 玩家的物品信息
  * 玩家的状态信息 保留永久状态 长时间状态
  * 当前的关卡 章节 当前关卡的地图数据
- * 目前房间的位置 怪物的属性位置当前血量 地上道具建筑的位置和属性
- * 地上金币的状态位置
+ * 目前房间的位置 地上道具建筑的位置和属性
  * 商店的购买状态
- * 每次进入一个房间的时候进行一次存档
+ * 每次进入一个房间的时候进行一次存档，保存当前房间内容
  */
 export default class ProfileData {
     //地图数据管理类
-    rectDungeon: RectDungeon = new RectDungeon(1);
+    rectDungeon: RectDungeon = new RectDungeon(0);
     //当前房间下标
     currentPos: cc.Vec2 = cc.v2(0,0);
     //根据下标保存普通箱子的位置
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
     shopTables: { [key: string]: ShopTableData[] } = {};
-    //根据下标保存怪物的位置和状态
-    monsters:{[key:string]:MonsterData[]} = {};
+    //根据下标保存箱子信息
+    chests:{[key:string]:ChestData[]} = {};
+    //根据下标+uuid保存地上的装备
+    equipments:{[key:string]:EquipmentData[]} = {};
     chapterName:number = 0;
     hasSaveData:boolean = false;
     playerData:PlayerData = new PlayerData();
@@ -35,22 +38,24 @@ export default class ProfileData {
     ammo = 30;//子弹
     level = 0;
     constructor(){
-        // this.loadProfile();
+        this.loadProfile();
     }
     saveData(){
-        // cc.sys.localStorage.setItem('profileData',JSON.stringify(this));
+        cc.sys.localStorage.setItem('profileData',JSON.stringify(this));
         console.log('save data');
     }
     clearData(){
         cc.sys.localStorage.setItem('profileData','');
+        this.chapterName = 0;
         this.playerData = new PlayerData();
         this.inventoryManager = new InventoryManager();
-        this.rectDungeon = new RectDungeon(1);
+        this.rectDungeon = new RectDungeon(0);
         this.currentPos = cc.v2(0,0);
         this.boxes = {};
         this.shopTables = {};
+        this.chests = {};
+        this.equipments = {};
         this.hasSaveData = false;
-        this.chapterName = 0;
         this.ammo = 30;
         this.level = 0;
         console.log('clear data');
@@ -69,7 +74,7 @@ export default class ProfileData {
             return;
         }
         if(!data.playerData||!data.inventoryManager||!data.rectDungeon||!data.currentPos||!data.shopTables
-        ||!data.boxes){
+        ||!data.boxes||!data.chests||!data.equipments){
             this.hasSaveData = false;
             return;
         }
@@ -99,15 +104,26 @@ export default class ProfileData {
                 this.shopTables[key][i] = tables;
             }
          }
-        //  for(let key in data.monsters){
-        //     let list = data.monsters[key];
-        //     this.monsters[key] = new Array();
-        //     for(let i = 0;i < list.length;i++){
-        //         let monsters = new MonsterData();
-        //         monsters.valueCopy(list[i]);
-        //         this.monsters[key][i] = monsters;
-        //     }
-        //  }
+
+         for(let key in data.chests){
+            let list = data.chests[key];
+            this.chests[key] = new Array();
+            for(let i = 0;i < list.length;i++){
+                let chest = new ChestData();
+                chest.valueCopy(list[i]);
+                this.chests[key][i] = chest;
+            }
+         }
+        
+         for(let key in data.equipments){
+            let list = data.equipments[key];
+            this.equipments[key] = new Array();
+            for(let i = 0;i < list.length;i++){
+                let equip = new EquipmentData();
+                equip.valueCopy(list[i]);
+                this.equipments[key][i] = equip;
+            }
+         }
         console.log('profileData',this);
         
     }

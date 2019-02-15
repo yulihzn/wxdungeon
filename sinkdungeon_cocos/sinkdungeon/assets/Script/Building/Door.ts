@@ -1,6 +1,7 @@
 import Dungeon from "../Dungeon";
 import Player from "../Player";
 import { EventConstant } from "../EventConstant";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -84,6 +85,7 @@ export default class Door extends cc.Component {
         let player = other.node.getComponent(Player);
         if (player) {
             if (this.isOpen) {
+                Logic.saveData();
                 cc.director.emit(EventConstant.LOADINGROOM, { detail: { dir: this.dir } });
             }
         }

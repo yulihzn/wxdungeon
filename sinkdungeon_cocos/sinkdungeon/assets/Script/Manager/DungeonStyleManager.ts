@@ -145,7 +145,7 @@ export default class DungeonStyleManager extends cc.Component {
         this.runBackgroundAnim(this.styleData.background);
 
         // for(let i = 0; i < 4;i++){
-        //     let n = Logic.mapManger.rectDungeon.getNeighborRoomType(Logic.mapManger.currentPos.x,Logic.mapManger.currentPos.y,i);
+        //     let n = Logic.mapManager.rectDungeon.getNeighborRoomType(Logic.mapManager.currentPos.x,Logic.mapManager.currentPos.y,i);
         //     if(n&&n.roomType != RectDungeon.EMPTY_ROOM){
         //         this.getDecorateRoom(i);
         //     }
@@ -157,11 +157,11 @@ export default class DungeonStyleManager extends cc.Component {
         // if (Logic.chapterName != 'chapter00') {
         //     return;
         // }
-        let isStartRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.START_ROOM;
-        let isEndRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.END_ROOM&&Logic.level != 3&&Logic.level != 5;
-        let isPuzzleRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
-        let isBossRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.BOSS_ROOM;
-        let isTarotRoom = Logic.mapManger.getCurrentRoomType() == RectDungeon.TAROT_ROOM;
+        let isStartRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.START_ROOM;
+        let isEndRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM&&Logic.level != 3&&Logic.level != 5;
+        let isPuzzleRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
+        let isBossRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM;
+        let isTarotRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM;
         if (isStartRoom) {
             oneIndex = 1;
             otherIndex = 2;

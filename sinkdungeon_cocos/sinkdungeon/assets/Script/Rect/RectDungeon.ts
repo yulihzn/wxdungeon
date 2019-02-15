@@ -56,6 +56,7 @@ export default class RectDungeon {
     }
 
     buildMapFromSave(dungeon: RectDungeon): RectDungeon {
+        this.isLevelZero = dungeon.isLevelZero;
         this.level = dungeon.level;
         this.size = dungeon.size;
         this.map = new Array();
