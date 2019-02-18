@@ -159,6 +159,7 @@ export default class Dungeon extends cc.Component {
         let boxes: BoxData[] = new Array();
         let shopTables: ShopTableData[] = new Array();
         let chests: ChestData[] = new Array();
+        this.addItemListOnGround();
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             this.wallmap[i] = new Array(i);
@@ -430,7 +431,6 @@ export default class Dungeon extends cc.Component {
         }
         this.addBoss();
         this.addEquipmentListOnGround();
-        this.addItemListOnGround();
     }
     addItem(pos: cc.Vec2, resName: string,noSave?:boolean) {
         if (!this.item) {
@@ -494,10 +494,11 @@ export default class Dungeon extends cc.Component {
     }
     addItemListOnGround() {
         let curritems = Logic.mapManager.getCurrentMapItems();
+        Logic.mapManager.setCurrentItemsArr(new Array());
         if (curritems) {
             for (let tempeitem of curritems) {
                 if (!tempeitem.isTaken) {
-                    this.addItem(tempeitem.pos,tempeitem.resName,true);
+                    this.addItem(Dungeon.getPosInMap(tempeitem.pos),tempeitem.resName,true);
                 }
             }
         }
