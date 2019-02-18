@@ -7,6 +7,7 @@ import ShopTableData from "./ShopTableData";
 import MonsterData from "./MonsterData";
 import ChestData from "./ChestData";
 import EquipmentData from "./EquipmentData";
+import ItemData from "./ItemData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -31,6 +32,8 @@ export default class ProfileData {
     chests:{[key:string]:ChestData[]} = {};
     //根据下标+uuid保存地上的装备
     equipments:{[key:string]:EquipmentData[]} = {};
+    //根据下标+uuid报错地上的物品
+    items:{[key:string]:ItemData[]}={};
     chapterName:number = 0;
     hasSaveData:boolean = false;
     playerData:PlayerData = new PlayerData();
@@ -55,6 +58,7 @@ export default class ProfileData {
         this.shopTables = {};
         this.chests = {};
         this.equipments = {};
+        this.items = {};
         this.hasSaveData = false;
         this.ammo = 30;
         this.level = 0;
@@ -74,7 +78,7 @@ export default class ProfileData {
             return;
         }
         if(!data.playerData||!data.inventoryManager||!data.rectDungeon||!data.currentPos||!data.shopTables
-        ||!data.boxes||!data.chests||!data.equipments){
+        ||!data.boxes||!data.chests||!data.equipments||!data.items){
             this.hasSaveData = false;
             return;
         }
@@ -122,6 +126,16 @@ export default class ProfileData {
                 let equip = new EquipmentData();
                 equip.valueCopy(list[i]);
                 this.equipments[key][i] = equip;
+            }
+         }
+
+         for(let key in data.items){
+            let list = data.items[key];
+            this.items[key] = new Array();
+            for(let i = 0;i < list.length;i++){
+                let item = new ItemData();
+                item.valueCopy(list[i]);
+                this.items[key][i] = item;
             }
          }
         console.log('profileData',this);

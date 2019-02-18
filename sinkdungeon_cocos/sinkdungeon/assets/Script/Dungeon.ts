@@ -29,6 +29,7 @@ import Boss from "./Boss/Boss";
 import SlimeVenom from "./Boss/SlimeVenom";
 import TarotTable from "./Building/TarotTable";
 import ChestData from "./Data/ChestData";
+import ItemData from "./Data/ItemData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -429,8 +430,9 @@ export default class Dungeon extends cc.Component {
         }
         this.addBoss();
         this.addEquipmentListOnGround();
+        this.addItemListOnGround();
     }
-    addItem(pos: cc.Vec2, resName: string) {
+    addItem(pos: cc.Vec2, resName: string,noSave?:boolean) {
         if (!this.item) {
             return;
         }
@@ -439,7 +441,19 @@ export default class Dungeon extends cc.Component {
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
-        item.getComponent(Item).init(resName);
+        item.getComponent(Item).init(resName,indexpos.clone());
+        if(noSave){
+            return;
+        }
+        let data = item.getComponent(Item).data;
+        let curritems = Logic.mapManager.getCurrentMapItems();
+            if (curritems) {
+                curritems.push(data);
+            }else{
+                curritems = new Array();
+                curritems.push(data);
+                Logic.mapManager.setCurrentItemsArr(curritems);
+            }
 
     }
 
@@ -468,14 +482,23 @@ export default class Dungeon extends cc.Component {
         }
     }
     addEquipmentListOnGround() {
-        let equipments: EquipmentData[] = new Array();
         let currequipments = Logic.mapManager.getCurrentMapEquipments();
         if (currequipments) {
             for (let tempequip of currequipments) {
                 if (this.equipmentManager) {
                     this.equipmentManager.getEquipment(tempequip.img, tempequip.pos, this.node, tempequip, null, null).data;
                 }
-                equipments.push(tempequip);
+            }
+        }
+        
+    }
+    addItemListOnGround() {
+        let curritems = Logic.mapManager.getCurrentMapItems();
+        if (curritems) {
+            for (let tempeitem of curritems) {
+                if (!tempeitem.isTaken) {
+                    this.addItem(tempeitem.pos,tempeitem.resName,true);
+                }
             }
         }
         

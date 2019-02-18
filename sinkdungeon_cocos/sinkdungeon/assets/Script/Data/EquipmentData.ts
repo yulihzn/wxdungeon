@@ -1,4 +1,5 @@
 import CommonData from "./CommonData";
+import BaseData from "./BaseData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -11,7 +12,7 @@ import CommonData from "./CommonData";
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 
-export default class EquipmentData{
+export default class EquipmentData extends BaseData{
     uuid:string = '';//唯一标识，用来存档
     pos:cc.Vec2 = cc.v2(0,0);//下标
     nameCn: string = '';
@@ -51,6 +52,7 @@ export default class EquipmentData{
     suitcolor3:string = '#ffffff';
     infobasecolor:string = '#ffffff';
     constructor(){
+        super();
         this.common = new CommonData();
     }
 
@@ -140,7 +142,5 @@ export default class EquipmentData{
         e.infobasecolor = this.infobasecolor;
         return e;
     }
-    genNonDuplicateID():string{
-        return Number(Math.random().toString().substr(3,16) + Date.now()).toString(36);
-      }
+    
 }

@@ -27,7 +27,6 @@ export default class Item extends cc.Component {
     public static readonly SHIELD = 'shield';
     anim:cc.Animation;
     data:ItemData = new ItemData();
-    private isTaken = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -36,8 +35,10 @@ export default class Item extends cc.Component {
     start () {
         this.anim = this.getComponent(cc.Animation);
     }
-    init(resName:string){
+    init(resName:string,pos:cc.Vec2){
+        this.data.uuid = this.data.genNonDuplicateID();
         this.data.resName = resName;
+        this.data.pos = pos;
         let spriteFrame = Logic.spriteFrames[this.data.resName];
         if(spriteFrame){
             let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
@@ -47,9 +48,9 @@ export default class Item extends cc.Component {
         }
     }
     private taken(player:Player):void{
-        if(!this.isTaken){
+        if(!this.data.isTaken){
             this.anim.play('ItemTaken');
-            this.isTaken = true;
+            this.data.isTaken = true;
             this.getEffect(player);
             setTimeout(()=>{
                 if(this.node){
@@ -57,7 +58,16 @@ export default class Item extends cc.Component {
                 }
             },3000);
         }
-        
+        let curritems = Logic.mapManager.getCurrentMapItems();
+        let newlist: ItemData[] = new Array();
+        if (curritems) {
+            for (let temp of curritems) {
+                if (temp.uuid && temp.uuid != this.data.uuid) {
+                    newlist.push(temp);
+                }
+            }
+        }
+        Logic.mapManager.setCurrentItemsArr(newlist);
     }
     private getEffect(player:Player){
         switch(this.data.resName){

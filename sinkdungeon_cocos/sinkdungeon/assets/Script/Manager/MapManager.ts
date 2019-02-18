@@ -9,6 +9,7 @@ import ShopTableData from "../Data/ShopTableData";
 import OilLake from "../Oil/OilLake";
 import MonsterData from "../Data/MonsterData";
 import ChestData from "../Data/ChestData";
+import ItemData from "../Data/ItemData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,6 +50,8 @@ export default class MapManager {
     chests:{[key:string]:ChestData[]} = {};
     //根据下标+uuid保存地上的装备
     equipments:{[key:string]:EquipmentData[]} = {};
+    //根据下标+uuid保存地上的装备
+    items:{[key:string]:ItemData[]} = {};
     constructor() {
         this.init();
     }
@@ -68,6 +71,7 @@ export default class MapManager {
         this.shopTables = Logic.profile.shopTables;
         this.chests = Logic.profile.chests;
         this.equipments = Logic.profile.equipments;
+        this.items = Logic.profile.items;
         this.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
         cc.log('load');
         cc.log(this.rectDungeon.getDisPlay());
@@ -83,6 +87,7 @@ export default class MapManager {
         this.shopTables = {};
         this.chests = {};
         this.equipments = {};
+        this.items = {};
         // let oillake:OilLake = new OilLake();
         // cc.log(oillake.getDisPlay());
     }
@@ -150,6 +155,15 @@ export default class MapManager {
     public setCurrentEquipmentsArr(arr: EquipmentData[]) {
         this.equipments[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
         Logic.profile.equipments = this.equipments;
+    }
+    /** 获取当前房间装备*/
+    public getCurrentMapItems(): ItemData[] {
+        return this.items[`x=${this.currentPos.x}y=${this.currentPos.y}`];
+    }
+    /** 设置当前房间装备*/
+    public setCurrentItemsArr(arr: ItemData[]) {
+        this.items[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
+        Logic.profile.items = this.items;
     }
     /** 设置房间状态为清理*/
     public setRoomClear(x: number, y: number) {
