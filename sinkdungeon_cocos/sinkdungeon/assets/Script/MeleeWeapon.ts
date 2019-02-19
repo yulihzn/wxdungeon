@@ -82,7 +82,7 @@ export default class MeleeWeapon extends cc.Component {
         return this.hv;
     }
 
-    attack(data: PlayerData,isMiss:boolean):boolean {
+    attack(data: PlayerData, isMiss: boolean): boolean {
         if (this.isAttacking) {
             return;
         }
@@ -100,16 +100,16 @@ export default class MeleeWeapon extends cc.Component {
             this.anim.getAnimationState(this.getAttackAnimName()).speed = animSpeed;
         }
         let p = this.weaponFirePoint.position.clone();
-        let ran = Logic.getRandomNum(0,100);
-        let waves = [data.getIceDamage() > 0&&ran<data.getIceRate() ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
-            , data.getFireDamage() > 0&&ran<data.getFireRate() ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
-            , data.getLighteningDamage() > 0&&ran<data.getLighteningRate() ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
-            , data.getToxicDamage() > 0&&ran<data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
-            , data.getCurseDamage() > 0&&ran<data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
+        let ran = Logic.getRandomNum(0, 100);
+        let waves = [data.getIceDamage() > 0 && ran < data.getIceRate() ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
+            , data.getFireDamage() > 0 && ran < data.getFireRate() ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
+            , data.getLighteningDamage() > 0 && ran < data.getLighteningRate() ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
+            , data.getToxicDamage() > 0 && ran < data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
+            , data.getCurseDamage() > 0 && ran < data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
         for (let w of waves) {
             this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar, this.isReverse);
         }
-        
+
     }
     private getAttackAnimName(): string {
         let name = "MeleeAttackStab";
@@ -132,20 +132,20 @@ export default class MeleeWeapon extends cc.Component {
         let firePrefab: cc.Node = cc.instantiate(lights[elementType - 1]);
         let xoffset = 60;
         let yoffset = 60;
-        if(isStab){
+        if (isStab) {
             xoffset = 10;
         }
         if (isFar) {
-            if(isStab){
+            if (isStab) {
                 xoffset += 20;
-            }else{
+            } else {
                 xoffset += 80;
             }
             yoffset += 10;
         }
-        let notStab1 = [cc.v2(p.x, -p.y - yoffset), cc.v2(p.x + xoffset*0.9, -p.y - yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset*0.9, p.y + yoffset / 2), cc.v2(p.x, p.y + yoffset)];
-        let notStab2 = [cc.v2(p.x, p.y + yoffset), cc.v2(p.x + xoffset*0.9, p.y + yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset*0.9, -p.y - yoffset / 2), cc.v2(p.x, -p.y - yoffset)];
-        let ps = [cc.v2(p.x-xoffset*2, p.y), cc.v2(p.x - xoffset*0.5, p.y), cc.v2(p.x , p.y), cc.v2(p.x + xoffset*0.5, p.y), cc.v2(p.x + xoffset, p.y)];
+        let notStab1 = [cc.v2(p.x, -p.y - yoffset), cc.v2(p.x + xoffset * 0.9, -p.y - yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset * 0.9, p.y + yoffset / 2), cc.v2(p.x, p.y + yoffset)];
+        let notStab2 = [cc.v2(p.x, p.y + yoffset), cc.v2(p.x + xoffset * 0.9, p.y + yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset * 0.9, -p.y - yoffset / 2), cc.v2(p.x, -p.y - yoffset)];
+        let ps = [cc.v2(p.x - xoffset * 2, p.y), cc.v2(p.x - xoffset * 0.5, p.y), cc.v2(p.x, p.y), cc.v2(p.x + xoffset * 0.5, p.y), cc.v2(p.x + xoffset, p.y)];
         if (!isStab) {
             ps = isReverse ? notStab1 : notStab2;
         }
@@ -205,8 +205,8 @@ export default class MeleeWeapon extends cc.Component {
                     pos = monster.getCenterPosition().sub(this.node.parent.position.add(p));
                 }
             }
-            
-            if(pos.equals(cc.Vec2.ZERO)){
+
+            if (pos.equals(cc.Vec2.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
                     let dis = Logic.getDistance(this.node.parent.position, boss.node.position);
                     if (dis < 200 && dis < olddis && !boss.isDied) {
@@ -216,7 +216,7 @@ export default class MeleeWeapon extends cc.Component {
                         pos = boss.getCenterPosition().sub(this.node.parent.position.add(p));
                     }
                 }
-                
+
             }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();
@@ -224,7 +224,7 @@ export default class MeleeWeapon extends cc.Component {
         }
         return pos;
     }
-    
+
     rotateColliderManager(target: cc.Vec2) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
@@ -292,12 +292,7 @@ export default class MeleeWeapon extends cc.Component {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(monster.node);
-                this.addMonsterStatus(this.player.data.getIceRate(),monster,StatusManager.FROZEN);
-                this.addMonsterStatus(this.player.data.getFireRate(),monster,StatusManager.BURNING);
-                this.addMonsterStatus(this.player.data.getLighteningRate(),monster,StatusManager.DIZZ);
-                this.addMonsterStatus(this.player.data.getToxicRate(),monster,StatusManager.TOXICOSIS);
-                this.addMonsterStatus(this.player.data.getCurseRate(),monster,StatusManager.CURSING);
-                this.addMonsterStatus(this.player.data.getRealRate(),monster,StatusManager.BLEEDING);
+                this.addMonsterAllStatus(monster);
             }
         }
 
@@ -305,15 +300,10 @@ export default class MeleeWeapon extends cc.Component {
         if (boss && !boss.isDied && !this.isMiss) {
             damageSuccess = boss.takeDamage(damage);
             if (damageSuccess) {
-                this.addBossStatus(this.player.data.getIceRate(),boss,StatusManager.FROZEN);
-                this.addBossStatus(this.player.data.getFireRate(),boss,StatusManager.BURNING);
-                this.addBossStatus(this.player.data.getLighteningRate(),boss,StatusManager.DIZZ);
-                this.addBossStatus(this.player.data.getToxicRate(),boss,StatusManager.TOXICOSIS);
-                this.addBossStatus(this.player.data.getCurseRate(),boss,StatusManager.CURSING);
-                this.addBossStatus(this.player.data.getRealRate(),boss,StatusManager.BLEEDING);
+                this.addBossAllStatus(boss);
             }
         }
-       
+
         let box = attackTarget.node.getComponent(Box);
         if (box) {
             box.breakBox();
@@ -325,11 +315,27 @@ export default class MeleeWeapon extends cc.Component {
         }
         this.isMiss = false;
     }
-   addMonsterStatus(rate:number,monster:Monster,statusType){
-    if(Logic.getRandomNum(0,100)<rate){monster.addStatus(statusType);}
-   }
-   addBossStatus(rate:number,boss:Boss,statusType){
-    if(Logic.getRandomNum(0,100)<rate){boss.addStatus(statusType);}
-   }
-   
+    addMonsterAllStatus(monster: Monster) {
+        this.addMonsterStatus(this.player.data.getIceRate(), monster, StatusManager.FROZEN);
+        this.addMonsterStatus(this.player.data.getFireRate(), monster, StatusManager.BURNING);
+        this.addMonsterStatus(this.player.data.getLighteningRate(), monster, StatusManager.DIZZ);
+        this.addMonsterStatus(this.player.data.getToxicRate(), monster, StatusManager.TOXICOSIS);
+        this.addMonsterStatus(this.player.data.getCurseRate(), monster, StatusManager.CURSING);
+        this.addMonsterStatus(this.player.data.getRealRate(), monster, StatusManager.BLEEDING);
+    }
+    addBossAllStatus(boss: Boss) {
+        this.addBossStatus(this.player.data.getIceRate(), boss, StatusManager.FROZEN);
+        this.addBossStatus(this.player.data.getFireRate(), boss, StatusManager.BURNING);
+        this.addBossStatus(this.player.data.getLighteningRate(), boss, StatusManager.DIZZ);
+        this.addBossStatus(this.player.data.getToxicRate(), boss, StatusManager.TOXICOSIS);
+        this.addBossStatus(this.player.data.getCurseRate(), boss, StatusManager.CURSING);
+        this.addBossStatus(this.player.data.getRealRate(), boss, StatusManager.BLEEDING);
+    }
+    addMonsterStatus(rate: number, monster: Monster, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType); }
+    }
+    addBossStatus(rate: number, boss: Boss, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType); }
+    }
+
 }

@@ -29,12 +29,13 @@ export default class MonsterData{
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     private statusTotalData: StatusData;
-    private list: CommonData[] = [];
     private common:CommonData;
     constructor(){
         this.statusTotalData = new StatusData();
         this.common = new CommonData();
-        this.list = [this.common, this.statusTotalData.Common];
+    }
+    private getCommonList():CommonData[]{
+        return [this.common, this.statusTotalData.Common];
     }
     get StatusTotalData() {
         return this.statusTotalData;
@@ -133,7 +134,7 @@ export default class MonsterData{
     //初始速度300,最大速度600 最小速度为10
     getMoveSpeed(): number {
         let speed = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             speed += data.moveSpeed;
         }
         return speed;
@@ -141,7 +142,7 @@ export default class MonsterData{
     //初始延迟是300,最低延迟为0 最大3000
     getAttackSpeed(): number {
         let speed = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             speed += data.attackSpeed;
         }
         return speed;
@@ -149,7 +150,7 @@ export default class MonsterData{
     //获取最小攻击力
     getDamageMin(): number {
         let d = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             d += data.damageMin;
         }
         return d;
@@ -157,7 +158,7 @@ export default class MonsterData{
     //获取最大攻击力
     getDamageMax(): number {
         let d = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             d += data.damageMax;
         }
         return d;
@@ -166,7 +167,7 @@ export default class MonsterData{
     //获取暴击率
     getCriticalStrikeRate(): number {
         let rate = 1;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate *= (1 - data.criticalStrikeRate / 100);
         }
         return 1 - rate;
@@ -175,7 +176,7 @@ export default class MonsterData{
     //闪避
     getDodge(): number {
         let rate = 1;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate *= (1 - data.dodge / 100);
         }
         return 1 - rate;
@@ -183,7 +184,7 @@ export default class MonsterData{
     //防御,可以为负数
     getDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.defence;
         }
         return defence;
@@ -193,7 +194,7 @@ export default class MonsterData{
     getHealth(): cc.Vec2 {
         let rate = 1;
         let maxHealth = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             maxHealth += data.maxHealth;
         }
         if (maxHealth > 0) {
@@ -206,7 +207,7 @@ export default class MonsterData{
 
     getIceDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.iceDefence;
         }
         if (defence > 100) {
@@ -217,7 +218,7 @@ export default class MonsterData{
 
     getFireDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.fireDefence;
         }
         if (defence > 100) {
@@ -228,7 +229,7 @@ export default class MonsterData{
 
     getLighteningDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.lighteningDefence;
         }
         if (defence > 100) {
@@ -239,7 +240,7 @@ export default class MonsterData{
 
     getToxicDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.toxicDefence;
         }
         if (defence > 100) {
@@ -250,7 +251,7 @@ export default class MonsterData{
 
     getCurseDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.curseDefence;
         }
         if (defence > 100) {
@@ -261,7 +262,7 @@ export default class MonsterData{
 
     getRealDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.realDamage;
         }
         if (damage < 0) {
@@ -272,7 +273,7 @@ export default class MonsterData{
 
     getIceDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.iceDamage;
         }
         if (damage < 0) {
@@ -283,7 +284,7 @@ export default class MonsterData{
 
     getFireDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.fireDamage;
         }
         if (damage < 0) {
@@ -294,7 +295,7 @@ export default class MonsterData{
 
     getLighteningDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.lighteningDamage;
         }
         if (damage < 0) {
@@ -305,7 +306,7 @@ export default class MonsterData{
 
     getToxicDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.toxicDamage;
         }
         if (damage < 0) {
@@ -316,7 +317,7 @@ export default class MonsterData{
 
     getCurseDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.curseDamage;
         }
         if (damage < 0) {
@@ -327,7 +328,7 @@ export default class MonsterData{
 
     getRealRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.realRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -337,7 +338,7 @@ export default class MonsterData{
 
     getIceRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.iceRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -347,7 +348,7 @@ export default class MonsterData{
 
     getFireRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.fireRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -357,7 +358,7 @@ export default class MonsterData{
 
     getLighteningRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.lighteningRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -367,7 +368,7 @@ export default class MonsterData{
 
     getToxicRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.toxicRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -377,7 +378,7 @@ export default class MonsterData{
 
     getCurseRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.curseRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -388,7 +389,7 @@ export default class MonsterData{
     //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
     getLifeRecovery(): number {
         let lifeRecovery = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             lifeRecovery += data.lifeRecovery;
         }
         return lifeRecovery > 0 ? lifeRecovery : 0;
@@ -396,7 +397,7 @@ export default class MonsterData{
 
     getLifeDrainRate(): number {
         let rate = 1;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate *= (1 - data.lifeDrain / 100);
         }
         return 1 - rate;

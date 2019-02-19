@@ -2,6 +2,7 @@ import Dungeon from "../Dungeon";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import Shooter from "../Shooter";
+import Logic from "../Logic";
 
 
 // Learn TypeScript:
@@ -54,11 +55,6 @@ export default class Emplacement extends cc.Component {
     }
     //Animation
     OpenFire() {
-    }
-    fire(){
-        if (this.anim) {
-            this.anim.play();
-        }
         if (!this.dungeon) {
             return;
         }
@@ -67,10 +63,26 @@ export default class Emplacement extends cc.Component {
         this.fireShooter(this.shooterLeft);
         this.fireShooter(this.shooterRight);
     }
+    fire(){
+        if (this.anim) {
+            this.anim.play();
+        }
+    }
     fireShooter(shooter: Shooter) {
         if (!shooter.dungeon) {
             shooter.dungeon = this.dungeon;
             shooter.data.bulletType = "bullet010";
+            if(Logic.chapterName == Logic.CHAPTER00){
+                shooter.data.bulletLineExNum = 3;
+                shooter.data.bulletType = "laser001";
+            }
+            switch(Logic.chapterName){
+                case Logic.CHAPTER00:shooter.data.bulletLineExNum = 3;shooter.data.bulletType = "laser001";break;
+                case Logic.CHAPTER01:shooter.data.bulletType = "bullet010";break;
+                case Logic.CHAPTER02:shooter.data.bulletType = "bullet013";break;
+                case Logic.CHAPTER03:shooter.data.bulletType = "bullet006";shooter.data.bulletLineExNum = 3;break;
+                case Logic.CHAPTER04:shooter.data.bulletType = "bullet012";break;
+            }
         }
         shooter.fireBullet();
     }
@@ -79,7 +91,7 @@ export default class Emplacement extends cc.Component {
     }
     update(dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 5) {
+        if (this.timeDelay > 3) {
             this.timeDelay = 0;
             this.fire();
         }

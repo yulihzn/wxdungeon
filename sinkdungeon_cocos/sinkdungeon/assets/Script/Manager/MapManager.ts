@@ -234,13 +234,13 @@ export default class MapManager {
     }
     private resetRooms() {
         let allfileRooms = this.allfileRooms00;
-        switch(Logic.chapterName){
-            case Logic.CHAPTER00:allfileRooms = this.allfileRooms00;break;
-            case Logic.CHAPTER01:allfileRooms = this.allfileRooms01;break;
-            case Logic.CHAPTER02:allfileRooms = this.allfileRooms02;break;
-            case Logic.CHAPTER03:allfileRooms = this.allfileRooms03;break;
-            case Logic.CHAPTER04:allfileRooms = this.allfileRooms04;break;
-        }
+        // switch(Logic.chapterName){
+        //     case Logic.CHAPTER00:allfileRooms = this.allfileRooms00;break;
+        //     case Logic.CHAPTER01:allfileRooms = this.allfileRooms01;break;
+        //     case Logic.CHAPTER02:allfileRooms = this.allfileRooms02;break;
+        //     case Logic.CHAPTER03:allfileRooms = this.allfileRooms03;break;
+        //     case Logic.CHAPTER04:allfileRooms = this.allfileRooms04;break;
+        // }
         if (allfileRooms && allfileRooms[this.roomStrs[0]]) {
             for (let i = 0; i < this.rectDungeon.map.length; i++) {
                 for (let j = 0; j < this.rectDungeon.map[0].length; j++) {

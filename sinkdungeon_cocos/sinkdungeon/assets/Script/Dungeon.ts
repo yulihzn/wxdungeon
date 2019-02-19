@@ -159,7 +159,9 @@ export default class Dungeon extends cc.Component {
         let boxes: BoxData[] = new Array();
         let shopTables: ShopTableData[] = new Array();
         let chests: ChestData[] = new Array();
+        //放置之前留在地上的物品和装备
         this.addItemListOnGround();
+        this.addEquipmentListOnGround();
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             this.wallmap[i] = new Array(i);
@@ -430,9 +432,8 @@ export default class Dungeon extends cc.Component {
             Logic.mapManager.setCurrentChestsArr(chests);
         }
         this.addBoss();
-        this.addEquipmentListOnGround();
     }
-    addItem(pos: cc.Vec2, resName: string,noSave?:boolean) {
+    addItem(pos: cc.Vec2, resName: string) {
         if (!this.item) {
             return;
         }
@@ -442,9 +443,7 @@ export default class Dungeon extends cc.Component {
         let indexpos = Dungeon.getIndexInMap(pos);
         item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
         item.getComponent(Item).init(resName,indexpos.clone());
-        if(noSave){
-            return;
-        }
+        
         let data = item.getComponent(Item).data;
         let curritems = Logic.mapManager.getCurrentMapItems();
             if (curritems) {
@@ -498,7 +497,7 @@ export default class Dungeon extends cc.Component {
         if (curritems) {
             for (let tempeitem of curritems) {
                 if (!tempeitem.isTaken) {
-                    this.addItem(Dungeon.getPosInMap(tempeitem.pos),tempeitem.resName,true);
+                    this.addItem(Dungeon.getPosInMap(tempeitem.pos),tempeitem.resName);
                 }
             }
         }

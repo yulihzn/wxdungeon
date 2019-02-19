@@ -150,13 +150,30 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 1.2,
+        "size": 1,
         "isTracking":1,
         "resName":"bullet012",
         "lightName": "bulletlight001",
         "lightColor": "#C72C2C",
         "damage": {
             "physicalDamage": 1
+        }
+    },
+    "bullet013": {
+        "name":"毒箭",
+        "speed": 500,
+        "isLaser":0,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "size": 1.2,
+        "isTracking":0,
+        "resName":"bullet013",
+        "lightName": "bulletlight001",
+        "lightColor": "#3EAF4C",
+        "damage": {
+            "physicalDamage": 1,
+            "toxicRate":100
         }
     },
     "laser001": {

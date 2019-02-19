@@ -439,9 +439,9 @@ export default class Player extends cc.Component {
             this.isFall = false;
         }, 2000);
     }
-    takeDamage(damageData: DamageData) {
+    takeDamage(damageData: DamageData):boolean {
         if(!this.data){
-            return;
+            return false;
         }
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
@@ -458,6 +458,7 @@ export default class Player extends cc.Component {
         if (Logic.playerData.currentHealth <= 0) {
             this.killed();
         }
+        return !isDodge&&dd.getTotalDamage() > 0;
     }
 
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {

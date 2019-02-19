@@ -1,50 +1,47 @@
-﻿~ (temp)
-! (temp)
-@ (temp)
-# 塌陷地板
-% (temp)
-^ (temp)
-& (temp)
+﻿~ 毒液
+! 落石
+@ 传送门
+# 墙
+% 商店
+$ 分割线
+^ 地上尖刺陷阱
+& 炮台
 * 正常地板
-- 床
+- 塌陷地板
 + 地毯装饰
-? (temp)
+? 宝箱
 . (temp)
-, (temp)
+, 塔罗
 < (temp)
 > (temp)
-[ (temp)
-] (temp)
-{ (temp)
-} (temp)
-; (temp)
+; 绿色植物
 : (temp)
-` (temp)
-_ (temp)
-= (temp)
+` 店主
+_ 开启门的踏板
+= 
 A 弹药
 B 普通可推箱子
-C 宝箱
-D 落石
-E 炮台
-F 开启门的踏板
-G 绿色植物
+C 
+D 
+E 
+F 
+G 
 H 爱心
 I 无敌盾牌
 J (temp)
 K (temp)
 L (temp)
-M 商店
+M 
 N (temp)
-O 塔罗
-P 传送门
+O 
+P 
 Q 蓝色药丸
 R 红色药丸
-S 店主
-T 地上尖刺陷阱
+S 
+T 
 U (temp)
-V 毒液
-W 墙
+V 
+W 
 X (temp)
 Y (temp)
 Z (temp)
@@ -58,7 +55,7 @@ g 哥布林
 h (temp)
 i (temp)
 j 小鸡 
-k 杀手
+k 看守
 l (temp)
 m 木乃伊
 n (temp)
@@ -74,13 +71,13 @@ w 狼人(temp)
 x (temp)
 y 石像鬼
 z (temp)
-1
-2
-3
-4
-5
-6
-7
-8
-9
-0
+0 冰魔
+1 战争机器
+2 船长
+3 海妖
+4 史莱姆王
+5 树妖
+6 机械拉神
+7 斯芬克斯
+8 眼魔
+9 黑龙

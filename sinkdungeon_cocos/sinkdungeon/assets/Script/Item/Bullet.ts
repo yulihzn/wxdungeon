@@ -7,6 +7,7 @@ import Logic from "../Logic";
 import Boss from "../Boss/Boss";
 import BulletData from "../Data/BulletData";
 import Dungeon from "../Dungeon";
+import StatusManager from "../Manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -145,6 +146,7 @@ export default class Bullet extends cc.Component {
         this.laserSpriteNode.setPosition(cc.v2(-distance + offset, 0));
         this.laserHeadSprite.node.setPosition(cc.v2(-distance + offset, 0));
         this.laserNode.opacity = 255;
+        this.sprite.opacity = 0;
         this.laserNode.scaleX = 1;
         this.laserNode.scaleY = 1;
         this.laserLightSprite.node.setPosition(-16, 0);
@@ -272,21 +274,25 @@ export default class Bullet extends cc.Component {
             return;
         }
         let damage = new DamageData();
+        let damageSuccess = false;
         damage.valueCopy(this.data.damage);
         let isDestory = false;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
-            monster.takeDamage(damage);
+            damageSuccess = monster.takeDamage(damage);
+            if(damageSuccess){this.addMonsterAllStatus(monster)}
             isDestory = true;
         }
         let player = attackTarget.getComponent(Player);
         if (player && !player.isDied) {
-            player.takeDamage(damage);
+            damageSuccess = player.takeDamage(damage);
+            if(damageSuccess){this.addPlayerAllStatus(player)}
             isDestory = true;
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {
-            boss.takeDamage(damage);
+            damageSuccess = boss.takeDamage(damage);
+            if(damageSuccess){this.addBossAllStatus(boss)}
             isDestory = true;
         }
 
@@ -363,4 +369,37 @@ export default class Bullet extends cc.Component {
 
     }
 
+    addMonsterAllStatus(monster: Monster) {
+        this.addMonsterStatus(this.data.damage.iceRate, monster, StatusManager.FROZEN);
+        this.addMonsterStatus(this.data.damage.fireRate, monster, StatusManager.BURNING);
+        this.addMonsterStatus(this.data.damage.lighteningRate, monster, StatusManager.DIZZ);
+        this.addMonsterStatus(this.data.damage.toxicRate, monster, StatusManager.TOXICOSIS);
+        this.addMonsterStatus(this.data.damage.curseRate, monster, StatusManager.CURSING);
+        this.addMonsterStatus(this.data.damage.realRate, monster, StatusManager.BLEEDING);
+    }
+    addBossAllStatus(boss: Boss) {
+        this.addBossStatus(this.data.damage.iceRate, boss, StatusManager.FROZEN);
+        this.addBossStatus(this.data.damage.fireRate, boss, StatusManager.BURNING);
+        this.addBossStatus(this.data.damage.lighteningRate, boss, StatusManager.DIZZ);
+        this.addBossStatus(this.data.damage.toxicRate, boss, StatusManager.TOXICOSIS);
+        this.addBossStatus(this.data.damage.curseRate, boss, StatusManager.CURSING);
+        this.addBossStatus(this.data.damage.realRate, boss, StatusManager.BLEEDING);
+    }
+    addPlayerAllStatus(player: Player) {
+        this.addPlayerStatus(this.data.damage.iceRate, player, StatusManager.FROZEN);
+        this.addPlayerStatus(this.data.damage.fireRate, player, StatusManager.BURNING);
+        this.addPlayerStatus(this.data.damage.lighteningRate, player, StatusManager.DIZZ);
+        this.addPlayerStatus(this.data.damage.toxicRate, player, StatusManager.TOXICOSIS);
+        this.addPlayerStatus(this.data.damage.curseRate, player, StatusManager.CURSING);
+        this.addPlayerStatus(this.data.damage.realRate, player, StatusManager.BLEEDING);
+    }
+    addMonsterStatus(rate: number, monster: Monster, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType); }
+    }
+    addBossStatus(rate: number, boss: Boss, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType); }
+    }
+    addPlayerStatus(rate: number, player: Player, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { player.addStatus(statusType); }
+    }
 }

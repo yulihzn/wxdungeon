@@ -105,6 +105,9 @@ export default class StatusManager extends cc.Component {
     }
     updateStatus(): StatusData {
         let e = new StatusData();
+        e.Common.lifeDrain = 1;
+        e.Common.criticalStrikeRate = 1;
+        e.Common.dodge = 1;
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
@@ -116,10 +119,10 @@ export default class StatusManager extends cc.Component {
             e.Common.defence += s.data.Common.defence?s.data.Common.defence:0;
             e.Common.criticalStrikeRate *= s.data.Common.criticalStrikeRate?(1-s.data.Common.criticalStrikeRate/100):1;
             e.Common.lifeDrain *= s.data.Common.lifeDrain?(1-s.data.Common.lifeDrain/100):1;
+            e.Common.dodge *= s.data.Common.dodge?(1-s.data.Common.dodge/100):1;
             e.Common.lifeRecovery += s.data.Common.lifeRecovery?s.data.Common.lifeRecovery:0;
             e.Common.moveSpeed += s.data.Common.moveSpeed?s.data.Common.moveSpeed:0;
             e.Common.attackSpeed += s.data.Common.attackSpeed?s.data.Common.attackSpeed:0;
-            e.Common.dodge *= s.data.Common.dodge?(1-s.data.Common.dodge/100):1;
             e.Common.maxHealth += s.data.Common.maxHealth?s.data.Common.maxHealth:0;
             e.Common.realDamage += s.data.Common.realDamage?s.data.Common.realDamage:0;
             e.Common.realRate += s.data.Common.realRate?s.data.Common.realRate:0;
@@ -139,9 +142,9 @@ export default class StatusManager extends cc.Component {
             e.Common.curseDefence += s.data.Common.curseDefence?s.data.Common.curseDefence:0;
             e.Common.curseRate += s.data.Common.curseRate?s.data.Common.curseRate:0;
         }
-        e.Common.criticalStrikeRate*=100;
-        e.Common.lifeDrain*=100;
-        e.Common.dodge*=100;
+        e.Common.criticalStrikeRate=(1-e.Common.criticalStrikeRate)*100;
+        e.Common.lifeDrain=(1-e.Common.lifeDrain)*100;
+        e.Common.dodge=(1-e.Common.dodge)*100;
         return e;
     }
 }

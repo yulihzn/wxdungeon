@@ -26,7 +26,6 @@ export default class PlayerData {
     private common: CommonData;
     private equipmentTotalData: EquipmentData;
     private statusTotalData: StatusData;
-    private list: CommonData[] = [];
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
@@ -35,7 +34,6 @@ export default class PlayerData {
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = PlayerData.DefAULT_SPEED;
         this.common.damageMin = PlayerData.DefAULT_ATTACK;
-        this.list = [this.common, this.equipmentTotalData.Common, this.statusTotalData.Common];
     }
     get EquipmentTotalData() {
         return this.equipmentTotalData;
@@ -45,6 +43,9 @@ export default class PlayerData {
     }
     get Common() {
         return this.common;
+    }
+    private getCommonList():CommonData[]{
+        return [this.common, this.equipmentTotalData.Common, this.statusTotalData.Common];
     }
     updateHA(health: cc.Vec2, attackPoint: number) {
         this.currentHealth = health.x;
@@ -137,7 +138,7 @@ export default class PlayerData {
     //初始速度300,最大速度600 最小速度为10
     getMoveSpeed(): number {
         let speed = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             speed += data.moveSpeed;
         }
         if (speed > PlayerData.DefAULT_SPEED * 2) { speed = PlayerData.DefAULT_SPEED * 2 }
@@ -147,7 +148,7 @@ export default class PlayerData {
     //初始延迟是300,最低延迟为0 最大3000
     getAttackSpeed(): number {
         let speed = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             speed += data.attackSpeed;
         }
         return speed;
@@ -155,7 +156,7 @@ export default class PlayerData {
     //初始延迟是300,最低延迟为10 最大3000
     getRemoteSpeed(): number {
         let speed = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             speed += data.remoteSpeed;
         }
         return speed;
@@ -163,7 +164,7 @@ export default class PlayerData {
     //获取最小攻击力
     getDamageMin(): number {
         let d = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             d += data.damageMin;
         }
         return d;
@@ -171,7 +172,7 @@ export default class PlayerData {
     //获取最大攻击力
     getDamageMax(): number {
         let d = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             d += data.damageMax;
         }
         return d;
@@ -180,7 +181,7 @@ export default class PlayerData {
     //获取暴击率
     getCriticalStrikeRate(): number {
         let rate = 1;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate *= (1 - data.criticalStrikeRate / 100);
         }
         return 1 - rate;
@@ -189,7 +190,7 @@ export default class PlayerData {
     //闪避
     getDodge(): number {
         let rate = 1;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate *= (1 - data.dodge / 100);
         }
         return 1 - rate;
@@ -197,7 +198,7 @@ export default class PlayerData {
     //防御,可以为负数
     getDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.defence;
         }
         return defence;
@@ -207,7 +208,7 @@ export default class PlayerData {
     getHealth(): cc.Vec2 {
         let rate = 1;
         let maxHealth = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             maxHealth += data.maxHealth;
         }
         if (maxHealth > 0) {
@@ -220,7 +221,7 @@ export default class PlayerData {
 
     getIceDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.iceDefence;
         }
         if (defence > 100) {
@@ -231,7 +232,7 @@ export default class PlayerData {
 
     getFireDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.fireDefence;
         }
         if (defence > 100) {
@@ -242,7 +243,7 @@ export default class PlayerData {
 
     getLighteningDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.lighteningDefence;
         }
         if (defence > 100) {
@@ -253,7 +254,7 @@ export default class PlayerData {
 
     getToxicDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.toxicDefence;
         }
         if (defence > 100) {
@@ -264,7 +265,7 @@ export default class PlayerData {
 
     getCurseDefence(): number {
         let defence = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             defence += data.curseDefence;
         }
         if (defence > 100) {
@@ -275,7 +276,7 @@ export default class PlayerData {
 
     getRealDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.realDamage;
         }
         if (damage < 0) {
@@ -286,7 +287,7 @@ export default class PlayerData {
 
     getIceDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.iceDamage;
         }
         if (damage < 0) {
@@ -297,7 +298,7 @@ export default class PlayerData {
 
     getFireDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.fireDamage;
         }
         if (damage < 0) {
@@ -308,7 +309,7 @@ export default class PlayerData {
 
     getLighteningDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.lighteningDamage;
         }
         if (damage < 0) {
@@ -319,7 +320,7 @@ export default class PlayerData {
 
     getToxicDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.toxicDamage;
         }
         if (damage < 0) {
@@ -330,7 +331,7 @@ export default class PlayerData {
 
     getCurseDamage(): number {
         let damage = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             damage += data.curseDamage;
         }
         if (damage < 0) {
@@ -341,7 +342,7 @@ export default class PlayerData {
 
     getRealRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.realRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -351,7 +352,7 @@ export default class PlayerData {
 
     getIceRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.iceRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -361,7 +362,7 @@ export default class PlayerData {
 
     getFireRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.fireRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -371,7 +372,7 @@ export default class PlayerData {
 
     getLighteningRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.lighteningRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -381,7 +382,7 @@ export default class PlayerData {
 
     getToxicRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.toxicRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -391,7 +392,7 @@ export default class PlayerData {
 
     getCurseRate(): number {
         let rate = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate += data.curseRate;
         }
         rate = rate < 0 ? 0 : rate;
@@ -402,7 +403,7 @@ export default class PlayerData {
     //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
     getLifeRecovery(): number {
         let lifeRecovery = 0;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             lifeRecovery += data.lifeRecovery;
         }
         return lifeRecovery > 0 ? lifeRecovery : 0;
@@ -410,7 +411,7 @@ export default class PlayerData {
 
     getLifeDrainRate(): number {
         let rate = 1;
-        for (let data of this.list) {
+        for (let data of this.getCommonList()) {
             rate *= (1 - data.lifeDrain / 100);
         }
         return 1 - rate;
