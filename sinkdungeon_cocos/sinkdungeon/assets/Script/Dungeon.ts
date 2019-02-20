@@ -109,7 +109,6 @@ export default class Dungeon extends cc.Component {
     anim: cc.Animation;
 
     bosses: Boss[] = [];
-    bossIndex: cc.Vec2;
 
     onLoad() {
         //初始化动画
@@ -408,9 +407,35 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'y') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
                     }
-                    if (mapData[i][j] == 'b') {
-                        this.bossIndex = cc.v2(i, j);
-
+                    if (mapData[i][j] == '0') {
+                        this.addBossCaptain(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '1') {
+                        this.addBossWarMachine(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '2') {
+                        this.addBossCaptain(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '3') {
+                        this.addBossKraken(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '4') {
+                        this.addBossSlime(0,cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '5') {
+                        this.addBossKraken(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '6') {
+                        this.addBossCaptain(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '7') {
+                        this.addBossKraken(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '8') {
+                        this.addBossCaptain(cc.v2(i,j));
+                    }
+                    if (mapData[i][j] == '9') {
+                        this.addBossKraken(cc.v2(i,j));
                     }
                 }
 
@@ -431,7 +456,6 @@ export default class Dungeon extends cc.Component {
         if (!currcs && chests.length > 0) {
             Logic.mapManager.setCurrentChestsArr(chests);
         }
-        this.addBoss();
     }
     addItem(pos: cc.Vec2, resName: string) {
         if (!this.item) {
@@ -535,37 +559,37 @@ export default class Dungeon extends cc.Component {
         }
     }
     private addBoss() {
-        if (!this.bossIndex) {
-            return;
-        }
-        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
-            this.addBossKraken();
-        } else {
-            if (Logic.chapterName == Logic.CHAPTER02) {
-                this.addBossSlime(0, this.bossIndex);
-            } else {
-                this.addBossCaptain();
-            }
-        }
+        
+        
     }
     addBossSlime(type: number, index: cc.Vec2) {
         if (!this.bosses) {
             return;
         }
-        let posIndex = cc.v2(index.x, index.y);
-        this.bosses.push(this.monsterManager.getSlime(this, posIndex, type));
+        this.bosses.push(this.monsterManager.getSlime(this, index.clone(), type));
     }
-    private addBossCaptain() {
+    private addBossCaptain(index: cc.Vec2) {
         if (!this.bosses) {
             return;
         }
-        this.bosses.push(this.monsterManager.getCaptain(this, this.bossIndex));
+        this.bosses.push(this.monsterManager.getCaptain(this, index.clone()));
     }
-    private addBossKraken() {
+    private addBossWarMachine(index: cc.Vec2) {
         if (!this.bosses) {
             return;
         }
-        let boss = this.monsterManager.getKraken(this, this.bossIndex);
+        let boss = this.monsterManager.getWarMachine(this, index.clone());
+        this.bosses.push(boss);
+        setTimeout(() => {
+            boss.showBoss();
+            // this.anim.play('DungeonWave');
+        }, 3500);
+    }
+    private addBossKraken(index: cc.Vec2) {
+        if (!this.bosses) {
+            return;
+        }
+        let boss = this.monsterManager.getKraken(this, index.clone());
         this.bosses.push(boss);
         this.anim.playAdditive('DungeonShakeOnce');
         setTimeout(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1000);

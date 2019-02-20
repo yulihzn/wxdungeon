@@ -176,6 +176,23 @@
             "toxicRate":100
         }
     },
+    "bullet014": {
+        "name":"毒蛇",
+        "speed": 500,
+        "isLaser":0,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "size": 2,
+        "isTracking":0,
+        "resName":"bullet014",
+        "lightName": "bulletlight001",
+        "lightColor": "#2F4F4F",
+        "damage": {
+            "physicalDamage": 1,
+            "toxicRate":100
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

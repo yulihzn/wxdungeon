@@ -5,6 +5,7 @@ import Dungeon from "../Dungeon";
 import Captain from "../Boss/Captain";
 import Logic from "../Logic";
 import Slime from "../Boss/Slime";
+import WarMachine from "../Boss/WarMachine";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,6 +48,8 @@ export default class MonsterManager extends cc.Component {
     captain: cc.Prefab = null;
     @property(cc.Prefab)
     slime: cc.Prefab = null;
+    @property(cc.Prefab)
+    warmachine = null;
     onLoad () {
     }
     /**
@@ -105,7 +108,21 @@ export default class MonsterManager extends cc.Component {
         monster.data = data;
         return monster;
     }
-   
+    getWarMachine(dungeon:Dungeon,posIndex:cc.Vec2):WarMachine{
+        let machinePrefab:cc.Node = null;
+        machinePrefab = cc.instantiate(this.warmachine);
+        machinePrefab.active = false;
+        machinePrefab.parent = dungeon.node;
+        let machine = machinePrefab.getComponent(WarMachine);
+        machine.dungeon = dungeon;
+        let data = new MonsterData();
+        data.updateHA(800,800,2);
+        machine.data = data;
+        machine.transportBoss(posIndex.x,posIndex.y);
+        machine.healthBar = dungeon.bossHealthBar;
+        machine.node.active = true;
+        return machine;
+    }
     getKraken(dungeon:Dungeon,posIndex:cc.Vec2):Kraken{
         let krakenPrefab:cc.Node = null;
         krakenPrefab = cc.instantiate(this.kraken);

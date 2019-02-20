@@ -210,10 +210,10 @@ export default class Bullet extends cc.Component {
         this.node.stopAllActions();
         let ss = this.sprite.getComponent(cc.Sprite);
         let idleAction = cc.repeatForever(cc.sequence(
-            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
-            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
+            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
+            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
             
-            cc.moveBy(0.2, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); })));
+            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); })));
         this.sprite.runAction(idleAction);
 
         if(this.data.lifeTime > 0){

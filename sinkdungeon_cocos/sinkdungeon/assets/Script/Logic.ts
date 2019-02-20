@@ -97,6 +97,7 @@ export default class Logic extends cc.Component {
     static resetData() {
         Logic.profile = new ProfileData();
         Logic.level = Logic.profile.level;
+        Logic.level = 5;
         Logic.playerData = Logic.profile.playerData.clone();
         Logic.inventoryManager = Logic.profile.inventoryManager;
         Logic.mapManager.reset(Logic.level);

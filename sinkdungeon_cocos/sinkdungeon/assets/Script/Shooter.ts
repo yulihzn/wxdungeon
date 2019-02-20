@@ -35,6 +35,7 @@ export default class Shooter extends cc.Component {
     bulletName: string = '';
     sprite: cc.Node;
     data: EquipmentData = new EquipmentData();
+    parentNode:cc.Node;//该node为dungeon下发射器的载体
 
     private hv: cc.Vec2 = cc.v2(1, 0);
 
@@ -138,7 +139,7 @@ export default class Shooter extends cc.Component {
             if(i>=this.data.bulletLineExNum){
                 clearInterval(interval)
             }
-        },100);
+        },200);
         
     }
    
@@ -201,6 +202,13 @@ export default class Shooter extends cc.Component {
             this.rotateColliderManager(olderTarget);
         }
     }
+    getParentNode():cc.Node{
+        if(this.parentNode){
+            return this.parentNode;
+        }else{
+            return this.node.parent;
+        }
+    }
     hasNearEnemy() {
         if (!this.isAutoAim) {
             return cc.Vec2.ZERO;
@@ -210,22 +218,22 @@ export default class Shooter extends cc.Component {
         if (this.isAI) {
         } else if (this.dungeon) {
             for (let monster of this.dungeon.monsters) {
-                let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
+                let dis = Logic.getDistance(this.getParentNode().position, monster.node.position);
                 if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = monster.node.position.sub(this.node.parent.position.add(p));
+                    pos = monster.node.position.sub(this.getParentNode().position.add(p));
                 }
             }
             if(pos.equals(cc.Vec2.ZERO)){
                 for (let boss of this.dungeon.bosses) {
-                    let dis = Logic.getDistance(this.node.parent.position, boss.node.position);
+                    let dis = Logic.getDistance(this.getParentNode().position, boss.node.position);
                     if (dis < 500 && dis < olddis && !boss.isDied) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        pos = boss.node.position.sub(this.node.parent.position.add(p));
+                        pos = boss.node.position.sub(this.getParentNode().position.add(p));
                     }
                 }
                 
@@ -245,8 +253,8 @@ export default class Shooter extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        this.node.scaleX = this.node.parent.scaleX > 0 ? 1 : -1;
-        this.node.scaleY = this.node.parent.scaleX > 0 ? 1 : -1;
+        this.node.scaleX = this.getParentNode().scaleX > 0 ? 1 : -1;
+        this.node.scaleY = this.getParentNode().scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         // 将当前物体的角度设置为对应角度
         this.node.rotation = this.node.scaleX == -1 ? angle : -angle;

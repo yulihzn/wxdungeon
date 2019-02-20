@@ -146,7 +146,7 @@ export default class Player extends cc.Component {
         cc.director.on(EventConstant.PLAYER_ROTATE
             , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
         if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
-            Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
+            Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
         }
         this.pos = Logic.playerData.pos.clone();
         this.defaultPos = Logic.playerData.pos.clone();
