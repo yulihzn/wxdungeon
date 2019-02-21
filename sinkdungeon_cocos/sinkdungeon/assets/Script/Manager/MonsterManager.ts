@@ -6,6 +6,7 @@ import Captain from "../Boss/Captain";
 import Logic from "../Logic";
 import Slime from "../Boss/Slime";
 import WarMachine from "../Boss/WarMachine";
+import Rah from "../Boss/Rah";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -50,6 +51,8 @@ export default class MonsterManager extends cc.Component {
     slime: cc.Prefab = null;
     @property(cc.Prefab)
     warmachine = null;
+    @property(cc.Prefab)
+    rah = null;
     onLoad () {
     }
     /**
@@ -122,6 +125,21 @@ export default class MonsterManager extends cc.Component {
         machine.healthBar = dungeon.bossHealthBar;
         machine.node.active = true;
         return machine;
+    }
+    getRah(dungeon:Dungeon,posIndex:cc.Vec2):Rah{
+        let rahPrefab:cc.Node = null;
+        rahPrefab = cc.instantiate(this.rah);
+        rahPrefab.active = false;
+        rahPrefab.parent = dungeon.node;
+        let rah = rahPrefab.getComponent(Rah);
+        rah.dungeon = dungeon;
+        let data = new MonsterData();
+        data.updateHA(400,400,2);
+        rah.data = data;
+        rah.transportBoss(posIndex.x,posIndex.y);
+        rah.healthBar = dungeon.bossHealthBar;
+        rah.node.active = true;
+        return rah;
     }
     getKraken(dungeon:Dungeon,posIndex:cc.Vec2):Kraken{
         let krakenPrefab:cc.Node = null;

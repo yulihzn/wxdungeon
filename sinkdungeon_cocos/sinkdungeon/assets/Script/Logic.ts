@@ -71,8 +71,8 @@ export default class Logic extends cc.Component {
         // cc.view.enableAntiAlias(false);
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
-        // manager.enabledDebugDraw = true;
         cc.director.getPhysicsManager().enabled = true;
+        // manager.enabledDebugDraw = true;
         //     cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
         // cc.PhysicsManager.DrawBits.e_pairBit |
         // cc.PhysicsManager.DrawBits.e_centerOfMassBit |
@@ -97,7 +97,6 @@ export default class Logic extends cc.Component {
     static resetData() {
         Logic.profile = new ProfileData();
         Logic.level = Logic.profile.level;
-        Logic.level = 5;
         Logic.playerData = Logic.profile.playerData.clone();
         Logic.inventoryManager = Logic.profile.inventoryManager;
         Logic.mapManager.reset(Logic.level);
@@ -158,7 +157,9 @@ export default class Logic extends cc.Component {
     static getHalfChance(): boolean {
         return Math.random() > 0.5;
     }
-
+    static getChance(rate:number):boolean{
+        return Logic.getRandomNum(0, 100) < rate;
+    }
     static getDistance(v1, v2) {
         let x = v1.x - v2.x;
         let y = v1.y - v2.y;

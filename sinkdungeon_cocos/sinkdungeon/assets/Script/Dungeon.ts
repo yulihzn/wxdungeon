@@ -426,7 +426,7 @@ export default class Dungeon extends cc.Component {
                         this.addBossKraken(cc.v2(i,j));
                     }
                     if (mapData[i][j] == '6') {
-                        this.addBossCaptain(cc.v2(i,j));
+                        this.addBossRah(cc.v2(i,j));
                     }
                     if (mapData[i][j] == '7') {
                         this.addBossKraken(cc.v2(i,j));
@@ -579,6 +579,17 @@ export default class Dungeon extends cc.Component {
             return;
         }
         let boss = this.monsterManager.getWarMachine(this, index.clone());
+        this.bosses.push(boss);
+        setTimeout(() => {
+            boss.showBoss();
+            // this.anim.play('DungeonWave');
+        }, 3500);
+    }
+    private addBossRah(index: cc.Vec2) {
+        if (!this.bosses) {
+            return;
+        }
+        let boss = this.monsterManager.getRah(this, index.clone());
         this.bosses.push(boss);
         setTimeout(() => {
             boss.showBoss();

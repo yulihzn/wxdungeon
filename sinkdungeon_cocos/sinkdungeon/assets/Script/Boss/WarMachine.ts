@@ -2,6 +2,8 @@ import Boss from "./Boss";
 import DamageData from "../Data/DamageData";
 import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
+import Logic from "../Logic";
+import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,6 +34,9 @@ export default class WarMachine extends Boss {
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
     isMoving = false;
+    isMissileCoolDown = false;
+    isGatlingCoolDown = false;
+    isMainGunCoolDown = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -60,6 +65,7 @@ export default class WarMachine extends Boss {
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         return true;
     }
+
     killed() {
         if (this.isDied) {
             return;
@@ -68,40 +74,112 @@ export default class WarMachine extends Boss {
     }
     actionCount = 0;
     bossAction(): void {
-        if (this.isDied || !this.isShow) {
+        if (this.isDied || !this.isShow || !this.dungeon) {
             this.actionCount = 0;
             return;
         }
-        this.actionCount++;
         if (this.dungeon) {
-            this.fireShooter(this.shooter01,"bullet010",0,0);
-            this.fireShooter(this.shooter02,"bullet011",0,2);
-            this.fireShooter(this.shooter03,"bullet011",0,2);
-            this.fireShooter(this.shooter04,"bullet012",0,0);
-            this.fireShooter(this.shooter05,"bullet012",0,0);
+            if (Logic.getChance(90)) { this.fireMainGun(); }
+        }
+        let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
+        if (playerDis < 200) {
+            this.fireMissile();
+        } else if (Logic.getChance(20)) {
+            this.fireMissile();
+        }
+        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
+        this.fireGatling(isHalf);
+        if (isHalf) {
+            this.actionCount++;
+            let pos = cc.v2(1, 0);
+            if (this.actionCount > 10) {
+                pos = cc.v2(-1, 0);
+            }
+            if (this.actionCount > 20) {
+                this.actionCount = 0;
+            }
+            if (!pos.equals(cc.Vec2.ZERO)) {
+                pos = pos.normalizeSelf();
+                this.move(pos, 500);
+            }
+        }
 
-        }
-        let pos = cc.v2(1,0);
-        if(this.actionCount > 10){
-            pos = cc.v2(-1,0);
-        }
-        if(this.actionCount > 20){
-            this.actionCount = 0;
-        }
-        if (!pos.equals(cc.Vec2.ZERO)) {
-            pos = pos.normalizeSelf();
-            this.move(pos, 20000);
+    }
+    initGuns(){
+        this.isMainGunCoolDown = false;
+        this.isGatlingCoolDown = false;
+        this.isMissileCoolDown = false;
+        this.shooter01.setHv(cc.v2(0, -1));
+        this.shooter02.setHv(cc.v2(0, -1));
+        this.shooter03.setHv(cc.v2(0, -1));
+        this.shooter04.setHv(cc.v2(0, -1));
+        this.shooter05.setHv(cc.v2(0, -1));
+        let pos = this.node.position.clone().add(this.shooter01.node.position);
+        let hv = this.dungeon.player.getCenterPosition().sub(pos);
+        if (!hv.equals(cc.Vec2.ZERO)) {
+            hv = hv.normalizeSelf();
+            this.shooter01.setHv(hv);
         }
     }
-    fireShooter(shooter:Shooter,bulletType:string,bulletArcExNum:number,bulletLineExNum:number):void{
+    fireMainGun() {
+        if (this.isMainGunCoolDown) {
+            return;
+        }
+        this.isMainGunCoolDown = true;
+        this.shooter01.setHv(cc.v2(0, -1));
+        let pos = this.node.position.clone().add(this.shooter01.node.position);
+        let hv = this.dungeon.player.getCenterPosition().sub(pos);
+        if (!hv.equals(cc.Vec2.ZERO)) {
+            hv = hv.normalizeSelf();
+            this.shooter01.setHv(hv);
+            this.fireShooter(this.shooter01, "bullet016", 0, 0);
+        }
+        setTimeout(() => { this.isMainGunCoolDown = false; }, 6000);
+    }
+    
+    fireGatling(isHalf: boolean) {
+        if (this.isGatlingCoolDown) {
+            return;
+        }
+        this.isGatlingCoolDown = true;
+        this.shooter02.setHv(cc.v2(0, -1));
+        this.shooter03.setHv(cc.v2(0, -1));
+        this.shooter02.data.bulletLineInterval = 500;
+        this.shooter03.data.bulletLineInterval = 500;
+        let cooldown = 3000;
+        let angle = Logic.getRandomNum(0,15);
+        angle = Logic.getHalfChance()?angle:-angle;
+        if (isHalf) {
+            this.fireShooter(this.shooter02, "bullet011", 0, 4);
+            this.fireShooter(this.shooter03, "bullet011", 0, 4);
+            cooldown = 1500;
+        } else {
+            this.fireShooter(this.shooter02, "bullet011", 2, 2);
+            this.fireShooter(this.shooter03, "bullet011", 2, 2);
+        }
+        setTimeout(() => { this.isGatlingCoolDown = false; }, cooldown);
+    }
+    fireMissile() {
+        if (this.isMissileCoolDown) {
+            return;
+        }
+        this.isMissileCoolDown = true;
+        this.shooter04.setHv(cc.v2(0, -1));
+        this.shooter05.setHv(cc.v2(0, -1));
+        this.fireShooter(this.shooter04, "bullet015", 0, 0);
+        this.fireShooter(this.shooter05, "bullet015", 0, 0);
+        setTimeout(() => { this.isMissileCoolDown = false; }, 8000);
+    }
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
         shooter.dungeon = this.dungeon;
-        shooter.setHv(cc.v2(0,-1))
+        // shooter.setHv(cc.v2(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet();
+        shooter.fireBullet(angle);
     }
     showBoss() {
+        this.initGuns();
         this.isShow = true;
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
@@ -111,19 +189,18 @@ export default class WarMachine extends Boss {
     actionTimeDelay = 0;
     isActionTimeDelay(dt: number): boolean {
         this.actionTimeDelay += dt;
-        if (this.actionTimeDelay > 2) {
+        if (this.actionTimeDelay > 0.2) {
             this.actionTimeDelay = 0;
             return true;
         }
         return false;
     }
-    update (dt) {
+    update(dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 0.016) {
+        if (this.timeDelay > 1) {
             this.timeDelay = 0;
-            this.updatePlayerPos();
         }
-        if(this.isActionTimeDelay(dt)){
+        if (this.isActionTimeDelay(dt)) {
             this.bossAction();
         }
         if (this.data.currentHealth < 1) {
@@ -159,5 +236,12 @@ export default class WarMachine extends Boss {
         // }
         this.changeZIndex();
     }
-
+    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+        let player = other.node.getComponent(Player);
+        if(player){
+            let d = new DamageData();
+            d.physicalDamage = 2;
+            player.takeDamage(d);
+        }
+    }
 }

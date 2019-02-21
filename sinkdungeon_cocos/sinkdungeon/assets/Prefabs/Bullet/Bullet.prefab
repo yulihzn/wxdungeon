@@ -790,6 +790,9 @@
       "__id__": 1
     },
     "_enabled": false,
+    "boom": {
+      "__uuid__": "d876d450-5edd-4ce5-ae3a-298945d3c014"
+    },
     "_id": ""
   },
   {

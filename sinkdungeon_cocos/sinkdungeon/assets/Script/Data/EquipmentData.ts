@@ -33,6 +33,7 @@ export default class EquipmentData extends BaseData{
     bulletType = "";//子弹类别
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
+    bulletLineInterval = 0;//线性喷射间隔时间（毫秒）
     showShooter = 0;//是否显示发射器
     isHeavy = 0;//是否是重型武器比如激光,具体影响是开枪时候减速
     private common:CommonData;
@@ -77,6 +78,7 @@ export default class EquipmentData extends BaseData{
         this.isLocked = data.isLocked?data.isLocked:0;
         this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
         this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
+        this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
         this.level = data.level?data.level:0;
         this.trouserslong = data.trouserslong?data.trouserslong:0;
         this.damageRemote = data.damageRemote?data.damageRemote:0;
@@ -125,6 +127,7 @@ export default class EquipmentData extends BaseData{
         e.isHeavy = this.isHeavy;
         e.bulletArcExNum = this.bulletArcExNum;
         e.bulletLineExNum = this.bulletLineExNum;
+        e.bulletLineInterval = this.bulletLineInterval;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

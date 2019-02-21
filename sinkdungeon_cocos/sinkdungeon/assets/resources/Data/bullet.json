@@ -193,6 +193,38 @@
             "toxicRate":100
         }
     },
+    "bullet015": {
+        "name":"战争机器追踪导弹",
+        "speed": 160,
+        "isLaser":0,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "size": 1.2,
+        "isTracking":1,
+        "resName":"bullet015",
+        "lightName": "bulletlight001",
+        "lightColor": "#C72C2C",
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet016": {
+        "name":"战争机器爆炸导弹",
+        "speed": 600,
+        "isLaser":0,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":1,
+        "size": 1.5,
+        "isBoom":1,
+        "resName":"bullet016",
+        "lightName": "bulletlight001",
+        "lightColor": "#FFFFE0",
+        "damage": {
+            "physicalDamage": 0
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

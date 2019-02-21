@@ -8,6 +8,7 @@ import Boss from "../Boss/Boss";
 import BulletData from "../Data/BulletData";
 import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
+import Boom from "./Boom";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,6 +25,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Bullet extends cc.Component {
 
+    @property(cc.Prefab)
+    boom:cc.Prefab = null;
     data: BulletData = new BulletData();
 
     anim: cc.Animation;
@@ -308,6 +311,14 @@ export default class Bullet extends cc.Component {
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
+        }
+        if(this.data.isBoom == 1){
+            let boom = cc.instantiate(this.boom);
+            boom.getComponent(Boom).isFromPlayer = this.isFromPlayer;
+            boom.parent = this.node.parent;
+            boom.setPosition(this.node.position);
+            boom.zIndex = 4100;
+            
         }
     }
     hasNearEnemy() {

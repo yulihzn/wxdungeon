@@ -17,7 +17,7 @@ import CommonData from "./CommonData";
 export default class PlayerData {
     static DEFAULT_HEALTH = 5000;
     static DefAULT_SPEED = 300;
-    static DefAULT_ATTACK = 20;
+    static DefAULT_ATTACK = 40;
     name: string = '';
     pos: cc.Vec2 = cc.v2(7, 4);
 

@@ -139,7 +139,7 @@ export default class Shooter extends cc.Component {
             if(i>=this.data.bulletLineExNum){
                 clearInterval(interval)
             }
-        },200);
+        },this.data.bulletLineInterval>0?this.data.bulletLineInterval:200);
         
     }
    
