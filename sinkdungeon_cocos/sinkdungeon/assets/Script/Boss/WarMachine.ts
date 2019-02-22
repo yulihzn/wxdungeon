@@ -4,6 +4,7 @@ import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
+import StatusManager from "../Manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,10 +50,11 @@ export default class WarMachine extends Boss {
         this.shooter04 = this.node.getChildByName('Shooter04').getComponent(Shooter);
         this.shooter05 = this.node.getChildByName('Shooter05').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
+        this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
     }
 
     start() {
-
+        this.initGuns();
     }
     takeDamage(damage: DamageData): boolean {
         if (this.isDied || !this.isShow) {
@@ -71,6 +73,8 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isDied = true;
+        setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
+        this.getLoot();
     }
     actionCount = 0;
     bossAction(): void {
@@ -78,6 +82,7 @@ export default class WarMachine extends Boss {
             this.actionCount = 0;
             return;
         }
+        this.changeZIndex();
         if (this.dungeon) {
             if (Logic.getChance(90)) { this.fireMainGun(); }
         }

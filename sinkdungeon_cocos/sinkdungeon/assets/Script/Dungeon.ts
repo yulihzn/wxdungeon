@@ -140,6 +140,7 @@ export default class Dungeon extends cc.Component {
         })
         //设置雾气层级
         this.fog.zIndex = 9000;
+        this.fog.scale = 1.5;
         let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
@@ -743,6 +744,9 @@ export default class Dungeon extends cc.Component {
         }
     }
     checkPlayerPos(dt: number) {
+        if(!this.map||!this.player||!this.node){
+            return;
+        }
         this.fog.setPosition(this.lerp(this.fog.position, this.player.node.position, dt * 3));
         let pos = Dungeon.getIndexInMap(this.player.node.position);
         let tile = this.map[pos.x][pos.y];

@@ -134,7 +134,7 @@ export default class MonsterManager extends cc.Component {
         let rah = rahPrefab.getComponent(Rah);
         rah.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(400,400,2);
+        data.updateHA(400,400,0);
         rah.data = data;
         rah.transportBoss(posIndex.x,posIndex.y);
         rah.healthBar = dungeon.bossHealthBar;

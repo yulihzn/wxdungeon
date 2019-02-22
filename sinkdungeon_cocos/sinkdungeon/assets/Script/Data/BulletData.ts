@@ -18,6 +18,7 @@ export default class BulletData {
     isRotate = 0;//是否旋转
     isLaser = 0;//是否是激光 
     isBoom = 0;//是否爆炸
+    isPhysical = 0;//是否有碰撞
     isTracking = 0;//是否跟踪 不能和激光同时存在 激光大于跟踪
     lifeTime = 0;//存活时间 秒
     size = 1;//子弹大小
@@ -33,6 +34,7 @@ export default class BulletData {
         this.isLaser = data.isLaser?data.isLaser:0;
         this.isBoom = data.isBoom?data.isBoom:0;
         this.isTracking = data.isTracking?data.isTracking:0;
+        this.isPhysical = data.isPhysical?data.isPhysical:0;
         this.size = data.size?data.size:1;
         this.lifeTime = data.lifeTime?data.lifeTime:0;
         this.resName = data.resName?data.resName:'';
@@ -55,6 +57,7 @@ export default class BulletData {
         e.lightName = this.lightName;
         e.lightColor = this.lightColor;
         e.lifeTime = this.lifeTime;
+        e.isPhysical = this.isPhysical;
         e.damage = this.damage.clone();
         return e;
     }

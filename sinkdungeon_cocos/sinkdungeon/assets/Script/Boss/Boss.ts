@@ -4,6 +4,8 @@ import Logic from "../Logic";
 import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
+import { EventConstant } from "../EventConstant";
+import EquipmentManager from "../Manager/EquipmentManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,7 +39,11 @@ export default abstract class Boss extends cc.Component {
         }
     }
     /**获取玩家距离 */
-    getNearPlayerDistance(playerNode: cc.Node): number {
+    getNearPlayerDistance(playerNode: cc.Node,offset?:cc.Vec2): number {
+        let p = this.node.position.clone();
+        if(offset){
+            p.addSelf(offset);
+        }
         let dis = Logic.getDistance(this.node.position, playerNode.position);
         return dis;
     }
@@ -66,6 +72,14 @@ export default abstract class Boss extends cc.Component {
                 this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             }
         }, 100);
+    }
+    getLoot(){
+        if(this.dungeon){
+            cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 19 } });
+            cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
+            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
+            this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,3);
+        }
     }
     showBoss() {
     }

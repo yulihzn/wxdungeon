@@ -4,6 +4,7 @@ import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
+import StatusManager from "../Manager/StatusManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,10 +25,14 @@ export default class Rah extends Boss {
     shooter: Shooter;
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
+    isFaceRight = true;
     isMoving = false;
+    isAttacking = false;
     isBugsCoolDown = false;
     isSnakeCoolDown = false;
     isDarkCoolDown = false;
+    isBlinkCoolDown = false;
+    isBlinking = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -36,10 +41,12 @@ export default class Rah extends Boss {
         this.anim = this.getComponent(cc.Animation);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
+        this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
     }
 
     start() {
-
+        super.start();
+        this.initGuns();
     }
     takeDamage(damage: DamageData): boolean {
         if (this.isDied || !this.isShow) {
@@ -57,46 +64,115 @@ export default class Rah extends Boss {
         if (this.isDied) {
             return;
         }
+        this.node.runAction(cc.fadeOut(3));
         this.isDied = true;
+        this.dungeon.fog.runAction(cc.scaleTo(1,1.5));
+        setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
+        this.getLoot();
     }
-    actionCount = 0;
     bossAction(): void {
         if (this.isDied || !this.isShow || !this.dungeon) {
-            this.actionCount = 0;
             return;
         }
+        this.node.position = Dungeon.fixOuterMap(this.node.position);
+        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.changeZIndex();
+        let newPos = this.dungeon.player.pos.clone();
+        let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-        if (playerDis < 300) {
+        let h = pos.x;
+        let v = pos.y;
+        let absh = Math.abs(h);
+        let absv = Math.abs(v);
+        this.isFaceRight = h > 0;
+        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
+        if (playerDis < 100) {
+            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        }
+        if (Logic.getChance(20) && isHalf) {
+            this.dark();
+        }
+        if (Logic.getChance(80)) {
+            this.blink();
+        }
+        if (playerDis < 600 && !this.isBlinking) {
             this.fireSnake();
         }
-        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
-        if (Logic.getChance(90)) { this.fireBugs(isHalf); }
-        if (isHalf) {
-            this.actionCount++;
-            let pos = cc.v2(1, 0);
-            if (this.actionCount > 10) {
-                pos = cc.v2(-1, 0);
-            }
-            if (this.actionCount > 20) {
-                this.actionCount = 0;
-            }
-            if (!pos.equals(cc.Vec2.ZERO)) {
-                pos = pos.normalizeSelf();
-                this.move(pos, 500);
-            }
+        if (Logic.getChance(90) && !this.isBlinking) {
+            this.fireBugs(isHalf);
         }
-
+        if (playerDis < 100 && !this.isBlinking) {
+            this.attack();
+        }
+        if (!pos.equals(cc.Vec2.ZERO) && !this.isAttacking && !this.isBlinking && playerDis > 100) {
+            pos = pos.normalizeSelf();
+            this.move(pos, 100);
+        }
     }
     initGuns() {
         this.isBugsCoolDown = false;
         this.isDarkCoolDown = false;
         this.isSnakeCoolDown = false;
+        this.isBlinkCoolDown = false;
         let pos = this.node.position.clone().add(this.shooter.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec2.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
         }
+    }
+    blink(): void {
+        if (this.isBlinkCoolDown) {
+            return;
+        }
+        this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        this.isBlinkCoolDown = true;
+        this.isBlinking = true;
+        let action = cc.sequence(cc.callFunc(() => { }),
+            cc.fadeOut(1),
+            cc.callFunc(() => {
+                let p = this.dungeon.player.pos.clone();
+                if (p.y > Dungeon.HEIGHT_SIZE - 1) {
+                    p.y -= 1;
+                } else {
+                    p.y += 1;
+                }
+                this.transportBoss(p.x, p.y);
+            }),
+            cc.fadeIn(1),
+            cc.callFunc(() => {
+                this.attack();
+            }));
+        this.node.runAction(action);
+        setTimeout(() => {
+            this.isBlinking = false;
+        }, 5000);
+        setTimeout(() => { this.isBlinkCoolDown = false; }, 10000);
+        return;
+    }
+    attack() {
+        if (this.isAttacking) {
+            return;
+        }
+        this.isAttacking = true;
+        setTimeout(() => { this.isAttacking = false; }, 2000);
+        if (!this.anim) {
+            this.anim = this.getComponent(cc.Animation);
+        }
+        this.anim.playAdditive('RahAttack001');
+    }
+    dark() {
+        if (this.isDarkCoolDown) {
+            return false;
+        }
+        this.isDarkCoolDown = true;
+        let action = cc.sequence(cc.scaleTo(2, 1.5, 1.5), cc.rotateTo(6, 0), cc.scaleTo(2, 0.5, 0.5));
+        this.dungeon.fog.runAction(action);
+        if (!this.anim) {
+            this.anim = this.getComponent(cc.Animation);
+        }
+        this.anim.playAdditive('RahSpellDark');
+        setTimeout(() => { this.isDarkCoolDown = false; }, 20000);
     }
     fireSnake() {
         if (this.isSnakeCoolDown) {
@@ -109,8 +185,12 @@ export default class Rah extends Boss {
         if (!hv.equals(cc.Vec2.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
-            this.fireShooter(this.shooter, "bullet016", 0, 0);
+            this.fireShooter(this.shooter, "bullet014", 1, 0);
         }
+        if (!this.anim) {
+            this.anim = this.getComponent(cc.Animation);
+        }
+        this.anim.playAdditive('RahSpellSnake');
         setTimeout(() => { this.isSnakeCoolDown = false; }, 6000);
     }
 
@@ -125,18 +205,21 @@ export default class Rah extends Boss {
         if (!hv.equals(cc.Vec2.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
-            this.fireShooter(this.shooter, "bullet016", 0, 1);
         }
-        let cooldown = 3000;
+        let cooldown = 8000;
         let angle = Logic.getRandomNum(0, 15);
         angle = Logic.getHalfChance() ? angle : -angle;
         if (isHalf) {
-            this.fireShooter(this.shooter, "bullet011", 0, 1);
-            cooldown = 1500;
+            cooldown = 4000;
         } else {
-            this.fireShooter(this.shooter, "bullet011", 0, 1);
         }
+        this.fireShooter(this.shooter, "bullet017", 3, 10);
+        if (!this.anim) {
+            this.anim = this.getComponent(cc.Animation);
+        }
+        this.anim.playAdditive('RahSpellBugs');
         setTimeout(() => { this.isBugsCoolDown = false; }, cooldown);
+        
     }
 
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
@@ -176,6 +259,10 @@ export default class Rah extends Boss {
             this.killed();
         }
         this.healthBar.node.active = !this.isDied;
+        if (this.isDied) {
+            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        }
+        this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
 
     move(pos: cc.Vec2, speed: number) {
@@ -207,9 +294,9 @@ export default class Rah extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if (player) {
+        if (player && this.isAttacking) {
             let d = new DamageData();
-            d.physicalDamage = 2;
+            d.physicalDamage = 3;
             player.takeDamage(d);
         }
     }

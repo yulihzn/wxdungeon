@@ -26,7 +26,7 @@ const { ccclass, property } = cc._decorator;
 export default class Bullet extends cc.Component {
 
     @property(cc.Prefab)
-    boom:cc.Prefab = null;
+    boom: cc.Prefab = null;
     data: BulletData = new BulletData();
 
     anim: cc.Animation;
@@ -89,14 +89,14 @@ export default class Bullet extends cc.Component {
 
     }
     timeDelay = 0;
-    update(dt){
+    update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.5) {
             this.checkTraking();
             this.timeDelay = 0;
         }
     }
-    private checkTraking():void{
+    private checkTraking(): void {
         if (this.data.isTracking == 1 && this.data.isLaser != 1) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec2.ZERO)) {
@@ -115,6 +115,14 @@ export default class Bullet extends cc.Component {
         this.boxPCollider.enabled = data.isRect == 1;
         this.light.position = data.isRect ? cc.v2(8, 0) : cc.v2(0, 0);
         this.node.scale = data.size > 0 ? data.size : 1;
+        if (this.circlePCollider.enabled) {
+            this.circlePCollider.sensor = data.isPhysical == 0;
+            this.circlePCollider.apply();
+        }
+        if (this.boxPCollider.enabled) {
+            this.boxPCollider.sensor = data.isPhysical == 0;
+            this.boxPCollider.apply();
+        }
         this.initLaser();
 
     }
@@ -215,12 +223,12 @@ export default class Bullet extends cc.Component {
         let idleAction = cc.repeatForever(cc.sequence(
             cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
             cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
-            
+
             cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); })));
         this.sprite.runAction(idleAction);
 
-        if(this.data.lifeTime > 0){
-            let lifeTimeAction = cc.sequence(cc.delayTime(this.data.lifeTime),cc.callFunc(()=>{this.bulletHit();}));
+        if (this.data.lifeTime > 0) {
+            let lifeTimeAction = cc.sequence(cc.delayTime(this.data.lifeTime), cc.callFunc(() => { this.bulletHit(); }));
             this.node.runAction(lifeTimeAction);
         }
 
@@ -283,19 +291,19 @@ export default class Bullet extends cc.Component {
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             damageSuccess = monster.takeDamage(damage);
-            if(damageSuccess){this.addMonsterAllStatus(monster)}
+            if (damageSuccess) { this.addMonsterAllStatus(monster) }
             isDestory = true;
         }
         let player = attackTarget.getComponent(Player);
         if (player && !player.isDied) {
             damageSuccess = player.takeDamage(damage);
-            if(damageSuccess){this.addPlayerAllStatus(player)}
+            if (damageSuccess) { this.addPlayerAllStatus(player) }
             isDestory = true;
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {
             damageSuccess = boss.takeDamage(damage);
-            if(damageSuccess){this.addBossAllStatus(boss)}
+            if (damageSuccess) { this.addBossAllStatus(boss) }
             isDestory = true;
         }
 
@@ -307,18 +315,18 @@ export default class Bullet extends cc.Component {
             this.bulletHit();
         }
     }
-    private bulletHit():void{
+    private bulletHit(): void {
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }
-        if(this.data.isBoom == 1){
+        if (this.data.isBoom == 1) {
             let boom = cc.instantiate(this.boom);
             boom.getComponent(Boom).isFromPlayer = this.isFromPlayer;
             boom.parent = this.node.parent;
             boom.setPosition(this.node.position);
             boom.zIndex = 4100;
-            
+
         }
     }
     hasNearEnemy() {
@@ -364,7 +372,7 @@ export default class Bullet extends cc.Component {
         }
         return pos;
     }
-    
+
     rotateColliderManager(target: cc.Vec2) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标

@@ -225,6 +225,23 @@
             "physicalDamage": 0
         }
     },
+    "bullet017": {
+        "name":"蝗虫",
+        "speed": 160,
+        "isLaser":0,
+        "isRect": 0,
+        "isRotate": 0,
+        "lifeTime":5,
+        "size": 1.5,
+        "isTracking":1,
+        "isPhysical":1,
+        "resName":"bullet017",
+        "lightName": "bulletlight001",
+        "lightColor": "#2F4F4F",
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
@@ -234,4 +251,5 @@
             "physicalDamage": 1
         }
     }
+    
 }
