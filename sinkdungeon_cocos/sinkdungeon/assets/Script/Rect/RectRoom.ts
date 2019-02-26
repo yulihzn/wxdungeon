@@ -77,8 +77,7 @@ export default class RectRoom {
         this.state = room.state;
         this.hasKey = room.hasKey;
         this.enemyCount = room.enemyCount;
-        this.map = new MapData('');
-        this.map = room.map;
+        this.map = new MapData('').valueCopy(room.map);
         this.hasKey = room.hasKey;
         this.saveIndex = room.saveIndex;
 

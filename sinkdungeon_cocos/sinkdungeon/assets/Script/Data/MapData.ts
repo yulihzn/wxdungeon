@@ -46,4 +46,8 @@ export default class MapData {
         data.map = data.map.concat(this.map);
         return data;
     }
+    valueCopy(data:MapData):MapData{
+        this.map = data&&data.map?data.map:null;
+        return this;
+    }
 }

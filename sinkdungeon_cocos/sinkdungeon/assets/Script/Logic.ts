@@ -142,6 +142,7 @@ export default class Logic extends cc.Component {
             }
             Logic.mapManager.reset(Logic.level);
             Logic.profile.currentPos = Logic.mapManager.currentPos.clone();
+            Logic.profile.rectDungeon = Logic.mapManager.rectDungeon;
             
             Logic.changeDungeonSize();
             Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));

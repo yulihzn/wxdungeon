@@ -48,7 +48,7 @@ export default class Item extends cc.Component {
         }
     }
     private taken(player:Player):void{
-        if(!this.data.isTaken){
+        if(!this.data.isTaken && this.anim){
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
             this.getEffect(player);

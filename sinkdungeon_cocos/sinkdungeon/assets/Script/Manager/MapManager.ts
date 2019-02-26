@@ -117,8 +117,10 @@ export default class MapManager {
         let room = this.getCurrentRoom();
         if(!room.map){
             let index = room.roomType - 1;
-            let r = this.getAllFileRooms()[this.roomStrs[index]]
-            room.map = r[room.saveIndex];
+            let r = this.getAllFileRooms()[this.roomStrs[index]];
+            if(r){
+                room.map = r[room.saveIndex];
+            }
         }
         return this.getCurrentRoom().map.clone();
     }
@@ -188,7 +190,7 @@ export default class MapManager {
         return this.rectDungeon.map[this.currentPos.x][this.currentPos.y].roomType;
     }
     public loadMap() {
-        if (this.rectDungeon.startRoom.map) {
+        if (this.allfileRooms00[this.roomStrs[0]]) {
             this.isloaded = true;
             return;
         }
@@ -265,6 +267,5 @@ export default class MapManager {
                 }
             }
         }
-        Logic.profile.rectDungeon = Logic.mapManager.rectDungeon;
     }
 }

@@ -606,7 +606,8 @@ export default class Dungeon extends cc.Component {
         this.anim.playAdditive('DungeonShakeOnce');
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2);
-        this.breakHalfTiles();
+        this.scheduleOnce(() => { this.breakHalfTiles(); }, 0.1);
+        
         this.scheduleOnce(() => {
             boss.showBoss();
             // this.anim.play('DungeonWave');

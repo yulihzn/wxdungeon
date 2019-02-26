@@ -47,7 +47,7 @@ export default class Kraken extends Boss {
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
-        this.node.y = this.pos.y * 64 + 70;
+        this.node.y = this.pos.y * 64 + 64;
     }
     
     changeZIndex() {
