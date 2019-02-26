@@ -62,7 +62,7 @@ export default class Slime extends Boss {
         cc.director.on('destoryvenom', (event) => {
             this.destroyVenom(event.detail.coinNode);
         })
-        setTimeout(() => { this.isShow = true; }, 1000)
+        this.scheduleOnce(() => { this.isShow = true; }, 1)
     }
 
     start() {
@@ -192,13 +192,13 @@ export default class Slime extends Boss {
         this.isHurt = true;
         this.isDashing = false;
         //100ms后修改受伤
-        setTimeout(() => { if (this.node) { this.isHurt = false; } }, 100);
+        this.scheduleOnce(() => { if (this.node) { this.isHurt = false; } }, 0.1);
         this.anim.play('SlimeHit');
         this.isAttacking = false;
         if (this.data.currentHealth < this.data.Common.maxHealth / 2 && !this.isCrownFall && this.slimeType == 0) {
             this.isCrownFall = true;
             this.isShow = false;
-            setTimeout(() => { this.isShow = true; this.crown.opacity = 0; }, 1000)
+            this.scheduleOnce(() => { this.isShow = true; this.crown.opacity = 0; }, 1)
             this.anim.play('SlimeCrownFall');
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
@@ -214,7 +214,7 @@ export default class Slime extends Boss {
         this.anim.play('SlimeDie');
         let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsBoxCollider);
         collider.sensor = true;
-        setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
+        this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         if (this.dungeon) {
             if (this.slimeType == 0) {
                 cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
@@ -264,7 +264,7 @@ export default class Slime extends Boss {
             }
             this.move(pos, speed * 1.5);
             this.isDashing = true;
-            setTimeout(() => { if (this.node) { this.isDashing = false; } }, 2000);
+            this.scheduleOnce(() => { if (this.node) { this.isDashing = false; } }, 2);
         }
         if (Logic.getRandomNum(1,10)<3) {
             this.move(pos, speed);

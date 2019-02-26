@@ -68,11 +68,11 @@ export default class Equipment extends cc.Component {
         cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
         this.node.getChildByName('shadow').active = false;
         this.equipmentDialog.node.active = false;
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             if (this.node) {
                 this.destroy();
             }
-        }, 1000);
+        }, 1);
         let currequipments = Logic.mapManager.getCurrentMapEquipments();
         let newlist: EquipmentData[] = new Array();
         if (currequipments) {

@@ -51,13 +51,13 @@ export default class Trap extends cc.Component {
         this.isOpen = true;
         // this.openSpriteFrame.getTexture().setAliasTexParameters();
         this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame;
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             if(this.closeSpriteFrame){
                 // this.closeSpriteFrame.getTexture().setAliasTexParameters();
                 this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
                 this.isOpen = false;
             }
-        }, 500);
+        }, 0.5);
     }
     
     onCollisionStay(other:cc.Collider,self:cc.Collider){

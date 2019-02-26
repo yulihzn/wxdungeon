@@ -2,6 +2,7 @@ import RectDoor from "./RectDoor";
 import Logic from "../Logic";
 import MapData from "../Data/MapData";
 import Dungeon from "../Dungeon";
+import RectDungeon from "./RectDungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,7 +38,7 @@ export default class RectRoom {
     x: number;
     y: number;
     // map: number[][];
-    map:MapData;
+    map: MapData;
     enemyCount: number = 0;
     /// The Key 是否包含钥匙
     hasKey: boolean;
@@ -46,9 +47,11 @@ export default class RectRoom {
     /// The is found.是否被发现
     isFound: boolean = false;
     //用来取随机tile的列表
-    randomTiles: cc.Vec2[];
+    // randomTiles: cc.Vec2[];
     /// The is init.是否是初始化
     isInit: boolean = true;
+    //保存地图数据下标
+    saveIndex = 0;
 
     constructor(isPrimary: boolean, index: number, x: number, y: number, roomType: number) {
         this.x = x;
@@ -59,8 +62,8 @@ export default class RectRoom {
         this.init();
     }
 
-    public initFromSave(room:RectRoom):RectRoom{
-        if(!room){
+    public initFromSave(room: RectRoom): RectRoom {
+        if (!room) {
             return;
         }
         this.x = room.x;
@@ -74,9 +77,13 @@ export default class RectRoom {
         this.state = room.state;
         this.hasKey = room.hasKey;
         this.enemyCount = room.enemyCount;
+        this.map = new MapData('');
         this.map = room.map;
         this.hasKey = room.hasKey;
-        this.randomTiles = room.randomTiles;
+        this.saveIndex = room.saveIndex;
+
+        // this.randomTiles = room.randomTiles;
+
         return this;
     }
     private init(): void {
@@ -90,15 +97,15 @@ export default class RectRoom {
                 this.doors[i] = new RectDoor(i, false, false);
             }
         }
-        this.randomTiles = new Array();
-        for (let i = 0; i < RectRoom.ROOM_WIDTH; i++) {
-            // this.map[i] = new Array(i);
-            this.randomTiles = new Array(i);
-            for (let j = 0; j < RectRoom.ROOM_HEIGHT; j++) {
-                // this.map[i][j] = 0;
-                this.randomTiles.push(cc.v2(i, j));
-            }
-        }
+        // this.randomTiles = new Array();
+        // for (let i = 0; i < RectRoom.ROOM_WIDTH; i++) {
+        //     // this.map[i] = new Array(i);
+        //     this.randomTiles = new Array(i);
+        //     for (let j = 0; j < RectRoom.ROOM_HEIGHT; j++) {
+        //         // this.map[i][j] = 0;
+        //         this.randomTiles.push(cc.v2(i, j));
+        //     }
+        // }
     }
 
     public lockAllDoors(islock: boolean): void {
@@ -112,15 +119,15 @@ export default class RectRoom {
     }
 
 
-    public randomTile(): cc.Vec2 {
-        if (this.randomTiles.length > 0) {
-            let index = Logic.getRandomNum(0, this.randomTiles.length - 1);
-            let p = this.randomTiles[index];
-            this.randomTiles.splice(index, 1);
-            return p;
-        }
-        return null;
-    }
+    // public randomTile(): cc.Vec2 {
+    //     if (this.randomTiles.length > 0) {
+    //         let index = Logic.getRandomNum(0, this.randomTiles.length - 1);
+    //         let p = this.randomTiles[index];
+    //         this.randomTiles.splice(index, 1);
+    //         return p;
+    //     }
+    //     return null;
+    // }
 
 }
 

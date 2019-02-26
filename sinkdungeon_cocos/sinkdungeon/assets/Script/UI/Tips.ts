@@ -32,7 +32,7 @@ export default class Tips extends cc.Component {
         }
         this.isUse = true;
         cc.director.emit(EventConstant.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType}});
-        setTimeout(()=>{this.isUse = false;},100);
+        setTimeout(()=>{this.isUse = false;},0.1);
     }
     onDestroy(){
         this.isUse = false;

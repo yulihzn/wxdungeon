@@ -25,7 +25,7 @@ export default class Boom extends cc.Component {
     // onLoad () {}
 
     start () {
-        setTimeout(()=>{if(this.node)this.node.destroy();},500);
+        this.scheduleOnce(()=>{if(this.node)this.node.destroy();},0.5);
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let isAttack = true;

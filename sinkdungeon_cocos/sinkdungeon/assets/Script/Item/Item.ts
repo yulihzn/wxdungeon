@@ -52,11 +52,11 @@ export default class Item extends cc.Component {
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
             this.getEffect(player);
-            setTimeout(()=>{
+            this.scheduleOnce(()=>{
                 if(this.node){
                     this.node.active = false;
                 }
-            },3000);
+            },3);
         }
         let curritems = Logic.mapManager.getCurrentMapItems();
         let newlist: ItemData[] = new Array();

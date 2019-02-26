@@ -36,12 +36,12 @@ export default class FallStone extends cc.Component {
     //anim
     FallFinish() {
         this.isFall = true;
-        setTimeout(() => { this.isFall = false; }, 100);
-        setTimeout(() => {
+        this.scheduleOnce(() => { this.isFall = false; }, 0.1);
+        this.scheduleOnce(() => {
             if(this.node){
                 this.node.destroy();
             }
-            }, 2000);
+            }, 2);
         
     }
     start() {

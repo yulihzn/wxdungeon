@@ -37,7 +37,7 @@ export default class Coin extends cc.Component {
         this.rigidBody.linearVelocity = cc.v2(x,y);
         this.rigidBody.linearDamping = 5;
         this.isReady = false;
-        setTimeout(()=>{this.isReady = true;},1000);
+        this.scheduleOnce(()=>{this.isReady = true;},1);
     }
     changeValue(value:number){
         //目前只有1和10

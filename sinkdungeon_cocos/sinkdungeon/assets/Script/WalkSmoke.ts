@@ -18,7 +18,7 @@ export default class WalkSmoke extends cc.Component {
     // onLoad () {}
 
     start () {
-        setTimeout(()=>{cc.director.emit('destorysmoke',{detail:{coinNode:this.node}});},300);
+        this.scheduleOnce(()=>{cc.director.emit('destorysmoke',{detail:{coinNode:this.node}});},0.3);
     }
 
     // update (dt) {}

@@ -302,10 +302,10 @@ export default class Player extends cc.Component {
         if (speed > PlayerData.DefAULT_SPEED * 10) { speed = PlayerData.DefAULT_SPEED * 10; }
         let spritePos = this.sprite.position.clone();
         let action = cc.sequence(cc.moveBy(0.1, pos.x, pos.y), cc.moveBy(0.1, -pos.x, -pos.y), cc.callFunc(() => {
-            setTimeout(() => {
+            this.scheduleOnce(() => {
                 this.sprite.position = spritePos.clone();
                 this.isAttacking = false;
-            }, speed);
+            }, speed/1000);
         }, this));
         this.sprite.runAction(action);
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
@@ -332,7 +332,7 @@ export default class Player extends cc.Component {
             return;
         }
         this.isHeavyRemotoAttacking =  this.isHeavyRemoteShooter();
-        setTimeout(()=>{this.isHeavyRemotoAttacking = false},200);
+        this.scheduleOnce(()=>{this.isHeavyRemotoAttacking = false},0.2);
         if (this.shooter) {
             this.shooter.fireBullet(0);
         }
@@ -430,14 +430,14 @@ export default class Player extends cc.Component {
         this.isFall = true;
         this.anim.play('PlayerFall');
         this.isAttacking = false;
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos);
             this.anim.play('PlayerIdle');
             let dd = new DamageData();
             dd.realDamage = 1;
             this.takeDamage(dd);
             this.isFall = false;
-        }, 2000);
+        }, 2);
     }
     takeDamage(damageData: DamageData):boolean {
         if(!this.data){
@@ -483,10 +483,10 @@ export default class Player extends cc.Component {
         this.isDied = true;
         this.anim.play('PlayerDie');
         cc.director.emit(EventConstant.HUD_STOP_COUNTTIME);
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             Logic.profile.clearData();
             cc.director.loadScene('gameover');
-        }, 1000);
+        }, 1);
     }
     //玩家行动
     playerAction(dir: number, pos: cc.Vec2, dt: number, dungeon: Dungeon) {

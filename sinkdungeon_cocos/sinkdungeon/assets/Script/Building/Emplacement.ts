@@ -45,7 +45,7 @@ export default class Emplacement extends cc.Component {
 
     start() {
         this.anim = this.getComponent(cc.Animation);
-        setTimeout(()=>{this.fire()},1000);        
+        this.scheduleOnce(()=>{this.fire()},1);        
     }
 
     setPos(pos: cc.Vec2) {

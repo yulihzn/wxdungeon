@@ -73,7 +73,7 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isDied = true;
-        setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
+        this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
     actionCount = 0;
@@ -139,7 +139,7 @@ export default class WarMachine extends Boss {
             this.shooter01.setHv(hv);
             this.fireShooter(this.shooter01, "bullet016", 0, 0);
         }
-        setTimeout(() => { this.isMainGunCoolDown = false; }, 6000);
+        this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 6);
     }
     
     fireGatling(isHalf: boolean) {
@@ -151,18 +151,18 @@ export default class WarMachine extends Boss {
         this.shooter03.setHv(cc.v2(0, -1));
         this.shooter02.data.bulletLineInterval = 500;
         this.shooter03.data.bulletLineInterval = 500;
-        let cooldown = 3000;
+        let cooldown = 3;
         let angle = Logic.getRandomNum(0,15);
         angle = Logic.getHalfChance()?angle:-angle;
         if (isHalf) {
             this.fireShooter(this.shooter02, "bullet011", 0, 4);
             this.fireShooter(this.shooter03, "bullet011", 0, 4);
-            cooldown = 1500;
+            cooldown = 1.5;
         } else {
             this.fireShooter(this.shooter02, "bullet011", 2, 2);
             this.fireShooter(this.shooter03, "bullet011", 2, 2);
         }
-        setTimeout(() => { this.isGatlingCoolDown = false; }, cooldown);
+        this.scheduleOnce(() => { this.isGatlingCoolDown = false; }, cooldown);
     }
     fireMissile() {
         if (this.isMissileCoolDown) {
@@ -173,7 +173,7 @@ export default class WarMachine extends Boss {
         this.shooter05.setHv(cc.v2(0, -1));
         this.fireShooter(this.shooter04, "bullet015", 0, 0);
         this.fireShooter(this.shooter05, "bullet015", 0, 0);
-        setTimeout(() => { this.isMissileCoolDown = false; }, 8000);
+        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, 8);
     }
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
         shooter.dungeon = this.dungeon;

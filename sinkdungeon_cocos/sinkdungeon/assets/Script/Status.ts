@@ -104,9 +104,9 @@ export default class Status extends cc.Component {
             if(this.data.duration  == 0  && this.stateRunning){
                 this.stateRunning = false;
                 this.anim.play('StatusHide');
-                setTimeout(()=>{if(this.node){
+                this.scheduleOnce(()=>{if(this.node){
                     this.node.destroy();
-                }},500);
+                }},0.5);
             }
         }
     }

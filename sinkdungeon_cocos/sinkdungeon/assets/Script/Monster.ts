@@ -282,7 +282,7 @@ export default class Monster extends cc.Component {
         this.sprite.stopAllActions();
         this.idleAction = null;
         //200ms后修改受伤
-        setTimeout(() => { if (this.node) { this.isHurt = false; } }, 200);
+        this.scheduleOnce(() => { if (this.node) { this.isHurt = false; } }, 0.2);
         this.sprite.opacity = 255;
         this.data.currentHealth -= dd.getTotalDamage();
         if (this.data.currentHealth > this.data.getHealth().y) {
@@ -345,7 +345,7 @@ export default class Monster extends cc.Component {
         } else {
             cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
         }
-        setTimeout(() => { if (this.node) { this.node.active = false; } }, 2000);
+        this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 2);
 
     }
     /**获取中心位置 */
@@ -402,7 +402,7 @@ export default class Monster extends cc.Component {
             this.showAttackEffect();
             this.move(pos, speed * 1.2);
             this.isDashing = true;
-            setTimeout(() => { if (this.node) { this.isDashing = false; this.stopAttackEffect(); } }, 3000);
+            this.scheduleOnce(() => { if (this.node) { this.isDashing = false; this.stopAttackEffect(); } }, 3);
         }
         if (this.data.disguise > 0 && playerDis < this.data.disguise && !this.dungeon.player.isDied && this.isDisguising) {
             this.changeBodyRes(this.data.resName);

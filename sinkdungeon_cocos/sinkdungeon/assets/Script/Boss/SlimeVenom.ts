@@ -43,13 +43,13 @@ export default class SlimeVenom extends cc.Component {
         this.venom2.rotation = Logic.getRandomNum(0,180);
         this.anim.play();
         if(!this.isForever){
-            setTimeout(()=>{
+            this.scheduleOnce(()=>{
                 if(this.anim){
                     this.isHide = true;
                     this.anim.play('VenomHide');
-                    setTimeout(()=>{cc.director.emit('destoryvenom',{detail:{coinNode:this.node}});},1500);
+                    this.scheduleOnce(()=>{cc.director.emit('destoryvenom',{detail:{coinNode:this.node}});},1.5);
                 }
-            },3000);
+            },3);
         }
         this.damagePlayer();
     }

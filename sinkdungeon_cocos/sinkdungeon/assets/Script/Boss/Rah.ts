@@ -67,7 +67,7 @@ export default class Rah extends Boss {
         this.node.runAction(cc.fadeOut(3));
         this.isDied = true;
         this.dungeon.fog.runAction(cc.scaleTo(1,1.5));
-        setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
+        this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
     bossAction(): void {
@@ -144,10 +144,10 @@ export default class Rah extends Boss {
                 this.attack();
             }));
         this.node.runAction(action);
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             this.isBlinking = false;
-        }, 5000);
-        setTimeout(() => { this.isBlinkCoolDown = false; }, 10000);
+        }, 5);
+        this.scheduleOnce(() => { this.isBlinkCoolDown = false; }, 10);
         return;
     }
     attack() {
@@ -155,7 +155,7 @@ export default class Rah extends Boss {
             return;
         }
         this.isAttacking = true;
-        setTimeout(() => { this.isAttacking = false; }, 2000);
+        this.scheduleOnce(() => { this.isAttacking = false; }, 2);
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation);
         }
@@ -172,7 +172,7 @@ export default class Rah extends Boss {
             this.anim = this.getComponent(cc.Animation);
         }
         this.anim.playAdditive('RahSpellDark');
-        setTimeout(() => { this.isDarkCoolDown = false; }, 20000);
+        this.scheduleOnce(() => { this.isDarkCoolDown = false; }, 20);
     }
     fireSnake() {
         if (this.isSnakeCoolDown) {
@@ -191,7 +191,7 @@ export default class Rah extends Boss {
             this.anim = this.getComponent(cc.Animation);
         }
         this.anim.playAdditive('RahSpellSnake');
-        setTimeout(() => { this.isSnakeCoolDown = false; }, 6000);
+        this.scheduleOnce(() => { this.isSnakeCoolDown = false; }, 6);
     }
 
     fireBugs(isHalf: boolean) {
@@ -206,11 +206,11 @@ export default class Rah extends Boss {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
         }
-        let cooldown = 8000;
+        let cooldown = 8;
         let angle = Logic.getRandomNum(0, 15);
         angle = Logic.getHalfChance() ? angle : -angle;
         if (isHalf) {
-            cooldown = 4000;
+            cooldown = 4;
         } else {
         }
         this.fireShooter(this.shooter, "bullet017", 3, 10);
@@ -218,7 +218,7 @@ export default class Rah extends Boss {
             this.anim = this.getComponent(cc.Animation);
         }
         this.anim.playAdditive('RahSpellBugs');
-        setTimeout(() => { this.isBugsCoolDown = false; }, cooldown);
+        this.scheduleOnce(() => { this.isBugsCoolDown = false; }, cooldown);
         
     }
 

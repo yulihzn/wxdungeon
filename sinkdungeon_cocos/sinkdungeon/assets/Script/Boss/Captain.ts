@@ -78,7 +78,7 @@ export default class Captain extends Boss {
     JumpFinish(){
         this.isJumping = false;
         this.isFall = true;
-        setTimeout(()=>{this.isFall = false;},100);
+        this.scheduleOnce(()=>{this.isFall = false;},0.1);
         this.getComponent(cc.PhysicsBoxCollider).sensor = false;
         this.getComponent(cc.PhysicsBoxCollider).apply();
         if(!this.dungeon || !this.shooter){
@@ -112,8 +112,8 @@ export default class Captain extends Boss {
         let angles3 = [-5,10,20,-10,-20,-30,-40,30,40];
         this.fireWithAngles(angles1);
         if(this.data.currentHealth<this.data.Common.maxHealth/2){
-            setTimeout(()=>{this.fireWithAngles(angles2);},100);
-            setTimeout(()=>{this.fireWithAngles(angles3);},200);
+            this.scheduleOnce(()=>{this.fireWithAngles(angles2);},0.1);
+            this.scheduleOnce(()=>{this.fireWithAngles(angles3);},0.2);
             
         }
     }
@@ -178,7 +178,7 @@ export default class Captain extends Boss {
         this.anim.play('CaptainDie');
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
-        setTimeout(() => { if (this.node) { this.node.active = false; } }, 5000);
+        this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
 
     }

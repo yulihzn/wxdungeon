@@ -553,9 +553,9 @@ export default class Dungeon extends cc.Component {
             for (let j = 6; j < Dungeon.HEIGHT_SIZE - 1; j++) {
                 this.map[i][j].isAutoShow = false;
                 this.breakTile(cc.v2(i, j));
-                setTimeout(() => {
+                this.scheduleOnce(() => {
                     this.breakTile(cc.v2(i, j));
-                }, 100 * Math.random())
+                }, 0.1 * Math.random())
             }
         }
     }
@@ -581,10 +581,10 @@ export default class Dungeon extends cc.Component {
         }
         let boss = this.monsterManager.getWarMachine(this, index.clone());
         this.bosses.push(boss);
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             boss.showBoss();
             // this.anim.play('DungeonWave');
-        }, 3500);
+        }, 3.5);
     }
     private addBossRah(index: cc.Vec2) {
         if (!this.bosses) {
@@ -592,10 +592,10 @@ export default class Dungeon extends cc.Component {
         }
         let boss = this.monsterManager.getRah(this, index.clone());
         this.bosses.push(boss);
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             boss.showBoss();
             // this.anim.play('DungeonWave');
-        }, 3500);
+        }, 3.5);
     }
     private addBossKraken(index: cc.Vec2) {
         if (!this.bosses) {
@@ -604,13 +604,13 @@ export default class Dungeon extends cc.Component {
         let boss = this.monsterManager.getKraken(this, index.clone());
         this.bosses.push(boss);
         this.anim.playAdditive('DungeonShakeOnce');
-        setTimeout(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1000);
-        setTimeout(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2000);
+        this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
+        this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2);
         this.breakHalfTiles();
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             boss.showBoss();
             // this.anim.play('DungeonWave');
-        }, 3500);
+        }, 3.5);
     }
     private addMonster(monster: Monster, pos: cc.Vec2) {
         //激活

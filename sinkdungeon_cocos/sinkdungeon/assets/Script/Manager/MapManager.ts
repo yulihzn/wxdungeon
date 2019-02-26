@@ -114,6 +114,12 @@ export default class MapManager {
 
     /** 获取当前房间地图数据copy*/
     public getCurrentMapData(): MapData {
+        let room = this.getCurrentRoom();
+        if(!room.map){
+            let index = room.roomType - 1;
+            let r = this.getAllFileRooms()[this.roomStrs[index]]
+            room.map = r[room.saveIndex];
+        }
         return this.getCurrentRoom().map.clone();
     }
     /** 获取当前房间*/
@@ -232,7 +238,7 @@ export default class MapManager {
             }
         })
     }
-    private resetRooms() {
+    private getAllFileRooms():{ [key: string]: MapData[] }{
         let allfileRooms = this.allfileRooms00;
         switch(Logic.chapterName){
             case Logic.CHAPTER00:allfileRooms = this.allfileRooms00;break;
@@ -241,6 +247,10 @@ export default class MapManager {
             case Logic.CHAPTER03:allfileRooms = this.allfileRooms03;break;
             case Logic.CHAPTER04:allfileRooms = this.allfileRooms04;break;
         }
+        return allfileRooms;
+    }
+    private resetRooms() {
+        let allfileRooms = this.getAllFileRooms();
         if (allfileRooms && allfileRooms[this.roomStrs[0]]) {
             for (let i = 0; i < this.rectDungeon.map.length; i++) {
                 for (let j = 0; j < this.rectDungeon.map[0].length; j++) {
@@ -249,10 +259,12 @@ export default class MapManager {
                     if (index >= 0) {
                         let r = allfileRooms[this.roomStrs[index]]
                         //随机取出一个该类型的房间数据
+                        room.saveIndex = Logic.getRandomNum(0, r.length - 1);
                         room.map = r[Logic.getRandomNum(0, r.length - 1)];
                     }
                 }
             }
         }
+        Logic.profile.rectDungeon = Logic.mapManager.rectDungeon;
     }
 }

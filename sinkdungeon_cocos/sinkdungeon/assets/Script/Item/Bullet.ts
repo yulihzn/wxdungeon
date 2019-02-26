@@ -163,7 +163,7 @@ export default class Bullet extends cc.Component {
         this.laserLightSprite.node.setPosition(-16, 0);
         let scaleAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.scaleTo(0.1, 1, 0));
         this.laserNode.runAction(scaleAction);
-        setTimeout(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 200);
+        this.scheduleOnce(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 0.2);
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, size: number, suffix?: string) {

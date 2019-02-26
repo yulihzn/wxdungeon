@@ -88,9 +88,9 @@ export default class Tile extends cc.Component {
         this.isBroken = true;
         this.isAnimPlaying = false;
         if(this.isAutoShow){
-            setTimeout(()=>{
+            this.scheduleOnce(()=>{
                 this.showTile();
-            },2000)
+            },2)
         }
         
     }

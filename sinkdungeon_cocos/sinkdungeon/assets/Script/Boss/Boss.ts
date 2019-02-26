@@ -67,11 +67,11 @@ export default abstract class Boss extends cc.Component {
 
     start() {
         this.changeZIndex();
-        setTimeout(() => {
+        this.scheduleOnce(() => {
             if (this.healthBar) {
                 this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             }
-        }, 100);
+        }, 0.1);
     }
     getLoot(){
         if(this.dungeon){
