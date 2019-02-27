@@ -149,8 +149,8 @@ export default class WarMachine extends Boss {
         this.isGatlingCoolDown = true;
         this.shooter02.setHv(cc.v2(0, -1));
         this.shooter03.setHv(cc.v2(0, -1));
-        this.shooter02.data.bulletLineInterval = 500;
-        this.shooter03.data.bulletLineInterval = 500;
+        this.shooter02.data.bulletLineInterval = 0.5;
+        this.shooter03.data.bulletLineInterval = 0.5;
         let cooldown = 3;
         let angle = Logic.getRandomNum(0,15);
         angle = Logic.getHalfChance()?angle:-angle;

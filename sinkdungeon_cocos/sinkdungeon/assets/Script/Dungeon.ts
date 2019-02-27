@@ -171,7 +171,7 @@ export default class Dungeon extends cc.Component {
                 t.parent = this.node;
                 t.position = Dungeon.getPosInMap(cc.v2(i, j));
                 //越往下层级越高，j是行，i是列
-                t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 this.map[i][j] = t.getComponent(Tile);
                 //默认关闭踩踏掉落
                 this.map[i][j].isAutoShow = false;
@@ -184,7 +184,7 @@ export default class Dungeon extends cc.Component {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
                     w.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    w.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    w.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     w.opacity = 255;
                     this.wallmap[i][j] = w.getComponent(Wall);
                 }
@@ -193,7 +193,7 @@ export default class Dungeon extends cc.Component {
                     let trap = cc.instantiate(this.trap);
                     trap.parent = this.node;
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.trapmap[i][j] = trap.getComponent(Trap);
                 }
                 //生成炮台
@@ -201,7 +201,7 @@ export default class Dungeon extends cc.Component {
                     let emplacement = cc.instantiate(this.emplacement);
                     emplacement.parent = this.node;
                     emplacement.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    emplacement.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    emplacement.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     let em = emplacement.getComponent(Emplacement);
                     em.dungeon = this;
                 }
@@ -214,14 +214,14 @@ export default class Dungeon extends cc.Component {
                     let fd = cc.instantiate(this.floorDecoration);
                     fd.parent = this.node;
                     fd.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成营火
                 if (mapData[i][j] == '-' && Logic.chapterName == Logic.CHAPTER02) {
                     let camp = cc.instantiate(this.campFire);
                     camp.parent = this.node;
                     camp.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    camp.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 - 2;
+                    camp.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 - 2;
                     let shadow = camp.getChildByName('sprite').getChildByName('shadow');
                     shadow.position = Dungeon.getPosInMap(cc.v2(i, j));
                     shadow.position = cc.v2(shadow.position.x, shadow.position.y + 40);
@@ -233,7 +233,7 @@ export default class Dungeon extends cc.Component {
                     let foot = cc.instantiate(this.footboard);
                     foot.parent = this.node;
                     foot.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    foot.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    foot.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.footboards.push(foot.getComponent(FootBoard));
                 }
                 //生成毒液
@@ -243,14 +243,14 @@ export default class Dungeon extends cc.Component {
                     venom.getComponent(SlimeVenom).isForever = true;
                     venom.parent = this.node;
                     venom.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成塔罗
                 if (mapData[i][j] == 'O') {
                     let tarottable = cc.instantiate(this.tarotTable);
                     tarottable.parent = this.node;
                     tarottable.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    tarottable.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100;
+                    tarottable.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成宝箱 房间清理的情况下箱子是打开的
                 if (mapData[i][j] == 'C') {
@@ -363,10 +363,10 @@ export default class Dungeon extends cc.Component {
                     let shop = cc.instantiate(this.shop);
                     shop.parent = this.node;
                     shop.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 100 + 1;
+                    shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 + 1;
                 }
                 //房间未清理时加载怪物
-                if (!Logic.mapManager.isCurrentRoomStateClear()) {
+                if (!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     if (mapData[i][j] == 's') {
                         let sailor = Logic.getHalfChance() ? MonsterManager.MONSTER_SAILOR : MonsterManager.MONSTER_STRONGSAILOR;
                         this.addMonsterFromData(sailor, i, j);
@@ -466,7 +466,7 @@ export default class Dungeon extends cc.Component {
         item.parent = this.node;
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+        item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         item.getComponent(Item).init(resName,indexpos.clone());
         
         let data = item.getComponent(Item).data;
@@ -492,7 +492,7 @@ export default class Dungeon extends cc.Component {
         stone.parent = this.node;
         stone.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        stone.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 100 + 3;
+        stone.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         if (stoneScript.isAuto) {
             stoneScript.fall();
         }
@@ -751,10 +751,10 @@ export default class Dungeon extends cc.Component {
         this.fog.setPosition(this.lerp(this.fog.position, this.player.node.position, dt * 3));
         let pos = Dungeon.getIndexInMap(this.player.node.position);
         let tile = this.map[pos.x][pos.y];
-        if (tile.isBroken) {
+        if (tile&&tile.isBroken) {
             this.player.fall();
         }
-        if (tile.isAutoShow) {
+        if (tile&&tile.isAutoShow) {
             this.breakTile(pos);
         }
     }
@@ -772,7 +772,7 @@ export default class Dungeon extends cc.Component {
                 return;
             }
             let tile = this.map[monster.pos.x][monster.pos.y];
-            if (tile.isBroken) {
+            if (tile&&tile.isBroken) {
                 monster.fall();
             }
             // if (tile.isBroken && !monster.isMoving) {

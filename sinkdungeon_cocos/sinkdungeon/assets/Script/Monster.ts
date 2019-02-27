@@ -131,7 +131,7 @@ export default class Monster extends cc.Component {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y) * 100 + 2;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y) * 10 + 2;
     }
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {
         if (!this.floatinglabelManager) {
@@ -391,7 +391,7 @@ export default class Monster extends cc.Component {
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
                 this.shooter.dungeon = this.dungeon;
-                this.shooter.data.bulletType = "bullet001";
+                this.shooter.data.bulletType = this.data.bulletType?this.data.bulletType:"laser001";
                 this.shooter.fireBullet(Logic.getRandomNum(0,5)-5);
             }
         }

@@ -51,9 +51,9 @@ export default class Kraken extends Boss {
     }
     
     changeZIndex() {
-        this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 100 + 2;
+        this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
         if (this.isShow && !this.isDied) {
-            this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 100 + 2;
+            this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
         }
     }
     attack(dir, finish) {

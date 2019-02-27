@@ -62,7 +62,7 @@ export default abstract class Boss extends cc.Component {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 100 + 2;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
     }
 
     start() {

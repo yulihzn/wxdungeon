@@ -10,6 +10,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";
+import Skill from "../Utils/Skill";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,6 +41,9 @@ export default class Captain extends Boss {
     isHurt = false;
     isFall = false;
     shooter: Shooter = null;
+    attackSkill = new Skill();
+    fireSkill = new Skill();
+    jumpSkill = new Skill();
     onLoad () {
         this.isAttacking = false;
         this.isDied = false;
@@ -112,8 +116,8 @@ export default class Captain extends Boss {
         let angles3 = [-5,10,20,-10,-20,-30,-40,30,40];
         this.fireWithAngles(angles1);
         if(this.data.currentHealth<this.data.Common.maxHealth/2){
-            this.scheduleOnce(()=>{this.fireWithAngles(angles2);},0.1);
-            this.scheduleOnce(()=>{this.fireWithAngles(angles3);},0.2);
+            this.scheduleOnce(()=>{this.fireWithAngles(angles2);},0.3);
+            this.scheduleOnce(()=>{this.fireWithAngles(angles3);},0.5);
             
         }
     }
@@ -161,11 +165,9 @@ export default class Captain extends Boss {
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
-        // if(!this.isAttacking){
-        // }
+        
         this.isHurt = true;
-        // this.anim.playAdditive('CaptainHit');
-        this.isAttacking = false;
+        this.anim.playAdditive('CaptainHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         return true;
     }
@@ -202,25 +204,31 @@ export default class Captain extends Boss {
         if(isPlayJump||isPlayFire){
             return;
         }
+        
         if (playerDis < 140 && !this.dungeon.player.isDied) {
-            if(!this.isAttacking){
+            this.attackSkill.next(()=>{
+                this.isAttacking = true;
                 this.anim.play("CaptainAttack");
-            }
+            },1);
+            // if(!this.isAttacking){
+            //     this.anim.play("CaptainAttack");
+            // }
         }else{
             let speed = 200;
             if(playerDis > 300){
-                if(Logic.getHalfChance()){
+                this.jumpSkill.next(()=>{
                     this.anim.play("CaptainJump");
                     isPlayJump = true;
-                }else{
-                    speed = 50;
-                    this.anim.play("CaptainFire");
-                }
+                },5);
+                
             }
-            // if(playerDis>200){
-            //     speed = 50;
-            //     this.anim.play("CaptainFire");
-            // }
+            if(!isPlayJump&&!this.isAttacking){
+                speed = 50;
+                this.fireSkill.next(()=>{
+                    this.anim.play("CaptainFire");
+                },2)
+            }
+          
             if (!pos.equals(cc.Vec2.ZERO)&&!isPlayJump && !this.isAttacking) {
                 pos = pos.normalizeSelf();
                 this.move(pos, speed);

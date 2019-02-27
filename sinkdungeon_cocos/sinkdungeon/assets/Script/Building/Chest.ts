@@ -64,7 +64,7 @@ export default class Chest extends cc.Component {
     setPos(pos: cc.Vec2) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
     }
 
     openChest() {

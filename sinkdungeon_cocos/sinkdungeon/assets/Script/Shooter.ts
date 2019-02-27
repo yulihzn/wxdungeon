@@ -114,7 +114,7 @@ export default class Shooter extends cc.Component {
         if(this.data.bulletArcExNum == 0){
             return;
         }
-        let angles = [10,-10,20,-20,30,-30,40,-40,50,-50,60,-60,-70,-70,80,-80,90,-90]
+        let angles = [10,-10,20,-20,30,-30,40,-40,50,-50,60,-60,-70,-70,80,-80,90,-90,100,-100,110,-110,120,-120,130,-130,140,-140,150,-150,160,-160,170,-170,180,-180]
         for(let i = 0;i < this.data.bulletArcExNum;i++){
             if(i < angles.length){
                 if (!this.isAI && Logic.ammo > 0) {
@@ -128,18 +128,13 @@ export default class Shooter extends cc.Component {
         if(this.data.bulletLineExNum == 0){
             return;
         }
-        let i = 0;
-        let interval = setInterval(()=>{
-            i++;
+        this.schedule(()=>{
             if (!this.isAI && Logic.ammo > 0) {
                 Logic.ammo--;
             }
             this.fire(this.bullet, this.bulletPool, angleOffset);
             this.fireArcBullet();
-            if(i>=this.data.bulletLineExNum){
-                clearInterval(interval)
-            }
-        },this.data.bulletLineInterval>0?this.data.bulletLineInterval:200);
+        },this.data.bulletLineInterval>0?this.data.bulletLineInterval:0.2,this.data.bulletLineExNum,0);
         
     }
    

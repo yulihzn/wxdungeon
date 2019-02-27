@@ -35,9 +35,9 @@ export default class Coin extends cc.Component {
         let x = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
         let y = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
         this.rigidBody.linearVelocity = cc.v2(x,y);
-        this.rigidBody.linearDamping = 5;
+        this.rigidBody.linearDamping = 30;
         this.isReady = false;
-        this.scheduleOnce(()=>{this.isReady = true;},1);
+        this.scheduleOnce(()=>{this.isReady = true;},0.5);
     }
     changeValue(value:number){
         //目前只有1和10

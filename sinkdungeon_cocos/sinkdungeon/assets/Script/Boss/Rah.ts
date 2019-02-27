@@ -49,7 +49,7 @@ export default class Rah extends Boss {
         this.initGuns();
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow) {
+        if (this.isDied || !this.isShow || this.isBlinking) {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
@@ -199,7 +199,7 @@ export default class Rah extends Boss {
             return;
         }
         this.isBugsCoolDown = true;
-        this.shooter.data.bulletLineInterval = 500;
+        this.shooter.data.bulletLineInterval = 0.5;
         let pos = this.node.position.clone().add(this.shooter.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec2.ZERO)) {

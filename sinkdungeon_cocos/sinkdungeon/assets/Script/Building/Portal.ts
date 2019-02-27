@@ -34,7 +34,7 @@ export default class Portal extends cc.Component {
     setPos(pos:cc.Vec2){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100+1;
+        this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
     }
     AnimGateClose(){
         this.anim.play('PortalCloseIdle');

@@ -280,7 +280,7 @@ export default class Player extends cc.Component {
         this.updatePlayerPos();
     }
     changeZIndex(pos: cc.Vec2) {
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 2;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
     addStatus(statusType: string) {
         this.statusManager.addStatus(statusType);

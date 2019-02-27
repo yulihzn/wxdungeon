@@ -135,6 +135,7 @@ export default class Bullet extends cc.Component {
             this.laserNode = this.node.getChildByName("laser");
         }
         this.sprite.opacity = 0;
+        this.sprite.getComponent(cc.Sprite).spriteFrame = null;
         this.laserNode.opacity = 0;
         this.laserHeadSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.laserNode.stopAllActions();

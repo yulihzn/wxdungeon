@@ -87,7 +87,7 @@ export default class Box extends cc.Component {
                     }
                 }
             }
-            this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.data.pos.y) * 100 + 1;
+            this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.data.pos.y) * 10 + 1;
         }
     }
 }
