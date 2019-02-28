@@ -1,6 +1,7 @@
 import Player from "../Player";
 import Logic from "../Logic";
 import { EventConstant } from "../EventConstant";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,8 +33,8 @@ export default class Coin extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
         let speed = 800;
-        let x = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
-        let y = Math.random()*(Logic.getHalfChance()?1:-1)*speed;
+        let x = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
+        let y = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
         this.rigidBody.linearVelocity = cc.v2(x,y);
         this.rigidBody.linearDamping = 30;
         this.isReady = false;

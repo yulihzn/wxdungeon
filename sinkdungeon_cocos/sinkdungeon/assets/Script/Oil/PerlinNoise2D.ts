@@ -10,7 +10,7 @@
 
 
 // How to make noise:
-// noise.seed(Math.random());
+// noise.seed(Random.rand());
 
 // for (var x = 0; x < canvas.width; x++) {
 //   for (var y = 0; y < canvas.height; y++) {

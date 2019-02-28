@@ -2,6 +2,7 @@ import EquipmentData from "./EquipmentData";
 import DamageData from "./DamageData";
 import StatusData from "./StatusData";
 import CommonData from "./CommonData";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,7 +84,7 @@ export default class PlayerData {
         let damageMin = this.getDamageMin();
         let damageMax = this.getDamageMax();
         let chance = this.getCriticalStrikeRate();
-        let attack = Math.random() > chance ? damageMin : damageMin + damageMax;
+        let attack = Random.rand() > chance ? damageMin : damageMin + damageMax;
         if (attack < 0) {
             attack = 0;
         }
@@ -126,9 +127,9 @@ export default class PlayerData {
         let chance = this.getCriticalStrikeRate();
         let drainRate = this.getLifeDrainRate();
         let drain = 0;
-        if (Math.random() < drainRate) {
+        if (Random.rand() < drainRate) {
             drain = 1;
-            if (Math.random() < chance) {
+            if (Random.rand() < chance) {
                 drain = 2;
             }
         }

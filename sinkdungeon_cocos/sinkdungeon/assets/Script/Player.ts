@@ -25,6 +25,7 @@ import PlayerData from './Data/PlayerData';
 import PlayerInfoDialog from './UI/PlayerInfoDialog';
 import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Tips from './UI/Tips';
+import Random from './Utils/Random';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -81,7 +82,6 @@ export default class Player extends cc.Component {
     rigidbody: cc.RigidBody;
 
     defaultPos = cc.v2(0, 0);
-
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -445,7 +445,7 @@ export default class Player extends cc.Component {
         }
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
-        let isDodge = Math.random() <= dodge && dd.getTotalDamage() > 0;
+        let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         dd = isDodge ? new DamageData() : dd;
         let health = this.data.getHealth();
         health.x -= dd.getTotalDamage();

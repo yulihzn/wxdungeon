@@ -11,6 +11,8 @@ import DamageData from "./Data/DamageData";
 import StatusManager from "./Manager/StatusManager";
 import PlayerData from "./Data/PlayerData";
 import Boss from "./Boss/Boss";
+import Random from "./Utils/Random";
+import Skill from "./Utils/Skill";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -61,6 +63,7 @@ export default class MeleeWeapon extends cc.Component {
     dungeon: Dungeon;
     weaponFirePoint: cc.Node;//剑尖
     isMiss = false;
+    drainSkill = new Skill();
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -176,7 +179,7 @@ export default class MeleeWeapon extends cc.Component {
     }
 
     getRandomNum(min, max): number {//生成一个随机数从[min,max]
-        return min + Math.round(Math.random() * (max - min));
+        return min + Math.round(Random.rand() * (max - min));
     }
 
     update(dt) {
@@ -308,11 +311,14 @@ export default class MeleeWeapon extends cc.Component {
         if (box) {
             box.breakBox();
         }
-        //生命汲取
-        let drain = this.player.data.getLifeDrain();
-        if (drain > 0 && damageSuccess) {
-            this.player.takeDamage(new DamageData(-drain));
-        }
+        //生命汲取,内置1s cd
+        this.drainSkill.next(() => {
+            let drain = this.player.data.getLifeDrain();
+            if (drain > 0 && damageSuccess) {
+                this.player.takeDamage(new DamageData(-drain));
+            }
+        }, 1, true);
+
         this.isMiss = false;
     }
     addMonsterAllStatus(monster: Monster) {

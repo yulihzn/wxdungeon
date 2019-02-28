@@ -30,6 +30,7 @@ import SlimeVenom from "./Boss/SlimeVenom";
 import TarotTable from "./Building/TarotTable";
 import ChestData from "./Data/ChestData";
 import ItemData from "./Data/ItemData";
+import Random from "./Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -371,14 +372,13 @@ export default class Dungeon extends cc.Component {
                         let sailor = Logic.getHalfChance() ? MonsterManager.MONSTER_SAILOR : MonsterManager.MONSTER_STRONGSAILOR;
                         this.addMonsterFromData(sailor, i, j);
                     }
-                    if (mapData[i][j] == 'p') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
-                    }
-                    if (mapData[i][j] == 'o') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
-                    }
+                    
+                    
                     if (mapData[i][j] == 'a') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
+                    }
+                    if (mapData[i][j] == 'b') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, i, j);
                     }
                     if (mapData[i][j] == 'c') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
@@ -393,6 +393,7 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                     }
+                    
                     if (mapData[i][j] == 'g') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
                     }
@@ -405,8 +406,25 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'k') {
                         this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
                     }
+                    if (mapData[i][j] == 'o') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
+                    }
+                    if (mapData[i][j] == 'p') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
+                    }
+                    if (mapData[i][j] == 't') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, i, j);
+                    }
+                    if (mapData[i][j] == 'w') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, i, j);
+                    }
                     if (mapData[i][j] == 'y') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
+                    }
+                    if (mapData[i][j] == 'z') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_CONNAR, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
                     }
                     if (mapData[i][j] == '0') {
                         this.addBossCaptain(cc.v2(i,j));
@@ -457,6 +475,7 @@ export default class Dungeon extends cc.Component {
         if (!currcs && chests.length > 0) {
             Logic.mapManager.setCurrentChestsArr(chests);
         }
+        cc.log('load finished');
     }
     addItem(pos: cc.Vec2, resName: string) {
         if (!this.item) {
@@ -555,7 +574,7 @@ export default class Dungeon extends cc.Component {
                 this.breakTile(cc.v2(i, j));
                 this.scheduleOnce(() => {
                     this.breakTile(cc.v2(i, j));
-                }, 0.1 * Math.random())
+                }, 0.1 * Random.rand())
             }
         }
     }

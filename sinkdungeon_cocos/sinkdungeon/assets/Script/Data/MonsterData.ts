@@ -1,6 +1,7 @@
 import DamageData from "./DamageData";
 import StatusData from "./StatusData";
 import CommonData from "./CommonData";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,10 +22,10 @@ export default class MonsterData{
     chapter:number = 0;//章节，如果为0所有章节都会出现
     stageLevel:number = 0;//关卡等级，如果为0所有level都会出现
     invisible:number=0;//是否隐身，发起攻击或者冲刺的时候现形,攻击结束以后1s再次隐身,隐身状态下可以被攻击而且现形
-    remote:number=0;//是否远程大于0 远程会远离目标到一定范围
-    melee:number=0;//是否近战大于0 近战会接近目标
-    dash:number=0;//是否冲刺大于0 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击
-    disguise:number=0;//是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复
+    remote:number=0;//是否远程大于0 远程会远离目标到一定范围 数字代表CD
+    melee:number=0;//是否近战大于0 近战会接近目标 数字代表CD
+    dash:number=0;//是否冲刺大于0 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击 数字代表CD
+    disguise:number=0;//是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复 
     sizeType:number=0;//0正常1小一号2大一号
     bulletType:string='';//子弹类型
     pos:cc.Vec2 = cc.v2(0,0);
@@ -125,9 +126,9 @@ export default class MonsterData{
         let chance = this.getCriticalStrikeRate();
         let drainRate = this.getLifeDrainRate();
         let drain = 0;
-        if (Math.random() < drainRate) {
+        if (Random.rand() < drainRate) {
             drain = 1;
-            if (Math.random() < chance) {
+            if (Random.rand() < chance) {
                 drain = 2;
             }
         }

@@ -31,12 +31,10 @@ export default class Captain extends Boss {
     sword: CaptainSword = null;
     
     healthBar: HealthBar = null;
-    isJumping = false;
     private anim: cc.Animation;
     rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
-    isAttacking = false;
     private timeDelay = 0;
     isHurt = false;
     isFall = false;
@@ -45,7 +43,7 @@ export default class Captain extends Boss {
     fireSkill = new Skill();
     jumpSkill = new Skill();
     onLoad () {
-        this.isAttacking = false;
+        this.attackSkill.IsExcuting = false;
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.rigidbody = this.getComponent(cc.RigidBody);
@@ -66,21 +64,21 @@ export default class Captain extends Boss {
     }
     //Animation
     AttackStart(){
-        this.isAttacking = true;
+        this.attackSkill.IsExcuting = true;
     }
     //Animation
     AttackFinish(){
-        this.isAttacking = false;
+        this.attackSkill.IsExcuting = false;
     }
     //Animation
     JumpStart(){
-        this.isJumping = true;
+        this.jumpSkill.IsExcuting = true;
         this.getComponent(cc.PhysicsBoxCollider).sensor = true;
         this.getComponent(cc.PhysicsBoxCollider).apply();
     }
     //Animation
     JumpFinish(){
-        this.isJumping = false;
+        this.jumpSkill.IsExcuting = false;
         this.isFall = true;
         this.scheduleOnce(()=>{this.isFall = false;},0.1);
         this.getComponent(cc.PhysicsBoxCollider).sensor = false;
@@ -207,7 +205,7 @@ export default class Captain extends Boss {
         
         if (playerDis < 140 && !this.dungeon.player.isDied) {
             this.attackSkill.next(()=>{
-                this.isAttacking = true;
+                this.attackSkill.IsExcuting = true;
                 this.anim.play("CaptainAttack");
             },1);
             // if(!this.isAttacking){
@@ -222,14 +220,14 @@ export default class Captain extends Boss {
                 },5);
                 
             }
-            if(!isPlayJump&&!this.isAttacking){
+            if(!isPlayJump&&!this.attackSkill.IsExcuting){
                 speed = 50;
                 this.fireSkill.next(()=>{
                     this.anim.play("CaptainFire");
                 },2)
             }
           
-            if (!pos.equals(cc.Vec2.ZERO)&&!isPlayJump && !this.isAttacking) {
+            if (!pos.equals(cc.Vec2.ZERO)&&!isPlayJump && !this.attackSkill.IsExcuting) {
                 pos = pos.normalizeSelf();
                 this.move(pos, speed);
             }
@@ -239,7 +237,7 @@ export default class Captain extends Boss {
     }
     
     JumpMove(){
-        if(!this.dungeon || !this.isJumping){
+        if(!this.dungeon || !this.jumpSkill.IsExcuting){
             return;
         }
         let newPos = this.dungeon.player.pos.clone();
@@ -268,7 +266,7 @@ export default class Captain extends Boss {
             this.isHurt = false;
             return;
         }
-        if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.attackSkill.IsExcuting && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
 

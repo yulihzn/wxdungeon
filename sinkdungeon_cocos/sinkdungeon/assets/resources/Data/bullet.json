@@ -242,6 +242,23 @@
             "physicalDamage": 1
         }
     },
+    "bullet018": {
+        "name":"长矛",
+        "speed": 600,
+        "isLaser":0,
+        "isRect": 0,
+        "isRotate": 0,
+        "lifeTime":2,
+        "size": 1.8,
+        "isTracking":0,
+        "isPhysical":0,
+        "resName":"bullet018",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

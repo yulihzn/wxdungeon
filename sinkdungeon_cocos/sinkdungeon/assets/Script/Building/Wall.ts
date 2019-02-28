@@ -41,12 +41,67 @@ export default class Wall extends cc.Component {
     start () {
         this.node.opacity = 255;
         switch(Logic.chapterName){
-            case Logic.CHAPTER00:this.changeRes('wall000');break;
-            case Logic.CHAPTER01:this.changeRes('wall005');break;
-            case Logic.CHAPTER02:this.changeRes('wall005');break;
-            case Logic.CHAPTER03:this.changeRes('wall005');break;
-            case Logic.CHAPTER04:this.changeRes('wall005');break;
+            case Logic.CHAPTER00:this.changeRes(this.getRes00());break;
+            case Logic.CHAPTER01:this.changeRes(this.getRes01());break;
+            case Logic.CHAPTER02:this.changeRes(this.getRes02());break;
+            case Logic.CHAPTER03:this.changeRes(this.getRes03());break;
+            case Logic.CHAPTER04:this.changeRes(this.getRes04());break;
         }
+    }
+    getRes00():string{
+        let r =  Logic.getRandomNum(0,3);
+        let s = 'wall000';
+        switch(r){
+            case 0:s = 'wall000';break;
+            case 1:s = 'wall000';break;
+            case 2:s = 'wall000';break;
+            case 3:s = 'wall001';break;
+        }
+        return s;
+    }
+    getRes01():string{
+        let r =  Logic.getRandomNum(0,3);
+        let s = 'wall005';
+        switch(r){
+            case 0:s = 'wall005';break;
+            case 1:s = 'wall005';break;
+            case 2:s = 'wall005';break;
+            case 3:s = 'wall003';break;
+        }
+        return s;
+    }
+    getRes02():string{
+        let r =  Logic.getRandomNum(0,3);
+        let s = 'wall002';
+        switch(r){
+            case 0:s = 'wall002';break;
+            case 1:s = 'wall002';break;
+            case 2:s = 'wall002';break;
+            case 3:s = 'wall002';break;
+        }
+        return s;
+    }
+    getRes03():string{
+        let r =  Logic.getRandomNum(0,3);
+        let s = 'wall008';
+        switch(r){
+            case 0:s = 'wall008';break;
+            case 1:s = 'wall008';break;
+            case 2:s = 'wall007';break;
+            case 3:s = 'wall006';break;
+        }
+        return s;
+    }
+    getRes04():string{
+        let r =  Logic.getRandomNum(0,3);
+        let s = 'wall004';
+        switch(r){
+            case 0:s = 'wall004';break;
+            case 1:s = 'wall004';break;
+            case 2:s = 'wall004';break;
+            case 3:s = 'wall004';break;
+        }
+        return s;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider) {
         this.node.opacity = 255;

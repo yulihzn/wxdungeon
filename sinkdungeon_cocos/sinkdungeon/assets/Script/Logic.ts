@@ -17,6 +17,7 @@ import ProfileData from "./Data/ProfileData";
 import BulletData from "./Data/BulletData";
 import ItemData from "./Data/ItemData";
 import ChestData from "./Data/ChestData";
+import Random from "./Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -62,6 +63,7 @@ export default class Logic extends cc.Component {
     static ammo = 30;//子弹
     static killCount = 0;//杀敌数
     static time = '00:00:00';
+    static seed = 5;
 
     onLoad() {
         //关闭调试
@@ -88,7 +90,7 @@ export default class Logic extends cc.Component {
     }
 
     start() {
-
+       
     }
     static saveData(){
         Logic.profile.playerData = Logic.playerData.clone();
@@ -154,10 +156,10 @@ export default class Logic extends cc.Component {
         return level == Logic.BOSS_LEVEL_1;
     }
     static getRandomNum(min, max): number {//生成一个随机数从[min,max]
-        return min + Math.round(Math.random() * (max - min));
+        return min + Math.round(Random.rand() * (max - min));
     }
     static getHalfChance(): boolean {
-        return Math.random() > 0.5;
+        return Random.rand() > 0.5;
     }
     static getChance(rate:number):boolean{
         return Logic.getRandomNum(0, 100) < rate;
@@ -168,6 +170,7 @@ export default class Logic extends cc.Component {
         return Math.sqrt(x * x + y * y);
     }
     static genNonDuplicateID():string{
-        return Number(Math.random().toString().substr(3,16) + Date.now()).toString(36);
+        return Number(Random.rand().toString().substr(3,16) + Date.now()).toString(36);
       }
+    
 }

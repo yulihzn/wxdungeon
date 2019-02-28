@@ -10,6 +10,7 @@ import Dungeon from "../Dungeon";
 import SlimeVenom from "./SlimeVenom";
 import Monster from "../Monster";
 import MonsterManager from "../Manager/MonsterManager";
+import Skill from "../Utils/Skill";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,12 +31,11 @@ export default class Slime extends Boss {
     venom: cc.Prefab = null;
     private venomPool: cc.NodePool;
     healthBar: HealthBar = null;
-    isJumping = false;
     private anim: cc.Animation;
     rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
-    isAttacking = false;
+    // isAttacking = false;
     private timeDelay = 0;
     isHurt = false;
     isCrownFall = false;
@@ -47,8 +47,9 @@ export default class Slime extends Boss {
     private decorate: cc.Node;
     scaleSize = 1;
     slimeType = 0;
+    meleeSkill = new Skill();
     onLoad() {
-        this.isAttacking = false;
+        this.meleeSkill.IsExcuting = false;
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.rigidbody = this.getComponent(cc.RigidBody);
@@ -107,7 +108,7 @@ export default class Slime extends Boss {
 
     //Animation
     AnimAttacking() {
-        this.isAttacking = false;
+        this.meleeSkill.IsExcuting = false;
         let attackRange = 64 + 50 * this.scaleSize;
         let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
         if (newdis < attackRange) { this.dungeon.player.takeDamage(this.data.getAttackPoint()); }
@@ -165,7 +166,7 @@ export default class Slime extends Boss {
         }
         this.node.scaleY = this.scaleSize;
         this.node.scaleX = this.isFaceRight ? this.scaleSize : -this.scaleSize;
-        if (this.isVenomTimeDelay(dt) && this.isMoving && !this.isAttacking) {
+        if (this.isVenomTimeDelay(dt) && this.isMoving && !this.meleeSkill.IsExcuting) {
             this.getVenom(this.node.parent, this.node.position);
         }
         if (this.isChildSlimeTimeDelay(dt) && !this.isDied && this.slimeType == 0 && this.dungeon) {
@@ -194,7 +195,7 @@ export default class Slime extends Boss {
         //100ms后修改受伤
         this.scheduleOnce(() => { if (this.node) { this.isHurt = false; } }, 0.1);
         this.anim.play('SlimeHit');
-        this.isAttacking = false;
+        this.meleeSkill.IsExcuting = false;
         if (this.data.currentHealth < this.data.Common.maxHealth / 2 && !this.isCrownFall && this.slimeType == 0) {
             this.isCrownFall = true;
             this.isShow = false;
@@ -251,7 +252,7 @@ export default class Slime extends Boss {
             }
             let isPlayAttack = this.anim.getAnimationState("SlimeAttack").isPlaying;
             if (!isPlayAttack) {
-                this.isAttacking = true;
+                this.meleeSkill.IsExcuting = true;
                 this.anim.play('SlimeAttack');
             }
         }
@@ -272,14 +273,14 @@ export default class Slime extends Boss {
     }
 
     move(pos: cc.Vec2, speed: number) {
-        if (this.isDied || this.isHurt || this.isDashing || !this.isShow || this.isAttacking) {
+        if (this.isDied || this.isHurt || this.isDashing || !this.isShow || this.meleeSkill.IsExcuting) {
             return;
         }
         if (pos.equals(cc.Vec2.ZERO)) {
             return;
         }
         pos = pos.normalizeSelf();
-        if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
         if (!pos.equals(cc.Vec2.ZERO)) {

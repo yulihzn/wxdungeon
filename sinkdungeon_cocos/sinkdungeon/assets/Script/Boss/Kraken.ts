@@ -8,6 +8,7 @@ import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
 import Boss from "./Boss";
 import StatusManager from "../Manager/StatusManager";
+import Skill from "../Utils/Skill";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,6 +34,7 @@ export default class Kraken extends Boss {
     private anim: cc.Animation;
     private timeDelay = 0;
     shooter: Shooter;
+    remoteSkill = new Skill();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -137,7 +139,7 @@ export default class Kraken extends Boss {
     actionTimeDelay = 0;
     isActionTimeDelay(dt: number): boolean {
         this.actionTimeDelay += dt;
-        if (this.actionTimeDelay > 1) {
+        if (this.actionTimeDelay > 0.2) {
             this.actionTimeDelay = 0;
             return true;
         }
@@ -168,24 +170,27 @@ export default class Kraken extends Boss {
         }
         this.changeZIndex();
         if(this.shooter&&this.dungeon){
-            let pos  = this.node.position.clone().add(this.shooter.node.position);
-            let hv = this.dungeon.player.getCenterPosition().sub(pos);
-            if(!hv.equals(cc.Vec2.ZERO)){
-                hv = hv.normalizeSelf();
-                this.shooter.setHv(hv);
-                this.shooter.dungeon = this.dungeon;
-                this.shooter.data.bulletType = "bullet004";
-                this.shooter.fireBullet();
-                this.shooter.fireBullet(30);
-                this.shooter.fireBullet(-30);
-            }
-            if(this.data.currentHealth<this.data.Common.maxHealth/2){
-                this.dungeon.addFallStone(this.dungeon.player.node.position,true);
-                this.shooter.fireBullet(30);
-                this.shooter.fireBullet(-30);
-                this.shooter.fireBullet(15);
-                this.shooter.fireBullet(-15);
-            }
+            this.remoteSkill.next(()=>{
+                let pos  = this.node.position.clone().add(this.shooter.node.position);
+                let hv = this.dungeon.player.getCenterPosition().sub(pos);
+                if(!hv.equals(cc.Vec2.ZERO)){
+                    hv = hv.normalizeSelf();
+                    this.shooter.setHv(hv);
+                    this.shooter.dungeon = this.dungeon;
+                    this.shooter.data.bulletType = "bullet004";
+                    this.shooter.fireBullet();
+                    this.shooter.fireBullet(30);
+                    this.shooter.fireBullet(-30);
+                }
+                if(this.data.currentHealth<this.data.Common.maxHealth/2){
+                    this.dungeon.addFallStone(this.dungeon.player.node.position,true);
+                    this.shooter.fireBullet(30);
+                    this.shooter.fireBullet(-30);
+                    this.shooter.fireBullet(15);
+                    this.shooter.fireBullet(-15);
+                }
+            },1);
+            
         }
         
 

@@ -1,6 +1,6 @@
 {
   "ver": "2.2.0",
-  "uuid": "77d79fe4-0fa1-44c7-aef5-b3f38ecc776e",
+  "uuid": "a3a627bd-668e-4843-b95a-5a01a5bf6970",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -8,8 +8,8 @@
   "subMetas": {
     "bullet017anim001": {
       "ver": "1.0.3",
-      "uuid": "66dcc1e3-2287-48e0-93be-cb2d0e4b0ea3",
-      "rawTextureUuid": "77d79fe4-0fa1-44c7-aef5-b3f38ecc776e",
+      "uuid": "3b6497c2-3649-4c0b-8e61-634110b1a281",
+      "rawTextureUuid": "a3a627bd-668e-4843-b95a-5a01a5bf6970",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

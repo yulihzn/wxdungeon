@@ -1,4 +1,5 @@
 import RectRoom from "./RectRoom";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -473,9 +474,9 @@ export default class RectDungeon {
         return "　";
     }
     getRandomNum(min, max): number {//生成一个随机数从[min,max]
-        return min + Math.round(Math.random() * (max - min));
+        return min + Math.round(Random.rand() * (max - min));
     }
     getHalfChance(): boolean {
-        return Math.random() > 0.5;
+        return Random.rand() > 0.5;
     }
 }

@@ -14,7 +14,7 @@
         "invisible": 0,
         "remote": 0,
         "melee": 0,
-        "dash": 20
+        "dash": 5
     },
     "monster001": {
         "nameCn": "哥布林",
@@ -30,7 +30,7 @@
         "currentHealth": 5,
         "invisible": 0,
         "remote": 0,
-        "melee": 70,
+        "melee": 1,
         "dash": 0
     },
     "monster002": {
@@ -47,8 +47,8 @@
         "currentHealth": 5,
         "invisible": 0,
         "remote": 0,
-        "melee": 70,
-        "dash": 10
+        "melee": 1,
+        "dash": 5
     },
     "monster003": {
         "nameCn": "阿努比斯",
@@ -64,7 +64,7 @@
         "currentHealth": 5,
         "invisible": 1,
         "remote": 0,
-        "melee": 90,
+        "melee": 1,
         "dash": 0
     },
     "monster004": {
@@ -81,7 +81,7 @@
         "currentHealth": 5,
         "invisible": 0,
         "remote": 0,
-        "melee": 80,
+        "melee": 0.5,
         "dash": 0
     },
     "monster005": {
@@ -98,8 +98,8 @@
         "currentHealth": 5,
         "invisible": 0,
         "remote": 0,
-        "melee": 80,
-        "dash": 20
+        "melee": 1,
+        "dash": 5
     },
     "monster006": {
         "nameCn": "章鱼",
@@ -114,7 +114,7 @@
         },
         "currentHealth": 10,
         "invisible": 0,
-        "remote": 30,
+        "remote": 2,
         "melee": 0,
         "dash": 0
     },
@@ -131,8 +131,8 @@
         },
         "currentHealth": 5,
         "invisible": 0,
-        "remote": 50,
-        "melee": 60,
+        "remote": 1,
+        "melee": 1,
         "dash": 0
     },
     "monster008": {
@@ -149,8 +149,8 @@
         "currentHealth": 10,
         "invisible": 0,
         "remote": 0,
-        "melee": 80,
-        "dash": 20
+        "melee": 1,
+        "dash": 4
     },
     "monster009": {
         "nameCn": "宝箱怪",
@@ -158,6 +158,7 @@
         "resName": "monster009",
         "chapter": 0,
         "stageLevel": 0,
+        "sizeType":0.7,
         "common": {
             "moveSpeed": 400,
             "maxHealth": 10,
@@ -167,7 +168,7 @@
         "invisible": 0,
         "remote": 0,
         "remoterate": 0,
-        "melee": 80,
+        "melee": 0.5,
         "dash": 0,
         "disguise": 80
     },
@@ -185,7 +186,7 @@
         "currentHealth": 5,
         "invisible": 0,
         "remote": 0,
-        "melee": 80,
+        "melee": 0.5,
         "dash": 0,
         "disguise": 200
     },
@@ -195,15 +196,15 @@
         "resName": "monster011",
         "chapter": 0,
         "stageLevel": 0,
-        "sizeType":0,
+        "sizeType":0.5,
         "common": {
-            "moveSpeed": 0,
-            "maxHealth": 999,
+            "moveSpeed": 50,
+            "maxHealth": 5,
             "damageMin": 1
         },
-        "currentHealth": 999,
+        "currentHealth": 5,
         "invisible": 0,
-        "remote": 20,
+        "remote": 0,
         "melee": 0,
         "dash": 0,
         "disguise": 0
@@ -214,7 +215,7 @@
         "resName": "monster012",
         "chapter": 0,
         "stageLevel": 0,
-        "sizeType":1,
+        "sizeType":0.5,
         "common": {
             "moveSpeed": 400,
             "maxHealth": 1,
@@ -224,8 +225,111 @@
         "currentHealth": 1,
         "invisible": 0,
         "remote": 0,
-        "melee": 20,
+        "melee": 1,
         "dash": 0,
         "disguise": 0
+    },
+    "monster013": {
+        "nameCn": "哥布林长矛手",
+        "nameEn": "Goblin Archer",
+        "resName": "monster013",
+        "bulletType":"bullet018",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 5,
+        "melee": 0,
+        "dash": 0
+    },
+    "monster014": {
+        "nameCn": "恐怖机器人",
+        "nameEn": "Terror Drone",
+        "resName": "monster014",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 500,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 1,
+        "dash": 0
+    },
+    "monster015": {
+        "nameCn": "狼人",
+        "nameEn": "Werewolf",
+        "resName": "monster015",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 300,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 1,
+        "dash": 0
+    },
+    "monster016": {
+        "nameCn": "二大爷",
+        "nameEn": "Altair",
+        "resName": "monster016",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 300,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 1,
+        "dash": 0
+    },
+    "monster017": {
+        "nameCn": "狂战士",
+        "nameEn": "Connar",
+        "resName": "monster017",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 1,
+        "dash": 0
+    },
+    "monster018": {
+        "nameCn": "E叔",
+        "nameEn": "Ezio",
+        "resName": "monster018",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 5,
+            "damageMin": 1
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 1,
+        "dash": 0
     }
 }

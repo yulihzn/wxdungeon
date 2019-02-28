@@ -7,6 +7,7 @@ import Logic from "../Logic";
 import Slime from "../Boss/Slime";
 import WarMachine from "../Boss/WarMachine";
 import Rah from "../Boss/Rah";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,6 +37,12 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_GARGOYLE = 'monster010';
     public static readonly MONSTER_CHICKEN = 'monster011';
     public static readonly MONSTER_SCARAB = 'monster012';
+    public static readonly MONSTER_GOBLIN_ARCHER = 'monster013';
+    public static readonly MONSTER_TERRORDRONE = 'monster014';
+    public static readonly MONSTER_WEREWOLF = 'monster015';
+    public static readonly MONSTER_ALTAIR = 'monster016';
+    public static readonly MONSTER_CONNAR = 'monster017';
+    public static readonly MONSTER_EZIO = 'monster018';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -70,12 +77,7 @@ export default class MonsterManager extends cc.Component {
         let data = new MonsterData();
         monster.dungeon = dungeon;
         data.valueCopy(Logic.monsters[resName]);
-        monster.isDisguising = data.disguise > 0;
-        if(monster.isDisguising){
-            monster.changeBodyRes(data.resName,Monster.RES_DISGUISE);
-        }else{
-            monster.changeBodyRes(resName);
-        }
+        
         //5%的几率变异
         let variationRate = 5;
         //1%几率添加元素
@@ -93,22 +95,29 @@ export default class MonsterManager extends cc.Component {
             data.dash = data.dash>0?data.dash+20:0;
             data.Common.moveSpeed = data.Common.moveSpeed>0?(data.Common.moveSpeed + 100):0;
         }
-        data.Common.iceDamage = Math.random()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
-        data.Common.fireDamage = Math.random()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
-        data.Common.lighteningDamage = Math.random()<rate?data.Common.lighteningDamage:Logic.getRandomNum(0,1);
-        data.Common.toxicDamage = Math.random()<rate?data.Common.toxicDamage:Logic.getRandomNum(0,1);
-        data.Common.curseDamage = Math.random()<rate?data.Common.curseDamage:Logic.getRandomNum(0,1);
-        data.Common.iceDefence = Math.random()<rate?data.Common.iceDefence:Logic.getRandomNum(0,100);
-        data.Common.fireDefence = Math.random()<rate?data.Common.fireDefence:Logic.getRandomNum(0,100);
-        data.Common.lighteningDefence = Math.random()<rate?data.Common.lighteningDefence:Logic.getRandomNum(0,100);
+        data.Common.iceDamage = Random.rand()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
+        data.Common.fireDamage = Random.rand()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
+        data.Common.lighteningDamage = Random.rand()<rate?data.Common.lighteningDamage:Logic.getRandomNum(0,1);
+        data.Common.toxicDamage = Random.rand()<rate?data.Common.toxicDamage:Logic.getRandomNum(0,1);
+        data.Common.curseDamage = Random.rand()<rate?data.Common.curseDamage:Logic.getRandomNum(0,1);
+        data.Common.iceDefence = Random.rand()<rate?data.Common.iceDefence:Logic.getRandomNum(0,100);
+        data.Common.fireDefence = Random.rand()<rate?data.Common.fireDefence:Logic.getRandomNum(0,100);
+        data.Common.lighteningDefence = Random.rand()<rate?data.Common.lighteningDefence:Logic.getRandomNum(0,100);
         data.Common.toxicDefence= Logic.getRandomNum(0,100)<rate?data.Common.toxicDefence:Logic.getRandomNum(0,100);
-        data.Common.curseDefence = Math.random()<rate?data.Common.curseDefence:Logic.getRandomNum(0,100);
-        data.Common.iceRate = Math.random()<rate?data.Common.iceRate:Logic.getRandomNum(0,100);
-        data.Common.fireRate = Math.random()<rate?data.Common.fireRate:Logic.getRandomNum(0,100);
-        data.Common.lighteningRate = Math.random()<rate?data.Common.lighteningRate:Logic.getRandomNum(0,100);
+        data.Common.curseDefence = Random.rand()<rate?data.Common.curseDefence:Logic.getRandomNum(0,100);
+        data.Common.iceRate = Random.rand()<rate?data.Common.iceRate:Logic.getRandomNum(0,100);
+        data.Common.fireRate = Random.rand()<rate?data.Common.fireRate:Logic.getRandomNum(0,100);
+        data.Common.lighteningRate = Random.rand()<rate?data.Common.lighteningRate:Logic.getRandomNum(0,100);
         data.Common.toxicRate= Logic.getRandomNum(0,100)<rate?data.Common.toxicRate:Logic.getRandomNum(0,100);
-        data.Common.curseRate = Math.random()<rate?data.Common.curseRate:Logic.getRandomNum(0,100);
+        data.Common.curseRate = Random.rand()<rate?data.Common.curseRate:Logic.getRandomNum(0,100);
         monster.data = data;
+
+        monster.isDisguising = data.disguise > 0;
+        if(monster.isDisguising){
+            monster.changeBodyRes(data.resName,Monster.RES_DISGUISE);
+        }else{
+            monster.changeBodyRes(resName);
+        }
         return monster;
     }
     getWarMachine(dungeon:Dungeon,posIndex:cc.Vec2):WarMachine{

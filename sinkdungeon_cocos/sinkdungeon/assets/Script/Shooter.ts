@@ -5,6 +5,7 @@ import Monster from "./Monster";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
+import Random from "./Utils/Random";
 
 
 // Learn TypeScript:
@@ -184,7 +185,7 @@ export default class Shooter extends cc.Component {
     }
 
     getRandomNum(min, max): number {//生成一个随机数从[min,max]
-        return min + Math.round(Math.random() * (max - min));
+        return min + Math.round(Random.rand() * (max - min));
     }
 
     update(dt) {

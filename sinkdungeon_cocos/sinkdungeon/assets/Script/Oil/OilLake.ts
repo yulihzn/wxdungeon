@@ -1,4 +1,5 @@
 import PerlinNoise2D from "./PerlinNoise2D";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,7 +22,7 @@ export default class OilLake {
         let threshold = .14, threshold2 = -.14;
         let x0 = 0, y0 = 0, dx = 20, dy = 20;
         let perlin:PerlinNoise2D = new PerlinNoise2D();
-        perlin.seed(Math.random())
+        perlin.seed(Random.rand())
         //噪声建立地形
 		dx = 20+this.getRandomNum(20);
 		dy = 20+this.getRandomNum(20);
@@ -42,7 +43,7 @@ export default class OilLake {
                 }else if (p < threshold2){
                 	this.map[i][j] = '~';
                 }
-				let pr = Math.random();
+				let pr = Random.rand();
 				if(pr>=0&&pr<0.20&&this.map[i][j]!= '~'){
 					this.map[i][j]= 'o';
 				}
@@ -53,7 +54,7 @@ export default class OilLake {
 		}
     }
     private getRandomNum(max): number {//生成一个随机数从[min,max]
-		return Math.round(Math.random() * max);
+		return Math.round(Random.rand() * max);
     }
 
     public getDisPlay(): string {

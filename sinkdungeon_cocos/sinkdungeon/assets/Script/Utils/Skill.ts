@@ -1,15 +1,20 @@
 const {ccclass, property} = cc._decorator;
 export default class Skill extends cc.Component{
     private isExcuting = false;
-    next(callback:Function,delay:number){
-        if(this.isExcuting){
+    private isInCooling = false;
+    private 
+    next(callback:Function,delay:number,finishAfterCoolDown?:boolean){
+        if(this.isInCooling){
             return;
         }
         if(callback){
             callback();
         }
-        this.isExcuting = true;
-        this.scheduleOnce(()=>{this.isExcuting = false;},delay)
+        this.isInCooling = true;
+        this.scheduleOnce(()=>{this.isInCooling = false;if(finishAfterCoolDown){this.isExcuting = false;}},delay)
+    }
+    refreshCoolDown(){
+        this.isInCooling = false;
     }
     get IsExcuting(){
         return this.isExcuting;
