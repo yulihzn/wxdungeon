@@ -3017,12 +3017,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 32
+      "y": 48
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 32,
-      "height": 64
+      "height": 80
     },
     "_id": ""
   },

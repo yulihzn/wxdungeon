@@ -253,6 +253,7 @@
         "resName": "monster014",
         "chapter": 0,
         "stageLevel": 0,
+        "bulletType":"laser002",
         "common": {
             "moveSpeed": 500,
             "maxHealth": 5,
@@ -260,8 +261,8 @@
         },
         "currentHealth": 5,
         "invisible": 0,
-        "remote": 0,
-        "melee": 1,
+        "remote": 1,
+        "melee": 0,
         "dash": 0
     },
     "monster015": {

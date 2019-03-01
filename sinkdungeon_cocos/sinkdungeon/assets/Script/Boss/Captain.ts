@@ -86,8 +86,16 @@ export default class Captain extends Boss {
         if(!this.dungeon || !this.shooter){
             return;
         }
-        let angles = [0,20,45,65,90,110,135,155,180,200,225,245,270,290,315];
-        this.fireWithAngles(angles);
+        let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
+        if (!hv.equals(cc.Vec2.ZERO)) {
+            hv = hv.normalizeSelf();
+            this.shooter.setHv(hv);
+            this.shooter.dungeon = this.dungeon;
+            this.shooter.data.bulletType = "bullet001";
+            this.shooter.data.bulletArcExNum = 99;
+            this.shooter.fireBullet(0,cc.v2(0,0));
+
+        }
     }
     fireWithAngles(angles:number[]){
         if(!this.dungeon || !this.shooter){
@@ -112,6 +120,7 @@ export default class Captain extends Boss {
         let angles1 = [0,10,15,-30,-40,-10,-15,30,40];
         let angles2 = [5,10,-10];
         let angles3 = [-5,10,20,-10,-20,-30,-40,30,40];
+        this.shooter.data.bulletArcExNum = 0;
         this.fireWithAngles(angles1);
         if(this.data.currentHealth<this.data.Common.maxHealth/2){
             this.scheduleOnce(()=>{this.fireWithAngles(angles2);},0.3);
@@ -202,29 +211,25 @@ export default class Captain extends Boss {
         if(isPlayJump||isPlayFire){
             return;
         }
-        
+        let speed = 200;
+        if(!isPlayJump){
+            this.fireSkill.next(()=>{
+                speed = 50;
+                this.anim.play("CaptainFire");
+            },5)
+        }
         if (playerDis < 140 && !this.dungeon.player.isDied) {
             this.attackSkill.next(()=>{
                 this.attackSkill.IsExcuting = true;
                 this.anim.play("CaptainAttack");
             },1);
-            // if(!this.isAttacking){
-            //     this.anim.play("CaptainAttack");
-            // }
         }else{
-            let speed = 200;
             if(playerDis > 300){
                 this.jumpSkill.next(()=>{
                     this.anim.play("CaptainJump");
                     isPlayJump = true;
                 },5);
                 
-            }
-            if(!isPlayJump&&!this.attackSkill.IsExcuting){
-                speed = 50;
-                this.fireSkill.next(()=>{
-                    this.anim.play("CaptainFire");
-                },2)
             }
           
             if (!pos.equals(cc.Vec2.ZERO)&&!isPlayJump && !this.attackSkill.IsExcuting) {

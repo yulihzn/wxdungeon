@@ -8,6 +8,7 @@ import Slime from "../Boss/Slime";
 import WarMachine from "../Boss/WarMachine";
 import Rah from "../Boss/Rah";
 import Random from "../Utils/Random";
+import IceDemon from "../Boss/IceDemon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,6 +61,8 @@ export default class MonsterManager extends cc.Component {
     warmachine = null;
     @property(cc.Prefab)
     rah = null;
+    @property(cc.Prefab)
+    iceDemon = null;
     onLoad () {
     }
     /**
@@ -90,9 +93,9 @@ export default class MonsterManager extends cc.Component {
             data.Common.maxHealth=data.Common.maxHealth*2;
             data.Common.damageMin=data.Common.damageMin*2;
             data.currentHealth=data.currentHealth*2;
-            data.melee = data.melee>0?data.melee+20:0;
-            data.remote = data.remote>0?data.remote+20:0;
-            data.dash = data.dash>0?data.dash+20:0;
+            data.melee = data.melee>0?data.melee-0.5:0;
+            data.remote = data.remote>0?data.remote-0.5:0;
+            data.dash = data.dash>0?data.dash-0.5:0;
             data.Common.moveSpeed = data.Common.moveSpeed>0?(data.Common.moveSpeed + 100):0;
         }
         data.Common.iceDamage = Random.rand()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
@@ -119,6 +122,21 @@ export default class MonsterManager extends cc.Component {
             monster.changeBodyRes(resName);
         }
         return monster;
+    }
+    getIceDemon(dungeon:Dungeon,posIndex:cc.Vec2):IceDemon{
+        let icePrefab:cc.Node = null;
+        icePrefab = cc.instantiate(this.iceDemon);
+        icePrefab.active = false;
+        icePrefab.parent = dungeon.node;
+        let iceDemon = icePrefab.getComponent(IceDemon);
+        iceDemon.dungeon = dungeon;
+        let data = new MonsterData();
+        data.updateHA(400,400,0);
+        iceDemon.data = data;
+        iceDemon.transportBoss(posIndex.x,posIndex.y);
+        iceDemon.healthBar = dungeon.bossHealthBar;
+        iceDemon.node.active = true;
+        return iceDemon;
     }
     getWarMachine(dungeon:Dungeon,posIndex:cc.Vec2):WarMachine{
         let machinePrefab:cc.Node = null;

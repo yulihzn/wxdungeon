@@ -234,7 +234,8 @@
         "lifeTime":5,
         "size": 1.5,
         "isTracking":1,
-        "isPhysical":1,
+        "delaytrack":1,
+        "isPhysical":0,
         "resName":"bullet017",
         "lightName": "bulletlight001",
         "lightColor": "#2F4F4F",
@@ -246,7 +247,7 @@
         "name":"长矛",
         "speed": 600,
         "isLaser":0,
-        "isRect": 0,
+        "isRect": 1,
         "isRotate": 0,
         "lifeTime":2,
         "size": 1.8,
@@ -263,6 +264,16 @@
         "name":"红色激光",
         "speed": 5000,
         "isLaser":1,
+        "resNameLaser":"laser001",
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "laser002": {
+        "name":"短暂红色激光",
+        "speed": 1000,
+        "isLaser":1,
+        "lifeTime":0.1,
         "resNameLaser":"laser001",
         "damage": {
             "physicalDamage": 1

@@ -90,7 +90,7 @@ export default class Player extends cc.Component {
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData;
         this.statusUpdate();
-        this.pos = cc.v2(4, 4);
+        this.pos = cc.v2(0, 0);
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         let walkName = "PlayerWalkShort";

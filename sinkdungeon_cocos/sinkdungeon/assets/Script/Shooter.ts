@@ -36,8 +36,7 @@ export default class Shooter extends cc.Component {
     bulletName: string = '';
     sprite: cc.Node;
     data: EquipmentData = new EquipmentData();
-    parentNode:cc.Node;//该node为dungeon下发射器的载体
-
+    parentNode: cc.Node;//该node为dungeon下发射器的载体
     private hv: cc.Vec2 = cc.v2(1, 0);
 
     onLoad() {
@@ -46,7 +45,7 @@ export default class Shooter extends cc.Component {
         cc.director.on('destorybullet', (event) => {
             this.destroyBullet(event.detail.bulletNode);
         })
-       
+
     }
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
@@ -57,12 +56,12 @@ export default class Shooter extends cc.Component {
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-        this.sprite.width = spriteFrame.getRect().width*1.5;
-        this.sprite.height = spriteFrame.getRect().height*1.5;
+        this.sprite.width = spriteFrame.getRect().width * 1.5;
+        this.sprite.height = spriteFrame.getRect().height * 1.5;
         this.sprite.anchorX = 0.2;
-        if(this.data.far == 1){
-            this.sprite.width = this.sprite.width*2;
-            this.sprite.height = this.sprite.height*2;
+        if (this.data.far == 1) {
+            this.sprite.width = this.sprite.width * 2;
+            this.sprite.height = this.sprite.height * 2;
             this.sprite.anchorX = 0.5
         }
     }
@@ -83,8 +82,8 @@ export default class Shooter extends cc.Component {
         }
     }
     remoteRate = 0;
-    fireBullet(angleOffset?: number,speed?:number) {
-        
+    fireBullet(angleOffset?: number,defaultPos?: cc.Vec2) {
+
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec2.ZERO;
@@ -106,41 +105,80 @@ export default class Shooter extends cc.Component {
         if (!this.isAI && Logic.ammo > 0) {
             Logic.ammo--;
         }
-        this.fire(this.bullet, this.bulletPool, angleOffset);
-        this.fireArcBullet();
-        this.fireLinecBullet(angleOffset);
+        if (this.data.bulletNets > 0) {
+            let bulletType = this.data.bulletType;
+            // this.fireNetsBullet(0,bulletType);
+            // this.fireNetsBullet(1,bulletType);
+            // this.fireNetsBullet(2,bulletType);
+            this.fireNetsBullet(3,bulletType);
+        } else {
+            this.fire(this.data.bulletType,this.bullet, this.bulletPool, angleOffset, this.hv.clone(),defaultPos);
+            this.fireArcBullet(this.data.bulletType);
+            this.fireLinecBullet(this.data.bulletType,angleOffset);
+        }
 
     }
-    private fireArcBullet():void{
-        if(this.data.bulletArcExNum == 0){
+    private fireArcBullet(bulletType:string): void {
+        if (this.data.bulletArcExNum <= 0) {
             return;
         }
-        let angles = [10,-10,20,-20,30,-30,40,-40,50,-50,60,-60,-70,-70,80,-80,90,-90,100,-100,110,-110,120,-120,130,-130,140,-140,150,-150,160,-160,170,-170,180,-180]
-        for(let i = 0;i < this.data.bulletArcExNum;i++){
-            if(i < angles.length){
+        let angles = [10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, -70, -70, 80, -80, 90, -90, 100, -100, 110, -110, 120, -120, 130, -130, 140, -140, 150, -150, 160, -160, 170, -170, 180, -180]
+        if(this.data.bulletArcExNum>angles.length){
+            let circleAngles = [0,20,45,65,90,110,135,155,180,200,225,245,270,290,315,335];
+            for (let i = 0; i < circleAngles.length; i++) {
                 if (!this.isAI && Logic.ammo > 0) {
                     Logic.ammo--;
                 }
-                this.fire(this.bullet, this.bulletPool, angles[i]);
+                this.fire(bulletType,this.bullet, this.bulletPool, circleAngles[i], this.hv.clone());
+            }
+        }else{
+            for (let i = 0; i < this.data.bulletArcExNum; i++) {
+                if (i < angles.length) {
+                    if (!this.isAI && Logic.ammo > 0) {
+                        Logic.ammo--;
+                    }
+                    this.fire(bulletType,this.bullet, this.bulletPool, angles[i], this.hv.clone());
+                }
             }
         }
+
     }
-    private fireLinecBullet(angleOffset:number):void{
-        if(this.data.bulletLineExNum == 0){
+    private fireLinecBullet(bulletType:string,angleOffset: number): void {
+        if (this.data.bulletLineExNum == 0) {
             return;
         }
-        this.schedule(()=>{
+        this.schedule(() => {
             if (!this.isAI && Logic.ammo > 0) {
                 Logic.ammo--;
             }
-            this.fire(this.bullet, this.bulletPool, angleOffset);
-            this.fireArcBullet();
-        },this.data.bulletLineInterval>0?this.data.bulletLineInterval:0.2,this.data.bulletLineExNum,0);
-        
-    }
-   
+            this.fire(bulletType,this.bullet, this.bulletPool, angleOffset, this.hv.clone());
+            this.fireArcBullet(bulletType);
+        }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, this.data.bulletLineExNum, 0);
 
-    private fire(prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number) {
+    }
+    //暂时不用，待完善
+    private fireNetsBullet(dir: number,bulletType:string) {
+        switch(dir){
+            case 0:this.setHv(cc.v2(0,1));break;
+            case 1:this.setHv(cc.v2(0,-1));break;
+            case 2:this.setHv(cc.v2(-1,0));break;
+            case 3:this.setHv(cc.v2(1,0));break;
+        }
+        let poses = [0,128,-128,256,-256];
+        for (let i = 0; i < poses.length; i++) {
+            this.fire(bulletType,this.bullet, this.bulletPool, 0, this.hv.clone(), cc.v2(64, poses[i]));
+        }
+    }
+
+    /**
+     * 发射子弹
+     * @param prefab 预制
+     * @param pool 线程池
+     * @param angleOffset 角度
+     * @param hv 方向向量
+     * @param defaultPos 初始位置默认cc.v2(30, 0)
+     */
+    private fire(bulletType:string,prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number, hv: cc.Vec2, defaultPos?: cc.Vec2) {
         let bulletPrefab: cc.Node = null;
         if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             bulletPrefab = pool.get();
@@ -150,14 +188,14 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(prefab);
         }
         bulletPrefab.parent = this.node;
-        let pos = this.node.convertToWorldSpace(cc.v2(30, 0));
+        let pos = this.node.convertToWorldSpace(defaultPos ? defaultPos : cc.v2(30, 0));
         pos = this.dungeon.node.convertToNodeSpace(pos);
         bulletPrefab.parent = this.dungeon.node;
         bulletPrefab.position = pos;
         bulletPrefab.scale = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
-        bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
+        // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
@@ -166,11 +204,11 @@ export default class Shooter extends cc.Component {
             bullet.data.damage.physicalDamage = this.data.damageRemote;
         }
         let bd = new BulletData();
-        bd.valueCopy(Logic.bullets[this.data.bulletType])
+        bd.valueCopy(Logic.bullets[bulletType])
         bullet.changeBullet(bd);
-        this.bulletName = bullet.name+bd.resName;
+        this.bulletName = bullet.name + bd.resName;
         bullet.enabled = true;
-        bullet.showBullet(this.hv.clone().rotateSelf(angleOffset * Math.PI / 180));
+        bullet.showBullet(hv.rotateSelf(angleOffset * Math.PI / 180));
     }
     destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
@@ -180,7 +218,7 @@ export default class Shooter extends cc.Component {
             this.bulletPool.put(bulletNode);
         }
     }
-   
+
     start() {
     }
 
@@ -198,10 +236,10 @@ export default class Shooter extends cc.Component {
             this.rotateColliderManager(olderTarget);
         }
     }
-    getParentNode():cc.Node{
-        if(this.parentNode){
+    getParentNode(): cc.Node {
+        if (this.parentNode) {
             return this.parentNode;
-        }else{
+        } else {
             return this.node.parent;
         }
     }
@@ -222,7 +260,7 @@ export default class Shooter extends cc.Component {
                     pos = monster.node.position.sub(this.getParentNode().position.add(p));
                 }
             }
-            if(pos.equals(cc.Vec2.ZERO)){
+            if (pos.equals(cc.Vec2.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
                     let dis = Logic.getDistance(this.getParentNode().position, boss.node.position);
                     if (dis < 500 && dis < olddis && !boss.isDied) {
@@ -232,7 +270,7 @@ export default class Shooter extends cc.Component {
                         pos = boss.node.position.sub(this.getParentNode().position.add(p));
                     }
                 }
-                
+
             }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();

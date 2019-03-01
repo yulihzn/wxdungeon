@@ -394,19 +394,7 @@ export default class Monster extends cc.Component {
             this.sprite.opacity = 255;
             },this.data.melee);
         }
-        // if (playerDis < 80 && !this.dungeon.player.isDied && this.data.melee > 0 && Logic.getRandomNum(0, 100) < this.data.melee && !this.isDashing && !this.isDisguising) {
-        //     pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
-        //     if (!pos.equals(cc.Vec2.ZERO)) {
-        //         pos = pos.normalizeSelf();
-        //     }
-        //     this.showAttackEffect();
-        //     this.meleeAttack(pos, (damage: DamageData) => {
-        //         this.stopAttackEffect();
-        //         let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-        //         if (newdis < 80) { this.addPlayerStatus(this.dungeon.player); this.dungeon.player.takeDamage(damage); }
-        //     });
-        //     this.sprite.opacity = 255;
-        // }
+       
         if (this.data.melee > 0) {
             pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
         }
@@ -426,18 +414,7 @@ export default class Monster extends cc.Component {
                 }
             }, this.data.remote);
         }
-        // if (playerDis < 600 && this.data.remote > 0 && Logic.getRandomNum(0, 100) < this.data.remote && this.shooter && !this.isDisguising) {
-        //     let p = this.shooter.node.position.clone();
-        //     p.x = this.shooter.node.scaleX > 0 ? p.x+30 : -p.x-30;
-        //     let hv = this.dungeon.player.getCenterPosition().sub(this.node.position.add(p));
-        //     if (!hv.equals(cc.Vec2.ZERO)) {
-        //         hv = hv.normalizeSelf();
-        //         this.shooter.setHv(hv);
-        //         this.shooter.dungeon = this.dungeon;
-        //         this.shooter.data.bulletType = this.data.bulletType?this.data.bulletType:"laser001";
-        //         this.shooter.fireBullet(Logic.getRandomNum(0,5)-5);
-        //     }
-        // }
+        
         //冲刺
         let speed = this.data.getMoveSpeed();
         if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && this.data.dash > 0 

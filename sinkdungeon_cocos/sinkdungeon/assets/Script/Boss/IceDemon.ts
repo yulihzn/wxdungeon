@@ -1,27 +1,32 @@
-import Boss from "./Boss";
-import DamageData from "../Data/DamageData";
-import Shooter from "../Shooter";
+import CaptainSword from "./CaptainSword";
+import HealthBar from "../HealthBar";
+import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
+import { EventConstant } from "../EventConstant";
+import Shooter from "../Shooter";
+import EquipmentManager from "../Manager/EquipmentManager";
+import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
+import Boss from "./Boss";
 import Skill from "../Utils/Skill";
 
 // Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
 // Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Rah extends Boss {
-
+export default class IceDemon extends Boss {
+    
     private anim: cc.Animation;
     shooter: Shooter;
     private timeDelay = 0;
@@ -30,9 +35,9 @@ export default class Rah extends Boss {
     isMoving = false;
     darkSkill = new Skill();
     blinkSkill = new Skill();
-    snakeSkill = new Skill();
+    defenceSkill = new Skill();
     bugsSkill = new Skill();
-    melleSkill = new Skill();
+    meleeSkill = new Skill();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -88,24 +93,24 @@ export default class Rah extends Boss {
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        if (Logic.getChance(20) && isHalf) {
-            this.dark();
-        }
-        if (Logic.getChance(80)) {
-            this.blink();
-        }
-        if (playerDis < 600 && !this.blinkSkill.IsExcuting) {
-            this.fireSnake();
-        }
-        if (Logic.getChance(90) && !this.blinkSkill.IsExcuting) {
-            this.fireBugs(isHalf);
-        }
-        if (playerDis < 100 && !this.blinkSkill.IsExcuting) {
+        // if (Logic.getChance(20) && isHalf) {
+        //     this.dark();
+        // }
+        // if (Logic.getChance(80)) {
+        //     this.blink();
+        // }
+        // if (playerDis < 600 && !this.blinkSkill.IsExcuting) {
+        //     this.fireSnake();
+        // }
+        // if (Logic.getChance(90) && !this.blinkSkill.IsExcuting) {
+        //     this.fireBugs(isHalf);
+        // }
+        if (playerDis < 100) {
             this.attack();
         }
-        if (!pos.equals(cc.Vec2.ZERO) && !this.melleSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 100) {
+        if (!pos.equals(cc.Vec2.ZERO) && !this.meleeSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 60) {
             pos = pos.normalizeSelf();
-            this.move(pos, 100);
+            this.move(pos, 300);
         }
     }
  
@@ -136,13 +141,14 @@ export default class Rah extends Boss {
         return;
     }
     attack() {
-        this.melleSkill.next(() => {
-            this.melleSkill.IsExcuting = true;
+        this.meleeSkill.next(() => {
+            this.meleeSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
-            this.anim.playAdditive('RahAttack001');
-        }, 2, true);
+            this.anim.play('IceDemonAttack001');
+            this.scheduleOnce(()=>{this.meleeSkill.IsExcuting = false;},2);
+        }, 3, true);
 
     }
     dark() {
@@ -152,12 +158,12 @@ export default class Rah extends Boss {
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
-            this.anim.playAdditive('RahSpellDark');
+            // this.anim.playAdditive('RahSpellDark');
         }, 20);
 
     }
     fireSnake() {
-        this.snakeSkill.next(() => {
+        this.defenceSkill.next(() => {
             this.shooter.setHv(cc.v2(0, -1));
             let pos = this.node.position.clone().add(this.shooter.node.position);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
@@ -169,7 +175,7 @@ export default class Rah extends Boss {
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
-            this.anim.playAdditive('RahSpellSnake');
+            // this.anim.playAdditive('RahSpellSnake');
         }, 6);
     }
 
@@ -186,7 +192,7 @@ export default class Rah extends Boss {
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
-            this.anim.playAdditive('RahSpellBugs');
+            // this.anim.playAdditive('RahSpellBugs');
         }, 4);
 
 
@@ -250,20 +256,20 @@ export default class Rah extends Boss {
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
-        // if (this.isMoving) {
-        //     if (!this.anim.getAnimationState('CaptainMove').isPlaying) {
-        //         this.anim.playAdditive('CaptainMove');
-        //     }
-        // } else {
-        //     if (this.anim.getAnimationState('CaptainMove').isPlaying) {
-        //         this.anim.play('CaptainIdle');
-        //     }
-        // }
+        if (this.isMoving) {
+            if (!this.anim.getAnimationState('IceDemonWalk').isPlaying) {
+                this.anim.playAdditive('IceDemonWalk');
+            }
+        } else {
+            if (this.anim.getAnimationState('IceDemonWalk').isPlaying) {
+                this.anim.play('IceDemonIdle');
+            }
+        }
         this.changeZIndex();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if (player && this.melleSkill.IsExcuting) {
+        if (player && this.meleeSkill.IsExcuting) {
             let d = new DamageData();
             d.physicalDamage = 3;
             player.takeDamage(d);

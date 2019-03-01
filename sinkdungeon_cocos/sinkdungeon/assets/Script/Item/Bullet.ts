@@ -53,6 +53,7 @@ export default class Bullet extends cc.Component {
 
     startPos: cc.Vec2 = cc.v2(0, 0);//子弹起始位置
 
+    isTrackDelay = false;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -86,6 +87,7 @@ export default class Bullet extends cc.Component {
         this.laserSpriteNode = this.laserNode.getChildByName("sprite");
         this.laserLightSprite = this.laserNode.getChildByName("light").getComponent(cc.Sprite);
         this.laserHeadSprite = this.laserNode.getChildByName("head").getComponent(cc.Sprite);
+        this.isTrackDelay = false;
 
     }
     timeDelay = 0;
@@ -97,7 +99,7 @@ export default class Bullet extends cc.Component {
         }
     }
     private checkTraking(): void {
-        if (this.data.isTracking == 1 && this.data.isLaser != 1) {
+        if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec2.ZERO)) {
                 this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
@@ -123,6 +125,7 @@ export default class Bullet extends cc.Component {
             this.boxPCollider.sensor = data.isPhysical == 0;
             this.boxPCollider.apply();
         }
+        
         this.initLaser();
 
     }
@@ -206,7 +209,8 @@ export default class Bullet extends cc.Component {
     //animation
     showBullet(hv: cc.Vec2) {
         this.hv = hv;
-        this.fire(this.hv);
+        this.rotateColliderManager(cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y));
+        this.fire(this.hv.clone());
     }
     //animation
     BulletDestory() {
@@ -232,7 +236,10 @@ export default class Bullet extends cc.Component {
             let lifeTimeAction = cc.sequence(cc.delayTime(this.data.lifeTime), cc.callFunc(() => { this.bulletHit(); }));
             this.node.runAction(lifeTimeAction);
         }
-
+        this.isTrackDelay = false;
+        if(this.data.isTracking == 1){
+            this.scheduleOnce(()=>{this.isTrackDelay = true;},this.data.delaytrack);
+        }
     }
 
     start() {

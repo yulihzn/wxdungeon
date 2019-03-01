@@ -1,15 +1,15 @@
 {
   "ver": "2.2.0",
-  "uuid": "de4a8b03-1160-41e7-aaf7-fd13c0fcfc3b",
+  "uuid": "695984c6-89ea-4169-910b-cffb0367d30d",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "bossicehand": {
+    "bossicepart02": {
       "ver": "1.0.3",
-      "uuid": "edfe93cc-de18-4fc8-80b5-a3c1e7b4eb7a",
-      "rawTextureUuid": "de4a8b03-1160-41e7-aaf7-fd13c0fcfc3b",
+      "uuid": "04bfb6be-7888-4005-87e8-b98dd17e0ad3",
+      "rawTextureUuid": "695984c6-89ea-4169-910b-cffb0367d30d",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
@@ -18,9 +18,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 16,
-      "height": 32,
+      "height": 8,
       "rawWidth": 16,
-      "rawHeight": 32,
+      "rawHeight": 8,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

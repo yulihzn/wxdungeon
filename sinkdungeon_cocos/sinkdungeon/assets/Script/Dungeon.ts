@@ -427,7 +427,7 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
                     }
                     if (mapData[i][j] == '0') {
-                        this.addBossCaptain(cc.v2(i,j));
+                        this.addBossIceDemon(cc.v2(i,j));
                     }
                     if (mapData[i][j] == '1') {
                         this.addBossWarMachine(cc.v2(i,j));
@@ -614,7 +614,17 @@ export default class Dungeon extends cc.Component {
         this.scheduleOnce(() => {
             boss.showBoss();
             // this.anim.play('DungeonWave');
-        }, 3.5);
+        }, 2);
+    }
+    private addBossIceDemon(index: cc.Vec2) {
+        if (!this.bosses) {
+            return;
+        }
+        let boss = this.monsterManager.getIceDemon(this, index.clone());
+        this.bosses.push(boss);
+        this.scheduleOnce(() => {
+            boss.showBoss();
+        }, 2);
     }
     private addBossKraken(index: cc.Vec2) {
         if (!this.bosses) {

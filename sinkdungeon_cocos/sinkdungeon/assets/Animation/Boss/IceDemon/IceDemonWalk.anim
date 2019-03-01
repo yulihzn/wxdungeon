@@ -1,0 +1,425 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "IceDemonWalk",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "paths": {
+      "sprite/head": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 20
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 22
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 20
+            },
+            {
+              "frame": 0.5,
+              "value": 22
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 20
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 22
+            },
+            {
+              "frame": 1,
+              "value": 20
+            }
+          ],
+          "x": [
+            {
+              "frame": 0,
+              "value": 20
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 20
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 20
+            },
+            {
+              "frame": 1,
+              "value": 20
+            }
+          ]
+        }
+      },
+      "sprite/body": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -2
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": -2
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": -2
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -60
+            }
+          ]
+        }
+      },
+      "sprite/tail": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -10
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -30
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -30
+            },
+            {
+              "frame": 1,
+              "value": -10
+            }
+          ]
+        }
+      },
+      "sprite/tail/tail1/tail2/tail3/tail4/tail5": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 10
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": 10
+            }
+          ]
+        }
+      },
+      "sprite/tail/tail1/tail2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 10
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 5
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": 10
+            }
+          ]
+        }
+      },
+      "sprite/rightleg": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 30
+            },
+            {
+              "frame": 0.25,
+              "value": 160
+            },
+            {
+              "frame": 0.5,
+              "value": 30
+            },
+            {
+              "frame": 0.75,
+              "value": 160
+            },
+            {
+              "frame": 1,
+              "value": 30
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -18
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -16
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -18
+            },
+            {
+              "frame": 0.5,
+              "value": -16
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -18
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": -16
+            },
+            {
+              "frame": 1,
+              "value": -18
+            }
+          ]
+        }
+      },
+      "sprite/rightleg/rightfoot": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 5
+            },
+            {
+              "frame": 0.25,
+              "value": 80
+            },
+            {
+              "frame": 0.5,
+              "value": 5
+            },
+            {
+              "frame": 0.75,
+              "value": 80
+            },
+            {
+              "frame": 1,
+              "value": 5
+            }
+          ]
+        }
+      },
+      "sprite/leftleg": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 160
+            },
+            {
+              "frame": 0.25,
+              "value": 40
+            },
+            {
+              "frame": 0.5,
+              "value": 160
+            },
+            {
+              "frame": 0.75,
+              "value": 40
+            },
+            {
+              "frame": 1,
+              "value": 160
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -18
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -16
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -18
+            },
+            {
+              "frame": 0.5,
+              "value": -16
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -18
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": -16
+            },
+            {
+              "frame": 1,
+              "value": -18
+            }
+          ]
+        }
+      },
+      "sprite/leftleg/leftfoot": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 80
+            },
+            {
+              "frame": 0.25,
+              "value": 5
+            },
+            {
+              "frame": 0.5,
+              "value": 80
+            },
+            {
+              "frame": 0.75,
+              "value": 5
+            },
+            {
+              "frame": 1,
+              "value": 80
+            }
+          ]
+        }
+      },
+      "sprite/rightarm": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 140
+            },
+            {
+              "frame": 0.25,
+              "value": 130
+            },
+            {
+              "frame": 0.5,
+              "value": 140
+            },
+            {
+              "frame": 0.75,
+              "value": 130
+            },
+            {
+              "frame": 1,
+              "value": 140
+            }
+          ]
+        }
+      },
+      "sprite/rightarm/righthand": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": -10
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/leftarm": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 160
+            },
+            {
+              "frame": 0.25,
+              "value": 145
+            },
+            {
+              "frame": 0.5,
+              "value": 160
+            },
+            {
+              "frame": 0.75,
+              "value": 145
+            },
+            {
+              "frame": 1,
+              "value": 160
+            }
+          ]
+        }
+      },
+      "sprite/leftarm/lefthand": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": -10
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
