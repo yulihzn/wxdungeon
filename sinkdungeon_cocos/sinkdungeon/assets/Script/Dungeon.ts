@@ -31,6 +31,7 @@ import TarotTable from "./Building/TarotTable";
 import ChestData from "./Data/ChestData";
 import ItemData from "./Data/ItemData";
 import Random from "./Utils/Random";
+import IceDemonThron from "./Boss/IceDemonThron";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,6 +84,8 @@ export default class Dungeon extends cc.Component {
     tarotTable: cc.Prefab = null;
     @property(cc.Prefab)
     venom: cc.Prefab = null;
+    @property(cc.Prefab)
+    iceThron: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -368,11 +371,6 @@ export default class Dungeon extends cc.Component {
                 }
                 //房间未清理时加载怪物
                 if (!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
-                    if (mapData[i][j] == 's') {
-                        let sailor = Logic.getHalfChance() ? MonsterManager.MONSTER_SAILOR : MonsterManager.MONSTER_STRONGSAILOR;
-                        this.addMonsterFromData(sailor, i, j);
-                    }
-                    
                     
                     if (mapData[i][j] == 'a') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
@@ -387,30 +385,42 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
                     }
                     if (mapData[i][j] == 'e') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
+                    }
+                    if (mapData[i][j] == 'f') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                     }
-                    
                     if (mapData[i][j] == 'g') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
                     }
-                    if (mapData[i][j] == 'm') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
+                    if (mapData[i][j] == 'i') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_CONNAR, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
                     }
+                    
                     if (mapData[i][j] == 'j') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, i, j);
                     }
                     if (mapData[i][j] == 'k') {
                         this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
                     }
+                    if (mapData[i][j] == 'm') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
+                    }
                     if (mapData[i][j] == 'o') {
                         this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
                     }
                     if (mapData[i][j] == 'p') {
                         this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
+                    }
+                    if (mapData[i][j] == 's') {
+                        let sailor = Logic.getHalfChance() ? MonsterManager.MONSTER_SAILOR : MonsterManager.MONSTER_STRONGSAILOR;
+                        this.addMonsterFromData(sailor, i, j);
                     }
                     if (mapData[i][j] == 't') {
                         this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, i, j);
@@ -422,9 +432,7 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
                     }
                     if (mapData[i][j] == 'z') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_CONNAR, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_ZOOMBIE, i, j);
                     }
                     if (mapData[i][j] == '0') {
                         this.addBossIceDemon(cc.v2(i,j));
@@ -512,6 +520,23 @@ export default class Dungeon extends cc.Component {
         stone.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         stone.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        if (stoneScript.isAuto) {
+            stoneScript.fall();
+        }
+
+    }
+    /**冰刺 */
+    addIceThron(pos: cc.Vec2, isAuto: boolean) {
+        if (!this.iceThron) {
+            return;
+        }
+        let thron = cc.instantiate(this.iceThron);
+        let stoneScript = thron.getComponent(IceDemonThron);
+        stoneScript.isAuto = isAuto;
+        thron.parent = this.node;
+        thron.position = pos;
+        let indexpos = Dungeon.getIndexInMap(pos);
+        thron.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         if (stoneScript.isAuto) {
             stoneScript.fall();
         }

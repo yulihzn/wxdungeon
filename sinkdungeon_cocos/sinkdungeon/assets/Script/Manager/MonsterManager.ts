@@ -44,6 +44,8 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_ALTAIR = 'monster016';
     public static readonly MONSTER_CONNAR = 'monster017';
     public static readonly MONSTER_EZIO = 'monster018';
+    public static readonly MONSTER_ZOOMBIE = 'monster019';
+    public static readonly MONSTER_ELECTRICEYE = 'monster020';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}

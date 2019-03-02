@@ -22,22 +22,22 @@ import Skill from "../Utils/Skill";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class IceDemon extends Boss {
-    
+
     private anim: cc.Animation;
     shooter: Shooter;
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
-    darkSkill = new Skill();
-    blinkSkill = new Skill();
+    dashSkill = new Skill();
+    thronSkill = new Skill();
     defenceSkill = new Skill();
-    bugsSkill = new Skill();
     meleeSkill = new Skill();
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -53,7 +53,7 @@ export default class IceDemon extends Boss {
         super.start();
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow || this.blinkSkill.IsExcuting) {
+        if (this.isDied || !this.isShow) {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
@@ -61,6 +61,7 @@ export default class IceDemon extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.defence();
         return true;
     }
 
@@ -70,7 +71,6 @@ export default class IceDemon extends Boss {
         }
         this.node.runAction(cc.fadeOut(3));
         this.isDied = true;
-        this.dungeon.fog.runAction(cc.scaleTo(1, 1.5));
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
@@ -81,122 +81,136 @@ export default class IceDemon extends Boss {
         this.node.position = Dungeon.fixOuterMap(this.node.position);
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
-        let newPos = this.dungeon.player.pos.clone();
-        let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
+        let pos = this.getMovePos();
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-        let h = pos.x;
-        let v = pos.y;
-        let absh = Math.abs(h);
-        let absv = Math.abs(v);
-        this.isFaceRight = h > 0;
         let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        // if (Logic.getChance(20) && isHalf) {
-        //     this.dark();
-        // }
-        // if (Logic.getChance(80)) {
-        //     this.blink();
-        // }
-        // if (playerDis < 600 && !this.blinkSkill.IsExcuting) {
-        //     this.fireSnake();
-        // }
-        // if (Logic.getChance(90) && !this.blinkSkill.IsExcuting) {
-        //     this.fireBugs(isHalf);
-        // }
-        if (playerDis < 100) {
+        if (playerDis < 100 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting&& !this.dashSkill.IsExcuting) {
             this.attack();
         }
-        if (!pos.equals(cc.Vec2.ZERO) && !this.meleeSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 60) {
+        if (!this.meleeSkill.IsExcuting && !this.defenceSkill.IsExcuting && !this.thronSkill.IsExcuting) {
+            this.dash();
+        }
+        if (!this.meleeSkill.IsExcuting && !this.defenceSkill.IsExcuting && !this.dashSkill.IsExcuting) {
+            this.thron();
+        }
+        if (!pos.equals(cc.Vec2.ZERO)
+            && !this.meleeSkill.IsExcuting
+            && !this.defenceSkill.IsExcuting
+            && !this.thronSkill.IsExcuting
+            && !this.dashSkill.IsExcuting
+            && playerDis > 60) {
             pos = pos.normalizeSelf();
-            this.move(pos, 300);
+            this.move(pos, 500);
         }
     }
- 
-    blink(): void {
-        this.blinkSkill.next(() => {
-            this.blinkSkill.IsExcuting = true;
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            let action = cc.sequence(cc.callFunc(() => { }),
-                cc.fadeOut(1),
-                cc.callFunc(() => {
-                    let p = this.dungeon.player.pos.clone();
-                    if (p.y > Dungeon.HEIGHT_SIZE - 1) {
-                        p.y -= 1;
-                    } else {
-                        p.y += 1;
-                    }
-                    this.transportBoss(p.x, p.y);
-                }),
-                cc.fadeIn(1),
-                cc.callFunc(() => {
-                    this.attack();
-                }));
-            this.node.runAction(action);
-            this.scheduleOnce(() => {
-                this.blinkSkill.IsExcuting = false;
-            }, 5);
-        }, 10);
-        return;
+    getMovePos(): cc.Vec2 {
+        let newPos = this.dungeon.player.pos.clone();
+        if (this.dungeon.player.pos.x > this.pos.x) {
+            newPos = newPos.addSelf(cc.v2(1, -1));
+        } else {
+            newPos = newPos.addSelf(cc.v2(-1, -1));
+        }
+        let pos = Dungeon.getPosInMap(newPos);
+        pos.y+=32;
+        pos =pos.sub(this.node.position);
+        let h = pos.x;
+        this.isFaceRight = h > 0;
+        return pos;
+    }
+    thron() {
+        this.thronSkill.next(() => {
+            this.thronSkill.IsExcuting = true;
+            if (!this.anim) {
+                this.anim = this.getComponent(cc.Animation);
+            }
+            this.anim.play('IceDemonThron');
+            let count = 1;
+            this.schedule(() => {
+                let p = this.pos.clone()
+                let ps = [cc.v2(p.x, p.y + count), cc.v2(p.x, p.y - count), cc.v2(p.x + count, p.y + count), cc.v2(p.x + count, p.y - count),
+                cc.v2(p.x + count, p.y), cc.v2(p.x - count, p.y), cc.v2(p.x - count, p.y + count), cc.v2(p.x - count, p.y - count)]
+                for (let i = 0; i < ps.length; i++) {
+                    this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
+                }
+                count++;
+            }, 0.2, 5, 1)
+            this.scheduleOnce(() => { this.thronSkill.IsExcuting = false; }, 4);
+        }, 15, true);
+
     }
     attack() {
+
         this.meleeSkill.next(() => {
             this.meleeSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
             this.anim.play('IceDemonAttack001');
-            this.scheduleOnce(()=>{this.meleeSkill.IsExcuting = false;},2);
+            this.scheduleOnce(() => {
+                let pos = this.getMovePos();
+                if (!pos.equals(cc.Vec2.ZERO)) {
+                    pos = pos.normalizeSelf();
+                }
+                let h = pos.x;
+                let v = pos.y;
+                let movement = cc.v2(h, v);
+                movement = movement.mul(1500);
+                this.rigidbody.linearVelocity = movement;
+            }, 1);
+            this.scheduleOnce(() => { this.meleeSkill.IsExcuting = false; }, 2);
         }, 3, true);
 
     }
-    dark() {
-        this.darkSkill.next(() => {
-            let action = cc.sequence(cc.scaleTo(2, 1.5, 1.5), cc.rotateTo(6, 0), cc.scaleTo(2, 0.5, 0.5));
-            this.dungeon.fog.runAction(action);
+    dash() {
+        this.dashSkill.next(() => {
+            this.dashSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
-            // this.anim.playAdditive('RahSpellDark');
-        }, 20);
+            this.anim.play('IceDemonDash');
+            this.scheduleOnce(() => {
+                let pos = this.getMovePos();
+                if (!pos.equals(cc.Vec2.ZERO)) {
+                    pos = pos.normalizeSelf();
+                }
+                let h = pos.x;
+                let v = pos.y;
+                let movement = cc.v2(h, v);
+                movement = movement.mul(2500);
+                this.rigidbody.linearVelocity = movement;
+            }, 2.4);
+            this.scheduleOnce(() => { this.dashSkill.IsExcuting = false; }, 3);
+        }, 8, true);
 
     }
-    fireSnake() {
+    defence() {
         this.defenceSkill.next(() => {
-            this.shooter.setHv(cc.v2(0, -1));
-            let pos = this.node.position.clone().add(this.shooter.node.position);
-            let hv = this.dungeon.player.getCenterPosition().sub(pos);
-            if (!hv.equals(cc.Vec2.ZERO)) {
-                hv = hv.normalizeSelf();
-                this.shooter.setHv(hv);
-                this.fireShooter(this.shooter, "bullet014", 1, 0);
-            }
+            this.defenceSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
-            // this.anim.playAdditive('RahSpellSnake');
-        }, 6);
+            this.anim.play('IceDemonDefence');
+            this.data.Common.defence = 9999;
+            this.data.Common.fireDefence = 9999;
+            this.data.Common.iceDefence = 9999;
+            this.data.Common.toxicDefence = 9999;
+            this.data.Common.lighteningDamage = 9999;
+            this.data.Common.curseDefence = 9999;
+            this.scheduleOnce(() => {
+                this.defenceSkill.IsExcuting = false;
+                this.data.Common.defence = 0;
+                this.data.Common.fireDefence = 0;
+                this.data.Common.iceDefence = 0;
+                this.data.Common.toxicDefence = 0;
+                this.data.Common.lighteningDamage = 0;
+                this.data.Common.curseDefence = 0;
+            }, 3);
+        }, 6, true);
     }
 
-    fireBugs(isHalf: boolean) {
-        this.bugsSkill.next(() => {
-            this.shooter.data.bulletLineInterval = 0.5;
-            let pos = this.node.position.clone().add(this.shooter.node.position);
-            let hv = this.dungeon.player.getCenterPosition().sub(pos);
-            if (!hv.equals(cc.Vec2.ZERO)) {
-                hv = hv.normalizeSelf();
-                this.shooter.setHv(hv);
-            }
-            this.fireShooter(this.shooter, "bullet017", 99, 0);
-            if (!this.anim) {
-                this.anim = this.getComponent(cc.Animation);
-            }
-            // this.anim.playAdditive('RahSpellBugs');
-        }, 4);
-
-
-    }
 
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
         shooter.dungeon = this.dungeon;
@@ -269,10 +283,11 @@ export default class IceDemon extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if (player && this.meleeSkill.IsExcuting) {
+        if (player && (this.meleeSkill.IsExcuting||this.dashSkill.IsExcuting)) {
             let d = new DamageData();
             d.physicalDamage = 3;
             player.takeDamage(d);
+            player.addStatus(StatusManager.FROZEN);
         }
     }
 }

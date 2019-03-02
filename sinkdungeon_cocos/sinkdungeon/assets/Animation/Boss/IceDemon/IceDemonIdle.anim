@@ -46,6 +46,12 @@
               "frame": 0,
               "value": 12
             }
+          ],
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 30
+            }
           ]
         }
       },
@@ -331,6 +337,26 @@
             {
               "frame": 1,
               "value": -30
+            }
+          ]
+        }
+      },
+      "sprite/rightleg/rightfoot/thron": {
+        "props": {
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
             }
           ]
         }

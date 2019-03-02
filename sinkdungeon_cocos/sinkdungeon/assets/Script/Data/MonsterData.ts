@@ -28,6 +28,9 @@ export default class MonsterData{
     disguise:number=0;//是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复 
     sizeType:number=0;//0正常1小一号2大一号
     bulletType:string='';//子弹类型
+    bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
+    bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
+    bulletLineInterval = 0;//线性喷射间隔时间（毫秒）
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     private statusTotalData: StatusData;
@@ -66,6 +69,9 @@ export default class MonsterData{
         this.disguise = data.disguise?data.disguise:0;
         this.sizeType = data.sizeType?data.sizeType:0;
         this.bulletType = data.bulletType;
+        this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
+        this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
+        this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -84,6 +90,9 @@ export default class MonsterData{
         e.disguise = this.disguise;
         e.sizeType = this.sizeType;
         e.bulletType = this.bulletType;
+        e.bulletArcExNum = this.bulletArcExNum;
+        e.bulletLineExNum = this.bulletLineExNum;
+        e.bulletLineInterval = this.bulletLineInterval;
         return e;
     }
     getAttackPoint():DamageData{

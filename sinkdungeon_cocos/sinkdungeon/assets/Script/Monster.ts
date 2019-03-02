@@ -182,7 +182,7 @@ export default class Monster extends cc.Component {
         let action = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
             cc.moveBy(0.2, 0, 0),
             cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK) }),
-            cc.moveBy(0.2, 0, 0),
+            cc.moveBy(0.5, 0, 0),
             cc.callFunc(() => {
                 this.changeBodyRes(this.data.resName, Monster.RES_WALK03)
                 this.anim.resume();
@@ -409,6 +409,9 @@ export default class Monster extends cc.Component {
                     hv = hv.normalizeSelf();
                     this.shooter.setHv(hv);
                     this.shooter.dungeon = this.dungeon;
+                    this.shooter.data.bulletArcExNum = this.data.bulletArcExNum;
+                    this.shooter.data.bulletLineExNum = this.data.bulletLineExNum;
+                    this.shooter.data.bulletLineInterval = this.data.bulletLineInterval;
                     this.shooter.data.bulletType = this.data.bulletType ? this.data.bulletType : "bullet001";
                     this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5);
                 }

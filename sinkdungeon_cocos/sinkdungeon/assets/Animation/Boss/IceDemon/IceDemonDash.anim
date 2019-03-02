@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "IceDemonDefence",
+  "_name": "IceDemonDash",
   "_objFlags": 0,
   "_native": "",
   "_duration": 3,
@@ -26,6 +26,10 @@
             },
             {
               "frame": 0.5,
+              "value": 26
+            },
+            {
+              "frame": 2,
               "value": 26
             },
             {
@@ -79,6 +83,10 @@
               "value": -2
             },
             {
+              "frame": 2,
+              "value": -2
+            },
+            {
               "frame": 2.5,
               "value": -2
             },
@@ -117,6 +125,14 @@
             {
               "frame": 2,
               "value": -55
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": -80
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": -80
             },
             {
               "frame": 3,
@@ -181,8 +197,20 @@
               "value": 120
             },
             {
+              "frame": 2,
+              "value": 120
+            },
+            {
               "frame": 2.5,
               "value": 120
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": 80
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": 80
             },
             {
               "frame": 3,
@@ -204,6 +232,10 @@
             },
             {
               "frame": 0.5,
+              "value": -16
+            },
+            {
+              "frame": 2,
               "value": -16
             },
             {
@@ -237,8 +269,16 @@
               "value": 70
             },
             {
+              "frame": 2,
+              "value": 70
+            },
+            {
               "frame": 2.5,
               "value": 70
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": 120
             },
             {
               "frame": 3,
@@ -259,8 +299,20 @@
               "value": 0
             },
             {
+              "frame": 2,
+              "value": 0
+            },
+            {
               "frame": 2.5,
               "value": 0
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": 120
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": 120
             },
             {
               "frame": 3,
@@ -285,6 +337,10 @@
               "value": -16
             },
             {
+              "frame": 2,
+              "value": -16
+            },
+            {
               "frame": 2.5,
               "value": -16
             },
@@ -294,7 +350,7 @@
             },
             {
               "frame": 2.8333333333333335,
-              "value": -16
+              "value": -18
             },
             {
               "frame": 3,
@@ -315,8 +371,20 @@
               "value": 100
             },
             {
+              "frame": 2,
+              "value": 100
+            },
+            {
               "frame": 2.5,
               "value": 100
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": 0
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": 0
             },
             {
               "frame": 3,
@@ -337,8 +405,20 @@
               "value": 20
             },
             {
-              "frame": 2.5,
+              "frame": 2,
               "value": 20
+            },
+            {
+              "frame": 2.5,
+              "value": 90
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": -30
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": -30
             },
             {
               "frame": 3,
@@ -359,8 +439,20 @@
               "value": -130
             },
             {
-              "frame": 2.5,
+              "frame": 2,
               "value": -130
+            },
+            {
+              "frame": 2.5,
+              "value": -100
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": -30
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": -30
             },
             {
               "frame": 3,
@@ -378,6 +470,10 @@
             },
             {
               "frame": 0.5,
+              "value": 135
+            },
+            {
+              "frame": 2,
               "value": 135
             },
             {
@@ -417,6 +513,10 @@
               "value": 50
             },
             {
+              "frame": 2,
+              "value": 50
+            },
+            {
               "frame": 2.5,
               "value": 50
             },
@@ -428,6 +528,22 @@
           "rotation": [
             {
               "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 2.5,
+              "value": 0
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": 60
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": 60
+            },
+            {
+              "frame": 3,
               "value": 0
             }
           ]
@@ -442,6 +558,94 @@
             }
           ]
         }
+      }
+    },
+    "comps": {
+      "cc.BoxCollider": {
+        "size": [
+          {
+            "frame": 0,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "frame": 2.5,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 0,
+              "height": 0
+            }
+          },
+          {
+            "frame": 2.6666666666666665,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 200,
+              "height": 100
+            }
+          },
+          {
+            "frame": 2.8333333333333335,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 200,
+              "height": 100
+            }
+          },
+          {
+            "frame": 3,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 0,
+              "height": 0
+            }
+          }
+        ],
+        "offset": [
+          {
+            "frame": 0,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 0
+            }
+          },
+          {
+            "frame": 2.5,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 0
+            }
+          },
+          {
+            "frame": 2.6666666666666665,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 60
+            }
+          },
+          {
+            "frame": 2.8333333333333335,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 60
+            }
+          },
+          {
+            "frame": 3,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 0
+            }
+          }
+        ]
       }
     }
   },

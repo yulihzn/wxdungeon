@@ -332,5 +332,43 @@
         "remote": 0,
         "melee": 1,
         "dash": 0
+    },
+    "monster019": {
+        "nameCn": "僵尸",
+        "nameEn": "Zombie",
+        "resName": "monster019",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 5,
+            "toxicRate":50,
+            "damageMin": 2
+        },
+        "currentHealth": 5,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 2,
+        "dash": 0
+    },
+    "monster020": {
+        "nameCn": "电眼",
+        "nameEn": "Electric eye",
+        "resName": "monster020",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 10,
+            "lighteningRate":100,
+            "damageMin": 2
+        },
+        "bulletArcExNum":4,
+        "currentHealth": 10,
+        "bulletType":"bullet019",
+        "invisible": 0,
+        "remote": 2,
+        "melee": 0,
+        "dash": 0
     }
 }

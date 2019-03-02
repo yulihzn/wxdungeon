@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "IceDemonWalk",
+  "_name": "IceDemonThron",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1,
+  "_duration": 1.5,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "2",
+  "wrapMode": "1",
   "curveData": {
     "paths": {
       "sprite/head": {
@@ -14,54 +14,70 @@
           "y": [
             {
               "frame": 0,
-              "value": 20
+              "value": 22
             },
             {
               "frame": 0.16666666666666666,
-              "value": 22
+              "value": 28
             },
             {
               "frame": 0.3333333333333333,
-              "value": 20
+              "value": 22
             },
             {
               "frame": 0.5,
-              "value": 22
+              "value": 26
             },
             {
               "frame": 0.6666666666666666,
-              "value": 20
-            },
-            {
-              "frame": 0.8333333333333334,
               "value": 22
             },
             {
+              "frame": 0.8333333333333334,
+              "value": 26
+            },
+            {
               "frame": 1,
-              "value": 20
+              "value": 22
             }
           ],
           "x": [
             {
               "frame": 0,
-              "value": 20
+              "value": 12
             },
             {
-              "frame": 0.3333333333333333,
-              "value": 20
+              "frame": 0.16666666666666666,
+              "value": 8
             },
             {
-              "frame": 0.6666666666666666,
-              "value": 20
+              "frame": 0.8333333333333334,
+              "value": 8
             },
             {
               "frame": 1,
-              "value": 20
+              "value": 12
             }
           ],
           "rotation": [
             {
               "frame": 0,
+              "value": 30
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -20
+            },
+            {
+              "frame": 0.75,
+              "value": -20
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 30
+            },
+            {
+              "frame": 1,
               "value": 30
             }
           ]
@@ -102,7 +118,23 @@
           "rotation": [
             {
               "frame": 0,
-              "value": -60
+              "value": -75
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -90
+            },
+            {
+              "frame": 0.75,
+              "value": -90
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": -75
+            },
+            {
+              "frame": 1,
+              "value": -75
             }
           ]
         }
@@ -112,19 +144,19 @@
           "rotation": [
             {
               "frame": 0,
-              "value": -10
+              "value": -60
             },
             {
               "frame": 0.3333333333333333,
-              "value": -30
+              "value": -65
             },
             {
               "frame": 0.6666666666666666,
-              "value": -30
+              "value": -55
             },
             {
               "frame": 1,
-              "value": -10
+              "value": -60
             }
           ]
         }
@@ -178,23 +210,11 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 30
-            },
-            {
-              "frame": 0.25,
-              "value": 160
-            },
-            {
-              "frame": 0.5,
-              "value": 30
-            },
-            {
-              "frame": 0.75,
-              "value": 160
+              "value": 90
             },
             {
               "frame": 1,
-              "value": 30
+              "value": 90
             }
           ],
           "y": [
@@ -234,23 +254,11 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 5
-            },
-            {
-              "frame": 0.25,
-              "value": 80
-            },
-            {
-              "frame": 0.5,
-              "value": 5
-            },
-            {
-              "frame": 0.75,
-              "value": 80
+              "value": 30
             },
             {
               "frame": 1,
-              "value": 5
+              "value": 30
             }
           ]
         }
@@ -260,23 +268,23 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 160
-            },
-            {
-              "frame": 0.25,
-              "value": 40
+              "value": 60
             },
             {
               "frame": 0.5,
-              "value": 160
+              "value": 0
             },
             {
               "frame": 0.75,
-              "value": 40
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 60
             },
             {
               "frame": 1,
-              "value": 160
+              "value": 60
             }
           ],
           "y": [
@@ -316,23 +324,19 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 80
+              "value": 30
             },
             {
-              "frame": 0.25,
-              "value": 5
+              "frame": 0.6666666666666666,
+              "value": 60
             },
             {
-              "frame": 0.5,
-              "value": 80
-            },
-            {
-              "frame": 0.75,
-              "value": 5
+              "frame": 0.8333333333333334,
+              "value": 30
             },
             {
               "frame": 1,
-              "value": 80
+              "value": 30
             }
           ]
         }
@@ -342,23 +346,27 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 140
-            },
-            {
-              "frame": 0.25,
-              "value": 130
+              "value": 75
             },
             {
               "frame": 0.5,
-              "value": 140
+              "value": 60
             },
             {
               "frame": 0.75,
-              "value": 130
+              "value": 60
             },
             {
-              "frame": 1,
+              "frame": 0.8333333333333334,
               "value": 140
+            },
+            {
+              "frame": 1.4666666666666666,
+              "value": 140
+            },
+            {
+              "frame": 1.5,
+              "value": 75
             }
           ]
         }
@@ -368,15 +376,11 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": -10
+              "value": -30
             },
             {
               "frame": 1,
-              "value": 0
+              "value": -30
             }
           ]
         }
@@ -386,23 +390,27 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 160
-            },
-            {
-              "frame": 0.25,
-              "value": 145
+              "value": 130
             },
             {
               "frame": 0.5,
-              "value": 160
+              "value": 80
             },
             {
               "frame": 0.75,
+              "value": 80
+            },
+            {
+              "frame": 0.8333333333333334,
               "value": 145
             },
             {
-              "frame": 1,
-              "value": 160
+              "frame": 1.3333333333333333,
+              "value": 145
+            },
+            {
+              "frame": 1.5,
+              "value": 130
             }
           ]
         }
@@ -412,15 +420,11 @@
           "rotation": [
             {
               "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": -10
+              "value": -30
             },
             {
               "frame": 1,
-              "value": 0
+              "value": -30
             }
           ]
         }

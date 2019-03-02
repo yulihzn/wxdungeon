@@ -260,6 +260,25 @@
             "physicalDamage": 1
         }
     },
+    "bullet019": {
+        "name":"闪电",
+        "speed": 300,
+        "isLaser":0,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":1,
+        "size": 2,
+        "isTracking":0,
+        "isPhysical":0,
+        "resName":"bullet019",
+        "lightName": "bulletlight001",
+        "lightColor": "#cbdbfc",
+        "damage": {
+            "physicalDamage": 1,
+            "lighteningDamage":1,
+            "lighteningRate":100
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
