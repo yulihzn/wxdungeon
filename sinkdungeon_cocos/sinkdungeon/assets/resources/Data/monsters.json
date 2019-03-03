@@ -364,11 +364,13 @@
             "damageMin": 2
         },
         "bulletArcExNum":4,
+        "bulletLineExNum":2,
         "currentHealth": 10,
         "bulletType":"bullet019",
         "invisible": 0,
         "remote": 2,
         "melee": 0,
+        "sizeType":2,
         "dash": 0
     }
 }
