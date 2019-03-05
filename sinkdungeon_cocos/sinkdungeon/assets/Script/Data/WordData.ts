@@ -29,8 +29,6 @@ export default class WordData {
         e.nameEn = this.nameEn;
         e.spriteFrameName = this.spriteFrameName;
         e.desc = this.desc;
-
-        e.spriteFrameName = this.spriteFrameName;
         return e;
     }
 }

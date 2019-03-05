@@ -4,25 +4,153 @@
         "nameEn": "Fool",
         "resName": "tarot00",
         "index": 0,
-        "desc": "Fool",
-        "word1": "防御加5",
-        "word2": "怪物近战伤害减半",
-        "word3": "陷阱间隔时间翻倍",
-        "word4": "无法使用远程，武器近战基础伤害转为最大伤害",
-        "word5": "怪物近战攻击欲望翻倍",
-        "word6": "陷阱间隔时间缩短一半"
+        "desc": "Fool"
     },
     "tarot01": {
         "nameCn": "Magician",
         "nameEn": "Magician",
         "resName": "tarot01",
         "index": 1,
-        "desc": "Magician",
-        "word1": "远程伤害翻倍",
-        "word2": "怪物子弹速度降低30%",
-        "word3": "陷阱间隔时间翻倍",
-        "word4": "无法使用远程，武器近战基础伤害转为最大伤害",
-        "word5": "怪物子弹速度提高30%",
-        "word6": "陷阱间隔时间缩短一半"
+        "desc": "Magician"
+    },
+    "tarot02": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot02",
+        "index": 2,
+        "desc": "Magician"
+    },
+    "tarot03": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot03",
+        "index": 3,
+        "desc": "Magician"
+    },
+    "tarot04": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot04",
+        "index": 4,
+        "desc": "Magician"
+    },
+    "tarot05": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot05",
+        "index": 5,
+        "desc": "Magician"
+    },
+    "tarot06": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot06",
+        "index": 6,
+        "desc": "Magician"
+    },
+    "tarot07": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot07",
+        "index": 7,
+        "desc": "Magician"
+    },
+    "tarot08": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot08",
+        "index": 8,
+        "desc": "Magician"
+    },
+    "tarot09": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot09",
+        "index": 9,
+        "desc": "Magician"
+    },
+    "tarot10": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot10",
+        "index": 10,
+        "desc": "Magician"
+    },
+    "tarot11": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot11",
+        "index": 11,
+        "desc": "Magician"
+    },
+    "tarot12": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot12",
+        "index": 12,
+        "desc": "Magician"
+    },
+    "tarot13": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot13",
+        "index": 13,
+        "desc": "Magician"
+    },
+    "tarot14": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot14",
+        "index": 14,
+        "desc": "Magician"
+    },
+    "tarot15": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot15",
+        "index": 15,
+        "desc": "Magician"
+    },
+    "tarot16": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot16",
+        "index": 16,
+        "desc": "Magician"
+    },
+    "tarot17": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot17",
+        "index": 17,
+        "desc": "Magician"
+    },
+    "tarot18": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot18",
+        "index": 18,
+        "desc": "Magician"
+    },
+    "tarot19": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot19",
+        "index": 19,
+        "desc": "Magician"
+    },
+    "tarot20": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot20",
+        "index": 20,
+        "desc": "Magician"
+    },
+    "tarot21": {
+        "nameCn": "Magician",
+        "nameEn": "Magician",
+        "resName": "tarot21",
+        "index": 21,
+        "desc": "Magician"
     }
 }

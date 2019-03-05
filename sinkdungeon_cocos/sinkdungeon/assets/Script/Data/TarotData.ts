@@ -1,7 +1,6 @@
 import CommonData from "./CommonData";
 
 export default class TarotData {
-    private common: CommonData;
     nameCn: string = '';
     nameEn: string = '';
     desc: string = '';
@@ -14,15 +13,7 @@ export default class TarotData {
     word5: string = '';
     word6: string = '';
 
-    constructor() {
-        this.common = new CommonData();
-    }
-
-    get Common() {
-        return this.common;
-    }
     public valueCopy(data: TarotData): void {
-        this.common.valueCopy(data.common);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn ? data.nameEn : this.nameEn;
         this.index = data.index ? data.index : this.index;
@@ -32,7 +23,6 @@ export default class TarotData {
     }
     public clone(): TarotData {
         let e = new TarotData();
-        e.common = this.common.clone();
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
         e.index = this.index;
