@@ -46,6 +46,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_EZIO = 'monster018';
     public static readonly MONSTER_ZOOMBIE = 'monster019';
     public static readonly MONSTER_ELECTRICEYE = 'monster020';
+
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -100,21 +101,35 @@ export default class MonsterManager extends cc.Component {
             data.dash = data.dash>0?data.dash-0.5:0;
             data.Common.moveSpeed = data.Common.moveSpeed>0?(data.Common.moveSpeed + 100):0;
         }
-        data.Common.iceDamage = Random.rand()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
-        data.Common.fireDamage = Random.rand()<rate?data.Common.iceDamage:Logic.getRandomNum(0,1);
-        data.Common.lighteningDamage = Random.rand()<rate?data.Common.lighteningDamage:Logic.getRandomNum(0,1);
-        data.Common.toxicDamage = Random.rand()<rate?data.Common.toxicDamage:Logic.getRandomNum(0,1);
-        data.Common.curseDamage = Random.rand()<rate?data.Common.curseDamage:Logic.getRandomNum(0,1);
-        data.Common.iceDefence = Random.rand()<rate?data.Common.iceDefence:Logic.getRandomNum(0,100);
-        data.Common.fireDefence = Random.rand()<rate?data.Common.fireDefence:Logic.getRandomNum(0,100);
-        data.Common.lighteningDefence = Random.rand()<rate?data.Common.lighteningDefence:Logic.getRandomNum(0,100);
-        data.Common.toxicDefence= Logic.getRandomNum(0,100)<rate?data.Common.toxicDefence:Logic.getRandomNum(0,100);
-        data.Common.curseDefence = Random.rand()<rate?data.Common.curseDefence:Logic.getRandomNum(0,100);
-        data.Common.iceRate = Random.rand()<rate?data.Common.iceRate:Logic.getRandomNum(0,100);
-        data.Common.fireRate = Random.rand()<rate?data.Common.fireRate:Logic.getRandomNum(0,100);
-        data.Common.lighteningRate = Random.rand()<rate?data.Common.lighteningRate:Logic.getRandomNum(0,100);
-        data.Common.toxicRate= Logic.getRandomNum(0,100)<rate?data.Common.toxicRate:Logic.getRandomNum(0,100);
-        data.Common.curseRate = Random.rand()<rate?data.Common.curseRate:Logic.getRandomNum(0,100);
+        let rand = Random.rand();
+        let df = Logic.getRandomNum(0,100);
+        let er = Logic.getRandomNum(0,100);
+        if(rand<0.005){
+            data.Common.iceDamage +=1;
+            data.Common.iceDefence=data.Common.iceDefence+df>100?100:data.Common.iceDefence+df;
+            data.Common.iceRate=data.Common.iceRate+er>100?100:data.Common.iceRate+er;
+        }else if(rand>=0.005&&rand<0.01){
+            data.Common.fireDamage +=1;
+            data.Common.fireDefence=data.Common.iceDefence+df>100?100:data.Common.iceDefence+df;
+            data.Common.fireRate=data.Common.iceRate+er>100?100:data.Common.iceRate+er;
+        }else if(rand>=0.01&&rand<0.015){
+            data.Common.fireDamage +=1;
+            data.Common.fireDefence=data.Common.iceDefence+df>100?100:data.Common.iceDefence+df;
+            data.Common.fireRate=data.Common.iceRate+er>100?100:data.Common.iceRate+er;
+        }else if(rand>=0.015&&rand<0.02){
+            data.Common.lighteningDamage +=1;
+            data.Common.lighteningDefence=data.Common.iceDefence+df>100?100:data.Common.iceDefence+df;
+            data.Common.lighteningRate=data.Common.iceRate+er>100?100:data.Common.iceRate+er;
+        }else if(rand>=0.02&&rand<0.025){
+            data.Common.toxicDamage +=1;
+            data.Common.toxicDefence=data.Common.iceDefence+df>100?100:data.Common.iceDefence+df;
+            data.Common.toxicRate=data.Common.iceRate+er>100?100:data.Common.iceRate+er;
+        }else if(rand>=0.025&&rand<0.03){
+            data.Common.curseDamage +=1;
+            data.Common.curseDefence=data.Common.iceDefence+df>100?100:data.Common.iceDefence+df;
+            data.Common.curseRate=data.Common.iceRate+er>100?100:data.Common.iceRate+er;
+        }
+  
         monster.data = data;
 
         monster.isDisguising = data.disguise > 0;
@@ -227,7 +242,30 @@ export default class MonsterManager extends cc.Component {
         slime.node.active = true;
         return slime;
     }
-    start () {
+    addRandomMonsters(dungeon:Dungeon){
+        let arr = new Array();
+        let num = Random.getRandomNum(1,3);
+        switch(Logic.chapterName){
+            case Logic.CHAPTER00:arr = [MonsterManager.MONSTER_CHICKEN,MonsterManager.MONSTER_TERRORDRONE,MonsterManager.MONSTER_KILLER
+            ,MonsterManager.MONSTER_ZOOMBIE,MonsterManager.MONSTER_ELECTRICEYE];
+            num = Random.getRandomNum(1,3);
+            break;
+            case Logic.CHAPTER01:arr=[MonsterManager.MONSTER_PIRATE,MonsterManager.MONSTER_SAILOR,MonsterManager.MONSTER_OCTOPUS
+            ,MonsterManager.MONSTER_ALTAIR,MonsterManager.MONSTER_EZIO,MonsterManager.MONSTER_CONNAR,MonsterManager.MONSTER_STRONGSAILOR];
+            num = Random.getRandomNum(2,3);break;
+            case Logic.CHAPTER02:arr=[MonsterManager.MONSTER_SLIME,MonsterManager.MONSTER_GOBLIN,MonsterManager.MONSTER_GOBLIN_ARCHER
+            ,MonsterManager.MONSTER_WEREWOLF];
+            num = Random.getRandomNum(2,5);break;
+            case Logic.CHAPTER03:arr=[MonsterManager.MONSTER_MUMMY,MonsterManager.MONSTER_ANUBIS,MonsterManager.MONSTER_SCARAB];
+            num = Random.getRandomNum(2,7);break;
+            case Logic.CHAPTER04:arr=[MonsterManager.MONSTER_GARGOYLE];
+            num = Random.getRandomNum(3,10);break;
+        }
+        for(let i = 0;i <= num;i++){
+            dungeon.addMonsterFromData(arr[Random.getRandomNum(0,arr.length-1)]
+            ,Random.getRandomNum(0,Dungeon.WIDTH_SIZE-1)
+        ,Random.getRandomNum(0,Dungeon.HEIGHT_SIZE-1))
+        }
     }
     
 }

@@ -370,7 +370,7 @@
         "invisible": 0,
         "remote": 2,
         "melee": 0,
-        "sizeType":2,
+        "sizeType":1,
         "dash": 0
     }
 }

@@ -51,6 +51,7 @@ export default class Monster extends cc.Component {
     // isAttacking = false;
     isDied = false;
     isFall = false;
+    isShow = false;
     private timeDelay = 0;
     data: MonsterData = new MonsterData();
     dungeon: Dungeon;
@@ -75,6 +76,7 @@ export default class Monster extends cc.Component {
 
     onLoad() {
         this.meleeSkill.IsExcuting = false;
+        this.isShow = false;
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
@@ -94,6 +96,7 @@ export default class Monster extends cc.Component {
         this.particleCurse = this.node.getChildByName('Effect').getChildByName('curse').getComponent(cc.ParticleSystem);
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
+        this.scheduleOnce(()=>{this.isShow = true;},1.5);
     }
 
     changeBodyRes(resName: string, suffix?: string) {
@@ -274,6 +277,9 @@ export default class Monster extends cc.Component {
         this.anim.play('PlayerFall');
     }
     takeDamage(damageData: DamageData): boolean {
+        if(!this.isShow){
+            return false;
+        }
         if (this.data.invisible && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 2) {
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
@@ -366,7 +372,7 @@ export default class Monster extends cc.Component {
         return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
     }
     monsterAction() {
-        if (this.isDied || !this.dungeon || this.isHurt) {
+        if (this.isDied || !this.dungeon || this.isHurt||!this.isShow) {
             return;
         }
         this.node.position = Dungeon.fixOuterMap(this.node.position);

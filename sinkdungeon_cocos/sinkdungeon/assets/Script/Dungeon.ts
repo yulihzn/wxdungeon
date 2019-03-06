@@ -179,12 +179,12 @@ export default class Dungeon extends cc.Component {
                 this.map[i][j] = t.getComponent(Tile);
                 //默认关闭踩踏掉落
                 this.map[i][j].isAutoShow = false;
-                if (mapData[i][j] == '#') {
+                if (mapData[i][j] == '-') {
                     //开启踩踏掉落
                     this.map[i][j].isAutoShow = true;
                 }
                 //生成墙
-                if (mapData[i][j] == 'W') {
+                if (mapData[i][j] == '#') {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
                     w.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -193,7 +193,7 @@ export default class Dungeon extends cc.Component {
                     this.wallmap[i][j] = w.getComponent(Wall);
                 }
                 //生成陷阱
-                if (mapData[i][j] == 'T') {
+                if (mapData[i][j] == '^') {
                     let trap = cc.instantiate(this.trap);
                     trap.parent = this.node;
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -201,7 +201,7 @@ export default class Dungeon extends cc.Component {
                     this.trapmap[i][j] = trap.getComponent(Trap);
                 }
                 //生成炮台
-                if (mapData[i][j] == 'E') {
+                if (mapData[i][j] == '&') {
                     let emplacement = cc.instantiate(this.emplacement);
                     emplacement.parent = this.node;
                     emplacement.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -210,30 +210,31 @@ export default class Dungeon extends cc.Component {
                     em.dungeon = this;
                 }
                 //生成落石
-                if (mapData[i][j] == 'D') {
+                if (mapData[i][j] == '!') {
                     this.addFallStone(Dungeon.getPosInMap(cc.v2(i, j)), false);
                 }
                 //生成装饰
                 if (mapData[i][j] == '+') {
-                    let fd = cc.instantiate(this.floorDecoration);
-                    fd.parent = this.node;
-                    fd.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
-                }
-                //生成营火
-                if (mapData[i][j] == '-' && Logic.chapterName == Logic.CHAPTER02) {
-                    let camp = cc.instantiate(this.campFire);
-                    camp.parent = this.node;
-                    camp.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    camp.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 - 2;
-                    let shadow = camp.getChildByName('sprite').getChildByName('shadow');
-                    shadow.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    shadow.position = cc.v2(shadow.position.x, shadow.position.y + 40);
-                    shadow.parent = this.node;
-                    shadow.zIndex = 3000;
+                    //生成营火
+                    if(Logic.chapterName == Logic.CHAPTER02){
+                        let camp = cc.instantiate(this.campFire);
+                        camp.parent = this.node;
+                        camp.position = Dungeon.getPosInMap(cc.v2(i, j));
+                        camp.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 - 2;
+                        let shadow = camp.getChildByName('sprite').getChildByName('shadow');
+                        shadow.position = Dungeon.getPosInMap(cc.v2(i, j));
+                        shadow.position = cc.v2(shadow.position.x, shadow.position.y + 40);
+                        shadow.parent = this.node;
+                        shadow.zIndex = 3000;
+                    }else{
+                        let fd = cc.instantiate(this.floorDecoration);
+                        fd.parent = this.node;
+                        fd.position = Dungeon.getPosInMap(cc.v2(i, j));
+                        fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    }
                 }
                 //生成踏板
-                if (mapData[i][j] == 'F') {
+                if (mapData[i][j] == '_') {
                     let foot = cc.instantiate(this.footboard);
                     foot.parent = this.node;
                     foot.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -241,7 +242,7 @@ export default class Dungeon extends cc.Component {
                     this.footboards.push(foot.getComponent(FootBoard));
                 }
                 //生成毒液
-                if (mapData[i][j] == 'V') {
+                if (mapData[i][j] == '~') {
                     let venom = cc.instantiate(this.venom);
                     venom.getComponent(SlimeVenom).player = this.player;
                     venom.getComponent(SlimeVenom).isForever = true;
@@ -250,14 +251,14 @@ export default class Dungeon extends cc.Component {
                     venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成塔罗
-                if (mapData[i][j] == 'O') {
+                if (mapData[i][j] == ',') {
                     let tarottable = cc.instantiate(this.tarotTable);
                     tarottable.parent = this.node;
                     tarottable.position = Dungeon.getPosInMap(cc.v2(i, j));
                     tarottable.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成宝箱 房间清理的情况下箱子是打开的
-                if (mapData[i][j] == 'C') {
+                if (mapData[i][j] == '?') {
                     let chest = cc.instantiate(this.chest);
                     chest.parent = this.node;
                     let c = chest.getComponent(Chest)
@@ -275,7 +276,7 @@ export default class Dungeon extends cc.Component {
                     }
                 }
                 //生成木盒子 并且根据之前记录的位置放置
-                if (mapData[i][j] == 'B') {
+                if (mapData[i][j] == '.') {
                     let box = cc.instantiate(this.box);
                     box.parent = this.node;
                     let b = box.getComponent(Box)
@@ -294,7 +295,7 @@ export default class Dungeon extends cc.Component {
                     }
                 }
                 //生成植物
-                if (mapData[i][j] == 'G') {
+                if (mapData[i][j] == ';') {
                     let box = cc.instantiate(this.box);
                     box.parent = this.node;
                     let b: Box = box.getComponent(Box);
@@ -317,16 +318,16 @@ export default class Dungeon extends cc.Component {
                         this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.REDCAPSULE);
                     }
                     //生成蓝色药丸
-                    if (mapData[i][j] == 'Q') {
+                    if (mapData[i][j] == 'B') {
                         this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BLUECAPSULE);
                     }
                     //生成无敌盾
-                    if (mapData[i][j] == 'I') {
+                    if (mapData[i][j] == 'S') {
                         this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.SHIELD);
                     }
                 }
                 //生成商店
-                if (mapData[i][j] == 'M') {
+                if (mapData[i][j] == '%') {
                     let table = cc.instantiate(this.shoptable);
                     table.parent = this.node;
                     let ta = table.getComponent(ShopTable);
@@ -346,7 +347,7 @@ export default class Dungeon extends cc.Component {
                     ta.showItem();
                 }
                 //生成下一层传送门(暂时废弃)
-                if (mapData[i][j] == 'P') {
+                if (mapData[i][j] == ':') {
                     let needAdd = false;
                     // if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3||
                     // Logic.chapterName=='chapter00')&&Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM){
@@ -363,7 +364,7 @@ export default class Dungeon extends cc.Component {
                     }
                 }
                 //生成店主
-                if (mapData[i][j] == 'S') {
+                if (mapData[i][j] == '`') {
                     let shop = cc.instantiate(this.shop);
                     shop.parent = this.node;
                     shop.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -372,66 +373,66 @@ export default class Dungeon extends cc.Component {
                 //房间未清理时加载怪物
                 if (!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     
-                    if (mapData[i][j] == 'a') {
+                    if (mapData[i][j] == 'k') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
                     }
-                    if (mapData[i][j] == 'b') {
+                    if (mapData[i][j] == 'm') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, i, j);
                     }
-                    if (mapData[i][j] == 'c') {
+                    if (mapData[i][j] == 'z') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
                     }
-                    if (mapData[i][j] == 'd') {
+                    if (mapData[i][j] == 'q') {
                         this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
                     }
                     if (mapData[i][j] == 'e') {
                         this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
                     }
-                    if (mapData[i][j] == 'f') {
+                    if (mapData[i][j] == 'r') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
                     }
-                    if (mapData[i][j] == 'g') {
+                    if (mapData[i][j] == 'l') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
                     }
-                    if (mapData[i][j] == 'i') {
+                    if (mapData[i][j] == 'j') {
                         this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_CONNAR, i, j);
                         this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
                     }
                     
-                    if (mapData[i][j] == 'j') {
+                    if (mapData[i][j] == 'a') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, i, j);
                     }
-                    if (mapData[i][j] == 'k') {
+                    if (mapData[i][j] == 'c') {
                         this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
                     }
-                    if (mapData[i][j] == 'm') {
+                    if (mapData[i][j] == 'p') {
                         this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
                     }
-                    if (mapData[i][j] == 'o') {
+                    if (mapData[i][j] == 'h') {
                         this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
                     }
-                    if (mapData[i][j] == 'p') {
+                    if (mapData[i][j] == 'f') {
                         this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
                     }
-                    if (mapData[i][j] == 's') {
+                    if (mapData[i][j] == 'g') {
                         let sailor = Logic.getHalfChance() ? MonsterManager.MONSTER_SAILOR : MonsterManager.MONSTER_STRONGSAILOR;
                         this.addMonsterFromData(sailor, i, j);
                     }
-                    if (mapData[i][j] == 't') {
+                    if (mapData[i][j] == 'b') {
                         this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, i, j);
                     }
-                    if (mapData[i][j] == 'w') {
+                    if (mapData[i][j] == 'o') {
                         this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, i, j);
                     }
                     if (mapData[i][j] == 'y') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
                     }
-                    if (mapData[i][j] == 'z') {
+                    if (mapData[i][j] == 'd') {
                         this.addMonsterFromData(MonsterManager.MONSTER_ZOOMBIE, i, j);
                     }
                     if (mapData[i][j] == '0') {
@@ -467,6 +468,14 @@ export default class Dungeon extends cc.Component {
                 }
 
             }
+        }
+        if (!Logic.mapManager.isCurrentRoomStateClear()) {
+            if(Logic.mapManager.getCurrentRoomType() == RectDungeon.DANGER_ROOM
+        ||Logic.mapManager.getCurrentRoomType() == RectDungeon.LOOT_ROOM
+        ||Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM
+        ||Logic.mapManager.getCurrentRoomType() == RectDungeon.TRAP_ROOM){
+            this.monsterManager.addRandomMonsters(this);
+        }
         }
         //保存当前盒子位置
         let currbs = Logic.mapManager.getCurrentMapBoxes();
@@ -711,12 +720,6 @@ export default class Dungeon extends cc.Component {
     }
 
     start() {
-        // let ss = this.node.getComponentsInChildren(cc.Sprite);
-        // for (let i = 0; i < ss.length; i++) {
-        //     if (ss[i].spriteFrame) {
-        //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        //     }
-        // }
         cc.director.emit(EventConstant.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
         for (let door of Logic.mapManager.getCurrentRoom().doors) {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false);

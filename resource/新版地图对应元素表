@@ -10,24 +10,25 @@ $ 分割线
 - 塌陷地板
 + 地毯装饰
 ? 宝箱
-. (temp)
+. 普通可推箱子
 , 塔罗
 < (temp)
 > (temp)
 ; 绿色植物
-: (temp)
+: 传送门
 ` 店主
 _ 开启门的踏板
-= 
+= 分割线
+
 A 弹药
-B 普通可推箱子
-C 
+B 蓝色药丸
+C 卡片
 D 
 E 
 F 
 G 
 H 爱心
-I 无敌盾牌
+I 
 J (temp)
 K (temp)
 L (temp)
@@ -35,9 +36,9 @@ M
 N (temp)
 O 
 P 
-Q 蓝色药丸
+Q 
 R 红色药丸
-S 
+S 无敌盾牌
 T 
 U (temp)
 V 
@@ -45,32 +46,39 @@ W
 X (temp)
 Y (temp)
 Z (temp)
-a 史莱姆
-b Boss
-c 宝箱怪
-d 阿努比斯
-e 圣甲虫
-f (temp)
-g 哥布林
-h (temp)
+
+a 小鸡 
+b 激光机器人
+c 看守
+d 僵尸
+e 电眼
+
+f 海盗
+g 水手
+h 章鱼
 i (temp)
-j 小鸡 
-k 看守
-l (temp)
-m 木乃伊
-n (temp)
-o 小章鱼
-p 骷髅海盗
-q (temp)
-r (temp)
-s 水手或者骷髅水手
+j 刺客
+
+k 史莱姆
+l 哥布林战士
+m 哥布林投手
+n 毒蛇(temp)
+o 狼人(temp)
+
+p 木乃伊
+q 阿努比斯
+r 圣甲虫
+s (temp)
 t (temp)
+
 u (temp)
-v 毒蛇(temp)
-w 狼人(temp) 
+v (temp)
+w (temp)
 x (temp)
 y 石像鬼
-z (temp)
+
+z 宝箱怪
+
 0 冰魔
 1 战争机器
 2 船长
