@@ -279,6 +279,23 @@
             "lighteningRate":100
         }
     },
+    "bullet020": {
+        "name":"鸡蛋",
+        "resName": "bullet020",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 200,
+        "isRect": 0,
+        "isRotate": 1,
+        "lifeTime":10,
+        "isPhysical":1,
+        "isDecelerate":1,
+        "size": 1,
+        "isBoom":1,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

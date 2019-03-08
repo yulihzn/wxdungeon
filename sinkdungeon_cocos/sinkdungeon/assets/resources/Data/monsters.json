@@ -197,6 +197,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "sizeType":0.5,
+        "bulletType":"bullet020",
         "common": {
             "moveSpeed": 50,
             "maxHealth": 5,
@@ -204,7 +205,7 @@
         },
         "currentHealth": 5,
         "invisible": 0,
-        "remote": 0,
+        "remote": 3,
         "melee": 0,
         "dash": 0,
         "disguise": 0
@@ -363,8 +364,8 @@
             "lighteningRate":100,
             "damageMin": 2
         },
-        "bulletArcExNum":4,
-        "bulletLineExNum":2,
+        "bulletArcExNum":2,
+        "bulletLineExNum":1,
         "currentHealth": 10,
         "bulletType":"bullet019",
         "invisible": 0,

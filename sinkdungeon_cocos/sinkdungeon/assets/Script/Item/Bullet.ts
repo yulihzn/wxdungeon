@@ -53,8 +53,8 @@ export default class Bullet extends cc.Component {
 
     startPos: cc.Vec2 = cc.v2(0, 0);//子弹起始位置
 
-    isTrackDelay = false;
-
+    isTrackDelay = false;//是否延迟追踪
+    isDecelerateDelay = false;//是否延迟减速
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -68,6 +68,7 @@ export default class Bullet extends cc.Component {
         this.boxPCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
+        this.sprite.rotation = 0;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
         this.laserNode = this.node.getChildByName("laser");
@@ -81,6 +82,7 @@ export default class Bullet extends cc.Component {
         this.rigidBody.linearVelocity = cc.v2(0, 0);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
+        this.sprite.rotation = 0;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
         this.laserNode = this.node.getChildByName("laser");
@@ -88,16 +90,27 @@ export default class Bullet extends cc.Component {
         this.laserLightSprite = this.laserNode.getChildByName("light").getComponent(cc.Sprite);
         this.laserHeadSprite = this.laserNode.getChildByName("head").getComponent(cc.Sprite);
         this.isTrackDelay = false;
+        this.isDecelerateDelay = false;
 
     }
     timeDelay = 0;
+    checkTimeDelay = 0;
     update(dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > 0.5) {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.5) {
             this.checkTraking();
-            this.timeDelay = 0;
+            this.checkTimeDelay = 0;
+        }
+        if(this.data.isDecelerate == 1 && this.isDecelerateDelay){
+            this.timeDelay += dt;
+            if (this.timeDelay > 0.016) {
+                this.timeDelay = 0;
+                let d = this.data.decelerateDelta>0?this.data.decelerateDelta:1;
+                this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.lerp(cc.v2(0,0),d*dt);
+            }
         }
     }
+   
     private checkTraking(): void {
         if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay) {
             let pos = this.hasNearEnemy();
@@ -111,11 +124,11 @@ export default class Bullet extends cc.Component {
     changeBullet(data: BulletData) {
         this.data = data;
         this.changeRes(data.resName, data.lightName, data.lightColor, data.size);
-        this.circleCollider.enabled = data.isRect == 0;
+        this.circleCollider.enabled = data.isRect != 1;
         this.boxCollider.enabled = data.isRect == 1;
-        this.circlePCollider.enabled = data.isRect == 0;
+        this.circlePCollider.enabled = data.isRect != 1;
         this.boxPCollider.enabled = data.isRect == 1;
-        this.light.position = data.isRect ? cc.v2(8, 0) : cc.v2(0, 0);
+        this.light.position = data.isRect==1 ? cc.v2(8, 0) : cc.v2(0, 0);
         this.node.scale = data.size > 0 ? data.size : 1;
         if (this.circlePCollider.enabled) {
             this.circlePCollider.sensor = data.isPhysical == 0;
@@ -139,6 +152,7 @@ export default class Bullet extends cc.Component {
         }
         this.sprite.opacity = 0;
         this.sprite.getComponent(cc.Sprite).spriteFrame = null;
+        this.sprite.rotation = 0;
         this.laserNode.opacity = 0;
         this.laserHeadSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.laserNode.stopAllActions();
@@ -225,21 +239,29 @@ export default class Bullet extends cc.Component {
         this.sprite.stopAllActions();
         this.node.stopAllActions();
         let ss = this.sprite.getComponent(cc.Sprite);
-        let idleAction = cc.repeatForever(cc.sequence(
+        let idleAction = cc.sequence(
             cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
             cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
-
-            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); })));
-        this.sprite.runAction(idleAction);
+            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); }));
+        let spawn = cc.spawn(idleAction,cc.rotateBy(0.3,this.data.rotateAngle>0?this.data.rotateAngle:15));
+        if(this.data.isRotate == 1){
+            this.sprite.runAction(cc.repeatForever(spawn));
+        }else{
+            this.sprite.runAction(cc.repeatForever(idleAction));
+        }
 
         if (this.data.lifeTime > 0) {
-            let lifeTimeAction = cc.sequence(cc.delayTime(this.data.lifeTime), cc.callFunc(() => { this.bulletHit(); }));
-            this.node.runAction(lifeTimeAction);
+            this.scheduleOnce(()=>{this.bulletHit();},this.data.lifeTime);
         }
         this.isTrackDelay = false;
         if(this.data.isTracking == 1){
             this.scheduleOnce(()=>{this.isTrackDelay = true;},this.data.delaytrack);
         }
+        this.isDecelerateDelay = false;
+        if(this.data.isDecelerate == 1){
+            this.scheduleOnce(()=>{this.isDecelerateDelay = true;},this.data.delayDecelerate);
+        }
+        
     }
 
     start() {
