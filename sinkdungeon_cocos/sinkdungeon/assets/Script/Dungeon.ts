@@ -460,7 +460,7 @@ export default class Dungeon extends cc.Component {
                         this.addBossKraken(cc.v2(i,j));
                     }
                     if (mapData[i][j] == '8') {
-                        this.addBossCaptain(cc.v2(i,j));
+                        this.addBossEvilEye(cc.v2(i,j));
                     }
                     if (mapData[i][j] == '9') {
                         this.addBossKraken(cc.v2(i,j));
@@ -655,6 +655,16 @@ export default class Dungeon extends cc.Component {
             return;
         }
         let boss = this.monsterManager.getIceDemon(this, index.clone());
+        this.bosses.push(boss);
+        this.scheduleOnce(() => {
+            boss.showBoss();
+        }, 2);
+    }
+    private addBossEvilEye(index: cc.Vec2) {
+        if (!this.bosses) {
+            return;
+        }
+        let boss = this.monsterManager.getEvilEye(this, index.clone());
         this.bosses.push(boss);
         this.scheduleOnce(() => {
             boss.showBoss();

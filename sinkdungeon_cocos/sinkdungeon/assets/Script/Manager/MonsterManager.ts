@@ -9,6 +9,7 @@ import WarMachine from "../Boss/WarMachine";
 import Rah from "../Boss/Rah";
 import Random from "../Utils/Random";
 import IceDemon from "../Boss/IceDemon";
+import EvilEye from "../Boss/EvilEye";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -66,6 +67,8 @@ export default class MonsterManager extends cc.Component {
     rah = null;
     @property(cc.Prefab)
     iceDemon = null;
+    @property(cc.Prefab)
+    evilEye = null;
     onLoad () {
     }
     /**
@@ -154,6 +157,21 @@ export default class MonsterManager extends cc.Component {
         iceDemon.healthBar = dungeon.bossHealthBar;
         iceDemon.node.active = true;
         return iceDemon;
+    }
+    getEvilEye(dungeon:Dungeon,posIndex:cc.Vec2):EvilEye{
+        let evilEyePrefab:cc.Node = null;
+        evilEyePrefab = cc.instantiate(this.evilEye);
+        evilEyePrefab.active = false;
+        evilEyePrefab.parent = dungeon.node;
+        let evil = evilEyePrefab.getComponent(EvilEye);
+        evil.dungeon = dungeon;
+        let data = new MonsterData();
+        data.updateHA(400,400,0);
+        evil.data = data;
+        evil.transportBoss(posIndex.x,posIndex.y);
+        evil.healthBar = dungeon.bossHealthBar;
+        evil.node.active = true;
+        return evil;
     }
     getWarMachine(dungeon:Dungeon,posIndex:cc.Vec2):WarMachine{
         let machinePrefab:cc.Node = null;
