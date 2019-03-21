@@ -1,5 +1,6 @@
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,7 +15,7 @@ import Logic from "../Logic";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Wall extends cc.Component {
+export default class Wall extends Building {
 
     pos:cc.Vec2;
     half = false;

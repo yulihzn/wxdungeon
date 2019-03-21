@@ -2,6 +2,7 @@ import Logic from "../Logic";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import { EventConstant } from "../EventConstant";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,7 +17,7 @@ import { EventConstant } from "../EventConstant";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class SlimeVenom extends cc.Component {
+export default class SlimeVenom extends Actor {
     venom1: cc.Node;
     venom2: cc.Node;
     venom3: cc.Node;

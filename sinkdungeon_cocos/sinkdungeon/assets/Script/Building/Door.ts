@@ -2,6 +2,7 @@ import Dungeon from "../Dungeon";
 import Player from "../Player";
 import { EventConstant } from "../EventConstant";
 import Logic from "../Logic";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,7 +17,7 @@ import Logic from "../Logic";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Door extends cc.Component {
+export default class Door extends Building {
 
     anim: cc.Animation;
     isOpen: boolean = false;

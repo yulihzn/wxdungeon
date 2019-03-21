@@ -1,0 +1,199 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "PlayerWalk",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 60,
+  "speed": 2,
+  "wrapMode": "2",
+  "curveData": {
+    "paths": {
+      "sprite/body": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 8
+            },
+            {
+              "frame": 0.5,
+              "value": 7.5
+            },
+            {
+              "frame": 1,
+              "value": 8
+            }
+          ]
+        }
+      },
+      "sprite/cloak": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.25,
+              "value": 30
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.75,
+              "value": 30
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/legright": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 45
+            },
+            {
+              "frame": 0.5,
+              "value": -45
+            },
+            {
+              "frame": 1,
+              "value": 45
+            }
+          ]
+        }
+      },
+      "sprite/legright/footright": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 75
+            },
+            {
+              "frame": 0.5,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": 75
+            }
+          ]
+        }
+      },
+      "sprite/legleft": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -45
+            },
+            {
+              "frame": 0.5,
+              "value": 45
+            },
+            {
+              "frame": 1,
+              "value": -45
+            }
+          ]
+        }
+      },
+      "sprite/legleft/footleft": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 5
+            },
+            {
+              "frame": 0.5,
+              "value": 75
+            },
+            {
+              "frame": 1,
+              "value": 5
+            }
+          ]
+        }
+      },
+      "sprite/armleft": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -30
+            },
+            {
+              "frame": 0.5,
+              "value": 75
+            },
+            {
+              "frame": 1,
+              "value": -30
+            }
+          ]
+        }
+      },
+      "sprite/armleft/handleft": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -45
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": -45
+            }
+          ]
+        }
+      },
+      "sprite/armright": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 60
+            },
+            {
+              "frame": 0.5,
+              "value": -45
+            },
+            {
+              "frame": 1,
+              "value": 60
+            }
+          ]
+        }
+      },
+      "sprite/armright/handright": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -30
+            },
+            {
+              "frame": 1,
+              "value": -30
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

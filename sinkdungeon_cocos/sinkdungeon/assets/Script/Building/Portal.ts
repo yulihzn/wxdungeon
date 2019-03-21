@@ -1,6 +1,7 @@
 import Dungeon from "../Dungeon";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
+import Building from "./Building";
 
 
 // Learn TypeScript:
@@ -16,7 +17,7 @@ import Player from "../Player";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Portal extends cc.Component {
+export default class Portal extends Building {
 
 
     anim:cc.Animation;

@@ -4,6 +4,7 @@ import Player from "../Player";
 import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
 import ChestData from "../Data/ChestData";
+import Building from "./Building";
 
 
 // Learn TypeScript:
@@ -19,7 +20,7 @@ import ChestData from "../Data/ChestData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Chest extends cc.Component {
+export default class Chest extends Building {
 
     @property(cc.SpriteFrame)
     openSpriteFrame: cc.SpriteFrame = null;

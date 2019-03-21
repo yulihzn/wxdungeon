@@ -1,6 +1,7 @@
 import Dungeon from "../Dungeon";
 import BoxData from "../Data/BoxData";
 import Logic from "../Logic";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,7 +16,7 @@ import Logic from "../Logic";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Box extends cc.Component {
+export default class Box extends Building {
 
     static readonly BOX = 0;
     static readonly PLANT = 1;

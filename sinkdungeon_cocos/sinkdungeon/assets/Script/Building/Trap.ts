@@ -2,6 +2,7 @@ import Dungeon from "../Dungeon";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
+import Building from "./Building";
 
 
 // Learn TypeScript:
@@ -17,7 +18,7 @@ import DamageData from "../Data/DamageData";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Trap extends cc.Component {
+export default class Trap extends Building {
 
     @property(cc.SpriteFrame)
     openSpriteFrame:cc.SpriteFrame = null;

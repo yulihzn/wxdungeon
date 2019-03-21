@@ -3,6 +3,7 @@ import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import Shooter from "../Shooter";
 import Logic from "../Logic";
+import Building from "./Building";
 
 
 // Learn TypeScript:
@@ -18,7 +19,7 @@ import Logic from "../Logic";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Emplacement extends cc.Component {
+export default class Emplacement extends Building {
 
     @property(Shooter)
     shooterTop: Shooter = null;

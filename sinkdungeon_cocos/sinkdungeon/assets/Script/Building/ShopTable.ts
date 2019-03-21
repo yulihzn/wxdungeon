@@ -4,6 +4,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
 import { EventConstant } from "../EventConstant";
 import ShopTableData from "../Data/ShopTableData";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,7 +19,7 @@ import ShopTableData from "../Data/ShopTableData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class ShopTable extends cc.Component {
+export default class ShopTable extends Building {
 
     // LIFE-CYCLE CALLBACKS:
     info: cc.Node;

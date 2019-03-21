@@ -45,20 +45,28 @@ export default class Player extends cc.Component {
     shooter: Shooter = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
-    private playerItemSprite: cc.Sprite;
-    hairSprite: cc.Sprite = null;
-    weaponSprite: cc.Sprite = null;
+    // private playerItemSprite: cc.Sprite;
+    // hairSprite: cc.Sprite = null;
+    // weaponSprite: cc.Sprite = null;
     weaponLightSprite: cc.Sprite = null;
-    weaponStabSprite: cc.Sprite = null;
+    // weaponStabSprite: cc.Sprite = null;
     weaponStabLightSprite: cc.Sprite = null;
-    helmetSprite: cc.Sprite = null;
-    clothesSprite: cc.Sprite = null;
-    trousersSprite: cc.Sprite = null;
-    glovesLeftSprite: cc.Sprite = null;
-    glovesRightSprite: cc.Sprite = null;
-    shoesLeftSprite: cc.Sprite = null;
-    shoesRightSprite: cc.Sprite = null;
-    cloakSprite: cc.Sprite = null;
+
+    weaponLeftSprite: cc.Sprite = null;
+    weaponRightSprite: cc.Sprite = null;
+
+    helmetSprite: cc.Sprite = null;//头盔
+    clothesSprite: cc.Sprite = null;//衣服
+    armLeftSprite: cc.Sprite = null;//左臂
+    armRightSprite: cc.Sprite = null;//右臂
+    handLeftSprite: cc.Sprite = null;//左手
+    handRightSprite: cc.Sprite = null;//右手
+    legLeftSprite: cc.Sprite = null;//左腿
+    legRightSprite: cc.Sprite = null;//右腿
+    footLeftSprite: cc.Sprite = null;//左脚
+    footRightSprite: cc.Sprite = null;//右脚
+    cloakSprite: cc.Sprite = null;//斗篷
+
     isMoving = false;//是否移动中
     isAttacking = false;//是否近战攻击中
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
@@ -71,7 +79,7 @@ export default class Player extends cc.Component {
     //触碰到的装备
     touchedEquipment: Equipment;
     //触碰到的提示
-    touchedTips:Tips;
+    touchedTips: Tips;
     inventoryManager: InventoryManager;
     data: PlayerData;
     recoveryTimeDelay = 0;
@@ -102,33 +110,22 @@ export default class Player extends cc.Component {
         }
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite');
-        this.playerItemSprite = this.sprite.getChildByName('righthand')
-            .getChildByName('item').getComponent(cc.Sprite);
-        this.hairSprite = this.sprite.getChildByName('body')
-            .getChildByName('hair').getComponent(cc.Sprite);
-        this.weaponSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
-            .getChildByName('weapon').getComponent(cc.Sprite);
-        this.weaponLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
-            .getChildByName('meleelight').getComponent(cc.Sprite);
-        this.weaponStabSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
-            .getChildByName('stabweapon').getComponent(cc.Sprite);
-        this.weaponStabLightSprite = this.node.getChildByName('MeleeWeapon').getChildByName('sprite')
-            .getChildByName('stablight').getComponent(cc.Sprite);
-        this.helmetSprite = this.sprite.getChildByName('body')
-            .getChildByName('helmet').getComponent(cc.Sprite);
-        this.clothesSprite = this.sprite.getChildByName('body')
-            .getChildByName('clothes').getComponent(cc.Sprite);
-        this.trousersSprite = this.sprite.getChildByName('body')
-            .getChildByName('trousers').getComponent(cc.Sprite);
-        this.glovesLeftSprite = this.sprite.getChildByName('body')
-            .getChildByName('glovesleft').getComponent(cc.Sprite);
-        this.glovesRightSprite = this.sprite.getChildByName('body')
-            .getChildByName('glovesright').getComponent(cc.Sprite);
-        this.shoesLeftSprite = this.sprite.getChildByName('body')
-            .getChildByName('shoesleft').getComponent(cc.Sprite);
-        this.shoesRightSprite = this.sprite.getChildByName('body')
-            .getChildByName('shoesright').getComponent(cc.Sprite);
-        this.cloakSprite = this.sprite.getChildByName('cloak').getComponent(cc.Sprite);
+
+        this.weaponLightSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'meleelight']);
+        this.weaponStabLightSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'stablight']);
+        this.helmetSprite = this.getSpriteChildSprite(['sprite','body', 'head', 'clothes']);
+        this.clothesSprite = this.getSpriteChildSprite(['sprite','body', 'clothes']);
+        this.armLeftSprite = this.getSpriteChildSprite(['sprite', 'armleft', 'clothes']);
+        this.armRightSprite = this.getSpriteChildSprite(['sprite', 'armright', 'clothes']);
+        this.handLeftSprite = this.getSpriteChildSprite(['sprite', 'armleft', 'handleft', 'clothes']);
+        this.handRightSprite = this.getSpriteChildSprite(['sprite', 'armright', 'handright', 'clothes']);
+        this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'legleft', 'clothes']);
+        this.legRightSprite = this.getSpriteChildSprite(['sprite', 'legright', 'clothes']);
+        this.footLeftSprite = this.getSpriteChildSprite(['sprite', 'legleft', 'footleft', 'clothes']);
+        this.footRightSprite = this.getSpriteChildSprite(['sprite', 'legright', 'footright', 'clothes']);
+        this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
+        this.weaponLeftSprite = this.getSpriteChildSprite(['sprite', 'armleft', 'handleft', 'weapon']);
+        this.weaponRightSprite = this.getSpriteChildSprite(['sprite', 'armright', 'handright', 'weapon']);
 
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
             , (event) => { this.changeItem(event.detail.spriteFrame) });
@@ -160,12 +157,19 @@ export default class Player extends cc.Component {
             this.destroySmoke(event.detail.coinNode);
         })
     }
+    private getSpriteChildSprite(childNames: string[]): cc.Sprite {
+        let node = this.node;
+        for (let name of childNames) {
+            node = node.getChildByName(name);
+        }
+        return node.getComponent(cc.Sprite);
+    }
     private statusUpdate() {
         if (!this.inventoryManager) {
             return;
         }
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG,{detail:{data:this.data}});
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
     private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
         let smokePrefab: cc.Node = null;
@@ -193,7 +197,7 @@ export default class Player extends cc.Component {
         }
     }
     changeItem(spriteFrame: cc.SpriteFrame) {
-        this.playerItemSprite.spriteFrame = spriteFrame;
+        // this.playerItemSprite.spriteFrame = spriteFrame;
     }
 
     changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
@@ -202,65 +206,63 @@ export default class Player extends cc.Component {
                 this.meleeWeapon.isStab = equipData.stab == 1;
                 this.meleeWeapon.isFar = equipData.far == 1;
                 if (equipData.stab == 1) {
-                    this.weaponSprite.spriteFrame = null;
-                    this.weaponStabSprite.spriteFrame = spriteFrame;
                     this.weaponStabLightSprite.spriteFrame = this.meleeWeapon.isFar ? Logic.spriteFrames['stablight'] : Logic.spriteFrames['stablight1'];
-                } else {
-                    this.weaponSprite.spriteFrame = spriteFrame;
-                    this.weaponStabSprite.spriteFrame = null;
                 }
+                this.weaponRightSprite.spriteFrame = spriteFrame;
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.color);
-                this.weaponSprite.node.color = color1;
+                this.weaponRightSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color1;
-                this.weaponStabSprite.node.color = color1;
                 this.weaponStabLightSprite.node.color = color1;
                 break;
             case 'remote': this.shooter.data = equipData.clone();
-                this.shooter.changeRes(this.shooter.data.img);
+                // this.shooter.changeRes(this.shooter.data.img);
+                this.weaponLeftSprite.spriteFrame = Logic.spriteFrames[this.shooter.data.img];
+                this.weaponLeftSprite.node.rotation = 0;
+                this.weaponLeftSprite.node.scale = 0.3;
+                this.weaponLeftSprite.node.anchorX = 0.2;
+                this.weaponLeftSprite.node.anchorY = 0.5;
                 break;
-            case 'helmet': this.helmetSprite.spriteFrame = spriteFrame;
-                this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
-                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.helmet.color);
-                this.helmetSprite.node.color = color2;
+            case 'helmet':
+                this.updateEquipMent(this.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
                 break;
-            case 'clothes': this.clothesSprite.spriteFrame = spriteFrame;
-                let color3 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.clothes.color);
-                this.clothesSprite.node.color = color3;
+            case 'clothes':
+                this.updateEquipMent(this.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
+                this.updateEquipMent(this.armLeftSprite, this.inventoryManager.clothes.color, null);
+                this.updateEquipMent(this.armRightSprite, this.inventoryManager.clothes.color, null);
+                this.updateEquipMent(this.handLeftSprite, this.inventoryManager.clothes.color, null);
+                this.updateEquipMent(this.handRightSprite, this.inventoryManager.clothes.color, null);
                 break;
             case 'trousers':
-                this.trousersSprite.spriteFrame = equipData.trouserslong == 1 ? Logic.spriteFrames['idle002'] : Logic.spriteFrames['idle001'];
-                let color4 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.trousers.color);
-                this.trousersSprite.node.color = color4;
+                this.updateEquipMent(this.legLeftSprite, this.inventoryManager.trousers.color, spriteFrame);
+                this.updateEquipMent(this.legRightSprite, this.inventoryManager.trousers.color, spriteFrame);
+                this.updateEquipMent(this.footLeftSprite, this.inventoryManager.trousers.color, null);
+                this.updateEquipMent(this.footRightSprite, this.inventoryManager.trousers.color, null);
                 break;
             case 'gloves':
-                this.glovesLeftSprite.spriteFrame = spriteFrame;
-                let color5l = cc.color(255, 255, 255).fromHEX(this.inventoryManager.gloves.color);
-                this.glovesLeftSprite.node.color = color5l;
-                this.glovesRightSprite.spriteFrame = spriteFrame;
-                let color5r = cc.color(255, 255, 255).fromHEX(this.inventoryManager.gloves.color);
-                this.glovesRightSprite.node.color = color5r;
+                this.updateEquipMent(this.handLeftSprite, this.inventoryManager.gloves.color, spriteFrame);
+                this.updateEquipMent(this.handRightSprite, this.inventoryManager.gloves.color, spriteFrame);
                 break;
             case 'shoes':
-                this.shoesLeftSprite.spriteFrame = spriteFrame;
-                let color6l = cc.color(255, 255, 255).fromHEX(this.inventoryManager.shoes.color);
-                this.shoesLeftSprite.node.color = color6l;
-                this.shoesRightSprite.spriteFrame = spriteFrame;
-                let color6r = cc.color(255, 255, 255).fromHEX(this.inventoryManager.shoes.color);
-                this.shoesRightSprite.node.color = color6r;
+                this.updateEquipMent(this.footLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
+                this.updateEquipMent(this.footRightSprite, this.inventoryManager.shoes.color, spriteFrame);
                 break;
-            case 'cloak': this.cloakSprite.spriteFrame = spriteFrame;
-                let color7 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.cloak.color);
-                this.cloakSprite.node.color = color7;
+            case 'cloak':
+                this.updateEquipMent(this.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
                 break;
         }
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG,{detail:{data:this.data}});
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
         let health = this.data.getHealth();
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR,{detail:{x:health.x,y:health.y}});
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
+    }
+    private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame): void {
+        sprite.spriteFrame = spriteFrame;
+        let c = cc.color(255, 255, 255).fromHEX(color);
+        sprite.node.color = c;
     }
     /**获取中心位置 */
-    getCenterPosition():cc.Vec2{
-        return this.node.position.clone().addSelf(cc.v2(0,32*this.node.scaleY));
+    getCenterPosition(): cc.Vec2 {
+        return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
@@ -305,7 +307,7 @@ export default class Player extends cc.Component {
             this.scheduleOnce(() => {
                 this.sprite.position = spritePos.clone();
                 this.isAttacking = false;
-            }, speed/1000);
+            }, speed / 1000);
         }, this));
         this.sprite.runAction(action);
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
@@ -317,7 +319,7 @@ export default class Player extends cc.Component {
     remoteRate = 0;
     remoteAttack() {
         let canFire = false;
-        if(!this.data){
+        if (!this.data) {
             return;
         }
         let speed = PlayerData.DefAULT_SPEED - this.data.getRemoteSpeed();
@@ -328,17 +330,17 @@ export default class Player extends cc.Component {
             this.remoteRate = currentTime;
             canFire = true;
         }
-        if(!canFire){
+        if (!canFire) {
             return;
         }
-        this.isHeavyRemotoAttacking =  this.isHeavyRemoteShooter();
-        this.scheduleOnce(()=>{this.isHeavyRemotoAttacking = false},0.2);
+        this.isHeavyRemotoAttacking = this.isHeavyRemoteShooter();
+        this.scheduleOnce(() => { this.isHeavyRemotoAttacking = false }, 0.2);
         if (this.shooter) {
             this.shooter.fireBullet(0);
         }
     }
-    isHeavyRemoteShooter():boolean{
-       return this.shooter.data.isHeavy == 1;
+    isHeavyRemoteShooter(): boolean {
+        return this.shooter.data.isHeavy == 1;
     }
     rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
         if (!this.node || this.isDied || this.isFall) {
@@ -386,20 +388,13 @@ export default class Player extends cc.Component {
         if (this.isMoving) {
             this.isFaceRight = h > 0;
         }
-        let walkName = "PlayerWalkShort";
-        let idleName = "idle001";
-        if (this.inventoryManager.trousers.trouserslong == 1) {
-            walkName = "PlayerWalk";
-            idleName = "idle002";
-        }
         if (this.isMoving) {
-            if (!this.anim.getAnimationState(walkName).isPlaying) {
-                this.anim.playAdditive(walkName);
+            if (!this.anim.getAnimationState('PlayerWalk').isPlaying) {
+                this.anim.playAdditive('PlayerWalk');
             }
         } else {
-            if (this.anim.getAnimationState(walkName).isPlaying) {
+            if (this.anim.getAnimationState('PlayerWalk').isPlaying) {
                 this.anim.play('PlayerIdle');
-                this.trousersSprite.spriteFrame = Logic.spriteFrames[idleName];
             }
         }
 
@@ -421,7 +416,7 @@ export default class Player extends cc.Component {
         }
         this.changeZIndex(this.pos);
         let health = this.data.getHealth();
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR,{detail:{x:health.x,y:health.y}});
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
     fall() {
         if (this.isFall) {
@@ -439,8 +434,8 @@ export default class Player extends cc.Component {
             this.isFall = false;
         }, 2);
     }
-    takeDamage(damageData: DamageData):boolean {
-        if(!this.data){
+    takeDamage(damageData: DamageData): boolean {
+        if (!this.data) {
             return false;
         }
         let dd = this.data.getDamage(damageData);
@@ -452,13 +447,13 @@ export default class Player extends cc.Component {
         if (health.x > health.y) {
             health.x = health.y;
         }
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR,{detail:{x:health.x,y:health.y}});
+        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
         Logic.playerData.currentHealth = health.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false);
         if (Logic.playerData.currentHealth <= 0) {
             this.killed();
         }
-        return !isDodge&&dd.getTotalDamage() > 0;
+        return !isDodge && dd.getTotalDamage() > 0;
     }
 
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {
@@ -548,7 +543,7 @@ export default class Player extends cc.Component {
                 this.touchedEquipment = null;
             }
         }
-        if(this.touchedTips){
+        if (this.touchedTips) {
             this.touchedTips.next();
         }
     }
@@ -581,7 +576,7 @@ export default class Player extends cc.Component {
             this.touchedEquipment = equipment;
         }
         let tips = other.node.getComponent(Tips);
-        if(tips){
+        if (tips) {
             this.touchedTips = tips;
         }
     }

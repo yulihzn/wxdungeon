@@ -1,6 +1,7 @@
 import Player from "../Player";
 import { EventConstant } from "../EventConstant";
 import Logic from "../Logic";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,7 +16,7 @@ import Logic from "../Logic";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class ExitDoor extends cc.Component {
+export default class ExitDoor extends Building {
     isOpen: boolean = false;
     wall1: cc.Node = null;
     wall2: cc.Node = null;

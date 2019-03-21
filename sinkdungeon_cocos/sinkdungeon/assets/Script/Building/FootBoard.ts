@@ -2,6 +2,7 @@ import Dungeon from "../Dungeon";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import Box from "./Box";
+import Building from "./Building";
 
 
 // Learn TypeScript:
@@ -17,7 +18,7 @@ import Box from "./Box";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class FootBoard extends cc.Component {
+export default class FootBoard extends Building {
 
     @property(cc.SpriteFrame)
     openSpriteFrame:cc.SpriteFrame = null;

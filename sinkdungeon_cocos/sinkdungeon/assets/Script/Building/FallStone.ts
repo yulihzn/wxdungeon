@@ -1,6 +1,7 @@
 import Player from "../Player";
 import { EventConstant } from "../EventConstant";
 import DamageData from "../Data/DamageData";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,7 +16,7 @@ import DamageData from "../Data/DamageData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class FallStone extends cc.Component {
+export default class FallStone extends Building {
 
 
     // LIFE-CYCLE CALLBACKS:

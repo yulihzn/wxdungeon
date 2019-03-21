@@ -87,7 +87,7 @@ export default class Shooter extends cc.Component {
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec2.ZERO;
-            this.changeRes(this.data.img);
+            // this.changeRes(this.data.img);
             let action = cc.sequence(cc.moveBy(0.1, 10, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim') }, this)
                 , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.changeRes(this.data.img) }, this));
             this.sprite.runAction(action);

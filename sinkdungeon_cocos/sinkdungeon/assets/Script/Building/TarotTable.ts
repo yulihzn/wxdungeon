@@ -5,6 +5,7 @@ import Logic from "../Logic";
 import { EventConstant } from "../EventConstant";
 import ShopTableData from "../Data/ShopTableData";
 import Tips from "../UI/Tips";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +20,7 @@ import Tips from "../UI/Tips";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class TarotTable extends cc.Component {
+export default class TarotTable extends Building {
 
     // LIFE-CYCLE CALLBACKS:
     pos: cc.Vec2;

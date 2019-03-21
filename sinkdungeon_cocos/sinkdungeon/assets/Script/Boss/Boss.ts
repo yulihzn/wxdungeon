@@ -6,6 +6,7 @@ import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import { EventConstant } from "../EventConstant";
 import EquipmentManager from "../Manager/EquipmentManager";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,7 +21,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default abstract class Boss extends cc.Component {
+export default abstract class Boss extends Actor {
     @property(StatusManager)
     statusManager: StatusManager = null;
     healthBar: HealthBar = null;
