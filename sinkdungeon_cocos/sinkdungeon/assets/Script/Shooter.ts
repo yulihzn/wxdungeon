@@ -6,6 +6,7 @@ import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
 import Random from "./Utils/Random";
+import Boss from "./Boss/Boss";
 
 
 // Learn TypeScript:
@@ -29,6 +30,7 @@ export default class Shooter extends cc.Component {
     isAI: boolean = false;
     dungeon: Dungeon = null;
     player: Player = null;
+    private graphics:cc.Graphics;
 
     private bulletPool: cc.NodePool;
     private timeDelay = 0;
@@ -38,8 +40,11 @@ export default class Shooter extends cc.Component {
     data: EquipmentData = new EquipmentData();
     parentNode: cc.Node;//该node为dungeon下发射器的载体
     private hv: cc.Vec2 = cc.v2(1, 0);
+    isArcAim = false;
+    isLineAim = false;
 
     onLoad() {
+        this.graphics = this.getComponent(cc.Graphics);
         this.bulletPool = new cc.NodePool();
         this.sprite = this.node.getChildByName('sprite');
         cc.director.on('destorybullet', (event) => {
@@ -81,9 +86,16 @@ export default class Shooter extends cc.Component {
             this.hv = hv;
         }
     }
-    remoteRate = 0;
     fireBullet(angleOffset?: number,defaultPos?: cc.Vec2) {
-
+        if(this.isArcAim){
+            this.aimTargetArc(angleOffset,defaultPos);
+        }else if(this.isLineAim){
+            this.aimTargetLine(angleOffset,defaultPos);
+        }else{
+            this.fireBulletDo(angleOffset,defaultPos);
+        }
+    }
+    private fireBulletDo(angleOffset?: number,defaultPos?: cc.Vec2){
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec2.ZERO;
@@ -116,7 +128,6 @@ export default class Shooter extends cc.Component {
             this.fireArcBullet(this.data.bulletType);
             this.fireLinecBullet(this.data.bulletType,angleOffset);
         }
-
     }
     private fireArcBullet(bulletType:string): void {
         if (this.data.bulletArcExNum <= 0) {
@@ -221,7 +232,101 @@ export default class Shooter extends cc.Component {
 
     start() {
     }
+    private drawLine(color:cc.Color,range:number){
+        if(!this.graphics){
+            return;
+        }
+        this.graphics.clear();
+        if(color.getR()>255){
+            return;
+        }
+        this.graphics.fillColor = color;
+        this.graphics.rect(0,0,range,5);
+        this.graphics.fill();
+    }
+    private getRayCastPoint(range?:number,startPos?:cc.Vec2):cc.Vec2{
+        let s = startPos?startPos:cc.v2(0,0);
+        let r= range?range:1000;
+        let p = cc.v2(r,0);
+        let p1 = this.node.convertToWorldSpaceAR(s);
+        let p2 = this.node.convertToWorldSpaceAR(p);
+        let results = cc.director.getPhysicsManager().rayCast(p1,p2,cc.RayCastType.AllClosest);
+        cc.log(results.length);
+        if(results.length>0){
+            for(let result of results){
+                let isInvalid = false;
+                if(!this.isAI){
+                    let player = result.collider.node.getComponent(Player);
+                    if(player){isInvalid = true;}
+                }else{
+                    let monster = result.collider.node.getComponent(Monster);
+                    let boss = result.collider.node.getComponent(Boss);
+                    if(monster||boss){isInvalid = true;}
+                }
+                let bullet = result.collider.node.getComponent(Bullet);
+                isInvalid = bullet?true:false;
+                if(bullet){isInvalid = true;}
+                if(result.collider.sensor){isInvalid = true;}
+                if(!isInvalid){
+                    p = this.node.convertToNodeSpaceAR(result.point);
+                    break;
+                }
+            }
+        }
+        return p;
 
+    }
+    //线性瞄准
+    private aimTargetLine(angleOffset?: number,defaultPos?: cc.Vec2){
+        if(!this.graphics){
+            return;
+        }
+        let p = this.getRayCastPoint();
+        let num = 225;
+        let fun = ()=>{
+            this.drawLine(cc.color(num,0,0),p.x);
+            num += 10;
+            if(num >= 255){
+                this.fireBulletDo(angleOffset,defaultPos);
+                this.unschedule(fun);
+                this.graphics.clear();
+            }
+        }
+        this.schedule(fun,0.1,3);
+    }
+    private drawArc(angle:number){
+        if(!this.graphics){
+            return;
+        }
+        this.graphics.clear();
+        if(angle<0){
+            return;
+        }
+        let r = 1000;
+        let startAngle = -angle*2*Math.PI/360;
+        let endAngle = angle*2*Math.PI/360;
+        let startPos = cc.v2(r*Math.cos(startAngle),r*Math.sin(startAngle));
+        let endPos = cc.v2(r*Math.cos(endAngle),r*Math.sin(endAngle));
+        this.graphics.arc(0,0,r,2*Math.PI-startAngle,2*Math.PI-endAngle);
+        this.graphics.fill();
+        this.graphics.moveTo(0,0);
+        this.graphics.lineTo(startPos.x,startPos.y);
+        this.graphics.lineTo(endPos.x,endPos.y);
+        this.graphics.close();
+        this.graphics.fill();
+    }
+    //圆弧瞄准
+    private aimTargetArc(angleOffset?: number,defaultPos?: cc.Vec2){
+        let num = 45;
+        let fun = ()=>{
+            this.drawArc(--num);
+            if(num < 0){
+                this.fireBulletDo(angleOffset,defaultPos);
+                this.unschedule(fun);
+            }
+        }
+        this.schedule(fun,0.025,45);
+    }
     getRandomNum(min, max): number {//生成一个随机数从[min,max]
         return min + Math.round(Random.rand() * (max - min));
     }

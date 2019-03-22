@@ -31,7 +31,7 @@ import Random from './Utils/Random';
 export default class Player extends cc.Component {
 
     @property(cc.Vec2)
-    pos: cc.Vec2 = cc.v2(4, 4);
+    pos: cc.Vec2 = cc.v2(0, 0);
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
     @property(cc.Prefab)
@@ -45,28 +45,21 @@ export default class Player extends cc.Component {
     shooter: Shooter = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
-    // private playerItemSprite: cc.Sprite;
-    // hairSprite: cc.Sprite = null;
-    // weaponSprite: cc.Sprite = null;
+    private playerItemSprite: cc.Sprite;
+    hairSprite: cc.Sprite = null;
+    weaponSprite: cc.Sprite = null;
     weaponLightSprite: cc.Sprite = null;
-    // weaponStabSprite: cc.Sprite = null;
+    weaponStabSprite: cc.Sprite = null;
     weaponStabLightSprite: cc.Sprite = null;
-
-    weaponLeftSprite: cc.Sprite = null;
-    weaponRightSprite: cc.Sprite = null;
-
-    helmetSprite: cc.Sprite = null;//头盔
-    clothesSprite: cc.Sprite = null;//衣服
-    armLeftSprite: cc.Sprite = null;//左臂
-    armRightSprite: cc.Sprite = null;//右臂
-    handLeftSprite: cc.Sprite = null;//左手
-    handRightSprite: cc.Sprite = null;//右手
-    legLeftSprite: cc.Sprite = null;//左腿
-    legRightSprite: cc.Sprite = null;//右腿
-    footLeftSprite: cc.Sprite = null;//左脚
-    footRightSprite: cc.Sprite = null;//右脚
-    cloakSprite: cc.Sprite = null;//斗篷
-
+    helmetSprite: cc.Sprite = null;
+    clothesSprite: cc.Sprite = null;
+    trousersSprite: cc.Sprite = null;
+    glovesLeftSprite: cc.Sprite = null;
+    glovesRightSprite: cc.Sprite = null;
+    shoesLeftSprite: cc.Sprite = null;
+    shoesRightSprite: cc.Sprite = null;
+    cloakSprite: cc.Sprite = null;
+    bodySprite: cc.Sprite = null;
     isMoving = false;//是否移动中
     isAttacking = false;//是否近战攻击中
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
@@ -74,6 +67,7 @@ export default class Player extends cc.Component {
     private anim: cc.Animation;
     isDied = false;//是否死亡
     isFall = false;//是否跌落
+    isStone = false;//是否石化
     baseAttackPoint: number = 1;
 
     //触碰到的装备
@@ -100,6 +94,7 @@ export default class Player extends cc.Component {
         this.statusUpdate();
         this.pos = cc.v2(0, 0);
         this.isDied = false;
+        this.isStone = false;
         this.anim = this.getComponent(cc.Animation);
         let walkName = "PlayerWalkShort";
         if (this.inventoryManager.trousers.trouserslong == 1) {
@@ -110,23 +105,21 @@ export default class Player extends cc.Component {
         }
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite');
-
+        this.bodySprite = this.getSpriteChildSprite(['sprite', 'body']);
+        this.playerItemSprite = this.getSpriteChildSprite(['sprite', 'righthand', 'item']);
+        this.hairSprite = this.getSpriteChildSprite(['sprite', 'body', 'hair']);
+        this.weaponSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'weapon']);
         this.weaponLightSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'meleelight']);
+        this.weaponStabSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'stabweapon']);
         this.weaponStabLightSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'stablight']);
-        this.helmetSprite = this.getSpriteChildSprite(['sprite','body', 'head', 'clothes']);
-        this.clothesSprite = this.getSpriteChildSprite(['sprite','body', 'clothes']);
-        this.armLeftSprite = this.getSpriteChildSprite(['sprite', 'armleft', 'clothes']);
-        this.armRightSprite = this.getSpriteChildSprite(['sprite', 'armright', 'clothes']);
-        this.handLeftSprite = this.getSpriteChildSprite(['sprite', 'armleft', 'handleft', 'clothes']);
-        this.handRightSprite = this.getSpriteChildSprite(['sprite', 'armright', 'handright', 'clothes']);
-        this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'legleft', 'clothes']);
-        this.legRightSprite = this.getSpriteChildSprite(['sprite', 'legright', 'clothes']);
-        this.footLeftSprite = this.getSpriteChildSprite(['sprite', 'legleft', 'footleft', 'clothes']);
-        this.footRightSprite = this.getSpriteChildSprite(['sprite', 'legright', 'footright', 'clothes']);
+        this.helmetSprite = this.getSpriteChildSprite(['sprite', 'body', 'helmet']);
+        this.clothesSprite = this.getSpriteChildSprite(['sprite', 'body', 'clothes']);
+        this.trousersSprite = this.getSpriteChildSprite(['sprite', 'body', 'trousers']);
+        this.glovesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'glovesleft']);
+        this.glovesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'glovesright']);
+        this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'shoesleft']);
+        this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'shoesright']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
-        this.weaponLeftSprite = this.getSpriteChildSprite(['sprite', 'armleft', 'handleft', 'weapon']);
-        this.weaponRightSprite = this.getSpriteChildSprite(['sprite', 'armright', 'handright', 'weapon']);
-
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
             , (event) => { this.changeItem(event.detail.spriteFrame) });
         cc.director.on(EventConstant.PLAYER_USEITEM
@@ -152,10 +145,51 @@ export default class Player extends cc.Component {
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);
         this.shooter.player = this;
+        this.shooter.isLineAim = true;
         this.smokePool = new cc.NodePool();
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
+    }
+    /**
+     * 
+     * @param isStone 是否是石头
+     * @param stoneLevel 石头等级：0：全身，1：身子和脚，2：脚 
+     */
+    private turnStone(isStone: boolean, stoneLevel?: number) {
+        let n = isStone ? 1 : 0;
+        this.bodySprite.setState(n);
+        this.hairSprite.setState(n);
+        this.helmetSprite.setState(n);
+        this.clothesSprite.setState(n);
+        this.trousersSprite.setState(n);
+        this.glovesLeftSprite.setState(n);
+        this.glovesRightSprite.setState(n);
+        this.shoesLeftSprite.setState(n);
+        this.shoesRightSprite.setState(n);
+        if (stoneLevel == 1) {
+            this.hairSprite.setState(0);
+            this.helmetSprite.setState(0);
+        }
+        if (stoneLevel == 2) {
+            this.bodySprite.setState(0);
+            this.hairSprite.setState(0);
+            this.helmetSprite.setState(0);
+            this.clothesSprite.setState(0);
+            this.glovesLeftSprite.setState(0);
+            this.glovesRightSprite.setState(0);
+        }
+    }
+    turnStoneAnim(isStone:boolean){
+        let action = cc.sequence(cc.callFunc(()=>{this.turnStone(true,2);}),cc.delayTime(0.3)
+        ,cc.callFunc(()=>{this.turnStone(true,1);}),cc.delayTime(0.3)
+        ,cc.callFunc(()=>{this.turnStone(true,0);this.isStone = true;}));
+        if(!isStone){
+            action = cc.sequence(cc.callFunc(()=>{this.turnStone(true,1);}),cc.delayTime(0.3)
+        ,cc.callFunc(()=>{this.turnStone(true,2);}),cc.delayTime(0.3)
+        ,cc.callFunc(()=>{this.turnStone(false);this.isStone = false;}));
+        }
+        this.node.runAction(action);
     }
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
@@ -197,7 +231,7 @@ export default class Player extends cc.Component {
         }
     }
     changeItem(spriteFrame: cc.SpriteFrame) {
-        // this.playerItemSprite.spriteFrame = spriteFrame;
+        this.playerItemSprite.spriteFrame = spriteFrame;
     }
 
     changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
@@ -206,45 +240,40 @@ export default class Player extends cc.Component {
                 this.meleeWeapon.isStab = equipData.stab == 1;
                 this.meleeWeapon.isFar = equipData.far == 1;
                 if (equipData.stab == 1) {
+                    this.weaponSprite.spriteFrame = null;
+                    this.weaponStabSprite.spriteFrame = spriteFrame;
                     this.weaponStabLightSprite.spriteFrame = this.meleeWeapon.isFar ? Logic.spriteFrames['stablight'] : Logic.spriteFrames['stablight1'];
+                } else {
+                    this.weaponSprite.spriteFrame = spriteFrame;
+                    this.weaponStabSprite.spriteFrame = null;
                 }
-                this.weaponRightSprite.spriteFrame = spriteFrame;
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.color);
-                this.weaponRightSprite.node.color = color1;
+                this.weaponSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color1;
+                this.weaponStabSprite.node.color = color1;
                 this.weaponStabLightSprite.node.color = color1;
                 break;
             case 'remote': this.shooter.data = equipData.clone();
-                // this.shooter.changeRes(this.shooter.data.img);
-                this.weaponLeftSprite.spriteFrame = Logic.spriteFrames[this.shooter.data.img];
-                this.weaponLeftSprite.node.rotation = 0;
-                this.weaponLeftSprite.node.scale = 0.3;
-                this.weaponLeftSprite.node.anchorX = 0.2;
-                this.weaponLeftSprite.node.anchorY = 0.5;
+                this.shooter.changeRes(this.shooter.data.img);
                 break;
             case 'helmet':
+                this.hairSprite.node.opacity = spriteFrame ? 0 : 255;
                 this.updateEquipMent(this.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
                 break;
             case 'clothes':
                 this.updateEquipMent(this.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
-                this.updateEquipMent(this.armLeftSprite, this.inventoryManager.clothes.color, null);
-                this.updateEquipMent(this.armRightSprite, this.inventoryManager.clothes.color, null);
-                this.updateEquipMent(this.handLeftSprite, this.inventoryManager.clothes.color, null);
-                this.updateEquipMent(this.handRightSprite, this.inventoryManager.clothes.color, null);
                 break;
             case 'trousers':
-                this.updateEquipMent(this.legLeftSprite, this.inventoryManager.trousers.color, spriteFrame);
-                this.updateEquipMent(this.legRightSprite, this.inventoryManager.trousers.color, spriteFrame);
-                this.updateEquipMent(this.footLeftSprite, this.inventoryManager.trousers.color, null);
-                this.updateEquipMent(this.footRightSprite, this.inventoryManager.trousers.color, null);
+                this.updateEquipMent(this.trousersSprite, this.inventoryManager.trousers.color
+                    , equipData.trouserslong == 1 ? Logic.spriteFrames['idle002'] : Logic.spriteFrames['idle001']);
                 break;
             case 'gloves':
-                this.updateEquipMent(this.handLeftSprite, this.inventoryManager.gloves.color, spriteFrame);
-                this.updateEquipMent(this.handRightSprite, this.inventoryManager.gloves.color, spriteFrame);
+                this.updateEquipMent(this.glovesLeftSprite, this.inventoryManager.gloves.color, spriteFrame);
+                this.updateEquipMent(this.glovesRightSprite, this.inventoryManager.gloves.color, spriteFrame);
                 break;
             case 'shoes':
-                this.updateEquipMent(this.footLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
-                this.updateEquipMent(this.footRightSprite, this.inventoryManager.shoes.color, spriteFrame);
+                this.updateEquipMent(this.shoesLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
+                this.updateEquipMent(this.shoesRightSprite, this.inventoryManager.shoes.color, spriteFrame);
                 break;
             case 'cloak':
                 this.updateEquipMent(this.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
@@ -388,13 +417,20 @@ export default class Player extends cc.Component {
         if (this.isMoving) {
             this.isFaceRight = h > 0;
         }
+        let walkName = "PlayerWalkShort";
+        let idleName = "idle001";
+        if (this.inventoryManager.trousers.trouserslong == 1) {
+            walkName = "PlayerWalk";
+            idleName = "idle002";
+        }
         if (this.isMoving) {
-            if (!this.anim.getAnimationState('PlayerWalk').isPlaying) {
-                this.anim.playAdditive('PlayerWalk');
+            if (!this.anim.getAnimationState(walkName).isPlaying) {
+                this.anim.playAdditive(walkName);
             }
         } else {
-            if (this.anim.getAnimationState('PlayerWalk').isPlaying) {
+            if (this.anim.getAnimationState(walkName).isPlaying) {
                 this.anim.play('PlayerIdle');
+                this.trousersSprite.spriteFrame = Logic.spriteFrames[idleName];
             }
         }
 
@@ -525,7 +561,9 @@ export default class Player extends cc.Component {
         if (this.isSmokeTimeDelay(dt) && this.isMoving) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
-
+        if(this.isStone){
+            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
 

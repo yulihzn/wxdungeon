@@ -12,5 +12,5 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default abstract class Actor extends cc.Component {
-    indexPos:cc.Vec3;//下标,x代表横向下标，y代表纵向下标，y决定Actor攻击判定，当受击框的y在攻击框的y范围则代表碰撞有效，其中z代表高度
+    // indexPos:cc.Vec3;//下标,x代表横向下标，y代表纵向下标，y决定Actor攻击判定，当受击框的y在攻击框的y范围则代表碰撞有效，其中z代表高度
 }

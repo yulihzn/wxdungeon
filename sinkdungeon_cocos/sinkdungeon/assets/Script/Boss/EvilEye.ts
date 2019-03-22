@@ -72,11 +72,8 @@ export default class EvilEye extends Boss {
 
     start() {
         super.start();
-        this.drawArc();
     }
-    drawArc(){
-        this.graphics.arc(0,0,100,0,30);
-    }
+    
     takeDamage(damage: DamageData): boolean {
         if (this.isDied || !this.isShow) {
             return false;
