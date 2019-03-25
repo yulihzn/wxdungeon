@@ -37,6 +37,7 @@ export default class EvilEye extends Boss {
     viceShooters: Shooter[];//1-6个副炮
 
     viceEyesFireSkill = new Skill();
+    mainEyesFireSkill = new Skill();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -109,6 +110,7 @@ export default class EvilEye extends Boss {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
         this.fireWithViceEyes();
+        this.fireWithMainEye();
         if (!pos.equals(cc.Vec2.ZERO)
             && playerDis > 100) {
             pos = pos.normalizeSelf();
@@ -145,7 +147,22 @@ export default class EvilEye extends Boss {
             }
         },3);
     }
-
+    fireWithMainEye(){
+        this.mainEyesFireSkill.next(()=>{
+            let p = this.shooter.node.convertToWorldSpace(cc.v2(0,0));
+            p = this.node.convertToNodeSpace(p);
+            this.shooter.node.setPosition(p);
+            let pos = this.node.position.clone().add(p);
+            let hv = this.dungeon.player.getCenterPosition().sub(pos);
+        if (!hv.equals(cc.Vec2.ZERO)) {
+            hv = hv.normalizeSelf();
+            this.shooter.setHv(hv);
+            this.shooter.data.isLineAim = 1;
+            this.fireShooter(this.shooter,'laser002',0,0,0,cc.v2(0,0));
+        }
+      
+        },10);
+    }
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number,defaultPos?:cc.Vec2): void {
         shooter.dungeon = this.dungeon;
         // shooter.setHv(cc.v2(0, -1))

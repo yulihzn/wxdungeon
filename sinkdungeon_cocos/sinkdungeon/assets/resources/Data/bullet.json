@@ -306,10 +306,22 @@
         }
     },
     "laser002": {
+        "name":"灰色激光",
+        "speed": 1000,
+        "isLaser":1,
+        "lifeTime":0.5,
+        "size": 2,
+        "resNameLaser":"laser002",
+        "damage": {
+            "physicalDamage": 1,
+            "stoneRate":100
+        }
+    },
+    "laser101": {
         "name":"短暂红色激光",
         "speed": 1000,
         "isLaser":1,
-        "lifeTime":0.1,
+        "lifeTime":0.5,
         "resNameLaser":"laser001",
         "damage": {
             "physicalDamage": 1

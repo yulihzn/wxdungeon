@@ -18,7 +18,7 @@ import Random from "../Utils/Random";
 export default class PlayerData {
     static DEFAULT_HEALTH = 5000;
     static DefAULT_SPEED = 300;
-    static DefAULT_ATTACK = 10;
+    static DefAULT_ATTACK = 1;
     name: string = '';
     pos: cc.Vec2 = cc.v2(7, 4);
 

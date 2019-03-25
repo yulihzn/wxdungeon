@@ -31,6 +31,8 @@ export default class MonsterData{
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（毫秒）
+    isArcAim = 0;//是否是扇形瞄准
+    isLineAim = 0;//是否是线性瞄准
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     private statusTotalData: StatusData;
@@ -72,6 +74,8 @@ export default class MonsterData{
         this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
         this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
         this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
+        this.isArcAim = data.isArcAim?data.isArcAim:0;
+        this.isLineAim = data.isLineAim?data.isLineAim:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -93,6 +97,8 @@ export default class MonsterData{
         e.bulletArcExNum = this.bulletArcExNum;
         e.bulletLineExNum = this.bulletLineExNum;
         e.bulletLineInterval = this.bulletLineInterval;
+        e.isArcAim = this.isArcAim;
+        e.isLineAim = this.isLineAim;
         return e;
     }
     getAttackPoint():DamageData{

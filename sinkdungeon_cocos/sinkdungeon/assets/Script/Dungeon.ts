@@ -216,7 +216,7 @@ export default class Dungeon extends cc.Component {
                 //生成装饰
                 if (mapData[i][j] == '+') {
                     //生成营火
-                    if(Logic.chapterName == Logic.CHAPTER02){
+                    if (Logic.chapterName == Logic.CHAPTER02) {
                         let camp = cc.instantiate(this.campFire);
                         camp.parent = this.node;
                         camp.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -226,7 +226,7 @@ export default class Dungeon extends cc.Component {
                         shadow.position = cc.v2(shadow.position.x, shadow.position.y + 40);
                         shadow.parent = this.node;
                         shadow.zIndex = 3000;
-                    }else{
+                    } else {
                         let fd = cc.instantiate(this.floorDecoration);
                         fd.parent = this.node;
                         fd.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -371,50 +371,21 @@ export default class Dungeon extends cc.Component {
                     shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 + 1;
                 }
                 //房间未清理时加载怪物
-                if (!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
-                    
-                    if (mapData[i][j] == 'k') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
-                    }
-                    if (mapData[i][j] == 'm') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, i, j);
-                    }
-                    if (mapData[i][j] == 'z') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
-                    }
-                    if (mapData[i][j] == 'q') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
-                    }
-                    if (mapData[i][j] == 'e') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
-                    }
-                    if (mapData[i][j] == 'r') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                    }
-                    if (mapData[i][j] == 'l') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
-                    }
-                    if (mapData[i][j] == 'j') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_CONNAR, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
-                    }
-                    
+                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     if (mapData[i][j] == 'a') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, i, j);
+                    }
+                    if (mapData[i][j] == 'b') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, i, j);
                     }
                     if (mapData[i][j] == 'c') {
                         this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
                     }
-                    if (mapData[i][j] == 'p') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
+                    if (mapData[i][j] == 'd') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ZOOMBIE, i, j);
                     }
-                    if (mapData[i][j] == 'h') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
+                    if (mapData[i][j] == 'e') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
                     }
                     if (mapData[i][j] == 'f') {
                         this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
@@ -423,59 +394,89 @@ export default class Dungeon extends cc.Component {
                         let sailor = Logic.getHalfChance() ? MonsterManager.MONSTER_SAILOR : MonsterManager.MONSTER_STRONGSAILOR;
                         this.addMonsterFromData(sailor, i, j);
                     }
-                    if (mapData[i][j] == 'b') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, i, j);
+                    if (mapData[i][j] == 'h') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
+                    }
+                    if (mapData[i][j] == 'i') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_FISH, i, j);
+                    }
+                    if (mapData[i][j] == 'j') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_CONNAR, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
+                    }
+                    if (mapData[i][j] == 'k') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
+                    }
+                    if (mapData[i][j] == 'l') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
+                    }
+                    if (mapData[i][j] == 'm') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, i, j);
                     }
                     if (mapData[i][j] == 'o') {
                         this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, i, j);
                     }
+                    if (mapData[i][j] == 'p') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
+                    }
+                    if (mapData[i][j] == 'q') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
+                    }
+                    if (mapData[i][j] == 'r') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
+                    }
                     if (mapData[i][j] == 'y') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
                     }
-                    if (mapData[i][j] == 'd') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ZOOMBIE, i, j);
+                    if (mapData[i][j] == 'z') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
                     }
                     if (mapData[i][j] == '0') {
-                        this.addBossIceDemon(cc.v2(i,j));
+                        this.addBossIceDemon(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '1') {
-                        this.addBossWarMachine(cc.v2(i,j));
+                        this.addBossWarMachine(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '2') {
-                        this.addBossCaptain(cc.v2(i,j));
+                        this.addBossCaptain(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '3') {
-                        this.addBossKraken(cc.v2(i,j));
+                        this.addBossKraken(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '4') {
-                        this.addBossSlime(0,cc.v2(i,j));
+                        this.addBossSlime(0, cc.v2(i, j));
                     }
                     if (mapData[i][j] == '5') {
-                        this.addBossKraken(cc.v2(i,j));
+                        this.addBossKraken(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '6') {
-                        this.addBossRah(cc.v2(i,j));
+                        this.addBossRah(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '7') {
-                        this.addBossKraken(cc.v2(i,j));
+                        this.addBossKraken(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '8') {
-                        this.addBossEvilEye(cc.v2(i,j));
+                        this.addBossEvilEye(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '9') {
-                        this.addBossKraken(cc.v2(i,j));
+                        this.addBossKraken(cc.v2(i, j));
                     }
                 }
 
             }
         }
         if (!Logic.mapManager.isCurrentRoomStateClear()) {
-            if(Logic.mapManager.getCurrentRoomType() == RectDungeon.DANGER_ROOM
-        ||Logic.mapManager.getCurrentRoomType() == RectDungeon.LOOT_ROOM
-        ||Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM
-        ||Logic.mapManager.getCurrentRoomType() == RectDungeon.TRAP_ROOM){
-            this.monsterManager.addRandomMonsters(this);
-        }
+            if (Logic.mapManager.getCurrentRoomType() == RectDungeon.DANGER_ROOM
+                || Logic.mapManager.getCurrentRoomType() == RectDungeon.LOOT_ROOM
+                || Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM
+                || Logic.mapManager.getCurrentRoomType() == RectDungeon.TRAP_ROOM) {
+                this.monsterManager.addRandomMonsters(this);
+            }
         }
         //保存当前盒子位置
         let currbs = Logic.mapManager.getCurrentMapBoxes();
@@ -503,17 +504,17 @@ export default class Dungeon extends cc.Component {
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
-        item.getComponent(Item).init(resName,indexpos.clone());
-        
+        item.getComponent(Item).init(resName, indexpos.clone());
+
         let data = item.getComponent(Item).data;
         let curritems = Logic.mapManager.getCurrentMapItems();
-            if (curritems) {
-                curritems.push(data);
-            }else{
-                curritems = new Array();
-                curritems.push(data);
-                Logic.mapManager.setCurrentItemsArr(curritems);
-            }
+        if (curritems) {
+            curritems.push(data);
+        } else {
+            curritems = new Array();
+            curritems.push(data);
+            Logic.mapManager.setCurrentItemsArr(curritems);
+        }
 
     }
 
@@ -567,7 +568,7 @@ export default class Dungeon extends cc.Component {
                 }
             }
         }
-        
+
     }
     addItemListOnGround() {
         let curritems = Logic.mapManager.getCurrentMapItems();
@@ -575,11 +576,11 @@ export default class Dungeon extends cc.Component {
         if (curritems) {
             for (let tempeitem of curritems) {
                 if (!tempeitem.isTaken) {
-                    this.addItem(Dungeon.getPosInMap(tempeitem.pos),tempeitem.resName);
+                    this.addItem(Dungeon.getPosInMap(tempeitem.pos), tempeitem.resName);
                 }
             }
         }
-        
+
     }
     /**添加装备 */
     addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable) {
@@ -588,7 +589,7 @@ export default class Dungeon extends cc.Component {
             let currequipments = Logic.mapManager.getCurrentMapEquipments();
             if (currequipments) {
                 currequipments.push(data);
-            }else{
+            } else {
                 currequipments = new Array();
                 currequipments.push(data);
                 Logic.mapManager.setCurrentEquipmentsArr(currequipments);
@@ -613,8 +614,8 @@ export default class Dungeon extends cc.Component {
         }
     }
     private addBoss() {
-        
-        
+
+
     }
     addBossSlime(type: number, index: cc.Vec2) {
         if (!this.bosses) {
@@ -680,7 +681,7 @@ export default class Dungeon extends cc.Component {
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2);
         this.scheduleOnce(() => { this.breakHalfTiles(); }, 0.1);
-        
+
         this.scheduleOnce(() => {
             boss.showBoss();
             // this.anim.play('DungeonWave');
@@ -812,16 +813,19 @@ export default class Dungeon extends cc.Component {
         }
     }
     checkPlayerPos(dt: number) {
-        if(!this.map||!this.player||!this.node){
+        if (!this.map || !this.player || !this.node) {
             return;
         }
         this.fog.setPosition(this.lerp(this.fog.position, this.player.node.position, dt * 3));
         let pos = Dungeon.getIndexInMap(this.player.node.position);
+        if (!this.map[pos.x] || !this.map[pos.x][pos.y]) {
+            return;
+        }
         let tile = this.map[pos.x][pos.y];
-        if (tile&&tile.isBroken) {
+        if (tile && tile.isBroken) {
             this.player.fall();
         }
-        if (tile&&tile.isAutoShow) {
+        if (tile && tile.isAutoShow) {
             this.breakTile(pos);
         }
     }
@@ -839,7 +843,7 @@ export default class Dungeon extends cc.Component {
                 return;
             }
             let tile = this.map[monster.pos.x][monster.pos.y];
-            if (tile&&tile.isBroken) {
+            if (tile && tile.isBroken) {
                 monster.fall();
             }
             // if (tile.isBroken && !monster.isMoving) {

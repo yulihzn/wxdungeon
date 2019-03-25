@@ -166,6 +166,8 @@ export default class Monster extends cc.Component {
             this.shooter.data.bulletArcExNum = this.data.bulletArcExNum;
             this.shooter.data.bulletLineExNum = this.data.bulletLineExNum;
             this.shooter.data.bulletLineInterval = this.data.bulletLineInterval;
+            this.shooter.data.isArcAim = this.data.isArcAim;
+            this.shooter.data.isLineAim = this.data.isLineAim;
             this.shooter.data.bulletType = this.data.bulletType ? this.data.bulletType : "bullet001";
             this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5);
         }
@@ -201,12 +203,30 @@ export default class Monster extends cc.Component {
         if (!this.sprite || this.meleeSkill.IsExcuting || this.remoteSkill.IsExcuting || this.isDied || this.isHurt || this.isDisguising) {
             return;
         }
+        let spriteframe1 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK01];
+        let spriteframe2 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK02];
+        let spriteframe3 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK03];
+        let isOne = spriteframe2?false:true;
+        let isTwo = spriteframe2?true:false;
+        let isThree = spriteframe3?true:false;
+        if(isThree){isOne = false;isTwo=false;}
         if (!this.idleAction) {
-            this.idleAction = cc.repeatForever(cc.sequence(
-                cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
-                cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
-                cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) }),
-                cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK03) })));
+            if(isOne){
+                this.idleAction = cc.repeatForever(cc.sequence(
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) })));
+            }else if(isTwo){
+                this.idleAction = cc.repeatForever(cc.sequence(
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) })));
+            }else if(isThree){
+                this.idleAction = cc.repeatForever(cc.sequence(
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) }),
+                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK03) })));
+            }
             this.sprite.runAction(this.idleAction);
         }
         if (!this.idleAction.isDone()) {
@@ -295,9 +315,9 @@ export default class Monster extends cc.Component {
         dd = isDodge ? new DamageData() : dd;
         if (isDodge) {
             this.showFloatFont(this.dungeon.node, 0, true, false);
-            return;
+            return false;
         }
-        this.isHurt = true;
+        this.isHurt = dd.getTotalDamage()>0;
         if (this.isDisguising) {
             this.changeBodyRes(this.data.resName);
         }
@@ -314,7 +334,10 @@ export default class Monster extends cc.Component {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
         this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false);
-        return true;
+        if(this.data.Common.lifeRecovery>0&&this.isHurt){
+            this.addStatus(StatusManager.RECOVERY);
+        }
+        return this.isHurt;
     }
     addStatus(statusType: string) {
         this.statusManager.addStatus(statusType);
@@ -440,7 +463,7 @@ export default class Monster extends cc.Component {
             this.changeBodyRes(this.data.resName);
             this.isDisguising = false;
         }
-        if (Logic.getHalfChance()) {
+        if (Logic.getHalfChance()&&!this.shooter.isAiming) {
             this.move(pos, speed);
         }
 

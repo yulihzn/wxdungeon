@@ -123,7 +123,7 @@ export default class Bullet extends cc.Component {
     }
     changeBullet(data: BulletData) {
         this.data = data;
-        this.changeRes(data.resName, data.lightName, data.lightColor, data.size);
+        this.changeRes(data.resName, data.lightName, data.lightColor);
         this.circleCollider.enabled = data.isRect != 1;
         this.boxCollider.enabled = data.isRect == 1;
         this.circlePCollider.enabled = data.isRect != 1;
@@ -154,6 +154,7 @@ export default class Bullet extends cc.Component {
         this.sprite.getComponent(cc.Sprite).spriteFrame = null;
         this.sprite.rotation = 0;
         this.laserNode.opacity = 0;
+        this.laserSpriteNode.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser);
         this.laserHeadSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.laserNode.stopAllActions();
 
@@ -184,7 +185,7 @@ export default class Bullet extends cc.Component {
         this.scheduleOnce(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 0.2);
     }
 
-    private changeRes(resName: string, lightName: string, lightColor: string, size: number, suffix?: string) {
+    private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
         }
@@ -196,13 +197,9 @@ export default class Bullet extends cc.Component {
 
         if (s1) {
             this.sprite.getComponent(cc.Sprite).spriteFrame = s1;
-            this.sprite.width = s1.getRect().width * size;
-            this.sprite.height = s1.getRect().height * size;
         }
         if (s2) {
             this.light.getComponent(cc.Sprite).spriteFrame = s2;
-            this.light.width = s2.getRect().width * size;
-            this.light.height = s2.getRect().height * size;
             let color = cc.color(255, 255, 255).fromHEX(lightColor);
             this.light.color = color;
         }
@@ -441,6 +438,7 @@ export default class Bullet extends cc.Component {
         this.addPlayerStatus(this.data.damage.toxicRate, player, StatusManager.TOXICOSIS);
         this.addPlayerStatus(this.data.damage.curseRate, player, StatusManager.CURSING);
         this.addPlayerStatus(this.data.damage.realRate, player, StatusManager.BLEEDING);
+        this.addPlayerStatus(this.data.damage.stoneRate, player, StatusManager.STONE);
     }
     addMonsterStatus(rate: number, monster: Monster, statusType) {
         if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType); }

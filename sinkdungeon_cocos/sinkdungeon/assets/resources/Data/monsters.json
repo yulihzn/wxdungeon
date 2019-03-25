@@ -254,7 +254,8 @@
         "resName": "monster014",
         "chapter": 0,
         "stageLevel": 0,
-        "bulletType":"laser002",
+        "bulletType":"laser001",
+        "isLineAim":1,
         "common": {
             "moveSpeed": 500,
             "maxHealth": 5,
@@ -262,7 +263,7 @@
         },
         "currentHealth": 5,
         "invisible": 0,
-        "remote": 1,
+        "remote": 5,
         "melee": 0,
         "dash": 0
     },
@@ -274,10 +275,11 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 5,
+            "maxHealth": 10,
+            "lifeRecovery":1,
             "damageMin": 1
         },
-        "currentHealth": 5,
+        "currentHealth": 10,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -373,5 +375,22 @@
         "melee": 0,
         "sizeType":1,
         "dash": 0
+    },
+    "monster021": {
+        "nameCn": "鱼人",
+        "nameEn": "fish",
+        "resName": "monster021",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 10,
+            "damageMin": 1
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 2,
+        "dash": 5
     }
 }

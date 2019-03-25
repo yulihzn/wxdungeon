@@ -516,8 +516,8 @@
       "__id__": 11
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
+    "_srcBlendFactor": 1,
+    "_dstBlendFactor": 770,
     "_spriteFrame": {
       "__uuid__": "9cb07dc9-c62f-457d-b2d7-415464789f85"
     },
@@ -721,7 +721,7 @@
     },
     "_enabled": true,
     "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
+    "_dstBlendFactor": 772,
     "_spriteFrame": {
       "__uuid__": "5c3e8a69-9036-43e3-8b06-55ad1e0817e0"
     },

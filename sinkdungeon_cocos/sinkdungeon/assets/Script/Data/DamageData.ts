@@ -28,6 +28,7 @@ export default class DamageData {
     lighteningRate = 0;//雷元素释放几率
     toxicRate = 0;//毒元素释放几率
     curseRate = 0;//诅咒元素释放几率
+    stoneRate = 0;//石化释放几率(目前仅限于boss眼魔激光使用)
 
     constructor(realDamage?:number){
         this.realDamage = realDamage?realDamage:0;
@@ -47,6 +48,7 @@ export default class DamageData {
         this.lighteningRate = data.lighteningRate?data.lighteningRate:0;
         this.toxicRate = data.toxicRate?data.toxicRate:0;
         this.curseRate = data.curseRate?data.curseRate:0;
+        this.stoneRate = data.stoneRate?data.stoneRate:0;
     }
    
     public clone(): DamageData {
@@ -64,6 +66,7 @@ export default class DamageData {
         e.lighteningRate = this.lighteningRate;
         e.toxicRate = this.toxicRate;
         e.curseRate = this.curseRate;
+        e.stoneRate = this.stoneRate;
         return e;
     }
     public getTotalDamage():number{

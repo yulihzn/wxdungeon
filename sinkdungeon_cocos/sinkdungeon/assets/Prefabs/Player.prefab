@@ -2872,8 +2872,8 @@
       "__id__": 79
     },
     "_enabled": true,
-    "_srcBlendFactor": 774,
-    "_dstBlendFactor": 0,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 772,
     "_lineWidth": 1,
     "_strokeColor": {
       "__type__": "cc.Color",
@@ -2882,8 +2882,8 @@
       "b": 0,
       "a": 255
     },
-    "_lineJoin": 2,
-    "_lineCap": 0,
+    "_lineJoin": 1,
+    "_lineCap": 1,
     "_fillColor": {
       "__type__": "cc.Color",
       "r": 170,

@@ -124,5 +124,28 @@
         "common": {
             
         }
+    },
+    "status012": {
+        "nameCn": "回复(狼人)",
+        "nameEn": "recovery",
+        "spriteFrameName": "iconhealthrecovery",
+        "statusType": 12,
+        "desc": "",
+        "duration": 5,
+        "realDamageOvertime": -1,
+        "common": {
+            
+        }
+    },
+    "status013": {
+        "nameCn": "石化",
+        "nameEn": "stone",
+        "spriteFrameName": "stone",
+        "statusType": 13,
+        "desc": "",
+        "duration": 5,
+        "common": {
+            "moveSpeed": -9999
+        }
     }
 }

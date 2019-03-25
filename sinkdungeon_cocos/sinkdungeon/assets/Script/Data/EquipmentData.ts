@@ -37,6 +37,8 @@ export default class EquipmentData extends BaseData{
     bulletNets = 0;//是否排状子弹11发并排数量为发射次数 为0的时候不触发 
     showShooter = 0;//是否显示发射器
     isHeavy = 0;//是否是重型武器比如激光,具体影响是开枪时候减速
+    isArcAim = 0;//是否是扇形瞄准
+    isLineAim = 0;//是否是线性瞄准
     private common:CommonData;
 
     info1:string = '';
@@ -87,6 +89,8 @@ export default class EquipmentData extends BaseData{
         this.showShooter = data.showShooter?data.showShooter:0;
         this.isHeavy = data.isHeavy?data.isHeavy:0;
         this.bulletType = data.bulletType?data.bulletType:'';
+        this.isArcAim = data.isArcAim?data.isArcAim:0;
+        this.isLineAim = data.isLineAim?data.isLineAim:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -127,6 +131,8 @@ export default class EquipmentData extends BaseData{
         e.showShooter = this.showShooter;
         e.bulletType = this.bulletType;
         e.isHeavy = this.isHeavy;
+        e.isArcAim = this.isArcAim;
+        e.isLineAim = this.isLineAim;
         e.bulletArcExNum = this.bulletArcExNum;
         e.bulletLineExNum = this.bulletLineExNum;
         e.bulletLineInterval = this.bulletLineInterval;

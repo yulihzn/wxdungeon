@@ -145,7 +145,6 @@ export default class Player extends cc.Component {
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter = this.shooterNode.getComponent(Shooter);
         this.shooter.player = this;
-        this.shooter.isLineAim = true;
         this.smokePool = new cc.NodePool();
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
@@ -411,6 +410,12 @@ export default class Player extends cc.Component {
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
         let speed = this.data.getMoveSpeed();
+        if(speed<0){
+            speed = 0;
+            if(this.statusManager.hasStatus(StatusManager.STONE)){
+                // this.turnStoneAnim(true);
+            }
+        }
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;

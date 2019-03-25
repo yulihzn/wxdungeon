@@ -264,17 +264,17 @@ export default class MeleeWeapon extends cc.Component {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        let power = 640;
+        let power = 320;
         if (!this.isFar && this.isStab) {
-            power = 320;
+            power = 160;
         } else if (this.isFar && this.isStab) {
-            power = 960;
+            power = 480;
         } else if (!this.isFar && !this.isStab) {
-            power = 640;
+            power = 320;
         } else {
-            power = 640;
+            power = 320;
         }
-        pos = pos.normalizeSelf().mul(640);
+        pos = pos.normalizeSelf().mul(power);
         let action = cc.moveBy(0.1, pos.x, pos.y);
         // node.runAction(action);
         rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);

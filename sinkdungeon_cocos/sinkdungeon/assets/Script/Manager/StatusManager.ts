@@ -31,6 +31,8 @@ export default class StatusManager extends cc.Component {
     public static readonly FASTATTACK = "status009";
     public static readonly PERFECTDEFENCE = "status010";
     public static readonly HEALING = "status011";
+    public static readonly RECOVERY = "status012";
+    public static readonly STONE = "status013";
 
 
     @property(cc.Prefab)
@@ -46,10 +48,23 @@ export default class StatusManager extends cc.Component {
     start() {
 
     }
-    addStatus(resName) {
+    addStatus(resName:string) {
         let sd = new StatusData();
         sd.valueCopy(Logic.debuffs[resName])
         this.showStatus(sd);
+    }
+    hasStatus(resName:string):boolean{
+        let hasStatus = false;
+        let sd = new StatusData();
+        sd.valueCopy(Logic.debuffs[resName]);
+        for (let i = this.statusList.length - 1; i >= 0; i--) {
+            let s = this.statusList[i];
+            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == sd.statusType) {
+                hasStatus = true;
+                break;
+            }
+        }
+        return hasStatus;
     }
     private showStatus(data: StatusData) {
         //去除已经失效的状态
@@ -80,6 +95,7 @@ export default class StatusManager extends cc.Component {
         status.showStatus(this.node.parent, data);
         this.statusList.push(status);
     }
+    
     update(dt) {
         if (this.node.parent) {
             this.node.scaleX = this.node.parent.scaleX>0?1:-1;
