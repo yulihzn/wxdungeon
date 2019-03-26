@@ -169,17 +169,20 @@ export default class Bullet extends cc.Component {
         if (this.data.isLaser != 1) {
             return;
         }
+        //碰撞终点
         let endPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         let distance = Logic.getDistance(this.startPos, endPos);
         let offset = 32;
-        this.laserSpriteNode.width = distance - offset;
-        this.laserSpriteNode.setPosition(cc.v2(-distance + offset, 0));
-        this.laserHeadSprite.node.setPosition(cc.v2(-distance + offset, 0));
+        //激光的宽度是两点之间的距离加贴图的宽度,激光的起始点是减去当前距离的点
+        let finalwidth = distance - offset;
+        this.laserSpriteNode.width = finalwidth/this.node.scaleY;
+        this.laserSpriteNode.setPosition(cc.v2(-finalwidth/this.node.scaleY, 0));
+        this.laserHeadSprite.node.setPosition(cc.v2(-finalwidth/this.node.scaleY, 0));
         this.laserNode.opacity = 255;
         this.sprite.opacity = 0;
         this.laserNode.scaleX = 1;
         this.laserNode.scaleY = 1;
-        this.laserLightSprite.node.setPosition(-16, 0);
+        this.laserLightSprite.node.setPosition(-16*this.node.scaleY, 0);
         let scaleAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.scaleTo(0.1, 1, 0));
         this.laserNode.runAction(scaleAction);
         this.scheduleOnce(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 0.2);
@@ -232,6 +235,7 @@ export default class Bullet extends cc.Component {
             this.rigidBody = this.getComponent(cc.RigidBody);
         }
         this.rigidBody.linearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
+        //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         this.sprite.stopAllActions();
         this.node.stopAllActions();

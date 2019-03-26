@@ -237,14 +237,14 @@ export default class Shooter extends cc.Component {
         }
         this.graphics.clear();
         this.graphics.fillColor = color;
-        this.graphics.circle(0,0,width);
-        this.graphics.circle(range,0,width/2+2);
+        this.graphics.circle(0,0,width/2+1);
+        this.graphics.circle(range,0,width/2+1);
         this.graphics.rect(0,-width/2,range,width);
         this.graphics.fill();
     }
     private getRayCastPoint(range?:number,startPos?:cc.Vec2):cc.Vec2{
         let s = startPos?startPos:cc.v2(0,0);
-        let r= range?range:1000;
+        let r= range?range:3000;
         let p = cc.v2(r,0);
         let p1 = this.node.convertToWorldSpaceAR(s);
         let p2 = this.node.convertToWorldSpaceAR(p);
@@ -310,13 +310,13 @@ export default class Shooter extends cc.Component {
             if(width > 10&&!isOver){
                 isOver = true;
             }else if(isOver){
-                width-=0.2;
+                width-=1;
             }else {
-                width+=0.2;
+                width+=1;
             }
            
         }
-        this.schedule(fun,0.02,100);
+        this.schedule(fun,0.025,30);
     }
     private drawArc(angle:number){
         if(!this.graphics){

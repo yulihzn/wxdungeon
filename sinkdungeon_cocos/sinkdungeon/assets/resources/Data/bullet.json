@@ -7,7 +7,7 @@
         "speed": 200,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.2,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }
@@ -59,7 +59,7 @@
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.5,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }
@@ -72,7 +72,7 @@
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.5,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }
@@ -85,7 +85,7 @@
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.5,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }
@@ -98,7 +98,7 @@
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.5,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }
@@ -111,7 +111,7 @@
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.5,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }
@@ -124,7 +124,7 @@
         "speed": 500,
         "isRect": 0,
         "isRotate": 0,
-        "size": 1.6,
+        "size": 1.5,
         "damage": {
             "physicalDamage": 1
         }
@@ -135,7 +135,7 @@
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
-        "size": 1.2,
+        "size": 1,
         "resName":"bullet011",
         "lightName": "bulletlight001",
         "lightColor": "#FFFF00",
@@ -183,7 +183,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 2,
+        "size": 1.5,
         "isTracking":0,
         "resName":"bullet014",
         "lightName": "bulletlight001",
@@ -232,7 +232,7 @@
         "isRect": 0,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 1.5,
+        "size": 1,
         "isTracking":1,
         "delaytrack":1,
         "isPhysical":0,
@@ -250,7 +250,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":2,
-        "size": 1.8,
+        "size": 1.5,
         "isTracking":0,
         "isPhysical":0,
         "resName":"bullet018",
@@ -267,7 +267,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":1,
-        "size": 2,
+        "size": 1.5,
         "isTracking":0,
         "isPhysical":0,
         "resName":"bullet019",
@@ -307,11 +307,23 @@
     },
     "laser002": {
         "name":"灰色激光",
-        "speed": 1000,
+        "speed": 5000,
         "isLaser":1,
-        "lifeTime":0.5,
+        "lifeTime":2,
         "size": 2,
         "resNameLaser":"laser002",
+        "damage": {
+            "physicalDamage": 1,
+            "fireRate":100
+        }
+    },
+    "laser003": {
+        "name":"紫色激光",
+        "speed": 5000,
+        "isLaser":1,
+        "lifeTime":2,
+        "size": 2,
+        "resNameLaser":"laser003",
         "damage": {
             "physicalDamage": 1,
             "stoneRate":100
@@ -321,7 +333,7 @@
         "name":"短暂红色激光",
         "speed": 1000,
         "isLaser":1,
-        "lifeTime":0.5,
+        "lifeTime":0.2,
         "resNameLaser":"laser001",
         "damage": {
             "physicalDamage": 1

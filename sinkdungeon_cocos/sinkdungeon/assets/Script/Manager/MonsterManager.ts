@@ -48,6 +48,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_ZOOMBIE = 'monster019';
     public static readonly MONSTER_ELECTRICEYE = 'monster020';
     public static readonly MONSTER_FISH = 'monster021';
+    public static readonly MONSTER_CROCODILE = 'monster022'
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -276,7 +277,7 @@ export default class MonsterManager extends cc.Component {
             case Logic.CHAPTER02: arr = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
                 , MonsterManager.MONSTER_WEREWOLF];
                 num = Random.getRandomNum(2, 5); break;
-            case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB];
+            case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB,MonsterManager.MONSTER_CROCODILE];
                 num = Random.getRandomNum(2, 7); break;
             case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE];
                 num = Random.getRandomNum(3, 10); break;

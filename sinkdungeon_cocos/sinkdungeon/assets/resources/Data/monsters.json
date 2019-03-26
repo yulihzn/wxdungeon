@@ -254,8 +254,7 @@
         "resName": "monster014",
         "chapter": 0,
         "stageLevel": 0,
-        "bulletType":"laser001",
-        "isLineAim":1,
+        "bulletType":"laser101",
         "common": {
             "moveSpeed": 500,
             "maxHealth": 5,
@@ -263,7 +262,7 @@
         },
         "currentHealth": 5,
         "invisible": 0,
-        "remote": 5,
+        "remote": 1,
         "melee": 0,
         "dash": 0
     },
@@ -392,5 +391,24 @@
         "remote": 0,
         "melee": 2,
         "dash": 5
+    },
+    "monster022": {
+        "nameCn": "鳄鱼",
+        "nameEn": "Crocodile",
+        "resName": "monster022",
+        "chapter": 0,
+        "stageLevel": 0,
+        "isLineAim":1,
+        "bulletType":"laser002",
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 10,
+            "damageMin": 2
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 4,
+        "melee": 2,
+        "dash": 0
     }
 }

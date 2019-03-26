@@ -413,7 +413,7 @@ export default class Monster extends cc.Component {
         let pos = newPos.clone();
 
         //近战
-        if (playerDis < 80 && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.isDisguising) {
+        if (playerDis < 100 && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.isDisguising) {
             this.meleeSkill.next(() => {
                 this.meleeSkill.IsExcuting = true;
                 this.showAttackEffect();

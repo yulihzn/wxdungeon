@@ -179,17 +179,7 @@ export default class Player extends cc.Component {
             this.glovesRightSprite.setState(0);
         }
     }
-    turnStoneAnim(isStone:boolean){
-        let action = cc.sequence(cc.callFunc(()=>{this.turnStone(true,2);}),cc.delayTime(0.3)
-        ,cc.callFunc(()=>{this.turnStone(true,1);}),cc.delayTime(0.3)
-        ,cc.callFunc(()=>{this.turnStone(true,0);this.isStone = true;}));
-        if(!isStone){
-            action = cc.sequence(cc.callFunc(()=>{this.turnStone(true,1);}),cc.delayTime(0.3)
-        ,cc.callFunc(()=>{this.turnStone(true,2);}),cc.delayTime(0.3)
-        ,cc.callFunc(()=>{this.turnStone(false);this.isStone = false;}));
-        }
-        this.node.runAction(action);
-    }
+    
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
         for (let name of childNames) {
@@ -412,9 +402,6 @@ export default class Player extends cc.Component {
         let speed = this.data.getMoveSpeed();
         if(speed<0){
             speed = 0;
-            if(this.statusManager.hasStatus(StatusManager.STONE)){
-                // this.turnStoneAnim(true);
-            }
         }
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
@@ -428,7 +415,7 @@ export default class Player extends cc.Component {
             walkName = "PlayerWalk";
             idleName = "idle002";
         }
-        if (this.isMoving) {
+        if (this.isMoving&&!this.isStone) {
             if (!this.anim.getAnimationState(walkName).isPlaying) {
                 this.anim.playAdditive(walkName);
             }
@@ -532,6 +519,7 @@ export default class Player extends cc.Component {
         if (this.shooter && !this.shooter.dungeon) {
             this.shooter.dungeon = dungeon;
         }
+        
         this.move(dir, pos, dt);
     }
     //30秒回复一次
@@ -566,9 +554,8 @@ export default class Player extends cc.Component {
         if (this.isSmokeTimeDelay(dt) && this.isMoving) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
-        if(this.isStone){
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-        }
+        this.isStone = this.statusManager.hasStatus(StatusManager.STONE);
+        this.turnStone(this.isStone);
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
 

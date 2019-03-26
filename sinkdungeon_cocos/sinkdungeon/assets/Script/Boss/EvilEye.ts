@@ -112,7 +112,7 @@ export default class EvilEye extends Boss {
         this.fireWithViceEyes();
         this.fireWithMainEye();
         if (!pos.equals(cc.Vec2.ZERO)
-            && playerDis > 100) {
+            && playerDis > 100 && !this.shooter.isAiming) {
             pos = pos.normalizeSelf();
             this.move(pos, 20);
         }
@@ -120,9 +120,9 @@ export default class EvilEye extends Boss {
     getMovePos(): cc.Vec2 {
         let newPos = this.dungeon.player.pos.clone();
         if (this.dungeon.player.pos.x > this.pos.x) {
-            newPos = newPos.addSelf(cc.v2(1, -1));
+            newPos = newPos.addSelf(cc.v2(1, 1));
         } else {
-            newPos = newPos.addSelf(cc.v2(-1, -1));
+            newPos = newPos.addSelf(cc.v2(-1, 1));
         }
         let pos = Dungeon.getPosInMap(newPos);
         pos.y+=32;
@@ -158,14 +158,14 @@ export default class EvilEye extends Boss {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.data.isLineAim = 1;
-            this.fireShooter(this.shooter,'laser002',0,0,0,cc.v2(0,0));
+            this.fireShooter(this.shooter,'laser003',0,3,0,cc.v2(0,0));
+            this.anim.playAdditive("EvilEyeStone");
         }
       
-        },10);
+        },7);
     }
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number,defaultPos?:cc.Vec2): void {
         shooter.dungeon = this.dungeon;
-        // shooter.setHv(cc.v2(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
