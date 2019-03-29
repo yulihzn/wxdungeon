@@ -10,6 +10,7 @@ import Rah from "../Boss/Rah";
 import Random from "../Utils/Random";
 import IceDemon from "../Boss/IceDemon";
 import EvilEye from "../Boss/EvilEye";
+import Dryad from "../Boss/Dryad";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -71,6 +72,8 @@ export default class MonsterManager extends cc.Component {
     iceDemon = null;
     @property(cc.Prefab)
     evilEye = null;
+    @property(cc.Prefab)
+    dryad = null;
     onLoad() {
     }
     /**
@@ -190,6 +193,21 @@ export default class MonsterManager extends cc.Component {
         machine.node.active = true;
         return machine;
     }
+    getDryad(dungeon: Dungeon, posIndex: cc.Vec2): Dryad {
+        let dryadPrefab: cc.Node = null;
+        dryadPrefab = cc.instantiate(this.dryad);
+        dryadPrefab.active = false;
+        dryadPrefab.parent = dungeon.node;
+        let dryad = dryadPrefab.getComponent(Dryad);
+        dryad.dungeon = dungeon;
+        let data = new MonsterData();
+        data.updateHA(800, 800, 2);
+        dryad.data = data;
+        dryad.transportBoss(posIndex.x, posIndex.y);
+        dryad.healthBar = dungeon.bossHealthBar;
+        dryad.node.active = true;
+        return dryad;
+    }
     getRah(dungeon: Dungeon, posIndex: cc.Vec2): Rah {
         let rahPrefab: cc.Node = null;
         rahPrefab = cc.instantiate(this.rah);
@@ -279,7 +297,8 @@ export default class MonsterManager extends cc.Component {
                 num = Random.getRandomNum(2, 5); break;
             case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB,MonsterManager.MONSTER_CROCODILE];
                 num = Random.getRandomNum(2, 7); break;
-            case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE];
+            case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE,MonsterManager.MONSTER_ANUBIS,MonsterManager.MONSTER_OCTOPUS,MonsterManager.MONSTER_ELECTRICEYE
+            ,MonsterManager.MONSTER_WEREWOLF];
                 num = Random.getRandomNum(3, 10); break;
         }
         for (let i = 0; i <= num; i++) {

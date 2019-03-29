@@ -33,7 +33,7 @@ export default class EquipmentData extends BaseData{
     bulletType = "";//子弹类别
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
-    bulletLineInterval = 0;//线性喷射间隔时间（毫秒）
+    bulletLineInterval = 0;//线性喷射间隔时间（秒）
     bulletNets = 0;//是否排状子弹11发并排数量为发射次数 为0的时候不触发 
     showShooter = 0;//是否显示发射器
     isHeavy = 0;//是否是重型武器比如激光,具体影响是开枪时候减速

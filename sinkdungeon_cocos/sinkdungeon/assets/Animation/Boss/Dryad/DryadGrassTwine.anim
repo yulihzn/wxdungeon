@@ -1,0 +1,59 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "DryadGrassTwine",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2.533333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite": {
+        "props": {
+          "scaleY": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 2,
+              "value": 4
+            }
+          ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "ce5ab50a-8a37-4a3d-a6b6-245c3fe9782e"
+                }
+              },
+              {
+                "frame": 2,
+                "value": {
+                  "__uuid__": "d511cd65-70a3-4f5d-bdbd-e551b9b651b6"
+                }
+              },
+              {
+                "frame": 2.5166666666666666,
+                "value": {
+                  "__uuid__": "86724705-dd52-4d31-8d93-830e6de8a708"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 2,
+      "func": "TwineUp",
+      "params": []
+    }
+  ]
+}

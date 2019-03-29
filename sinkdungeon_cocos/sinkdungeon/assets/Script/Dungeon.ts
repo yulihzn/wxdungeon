@@ -32,6 +32,7 @@ import ChestData from "./Data/ChestData";
 import ItemData from "./Data/ItemData";
 import Random from "./Utils/Random";
 import IceDemonThron from "./Boss/IceDemonThron";
+import DryadGrass from "./Boss/DryadGrass";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -86,6 +87,8 @@ export default class Dungeon extends cc.Component {
     venom: cc.Prefab = null;
     @property(cc.Prefab)
     iceThron: cc.Prefab = null;
+    @property(cc.Prefab)
+    dryadGrass: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -455,7 +458,7 @@ export default class Dungeon extends cc.Component {
                         this.addBossSlime(0, cc.v2(i, j));
                     }
                     if (mapData[i][j] == '5') {
-                        this.addBossKraken(cc.v2(i, j));
+                        this.addBossDryad(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '6') {
                         this.addBossRah(cc.v2(i, j));
@@ -555,6 +558,23 @@ export default class Dungeon extends cc.Component {
         }
 
     }
+    /**树根缠绕 */
+    addTwineGrass(pos: cc.Vec2, isAuto: boolean) {
+        if (!this.dryadGrass) {
+            return;
+        }
+        let grass = cc.instantiate(this.dryadGrass);
+        let dryadGrassScript = grass.getComponent(DryadGrass);
+        dryadGrassScript.isAuto = isAuto;
+        grass.parent = this.node;
+        grass.position = pos;
+        let indexpos = Dungeon.getIndexInMap(pos);
+        grass.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        if (dryadGrassScript.isAuto) {
+            dryadGrassScript.fall();
+        }
+
+    }
 
     /**掉落金币 */
     addCoin(pos: cc.Vec2, count: number) {
@@ -640,8 +660,17 @@ export default class Dungeon extends cc.Component {
         this.bosses.push(boss);
         this.scheduleOnce(() => {
             boss.showBoss();
-            // this.anim.play('DungeonWave');
         }, 3.5);
+    }
+    private addBossDryad(index: cc.Vec2) {
+        if (!this.bosses) {
+            return;
+        }
+        let boss = this.monsterManager.getDryad(this, index.clone());
+        this.bosses.push(boss);
+        this.scheduleOnce(() => {
+            boss.showBoss();
+        }, 2);
     }
     private addBossRah(index: cc.Vec2) {
         if (!this.bosses) {
@@ -651,7 +680,6 @@ export default class Dungeon extends cc.Component {
         this.bosses.push(boss);
         this.scheduleOnce(() => {
             boss.showBoss();
-            // this.anim.play('DungeonWave');
         }, 2);
     }
     private addBossIceDemon(index: cc.Vec2) {

@@ -1,0 +1,243 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "DryadOpen",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 4,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "1",
+  "curveData": {
+    "paths": {
+      "sprite/head": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 64
+            },
+            {
+              "frame": 1,
+              "value": 56
+            },
+            {
+              "frame": 2,
+              "value": 64
+            },
+            {
+              "frame": 3,
+              "value": 56
+            },
+            {
+              "frame": 4,
+              "value": 64
+            }
+          ]
+        }
+      },
+      "sprite/head/headup": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 12
+            },
+            {
+              "frame": 1,
+              "value": 16
+            },
+            {
+              "frame": 2,
+              "value": 12
+            },
+            {
+              "frame": 3,
+              "value": 16
+            },
+            {
+              "frame": 4,
+              "value": 12
+            }
+          ]
+        }
+      },
+      "sprite/armright": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 30
+            },
+            {
+              "frame": 0.5,
+              "value": 20
+            },
+            {
+              "frame": 3.5166666666666666,
+              "value": 20
+            },
+            {
+              "frame": 4,
+              "value": 30
+            }
+          ]
+        }
+      },
+      "sprite/armleft": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -30
+            },
+            {
+              "frame": 0.5,
+              "value": -20
+            },
+            {
+              "frame": 3.5,
+              "value": -20
+            },
+            {
+              "frame": 4,
+              "value": -30
+            }
+          ]
+        }
+      },
+      "sprite/body": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 64
+            },
+            {
+              "frame": 0.5,
+              "value": 60
+            },
+            {
+              "frame": 1,
+              "value": 64
+            },
+            {
+              "frame": 1.5,
+              "value": 60
+            },
+            {
+              "frame": 2,
+              "value": 64
+            },
+            {
+              "frame": 2.5,
+              "value": 60
+            },
+            {
+              "frame": 3,
+              "value": 64
+            },
+            {
+              "frame": 3.5,
+              "value": 60
+            },
+            {
+              "frame": 4,
+              "value": 64
+            }
+          ]
+        }
+      },
+      "sprite/bottom": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.9,
+                "y": 0.9
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 3,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.9,
+                "y": 0.9
+              }
+            },
+            {
+              "frame": 4,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ]
+        }
+      },
+      "sprite/armright/hand": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 90
+            },
+            {
+              "frame": 0.5,
+              "value": 270
+            },
+            {
+              "frame": 3.5,
+              "value": 270
+            },
+            {
+              "frame": 4,
+              "value": 90
+            }
+          ]
+        }
+      },
+      "sprite/armleft/hand": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 90
+            },
+            {
+              "frame": 0.5,
+              "value": -90
+            },
+            {
+              "frame": 3.5,
+              "value": -90
+            },
+            {
+              "frame": 4,
+              "value": 90
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

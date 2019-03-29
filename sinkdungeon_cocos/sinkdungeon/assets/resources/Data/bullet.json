@@ -296,6 +296,25 @@
             "physicalDamage": 1
         }
     },
+    "bullet021": {
+        "name":"花瓣",
+        "resName": "bullet021",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 200,
+        "isRect": 0,
+        "isRotate": 0,
+        "lifeTime":10,
+        "isPhysical":0,
+        "isDecelerate":2,
+        "isTracking":0,
+        "delaytrack":3,
+        "size": 1,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

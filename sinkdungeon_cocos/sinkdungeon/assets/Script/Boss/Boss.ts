@@ -7,6 +7,7 @@ import StatusManager from "../Manager/StatusManager";
 import { EventConstant } from "../EventConstant";
 import EquipmentManager from "../Manager/EquipmentManager";
 import Actor from "../Base/Actor";
+import Shooter from "../Shooter";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,5 +84,12 @@ export default abstract class Boss extends Actor {
         }
     }
     showBoss() {
+    }
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
+        shooter.dungeon = this.dungeon;
+        shooter.data.bulletType = bulletType;
+        shooter.data.bulletArcExNum = bulletArcExNum;
+        shooter.data.bulletLineExNum = bulletLineExNum;
+        shooter.fireBullet(angle);
     }
 }

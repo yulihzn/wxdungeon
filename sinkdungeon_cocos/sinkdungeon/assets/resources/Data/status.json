@@ -147,5 +147,16 @@
         "common": {
             "moveSpeed": -9999
         }
+    },
+    "status014": {
+        "nameCn": "缠绕",
+        "nameEn": "twine",
+        "spriteFrameName": "toxicosis",
+        "statusType": 14,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "moveSpeed": -9999
+        }
     }
 }

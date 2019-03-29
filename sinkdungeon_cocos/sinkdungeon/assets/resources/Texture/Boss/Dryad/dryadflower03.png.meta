@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "086ca9dc-a9ef-4d95-ad2f-75d96d565eb1",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "dryadflower03": {
+      "ver": "1.0.3",
+      "uuid": "57688455-10d6-4762-adf9-8fe6fab04f43",
+      "rawTextureUuid": "086ca9dc-a9ef-4d95-ad2f-75d96d565eb1",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 16,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
