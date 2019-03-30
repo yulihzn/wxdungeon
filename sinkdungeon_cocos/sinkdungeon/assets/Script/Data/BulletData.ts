@@ -31,6 +31,7 @@ export default class BulletData {
     lightName = '';//子弹消失的光芒
     resNameLaser = "";//激光贴图
     lightColor:string = '#ffffff';//子弹颜色
+    fixedRotation = 0;//是否固定方向
     damage:DamageData = new DamageData();
     valueCopy(data:BulletData){
         this.speed = data.speed?data.speed:0;
@@ -45,6 +46,7 @@ export default class BulletData {
         this.isTracking = data.isTracking?data.isTracking:0;
         this.isPhysical = data.isPhysical?data.isPhysical:0;
         this.delaytrack = data.delaytrack?data.delaytrack:0;
+        this.fixedRotation = data.fixedRotation?data.fixedRotation:0;
         this.size = data.size?data.size:1;
         this.lifeTime = data.lifeTime?data.lifeTime:0;
         this.resName = data.resName?data.resName:'';
@@ -73,6 +75,7 @@ export default class BulletData {
         e.lifeTime = this.lifeTime;
         e.isPhysical = this.isPhysical;
         e.delaytrack = this.delaytrack;
+        e.fixedRotation = this.fixedRotation;
         e.damage = this.damage.clone();
         return e;
     }

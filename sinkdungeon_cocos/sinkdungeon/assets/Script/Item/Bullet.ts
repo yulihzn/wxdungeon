@@ -101,6 +101,9 @@ export default class Bullet extends cc.Component {
             this.checkTraking();
             this.checkTimeDelay = 0;
         }
+        if(this.data.fixedRotation == 1){
+            this.node.rotation = 0;
+        }
         if(this.data.isDecelerate == 1 && this.isDecelerateDelay){
             this.timeDelay += dt;
             if (this.timeDelay > 0.016) {
@@ -405,6 +408,10 @@ export default class Bullet extends cc.Component {
     }
 
     rotateColliderManager(target: cc.Vec2) {
+        if(this.data.fixedRotation == 1){
+            return;
+        }
+
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
         // 两者取差得到方向向量

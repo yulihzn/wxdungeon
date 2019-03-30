@@ -334,6 +334,26 @@
             "physicalDamage": 5
         }
     },
+    "bullet023": {
+        "name":"风暴",
+        "resName": "bullet023",
+        "lightName": "bulletlight001",
+        "lightColor": "#708090",
+        "speed": 200,
+        "isRect": 0,
+        "isRotate": 0,
+        "lifeTime":15,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":1,
+        "fixedRotation":1,
+        "delaytrack":1,
+        "size": 5,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 5
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
