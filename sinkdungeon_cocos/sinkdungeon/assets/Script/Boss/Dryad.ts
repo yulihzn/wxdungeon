@@ -6,6 +6,7 @@ import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
+import BossAttackCollider from "./BossAttackCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,6 +23,10 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Dryad extends Boss {
 
+    @property(BossAttackCollider)
+    hand01:BossAttackCollider = null;
+    @property(BossAttackCollider)
+    hand02:BossAttackCollider = null;
     private anim: cc.Animation;
     shooter01: Shooter;//主炮
     shooter02: Shooter;//加特林左
@@ -36,6 +41,8 @@ export default class Dryad extends Boss {
     // LIFE-CYCLE CALLBACKS:
     twoFlowerSkill = new Skill();
     twineGrassSkill = new Skill();
+    meleeSkill = new Skill();
+    stoneSkill = new Skill();
 
     onLoad() {
         this.isDied = false;
@@ -75,19 +82,36 @@ export default class Dryad extends Boss {
             return;
         }
         this.changeZIndex();
-        // if (this.dungeon) {
-        //     if (Logic.getChance(90)) { this.fireMainGun(); }
-        // }
-        // let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-        // if (playerDis < 200) {
-        //     this.fireMissile();
-        // } else if (Logic.getChance(20)) {
-        //     this.fireMissile();
-        // }
-        // let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
-        // this.fireGatling(isHalf);
-        this.twoFlowers();
+        if(!this.twoFlowerSkill.IsExcuting&&!this.stoneSkill.IsExcuting){
+            this.attack();
+        }
+        if(!this.meleeSkill.IsExcuting&&!this.stoneSkill.IsExcuting){
+            this.twoFlowers();
+        }
+        if(!this.meleeSkill.IsExcuting&&!this.twoFlowerSkill.IsExcuting){
+            this.fireStone();
+        }
         this.twineGrass();
+
+    }
+    attack() {
+        this.meleeSkill.next(() => {
+            this.meleeSkill.IsExcuting = true;
+            if (!this.anim) {
+                this.anim = this.getComponent(cc.Animation);
+            }
+            let attackName = 'DryadAttack01';
+            if(Logic.getHalfChance()){
+                this.anim.play('DryadAttack01');
+            this.hand01.showCollider(2,1);
+                
+            }else{
+                this.anim.play('DryadAttack02');
+            this.hand02.showCollider(2,1);
+            }
+            this.scheduleOnce(()=>{this.anim.play('DryadIdle');this.meleeSkill.IsExcuting = false;},2);
+        }, 3, true);
+        
 
     }
     twineGrass(){
@@ -95,10 +119,11 @@ export default class Dryad extends Boss {
             this.schedule(()=>{
                 this.dungeon.addTwineGrass(Dungeon.getPosInMap(this.dungeon.player.pos.clone()), true);
             },1,2);
-        },12);
+        },12,true);
     }
     twoFlowers(){
         this.twoFlowerSkill.next(()=>{
+            this.twoFlowerSkill.IsExcuting = true;
             this.shooter02.setHv(cc.v2(0,-1));
             this.shooter03.setHv(cc.v2(0,-1));
             //动画总共4秒
@@ -112,11 +137,26 @@ export default class Dryad extends Boss {
                 this.fireShooter(this.shooter02, "bullet021", 99, 2);
                 this.fireShooter(this.shooter03, "bullet021", 99, 2);
             },2);
-            this.scheduleOnce(()=>{this.anim.play('DryadIdle')},4);
+            this.scheduleOnce(()=>{this.anim.play('DryadIdle');this.twoFlowerSkill.IsExcuting = false;},4);
 
-        },8)
+        },8,true)
     }
-   
+    fireStone() {
+        this.stoneSkill.next(() => {
+            this.stoneSkill.IsExcuting = true;
+            this.anim.play('DryadStone');
+            this.scheduleOnce(()=>{
+                let pos = this.node.position.clone().add(this.shooter01.node.position);
+                let hv = this.dungeon.player.getCenterPosition().sub(pos);
+                if (!hv.equals(cc.Vec2.ZERO)) {
+                    hv = hv.normalizeSelf();
+                    this.shooter01.setHv(hv);
+                    this.fireShooter(this.shooter01, "bullet022", 0, 0);
+                }
+            },1.1);
+            this.scheduleOnce(()=>{this.stoneSkill.IsExcuting = false;this.anim.play('DryadIdle');},2);
+        }, 8,true);
+    }
    
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
         shooter.dungeon = this.dungeon;
@@ -155,5 +195,5 @@ export default class Dryad extends Boss {
         this.healthBar.node.active = !this.isDied;
         this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
-
+    
 }

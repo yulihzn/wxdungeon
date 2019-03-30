@@ -61,7 +61,7 @@ export default class Coin extends cc.Component {
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 1) {
+        if (this.checkTimeDelay > 0.2) {
             this.checkTimeDelay = 0;
             return true;
         }

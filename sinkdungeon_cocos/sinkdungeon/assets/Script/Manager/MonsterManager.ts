@@ -11,6 +11,7 @@ import Random from "../Utils/Random";
 import IceDemon from "../Boss/IceDemon";
 import EvilEye from "../Boss/EvilEye";
 import Dryad from "../Boss/Dryad";
+import Sphinx from "../Boss/Sphinx";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -74,6 +75,18 @@ export default class MonsterManager extends cc.Component {
     evilEye = null;
     @property(cc.Prefab)
     dryad = null;
+    @property(cc.Prefab)
+    sphinx = null;
+    readonly maxHealth00 = 200;
+    readonly maxHealth01 = 300;
+    readonly maxHealth02 = 300;
+    readonly maxHealth03 = 400;
+    readonly maxHealth04 = 400;
+    readonly maxHealth05 = 500;
+    readonly maxHealth06 = 500;
+    readonly maxHealth07 = 600;
+    readonly maxHealth08 = 600;
+    readonly maxHealth09 = 800;
     onLoad() {
     }
     /**
@@ -156,7 +169,7 @@ export default class MonsterManager extends cc.Component {
         let iceDemon = icePrefab.getComponent(IceDemon);
         iceDemon.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(400, 400, 0);
+        data.updateHA(this.maxHealth00, this.maxHealth00, 0);
         iceDemon.data = data;
         iceDemon.transportBoss(posIndex.x, posIndex.y);
         iceDemon.healthBar = dungeon.bossHealthBar;
@@ -171,7 +184,7 @@ export default class MonsterManager extends cc.Component {
         let evil = evilEyePrefab.getComponent(EvilEye);
         evil.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(400, 400, 0);
+        data.updateHA(this.maxHealth08, this.maxHealth08, 0);
         evil.data = data;
         evil.transportBoss(posIndex.x, posIndex.y);
         evil.healthBar = dungeon.bossHealthBar;
@@ -186,7 +199,7 @@ export default class MonsterManager extends cc.Component {
         let machine = machinePrefab.getComponent(WarMachine);
         machine.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(800, 800, 2);
+        data.updateHA(this.maxHealth01, this.maxHealth01, 2);
         machine.data = data;
         machine.transportBoss(posIndex.x, posIndex.y);
         machine.healthBar = dungeon.bossHealthBar;
@@ -201,12 +214,27 @@ export default class MonsterManager extends cc.Component {
         let dryad = dryadPrefab.getComponent(Dryad);
         dryad.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(800, 800, 2);
+        data.updateHA(this.maxHealth05, this.maxHealth05, 2);
         dryad.data = data;
         dryad.transportBoss(posIndex.x, posIndex.y);
         dryad.healthBar = dungeon.bossHealthBar;
         dryad.node.active = true;
         return dryad;
+    }
+    getSphinx(dungeon: Dungeon, posIndex: cc.Vec2): Sphinx {
+        let sphinxPrefab: cc.Node = null;
+        sphinxPrefab = cc.instantiate(this.sphinx);
+        sphinxPrefab.active = false;
+        sphinxPrefab.parent = dungeon.node;
+        let sphinx = sphinxPrefab.getComponent(Sphinx);
+        sphinx.dungeon = dungeon;
+        let data = new MonsterData();
+        data.updateHA(this.maxHealth07, this.maxHealth07, 2);
+        sphinx.data = data;
+        sphinx.transportBoss(posIndex.x, posIndex.y);
+        sphinx.healthBar = dungeon.bossHealthBar;
+        sphinx.node.active = true;
+        return sphinx;
     }
     getRah(dungeon: Dungeon, posIndex: cc.Vec2): Rah {
         let rahPrefab: cc.Node = null;
@@ -216,7 +244,7 @@ export default class MonsterManager extends cc.Component {
         let rah = rahPrefab.getComponent(Rah);
         rah.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(400, 400, 0);
+        data.updateHA(this.maxHealth06, this.maxHealth06, 0);
         rah.data = data;
         rah.transportBoss(posIndex.x, posIndex.y);
         rah.healthBar = dungeon.bossHealthBar;
@@ -231,7 +259,7 @@ export default class MonsterManager extends cc.Component {
         let kraken = krakenPrefab.getComponent(Kraken);
         kraken.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(800, 800, 2);
+        data.updateHA(this.maxHealth03, this.maxHealth03, 2);
         kraken.data = data;
         kraken.transportBoss(posIndex.x, posIndex.y);
         kraken.healthBar = dungeon.bossHealthBar;
@@ -246,7 +274,7 @@ export default class MonsterManager extends cc.Component {
         let captain = captainPrefab.getComponent(Captain);
         captain.dungeon = dungeon;
         let data = new MonsterData();
-        data.updateHA(400, 400, 2);
+        data.updateHA(this.maxHealth02, this.maxHealth02, 2);
         captain.data = data;
         captain.transportBoss(posIndex.x, posIndex.y);
         captain.healthBar = dungeon.bossHealthBar;
@@ -263,7 +291,7 @@ export default class MonsterManager extends cc.Component {
         let data = new MonsterData();
         data.Common.moveSpeed = 200;
         switch (type) {
-            case 0: data.updateHA(400, 400, 2); slime.scaleSize = 2; break;
+            case 0: data.updateHA(this.maxHealth04, this.maxHealth04, 2); slime.scaleSize = 2; break;
             case 1: data.updateHA(200, 200, 2); slime.scaleSize = 1.5; break;
             case 2: data.updateHA(100, 100, 2); slime.scaleSize = 1; break;
             case 3: data.updateHA(50, 50, 2); slime.scaleSize = 0.5; break;

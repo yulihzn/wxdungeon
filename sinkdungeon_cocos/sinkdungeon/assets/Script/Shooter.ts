@@ -202,7 +202,8 @@ export default class Shooter extends cc.Component {
         pos = this.dungeon.node.convertToNodeSpace(pos);
         bulletPrefab.parent = this.dungeon.node;
         bulletPrefab.position = pos;
-        bulletPrefab.scale = 1;
+        bulletPrefab.scaleX = 1;
+        bulletPrefab.scaleY = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
         // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;

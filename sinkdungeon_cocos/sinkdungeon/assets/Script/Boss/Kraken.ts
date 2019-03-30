@@ -113,6 +113,7 @@ export default class Kraken extends Boss {
             hand.isShow = false;
         }
         this.anim.play('KrakenDie');
+        this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
     //Animation

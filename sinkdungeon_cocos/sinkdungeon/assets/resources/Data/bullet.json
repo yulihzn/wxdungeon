@@ -131,7 +131,7 @@
     },
     "bullet011": {
         "name":"霰弹",
-        "speed": 700,
+        "speed": 500,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
@@ -166,7 +166,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 1.2,
+        "size": 2,
         "isTracking":0,
         "resName":"bullet013",
         "lightName": "bulletlight001",
@@ -183,7 +183,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 1.5,
+        "size": 2,
         "isTracking":0,
         "resName":"bullet014",
         "lightName": "bulletlight001",
@@ -200,7 +200,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 1.2,
+        "size": 2,
         "isTracking":1,
         "resName":"bullet015",
         "lightName": "bulletlight001",
@@ -216,7 +216,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":1,
-        "size": 1.5,
+        "size": 3,
         "isBoom":1,
         "resName":"bullet016",
         "lightName": "bulletlight001",
@@ -250,7 +250,7 @@
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":2,
-        "size": 1.5,
+        "size": 2,
         "isTracking":0,
         "isPhysical":0,
         "resName":"bullet018",
@@ -290,7 +290,7 @@
         "lifeTime":10,
         "isPhysical":1,
         "isDecelerate":1,
-        "size": 1,
+        "size": 0.8,
         "isBoom":1,
         "damage": {
             "physicalDamage": 1
@@ -313,6 +313,25 @@
         "isBoom":0,
         "damage": {
             "physicalDamage": 1
+        }
+    },
+    "bullet022": {
+        "name":"石头",
+        "resName": "bullet022",
+        "lightName": "bulletlight001",
+        "lightColor": "#708090",
+        "speed": 200,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "delaytrack":0,
+        "size": 7,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 5
         }
     },
     "laser001": {

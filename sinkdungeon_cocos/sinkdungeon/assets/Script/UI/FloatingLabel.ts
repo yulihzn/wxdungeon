@@ -45,7 +45,7 @@ export default class FloatingLabel extends cc.Component {
     }
     showDamage(damage:number){
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
-        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,1+Math.abs(damage/10));
+        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,1+Math.abs(damage/20));
     }
 
     hideLabel(){

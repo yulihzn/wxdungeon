@@ -83,7 +83,8 @@ export default class Monster extends cc.Component {
         this.sprite = this.node.getChildByName('sprite');
 
         if (this.isVariation) {
-            this.node.scale = Monster.SCALE_NUM;
+            let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
+            this.node.scale = Monster.SCALE_NUM*scaleNum;
         }
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
@@ -97,7 +98,7 @@ export default class Monster extends cc.Component {
         this.particleCurse = this.node.getChildByName('Effect').getChildByName('curse').getComponent(cc.ParticleSystem);
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
-        this.scheduleOnce(() => { this.isShow = true; }, 1.5);
+        this.scheduleOnce(() => { this.isShow = true; }, 0.5);
     }
 
     changeBodyRes(resName: string, suffix?: string) {
@@ -107,11 +108,11 @@ export default class Monster extends cc.Component {
         let body = this.sprite.getChildByName('body');
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
         body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-        body.width = spriteFrame.getRect().width;
-        body.height = spriteFrame.getRect().height;
+        // body.width = spriteFrame.getRect().width;
+        // body.height = spriteFrame.getRect().height;
         let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-        body.width = body.width * scaleNum;
-        body.height = body.height * scaleNum;
+        // body.width = body.width * scaleNum;
+        // body.height = body.height * scaleNum;
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
@@ -305,7 +306,7 @@ export default class Monster extends cc.Component {
         if (!this.isShow) {
             return false;
         }
-        if (this.data.invisible && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 2) {
+        if (this.data.invisible && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
         }
@@ -323,6 +324,7 @@ export default class Monster extends cc.Component {
         }
         this.isDisguising = false;
         this.meleeSkill.IsExcuting = false;
+        this.remoteSkill.IsExcuting = false;
         this.sprite.stopAllActions();
         this.idleAction = null;
         //200ms后修改受伤
@@ -590,7 +592,8 @@ export default class Monster extends cc.Component {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        let sn = this.isVariation ? Monster.SCALE_NUM : 1;
+        let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
+        let sn = this.isVariation ? Monster.SCALE_NUM*scaleNum : scaleNum;
         this.node.scaleX = this.isFaceRight ? sn : -sn;
         this.node.scaleY = sn;
 

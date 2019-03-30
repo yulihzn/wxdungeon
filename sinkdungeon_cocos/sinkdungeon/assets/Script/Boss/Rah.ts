@@ -32,7 +32,7 @@ export default class Rah extends Boss {
     blinkSkill = new Skill();
     snakeSkill = new Skill();
     bugsSkill = new Skill();
-    melleSkill = new Skill();
+    meleeSkill = new Skill();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -103,7 +103,7 @@ export default class Rah extends Boss {
         if (playerDis < 100 && !this.blinkSkill.IsExcuting) {
             this.attack();
         }
-        if (!pos.equals(cc.Vec2.ZERO) && !this.melleSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 100) {
+        if (!pos.equals(cc.Vec2.ZERO) && !this.meleeSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 100) {
             pos = pos.normalizeSelf();
             this.move(pos, 100);
         }
@@ -136,8 +136,8 @@ export default class Rah extends Boss {
         return;
     }
     attack() {
-        this.melleSkill.next(() => {
-            this.melleSkill.IsExcuting = true;
+        this.meleeSkill.next(() => {
+            this.meleeSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
@@ -263,7 +263,7 @@ export default class Rah extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if (player && this.melleSkill.IsExcuting) {
+        if (player && this.meleeSkill.IsExcuting) {
             let d = new DamageData();
             d.physicalDamage = 3;
             player.takeDamage(d);

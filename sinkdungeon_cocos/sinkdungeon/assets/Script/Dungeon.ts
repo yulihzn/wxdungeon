@@ -33,6 +33,7 @@ import ItemData from "./Data/ItemData";
 import Random from "./Utils/Random";
 import IceDemonThron from "./Boss/IceDemonThron";
 import DryadGrass from "./Boss/DryadGrass";
+import DecorationFloor from "./Building/DecorationFloor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -234,6 +235,13 @@ export default class Dungeon extends cc.Component {
                         fd.parent = this.node;
                         fd.position = Dungeon.getPosInMap(cc.v2(i, j));
                         fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                        let df = fd.getComponent(DecorationFloor);
+                        if(Logic.mapManager.getCurrentRoomType() == RectDungeon.POKER_ROOM){
+                            df.changeRes('dev');
+                        }
+                        if(Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM){
+                            df.changeRes('exitarrow');
+                        }
                     }
                 }
                 //生成踏板
@@ -464,13 +472,13 @@ export default class Dungeon extends cc.Component {
                         this.addBossRah(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '7') {
-                        this.addBossKraken(cc.v2(i, j));
+                        this.addBossSphinx(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '8') {
                         this.addBossEvilEye(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '9') {
-                        this.addBossKraken(cc.v2(i, j));
+                        this.addBossDryad(cc.v2(i, j));
                     }
                 }
 
@@ -667,6 +675,16 @@ export default class Dungeon extends cc.Component {
             return;
         }
         let boss = this.monsterManager.getDryad(this, index.clone());
+        this.bosses.push(boss);
+        this.scheduleOnce(() => {
+            boss.showBoss();
+        }, 2);
+    }
+    private addBossSphinx(index: cc.Vec2) {
+        if (!this.bosses) {
+            return;
+        }
+        let boss = this.monsterManager.getSphinx(this, index.clone());
         this.bosses.push(boss);
         this.scheduleOnce(() => {
             boss.showBoss();

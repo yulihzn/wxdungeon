@@ -216,7 +216,7 @@
         "resName": "monster012",
         "chapter": 0,
         "stageLevel": 0,
-        "sizeType":0.5,
+        "sizeType":0.25,
         "common": {
             "moveSpeed": 400,
             "maxHealth": 1,
@@ -261,8 +261,9 @@
             "damageMin": 1
         },
         "currentHealth": 5,
+        "isLineAim":1,
         "invisible": 0,
-        "remote": 1,
+        "remote": 3,
         "melee": 0,
         "dash": 0
     },
@@ -291,7 +292,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "common": {
-            "moveSpeed": 300,
+            "moveSpeed": 400,
             "maxHealth": 5,
             "damageMin": 1
         },
@@ -308,7 +309,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "common": {
-            "moveSpeed": 200,
+            "moveSpeed": 400,
             "maxHealth": 5,
             "damageMin": 1
         },
@@ -325,7 +326,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "common": {
-            "moveSpeed": 200,
+            "moveSpeed": 400,
             "maxHealth": 5,
             "damageMin": 1
         },
@@ -409,6 +410,7 @@
         "invisible": 0,
         "remote": 4,
         "melee": 2,
+        "sizeType":1.5,
         "dash": 0
     }
 }

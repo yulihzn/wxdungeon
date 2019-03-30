@@ -73,15 +73,13 @@ export default class Emplacement extends Building {
         if (!shooter.dungeon) {
             shooter.dungeon = this.dungeon;
             shooter.data.bulletType = "bullet010";
-            if(Logic.chapterName == Logic.CHAPTER00){
-                shooter.data.bulletLineExNum = 3;
-                shooter.data.bulletType = "laser001";
-            }
+            shooter.data.bulletLineExNum = 0;
+            
             switch(Logic.chapterName){
                 case Logic.CHAPTER00:shooter.data.bulletLineExNum = 3;shooter.data.bulletType = "laser001";break;
                 case Logic.CHAPTER01:shooter.data.bulletType = "bullet010";break;
                 case Logic.CHAPTER02:shooter.data.bulletType = "bullet013";break;
-                case Logic.CHAPTER03:shooter.data.bulletType = "bullet006";shooter.data.bulletLineExNum = 3;break;
+                case Logic.CHAPTER03:shooter.data.bulletType = "bullet006";shooter.data.bulletLineExNum = 1;break;
                 case Logic.CHAPTER04:shooter.data.bulletType = "bullet012";break;
             }
         }

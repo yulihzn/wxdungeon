@@ -47,8 +47,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.2918619791666667,
-      "y": 0.2918619791666667,
+      "x": 0.29181857638888886,
+      "y": 0.29181857638888886,
       "z": 1
     },
     "_quat": {
@@ -290,7 +290,7 @@
       "__uuid__": "f8d6b395-8a3d-4f71-bf62-156b8ec6569f"
     },
     "floorDecoration": {
-      "__uuid__": "0c3d140a-8428-4436-b8fb-ef9e29b3d8e4"
+      "__uuid__": "df963243-b74c-4c68-b411-9acadaeb33dc"
     },
     "playerPrefab": {
       "__uuid__": "c0c182eb-1a34-4189-98f2-37c2b9b9353f"
@@ -1236,6 +1236,9 @@
     },
     "dryad": {
       "__uuid__": "8f8967eb-ce44-4cdf-840a-43021dac269e"
+    },
+    "sphinx": {
+      "__uuid__": "061b0ec9-c916-49a7-9074-3a217ac8b2e3"
     },
     "_id": "11d1ERiJdHJorbxmDBQaOm"
   },

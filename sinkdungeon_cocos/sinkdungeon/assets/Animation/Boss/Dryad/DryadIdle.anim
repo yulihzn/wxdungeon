@@ -156,6 +156,22 @@
             }
           ]
         }
+      },
+      "sprite/stone": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": -32
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
       }
     }
   },
