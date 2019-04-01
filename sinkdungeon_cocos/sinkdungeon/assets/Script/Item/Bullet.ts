@@ -44,7 +44,7 @@ export default class Bullet extends cc.Component {
     boxPCollider: cc.PhysicsBoxCollider;
 
     effect: cc.Node;
-
+    
     laserSpriteNode: cc.Node;
     laserLightSprite: cc.Sprite;
     laserHeadSprite: cc.Sprite;
@@ -141,7 +141,7 @@ export default class Bullet extends cc.Component {
             this.boxPCollider.sensor = data.isPhysical == 0;
             this.boxPCollider.apply();
         }
-        
+        this.effect.active = this.data.isFire == 1;
         this.initLaser();
 
     }

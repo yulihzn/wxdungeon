@@ -12,6 +12,7 @@ import IceDemon from "../Boss/IceDemon";
 import EvilEye from "../Boss/EvilEye";
 import Dryad from "../Boss/Dryad";
 import Sphinx from "../Boss/Sphinx";
+import Dragon from "../Boss/Dragon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -77,6 +78,8 @@ export default class MonsterManager extends cc.Component {
     dryad = null;
     @property(cc.Prefab)
     sphinx = null;
+    @property(cc.Prefab)
+    dragon = null;
     readonly maxHealth00 = 200;
     readonly maxHealth01 = 300;
     readonly maxHealth02 = 300;
@@ -235,6 +238,21 @@ export default class MonsterManager extends cc.Component {
         sphinx.healthBar = dungeon.bossHealthBar;
         sphinx.node.active = true;
         return sphinx;
+    }
+    getDragon(dungeon: Dungeon, posIndex: cc.Vec2): Dragon {
+        let dragonPrefab: cc.Node = null;
+        dragonPrefab = cc.instantiate(this.dragon);
+        dragonPrefab.active = false;
+        dragonPrefab.parent = dungeon.node;
+        let dragon = dragonPrefab.getComponent(Dragon);
+        dragon.dungeon = dungeon;
+        let data = new MonsterData();
+        data.updateHA(this.maxHealth09, this.maxHealth09, 5);
+        dragon.data = data;
+        dragon.transportBoss(posIndex.x, posIndex.y);
+        dragon.healthBar = dungeon.bossHealthBar;
+        dragon.node.active = true;
+        return dragon;
     }
     getRah(dungeon: Dungeon, posIndex: cc.Vec2): Rah {
         let rahPrefab: cc.Node = null;

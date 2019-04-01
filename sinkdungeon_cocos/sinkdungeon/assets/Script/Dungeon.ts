@@ -478,7 +478,7 @@ export default class Dungeon extends cc.Component {
                         this.addBossEvilEye(cc.v2(i, j));
                     }
                     if (mapData[i][j] == '9') {
-                        this.addBossDryad(cc.v2(i, j));
+                        this.addBossDragon(cc.v2(i, j));
                     }
                 }
 
@@ -675,6 +675,16 @@ export default class Dungeon extends cc.Component {
             return;
         }
         let boss = this.monsterManager.getDryad(this, index.clone());
+        this.bosses.push(boss);
+        this.scheduleOnce(() => {
+            boss.showBoss();
+        }, 2);
+    }
+    private addBossDragon(index: cc.Vec2) {
+        if (!this.bosses) {
+            return;
+        }
+        let boss = this.monsterManager.getDragon(this, index.clone());
         this.bosses.push(boss);
         this.scheduleOnce(() => {
             boss.showBoss();

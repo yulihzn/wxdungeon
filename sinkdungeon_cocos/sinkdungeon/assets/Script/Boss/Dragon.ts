@@ -21,14 +21,13 @@ import BossAttackCollider from "./BossAttackCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Sphinx extends Boss {
+export default class Dragon extends Boss {
 
     private anim: cc.Animation;
     shooter01: Shooter;
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
     isMoving = false;
-    stormSkill = new Skill();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -67,27 +66,8 @@ export default class Sphinx extends Boss {
             return;
         }
         this.changeZIndex();
-        this.fireStorm();
-
     }
-    fireStorm() {
-        this.stormSkill.next(() => {
-            this.stormSkill.IsExcuting = true;
-            this.anim.play('SphinxStorm');
-            this.scheduleOnce(()=>{
-                let pos = this.node.position.clone().add(this.shooter01.node.position);
-                let hv = this.dungeon.player.getCenterPosition().sub(pos);
-                if (!hv.equals(cc.Vec2.ZERO)) {
-                    hv = hv.normalizeSelf();
-                    this.shooter01.setHv(hv);
-                    this.fireShooter(this.shooter01, "bullet023", 0, -20);
-                    this.fireShooter(this.shooter01, "bullet123", 0, 0,0);
-                    this.fireShooter(this.shooter01, "bullet223", 0, 0,20);
-                }
-            },0.3);
-            this.scheduleOnce(()=>{this.stormSkill.IsExcuting = false;this.anim.play('SphinxIdle');},2);
-        }, 8,true);
-    }
+   
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
         shooter.dungeon = this.dungeon;
         shooter.data.bulletType = bulletType;
