@@ -412,5 +412,65 @@
         "melee": 2,
         "sizeType":1.5,
         "dash": 0
+    },
+    "monster023": {
+        "nameCn": "毒蛇",
+        "nameEn": "Snake",
+        "resName": "monster023",
+        "chapter": 0,
+        "stageLevel": 0,
+        "isLineAim":1,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 10,
+            "toxicRate":100,
+            "damageMin": 2
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 2,
+        "sizeType":2,
+        "dash": 0
+    },
+    "monster024": {
+        "nameCn": "恶魔",
+        "nameEn": "Demon",
+        "resName": "monster024",
+        "chapter": 0,
+        "stageLevel": 0,
+        "isLineAim":1,
+        "common": {
+            "moveSpeed": 100,
+            "maxHealth": 10,
+            "damageMin": 5
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 2,
+        "blink":3,
+        "sizeType":1.5,
+        "dash": 0
+    },
+    "monster025": {
+        "nameCn": "巫师",
+        "nameEn": "Warlock",
+        "resName": "monster025",
+        "chapter": 0,
+        "stageLevel": 0,
+        "isLineAim":0,
+        "bulletType":"bullet100",
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 10,
+            "damageMin": 2
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 4,
+        "melee": 0,
+        "sizeType":1,
+        "dash": 0
     }
 }

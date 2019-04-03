@@ -28,6 +28,7 @@ export default class Dragon extends Boss {
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
     isMoving = false;
+    fireSkill = new Skill();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -61,11 +62,26 @@ export default class Dragon extends Boss {
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
+    fireFire() {
+        this.fireSkill.next(() => {
+            this.fireSkill.IsExcuting = true;
+            // this.anim.play('DryadStone');
+            this.scheduleOnce(()=>{
+                this.shooter01.setHv(cc.v2(0,-1));
+                    this.shooter01.data.bulletLineInterval = 0.5;
+                    this.fireShooter(this.shooter01, "bullet200", 0, 5);
+            },1.1);
+            this.scheduleOnce(()=>{this.fireSkill.IsExcuting = false;
+                // this.anim.play('DryadIdle');
+            },2);
+        }, 8,true);
+    }
     bossAction(): void {
         if (this.isDied || !this.isShow || !this.dungeon) {
             return;
         }
         this.changeZIndex();
+        this.fireFire();
     }
    
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {

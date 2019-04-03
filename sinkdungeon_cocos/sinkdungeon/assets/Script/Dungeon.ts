@@ -425,6 +425,9 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'm') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, i, j);
                     }
+                    if (mapData[i][j] == 'n') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_SNAKE, i, j);
+                    }
                     if (mapData[i][j] == 'o') {
                         this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, i, j);
                     }
@@ -443,6 +446,12 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 's') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CROCODILE, i, j);
+                    }
+                    if (mapData[i][j] == 'v') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_DEMON, i, j);
+                    }
+                    if (mapData[i][j] == 'w') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_WARLOCK, i, j);
                     }
                     if (mapData[i][j] == 'y') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);

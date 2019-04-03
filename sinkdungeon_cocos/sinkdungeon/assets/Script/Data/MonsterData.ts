@@ -77,6 +77,7 @@ export default class MonsterData{
         this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
         this.isArcAim = data.isArcAim?data.isArcAim:0;
         this.isLineAim = data.isLineAim?data.isLineAim:0;
+        this.blink = data.blink?data.blink:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -100,6 +101,7 @@ export default class MonsterData{
         e.bulletLineInterval = this.bulletLineInterval;
         e.isArcAim = this.isArcAim;
         e.isLineAim = this.isLineAim;
+        e.blink = this.blink;
         return e;
     }
     getAttackPoint():DamageData{

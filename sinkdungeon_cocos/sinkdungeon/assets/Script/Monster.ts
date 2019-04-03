@@ -14,7 +14,6 @@ import HealthBar from './HealthBar';
 import Logic from './Logic';
 import MonsterData from './Data/MonsterData';
 import Dungeon from './Dungeon';
-import MonsterManager from './Manager/MonsterManager';
 import Shooter from './Shooter';
 import Player from './Player';
 import StatusManager from './Manager/StatusManager';
@@ -46,6 +45,7 @@ export default class Monster extends cc.Component {
     private dashlight: cc.Node;
     private anim: cc.Animation;
     rigidbody: cc.RigidBody;
+    graphics: cc.Graphics;
     isFaceRight = true;
     isMoving = false;
     // isAttacking = false;
@@ -73,9 +73,11 @@ export default class Monster extends cc.Component {
     remoteSkill = new Skill();
     meleeSkill = new Skill();
     dashSkill = new Skill();
+    blinkSkill = new Skill();
     isAttackAnimExcuting = false;
 
     onLoad() {
+        this.graphics = this.getComponent(cc.Graphics);
         this.meleeSkill.IsExcuting = false;
         this.isShow = false;
         this.isDied = false;
@@ -84,7 +86,7 @@ export default class Monster extends cc.Component {
 
         if (this.isVariation) {
             let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-            this.node.scale = Monster.SCALE_NUM*scaleNum;
+            this.node.scale = Monster.SCALE_NUM * scaleNum;
         }
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
@@ -99,6 +101,9 @@ export default class Monster extends cc.Component {
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
         this.scheduleOnce(() => { this.isShow = true; }, 0.5);
+
+        // this.graphics.rect(0, 0, 100, 100);
+        // this.graphics.stroke();
     }
 
     changeBodyRes(resName: string, suffix?: string) {
@@ -154,7 +159,7 @@ export default class Monster extends cc.Component {
             flabel.hideLabel();
         }
     }
-    
+
     remoteAttack() {
         this.remoteSkill.IsExcuting = false;
         let p = this.shooter.node.position.clone();
@@ -174,11 +179,11 @@ export default class Monster extends cc.Component {
         }
     }
     showAttackAnim(finish: Function) {
-        if(this.isAttackAnimExcuting){
+        if (this.isAttackAnimExcuting) {
             return;
         }
         this.isAttackAnimExcuting = true;
-        let pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
+        let pos = this.dungeon.player.node.position.sub(this.node.position);
         if (!pos.equals(cc.Vec2.ZERO)) {
             pos = pos.normalizeSelf();
         }
@@ -194,10 +199,9 @@ export default class Monster extends cc.Component {
             cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK) }),
             cc.moveBy(0.2, pos.x, pos.y),
             cc.callFunc(() => {
-                this.changeBodyRes(this.data.resName, Monster.RES_WALK03)
                 this.anim.resume();
                 if (finish) { finish(); }
-            }), cc.moveTo(0.2, 0, 0),cc.callFunc(()=>{this.isAttackAnimExcuting = false;}));
+            }), cc.moveTo(0.2, 0, 0), cc.callFunc(() => { this.isAttackAnimExcuting = false; }));
         this.sprite.runAction(action);
     }
     actionSpriteFrameIdle() {
@@ -207,21 +211,21 @@ export default class Monster extends cc.Component {
         let spriteframe1 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK01];
         let spriteframe2 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK02];
         let spriteframe3 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK03];
-        let isOne = spriteframe2?false:true;
-        let isTwo = spriteframe2?true:false;
-        let isThree = spriteframe3?true:false;
-        if(isThree){isOne = false;isTwo=false;}
+        let isOne = spriteframe2 ? false : true;
+        let isTwo = spriteframe2 ? true : false;
+        let isThree = spriteframe3 ? true : false;
+        if (isThree) { isOne = false; isTwo = false; }
         if (!this.idleAction) {
-            if(isOne){
+            if (isOne) {
                 this.idleAction = cc.repeatForever(cc.sequence(
                     cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
                     cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) })));
-            }else if(isTwo){
+            } else if (isTwo) {
                 this.idleAction = cc.repeatForever(cc.sequence(
                     cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
                     cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
                     cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) })));
-            }else if(isThree){
+            } else if (isThree) {
                 this.idleAction = cc.repeatForever(cc.sequence(
                     cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
                     cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
@@ -306,7 +310,7 @@ export default class Monster extends cc.Component {
         if (!this.isShow) {
             return false;
         }
-        if (this.data.invisible && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
+        if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
         }
@@ -318,7 +322,7 @@ export default class Monster extends cc.Component {
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
         }
-        this.isHurt = dd.getTotalDamage()>0;
+        this.isHurt = dd.getTotalDamage() > 0;
         if (this.isDisguising) {
             this.changeBodyRes(this.data.resName);
         }
@@ -337,7 +341,7 @@ export default class Monster extends cc.Component {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
         this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false);
-        if(this.data.Common.lifeRecovery>0&&this.isHurt){
+        if (this.data.Common.lifeRecovery > 0 && this.isHurt) {
             this.addStatus(StatusManager.RECOVERY);
         }
         return this.isHurt;
@@ -402,6 +406,28 @@ export default class Monster extends cc.Component {
     getCenterPosition(): cc.Vec2 {
         return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
     }
+    blink() {
+        if (this.data.blink > 0) {
+            this.blinkSkill.next(() => {
+                this.blinkSkill.IsExcuting = true;
+                let body = this.sprite.getChildByName('body');
+                let action = cc.sequence(cc.fadeOut(0.5)
+                    , cc.callFunc(() => {
+                        let newPos = this.dungeon.player.pos.clone();
+                        if (this.dungeon.player.pos.x > this.pos.x) {
+                            newPos = newPos.addSelf(cc.v2(1, 0));
+                        } else {
+                            newPos = newPos.addSelf(cc.v2(-1, 0));
+                        }
+                        let pos = Dungeon.getPosInMap(newPos);
+                        this.node.setPosition(pos);
+                    })
+                    , cc.fadeIn(0.5));
+                body.runAction(action);
+                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; })
+            }, this.data.blink, true)
+        }
+    }
     monsterAction() {
         if (this.isDied || !this.dungeon || this.isHurt || !this.isShow) {
             return;
@@ -416,7 +442,7 @@ export default class Monster extends cc.Component {
         let pos = newPos.clone();
 
         //近战
-        if (playerDis < 100 && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.isDisguising) {
+        if (playerDis < 100*this.node.scaleY && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
             this.meleeSkill.next(() => {
                 this.meleeSkill.IsExcuting = true;
                 this.showAttackEffect();
@@ -428,24 +454,26 @@ export default class Monster extends cc.Component {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();
                     let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-                    if (newdis < 80 && !isMiss) { 
+                    if (newdis < 80*this.node.scaleY && !isMiss) {
                         this.addPlayerStatus(this.dungeon.player);
-                         this.dungeon.player.takeDamage(this.data.getAttackPoint());
-                         }
+                        this.dungeon.player.takeDamage(this.data.getAttackPoint());
+                    }
                 })
-                
+
                 this.sprite.opacity = 255;
             }, this.data.melee);
-        }
 
+        }
+        this.blink();
         if (this.data.melee > 0) {
-            pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
+            pos = this.getMovePosFromPlayer();
         }
         //远程
         if (playerDis < 600 && this.data.remote > 0 && this.shooter && !this.isDisguising && !this.meleeSkill.IsExcuting) {
             this.remoteSkill.next(() => {
                 this.remoteSkill.IsExcuting = true;
                 this.showAttackAnim(() => { this.remoteAttack() });
+                this.sprite.opacity = 255;
             }, this.data.remote, true);
         }
 
@@ -454,7 +482,7 @@ export default class Monster extends cc.Component {
         if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && this.data.dash > 0
             && !this.dashSkill.IsExcuting && !this.isDisguising) {
             this.dashSkill.next(() => {
-                pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
+                pos = this.getMovePosFromPlayer();
                 this.showAttackEffect();
                 this.move(pos, speed * 1.2);
                 this.dashSkill.IsExcuting = true;
@@ -466,10 +494,23 @@ export default class Monster extends cc.Component {
             this.changeBodyRes(this.data.resName);
             this.isDisguising = false;
         }
-        if (Logic.getHalfChance()&&!this.shooter.isAiming) {
+        if (Logic.getHalfChance() && !this.shooter.isAiming&&playerDis > 64*this.node.scaleY) {
             this.move(pos, speed);
         }
 
+    }
+    getMovePosFromPlayer(): cc.Vec2 {
+        let newPos = this.dungeon.player.pos.clone();
+        if (this.dungeon.player.pos.x > this.pos.x) {
+            newPos = newPos.addSelf(cc.v2(1, 0));
+        } else {
+            newPos = newPos.addSelf(cc.v2(-1, 0));
+        }
+        let pos = Dungeon.getPosInMap(newPos);
+        pos = pos.sub(this.node.position);
+        let h = pos.x;
+        this.isFaceRight = h > 0;
+        return pos;
     }
     lerp(a, b, r) {
         return a + (b - a) * r;
@@ -594,7 +635,7 @@ export default class Monster extends cc.Component {
             this.killed();
         }
         let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-        let sn = this.isVariation ? Monster.SCALE_NUM*scaleNum : scaleNum;
+        let sn = this.isVariation ? Monster.SCALE_NUM * scaleNum : scaleNum;
         this.node.scaleX = this.isFaceRight ? sn : -sn;
         this.node.scaleY = sn;
 
