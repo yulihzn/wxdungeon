@@ -325,6 +325,7 @@ export default class Monster extends cc.Component {
         this.isDisguising = false;
         this.meleeSkill.IsExcuting = false;
         this.remoteSkill.IsExcuting = false;
+        this.isAttackAnimExcuting = false;
         this.sprite.stopAllActions();
         this.idleAction = null;
         //200ms后修改受伤

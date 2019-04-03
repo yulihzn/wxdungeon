@@ -26,13 +26,14 @@ export default class MonsterData{
     melee:number=0;//是否近战大于0 近战会接近目标 数字代表CD
     dash:number=0;//是否冲刺大于0 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击 数字代表CD
     disguise:number=0;//是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复 
-    sizeType:number=0;//0正常1小一号2大一号
+    sizeType:number=0;//1正常 怪物大小
     bulletType:string='';//子弹类型
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（毫秒）
     isArcAim = 0;//是否是扇形瞄准
     isLineAim = 0;//是否是线性瞄准
+    blink = 0;//是否闪烁大于0 数字代表cd
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     private statusTotalData: StatusData;
