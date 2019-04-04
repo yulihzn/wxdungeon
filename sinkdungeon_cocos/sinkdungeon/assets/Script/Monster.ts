@@ -21,6 +21,7 @@ import DamageData from './Data/DamageData';
 import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Random from './Utils/Random';
 import Skill from './Utils/Skill';
+import Item from './Item/Item';
 
 @ccclass
 export default class Monster extends cc.Component {
@@ -191,7 +192,7 @@ export default class Monster extends cc.Component {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        pos = pos.normalizeSelf().mul(32);
+        pos = pos.normalizeSelf().mul(this.node.scaleX>0?32:-32);
         this.sprite.stopAllActions();
         this.idleAction = null;
         let action = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
@@ -375,6 +376,7 @@ export default class Monster extends cc.Component {
         if (Logic.getRandomNum(0, 100) < this.data.getLighteningRate()) { player.addStatus(StatusManager.DIZZ); }
         if (Logic.getRandomNum(0, 100) < this.data.getToxicRate()) { player.addStatus(StatusManager.TOXICOSIS); }
         if (Logic.getRandomNum(0, 100) < this.data.getCurseRate()) { player.addStatus(StatusManager.CURSING); }
+        if (Logic.getRandomNum(0, 100) < this.data.getRealRate()) { player.addStatus(StatusManager.BLEEDING); }
     }
     killed() {
         if (this.isDied) {
@@ -392,12 +394,20 @@ export default class Monster extends cc.Component {
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
         let rand = Random.rand();
-        if (rand < 0.9) {
-            cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
-        } else if (rand >= 0.9 && rand < 0.98) {
-            cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
-        } else {
-            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
+        if(this.dungeon){
+            if (rand < 0.9) {
+                cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+            } else if (rand >= 0.8 && rand < 0.825) {
+                this.dungeon.addItem(this.node.position.clone(),Item.HEART);
+            } else if (rand >= 0.825 && rand < 0.85){
+                this.dungeon.addItem(this.node.position.clone(),Item.AMMO);
+            }else if (rand >= 0.85 && rand < 0.875){
+                this.dungeon.addItem(this.node.position.clone(),Item.REDCAPSULE);
+            }else if (rand >= 0.875 && rand < 0.9){
+                this.dungeon.addItem(this.node.position.clone(),Item.BLUECAPSULE);
+            }else if (rand >= 0.9 && rand < 0.925){
+                this.dungeon.addItem(this.node.position.clone(),Item.SHIELD);
+            }
         }
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 2);
 

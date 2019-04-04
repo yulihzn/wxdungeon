@@ -151,7 +151,7 @@
     "status014": {
         "nameCn": "缠绕",
         "nameEn": "twine",
-        "spriteFrameName": "toxicosis",
+        "spriteFrameName": "status014",
         "statusType": 14,
         "desc": "",
         "duration": 3,

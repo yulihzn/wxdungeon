@@ -236,11 +236,10 @@ export default class Dungeon extends cc.Component {
                         fd.position = Dungeon.getPosInMap(cc.v2(i, j));
                         fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                         let df = fd.getComponent(DecorationFloor);
-                        if(Logic.mapManager.getCurrentRoomType() == RectDungeon.POKER_ROOM){
-                            df.changeRes('dev');
-                        }
                         if(Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM){
                             df.changeRes('exitarrow');
+                        }else{
+                            df.changeRes('dev');
                         }
                     }
                 }
@@ -452,6 +451,9 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 'w') {
                         this.addMonsterFromData(MonsterManager.MONSTER_WARLOCK, i, j);
+                    }
+                    if (mapData[i][j] == 'x') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_SPIDER, i, j);
                     }
                     if (mapData[i][j] == 'y') {
                         this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);

@@ -33,6 +33,8 @@ export default class BulletData {
     lightColor:string = '#ffffff';//子弹颜色
     fixedRotation = 0;//是否固定方向
     isFire = 0;//是否火焰特效
+    statusType:string = "";//附加状态
+    statusRate = 0;//状态几率
     damage:DamageData = new DamageData();
     valueCopy(data:BulletData){
         this.speed = data.speed?data.speed:0;
@@ -53,6 +55,8 @@ export default class BulletData {
         this.resName = data.resName?data.resName:'';
         this.resNameLaser = data.resNameLaser?data.resNameLaser:"";
         this.lightName = data.lightName?data.lightName:'';
+        this.statusType = data.statusType?data.statusType:'';
+        this.statusRate = data.statusRate?data.statusRate:0;
         this.lightColor = data.lightColor?data.lightColor:'#ffffff'
         this.isFire = data.isFire?data.isFire:0;
         this.damage.valueCopy(data.damage);
@@ -79,6 +83,8 @@ export default class BulletData {
         e.delaytrack = this.delaytrack;
         e.fixedRotation = this.fixedRotation;
         e.isFire = this.isFire;
+        e.statusType = this.statusType;
+        e.statusRate = this.statusRate;
         e.damage = this.damage.clone();
         return e;
     }

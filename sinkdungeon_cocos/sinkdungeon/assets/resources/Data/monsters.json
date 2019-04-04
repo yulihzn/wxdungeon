@@ -23,7 +23,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "common": {
-            "moveSpeed": 400,
+            "moveSpeed": 500,
             "maxHealth": 5,
             "damageMin": 1
         },
@@ -42,6 +42,7 @@
         "common": {
             "moveSpeed": 100,
             "maxHealth": 5,
+            "curseRate":100,
             "damageMin": 3
         },
         "currentHealth": 5,
@@ -114,7 +115,7 @@
         },
         "currentHealth": 10,
         "invisible": 0,
-        "remote": 2,
+        "remote": 1,
         "melee": 0,
         "dash": 0
     },
@@ -277,12 +278,14 @@
             "moveSpeed": 300,
             "maxHealth": 10,
             "lifeRecovery":1,
+            "realRate":50,
             "damageMin": 1
         },
         "currentHealth": 10,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
+        "sizeType":1.5,
         "dash": 0
     },
     "monster016": {
@@ -419,7 +422,7 @@
         "resName": "monster023",
         "chapter": 0,
         "stageLevel": 0,
-        "isLineAim":1,
+        "isLineAim":0,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 10,
@@ -470,6 +473,26 @@
         "invisible": 0,
         "remote": 4,
         "melee": 0,
+        "sizeType":1,
+        "dash": 0
+    },
+    "monster026": {
+        "nameCn": "蜘蛛",
+        "nameEn": "Spider",
+        "resName": "monster026",
+        "chapter": 0,
+        "stageLevel": 0,
+        "bulletType":"bullet024",
+        "common": {
+            "moveSpeed": 300,
+            "maxHealth": 10,
+            "toxicRate":100,
+            "damageMin": 2
+        },
+        "currentHealth": 10,
+        "invisible": 0,
+        "remote": 3,
+        "melee": 2,
         "sizeType":1,
         "dash": 0
     }

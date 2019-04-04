@@ -433,6 +433,7 @@ export default class Bullet extends cc.Component {
         this.addMonsterStatus(this.data.damage.toxicRate, monster, StatusManager.TOXICOSIS);
         this.addMonsterStatus(this.data.damage.curseRate, monster, StatusManager.CURSING);
         this.addMonsterStatus(this.data.damage.realRate, monster, StatusManager.BLEEDING);
+        this.addMonsterStatus(this.data.statusRate, monster, this.data.statusType);
     }
     addBossAllStatus(boss: Boss) {
         this.addBossStatus(this.data.damage.iceRate, boss, StatusManager.FROZEN);
@@ -441,6 +442,7 @@ export default class Bullet extends cc.Component {
         this.addBossStatus(this.data.damage.toxicRate, boss, StatusManager.TOXICOSIS);
         this.addBossStatus(this.data.damage.curseRate, boss, StatusManager.CURSING);
         this.addBossStatus(this.data.damage.realRate, boss, StatusManager.BLEEDING);
+        this.addBossStatus(this.data.statusRate,boss,this.data.statusType);
     }
     addPlayerAllStatus(player: Player) {
         this.addPlayerStatus(this.data.damage.iceRate, player, StatusManager.FROZEN);
@@ -450,6 +452,7 @@ export default class Bullet extends cc.Component {
         this.addPlayerStatus(this.data.damage.curseRate, player, StatusManager.CURSING);
         this.addPlayerStatus(this.data.damage.realRate, player, StatusManager.BLEEDING);
         this.addPlayerStatus(this.data.damage.stoneRate, player, StatusManager.STONE);
+        this.addPlayerStatus(this.data.statusRate, player, this.data.statusType);
     }
     addMonsterStatus(rate: number, monster: Monster, statusType) {
         if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType); }

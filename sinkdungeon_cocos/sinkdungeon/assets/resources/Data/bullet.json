@@ -436,6 +436,21 @@
             "fireDamage":1
         }
     },
+    "bullet024": {
+        "name":"蛛网",
+        "resName": "bullet024",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 1,
+        "isRotate": 0,
+        "size": 1,
+        "statusType":"status014",
+        "statusRate":100,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

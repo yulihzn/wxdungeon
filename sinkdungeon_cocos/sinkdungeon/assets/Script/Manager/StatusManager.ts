@@ -49,6 +49,9 @@ export default class StatusManager extends cc.Component {
 
     }
     addStatus(resName:string) {
+        if(resName.length<1){
+            return;
+        }
         let sd = new StatusData();
         sd.valueCopy(Logic.debuffs[resName])
         this.showStatus(sd);
