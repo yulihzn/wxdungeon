@@ -16,13 +16,14 @@ import Logic from './Logic';
 export default class Controller extends cc.Component {
 
     @property(cc.Node)
-    mainAction: cc.Node = null;
-    mainActionTouched = false;
+    attackAction: cc.Node = null;
+    attackActionTouched = false;
     @property(cc.Node)
-    secondAction: cc.Node = null;
-    secondActionTouched = false;
+    shootAction: cc.Node = null;
+    shootActionTouched = false;
 
-    thirdActionTouched = false;
+    interactActionTouched = false;
+    skillActionTouched = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -31,27 +32,27 @@ export default class Controller extends cc.Component {
         // for (let i = 0; i < ss.length; i++) {
         //     ss[i].spriteFrame.getTexture().setAliasTexParameters();
         // }
-        this.mainAction.on(cc.Node.EventType.TOUCH_START, function (event: cc.Event.EventTouch) {
-            this.mainActionTouched = true;
+        this.attackAction.on(cc.Node.EventType.TOUCH_START, function (event: cc.Event.EventTouch) {
+            this.attackActionTouched = true;
         }, this)
 
-        this.mainAction.on(cc.Node.EventType.TOUCH_END, function (event) {
-            this.mainActionTouched = false;
+        this.attackAction.on(cc.Node.EventType.TOUCH_END, function (event) {
+            this.attackActionTouched = false;
         }, this)
 
-        this.mainAction.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
-            this.mainActionTouched = false;
+        this.attackAction.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
+            this.attackActionTouched = false;
         }, this)
-        this.secondAction.on(cc.Node.EventType.TOUCH_START, function (event: cc.Event.EventTouch) {
-            this.secondActionTouched = true;
-        }, this)
-
-        this.secondAction.on(cc.Node.EventType.TOUCH_END, function (event) {
-            this.secondActionTouched = false;
+        this.shootAction.on(cc.Node.EventType.TOUCH_START, function (event: cc.Event.EventTouch) {
+            this.shootActionTouched = true;
         }, this)
 
-        this.secondAction.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
-            this.secondActionTouched = false;
+        this.shootAction.on(cc.Node.EventType.TOUCH_END, function (event) {
+            this.shootActionTouched = false;
+        }, this)
+
+        this.shootAction.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
+            this.shootActionTouched = false;
         }, this)
         cc.director.on(EventConstant.HUD_DARK_CONTROLLER
             , (event) => { this.changeRes(event.detail.index,false) });
@@ -66,13 +67,20 @@ export default class Controller extends cc.Component {
             case 1:resName = isLight?'uiremotelight':'uiremote';break;
             case 2:resName = isLight?'uiswitchlight':'uiswitch';break;
         }
-        this.mainAction.getComponent(cc.Button).normalSprite = Logic.spriteFrames[resName];
+        this.attackAction.getComponent(cc.Button).normalSprite = Logic.spriteFrames[resName];
     }
-
-    thirdAction() {
-        if(!this.thirdActionTouched){
-            this.thirdActionTouched = true;
+    //button
+    interActAction() {
+        if(!this.interactActionTouched){
+            this.interactActionTouched = true;
             cc.director.emit(EventConstant.PLAYER_USEITEM);
+        }
+    }
+    //button
+    skillAction() {
+        if(!this.skillActionTouched){
+            this.interactActionTouched = true;
+            cc.director.emit(EventConstant.PLAYER_SKILL);
         }
     }
     move(event, dir) {
@@ -89,23 +97,34 @@ export default class Controller extends cc.Component {
         }
         return false;
     }
-    thirdTimeDelay = 0;
-    isThirdTimeDelay(dt: number): boolean {
-        this.thirdTimeDelay += dt;
-        if (this.thirdTimeDelay > 0.2) {
-            this.thirdTimeDelay = 0;
-            this.thirdActionTouched = false;
+    interactTimeDelay = 0;
+    isInteractTimeDelay(dt: number): boolean {
+        this.interactTimeDelay += dt;
+        if (this.interactTimeDelay > 0.1) {
+            this.interactTimeDelay = 0;
+            this.interactActionTouched = false;
+            return true;
+        }
+        return false;
+    }
+    skillTimeDelay = 0;
+    isSkillTimeDelay(dt: number): boolean {
+        this.skillTimeDelay += dt;
+        if (this.skillTimeDelay > 0.1) {
+            this.skillTimeDelay = 0;
+            this.skillActionTouched = false;
             return true;
         }
         return false;
     }
     update(dt) {
-        this.isThirdTimeDelay(dt);
+        this.isInteractTimeDelay(dt);
+        this.isSkillTimeDelay(dt);
         if (this.isTimeDelay(dt)) {
-            if (this.mainActionTouched) {
+            if (this.attackActionTouched) {
                 cc.director.emit(EventConstant.PLAYER_ATTACK);
             }
-            if (this.secondActionTouched) {
+            if (this.shootActionTouched) {
                 cc.director.emit(EventConstant.PLAYER_REMOTEATTACK);
             }
         }

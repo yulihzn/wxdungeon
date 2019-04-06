@@ -22,10 +22,10 @@ import StatusManager from './Manager/StatusManager';
 import DamageData from './Data/DamageData';
 import InventoryManager from './Manager/InventoryManager';
 import PlayerData from './Data/PlayerData';
-import PlayerInfoDialog from './UI/PlayerInfoDialog';
 import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Tips from './UI/Tips';
 import Random from './Utils/Random';
+import Skill from './Utils/Skill';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -84,6 +84,8 @@ export default class Player extends cc.Component {
     rigidbody: cc.RigidBody;
 
     defaultPos = cc.v2(0, 0);
+    //冲刺
+    dashSkill = new Skill();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -124,7 +126,8 @@ export default class Player extends cc.Component {
             , (event) => { this.changeItem(event.detail.spriteFrame) });
         cc.director.on(EventConstant.PLAYER_USEITEM
             , (event) => { this.UseItem() });
-
+        cc.director.on(EventConstant.PLAYER_SKILL
+            , (event) => { this.UseSkill() });
         cc.director.on(EventConstant.PLAYER_ATTACK
             , (event) => { this.meleeAttack() });
         cc.director.on(EventConstant.PLAYER_REMOTEATTACK
@@ -179,7 +182,7 @@ export default class Player extends cc.Component {
             this.glovesRightSprite.setState(0);
         }
     }
-    
+
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
         for (let name of childNames) {
@@ -375,6 +378,7 @@ export default class Player extends cc.Component {
         if (this.isDied || this.isFall) {
             return;
         }
+        
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
@@ -400,7 +404,7 @@ export default class Player extends cc.Component {
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
         let speed = this.data.getMoveSpeed();
-        if(speed<0){
+        if (speed < 0) {
             speed = 0;
         }
         movement = movement.mul(speed);
@@ -415,7 +419,7 @@ export default class Player extends cc.Component {
             walkName = "PlayerWalk";
             idleName = "idle002";
         }
-        if (this.isMoving&&!this.isStone) {
+        if (this.isMoving && !this.isStone) {
             if (!this.anim.getAnimationState(walkName).isPlaying) {
                 this.anim.playAdditive(walkName);
             }
@@ -519,8 +523,9 @@ export default class Player extends cc.Component {
         if (this.shooter && !this.shooter.dungeon) {
             this.shooter.dungeon = dungeon;
         }
-        
-        this.move(dir, pos, dt);
+        if(this.dashSkill&&!this.dashSkill.IsExcuting){
+            this.move(dir, pos, dt);
+        }
     }
     //30秒回复一次
     isRecoveryTimeDelay(dt: number): boolean {
@@ -559,6 +564,36 @@ export default class Player extends cc.Component {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
 
+    UseSkill(){
+        if(!this.dashSkill){
+            return;
+        }
+        if(this.dashSkill.IsExcuting){
+            return;
+        }
+        this.dashSkill.IsExcuting = true;
+        this.dashSkill.next(()=>{
+            this.schedule(()=>{this.getWalkSmoke(this.node.parent, this.node.position);},0.05,4,0);
+            let idleName = "idle001";
+            if (this.inventoryManager.trousers.trouserslong == 1) {
+                idleName = "idle002";
+            }
+            this.anim.play('PlayerIdle');
+            let pos = this.rigidbody.linearVelocity.clone();
+            this.isMoving = false;
+            if(pos.equals(cc.Vec2.ZERO)){
+                pos = this.isFaceRight?cc.v2(1,0):cc.v2(-1,0);
+            }else{
+                pos = pos.normalizeSelf();
+            }
+            pos = pos.mul(1000);
+            this.rigidbody.linearVelocity = pos;
+            this.scheduleOnce(()=>{
+                this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+                this.trousersSprite.spriteFrame = Logic.spriteFrames[idleName];
+            },0.5)
+        },0.5,true);
+    }
     UseItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {

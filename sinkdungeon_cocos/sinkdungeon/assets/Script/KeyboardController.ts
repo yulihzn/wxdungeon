@@ -25,6 +25,7 @@ export default class KeyboardController extends cc.Component {
     isA = false;
     isB = false;
     isC = false;
+    isD = false;
     onLoad () {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN,this.onKeyDown,this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP,this.onKeyUp,this);
@@ -33,7 +34,7 @@ export default class KeyboardController extends cc.Component {
     start () {
 
     }
-    onKeyDown(event:cc.Event.EventCustom){
+    onKeyDown(event:cc.Event.EventKeyboard){
         switch(event.keyCode){
             case cc.macro.KEY.w:this.isUp =true;break;
             case cc.macro.KEY.s:this.isDown =true;break;
@@ -42,10 +43,11 @@ export default class KeyboardController extends cc.Component {
 
             case cc.macro.KEY.j:this.isA = true;break;
             case cc.macro.KEY.k:this.isB = true;break;
-            case cc.macro.KEY.l:this.isC = true;break;
+            case cc.macro.KEY.i:this.isC = true;break;
+            case cc.macro.KEY.l:this.isD = true;break;
         }
     }
-    onKeyUp(event:cc.Event.EventCustom){
+    onKeyUp(event:cc.Event.EventKeyboard){
         switch(event.keyCode){
             case cc.macro.KEY.w:this.isUp =false;break;
             case cc.macro.KEY.s:this.isDown =false;break;
@@ -54,7 +56,8 @@ export default class KeyboardController extends cc.Component {
 
             case cc.macro.KEY.j:this.isA = false;break;
             case cc.macro.KEY.k:this.isB = false;break;
-            case cc.macro.KEY.l:this.isC = false;break;
+            case cc.macro.KEY.i:this.isC = false;break;
+            case cc.macro.KEY.l:this.isD = false;break;
         }
     }
     update (dt) {
@@ -107,6 +110,9 @@ export default class KeyboardController extends cc.Component {
         }
         if(this.isC){
             cc.director.emit(EventConstant.PLAYER_USEITEM);
+        }
+        if(this.isD){
+            cc.director.emit(EventConstant.PLAYER_SKILL);
         }
         
     }

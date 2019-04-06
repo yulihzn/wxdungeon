@@ -5,6 +5,7 @@ export class EventConstant extends cc.Component{
     public static readonly PLAYER_MOVE = 'PLAYER_MOVE';
     public static readonly PLAYER_ROTATE = 'PLAYER_ROTATE';
     public static readonly PLAYER_USEITEM = 'PLAYER_USEITEM';
+    public static readonly PLAYER_SKILL = 'PLAYER_SKILL';
     public static readonly PLAYER_ATTACK = 'PLAYER_ATTACK';
     public static readonly PLAYER_REMOTEATTACK = 'PLAYER_REMOTEATTACK';
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM';
