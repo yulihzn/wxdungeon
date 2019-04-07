@@ -1,16 +1,16 @@
 {
   "ver": "2.2.0",
-  "uuid": "f2ac388e-3902-406a-b63a-bcba0e7a49b5",
+  "uuid": "387f8309-fbc2-4fdb-9579-d176339ecf47",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
-    "gem04": {
+    "dialogbg": {
       "ver": "1.0.3",
-      "uuid": "205b61d8-8b47-4b66-9ae9-19aa22c82194",
-      "rawTextureUuid": "f2ac388e-3902-406a-b63a-bcba0e7a49b5",
-      "trimType": "auto",
+      "uuid": "26cd9bc3-daf3-4b27-8234-294d5a4a8603",
+      "rawTextureUuid": "387f8309-fbc2-4fdb-9579-d176339ecf47",
+      "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
@@ -21,10 +21,10 @@
       "height": 16,
       "rawWidth": 16,
       "rawHeight": 16,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
+      "borderTop": 5,
+      "borderBottom": 5,
+      "borderLeft": 5,
+      "borderRight": 5,
       "subMetas": {}
     }
   }
