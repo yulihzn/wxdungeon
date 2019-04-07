@@ -1,4 +1,5 @@
 {
+  "assets-sort-type": "name",
   "collision-matrix": [
     [
       true,
@@ -33,7 +34,13 @@
   ],
   "design-resolution-height": 1280,
   "design-resolution-width": 720,
-  "excluded-modules": [],
+  "excluded-modules": [
+    "TiledMap",
+    "Spine Skeleton",
+    "DragonBones",
+    "VideoPlayer",
+    "WebView"
+  ],
   "facebook": {
     "appID": "",
     "audience": {
@@ -60,6 +67,6 @@
     "width": 960
   },
   "start-scene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
-  "use-customize-simulator": false,
+  "use-customize-simulator": true,
   "use-project-simulator-setting": false
 }

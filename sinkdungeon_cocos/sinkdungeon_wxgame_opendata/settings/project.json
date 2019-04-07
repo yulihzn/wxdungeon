@@ -7,16 +7,15 @@
   "design-resolution-height": 640,
   "design-resolution-width": 960,
   "excluded-modules": [
-    "WebGL Renderer",
-    "Renderer Texture",
-    "Dynamic Atlas",
-    "ParticleSystem",
-    "TiledMap",
-    "Spine Skeleton",
     "DragonBones",
-    "RichText",
+    "Dynamic Atlas",
+    "EditBox",
     "MotionStreak",
-    "EditBox"
+    "ParticleSystem",
+    "Renderer Texture",
+    "RichText",
+    "Spine Skeleton",
+    "TiledMap"
   ],
   "facebook": {
     "appID": "",
@@ -40,5 +39,7 @@
     "width": 960
   },
   "use-customize-simulator": false,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "start-scene": "current",
+  "assets-sort-type": "name"
 }
