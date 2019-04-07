@@ -31,7 +31,7 @@ export default class Launch extends cc.Component {
     updateFriend() {
         let that = this;
         this.content.removeAllChildren();
-        https://developers.weixin.qq.com/minigame/dev/document/open-api/data/wx.getUserInfo.html
+        // https://developers.weixin.qq.com/minigame/dev/document/open-api/data/wx.getUserInfo.html
         this.wx.getUserInfo({
             openIdList: ['selfOpenId'],
             lang: 'zh_CN',

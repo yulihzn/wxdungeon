@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.39166666666666666,
-      "y": 0.39166666666666666,
+      "x": 0.7770833333333333,
+      "y": 0.7770833333333333,
       "z": 1
     },
     "_quat": {
@@ -153,9 +153,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
@@ -210,7 +210,7 @@
       "r": 0,
       "g": 0,
       "b": 0,
-      "a": 255
+      "a": 199
     },
     "_depth": -1,
     "_zoomRatio": 1,
@@ -362,9 +362,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 87,
-      "g": 86,
-      "b": 86,
+      "r": 47,
+      "g": 47,
+      "b": 47,
       "a": 255
     },
     "_contentSize": {
@@ -379,7 +379,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 0,
+      "x": -210,
       "y": 0,
       "z": 0
     },
@@ -560,6 +560,7 @@
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0,
+    "_N$affectedByScale": false,
     "_id": "18JbivhExC0rXaIosZM6ED"
   },
   {
@@ -677,7 +678,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 0,
+      "x": -210,
       "y": 195,
       "z": 0
     },
@@ -784,6 +785,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -1078,6 +1080,7 @@
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_spacingX": 0,
+    "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",

@@ -6,7 +6,18 @@
   ],
   "design-resolution-height": 640,
   "design-resolution-width": 960,
-  "excluded-modules": [],
+  "excluded-modules": [
+    "WebGL Renderer",
+    "Renderer Texture",
+    "Dynamic Atlas",
+    "ParticleSystem",
+    "TiledMap",
+    "Spine Skeleton",
+    "DragonBones",
+    "RichText",
+    "MotionStreak",
+    "EditBox"
+  ],
   "facebook": {
     "appID": "",
     "audience": {
@@ -22,13 +33,12 @@
   "group-list": [
     "default"
   ],
-  "last-module-event-record-time": 1548837778283,
+  "last-module-event-record-time": 1554639799603,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
     "width": 960
   },
-  "start-scene": "current",
   "use-customize-simulator": false,
   "use-project-simulator-setting": false
 }
