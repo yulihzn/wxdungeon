@@ -41,8 +41,8 @@
     },
     "_scale": {
       "__type__": "cc.Vec3",
-      "x": 0.5987847222222222,
-      "y": 0.5987847222222222,
+      "x": 0.13442309426323346,
+      "y": 0.13442309426323346,
       "z": 1
     },
     "_quat": {
@@ -52,7 +52,6 @@
       "z": 0,
       "w": 1
     },
-    "_zIndex": 0,
     "groupIndex": 0,
     "autoReleaseAssets": false,
     "_id": "7e963c8f-327d-4b32-ae36-47956943fdba"
@@ -130,7 +129,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "e56noMCpJDgbraHUEWqoWW"
   },
@@ -191,7 +189,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "b39sa+HPxLd4Yl4i24bwxq"
   },
@@ -277,7 +274,6 @@
     },
     "_skewX": 0,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "baDrPu3s1JSZHZ94BZdgRr"
   },
@@ -289,8 +285,6 @@
       "__id__": 5
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_spriteFrame": {
       "__uuid__": "a23235d1-15db-4b95-8439-a2e005bfff91"
     },
@@ -307,6 +301,8 @@
     "_isTrimmedMode": true,
     "_state": 0,
     "_atlas": null,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_id": "afTj+5OeZE4KNZC2MhAZ7U"
   },
   {
@@ -363,7 +359,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 367.5,
-      "height": 225
+      "height": 60
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -393,7 +389,6 @@
     },
     "_skewX": 15,
     "_skewY": 0,
-    "_zIndex": 0,
     "groupIndex": 0,
     "_id": "27PoXy5QFB/ZVJLu0/MHkr"
   },
@@ -405,13 +400,11 @@
       "__id__": 8
     },
     "_enabled": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "Sink Dungeon",
     "_N$string": "Sink Dungeon",
     "_fontSize": 60,
-    "_lineHeight": 60,
+    "_lineHeight": 16,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "850ec44c-81fd-45f3-b6ed-4cf410575571"
@@ -423,6 +416,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
+    "_N$cacheMode": 0,
     "_id": "31luQyGoxL6poh3fk53bli"
   },
   {
