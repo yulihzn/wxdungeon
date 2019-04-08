@@ -64,9 +64,7 @@
         "desc": "",
         "duration": 3,
         "realDamageOvertime": 1,
-        "common": {
-            
-        }
+        "common": {}
     },
     "status007": {
         "nameCn": "攻击增加",
@@ -76,7 +74,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "damageMin":5
+            "damageMin": 5
         }
     },
     "status008": {
@@ -87,7 +85,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "moveSpeed":200
+            "moveSpeed": 200
         }
     },
     "status009": {
@@ -98,7 +96,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "attackSpeed":200
+            "attackSpeed": 200
         }
     },
     "status010": {
@@ -109,8 +107,8 @@
         "desc": "",
         "duration": 15,
         "common": {
-            "defence":9999,
-            "dodge":100
+            "defence": 9999,
+            "dodge": 100
         }
     },
     "status011": {
@@ -121,9 +119,7 @@
         "desc": "",
         "duration": 0,
         "realDamageDirect": -1,
-        "common": {
-            
-        }
+        "common": {}
     },
     "status012": {
         "nameCn": "回复(狼人)",
@@ -133,9 +129,7 @@
         "desc": "",
         "duration": 5,
         "realDamageOvertime": -1,
-        "common": {
-            
-        }
+        "common": {}
     },
     "status013": {
         "nameCn": "石化",
@@ -157,6 +151,40 @@
         "duration": 3,
         "common": {
             "moveSpeed": -9999
+        }
+    },
+    "status015": {
+        "nameCn": "普通盾牌防御",
+        "nameEn": "defence perfect",
+        "spriteFrameName": "icondefence",
+        "statusType": 15,
+        "desc": "",
+        "duration": 2,
+        "common": {
+            "defence": 9999,
+            "iceDefence": 100,
+            "fireDefence": 100,
+            "lighteningDefence": 100,
+            "toxicDefence": 100,
+            "curseDefence": 100,
+            "moveSpeed":-100
+        }
+    },
+    "status016": {
+        "nameCn": "加长盾牌防御",
+        "nameEn": "defence perfect",
+        "spriteFrameName": "icondefence",
+        "statusType": 16,
+        "desc": "",
+        "duration": 4,
+        "common": {
+            "defence": 9999,
+            "iceDefence": 100,
+            "fireDefence": 100,
+            "lighteningDefence": 100,
+            "toxicDefence": 100,
+            "curseDefence": 100,
+            "moveSpeed":-100
         }
     }
 }

@@ -22,6 +22,7 @@ export class EventConstant extends cc.Component{
     public static readonly HUD_STOP_COUNTTIME = 'HUD_STOP_COUNTTIME';
     public static readonly HUD_LIGHT_CONTROLLER = 'HUD_LIGHT_CONTROLLER';
     public static readonly HUD_DARK_CONTROLLER = 'HUD_DARK_CONTROLLER';
+    public static readonly HUD_CONTROLLER_COOLDOWN = 'HUD_CONTROLLER_COOLDOWN';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';
     public static readonly DUNGEON_ADD_COIN = 'DUNGEON_ADD_COIN';

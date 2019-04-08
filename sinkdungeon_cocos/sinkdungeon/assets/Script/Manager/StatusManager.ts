@@ -34,6 +34,9 @@ export default class StatusManager extends cc.Component {
     public static readonly RECOVERY = "status012";
     public static readonly STONE = "status013";
     public static readonly TWINE = "status014";
+    public static readonly SHIELD_NORMAL = "status015";
+    public static readonly SHIELD_LONG = "status016";
+    
 
     @property(cc.Prefab)
     statusPrefab: cc.Prefab = null;

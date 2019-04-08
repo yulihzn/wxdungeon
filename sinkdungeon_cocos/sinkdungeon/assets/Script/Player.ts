@@ -60,6 +60,8 @@ export default class Player extends cc.Component {
     shoesRightSprite: cc.Sprite = null;
     cloakSprite: cc.Sprite = null;
     bodySprite: cc.Sprite = null;
+    shieldBackSprite: cc.Sprite = null;
+    shieldFrontSprite: cc.Sprite = null;
     isMoving = false;//是否移动中
     isAttacking = false;//是否近战攻击中
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
@@ -86,6 +88,8 @@ export default class Player extends cc.Component {
     defaultPos = cc.v2(0, 0);
     //冲刺
     dashSkill = new Skill();
+    //盾牌
+    shieldSkill = new Skill();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -122,12 +126,16 @@ export default class Player extends cc.Component {
         this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'shoesleft']);
         this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'shoesright']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
+        this.shieldBackSprite = this.getSpriteChildSprite(['sprite', 'shieldback']);
+        this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
+        this.shieldBackSprite.node.opacity = 0;
+        this.shieldFrontSprite.node.opacity = 0;
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
             , (event) => { this.changeItem(event.detail.spriteFrame) });
         cc.director.on(EventConstant.PLAYER_USEITEM
-            , (event) => { this.UseItem() });
+            , (event) => { this.useItem() });
         cc.director.on(EventConstant.PLAYER_SKILL
-            , (event) => { this.UseSkill() });
+            , (event) => { this.useSkill() });
         cc.director.on(EventConstant.PLAYER_ATTACK
             , (event) => { this.meleeAttack() });
         cc.director.on(EventConstant.PLAYER_REMOTEATTACK
@@ -183,6 +191,7 @@ export default class Player extends cc.Component {
         }
     }
 
+    
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
         for (let name of childNames) {
@@ -378,7 +387,7 @@ export default class Player extends cc.Component {
         if (this.isDied || this.isFall) {
             return;
         }
-        
+
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.5);
         }
@@ -523,7 +532,7 @@ export default class Player extends cc.Component {
         if (this.shooter && !this.shooter.dungeon) {
             this.shooter.dungeon = dungeon;
         }
-        if(this.dashSkill&&!this.dashSkill.IsExcuting){
+        if (this.dashSkill && !this.dashSkill.IsExcuting) {
             this.move(dir, pos, dt);
         }
     }
@@ -563,17 +572,47 @@ export default class Player extends cc.Component {
         this.turnStone(this.isStone);
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
-
-    UseSkill(){
-        if(!this.dashSkill){
+    private useSkill():void{
+        this.useShield();
+    }
+    private useShield(): void {
+        if (!this.shieldSkill) {
             return;
         }
-        if(this.dashSkill.IsExcuting){
+        if (this.shieldSkill.IsExcuting) {
+            return;
+        }
+        let cooldown = 3;
+        this.shieldSkill.next(() => {
+            this.shieldSkill.IsExcuting = true;
+            let y = this.shieldFrontSprite.node.y;
+            this.shieldBackSprite.node.scaleX = 1;
+            this.shieldFrontSprite.node.scaleX = 0;
+            this.shieldBackSprite.node.opacity = 255;
+            this.shieldFrontSprite.node.opacity = 255;
+            this.shieldFrontSprite.node.x = -8;
+            let invulnerabilityTime = 2;
+            let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(0.1, cc.v2(-8, y)), cc.scaleTo(0.1, 1, 1));
+            let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(0.1, cc.v2(-8, y)), cc.scaleTo(0.1, 0, 1));
+            this.shieldBackSprite.node.runAction(backAction);
+            this.shieldFrontSprite.node.runAction(frontAction);
+            this.scheduleOnce(()=>{this.addStatus(StatusManager.SHIELD_NORMAL)},0.2);
+            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
+        }, cooldown, true);
+    }
+    private useDash() {
+        if (!this.dashSkill) {
+            return;
+        }
+        if (this.dashSkill.IsExcuting) {
             return;
         }
         this.dashSkill.IsExcuting = true;
-        this.dashSkill.next(()=>{
-            this.schedule(()=>{this.getWalkSmoke(this.node.parent, this.node.position);},0.05,4,0);
+        let cooldown = 2;
+        this.dashSkill.next(() => {
+            this.schedule(() => { this.getWalkSmoke(this.node.parent, this.node.position); }, 0.05, 4, 0);
             let idleName = "idle001";
             if (this.inventoryManager.trousers.trouserslong == 1) {
                 idleName = "idle002";
@@ -581,20 +620,21 @@ export default class Player extends cc.Component {
             this.anim.play('PlayerIdle');
             let pos = this.rigidbody.linearVelocity.clone();
             this.isMoving = false;
-            if(pos.equals(cc.Vec2.ZERO)){
-                pos = this.isFaceRight?cc.v2(1,0):cc.v2(-1,0);
-            }else{
+            if (pos.equals(cc.Vec2.ZERO)) {
+                pos = this.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
+            } else {
                 pos = pos.normalizeSelf();
             }
             pos = pos.mul(1000);
             this.rigidbody.linearVelocity = pos;
-            this.scheduleOnce(()=>{
+            this.scheduleOnce(() => {
                 this.rigidbody.linearVelocity = cc.Vec2.ZERO;
                 this.trousersSprite.spriteFrame = Logic.spriteFrames[idleName];
-            },0.5)
-        },0.5,true);
+            }, 0.5)
+            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
+        }, cooldown, true);
     }
-    UseItem() {
+    useItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {
                 if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {

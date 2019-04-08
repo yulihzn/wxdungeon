@@ -16,7 +16,7 @@ import Random from "../Utils/Random";
 
 
 export default class PlayerData {
-    static DEFAULT_HEALTH = 5;
+    static DEFAULT_HEALTH = 5000;
     static DefAULT_SPEED = 300;
     static DefAULT_ATTACK = 1;
     name: string = '';
