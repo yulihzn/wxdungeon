@@ -3,7 +3,7 @@
   "uuid": "b1d694d7-3bf6-465f-8552-691ce875472b",
   "type": "sprite",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
   "premultiplyAlpha": false,
   "subMetas": {
     "redcapsule": {
