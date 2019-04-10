@@ -11,12 +11,20 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class TalentIcon extends cc.Component {
+export default class TalentTree extends cc.Component {
 
+    private talentShield:cc.Node[] = [];
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.talentShield = new Array();
+        for(let i = 0;i < 14;i++){
+            let index = i<9?`0${i+1}`:`${i+1}`;
+            this.talentShield.push(this.node.getChildByName('layout').getChildByName('talentempty').getChildByName(`talentshield${index}`));
+        }
+        let l = this.talentShield.length;
+    }
 
     start () {
 

@@ -71,7 +71,7 @@ export default class Logic extends cc.Component {
         cc.game.setFrameRate(60);
         cc.game.addPersistRootNode(this.node);
         // cc.view.enableAntiAlias(false);
-        cc.macro.DOWNLOAD_MAX_CONCURRENT = 10;
+        // cc.macro.DOWNLOAD_MAX_CONCURRENT = 10;
         let manager = cc.director.getCollisionManager();
         manager.enabled = true;
         cc.director.getPhysicsManager().enabled = true;
