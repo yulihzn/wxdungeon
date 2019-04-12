@@ -29,8 +29,8 @@ export default class TalentTree extends cc.Component {
             let nodedash = this.node.getChildByName('layout').getChildByName('talentempty').getChildByName(`talentdash${index}`);
             nodeshield.addComponent(TalentIcon);
             nodedash.addComponent(TalentIcon);
-            nodeshield.getComponent(cc.Sprite).setState(1);
-            nodedash.getComponent(cc.Sprite).setState(1);
+            nodeshield.color = cc.color(51, 51, 51);
+            nodedash.color = cc.color(51, 51, 51);
             nodeshield.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch)=> {
                 this.talentClick(nodeshield);
             }, this);
@@ -55,7 +55,7 @@ export default class TalentTree extends cc.Component {
         this.initShieldNode(12,[11],[13]);
         this.initShieldNode(13,[12],[]);
 
-        this.initDashNode(0,[],[1,2,7]);
+        this.initDashNode(0,[],[1,7,12]);
         this.initDashNode(1,[0],[2,3,4,5]);
         this.initDashNode(2,[1],[6]);
         this.initDashNode(3,[1],[6]);
