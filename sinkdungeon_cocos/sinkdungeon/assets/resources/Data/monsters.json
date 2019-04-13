@@ -348,7 +348,7 @@
         "common": {
             "moveSpeed": 200,
             "maxHealth": 5,
-            "toxicRate":50,
+            "toxicRate":100,
             "damageMin": 2
         },
         "currentHealth": 5,

@@ -9,6 +9,7 @@ import BulletData from "../Data/BulletData";
 import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import Boom from "./Boom";
+import TalentShield from "../Talent/TalentShield";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -330,9 +331,16 @@ export default class Bullet extends cc.Component {
         }
         let player = attackTarget.getComponent(Player);
         if (player && !player.isDied) {
-            damageSuccess = player.takeDamage(damage);
-            if (damageSuccess) { this.addPlayerAllStatus(player) }
-            isDestory = true;
+            //子弹偏转
+            let isReverse = false;
+            if(player.talentShield.IsExcuting&&player.talentShield.hashTalent(TalentShield.SHIELD_03)){
+                isReverse = this.revserseBullet();
+            }
+            if(!isReverse){
+                damageSuccess = player.takeDamage(damage);
+                if (damageSuccess) { this.addPlayerAllStatus(player) }
+                isDestory = true;
+            }
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {
@@ -348,6 +356,17 @@ export default class Bullet extends cc.Component {
         if (isDestory) {
             this.bulletHit();
         }
+    }
+    //子弹偏转 不能偏转激光，追踪弹效果去除
+    private revserseBullet():boolean{
+        if(this.data.isLaser != 1){
+            this.node.rotation+=180;
+            this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.mul(-1);
+            this.isFromPlayer = true;
+            this.data.isTracking = 0;
+            return true;
+        }
+        return false;
     }
     private bulletHit(): void {
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {

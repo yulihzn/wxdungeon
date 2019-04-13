@@ -11,26 +11,26 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class TalentShield extends cc.Component {
-    public static readonly SHIELD_01 = 2000001;//普通
-    public static readonly SHIELD_02 = 2000002;//迅捷反击
-    public static readonly SHIELD_03 = 2000003;//镜面偏转
-    public static readonly SHIELD_04 = 2000004;//元素晶盾
-    public static readonly SHIELD_05 = 2000005;//强力盾反
+    public static readonly SHIELD_01 = 2000001;//普通 1
+    public static readonly SHIELD_02 = 2000002;//迅捷反击 1
+    public static readonly SHIELD_03 = 2000003;//镜面偏转 1
+    public static readonly SHIELD_04 = 2000004;//元素晶盾 1
+    public static readonly SHIELD_05 = 2000005;//强力盾反 1
     public static readonly SHIELD_06 = 2000006;//乾坤一掷
     public static readonly SHIELD_07 = 2000007;//九转回旋（减速）
     public static readonly SHIELD_08 = 2000008;//平地惊雷（眩晕）
     public static readonly SHIELD_09 = 2000009;//四两千斤（击退）
     public static readonly SHIELD_10 = 2000010;//见血封喉（流血）
     public static readonly SHIELD_11 = 2000011;//阴阳遁形（距离）
-    public static readonly SHIELD_12 = 2000012;//敏捷身法（移除减速损耗）
-    public static readonly SHIELD_13 = 2000013;//坚韧不屈（缩短cd）
-    public static readonly SHIELD_14 = 2000014;//龟甲铜墙（举盾时间变长，非乾坤一掷）
+    public static readonly SHIELD_12 = 2000012;//敏捷身法（移除减速损耗）1 
+    public static readonly SHIELD_13 = 2000013;//坚韧不屈（缩短cd）1
+    public static readonly SHIELD_14 = 2000014;//龟甲铜墙（举盾时间变长，非乾坤一掷）1
     private shieldSkill = new Skill();
     private shieldBackSprite: cc.Sprite = null;
     private shieldFrontSprite: cc.Sprite = null;
     private player: Player;
     private talentList: TalentData[];
-
+    private hasTalentMap: { [key: number]: boolean } = {};
     private sprites: cc.Sprite[];
     get IsExcuting() {
         return this.shieldSkill.IsExcuting;
@@ -55,10 +55,12 @@ export default class TalentShield extends cc.Component {
     }
     loadList(talentList: TalentData[]) {
         this.talentList = new Array();
+        this.hasTalentMap = {};
         for (let t of talentList) {
             let temp = new TalentData();
             temp.valueCopy(t);
             this.talentList.push(temp);
+            this.hasTalentMap[temp.id] = true;
         }
         this.changeShieldPerformance();
     }
@@ -73,6 +75,7 @@ export default class TalentShield extends cc.Component {
         }
         if(!hasit){
             this.talentList.push(data);
+            this.hasTalentMap[data.id] = true;
             this.changeShieldPerformance();
         }
     }
@@ -130,14 +133,24 @@ export default class TalentShield extends cc.Component {
         if (this.shieldSkill.IsExcuting) {
             return;
         }
-        let cooldown = 3;
-        if(this.hashTalent(TalentShield.SHIELD_14)){
-            cooldown = 5;
+        let cooldown = 6;
+        let invulnerabilityTime = 1;
+       
+        if(this.hashTalent(TalentShield.SHIELD_13)){
+            cooldown = 3;
         }
         this.shieldSkill.next(() => {
             let statusName = StatusManager.SHIELD_NORMAL;
+            let isNormalSpeed = this.hashTalent(TalentShield.SHIELD_12);
+            if(isNormalSpeed){
+                statusName = StatusManager.SHIELD_NORMAL_SPEED;
+            }
             if(this.hashTalent(TalentShield.SHIELD_14)){
                 statusName = StatusManager.SHIELD_LONG;
+                invulnerabilityTime = 2;
+                if(isNormalSpeed){
+                    statusName = StatusManager.SHIELD_LONG_SPEED;
+                }
             }
             this.shieldSkill.IsExcuting = true;
             let y = this.shieldFrontSprite.node.y;
@@ -146,7 +159,6 @@ export default class TalentShield extends cc.Component {
             this.shieldBackSprite.node.opacity = 255;
             this.shieldFrontSprite.node.opacity = 255;
             this.shieldFrontSprite.node.x = -8;
-            let invulnerabilityTime = 2;
             let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
                 , cc.delayTime(invulnerabilityTime), cc.moveTo(0.1, cc.v2(-8, y)), cc.scaleTo(0.1, 1, 1));
             let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
@@ -162,6 +174,9 @@ export default class TalentShield extends cc.Component {
                     this.player.addStatus(statusName);
                 }
             }, 0.2);
+            this.scheduleOnce(()=>{
+                this.shieldSkill.IsExcuting = false;
+            },invulnerabilityTime+0.2)
             cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
         }, cooldown, true);
     }
@@ -176,12 +191,7 @@ export default class TalentShield extends cc.Component {
         return node.getComponent(cc.Sprite);
     }
     hashTalent(id: number): boolean {
-        for (let t of this.talentList) {
-            if (t.id == id) {
-                return true;
-            }
-        }
-        return false;
+        return this.hasTalentMap[id]&&this.hasTalentMap[id]==true;
     }
     canAddStatus(statusType: string):boolean{
         if(!this.hashTalent(TalentShield.SHIELD_04)){
@@ -200,7 +210,7 @@ export default class TalentShield extends cc.Component {
         if (actor && this.IsExcuting) {
             if (this.hashTalent(TalentShield.SHIELD_05)) {
                 actor.takeDamage(new DamageData(5));
-            } else if (this.hashTalent(TalentShield.SHIELD_01)) {
+            } else if (this.hashTalent(TalentShield.SHIELD_02)) {
                 actor.takeDamage(new DamageData(1));
             }
         }

@@ -163,9 +163,10 @@ export default class Player extends cc.Component {
         this.addComponent(TalentShield);
         this.talentShield = this.getComponent(TalentShield);
         this.talentShield.loadList(Logic.talentList);
+        this.talentShield.addTalent(TalentShield.SHIELD_01);
         this.talentShield.addTalent(TalentShield.SHIELD_02);
-        this.talentShield.addTalent(TalentShield.SHIELD_04);
-        this.talentShield.addTalent(TalentShield.SHIELD_05);
+        this.talentShield.addTalent(TalentShield.SHIELD_03);
+        this.talentShield.addTalent(TalentShield.SHIELD_13);
         this.talentShield.addTalent(TalentShield.SHIELD_14);
         this.addComponent(TalentDash);
         this.talentDash = this.getComponent(TalentDash);
@@ -324,7 +325,11 @@ export default class Player extends cc.Component {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
     addStatus(statusType: string) {
-        if(this.talentShield.IsExcuting&&this.talentShield.canAddStatus(statusType)){
+        if(this.talentShield.IsExcuting){
+            if(this.talentShield.canAddStatus(statusType)){
+                this.statusManager.addStatus(statusType);
+            }
+        }else{
             this.statusManager.addStatus(statusType);
         }
     }
@@ -491,7 +496,7 @@ export default class Player extends cc.Component {
             return false;
         }
         //盾牌
-        this.talentShield.takeDamage(damageData);
+        this.talentShield.takeDamage(damageData,actor);
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
