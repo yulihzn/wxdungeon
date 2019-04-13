@@ -22,9 +22,10 @@ import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Random from './Utils/Random';
 import Skill from './Utils/Skill';
 import Item from './Item/Item';
+import Actor from './Base/Actor';
 
 @ccclass
-export default class Monster extends cc.Component {
+export default class Monster extends Actor {
     public static readonly RES_DISGUISE = 'disguise';//图片资源 伪装
     public static readonly RES_WALK01 = 'anim001';//图片资源 行走1
     public static readonly RES_WALK02 = 'anim002';//图片资源 行走2
@@ -466,7 +467,7 @@ export default class Monster extends cc.Component {
                     let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
                     if (newdis < 80*this.node.scaleY && !isMiss) {
                         this.addPlayerStatus(this.dungeon.player);
-                        this.dungeon.player.takeDamage(this.data.getAttackPoint());
+                        this.dungeon.player.takeDamage(this.data.getAttackPoint(),this);
                     }
                 })
 
@@ -532,7 +533,7 @@ export default class Monster extends cc.Component {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.addPlayerStatus(this.dungeon.player);
             this.stopAttackEffect();
-            this.dungeon.player.takeDamage(this.data.getAttackPoint());
+            this.dungeon.player.takeDamage(this.data.getAttackPoint(),this);
         }
     }
     // getPosDir(oldPos: cc.Vec2, newPos: cc.Vec2): number {

@@ -33,20 +33,7 @@ export default class TalentManager extends cc.Component {
     public static readonly DASH_13 = 1000013;
     public static readonly DASH_14 = 1000014;
 
-    public static readonly SHIELD_01 = 2000001;
-    public static readonly SHIELD_02 = 2000002;
-    public static readonly SHIELD_03 = 2000003;
-    public static readonly SHIELD_04 = 2000004;
-    public static readonly SHIELD_05 = 2000005;
-    public static readonly SHIELD_06 = 2000006;
-    public static readonly SHIELD_07 = 2000007;
-    public static readonly SHIELD_08 = 2000008;
-    public static readonly SHIELD_09 = 2000009;
-    public static readonly SHIELD_10 = 2000010;
-    public static readonly SHIELD_11 = 2000011;
-    public static readonly SHIELD_12 = 2000012;
-    public static readonly SHIELD_13 = 2000013;
-    public static readonly SHIELD_14 = 2000014;
+    
     
     private talentList: TalentData[];
     dugeon:Dungeon;

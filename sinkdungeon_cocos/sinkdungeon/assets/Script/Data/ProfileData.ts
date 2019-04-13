@@ -8,6 +8,7 @@ import MonsterData from "./MonsterData";
 import ChestData from "./ChestData";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
+import TalentData from "./TalentData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -38,6 +39,7 @@ export default class ProfileData {
     hasSaveData:boolean = false;
     playerData:PlayerData = new PlayerData();
     inventoryManager: InventoryManager = new InventoryManager();
+    talentList:TalentData[] = new Array();
     ammo = 30;//子弹
     level = 0;
     constructor(){
@@ -52,6 +54,7 @@ export default class ProfileData {
         this.chapterName = 0;
         this.playerData = new PlayerData();
         this.inventoryManager = new InventoryManager();
+        this.talentList = new Array();
         this.rectDungeon = new RectDungeon(0);
         this.currentPos = cc.v2(0,0);
         this.boxes = {};
@@ -78,7 +81,7 @@ export default class ProfileData {
             return;
         }
         if(!data.playerData||!data.inventoryManager||!data.rectDungeon||!data.currentPos||!data.shopTables
-        ||!data.boxes||!data.chests||!data.equipments||!data.items){
+        ||!data.boxes||!data.chests||!data.equipments||!data.items||!data.talentList){
             this.hasSaveData = false;
             return;
         }
@@ -87,6 +90,9 @@ export default class ProfileData {
         this.chapterName = data.chapterName;
         for(let i =0;i<data.inventoryManager.list.length;i++){
             this.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
+        }
+        for(let i =0;i<data.talentList.length;i++){
+            this.talentList[i].valueCopy(data.talentList[i]);
         }
         this.rectDungeon = this.rectDungeon.buildMapFromSave(data.rectDungeon);
         this.currentPos = data.currentPos?cc.v2(data.currentPos.x,data.currentPos.y):cc.v2(0,0);

@@ -26,6 +26,9 @@ import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Tips from './UI/Tips';
 import Random from './Utils/Random';
 import Skill from './Utils/Skill';
+import TalentShield from './Talent/TalentShield';
+import TalentDash from './Talent/TalentDash';
+import Actor from './Base/Actor';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -60,13 +63,11 @@ export default class Player extends cc.Component {
     shoesRightSprite: cc.Sprite = null;
     cloakSprite: cc.Sprite = null;
     bodySprite: cc.Sprite = null;
-    shieldBackSprite: cc.Sprite = null;
-    shieldFrontSprite: cc.Sprite = null;
     isMoving = false;//是否移动中
     isAttacking = false;//是否近战攻击中
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
     private sprite: cc.Node;
-    private anim: cc.Animation;
+    anim: cc.Animation;
     isDied = false;//是否死亡
     isFall = false;//是否跌落
     isStone = false;//是否石化
@@ -86,10 +87,9 @@ export default class Player extends cc.Component {
     rigidbody: cc.RigidBody;
 
     defaultPos = cc.v2(0, 0);
-    //冲刺
-    dashSkill = new Skill();
-    //盾牌
-    shieldSkill = new Skill();
+
+    talentDash:TalentDash;
+    talentShield:TalentShield;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -126,10 +126,10 @@ export default class Player extends cc.Component {
         this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'shoesleft']);
         this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'shoesright']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
-        this.shieldBackSprite = this.getSpriteChildSprite(['sprite', 'shieldback']);
-        this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
-        this.shieldBackSprite.node.opacity = 0;
-        this.shieldFrontSprite.node.opacity = 0;
+        // this.shieldBackSprite = this.getSpriteChildSprite(['sprite', 'shieldback']);
+        // this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
+        // this.shieldBackSprite.node.opacity = 0;
+        // this.shieldFrontSprite.node.opacity = 0;
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
             , (event) => { this.changeItem(event.detail.spriteFrame) });
         cc.director.on(EventConstant.PLAYER_USEITEM
@@ -160,6 +160,15 @@ export default class Player extends cc.Component {
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
+        this.addComponent(TalentShield);
+        this.talentShield = this.getComponent(TalentShield);
+        this.talentShield.loadList(Logic.talentList);
+        this.talentShield.addTalent(TalentShield.SHIELD_02);
+        this.talentShield.addTalent(TalentShield.SHIELD_04);
+        this.talentShield.addTalent(TalentShield.SHIELD_05);
+        this.talentShield.addTalent(TalentShield.SHIELD_14);
+        this.addComponent(TalentDash);
+        this.talentDash = this.getComponent(TalentDash);
     }
     /**
      * 
@@ -206,7 +215,7 @@ export default class Player extends cc.Component {
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
         cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
-    private getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
+    getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
         let smokePrefab: cc.Node = null;
         if (this.smokePool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             smokePrefab = this.smokePool.get();
@@ -315,7 +324,9 @@ export default class Player extends cc.Component {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
     addStatus(statusType: string) {
-        this.statusManager.addStatus(statusType);
+        if(this.talentShield.IsExcuting&&this.talentShield.canAddStatus(statusType)){
+            this.statusManager.addStatus(statusType);
+        }
     }
     meleeAttack() {
         if (!this.meleeWeapon || this.isAttacking) {
@@ -475,10 +486,12 @@ export default class Player extends cc.Component {
             this.isFall = false;
         }, 2);
     }
-    takeDamage(damageData: DamageData): boolean {
+    takeDamage(damageData: DamageData,actor?:Actor): boolean {
         if (!this.data) {
             return false;
         }
+        //盾牌
+        this.talentShield.takeDamage(damageData);
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
@@ -532,7 +545,7 @@ export default class Player extends cc.Component {
         if (this.shooter && !this.shooter.dungeon) {
             this.shooter.dungeon = dungeon;
         }
-        if (this.dashSkill && !this.dashSkill.IsExcuting) {
+        if (this.talentDash && !this.talentDash.IsExcuting) {
             this.move(dir, pos, dt);
         }
     }
@@ -573,67 +586,12 @@ export default class Player extends cc.Component {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
     private useSkill():void{
-        this.useShield();
+        if(this.talentShield){
+            this.talentShield.useShield();
+        }
+        // this.talentDash.useDash();
     }
-    private useShield(): void {
-        if (!this.shieldSkill) {
-            return;
-        }
-        if (this.shieldSkill.IsExcuting) {
-            return;
-        }
-        let cooldown = 3;
-        this.shieldSkill.next(() => {
-            this.shieldSkill.IsExcuting = true;
-            let y = this.shieldFrontSprite.node.y;
-            this.shieldBackSprite.node.scaleX = 1;
-            this.shieldFrontSprite.node.scaleX = 0;
-            this.shieldBackSprite.node.opacity = 255;
-            this.shieldFrontSprite.node.opacity = 255;
-            this.shieldFrontSprite.node.x = -8;
-            let invulnerabilityTime = 2;
-            let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(0.1, cc.v2(-8, y)), cc.scaleTo(0.1, 1, 1));
-            let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(0.1, cc.v2(-8, y)), cc.scaleTo(0.1, 0, 1));
-            this.shieldBackSprite.node.runAction(backAction);
-            this.shieldFrontSprite.node.runAction(frontAction);
-            this.scheduleOnce(()=>{this.addStatus(StatusManager.SHIELD_NORMAL)},0.2);
-            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
-        }, cooldown, true);
-    }
-    private useDash() {
-        if (!this.dashSkill) {
-            return;
-        }
-        if (this.dashSkill.IsExcuting) {
-            return;
-        }
-        this.dashSkill.IsExcuting = true;
-        let cooldown = 2;
-        this.dashSkill.next(() => {
-            this.schedule(() => { this.getWalkSmoke(this.node.parent, this.node.position); }, 0.05, 4, 0);
-            let idleName = "idle001";
-            if (this.inventoryManager.trousers.trouserslong == 1) {
-                idleName = "idle002";
-            }
-            this.anim.play('PlayerIdle');
-            let pos = this.rigidbody.linearVelocity.clone();
-            this.isMoving = false;
-            if (pos.equals(cc.Vec2.ZERO)) {
-                pos = this.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
-            } else {
-                pos = pos.normalizeSelf();
-            }
-            pos = pos.mul(1000);
-            this.rigidbody.linearVelocity = pos;
-            this.scheduleOnce(() => {
-                this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-                this.trousersSprite.spriteFrame = Logic.spriteFrames[idleName];
-            }, 0.5)
-            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
-        }, cooldown, true);
-    }
+    
     useItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {

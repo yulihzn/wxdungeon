@@ -18,6 +18,7 @@ import BulletData from "./Data/BulletData";
 import ItemData from "./Data/ItemData";
 import ChestData from "./Data/ChestData";
 import Random from "./Utils/Random";
+import TalentData from "./Data/TalentData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,6 +58,7 @@ export default class Logic extends cc.Component {
 
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
+    static talentList:TalentData[] = new Array();
 
     static mapManager: MapManager = new MapManager();
     static coins = 0;//金币
@@ -102,6 +104,7 @@ export default class Logic extends cc.Component {
         Logic.level = Logic.profile.level;
         Logic.playerData = Logic.profile.playerData.clone();
         Logic.inventoryManager = Logic.profile.inventoryManager;
+        Logic.talentList = Logic.profile.talentList;
         Logic.mapManager.reset(Logic.level);
         Logic.mapManager.loadDataFromSave();
         let c = cc.sys.localStorage.getItem('coin');

@@ -26,6 +26,8 @@ export default class Controller extends cc.Component {
     interactActionTouched = false;
     @property(cc.Node)
     skillAction: cc.Node = null;
+    @property(cc.Node)
+    coolDown: cc.Node = null;
     skillActionTouched = false;
     graphics:cc.Graphics = null;
 
@@ -99,7 +101,10 @@ export default class Controller extends cc.Component {
         if(coolDown <= 0){
             return;
         }
-        let p = this.skillAction.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        if(!this.coolDown){
+            return;
+        }
+        let p = this.coolDown.convertToWorldSpaceAR(cc.Vec2.ZERO);
         p = this.node.convertToNodeSpaceAR(p);
         let angle = 360;
         let delta = 0.016;

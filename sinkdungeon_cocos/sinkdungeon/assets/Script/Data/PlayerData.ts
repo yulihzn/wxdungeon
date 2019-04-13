@@ -26,7 +26,7 @@ export default class PlayerData {
 
     private common: CommonData;
     private equipmentTotalData: EquipmentData;
-    private statusTotalData: StatusData;
+    private statusTotalData: StatusData;    
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();

@@ -32,8 +32,8 @@ export default class TalentIcon extends cc.Component {
                 this.node.color = cc.color(255, 255, 255);
             }
         } else {
-            this.disconnectNode(this);
-            this.closeAllChildren(this.children)
+            // this.disconnectNode(this);
+            // this.closeAllChildren(this.children)
         }
     }
     disconnectNode(icon: TalentIcon) {

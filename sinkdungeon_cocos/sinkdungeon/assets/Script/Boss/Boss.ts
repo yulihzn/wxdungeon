@@ -1,5 +1,4 @@
 import HealthBar from "../HealthBar";
-import DamageData from "../Data/DamageData";
 import Logic from "../Logic";
 import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
@@ -31,7 +30,6 @@ export default abstract class Boss extends Actor {
     data: MonsterData = new MonsterData();
     isDied = false;
     isShow = false;
-    abstract takeDamage(damage: DamageData): boolean;
     abstract killed();
     abstract bossAction(): void;
     /**添加状态 */
