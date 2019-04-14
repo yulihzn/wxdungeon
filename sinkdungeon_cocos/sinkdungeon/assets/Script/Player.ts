@@ -29,6 +29,7 @@ import Skill from './Utils/Skill';
 import TalentShield from './Talent/TalentShield';
 import TalentDash from './Talent/TalentDash';
 import Actor from './Base/Actor';
+import FlyWheel from './Item/FlyWheel';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -90,6 +91,7 @@ export default class Player extends cc.Component {
 
     talentDash:TalentDash;
     talentShield:TalentShield;
+    flyWheel:FlyWheel;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -160,11 +162,12 @@ export default class Player extends cc.Component {
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
-        this.addComponent(TalentShield);
+        // this.addComponent(TalentShield);
         this.talentShield = this.getComponent(TalentShield);
+        this.talentShield.init();
         this.talentShield.loadList(Logic.talentList);
         this.talentShield.addTalent(TalentShield.SHIELD_01);
-        this.talentShield.addTalent(TalentShield.SHIELD_02);
+        this.talentShield.addTalent(TalentShield.SHIELD_06);
         this.talentShield.addTalent(TalentShield.SHIELD_03);
         this.talentShield.addTalent(TalentShield.SHIELD_13);
         this.talentShield.addTalent(TalentShield.SHIELD_14);
@@ -397,6 +400,9 @@ export default class Player extends cc.Component {
         // }
         if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
             this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
+        }
+        if (this.talentShield && !pos.equals(cc.Vec2.ZERO)) {
+            this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
         }
     }
     move(dir: number, pos: cc.Vec2, dt: number) {

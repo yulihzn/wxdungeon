@@ -6,6 +6,8 @@ import TalentData from "../Data/TalentData";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
 import Actor from "../Base/Actor";
+import FlyWheel from "../Item/FlyWheel";
+import Dungeon from "../Dungeon";
 
 const { ccclass, property } = cc._decorator;
 
@@ -32,6 +34,8 @@ export default class TalentShield extends cc.Component {
     private talentList: TalentData[];
     private hasTalentMap: { [key: number]: boolean } = {};
     private sprites: cc.Sprite[];
+    @property(FlyWheel)
+    flyWheel:FlyWheel = null;
     get IsExcuting() {
         return this.shieldSkill.IsExcuting;
     }
@@ -39,6 +43,9 @@ export default class TalentShield extends cc.Component {
         this.shieldSkill.IsExcuting = flag;
     }
     onLoad() {
+        
+    }
+    init(){
         this.shieldBackSprite = this.getSpriteChildSprite(['sprite', 'shieldback']);
         this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
         this.shieldBackSprite.node.opacity = 0;
@@ -52,6 +59,10 @@ export default class TalentShield extends cc.Component {
             sprite.node.opacity = 0;
             this.sprites.push(sprite);
         }
+        this.flyWheel.dungeon = this.player.node.parent.getComponent(Dungeon);
+        this.flyWheel.node.active = false;
+        this.node.parent = this.flyWheel.dungeon.node;
+        this.node.setPosition(this.player.node.position.add(cc.v2(8,48)));
     }
     loadList(talentList: TalentData[]) {
         this.talentList = new Array();
@@ -142,6 +153,8 @@ export default class TalentShield extends cc.Component {
         this.shieldSkill.next(() => {
             let statusName = StatusManager.SHIELD_NORMAL;
             let isNormalSpeed = this.hashTalent(TalentShield.SHIELD_12);
+            let animOverTime = 0.1;
+
             if(isNormalSpeed){
                 statusName = StatusManager.SHIELD_NORMAL_SPEED;
             }
@@ -152,6 +165,10 @@ export default class TalentShield extends cc.Component {
                     statusName = StatusManager.SHIELD_LONG_SPEED;
                 }
             }
+            if(this.hashTalent(TalentShield.SHIELD_06)){
+                invulnerabilityTime = 0;
+                animOverTime = 0;
+            }
             this.shieldSkill.IsExcuting = true;
             let y = this.shieldFrontSprite.node.y;
             this.shieldBackSprite.node.scaleX = 1;
@@ -160,9 +177,9 @@ export default class TalentShield extends cc.Component {
             this.shieldFrontSprite.node.opacity = 255;
             this.shieldFrontSprite.node.x = -8;
             let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(0.1, cc.v2(-8, y)), cc.scaleTo(0.1, 1, 1));
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 1, 1));
             let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(0.1, cc.v2(-8, y)), cc.scaleTo(0.1, 0, 1));
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 0, 1));
             this.shieldBackSprite.node.runAction(backAction);
             this.shieldFrontSprite.node.runAction(frontAction);
             this.scheduleOnce(() => {
@@ -181,7 +198,9 @@ export default class TalentShield extends cc.Component {
         }, cooldown, true);
     }
     private throwShield() {
-
+        if(this.flyWheel){
+            this.flyWheel.show();
+        }
     }
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
