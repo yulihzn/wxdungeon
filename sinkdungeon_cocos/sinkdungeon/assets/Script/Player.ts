@@ -170,7 +170,8 @@ export default class Player extends cc.Component {
         this.talentShield.addTalent(TalentShield.SHIELD_06);
         this.talentShield.addTalent(TalentShield.SHIELD_03);
         this.talentShield.addTalent(TalentShield.SHIELD_13);
-        this.talentShield.addTalent(TalentShield.SHIELD_14);
+        this.talentShield.addTalent(TalentShield.SHIELD_07);
+        this.talentShield.addTalent(TalentShield.SHIELD_11);
         this.addComponent(TalentDash);
         this.talentDash = this.getComponent(TalentDash);
     }
@@ -391,6 +392,7 @@ export default class Player extends cc.Component {
     isHeavyRemoteShooter(): boolean {
         return this.shooter.data.isHeavy == 1;
     }
+    //暂时不用
     rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
         if (!this.node || this.isDied || this.isFall) {
             return;
@@ -422,10 +424,14 @@ export default class Player extends cc.Component {
             //存档系统保存玩家位置
             Logic.profile.playerData.pos = this.pos.clone();
         }
+        //调整武器方向
         if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
             this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
         }
-
+        //调整盾牌方向
+        if (this.talentShield && !pos.equals(cc.Vec2.ZERO)) {
+            this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
+        }
         let h = pos.x;
         let v = pos.y;
         let absh = Math.abs(h);

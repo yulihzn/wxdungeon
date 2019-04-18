@@ -1,5 +1,12 @@
 import Logic from "../Logic";
 import Dungeon from "../Dungeon";
+import TalentData from "../Data/TalentData";
+import TalentShield from "../Talent/TalentShield";
+import DamageData from "../Data/DamageData";
+import Monster from "../Monster";
+import Boss from "../Boss/Boss";
+import StatusManager from "../Manager/StatusManager";
+import Box from "../Building/Box";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,12 +25,68 @@ export default class FlyWheel extends cc.Component {
     rigidBody:cc.RigidBody;
     dungeon:Dungeon;
     hv:cc.Vec2 = cc.v2(1,0);
-
+    private sprites: cc.Sprite[];
     isFlyOut = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.rigidBody = this.getComponent(cc.RigidBody);
+    }
+    init(){
+        this.sprites = new Array();
+        let arr = [2, 3, 4, 5, 9, 12, 13, 14];
+        for (let i = 0; i < arr.length; i++) {
+            let sprite = this.getSpriteChildSprite(['sprite',`sprite${arr[i]}`]);
+            sprite.node.opacity = 0;
+            this.sprites.push(sprite);
+        }
+    }
+    
+    changeShieldPerformance(talentList: TalentData[]) {
+        //隐藏所有额外显示
+        for (let sprite of this.sprites) {
+            sprite.node.opacity = 0;
+        }
+        this.node.color = cc.color(255, 255, 255);
+        let isThrow = false;
+        //[2,3,4,5,9,12,13,14];
+        for (let t of talentList) {
+            if (t.id == TalentShield.SHIELD_01) {
+            } else if (t.id == TalentShield.SHIELD_02) {
+                this.sprites[0].node.opacity = 255;
+            } else if (t.id == TalentShield.SHIELD_03) {
+                this.sprites[1].node.opacity = 255;
+            } else if (t.id == TalentShield.SHIELD_04) {
+                this.sprites[2].node.opacity = 255;
+            } else if (t.id == TalentShield.SHIELD_05) {
+                this.sprites[3].node.opacity = 255;
+            } else if (t.id == TalentShield.SHIELD_06) {
+                isThrow = true;
+            } else if (t.id == TalentShield.SHIELD_07) {
+                this.node.color = cc.color(0, 0, 0);
+            } else if (t.id == TalentShield.SHIELD_08) {
+                this.node.color = cc.color(0, 0, 0);
+            } else if (t.id == TalentShield.SHIELD_09) {
+                this.sprites[4].node.opacity = 255;
+            } else if (t.id == TalentShield.SHIELD_10) {
+                this.node.color = cc.color(0, 0, 0);
+            } else if (t.id == TalentShield.SHIELD_11) {
+                this.node.color = cc.color(0, 0, 0);
+            } else if (t.id == TalentShield.SHIELD_12) {
+                this.sprites[5].node.opacity = 255;
+            } else if (t.id == TalentShield.SHIELD_13) {
+                this.sprites[6].node.opacity = 255;
+            } else if (t.id == TalentShield.SHIELD_14) {
+                this.sprites[7].node.opacity = 255;
+            }
+        }
+    }
+    private getSpriteChildSprite(childNames: string[]): cc.Sprite {
+        let node = this.node;
+        for (let name of childNames) {
+            node = node.getChildByName(name);
+        }
+        return node.getComponent(cc.Sprite);
     }
     onEnable(){
     }
@@ -53,10 +116,13 @@ export default class FlyWheel extends cc.Component {
         this.node.active = true;
         this.node.parent = this.dungeon.node;
         this.node.setPosition(this.getPlayerPosition());
-        let isRight = this.dungeon.player.isFaceRight;
         let speed = 1000;
         this.rigidBody.linearDamping = 3;
-        this.rigidBody.linearVelocity = this.hv.mul(isRight?speed:-speed);
+        if(this.dungeon.player.talentShield.hashTalent(TalentShield.SHIELD_11)){
+            speed = 3000;
+            this.rigidBody.linearDamping = 6;
+        }
+        this.rigidBody.linearVelocity = this.hv.mul(speed);
         this.isFlyOut = true;
         this.node.zIndex = 4000;
         this.scheduleOnce(()=>{
@@ -68,7 +134,7 @@ export default class FlyWheel extends cc.Component {
         this.rigidBody.linearVelocity = cc.Vec2.ZERO;
     }
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        // this.attacking(otherCollider);
+        this.attacking(otherCollider);
     }
     setHv(hv: cc.Vec2) {
         if(hv.equals(cc.Vec2.ZERO)){
@@ -76,6 +142,50 @@ export default class FlyWheel extends cc.Component {
         }else{
             this.hv = hv;
         }
+    }
+    attacking(attackTarget: cc.PhysicsCollider) {
+        if (!attackTarget || !this.node.active) {
+            return;
+        }
+        let damage = new DamageData(1);
+        
+        let damageSuccess = false;
+        let monster = attackTarget.node.getComponent(Monster);
+        if (monster && !monster.isDied) {
+            damageSuccess = monster.takeDamage(damage);
+            if (damageSuccess) {
+                this.beatBack(monster.node);
+                this.addMonsterAllStatus(monster);
+            }
+        }
+
+        let boss = attackTarget.node.getComponent(Boss);
+        if (boss && !boss.isDied) {
+            damageSuccess = boss.takeDamage(damage);
+            if (damageSuccess) {
+                this.addBossAllStatus(boss);
+            }
+        }
+
+        let box = attackTarget.node.getComponent(Box);
+        if (box) {
+            box.breakBox();
+        }
+
+    }
+    beatBack(node: cc.Node) {
+        //飞出去才有击退
+        if(!this.dungeon.player.talentShield.hashTalent(TalentShield.SHIELD_09)||!this.isFlyOut){
+            return;
+        }
+        let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
+        let pos = this.hv.clone();
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = cc.v2(1, 0);
+        }
+        let power = 640;
+        pos = pos.normalizeSelf().mul(power);
+        rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
     }
     update (dt) { 
         if(this.isCheckTimeDelay(dt)){
@@ -95,5 +205,22 @@ export default class FlyWheel extends cc.Component {
         if (this.dungeon&&this.dungeon.player&&this.getNearPlayerDistance(this.dungeon.player.node)<32&&this.node.active&&!this.isFlyOut) {
             this.hide();
         }
+    }
+
+    addMonsterAllStatus(monster: Monster) {
+        this.addMonsterStatus(TalentShield.SHIELD_07, monster, StatusManager.FROZEN);
+        this.addMonsterStatus(TalentShield.SHIELD_08, monster, StatusManager.DIZZ);
+        this.addMonsterStatus(TalentShield.SHIELD_10, monster, StatusManager.BLEEDING);
+    }
+    addBossAllStatus(boss: Boss) {
+        this.addBossStatus(TalentShield.SHIELD_07, boss, StatusManager.FROZEN);
+        this.addBossStatus(TalentShield.SHIELD_08, boss, StatusManager.DIZZ);
+        this.addBossStatus(TalentShield.SHIELD_10, boss, StatusManager.BLEEDING);
+    }
+    addMonsterStatus(talentType: number, monster: Monster, statusType) {
+        if (this.dungeon.player.talentShield.hashTalent(talentType)) { monster.addStatus(statusType); }
+    }
+    addBossStatus(talentType: number, boss: Boss, statusType) {
+        if (this.dungeon.player.talentShield.hashTalent(talentType)) { boss.addStatus(statusType); }
     }
 }

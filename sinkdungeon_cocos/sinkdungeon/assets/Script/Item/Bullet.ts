@@ -10,6 +10,7 @@ import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import Boom from "./Boom";
 import TalentShield from "../Talent/TalentShield";
+import FlyWheel from "./FlyWheel";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -290,6 +291,11 @@ export default class Bullet extends cc.Component {
         //上面的墙不销毁
         if (otherCollider.tag == 2) {
             isDestory = false;
+        }
+        //飞轮需要销毁
+        let flyWheel = otherCollider.node.getComponent(FlyWheel);
+        if(flyWheel){
+            isDestory = true;
         }
         if (isDestory) {
             this.bulletHit();

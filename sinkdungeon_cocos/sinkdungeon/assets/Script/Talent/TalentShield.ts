@@ -18,11 +18,11 @@ export default class TalentShield extends cc.Component {
     public static readonly SHIELD_03 = 2000003;//镜面偏转 1
     public static readonly SHIELD_04 = 2000004;//元素晶盾 1
     public static readonly SHIELD_05 = 2000005;//强力盾反 1
-    public static readonly SHIELD_06 = 2000006;//乾坤一掷
-    public static readonly SHIELD_07 = 2000007;//九转回旋（减速）
-    public static readonly SHIELD_08 = 2000008;//平地惊雷（眩晕）
-    public static readonly SHIELD_09 = 2000009;//四两千斤（击退）
-    public static readonly SHIELD_10 = 2000010;//见血封喉（流血）
+    public static readonly SHIELD_06 = 2000006;//乾坤一掷 1
+    public static readonly SHIELD_07 = 2000007;//九转回旋（减速）1
+    public static readonly SHIELD_08 = 2000008;//平地惊雷（眩晕）1
+    public static readonly SHIELD_09 = 2000009;//四两千斤（击退）1
+    public static readonly SHIELD_10 = 2000010;//见血封喉（流血）1
     public static readonly SHIELD_11 = 2000011;//阴阳遁形（距离）
     public static readonly SHIELD_12 = 2000012;//敏捷身法（移除减速损耗）1 
     public static readonly SHIELD_13 = 2000013;//坚韧不屈（缩短cd）1
@@ -63,6 +63,7 @@ export default class TalentShield extends cc.Component {
         this.flyWheel.node.active = false;
         this.node.parent = this.flyWheel.dungeon.node;
         this.node.setPosition(this.player.node.position.add(cc.v2(8,48)));
+        this.flyWheel.init();
     }
     loadList(talentList: TalentData[]) {
         this.talentList = new Array();
@@ -129,6 +130,7 @@ export default class TalentShield extends cc.Component {
             }
         }
         this.changeRes(isThrow ? 'shield06' : 'shield01');
+        this.flyWheel.changeShieldPerformance(this.talentList);
     }
     changeRes(resName: string) {
         if (!resName || resName.length < 1) {
