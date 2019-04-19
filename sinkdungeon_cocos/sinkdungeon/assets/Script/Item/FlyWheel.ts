@@ -120,7 +120,7 @@ export default class FlyWheel extends cc.Component {
         this.rigidBody.linearDamping = 3;
         if(this.dungeon.player.talentShield.hashTalent(TalentShield.SHIELD_11)){
             speed = 3000;
-            this.rigidBody.linearDamping = 6;
+            this.rigidBody.linearDamping = 12;
         }
         this.rigidBody.linearVelocity = this.hv.mul(speed);
         this.isFlyOut = true;
@@ -183,7 +183,7 @@ export default class FlyWheel extends cc.Component {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        let power = 640;
+        let power = 1000;
         pos = pos.normalizeSelf().mul(power);
         rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
     }

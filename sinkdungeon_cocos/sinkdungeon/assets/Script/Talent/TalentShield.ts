@@ -23,7 +23,7 @@ export default class TalentShield extends cc.Component {
     public static readonly SHIELD_08 = 2000008;//平地惊雷（眩晕）1
     public static readonly SHIELD_09 = 2000009;//四两千斤（击退）1
     public static readonly SHIELD_10 = 2000010;//见血封喉（流血）1
-    public static readonly SHIELD_11 = 2000011;//阴阳遁形（距离）
+    public static readonly SHIELD_11 = 2000011;//阴阳遁形（距离）1
     public static readonly SHIELD_12 = 2000012;//敏捷身法（移除减速损耗）1 
     public static readonly SHIELD_13 = 2000013;//坚韧不屈（缩短cd）1
     public static readonly SHIELD_14 = 2000014;//龟甲铜墙（举盾时间变长，非乾坤一掷）1
@@ -156,6 +156,13 @@ export default class TalentShield extends cc.Component {
             let statusName = StatusManager.SHIELD_NORMAL;
             let isNormalSpeed = this.hashTalent(TalentShield.SHIELD_12);
             let animOverTime = 0.1;
+            this.shieldSkill.IsExcuting = true;
+            let y = this.shieldFrontSprite.node.y;
+            this.shieldBackSprite.node.scaleX = 1;
+            this.shieldFrontSprite.node.scaleX = 0;
+            this.shieldBackSprite.node.opacity = 255;
+            this.shieldFrontSprite.node.opacity = 255;
+            this.shieldFrontSprite.node.x = -8;
 
             if(isNormalSpeed){
                 statusName = StatusManager.SHIELD_NORMAL_SPEED;
@@ -171,13 +178,6 @@ export default class TalentShield extends cc.Component {
                 invulnerabilityTime = 0;
                 animOverTime = 0;
             }
-            this.shieldSkill.IsExcuting = true;
-            let y = this.shieldFrontSprite.node.y;
-            this.shieldBackSprite.node.scaleX = 1;
-            this.shieldFrontSprite.node.scaleX = 0;
-            this.shieldBackSprite.node.opacity = 255;
-            this.shieldFrontSprite.node.opacity = 255;
-            this.shieldFrontSprite.node.x = -8;
             let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
                 , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 1, 1));
             let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
@@ -187,6 +187,7 @@ export default class TalentShield extends cc.Component {
             this.scheduleOnce(() => {
                 if (this.hashTalent(TalentShield.SHIELD_06)) {
                     //乾坤一掷
+                    this.shieldBackSprite.node.opacity = 0;
                     this.throwShield();
                 } else {
                     //添加状态
@@ -196,6 +197,9 @@ export default class TalentShield extends cc.Component {
             this.scheduleOnce(()=>{
                 this.shieldSkill.IsExcuting = false;
             },invulnerabilityTime+0.2)
+            this.scheduleOnce(()=>{
+                this.shieldBackSprite.node.opacity = 255;
+            },1)
             cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
         }, cooldown, true);
     }

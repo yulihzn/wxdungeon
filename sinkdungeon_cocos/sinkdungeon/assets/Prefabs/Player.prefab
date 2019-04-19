@@ -58,10 +58,13 @@
       },
       {
         "__id__": 154
+      },
+      {
+        "__id__": 155
       }
     ],
     "_prefab": {
-      "__id__": 155
+      "__id__": 156
     },
     "_opacity": 255,
     "_color": {
@@ -5162,6 +5165,16 @@
     "flyWheel": {
       "__id__": 147
     },
+    "_id": ""
+  },
+  {
+    "__type__": "52ac4HK4rpMhYIJb8+wkG1J",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {

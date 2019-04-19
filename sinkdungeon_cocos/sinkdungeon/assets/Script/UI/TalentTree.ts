@@ -62,12 +62,12 @@ export default class TalentTree extends cc.Component {
         this.initDashNode(4,[1],[6]);
         this.initDashNode(5,[1],[6]);
         this.initDashNode(6,[2,3,4,5],[]);
-        this.initDashNode(7,[0],[8,9,10]);
-        this.initDashNode(8,[7],[11]);
-        this.initDashNode(9,[7],[11]);
-        this.initDashNode(10,[7],[11]);
-        this.initDashNode(11,[8,9,10],[]);
-        this.initDashNode(12,[0],[13]);
+        this.initDashNode(7,[0],[8,9]);
+        this.initDashNode(8,[7],[10]);
+        this.initDashNode(9,[7],[10]);
+        this.initDashNode(10,[8,9],[]);
+        this.initDashNode(11,[0],[12]);
+        this.initDashNode(12,[11],[13]);
         this.initDashNode(13,[12],[]);
     }
     talentClick(node:cc.Node){
