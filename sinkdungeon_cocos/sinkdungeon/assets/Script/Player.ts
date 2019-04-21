@@ -30,6 +30,7 @@ import TalentShield from './Talent/TalentShield';
 import TalentDash from './Talent/TalentDash';
 import Actor from './Base/Actor';
 import FlyWheel from './Item/FlyWheel';
+import Talent from './Talent/Talent';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -166,14 +167,17 @@ export default class Player extends cc.Component {
         this.talentShield = this.getComponent(TalentShield);
         this.talentShield.init();
         this.talentShield.loadList(Logic.talentList);
-        this.talentShield.addTalent(TalentShield.SHIELD_01);
-        this.talentShield.addTalent(TalentShield.SHIELD_06);
-        this.talentShield.addTalent(TalentShield.SHIELD_03);
-        this.talentShield.addTalent(TalentShield.SHIELD_13);
-        this.talentShield.addTalent(TalentShield.SHIELD_07);
-        this.talentShield.addTalent(TalentShield.SHIELD_11);
-        this.addComponent(TalentDash);
+        this.talentShield.addTalent(Talent.SHIELD_01);
+        this.talentShield.addTalent(Talent.SHIELD_06);
+        this.talentShield.addTalent(Talent.SHIELD_03);
+        this.talentShield.addTalent(Talent.SHIELD_13);
+        this.talentShield.addTalent(Talent.SHIELD_07);
+        this.talentShield.addTalent(Talent.SHIELD_11);
         this.talentDash = this.getComponent(TalentDash);
+        this.talentDash.init();
+        this.talentDash.loadList(Logic.talentList);
+        this.talentDash.addTalent(Talent.DASH_01);
+        this.talentDash.addTalent(Talent.DASH_14);
     }
     /**
      * 
@@ -603,10 +607,12 @@ export default class Player extends cc.Component {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
     private useSkill():void{
-        if(this.talentShield){
-            this.talentShield.useShield();
+        // if(this.talentShield){
+        //     this.talentShield.useShield();
+        // }
+        if(this.talentDash){
+            this.talentDash.useDash();
         }
-        // this.talentDash.useDash();
     }
     
     useItem() {
