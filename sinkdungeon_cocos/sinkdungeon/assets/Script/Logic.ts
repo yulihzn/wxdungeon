@@ -58,7 +58,9 @@ export default class Logic extends cc.Component {
 
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
+
     static talentList:TalentData[] = new Array();
+    static hasTalentMap: { [key: number]: boolean } = {};
 
     static mapManager: MapManager = new MapManager();
     static coins = 0;//金币
@@ -111,6 +113,35 @@ export default class Logic extends cc.Component {
         Logic.coins = c ? parseInt(c) : 0;
         Logic.ammo = Logic.profile.ammo;
         // Logic.playerData.updateHA(cc.v2(999,999),30);
+    }
+    static loadList(talentList: TalentData[]) {
+        Logic.talentList = talentList;
+        Logic.hasTalentMap = {};
+        for (let t of talentList) {
+            let temp = new TalentData();
+            temp.valueCopy(t);
+            Logic.talentList.push(temp);
+            Logic.hasTalentMap[temp.id] = true;
+        }
+    }
+    static addTalent(id: number) :boolean{
+        let data = new TalentData();
+        data.id = id;
+        let hasit = false;
+        for (let t of Logic.talentList) {
+            if(id == t.id){
+                hasit = true;
+            }
+        }
+        if(!hasit){
+            Logic.talentList.push(data);
+            Logic.hasTalentMap[data.id] = true;
+            return true;
+        }
+        return false;
+    }
+    static hashTalent(id: number): boolean {
+        return Logic.hasTalentMap[id]&&Logic.hasTalentMap[id]==true;
     }
     static changeDungeonSize() {
         let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;

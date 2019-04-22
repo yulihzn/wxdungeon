@@ -3,6 +3,7 @@ import Player from "../Player";
 import TalentData from "../Data/TalentData";
 import DamageData from "../Data/DamageData";
 import Actor from "../Base/Actor";
+import Logic from "../Logic";
 
 const { ccclass, property } = cc._decorator;
 
@@ -15,13 +16,13 @@ export default abstract class Talent extends cc.Component {
     public static readonly DASH_05 = 1000005;//醉舞矛戈 减速
     public static readonly DASH_06 = 1000006;//野蛮冲撞 眩晕
     public static readonly DASH_07 = 1000007;//突刺鹰击 5伤害
-    public static readonly DASH_08 = 1000008;//飞燕如梭 冲刺速度提高距离变远
+    public static readonly DASH_08 = 1000008;//移形换影 本体不冲刺而是幻影替代随后瞬移到幻影的位置
     public static readonly DASH_09 = 1000009;//火焰舞者 划过路径留下一道3秒的火焰
     public static readonly DASH_10 = 1000010;//冰霜之城 划过路径留下一道3秒的冰墙
     public static readonly DASH_11 = 1000011;//元素湍流 扩大路径面积
     public static readonly DASH_12 = 1000012;//灵姿鬼步 冲刺期间无敌
     public static readonly DASH_13 = 1000013;//坚韧意志 缩短冲刺冷却
-    public static readonly DASH_14 = 1000014;//移形换影 本体不冲刺而是幻影替代随后瞬移到幻影的位置
+    public static readonly DASH_14 = 1000014;//飞燕如梭 冲刺速度提高距离变远
 
     public static readonly SHIELD_01 = 2000001;//普通 1
     public static readonly SHIELD_02 = 2000002;//迅捷反击 1
@@ -53,7 +54,6 @@ export default abstract class Talent extends cc.Component {
     }
     init(){
         this.player = this.getComponent(Player);
-        this.talentList = new Array();
     }
     loadList(talentList: TalentData[]) {
         this.talentList = new Array();
@@ -79,6 +79,7 @@ export default abstract class Talent extends cc.Component {
             this.talentList.push(data);
             this.hasTalentMap[data.id] = true;
             this.changePerformance();
+            Logic.addTalent(data.id);
         }
     }
     abstract changePerformance():void

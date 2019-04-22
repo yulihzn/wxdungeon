@@ -4,6 +4,7 @@ import EquipmentData from "./Data/EquipmentData";
 import RectDungeon from "./Rect/RectDungeon";
 import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
+import TalentTree from "./UI/TalentTree";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,6 +23,12 @@ export default class Loading extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;
+    @property(TalentTree)
+    simpleTree:TalentTree=null;
+    @property(TalentTree)
+    shieldTree:TalentTree=null;
+    @property(TalentTree)
+    dashTree:TalentTree=null;
     private timeDelay = 0;
     private isEquipmentLoaded = false;
     private isMonsterLoaded = false;
@@ -33,8 +40,38 @@ export default class Loading extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
 
-    // onLoad () {}
+    onLoad () {
+        this.simpleTree.node.active = false;
+        this.shieldTree.node.active = false;
+        this.dashTree.node.active = false;
+        this.showTalentPick();
+    }
 
+    showTalentPick(){
+        if(Logic.talentList.length<1){
+            this.simpleTree.node.active = true;
+        }
+        if(Logic.talentList.length>=1){
+            this.simpleTree.node.active = false
+            if(Logic.talentList[0].id<2000001){
+                this.dashTree.node.active = true;
+            }else{
+                this.shieldTree.node.active = true;
+            }
+        }
+
+    }
+    isPickedTalent():boolean{
+        if(Logic.level==0||Logic.level==1||Logic.level==3||Logic.level==5){
+            if(this.simpleTree.hasPicked||this.shieldTree.hasPicked||this.dashTree.hasPicked){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return true;
+        }
+    }
     start() {
         this.label.string = `Level ${Logic.chapterName+1}-${Logic.level}`
         if (Logic.level == 0) {
@@ -154,7 +191,8 @@ export default class Loading extends cc.Component {
         if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded
             && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded
             && this.isBulletsLoaded
-            && this.isItemsLoaded) {
+            && this.isItemsLoaded
+            && this.isPickedTalent()) {
             this.timeDelay = 0;
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;

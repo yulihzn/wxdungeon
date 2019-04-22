@@ -33,6 +33,7 @@ export class EventConstant extends cc.Component{
     public static readonly BOSS_ADDSLIME = 'BOSS_ADDSLIME';
     public static readonly HUD_UPDATE_PLAYER_INFODIALOG = 'HUD_UPDATE_PLAYER_INFO_DIALOG';
     public static readonly HUD_UPDATE_PLAYER_HEALTHBAR = 'HUD_UPDATE_PLAYER_HEALTHBAR';
+    public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE';
     public static eventHandler:cc.Node = new cc.Node();
     // LIFE-CYCLE CALLBACKS:
 

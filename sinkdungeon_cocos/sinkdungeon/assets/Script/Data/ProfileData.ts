@@ -91,9 +91,9 @@ export default class ProfileData {
         for(let i =0;i<data.inventoryManager.list.length;i++){
             this.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
         }
-        for(let i =0;i<data.talentList.length;i++){
-            this.talentList[i].valueCopy(data.talentList[i]);
-        }
+        // for(let i =0;i<data.talentList.length;i++){
+        //     this.talentList[i].valueCopy(data.talentList[i]);
+        // }
         this.rectDungeon = this.rectDungeon.buildMapFromSave(data.rectDungeon);
         this.currentPos = data.currentPos?cc.v2(data.currentPos.x,data.currentPos.y):cc.v2(0,0);
         for(let key in data.boxes){

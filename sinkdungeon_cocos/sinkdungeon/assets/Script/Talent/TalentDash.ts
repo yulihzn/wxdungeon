@@ -49,7 +49,7 @@ export default class TalentDash extends Talent {
             } else {
                 pos = pos.normalizeSelf();
             }
-            if(this.hashTalent(Talent.DASH_14)){
+            if(this.hashTalent(Talent.DASH_08)){
                 speed = 0;
                 if(this.dashShadow){
                     this.dashShadow.setHv(pos.clone());

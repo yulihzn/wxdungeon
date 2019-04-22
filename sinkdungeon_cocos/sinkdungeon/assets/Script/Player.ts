@@ -167,17 +167,17 @@ export default class Player extends cc.Component {
         this.talentShield = this.getComponent(TalentShield);
         this.talentShield.init();
         this.talentShield.loadList(Logic.talentList);
-        this.talentShield.addTalent(Talent.SHIELD_01);
-        this.talentShield.addTalent(Talent.SHIELD_06);
-        this.talentShield.addTalent(Talent.SHIELD_03);
-        this.talentShield.addTalent(Talent.SHIELD_13);
-        this.talentShield.addTalent(Talent.SHIELD_07);
-        this.talentShield.addTalent(Talent.SHIELD_11);
+        // this.talentShield.addTalent(Talent.SHIELD_01);
+        // this.talentShield.addTalent(Talent.SHIELD_06);
+        // this.talentShield.addTalent(Talent.SHIELD_03);
+        // this.talentShield.addTalent(Talent.SHIELD_13);
+        // this.talentShield.addTalent(Talent.SHIELD_07);
+        // this.talentShield.addTalent(Talent.SHIELD_11);
         this.talentDash = this.getComponent(TalentDash);
         this.talentDash.init();
         this.talentDash.loadList(Logic.talentList);
-        this.talentDash.addTalent(Talent.DASH_01);
-        this.talentDash.addTalent(Talent.DASH_14);
+        // this.talentDash.addTalent(Talent.DASH_01);
+        // this.talentDash.addTalent(Talent.DASH_14);
     }
     /**
      * 
@@ -607,12 +607,16 @@ export default class Player extends cc.Component {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
     private useSkill():void{
-        // if(this.talentShield){
-        //     this.talentShield.useShield();
-        // }
-        if(this.talentDash){
-            this.talentDash.useDash();
+        if(Logic.hashTalent(Talent.SHIELD_01)){
+            if(this.talentShield){
+                this.talentShield.useShield();
+            }
+        }else{
+            if(this.talentDash){
+                this.talentDash.useDash();
+            }
         }
+        
     }
     
     useItem() {
