@@ -44,7 +44,7 @@ export default class Loading extends cc.Component {
         this.simpleTree.node.active = false;
         this.shieldTree.node.active = false;
         this.dashTree.node.active = false;
-        this.showTalentPick();
+        
     }
 
     showTalentPick(){
@@ -59,15 +59,29 @@ export default class Loading extends cc.Component {
                 this.shieldTree.node.active = true;
             }
         }
+        if(Logic.talentList.length>9){
+            this.simpleTree.node.active = false;
+            this.shieldTree.node.active = false;
+            this.dashTree.node.active = false;
+        }
 
     }
     isPickedTalent():boolean{
         if(Logic.level==0||Logic.level==1||Logic.level==3||Logic.level==5){
-            if(this.simpleTree.hasPicked||this.shieldTree.hasPicked||this.dashTree.hasPicked){
-                return true;
-            }else{
-                return false;
+            let isPicked = false;
+            if(this.simpleTree.node.active&&this.simpleTree.hasPicked){
+                isPicked = true;
             }
+            if(this.dashTree.node.active&&this.dashTree.hasPicked){
+                isPicked = true;
+            }
+            if(this.shieldTree.node.active&&this.shieldTree.hasPicked){
+                isPicked = true;
+            }
+            if(!this.simpleTree.node.active&&!this.dashTree.node.active&&!this.shieldTree.node.active){
+                isPicked = true;
+            }
+            return isPicked;
         }else{
             return true;
         }
@@ -172,6 +186,7 @@ export default class Loading extends cc.Component {
     loadSpriteFrames() {
         if (Logic.spriteFrames) {
             this.isSpriteFramesLoaded = true;
+            this.showTalentPick();
             return;
         }
         cc.loader.loadResDir('Texture', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
@@ -181,6 +196,7 @@ export default class Loading extends cc.Component {
                 Logic.spriteFrames[frame.name] = frame;
             }
             this.isSpriteFramesLoaded = true;
+            this.showTalentPick();
             cc.log('texture loaded');
         })
     }

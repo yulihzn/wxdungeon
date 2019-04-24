@@ -75,12 +75,12 @@ export default class TalentTree extends cc.Component {
             this.initDashNode(Talent.DASH_14,13,[12],[]);
         }
         cc.director.on(EventConstant.TALENT_TREE_UPDATE
-            , (event) => { if(this.node.active){this.hasPicked = true;} });
+            , (event) => { if(this.node&&this.node.active){this.hasPicked = true;} });
     }
     initTalentSprite(name:string,talentList:cc.Node[]){
         for(let i = 0;i < 14;i++){
             if(this.treeType == TalentTree.TREE_SIMPLE && i >0){
-                continue;
+                break;
             }
             let index = i<9?`0${i+1}`:`${i+1}`;
             let node = this.node.getChildByName('layout').getChildByName('talentempty').getChildByName(`${name}${index}`);
@@ -113,6 +113,9 @@ export default class TalentTree extends cc.Component {
         icon.data = new TalentData();
         icon.data.id = id;
         icon.isOpen = Logic.hashTalent(id);
+        if(icon.isOpen){
+            icon.node.color = cc.color(255, 255, 255);
+        }
         for(let i of parentIndexs){
             icon.parents.push(talentList[i]);
         }

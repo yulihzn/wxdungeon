@@ -38,7 +38,7 @@ export default class TalentIcon extends cc.Component {
             //1.如果父icon当前没有子icon 2.其它子icon打开 3.父icon是根 下才能赋值
             if (icon.isOpen && (!icon.currentChild || icon.currentChild == null||icon.isRoot)) {
                 this.currentParent = parent;
-                icon.currentChild = this.node;
+                parent.getComponent(TalentIcon).currentChild = this.node;
             }
         }
         //如果不是根而且没有当前父icon则不能打开
