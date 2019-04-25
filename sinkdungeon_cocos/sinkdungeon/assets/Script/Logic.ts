@@ -61,6 +61,7 @@ export default class Logic extends cc.Component {
 
     static talentList:TalentData[] = new Array();
     static hasTalentMap: { [key: number]: boolean } = {};
+    static isPickedTalent = false;
 
     static mapManager: MapManager = new MapManager();
     static coins = 0;//金币
@@ -112,6 +113,7 @@ export default class Logic extends cc.Component {
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c ? parseInt(c) : 0;
         Logic.ammo = Logic.profile.ammo;
+        Logic.isPickedTalent = false;
         // Logic.playerData.updateHA(cc.v2(999,999),30);
     }
     static loadList(talentList: TalentData[]) {
@@ -136,6 +138,7 @@ export default class Logic extends cc.Component {
         if(!hasit){
             Logic.talentList.push(data);
             Logic.hasTalentMap[data.id] = true;
+            Logic.isPickedTalent = true;
             return true;
         }
         return false;
@@ -161,6 +164,7 @@ export default class Logic extends cc.Component {
                 case 2: Logic.playerData.pos = cc.v2(Dungeon.WIDTH_SIZE - 1, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
                 case 3: Logic.playerData.pos = cc.v2(0, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
             }
+            Logic.isPickedTalent = false;
             cc.director.loadScene('loading');
             
         }

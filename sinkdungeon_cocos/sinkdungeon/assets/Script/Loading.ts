@@ -67,6 +67,9 @@ export default class Loading extends cc.Component {
 
     }
     isPickedTalent():boolean{
+        if(Logic.isPickedTalent){
+            return true;
+        }
         if(Logic.level==0||Logic.level==1||Logic.level==3||Logic.level==5){
             let isPicked = false;
             if(this.simpleTree.node.active&&this.simpleTree.hasPicked){

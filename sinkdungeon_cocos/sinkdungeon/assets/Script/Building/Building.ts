@@ -13,6 +13,6 @@ import Actor from "../Base/Actor";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default abstract class Building extends Actor {
+export default abstract class Building extends cc.Component {
 
 }

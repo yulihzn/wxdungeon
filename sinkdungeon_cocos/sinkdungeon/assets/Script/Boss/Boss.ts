@@ -52,8 +52,9 @@ export default abstract class Boss extends Actor {
         return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
     }
     updatePlayerPos() {
-        this.node.x = this.pos.x * 64 + 32;
-        this.node.y = this.pos.y * 64 + 32;
+        // this.node.x = this.pos.x * 64 + 32;
+        // this.node.y = this.pos.y * 64 + 32;
+        this.node.position = Dungeon.getPosInMap(this.pos);
     }
     transportBoss(x: number, y: number) {
         this.pos.x = x;

@@ -129,8 +129,9 @@ export default class Monster extends Actor {
         return spriteFrame;
     }
     updatePlayerPos() {
-        this.node.x = this.pos.x * 64 + 32;
-        this.node.y = this.pos.y * 64 + 32;
+        // this.node.x = this.pos.x * 64 + 32;
+        // this.node.y = this.pos.y * 64 + 32;
+        this.node.position = Dungeon.getPosInMap(this.pos);
     }
     transportPlayer(x: number, y: number) {
         this.sprite.rotation = 0;
