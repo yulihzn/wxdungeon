@@ -62,7 +62,7 @@ export default class DashShadow extends cc.Component {
         return false;
     }
     getPlayerPosition():cc.Vec2{
-        return this.dungeon.player.node.position.clone().addSelf(cc.v2(8,48));
+        return this.dungeon.player.node.position.clone().addSelf(cc.v2(8,8));
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
@@ -88,32 +88,32 @@ export default class DashShadow extends cc.Component {
         },0.45)
     }
     hide(){
-        this.dungeon.player.node.setPosition(this.node.position.x,this.node.position.y);
+        this.dungeon.player.node.setPosition(Dungeon.fixOuterMap(this.node.position.clone()));
         this.node.active = false;
         this.rigidBody.linearVelocity = cc.Vec2.ZERO;
     }
     
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        if(!this.node.active){
-            return;
-        }
-        let isDestory = true;
-        let player = otherCollider.node.getComponent(Player);
-        let bullet = otherCollider.node.getComponent(Bullet);
+    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    //     if(!this.node.active){
+    //         return;
+    //     }
+    //     let isDestory = true;
+    //     let player = otherCollider.node.getComponent(Player);
+    //     let bullet = otherCollider.node.getComponent(Bullet);
 
-        //子弹玩家不销毁
-        if (player || bullet) {
-            isDestory = false;
-        }
-        //触发器不销毁
-        if (otherCollider.sensor) {
-            isDestory = false;
-        }
-        if (isDestory) {
-            this.hide();
-            // this.attacking(otherCollider);
-        }
-    }
+    //     //子弹玩家不销毁
+    //     if (player || bullet) {
+    //         isDestory = false;
+    //     }
+    //     //触发器不销毁
+    //     if (otherCollider.sensor) {
+    //         isDestory = false;
+    //     }
+    //     if (isDestory) {
+    //         this.hide();
+    //         // this.attacking(otherCollider);
+    //     }
+    // }
     
     setHv(hv: cc.Vec2) {
         if(hv.equals(cc.Vec2.ZERO)){

@@ -24,11 +24,11 @@ export default class Loading extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
     @property(TalentTree)
-    simpleTree:TalentTree=null;
+    simpleTree: TalentTree = null;
     @property(TalentTree)
-    shieldTree:TalentTree=null;
+    shieldTree: TalentTree = null;
     @property(TalentTree)
-    dashTree:TalentTree=null;
+    dashTree: TalentTree = null;
     private timeDelay = 0;
     private isEquipmentLoaded = false;
     private isMonsterLoaded = false;
@@ -40,57 +40,65 @@ export default class Loading extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
 
-    onLoad () {
+    onLoad() {
         this.simpleTree.node.active = false;
         this.shieldTree.node.active = false;
         this.dashTree.node.active = false;
-        
+        this.label.node.setPosition(cc.v2(0,0));
+
     }
 
-    showTalentPick(){
-        if(Logic.talentList.length<1){
+    showTalentPick() {
+        if (Logic.isPickedTalent) {
+            this.simpleTree.node.active = false;
+            this.shieldTree.node.active = false;
+            this.dashTree.node.active = false;
+            return true;
+        }
+        if (Logic.talentList.length < 1) {
             this.simpleTree.node.active = true;
         }
-        if(Logic.talentList.length>=1){
+        if (Logic.talentList.length >= 1) {
             this.simpleTree.node.active = false
-            if(Logic.talentList[0].id<2000001){
+            if (Logic.talentList[0].id < 2000001) {
                 this.dashTree.node.active = true;
-            }else{
+            } else {
                 this.shieldTree.node.active = true;
             }
+            this.label.node.setPosition(cc.v2(-400,0));
         }
-        if(Logic.talentList.length>9){
+        if (Logic.talentList.length > 9) {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
             this.dashTree.node.active = false;
         }
 
     }
-    isPickedTalent():boolean{
-        if(Logic.isPickedTalent){
+    isPickedTalent(): boolean {
+        if (Logic.isPickedTalent) {
             return true;
         }
-        if(Logic.level==0||Logic.level==1||Logic.level==3||Logic.level==5){
+        if (Logic.level == 0 || Logic.level == 1 || Logic.level == 3 || Logic.level == 5) {
             let isPicked = false;
-            if(this.simpleTree.node.active&&this.simpleTree.hasPicked){
+            if (this.simpleTree.node.active && this.simpleTree.hasPicked) {
                 isPicked = true;
             }
-            if(this.dashTree.node.active&&this.dashTree.hasPicked){
+            if (this.dashTree.node.active && this.dashTree.hasPicked) {
                 isPicked = true;
             }
-            if(this.shieldTree.node.active&&this.shieldTree.hasPicked){
+            if (this.shieldTree.node.active && this.shieldTree.hasPicked) {
                 isPicked = true;
             }
-            if(!this.simpleTree.node.active&&!this.dashTree.node.active&&!this.shieldTree.node.active){
+            if (!this.simpleTree.node.active && !this.dashTree.node.active && !this.shieldTree.node.active) {
                 isPicked = true;
             }
             return isPicked;
-        }else{
+        } else {
             return true;
         }
     }
     start() {
-        this.label.string = `Level ${Logic.chapterName+1}-${Logic.level}`
+        this.label.string = `Level ${Logic.chapterName + 1}-${Logic.level}`
         if (Logic.level == 0) {
             this.label.string = `Sink Dungeon`
         }

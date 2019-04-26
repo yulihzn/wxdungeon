@@ -23,15 +23,19 @@ export default class TalentTree extends cc.Component {
     public static readonly TREE_SHIELD = 1;
     public static readonly TREE_DASH = 2;
     public static readonly TREE_SIMPLE = 3;
+    @property(cc.Label)
+    labelDesc: cc.Label = null;
     @property()
     treeType = 0;
     private talentShield:cc.Node[] = [];
     private talentDash:cc.Node[] = [];
     hasPicked = false;
+    static TEXT_PICKSKILL = '选择合适的技能（按住查看技能）';
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        if(this.labelDesc)this.labelDesc.string = TalentTree.TEXT_PICKSKILL;
         this.talentShield = new Array();
         this.talentDash = new Array();
         if(this.treeType != TalentTree.TREE_DASH){
@@ -86,6 +90,12 @@ export default class TalentTree extends cc.Component {
             let node = this.node.getChildByName('layout').getChildByName('talentempty').getChildByName(`${name}${index}`);
             node.addComponent(TalentIcon);
             node.color = cc.color(51, 51, 51);
+            node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
+                if(this.labelDesc)this.labelDesc.string = node.getComponent(TalentIcon).data.desc;
+            }, this);
+            node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch)=> {
+                if(this.labelDesc)this.labelDesc.string = '';
+            }, this);
             node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch)=> {
                 this.talentClick(node);
             }, this);
@@ -112,6 +122,11 @@ export default class TalentTree extends cc.Component {
         icon.parents = new Array();
         icon.data = new TalentData();
         icon.data.id = id;
+        if(id<2000000){
+            icon.data.desc = Talent.DASH_DESC[id%1000000-1];
+        }else{
+            icon.data.desc = Talent.SHIELD_DESC[id%2000000-1];
+        }
         icon.isOpen = Logic.hashTalent(id);
         if(icon.isOpen){
             icon.node.color = cc.color(255, 255, 255);

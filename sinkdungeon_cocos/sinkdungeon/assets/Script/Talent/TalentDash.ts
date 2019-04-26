@@ -19,7 +19,6 @@ export default class TalentDash extends Talent {
         this.dashShadow.dungeon = this.player.node.parent.getComponent(Dungeon);
         this.dashShadow.node.active = false;
         this.node.parent = this.dashShadow.dungeon.node;
-        this.node.setPosition(this.player.node.position.add(cc.v2(8, 48)));
         this.dashShadow.init();
     }
     useSKill() {

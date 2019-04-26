@@ -164,7 +164,6 @@ export default class Logic extends cc.Component {
                 case 2: Logic.playerData.pos = cc.v2(Dungeon.WIDTH_SIZE - 1, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
                 case 3: Logic.playerData.pos = cc.v2(0, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
             }
-            Logic.isPickedTalent = false;
             cc.director.loadScene('loading');
             
         }
@@ -187,6 +186,7 @@ export default class Logic extends cc.Component {
             
             Logic.changeDungeonSize();
             Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
+            Logic.isPickedTalent = false;
             cc.director.loadScene('loading');
         }
     }

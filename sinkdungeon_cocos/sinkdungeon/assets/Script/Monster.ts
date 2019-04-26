@@ -186,7 +186,7 @@ export default class Monster extends Actor {
             return;
         }
         this.isAttackAnimExcuting = true;
-        let pos = this.dungeon.player.node.position.sub(this.node.position);
+        let pos = this.dungeon.player.node.position.clone().sub(this.node.position);
         if (!pos.equals(cc.Vec2.ZERO)) {
             pos = pos.normalizeSelf();
         }

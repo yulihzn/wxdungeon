@@ -37,7 +37,6 @@ export default class TalentShield extends Talent {
         this.flyWheel.dungeon = this.player.node.parent.getComponent(Dungeon);
         this.flyWheel.node.active = false;
         this.node.parent = this.flyWheel.dungeon.node;
-        this.node.setPosition(this.player.node.position.add(cc.v2(8, 48)));
         this.flyWheel.init();
     }
     
