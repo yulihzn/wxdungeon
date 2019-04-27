@@ -517,6 +517,10 @@ export default class Player extends cc.Component {
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
+        //无敌冲刺
+        if(this.talentDash.hashTalent(Talent.DASH_12)){
+            isDodge = true;
+        }
         dd = isDodge ? new DamageData() : dd;
         let health = this.data.getHealth();
         health.x -= dd.getTotalDamage();
@@ -612,7 +616,7 @@ export default class Player extends cc.Component {
             if(this.talentShield){
                 this.talentShield.useShield();
             }
-        }else{
+        }else if(Logic.hashTalent(Talent.DASH_01)){
             if(this.talentDash){
                 this.talentDash.useDash();
             }

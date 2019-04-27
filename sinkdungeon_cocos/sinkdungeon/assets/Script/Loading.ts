@@ -49,7 +49,7 @@ export default class Loading extends cc.Component {
     }
 
     showTalentPick() {
-        if (Logic.isPickedTalent) {
+        if (Logic.isPickedTalent||!this.isTalentLevel()) {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
             this.dashTree.node.active = false;
@@ -74,11 +74,14 @@ export default class Loading extends cc.Component {
         }
 
     }
+    isTalentLevel():boolean{
+        return Logic.level == 1 || Logic.level == 4;
+    }
     isPickedTalent(): boolean {
         if (Logic.isPickedTalent) {
             return true;
         }
-        if (Logic.level == 0 || Logic.level == 1 || Logic.level == 3 || Logic.level == 5) {
+        if (this.isTalentLevel()) {
             let isPicked = false;
             if (this.simpleTree.node.active && this.simpleTree.hasPicked) {
                 isPicked = true;

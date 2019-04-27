@@ -32,7 +32,13 @@ export default class TalentDash extends Talent {
             return;
         }
         let cooldown = 2;
+        if(this.hashTalent(Talent.DASH_13)){
+            cooldown = 1;
+        }
         let speed = 1000;
+        if(this.hashTalent(Talent.DASH_14)){
+            speed = 2000;
+        }
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
             this.schedule(() => { this.player.getWalkSmoke(this.node.parent, this.node.position); }, 0.05, 4, 0);

@@ -9,6 +9,7 @@ import StatusManager from "../Manager/StatusManager";
 import Box from "../Building/Box";
 import Player from "../Player";
 import Bullet from "./Bullet";
+import Talent from "../Talent/Talent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -93,27 +94,11 @@ export default class DashShadow extends cc.Component {
         this.rigidBody.linearVelocity = cc.Vec2.ZERO;
     }
     
-    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-    //     if(!this.node.active){
-    //         return;
-    //     }
-    //     let isDestory = true;
-    //     let player = otherCollider.node.getComponent(Player);
-    //     let bullet = otherCollider.node.getComponent(Bullet);
-
-    //     //子弹玩家不销毁
-    //     if (player || bullet) {
-    //         isDestory = false;
-    //     }
-    //     //触发器不销毁
-    //     if (otherCollider.sensor) {
-    //         isDestory = false;
-    //     }
-    //     if (isDestory) {
-    //         this.hide();
-    //         // this.attacking(otherCollider);
-    //     }
-    // }
+    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+        if(this.dungeon.player.talentDash.hashTalent(Talent.DASH_02)){
+            this.attacking(otherCollider);
+        }
+    }
     
     setHv(hv: cc.Vec2) {
         if(hv.equals(cc.Vec2.ZERO)){
@@ -128,6 +113,9 @@ export default class DashShadow extends cc.Component {
             return;
         }
         let damage = new DamageData(1);
+        if(this.dungeon.player.talentDash.hashTalent(Talent.DASH_07)){
+            damage.realDamage = 5;
+        }
         
         let damageSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
@@ -149,7 +137,9 @@ export default class DashShadow extends cc.Component {
 
     }
     beatBack(node: cc.Node) {
-     
+        if(!this.dungeon.player.talentShield.hashTalent(Talent.DASH_04)){
+            return;
+        }
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.hv.clone();
         if (pos.equals(cc.Vec2.ZERO)) {
@@ -159,18 +149,16 @@ export default class DashShadow extends cc.Component {
         pos = pos.normalizeSelf().mul(power);
         rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
     }
-    update (dt) { 
-    }
 
     addMonsterAllStatus(monster: Monster) {
-        this.addMonsterStatus(TalentShield.SHIELD_07, monster, StatusManager.FROZEN);
-        this.addMonsterStatus(TalentShield.SHIELD_08, monster, StatusManager.DIZZ);
-        this.addMonsterStatus(TalentShield.SHIELD_10, monster, StatusManager.BLEEDING);
+        this.addMonsterStatus(Talent.DASH_05, monster, StatusManager.FROZEN);
+        this.addMonsterStatus(Talent.DASH_06, monster, StatusManager.DIZZ);
+        this.addMonsterStatus(Talent.DASH_03, monster, StatusManager.BLEEDING);
     }
     addBossAllStatus(boss: Boss) {
-        this.addBossStatus(TalentShield.SHIELD_07, boss, StatusManager.FROZEN);
-        this.addBossStatus(TalentShield.SHIELD_08, boss, StatusManager.DIZZ);
-        this.addBossStatus(TalentShield.SHIELD_10, boss, StatusManager.BLEEDING);
+        this.addBossStatus(Talent.DASH_05, boss, StatusManager.FROZEN);
+        this.addBossStatus(Talent.DASH_06, boss, StatusManager.DIZZ);
+        this.addBossStatus(Talent.DASH_03, boss, StatusManager.BLEEDING);
     }
     addMonsterStatus(talentType: number, monster: Monster, statusType) {
         if (this.dungeon.player.talentShield.hashTalent(talentType)) { monster.addStatus(statusType); }

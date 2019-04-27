@@ -408,7 +408,7 @@
     },
     "bullet100": {
         "name":"火球",
-        "resName": "bullet000",
+        "resName": "bullet006",
         "lightName": "bulletlight001",
         "lightColor": "#ffad00",
         "speed": 200,

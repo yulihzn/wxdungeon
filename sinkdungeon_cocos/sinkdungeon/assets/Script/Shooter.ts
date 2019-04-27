@@ -250,7 +250,6 @@ export default class Shooter extends cc.Component {
         let p1 = this.node.convertToWorldSpaceAR(s);
         let p2 = this.node.convertToWorldSpaceAR(p);
         let results = cc.director.getPhysicsManager().rayCast(p1,p2,cc.RayCastType.All);
-        cc.log(results.length);
         let arr:cc.Vec2[] = new Array();
         if(results.length>0){
             for(let result of results){

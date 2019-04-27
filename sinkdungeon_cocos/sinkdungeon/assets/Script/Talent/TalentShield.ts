@@ -6,6 +6,7 @@ import Actor from "../Base/Actor";
 import FlyWheel from "../Item/FlyWheel";
 import Dungeon from "../Dungeon";
 import Talent from "./Talent";
+import Skill from "../Utils/Skill";
 
 const { ccclass, property } = cc._decorator;
 
@@ -17,6 +18,7 @@ export default class TalentShield extends Talent {
     private sprites: cc.Sprite[];
     @property(FlyWheel)
     flyWheel: FlyWheel = null;
+    private flyWhellSkill = new Skill();
    
     onLoad() {
 
@@ -140,12 +142,10 @@ export default class TalentShield extends Talent {
             this.scheduleOnce(() => {
                 if (this.hashTalent(TalentShield.SHIELD_06)) {
                     //乾坤一掷
-                    this.shieldBackSprite.node.opacity = 0;
                     this.throwShield();
-                } else {
-                    //添加状态
-                    this.player.addStatus(statusName);
-                }
+                } 
+                //添加状态
+                this.player.addStatus(statusName);
             }, 0.2);
             this.scheduleOnce(() => {
                 this.talentSkill.IsExcuting = false;
@@ -157,6 +157,7 @@ export default class TalentShield extends Talent {
         }, cooldown, true);
     }
     private throwShield() {
+        this.shieldBackSprite.node.opacity = 0;
         if (this.flyWheel) {
             this.flyWheel.show();
         }
