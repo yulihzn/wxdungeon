@@ -108,6 +108,7 @@ export default class Logic extends cc.Component {
         Logic.playerData = Logic.profile.playerData.clone();
         Logic.inventoryManager = Logic.profile.inventoryManager;
         Logic.talentList = Logic.profile.talentList;
+        Logic.hasTalentMap = {};
         Logic.mapManager.reset(Logic.level);
         Logic.mapManager.loadDataFromSave();
         let c = cc.sys.localStorage.getItem('coin');
