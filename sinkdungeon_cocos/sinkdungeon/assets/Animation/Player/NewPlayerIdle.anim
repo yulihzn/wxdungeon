@@ -1,0 +1,120 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "NewPlayerIdle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.016666666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite/body": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "sprite/body/handright": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -2.5,
+                7
+              ]
+            }
+          ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "80a6dead-233c-4c52-89b0-3ea465d621a3"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/body/handleft": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                4.5,
+                6
+              ]
+            }
+          ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "1930be3f-cfb9-4093-9c4a-2e9015882d35"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/body/legs": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "ecff89f8-f0c4-441c-b4e6-7b7dcdb3c48f"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/body/head/face": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "ccaaf153-c0a6-4ec5-93ec-094957c739fe"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/body/head/hair": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "3f8bca30-a825-4093-a96e-135e59d55c59"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "events": []
+}

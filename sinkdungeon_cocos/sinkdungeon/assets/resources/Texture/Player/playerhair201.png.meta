@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "3cbb55ef-bfed-4d0e-a658-b5425e91bb63",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "playerhair201": {
+      "ver": "1.0.3",
+      "uuid": "4377143f-2350-4bbe-9156-779768623bf7",
+      "rawTextureUuid": "3cbb55ef-bfed-4d0e-a658-b5425e91bb63",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 11,
+      "height": 11,
+      "rawWidth": 11,
+      "rawHeight": 11,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
