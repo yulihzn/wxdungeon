@@ -286,7 +286,7 @@
         "lightName": "bulletlight001",
         "lightColor": "#cbdbfc",
         "damage": {
-            "physicalDamage": 1,
+            "physicalDamage": 0,
             "lighteningDamage":1,
             "lighteningRate":100
         }

@@ -54,6 +54,12 @@ export default class MeleeWeapon extends cc.Component {
     @property(cc.Prefab)
     curseLight: cc.Prefab = null;
 
+    handStab:cc.Node = null;
+    handWave:cc.Node = null;
+    glovesStabSprite:cc.Sprite = null;
+    glovesWaveSprite:cc.Sprite = null;
+
+
     private isReverse = false;
     private anim: cc.Animation;
     isAttacking: boolean = false;
@@ -69,8 +75,22 @@ export default class MeleeWeapon extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
         this.weaponFirePoint = this.node.getChildByName('firepoint');
+        this.handStab = this.stabWeapon.node.getChildByName('hand');
+        this.handWave = this.waveWeapon.node.getChildByName('hand');
+        this.glovesStabSprite = this.handStab.getChildByName('gloves').getComponent(cc.Sprite);
+        this.glovesWaveSprite= this.handWave .getChildByName('gloves').getComponent(cc.Sprite);
+
         // this.stabWeapon.meleeWeapon = this;
         // this.waveWeapon.meleeWeapon = this;
+    }
+    setHands(){
+        if(this.isStab){
+            this.handStab.opacity = 255;
+            this.handWave.opacity = 0;
+        }else{
+            this.handStab.opacity = 0;
+            this.handWave.opacity = 255;
+        }
     }
     setHv(hv: cc.Vec2) {
         let pos = this.hasNearEnemy();
@@ -189,7 +209,7 @@ export default class MeleeWeapon extends cc.Component {
             this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
         } else if ((this.hv.x != 0 || this.hv.y != 0) && !this.isAttacking) {
-            this.node.position = cc.v2(25, 45);
+            // this.node.position = cc.v2(25, 45);
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }

@@ -159,7 +159,7 @@ export default class NewClass extends cc.Component {
             this.inventoryManager.clothes.valueCopy(equipmentDataNew);
             break;
             case 'trousers':
-            this.trousers.spriteFrame = equipmentDataNew.trouserslong==1?Logic.spriteFrames['idle002']:Logic.spriteFrames['idle001'];
+            this.trousers.spriteFrame = equipmentDataNew.trouserslong==1?Logic.spriteFrames['trousers000']:spriteFrame;
             this.trousers.node.color = color;
             this.setEquipment(equipmentDataNew,this.inventoryManager.trousers,isChange);
             this.inventoryManager.trousers.valueCopy(equipmentDataNew);

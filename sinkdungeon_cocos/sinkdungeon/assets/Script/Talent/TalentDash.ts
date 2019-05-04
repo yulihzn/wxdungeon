@@ -3,6 +3,7 @@ import Logic from "../Logic";
 import Talent from "./Talent";
 import DashShadow from "../Item/DashShadow";
 import Dungeon from "../Dungeon";
+import Player from "../Player";
 
 const { ccclass, property } = cc._decorator;
 
@@ -42,11 +43,6 @@ export default class TalentDash extends Talent {
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
             this.schedule(() => { this.player.getWalkSmoke(this.node.parent, this.node.position); }, 0.05, 4, 0);
-            let idleName = "idle001";
-            if (this.player.inventoryManager.trousers.trouserslong == 1) {
-                idleName = "idle002";
-            }
-            this.player.anim.play('PlayerIdle');
             let pos = this.player.rigidbody.linearVelocity.clone();
             this.player.isMoving = false;
             if (pos.equals(cc.Vec2.ZERO)) {
@@ -65,7 +61,8 @@ export default class TalentDash extends Talent {
             this.player.rigidbody.linearVelocity = pos;
             this.scheduleOnce(() => {
                 this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
-                this.player.trousersSprite.spriteFrame = Logic.spriteFrames[idleName];
+                this.player.playerAnim(Player.STATE_IDLE);
+                this.player.resetFoot();
                 this.IsExcuting = false;
             }, 0.5)
             cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });

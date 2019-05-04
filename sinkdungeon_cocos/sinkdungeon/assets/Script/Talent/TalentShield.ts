@@ -25,7 +25,7 @@ export default class TalentShield extends Talent {
     }
     init() {
         super.init();
-        this.shieldBackSprite = this.getSpriteChildSprite(['sprite', 'shieldback']);
+        this.shieldBackSprite = this.getSpriteChildSprite(['shieldback']);
         this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
         this.shieldBackSprite.node.opacity = 0;
         this.shieldFrontSprite.node.opacity = 0;

@@ -742,9 +742,9 @@
         "nameEn": "Short Trousers",
         "equipmetType": "trousers",
         "prefix": "",
-        "color": "#323c39",
+        "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "img": "trousers001",
+        "img": "trousers002",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
