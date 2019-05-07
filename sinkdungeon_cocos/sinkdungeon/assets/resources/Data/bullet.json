@@ -488,6 +488,27 @@
             "physicalDamage": 1
         }
     },
+    "bullet027": {
+        "name":"手里剑",
+        "resName": "bullet027",
+        "lightName": "bulletlight001",
+        "lightColor": "#708090",
+        "speed": 600,
+        "isRect": 0,
+        "isRotate": 1,
+        "rotateAngle":150,
+        "lifeTime":1,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "fixedRotation":0,
+        "delaytrack":0,
+        "size": 2,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
