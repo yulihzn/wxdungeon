@@ -4,6 +4,11 @@ import Talent from "./Talent";
 import DashShadow from "../Item/DashShadow";
 import Dungeon from "../Dungeon";
 import Player from "../Player";
+import DamageData from "../Data/DamageData";
+import Monster from "../Monster";
+import Boss from "../Boss/Boss";
+import StatusManager from "../Manager/StatusManager";
+import Shooter from "../Shooter";
 
 const { ccclass, property } = cc._decorator;
 
@@ -12,15 +17,15 @@ export default class TalentDash extends Talent {
 
     @property(DashShadow)
     dashShadow:DashShadow=null;
+    hv:cc.Vec2;
 
     onLoad() {
     }
     init(){
         super.init();
-        this.dashShadow.dungeon = this.player.node.parent.getComponent(Dungeon);
         this.dashShadow.node.active = false;
-        this.node.parent = this.dashShadow.dungeon.node;
-        this.dashShadow.init();
+        this.node.parent = this.player.node.parent;
+        this.dashShadow.init(this);
     }
     useSKill() {
         this.useDash();
@@ -36,13 +41,15 @@ export default class TalentDash extends Talent {
         if(this.hashTalent(Talent.DASH_13)){
             cooldown = 1;
         }
-        let speed = 1000;
+        let speed = 1200;
         if(this.hashTalent(Talent.DASH_14)){
-            speed = 2000;
+            speed = 2400;
         }
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
-            this.schedule(() => { this.player.getWalkSmoke(this.node.parent, this.node.position); }, 0.05, 4, 0);
+            this.schedule(() => { 
+                this.player.getWalkSmoke(this.node.parent, this.node.position);
+             }, 0.05, 4, 0);
             let pos = this.player.rigidbody.linearVelocity.clone();
             this.player.isMoving = false;
             if (pos.equals(cc.Vec2.ZERO)) {
@@ -52,11 +59,9 @@ export default class TalentDash extends Talent {
             }
             if(this.hashTalent(Talent.DASH_08)){
                 speed = 0;
-                if(this.dashShadow){
-                    this.dashShadow.setHv(pos.clone());
-                    this.dashShadow.show();
-                }
+                this.showShadow(pos);
             }
+            this.hv=pos.clone();
             pos = pos.mul(speed);
             this.player.rigidbody.linearVelocity = pos;
             this.scheduleOnce(() => {
@@ -67,6 +72,13 @@ export default class TalentDash extends Talent {
             }, 0.5)
             cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
         }, cooldown, true);
+    }
+    
+    showShadow(pos:cc.Vec2){
+        if(this.dashShadow){
+            this.dashShadow.setHv(pos.clone());
+            this.dashShadow.show();
+        }
     }
     changePerformance() {
         for (let t of this.talentList) {
@@ -86,6 +98,66 @@ export default class TalentDash extends Talent {
             } else if (t.id == Talent.DASH_14) {
             }
         }
+    }
+    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+        if(this.hashTalent(Talent.DASH_02)&&!this.hashTalent(Talent.DASH_08)){
+            this.attacking(otherCollider,this.node);
+        }
+    }
+    attacking(attackTarget: cc.PhysicsCollider,currentNode:cc.Node) {
+        if (!attackTarget || !currentNode.active) {
+            return;
+        }
+        let damage = new DamageData(1);
+        if(this.hashTalent(Talent.DASH_07)){
+            damage.realDamage = 5;
+        }
+        
+        let damageSuccess = false;
+        let monster = attackTarget.node.getComponent(Monster);
+        if (monster && !monster.isDied) {
+            damageSuccess = monster.takeDamage(damage);
+            if (damageSuccess) {
+                this.beatBack(monster.node);
+                this.addMonsterAllStatus(monster);
+            }
+        }
+
+        let boss = attackTarget.node.getComponent(Boss);
+        if (boss && !boss.isDied) {
+            damageSuccess = boss.takeDamage(damage);
+            if (damageSuccess) {
+                this.addBossAllStatus(boss);
+            }
+        }
+
+    }
+    beatBack(node: cc.Node) {
+        if(!this.hashTalent(Talent.DASH_04)){
+            return;
+        }
+        let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
+        let pos = this.hv.clone();
+        let power = 1000;
+        pos = pos.normalizeSelf().mul(power);
+        rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
+    }
+
+    addMonsterAllStatus(monster: Monster) {
+        this.addMonsterStatus(Talent.DASH_05, monster, StatusManager.FROZEN);
+        this.addMonsterStatus(Talent.DASH_06, monster, StatusManager.DIZZ);
+        this.addMonsterStatus(Talent.DASH_03, monster, StatusManager.BLEEDING);
+    }
+    addBossAllStatus(boss: Boss) {
+        this.addBossStatus(Talent.DASH_05, boss, StatusManager.FROZEN);
+        this.addBossStatus(Talent.DASH_06, boss, StatusManager.DIZZ);
+        this.addBossStatus(Talent.DASH_03, boss, StatusManager.BLEEDING);
+    }
+    addMonsterStatus(talentType: number, monster: Monster, statusType) {
+        if (this.hashTalent(talentType)) { monster.addStatus(statusType); }
+    }
+    addBossStatus(talentType: number, boss: Boss, statusType) {
+        if (this.hashTalent(talentType)) { boss.addStatus(statusType); }
     }
     takeDamage() {
 

@@ -451,6 +451,43 @@
             "physicalDamage": 1
         }
     },
+    "bullet025": {
+        "name":"火焰（路径）",
+        "resName": "bullet025",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffad00",
+        "speed": 1,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 2,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":1,
+        "fixedRotation":1,
+        "statusType":"status002",
+        "statusRate":100,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet026": {
+        "name":"冰柱（路径）",
+        "resName": "bullet026",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 1,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 2,
+        "lifeTime":5,
+        "isPhysical":1,
+        "isDecelerate":1,
+        "statusType":"status001",
+        "statusRate":100,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
