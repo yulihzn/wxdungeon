@@ -40,7 +40,7 @@ export default class Equipment extends cc.Component {
         this.equipmentDialog.refreshDialog(this.data);
         let spriteFrame = Logic.spriteFrames[this.data.img];
         if (data.equipmetType == 'trousers') {
-            spriteFrame = data.trouserslong == 1 ? Logic.spriteFrames['idle002'] : Logic.spriteFrames['idle001'];
+            spriteFrame = data.trouserslong==1?Logic.spriteFrames['trousers000']:spriteFrame;
         }
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         this.sprite.width = spriteFrame.getRect().width;

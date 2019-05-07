@@ -43,7 +43,7 @@ export default class Status extends cc.Component {
         this.data = data;
         this.sprite.spriteFrame = Logic.spriteFrames[data.spriteFrameName];
         this.anim.playAdditive('StatusShow');
-        this.doStatusDamge(true);
+        this.doStatusDamage(true);
         this.stateRunning = true;
         
     }
@@ -66,27 +66,29 @@ export default class Status extends cc.Component {
         return false;
     }
     
-    private doStatusDamge(isDirect:boolean){
+    private doStatusDamage(isDirect:boolean){
         if(!this.target||!this.data){
             return;
         }
-        let dd = isDirect?this.getDamgeDirect():this.getDamgeOverTime();
+        let dd = isDirect?this.getDamageDirect():this.getDamageOverTime();
+        let dizzDuration = isDirect?this.data.dizzDurationDirect:this.data.dizzDurationOvertime;
         let player = this.target.getComponent(Player);
-        if(dd.getTotalDamage()== 0){
-            return;
-        }
+        let takeD = dd.getTotalDamage()== 0;
         if(player){
-            player.takeDamage(dd);
-            return;   
+            if(takeD){player.takeDamage(dd);}
+            player.dizzCharacter(dizzDuration);
+            return;
         }
         let monster = this.target.getComponent(Monster);
         if(monster){
-            monster.takeDamage(dd);
+            if(takeD){monster.takeDamage(dd);}
+            monster.dizzCharacter(dizzDuration);
             return;
         }
+        //boss免疫眩晕
         let boss = this.target.getComponent(Boss);
         if(boss){
-            boss.takeDamage(dd);
+            if(takeD){boss.takeDamage(dd);}
             return;
         }
     }
@@ -99,7 +101,7 @@ export default class Status extends cc.Component {
                 if(this.data.duration != -1){
                     this.data.duration--;
                 }
-                this.doStatusDamge(false);
+                this.doStatusDamage(false);
             }
             if(this.data.duration  == 0  && this.stateRunning){
                 this.stateRunning = false;
@@ -110,7 +112,7 @@ export default class Status extends cc.Component {
             }
         }
     }
-    getDamgeDirect():DamageData{
+    getDamageDirect():DamageData{
         let dd = new DamageData();
         dd.realDamage = this.data.realDamageDirect?this.data.realDamageDirect:0;
         dd.physicalDamage = this.data.physicalDamageDirect?this.data.physicalDamageDirect:0;
@@ -121,7 +123,7 @@ export default class Status extends cc.Component {
         dd.curseDamage = this.data.curseDamageDirect?this.data.curseDamageDirect:0;
         return dd;
     }
-    getDamgeOverTime():DamageData{
+    getDamageOverTime():DamageData{
         let dd = new DamageData();
         dd.realDamage = this.data.realDamageOvertime?this.data.realDamageOvertime:0;
         dd.physicalDamage = this.data.physicalDamageOvertime?this.data.physicalDamageOvertime:0;

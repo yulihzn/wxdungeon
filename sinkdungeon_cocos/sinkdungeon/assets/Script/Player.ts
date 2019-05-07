@@ -74,6 +74,7 @@ export default class Player extends cc.Component {
     isDied = false;//是否死亡
     isFall = false;//是否跌落
     isStone = false;//是否石化
+    isDizz = false;//是否眩晕
     baseAttackPoint: number = 1;
 
     //触碰到的装备
@@ -109,7 +110,7 @@ export default class Player extends cc.Component {
        
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite');
-        this.bodySprite = this.getSpriteChildSprite(['sprite', 'body']);
+        this.bodySprite = this.getSpriteChildSprite(['sprite', 'body','body']);
         // this.playerItemSprite = this.getSpriteChildSprite(['sprite', 'righthand', 'item']);
         this.hairSprite = this.getSpriteChildSprite(['sprite', 'body','head', 'hair']);
         this.weaponSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'weapon']);
@@ -142,8 +143,8 @@ export default class Player extends cc.Component {
             , (event) => { this.statusUpdate() });
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage) });
-        cc.director.on(EventConstant.PLAYER_ROTATE
-            , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
+        // cc.director.on(EventConstant.PLAYER_ROTATE
+        //     , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
         if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
             Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
         }
@@ -211,6 +212,17 @@ export default class Player extends cc.Component {
             node = node.getChildByName(name);
         }
         return node.getComponent(cc.Sprite);
+    }
+    dizzCharacter(dizzDuration:number){
+        if(dizzDuration>0){
+            this.isDizz = true;
+            this.resetFoot();
+            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.playerAnim(Player.STATE_IDLE);
+            this.scheduleOnce(()=>{
+                this.isDizz = false;
+            },dizzDuration)
+        }
     }
     private statusUpdate() {
         if (!this.inventoryManager) {
@@ -343,7 +355,7 @@ export default class Player extends cc.Component {
         }
     }
     meleeAttack() {
-        if (!this.meleeWeapon || this.isAttacking) {
+        if (!this.meleeWeapon || this.isAttacking || this.isDizz || this.isDied || this.isFall) {
             return;
         }
 
@@ -375,7 +387,7 @@ export default class Player extends cc.Component {
     remoteRate = 0;
     remoteAttack() {
         let canFire = false;
-        if (!this.data) {
+        if (!this.data || this.isDizz || this.isDied || this.isFall) {
             return;
         }
         let speed = PlayerData.DefAULT_SPEED - this.data.getRemoteSpeed();
@@ -399,22 +411,22 @@ export default class Player extends cc.Component {
         return this.shooter.data.isHeavy == 1;
     }
     //暂时不用
-    rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
-        if (!this.node || this.isDied || this.isFall) {
-            return;
-        }
-        // if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
-        //     this.shooter.setHv(cc.v2(pos.x, pos.y));
-        // }
-        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
-            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
-        }
-        if (this.talentShield && !pos.equals(cc.Vec2.ZERO)) {
-            this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
-        }
-    }
+    // rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
+    //     if (!this.node || this.isDied || this.isFall) {
+    //         return;
+    //     }
+    //     // if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
+    //     //     this.shooter.setHv(cc.v2(pos.x, pos.y));
+    //     // }
+    //     if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
+    //         this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
+    //     }
+    //     if (this.talentShield && !pos.equals(cc.Vec2.ZERO)) {
+    //         this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
+    //     }
+    // }
     move(dir: number, pos: cc.Vec2, dt: number) {
-        if (this.isDied || this.isFall) {
+        if (this.isDied || this.isFall || this.isDizz) {
             return;
         }
 
@@ -630,7 +642,7 @@ export default class Player extends cc.Component {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
         this.isStone = this.statusManager.hasStatus(StatusManager.STONE);
-        // this.turnStone(this.isStone);
+        this.turnStone(this.isStone);
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
     private useSkill():void{

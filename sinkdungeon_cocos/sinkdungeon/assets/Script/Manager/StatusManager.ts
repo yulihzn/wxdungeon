@@ -82,12 +82,13 @@ export default class StatusManager extends cc.Component {
                 this.statusList.splice(i, 1);
             }
         }
-        //新的状态如果存在则刷新
+        //新的状态如果存在则刷新且重新触发
         let hasStatus = false;
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == data.statusType) {
                 s.data.duration=data.duration;
+                s.showStatus(this.node.parent, data);
                 hasStatus = true;
                 break;
             }
@@ -100,8 +101,8 @@ export default class StatusManager extends cc.Component {
         statusNode.parent = this.node;
         statusNode.active = true;
         let status = statusNode.getComponent(Status);
-        status.showStatus(this.node.parent, data);
         this.statusList.push(status);
+        status.showStatus(this.node.parent, data);
     }
     
     update(dt) {
@@ -127,7 +128,7 @@ export default class StatusManager extends cc.Component {
         }
         return false;
     }
-    updateStatus(): StatusData {
+    private updateStatus(): StatusData {
         let e = new StatusData();
         e.Common.lifeDrain = 1;
         e.Common.criticalStrikeRate = 1;

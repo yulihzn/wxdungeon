@@ -370,7 +370,7 @@
             "damageMin": 2
         },
         "bulletArcExNum":2,
-        "bulletLineExNum":1,
+        "bulletLineExNum":0,
         "currentHealth": 10,
         "bulletType":"bullet019",
         "invisible": 0,
@@ -487,7 +487,8 @@
             "moveSpeed": 300,
             "maxHealth": 10,
             "toxicRate":100,
-            "damageMin": 2
+            "toxicDamage":1,
+            "damageMin": 1
         },
         "currentHealth": 10,
         "invisible": 0,

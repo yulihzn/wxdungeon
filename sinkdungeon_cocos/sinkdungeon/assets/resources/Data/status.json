@@ -28,6 +28,7 @@
         "statusType": 3,
         "desc": "",
         "duration": 3,
+        "dizzDurationDirect":1,
         "common": {
             "attackSpeed": -100
         }

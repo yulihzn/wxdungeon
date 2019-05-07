@@ -39,6 +39,8 @@ export default class StatusData {
     toxicDamageOvertime = 0;//持续毒元素伤害
     curseDamageDirect = 0;//瞬间诅咒元素伤害
     curseDamageOvertime = 0;//持续诅咒元素伤害
+    dizzDurationDirect = 0;//瞬间眩晕时长
+    dizzDurationOvertime = 0;//持续眩晕时长
     constructor(){
         this.common = new CommonData();
     }
@@ -69,6 +71,8 @@ export default class StatusData {
         this.toxicDamageOvertime = data.toxicDamageOvertime;
         this.curseDamageDirect = data.curseDamageDirect;
         this.curseDamageOvertime = data.curseDamageOvertime;
+        this.dizzDurationDirect = data.dizzDurationDirect;
+        this.dizzDurationOvertime = data.dizzDurationOvertime;
     }
     public clone(): StatusData {
         let e = new StatusData();
@@ -94,6 +98,8 @@ export default class StatusData {
         e.curseDamageDirect = this.curseDamageDirect;
         e.curseDamageOvertime = this.curseDamageOvertime;
         e.spriteFrameName = this.spriteFrameName;
+        e.dizzDurationDirect = this.dizzDurationDirect;
+        e.dizzDurationOvertime = this.dizzDurationOvertime;
         return e;
     }
 }
