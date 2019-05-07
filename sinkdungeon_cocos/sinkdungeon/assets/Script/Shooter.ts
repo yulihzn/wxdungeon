@@ -29,6 +29,7 @@ export default class Shooter extends cc.Component {
     @property
     isAI: boolean = false;
     dungeon: Dungeon = null;
+    //只有赋值才代表是玩家真正的shooter
     player: Player = null;
     private graphics:cc.Graphics;
 
@@ -113,7 +114,7 @@ export default class Shooter extends cc.Component {
         if (!this.isAI && this.player && (Logic.ammo <= 0 || this.player.inventoryManager.remote.equipmetType != 'remote')) {
             return;
         }
-        if (!this.isAI && Logic.ammo > 0) {
+        if (!this.isAI && this.player && Logic.ammo > 0) {
             Logic.ammo--;
         }
         if (this.data.bulletNets > 0) {

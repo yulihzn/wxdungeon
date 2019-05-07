@@ -10,15 +10,15 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default abstract class Talent extends cc.Component {
     public static readonly DASH_01 = 1000001;//普通
-    public static readonly DASH_02 = 1000002;//突刺冲撞 1伤害
-    public static readonly DASH_03 = 1000003;//鱼肠刺僚 流血
-    public static readonly DASH_04 = 1000004;//螳臂当车 击退
-    public static readonly DASH_05 = 1000005;//醉舞矛戈 减速
-    public static readonly DASH_06 = 1000006;//野蛮冲撞 眩晕
-    public static readonly DASH_07 = 1000007;//突刺鹰击 5伤害
+    public static readonly DASH_02 = 1000002;//突刺冲撞 1伤害 1
+    public static readonly DASH_03 = 1000003;//鱼肠刺僚 流血 1
+    public static readonly DASH_04 = 1000004;//螳臂当车 击退 1
+    public static readonly DASH_05 = 1000005;//醉舞矛戈 减速 1
+    public static readonly DASH_06 = 1000006;//野蛮冲撞 眩晕 1
+    public static readonly DASH_07 = 1000007;//突刺鹰击 5伤害 1
     public static readonly DASH_08 = 1000008;//移形换影 本体不冲刺而是幻影替代随后瞬移到幻影的位置 1
-    public static readonly DASH_09 = 1000009;//火焰舞者 划过路径留下一道3秒的火焰
-    public static readonly DASH_10 = 1000010;//冰霜之城 划过路径留下一道3秒的冰墙
+    public static readonly DASH_09 = 1000009;//火焰舞者 划过路径留下一道3秒的火焰 1
+    public static readonly DASH_10 = 1000010;//冰霜之城 划过路径留下一道3秒的冰墙 1
     public static readonly DASH_11 = 1000011;//元素湍流 扩大路径面积
     public static readonly DASH_12 = 1000012;//灵姿鬼步 冲刺期间无敌 1
     public static readonly DASH_13 = 1000013;//坚韧意志 缩短冲刺冷却 1

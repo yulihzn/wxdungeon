@@ -47,8 +47,7 @@ export default class Player extends cc.Component {
     @property(cc.Node)
     meleeWeaponNode: cc.Node = null;
     meleeWeapon: MeleeWeapon = null;
-    @property(cc.Node)
-    shooterNode: cc.Node = null;
+    @property(Shooter)
     shooter: Shooter = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
@@ -153,7 +152,6 @@ export default class Player extends cc.Component {
         this.baseAttackPoint = Logic.playerData.getDamageMin();
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
-        this.shooter = this.shooterNode.getComponent(Shooter);
         this.shooter.player = this;
         this.smokePool = new cc.NodePool();
         cc.director.on('destorysmoke', (event) => {
@@ -172,8 +170,10 @@ export default class Player extends cc.Component {
         this.talentDash = this.getComponent(TalentDash);
         this.talentDash.init();
         this.talentDash.loadList(Logic.talentList);
-        // this.talentDash.addTalent(Talent.DASH_01);
-        // this.talentDash.addTalent(Talent.DASH_14);
+        this.talentDash.addTalent(Talent.DASH_01);
+        this.talentDash.addTalent(Talent.DASH_08);
+        this.talentDash.addTalent(Talent.DASH_10);
+        // this.talentDash.addTalent(Talent.DASH_11);
         if (this.anim) {
             this.resetFoot();
             this.playerAnim(Player.STATE_WALK);
