@@ -3,70 +3,14 @@
   "_name": "PlayerIdle",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 1.0166666666666666,
   "sample": 60,
-  "speed": 2,
+  "speed": 0.5,
   "wrapMode": "2",
   "curveData": {
     "paths": {
       "sprite/body": {
         "props": {
-          "y": [
-            {
-              "frame": 0,
-              "value": 8
-            },
-            {
-              "frame": 1,
-              "value": 7.5
-            },
-            {
-              "frame": 2,
-              "value": 8
-            }
-          ],
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/cloak": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 5
-            },
-            {
-              "frame": 1,
-              "value": 0
-            },
-            {
-              "frame": 1.5,
-              "value": 5
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
           "position": [
             {
               "frame": 0,
@@ -78,111 +22,198 @@
           ]
         }
       },
-      "sprite/armleft": {
+      "sprite/body/handleft": {
         "props": {
-          "rotation": [
+          "position": [
             {
               "frame": 0,
-              "value": -10
+              "value": [
+                4.5,
+                6
+              ]
             }
           ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "1930be3f-cfb9-4093-9c4a-2e9015882d35"
+                }
+              }
+            ]
+          }
         }
       },
-      "sprite/armleft/handleft": {
+      "sprite/body/legs": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "ecff89f8-f0c4-441c-b4e6-7b7dcdb3c48f"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/body/head/face": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "ccaaf153-c0a6-4ec5-93ec-094957c739fe"
+                }
+              },
+              {
+                "frame": 0.16666666666666666,
+                "value": {
+                  "__uuid__": "8eb15f7a-d198-46ec-9f84-62d440c6ca0e"
+                }
+              },
+              {
+                "frame": 0.25,
+                "value": {
+                  "__uuid__": "ccaaf153-c0a6-4ec5-93ec-094957c739fe"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "ccaaf153-c0a6-4ec5-93ec-094957c739fe"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/body/head/hair": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "3f8bca30-a825-4093-a96e-135e59d55c59"
+                }
+              },
+              {
+                "frame": 0.25,
+                "value": {
+                  "__uuid__": "7cba0aad-7de5-44fe-a77a-8c8240163896"
+                }
+              },
+              {
+                "frame": 0.5,
+                "value": {
+                  "__uuid__": "3f8bca30-a825-4093-a96e-135e59d55c59"
+                }
+              },
+              {
+                "frame": 0.75,
+                "value": {
+                  "__uuid__": "7cba0aad-7de5-44fe-a77a-8c8240163896"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/cloak": {
         "props": {
           "rotation": [
             {
               "frame": 0,
               "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/legleft": {
-        "props": {
-          "rotation": [
+            },
             {
-              "frame": 0,
+              "frame": 0.16666666666666666,
+              "value": 15
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 15
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 15
+            },
+            {
+              "frame": 1,
               "value": 0
             }
           ]
         }
       },
-      "sprite/legleft/footleft": {
+      "sprite/body/legs/footright": {
         "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -2,
+                -1
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                -2,
+                -1
+              ]
+            }
+          ],
           "rotation": [
             {
               "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1,
               "value": 0
             }
           ]
         }
       },
-      "sprite/body/head": {
+      "sprite/body/legs/footleft": {
         "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                2,
+                -1
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                2,
+                -1
+              ]
+            }
+          ],
           "rotation": [
             {
               "frame": 0,
               "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/body/head/eyeleft": {
-        "props": {
-          "scaleY": [
+            },
             {
-              "frame": 0,
-              "value": 1
-            }
-          ]
-        }
-      },
-      "sprite/body/head/eyeright": {
-        "props": {
-          "scaleY": [
-            {
-              "frame": 0,
-              "value": 1
-            }
-          ]
-        }
-      },
-      "sprite/legright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/legright/footright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/armright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 10
-            }
-          ]
-        }
-      },
-      "sprite/armright/handright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
+              "frame": 1,
               "value": 0
             }
           ]

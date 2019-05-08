@@ -29,8 +29,8 @@ export default class Start extends cc.Component {
     chooseChapter(){
         cc.director.loadScene('chapter');
     }
-    testScene(){
-        cc.director.loadScene('test');
+    achievementScene(){
+        cc.director.loadScene('achievement');
     }
     continueGame(){
         if(this.wxhelper){

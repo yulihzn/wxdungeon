@@ -425,6 +425,7 @@ export default class Monster extends Actor {
                 this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
             }
         }
+        Logic.addMonsterKillAchievement(this.data.resName);
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 2);
 
     }

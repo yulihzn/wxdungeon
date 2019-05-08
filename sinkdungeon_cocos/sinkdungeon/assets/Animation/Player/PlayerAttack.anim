@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "NewPlayerAttack",
+  "_name": "PlayerAttack",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.6833333333333333,
@@ -172,7 +172,7 @@
               {
                 "frame": 0.3333333333333333,
                 "value": {
-                  "__uuid__": "152016e7-9642-4eae-8ec9-27b3911f0332"
+                  "__uuid__": "e38e6b8c-ee17-4063-bbd2-d0758885812b"
                 }
               },
               {

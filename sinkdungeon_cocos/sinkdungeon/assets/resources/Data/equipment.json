@@ -660,6 +660,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet004",
+        "hideHair":1,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -682,6 +683,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet005",
+        "hideHair":1,
         "common": {
             "damageMin": 0,
             "damageMax": 0,

@@ -2,63 +2,13 @@
   "__type__": "cc.AnimationClip",
   "_name": "PlayerDie",
   "_objFlags": 0,
-  "_native": "",
-  "_duration": 2,
+  "_rawFiles": null,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "1",
+  "wrapMode": 1,
   "curveData": {
     "paths": {
-      "sprite/body": {
-        "props": {
-          "y": [
-            {
-              "frame": 0,
-              "value": 8
-            },
-            {
-              "frame": 1,
-              "value": 7.5
-            },
-            {
-              "frame": 2,
-              "value": 8
-            }
-          ],
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/cloak": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 5
-            },
-            {
-              "frame": 1,
-              "value": 0
-            },
-            {
-              "frame": 1.5,
-              "value": 5
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ]
-        }
-      },
       "sprite": {
         "props": {
           "rotation": [
@@ -67,143 +17,24 @@
               "value": 0
             },
             {
-              "frame": 0.5,
+              "frame": 0.5166666666666667,
               "value": 90
             },
             {
-              "frame": 1,
+              "frame": 0.6666666666666666,
               "value": 80
             },
             {
-              "frame": 1.3333333333333333,
+              "frame": 0.75,
               "value": 90
             },
             {
-              "frame": 1.6666666666666667,
+              "frame": 0.8333333333333334,
               "value": 85
             },
             {
-              "frame": 2,
+              "frame": 1,
               "value": 90
-            }
-          ],
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                0,
-                0
-              ]
-            }
-          ]
-        }
-      },
-      "sprite/armleft": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -10
-            }
-          ]
-        }
-      },
-      "sprite/armleft/handleft": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/legleft": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/legleft/footleft": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/body/head": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/body/head/eyeleft": {
-        "props": {
-          "scaleY": [
-            {
-              "frame": 0,
-              "value": 1
-            }
-          ]
-        }
-      },
-      "sprite/body/head/eyeright": {
-        "props": {
-          "scaleY": [
-            {
-              "frame": 0,
-              "value": 1
-            }
-          ]
-        }
-      },
-      "sprite/legright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/legright/footright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/armright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 10
-            }
-          ]
-        }
-      },
-      "sprite/armright/handright": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
             }
           ]
         }

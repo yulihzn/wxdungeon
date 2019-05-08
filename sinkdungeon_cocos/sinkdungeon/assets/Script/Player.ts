@@ -284,7 +284,7 @@ export default class Player extends cc.Component {
                 this.shooter.changeRes(this.shooter.data.img);
                 break;
             case 'helmet':
-                this.hairSprite.node.opacity = spriteFrame ? 255 : 255;
+                this.hairSprite.node.opacity =  this.inventoryManager.helmet.hideHair==1? 0 : 255;
                 this.updateEquipMent(this.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
                 break;
             case 'clothes':
@@ -468,10 +468,6 @@ export default class Player extends cc.Component {
         if (this.isMoving) {
             this.isFaceRight = h > 0;
         }
-        // let walkName = "NewPlayerWalk";
-        // if (this.inventoryManager.trousers.trouserslong == 1) {
-        //     walkName = "NewPlayerWalk";
-        // }
         if (this.isMoving && !this.isStone) {
             this.playerAnim(Player.STATE_WALK);
         } else {
@@ -491,25 +487,25 @@ export default class Player extends cc.Component {
                 this.shoesRightSprite.node.parent.setRotation(0);
     }
     playerAnim(animType:number):void{
-        let walkName = "NewPlayerWalk";
+        let walkName = "PlayerWalk";
         switch(animType){
             case Player.STATE_IDLE:
             if (this.anim.getAnimationState(walkName).isPlaying) {
-                this.anim.play('NewPlayerIdle');
+                this.anim.play('PlayerIdle');
             }
             break;
             case Player.STATE_WALK:
             if (!this.anim.getAnimationState(walkName).isPlaying 
-            &&!this.anim.getAnimationState('NewPlayerFist').isPlaying
-            &&!this.anim.getAnimationState('NewPlayerAttack').isPlaying) {
+            &&!this.anim.getAnimationState('PlayerFist').isPlaying
+            &&!this.anim.getAnimationState('PlayerAttack').isPlaying) {
                 this.anim.play(walkName);
             }
             break;
             case Player.STATE_ATTACK:
             if(!this.meleeWeapon.isFar&&this.meleeWeapon.isStab){
-                this.anim.play('NewPlayerFist');
+                this.anim.play('PlayerFist');
             }else{
-                this.anim.play('NewPlayerAttack');
+                this.anim.play('PlayerAttack');
             }
             break;
             case Player.STATE_FALL:break;
