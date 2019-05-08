@@ -77,7 +77,11 @@ export default class EquipmentManager extends cc.Component {
     EquipmentManager.WEAPON_HUGEAXE,EquipmentManager.WEAPON_HAPPYFIRE,EquipmentManager.WEAPON_SADICE,
     EquipmentManager.REMOTE_ALIENGUN,EquipmentManager.REMOTE_WAND,EquipmentManager.REMOTE_WINCHESTER,EquipmentManager.REMOTE_RPG,
     EquipmentManager.WEAPON_EGYPTWAND,EquipmentManager.WEAPON_TOXICDAGGER,EquipmentManager.WEAPON_OLDROOTDAGGER,EquipmentManager.WEAPON_COOKCHOPPER,
+<<<<<<< HEAD
     EquipmentManager.REMOTE_SHURIKEN,EquipmentManager.WEAPON_LIGHTENINGBLADE];
+=======
+    EquipmentManager.REMOTE_SHURIKEN];
+>>>>>>> b47b45c05e656bb6c230f0d3ea3b275c12f38ae5
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红
