@@ -23,6 +23,7 @@ import Random from './Utils/Random';
 import Skill from './Utils/Skill';
 import Item from './Item/Item';
 import Actor from './Base/Actor';
+import Achievements from './Achievement';
 
 @ccclass
 export default class Monster extends Actor {
@@ -108,7 +109,7 @@ export default class Monster extends Actor {
         this.actionSpriteFrameIdle();
         this.scheduleOnce(() => { this.isShow = true; }, 0.5);
 
-        // this.graphics.rect(0, 0, 100, 100);
+        // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
     }
 
@@ -175,6 +176,9 @@ export default class Monster extends Actor {
         if (!hv.equals(cc.Vec2.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
+            if(this.isVariation){
+                this.shooter.data.bulletSize = 0.5;
+            }
             this.shooter.dungeon = this.dungeon;
             this.shooter.data.bulletArcExNum = this.data.bulletArcExNum;
             this.shooter.data.bulletLineExNum = this.data.bulletLineExNum;
@@ -294,12 +298,6 @@ export default class Monster extends Actor {
     }
 
     start() {
-        // let ss = this.node.getComponentsInChildren(cc.Sprite);
-        // for (let i = 0; i < ss.length; i++) {
-        //     if (ss[i].spriteFrame) {
-        //         ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        //     }
-        // }
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
     }
@@ -318,6 +316,10 @@ export default class Monster extends Actor {
             return false;
         }
         if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
+            this.showFloatFont(this.dungeon.node, 0, true, false);
+            return false;
+        }
+        if(this.blinkSkill.IsExcuting){
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
         }
@@ -425,10 +427,11 @@ export default class Monster extends Actor {
                 this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
             }
         }
-        Logic.addMonsterKillAchievement(this.data.resName);
+        Achievements.addMonsterKillAchievement(this.data.resName);
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 2);
 
     }
+  
     /**获取中心位置 */
     getCenterPosition(): cc.Vec2 {
         return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
@@ -451,7 +454,7 @@ export default class Monster extends Actor {
                     })
                     , cc.fadeIn(0.5));
                 body.runAction(action);
-                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; })
+                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; },1)
             }, this.data.blink, true)
         }
     }

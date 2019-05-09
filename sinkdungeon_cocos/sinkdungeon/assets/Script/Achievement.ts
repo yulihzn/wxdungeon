@@ -49,15 +49,14 @@ export default class Achievements extends cc.Component {
         })
     }
     show(){
+        let data:AchievementData = Achievements.getAchievementData();
         for(let i = 0;i < this.iconList.length;i++){
             let name = `monster${i<10?'00'+i:'0'+i}`;
             let fr = this.spriteFrames[name]
             if(fr){
                 this.iconList[i].node.width = 96;
                 this.iconList[i].node.height = 96;
-                this.iconList[i].spriteFrame = this.spriteFrames[`monster${i<10?'00'+i:'0'+i}`]
-                let s:string = cc.sys.localStorage.getItem("achievement");
-                let data:AchievementData = JSON.parse(s);
+                this.iconList[i].spriteFrame = this.spriteFrames[name];
                 if(data&&data.monsters&&data.monsters[name]&&data.monsters[name] == 1){
                     this.iconList[i].node.color = cc.color(255,255,255);
                 }else{
@@ -73,6 +72,24 @@ export default class Achievements extends cc.Component {
     backToHome() {
         cc.director.loadScene('start');
     }
-
+    static getAchievementData():AchievementData{
+        let s:string = cc.sys.localStorage.getItem("achievement");
+        let data:AchievementData = JSON.parse(s);
+        if(!data||!data.monsters){
+            data = new AchievementData();
+        }
+        return data;
+    }
+    static saveAchievementData(data:AchievementData):void{
+        cc.sys.localStorage.setItem("achievement",JSON.stringify(data));
+    }
+    static addMonsterKillAchievement(name:string){
+        let data:AchievementData = Achievements.getAchievementData();
+        data.monsters[name] = 1;
+        let ss = JSON.stringify(data);
+        cc.log(data.monsters);
+        cc.log(data);
+        Achievements.saveAchievementData(data);
+    }
     // update (dt) {}
 }

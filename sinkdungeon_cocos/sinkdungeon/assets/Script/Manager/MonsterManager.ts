@@ -118,7 +118,6 @@ export default class MonsterManager extends cc.Component {
         let rate = 0.01;
         variationRate = variationRate + Logic.chapterName * 5 + Logic.level * 2;
         rate = rate + Logic.chapterName * 0.05 + Logic.level * 0.02;
-
         monster.isVariation = Logic.getRandomNum(0, 100) < variationRate;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;

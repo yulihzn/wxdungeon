@@ -20,6 +20,7 @@ import ChestData from "./Data/ChestData";
 import Random from "./Utils/Random";
 import TalentData from "./Data/TalentData";
 import AchievementData from "./Data/AchievementData";
+import AchievementKeyData from "./Data/AchievementKeyData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -148,16 +149,7 @@ export default class Logic extends cc.Component {
     static hashTalent(id: number): boolean {
         return Logic.hasTalentMap[id]&&Logic.hasTalentMap[id]==true;
     }
-    static addMonsterKillAchievement(name:string){
-        let s:string = cc.sys.localStorage.getItem("achievement");
-        let data:AchievementData = JSON.parse(s);
-        if(!data||!data.monsters){
-            data = new AchievementData();
-        }
-        data.monsters[name] == 1;
-        let ss = JSON.stringify(data);
-        cc.sys.localStorage.setItem("achievement",ss);
-    }
+    
     static changeDungeonSize() {
         let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;
         if (mapData && mapData.length > 0) {

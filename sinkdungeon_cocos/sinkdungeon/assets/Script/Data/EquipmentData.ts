@@ -31,6 +31,7 @@ export default class EquipmentData extends BaseData{
     trouserslong = 0;//是否长裤
     damageRemote = 0;//远程伤害
     bulletType = "";//子弹类别
+    bulletSize = 0;//子弹增加大小 为0代表不改变 1代表加一倍
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（秒）
@@ -93,6 +94,7 @@ export default class EquipmentData extends BaseData{
         this.isArcAim = data.isArcAim?data.isArcAim:0;
         this.isLineAim = data.isLineAim?data.isLineAim:0;
         this.hideHair = data.hideHair?data.hideHair:0;
+        this.bulletSize = data.bulletSize?data.bulletSize:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -140,6 +142,7 @@ export default class EquipmentData extends BaseData{
         e.bulletLineInterval = this.bulletLineInterval;
         e.bulletNets = this.bulletNets;
         e.hideHair = this.hideHair;
+        e.bulletSize = this.bulletSize;
 
         e.info1 = this.info1;
         e.info2 = this.info2;
