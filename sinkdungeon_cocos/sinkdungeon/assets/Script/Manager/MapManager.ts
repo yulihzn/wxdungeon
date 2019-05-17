@@ -206,12 +206,15 @@ export default class MapManager {
                 cc.error(err);
             } else {
                 let strs: string = resource.text;
+                //以room为标签分割字符串
                 let arr = strs.split('room');
                 let index = 0;
+                //循环获取各个类型room的地图数组
                 for (let i = 0; i < arr.length; i++) {
                     let str = arr[i];
                     let temparr = null;
                     if (str) {
+                        //获取=号以后的该room类型的地图数组（以$分隔）
                         str = str.substring(str.indexOf('=') + 1, str.length - 3);
                         temparr = str.split('$');
                     }
@@ -221,6 +224,7 @@ export default class MapManager {
                             let tempstr = temparr[j];
                             a.push(new MapData(tempstr));
                         }
+                        //按顺序排列的room类型名来保存该类型的地图数组
                         allfileRooms[this.roomStrs[index]] = a;
                         index++;
                     }

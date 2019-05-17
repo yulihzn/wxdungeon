@@ -20,7 +20,6 @@ import ChestData from "./Data/ChestData";
 import Random from "./Utils/Random";
 import TalentData from "./Data/TalentData";
 import AchievementData from "./Data/AchievementData";
-import AchievementKeyData from "./Data/AchievementKeyData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
