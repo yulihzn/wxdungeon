@@ -112,11 +112,12 @@ export default class Logic extends cc.Component {
         Logic.hasTalentMap = {};
         Logic.mapManager.reset(Logic.level);
         Logic.mapManager.loadDataFromSave();
+        Dungeon.WIDTH_SIZE = 15;
+        Dungeon.HEIGHT_SIZE = 9;
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c ? parseInt(c) : 0;
         Logic.ammo = Logic.profile.ammo;
         Logic.isPickedTalent = false;
-        // Logic.playerData.updateHA(cc.v2(999,999),30);
     }
     static loadList(talentList: TalentData[]) {
         Logic.talentList = talentList;

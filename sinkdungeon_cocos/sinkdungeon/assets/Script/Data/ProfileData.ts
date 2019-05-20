@@ -46,8 +46,8 @@ export default class ProfileData {
         this.loadProfile();
     }
     saveData(){
-        cc.sys.localStorage.setItem('profileData',JSON.stringify(this));
-        console.log('save data');
+        // cc.sys.localStorage.setItem('profileData',JSON.stringify(this));
+        // console.log('save data');
     }
     clearData(){
         cc.sys.localStorage.setItem('profileData','');

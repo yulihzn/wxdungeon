@@ -23,15 +23,16 @@ export default class RectDungeon {
     public static readonly EMPTY_ROOM = 0;
     public static readonly START_ROOM = 1;
     public static readonly END_ROOM = 2;
-    public static readonly TRAP_ROOM = 3;
-    public static readonly LOOT_ROOM = 4;
-    public static readonly DANGER_ROOM = 5;
-    public static readonly MERCHANT_ROOM = 6;
-    public static readonly PUZZLE_ROOM = 7;
-    public static readonly BOSS_ROOM = 8;
-    public static readonly POKER_ROOM = 9;
-    public static readonly TAROT_ROOM = 10;
-    public static readonly TEST_ROOM = 11;
+    public static readonly PRIMARY_ROOM = 3;
+    public static readonly TRAP_ROOM = 4;
+    public static readonly LOOT_ROOM = 5;
+    public static readonly DANGER_ROOM = 6;
+    public static readonly MERCHANT_ROOM = 7;
+    public static readonly PUZZLE_ROOM = 8;
+    public static readonly BOSS_ROOM = 9;
+    public static readonly POKER_ROOM = 10;
+    public static readonly TAROT_ROOM = 11;
+    public static readonly TEST_ROOM = 12;
     public level: number = 1;
     public map: RectRoom[][];
     public size: number;
@@ -45,9 +46,9 @@ export default class RectDungeon {
 
     public constructor(level: number) {
         this.isLevelZero = level == 0;
-        if(this.isLevelZero){
+        if (this.isLevelZero) {
             this.level = 1;
-        }else{
+        } else {
             this.level = level;
         }
         this.size = this.level + 2;
@@ -67,10 +68,10 @@ export default class RectDungeon {
                 this.map[i][j] = new RectRoom(true, 0, i, j, RectDungeon.EMPTY_ROOM).initFromSave(dungeon.map[i][j]);
             }
         }
-        for(let i = 0; i < dungeon.primaryRooms.length;i++){
+        for (let i = 0; i < dungeon.primaryRooms.length; i++) {
             this.primaryRooms[i] = dungeon.primaryRooms[i];
         }
-        for(let i = 0; i < dungeon.secondaryRooms.length;i++){
+        for (let i = 0; i < dungeon.secondaryRooms.length; i++) {
             this.secondaryRooms[i] = dungeon.secondaryRooms[i];
         }
         this.startRoom = new RectRoom(false, 0, 0, 0, RectDungeon.EMPTY_ROOM).initFromSave(dungeon.startRoom);
@@ -171,14 +172,45 @@ export default class RectDungeon {
         }
         return false;
     }
+    isPrimaryVertical(i: number, j: number): boolean {
+        if ((i == this.size - 2 || i == 1) && j < this.size - 1 && j > 0) {
+            if (this.map[i][j].isPrimary) {
+                return true;
+            }
+        }
+        return false;
+    }
+    isPrimaryHorizontal(i: number, j: number): boolean {
+        if (i < this.size - 1 && i > 0 && (j == this.size - 2 || j == 1)) {
+            if (this.map[i][j].isPrimary) {
+                return true;
+            }
+        }
+        return false;
+    }
+    isPrimaryRoomCorner(i: number, j: number): boolean {
+        if (i == this.size - 2 && j == 1) {
+            return true;
+        }
+        if (i == this.size - 2 && j == this.size - 2) {
+            return true;
+        }
+        if (i == 1 && j == this.size - 2) {
+            return true;
+        }
+        if (i == 1 && j == 1) {
+            return true;
+        }
+        return false;
+    }
     /// <summary>
     /// Builds the type of the primary rooms.只生成一个相邻的S和E,其余是D和T随机
     /// </summary>
     buildPrimaryRoomsType(): void {
-        let roomType: number[] = [RectDungeon.TRAP_ROOM, RectDungeon.DANGER_ROOM];
+        // let roomType: number[] = [RectDungeon.TRAP_ROOM, RectDungeon.DANGER_ROOM];
         for (let room of this.primaryRooms) {
-            let randomtype = roomType[this.getRandomNum(0, roomType.length - 1)];
-            room.roomType = randomtype;
+            // let randomtype = roomType[this.getRandomNum(0, roomType.length - 1)];
+            room.roomType = RectDungeon.PRIMARY_ROOM;
         }
         let startIndex = this.getRandomNum(0, this.primaryRooms.length - 1);
         //保持在横排
@@ -248,8 +280,8 @@ export default class RectDungeon {
 
 
     }
-    buildZeroRoomsType():void{
-        if(!this.isLevelZero){
+    buildZeroRoomsType(): void {
+        if (!this.isLevelZero) {
             return;
         }
         this.secondaryRooms[0].roomType = RectDungeon.POKER_ROOM;
@@ -257,7 +289,7 @@ export default class RectDungeon {
         this.secondaryRooms[2].roomType = RectDungeon.TAROT_ROOM;
         this.secondaryRooms[3].roomType = RectDungeon.TEST_ROOM;
         this.endRoom = this.secondaryRooms[2];
-        
+
 
     }
     addMerchantRoom(): void {
@@ -385,7 +417,7 @@ export default class RectDungeon {
     public getNeighborRoomType(i: number, j: number, dir: number): RectRoom {
         let x = i;
         let y = j;
-        if(dir == -1){
+        if (dir == -1) {
             return this.map[x][y];
         }
         if (dir == 0) {

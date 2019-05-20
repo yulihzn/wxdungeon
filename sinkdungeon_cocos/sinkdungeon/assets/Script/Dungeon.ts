@@ -236,9 +236,9 @@ export default class Dungeon extends cc.Component {
                         fd.position = Dungeon.getPosInMap(cc.v2(i, j));
                         fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                         let df = fd.getComponent(DecorationFloor);
-                        if(Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM){
+                        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM) {
                             df.changeRes('exitarrow');
-                        }else{
+                        } else {
                             df.changeRes('dev');
                         }
                     }
@@ -499,7 +499,8 @@ export default class Dungeon extends cc.Component {
             if (Logic.mapManager.getCurrentRoomType() == RectDungeon.DANGER_ROOM
                 || Logic.mapManager.getCurrentRoomType() == RectDungeon.LOOT_ROOM
                 || Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM
-                || Logic.mapManager.getCurrentRoomType() == RectDungeon.TRAP_ROOM) {
+                || Logic.mapManager.getCurrentRoomType() == RectDungeon.TRAP_ROOM
+                || Logic.mapManager.getCurrentRoomType() == RectDungeon.PRIMARY_ROOM) {
                 this.monsterManager.addRandomMonsters(this);
             }
         }
@@ -654,10 +655,6 @@ export default class Dungeon extends cc.Component {
                 }, 0.1 * Random.rand())
             }
         }
-    }
-    private addBoss() {
-
-
     }
     addBossSlime(type: number, index: cc.Vec2) {
         if (!this.bosses) {

@@ -74,6 +74,9 @@ export default class Achievements extends cc.Component {
     }
     static getAchievementData():AchievementData{
         let s:string = cc.sys.localStorage.getItem("achievement");
+        if(!s){
+            s = '{}'
+        }
         let data:AchievementData = JSON.parse(s);
         if(!data||!data.monsters){
             data = new AchievementData();

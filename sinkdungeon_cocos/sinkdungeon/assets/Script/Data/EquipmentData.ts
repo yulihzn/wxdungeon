@@ -46,6 +46,7 @@ export default class EquipmentData extends BaseData{
     info1:string = '';
     info2:string = '';
     info3:string = '';
+    info4:string = '';
     suit1:string = '';
     suit2:string = '';
     suit3:string = '';

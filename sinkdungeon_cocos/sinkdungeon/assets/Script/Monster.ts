@@ -24,6 +24,7 @@ import Skill from './Utils/Skill';
 import Item from './Item/Item';
 import Actor from './Base/Actor';
 import Achievements from './Achievement';
+import EquipmentManager from './Manager/EquipmentManager';
 
 @ccclass
 export default class Monster extends Actor {
@@ -108,7 +109,7 @@ export default class Monster extends Actor {
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
         this.scheduleOnce(() => { this.isShow = true; }, 0.5);
-
+        this.changeBodyColor();
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
     }
@@ -346,7 +347,7 @@ export default class Monster extends Actor {
         this.scheduleOnce(() => {
             if (this.node) {
                 this.isHurt = false;
-                this.body.color = cc.color(255, 255, 255);
+                this.changeBodyColor();
             }
         }, 0.1);
         this.sprite.opacity = 255;
@@ -360,6 +361,32 @@ export default class Monster extends Actor {
             this.addStatus(StatusManager.RECOVERY);
         }
         return this.isHurt;
+    }
+    changeBodyColor():void{
+        if(!this.data){
+            return;
+        }
+        let c = '#000000';
+        c = this.getMixColor(c,this.data.getIceDefence()>0?'#CCFFFF':'#000000');
+        c = this.getMixColor(c,this.data.getFireDefence()>0?'#FF6633':'#000000');
+        c = this.getMixColor(c,this.data.getLighteningDefence()>0?'#0099FF':'#000000');
+        c = this.getMixColor(c,this.data.getToxicDefence()>0?'#66CC00':'#000000');
+        c = this.getMixColor(c,this.data.getCurseDefence()>0?'#660099':'#000000');
+        c = c == '#000000' ? '#ffffff' : c;
+        this.body.color = cc.color(255,255,255).fromHEX(c);
+    }
+    getMixColor(color1: string, color2: string): string {
+        let c1 = cc.color().fromHEX(color1);
+        let c2 = cc.color().fromHEX(color2);
+        let c3 = cc.color();
+        let r = c1.getR() + c2.getR();
+        let g = c1.getG() + c2.getG();
+        let b = c1.getB() + c2.getB();
+
+        c3.setR(r > 255 ? 255 : r);
+        c3.setG(g > 255 ? 255 : g);
+        c3.setB(b > 255 ? 255 : b);
+        return '#' + c3.toHEX('#rrggbb');
     }
     addStatus(statusType: string) {
         this.statusManager.addStatus(statusType);
@@ -413,7 +440,7 @@ export default class Monster extends Actor {
         collider.sensor = true;
         let rand = Random.rand();
         if (this.dungeon) {
-            if (rand < 0.9) {
+            if (rand < 0.8) {
                 cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
             } else if (rand >= 0.8 && rand < 0.825) {
                 this.dungeon.addItem(this.node.position.clone(), Item.HEART);
@@ -425,6 +452,8 @@ export default class Monster extends Actor {
                 this.dungeon.addItem(this.node.position.clone(), Item.BLUECAPSULE);
             } else if (rand >= 0.9 && rand < 0.925) {
                 this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
+            } else if(rand >= 0.925 && rand < 0.935){
+                this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,1);
             }
         }
         Achievements.addMonsterKillAchievement(this.data.resName);

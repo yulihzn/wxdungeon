@@ -38,8 +38,6 @@ export default class MiniMap extends cc.Component {
 		if(this.size < 3){
 			this.size = 3;
 		}
-		let offset = RectDungeon.LEVEL_5 - this.level;
-		offset = Math.round(offset / 2);
 		this.map = new Array();
 		for (let i = 0; i < this.size; i++) {
 			this.map[i] = new Array();

@@ -30,7 +30,7 @@ export default class MapManager {
     private allfileRooms02: { [key: string]: MapData[] } = {};
     private allfileRooms03: { [key: string]: MapData[] } = {};
     private allfileRooms04: { [key: string]: MapData[] } = {};
-    private roomStrs = ['startroom', 'endroom', 'traproom', 'lootroom', 'dangerroom', 'merchantroom', 'puzzleroom', 'bossroom', 'pokerroom', 'tarotroom', 'testroom'];
+    private roomStrs = ['startroom', 'endroom','primaryroom', 'traproom', 'lootroom', 'dangerroom', 'merchantroom', 'puzzleroom', 'bossroom', 'pokerroom', 'tarotroom', 'testroom'];
     //文件是否加载成功
     isloaded: boolean = false;
     isloaded00: boolean = false;
@@ -266,7 +266,19 @@ export default class MapManager {
                         let r = allfileRooms[this.roomStrs[index]]
                         //随机取出一个该类型的房间数据
                         room.saveIndex = Logic.getRandomNum(0, r.length - 1);
-                        room.map = r[Logic.getRandomNum(0, r.length - 1)];
+                        let roomInex = Logic.getRandomNum(0, r.length - 1);
+                        if(room.roomType == RectDungeon.PRIMARY_ROOM){
+                            if(this.rectDungeon.isPrimaryHorizontal(i,j)){
+                                roomInex = 0;
+                            }
+                            if(this.rectDungeon.isPrimaryVertical(i,j)){
+                                roomInex = 1;
+                            }
+                            if(this.rectDungeon.isPrimaryRoomCorner(i,j)){
+                                roomInex = r.length - 1;
+                            }
+                        }
+                        room.map = r[roomInex];
                     }
                 }
             }
