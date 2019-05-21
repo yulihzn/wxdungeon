@@ -510,6 +510,7 @@
             "maxHealth": 5,
             "damageMin": 1
         },
+        "isBoom":1,
         "currentHealth": 5,
         "invisible": 0,
         "remote": 3,
