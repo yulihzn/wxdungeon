@@ -25,6 +25,7 @@ import Item from './Item/Item';
 import Actor from './Base/Actor';
 import Achievements from './Achievement';
 import EquipmentManager from './Manager/EquipmentManager';
+import Boom from './Item/Boom';
 
 @ccclass
 export default class Monster extends Actor {
@@ -32,7 +33,8 @@ export default class Monster extends Actor {
     public static readonly RES_WALK01 = 'anim001';//图片资源 行走1
     public static readonly RES_WALK02 = 'anim002';//图片资源 行走2
     public static readonly RES_WALK03 = 'anim003';//图片资源 行走3
-    public static readonly RES_ATTACK = 'anim004';//图片资源 攻击
+    public static readonly RES_ATTACK01 = 'anim004';//图片资源 准备攻击
+    public static readonly RES_ATTACK02 = 'anim005';//图片资源 攻击
 
     static readonly SCALE_NUM = 1.5;
     @property(cc.Vec2)
@@ -44,6 +46,8 @@ export default class Monster extends Actor {
     statusManager: StatusManager = null;
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
+    @property(cc.Prefab)
+    boom:cc.Prefab = null;
     private sprite: cc.Node;
     private body: cc.Node;
     private shadow: cc.Node;
@@ -206,9 +210,9 @@ export default class Monster extends Actor {
         pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 32 : -32);
         this.sprite.stopAllActions();
         this.idleAction = null;
-        let action = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
+        let action = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01) }),
             cc.moveBy(0.2, -pos.x / 2, -pos.y / 2),
-            cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK) }),
+            cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02) }),
             cc.moveBy(0.2, pos.x, pos.y),
             cc.callFunc(() => {
                 this.anim.resume();
@@ -343,7 +347,9 @@ export default class Monster extends Actor {
         this.sprite.stopAllActions();
         this.idleAction = null;
         //100ms后修改受伤
-        this.body.color = cc.color(255, 0, 0);
+        if(dd.getTotalDamage()>0){
+            this.body.color = cc.color(255, 0, 0);
+        }
         this.scheduleOnce(() => {
             if (this.node) {
                 this.isHurt = false;
@@ -457,7 +463,15 @@ export default class Monster extends Actor {
             }
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 2);
+        this.scheduleOnce(() => { if (this.node) { 
+            if (this.data.isBoom == 1) {
+                let boom = cc.instantiate(this.boom);
+                boom.parent = this.node.parent;
+                boom.setPosition(this.node.position);
+                boom.zIndex = 4100;
+            }
+            this.node.active = false;
+         } }, 2);
 
     }
   

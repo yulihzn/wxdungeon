@@ -73,7 +73,7 @@ export default class Status extends cc.Component {
         let dd = isDirect?this.getDamageDirect():this.getDamageOverTime();
         let dizzDuration = isDirect?this.data.dizzDurationDirect:this.data.dizzDurationOvertime;
         let player = this.target.getComponent(Player);
-        let takeD = dd.getTotalDamage()== 0;
+        let takeD = dd.getTotalDamage() != 0;
         if(player){
             if(takeD){player.takeDamage(dd);}
             player.dizzCharacter(dizzDuration);

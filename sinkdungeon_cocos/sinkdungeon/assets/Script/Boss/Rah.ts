@@ -263,7 +263,7 @@ export default class Rah extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if (player && this.meleeSkill.IsExcuting) {
+        if (player && this.meleeSkill.IsExcuting&&!this.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
             player.takeDamage(d);

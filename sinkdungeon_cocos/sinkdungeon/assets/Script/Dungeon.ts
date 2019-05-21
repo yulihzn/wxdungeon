@@ -34,6 +34,7 @@ import Random from "./Utils/Random";
 import IceDemonThron from "./Boss/IceDemonThron";
 import DryadGrass from "./Boss/DryadGrass";
 import DecorationFloor from "./Building/DecorationFloor";
+import Saw from "./Building/Saw";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -90,6 +91,8 @@ export default class Dungeon extends cc.Component {
     iceThron: cc.Prefab = null;
     @property(cc.Prefab)
     dryadGrass: cc.Prefab = null;
+    @property(cc.Prefab)
+    saw: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -203,6 +206,12 @@ export default class Dungeon extends cc.Component {
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.trapmap[i][j] = trap.getComponent(Trap);
+                }
+                //生成电锯,占据5个格子
+                if (mapData[i][j] == '|') {
+                    let saw = cc.instantiate(this.saw);
+                    saw.parent = this.node;
+                    saw.getComponent(Saw).setPos(cc.v2(i,j));
                 }
                 //生成炮台
                 if (mapData[i][j] == '&') {
@@ -411,9 +420,7 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_FISH, i, j);
                     }
                     if (mapData[i][j] == 'j') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_CONNAR, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_EZIO, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_BOOMER, i, j);
                     }
                     if (mapData[i][j] == 'k') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
@@ -445,6 +452,9 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 's') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CROCODILE, i, j);
+                    }
+                    if (mapData[i][j] == 't') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, i, j);
                     }
                     if (mapData[i][j] == 'v') {
                         this.addMonsterFromData(MonsterManager.MONSTER_DEMON, i, j);

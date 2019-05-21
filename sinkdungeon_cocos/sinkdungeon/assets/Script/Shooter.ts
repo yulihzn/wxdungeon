@@ -70,6 +70,9 @@ export default class Shooter extends cc.Component {
             this.sprite.anchorX = 0.5
         }
     }
+    changeResColor(color:cc.Color){
+        this.sprite.color = color;
+    }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
         if (!spriteFrame) {

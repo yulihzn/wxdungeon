@@ -243,7 +243,7 @@ export default class WarMachine extends Boss {
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let player = other.node.getComponent(Player);
-        if(player){
+        if(player&&!this.isDied){
             let d = new DamageData();
             d.physicalDamage = 2;
             player.takeDamage(d);

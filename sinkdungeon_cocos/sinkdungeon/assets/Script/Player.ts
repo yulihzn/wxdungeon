@@ -282,6 +282,8 @@ export default class Player extends cc.Component {
                 break;
             case 'remote': this.shooter.data = equipData.clone();
                 this.shooter.changeRes(this.shooter.data.img);
+                let c = cc.color(255, 255, 255).fromHEX(this.shooter.data.color);
+                this.shooter.changeResColor(c);
                 break;
             case 'helmet':
                 this.hairSprite.node.opacity =  this.inventoryManager.helmet.hideHair==1? 0 : 255;

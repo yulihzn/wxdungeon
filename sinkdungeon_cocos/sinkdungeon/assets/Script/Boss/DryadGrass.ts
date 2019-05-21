@@ -29,6 +29,9 @@ export default class DryadGrass extends Actor {
     onLoad() {
         this.isUp = false;
     }
+    takeDamage(){
+        return false;
+    }
     fall() {
         this.anim = this.getComponent(cc.Animation);
         this.anim.play();

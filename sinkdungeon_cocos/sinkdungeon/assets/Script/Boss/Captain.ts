@@ -131,7 +131,7 @@ export default class Captain extends Boss {
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let player = other.getComponent(Player);
         if (player && self.tag == 1) {
-            if (this.isFall) {
+            if (this.isFall&&!this.isDied) {
                 this.isFall = false;
                 let dd = new DamageData();
                 dd.physicalDamage = 2;
