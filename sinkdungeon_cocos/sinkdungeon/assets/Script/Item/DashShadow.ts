@@ -76,8 +76,8 @@ export default class DashShadow extends cc.Component {
         let speed = 1200;
         this.rigidBody.linearDamping = 1;
         if (this.talentDash.player.talentShield.hashTalent(TalentShield.DASH_14)) {
-            speed = 2400;
-            this.rigidBody.linearDamping = 12;
+            speed = 2000;
+            this.rigidBody.linearDamping = 1;
         }
         this.rigidBody.linearVelocity = this.hv.mul(speed);
         this.node.zIndex = 4000;
@@ -101,7 +101,7 @@ export default class DashShadow extends cc.Component {
         shooter.data.bulletLineExNum = 9;
         shooter.data.bulletLineInterval = 0.04;
         if (this.talentDash.hashTalent(Talent.DASH_11)) {
-            shooter.data.bulletLineExNum = 18;
+            shooter.data.bulletLineExNum = 15;
             shooter.data.bulletLineInterval = 0.02;
         }
         let isOpenFire = false;

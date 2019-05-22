@@ -41,6 +41,7 @@ export default class EquipmentData extends BaseData{
     isArcAim = 0;//是否是扇形瞄准
     isLineAim = 0;//是否是线性瞄准
     hideHair = 0;//是否隐藏头发
+    bulletExSpeed = 0;//子弹额外速度
     private common:CommonData;
 
     info1:string = '';
@@ -96,6 +97,7 @@ export default class EquipmentData extends BaseData{
         this.isLineAim = data.isLineAim?data.isLineAim:0;
         this.hideHair = data.hideHair?data.hideHair:0;
         this.bulletSize = data.bulletSize?data.bulletSize:0;
+        this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -144,6 +146,7 @@ export default class EquipmentData extends BaseData{
         e.bulletNets = this.bulletNets;
         e.hideHair = this.hideHair;
         e.bulletSize = this.bulletSize;
+        e.bulletExSpeed = this.bulletExSpeed;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

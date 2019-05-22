@@ -42,7 +42,7 @@ export default class Saw extends Building {
     setPos(pos:cc.Vec2){
         this.pos = pos;
         let p = Dungeon.getPosInMap(pos);
-        this.node.position = cc.v2(p.x-64,p.y);
+        this.node.position = cc.v2(p.x,p.y);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
     }
     

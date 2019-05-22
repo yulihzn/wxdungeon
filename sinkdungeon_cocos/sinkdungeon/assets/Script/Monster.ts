@@ -191,6 +191,7 @@ export default class Monster extends Actor {
             this.shooter.data.isArcAim = this.data.isArcAim;
             this.shooter.data.isLineAim = this.data.isLineAim;
             this.shooter.data.bulletType = this.data.bulletType ? this.data.bulletType : "bullet001";
+            this.shooter.data.bulletExSpeed = this.data.bulletExSpeed;
             this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5);
         }
     }
@@ -458,7 +459,7 @@ export default class Monster extends Actor {
                 this.dungeon.addItem(this.node.position.clone(), Item.BLUECAPSULE);
             } else if (rand >= 0.9 && rand < 0.925) {
                 this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
-            } else if(rand >= 0.925 && rand < 0.935){
+            } else if(rand >= 0.925 && rand < 0.95){
                 this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,1);
             }
         }

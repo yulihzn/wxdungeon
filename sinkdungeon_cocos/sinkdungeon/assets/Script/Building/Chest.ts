@@ -83,7 +83,7 @@ export default class Chest extends Building {
                     if (dungeon) {
                         if(Logic.level < 1){
                             dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos,null,this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.WEAPON_DINNERFORK, this.data.pos,null,this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos,null,this.data.quality);
                         }else{
                             dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.data.pos,null,this.data.quality);
                         }

@@ -221,6 +221,10 @@ export default class Shooter extends cc.Component {
         let bd = new BulletData();
         bd.valueCopy(Logic.bullets[bulletType])
         bd.size +=this.data.bulletSize;
+        bd.speed+= this.data.bulletExSpeed;
+        if(bd.speed + this.data.bulletExSpeed > 50){
+            bd.speed+=this.data.bulletExSpeed;
+        }
         bullet.changeBullet(bd);
         this.bulletName = bullet.name + bd.resName;
         bullet.enabled = true;

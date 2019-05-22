@@ -13,6 +13,7 @@ import EvilEye from "../Boss/EvilEye";
 import Dryad from "../Boss/Dryad";
 import Sphinx from "../Boss/Sphinx";
 import Dragon from "../Boss/Dragon";
+import MonsterRandomAttr from "./MonsterRandomAttr";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -96,6 +97,8 @@ export default class MonsterManager extends cc.Component {
     readonly maxHealth07 = 600;
     readonly maxHealth08 = 600;
     readonly maxHealth09 = 800;
+
+    monsterRandomAttr:MonsterRandomAttr = new MonsterRandomAttr;
     onLoad() {
     }
     /**
@@ -116,10 +119,7 @@ export default class MonsterManager extends cc.Component {
 
         //5%的几率变异
         let variationRate = 5;
-        //1%几率添加元素
-        let rate = 0.01;
         variationRate = variationRate + Logic.chapterName * 5 + Logic.level * 2;
-        rate = rate + Logic.chapterName * 0.05 + Logic.level * 0.02;
         monster.isVariation = Logic.getRandomNum(0, 100) < variationRate;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
@@ -133,6 +133,7 @@ export default class MonsterManager extends cc.Component {
         let rand = Random.rand();
         let df = Logic.getRandomNum(50, 100);
         let er = Logic.getRandomNum(0, 100);
+        //0.5%几率添加元素
         if (rand < 0.005) {
             data.Common.iceDamage += 1;
             data.Common.iceDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
@@ -158,7 +159,11 @@ export default class MonsterManager extends cc.Component {
             data.Common.curseDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
             data.Common.curseRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
         }
-
+        //10%几率随机属性
+        if(rand<0.1){
+            this.monsterRandomAttr.addRandomAttrs(3);
+            data = this.monsterRandomAttr.updateMonsterData(data);
+        }
         monster.data = data;
 
         monster.isDisguising = data.disguise > 0;

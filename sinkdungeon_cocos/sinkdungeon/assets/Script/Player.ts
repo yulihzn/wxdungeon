@@ -336,7 +336,7 @@ export default class Player extends cc.Component {
             return;
         }
         this.sprite.rotation = 0;
-        this.sprite.scale = 1;
+        this.sprite.scale = 5;
         this.sprite.opacity = 255;
         this.sprite.x = 0;
         this.sprite.y = 0;
@@ -550,7 +550,7 @@ export default class Player extends cc.Component {
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
-        if(this.talentDash.hashTalent(Talent.DASH_12)){
+        if(this.talentDash.hashTalent(Talent.DASH_12)&&this.talentDash.IsExcuting && dd.getTotalDamage() > 0){
             isDodge = true;
         }
         dd = isDodge ? new DamageData() : dd;

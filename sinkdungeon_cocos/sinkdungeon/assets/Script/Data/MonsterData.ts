@@ -31,6 +31,7 @@ export default class MonsterData{
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（毫秒）
+    bulletExSpeed = 0;//子弹额外速度
     isArcAim = 0;//是否是扇形瞄准
     isLineAim = 0;//是否是线性瞄准
     blink = 0;//是否闪烁大于0 数字代表cd
@@ -80,6 +81,7 @@ export default class MonsterData{
         this.isLineAim = data.isLineAim?data.isLineAim:0;
         this.blink = data.blink?data.blink:0;
         this.isBoom = data.isBoom?data.isBoom:0;
+        this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -105,6 +107,7 @@ export default class MonsterData{
         e.isLineAim = this.isLineAim;
         e.blink = this.blink;
         e.isBoom = this.isBoom;
+        e.bulletExSpeed = this.bulletExSpeed;
         return e;
     }
     getAttackPoint():DamageData{

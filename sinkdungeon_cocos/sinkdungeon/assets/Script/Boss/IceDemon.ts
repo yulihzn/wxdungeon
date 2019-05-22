@@ -94,7 +94,7 @@ export default class IceDemon extends Boss {
             this.dash();
         }
         if (!this.meleeSkill.IsExcuting && !this.defenceSkill.IsExcuting && !this.dashSkill.IsExcuting) {
-            this.thron();
+            this.thron(isHalf);
         }
         if (!pos.equals(cc.Vec2.ZERO)
             && !this.meleeSkill.IsExcuting
@@ -120,7 +120,7 @@ export default class IceDemon extends Boss {
         this.isFaceRight = h > 0;
         return pos;
     }
-    thron() {
+    thron(isHalf:boolean) {
         this.thronSkill.next(() => {
             this.thronSkill.IsExcuting = true;
             if (!this.anim) {
@@ -136,7 +136,7 @@ export default class IceDemon extends Boss {
                     this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
                 }
                 count++;
-            }, 0.2, 5, 1)
+            }, 0.2, isHalf?7:5, 1)
             this.scheduleOnce(() => { this.thronSkill.IsExcuting = false; }, 4);
         }, 15, true);
 

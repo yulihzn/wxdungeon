@@ -57,6 +57,7 @@ export default class Bullet extends cc.Component {
 
     isTrackDelay = false;//是否延迟追踪
     isDecelerateDelay = false;//是否延迟减速
+    isHit = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -93,6 +94,7 @@ export default class Bullet extends cc.Component {
         this.laserHeadSprite = this.laserNode.getChildByName("head").getComponent(cc.Sprite);
         this.isTrackDelay = false;
         this.isDecelerateDelay = false;
+        this.isHit = false;
 
     }
     timeDelay = 0;
@@ -322,7 +324,7 @@ export default class Bullet extends cc.Component {
         }
     }
     attacking(attackTarget: cc.Node) {
-        if (!attackTarget) {
+        if (!attackTarget||this.isHit) {
             return;
         }
         let damage = new DamageData();
@@ -375,6 +377,7 @@ export default class Bullet extends cc.Component {
         return false;
     }
     private bulletHit(): void {
+        this.isHit = true;
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");

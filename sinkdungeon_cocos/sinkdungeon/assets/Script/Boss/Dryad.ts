@@ -110,7 +110,7 @@ export default class Dryad extends Boss {
             this.hand02.showCollider(2,1);
             }
             this.scheduleOnce(()=>{this.anim.play('DryadIdle');this.meleeSkill.IsExcuting = false;},2);
-        }, 3, true);
+        }, 2, true);
         
 
     }
@@ -119,7 +119,7 @@ export default class Dryad extends Boss {
             this.schedule(()=>{
                 this.dungeon.addTwineGrass(Dungeon.getPosInMap(this.dungeon.player.pos.clone()), true);
             },1,2);
-        },12,true);
+        },8,true);
     }
     twoFlowers(){
         this.twoFlowerSkill.next(()=>{
@@ -139,7 +139,7 @@ export default class Dryad extends Boss {
             },2);
             this.scheduleOnce(()=>{this.anim.play('DryadIdle');this.twoFlowerSkill.IsExcuting = false;},4);
 
-        },8,true)
+        },6,true)
     }
     fireStone() {
         this.stoneSkill.next(() => {
