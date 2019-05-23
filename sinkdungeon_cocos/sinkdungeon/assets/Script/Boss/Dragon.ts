@@ -51,6 +51,7 @@ export default class Dragon extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.playHit(this.node.getChildByName('sprite'));
         return true;
     }
 

@@ -7,6 +7,7 @@ import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import BossAttackCollider from "./BossAttackCollider";
+import MonsterManager from "../Manager/MonsterManager";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,6 +30,7 @@ export default class Sphinx extends Boss {
     rigidbody: cc.RigidBody;
     isMoving = false;
     stormSkill = new Skill();
+    summonSkill = new Skill();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -51,6 +53,7 @@ export default class Sphinx extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.playHit(this.node.getChildByName('sprite'));
         return true;
     }
 
@@ -68,32 +71,47 @@ export default class Sphinx extends Boss {
         }
         this.changeZIndex();
         this.fireStorm();
+        this.summonMonster();
 
+    }
+    summonMonster() {
+        if(this.dungeon.getMonsterAliveNum()>1){
+            return;
+        }
+        this.summonSkill.next(() => {
+            this.summonSkill.IsExcuting = true;
+            let pos = Dungeon.getIndexInMap(this.node.position.clone());
+            this.dungeon.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, pos.x, pos.y - 1);
+            this.dungeon.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, pos.x+1, pos.y - 1);
+            this.dungeon.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, pos.x-1, pos.y - 1);
+            this.dungeon.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, pos.x-1, pos.y - 2);
+            this.dungeon.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, pos.x+1, pos.y - 2);
+        }, 15, true);
     }
     fireStorm() {
         this.stormSkill.next(() => {
             this.stormSkill.IsExcuting = true;
             this.anim.play('SphinxStorm');
-            this.scheduleOnce(()=>{
+            this.scheduleOnce(() => {
                 let pos = this.node.position.clone().add(this.shooter01.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec2.ZERO)) {
                     hv = hv.normalizeSelf();
                     this.shooter01.setHv(hv);
                     this.fireShooter(this.shooter01, "bullet023", 0, -20);
-                    this.fireShooter(this.shooter01, "bullet123", 0, 0,0);
-                    this.fireShooter(this.shooter01, "bullet223", 0, 0,20);
+                    this.fireShooter(this.shooter01, "bullet123", 0, 0, 0);
+                    this.fireShooter(this.shooter01, "bullet223", 0, 0, 20);
                 }
-            },0.3);
-            this.scheduleOnce(()=>{this.stormSkill.IsExcuting = false;this.anim.play('SphinxIdle');},2);
-        }, 8,true);
+            }, 0.3);
+            this.scheduleOnce(() => { this.stormSkill.IsExcuting = false; this.anim.play('SphinxIdle'); }, 2);
+        }, 8, true);
     }
-    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
         shooter.dungeon = this.dungeon;
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(angle,cc.Vec2.ZERO);
+        shooter.fireBullet(angle, cc.Vec2.ZERO);
     }
     showBoss() {
         this.isShow = true;
@@ -125,5 +143,5 @@ export default class Sphinx extends Boss {
         this.healthBar.node.active = !this.isDied;
         this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
-    
+
 }

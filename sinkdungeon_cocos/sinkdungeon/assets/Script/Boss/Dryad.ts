@@ -66,6 +66,7 @@ export default class Dryad extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        this.playHit(this.node.getChildByName('sprite'));
         return true;
     }
 
@@ -110,7 +111,7 @@ export default class Dryad extends Boss {
             this.hand02.showCollider(2,1);
             }
             this.scheduleOnce(()=>{this.anim.play('DryadIdle');this.meleeSkill.IsExcuting = false;},2);
-        }, 2, true);
+        }, 3, true);
         
 
     }

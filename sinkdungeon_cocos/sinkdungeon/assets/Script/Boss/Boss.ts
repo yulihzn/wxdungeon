@@ -51,6 +51,14 @@ export default abstract class Boss extends Actor {
     getCenterPosition(): cc.Vec2 {
         return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
     }
+    playHit(sprite:cc.Node){
+        if(sprite){
+            sprite.stopAllActions();
+            sprite.position = cc.v2(0,0);
+            sprite.runAction(cc.sequence(cc.moveTo(0.1,2,0),cc.moveTo(0.1,-2,0),cc.moveTo(0.1,2,0),
+            cc.moveTo(0.1,-2,0),cc.moveTo(0.1,0,2),cc.moveTo(0.1,0,-2),cc.moveTo(0.1,0,2),cc.moveTo(0.1,0,0)));
+        }
+    }
     updatePlayerPos() {
         // this.node.x = this.pos.x * 64 + 32;
         // this.node.y = this.pos.y * 64 + 32;

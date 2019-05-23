@@ -825,17 +825,21 @@ export default class Dungeon extends cc.Component {
             this.player.playerAction(dir, pos, dt, this)
         }
     }
-    /**检查房间是否清理 */
-    checkRoomClear() {
-        let isClear = false;
-        //检查怪物是否清理
+    getMonsterAliveNum():number{
         let count = 0;
         for (let monster of this.monsters) {
             if (monster.isDied) {
                 count++;
             }
         }
-        isClear = count >= this.monsters.length;
+        return this.monsters.length-count;
+    }
+    /**检查房间是否清理 */
+    checkRoomClear() {
+        let isClear = false;
+        //检查怪物是否清理
+        let count = this.getMonsterAliveNum();
+        isClear = count <= 0;
         if (this.bosses.length > 0) {
             count = 0;
             for (let boss of this.bosses) {

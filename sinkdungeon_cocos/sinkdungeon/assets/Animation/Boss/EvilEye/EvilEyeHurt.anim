@@ -1,0 +1,831 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "EvilEyeHurt",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "1",
+  "curveData": {
+    "paths": {
+      "sprite": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 128
+            },
+            {
+              "frame": 1,
+              "value": 120
+            },
+            {
+              "frame": 2,
+              "value": 128
+            }
+          ]
+        }
+      },
+      "sprite/eye": {
+        "props": {
+          "scaleY": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 1.4166666666666667,
+              "value": 1
+            },
+            {
+              "frame": 1.5,
+              "value": 0.1
+            },
+            {
+              "frame": 1.5833333333333333,
+              "value": 1
+            },
+            {
+              "frame": 2,
+              "value": 1
+            }
+          ]
+        }
+      },
+      "sprite/mouth": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.5,
+                "y": 0.2
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.2,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.5,
+                "y": 0.2
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb1/tentacle1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -60
+            },
+            {
+              "frame": 0.5,
+              "value": -70
+            },
+            {
+              "frame": 2,
+              "value": -60
+            }
+          ]
+        }
+      },
+      "sprite/limb1/tentacle1/tentacle2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 0.5,
+              "value": 15
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb1/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 0.5,
+              "value": 15
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb2/tentacle1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -30
+            },
+            {
+              "frame": 1,
+              "value": -40
+            },
+            {
+              "frame": 2,
+              "value": -30
+            }
+          ]
+        }
+      },
+      "sprite/limb2/tentacle1/tentacle2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1,
+              "value": 15
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb2/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1,
+              "value": 20
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb3/tentacle1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": 10
+            },
+            {
+              "frame": 2,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/limb3/tentacle1/tentacle2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1.5,
+              "value": -20
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb3/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1.5,
+              "value": -10
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb4/tentacle1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": -10
+            },
+            {
+              "frame": 2,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/limb4/tentacle1/tentacle2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1.5,
+              "value": 20
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb4/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1.5,
+              "value": 10
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb5/tentacle1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 30
+            },
+            {
+              "frame": 1,
+              "value": 40
+            },
+            {
+              "frame": 2,
+              "value": 30
+            }
+          ]
+        }
+      },
+      "sprite/limb5/tentacle1/tentacle2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": -15
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb5/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": -15
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb6/tentacle1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 60
+            },
+            {
+              "frame": 0.5,
+              "value": 70
+            },
+            {
+              "frame": 2,
+              "value": 60
+            }
+          ]
+        }
+      },
+      "sprite/limb6/tentacle1/tentacle2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 0.5,
+              "value": -15
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb6/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 0.5,
+              "value": -15
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb1/tentacle1/tentacle2/tentacle3/eye": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.1
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb2/tentacle1/tentacle2/tentacle3/eye": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.1
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb3/tentacle1/tentacle2/tentacle3/eye": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.1
+              }
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb4/tentacle1/tentacle2/tentacle3/eye": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.1
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb5/tentacle1/tentacle2/tentacle3/eye": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.1
+              }
+            },
+            {
+              "frame": 1.1666666666666667,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb6/tentacle1/tentacle2/tentacle3/eye": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 1.1666666666666667,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.1
+              }
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            }
+          ]
+        }
+      },
+      "sprite/eye/flame": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/limb1": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 1
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb2": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 1
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb3": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 1
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb4": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 1
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb5": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 1
+              }
+            }
+          ]
+        }
+      },
+      "sprite/limb6": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 1
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

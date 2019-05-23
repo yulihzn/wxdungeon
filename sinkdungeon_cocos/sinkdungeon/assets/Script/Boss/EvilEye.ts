@@ -38,6 +38,7 @@ export default class EvilEye extends Boss {
 
     viceEyesFireSkill = new Skill();
     mainEyesFireSkill = new Skill();
+    isHalfBlood = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -84,6 +85,11 @@ export default class EvilEye extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
+        if(isHalf&&!this.isHalfBlood){
+            this.isHalfBlood = true;
+            this.anim.playAdditive("EvilEyeHurt");
+        }
         return true;
     }
 
