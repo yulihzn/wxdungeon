@@ -357,7 +357,7 @@ export default class Player extends cc.Component {
         }
     }
     meleeAttack() {
-        if (!this.meleeWeapon || this.isAttacking || this.isDizz || this.isDied || this.isFall) {
+        if (!this.meleeWeapon || this.isAttacking || this.isDizz || this.isDied || this.isFall || this.meleeWeapon.isAttacking) {
             return;
         }
 

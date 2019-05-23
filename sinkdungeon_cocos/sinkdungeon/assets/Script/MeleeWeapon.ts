@@ -107,7 +107,7 @@ export default class MeleeWeapon extends cc.Component {
 
     attack(data: PlayerData, isMiss: boolean): boolean {
         if (this.isAttacking) {
-            return;
+            return false;
         }
         this.isMiss = isMiss;
         this.isAttacking = true;
@@ -132,6 +132,7 @@ export default class MeleeWeapon extends cc.Component {
         for (let w of waves) {
             this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar, this.isReverse);
         }
+        return true;
 
     }
     private getAttackAnimName(): string {
@@ -338,8 +339,10 @@ export default class MeleeWeapon extends cc.Component {
                 this.player.takeDamage(new DamageData(-drain));
             }
         }, 1, true);
-
         this.isMiss = false;
+        //停顿
+        this.anim.pause();
+        this.scheduleOnce(()=>{this.anim.resume()},0.05)
     }
     addMonsterAllStatus(monster: Monster) {
         this.addMonsterStatus(this.player.data.getIceRate(), monster, StatusManager.FROZEN);

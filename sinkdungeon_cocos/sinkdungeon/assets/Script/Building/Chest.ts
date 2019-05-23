@@ -87,9 +87,9 @@ export default class Chest extends Building {
                         }else{
                             dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.data.pos,null,this.data.quality);
                         }
-                        // dungeon.addEquipment(EquipmentManager.WEAPON_HAPPYFIRE, this.pos,null,this.quality);
-                        // dungeon.addEquipment(EquipmentManager.WEAPON_SADICE, this.pos,null,this.quality);
-                        // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.pos,null,this.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.data.pos,null,this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.GLOVES_WARRIOR, this.data.pos,null,this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.GLOVES_DEMON, this.data.pos,null,this.data.quality);
                     }
                 }
             }));

@@ -114,6 +114,10 @@ export default class Monster extends Actor {
         this.actionSpriteFrameIdle();
         this.scheduleOnce(() => { this.isShow = true; }, 0.5);
         this.changeBodyColor();
+        // this.graphics.strokeColor = cc.Color.ORANGE;
+        // this.graphics.circle(0,0,100);
+        // this.graphics.stroke();
+        // this.graphics.strokeColor = cc.Color.RED;
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
     }
@@ -374,11 +378,11 @@ export default class Monster extends Actor {
             return;
         }
         let c = '#000000';
-        c = this.getMixColor(c,this.data.getIceDefence()>0?'#CCFFFF':'#000000');
-        c = this.getMixColor(c,this.data.getFireDefence()>0?'#FF6633':'#000000');
-        c = this.getMixColor(c,this.data.getLighteningDefence()>0?'#0099FF':'#000000');
-        c = this.getMixColor(c,this.data.getToxicDefence()>0?'#66CC00':'#000000');
-        c = this.getMixColor(c,this.data.getCurseDefence()>0?'#660099':'#000000');
+        c = this.getMixColor(c,this.data.getIceDefence()+this.data.getIceDamage()>0?'#CCFFFF':'#000000');
+        c = this.getMixColor(c,this.data.getFireDefence()+this.data.getFireDamage()>0?'#FF6633':'#000000');
+        c = this.getMixColor(c,this.data.getLighteningDefence()+this.data.getLighteningDamage()>0?'#0099FF':'#000000');
+        c = this.getMixColor(c,this.data.getToxicDefence()+this.data.getToxicDamage()>0?'#66CC00':'#000000');
+        c = this.getMixColor(c,this.data.getCurseDefence()+this.data.getCurseDamage()>0?'#660099':'#000000');
         c = c == '#000000' ? '#ffffff' : c;
         this.body.color = cc.color(255,255,255).fromHEX(c);
     }
@@ -688,6 +692,11 @@ export default class Monster extends Actor {
     // }
 
 
+    getScaleSize():number{
+        let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
+        let sn = this.isVariation ? Monster.SCALE_NUM * scaleNum : scaleNum;
+        return sn;
+    }
 
     update(dt) {
         this.timeDelay += dt;
@@ -720,8 +729,7 @@ export default class Monster extends Actor {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-        let sn = this.isVariation ? Monster.SCALE_NUM * scaleNum : scaleNum;
+        let sn = this.getScaleSize();
         this.node.scaleX = this.isFaceRight ? sn : -sn;
         this.node.scaleY = sn;
 
