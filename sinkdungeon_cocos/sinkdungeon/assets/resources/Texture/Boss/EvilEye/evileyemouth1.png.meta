@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "d1516ad1-1c4e-43bb-9dd8-68884a7af17c",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "evileyemouth1": {
+      "ver": "1.0.3",
+      "uuid": "3d9d8756-7cad-4dfa-a710-fb22cddc8cdd",
+      "rawTextureUuid": "d1516ad1-1c4e-43bb-9dd8-68884a7af17c",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 16,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

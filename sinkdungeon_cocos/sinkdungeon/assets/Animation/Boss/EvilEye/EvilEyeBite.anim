@@ -1,11 +1,11 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "EvilEyeIdle",
+  "_name": "EvilEyeBite",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 2.0166666666666666,
   "sample": 60,
-  "speed": 1,
+  "speed": 2,
   "wrapMode": "2",
   "curveData": {
     "paths": {
@@ -50,6 +50,18 @@
               "frame": 2,
               "value": 1
             }
+          ],
+          "color": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Color",
+                "r": 212,
+                "g": 43,
+                "b": 43,
+                "a": 255
+              }
+            }
           ]
         }
       },
@@ -60,24 +72,56 @@
               "frame": 0,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 1.5,
-                "y": 0.2
+                "x": 2,
+                "y": 1.5
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 1.5
               }
             },
             {
               "frame": 1,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 1.2,
-                "y": 0.5
+                "x": 2,
+                "y": 1
+              }
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 1.5
+              }
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 1
               }
             },
             {
               "frame": 2,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 1.5,
-                "y": 0.2
+                "x": 2,
+                "y": 1.5
               }
             }
           ]
@@ -87,6 +131,42 @@
             "spriteFrame": [
               {
                 "frame": 0,
+                "value": {
+                  "__uuid__": "e6637dac-746f-45d7-90aa-a24665762de5"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "3d9d8756-7cad-4dfa-a710-fb22cddc8cdd"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "e6637dac-746f-45d7-90aa-a24665762de5"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "3d9d8756-7cad-4dfa-a710-fb22cddc8cdd"
+                }
+              },
+              {
+                "frame": 1.3333333333333333,
+                "value": {
+                  "__uuid__": "e6637dac-746f-45d7-90aa-a24665762de5"
+                }
+              },
+              {
+                "frame": 1.6666666666666667,
+                "value": {
+                  "__uuid__": "3d9d8756-7cad-4dfa-a710-fb22cddc8cdd"
+                }
+              },
+              {
+                "frame": 2,
                 "value": {
                   "__uuid__": "e6637dac-746f-45d7-90aa-a24665762de5"
                 }

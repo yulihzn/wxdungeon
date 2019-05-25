@@ -27,17 +27,18 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class EvilEye extends Boss {
 
-    private graphics:cc.Graphics
+    private graphics: cc.Graphics
     private anim: cc.Animation;
     shooter: Shooter;
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
     isMoving = false;
-    viceEyes:cc.Node[];//1-6个副眼
+    viceEyes: cc.Node[];//1-6个副眼
     viceShooters: Shooter[];//1-6个副炮
 
     viceEyesFireSkill = new Skill();
     mainEyesFireSkill = new Skill();
+    dashSkill = new Skill();
     isHalfBlood = false;
 
     // LIFE-CYCLE CALLBACKS:
@@ -52,17 +53,17 @@ export default class EvilEye extends Boss {
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         this.viceEyes = new Array();
         this.viceEyes.push(this.node.getChildByName('sprite').getChildByName('limb1').getChildByName('tentacle1')
-        .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
+            .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
         this.viceEyes.push(this.node.getChildByName('sprite').getChildByName('limb2').getChildByName('tentacle1')
-        .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
+            .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
         this.viceEyes.push(this.node.getChildByName('sprite').getChildByName('limb3').getChildByName('tentacle1')
-        .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
+            .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
         this.viceEyes.push(this.node.getChildByName('sprite').getChildByName('limb4').getChildByName('tentacle1')
-        .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
+            .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
         this.viceEyes.push(this.node.getChildByName('sprite').getChildByName('limb5').getChildByName('tentacle1')
-        .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
+            .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
         this.viceEyes.push(this.node.getChildByName('sprite').getChildByName('limb6').getChildByName('tentacle1')
-        .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
+            .getChildByName('tentacle2').getChildByName('tentacle3').getChildByName('eye'));
         this.viceShooters = new Array();
         this.viceShooters.push(this.node.getChildByName('Shooter1').getComponent(Shooter));
         this.viceShooters.push(this.node.getChildByName('Shooter2').getComponent(Shooter));
@@ -75,9 +76,9 @@ export default class EvilEye extends Boss {
     start() {
         super.start();
     }
-    
+
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow) {
+        if (this.isDied || !this.isShow || this.anim.getAnimationState('EvilEyeHurt').isPlaying) {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
@@ -86,9 +87,10 @@ export default class EvilEye extends Boss {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
-        if(isHalf&&!this.isHalfBlood){
+        if (isHalf && !this.isHalfBlood) {
             this.isHalfBlood = true;
-            this.anim.playAdditive("EvilEyeHurt");
+            this.anim.play("EvilEyeHurt");
+            this.scheduleOnce(() => { this.anim.play('EvilEyeBite') }, 2.5)
         }
         return true;
     }
@@ -115,67 +117,107 @@ export default class EvilEye extends Boss {
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        this.fireWithViceEyes();
-        this.fireWithMainEye();
+
+        if (!this.mainEyesFireSkill.IsExcuting && isHalf && !this.anim.getAnimationState('EvilEyeHurt').isPlaying) {
+            this.dash();
+        }
+        this.fireWithViceEyes(isHalf);
+        if (!this.dashSkill.IsExcuting) {
+            this.fireWithMainEye();
+        }
         if (!pos.equals(cc.Vec2.ZERO)
-            && playerDis > 100 && !this.shooter.isAiming) {
+            && playerDis > 100 && !this.shooter.isAiming && !this.dashSkill.IsExcuting) {
             pos = pos.normalizeSelf();
             this.move(pos, 20);
         }
     }
     getMovePos(): cc.Vec2 {
         let newPos = this.dungeon.player.pos.clone();
-        if (this.dungeon.player.pos.x > this.pos.x) {
-            newPos = newPos.addSelf(cc.v2(1, 1));
-        } else {
-            newPos = newPos.addSelf(cc.v2(-1, 1));
-        }
+        // if (this.dungeon.player.pos.x > this.pos.x) {
+        //     newPos = newPos.addSelf(cc.v2(1, 1));
+        // } else {
+        //     newPos = newPos.addSelf(cc.v2(-1, 1));
+        // }
         let pos = Dungeon.getPosInMap(newPos);
-        pos.y+=32;
-        pos =pos.sub(this.node.position);
+        pos.y += 32;
+        pos = pos.sub(this.node.position);
         let h = pos.x;
         return pos;
     }
 
-    fireWithViceEyes(){
-        this.viceEyesFireSkill.next(()=>{
-            for(let i = 0;i < this.viceShooters.length;i++){
-                let p = this.viceEyes[i].convertToWorldSpace(cc.v2(0,0));
-                p = this.node.convertToNodeSpace(p);
-                this.viceShooters[i].node.setPosition(p);
-                let pos = this.node.position.clone().add(p);
-                let hv = this.dungeon.player.getCenterPosition().sub(pos);
+    fireWithViceEyes(isHalf:boolean) {
+        this.viceEyesFireSkill.next(() => {
+            this.viceEyesFireSkill.IsExcuting = true;
+            this.scheduleOnce(()=>{this.viceEyesFireSkill.IsExcuting = false;},2);
+            if(isHalf){
+                this.schedule(()=>{this.fireViceBullet();},0.5,2,0);
+            }else{
+                this.fireViceBullet();
+            }
+        }, 3);
+    }
+    fireViceBullet(){
+        for (let i = 0; i < this.viceShooters.length; i++) {
+            let p = this.viceEyes[i].convertToWorldSpace(cc.v2(0, 0));
+            p = this.node.convertToNodeSpace(p);
+            this.viceShooters[i].node.setPosition(p);
+            let pos = this.node.position.clone().add(p);
+            let hv = this.dungeon.player.getCenterPosition().sub(pos);
             if (!hv.equals(cc.Vec2.ZERO)) {
                 hv = hv.normalizeSelf();
                 this.viceShooters[i].setHv(hv);
-                this.fireShooter(this.viceShooters[i],'bullet001',0,0,0,cc.v2(0,0));
+                this.fireShooter(this.viceShooters[i], 'bullet001', 0, 0, 0, cc.v2(0, 0));
+                
             }
-            }
-        },3);
+        }
     }
-    fireWithMainEye(){
-        this.mainEyesFireSkill.next(()=>{
-            let p = this.shooter.node.convertToWorldSpace(cc.v2(0,0));
+    fireWithMainEye() {
+        this.mainEyesFireSkill.next(() => {
+            this.mainEyesFireSkill.IsExcuting = true;
+            this.scheduleOnce(()=>{this.mainEyesFireSkill.IsExcuting = false;},3);
+            let p = this.shooter.node.convertToWorldSpace(cc.v2(0, 0));
             p = this.node.convertToNodeSpace(p);
             this.shooter.node.setPosition(p);
             let pos = this.node.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
-        if (!hv.equals(cc.Vec2.ZERO)) {
-            hv = hv.normalizeSelf();
-            this.shooter.setHv(hv);
-            this.shooter.data.isLineAim = 1;
-            this.fireShooter(this.shooter,'laser003',0,3,0,cc.v2(0,0));
-            this.anim.playAdditive("EvilEyeStone");
-        }
-      
-        },7);
+            if (!hv.equals(cc.Vec2.ZERO)) {
+                hv = hv.normalizeSelf();
+                this.shooter.setHv(hv);
+                this.shooter.data.isLineAim = 1;
+                this.fireShooter(this.shooter, 'laser003', 0, 3, 0, cc.v2(0, 0));
+                this.anim.playAdditive("EvilEyeStone");
+            }
+
+        }, 7);
     }
-    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number,defaultPos?:cc.Vec2): void {
+    dash() {
+        this.dashSkill.next(() => {
+            this.dashSkill.IsExcuting = true;
+            if (!this.anim) {
+                this.anim = this.getComponent(cc.Animation);
+            }
+            this.anim.play('EvilEyeBite');
+            let pos = this.getMovePos();
+            if (!pos.equals(cc.Vec2.ZERO)) {
+                pos = pos.normalizeSelf();
+            }
+            let h = pos.x;
+            let v = pos.y;
+            let movement = cc.v2(h, v);
+            movement = movement.mul(800);
+            this.rigidbody.linearVelocity = movement;
+            this.scheduleOnce(() => {
+                this.dashSkill.IsExcuting = false;
+            }, 2);
+        }, 3, true);
+
+    }
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number, defaultPos?: cc.Vec2): void {
         shooter.dungeon = this.dungeon;
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(angle,defaultPos);
+        shooter.fireBullet(angle, defaultPos);
     }
     showBoss() {
         this.isShow = true;
@@ -226,16 +268,16 @@ export default class EvilEye extends Boss {
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
-        
+
         this.changeZIndex();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        // if (player && (this.meleeSkill.IsExcuting||this.dashSkill.IsExcuting)) {
-        //     let d = new DamageData();
-        //     d.physicalDamage = 3;
-        //     player.takeDamage(d);
-        //     player.addStatus(StatusManager.FROZEN);
-        // }
+        if (player && (this.dashSkill.IsExcuting)) {
+            let d = new DamageData();
+            d.physicalDamage = 5;
+            player.takeDamage(d);
+            player.addStatus(StatusManager.BLEEDING);
+        }
     }
 }
