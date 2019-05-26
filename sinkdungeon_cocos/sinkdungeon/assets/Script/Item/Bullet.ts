@@ -45,8 +45,6 @@ export default class Bullet extends cc.Component {
     circlePCollider: cc.PhysicsCircleCollider;
     boxPCollider: cc.PhysicsBoxCollider;
 
-    effect: cc.Node;
-    
     laserSpriteNode: cc.Node;
     laserLightSprite: cc.Sprite;
     laserHeadSprite: cc.Sprite;
@@ -64,7 +62,6 @@ export default class Bullet extends cc.Component {
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
-        this.effect = this.node.getChildByName('effect');
         this.circleCollider = this.getComponent(cc.CircleCollider);
         this.boxCollider = this.getComponent(cc.BoxCollider);
         this.circlePCollider = this.getComponent(cc.PhysicsCircleCollider);
@@ -145,7 +142,6 @@ export default class Bullet extends cc.Component {
             this.boxPCollider.sensor = data.isPhysical == 0;
             this.boxPCollider.apply();
         }
-        this.effect.active = this.data.isFire == 1;
         this.initLaser();
 
     }

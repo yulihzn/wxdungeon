@@ -29,7 +29,11 @@ export default class FallStone extends Building {
     onLoad() {
         this.isFall = false;
     }
-    fall() {
+    fall(withFire?:boolean) {
+        if(withFire){
+            this.node.getChildByName('stone').getChildByName('fire').active = true;
+            this.node.getChildByName('stone').color = cc.color(253,122,37);
+        }
         this.anim = this.getComponent(cc.Animation);
         this.anim.play();
         this.isFalling = true;

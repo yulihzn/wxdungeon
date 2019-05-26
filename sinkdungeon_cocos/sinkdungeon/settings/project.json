@@ -35,9 +35,14 @@
   "design-resolution-height": 1280,
   "design-resolution-width": 720,
   "excluded-modules": [
+    "LabelOutline",
     "TiledMap",
     "Spine Skeleton",
     "DragonBones",
+    "RichText",
+    "Toggle",
+    "PageView",
+    "PageViewIndicator",
     "VideoPlayer",
     "WebView"
   ],

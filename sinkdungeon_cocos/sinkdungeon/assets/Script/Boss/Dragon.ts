@@ -7,6 +7,7 @@ import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import BossAttackCollider from "./BossAttackCollider";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,6 +30,9 @@ export default class Dragon extends Boss {
     rigidbody: cc.RigidBody;
     isMoving = false;
     fireSkill = new Skill();
+    rainSkill = new Skill();
+    isRainReady = false;
+    physicBox:cc.PhysicsBoxCollider;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -38,6 +42,7 @@ export default class Dragon extends Boss {
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
+        this.physicBox = this.getComponent(cc.PhysicsBoxCollider);
     }
 
     start() {
@@ -51,7 +56,6 @@ export default class Dragon extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        this.playHit(this.node.getChildByName('sprite'));
         return true;
     }
 
@@ -66,31 +70,94 @@ export default class Dragon extends Boss {
     fireFire() {
         this.fireSkill.next(() => {
             this.fireSkill.IsExcuting = true;
-            // this.anim.play('DryadStone');
-            this.scheduleOnce(()=>{
-                this.shooter01.setHv(cc.v2(0,-1));
-                    this.shooter01.data.bulletLineInterval = 0.5;
-                    this.fireShooter(this.shooter01, "bullet200", 0, 5);
-            },1.1);
-            this.scheduleOnce(()=>{this.fireSkill.IsExcuting = false;
-                // this.anim.play('DryadIdle');
-            },2);
-        }, 8,true);
+            this.anim.play('DragonFire');
+            this.scheduleOnce(() => {
+                this.shooter01.setHv(cc.v2(0, -1));
+                this.shooter01.data.bulletLineInterval = 0.5;
+                this.fireShooter(this.shooter01, "bullet200", 2, 5);
+            }, 1.1);
+            this.scheduleOnce(() => {
+                this.fireSkill.IsExcuting = false;
+                this.anim.play('DragonIdle');
+            }, 2);
+        }, 5, true);
     }
+    fireRain(): void {
+        if (!this.isRainReady) {
+            return;
+        }
+        this.rainSkill.next(() => {
+            this.rainSkill.IsExcuting = true;
+            this.physicBox.sensor = true;
+            this.physicBox.apply();
+            this.rigidbody.linearVelocity = cc.v2(0, 0);
+            this.anim.stop();
+            this.anim.play('DragonFlyHigh');
+            this.scheduleOnce(() => {
+                this.anim.play('DragonFlyLow');
+                this.physicBox.sensor = false;
+                this.physicBox.apply();
+            }, 13);
+            this.scheduleOnce(() => {
+                this.rainSkill.IsExcuting = false;
+            }, 15);
+            this.schedule(() => {
+                this.dungeon.addFallStone(this.dungeon.player.node.position, true,true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
+            }, 0.5, 20, 2);
+        }, 30)
+    }
+    actionCount = 0;
     bossAction(): void {
         if (this.isDied || !this.isShow || !this.dungeon) {
+            this.actionCount = 0;
             return;
         }
         this.changeZIndex();
-        this.fireFire();
+        this.fireRain();
+        if (!this.rainSkill.IsExcuting) {
+            this.fireFire();
+        }
+        if (!this.rainSkill.IsExcuting) {
+            this.actionCount++;
+            let pos = cc.v2(1, 0);
+            if (this.actionCount > 10) {
+                pos = cc.v2(-1, 0);
+            }
+            if (this.actionCount > 20) {
+                this.actionCount = 0;
+            }
+            if (!pos.equals(cc.Vec2.ZERO)) {
+                pos = pos.normalizeSelf();
+                this.move(pos, 800);
+            }
+        }
     }
-   
-    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
+    move(pos: cc.Vec2, speed: number) {
+        if (this.isDied) {
+            return;
+        }
+        if (!pos.equals(cc.Vec2.ZERO)) {
+            this.pos = Dungeon.getIndexInMap(this.node.position);
+        }
+        let h = pos.x;
+        let v = pos.y;
+        let movement = cc.v2(h, v);
+        movement = movement.mul(speed);
+        this.rigidbody.linearVelocity = movement;
+        this.isMoving = h != 0 || v != 0;
+
+        this.changeZIndex();
+    }
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
         shooter.dungeon = this.dungeon;
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(angle,cc.Vec2.ZERO);
+        shooter.setHv(cc.v2(0, -1));
+        shooter.fireBullet(angle, cc.Vec2.ZERO);
     }
     showBoss() {
         this.isShow = true;
@@ -98,6 +165,7 @@ export default class Dragon extends Boss {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             this.healthBar.node.active = !this.isDied;
         }
+        this.scheduleOnce(() => { this.isRainReady = true }, 10);
     }
     actionTimeDelay = 0;
     isActionTimeDelay(dt: number): boolean {
@@ -120,7 +188,14 @@ export default class Dragon extends Boss {
             this.killed();
         }
         this.healthBar.node.active = !this.isDied;
-        this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        // this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
-    
+    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+        let player = other.node.getComponent(Player);
+        if(player&&!this.isDied && !this.physicBox.sensor){
+            let d = new DamageData();
+            d.physicalDamage = 3;
+            player.takeDamage(d);
+        }
+    }
 }

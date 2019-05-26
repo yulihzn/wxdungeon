@@ -3,7 +3,7 @@
   "_name": "StoneFalling",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2.5166666666666666,
+  "_duration": 2.8333333333333335,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -87,6 +87,160 @@
                 "x": 1,
                 "y": 1
               }
+            }
+          ]
+        }
+      },
+      "stone/fire": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "5f32f2d5-7dd9-425f-9966-fbe181790816"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "e332c479-5ed0-4665-a820-e9c0688feff4"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "322525aa-dc8a-420f-8366-2fcc8b368790"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "5f32f2d5-7dd9-425f-9966-fbe181790816"
+                }
+              },
+              {
+                "frame": 1.3333333333333333,
+                "value": {
+                  "__uuid__": "e332c479-5ed0-4665-a820-e9c0688feff4"
+                }
+              },
+              {
+                "frame": 1.6666666666666667,
+                "value": {
+                  "__uuid__": "322525aa-dc8a-420f-8366-2fcc8b368790"
+                }
+              },
+              {
+                "frame": 2,
+                "value": {
+                  "__uuid__": "e332c479-5ed0-4665-a820-e9c0688feff4"
+                }
+              },
+              {
+                "frame": 2.3333333333333335,
+                "value": {
+                  "__uuid__": "322525aa-dc8a-420f-8366-2fcc8b368790"
+                }
+              }
+            ]
+          }
+        },
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 200
+            },
+            {
+              "frame": 2.3333333333333335,
+              "value": 200
+            },
+            {
+              "frame": 2.5,
+              "value": 255
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.5,
+                "y": 1
+              }
+            },
+            {
+              "frame": 2.3333333333333335,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.5,
+                "y": 1
+              }
+            },
+            {
+              "frame": 2.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3,
+                "y": 2
+              }
+            },
+            {
+              "frame": 2.533333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 0.75
+              }
+            },
+            {
+              "frame": 2.8,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 0.75
+              }
+            },
+            {
+              "frame": 2.8333333333333335,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 0
+              }
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                4
+              ]
+            },
+            {
+              "frame": 2.533333333333333,
+              "value": [
+                0,
+                4
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 2.6333333333333333,
+              "value": [
+                0,
+                8
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 2.7333333333333334,
+              "value": [
+                -4,
+                4
+              ]
             }
           ]
         }

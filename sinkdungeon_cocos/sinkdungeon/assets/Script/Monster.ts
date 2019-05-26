@@ -463,7 +463,7 @@ export default class Monster extends Actor {
                 this.dungeon.addItem(this.node.position.clone(), Item.BLUECAPSULE);
             } else if (rand >= 0.9 && rand < 0.925) {
                 this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
-            } else if(rand >= 0.925 && rand < 0.95){
+            } else if(rand >= 0.925 && rand < 1){
                 this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.pos,null,1);
             }
         }

@@ -239,7 +239,15 @@ export default class Dungeon extends cc.Component {
                         shadow.position = cc.v2(shadow.position.x, shadow.position.y + 40);
                         shadow.parent = this.node;
                         shadow.zIndex = 3000;
-                    } else {
+                    } else if(Logic.mapManager.getCurrentRoomType() == RectDungeon.START_ROOM){
+                        if(Logic.level == 0){
+                            let bed = cc.instantiate(this.bed);
+                            bed.parent = this.node;
+                            bed.scale = 6;
+                            bed.position = Dungeon.getPosInMap(cc.v2(i, j));
+                            bed.zIndex = 5000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                        }
+                    }else {
                         let fd = cc.instantiate(this.floorDecoration);
                         fd.parent = this.node;
                         fd.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -555,7 +563,7 @@ export default class Dungeon extends cc.Component {
     }
 
     /**掉落石头 */
-    addFallStone(pos: cc.Vec2, isAuto: boolean) {
+    addFallStone(pos: cc.Vec2, isAuto: boolean,withFire?:boolean) {
         if (!this.fallStone) {
             return;
         }
@@ -567,7 +575,7 @@ export default class Dungeon extends cc.Component {
         let indexpos = Dungeon.getIndexInMap(pos);
         stone.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         if (stoneScript.isAuto) {
-            stoneScript.fall();
+            stoneScript.fall(withFire);
         }
 
     }
