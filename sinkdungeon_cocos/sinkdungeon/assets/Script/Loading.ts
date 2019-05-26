@@ -5,6 +5,7 @@ import RectDungeon from "./Rect/RectDungeon";
 import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
 import TalentTree from "./UI/TalentTree";
+import CutScene from "./UI/CutScene";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,6 +30,8 @@ export default class Loading extends cc.Component {
     shieldTree: TalentTree = null;
     @property(TalentTree)
     dashTree: TalentTree = null;
+    @property(CutScene)
+    cutScene: CutScene = null;
     private timeDelay = 0;
     private isEquipmentLoaded = false;
     private isMonsterLoaded = false;
@@ -44,12 +47,12 @@ export default class Loading extends cc.Component {
         this.simpleTree.node.active = false;
         this.shieldTree.node.active = false;
         this.dashTree.node.active = false;
-        this.label.node.setPosition(cc.v2(0,0));
+        this.label.node.setPosition(cc.v2(0, 0));
 
     }
 
     showTalentPick() {
-        if (Logic.isPickedTalent||!this.isTalentLevel()) {
+        if (Logic.isPickedTalent || !this.isTalentLevel()) {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
             this.dashTree.node.active = false;
@@ -65,7 +68,7 @@ export default class Loading extends cc.Component {
             } else {
                 this.shieldTree.node.active = true;
             }
-            this.label.node.setPosition(cc.v2(-400,0));
+            this.label.node.setPosition(cc.v2(-400, 0));
         }
         if (Logic.talentList.length > 9) {
             this.simpleTree.node.active = false;
@@ -74,7 +77,7 @@ export default class Loading extends cc.Component {
         }
 
     }
-    isTalentLevel():boolean{
+    isTalentLevel(): boolean {
         return Logic.level == 1 || Logic.level == 4;
     }
     isPickedTalent(): boolean {
@@ -116,7 +119,10 @@ export default class Loading extends cc.Component {
         this.loadDebuffs();
         this.loadBullets();
         this.loadItems();
-
+        if (Logic.isFirst == 1) {
+            this.cutScene.isSkip = true;
+            this.cutScene.unregisterClick();
+        }
     }
     loadMap() {
         Logic.mapManager.isloaded = false;
@@ -215,15 +221,24 @@ export default class Loading extends cc.Component {
         })
     }
 
+    showCut(): void {
+        if (this.isSpriteFramesLoaded && Logic.isFirst != 1) {
+            Logic.isFirst = 1;
+            this.cutScene.playShow();
+        }
+    }
     update(dt) {
         this.timeDelay += dt;
         this.isLevelLoaded = Logic.mapManager.isloaded;
+        this.showCut();
         if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded
             && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded
             && this.isBulletsLoaded
             && this.isItemsLoaded
-            && this.isPickedTalent()) {
+            && this.isPickedTalent()
+            && this.cutScene.isSkip) {
             this.timeDelay = 0;
+            this.cutScene.unregisterClick();
             this.isLevelLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
@@ -232,5 +247,6 @@ export default class Loading extends cc.Component {
             this.isItemsLoaded = false;
             cc.director.loadScene('game');
         }
+
     }
 }

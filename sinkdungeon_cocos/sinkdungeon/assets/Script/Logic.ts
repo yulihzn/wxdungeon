@@ -70,6 +70,7 @@ export default class Logic extends cc.Component {
     static killCount = 0;//杀敌数
     static time = '00:00:00';
     static seed = 5;
+    static isFirst = 0;
 
     onLoad() {
         //关闭调试
