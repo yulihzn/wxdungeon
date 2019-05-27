@@ -110,8 +110,8 @@ export default class Dryad extends Boss {
                 this.anim.play('DryadAttack02');
             this.hand02.showCollider(2,1);
             }
-            this.scheduleOnce(()=>{this.anim.play('DryadIdle');this.meleeSkill.IsExcuting = false;},2);
-        }, 3, true);
+            this.scheduleOnce(()=>{this.anim.play('DryadIdle');this.meleeSkill.IsExcuting = false;},1);
+        }, 2, true);
         
 
     }
@@ -154,9 +154,9 @@ export default class Dryad extends Boss {
                     this.shooter01.setHv(hv);
                     this.fireShooter(this.shooter01, "bullet022", 0, 0);
                 }
-            },1.1);
-            this.scheduleOnce(()=>{this.stoneSkill.IsExcuting = false;this.anim.play('DryadIdle');},2);
-        }, 8,true);
+            },0.55);
+            this.scheduleOnce(()=>{this.stoneSkill.IsExcuting = false;this.anim.play('DryadIdle');},1);
+        }, 4,true);
     }
    
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {

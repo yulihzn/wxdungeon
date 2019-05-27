@@ -98,7 +98,7 @@ export default class MonsterManager extends cc.Component {
     readonly maxHealth08 = 600;
     readonly maxHealth09 = 800;
 
-    monsterRandomAttr:MonsterRandomAttr = new MonsterRandomAttr;
+    monsterRandomAttr: MonsterRandomAttr = new MonsterRandomAttr;
     onLoad() {
     }
     /**
@@ -116,7 +116,11 @@ export default class MonsterManager extends cc.Component {
         let data = new MonsterData();
         monster.dungeon = dungeon;
         data.valueCopy(Logic.monsters[resName]);
-
+        //10%几率随机属性
+        if (Random.rand() < 0.1) {
+            this.monsterRandomAttr.addRandomAttrs(3);
+            data = this.monsterRandomAttr.updateMonsterData(data);
+        }
         //5%的几率变异
         let variationRate = 5;
         variationRate = variationRate + Logic.chapterName * 5 + Logic.level * 2;
@@ -159,11 +163,7 @@ export default class MonsterManager extends cc.Component {
             data.Common.curseDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
             data.Common.curseRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
         }
-        //10%几率随机属性
-        if(rand<0.1){
-            this.monsterRandomAttr.addRandomAttrs(3);
-            data = this.monsterRandomAttr.updateMonsterData(data);
-        }
+
         monster.data = data;
 
         monster.isDisguising = data.disguise > 0;
@@ -345,17 +345,17 @@ export default class MonsterManager extends cc.Component {
                 num = Random.getRandomNum(1, 3);
                 break;
             case Logic.CHAPTER01: arr = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
-                , MonsterManager.MONSTER_ALTAIR, MonsterManager.MONSTER_EZIO, MonsterManager.MONSTER_CONNAR, MonsterManager.MONSTER_STRONGSAILOR
-                , MonsterManager.MONSTER_FISH,MonsterManager.MONSTER_BOOMER];
+                , MonsterManager.MONSTER_STRONGSAILOR
+                , MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
                 num = Random.getRandomNum(2, 3); break;
             case Logic.CHAPTER02: arr = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
-                , MonsterManager.MONSTER_WEREWOLF,MonsterManager.MONSTER_SNAKE];
+                , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE];
                 num = Random.getRandomNum(2, 5); break;
-            case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB,MonsterManager.MONSTER_CROCODILE
-            ,MonsterManager.MONSTER_SANDSTATUE];
+            case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
+                , MonsterManager.MONSTER_SANDSTATUE];
                 num = Random.getRandomNum(2, 7); break;
-            case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE,MonsterManager.MONSTER_WARLOCK,MonsterManager.MONSTER_DEMON,MonsterManager.MONSTER_ELECTRICEYE
-            ,MonsterManager.MONSTER_SPIDER];
+            case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
+                , MonsterManager.MONSTER_SPIDER];
                 num = Random.getRandomNum(3, 10); break;
         }
         for (let i = 0; i <= num; i++) {

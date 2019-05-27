@@ -48,7 +48,7 @@ export default class Dragon extends Boss {
     start() {
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow) {
+        if (this.isDied || !this.isShow || this.rainSkill.IsExcuting) {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
@@ -107,7 +107,7 @@ export default class Dragon extends Boss {
                 this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
                 this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
             }, 0.5, 20, 2);
-        }, 30)
+        }, 20)
     }
     actionCount = 0;
     bossAction(): void {

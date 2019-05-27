@@ -17,7 +17,7 @@ import EquipmentDialog from './Equipment/EquipmentDialog';
 import InventoryManager from './Manager/InventoryManager';
 import Dungeon from './Dungeon';
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Inventory extends cc.Component {
 
     @property(cc.Node)
     tabselect: cc.Node = null;
