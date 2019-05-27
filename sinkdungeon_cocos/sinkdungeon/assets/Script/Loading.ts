@@ -6,6 +6,7 @@ import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
 import TalentTree from "./UI/TalentTree";
 import CutScene from "./UI/CutScene";
+import EquipmentStringData from "./Data/EquipmentStringData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -140,6 +141,15 @@ export default class Loading extends cc.Component {
                 Logic.equipments = resource.json;
                 this.isEquipmentLoaded = true;
                 cc.log('equipment loaded');
+                // let stringmap = new Array();
+                // for(let key in resource.json){
+                //     let temp = new EquipmentStringData();
+                //     let temp1 = new EquipmentData();
+                //     temp1.valueCopy(resource.json[key]);
+                //     temp.valueCopy(temp1);
+                //     stringmap.push(temp);
+                // }
+                // cc.log(JSON.stringify(stringmap));
             }
         })
     }
