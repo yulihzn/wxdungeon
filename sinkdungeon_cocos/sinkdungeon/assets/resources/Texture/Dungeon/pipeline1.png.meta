@@ -7,7 +7,7 @@
   "premultiplyAlpha": false,
   "subMetas": {
     "pipeline1": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b5d1e5b0-1729-4ef8-a40b-4bb8dc111174",
       "rawTextureUuid": "5a91f35b-8d10-4e5d-ba02-398690cb48d1",
       "trimType": "custom",

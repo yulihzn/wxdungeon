@@ -48,6 +48,8 @@ export default class Monster extends Actor {
     floatinglabelManager: FloatinglabelManager = null;
     @property(cc.Prefab)
     boom:cc.Prefab = null;
+    @property(cc.Node)
+    dangerZone:cc.Node = null;
     private sprite: cc.Node;
     private body: cc.Node;
     private shadow: cc.Node;
@@ -216,13 +218,18 @@ export default class Monster extends Actor {
         this.sprite.stopAllActions();
         this.idleAction = null;
         let action = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01) }),
-            cc.moveBy(0.2, -pos.x / 2, -pos.y / 2),
-            cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02) }),
+            cc.moveBy(0.4, -pos.x / 2, -pos.y / 2),
+            cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02); }),
             cc.moveBy(0.2, pos.x, pos.y),
             cc.callFunc(() => {
                 this.anim.resume();
                 if (finish) { finish(); }
-            }), cc.moveTo(0.2, 0, 0), cc.callFunc(() => { this.isAttackAnimExcuting = false; }));
+            }), cc.moveTo(0.2, 0, 0), cc.callFunc(() => { 
+                this.changeBodyRes(this.data.resName, Monster.RES_WALK01);
+                //这里防止不转向
+                this.changeFaceRight();
+                this.isAttackAnimExcuting = false;
+             }));
         this.sprite.runAction(action);
     }
     actionSpriteFrameIdle() {
@@ -292,8 +299,8 @@ export default class Monster extends Actor {
         this.rigidbody.linearVelocity = movement.clone();
         this.currentlinearVelocitySpeed = movement.clone();
         this.isMoving = h != 0 || v != 0;
-        if (this.isMoving) {
-            this.isFaceRight = h > 0;
+        if (this.isMoving&&!this.isAttackAnimExcuting) {
+            this.isFaceRight = h >= 0;
         }
         // if (this.isMoving) {
         //     if (!this.anim.getAnimationState('MonsterMove').isPlaying) {
@@ -528,11 +535,14 @@ export default class Monster extends Actor {
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true)
                 }
+                
                 this.showAttackAnim(() => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();
+                    let isPlayerAtRight = this.dungeon.player.node.position.x>this.node.x;
+                    let isBehind = this.isFaceRight?!isPlayerAtRight:isPlayerAtRight;
                     let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-                    if (newdis < 80 * this.node.scaleY && !isMiss) {
+                    if (newdis < 80 * this.node.scaleY && !isMiss && !isBehind) {
                         this.addPlayerStatus(this.dungeon.player);
                         this.dungeon.player.takeDamage(this.data.getAttackPoint(), this);
                     }
@@ -574,7 +584,7 @@ export default class Monster extends Actor {
             this.changeBodyRes(this.data.resName);
             this.isDisguising = false;
         }
-        if (Logic.getHalfChance() && !this.shooter.isAiming && playerDis > 64 * this.node.scaleY) {
+        if (Logic.getHalfChance() && !this.shooter.isAiming && playerDis > 64 * this.node.scaleY && !this.isAttackAnimExcuting) {
             this.move(pos, speed);
         }
 
@@ -588,9 +598,16 @@ export default class Monster extends Actor {
         }
         let pos = Dungeon.getPosInMap(newPos);
         pos = pos.sub(this.node.position);
-        let h = pos.x;
-        this.isFaceRight = h > 0;
+        if(!this.isAttackAnimExcuting){
+            this.changeFaceRight();
+        }
         return pos;
+    }
+    changeFaceRight(){
+        let pos = this.dungeon.player.node.position.clone();
+        pos = pos.sub(this.node.position);
+        let h = pos.x;
+        this.isFaceRight = h >= 0;
     }
     lerp(a, b, r) {
         return a + (b - a) * r;

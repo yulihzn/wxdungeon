@@ -207,7 +207,9 @@ export default class MeleeWeapon extends cc.Component {
 
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec2.ZERO)) {
-            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+            if(!this.isAttacking){
+                this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+            }
             this.hv = pos;
         } else if ((this.hv.x != 0 || this.hv.y != 0) && !this.isAttacking) {
             // this.node.position = cc.v2(25, 45);

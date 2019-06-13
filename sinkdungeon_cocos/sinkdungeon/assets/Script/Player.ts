@@ -565,7 +565,11 @@ export default class Player extends cc.Component {
         if (Logic.playerData.currentHealth <= 0) {
             this.killed();
         }
-        return !isDodge && dd.getTotalDamage() > 0;
+        let valid = !isDodge && dd.getTotalDamage() > 0;
+        if(valid){
+            cc.director.emit(EventConstant.HUD_DAMAGE_CORNER_SHOW);
+        }
+        return valid;
     }
 
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {

@@ -26,6 +26,8 @@ export default class GameHud extends cc.Component {
     level: cc.Label = null;
     @property(cc.Label)
     clock: cc.Label = null;
+    @property(cc.Node)
+    damageCorner:cc.Node = null;
     private checkTimeDelay = 0;
     private startCountTime = true;
 
@@ -44,6 +46,9 @@ export default class GameHud extends cc.Component {
         cc.director.on(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, (event) => {
             this.healthBarUpdate(event.detail.x, event.detail.y);
         })
+        cc.director.on(EventConstant.HUD_DAMAGE_CORNER_SHOW, (event) => {
+            this.showDamageCorner();
+        })
         cc.director.on(EventConstant.HUD_STOP_COUNTTIME
             , (event) => { this.startCountTime = false; });
         if (this.clock) {
@@ -51,6 +56,9 @@ export default class GameHud extends cc.Component {
         }
         if (this.level) {
             this.level.string = `Level ${Logic.chapterName + 1}-${Logic.level}`;
+        }
+        if(this.damageCorner){
+            this.damageCorner.opacity = 0;
         }
     }
     private statusUpdate(data: PlayerData) {
@@ -60,6 +68,15 @@ export default class GameHud extends cc.Component {
         this.playerInfoDialog.refreshDialog(data, data.EquipmentTotalData, data.StatusTotalData);
     }
 
+    private showDamageCorner(){
+        if(!this.damageCorner){
+            return;
+        }
+        this.damageCorner.stopAllActions();
+        this.damageCorner.opacity = 255;
+        this.damageCorner.scale = 1;
+        this.damageCorner.runAction(cc.spawn(cc.scaleTo(0.5,1.05),cc.fadeOut(1)));
+    }
     private healthBarUpdate(currentHealth, maxHealth): void {
         if (this.healthBar) {
             this.healthBar.refreshHealth(currentHealth, maxHealth);

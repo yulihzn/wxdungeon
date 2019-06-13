@@ -7,7 +7,7 @@
   "premultiplyAlpha": false,
   "subMetas": {
     "joystickbutton": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "11ad155d-2e38-4103-8058-41b6195fcfe7",
       "rawTextureUuid": "193bcc4d-93d6-411b-a741-8fe74777afff",
       "trimType": "custom",
