@@ -629,7 +629,7 @@ export default class Player extends cc.Component {
         }
         return false;
     }
-
+    
     update(dt) {
 
         if (this.isRecoveryTimeDelay(dt)) {

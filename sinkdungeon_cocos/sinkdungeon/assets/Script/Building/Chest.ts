@@ -82,6 +82,7 @@ export default class Chest extends Building {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
                         if(Logic.level < 1){
+                            dungeon.addEquipment(EquipmentManager.SHOES_DEMON, this.data.pos,null,this.data.quality);
                             dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos,null,this.data.quality);
                             dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos,null,this.data.quality);
                         }else{

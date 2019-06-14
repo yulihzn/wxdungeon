@@ -136,7 +136,7 @@ export default class PlayerData {
         return drain;
     }
 
-    //初始速度300,最大速度600 最小速度为10
+    //初始速度300,最大速度600 最小速度为0
     getMoveSpeed(): number {
         let speed = 0;
         for (let data of this.getCommonList()) {

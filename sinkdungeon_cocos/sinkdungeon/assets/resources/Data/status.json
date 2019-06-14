@@ -219,5 +219,16 @@
             "toxicDefence": 100,
             "curseDefence": 100
         }
+    },
+    "status019": {
+        "nameCn": "3s移动加速",
+        "nameEn": "moving faster",
+        "spriteFrameName": "iconmovespeed",
+        "statusType": 19,
+        "desc": "",
+        "duration": 3,
+        "common": {
+            "moveSpeed": 200
+        }
     }
 }

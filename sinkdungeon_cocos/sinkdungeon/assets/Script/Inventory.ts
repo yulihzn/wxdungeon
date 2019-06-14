@@ -46,6 +46,16 @@ export default class Inventory extends cc.Component {
     equipmentDialog:EquipmentDialog = null;
 
     inventoryManager:InventoryManager;
+    
+    weaponTimeDelay = 0;
+    remoteTimeDelay = 0;
+    helmetTimeDelay = 0;
+    clothesTimeDelay = 0;
+    trousersTimeDelay = 0;
+    glovesTimeDelay = 0;
+    shoesTimeDelay = 0;
+    cloakTimeDelay = 0;
+    
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -182,9 +192,75 @@ export default class Inventory extends cc.Component {
         }
         if(this.dungeon.player){
             this.dungeon.player.getComponent(Player).inventoryManager = this.inventoryManager;
-            this.dungeon.player.getComponent(Player).changeEquipment(equipmentDataNew,spriteFrame)
+            this.dungeon.player.getComponent(Player).changeEquipment(equipmentDataNew,spriteFrame);
+            if(equipmentDataNew.statusInterval>0&&equipmentDataNew.statusName.length>0){
+                this.dungeon.player.addStatus(equipmentDataNew.statusName);
+            }
         }
     }
-
-    // update (dt) {}
+    addPlayerStatus(equipmentData:EquipmentData){
+        if(!this.dungeon||!this.dungeon.player){
+            return;
+        }
+        if(equipmentData.statusInterval>0&&equipmentData.statusName.length>0){
+            this.dungeon.player.addStatus(equipmentData.statusName);
+        }
+    }
+    secondTimeDelay = 0;
+    getTimeDelay(timeDelay:number,interval:number,dt: number): number {
+        timeDelay += dt;
+        if (timeDelay > interval) {
+            timeDelay = 0;
+            return timeDelay;
+        }
+        return timeDelay;
+    }
+    isTimeDelay(dt: number,equipmentData:EquipmentData){
+        let timeDelay = 0;
+        switch(equipmentData.equipmetType){
+            case 'weapon':this.weaponTimeDelay = this.getTimeDelay(this.weaponTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.weaponTimeDelay;break;
+            case 'remote':this.remoteTimeDelay = this.getTimeDelay(this.remoteTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.remoteTimeDelay;break;
+            case 'helmet':this.helmetTimeDelay = this.getTimeDelay(this.helmetTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.helmetTimeDelay;break;
+            case 'clothes':this.clothesTimeDelay = this.getTimeDelay(this.clothesTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.clothesTimeDelay;break;
+            case 'trousers':this.trousersTimeDelay = this.getTimeDelay(this.trousersTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.trousersTimeDelay;break;
+            case 'gloves':this.glovesTimeDelay = this.getTimeDelay(this.glovesTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.glovesTimeDelay;break;
+            case 'shoes':this.shoesTimeDelay = this.getTimeDelay(this.shoesTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.shoesTimeDelay;break;
+            case 'cloak':this.cloakTimeDelay = this.getTimeDelay(this.cloakTimeDelay,equipmentData.statusInterval,dt);
+            timeDelay = this.cloakTimeDelay;break;
+        }
+        return timeDelay > 0;
+    }
+    update (dt) {
+        if(this.isTimeDelay(dt,this.inventoryManager.weapon)){
+            this.addPlayerStatus(this.inventoryManager.weapon);
+        }
+        if(this.isTimeDelay(dt,this.inventoryManager.remote)){
+            this.addPlayerStatus(this.inventoryManager.remote);
+        }
+        if(this.isTimeDelay(dt,this.inventoryManager.helmet)){
+            this.addPlayerStatus(this.inventoryManager.helmet);
+        }
+        if(this.isTimeDelay(dt,this.inventoryManager.clothes)){
+            this.addPlayerStatus(this.inventoryManager.clothes);
+        }
+        if(this.isTimeDelay(dt,this.inventoryManager.trousers)){
+            this.addPlayerStatus(this.inventoryManager.trousers);
+        }
+        if(this.isTimeDelay(dt,this.inventoryManager.gloves)){
+            this.addPlayerStatus(this.inventoryManager.gloves);
+        }
+        if(this.isTimeDelay(dt,this.inventoryManager.shoes)){
+            this.addPlayerStatus(this.inventoryManager.shoes);
+        }
+        if(this.isTimeDelay(dt,this.inventoryManager.cloak)){
+            this.addPlayerStatus(this.inventoryManager.cloak);
+        }
+    }
 }

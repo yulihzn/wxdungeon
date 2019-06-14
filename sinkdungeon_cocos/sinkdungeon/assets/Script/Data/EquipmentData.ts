@@ -42,6 +42,8 @@ export default class EquipmentData extends BaseData{
     isLineAim = 0;//是否是线性瞄准
     hideHair = 0;//是否隐藏头发
     bulletExSpeed = 0;//子弹额外速度
+    statusName = '';//状态类别
+    statusInterval = 0;//添加状态的间隔
     private common:CommonData;
 
     info1:string = '';
@@ -98,6 +100,8 @@ export default class EquipmentData extends BaseData{
         this.hideHair = data.hideHair?data.hideHair:0;
         this.bulletSize = data.bulletSize?data.bulletSize:0;
         this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
+        this.statusName = data.statusName?data.statusName:'';
+        this.statusInterval = data.statusInterval?data.statusInterval:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';

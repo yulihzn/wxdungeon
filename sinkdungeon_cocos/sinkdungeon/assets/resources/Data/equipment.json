@@ -1041,6 +1041,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes003",
+        "statusInterval":5,
+        "statusName":"status019",
         "common": {
             "damageMin": 0,
             "damageMax": 1,

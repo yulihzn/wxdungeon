@@ -168,7 +168,7 @@ export default class EquipmentManager extends cc.Component {
         let lifeDrain = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_REMOTE])) {
-            lifeDrain = this.getRandomQuality(0, 100, chestQuality);
+            lifeDrain = this.getRandomQuality(0, 100 - data.Common.lifeDrain, chestQuality);
             level = lifeDrain.y > level ? lifeDrain.y : level;
             desc.prefix += lifeDrain.y > 2 ? '邪恶' : '';
             desc.color = this.getMixColor(desc.color
@@ -186,22 +186,26 @@ export default class EquipmentManager extends cc.Component {
             desc.color = this.getMixColor(desc.color
                 , lifeRecovery.y > 2 ? EquipmentManager.COLOR_RECOVERY : '#000000');
         }
-        //移动速度0-300减去装备自带移动速度
+        //移动速度0-100减去装备自带移动速度
         let moveSpeed = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
             , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])) {
-            moveSpeed = this.getRandomQuality(0, 300 - data.Common.moveSpeed, chestQuality);
+            let ms = 100 - data.Common.moveSpeed;
+            if (ms < 5) { ms = 5; }
+            moveSpeed = this.getRandomQuality(0, ms, chestQuality);
             level = moveSpeed.y > level ? moveSpeed.y : level;
             desc.prefix += moveSpeed.y > 2 ? '灵动' : '';
             desc.color = this.getMixColor(desc.color
                 , moveSpeed.y > 2 ? EquipmentManager.COLOR_MOVESPEED : '#000000');
         }
-        //攻击速度0-400减去装备自带攻速
+        //攻击速度0-100减去装备自带攻速
         let attackSpeed = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOTHES
             , EquipmentManager.TYPE_REMOTE])) {
-            attackSpeed = this.getRandomQuality(0, 400 - data.Common.attackSpeed, chestQuality);
+            let as = 100 - data.Common.attackSpeed;
+            if (as < 5) { as = 5; }
+            attackSpeed = this.getRandomQuality(0, as, chestQuality);
             level = attackSpeed.y > level ? attackSpeed.y : level;
             desc.prefix += attackSpeed.y > 2 ? '迅捷' : '';
             desc.color = this.getMixColor(desc.color
@@ -255,21 +259,21 @@ export default class EquipmentManager extends cc.Component {
         level = curseDamage.y > level ? curseDamage.y : level;
         desc.prefix += curseDamage.y > 2 ? '诅咒' : '';
 
-        let defenceNum = 80;
+        let defenceNum = 60;
         let defenceRate = 0.1;
-        //冰抗性0-80 0.1几率
+        //冰抗性0-60 0.1几率
         let iceDefence = Random.rand() < defenceRate ? this.getRandomQuality(0, defenceNum, chestQuality) : cc.v2(0, 0);
         level = iceDefence.y > level ? iceDefence.y : level;
-        //火抗性0-80 0.1几率
+        //火抗性0-60 0.1几率
         let fireDefence = Random.rand() < defenceRate ? this.getRandomQuality(0, defenceNum, chestQuality) : cc.v2(0, 0);
         level = fireDefence.y > level ? fireDefence.y : level;
-        //雷抗性0-80 0.1几率
+        //雷抗性0-60 0.1几率
         let lighteningDefence = Random.rand() < defenceRate ? this.getRandomQuality(0, defenceNum, chestQuality) : cc.v2(0, 0);
         level = lighteningDefence.y > level ? lighteningDefence.y : level;
-        //毒抗性0-80 0.1几率
+        //毒抗性0-60 0.1几率
         let toxicDefence = Random.rand() < defenceRate ? this.getRandomQuality(0, defenceNum, chestQuality) : cc.v2(0, 0);
         level = toxicDefence.y > level ? toxicDefence.y : level;
-        //诅咒抗性0-80 0.1几率
+        //诅咒抗性0-60 0.1几率
         let curseDefence = Random.rand() < defenceRate ? this.getRandomQuality(0, defenceNum, chestQuality) : cc.v2(0, 0);
         level = curseDefence.y > level ? curseDefence.y : level;
 
