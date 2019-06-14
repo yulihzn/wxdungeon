@@ -7,7 +7,7 @@
   "premultiplyAlpha": false,
   "subMetas": {
     "particle_texture_ice": {
-      "ver": "1.0.4",
+      "ver": "1.0.3",
       "uuid": "25ad90af-44cc-4826-8a74-a6de802a3992",
       "rawTextureUuid": "f327cb1d-8e48-4407-a95a-3352149c88ea",
       "trimType": "custom",

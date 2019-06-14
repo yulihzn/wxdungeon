@@ -221,12 +221,12 @@
         }
     },
     "status019": {
-        "nameCn": "3s移动加速",
+        "nameCn": "1s加速移动",
         "nameEn": "moving faster",
         "spriteFrameName": "iconmovespeed",
         "statusType": 19,
         "desc": "",
-        "duration": 3,
+        "duration": 1,
         "common": {
             "moveSpeed": 200
         }

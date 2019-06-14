@@ -7,7 +7,7 @@
   "premultiplyAlpha": false,
   "subMetas": {
     "fog": {
-      "ver": "1.0.4",
+      "ver": "1.0.3",
       "uuid": "2425c6f8-58bb-4563-a769-9d26493d72be",
       "rawTextureUuid": "cf8f073f-99d4-4148-bd8a-5f5aa4777b70",
       "trimType": "custom",

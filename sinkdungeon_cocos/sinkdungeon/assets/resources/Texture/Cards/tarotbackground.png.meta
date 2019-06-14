@@ -7,7 +7,7 @@
   "premultiplyAlpha": false,
   "subMetas": {
     "tarotbackground": {
-      "ver": "1.0.4",
+      "ver": "1.0.3",
       "uuid": "6bf03eb1-9821-4dff-a84b-2da496f7c9cc",
       "rawTextureUuid": "d11a6110-864e-4efd-9afd-ae810624cc5c",
       "trimType": "custom",

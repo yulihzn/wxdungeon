@@ -216,7 +216,7 @@ export default class Inventory extends cc.Component {
         return timeDelay;
     }
     isTimeDelay(dt: number,equipmentData:EquipmentData){
-        let timeDelay = 0;
+        let timeDelay = -1;
         switch(equipmentData.equipmetType){
             case 'weapon':this.weaponTimeDelay = this.getTimeDelay(this.weaponTimeDelay,equipmentData.statusInterval,dt);
             timeDelay = this.weaponTimeDelay;break;
@@ -235,7 +235,7 @@ export default class Inventory extends cc.Component {
             case 'cloak':this.cloakTimeDelay = this.getTimeDelay(this.cloakTimeDelay,equipmentData.statusInterval,dt);
             timeDelay = this.cloakTimeDelay;break;
         }
-        return timeDelay > 0;
+        return timeDelay == 0;
     }
     update (dt) {
         if(this.isTimeDelay(dt,this.inventoryManager.weapon)){
