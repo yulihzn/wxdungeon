@@ -406,6 +406,7 @@ export default class Player extends cc.Component {
         this.isHeavyRemotoAttacking = this.isHeavyRemoteShooter();
         this.scheduleOnce(() => { this.isHeavyRemotoAttacking = false }, 0.2);
         if (this.shooter) {
+            this.shooter.remoteDamagePlayer = this.data.getFinalRemoteDamage();
             this.shooter.fireBullet(0);
         }
     }

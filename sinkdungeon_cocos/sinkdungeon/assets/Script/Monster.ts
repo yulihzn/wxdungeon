@@ -378,7 +378,10 @@ export default class Monster extends Actor {
         if (this.data.Common.lifeRecovery > 0 && this.isHurt) {
             this.addStatus(StatusManager.RECOVERY);
         }
-        return this.isHurt;
+        let h = this.isHurt?true:false;
+        //20%几率无视
+        this.isHurt = Random.getRandomNum(0,100)<80;
+        return h;
     }
     changeBodyColor():void{
         if(!this.data){

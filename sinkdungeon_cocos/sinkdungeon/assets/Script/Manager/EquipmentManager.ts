@@ -60,29 +60,82 @@ export default class EquipmentManager extends cc.Component {
     public static readonly CLOTHES_BUCKET = "clothes005";
     public static readonly CLOTHES_REDROBE = "clothes006";
     public static readonly CLOTHES_WHITEROBE = "clothes007";
+    public static readonly CLOTHES_GENTLEMAN = "clothes008";
+    public static readonly CLOTHES_RADIATION = "clothes009";
+    public static readonly CLOTHES_JUNGLE = "clothes010";
+    public static readonly CLOTHES_PHARAOH = "clothes011";
+    public static readonly CLOTHES_KNIGHT = "clothes012";
+    public static readonly CLOTHES_DEATH = "clothes013";
+    public static readonly CLOTHES_ENERGY = "clothes014";
     public static readonly HELMET_BUCKETHAT = "helmet002";
     public static readonly HELMET_PIRATEHAT = "helmet003";
     public static readonly HELMET_REDHAT = "helmet004";
     public static readonly HELMET_WHITEHAT = "helmet005";
+    public static readonly HELMET_PHARAOH  = "helmet006";
+    public static readonly HELMET_CAT  = "helmet007";
+    public static readonly HELMET_CHIEF  = "helmet008";
+    public static readonly HELMET_HORUS  = "helmet009";
+    public static readonly HELMET_GENTLEMAN  = "helmet010";
+    public static readonly HELMET_CHICKEN  = "helmet011";
+    public static readonly HELMET_DUCK  = "helmet012";
+    public static readonly HELMET_GOOSE  = "helmet013";
+    public static readonly HELMET_RADIATION  = "helmet014";
+    public static readonly HELMET_JUNGLE  = "helmet015";
+    public static readonly HELMET_ANUBIS  = "helmet016";
+    public static readonly HELMET_KNIGHT  = "helmet017";
+    public static readonly HELMET_DEATH  = "helmet018";
+    public static readonly HELMET_ENERY  = "helmet019";
     public static readonly CLOAK_WARRIOR = "cloak001";
     public static readonly TROUSERS_LONG = "trousers001";
     public static readonly TROUSERS_SHORT = "trousers002";
+    public static readonly TROUSERS_RADIATION = "trousers003";
+    public static readonly TROUSERS_JUNGLE = "trousers004";
+    public static readonly TROUSERS_PHARAOH = "trousers005";
+    public static readonly TROUSERS_KNIGHT = "trousers006";
+    public static readonly TROUSERS_DEATH = "trousers007";
+    public static readonly TROUSERS_ENERGY = "trousers008";
     public static readonly GLOVES_WARRIOR = "gloves001";
     public static readonly GLOVES_DEMON = "gloves002";
     public static readonly GLOVES_BLOODCRAW = "gloves003";
+    public static readonly GLOVES_RADIATION = "gloves004";
+    public static readonly GLOVES_JUNGLE = "gloves005";
+    public static readonly GLOVES_PHARAOH = "gloves006";
+    public static readonly GLOVES_KNIGHT = "gloves007";
+    public static readonly GLOVES_DEATH = "gloves008";
+    public static readonly GLOVES_ENERGY = "gloves009";
     public static readonly SHOES_WARRIOR = "shoes001";
     public static readonly SHOES_SKATEBOARD = "shoes002";
     public static readonly SHOES_DEMON = "shoes003";
+    public static readonly SHOES_RADIATION = "shoes004";
+    public static readonly SHOES_JUNGLE = "shoes005";
+    public static readonly SHOES_PHARAOH = "shoes006";
+    public static readonly SHOES_KNIGHT = "shoes007";
+    public static readonly SHOES_DEATH = "shoes008";
+    public static readonly SHOES_ENERGY = "shoes009";
     public static readonly equipments: string[] = [EquipmentManager.WEAPON_DINNERFORK, EquipmentManager.WEAPON_KNIFE, EquipmentManager.WEAPON_CHOPPER,
     EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.CLOTHES_SHIRT
         , EquipmentManager.CLOTHES_VEST, EquipmentManager.CLOTHES_NAVY, EquipmentManager.CLOTHES_PIRATE,
     EquipmentManager.CLOTHES_BUCKET, EquipmentManager.CLOTHES_REDROBE,
     EquipmentManager.CLOTHES_WHITEROBE, EquipmentManager.HELMET_BUCKETHAT,
+    EquipmentManager.CLOTHES_RADIATION,EquipmentManager.CLOTHES_JUNGLE,EquipmentManager.CLOTHES_PHARAOH,
+    EquipmentManager.CLOTHES_KNIGHT,EquipmentManager.CLOTHES_ENERGY,EquipmentManager.CLOTHES_GENTLEMAN,
     EquipmentManager.HELMET_PIRATEHAT, EquipmentManager.HELMET_REDHAT,
-    EquipmentManager.HELMET_WHITEHAT, EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
-    EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT, EquipmentManager.GLOVES_WARRIOR,
+    EquipmentManager.HELMET_WHITEHAT,EquipmentManager.HELMET_PHARAOH,EquipmentManager.HELMET_CAT,
+    EquipmentManager.HELMET_CHIEF,EquipmentManager.HELMET_HORUS,EquipmentManager.HELMET_GENTLEMAN,
+    EquipmentManager.HELMET_CHICKEN,EquipmentManager.HELMET_DUCK,EquipmentManager.HELMET_GOOSE,
+    EquipmentManager.HELMET_RADIATION,EquipmentManager.HELMET_JUNGLE,EquipmentManager.HELMET_ANUBIS,
+    EquipmentManager.HELMET_KNIGHT,EquipmentManager.HELMET_DEATH,EquipmentManager.HELMET_ENERY,
+     EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
+    EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT,EquipmentManager.TROUSERS_RADIATION,
+    EquipmentManager.TROUSERS_JUNGLE,EquipmentManager.TROUSERS_PHARAOH,EquipmentManager.TROUSERS_KNIGHT,
+    EquipmentManager.TROUSERS_DEATH,EquipmentManager.TROUSERS_ENERGY, EquipmentManager.GLOVES_WARRIOR,
     EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
-    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON, EquipmentManager.WEAPON_CROWBAR, EquipmentManager.WEAPON_FRUITKNIFE, EquipmentManager.WEAPON_KATANA,
+    EquipmentManager.SHOES_RADIATION,EquipmentManager.SHOES_JUNGLE,EquipmentManager.SHOES_PHARAOH,
+    EquipmentManager.SHOES_KNIGHT,EquipmentManager.SHOES_ENERGY,
+    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON,EquipmentManager.GLOVES_RADIATION,
+    EquipmentManager.GLOVES_PHARAOH,EquipmentManager.GLOVES_JUNGLE,EquipmentManager.GLOVES_KNIGHT,
+    EquipmentManager.GLOVES_DEATH,EquipmentManager.GLOVES_ENERGY,
+    EquipmentManager.WEAPON_CROWBAR, EquipmentManager.WEAPON_FRUITKNIFE, EquipmentManager.WEAPON_KATANA,
     EquipmentManager.WEAPON_HUGEAXE, EquipmentManager.WEAPON_HAPPYFIRE, EquipmentManager.WEAPON_SADICE,
     EquipmentManager.REMOTE_ALIENGUN, EquipmentManager.REMOTE_WAND, EquipmentManager.REMOTE_WINCHESTER, EquipmentManager.REMOTE_RPG,
     EquipmentManager.WEAPON_EGYPTWAND, EquipmentManager.WEAPON_TOXICDAGGER, EquipmentManager.WEAPON_OLDROOTDAGGER, EquipmentManager.WEAPON_COOKCHOPPER,
@@ -450,7 +503,9 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfoBase(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
-        info += data.damageRemote + desc.damageRemote == 0 ? `` : `远距离伤害${data.damageRemote}${desc.damageRemote == 0 ? '' : '+' + desc.damageRemote}\n`;
+        info += data.Common.remoteDamage + desc.remoteDamage == 0 ? `` : `远距离伤害${data.Common.remoteDamage}${desc.remoteDamage == 0 ? '' : '+' + desc.remoteDamage}\n`;
+        info += data.Common.remoteCritRate + desc.remoteCritRate == 0 ? `` : `远距离暴击率${data.Common.remoteCritRate}${desc.remoteCritRate == 0 ? '' : '+' + desc.remoteCritRate}\n`;
+        info += data.Common.remoteSpeed + desc.remoteSpeed == 0 ? `` : `远距离攻速${data.Common.remoteSpeed}${desc.remoteSpeed == 0 ? '' : '+' + desc.remoteSpeed}\n`;
         info += data.Common.damageMin + desc.damageMin == 0 ? `` : `攻击${data.Common.damageMin}${desc.damageMin == 0 ? '' : '+' + desc.damageMin} 最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n`;
         info += data.Common.damageMax + desc.damageMax == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n` : ``
         info += data.Common.defence + desc.defence == 0 ? `` : `防御${data.Common.defence}${desc.defence == 0 ? '' : '+' + desc.defence}\n`;

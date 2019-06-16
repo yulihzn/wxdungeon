@@ -42,6 +42,8 @@ export default class Shooter extends cc.Component {
     parentNode: cc.Node;//该node为dungeon下发射器的载体
     private hv: cc.Vec2 = cc.v2(1, 0);
     isAiming = false;//是否在瞄准
+    //玩家远程伤害
+    remoteDamagePlayer = 0;
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -215,11 +217,11 @@ export default class Shooter extends cc.Component {
         bullet.node.zIndex = 4000;
         bullet.isFromPlayer = !this.isAI;
         bullet.dungeon = this.dungeon;
-        if (bullet.isFromPlayer && this.player) {
-            bullet.data.damage.physicalDamage = this.data.damageRemote;
-        }
         let bd = new BulletData();
         bd.valueCopy(Logic.bullets[bulletType])
+        if (bullet.isFromPlayer && this.player) {
+            bd.damage.physicalDamage = this.remoteDamagePlayer;
+        }
         bd.size +=this.data.bulletSize;
         bd.speed+= this.data.bulletExSpeed;
         if(bd.speed + this.data.bulletExSpeed > 50){

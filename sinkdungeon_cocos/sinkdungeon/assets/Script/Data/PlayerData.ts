@@ -97,7 +97,16 @@ export default class PlayerData {
         dd.curseDamage = this.getCurseDamage();
         return dd;
     }
-
+    //获取最终远程伤害
+    getFinalRemoteDamage(): number {
+        let remoteDamage = this.getRemoteDamage();
+        let chance = this.getRemoteCritRate();
+        let attack = Random.rand() > chance ? remoteDamage : remoteDamage+remoteDamage;
+        if (attack < 0) {
+            attack = 0;
+        }
+        return attack;
+    }
     //伤害减免
     getDamage(damageData: DamageData): DamageData {
         let finalDamageData = damageData.clone();
@@ -162,6 +171,14 @@ export default class PlayerData {
         }
         return speed;
     }
+    //获取远程攻击
+    getRemoteDamage():number{
+        let d = 0;
+        for (let data of this.getCommonList()) {
+            d += data.remoteDamage;
+        }
+        return d;
+    }
     //获取最小攻击力
     getDamageMin(): number {
         let d = 0;
@@ -184,6 +201,15 @@ export default class PlayerData {
         let rate = 1;
         for (let data of this.getCommonList()) {
             rate *= (1 - data.criticalStrikeRate / 100);
+        }
+        return 1 - rate;
+    }
+
+    //获取远程暴击率
+    getRemoteCritRate(): number {
+        let rate = 1;
+        for (let data of this.getCommonList()) {
+            rate *= (1 - data.remoteCritRate / 100);
         }
         return 1 - rate;
     }

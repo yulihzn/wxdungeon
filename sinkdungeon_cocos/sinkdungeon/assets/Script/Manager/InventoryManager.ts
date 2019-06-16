@@ -61,7 +61,22 @@ export default class InventoryManager {
         }
         return attackPoint;
     }
-    
+    //获取远程攻击
+    getRemoteDamage():number{
+        let d = 0;
+        for (let data of this.list) {
+            d += data.Common.remoteDamage;
+        }
+        return d;
+    }
+    //获取远程暴击率
+    getRemoteCritRate(): number {
+        let rate = 1;
+        for(let data of this.list){
+            rate *= (1-data.Common.remoteCritRate/100);
+        }
+        return (1-rate)*100;
+    }
     //获取暴击率
     getCriticalStrikeRate():number{
         let rate = 1;
@@ -243,6 +258,8 @@ export default class InventoryManager {
         e.Common.moveSpeed = this.getMoveSpeed();
         e.Common.attackSpeed = this.getAttackSpeed();
         e.Common.remoteSpeed = this.getRemoteSpeed();
+        e.Common.remoteDamage = this.getRemoteDamage();
+        e.Common.remoteCritRate = this.getRemoteCritRate();
         e.Common.dodge = this.getDodge();
         e.Common.maxHealth = this.getHealth();
         e.Common.realDamage = this.getRealDamage();

@@ -21,6 +21,8 @@ export default class CommonData  {
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避
     remoteSpeed:number = 0;//远程攻速
+    remoteDamage:number = 0;//远程攻速
+    remoteCritRate:number = 0;//远程暴击
 
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
@@ -44,7 +46,9 @@ export default class CommonData  {
         this.maxHealth = data.maxHealth ? data.maxHealth : 0;
         this.damageMin = data.damageMin ? data.damageMin : 0;
         this.damageMax = data.damageMax ? data.damageMax : 0;
+        this.remoteDamage = data.remoteDamage ? data.remoteDamage : 0;
         this.criticalStrikeRate = data.criticalStrikeRate ? data.criticalStrikeRate : 0;
+        this.remoteCritRate = data.remoteCritRate ? data.remoteCritRate : 0;
         this.defence = data.defence ? data.defence : 0;
         this.lifeDrain = data.lifeDrain ? data.lifeDrain : 0;
         this.lifeRecovery = data.lifeRecovery ? data.lifeRecovery : 0;
@@ -100,6 +104,8 @@ export default class CommonData  {
         e.curseDamage = this.curseDamage;
         e.curseDefence = this.curseDefence;
         e.curseRate = this.curseRate;
+        e.remoteDamage = this.remoteDamage;
+        e.remoteCritRate = this.remoteCritRate;
         return e;
     }
 }

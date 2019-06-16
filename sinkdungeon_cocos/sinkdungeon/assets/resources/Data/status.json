@@ -230,5 +230,15 @@
         "common": {
             "moveSpeed": 200
         }
+    },
+    "status020": {
+        "nameCn": "回复(丛林上衣)",
+        "nameEn": "recovery",
+        "spriteFrameName": "iconhealthrecovery",
+        "statusType": 20,
+        "desc": "",
+        "duration": 999,
+        "realDamageOvertime": -0.1,
+        "common": {}
     }
 }

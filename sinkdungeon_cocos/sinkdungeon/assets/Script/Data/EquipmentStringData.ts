@@ -53,7 +53,6 @@ export default class EquipmentStringData {
     stab = 0;//是否突刺
     far = 0; //是否远距离
     trouserslong = 0;//是否长裤
-    damageRemote = 0;//远程伤害
     bulletType = "";//子弹类别
     bulletSize = 0;//子弹增加大小 为0代表不改变 1代表加一倍
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
@@ -108,7 +107,6 @@ export default class EquipmentStringData {
         this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
         this.bulletLineInterval = data.bulletLineInterval?data.bulletLineInterval:0;
         this.trouserslong = data.trouserslong?data.trouserslong:0;
-        this.damageRemote = data.damageRemote?data.damageRemote:0;
         this.showShooter = data.showShooter?data.showShooter:0;
         this.isHeavy = data.isHeavy?data.isHeavy:0;
         this.bulletType = data.bulletType?data.bulletType:'';
@@ -129,7 +127,6 @@ export default class EquipmentStringData {
         e.stab = this.stab;
         e.far = this.far;
         e.trouserslong = this.trouserslong;
-        e.damageRemote = this.damageRemote;
         e.showShooter = this.showShooter;
         e.bulletType = this.bulletType;
         e.isHeavy = this.isHeavy;
