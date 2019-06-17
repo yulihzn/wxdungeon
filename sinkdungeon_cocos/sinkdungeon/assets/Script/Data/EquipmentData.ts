@@ -44,6 +44,10 @@ export default class EquipmentData extends BaseData{
     bulletExSpeed = 0;//子弹额外速度
     statusName = '';//状态类别
     statusInterval = 0;//添加状态的间隔
+    exBulletTypeAttack = '';//攻击额外子弹类别
+    exBulletTypeHurt = '';//受伤害额外子弹类别
+    exBulletRate = 0;//额外子弹几率
+
     private common:CommonData;
 
     info1:string = '';
@@ -94,6 +98,8 @@ export default class EquipmentData extends BaseData{
         this.showShooter = data.showShooter?data.showShooter:0;
         this.isHeavy = data.isHeavy?data.isHeavy:0;
         this.bulletType = data.bulletType?data.bulletType:'';
+        this.exBulletTypeAttack = data.exBulletTypeAttack?data.exBulletTypeAttack:'';
+        this.exBulletTypeHurt = data.exBulletTypeHurt?data.exBulletTypeHurt:'';
         this.isArcAim = data.isArcAim?data.isArcAim:0;
         this.isLineAim = data.isLineAim?data.isLineAim:0;
         this.hideHair = data.hideHair?data.hideHair:0;
@@ -102,6 +108,7 @@ export default class EquipmentData extends BaseData{
         this.statusName = data.statusName?data.statusName:'';
         this.statusInterval = data.statusInterval?data.statusInterval:0;
         this.isReflect = data.isReflect?data.isReflect:0;
+        this.exBulletRate = data.exBulletRate?data.exBulletRate:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -140,6 +147,8 @@ export default class EquipmentData extends BaseData{
         e.trouserslong = this.trouserslong;
         e.showShooter = this.showShooter;
         e.bulletType = this.bulletType;
+        e.exBulletTypeAttack = this.exBulletTypeAttack;
+        e.exBulletTypeHurt = this.exBulletTypeHurt;
         e.isHeavy = this.isHeavy;
         e.isArcAim = this.isArcAim;
         e.isLineAim = this.isLineAim;
@@ -151,6 +160,7 @@ export default class EquipmentData extends BaseData{
         e.bulletSize = this.bulletSize;
         e.bulletExSpeed = this.bulletExSpeed;
         e.isReflect = this.isReflect;
+        e.exBulletRate = this.exBulletRate;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

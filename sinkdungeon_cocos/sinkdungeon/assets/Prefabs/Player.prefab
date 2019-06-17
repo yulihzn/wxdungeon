@@ -6514,6 +6514,9 @@
     "shooter": {
       "__id__": 61
     },
+    "shooterEx": {
+      "__id__": 189
+    },
     "statusManager": {
       "__id__": 107
     },

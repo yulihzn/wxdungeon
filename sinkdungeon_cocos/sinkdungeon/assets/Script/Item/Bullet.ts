@@ -355,7 +355,7 @@ export default class Bullet extends cc.Component {
         }
 
         let meleeWeapon: MeleeWeapon = attackTarget.getComponent(MeleeWeapon);
-        if (meleeWeapon && meleeWeapon.isAttacking) {
+        if (meleeWeapon && meleeWeapon.isAttacking && !this.isFromPlayer) {
             //子弹偏转
             let isReverse = false;
             if(meleeWeapon.isReflect){

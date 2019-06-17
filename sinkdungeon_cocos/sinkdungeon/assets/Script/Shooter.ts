@@ -117,7 +117,7 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (!this.isAI && this.player && ((Logic.ammo <= 0&&!this.isEx) || this.player.inventoryManager.remote.equipmetType != 'remote')) {
+        if (!this.isAI && this.player &&!this.isEx && ((Logic.ammo <= 0) || this.player.inventoryManager.remote.equipmetType != 'remote')) {
             return;
         }
         if (!this.isAI && this.player && Logic.ammo > 0 && !this.isEx) {

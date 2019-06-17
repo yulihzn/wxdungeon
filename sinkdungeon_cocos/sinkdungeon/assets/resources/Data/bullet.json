@@ -527,6 +527,21 @@
             "physicalDamage": 1
         }
     },
+    "bullet029": {
+        "name":"圆形种子",
+        "resName": "bullet008",
+        "lightName": "bulletlight001",
+        "lightColor": "#3EAF4C",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1,
+        "statusType":"status014",
+        "statusRate":100,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

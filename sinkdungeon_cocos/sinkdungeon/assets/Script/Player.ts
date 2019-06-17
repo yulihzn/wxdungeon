@@ -390,6 +390,7 @@ export default class Player extends cc.Component {
         }
         this.playerAnim(Player.STATE_ATTACK);
         this.meleeWeapon.attack(this.data, isMiss);
+        this.remoteExAttack();
     }
     remoteRate = 0;
     remoteAttack() {
@@ -416,11 +417,28 @@ export default class Player extends cc.Component {
         }
     }
     //特效攻击
-    remoteExAttack(bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
-        this.shooterEx.data.bulletType = bulletType;
-        this.shooterEx.data.bulletArcExNum = bulletArcExNum;
-        this.shooterEx.data.bulletLineExNum = bulletLineExNum;
-        this.shooterEx.fireBullet(angle);
+    remoteExAttack(): void {
+        for(let data of this.inventoryManager.list){
+            if(data.exBulletTypeAttack.length>0&&Random.getRandomNum(0,100)<data.exBulletRate){
+                this.shooterEx.data.bulletType = data.exBulletTypeAttack;
+                this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
+                this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
+                this.shooterEx.data.bulletSize = data.bulletSize;
+                this.shooterEx.fireBullet(0);
+            }
+        }
+    }
+    //特效受击
+    remoteExHurt(): void {
+        for(let data of this.inventoryManager.list){
+            if(data.exBulletTypeHurt.length>0&&Random.getRandomNum(0,100)<data.exBulletRate){
+                this.shooterEx.data.bulletType = data.exBulletTypeHurt;
+                this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
+                this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
+                this.shooterEx.data.bulletSize = data.bulletSize;
+                this.shooterEx.fireBullet(0);
+            }
+        }
     }
     isHeavyRemoteShooter(): boolean {
         return this.shooter.data.isHeavy == 1;
@@ -584,6 +602,7 @@ export default class Player extends cc.Component {
         let valid = !isDodge && dd.getTotalDamage() > 0;
         if(valid){
             cc.director.emit(EventConstant.HUD_DAMAGE_CORNER_SHOW);
+            this.remoteExHurt();
         }
         return valid;
     }
