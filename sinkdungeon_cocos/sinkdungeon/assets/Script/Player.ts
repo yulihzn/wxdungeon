@@ -49,6 +49,8 @@ export default class Player extends cc.Component {
     meleeWeapon: MeleeWeapon = null;
     @property(Shooter)
     shooter: Shooter = null;
+    @property(Shooter)
+    shooterEx: Shooter = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
     // private playerItemSprite: cc.Sprite;
@@ -154,6 +156,8 @@ export default class Player extends cc.Component {
         this.updatePlayerPos();
         this.meleeWeapon = this.meleeWeaponNode.getComponent(MeleeWeapon);
         this.shooter.player = this;
+        this.shooterEx.player = this;
+        this.shooterEx.isEx = true;
         this.smokePool = new cc.NodePool();
         cc.director.on('destorysmoke', (event) => {
             this.destroySmoke(event.detail.coinNode);
@@ -265,6 +269,7 @@ export default class Player extends cc.Component {
             case 'weapon':
                 this.meleeWeapon.isStab = equipData.stab == 1;
                 this.meleeWeapon.isFar = equipData.far == 1;
+                this.meleeWeapon.isReflect = equipData.isReflect == 1;
                 this.meleeWeapon.setHands();
                 if (equipData.stab == 1) {
                     this.weaponSprite.spriteFrame = null;
@@ -410,6 +415,13 @@ export default class Player extends cc.Component {
             this.shooter.fireBullet(0);
         }
     }
+    //特效攻击
+    remoteExAttack(bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
+        this.shooterEx.data.bulletType = bulletType;
+        this.shooterEx.data.bulletArcExNum = bulletArcExNum;
+        this.shooterEx.data.bulletLineExNum = bulletLineExNum;
+        this.shooterEx.fireBullet(angle);
+    }
     isHeavyRemoteShooter(): boolean {
         return this.shooter.data.isHeavy == 1;
     }
@@ -444,6 +456,9 @@ export default class Player extends cc.Component {
             this.pos = Dungeon.getIndexInMap(this.node.position);
             //存档系统保存玩家位置
             Logic.profile.playerData.pos = this.pos.clone();
+        }
+        if (this.shooterEx && !pos.equals(cc.Vec2.ZERO)) {
+            this.shooterEx.setHv(cc.v2(pos.x, pos.y));
         }
         //调整武器方向
         if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
@@ -607,6 +622,9 @@ export default class Player extends cc.Component {
         }
         if (this.shooter && !this.shooter.dungeon) {
             this.shooter.dungeon = dungeon;
+        }
+        if (this.shooterEx && !this.shooterEx.dungeon) {
+            this.shooterEx.dungeon = dungeon;
         }
         if (this.talentDash && !this.talentDash.IsExcuting) {
             this.move(dir, pos, dt);

@@ -503,9 +503,9 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfoBase(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
-        info += data.Common.remoteDamage + desc.remoteDamage == 0 ? `` : `远距离伤害${data.Common.remoteDamage}${desc.remoteDamage == 0 ? '' : '+' + desc.remoteDamage}\n`;
-        info += data.Common.remoteCritRate + desc.remoteCritRate == 0 ? `` : `远距离暴击率${data.Common.remoteCritRate}${desc.remoteCritRate == 0 ? '' : '+' + desc.remoteCritRate}\n`;
-        info += data.Common.remoteSpeed + desc.remoteSpeed == 0 ? `` : `远距离攻速${data.Common.remoteSpeed}${desc.remoteSpeed == 0 ? '' : '+' + desc.remoteSpeed}\n`;
+        info += data.Common.remoteDamage + desc.remoteDamage == 0 ? `` : `远程伤害${data.Common.remoteDamage}${desc.remoteDamage == 0 ? '' : '+' + desc.remoteDamage}\n`;
+        info += data.Common.remoteCritRate + desc.remoteCritRate == 0 ? `` : `远程暴击率${data.Common.remoteCritRate}${desc.remoteCritRate == 0 ? '' : '+' + desc.remoteCritRate}\n`;
+        info += data.Common.remoteSpeed + desc.remoteSpeed == 0 ? `` : `远程攻速${data.Common.remoteSpeed}${desc.remoteSpeed == 0 ? '' : '+' + desc.remoteSpeed}\n`;
         info += data.Common.damageMin + desc.damageMin == 0 ? `` : `攻击${data.Common.damageMin}${desc.damageMin == 0 ? '' : '+' + desc.damageMin} 最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n`;
         info += data.Common.damageMax + desc.damageMax == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n` : ``
         info += data.Common.defence + desc.defence == 0 ? `` : `防御${data.Common.defence}${desc.defence == 0 ? '' : '+' + desc.defence}\n`;
@@ -532,6 +532,7 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfo2(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
+        info += data.isReflect == 0 ? `` : `反弹子弹\n`;
         info += data.Common.realDamage + desc.realDamage == 0 ? `` : `攻击附加${data.Common.realDamage}${desc.realDamage == 0 ? '' : '+' + desc.realDamage}点流血伤害\n`;
         info += data.Common.realRate + desc.realRate == 0 ? `` : `攻击有${data.Common.realRate}${desc.realRate == 0 ? '' : '+' + desc.realRate}%几率释放流血\n`;
         info += data.Common.iceDamage + desc.iceDamage == 0 ? `` : `攻击附加${data.Common.iceDamage}${desc.iceDamage == 0 ? '' : '+' + desc.iceDamage}点冰伤害\n`;

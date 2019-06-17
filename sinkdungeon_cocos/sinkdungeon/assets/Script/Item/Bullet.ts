@@ -56,6 +56,7 @@ export default class Bullet extends cc.Component {
     isTrackDelay = false;//是否延迟追踪
     isDecelerateDelay = false;//是否延迟减速
     isHit = false;
+    isReserved = false;//是否已经反弹，防止多次碰撞弹射
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -92,7 +93,7 @@ export default class Bullet extends cc.Component {
         this.isTrackDelay = false;
         this.isDecelerateDelay = false;
         this.isHit = false;
-
+        this.isReserved = false;
     }
     timeDelay = 0;
     checkTimeDelay = 0;
@@ -355,7 +356,14 @@ export default class Bullet extends cc.Component {
 
         let meleeWeapon: MeleeWeapon = attackTarget.getComponent(MeleeWeapon);
         if (meleeWeapon && meleeWeapon.isAttacking) {
-            isDestory = true;
+            //子弹偏转
+            let isReverse = false;
+            if(meleeWeapon.isReflect){
+                isReverse = this.revserseBullet();
+            }
+            if(!isReverse){
+                isDestory = true;
+            }
         }
         if (isDestory) {
             this.bulletHit();
@@ -363,6 +371,10 @@ export default class Bullet extends cc.Component {
     }
     //子弹偏转 不能偏转激光，追踪弹效果去除
     private revserseBullet():boolean{
+        if(this.isReserved){
+            this.isReserved = true;
+            return false;
+        }
         if(this.data.isLaser != 1){
             this.node.rotation+=180;
             this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.mul(-1);

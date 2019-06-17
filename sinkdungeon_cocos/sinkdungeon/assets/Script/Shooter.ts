@@ -31,6 +31,7 @@ export default class Shooter extends cc.Component {
     dungeon: Dungeon = null;
     //只有赋值才代表是玩家真正的shooter
     player: Player = null;
+    isEx = false;//是否是额外shooter，额外shooter不耗子弹，伤害也按子弹来
     private graphics:cc.Graphics;
 
     private bulletPool: cc.NodePool;
@@ -116,10 +117,10 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (!this.isAI && this.player && (Logic.ammo <= 0 || this.player.inventoryManager.remote.equipmetType != 'remote')) {
+        if (!this.isAI && this.player && ((Logic.ammo <= 0&&!this.isEx) || this.player.inventoryManager.remote.equipmetType != 'remote')) {
             return;
         }
-        if (!this.isAI && this.player && Logic.ammo > 0) {
+        if (!this.isAI && this.player && Logic.ammo > 0 && !this.isEx) {
             Logic.ammo--;
         }
         if (this.data.bulletNets > 0) {
@@ -219,7 +220,7 @@ export default class Shooter extends cc.Component {
         bullet.dungeon = this.dungeon;
         let bd = new BulletData();
         bd.valueCopy(Logic.bullets[bulletType])
-        if (bullet.isFromPlayer && this.player) {
+        if (bullet.isFromPlayer && this.player && !this.isEx) {
             bd.damage.physicalDamage = this.remoteDamagePlayer;
         }
         bd.size +=this.data.bulletSize;

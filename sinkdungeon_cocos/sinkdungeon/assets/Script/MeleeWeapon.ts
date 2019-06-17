@@ -70,6 +70,7 @@ export default class MeleeWeapon extends cc.Component {
     weaponFirePoint: cc.Node;//剑尖
     isMiss = false;
     drainSkill = new Skill();
+    isReflect = false;//子弹偏转
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);

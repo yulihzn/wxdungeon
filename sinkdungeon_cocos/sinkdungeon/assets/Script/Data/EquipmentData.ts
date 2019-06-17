@@ -28,6 +28,7 @@ export default class EquipmentData extends BaseData{
     stab = 0;//是否突刺
     far = 0; //是否远距离
     isLocked = 0;//是否锁定
+    isReflect = 0;//子弹偏转 仅限近战武器
     trouserslong = 0;//是否长裤
     bulletType = "";//子弹类别
     bulletSize = 0;//子弹增加大小 为0代表不改变 1代表加一倍
@@ -100,6 +101,7 @@ export default class EquipmentData extends BaseData{
         this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
         this.statusName = data.statusName?data.statusName:'';
         this.statusInterval = data.statusInterval?data.statusInterval:0;
+        this.isReflect = data.isReflect?data.isReflect:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -148,6 +150,7 @@ export default class EquipmentData extends BaseData{
         e.hideHair = this.hideHair;
         e.bulletSize = this.bulletSize;
         e.bulletExSpeed = this.bulletExSpeed;
+        e.isReflect = this.isReflect;
 
         e.info1 = this.info1;
         e.info2 = this.info2;
