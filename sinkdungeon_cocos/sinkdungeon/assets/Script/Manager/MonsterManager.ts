@@ -135,8 +135,8 @@ export default class MonsterManager extends cc.Component {
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100) : 0;
         }
         let rand = Random.rand();
-        let df = Logic.getRandomNum(50, 100);
-        let er = Logic.getRandomNum(0, 100);
+        let df = Logic.getRandomNum(80, 100);
+        let er = Logic.getRandomNum(80, 100);
         //0.5%几率添加元素
         if (rand < 0.005) {
             data.Common.iceDamage += 1;

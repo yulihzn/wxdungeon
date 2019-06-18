@@ -248,7 +248,7 @@
         "img": "weapon009",
         "common": {
             "damageMin": 0,
-            "damageMax": 0,
+            "damageMax": 2,
             "criticalStrikeRate": 0,
             "defence": 0,
             "lifeDrain": 0,
@@ -271,7 +271,7 @@
         "titlecolor": "#ffffff",
         "img": "weapon010",
         "common": {
-            "damageMin": 1,
+            "damageMin": 0,
             "damageMax": 2,
             "criticalStrikeRate": 0,
             "defence": 0,
@@ -309,7 +309,7 @@
             "maxHealth": 0
         },
         "stab":1,
-        "desc": "stab!!!",
+        "desc": "Immortal!!!",
         "far": 1
     },
     "weapon012": {
@@ -484,6 +484,7 @@
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
+            "remoteCritRate":30,
             "defence": 0,
             "lifeDrain": 0,
             "lifeRecovery": 0,
@@ -629,7 +630,7 @@
             "lifeRecovery": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":200,
+            "remoteSpeed":100,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -771,7 +772,7 @@
             "lifeRecovery": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 10,
+            "dodge": 20,
             "maxHealth": 0
         },
         "desc": "尝试一场化装舞会"

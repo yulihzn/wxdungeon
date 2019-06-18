@@ -124,6 +124,19 @@ export default class Monster extends Actor {
         // this.graphics.stroke();
     }
 
+    showCircle(){
+        let r = 0;
+        this.schedule(()=>{
+            this.graphics.clear();
+            this.graphics.strokeColor = cc.Color.RED;
+            this.graphics.circle(0,0,r);
+            r+=2;
+            this.graphics.stroke();
+            if(r>80){
+                this.graphics.clear();
+            }
+        },0.016,40);
+    }
     changeBodyRes(resName: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
@@ -538,7 +551,7 @@ export default class Monster extends Actor {
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true)
                 }
-                
+                // this.showCircle();
                 this.showAttackAnim(() => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();

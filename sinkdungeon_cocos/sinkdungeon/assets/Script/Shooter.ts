@@ -399,21 +399,25 @@ export default class Shooter extends cc.Component {
         } else if (this.dungeon) {
             for (let monster of this.dungeon.monsters) {
                 let dis = Logic.getDistance(this.getParentNode().position, monster.node.position);
-                if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
+                if (dis < 600 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = monster.node.position.sub(this.getParentNode().position.add(p));
+                    let mp = monster.node.position.clone();
+                    mp.y+=32;
+                    pos = mp.sub(this.getParentNode().position.add(p));
                 }
             }
             if (pos.equals(cc.Vec2.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
                     let dis = Logic.getDistance(this.getParentNode().position, boss.node.position);
-                    if (dis < 500 && dis < olddis && !boss.isDied) {
+                    if (dis < 600 && dis < olddis && !boss.isDied) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        pos = boss.node.position.sub(this.getParentNode().position.add(p));
+                        let bp = boss.node.position.clone();
+                        bp.y+=32;
+                        pos = bp.sub(this.getParentNode().position.add(p));
                     }
                 }
 

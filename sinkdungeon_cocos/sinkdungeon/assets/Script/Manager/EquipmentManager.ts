@@ -72,20 +72,20 @@ export default class EquipmentManager extends cc.Component {
     public static readonly HELMET_PIRATEHAT = "helmet003";
     public static readonly HELMET_REDHAT = "helmet004";
     public static readonly HELMET_WHITEHAT = "helmet005";
-    public static readonly HELMET_PHARAOH  = "helmet006";
-    public static readonly HELMET_CAT  = "helmet007";
-    public static readonly HELMET_CHIEF  = "helmet008";
-    public static readonly HELMET_HORUS  = "helmet009";
-    public static readonly HELMET_GENTLEMAN  = "helmet010";
-    public static readonly HELMET_CHICKEN  = "helmet011";
-    public static readonly HELMET_DUCK  = "helmet012";
-    public static readonly HELMET_GOOSE  = "helmet013";
-    public static readonly HELMET_RADIATION  = "helmet014";
-    public static readonly HELMET_JUNGLE  = "helmet015";
-    public static readonly HELMET_ANUBIS  = "helmet016";
-    public static readonly HELMET_KNIGHT  = "helmet017";
-    public static readonly HELMET_DEATH  = "helmet018";
-    public static readonly HELMET_ENERY  = "helmet019";
+    public static readonly HELMET_PHARAOH = "helmet006";
+    public static readonly HELMET_CAT = "helmet007";
+    public static readonly HELMET_CHIEF = "helmet008";
+    public static readonly HELMET_HORUS = "helmet009";
+    public static readonly HELMET_GENTLEMAN = "helmet010";
+    public static readonly HELMET_CHICKEN = "helmet011";
+    public static readonly HELMET_DUCK = "helmet012";
+    public static readonly HELMET_GOOSE = "helmet013";
+    public static readonly HELMET_RADIATION = "helmet014";
+    public static readonly HELMET_JUNGLE = "helmet015";
+    public static readonly HELMET_ANUBIS = "helmet016";
+    public static readonly HELMET_KNIGHT = "helmet017";
+    public static readonly HELMET_DEATH = "helmet018";
+    public static readonly HELMET_ENERY = "helmet019";
     public static readonly CLOAK_WARRIOR = "cloak001";
     public static readonly TROUSERS_LONG = "trousers001";
     public static readonly TROUSERS_SHORT = "trousers002";
@@ -114,28 +114,28 @@ export default class EquipmentManager extends cc.Component {
     public static readonly SHOES_DEATH = "shoes008";
     public static readonly SHOES_ENERGY = "shoes009";
     public static readonly equipments: string[] = [EquipmentManager.WEAPON_DINNERFORK, EquipmentManager.WEAPON_KNIFE, EquipmentManager.WEAPON_CHOPPER,
-    EquipmentManager.WEAPON_HUGEBLADE,EquipmentManager.WEAPON_JUNGLEFORK, EquipmentManager.CLOTHES_SHIRT
+    EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.WEAPON_JUNGLEFORK, EquipmentManager.CLOTHES_SHIRT
         , EquipmentManager.CLOTHES_VEST, EquipmentManager.CLOTHES_NAVY, EquipmentManager.CLOTHES_PIRATE,
     EquipmentManager.CLOTHES_BUCKET, EquipmentManager.CLOTHES_REDROBE,
     EquipmentManager.CLOTHES_WHITEROBE, EquipmentManager.HELMET_BUCKETHAT,
-    EquipmentManager.CLOTHES_RADIATION,EquipmentManager.CLOTHES_JUNGLE,EquipmentManager.CLOTHES_PHARAOH,
-    EquipmentManager.CLOTHES_KNIGHT,EquipmentManager.CLOTHES_ENERGY,EquipmentManager.CLOTHES_GENTLEMAN,
+    EquipmentManager.CLOTHES_RADIATION, EquipmentManager.CLOTHES_JUNGLE, EquipmentManager.CLOTHES_PHARAOH,
+    EquipmentManager.CLOTHES_KNIGHT, EquipmentManager.CLOTHES_ENERGY, EquipmentManager.CLOTHES_GENTLEMAN,
     EquipmentManager.HELMET_PIRATEHAT, EquipmentManager.HELMET_REDHAT,
-    EquipmentManager.HELMET_WHITEHAT,EquipmentManager.HELMET_PHARAOH,EquipmentManager.HELMET_CAT,
-    EquipmentManager.HELMET_CHIEF,EquipmentManager.HELMET_HORUS,EquipmentManager.HELMET_GENTLEMAN,
-    EquipmentManager.HELMET_CHICKEN,EquipmentManager.HELMET_DUCK,EquipmentManager.HELMET_GOOSE,
-    EquipmentManager.HELMET_RADIATION,EquipmentManager.HELMET_JUNGLE,EquipmentManager.HELMET_ANUBIS,
-    EquipmentManager.HELMET_KNIGHT,EquipmentManager.HELMET_DEATH,EquipmentManager.HELMET_ENERY,
-     EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
-    EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT,EquipmentManager.TROUSERS_RADIATION,
-    EquipmentManager.TROUSERS_JUNGLE,EquipmentManager.TROUSERS_PHARAOH,EquipmentManager.TROUSERS_KNIGHT,
-    EquipmentManager.TROUSERS_DEATH,EquipmentManager.TROUSERS_ENERGY, EquipmentManager.GLOVES_WARRIOR,
+    EquipmentManager.HELMET_WHITEHAT, EquipmentManager.HELMET_PHARAOH, EquipmentManager.HELMET_CAT,
+    EquipmentManager.HELMET_CHIEF, EquipmentManager.HELMET_HORUS, EquipmentManager.HELMET_GENTLEMAN,
+    EquipmentManager.HELMET_CHICKEN, EquipmentManager.HELMET_DUCK, EquipmentManager.HELMET_GOOSE,
+    EquipmentManager.HELMET_RADIATION, EquipmentManager.HELMET_JUNGLE, EquipmentManager.HELMET_ANUBIS,
+    EquipmentManager.HELMET_KNIGHT, EquipmentManager.HELMET_DEATH, EquipmentManager.HELMET_ENERY,
+    EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
+    EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT, EquipmentManager.TROUSERS_RADIATION,
+    EquipmentManager.TROUSERS_JUNGLE, EquipmentManager.TROUSERS_PHARAOH, EquipmentManager.TROUSERS_KNIGHT,
+    EquipmentManager.TROUSERS_DEATH, EquipmentManager.TROUSERS_ENERGY, EquipmentManager.GLOVES_WARRIOR,
     EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
-    EquipmentManager.SHOES_RADIATION,EquipmentManager.SHOES_JUNGLE,EquipmentManager.SHOES_PHARAOH,
-    EquipmentManager.SHOES_KNIGHT,EquipmentManager.SHOES_ENERGY,
-    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON,EquipmentManager.GLOVES_RADIATION,
-    EquipmentManager.GLOVES_PHARAOH,EquipmentManager.GLOVES_JUNGLE,EquipmentManager.GLOVES_KNIGHT,
-    EquipmentManager.GLOVES_DEATH,EquipmentManager.GLOVES_ENERGY,
+    EquipmentManager.SHOES_RADIATION, EquipmentManager.SHOES_JUNGLE, EquipmentManager.SHOES_PHARAOH,
+    EquipmentManager.SHOES_KNIGHT, EquipmentManager.SHOES_ENERGY,
+    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON, EquipmentManager.GLOVES_RADIATION,
+    EquipmentManager.GLOVES_PHARAOH, EquipmentManager.GLOVES_JUNGLE, EquipmentManager.GLOVES_KNIGHT,
+    EquipmentManager.GLOVES_DEATH, EquipmentManager.GLOVES_ENERGY,
     EquipmentManager.WEAPON_CROWBAR, EquipmentManager.WEAPON_FRUITKNIFE, EquipmentManager.WEAPON_KATANA,
     EquipmentManager.WEAPON_HUGEAXE, EquipmentManager.WEAPON_HAPPYFIRE, EquipmentManager.WEAPON_SADICE,
     EquipmentManager.REMOTE_ALIENGUN, EquipmentManager.REMOTE_WAND, EquipmentManager.REMOTE_WINCHESTER, EquipmentManager.REMOTE_RPG,
