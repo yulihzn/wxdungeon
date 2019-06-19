@@ -36,7 +36,7 @@ cc.Sprite.prototype.activateMaterial = function(name) {
             this._currMaterial = mat;
             this._currMaterial.name = name;
             this._state = STATE_CUSTOM;
-            this._activateMaterial();
+            this._activateMaterial1();
         } else {
             console.error("activateMaterial - unknwon material: ", name);
         }
@@ -50,7 +50,7 @@ cc.Sprite.prototype.getCurrMaterial = function() {
     }
 }
 
-cc.Sprite.prototype._activateMaterial = function() {
+cc.Sprite.prototype._activateMaterial1 = function() {
     let spriteFrame = this._spriteFrame;
 
     // WebGL
