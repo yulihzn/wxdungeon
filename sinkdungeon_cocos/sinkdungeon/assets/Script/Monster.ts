@@ -26,6 +26,7 @@ import Actor from './Base/Actor';
 import Achievements from './Achievement';
 import EquipmentManager from './Manager/EquipmentManager';
 import Boom from './Item/Boom';
+import AudioPlayer from './Utils/AudioPlayer';
 
 @ccclass
 export default class Monster extends Actor {
@@ -394,6 +395,7 @@ export default class Monster extends Actor {
         let h = this.isHurt?true:false;
         //20%几率无视
         this.isHurt = Random.getRandomNum(0,100)<80;
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}})
         return h;
     }
     changeBodyColor():void{

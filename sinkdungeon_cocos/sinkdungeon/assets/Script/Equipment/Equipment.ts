@@ -6,6 +6,7 @@ import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import ShopTable from "../Building/ShopTable";
 import Dungeon from "../Dungeon";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,6 +84,8 @@ export default class Equipment extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentEquipmentsArr(newlist);
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PICK_UP}})
+
     }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
     //     let player = otherCollider.body.node.getComponent(Player);

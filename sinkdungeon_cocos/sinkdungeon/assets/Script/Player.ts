@@ -29,6 +29,7 @@ import TalentDash from './Talent/TalentDash';
 import Actor from './Base/Actor';
 import FlyWheel from './Item/FlyWheel';
 import Talent from './Talent/Talent';
+import AudioPlayer from './Utils/AudioPlayer';
 
 @ccclass
 export default class Player extends cc.Component {
@@ -603,6 +604,7 @@ export default class Player extends cc.Component {
         if(valid){
             cc.director.emit(EventConstant.HUD_DAMAGE_CORNER_SHOW);
             this.remoteExHurt();
+            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_HIT}});
         }
         return valid;
     }
