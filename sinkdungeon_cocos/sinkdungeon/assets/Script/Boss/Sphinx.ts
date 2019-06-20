@@ -143,5 +143,7 @@ export default class Sphinx extends Boss {
         this.healthBar.node.active = !this.isDied;
         this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
-
+    actorName(){
+        return '斯芬克斯';
+    }
 }

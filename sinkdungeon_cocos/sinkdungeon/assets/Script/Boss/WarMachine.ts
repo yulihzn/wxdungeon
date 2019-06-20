@@ -249,4 +249,7 @@ export default class WarMachine extends Boss {
             player.takeDamage(d);
         }
     }
+    actorName(){
+        return '战争机器';
+    }
 }

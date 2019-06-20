@@ -280,4 +280,7 @@ export default class EvilEye extends Boss {
             player.addStatus(StatusManager.BLEEDING);
         }
     }
+    actorName(){
+        return '邪眼';
+    }
 }

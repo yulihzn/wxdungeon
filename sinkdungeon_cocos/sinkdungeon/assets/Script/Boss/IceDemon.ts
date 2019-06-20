@@ -290,4 +290,7 @@ export default class IceDemon extends Boss {
             player.addStatus(StatusManager.FROZEN);
         }
     }
+    actorName(){
+        return '冰魔';
+    }
 }

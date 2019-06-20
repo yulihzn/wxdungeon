@@ -196,5 +196,7 @@ export default class Dryad extends Boss {
         this.healthBar.node.active = !this.isDied;
         this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
-    
+    actorName(){
+        return '远古之树';
+    }
 }

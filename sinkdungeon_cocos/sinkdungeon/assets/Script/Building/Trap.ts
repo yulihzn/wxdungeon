@@ -89,4 +89,7 @@ export default class Trap extends Building {
             this.timeDelay = 0;
         }
     }
+    actorName(){
+        return '尖刺';
+    }
 }

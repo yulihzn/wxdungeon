@@ -1,0 +1,31 @@
+{
+  "ver": "2.2.0",
+  "uuid": "05cf7a00-f6c2-4639-b8a2-3ed8121ae176",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "subMetas": {
+    "tilewaterlight_1_0": {
+      "ver": "1.0.3",
+      "uuid": "8ca067d6-d189-4a5d-b7a0-98a9170395ef",
+      "rawTextureUuid": "05cf7a00-f6c2-4639-b8a2-3ed8121ae176",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 16,
+      "height": 16,
+      "rawWidth": 16,
+      "rawHeight": 16,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

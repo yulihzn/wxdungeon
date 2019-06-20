@@ -83,4 +83,10 @@ export default class SlimeVenom extends Actor {
             cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});
         }
     }
+    takeDamage(damge:DamageData){
+        return false;
+    }
+    actorName(){
+        return '史莱姆毒液';
+    }
 }

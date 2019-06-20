@@ -301,4 +301,7 @@ export default class Captain extends Boss {
         }
         this.changeZIndex();
     }
+    actorName(){
+        return '邪恶船长';
+    }
 }

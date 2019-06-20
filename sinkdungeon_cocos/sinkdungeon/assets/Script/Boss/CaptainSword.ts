@@ -35,5 +35,8 @@ export default class CaptainSword extends cc.Component {
             cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});
         }
     }
+    actorName(){
+        return '邪恶船长';
+    }
     // update (dt) {}
 }

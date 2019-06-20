@@ -32,8 +32,11 @@ export default class KrakenSwingHand extends cc.Component {
             this.node.stopAllActions();
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd,actorName:this.actorName()}});
         }
+    }
+    actorName(){
+        return '海妖';
     }
     // update (dt) {}
 }

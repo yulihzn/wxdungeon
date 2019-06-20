@@ -60,4 +60,7 @@ export default class Saw extends Building {
 
     update (dt) {
     }
+    actorName(){
+        return '锯齿轮';
+    }
 }

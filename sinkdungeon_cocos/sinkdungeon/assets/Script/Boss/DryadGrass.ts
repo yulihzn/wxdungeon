@@ -68,4 +68,7 @@ export default class DryadGrass extends Actor {
             
         }
     }
+    actorName(){
+        return '树根缠绕';
+    }
 }

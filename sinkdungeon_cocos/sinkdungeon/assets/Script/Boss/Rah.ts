@@ -269,4 +269,7 @@ export default class Rah extends Boss {
             player.takeDamage(d);
         }
     }
+    actorName(){
+        return '机械拉神';
+    }
 }

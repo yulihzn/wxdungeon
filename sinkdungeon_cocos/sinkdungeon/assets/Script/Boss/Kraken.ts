@@ -196,4 +196,7 @@ export default class Kraken extends Boss {
         
 
     }
+    actorName(){
+        return '海妖';
+    }
 }

@@ -198,4 +198,7 @@ export default class Dragon extends Boss {
             player.takeDamage(d);
         }
     }
+    actorName(){
+        return '末日黑龙';
+    }
 }

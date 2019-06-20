@@ -35,6 +35,7 @@ import IceDemonThron from "./Boss/IceDemonThron";
 import DryadGrass from "./Boss/DryadGrass";
 import DecorationFloor from "./Building/DecorationFloor";
 import Saw from "./Building/Saw";
+import TileWaterPool from "./Building/TileWaterPool";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -93,6 +94,8 @@ export default class Dungeon extends cc.Component {
     dryadGrass: cc.Prefab = null;
     @property(cc.Prefab)
     saw: cc.Prefab = null;
+    @property(cc.Prefab)
+    waterPool:cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -102,6 +105,7 @@ export default class Dungeon extends cc.Component {
     wallmap: Wall[][] = new Array();//墙列表
     trapmap: Trap[][] = new Array();//陷阱列表
     footboards: FootBoard[] = new Array();//踏板列表
+    waterlist:TileWaterPool[] = new Array();//水池
     static WIDTH_SIZE: number = 15;
     static HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
@@ -167,6 +171,7 @@ export default class Dungeon extends cc.Component {
         this.wallmap = new Array();
         this.trapmap = new Array();
         this.footboards = new Array();
+        this.waterlist = new Array();
         let boxes: BoxData[] = new Array();
         let shopTables: ShopTableData[] = new Array();
         let chests: ChestData[] = new Array();
@@ -206,6 +211,15 @@ export default class Dungeon extends cc.Component {
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.trapmap[i][j] = trap.getComponent(Trap);
+                }
+                //生成水池
+                if (mapData[i][j] == '~') {
+                    let wp = cc.instantiate(this.waterPool);
+                    wp.parent = this.node;
+                    wp.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    wp.zIndex = 2000;
+                    wp.getComponent(TileWaterPool).setTiles(i,j,mapData);
+                    this.waterlist.push(wp.getComponent(TileWaterPool));
                 }
                 //生成电锯,占据5个格子
                 if (mapData[i][j] == '|') {
@@ -269,7 +283,7 @@ export default class Dungeon extends cc.Component {
                     this.footboards.push(foot.getComponent(FootBoard));
                 }
                 //生成毒液
-                if (mapData[i][j] == '~') {
+                if (mapData[i][j] == ',') {
                     let venom = cc.instantiate(this.venom);
                     venom.getComponent(SlimeVenom).player = this.player;
                     venom.getComponent(SlimeVenom).isForever = true;
@@ -278,7 +292,7 @@ export default class Dungeon extends cc.Component {
                     venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成塔罗
-                if (mapData[i][j] == ',') {
+                if (mapData[i][j] == '>') {
                     let tarottable = cc.instantiate(this.tarotTable);
                     tarottable.parent = this.node;
                     tarottable.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -965,6 +979,9 @@ export default class Dungeon extends cc.Component {
         }
         if (this.isCheckTimeDelay(dt)) {
             this.checkRoomClear();
+            for(let w of this.waterlist){
+                w.changeWaterLight();
+            }
         }
 
     }

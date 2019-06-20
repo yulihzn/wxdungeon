@@ -775,4 +775,7 @@ export default class Monster extends Actor {
         this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
         this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);
     }
+    actorName(){
+        return this.data.nameCn;
+    }
 }

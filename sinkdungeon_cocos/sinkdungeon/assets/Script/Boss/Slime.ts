@@ -304,4 +304,7 @@ export default class Slime extends Boss {
         }
         this.changeZIndex();
     }
+    actorName(){
+        return '史莱姆之王';
+    }
 }
