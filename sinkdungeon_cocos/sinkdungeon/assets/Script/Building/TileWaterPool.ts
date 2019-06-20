@@ -29,7 +29,7 @@ export default class TileWaterPool extends Building {
     changeWaterLight(){
         let sprite = this.getComponentInChildren(cc.Sprite);
             this.islight = !this.islight;
-            this.resName =this.islight?this.resName:'light'+this.resName];
+            sprite.spriteFrame =Logic.spriteFrames[this.islight?this.resName:'light'+this.resName];
     }
  
     setTiles(i: number, j: number, mapData: string[][]) {
