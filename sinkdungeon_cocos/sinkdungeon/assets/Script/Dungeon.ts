@@ -218,8 +218,9 @@ export default class Dungeon extends cc.Component {
                     wp.parent = this.node;
                     wp.position = Dungeon.getPosInMap(cc.v2(i, j));
                     wp.zIndex = 2000;
-                    wp.getComponent(TileWaterPool).setTiles(i,j,mapData);
-                    this.waterlist.push(wp.getComponent(TileWaterPool));
+                    let w = wp.getComponent(TileWaterPool);
+                    w.setTiles(i,j,mapData);
+                    this.waterlist.push(w);
                 }
                 //生成电锯,占据5个格子
                 if (mapData[i][j] == '|') {
