@@ -288,13 +288,13 @@ export default class MeleeWeapon extends cc.Component {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        let power = 320;
+        let power = 200;
         if (!this.isFar && this.isStab) {
-            power = 160;
+            power = 100;
         } else if (this.isFar && this.isStab) {
-            power = 480;
+            power = 400;
         } else if (!this.isFar && !this.isStab) {
-            power = 320;
+            power = 200;
         } else {
             power = 320;
         }

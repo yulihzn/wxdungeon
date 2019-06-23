@@ -34,8 +34,11 @@ export default class Monster extends Actor {
     public static readonly RES_WALK01 = 'anim001';//图片资源 行走1
     public static readonly RES_WALK02 = 'anim002';//图片资源 行走2
     public static readonly RES_WALK03 = 'anim003';//图片资源 行走3
+    public static readonly RES_HIT01 = 'hit001';//图片资源 受击1
     public static readonly RES_ATTACK01 = 'anim004';//图片资源 准备攻击
     public static readonly RES_ATTACK02 = 'anim005';//图片资源 攻击
+    public static readonly RES_ATTACK03 = 'anim006';//图片资源 准备特殊攻击
+    public static readonly RES_ATTACK04 = 'anim007';//图片资源 特殊攻击
 
     static readonly SCALE_NUM = 1.5;
     @property(cc.Vec2)
@@ -52,7 +55,7 @@ export default class Monster extends Actor {
     @property(cc.Node)
     dangerZone:cc.Node = null;
     private sprite: cc.Node;
-    private body: cc.Node;
+    private bodySprite: cc.Sprite;
     private shadow: cc.Node;
     private dashlight: cc.Node;
     private anim: cc.Animation;
@@ -97,7 +100,7 @@ export default class Monster extends Actor {
         this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
-        this.body = this.sprite.getChildByName('body');
+        this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         if (this.isVariation) {
             let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
             this.node.scale = Monster.SCALE_NUM * scaleNum;
@@ -138,13 +141,20 @@ export default class Monster extends Actor {
             }
         },0.016,40);
     }
+    getCurrentBodyRes():string{
+        if (!this.sprite) {
+            this.sprite = this.node.getChildByName('sprite');
+            this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
+        }
+        return this.bodySprite.spriteFrame.name;
+    }
     changeBodyRes(resName: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
-            this.body = this.sprite.getChildByName('body');
+            this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
-        this.body.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+        this.bodySprite.spriteFrame = spriteFrame;
         // body.width = spriteFrame.getRect().width;
         // body.height = spriteFrame.getRect().height;
         let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
@@ -362,10 +372,8 @@ export default class Monster extends Actor {
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
         }
+        this.changeBodyRes(this.data.resName,Monster.RES_HIT01);
         this.isHurt = dd.getTotalDamage() > 0;
-        if (this.isDisguising) {
-            this.changeBodyRes(this.data.resName);
-        }
         this.isDisguising = false;
         this.meleeSkill.IsExcuting = false;
         this.remoteSkill.IsExcuting = false;
@@ -374,7 +382,7 @@ export default class Monster extends Actor {
         this.idleAction = null;
         //100ms后修改受伤
         if(dd.getTotalDamage()>0){
-            this.body.color = cc.color(255, 0, 0);
+            this.bodySprite.node.color = cc.color(255, 0, 0);
         }
         this.scheduleOnce(() => {
             if (this.node) {
@@ -392,11 +400,8 @@ export default class Monster extends Actor {
         if (this.data.Common.lifeRecovery > 0 && this.isHurt) {
             this.addStatus(StatusManager.RECOVERY);
         }
-        let h = this.isHurt?true:false;
-        //20%几率无视
-        this.isHurt = Random.getRandomNum(0,100)<80;
         cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}})
-        return h;
+        return this.isHurt;
     }
     changeBodyColor():void{
         if(!this.data){
@@ -409,7 +414,7 @@ export default class Monster extends Actor {
         c = this.getMixColor(c,this.data.getToxicDefence()+this.data.getToxicDamage()>0?'#66CC00':'#000000');
         c = this.getMixColor(c,this.data.getCurseDefence()+this.data.getCurseDamage()>0?'#660099':'#000000');
         c = c == '#000000' ? '#ffffff' : c;
-        this.body.color = cc.color(255,255,255).fromHEX(c);
+        this.bodySprite.node.color = cc.color(255,255,255).fromHEX(c);
     }
     getMixColor(color1: string, color2: string): string {
         let c1 = cc.color().fromHEX(color1);
