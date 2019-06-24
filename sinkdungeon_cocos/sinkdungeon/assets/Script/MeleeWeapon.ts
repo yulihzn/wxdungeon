@@ -121,16 +121,17 @@ export default class MeleeWeapon extends cc.Component {
         }else{
             this.comboType = MeleeWeapon.COMBO1; 
         }
+        if(!this.isComboing){
+            this.comboType = MeleeWeapon.COMBO1;
+            this.isComboing = true;
+        }
     }
     attack(data: PlayerData, isMiss: boolean): boolean {
         if (this.isAttacking) {
             return false;
         }
         this.updateCombo();
-        // if(!this.isComboing){
-        //     this.comboType = MeleeWeapon.COMBO1;
-        //     this.isComboing = true;
-        // }
+        
         this.isMiss = isMiss;
         this.isAttacking = true;
         let animSpeed = 1 + data.getAttackSpeed() / 1000;
