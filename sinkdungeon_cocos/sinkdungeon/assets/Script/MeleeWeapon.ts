@@ -119,7 +119,7 @@ export default class MeleeWeapon extends cc.Component {
         }else if(this.comboType == MeleeWeapon.COMBO3){
             this.comboType = MeleeWeapon.COMBO1;
         }else{
-            this.comboType == MeleeWeapon.COMBO1; 
+            this.comboType = MeleeWeapon.COMBO1; 
         }
     }
     attack(data: PlayerData, isMiss: boolean): boolean {
