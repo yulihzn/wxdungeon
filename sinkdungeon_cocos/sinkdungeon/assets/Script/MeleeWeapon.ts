@@ -158,7 +158,6 @@ export default class MeleeWeapon extends cc.Component {
         }
         if (this.anim) {
             let animname = this.getAttackAnimName();
-            cc.log(animname);
             this.anim.play(animname);
             this.anim.getAnimationState(animname).speed = animSpeed;
         }
@@ -343,19 +342,17 @@ export default class MeleeWeapon extends cc.Component {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        let power = 200;
+        let power = 50;
         if (!this.isFar && this.isStab) {
-            power = 100;
+            power = 50;
         } else if (this.isFar && this.isStab) {
-            power = 400;
+            power = 300;
         } else if (!this.isFar && !this.isStab) {
             power = 200;
         } else {
-            power = 320;
+            power = 50;
         }
         pos = pos.normalizeSelf().mul(power);
-        let action = cc.moveBy(0.1, pos.x, pos.y);
-        // node.runAction(action);
         rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
     }
     attacking(attackTarget: cc.Collider) {

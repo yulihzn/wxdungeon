@@ -1,11 +1,11 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MeleeAttackStabFar",
+  "_name": "MeleeAttackStabFar3",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.25,
+  "_duration": 0.75,
   "sample": 60,
-  "speed": 1,
+  "speed": 2,
   "wrapMode": "1",
   "curveData": {
     "paths": {
@@ -26,6 +26,30 @@
             },
             {
               "frame": 0.25,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -48
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 30
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.5833333333333334,
+              "value": -48
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 30
+            },
+            {
+              "frame": 0.75,
               "value": 0
             }
           ]
@@ -49,6 +73,30 @@
             {
               "frame": 0.25,
               "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 128
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.5833333333333334,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 128
+            },
+            {
+              "frame": 0.75,
+              "value": 0
             }
           ],
           "x": [
@@ -62,7 +110,53 @@
             },
             {
               "frame": 0.25,
+              "value": 32
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 110
+            },
+            {
+              "frame": 0.5,
+              "value": 32
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 110
+            },
+            {
+              "frame": 0.75,
               "value": 48
+            }
+          ]
+        }
+      },
+      "sprite": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 15
+            },
+            {
+              "frame": 0.25,
+              "value": 0
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": -15
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.75,
+              "value": 0
             }
           ]
         }
@@ -82,6 +176,22 @@
           {
             "frame": 0.25,
             "value": 0
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": 40
+          },
+          {
+            "frame": 0.5,
+            "value": 0
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": 40
+          },
+          {
+            "frame": 0.75,
+            "value": 0
           }
         ],
         "offset": [
@@ -98,6 +208,46 @@
             "value": {
               "__type__": "cc.Vec2",
               "x": 120,
+              "y": -30
+            }
+          },
+          {
+            "frame": 0.25,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 0
+            }
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 120,
+              "y": 30
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 0
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 120,
+              "y": 10
+            }
+          },
+          {
+            "frame": 0.75,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
               "y": 0
             }
           }
@@ -107,7 +257,7 @@
   },
   "events": [
     {
-      "frame": 0.25,
+      "frame": 0.75,
       "func": "MeleeAttackFinish",
       "params": [
         false

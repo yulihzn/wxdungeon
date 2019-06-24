@@ -319,6 +319,9 @@ export default class Monster extends Actor {
         let mul = absh > absv ? absh : absv;
         mul = mul == 0 ? 1 : mul;
         let movement = cc.v2(h, v);
+        if (speed < 0) {
+            speed = 0;
+        }
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement.clone();
         this.currentlinearVelocitySpeed = movement.clone();
