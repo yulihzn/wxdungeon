@@ -8,6 +8,8 @@ import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import BossAttackCollider from "./BossAttackCollider";
 import Random from "../Utils/Random";
+import { EventConstant } from "../EventConstant";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,6 +58,7 @@ export default class Dragon extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 

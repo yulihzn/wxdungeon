@@ -73,7 +73,7 @@ export default class Item extends cc.Component {
         switch(this.data.resName){
             case Item.HEART:player.addStatus(StatusManager.HEALING);break;
             case Item.AMMO:Logic.ammo+=30;break;
-            case Item.REDCAPSULE:player.addStatus(StatusManager.ATTACKPLUS);break;
+            case Item.REDCAPSULE:player.addStatus(StatusManager.FASTATTACK);break;
             case Item.BLUECAPSULE:player.addStatus(StatusManager.FASTMOVE);break;
             case Item.SHIELD:player.addStatus(StatusManager.PERFECTDEFENCE);break;
         }

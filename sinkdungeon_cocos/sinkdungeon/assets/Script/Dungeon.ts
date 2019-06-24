@@ -346,7 +346,7 @@ export default class Dungeon extends cc.Component {
                     b.boxType = Box.PLANT;
                 }
                 //房间未清理时加载物品
-                if (!Logic.mapManager.isCurrentRoomStateClear()) {
+                if (!Logic.mapManager.isCurrentRoomStateClear()|| Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     //生成心
                     if (mapData[i][j] == 'H') {
                         this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.HEART);

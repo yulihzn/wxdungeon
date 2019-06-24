@@ -5,6 +5,8 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
+import AudioPlayer from "../Utils/AudioPlayer";
+import { EventConstant } from "../EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -65,6 +67,7 @@ export default class WarMachine extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 

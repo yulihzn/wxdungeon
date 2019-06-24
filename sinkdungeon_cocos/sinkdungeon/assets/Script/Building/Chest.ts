@@ -5,6 +5,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
 import ChestData from "../Data/ChestData";
 import Building from "./Building";
+import RectDungeon from "../Rect/RectDungeon";
 
 
 // Learn TypeScript:
@@ -81,17 +82,18 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        if(Logic.level < 1){
+                        if(Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RectDungeon.TEST_ROOM){
                             dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos,null,this.data.quality);
                             dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                         }else{
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.data.pos,null,this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);
                             dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.data.pos,null,this.data.quality);
                         }
-                        // dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.data.pos,null,this.data.quality);
-                        // dungeon.addEquipment(EquipmentManager.GLOVES_WARRIOR, this.data.pos,null,this.data.quality);
-                        // dungeon.addEquipment(EquipmentManager.GLOVES_DEMON, this.data.pos,null,this.data.quality);
                     }
                 }
             }));

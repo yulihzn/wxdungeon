@@ -11,6 +11,7 @@ import SlimeVenom from "./SlimeVenom";
 import Monster from "../Monster";
 import MonsterManager from "../Manager/MonsterManager";
 import Skill from "../Utils/Skill";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -203,6 +204,7 @@ export default class Slime extends Boss {
             this.anim.play('SlimeCrownFall');
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 

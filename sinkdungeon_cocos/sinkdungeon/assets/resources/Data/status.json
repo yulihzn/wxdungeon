@@ -95,9 +95,9 @@
         "spriteFrameName": "iconattackspeed",
         "statusType": 9,
         "desc": "",
-        "duration": 15,
+        "duration": 999,
         "common": {
-            "attackSpeed": 200
+            "attackSpeed": 999
         }
     },
     "status010": {

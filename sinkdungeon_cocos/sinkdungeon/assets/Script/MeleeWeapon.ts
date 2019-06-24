@@ -71,6 +71,11 @@ export default class MeleeWeapon extends cc.Component {
     isMiss = false;
     drainSkill = new Skill();
     isReflect = false;//子弹偏转
+    static readonly COMBO1:number = 1;
+    static readonly COMBO2:number = 2;
+    static readonly COMBO3:number = 3;
+    comboType = 0;
+    isComboing = false;
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -106,22 +111,55 @@ export default class MeleeWeapon extends cc.Component {
         return this.hv;
     }
 
+    updateCombo(){
+        if(this.comboType == MeleeWeapon.COMBO1){
+            this.comboType = MeleeWeapon.COMBO2;
+        }else if(this.comboType == MeleeWeapon.COMBO2){
+            this.comboType = MeleeWeapon.COMBO3;
+        }else if(this.comboType == MeleeWeapon.COMBO3){
+            this.comboType = MeleeWeapon.COMBO1;
+        }else{
+            this.comboType == MeleeWeapon.COMBO1; 
+        }
+    }
     attack(data: PlayerData, isMiss: boolean): boolean {
         if (this.isAttacking) {
             return false;
         }
+        this.updateCombo();
+        // if(!this.isComboing){
+        //     this.comboType = MeleeWeapon.COMBO1;
+        //     this.isComboing = true;
+        // }
         this.isMiss = isMiss;
         this.isAttacking = true;
         let animSpeed = 1 + data.getAttackSpeed() / 1000;
         if (animSpeed < 0.2) {
-            animSpeed = 0.2;
+            //匕首上限
+            if(this.isStab&&!this.isFar){
+                animSpeed = 0.2;
+            }
+            //长剑上限
+            if(!this.isStab&&!this.isFar){
+                animSpeed = 0.4;
+            }
+            //长枪上限
+            if(this.isStab&&this.isFar){
+                animSpeed = 0.6;
+            }
+            //大剑上限
+            if(!this.isStab&&this.isFar){
+                animSpeed = 0.8;
+            }
         }
         if (animSpeed > 3) {
             animSpeed = 3;
         }
         if (this.anim) {
-            this.anim.play(this.getAttackAnimName());
-            this.anim.getAnimationState(this.getAttackAnimName()).speed = animSpeed;
+            let animname = this.getAttackAnimName();
+            cc.log(animname);
+            this.anim.play(animname);
+            this.anim.getAnimationState(animname).speed = animSpeed;
         }
         let p = this.weaponFirePoint.position.clone();
         let ran = Logic.getRandomNum(0, 100);
@@ -147,7 +185,18 @@ export default class MeleeWeapon extends cc.Component {
         } else {
             this.isReverse ? name = "MeleeAttackReverse" : name = "MeleeAttack";
         }
-        return name;
+        return name+this.getComboSuffix();
+    }
+    private getComboSuffix():string{
+        if(this.comboType == MeleeWeapon.COMBO1){
+            return '1';
+        }else if(this.comboType == MeleeWeapon.COMBO2){
+            return '2';
+        }else if(this.comboType == MeleeWeapon.COMBO3){
+            return '3';
+        }else{
+            return '1';
+        }
     }
     private getWaveLight(dungeonNode: cc.Node, p: cc.Vec2, elementType: number, isStab: boolean, isFar: boolean, isReverse: boolean) {
         let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight];
@@ -193,6 +242,11 @@ export default class MeleeWeapon extends cc.Component {
     MeleeAttackFinish(reverse: boolean) {
         this.isAttacking = false;
         this.isReverse = !reverse;
+        this.scheduleOnce(()=>{
+            if(!this.isAttacking){
+                this.isComboing = false;
+            }
+        },1);
         // this.waveWeapon.isAttacking = false;
         // this.stabWeapon.isAttacking = false;
     }

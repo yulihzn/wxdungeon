@@ -35,7 +35,7 @@ import AudioPlayer from './Utils/AudioPlayer';
 export default class Player extends cc.Component {
     static readonly STATE_IDLE = 0;
     static readonly STATE_WALK = 1;
-    static readonly STATE_ATTACK =2;
+    static readonly STATE_ATTACK = 2;
     static readonly STATE_FALL = 3;
     static readonly STATE_DIE = 4;
     @property(cc.Vec2)
@@ -63,7 +63,7 @@ export default class Player extends cc.Component {
     helmetSprite: cc.Sprite = null;
     clothesSprite: cc.Sprite = null;
     trousersSprite: cc.Sprite = null;
-    pantsSprite:cc.Sprite = null;
+    pantsSprite: cc.Sprite = null;
     glovesLeftSprite: cc.Sprite = null;
     shoesLeftSprite: cc.Sprite = null;
     shoesRightSprite: cc.Sprite = null;
@@ -95,9 +95,9 @@ export default class Player extends cc.Component {
 
     defaultPos = cc.v2(0, 0);
 
-    talentDash:TalentDash;
-    talentShield:TalentShield;
-    flyWheel:FlyWheel;
+    talentDash: TalentDash;
+    talentShield: TalentShield;
+    flyWheel: FlyWheel;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -110,23 +110,23 @@ export default class Player extends cc.Component {
         this.isDied = false;
         this.isStone = false;
         this.anim = this.getComponent(cc.Animation);
-       
+
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.sprite = this.node.getChildByName('sprite');
-        this.bodySprite = this.getSpriteChildSprite(['sprite', 'body','body']);
+        this.bodySprite = this.getSpriteChildSprite(['sprite', 'body', 'body']);
         // this.playerItemSprite = this.getSpriteChildSprite(['sprite', 'righthand', 'item']);
-        this.hairSprite = this.getSpriteChildSprite(['sprite', 'body','head', 'hair']);
+        this.hairSprite = this.getSpriteChildSprite(['sprite', 'body', 'head', 'hair']);
         this.weaponSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'weapon']);
         this.weaponLightSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'meleelight']);
         this.weaponStabSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'stabweapon']);
         this.weaponStabLightSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'stablight']);
-        this.helmetSprite = this.getSpriteChildSprite(['sprite', 'body','head','helmet']);
-        this.clothesSprite = this.getSpriteChildSprite(['sprite', 'body','body', 'clothes']);
+        this.helmetSprite = this.getSpriteChildSprite(['sprite', 'body', 'head', 'helmet']);
+        this.clothesSprite = this.getSpriteChildSprite(['sprite', 'body', 'body', 'clothes']);
         this.trousersSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs']);
-        this.pantsSprite = this.getSpriteChildSprite(['sprite', 'body', 'body','pants']);
-        this.glovesLeftSprite = this.getSpriteChildSprite(['sprite', 'body','handleft', 'gloveleft']);
-        this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footleft','shoes']);
-        this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footright','shoes']);
+        this.pantsSprite = this.getSpriteChildSprite(['sprite', 'body', 'body', 'pants']);
+        this.glovesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'handleft', 'gloveleft']);
+        this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footleft', 'shoes']);
+        this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footright', 'shoes']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
         // this.shieldBackSprite = this.getSpriteChildSprite(['sprite', 'shieldback']);
         // this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
@@ -210,7 +210,7 @@ export default class Player extends cc.Component {
         }
     }
 
-    
+
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
         for (let name of childNames) {
@@ -218,15 +218,15 @@ export default class Player extends cc.Component {
         }
         return node.getComponent(cc.Sprite);
     }
-    dizzCharacter(dizzDuration:number){
-        if(dizzDuration>0){
+    dizzCharacter(dizzDuration: number) {
+        if (dizzDuration > 0) {
             this.isDizz = true;
             this.resetFoot();
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.playerAnim(Player.STATE_IDLE);
-            this.scheduleOnce(()=>{
+            this.scheduleOnce(() => {
                 this.isDizz = false;
-            },dizzDuration)
+            }, dizzDuration)
         }
     }
     private statusUpdate() {
@@ -292,16 +292,16 @@ export default class Player extends cc.Component {
                 this.shooter.changeResColor(c);
                 break;
             case 'helmet':
-                this.hairSprite.node.opacity =  this.inventoryManager.helmet.hideHair==1? 0 : 255;
+                this.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
                 this.updateEquipMent(this.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
                 break;
             case 'clothes':
                 this.updateEquipMent(this.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
                 break;
             case 'trousers':
-            let isLong = this.inventoryManager.trousers.trouserslong == 1;
-                this.updateEquipMent(this.trousersSprite, isLong?this.inventoryManager.trousers.color:'#ffffff',Logic.spriteFrames['playerlegs']);
-                this.updateEquipMent(this.pantsSprite, this.inventoryManager.trousers.color,spriteFrame);
+                let isLong = this.inventoryManager.trousers.trouserslong == 1;
+                this.updateEquipMent(this.trousersSprite, isLong ? this.inventoryManager.trousers.color : '#ffffff', Logic.spriteFrames['playerlegs']);
+                this.updateEquipMent(this.pantsSprite, this.inventoryManager.trousers.color, spriteFrame);
                 break;
             case 'gloves':
                 this.updateEquipMent(this.glovesLeftSprite, this.inventoryManager.gloves.color, spriteFrame);
@@ -354,11 +354,11 @@ export default class Player extends cc.Component {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
     addStatus(statusType: string) {
-        if(this.talentShield.IsExcuting){
-            if(this.talentShield.canAddStatus(statusType)){
+        if (this.talentShield.IsExcuting) {
+            if (this.talentShield.canAddStatus(statusType)) {
                 this.statusManager.addStatus(statusType);
             }
-        }else{
+        } else {
             this.statusManager.addStatus(statusType);
         }
     }
@@ -375,7 +375,24 @@ export default class Player extends cc.Component {
         pos = pos.normalizeSelf().mul(15);
         pos.x = this.isFaceRight ? pos.x : -pos.x;
         let speed = PlayerData.DefAULT_SPEED - this.data.getAttackSpeed();
-        if (speed < 1) { speed = 1 }
+        if (speed < 1) {
+            //匕首上限
+            if(this.meleeWeapon.isStab&&!this.meleeWeapon.isFar){
+                speed = 1;
+            }
+            //长剑上限
+            if(!this.meleeWeapon.isStab&&!this.meleeWeapon.isFar){
+                speed = 100;
+            }
+            //长枪上限
+            if(this.meleeWeapon.isStab&&this.meleeWeapon.isFar){
+                speed = 200;
+            }
+            //大剑上限
+            if(!this.meleeWeapon.isStab&&this.meleeWeapon.isFar){
+                speed = 300;
+            }
+        }
         if (speed > PlayerData.DefAULT_SPEED * 10) { speed = PlayerData.DefAULT_SPEED * 10; }
         let spritePos = this.sprite.position.clone();
         let action = cc.sequence(cc.moveBy(0.1, -pos.x, -pos.y), cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
@@ -419,8 +436,8 @@ export default class Player extends cc.Component {
     }
     //特效攻击
     remoteExAttack(): void {
-        for(let data of this.inventoryManager.list){
-            if(data.exBulletTypeAttack.length>0&&Random.getRandomNum(0,100)<data.exBulletRate){
+        for (let data of this.inventoryManager.list) {
+            if (data.exBulletTypeAttack.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
                 this.shooterEx.data.bulletType = data.exBulletTypeAttack;
                 this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
                 this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
@@ -431,8 +448,8 @@ export default class Player extends cc.Component {
     }
     //特效受击
     remoteExHurt(): void {
-        for(let data of this.inventoryManager.list){
-            if(data.exBulletTypeHurt.length>0&&Random.getRandomNum(0,100)<data.exBulletRate){
+        for (let data of this.inventoryManager.list) {
+            if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
                 this.shooterEx.data.bulletType = data.exBulletTypeHurt;
                 this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
                 this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
@@ -516,37 +533,37 @@ export default class Player extends cc.Component {
             this.changeZIndex(this.pos);
         }
     }
-    resetFoot(){
+    resetFoot() {
         this.trousersSprite.spriteFrame = Logic.spriteFrames['playerlegs'];
-                this.shoesLeftSprite.node.parent.setPosition(2,-1);
-                this.shoesLeftSprite.node.parent.setRotation(0);
-                this.shoesRightSprite.node.parent.setPosition(-2,-1);
-                this.shoesRightSprite.node.parent.setRotation(0);
+        this.shoesLeftSprite.node.parent.setPosition(2, -1);
+        this.shoesLeftSprite.node.parent.setRotation(0);
+        this.shoesRightSprite.node.parent.setPosition(-2, -1);
+        this.shoesRightSprite.node.parent.setRotation(0);
     }
-    playerAnim(animType:number):void{
+    playerAnim(animType: number): void {
         let walkName = "PlayerWalk";
-        switch(animType){
+        switch (animType) {
             case Player.STATE_IDLE:
-            if (this.anim.getAnimationState(walkName).isPlaying) {
-                this.anim.play('PlayerIdle');
-            }
-            break;
+                if (this.anim.getAnimationState(walkName).isPlaying) {
+                    this.anim.play('PlayerIdle');
+                }
+                break;
             case Player.STATE_WALK:
-            if (!this.anim.getAnimationState(walkName).isPlaying 
-            &&!this.anim.getAnimationState('PlayerFist').isPlaying
-            &&!this.anim.getAnimationState('PlayerAttack').isPlaying) {
-                this.anim.play(walkName);
-            }
-            break;
+                if (!this.anim.getAnimationState(walkName).isPlaying
+                    && !this.anim.getAnimationState('PlayerFist').isPlaying
+                    && !this.anim.getAnimationState('PlayerAttack').isPlaying) {
+                    this.anim.play(walkName);
+                }
+                break;
             case Player.STATE_ATTACK:
-            if(!this.meleeWeapon.isFar&&this.meleeWeapon.isStab){
-                this.anim.play('PlayerFist');
-            }else{
-                this.anim.play('PlayerAttack');
-            }
-            break;
-            case Player.STATE_FALL:break;
-            case Player.STATE_DIE:break;
+                if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
+                    this.anim.play('PlayerFist');
+                } else {
+                    this.anim.play('PlayerAttack');
+                }
+                break;
+            case Player.STATE_FALL: break;
+            case Player.STATE_DIE: break;
         }
     }
 
@@ -575,17 +592,17 @@ export default class Player extends cc.Component {
             this.isFall = false;
         }, 2);
     }
-    takeDamage(damageData: DamageData,actor?:Actor): boolean {
+    takeDamage(damageData: DamageData, actor?: Actor): boolean {
         if (!this.data) {
             return false;
         }
         //盾牌
-        this.talentShield.takeDamage(damageData,actor);
+        this.talentShield.takeDamage(damageData, actor);
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
-        if(this.talentDash.hashTalent(Talent.DASH_12)&&this.talentDash.IsExcuting && dd.getTotalDamage() > 0){
+        if (this.talentDash.hashTalent(Talent.DASH_12) && this.talentDash.IsExcuting && dd.getTotalDamage() > 0) {
             isDodge = true;
         }
         dd = isDodge ? new DamageData() : dd;
@@ -601,10 +618,10 @@ export default class Player extends cc.Component {
             this.killed();
         }
         let valid = !isDodge && dd.getTotalDamage() > 0;
-        if(valid){
+        if (valid) {
             cc.director.emit(EventConstant.HUD_DAMAGE_CORNER_SHOW);
             this.remoteExHurt();
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PLAYER_HIT}});
+            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAYER_HIT } });
         }
         return valid;
     }
@@ -669,7 +686,7 @@ export default class Player extends cc.Component {
         }
         return false;
     }
-    
+
     update(dt) {
 
         if (this.isRecoveryTimeDelay(dt)) {
@@ -687,19 +704,19 @@ export default class Player extends cc.Component {
         this.turnStone(this.isStone);
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
-    private useSkill():void{
-        if(Logic.hashTalent(Talent.SHIELD_01)){
-            if(this.talentShield){
+    private useSkill(): void {
+        if (Logic.hashTalent(Talent.SHIELD_01)) {
+            if (this.talentShield) {
                 this.talentShield.useShield();
             }
-        }else if(Logic.hashTalent(Talent.DASH_01)){
-            if(this.talentDash){
+        } else if (Logic.hashTalent(Talent.DASH_01)) {
+            if (this.talentDash) {
                 this.talentDash.useDash();
             }
         }
-        
+
     }
-    
+
     useItem() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {

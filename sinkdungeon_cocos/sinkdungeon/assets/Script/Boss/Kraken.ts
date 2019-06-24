@@ -9,6 +9,7 @@ import DamageData from "../Data/DamageData";
 import Boss from "./Boss";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -99,6 +100,7 @@ export default class Kraken extends Boss {
                 this.anim.playAdditive('KrakenSwingLeft');
             }
         }
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
     
