@@ -223,7 +223,7 @@ export default class Dungeon extends cc.Component {
                     this.waterlist.push(w);
                 }
                 //生成电锯,占据5个格子
-                if (mapData[i][j] == 'T3') {
+                if (mapData[i][j] == 'X0') {
                     let saw = cc.instantiate(this.saw);
                     saw.parent = this.node;
                     saw.getComponent(Saw).setPos(cc.v2(i,j));
@@ -238,7 +238,7 @@ export default class Dungeon extends cc.Component {
                     em.dungeon = this;
                 }
                 //生成落石
-                if (mapData[i][j] == 'T1') {
+                if (mapData[i][j] == 'F0') {
                     this.addFallStone(Dungeon.getPosInMap(cc.v2(i, j)), false);
                 }
                 //生成装饰
@@ -284,7 +284,7 @@ export default class Dungeon extends cc.Component {
                     this.footboards.push(foot.getComponent(FootBoard));
                 }
                 //生成毒液
-                if (mapData[i][j] == 'T4') {
+                if (mapData[i][j] == 'V0') {
                     let venom = cc.instantiate(this.venom);
                     venom.getComponent(SlimeVenom).player = this.player;
                     venom.getComponent(SlimeVenom).isForever = true;
@@ -318,12 +318,16 @@ export default class Dungeon extends cc.Component {
                     }
                 }
                 //生成木盒子 并且根据之前记录的位置放置
-                if (mapData[i][j] == 'B0') {
+                if (this.isThe(mapData[i][j],'B')) {
                     let box = cc.instantiate(this.box);
                     box.parent = this.node;
                     let b = box.getComponent(Box)
                     b.data.defaultPos = cc.v2(i, j);
                     b.setPos(cc.v2(i, j));
+                    //生成植物
+                    if(this.isThe(mapData[i][j],'B1')){
+                        b.boxType = Box.PLANT;
+                    }
                     let currboxes = Logic.mapManager.getCurrentMapBoxes();
                     if (currboxes) {
                         for (let tempbox of currboxes) {
@@ -336,15 +340,7 @@ export default class Dungeon extends cc.Component {
                         boxes.push(b.data);
                     }
                 }
-                //生成植物
-                if (mapData[i][j] == 'B1') {
-                    let box = cc.instantiate(this.box);
-                    box.parent = this.node;
-                    let b: Box = box.getComponent(Box);
-                    b.data.defaultPos = cc.v2(i, j);
-                    b.setPos(cc.v2(i, j));
-                    b.boxType = Box.PLANT;
-                }
+               
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear()|| Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     //生成心
@@ -556,6 +552,10 @@ export default class Dungeon extends cc.Component {
             Logic.mapManager.setCurrentChestsArr(chests);
         }
         cc.log('load finished');
+    }
+    isThe(mapStr:string,typeStr:string):boolean{
+        let isequal = mapStr.indexOf(typeStr) != -1;
+        return isequal;
     }
     addItem(pos: cc.Vec2, resName: string) {
         if (!this.item) {

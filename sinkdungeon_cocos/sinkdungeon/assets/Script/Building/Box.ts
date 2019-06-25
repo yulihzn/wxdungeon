@@ -20,6 +20,7 @@ export default class Box extends Building {
 
     static readonly BOX = 0;
     static readonly PLANT = 1;
+    static readonly BOXBREAKABLE = 2;
     // LIFE-CYCLE CALLBACKS:
     anim: cc.Animation;
     private timeDelay = 0;
@@ -36,6 +37,7 @@ export default class Box extends Building {
         switch(this.boxType){
             case Box.BOX:resName = 'box';break;
             case Box.PLANT:resName = 'plant';break;
+            case Box.BOXBREAKABLE:resName = 'box';break;
         }
         switch(Logic.chapterName){
             case Logic.CHAPTER00:this.changeRes(`${resName}000`);break;
