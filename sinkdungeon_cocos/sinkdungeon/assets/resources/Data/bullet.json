@@ -529,7 +529,7 @@
     },
     "bullet029": {
         "name":"圆形种子",
-        "resName": "bullet008",
+        "resName": "bullet029",
         "lightName": "bulletlight001",
         "lightColor": "#3EAF4C",
         "speed": 500,
@@ -538,6 +538,19 @@
         "size": 1,
         "statusType":"status014",
         "statusRate":100,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet030": {
+        "name":"千本",
+        "resName": "bullet030",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1,
         "damage": {
             "physicalDamage": 1
         }

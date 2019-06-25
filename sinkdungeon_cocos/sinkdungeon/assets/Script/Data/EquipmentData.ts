@@ -32,7 +32,7 @@ export default class EquipmentData extends BaseData{
     trouserslong = 0;//是否长裤
     bulletType = "";//子弹类别
     bulletSize = 0;//子弹增加大小 为0代表不改变 1代表加一倍
-    bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
+    bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18,超过的话是一个固定圆，为80的时候是个八方向
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（秒）
     bulletNets = 0;//是否排状子弹11发并排数量为发射次数 为0的时候不触发 
@@ -47,6 +47,9 @@ export default class EquipmentData extends BaseData{
     exBulletTypeAttack = '';//攻击额外子弹类别
     exBulletTypeHurt = '';//受伤害额外子弹类别
     exBulletRate = 0;//额外子弹几率
+    exBulletCombo1 = 0;//攻击额外子弹连段，为1代表在这一次攻击释放
+    exBulletCombo2 = 0;
+    exBulletCombo3 = 0;
 
     private common:CommonData;
 
@@ -109,6 +112,9 @@ export default class EquipmentData extends BaseData{
         this.statusInterval = data.statusInterval?data.statusInterval:0;
         this.isReflect = data.isReflect?data.isReflect:0;
         this.exBulletRate = data.exBulletRate?data.exBulletRate:0;
+        this.exBulletCombo1 = data.exBulletCombo1?data.exBulletCombo1:0;
+        this.exBulletCombo2 = data.exBulletCombo2?data.exBulletCombo2:0;
+        this.exBulletCombo3 = data.exBulletCombo3?data.exBulletCombo3:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -161,6 +167,9 @@ export default class EquipmentData extends BaseData{
         e.bulletExSpeed = this.bulletExSpeed;
         e.isReflect = this.isReflect;
         e.exBulletRate = this.exBulletRate;
+        e.exBulletCombo1 = this.exBulletCombo1;
+        e.exBulletCombo2 = this.exBulletCombo2;
+        e.exBulletCombo3 = this.exBulletCombo3;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

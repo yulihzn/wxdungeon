@@ -141,7 +141,12 @@ export default class Shooter extends cc.Component {
         }
         let angles = [10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, -70, -70, 80, -80, 90, -90, 100, -100, 110, -110, 120, -120, 130, -130, 140, -140, 150, -150, 160, -160, 170, -170, 180, -180]
         if(this.data.bulletArcExNum>angles.length){
+            //大于默认度数数组为16方向
             let circleAngles = [0,20,45,65,90,110,135,155,180,200,225,245,270,290,315,335];
+            //为80的时候是个八方向
+            if(this.data.bulletArcExNum == 80){
+                circleAngles = [0,45,90,135,180,225,270,315,335];
+            }
             for (let i = 0; i < circleAngles.length; i++) {
                 if (!this.isAI && Logic.ammo > 0) {
                     Logic.ammo--;

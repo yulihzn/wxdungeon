@@ -47,6 +47,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly WEAPON_COOKCHOPPER = "weapon014";
     public static readonly WEAPON_LIGHTENINGBLADE = "weapon015";
     public static readonly WEAPON_JUNGLEFORK = "weapon016";
+    public static readonly WEAPON_KUNAI = "weapon017";
     public static readonly REMOTE_CROSSBOW = "remote001";
     public static readonly REMOTE_LONGBOW = "remote002";
     public static readonly REMOTE_WAND = "remote003";
@@ -114,7 +115,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly SHOES_DEATH = "shoes008";
     public static readonly SHOES_ENERGY = "shoes009";
     public static readonly equipments: string[] = [EquipmentManager.WEAPON_DINNERFORK, EquipmentManager.WEAPON_KNIFE, EquipmentManager.WEAPON_CHOPPER,
-    EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.WEAPON_JUNGLEFORK, EquipmentManager.CLOTHES_SHIRT
+    EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.WEAPON_JUNGLEFORK, EquipmentManager.CLOTHES_SHIRT,EquipmentManager.WEAPON_KUNAI,
         , EquipmentManager.CLOTHES_VEST, EquipmentManager.CLOTHES_NAVY, EquipmentManager.CLOTHES_PIRATE,
     EquipmentManager.CLOTHES_BUCKET, EquipmentManager.CLOTHES_REDROBE,
     EquipmentManager.CLOTHES_WHITEROBE, EquipmentManager.HELMET_BUCKETHAT,

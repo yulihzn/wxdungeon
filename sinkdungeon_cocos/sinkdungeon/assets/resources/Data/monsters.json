@@ -39,6 +39,8 @@
         "resName": "monster002",
         "chapter": 0,
         "stageLevel": 0,
+        "bulletType":"bullet017",
+        "bulletArcExNum":1,
         "common": {
             "moveSpeed": 100,
             "maxHealth": 25,
@@ -47,7 +49,7 @@
         },
         "currentHealth": 25,
         "invisible": 0,
-        "remote": 0,
+        "remote": 2,
         "melee": 1,
         "dash": 5
     },

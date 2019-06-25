@@ -408,7 +408,7 @@ export default class Player extends cc.Component {
         }
         this.playerAnim(Player.STATE_ATTACK);
         this.meleeWeapon.attack(this.data, isMiss);
-        this.remoteExAttack();
+        this.remoteExAttack(this.meleeWeapon.comboType);
     }
     remoteRate = 0;
     remoteAttack() {
@@ -435,9 +435,19 @@ export default class Player extends cc.Component {
         }
     }
     //特效攻击
-    remoteExAttack(): void {
+    remoteExAttack(comboType:number): void {
         for (let data of this.inventoryManager.list) {
-            if (data.exBulletTypeAttack.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
+            let canShoot = false;
+            if(comboType == MeleeWeapon.COMBO1&&data.exBulletCombo1 > 0){
+                canShoot = true;
+            }
+            if(comboType == MeleeWeapon.COMBO2&&data.exBulletCombo2 > 0){
+                canShoot = true;
+            }
+            if(comboType == MeleeWeapon.COMBO3&&data.exBulletCombo3 > 0){
+                canShoot = true;
+            }
+            if (canShoot&&data.exBulletTypeAttack.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
                 this.shooterEx.data.bulletType = data.exBulletTypeAttack;
                 this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
                 this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
