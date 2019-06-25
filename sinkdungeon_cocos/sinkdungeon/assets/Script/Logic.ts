@@ -71,6 +71,7 @@ export default class Logic extends cc.Component {
     static time = '00:00:00';
     static seed = 5;
     static isFirst = 0;
+    static isCheatMode = false;//作弊
 
     onLoad() {
         //关闭调试

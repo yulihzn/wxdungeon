@@ -181,6 +181,9 @@ export default class Player extends cc.Component {
             this.resetFoot();
             this.playerAnim(Player.STATE_WALK);
         }
+        if(Logic.isCheatMode){
+            this.scheduleOnce(()=>{this.addStatus(StatusManager.PERFECTDEFENCE)},0.2);
+        }
     }
     /**
      * 

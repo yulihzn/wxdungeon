@@ -25,10 +25,12 @@ export default class MapData {
             this.map[i] = new Array();
         }
         for (let i = 0; i < arr.length; i++) {
-            //y的反向在txt里是相反的
+            //y的方向在txt里是相反的
             let row = arr[arr.length-1-i].split('');
-            for (let j = 0; j < row.length; j++) {
-                this.map[i][j] = row[j];
+            let k = 0;
+            for (let j = 0; j < row.length -1; k++) {
+                this.map[i][k] = row[j]+row[j+1];
+                j+=2;
             }
         }
         //对应行列在txt里是反过来的
