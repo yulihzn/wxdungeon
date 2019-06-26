@@ -172,6 +172,7 @@ export default class MonsterManager extends cc.Component {
         } else {
             monster.changeBodyRes(resName);
         }
+        
         return monster;
     }
     getIceDemon(dungeon: Dungeon, posIndex: cc.Vec2): IceDemon {

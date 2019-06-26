@@ -36,6 +36,7 @@ export default class MonsterData{
     isLineAim = 0;//是否是线性瞄准
     blink = 0;//是否闪烁大于0 数字代表cd
     isBoom = 0;//是否死亡爆炸
+    isHeavy = 0;//是否很重 如果很重是转向的
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     private statusTotalData: StatusData;
@@ -82,6 +83,7 @@ export default class MonsterData{
         this.blink = data.blink?data.blink:0;
         this.isBoom = data.isBoom?data.isBoom:0;
         this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
+        this.isHeavy = data.isHeavy?data.isHeavy:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -108,6 +110,7 @@ export default class MonsterData{
         e.blink = this.blink;
         e.isBoom = this.isBoom;
         e.bulletExSpeed = this.bulletExSpeed;
+        e.isHeavy = this.isHeavy;
         return e;
     }
     getAttackPoint():DamageData{

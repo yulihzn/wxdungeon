@@ -120,6 +120,9 @@ export default class Monster extends Actor {
         this.actionSpriteFrameIdle();
         this.scheduleOnce(() => { this.isShow = true; }, 0.5);
         this.changeBodyColor();
+        if(this.data.isHeavy>0){
+            this.rigidbody.type = cc.RigidBodyType.Static;
+        }
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
@@ -326,7 +329,7 @@ export default class Monster extends Actor {
         this.rigidbody.linearVelocity = movement.clone();
         this.currentlinearVelocitySpeed = movement.clone();
         this.isMoving = h != 0 || v != 0;
-        if (this.isMoving&&!this.isAttackAnimExcuting) {
+        if (this.isMoving&&!this.isAttackAnimExcuting&&!this.isDisguising&&this.data.isHeavy<1) {
             this.isFaceRight = h >= 0;
         }
         // if (this.isMoving) {
@@ -351,8 +354,9 @@ export default class Monster extends Actor {
         }
         this.isFall = true;
         this.isDied = true;
-        let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
         collider.sensor = true;
+        collider.apply();
         this.anim.play('PlayerFall');
     }
     takeDamage(damageData: DamageData): boolean {
@@ -624,7 +628,7 @@ export default class Monster extends Actor {
         }
         let pos = Dungeon.getPosInMap(newPos);
         pos = pos.sub(this.node.position);
-        if(!this.isAttackAnimExcuting){
+        if(!this.isAttackAnimExcuting&&!this.isAttackAnimExcuting&&!this.isDisguising&&this.data.isHeavy<1){
             this.changeFaceRight();
         }
         return pos;

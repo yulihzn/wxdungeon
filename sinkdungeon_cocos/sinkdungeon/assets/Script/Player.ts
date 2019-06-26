@@ -532,7 +532,7 @@ export default class Player extends cc.Component {
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
-        if (this.isMoving) {
+        if (this.isMoving&&!this.isAttacking) {
             this.isFaceRight = h > 0;
         }
         if (this.isMoving && !this.isStone) {

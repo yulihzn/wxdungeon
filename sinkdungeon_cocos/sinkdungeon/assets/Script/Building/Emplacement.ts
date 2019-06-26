@@ -35,6 +35,18 @@ export default class Emplacement extends Building {
     private timeDelay = 0;
     dungeon: Dungeon;
     anim: cc.Animation;
+    static readonly ALL = 0;//E0
+    static readonly TOP = 1;//E1
+    static readonly BOTTOM = 2;//E2
+    static readonly LEFT = 3;//E3
+    static readonly RIGHT = 4;//E4
+    static readonly TOPBOTTOM = 5;//E5
+    static readonly TOPLEFT = 6;//E6
+    static readonly TOPRIGHT = 7;//E7
+    static readonly BOTTOMLEFT = 8;//E8
+    static readonly BOTTOMRIGHT = 9;//E9
+    static readonly LEFTRIGHT = 10;//EE
+    dirType = 0;//方向类型
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -58,6 +70,19 @@ export default class Emplacement extends Building {
     OpenFire() {
         if (!this.dungeon) {
             return;
+        }
+        switch(this.dirType){
+            case Emplacement.ALL:break;
+            case Emplacement.TOP:break;
+            case Emplacement.BOTTOM:break;
+            case Emplacement.LEFT:break;
+            case Emplacement.RIGHT:break;
+            case Emplacement.TOPBOTTOM:break;
+            case Emplacement.TOPLEFT:break;
+            case Emplacement.TOPRIGHT:break;
+            case Emplacement.BOTTOMLEFT:break;
+            case Emplacement.BOTTOMRIGHT:break;
+            case Emplacement.LEFTRIGHT:break;
         }
         this.fireShooter(this.shooterTop);
         this.fireShooter(this.shooterBottom);

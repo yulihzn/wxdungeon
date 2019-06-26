@@ -296,6 +296,7 @@
         "resName": "monster016",
         "chapter": 0,
         "stageLevel": 0,
+        "isHeavy":1,
         "common": {
             "moveSpeed": 0,
             "maxHealth": 9999,
