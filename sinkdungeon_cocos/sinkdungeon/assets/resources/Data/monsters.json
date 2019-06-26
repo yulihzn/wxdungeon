@@ -291,17 +291,17 @@
         "dash": 0
     },
     "monster016": {
-        "nameCn": "二大爷",
-        "nameEn": "Altair",
+        "nameCn": "训练假人",
+        "nameEn": "Dummy",
         "resName": "monster016",
         "chapter": 0,
         "stageLevel": 0,
         "common": {
             "moveSpeed": 0,
-            "maxHealth": 999,
+            "maxHealth": 9999,
             "damageMin": 1
         },
-        "currentHealth": 999,
+        "currentHealth": 9999,
         "invisible": 0,
         "remote": 0,
         "melee": 0,

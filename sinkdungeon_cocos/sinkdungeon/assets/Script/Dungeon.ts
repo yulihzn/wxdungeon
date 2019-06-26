@@ -476,7 +476,7 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, i, j);
                     }
                     if (mapData[i][j] == 'e0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ALTAIR, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
                     }
                     if (mapData[i][j] == 'e1') {
                         this.addMonsterFromData(MonsterManager.MONSTER_DEMON, i, j);
@@ -492,6 +492,9 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 'f0') {
                         this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
+                    }
+                    if (mapData[i][j] == 'g0') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, i, j);
                     }
                     if (mapData[i][j] == 'z0') {
                         this.addBossIceDemon(cc.v2(i, j));
