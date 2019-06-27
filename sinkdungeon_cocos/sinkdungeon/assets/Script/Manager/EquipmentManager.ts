@@ -115,7 +115,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly SHOES_DEATH = "shoes008";
     public static readonly SHOES_ENERGY = "shoes009";
     public static readonly equipments: string[] = [EquipmentManager.WEAPON_DINNERFORK, EquipmentManager.WEAPON_KNIFE, EquipmentManager.WEAPON_CHOPPER,
-    EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.WEAPON_JUNGLEFORK, EquipmentManager.CLOTHES_SHIRT,EquipmentManager.WEAPON_KUNAI,
+    EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.WEAPON_JUNGLEFORK, EquipmentManager.CLOTHES_SHIRT, EquipmentManager.WEAPON_KUNAI,
         , EquipmentManager.CLOTHES_VEST, EquipmentManager.CLOTHES_NAVY, EquipmentManager.CLOTHES_PIRATE,
     EquipmentManager.CLOTHES_BUCKET, EquipmentManager.CLOTHES_REDROBE,
     EquipmentManager.CLOTHES_WHITEROBE, EquipmentManager.HELMET_BUCKETHAT,
@@ -180,11 +180,14 @@ export default class EquipmentManager extends cc.Component {
         let arr = ['粗糙的', '普通的', '精良的', '优秀的', '史诗的', '传说的']
         let colors = ['#dcdcdc', '#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500']
         let level = 0;
-        //暴击0-100减去装备自带
+        //暴击0-50减去装备自带
         let criticalStrikeRate = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
-            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_REMOTE])) {
-            criticalStrikeRate = this.getRandomQuality(0, 100 - data.Common.criticalStrikeRate, chestQuality);
+            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_REMOTE])
+            && data.Common.criticalStrikeRate > 0) {
+                let csk = 50 - data.Common.criticalStrikeRate;
+                if(csk<5){csk=5;}
+            criticalStrikeRate = this.getRandomQuality(0, csk, chestQuality);
             level = criticalStrikeRate.y > level ? criticalStrikeRate.y : level;
             desc.prefix += criticalStrikeRate.y > 2 ? '暴击' : '';
             desc.color = this.getMixColor('#000000'
@@ -194,14 +197,16 @@ export default class EquipmentManager extends cc.Component {
         //基础攻击0-5
         let damageMin = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
-            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])) {
+            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
+            && data.Common.damageMin > 0) {
             damageMin = this.getRandomQuality(0, 5, chestQuality);
             level = damageMin.y > level ? damageMin.y : level;
         }
         //最大攻击0-5
         let damageMax = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
-            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])) {
+            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
+            && data.Common.damageMax > 0) {
             damageMax = this.getRandomQuality(damageMin.x, damageMin.x + 5, chestQuality);
             level = damageMax.y > level ? damageMax.y : level;
             desc.prefix += damageMax.y > 2 ? '强力' : '';
@@ -212,18 +217,22 @@ export default class EquipmentManager extends cc.Component {
         let defence = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET, EquipmentManager.TYPE_GLOVES
             , EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS, EquipmentManager.TYPE_SHOES
-            , EquipmentManager.TYPE_CLOTHES])) {
+            , EquipmentManager.TYPE_CLOTHES])
+            && data.Common.defence > 0) {
             defence = this.getRandomQuality(0, 5, chestQuality);
             level = defence.y > level ? defence.y : level;
             desc.prefix += defence.y > 2 ? '坚固' : '';
             desc.color = this.getMixColor(desc.color
                 , defence.y > 2 ? EquipmentManager.COLOR_STABLE : '#000000');
         }
-        //吸血0%-100%
+        //吸血0%-50%
         let lifeDrain = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
-            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_REMOTE])) {
-            lifeDrain = this.getRandomQuality(0, 100 - data.Common.lifeDrain, chestQuality);
+            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_REMOTE])
+            && data.Common.lifeDrain > 0) {
+                let ld = 50 - data.Common.lifeDrain;
+                if(ld<5){ld = 5;}
+            lifeDrain = this.getRandomQuality(0, ld, chestQuality);
             level = lifeDrain.y > level ? lifeDrain.y : level;
             desc.prefix += lifeDrain.y > 2 ? '邪恶' : '';
             desc.color = this.getMixColor(desc.color
@@ -234,18 +243,20 @@ export default class EquipmentManager extends cc.Component {
         let lifeRecovery = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])) {
+            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
+            && data.Common.lifeRecovery > 0) {
             lifeRecovery = Random.rand() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
             level = lifeRecovery.y > level ? lifeRecovery.y : level;
             desc.prefix += lifeRecovery.y > 2 ? '温暖' : '';
             desc.color = this.getMixColor(desc.color
                 , lifeRecovery.y > 2 ? EquipmentManager.COLOR_RECOVERY : '#000000');
         }
-        //移动速度0-100减去装备自带移动速度
+        //移动速度0-50减去装备自带移动速度
         let moveSpeed = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])) {
-            let ms = 100 - data.Common.moveSpeed;
+            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
+            && data.Common.moveSpeed > 0) {
+            let ms = 50 - data.Common.moveSpeed;
             if (ms < 5) { ms = 5; }
             moveSpeed = this.getRandomQuality(0, ms, chestQuality);
             level = moveSpeed.y > level ? moveSpeed.y : level;
@@ -253,12 +264,13 @@ export default class EquipmentManager extends cc.Component {
             desc.color = this.getMixColor(desc.color
                 , moveSpeed.y > 2 ? EquipmentManager.COLOR_MOVESPEED : '#000000');
         }
-        //攻击速度0-100减去装备自带攻速
+        //攻击速度0-30减去装备自带攻速
         let attackSpeed = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOTHES
-            , EquipmentManager.TYPE_REMOTE])) {
-            let as = 100 - data.Common.attackSpeed;
+            , EquipmentManager.TYPE_REMOTE])
+            && data.Common.attackSpeed > 0) {
+            let as = 30 - data.Common.attackSpeed;
             if (as < 5) { as = 5; }
             attackSpeed = this.getRandomQuality(0, as, chestQuality);
             level = attackSpeed.y > level ? attackSpeed.y : level;
@@ -266,12 +278,15 @@ export default class EquipmentManager extends cc.Component {
             desc.color = this.getMixColor(desc.color
                 , attackSpeed.y > 2 ? EquipmentManager.COLOR_ATTACKSPPED : '#000000');
         }
-        //闪避0-60减去装备自带闪避
+        //闪避0-30减去装备自带闪避
         let dodge = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])) {
-            dodge = this.getRandomQuality(0, 60 - data.Common.dodge, chestQuality);
+            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
+            && data.Common.dodge > 0) {
+            let d1 = 30 - data.Common.dodge;
+            if (d1 < 5) { d1 = 5; }
+            dodge = this.getRandomQuality(0, d1, chestQuality);
             level = dodge.y > level ? dodge.y : level;
             desc.prefix += dodge.y > 2 ? '飘逸' : '';
             desc.color = this.getMixColor(desc.color
@@ -281,7 +296,8 @@ export default class EquipmentManager extends cc.Component {
         let health = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])) {
+            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
+            && data.Common.maxHealth > 0) {
             health = this.getRandomQuality(0, 5, chestQuality);
             level = health.y > level ? health.y : level;
             desc.prefix += health.y > 2 ? '健康' : '';
@@ -333,7 +349,7 @@ export default class EquipmentManager extends cc.Component {
         level = curseDefence.y > level ? curseDefence.y : level;
 
         let rateNum = 60;
-        let rateRate = 0.1;
+        let rateRate = 0.05;
         //流血几率0-60
         let realRate = Random.rand() < rateRate ? this.getRandomQuality(0, rateNum, chestQuality) : cc.v2(0, 0);
         level = realRate.y > level ? realRate.y : level;
@@ -509,7 +525,7 @@ export default class EquipmentManager extends cc.Component {
         info += data.Common.remoteCritRate + desc.remoteCritRate == 0 ? `` : `远程暴击率${data.Common.remoteCritRate}${desc.remoteCritRate == 0 ? '' : '+' + desc.remoteCritRate}\n`;
         info += data.Common.remoteSpeed + desc.remoteSpeed == 0 ? `` : `远程攻速${data.Common.remoteSpeed}${desc.remoteSpeed == 0 ? '' : '+' + desc.remoteSpeed}\n`;
         info += data.Common.damageMin + desc.damageMin == 0 ? `` : `攻击${data.Common.damageMin}${desc.damageMin == 0 ? '' : '+' + desc.damageMin} 最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n`;
-        info += data.Common.damageMax + desc.damageMax == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n` : ``
+        info += data.Common.damageMin + desc.damageMin == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n` : ``
         info += data.Common.defence + desc.defence == 0 ? `` : `防御${data.Common.defence}${desc.defence == 0 ? '' : '+' + desc.defence}\n`;
         info += data.Common.maxHealth + desc.health == 0 ? `` : `生命${data.Common.maxHealth}${desc.health == 0 ? '' : '+' + desc.health}\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {

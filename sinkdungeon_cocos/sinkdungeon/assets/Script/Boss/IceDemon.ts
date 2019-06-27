@@ -89,7 +89,7 @@ export default class IceDemon extends Boss {
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        if (playerDis < 100 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting&& !this.dashSkill.IsExcuting) {
+        if (playerDis < 200 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting&& !this.dashSkill.IsExcuting) {
             this.attack();
         }
         if (!this.meleeSkill.IsExcuting && !this.defenceSkill.IsExcuting && !this.thronSkill.IsExcuting) {
@@ -138,7 +138,26 @@ export default class IceDemon extends Boss {
                     this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
                 }
                 count++;
-            }, 0.2, isHalf?7:5, 1)
+            }, 0.2, isHalf?7:5, 1);
+            if(isHalf){
+                this.scheduleOnce(()=>{
+                    let p = this.pos.clone();
+                    let ps = [cc.v2(p.x+2,p.y+1),cc.v2(p.x+2,p.y-1),cc.v2(p.x-2,p.y+1),cc.v2(p.x-2,p.y-1)
+                        ,cc.v2(p.x+4,p.y+2),cc.v2(p.x+4,p.y-2),cc.v2(p.x-4,p.y+2),cc.v2(p.x-4,p.y-2)
+                        ,cc.v2(p.x+5,p.y+3),cc.v2(p.x+5,p.y-3),cc.v2(p.x-5,p.y+3),cc.v2(p.x-5,p.y-3)
+                        ,cc.v2(p.x+6,p.y+2),cc.v2(p.x+6,p.y-2),cc.v2(p.x-6,p.y+2),cc.v2(p.x-6,p.y-2)
+                        ,cc.v2(p.x+6,p.y+4),cc.v2(p.x+6,p.y-4),cc.v2(p.x-6,p.y+4),cc.v2(p.x-6,p.y-4)
+                        ,cc.v2(p.x+1,p.y+2),cc.v2(p.x+1,p.y-2),cc.v2(p.x-1,p.y+2),cc.v2(p.x-1,p.y-2)
+                        ,cc.v2(p.x+2,p.y+4),cc.v2(p.x+2,p.y-4),cc.v2(p.x-2,p.y+4),cc.v2(p.x-2,p.y-4)
+                        ,cc.v2(p.x+3,p.y+5),cc.v2(p.x+3,p.y-5),cc.v2(p.x-3,p.y+5),cc.v2(p.x-3,p.y-5)
+                        ,cc.v2(p.x+2,p.y+6),cc.v2(p.x+2,p.y-6),cc.v2(p.x-2,p.y+6),cc.v2(p.x-2,p.y-6)
+                        ,cc.v2(p.x+4,p.y+6),cc.v2(p.x+4,p.y-6),cc.v2(p.x-4,p.y+6),cc.v2(p.x-4,p.y-6)];
+                        for (let i = 0; i < ps.length; i++) {
+                            this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
+                        }
+                },1.5)
+            }
+           
             this.scheduleOnce(() => { this.thronSkill.IsExcuting = false; }, 4);
         }, 15, true);
 

@@ -85,7 +85,7 @@ export default class Chest extends Building {
                         if(Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RectDungeon.TEST_ROOM){
                             dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos,null,this.data.quality);
                             dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos,null,this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.data.pos,null,this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                         }else{
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);

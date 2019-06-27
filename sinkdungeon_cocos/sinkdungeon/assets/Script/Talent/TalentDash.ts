@@ -37,9 +37,9 @@ export default class TalentDash extends Talent {
         if (this.talentSkill.IsExcuting) {
             return;
         }
-        let cooldown = 2;
+        let cooldown = 3;
         if(this.hashTalent(Talent.DASH_13)){
-            cooldown = 1;
+            cooldown = 2;
         }
         let speed = 1200;
         if(this.hashTalent(Talent.DASH_14)){

@@ -55,10 +55,24 @@ export default class Emplacement extends Building {
         this.setShooterHv(this.shooterLeft, cc.v2(-1, 0));
         this.setShooterHv(this.shooterRight, cc.v2(1, 0));
     }
-
+    setDirType(mapStr:string){
+        switch(mapStr){
+            case 'E0':this.dirType =Emplacement.ALL;break;
+            case 'E1':this.dirType =Emplacement.TOP;break;
+            case 'E2':this.dirType =Emplacement.BOTTOM;break;
+            case 'E3':this.dirType =Emplacement.LEFT;break;
+            case 'E4':this.dirType =Emplacement.RIGHT;break;
+            case 'E5':this.dirType =Emplacement.TOPBOTTOM;break;
+            case 'E6':this.dirType =Emplacement.TOPLEFT;break;
+            case 'E7':this.dirType =Emplacement.TOPRIGHT;break;
+            case 'E8':this.dirType =Emplacement.BOTTOMLEFT;break;
+            case 'E9':this.dirType =Emplacement.BOTTOMRIGHT;break;
+            case 'EE':this.dirType =Emplacement.LEFTRIGHT;break;
+        }
+    }
     start() {
         this.anim = this.getComponent(cc.Animation);
-        this.scheduleOnce(()=>{this.fire()},1);        
+        this.scheduleOnce(() => { this.fire() }, 1);
     }
 
     setPos(pos: cc.Vec2) {
@@ -71,25 +85,58 @@ export default class Emplacement extends Building {
         if (!this.dungeon) {
             return;
         }
-        switch(this.dirType){
-            case Emplacement.ALL:break;
-            case Emplacement.TOP:break;
-            case Emplacement.BOTTOM:break;
-            case Emplacement.LEFT:break;
-            case Emplacement.RIGHT:break;
-            case Emplacement.TOPBOTTOM:break;
-            case Emplacement.TOPLEFT:break;
-            case Emplacement.TOPRIGHT:break;
-            case Emplacement.BOTTOMLEFT:break;
-            case Emplacement.BOTTOMRIGHT:break;
-            case Emplacement.LEFTRIGHT:break;
+        switch (this.dirType) {
+            case Emplacement.ALL:
+                this.fireShooter(this.shooterTop);
+                this.fireShooter(this.shooterBottom);
+                this.fireShooter(this.shooterLeft);
+                this.fireShooter(this.shooterRight);
+                break;
+            case Emplacement.TOP:
+                this.fireShooter(this.shooterTop);
+                break;
+            case Emplacement.BOTTOM:
+                this.fireShooter(this.shooterBottom);
+                break;
+            case Emplacement.LEFT:
+                this.fireShooter(this.shooterLeft);
+                break;
+            case Emplacement.RIGHT:
+                this.fireShooter(this.shooterRight);
+                break;
+            case Emplacement.TOPBOTTOM:
+                this.fireShooter(this.shooterTop);
+                this.fireShooter(this.shooterBottom);
+                break;
+            case Emplacement.TOPLEFT:
+                this.fireShooter(this.shooterTop);
+                this.fireShooter(this.shooterLeft);
+                break;
+            case Emplacement.TOPRIGHT:
+                this.fireShooter(this.shooterTop);
+                this.fireShooter(this.shooterRight);
+                break;
+            case Emplacement.BOTTOMLEFT:
+                this.fireShooter(this.shooterBottom);
+                this.fireShooter(this.shooterLeft);
+                break;
+            case Emplacement.BOTTOMRIGHT:
+                this.fireShooter(this.shooterBottom);
+                this.fireShooter(this.shooterRight);
+                break;
+            case Emplacement.LEFTRIGHT:
+                this.fireShooter(this.shooterLeft);
+                this.fireShooter(this.shooterRight);
+                break;
+            default:
+                this.fireShooter(this.shooterTop);
+                this.fireShooter(this.shooterBottom);
+                this.fireShooter(this.shooterLeft);
+                this.fireShooter(this.shooterRight);
+                break;
         }
-        this.fireShooter(this.shooterTop);
-        this.fireShooter(this.shooterBottom);
-        this.fireShooter(this.shooterLeft);
-        this.fireShooter(this.shooterRight);
     }
-    fire(){
+    fire() {
         if (this.anim) {
             this.anim.play();
         }
@@ -99,13 +146,13 @@ export default class Emplacement extends Building {
             shooter.dungeon = this.dungeon;
             shooter.data.bulletType = "bullet010";
             shooter.data.bulletLineExNum = 0;
-            
-            switch(Logic.chapterName){
-                case Logic.CHAPTER00:shooter.data.bulletLineExNum = 3;shooter.data.bulletType = "laser001";break;
-                case Logic.CHAPTER01:shooter.data.bulletType = "bullet010";break;
-                case Logic.CHAPTER02:shooter.data.bulletType = "bullet013";break;
-                case Logic.CHAPTER03:shooter.data.bulletType = "bullet006";shooter.data.bulletLineExNum = 1;break;
-                case Logic.CHAPTER04:shooter.data.bulletType = "bullet012";break;
+
+            switch (Logic.chapterName) {
+                case Logic.CHAPTER00: shooter.data.bulletLineExNum = 3; shooter.data.bulletType = "laser001"; break;
+                case Logic.CHAPTER01: shooter.data.bulletType = "bullet010"; break;
+                case Logic.CHAPTER02: shooter.data.bulletType = "bullet013"; break;
+                case Logic.CHAPTER03: shooter.data.bulletType = "bullet006"; shooter.data.bulletLineExNum = 1; break;
+                case Logic.CHAPTER04: shooter.data.bulletType = "bullet012"; break;
             }
         }
         shooter.fireBullet();

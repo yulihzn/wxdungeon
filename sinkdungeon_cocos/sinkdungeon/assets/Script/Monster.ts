@@ -539,7 +539,7 @@ export default class Monster extends Actor {
                     })
                     , cc.fadeIn(0.5));
                 body.runAction(action);
-                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; },1)
+                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; },1.5)
             }, this.data.blink, true)
         }
     }

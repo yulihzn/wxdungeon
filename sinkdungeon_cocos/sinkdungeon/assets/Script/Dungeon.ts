@@ -229,12 +229,13 @@ export default class Dungeon extends cc.Component {
                     saw.getComponent(Saw).setPos(cc.v2(i,j));
                 }
                 //生成炮台
-                if (mapData[i][j] == 'E0') {
+                if (this.isThe(mapData[i][j],'E')) {
                     let emplacement = cc.instantiate(this.emplacement);
                     emplacement.parent = this.node;
                     emplacement.position = Dungeon.getPosInMap(cc.v2(i, j));
                     emplacement.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     let em = emplacement.getComponent(Emplacement);
+                    em.setDirType(mapData[i][j]);
                     em.dungeon = this;
                 }
                 //生成落石

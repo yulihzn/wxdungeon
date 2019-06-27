@@ -98,11 +98,11 @@ export default class DashShadow extends cc.Component {
         }
     }
     fire(shooter: Shooter) {
-        shooter.data.bulletLineExNum = 9;
-        shooter.data.bulletLineInterval = 0.04;
+        shooter.data.bulletLineExNum = 5;
+        shooter.data.bulletLineInterval = 0.05;
         if (this.talentDash.hashTalent(Talent.DASH_11)) {
-            shooter.data.bulletLineExNum = 15;
-            shooter.data.bulletLineInterval = 0.02;
+            shooter.data.bulletLineExNum = 10;
+            shooter.data.bulletLineInterval = 0.03;
         }
         let isOpenFire = false;
         if (this.talentDash.hashTalent(Talent.DASH_09)) {
