@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "NewPlayerFist",
+  "_name": "PlayerFist",
   "_objFlags": 0,
   "_native": "",
   "_duration": 1.0166666666666666,
@@ -126,6 +126,24 @@
                 "value": {
                   "__uuid__": "ecff89f8-f0c4-441c-b4e6-7b7dcdb3c48f"
                 }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "28cddff8-27ff-427d-83c2-af39db604be7"
+                }
+              },
+              {
+                "frame": 0.8333333333333334,
+                "value": {
+                  "__uuid__": "1e4c5621-90fd-47f2-a425-6fa16571148b"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "ecff89f8-f0c4-441c-b4e6-7b7dcdb3c48f"
+                }
               }
             ]
           }
@@ -209,6 +227,30 @@
               "value": [
                 2,
                 -1
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": [
+                4,
+                -1
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": [
+                3,
+                -1
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 1,
+              "value": [
+                2,
+                -1
               ]
             }
           ],
@@ -231,6 +273,30 @@
           "position": [
             {
               "frame": 0,
+              "value": [
+                -2,
+                -1
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": [
+                -3,
+                -1
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": [
+                -4,
+                -1
+              ],
+              "curve": "constant"
+            },
+            {
+              "frame": 1,
               "value": [
                 -2,
                 -1

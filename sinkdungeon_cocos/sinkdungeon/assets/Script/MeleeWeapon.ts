@@ -135,27 +135,15 @@ export default class MeleeWeapon extends cc.Component {
         this.isMiss = isMiss;
         this.isAttacking = true;
         let animSpeed = 1 + data.getAttackSpeed() / 1000;
+        //最慢
         if (animSpeed < 0.2) {
-            //匕首上限
-            if(this.isStab&&!this.isFar){
-                animSpeed = 0.2;
-            }
-            //长剑上限
-            if(!this.isStab&&!this.isFar){
-                animSpeed = 0.4;
-            }
-            //长枪上限
-            if(this.isStab&&this.isFar){
-                animSpeed = 0.6;
-            }
-            //大剑上限
-            if(!this.isStab&&this.isFar){
-                animSpeed = 0.8;
-            }
+            animSpeed = 0.2;
         }
+        //最快
         if (animSpeed > 3) {
             animSpeed = 3;
         }
+        
         if (this.anim) {
             let animname = this.getAttackAnimName();
             this.anim.play(animname);

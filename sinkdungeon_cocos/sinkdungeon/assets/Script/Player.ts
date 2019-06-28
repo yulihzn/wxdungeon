@@ -553,7 +553,7 @@ export default class Player extends cc.Component {
         this.shoesRightSprite.node.parent.setPosition(-2, -1);
         this.shoesRightSprite.node.parent.setRotation(0);
     }
-    playerAnim(animType: number): void {
+    playerAnim(animType: number,speed?:number): void {
         let walkName = "PlayerWalk";
         switch (animType) {
             case Player.STATE_IDLE:
@@ -569,8 +569,13 @@ export default class Player extends cc.Component {
                 }
                 break;
             case Player.STATE_ATTACK:
-                if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
+                if ((!this.meleeWeapon.isFar && this.meleeWeapon.isStab)||(this.meleeWeapon.isFar&&!this.meleeWeapon.isStab)) {
                     this.anim.play('PlayerFist');
+                    if(this.meleeWeapon.isFar&&!this.meleeWeapon.isStab){
+                        this.anim.getAnimationState('PlayerFist').speed = 1;
+                    }else{
+                        this.anim.getAnimationState('PlayerFist').speed = 2;
+                    }
                 } else {
                     this.anim.play('PlayerAttack');
                 }

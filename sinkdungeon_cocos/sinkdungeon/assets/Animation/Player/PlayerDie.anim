@@ -2,7 +2,7 @@
   "__type__": "cc.AnimationClip",
   "_name": "PlayerDie",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 1,
   "sample": 60,
   "speed": 1,
@@ -35,6 +35,20 @@
             {
               "frame": 1,
               "value": 90
+            }
+          ]
+        }
+      },
+      "MeleeWeapon/sprite": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255
+            },
+            {
+              "frame": 0.08333333333333333,
+              "value": 0
             }
           ]
         }

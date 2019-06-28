@@ -108,7 +108,7 @@
             "lifeDrain": 0,
             "lifeRecovery": 0,
             "moveSpeed": -50,
-            "attackSpeed": -300,
+            "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -157,7 +157,7 @@
             "lifeDrain": 0,
             "lifeRecovery": 0,
             "moveSpeed": -50,
-            "attackSpeed": -500,
+            "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
         },

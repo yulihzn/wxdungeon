@@ -218,6 +218,16 @@
             }
           ]
         }
+      },
+      "MeleeWeapon/sprite": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 255
+            }
+          ]
+        }
       }
     }
   },
