@@ -38,6 +38,7 @@ export default class StatusManager extends cc.Component {
     public static readonly SHIELD_LONG = "status016";
     public static readonly SHIELD_NORMAL_SPEED = "status017";
     public static readonly SHIELD_LONG_SPEED = "status018";
+    public static readonly WEREWOLFDEFENCE = "status021";
     
 
     @property(cc.Prefab)

@@ -110,6 +110,7 @@
         "resName": "monster006",
         "chapter": 0,
         "stageLevel": 0,
+        "bulletType":"bullet031",
         "common": {
             "moveSpeed": 200,
             "maxHealth": 15,
@@ -258,6 +259,8 @@
         "chapter": 0,
         "stageLevel": 0,
         "bulletType":"laser101",
+        "specialAttack":5,
+        "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 500,
             "maxHealth": 5,
@@ -276,6 +279,8 @@
         "resName": "monster015",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":5,
+        "specialType":"special015",
         "common": {
             "moveSpeed": 300,
             "maxHealth": 20,
@@ -349,6 +354,9 @@
         "resName": "monster019",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":5,
+        "specialType":"special019",
+        "specialDistance":64,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 5,
@@ -375,6 +383,8 @@
         },
         "bulletArcExNum":2,
         "bulletLineExNum":0,
+        "specialAttack":5,
+        "specialBulletArcExNum":4,
         "currentHealth": 10,
         "bulletType":"bullet019",
         "invisible": 0,
@@ -408,6 +418,8 @@
         "stageLevel": 0,
         "isLineAim":1,
         "bulletType":"laser002",
+        "specialAttack":5,
+        "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 20,

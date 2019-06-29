@@ -555,6 +555,33 @@
             "physicalDamage": 1
         }
     },
+    "bullet031": {
+        "name":"墨汁",
+        "resName": "bullet031",
+        "lightName": "bulletlight003",
+        "lightColor": "#000000",
+        "speed": 300,
+        "isRect": 1,
+        "isRotate": 0,
+        "size": 2,
+        "damage": {
+            "physicalDamage": 2
+        }
+    },
+    "bullet032": {
+        "name":"刀气",
+        "resName": "bullet032",
+        "lightName": "bulletlight003",
+        "lightColor": "#333333",
+        "speed": 700,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":0.5,
+        "size": 7,
+        "damage": {
+            "physicalDamage": 2
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
@@ -592,7 +619,7 @@
         "name":"短暂红色激光",
         "speed": 1000,
         "isLaser":1,
-        "lifeTime":0.2,
+        "lifeTime":0.3,
         "resNameLaser":"laser001",
         "damage": {
             "physicalDamage": 1

@@ -131,11 +131,11 @@ export default class Shooter extends cc.Component {
             this.fireNetsBullet(3,bulletType);
         } else {
             this.fire(this.data.bulletType,this.bullet, this.bulletPool, angleOffset, this.hv.clone(),defaultPos);
-            this.fireArcBullet(this.data.bulletType);
-            this.fireLinecBullet(this.data.bulletType,angleOffset);
+            this.fireArcBullet(this.data.bulletType,defaultPos);
+            this.fireLinecBullet(this.data.bulletType,angleOffset,defaultPos);
         }
     }
-    private fireArcBullet(bulletType:string): void {
+    private fireArcBullet(bulletType:string,defaultPos: cc.Vec2): void {
         if (this.data.bulletArcExNum <= 0) {
             return;
         }
@@ -151,7 +151,7 @@ export default class Shooter extends cc.Component {
                 if (!this.isAI && Logic.ammo > 0) {
                     Logic.ammo--;
                 }
-                this.fire(bulletType,this.bullet, this.bulletPool, circleAngles[i], this.hv.clone());
+                this.fire(bulletType,this.bullet, this.bulletPool, circleAngles[i], this.hv.clone(),defaultPos);
             }
         }else{
             for (let i = 0; i < this.data.bulletArcExNum; i++) {
@@ -159,13 +159,13 @@ export default class Shooter extends cc.Component {
                     if (!this.isAI && Logic.ammo > 0) {
                         Logic.ammo--;
                     }
-                    this.fire(bulletType,this.bullet, this.bulletPool, angles[i], this.hv.clone());
+                    this.fire(bulletType,this.bullet, this.bulletPool, angles[i], this.hv.clone(),defaultPos);
                 }
             }
         }
 
     }
-    private fireLinecBullet(bulletType:string,angleOffset: number): void {
+    private fireLinecBullet(bulletType:string,angleOffset: number,defaultPos: cc.Vec2): void {
         if (this.data.bulletLineExNum == 0) {
             return;
         }
@@ -173,8 +173,8 @@ export default class Shooter extends cc.Component {
             if (!this.isAI && Logic.ammo > 0) {
                 Logic.ammo--;
             }
-            this.fire(bulletType,this.bullet, this.bulletPool, angleOffset, this.hv.clone());
-            this.fireArcBullet(bulletType);
+            this.fire(bulletType,this.bullet, this.bulletPool, angleOffset, this.hv.clone(),defaultPos);
+            this.fireArcBullet(bulletType,defaultPos);
         }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, this.data.bulletLineExNum, 0);
 
     }
@@ -333,7 +333,7 @@ export default class Shooter extends cc.Component {
             }
            
         }
-        this.schedule(fun,0.025,30);
+        this.schedule(fun,0.01,30);
     }
     private drawArc(angle:number){
         if(!this.graphics){

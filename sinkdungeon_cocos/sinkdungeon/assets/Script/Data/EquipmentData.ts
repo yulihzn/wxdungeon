@@ -50,6 +50,7 @@ export default class EquipmentData extends BaseData{
     exBulletCombo1 = 0;//攻击额外子弹连段，为1代表在这一次攻击释放
     exBulletCombo2 = 0;
     exBulletCombo3 = 0;
+    exBulletOffsetX = 0;//额外子弹偏移x
 
     private common:CommonData;
 
@@ -115,6 +116,7 @@ export default class EquipmentData extends BaseData{
         this.exBulletCombo1 = data.exBulletCombo1?data.exBulletCombo1:0;
         this.exBulletCombo2 = data.exBulletCombo2?data.exBulletCombo2:0;
         this.exBulletCombo3 = data.exBulletCombo3?data.exBulletCombo3:0;
+        this.exBulletOffsetX = data.exBulletOffsetX?data.exBulletOffsetX:0;
   
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -170,6 +172,7 @@ export default class EquipmentData extends BaseData{
         e.exBulletCombo1 = this.exBulletCombo1;
         e.exBulletCombo2 = this.exBulletCombo2;
         e.exBulletCombo3 = this.exBulletCombo3;
+        e.exBulletOffsetX = this.exBulletOffsetX;
 
         e.info1 = this.info1;
         e.info2 = this.info2;

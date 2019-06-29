@@ -37,6 +37,13 @@ export default class MonsterData{
     blink = 0;//是否闪烁大于0 数字代表cd
     isBoom = 0;//是否死亡爆炸
     isHeavy = 0;//是否很重 如果很重是转向的
+    shooterOffsetX =0;//远程位置x
+    shooterOffsetY =0;//远程位置y
+    specialAttack = 0 ;//是否特殊攻击大于0
+    specialType = '';//特殊类型
+    specialDistance = 0;//特殊类型位置x
+    specialBulletArcExNum = 0;//特殊额外扇形喷射子弹数量,为0的时候不计入,最大18
+    specialBulletLineExNum = 0;//特殊额外线性喷射子弹数量，为0的时候不计入
     pos:cc.Vec2 = cc.v2(0,0);
     currentHealth:number=0;
     private statusTotalData: StatusData;
@@ -84,6 +91,13 @@ export default class MonsterData{
         this.isBoom = data.isBoom?data.isBoom:0;
         this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
         this.isHeavy = data.isHeavy?data.isHeavy:0;
+        this.shooterOffsetX = data.shooterOffsetX?data.shooterOffsetX:0;
+        this.shooterOffsetY = data.shooterOffsetY?data.shooterOffsetY:0;
+        this.specialAttack = data.specialAttack?data.specialAttack:0;
+        this.specialType = data.specialType?data.specialType:'';
+        this.specialDistance = data.specialDistance?data.specialDistance:0;
+        this.specialBulletArcExNum = data.specialBulletArcExNum?data.specialBulletArcExNum:0;
+        this.specialBulletLineExNum = data.specialBulletLineExNum?data.specialBulletLineExNum:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -111,6 +125,13 @@ export default class MonsterData{
         e.isBoom = this.isBoom;
         e.bulletExSpeed = this.bulletExSpeed;
         e.isHeavy = this.isHeavy;
+        e.shooterOffsetX = this.shooterOffsetX;
+        e.shooterOffsetY = this.shooterOffsetY;
+        e.specialAttack = this.specialAttack;
+        e.specialType = this.specialType;
+        e.specialDistance = this.specialDistance;
+        e.specialBulletArcExNum = this.specialBulletArcExNum;
+        e.specialBulletLineExNum = this.specialBulletLineExNum;
         return e;
     }
     getAttackPoint():DamageData{

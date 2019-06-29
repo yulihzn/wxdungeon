@@ -29,111 +29,130 @@ export default class Controller extends cc.Component {
     @property(cc.Node)
     coolDown: cc.Node = null;
     skillActionTouched = false;
-    graphics:cc.Graphics = null;
+    graphics: cc.Graphics = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
-        this.attackAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
+        this.attackAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.attackActionTouched = true;
         }, this)
 
-        this.attackAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch)=>  {
+        this.attackAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.attackActionTouched = false;
         }, this)
 
-        this.attackAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch)=> {
+        this.attackAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.attackActionTouched = false;
         }, this)
-        this.shootAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
+        this.shootAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.shootActionTouched = true;
         }, this)
 
-        this.shootAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch)=> {
+        this.shootAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.shootActionTouched = false;
         }, this)
 
-        this.shootAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch)=> {
+        this.shootAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.shootActionTouched = false;
         }, this)
-        this.interactAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
+        this.interactAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.interactActionTouched = true;
         }, this)
 
-        this.interactAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch)=> {
+        this.interactAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.interactActionTouched = false;
         }, this)
 
-        this.interactAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch)=> {
+        this.interactAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.interactActionTouched = false;
         }, this)
-        this.skillAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
+        this.skillAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.skillActionTouched = true;
         }, this)
 
-        this.skillAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch)=> {
+        this.skillAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.skillActionTouched = false;
         }, this)
 
-        this.skillAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch)=> {
+        this.skillAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.skillActionTouched = false;
         }, this)
         cc.director.on(EventConstant.HUD_DARK_CONTROLLER
-            , (event) => { this.changeRes(event.detail.index,false) });
+            , (event) => { this.changeRes(event.detail.index, false) });
         cc.director.on(EventConstant.HUD_DARK_CONTROLLER
-            , (event) => { this.changeRes(event.detail.index,true) });
-            cc.director.on(EventConstant.HUD_CONTROLLER_COOLDOWN
-                , (event) => { this.drawSkillCoolDown(event.detail.cooldown); });
+            , (event) => { this.changeRes(event.detail.index, true) });
+        cc.director.on(EventConstant.HUD_CONTROLLER_COOLDOWN
+            , (event) => { this.drawSkillCoolDown(event.detail.cooldown, event.detail.talentType); });
     }
 
-    changeRes(actionType:number,isLight:boolean){
+    changeRes(actionType: number, isLight: boolean) {
         let resName = '';
-        switch(actionType){
-            case 0:resName = isLight?'uimeleelight':'uimelee';break;
-            case 1:resName = isLight?'uiremotelight':'uiremote';break;
-            case 2:resName = isLight?'uiswitchlight':'uiswitch';break;
+        switch (actionType) {
+            case 0: resName = isLight ? 'uimeleelight' : 'uimelee'; break;
+            case 1: resName = isLight ? 'uiremotelight' : 'uiremote'; break;
+            case 2: resName = isLight ? 'uiswitchlight' : 'uiswitch'; break;
         }
         this.attackAction.getComponent(cc.Button).normalSprite = Logic.spriteFrames[resName];
     }
 
-    private drawSkillCoolDown(coolDown:number){
-        if(coolDown <= 0){
+    private drawSkillCoolDown(coolDown: number, talentType: number) {
+        if (coolDown <= 0) {
             return;
         }
-        if(!this.coolDown){
+        if (!this.coolDown) {
             return;
         }
+        let td = this.coolDown.getChildByName('talentdash01');
+        let ts = this.coolDown.getChildByName('talentshield01');
         let p = this.coolDown.convertToWorldSpaceAR(cc.Vec2.ZERO);
         p = this.node.convertToNodeSpaceAR(p);
-        let angle = 360;
-        let delta = 0.016;
+        let height = 64;
+        let delta = 0.1;
         //0.5为误差补偿
-        let offset = 360/(coolDown-0.5)*delta;
-        let func = ()=>{
-            angle-=offset;
-            this.drawArc(angle,p);
-            if(angle<0){
-                if(this.graphics){
+        let offset = 64 / coolDown * delta;
+        let func = () => {
+            height -= offset;
+            if (this.graphics) {
+                this.graphics.clear();
+            }
+            this.drawRect(height, p);
+            if (talentType == 1) {
+                td.opacity = 255;
+                ts.opacity = 0;
+            } else {
+                td.opacity = 0;
+                ts.opacity = 255;
+            }
+            if (height < 0) {
+                td.opacity = 0;
+                ts.opacity = 0;
+                if (this.graphics) {
                     this.graphics.clear();
                 }
                 this.unschedule(func);
             }
         }
-        this.schedule(func,delta,cc.macro.REPEAT_FOREVER);
+        this.schedule(func, delta, cc.macro.REPEAT_FOREVER);
     }
-    private drawArc(angle:number,center:cc.Vec2){
-        if(!this.graphics){
+    private drawRect(height, center: cc.Vec2) {
+        this.graphics.fillColor = cc.color(0, 255, 0, 200);
+        this.graphics.rect(center.x - 32, center.y - 32, 64, height);
+        this.graphics.fill();
+    }
+    private drawArc(angle: number, center: cc.Vec2) {
+        if (!this.graphics) {
             return;
         }
         this.graphics.clear();
-        if(angle<0){
+        if (angle < 0) {
             return;
         }
         let r = 48;
         let startAngle = 0;
-        let endAngle = angle*2*Math.PI/360;
-        this.graphics.arc(center.x,center.y,r,2*Math.PI,2*Math.PI-endAngle);
+        let endAngle = angle * 2 * Math.PI / 360;
+        this.graphics.arc(center.x, center.y, r, 2 * Math.PI, 2 * Math.PI - endAngle);
         this.graphics.stroke();
     }
     timeDelay = 0;

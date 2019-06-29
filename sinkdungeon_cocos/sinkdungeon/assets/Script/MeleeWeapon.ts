@@ -235,10 +235,11 @@ export default class MeleeWeapon extends cc.Component {
                 this.isComboing = false;
             }
         },1);
-        // this.waveWeapon.isAttacking = false;
-        // this.stabWeapon.isAttacking = false;
     }
-
+    //Anim
+    ExAttackTime(){
+        this.player.remoteExAttack(this.comboType);
+    }
     start() {
     }
 

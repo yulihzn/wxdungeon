@@ -286,12 +286,8 @@ export default class Dungeon extends cc.Component {
                 }
                 //生成毒液
                 if (mapData[i][j] == 'V0') {
-                    let venom = cc.instantiate(this.venom);
-                    venom.getComponent(SlimeVenom).player = this.player;
-                    venom.getComponent(SlimeVenom).isForever = true;
-                    venom.parent = this.node;
-                    venom.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    this.addVenom(Dungeon.getPosInMap(cc.v2(i, j)));
+                    
                 }
                 //生成塔罗
                 if (mapData[i][j] == 'Q0') {
@@ -600,6 +596,15 @@ export default class Dungeon extends cc.Component {
             stoneScript.fall(withFire);
         }
 
+    }
+    addVenom(pos:cc.Vec2){
+        let venom = cc.instantiate(this.venom);
+        venom.getComponent(SlimeVenom).player = this.player;
+        venom.getComponent(SlimeVenom).isForever = true;
+        venom.parent = this.node;
+        venom.position = pos;
+        let indexpos = Dungeon.getIndexInMap(pos);
+        venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
     }
     /**冰刺 */
     addIceThron(pos: cc.Vec2, isAuto: boolean) {

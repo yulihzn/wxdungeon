@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MeleeAttackStabTwo",
+  "_name": "MeleeAttackStab2",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.5,
@@ -155,6 +155,11 @@
     }
   },
   "events": [
+    {
+      "frame": 0.16666666666666666,
+      "func": "ExAttackTime",
+      "params": []
+    },
     {
       "frame": 0.5,
       "func": "MeleeAttackFinish",

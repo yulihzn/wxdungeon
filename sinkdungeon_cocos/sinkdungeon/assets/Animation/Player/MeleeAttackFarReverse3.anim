@@ -185,6 +185,11 @@
   },
   "events": [
     {
+      "frame": 0.8333333333333334,
+      "func": "ExAttackTime",
+      "params": []
+    },
+    {
       "frame": 1,
       "func": "MeleeAttackFinish",
       "params": [

@@ -70,7 +70,7 @@ export default class TalentDash extends Talent {
                 this.player.resetFoot();
                 this.IsExcuting = false;
             }, 0.5)
-            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
+            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown ,talentType:1} });
         }, cooldown, true);
     }
     

@@ -411,7 +411,6 @@ export default class Player extends cc.Component {
         }
         this.playerAnim(Player.STATE_ATTACK);
         this.meleeWeapon.attack(this.data, isMiss);
-        this.remoteExAttack(this.meleeWeapon.comboType);
     }
     remoteRate = 0;
     remoteAttack() {
@@ -455,7 +454,7 @@ export default class Player extends cc.Component {
                 this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
                 this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
                 this.shooterEx.data.bulletSize = data.bulletSize;
-                this.shooterEx.fireBullet(0);
+                this.shooterEx.fireBullet(0,cc.v2(data.exBulletOffsetX,24));
             }
         }
     }
@@ -532,7 +531,7 @@ export default class Player extends cc.Component {
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
-        if (this.isMoving&&!this.isAttacking) {
+        if (this.isMoving&&!this.isAttacking&&!this.meleeWeapon.isAttacking) {
             this.isFaceRight = h > 0;
         }
         if (this.isMoving && !this.isStone) {

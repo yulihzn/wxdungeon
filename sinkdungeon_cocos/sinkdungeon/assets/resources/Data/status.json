@@ -240,5 +240,17 @@
         "duration": 999,
         "realDamageOvertime": -0.1,
         "common": {}
+    },
+    "status021": {
+        "nameCn": "防御(狼人)",
+        "nameEn": "defence perfect",
+        "spriteFrameName": "icondefence",
+        "statusType": 21,
+        "desc": "",
+        "duration": 1,
+        "common": {
+            "defence": 9999,
+            "dodge": 100
+        }
     }
 }

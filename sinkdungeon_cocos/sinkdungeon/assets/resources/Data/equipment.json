@@ -424,11 +424,13 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "weapon016",
+        "bulletArcExNum":2,
         "exBulletTypeAttack":"bullet029",
-        "exBulletRate":20,
-        "exBulletCombo1":1,
+        "exBulletRate":100,
+        "exBulletCombo1":0,
         "exBulletCombo2":1,
-        "exBulletCombo3":1,
+        "exBulletCombo3":0,
+        "exBulletOffsetX":32,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -446,7 +448,7 @@
         "far": 1
     },
     "weapon017": {
-        "nameCn": "Kunai",
+        "nameCn": "苦无",
         "nameEn": "Kunai",
         "equipmetType": "weapon",
         "equipmetTypeCn": "",
@@ -473,6 +475,35 @@
         "stab":1,
         "desc": "nininininja",
         "far": 0
+    },
+    "weapon018": {
+        "nameCn": "死神镰刀",
+        "nameEn": "Kunai",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon018",
+        "exBulletCombo2":1,
+        "exBulletTypeAttack":"bullet032",
+        "exBulletOffsetX":48,
+        "exBulletRate":100,
+        "common": {
+            "damageMin": 3,
+            "damageMax": 3,
+            "criticalStrikeRate": 20,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":0,
+        "desc": "死亡",
+        "far": 1
     },
     "remote001": {
         "nameCn": "十字弩",

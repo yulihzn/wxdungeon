@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MeleeAttackReverse",
+  "_name": "MeleeAttackReverse1",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.25,
@@ -130,6 +130,11 @@
     }
   },
   "events": [
+    {
+      "frame": 0.08333333333333333,
+      "func": "ExAttackTime",
+      "params": []
+    },
     {
       "frame": 0.25,
       "func": "MeleeAttackFinish",
