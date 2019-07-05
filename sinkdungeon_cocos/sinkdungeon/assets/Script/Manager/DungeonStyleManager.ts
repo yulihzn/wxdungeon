@@ -84,11 +84,11 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', 'decorate000', null); break;
-            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', 'null', 'null'); break;
-            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', null, null); break;
-            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', null, null); break;
-            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', null, null); break;
+            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', '#323c39', null); break;
+            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', '#12222e', 'null'); break;
+            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', '#4f4028', null); break;
+            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', '#9b9152', null); break;
+            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', '#1f1e1e', null); break;
         }
         if (!this.styleData) {
             return;
@@ -143,13 +143,7 @@ export default class DungeonStyleManager extends cc.Component {
 
         this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
         this.runBackgroundAnim(this.styleData.background);
-
-        // for(let i = 0; i < 4;i++){
-        //     let n = Logic.mapManager.rectDungeon.getNeighborRoomType(Logic.mapManager.currentPos.x,Logic.mapManager.currentPos.y,i);
-        //     if(n&&n.roomType != RectDungeon.EMPTY_ROOM){
-        //         this.getDecorateRoom(i);
-        //     }
-        // }
+        this.addDecorateBg();
     }
     private addExitDoor(posX: number, walltop: cc.Node) {
         let oneIndex = Dungeon.WIDTH_SIZE - 3;
@@ -225,38 +219,18 @@ export default class DungeonStyleManager extends cc.Component {
         return wallright;
     }
 
-    private getDecorateRoom(dir): cc.Node {
+    private addDecorateBg(): cc.Node {
         let room = cc.instantiate(this.decorateRoom);
         room.parent = this.node;
-        let pos: cc.Vec2;
-        switch (dir) {
-            case 0: pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE / 2, Dungeon.HEIGHT_SIZE)); pos.y = pos.y + room.height / 2 * 4; break;
-            case 1: pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE / 2, 0)); pos.y = pos.y - room.height / 2 * 4; break;
-            case 2: pos = Dungeon.getPosInMap(cc.v2(0, Dungeon.HEIGHT_SIZE / 2)); pos.y = pos.x - room.width / 2 * 4; break;
-            case 3: pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, Dungeon.HEIGHT_SIZE / 2)); pos.x = pos.x + room.width / 2 * 4; break;
-        }
+        let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE/2));
         room.setPosition(pos);
-        room.zIndex = 1000;
-        room.getComponent(cc.Sprite).spriteFrame = this.styleData.d1 ? Logic.spriteFrames[this.styleData.d1] : null;
+        room.zIndex = 100;
+        room.width = 40*Dungeon.WIDTH_SIZE;
+        room.height = 40*(Dungeon.HEIGHT_SIZE+4);
+        room.color = cc.Color.WHITE.fromHEX(this.styleData.bg02color);
         return room;
     }
-    // setStyle(background: string, topwall: string, sidewall: string, door: string, d1: string, d2: string) {
-    //     this.doorRes = door;
-    //     this.background01.getComponent(cc.Sprite).spriteFrame = background ? Logic.spriteFrames[background] : null;
-    //     this.background02.getComponent(cc.Sprite).spriteFrame = background ? Logic.spriteFrames[background] : null;
-    //     this.setWall(this.wallTop, topwall, door);
-    //     this.setWall(this.wallBottom, topwall, door);
-    //     this.setWall(this.wallLeft, sidewall, door);
-    //     this.setWall(this.wallRight, sidewall, door);
-    //     this.wallDecoration01.getComponent(cc.Sprite).spriteFrame = d1 ? Logic.spriteFrames[d1] : null;
-    //     this.wallDecoration02.getComponent(cc.Sprite).spriteFrame = d2 ? Logic.spriteFrames[d2] : null;
-    // }
-    // setWall(wallNode: cc.Node, wall: string, door: string) {
-    //     wallNode.getChildByName('wallleft').getComponent(cc.Sprite).spriteFrame = wall ? Logic.spriteFrames[wall] : null;
-    //     wallNode.getChildByName('wallright').getComponent(cc.Sprite).spriteFrame = wall ? Logic.spriteFrames[wall] : null;
-    //     wallNode.getChildByName('wallcenter').getComponent(cc.Sprite).spriteFrame = wall ? Logic.spriteFrames[wall] : null;
-    //     wallNode.getChildByName('door').getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door ? Logic.spriteFrames[door] : null;
-    // }
+
     setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
         let door = this.styleData.door;
         let frame = this.styleData.doorframe;

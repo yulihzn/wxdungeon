@@ -196,13 +196,14 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].isAutoShow = true;
                 }
                 //生成墙
-                if (mapData[i][j] == '##') {
+                if (this.isThe(mapData[i][j],'#')) {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
                     w.position = Dungeon.getPosInMap(cc.v2(i, j));
                     w.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     w.opacity = 255;
                     this.wallmap[i][j] = w.getComponent(Wall);
+                    this.wallmap[i][j].mapStr = mapData[i][j];
                 }
                 //生成陷阱
                 if (mapData[i][j] == 'T0') {
@@ -243,9 +244,9 @@ export default class Dungeon extends cc.Component {
                     this.addFallStone(Dungeon.getPosInMap(cc.v2(i, j)), false);
                 }
                 //生成装饰
-                if (mapData[i][j] == '++') {
+                if (this.isThe(mapData[i][j],'+')) {
                     //生成营火
-                    if (Logic.chapterName == Logic.CHAPTER02) {
+                    if (this.isThe(mapData[i][j],'+0')) {
                         let camp = cc.instantiate(this.campFire);
                         camp.parent = this.node;
                         camp.position = Dungeon.getPosInMap(cc.v2(i, j));
@@ -255,7 +256,7 @@ export default class Dungeon extends cc.Component {
                         shadow.position = cc.v2(shadow.position.x, shadow.position.y + 40);
                         shadow.parent = this.node;
                         shadow.zIndex = 3000;
-                    } else if(Logic.mapManager.getCurrentRoomType() == RectDungeon.START_ROOM){
+                    } else if(this.isThe(mapData[i][j],'+1')){
                         if(Logic.level == 0){
                             let bed = cc.instantiate(this.bed);
                             bed.parent = this.node;
@@ -263,13 +264,13 @@ export default class Dungeon extends cc.Component {
                             bed.position = Dungeon.getPosInMap(cc.v2(i, j));
                             bed.zIndex = 5000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                         }
-                    }else {
+                    }else{
                         let fd = cc.instantiate(this.floorDecoration);
                         fd.parent = this.node;
                         fd.position = Dungeon.getPosInMap(cc.v2(i, j));
                         fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                         let df = fd.getComponent(DecorationFloor);
-                        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM) {
+                        if (this.isThe(mapData[i][j],'++')) {
                             df.changeRes('exitarrow');
                         } else {
                             df.changeRes('dev');

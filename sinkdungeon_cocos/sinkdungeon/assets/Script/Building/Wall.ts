@@ -20,6 +20,7 @@ export default class Wall extends Building {
     pos:cc.Vec2;
     half = false;
     wallsprite:cc.Sprite;
+    mapStr:string = '##';
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -49,58 +50,49 @@ export default class Wall extends Building {
             case Logic.CHAPTER04:this.changeRes(this.getRes04());break;
         }
     }
+    
     getRes00():string{
-        let r =  Logic.getRandomNum(0,3);
         let s = 'wall000';
-        switch(r){
-            case 0:s = 'wall000';break;
-            case 1:s = 'wall000';break;
-            case 2:s = 'wall000';break;
-            case 3:s = 'wall001';break;
+        switch(this.mapStr){
+            case '##':s = 'wall000';break;
+            case '#0':s = 'wall000';break;
+            case '#1':s = 'wall001';break;
         }
         return s;
     }
     getRes01():string{
-        let r =  Logic.getRandomNum(0,3);
         let s = 'wall005';
-        switch(r){
-            case 0:s = 'wall005';break;
-            case 1:s = 'wall005';break;
-            case 2:s = 'wall005';break;
-            case 3:s = 'wall003';break;
+        switch(this.mapStr){
+            case '##':s = 'wall005';break;
+            case '#0':s = 'wall005';break;
+            case '#1':s = 'wall003';break;
         }
         return s;
     }
     getRes02():string{
-        let r =  Logic.getRandomNum(0,3);
         let s = 'wall002';
-        switch(r){
-            case 0:s = 'wall002';break;
-            case 1:s = 'wall002';break;
-            case 2:s = 'wall002';break;
-            case 3:s = 'wall002';break;
+        switch(this.mapStr){
+            case '##':s = 'wall002';break;
+            case '#0':s = 'wall002';break;
+            case '#1':s = 'wall002';break;
         }
         return s;
     }
     getRes03():string{
-        let r =  Logic.getRandomNum(0,3);
         let s = 'wall008';
-        switch(r){
-            case 0:s = 'wall008';break;
-            case 1:s = 'wall008';break;
-            case 2:s = 'wall007';break;
-            case 3:s = 'wall006';break;
+        switch(this.mapStr){
+            case '##':s = 'wall008';break;
+            case '#0':s = 'wall007';break;
+            case '#1':s = 'wall006';break;
         }
         return s;
     }
     getRes04():string{
-        let r =  Logic.getRandomNum(0,3);
         let s = 'wall004';
-        switch(r){
-            case 0:s = 'wall004';break;
-            case 1:s = 'wall004';break;
-            case 2:s = 'wall004';break;
-            case 3:s = 'wall004';break;
+        switch(this.mapStr){
+            case '##':s = 'wall004';break;
+            case '#0':s = 'wall004';break;
+            case '#1':s = 'wall004';break;
         }
         return s;
     }
