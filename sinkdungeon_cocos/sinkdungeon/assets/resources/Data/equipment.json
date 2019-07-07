@@ -286,7 +286,7 @@
         "desc": "这个肯定是山寨货"
     },
     "weapon011": {
-        "nameCn": "Egypt Wand",
+        "nameCn": "埃及长杖",
         "nameEn": "Egypt Wand",
         "equipmetType": "weapon",
         "equipmetTypeCn": "",
@@ -313,7 +313,7 @@
         "far": 1
     },
     "weapon012": {
-        "nameCn": "Toxic Dagger",
+        "nameCn": "淬毒匕首",
         "nameEn": "ToxicDagger",
         "equipmetType": "weapon",
         "equipmetTypeCn": "",
@@ -340,7 +340,7 @@
         "far": 0
     },
     "weapon013": {
-        "nameCn": "Old Root Dagger",
+        "nameCn": "老树根",
         "nameEn": "OldRootDagger",
         "equipmetType": "weapon",
         "equipmetTypeCn": "",
@@ -365,7 +365,7 @@
         "far": 0
     },
     "weapon014": {
-        "nameCn": " Cook Chopper",
+        "nameCn": " 杀猪刀",
         "nameEn": "Cook Chopper",
         "equipmetType": "weapon",
         "equipmetTypeCn": "",
@@ -505,6 +505,60 @@
         "desc": "死亡",
         "far": 1
     },
+    "weapon019": {
+        "nameCn": "影剑",
+        "nameEn": "Shadow Sword",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon019",
+        "exBulletCombo1":1,
+        "exBulletTypeAttack":"bullet034",
+        "exBulletOffsetX":16,
+        "exBulletRate":100,
+        "common": {
+            "damageMin": 1,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":0,
+        "desc": "影子",
+        "far": 0
+    },
+    "weapon020": {
+        "nameCn": "血刀",
+        "nameEn": "Blood Blade",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "weapon020",
+        "common": {
+            "damageMin": 3,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 30,
+            "lifeRecovery": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 5
+        },
+        "stab":0,
+        "desc": "死亡",
+        "far": 0
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",
@@ -561,7 +615,7 @@
         "desc": "普通的长弓"
     },
     "remote003": {
-        "nameCn": "Wand",
+        "nameCn": "法杖",
         "nameEn": "Wand",
         "equipmetType": "remote",
         "equipmetTypeCn": "",
@@ -585,10 +639,10 @@
         },
         "stab":1,
         "far": 1,
-        "desc": "Wand"
+        "desc": "普通的法杖"
     },
     "remote004": {
-        "nameCn": "Alien Gun",
+        "nameCn": "激光枪",
         "nameEn": "Alien Gun",
         "equipmetType": "remote",
         "equipmetTypeCn": "",
@@ -613,10 +667,10 @@
             "maxHealth": 0
         },
         "stab":1,
-        "desc": "Alien Gun"
+        "desc": "激光枪"
     },
     "remote005": {
-        "nameCn": "Winchester Gun",
+        "nameCn": "Winchester",
         "nameEn": "Winchester Gun",
         "equipmetType": "remote",
         "equipmetTypeCn": "",
@@ -642,7 +696,7 @@
             "maxHealth": 0
         },
         "stab":1,
-        "desc": "Winchester Gun"
+        "desc": "Family Business"
     },
     "remote006": {
         "nameCn": "R P G",
@@ -673,7 +727,7 @@
         "desc": "R P G"
     },
     "remote007": {
-        "nameCn": "Shuriken",
+        "nameCn": "手里剑",
         "nameEn": "Shuriken",
         "equipmetType": "remote",
         "equipmetTypeCn": "",
@@ -698,7 +752,7 @@
             "maxHealth": 0
         },
         "stab":1,
-        "desc": "R P G"
+        "desc": "手里剑"
     },
     "helmet002": {
         "nameCn": "渔夫帽",
@@ -815,7 +869,7 @@
             "curseDefence":20,
             "maxHealth": 0
         },
-        "desc": "啊..不朽..被攻击时10%概率放出毒蛇"
+        "desc": "啊..不朽..毒蛇"
     },
     "helmet007": {
         "nameCn": "猫咪面具",

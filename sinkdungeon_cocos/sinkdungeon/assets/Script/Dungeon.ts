@@ -361,6 +361,10 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'A4') {
                         this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.SHIELD);
                     }
+                    //生成金苹果
+                    if (mapData[i][j] == 'A5') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.GOLDAPPLE);
+                    }
                 }
                 //生成商店
                 if (mapData[i][j] == 'S0') {
@@ -427,8 +431,7 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
                     }
                     if (mapData[i][j] == 'b1') {
-                        let sailor = Logic.getHalfChance() ? MonsterManager.MONSTER_SAILOR : MonsterManager.MONSTER_STRONGSAILOR;
-                        this.addMonsterFromData(sailor, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_SAILOR, i, j);
                     }
                     if (mapData[i][j] == 'b2') {
                         this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
@@ -438,6 +441,9 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 'b4') {
                         this.addMonsterFromData(MonsterManager.MONSTER_BOOMER, i, j);
+                    }
+                    if (mapData[i][j] == 'b5') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_STRONGSAILOR, i, j);
                     }
                     if (mapData[i][j] == 'c0') {
                         this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);

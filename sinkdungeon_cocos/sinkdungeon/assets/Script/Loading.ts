@@ -141,6 +141,10 @@ export default class Loading extends cc.Component {
                 Logic.equipments = resource.json;
                 this.isEquipmentLoaded = true;
                 cc.log('equipment loaded');
+                Logic.equipmentNameList = new Array();
+                for(let key in resource.json){
+                    Logic.equipmentNameList.push(key);
+                }
                 // let stringmap = new Array();
                 // for(let key in resource.json){
                 //     let temp = new EquipmentStringData();

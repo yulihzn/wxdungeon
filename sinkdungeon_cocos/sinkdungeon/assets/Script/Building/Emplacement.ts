@@ -152,7 +152,7 @@ export default class Emplacement extends Building {
                 case Logic.CHAPTER01: shooter.data.bulletType = "bullet010"; break;
                 case Logic.CHAPTER02: shooter.data.bulletType = "bullet013"; break;
                 case Logic.CHAPTER03: shooter.data.bulletType = "bullet006"; shooter.data.bulletLineExNum = 1; break;
-                case Logic.CHAPTER04: shooter.data.bulletType = "bullet012"; break;
+                case Logic.CHAPTER04: shooter.data.bulletType = "bullet024"; shooter.data.bulletLineExNum = 1; break;
             }
         }
         shooter.fireBullet();

@@ -95,6 +95,8 @@ export default class Monster extends Actor {
     dashSkill = new Skill();
     blinkSkill = new Skill();
     isAttackAnimExcuting = false;
+    //躲避目标位置
+    moveTarget:cc.Vec2 = cc.v2(0,0);
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -258,14 +260,14 @@ export default class Monster extends Actor {
         let action2 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK03) }),
             cc.callFunc(() => {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance);
+                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance,this.isFaceRight);
             }),
             cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0), cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0),
             cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0), cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0),
             cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK04); }),
             cc.callFunc(() => {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance);
+                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance,this.isFaceRight);
             }),
             cc.delayTime(0.5));
         let afterAction = cc.sequence(cc.callFunc(() => {
@@ -330,9 +332,17 @@ export default class Monster extends Actor {
         if (pos.equals(cc.Vec2.ZERO)) {
             return;
         }
+        let isDodge = false;
+        if(!this.moveTarget.equals(cc.Vec2.ZERO)){
+            pos = this.moveTarget.clone();
+            isDodge = true;
+        }
         pos = pos.normalizeSelf();
         if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.1);
+        }
+        if(isDodge){
+            pos = pos.mul(3);
         }
 
         if (!pos.equals(cc.Vec2.ZERO)) {
@@ -395,13 +405,15 @@ export default class Monster extends Actor {
             this.showFloatFont(this.dungeon.node, 0, true, false);
             return false;
         }
-        this.changeBodyRes(this.data.resName, Monster.RES_HIT01);
         this.isHurt = dd.getTotalDamage() > 0;
         this.isDisguising = false;
-        this.meleeSkill.IsExcuting = false;
-        this.remoteSkill.IsExcuting = false;
-        this.isAttackAnimExcuting = false;
-        this.sprite.stopAllActions();
+        if(!this.specialSkill.IsExcuting){
+            this.meleeSkill.IsExcuting = false;
+            this.remoteSkill.IsExcuting = false;
+            this.isAttackAnimExcuting = false;
+            this.changeBodyRes(this.data.resName, Monster.RES_HIT01);
+            this.sprite.stopAllActions();
+        }
         this.idleAction = null;
         //100ms后修改受伤
         if (dd.getTotalDamage() > 0) {
@@ -515,9 +527,9 @@ export default class Monster extends Actor {
             } else if (rand >= 0.875 && rand < 0.9) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BLUECAPSULE);
             } else if (rand >= 0.9 && rand < 0.925) {
-                this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
+                // this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
             } else if (rand >= 0.925 && rand < 1) {
-                this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0, EquipmentManager.equipments.length - 1)], this.pos, null, 1);
+                this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 1);
             }
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
@@ -573,6 +585,7 @@ export default class Monster extends Actor {
         newPos.y += Logic.getRandomNum(0, 200) - 100;
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
         let pos = newPos.clone();
+       
         if (this.data.specialAttack > 0) {
             this.specialSkill.next(() => { this.specialSkill.IsExcuting = true; }, this.data.specialAttack, true);
         }
@@ -581,7 +594,7 @@ export default class Monster extends Actor {
         if (this.specialSkill.IsExcuting) {
             pd = 200;
         }
-        if (playerDis < 100 * this.node.scaleY && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
+        if (playerDis < pd * this.node.scaleY && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
             this.meleeSkill.next(() => {
                 this.meleeSkill.IsExcuting = true;
                 this.showAttackEffect(false);
@@ -643,6 +656,7 @@ export default class Monster extends Actor {
             this.changeBodyRes(this.data.resName);
             this.isDisguising = false;
         }
+       
         if (Logic.getHalfChance() && !this.shooter.isAiming && playerDis > 64 * this.node.scaleY && !this.isAttackAnimExcuting) {
             this.move(pos, speed);
         }

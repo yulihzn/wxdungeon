@@ -85,7 +85,8 @@ export default class Chest extends Building {
                         if(Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RectDungeon.TEST_ROOM){
                             dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos,null,this.data.quality);
                             dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos,null,this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos,null,this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos,null,this.data.quality);
                         }else{
@@ -93,7 +94,7 @@ export default class Chest extends Building {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0,EquipmentManager.equipments.length-1)], this.data.pos,null,this.data.quality);
+                            dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos,null,this.data.quality);
                         }
                     }
                 }

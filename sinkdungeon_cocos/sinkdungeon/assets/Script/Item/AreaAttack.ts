@@ -25,10 +25,12 @@ export default class AreaAttack extends cc.Component {
         let dis = Logic.getDistance(this.node.position, playerNode.position);
         return dis;
     }
-    damagePlayer(status: string, player: Player) {
+    damagePlayer(status: string, player: Player,data:DamageData) {
         if (this.node&&player && this.getNearPlayerDistance(player.node) < 64 * this.node.scale) {
-            player.takeDamage(new DamageData(1));
-            player.addStatus(status);
+            player.takeDamage(data);
+            if(status.length>0){
+                player.addStatus(status);
+            }
         }
         if(!this.node){
             return;

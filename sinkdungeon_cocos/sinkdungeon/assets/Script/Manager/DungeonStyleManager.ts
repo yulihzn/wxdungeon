@@ -86,8 +86,8 @@ export default class DungeonStyleManager extends cc.Component {
         switch (Logic.chapterName) {
             case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', '#323c39', null); break;
             case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', '#12222e', 'null'); break;
-            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', '#4f4028', null); break;
-            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', '#9b9152', null); break;
+            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', '#1b300d', null); break;
+            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', '#c8bc69', null); break;
             case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', '#1f1e1e', null); break;
         }
         if (!this.styleData) {

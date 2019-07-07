@@ -39,7 +39,7 @@ export default class ShopTable extends Building {
         if (this.node.parent && !this.data.isSaled) {
             let dungeon = this.node.parent.getComponent(Dungeon);
             if (dungeon) {
-                dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0, EquipmentManager.equipments.length - 1)], this.data.pos, this.data.equipdata, 3, this);
+                dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, this.data.equipdata, 3, this);
             }
         }
     }

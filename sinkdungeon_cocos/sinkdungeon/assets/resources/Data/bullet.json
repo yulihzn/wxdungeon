@@ -29,7 +29,7 @@
         "resName": "bullet002",
         "lightName": "bulletlight002",
         "lightColor": "#ffffff",
-        "speed": 500,
+        "speed": 300,
         "isRect": 1,
         "isRotate": 0,
         "size": 1,
@@ -42,7 +42,7 @@
         "resName": "bullet003",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
-        "speed": 500,
+        "speed": 600,
         "isRect": 1,
         "isRotate": 0,
         "size": 1,
@@ -157,12 +157,12 @@
     },
     "bullet012": {
         "name":"追踪导弹",
-        "speed": 200,
+        "speed": 500,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 1,
+        "size": 2,
         "isTracking":1,
         "resName":"bullet012",
         "lightName": "bulletlight001",
@@ -207,7 +207,7 @@
     },
     "bullet015": {
         "name":"战争机器追踪导弹",
-        "speed": 160,
+        "speed": 300,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
@@ -580,6 +580,42 @@
         "size": 7,
         "damage": {
             "physicalDamage": 2
+        }
+    },
+    "bullet033": {
+        "name":"浪花",
+        "resName": "bullet033",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 400,
+        "isRect": 0,
+        "isRotate": 0,
+        "lifeTime":2,
+        "isPhysical":0,
+        "isDecelerate":1,
+        "size": 2,
+        "isBoom":0,
+        "statusType":"status001",
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
+    "bullet034": {
+        "name":"剑影",
+        "resName": "bullet034",
+        "lightName": "bulletlight003",
+        "lightColor": "#000000",
+        "speed": 800,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":1,
+        "isPhysical":0,
+        "isDecelerate":1,
+        "isTracking":1,
+        "size": 4,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 1
         }
     },
     "laser001": {

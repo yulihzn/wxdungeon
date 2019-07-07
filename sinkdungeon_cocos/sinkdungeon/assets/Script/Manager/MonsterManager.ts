@@ -129,9 +129,9 @@ export default class MonsterManager extends cc.Component {
             data.Common.maxHealth = data.Common.maxHealth * 2;
             data.Common.damageMin = data.Common.damageMin * 2;
             data.currentHealth = data.currentHealth * 2;
-            data.melee = data.melee > 0 ? data.melee - 0.5 : 0;
-            data.remote = data.remote > 0 ? data.remote - 0.5 : 0;
-            data.dash = data.dash > 0 ? data.dash - 0.5 : 0;
+            data.melee = data.melee > 1 ? data.melee - 0.5 : 0;
+            data.remote = data.remote > 1 ? data.remote - 0.5 : 0;
+            data.dash = data.dash > 1 ? data.dash - 0.5 : 0;
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100) : 0;
         }
         let rand = Random.rand();
@@ -351,13 +351,13 @@ export default class MonsterManager extends cc.Component {
                 num = Random.getRandomNum(2, 3); break;
             case Logic.CHAPTER02: arr = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
                 , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE];
-                num = Random.getRandomNum(2, 5); break;
+                num = Random.getRandomNum(2, 4); break;
             case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
                 , MonsterManager.MONSTER_SANDSTATUE];
-                num = Random.getRandomNum(2, 7); break;
+                num = Random.getRandomNum(2, 5); break;
             case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
                 , MonsterManager.MONSTER_SPIDER];
-                num = Random.getRandomNum(3, 10); break;
+                num = Random.getRandomNum(3, 6); break;
         }
         for (let i = 0; i <= num; i++) {
             dungeon.addMonsterFromData(arr[Random.getRandomNum(0, arr.length - 1)]

@@ -40,8 +40,8 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER00:this.changeRes('exit000');break;
             case Logic.CHAPTER01:this.changeRes('exit001');break;
             case Logic.CHAPTER02:this.changeRes('exit002');break;
-            case Logic.CHAPTER03:this.changeRes('exit000');break;
-            case Logic.CHAPTER04:this.changeRes('exit000');break;
+            case Logic.CHAPTER03:this.changeRes('exit003');break;
+            case Logic.CHAPTER04:this.changeRes('exit004');break;
         }
     }
     hideWall() {

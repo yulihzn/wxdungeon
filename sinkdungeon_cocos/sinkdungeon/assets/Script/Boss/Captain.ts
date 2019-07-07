@@ -40,6 +40,7 @@ export default class Captain extends Boss {
     isHurt = false;
     isFall = false;
     shooter: Shooter = null;
+    exshooter:Shooter = null;
     attackSkill = new Skill();
     fireSkill = new Skill();
     jumpSkill = new Skill();
@@ -49,6 +50,7 @@ export default class Captain extends Boss {
         this.anim = this.getComponent(cc.Animation);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
+        this.exshooter = this.node.getChildByName('ExShooter').getComponent(Shooter);
         this.updatePlayerPos();
     }
 
@@ -84,17 +86,21 @@ export default class Captain extends Boss {
         this.scheduleOnce(()=>{this.isFall = false;},0.1);
         this.getComponent(cc.PhysicsBoxCollider).sensor = false;
         this.getComponent(cc.PhysicsBoxCollider).apply();
-        if(!this.dungeon || !this.shooter){
+        if(!this.dungeon || !this.exshooter){
             return;
         }
         let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
         if (!hv.equals(cc.Vec2.ZERO)) {
             hv = hv.normalizeSelf();
-            this.shooter.setHv(hv);
-            this.shooter.dungeon = this.dungeon;
-            this.shooter.data.bulletType = "bullet001";
-            this.shooter.data.bulletArcExNum = 99;
-            this.shooter.fireBullet(0,cc.v2(0,0));
+            this.exshooter.setHv(hv);
+            this.exshooter.dungeon = this.dungeon;
+            this.exshooter.data.bulletType = "bullet033";
+            this.exshooter.data.bulletArcExNum = 99;
+            this.exshooter.data.bulletLineInterval = 1;
+            if(this.data.currentHealth<this.data.Common.maxHealth/2){
+                this.exshooter.data.bulletLineExNum = 1;
+            }
+            this.exshooter.fireBullet(0,cc.v2(0,0));
 
         }
     }
@@ -107,7 +113,7 @@ export default class Captain extends Boss {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.dungeon = this.dungeon;
-            this.shooter.data.bulletType = "bullet001";
+            this.shooter.data.bulletType = "bullet002";
             for(let angle of angles){
                 this.shooter.fireBullet(angle);
             }
@@ -175,7 +181,7 @@ export default class Captain extends Boss {
         }
         
         this.isHurt = true;
-        this.anim.playAdditive('CaptainHit');
+        // this.anim.playAdditive('CaptainHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;

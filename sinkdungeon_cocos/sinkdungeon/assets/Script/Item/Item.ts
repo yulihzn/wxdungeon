@@ -25,6 +25,7 @@ export default class Item extends cc.Component {
     public static readonly REDCAPSULE = 'redcapsule';
     public static readonly BLUECAPSULE = 'bluecapsule';
     public static readonly SHIELD = 'shield';
+    public static readonly GOLDAPPLE = 'goldapple';
     anim:cc.Animation;
     data:ItemData = new ItemData();
 
@@ -76,6 +77,7 @@ export default class Item extends cc.Component {
             case Item.REDCAPSULE:player.addStatus(StatusManager.FASTATTACK);break;
             case Item.BLUECAPSULE:player.addStatus(StatusManager.FASTMOVE);break;
             case Item.SHIELD:player.addStatus(StatusManager.PERFECTDEFENCE);break;
+            case Item.GOLDAPPLE:player.addStatus(StatusManager.GOLDAPPLE);break;
         }
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){

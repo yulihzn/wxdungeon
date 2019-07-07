@@ -1,25 +1,16 @@
 import PlayerData from "./Data/PlayerData";
 import { EventConstant } from "./EventConstant";
-import MapData from "./Data/MapData";
 import EquipmentData from "./Data/EquipmentData";
-import RectDungeon from "./Rect/RectDungeon";
-import RectRoom from "./Rect/RectRoom";
 import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
-import FootBoard from "./Building/FootBoard";
-import Box from "./Building/Box";
-import BoxData from "./Data/BoxData";
-import ShopTableData from "./Data/ShopTableData";
 import MonsterData from "./Data/MonsterData";
 import StatusData from "./Data/StatusData";
 import InventoryManager from "./Manager/InventoryManager";
 import ProfileData from "./Data/ProfileData";
 import BulletData from "./Data/BulletData";
 import ItemData from "./Data/ItemData";
-import ChestData from "./Data/ChestData";
 import Random from "./Utils/Random";
 import TalentData from "./Data/TalentData";
-import AchievementData from "./Data/AchievementData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,6 +33,7 @@ export default class Logic extends cc.Component {
     static readonly CHAPTER03: number = 3;
     static readonly CHAPTER04: number = 4;
     static equipments: { [key: string]: EquipmentData } = null;
+    static equipmentNameList:string[] = [];
     //怪物json
     static monsters: { [key: string]: MonsterData } = null;
     //图片资源
@@ -217,5 +209,8 @@ export default class Logic extends cc.Component {
     static genNonDuplicateID():string{
         return Number(Random.rand().toString().substr(3,16) + Date.now()).toString(36);
       }
-    
+    /**随机装备名字 */
+    static getRandomEquipType():string{
+        return Logic.equipmentNameList[Random.getRandomNum(1,Logic.equipmentNameList.length-1)];
+    }
 }

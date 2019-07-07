@@ -128,14 +128,16 @@
         "resName": "monster007",
         "chapter": 0,
         "stageLevel": 0,
+        "specialBulletLineExNum":1,
+        "specialAttack":5,
         "common": {
-            "moveSpeed": 200,
+            "moveSpeed": 300,
             "maxHealth": 5,
             "damageMin": 1
         },
         "currentHealth": 5,
         "invisible": 0,
-        "remote": 1,
+        "remote": 2,
         "melee": 1,
         "dash": 0
     },
@@ -145,6 +147,9 @@
         "resName": "monster008",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":5,
+        "specialType":"special008",
+        "specialDistance":64,
         "common": {
             "moveSpeed": 400,
             "maxHealth": 15,
@@ -458,7 +463,9 @@
         "resName": "monster024",
         "chapter": 0,
         "stageLevel": 0,
-        "isLineAim":1,
+        "specialAttack":5,
+        "specialDistance":64,
+        "specialType":"special024",
         "common": {
             "moveSpeed": 100,
             "maxHealth": 40,

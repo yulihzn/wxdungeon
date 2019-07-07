@@ -7,7 +7,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "moveSpeed": -100
+            "moveSpeed": -150
         }
     },
     "status002": {
@@ -18,7 +18,7 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "defence": -15
+            "defence": -50
         }
     },
     "status003": {
@@ -30,7 +30,7 @@
         "duration": 3,
         "dizzDurationDirect":1,
         "common": {
-            "attackSpeed": -100
+            "attackSpeed": -200
         }
     },
     "status004": {
@@ -95,9 +95,9 @@
         "spriteFrameName": "iconattackspeed",
         "statusType": 9,
         "desc": "",
-        "duration": 999,
+        "duration": 15,
         "common": {
-            "attackSpeed": 999
+            "attackSpeed": 200
         }
     },
     "status010": {
@@ -128,8 +128,8 @@
         "spriteFrameName": "iconhealthrecovery",
         "statusType": 12,
         "desc": "",
-        "duration": 5,
-        "realDamageOvertime": -1,
+        "duration": 15,
+        "realDamageOvertime": -2,
         "common": {}
     },
     "status013": {
@@ -252,5 +252,15 @@
             "defence": 9999,
             "dodge": 100
         }
+    },
+    "status022": {
+        "nameCn": "金苹果完全恢复",
+        "nameEn": "healing",
+        "spriteFrameName": "iconhealthrecovery",
+        "statusType": 22,
+        "desc": "",
+        "duration": 0,
+        "realDamageDirect": -100,
+        "common": {}
     }
 }

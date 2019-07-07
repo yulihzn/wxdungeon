@@ -222,7 +222,7 @@ export default class Slime extends Boss {
             if (this.slimeType == 0) {
                 cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
                 cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
-                this.dungeon.addEquipment(EquipmentManager.equipments[Logic.getRandomNum(0, EquipmentManager.equipments.length - 1)], this.pos, null, 3);
+                this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 3);
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {
                 cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 5 } });

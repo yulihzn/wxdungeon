@@ -38,7 +38,7 @@ export default class AudioPlayer extends cc.Component {
             case AudioPlayer.PICK_UP:
                 cc.audioEngine.playEffect(this.pickUp, false);
                 break;
-                case AudioPlayer.PLAYER_HIT:
+            case AudioPlayer.PLAYER_HIT:
                 cc.audioEngine.playEffect(this.playerHit, false);
                 break;
         }

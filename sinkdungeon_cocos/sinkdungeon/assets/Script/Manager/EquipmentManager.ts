@@ -49,6 +49,8 @@ export default class EquipmentManager extends cc.Component {
     public static readonly WEAPON_JUNGLEFORK = "weapon016";
     public static readonly WEAPON_KUNAI = "weapon017";
     public static readonly WEAPON_DEATH = "weapon018";
+    public static readonly WEAPON_SHADOW = "weapon019";
+    public static readonly WEAPON_BLOOD = "weapon020";
     public static readonly REMOTE_CROSSBOW = "remote001";
     public static readonly REMOTE_LONGBOW = "remote002";
     public static readonly REMOTE_WAND = "remote003";
@@ -115,34 +117,6 @@ export default class EquipmentManager extends cc.Component {
     public static readonly SHOES_KNIGHT = "shoes007";
     public static readonly SHOES_DEATH = "shoes008";
     public static readonly SHOES_ENERGY = "shoes009";
-    public static readonly equipments: string[] = [EquipmentManager.WEAPON_DINNERFORK, EquipmentManager.WEAPON_KNIFE, EquipmentManager.WEAPON_CHOPPER,
-    EquipmentManager.WEAPON_HUGEBLADE, EquipmentManager.WEAPON_JUNGLEFORK, EquipmentManager.CLOTHES_SHIRT, EquipmentManager.WEAPON_KUNAI,EquipmentManager.SHOES_DEATH,
-        , EquipmentManager.CLOTHES_VEST, EquipmentManager.CLOTHES_NAVY, EquipmentManager.CLOTHES_PIRATE,
-    EquipmentManager.CLOTHES_BUCKET, EquipmentManager.CLOTHES_REDROBE,
-    EquipmentManager.CLOTHES_WHITEROBE, EquipmentManager.HELMET_BUCKETHAT,
-    EquipmentManager.CLOTHES_RADIATION, EquipmentManager.CLOTHES_JUNGLE, EquipmentManager.CLOTHES_PHARAOH,
-    EquipmentManager.CLOTHES_KNIGHT, EquipmentManager.CLOTHES_ENERGY, EquipmentManager.CLOTHES_GENTLEMAN,
-    EquipmentManager.HELMET_PIRATEHAT, EquipmentManager.HELMET_REDHAT,
-    EquipmentManager.HELMET_WHITEHAT, EquipmentManager.HELMET_PHARAOH, EquipmentManager.HELMET_CAT,
-    EquipmentManager.HELMET_CHIEF, EquipmentManager.HELMET_HORUS, EquipmentManager.HELMET_GENTLEMAN,
-    EquipmentManager.HELMET_CHICKEN, EquipmentManager.HELMET_DUCK, EquipmentManager.HELMET_GOOSE,
-    EquipmentManager.HELMET_RADIATION, EquipmentManager.HELMET_JUNGLE, EquipmentManager.HELMET_ANUBIS,
-    EquipmentManager.HELMET_KNIGHT, EquipmentManager.HELMET_DEATH, EquipmentManager.HELMET_ENERY,
-    EquipmentManager.WEAPON_PITCHFORK, EquipmentManager.CLOAK_WARRIOR,
-    EquipmentManager.TROUSERS_LONG, EquipmentManager.TROUSERS_SHORT, EquipmentManager.TROUSERS_RADIATION,
-    EquipmentManager.TROUSERS_JUNGLE, EquipmentManager.TROUSERS_PHARAOH, EquipmentManager.TROUSERS_KNIGHT,
-    EquipmentManager.TROUSERS_DEATH, EquipmentManager.TROUSERS_ENERGY, EquipmentManager.GLOVES_WARRIOR,
-    EquipmentManager.SHOES_WARRIOR, EquipmentManager.SHOES_DEMON, EquipmentManager.SHOES_SKATEBOARD,
-    EquipmentManager.SHOES_RADIATION, EquipmentManager.SHOES_JUNGLE, EquipmentManager.SHOES_PHARAOH,
-    EquipmentManager.SHOES_KNIGHT, EquipmentManager.SHOES_ENERGY,
-    EquipmentManager.GLOVES_BLOODCRAW, EquipmentManager.GLOVES_DEMON, EquipmentManager.GLOVES_RADIATION,
-    EquipmentManager.GLOVES_PHARAOH, EquipmentManager.GLOVES_JUNGLE, EquipmentManager.GLOVES_KNIGHT,
-    EquipmentManager.GLOVES_DEATH, EquipmentManager.GLOVES_ENERGY,
-    EquipmentManager.WEAPON_CROWBAR, EquipmentManager.WEAPON_FRUITKNIFE, EquipmentManager.WEAPON_KATANA,
-    EquipmentManager.WEAPON_HUGEAXE, EquipmentManager.WEAPON_HAPPYFIRE, EquipmentManager.WEAPON_SADICE,
-    EquipmentManager.REMOTE_ALIENGUN, EquipmentManager.REMOTE_WAND, EquipmentManager.REMOTE_WINCHESTER, EquipmentManager.REMOTE_RPG,
-    EquipmentManager.WEAPON_EGYPTWAND, EquipmentManager.WEAPON_TOXICDAGGER, EquipmentManager.WEAPON_OLDROOTDAGGER, EquipmentManager.WEAPON_COOKCHOPPER,
-    EquipmentManager.REMOTE_SHURIKEN, EquipmentManager.WEAPON_LIGHTENINGBLADE];
 
     //暴击的(暴击)
     public static readonly COLOR_CRITICALSTRIKE = "#DC143C";//猩红
@@ -601,6 +575,8 @@ export default class EquipmentManager extends cc.Component {
         c3.setB(b > 255 ? 255 : b);
         return '#' + c3.toHEX('#rrggbb');
     }
+
+    
 
     // update (dt) {}
 }
