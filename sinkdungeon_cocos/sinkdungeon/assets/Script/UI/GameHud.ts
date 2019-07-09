@@ -28,6 +28,8 @@ export default class GameHud extends cc.Component {
     clock: cc.Label = null;
     @property(cc.Node)
     damageCorner:cc.Node = null;
+    @property(cc.Node)
+    pasueButton:cc.Node = null;
     private checkTimeDelay = 0;
     private startCountTime = true;
 
@@ -60,6 +62,9 @@ export default class GameHud extends cc.Component {
         if(this.damageCorner){
             this.damageCorner.opacity = 0;
         }
+        this.pasueButton.on(cc.Node.EventType.TOUCH_START, (event:cc.Event.EventTouch)=>{
+            this.pauseGame();
+        });
     }
     private statusUpdate(data: PlayerData) {
         if (!this.playerInfoDialog) {
@@ -124,5 +129,14 @@ export default class GameHud extends cc.Component {
         strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond;
         Logic.time = strHour + ':' + strMinute + ':' + strSecond;
 
+    }
+    pauseGame():void{
+        if(cc.director.isPaused()){
+            cc.director.resume();
+            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames['hud_pause'];
+        }else{
+            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames['hud_pause_pressed'];
+            cc.director.pause();
+        }
     }
 }

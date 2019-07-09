@@ -62,16 +62,16 @@ export default class MapManager {
         this.isloaded = false;
     }
     loadDataFromSave() {
-        if (!Logic.profile.hasSaveData) {
+        if (!Logic.profileManager.hasSaveData) {
             return;
         }
-        this.rectDungeon = Logic.profile.rectDungeon;
-        this.currentPos = Logic.profile.currentPos.clone();
-        this.boxes = Logic.profile.boxes;
-        this.shopTables = Logic.profile.shopTables;
-        this.chests = Logic.profile.chests;
-        this.equipments = Logic.profile.equipments;
-        this.items = Logic.profile.items;
+        this.rectDungeon = Logic.profileManager.data.rectDungeon;
+        this.currentPos = Logic.profileManager.data.currentPos.clone();
+        this.boxes = Logic.profileManager.data.boxes;
+        this.shopTables = Logic.profileManager.data.shopTables;
+        this.chests = Logic.profileManager.data.chests;
+        this.equipments = Logic.profileManager.data.equipments;
+        this.items = Logic.profileManager.data.items;
         this.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
         cc.log('load');
         cc.log(this.rectDungeon.getDisPlay());
@@ -97,7 +97,7 @@ export default class MapManager {
         let room = this.rectDungeon.getNeighborRoomType(this.currentPos.x, this.currentPos.y, dir)
         if (room && room.roomType != 0) {
             this.currentPos = cc.v2(room.x, room.y);
-            Logic.profile.currentPos = this.currentPos.clone();
+            Logic.profileManager.data.currentPos = this.currentPos.clone();
             this.changeRoomsIsFound(room.x, room.y);
         }
         return room;
@@ -135,7 +135,7 @@ export default class MapManager {
     /** 设置当前房间箱子*/
     public setCurrentBoxesArr(arr: BoxData[]) {
         this.boxes[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profile.boxes = this.boxes;
+        Logic.profileManager.data.boxes = this.boxes;
     }
     /** 获取当前房间商店*/
     public getCurrentMapShopTables(): ShopTableData[] {
@@ -144,7 +144,7 @@ export default class MapManager {
     /** 设置当前房间商店*/
     public setCurrentShopTableArr(arr: ShopTableData[]) {
         this.shopTables[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profile.shopTables = this.shopTables;
+        Logic.profileManager.data.shopTables = this.shopTables;
     }
     /** 获取当前房间箱子*/
     public getCurrentMapChests(): ChestData[] {
@@ -153,7 +153,7 @@ export default class MapManager {
     /** 设置当前房间箱子*/
     public setCurrentChestsArr(arr: ChestData[]) {
         this.chests[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profile.chests = this.chests;
+        Logic.profileManager.data.chests = this.chests;
     }
     /** 获取当前房间装备*/
     public getCurrentMapEquipments(): EquipmentData[] {
@@ -162,16 +162,16 @@ export default class MapManager {
     /** 设置当前房间装备*/
     public setCurrentEquipmentsArr(arr: EquipmentData[]) {
         this.equipments[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profile.equipments = this.equipments;
+        Logic.profileManager.data.equipments = this.equipments;
     }
-    /** 获取当前房间装备*/
+    /** 获取当前房间物品*/
     public getCurrentMapItems(): ItemData[] {
         return this.items[`x=${this.currentPos.x}y=${this.currentPos.y}`];
     }
-    /** 设置当前房间装备*/
+    /** 设置当前房间物品*/
     public setCurrentItemsArr(arr: ItemData[]) {
         this.items[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profile.items = this.items;
+        Logic.profileManager.data.items = this.items;
     }
     /** 设置房间状态为清理*/
     public setRoomClear(x: number, y: number) {

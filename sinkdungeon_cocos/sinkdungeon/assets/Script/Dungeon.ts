@@ -326,6 +326,7 @@ export default class Dungeon extends cc.Component {
                     if(this.isThe(mapData[i][j],'B1')){
                         b.boxType = Box.PLANT;
                     }
+                    //设置对应存档盒子的位置
                     let currboxes = Logic.mapManager.getCurrentMapBoxes();
                     if (currboxes) {
                         for (let tempbox of currboxes) {
@@ -543,17 +544,17 @@ export default class Dungeon extends cc.Component {
                 this.monsterManager.addRandomMonsters(this);
             }
         }
-        //保存当前盒子位置
+        //存档的盒子为空，保存当前盒子位置
         let currbs = Logic.mapManager.getCurrentMapBoxes();
         if (!currbs && boxes.length > 0) {
             Logic.mapManager.setCurrentBoxesArr(boxes);
         }
-        //保存当前商店状态
+        //存档的商店为空，保存当前商店状态
         let currts = Logic.mapManager.getCurrentMapShopTables();
         if (!currts && shopTables.length > 0) {
             Logic.mapManager.setCurrentShopTableArr(shopTables);
         }
-        //保存当前宝箱状态
+        //存档的宝箱为空，保存当前宝箱状态
         let currcs = Logic.mapManager.getCurrentMapChests();
         if (!currcs && chests.length > 0) {
             Logic.mapManager.setCurrentChestsArr(chests);

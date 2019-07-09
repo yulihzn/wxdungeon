@@ -32,7 +32,7 @@ import Talent from './Talent/Talent';
 import AudioPlayer from './Utils/AudioPlayer';
 
 @ccclass
-export default class Player extends cc.Component {
+export default class Player extends Actor {
     static readonly STATE_IDLE = 0;
     static readonly STATE_WALK = 1;
     static readonly STATE_ATTACK = 2;
@@ -128,10 +128,6 @@ export default class Player extends cc.Component {
         this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footleft', 'shoes']);
         this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footright', 'shoes']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
-        // this.shieldBackSprite = this.getSpriteChildSprite(['sprite', 'shieldback']);
-        // this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
-        // this.shieldBackSprite.node.opacity = 0;
-        // this.shieldFrontSprite.node.opacity = 0;
         cc.director.on(EventConstant.INVENTORY_CHANGEITEM
             , (event) => { this.changeItem(event.detail.spriteFrame) });
         cc.director.on(EventConstant.PLAYER_USEITEM
@@ -146,8 +142,7 @@ export default class Player extends cc.Component {
             , (event) => { this.statusUpdate() });
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage) });
-        // cc.director.on(EventConstant.PLAYER_ROTATE
-        //     , (event) => { this.rotatePlayer(event.detail.dir, event.detail.pos, event.detail.dt) });
+    
         if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
             Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
         }
@@ -184,6 +179,9 @@ export default class Player extends cc.Component {
         if(Logic.isCheatMode){
             this.scheduleOnce(()=>{this.addStatus(StatusManager.PERFECTDEFENCE)},0.2);
         }
+    }
+    actorName():string{
+        return 'Player';
     }
     /**
      * 
@@ -503,7 +501,7 @@ export default class Player extends cc.Component {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
             //存档系统保存玩家位置
-            Logic.profile.playerData.pos = this.pos.clone();
+            Logic.profileManager.data.playerData.pos = this.pos.clone();
         }
         if (this.shooterEx && !pos.equals(cc.Vec2.ZERO)) {
             this.shooterEx.setHv(cc.v2(pos.x, pos.y));
@@ -666,7 +664,7 @@ export default class Player extends cc.Component {
         this.anim.play('PlayerDie');
         cc.director.emit(EventConstant.HUD_STOP_COUNTTIME);
         this.scheduleOnce(() => {
-            Logic.profile.clearData();
+            Logic.profileManager.data.clearData();
             cc.director.loadScene('gameover');
         }, 1);
     }

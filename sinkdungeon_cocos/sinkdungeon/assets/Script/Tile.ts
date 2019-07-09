@@ -27,10 +27,6 @@ export default class Tile extends cc.Component {
     floor:cc.Sprite;
     onLoad () {
         this.isAutoShow = true;
-        // let ss = this.node.getComponentsInChildren(cc.Sprite);
-        // for(let i = 0;i < ss.length;i++){
-        //     ss[i].spriteFrame.getTexture().setAliasTexParameters();
-        // }
         this.anim = this.getComponent(cc.Animation);
         this.floor = this.node.getChildByName('sprite').getChildByName('floor').getComponent(cc.Sprite);
     }

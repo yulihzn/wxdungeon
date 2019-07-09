@@ -36,19 +36,11 @@ export default class ProfileData {
     //根据下标+uuid报错地上的物品
     items:{[key:string]:ItemData[]}={};
     chapterName:number = 0;
-    hasSaveData:boolean = false;
     playerData:PlayerData = new PlayerData();
     inventoryManager: InventoryManager = new InventoryManager();
     talentList:TalentData[] = new Array();
     ammo = 30;//子弹
     level = 0;
-    constructor(){
-        this.loadProfile();
-    }
-    saveData(){
-        // cc.sys.localStorage.setItem('profileData',JSON.stringify(this));
-        // console.log('save data');
-    }
     clearData(){
         cc.sys.localStorage.setItem('profileData','');
         this.chapterName = 0;
@@ -62,89 +54,8 @@ export default class ProfileData {
         this.chests = {};
         this.equipments = {};
         this.items = {};
-        this.hasSaveData = false;
         this.ammo = 30;
         this.level = 0;
         console.log('clear data');
-    }
-    getSaveData():ProfileData{
-        let s = cc.sys.localStorage.getItem('profileData');
-        if(s){
-            return JSON.parse(s);
-        }
-        return null;
-    }
-    loadProfile(){
-        let data = this.getSaveData();
-        if(!data){
-            this.hasSaveData = false;
-            return;
-        }
-        if(!data.playerData||!data.inventoryManager||!data.rectDungeon||!data.currentPos||!data.shopTables
-        ||!data.boxes||!data.chests||!data.equipments||!data.items||!data.talentList){
-            this.hasSaveData = false;
-            return;
-        }
-        this.hasSaveData = true;
-        this.playerData.valueCopy(data.playerData);
-        this.chapterName = data.chapterName;
-        for(let i =0;i<data.inventoryManager.list.length;i++){
-            this.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
-        }
-        // for(let i =0;i<data.talentList.length;i++){
-        //     this.talentList[i].valueCopy(data.talentList[i]);
-        // }
-        this.rectDungeon = this.rectDungeon.buildMapFromSave(data.rectDungeon);
-        this.currentPos = data.currentPos?cc.v2(data.currentPos.x,data.currentPos.y):cc.v2(0,0);
-        for(let key in data.boxes){
-           let list = data.boxes[key];
-           this.boxes[key] = new Array();
-           for(let i = 0;i < list.length;i++){
-               let box = new BoxData();
-               box.valueCopy(list[i]);
-               this.boxes[key][i] = box;
-           }
-        }
-        for(let key in data.shopTables){
-            let list = data.shopTables[key];
-            this.shopTables[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let tables = new ShopTableData();
-                tables.valueCopy(list[i]);
-                this.shopTables[key][i] = tables;
-            }
-         }
-
-         for(let key in data.chests){
-            let list = data.chests[key];
-            this.chests[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let chest = new ChestData();
-                chest.valueCopy(list[i]);
-                this.chests[key][i] = chest;
-            }
-         }
-        
-         for(let key in data.equipments){
-            let list = data.equipments[key];
-            this.equipments[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let equip = new EquipmentData();
-                equip.valueCopy(list[i]);
-                this.equipments[key][i] = equip;
-            }
-         }
-
-         for(let key in data.items){
-            let list = data.items[key];
-            this.items[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let item = new ItemData();
-                item.valueCopy(list[i]);
-                this.items[key][i] = item;
-            }
-         }
-        console.log('profileData',this);
-        
     }
 }

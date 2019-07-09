@@ -17,15 +17,15 @@ export default class Start extends cc.Component {
         cc.view.enableAntiAlias(false)
         // init logic
         if(this.continueButton){
-            this.continueButton.active = Logic.profile.hasSaveData;
+            this.continueButton.active = Logic.profileManager.hasSaveData;
         }
     }
     startGame(){
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }
-        Logic.profile.clearData();
-        Logic.chapterName = Logic.profile.chapterName;
+        Logic.profileManager.clearData();
+        Logic.chapterName = Logic.profileManager.data.chapterName;
         Logic.resetData();
         cc.director.loadScene('loading');
     }
@@ -39,7 +39,7 @@ export default class Start extends cc.Component {
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }
-        Logic.chapterName = Logic.profile.chapterName;
+        Logic.chapterName = Logic.profileManager.data.chapterName;
         Logic.resetData();
         cc.director.loadScene('loading');
     }

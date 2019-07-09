@@ -11,6 +11,7 @@ import BulletData from "./Data/BulletData";
 import ItemData from "./Data/ItemData";
 import Random from "./Utils/Random";
 import TalentData from "./Data/TalentData";
+import ProfileManager from "./Manager/ProfileManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,7 +45,6 @@ export default class Logic extends cc.Component {
     static bullets: { [key: string]: BulletData } = null;
     //子弹json
     static items: { [key: string]: ItemData } = null;
-    static profile:ProfileData = new ProfileData();
 
     static level = 0;
     static chapterName = 0;
@@ -64,6 +64,8 @@ export default class Logic extends cc.Component {
     static seed = 5;
     static isFirst = 0;
     static isCheatMode = false;//作弊
+
+    static profileManager:ProfileManager = new ProfileManager();
 
     onLoad() {
         //关闭调试
@@ -94,15 +96,16 @@ export default class Logic extends cc.Component {
        
     }
     static saveData(){
-        Logic.profile.playerData = Logic.playerData.clone();
-        Logic.profile.saveData();
+        Logic.profileManager.data.playerData = Logic.playerData.clone();
+        Logic.profileManager.saveData();
     }
     static resetData() {
-        Logic.profile = new ProfileData();
-        Logic.level = Logic.profile.level;
-        Logic.playerData = Logic.profile.playerData.clone();
-        Logic.inventoryManager = Logic.profile.inventoryManager;
-        Logic.talentList = Logic.profile.talentList;
+        Logic.profileManager.data = new ProfileData();
+        Logic.level = Logic.profileManager.data.level;
+        Logic.playerData = Logic.profileManager.data.playerData.clone();
+        Logic.inventoryManager = Logic.profileManager.data.inventoryManager;
+        Logic.talentList = Logic.profileManager.data.talentList;
+        Logic.ammo = Logic.profileManager.data.ammo;
         Logic.hasTalentMap = {};
         Logic.mapManager.reset(Logic.level);
         Logic.mapManager.loadDataFromSave();
@@ -110,7 +113,6 @@ export default class Logic extends cc.Component {
         Dungeon.HEIGHT_SIZE = 9;
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c ? parseInt(c) : 0;
-        Logic.ammo = Logic.profile.ammo;
         Logic.isPickedTalent = false;
     }
     static loadList(talentList: TalentData[]) {
@@ -174,13 +176,13 @@ export default class Logic extends cc.Component {
             
         } else {
             if(Logic.chapterName < Logic.CHAPTER04 && Logic.level > 5){
-                Logic.profile.chapterName++;
+                Logic.profileManager.data.chapterName++;
                 Logic.chapterName++;
                 Logic.level = 1;
             }
             Logic.mapManager.reset(Logic.level);
-            Logic.profile.currentPos = Logic.mapManager.currentPos.clone();
-            Logic.profile.rectDungeon = Logic.mapManager.rectDungeon;
+            Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
+            Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
             
             Logic.changeDungeonSize();
             Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));

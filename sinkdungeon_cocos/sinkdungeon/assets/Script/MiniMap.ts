@@ -21,11 +21,11 @@ export default class MiniMap extends cc.Component {
 	miniTile: cc.Prefab = null;
 	static ColorLevel = {
 		HIDE: 0, NORMAL: 1, PLAYER: 2, CLEAR: 3, NORMAL_BOSS: 4, CLEAR_PUZZLE: 5, CLEAR_END: 6, CLEAR_BOSS: 7, NORMAL_LOOT: 8, CLEAR_LOOT: 9,
-		NORMAL_START: 10, NORMAL_END: 11,NORMAL_POKER:12,NORMAL_TAROT:13,NORMAL_TEST:14
+		NORMAL_START: 10, NORMAL_END: 11, NORMAL_POKER: 12, NORMAL_TAROT: 13, NORMAL_TEST: 14, NORMAL_PUZZLE: 15, NORMAL_MERCHANT: 16, CLEAR_MERCHANT: 17
 	}
 	size: number = 0;
 	map: cc.Node[][];
-	private level:number = 1;
+	private level: number = 1;
 
 	// LIFE-CYCLE CALLBACKS:
 
@@ -33,9 +33,9 @@ export default class MiniMap extends cc.Component {
 		cc.director.on(EventConstant.CHANGE_MINIMAP, (event) => {
 			this.changeMap(event.detail.x, event.detail.y);
 		});
-		this.level = Logic.level<1?1:Logic.level;
+		this.level = Logic.level < 1 ? 1 : Logic.level;
 		this.size = this.level + 2;
-		if(this.size < 3){
+		if (this.size < 3) {
 			this.size = 3;
 		}
 		this.map = new Array();
@@ -70,52 +70,46 @@ export default class MiniMap extends cc.Component {
 				if (isFound) {
 					this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL);
 					this.map[i][j].opacity = 255;
+					let isClear = state == RectRoom.STATE_CLEAR;
+
+					this.map[i][j].color = this.getColor(isClear?MiniMap.ColorLevel.CLEAR:MiniMap.ColorLevel.NORMAL);
 					
-					if (state == RectRoom.STATE_SLEEP || state == RectRoom.STATE_ACTIVE) {
-						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL);
-						if (roomType == RectDungeon.BOSS_ROOM) {
-							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_BOSS);
-						}
-						if (roomType == RectDungeon.LOOT_ROOM) {
-							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_LOOT);
-						}
-						if (roomType == RectDungeon.END_ROOM && Logic.level!=RectDungeon.LEVEL_3 && Logic.level!=RectDungeon.LEVEL_5) {
-							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_END);
-						}
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.BOSS_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_BOSS, MiniMap.ColorLevel.CLEAR_BOSS);
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.LOOT_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_LOOT, MiniMap.ColorLevel.CLEAR_LOOT);
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.MERCHANT_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_MERCHANT, MiniMap.ColorLevel.CLEAR_MERCHANT);
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.START_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_START, MiniMap.ColorLevel.NORMAL_START);
+					if(Logic.level != RectDungeon.LEVEL_3 && Logic.level != RectDungeon.LEVEL_5){
+						this.map[i][j].color = this.getMapColor(roomType, RectDungeon.END_ROOM, isClear
+							, MiniMap.ColorLevel.NORMAL_END, MiniMap.ColorLevel.CLEAR_END);
 					}
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.PUZZLE_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_PUZZLE, MiniMap.ColorLevel.CLEAR_PUZZLE);
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.POKER_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_POKER, MiniMap.ColorLevel.NORMAL_POKER);
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.TAROT_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_TAROT, MiniMap.ColorLevel.NORMAL_TAROT);
+					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.TEST_ROOM, isClear
+						, MiniMap.ColorLevel.NORMAL_TEST, MiniMap.ColorLevel.NORMAL_TEST);
 					if (roomType == RectDungeon.START_ROOM) {
 						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_START);
 					}
-					if (roomType == RectDungeon.PUZZLE_ROOM) {
-						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.CLEAR_PUZZLE);
-					}
-					if (roomType == RectDungeon.POKER_ROOM) {
-						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_POKER);
-					}
-					if (roomType == RectDungeon.TAROT_ROOM) {
-						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_TAROT);
-					}
-					if (roomType == RectDungeon.TEST_ROOM) {
-						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_TEST);
-					}
-					if (state == RectRoom.STATE_CLEAR) {
-						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.CLEAR);
-						if (roomType == RectDungeon.BOSS_ROOM) {
-							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.CLEAR_BOSS);
-						}
-						if (roomType == RectDungeon.END_ROOM&& Logic.level!=RectDungeon.LEVEL_3&& Logic.level!=RectDungeon.LEVEL_5) {
-							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.CLEAR_END);
-						}
-						if (roomType == RectDungeon.LOOT_ROOM) {
-							this.map[i][j].color = this.getColor(MiniMap.ColorLevel.CLEAR_LOOT);
-						}
-					}
-					
+
 					if (i == x && j == y) {
 						this.map[x][y].color = this.getColor(MiniMap.ColorLevel.PLAYER);
 					}
 				}
 			}
+		}
+	}
+	getMapColor(roomType: number, roomTypeType: number, isClear: boolean, typeNormal: number, typeClear: number): cc.Color {
+		if (roomType == roomTypeType) {
+			return this.getColor(isClear ? typeClear : typeNormal);
+		} else {
+			return this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);
 		}
 	}
 	getColor(t: number): cc.Color {
@@ -145,16 +139,25 @@ export default class MiniMap extends cc.Component {
 			case MiniMap.ColorLevel.NORMAL_LOOT:
 				color = new cc.Color(255, 215, 0);//黄金
 				break;
+			case MiniMap.ColorLevel.NORMAL_MERCHANT:
+				color = new cc.Color(255, 215, 0);//黄金
+				break;
 			case MiniMap.ColorLevel.NORMAL_POKER:
 				color = new cc.Color(139, 69, 19);//马鞍棕色
 				break;
 			case MiniMap.ColorLevel.NORMAL_TAROT:
-				color = new cc.Color(255,165,0);//橙色
+				color = new cc.Color(255, 165, 0);//橙色
 				break;
 			case MiniMap.ColorLevel.NORMAL_TEST:
-				color = new cc.Color(238,130,238);//紫罗兰
+				color = new cc.Color(238, 130, 238);//紫罗兰
+				break;
+			case MiniMap.ColorLevel.NORMAL_PUZZLE:
+				color = new cc.Color(128, 0, 128);//紫色
 				break;
 			case MiniMap.ColorLevel.CLEAR_LOOT:
+				color = new cc.Color(240, 230, 140);//浅黄
+				break;
+			case MiniMap.ColorLevel.CLEAR_MERCHANT:
 				color = new cc.Color(240, 230, 140);//浅黄
 				break;
 			case MiniMap.ColorLevel.CLEAR_BOSS:
@@ -164,7 +167,7 @@ export default class MiniMap extends cc.Component {
 				color = new cc.Color(176, 196, 222);//淡钢蓝
 				break;
 			case MiniMap.ColorLevel.CLEAR_PUZZLE:
-				color = new cc.Color(128, 0, 128);//紫色
+				color = new cc.Color(75, 0, 130);//靛青
 				break;
 		}
 
