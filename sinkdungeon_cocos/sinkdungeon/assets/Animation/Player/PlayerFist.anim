@@ -254,7 +254,7 @@
               ]
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -264,12 +264,6 @@
       },
       "sprite/body/legs/footright": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
           "position": [
             {
               "frame": 0,
@@ -301,6 +295,12 @@
                 -2,
                 -1
               ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
             }
           ]
         }

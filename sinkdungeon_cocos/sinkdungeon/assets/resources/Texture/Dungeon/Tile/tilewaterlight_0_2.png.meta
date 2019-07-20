@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "8419f33b-35e7-4f52-a15b-4cd3a1ca93c4",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "tilewaterlight_0_2": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "afda8dc4-b5b6-4d87-beb6-b0e2bfe83a43",
       "rawTextureUuid": "8419f33b-35e7-4f52-a15b-4cd3a1ca93c4",
       "trimType": "custom",

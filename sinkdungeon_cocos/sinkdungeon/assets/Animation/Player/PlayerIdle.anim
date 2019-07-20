@@ -127,14 +127,14 @@
       },
       "sprite/cloak": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.16666666666666666,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 0.3333333333333333,
@@ -142,7 +142,7 @@
             },
             {
               "frame": 0.5,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 0.6666666666666666,
@@ -150,7 +150,7 @@
             },
             {
               "frame": 0.8333333333333334,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 1,
@@ -177,7 +177,7 @@
               ]
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -207,7 +207,7 @@
               ]
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0

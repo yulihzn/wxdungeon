@@ -236,7 +236,7 @@ export default class Shooter extends cc.Component {
         bullet.changeBullet(bd);
         this.bulletName = bullet.name + bd.resName;
         bullet.enabled = true;
-        bullet.showBullet(hv.rotateSelf(angleOffset * Math.PI / 180));
+        bullet.showBullet(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180));
     }
     destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
@@ -446,7 +446,7 @@ export default class Shooter extends cc.Component {
         this.node.scaleY = this.getParentNode().scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         // 将当前物体的角度设置为对应角度
-        this.node.rotation = this.node.scaleX == -1 ? angle : -angle;
+        this.node.angle = this.node.scaleX == -1 ? -angle : angle;
 
     }
 }

@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "a77724c6-94d5-4ec3-b9e2-7ae5761a268f",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "playerhair01": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "7cba0aad-7de5-44fe-a77a-8c8240163896",
       "rawTextureUuid": "a77724c6-94d5-4ec3-b9e2-7ae5761a268f",
       "trimType": "custom",

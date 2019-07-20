@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "5f3f8214-db34-46ab-8d37-94885310e1f4",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "claw001": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "bfddea39-1d25-41f8-8cd2-ea648932328f",
       "rawTextureUuid": "5f3f8214-db34-46ab-8d37-94885310e1f4",
       "trimType": "custom",

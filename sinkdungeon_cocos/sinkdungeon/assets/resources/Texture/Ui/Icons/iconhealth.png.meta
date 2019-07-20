@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "dc5e6794-e25a-46cb-92b3-4bc80dc77498",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "iconhealth": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "1e1c0f64-7a8e-4c12-8e75-2a17e84dc388",
       "rawTextureUuid": "dc5e6794-e25a-46cb-92b3-4bc80dc77498",
       "trimType": "custom",

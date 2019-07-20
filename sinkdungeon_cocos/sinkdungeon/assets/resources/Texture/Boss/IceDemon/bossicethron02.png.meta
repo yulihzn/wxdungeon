@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "35c36ec2-8226-4ac5-aa2f-c382f510d8a0",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "bossicethron02": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "c98ddf60-9559-4ef4-aba1-933dd393ac5f",
       "rawTextureUuid": "35c36ec2-8226-4ac5-aa2f-c382f510d8a0",
       "trimType": "auto",

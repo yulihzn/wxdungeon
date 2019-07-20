@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "685c6ceb-f8ad-4d37-96b6-9881279701fe",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "tarot04": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "cda58faa-6225-45bd-9bba-ccf68d32e9c8",
       "rawTextureUuid": "685c6ceb-f8ad-4d37-96b6-9881279701fe",
       "trimType": "custom",

@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "e7c80384-0558-4127-9bd3-a0ab47e3c46c",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "fallentree01": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b08659fe-a6ba-4df1-98e4-994cdf3006e2",
       "rawTextureUuid": "e7c80384-0558-4127-9bd3-a0ab47e3c46c",
       "trimType": "custom",

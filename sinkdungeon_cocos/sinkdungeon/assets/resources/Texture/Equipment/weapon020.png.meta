@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "69ba1994-cd9a-44fa-bf19-26d99687873e",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "weapon020": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "a91b28b5-80b2-414e-b376-da0afd1c9a16",
       "rawTextureUuid": "69ba1994-cd9a-44fa-bf19-26d99687873e",
       "trimType": "custom",

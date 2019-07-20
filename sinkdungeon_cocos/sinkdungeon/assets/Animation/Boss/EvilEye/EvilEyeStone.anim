@@ -81,277 +81,7 @@
       },
       "sprite/limb1/tentacle1": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -60
-            },
-            {
-              "frame": 0.5,
-              "value": -70
-            },
-            {
-              "frame": 2,
-              "value": -60
-            }
-          ]
-        }
-      },
-      "sprite/limb1/tentacle1/tentacle2": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -15
-            },
-            {
-              "frame": 0.5,
-              "value": 15
-            },
-            {
-              "frame": 2,
-              "value": -15
-            }
-          ]
-        }
-      },
-      "sprite/limb1/tentacle1/tentacle2/tentacle3": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -15
-            },
-            {
-              "frame": 0.5,
-              "value": 15
-            },
-            {
-              "frame": 2,
-              "value": -15
-            }
-          ]
-        }
-      },
-      "sprite/limb2/tentacle1": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -30
-            },
-            {
-              "frame": 1,
-              "value": -40
-            },
-            {
-              "frame": 2,
-              "value": -30
-            }
-          ]
-        }
-      },
-      "sprite/limb2/tentacle1/tentacle2": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -15
-            },
-            {
-              "frame": 1,
-              "value": 15
-            },
-            {
-              "frame": 2,
-              "value": -15
-            }
-          ]
-        }
-      },
-      "sprite/limb2/tentacle1/tentacle2/tentacle3": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -15
-            },
-            {
-              "frame": 1,
-              "value": 20
-            },
-            {
-              "frame": 2,
-              "value": -15
-            }
-          ]
-        }
-      },
-      "sprite/limb3/tentacle1": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 1.5,
-              "value": 10
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/limb3/tentacle1/tentacle2": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -15
-            },
-            {
-              "frame": 1.5,
-              "value": -20
-            },
-            {
-              "frame": 2,
-              "value": -15
-            }
-          ]
-        }
-      },
-      "sprite/limb3/tentacle1/tentacle2/tentacle3": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -15
-            },
-            {
-              "frame": 1.5,
-              "value": -10
-            },
-            {
-              "frame": 2,
-              "value": -15
-            }
-          ]
-        }
-      },
-      "sprite/limb4/tentacle1": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 1.5,
-              "value": -10
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/limb4/tentacle1/tentacle2": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 15
-            },
-            {
-              "frame": 1.5,
-              "value": 20
-            },
-            {
-              "frame": 2,
-              "value": 15
-            }
-          ]
-        }
-      },
-      "sprite/limb4/tentacle1/tentacle2/tentacle3": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 15
-            },
-            {
-              "frame": 1.5,
-              "value": 10
-            },
-            {
-              "frame": 2,
-              "value": 15
-            }
-          ]
-        }
-      },
-      "sprite/limb5/tentacle1": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 30
-            },
-            {
-              "frame": 1,
-              "value": 40
-            },
-            {
-              "frame": 2,
-              "value": 30
-            }
-          ]
-        }
-      },
-      "sprite/limb5/tentacle1/tentacle2": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 15
-            },
-            {
-              "frame": 1,
-              "value": -15
-            },
-            {
-              "frame": 2,
-              "value": 15
-            }
-          ]
-        }
-      },
-      "sprite/limb5/tentacle1/tentacle2/tentacle3": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 15
-            },
-            {
-              "frame": 1,
-              "value": -15
-            },
-            {
-              "frame": 2,
-              "value": 15
-            }
-          ]
-        }
-      },
-      "sprite/limb6/tentacle1": {
-        "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 60
@@ -367,9 +97,9 @@
           ]
         }
       },
-      "sprite/limb6/tentacle1/tentacle2": {
+      "sprite/limb1/tentacle1/tentacle2": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 15
@@ -385,9 +115,9 @@
           ]
         }
       },
-      "sprite/limb6/tentacle1/tentacle2/tentacle3": {
+      "sprite/limb1/tentacle1/tentacle2/tentacle3": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 15
@@ -399,6 +129,276 @@
             {
               "frame": 2,
               "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb2/tentacle1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 30
+            },
+            {
+              "frame": 1,
+              "value": 40
+            },
+            {
+              "frame": 2,
+              "value": 30
+            }
+          ]
+        }
+      },
+      "sprite/limb2/tentacle1/tentacle2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": -15
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb2/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": -20
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb3/tentacle1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": -10
+            },
+            {
+              "frame": 2,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/limb3/tentacle1/tentacle2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1.5,
+              "value": 20
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb3/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1.5,
+              "value": 10
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "sprite/limb4/tentacle1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": 10
+            },
+            {
+              "frame": 2,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/limb4/tentacle1/tentacle2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1.5,
+              "value": -20
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb4/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1.5,
+              "value": -10
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb5/tentacle1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -30
+            },
+            {
+              "frame": 1,
+              "value": -40
+            },
+            {
+              "frame": 2,
+              "value": -30
+            }
+          ]
+        }
+      },
+      "sprite/limb5/tentacle1/tentacle2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1,
+              "value": 15
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb5/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 1,
+              "value": 15
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb6/tentacle1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -60
+            },
+            {
+              "frame": 0.5,
+              "value": -70
+            },
+            {
+              "frame": 2,
+              "value": -60
+            }
+          ]
+        }
+      },
+      "sprite/limb6/tentacle1/tentacle2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 0.5,
+              "value": 15
+            },
+            {
+              "frame": 2,
+              "value": -15
+            }
+          ]
+        }
+      },
+      "sprite/limb6/tentacle1/tentacle2/tentacle3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15
+            },
+            {
+              "frame": 0.5,
+              "value": 15
+            },
+            {
+              "frame": 2,
+              "value": -15
             }
           ]
         }

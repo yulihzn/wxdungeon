@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "a879c727-3844-4358-ab18-5b496774fc85",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "talentdash01": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "7bcc5566-fdf3-446f-bdb1-f1dd51f3df83",
       "rawTextureUuid": "a879c727-3844-4358-ab18-5b496774fc85",
       "trimType": "custom",

@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "4cf08439-1b04-49c8-926d-033b0b401e25",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "boom000anim007": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "e14c507f-20d8-4526-ae32-69dbda1b7814",
       "rawTextureUuid": "4cf08439-1b04-49c8-926d-033b0b401e25",
       "trimType": "custom",

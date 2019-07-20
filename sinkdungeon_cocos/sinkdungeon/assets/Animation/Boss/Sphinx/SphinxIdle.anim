@@ -11,28 +11,6 @@
     "paths": {
       "sprite/swingleft": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": 15
-            },
-            {
-              "frame": 1,
-              "value": 0
-            },
-            {
-              "frame": 1.5,
-              "value": 15
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ],
           "skewX": [
             {
               "frame": 0,
@@ -42,6 +20,28 @@
           "skewY": [
             {
               "frame": 0,
+              "value": 0
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": -15
+            },
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": -15
+            },
+            {
+              "frame": 2,
               "value": 0
             }
           ]
@@ -49,28 +49,6 @@
       },
       "sprite/swingright": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.5,
-              "value": -15
-            },
-            {
-              "frame": 1,
-              "value": 0
-            },
-            {
-              "frame": 1.5,
-              "value": -15
-            },
-            {
-              "frame": 2,
-              "value": 0
-            }
-          ],
           "skewX": [
             {
               "frame": 0,
@@ -80,6 +58,28 @@
           "skewY": [
             {
               "frame": 0,
+              "value": 0
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 1.5,
+              "value": 15
+            },
+            {
+              "frame": 2,
               "value": 0
             }
           ]

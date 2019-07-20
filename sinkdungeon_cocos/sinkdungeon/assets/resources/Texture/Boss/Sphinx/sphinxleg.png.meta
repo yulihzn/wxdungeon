@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "acf0053b-f051-4656-a52c-c2b234d7c5f7",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "sphinxleg": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "3fb4ed3a-3200-4461-878b-0f75ddc86cbc",
       "rawTextureUuid": "acf0053b-f051-4656-a52c-c2b234d7c5f7",
       "trimType": "custom",

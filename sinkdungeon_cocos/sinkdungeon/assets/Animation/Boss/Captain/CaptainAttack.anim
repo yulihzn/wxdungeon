@@ -59,14 +59,14 @@
       },
       "sprite/rightarm": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.3333333333333333,
-              "value": -5
+              "value": 5
             },
             {
               "frame": 0.6666666666666666,
@@ -77,18 +77,18 @@
       },
       "sprite/leftarm": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.3333333333333333,
-              "value": -220
+              "value": 220
             },
             {
               "frame": 0.5,
-              "value": -15
+              "value": 15
             },
             {
               "frame": 0.6666666666666666,
@@ -99,18 +99,18 @@
       },
       "sprite/leftarm/sword": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.3333333333333333,
-              "value": 45
+              "value": -45
             },
             {
               "frame": 0.5,
-              "value": 121
+              "value": -121
             },
             {
               "frame": 0.6666666666666666,
@@ -121,12 +121,6 @@
       },
       "sprite/rightleg": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
           "position": [
             {
               "frame": 0,
@@ -134,6 +128,12 @@
                 8,
                 -5
               ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
             }
           ]
         }
@@ -149,10 +149,10 @@
               ]
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 5
+              "value": -5
             }
           ]
         }

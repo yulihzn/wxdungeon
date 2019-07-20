@@ -179,14 +179,14 @@
               "value": 0
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.5,
-              "value": 30
+              "value": -30
             },
             {
               "frame": 1,
@@ -194,7 +194,7 @@
             },
             {
               "frame": 1.5,
-              "value": 30
+              "value": -30
             },
             {
               "frame": 2,
@@ -249,14 +249,14 @@
               "value": 0
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.5,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 1,
@@ -264,7 +264,7 @@
             },
             {
               "frame": 1.5,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 2,
@@ -345,25 +345,7 @@
       },
       "sprite/armleft/leg": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 10
-            },
-            {
-              "frame": 1,
-              "value": 15
-            },
-            {
-              "frame": 2,
-              "value": 10
-            }
-          ]
-        }
-      },
-      "sprite/armright/leg": {
-        "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": -10
@@ -379,45 +361,45 @@
           ]
         }
       },
-      "sprite/tail/bottom/middle/top": {
+      "sprite/armright/leg": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -30
+              "value": 10
             },
             {
               "frame": 1,
-              "value": -20
+              "value": 15
             },
             {
               "frame": 2,
-              "value": -30
+              "value": 10
+            }
+          ]
+        }
+      },
+      "sprite/tail/bottom/middle/top": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 30
+            },
+            {
+              "frame": 1,
+              "value": 20
+            },
+            {
+              "frame": 2,
+              "value": 30
             }
           ]
         }
       },
       "sprite/legleft/leg": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 10
-            },
-            {
-              "frame": 1,
-              "value": 5
-            },
-            {
-              "frame": 2,
-              "value": 10
-            }
-          ]
-        }
-      },
-      "sprite/legright/leg": {
-        "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": -10
@@ -429,6 +411,24 @@
             {
               "frame": 2,
               "value": -10
+            }
+          ]
+        }
+      },
+      "sprite/legright/leg": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 10
+            },
+            {
+              "frame": 1,
+              "value": 5
+            },
+            {
+              "frame": 2,
+              "value": 10
             }
           ]
         }

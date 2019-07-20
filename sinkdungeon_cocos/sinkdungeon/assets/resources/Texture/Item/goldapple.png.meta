@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "504fa4a5-cacf-4291-9663-702cbd97b088",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "goldapple": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "8e444fb0-523b-4d53-9b1a-bbe26100e72e",
       "rawTextureUuid": "504fa4a5-cacf-4291-9663-702cbd97b088",
       "trimType": "custom",

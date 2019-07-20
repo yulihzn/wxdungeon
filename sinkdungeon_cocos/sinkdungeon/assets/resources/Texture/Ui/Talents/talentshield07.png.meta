@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "5fa2ef7c-4640-43cd-a407-68b0b6cfb9a7",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "talentshield07": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "e062fd16-e082-41f1-ab62-023a85924a57",
       "rawTextureUuid": "5fa2ef7c-4640-43cd-a407-68b0b6cfb9a7",
       "trimType": "custom",

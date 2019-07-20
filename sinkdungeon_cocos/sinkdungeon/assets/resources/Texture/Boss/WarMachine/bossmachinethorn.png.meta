@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "138cf40d-00b8-40f7-af48-1c761cf7e6bd",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "bossmachinethorn": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "203c27be-28ac-4e81-b8b9-d305d50c0ce0",
       "rawTextureUuid": "138cf40d-00b8-40f7-af48-1c761cf7e6bd",
       "trimType": "custom",

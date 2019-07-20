@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "086ca9dc-a9ef-4d95-ad2f-75d96d565eb1",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "dryadflower03": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "57688455-10d6-4762-adf9-8fe6fab04f43",
       "rawTextureUuid": "086ca9dc-a9ef-4d95-ad2f-75d96d565eb1",
       "trimType": "custom",

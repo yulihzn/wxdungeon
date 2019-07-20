@@ -59,10 +59,10 @@
               "value": 20
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 30
+              "value": -30
             }
           ]
         }
@@ -99,42 +99,42 @@
               "value": 0
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -60
+              "value": 60
             }
           ]
         }
       },
       "sprite/tail": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -10
+              "value": 10
             },
             {
               "frame": 0.3333333333333333,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 0.6666666666666666,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 1,
-              "value": -10
+              "value": 10
             }
           ]
         }
       },
       "sprite/tail/tail1/tail2/tail3/tail4/tail5": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 10
+              "value": -10
             },
             {
               "frame": 0.3333333333333333,
@@ -142,61 +142,39 @@
             },
             {
               "frame": 0.6666666666666666,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 1,
-              "value": 10
+              "value": -10
             }
           ]
         }
       },
       "sprite/tail/tail1/tail2": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 10
+              "value": -10
             },
             {
               "frame": 0.3333333333333333,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.6666666666666666,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 1,
-              "value": 10
+              "value": -10
             }
           ]
         }
       },
       "sprite/rightleg": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 30
-            },
-            {
-              "frame": 0.25,
-              "value": 160
-            },
-            {
-              "frame": 0.5,
-              "value": 30
-            },
-            {
-              "frame": 0.75,
-              "value": 160
-            },
-            {
-              "frame": 1,
-              "value": 30
-            }
-          ],
           "y": [
             {
               "frame": 0,
@@ -225,60 +203,60 @@
             {
               "frame": 1,
               "value": -18
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": -30
+            },
+            {
+              "frame": 0.25,
+              "value": -160
+            },
+            {
+              "frame": 0.5,
+              "value": -30
+            },
+            {
+              "frame": 0.75,
+              "value": -160
+            },
+            {
+              "frame": 1,
+              "value": -30
             }
           ]
         }
       },
       "sprite/rightleg/rightfoot": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.25,
-              "value": 80
+              "value": -80
             },
             {
               "frame": 0.5,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.75,
-              "value": 80
+              "value": -80
             },
             {
               "frame": 1,
-              "value": 5
+              "value": -5
             }
           ]
         }
       },
       "sprite/leftleg": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 160
-            },
-            {
-              "frame": 0.25,
-              "value": 40
-            },
-            {
-              "frame": 0.5,
-              "value": 160
-            },
-            {
-              "frame": 0.75,
-              "value": 40
-            },
-            {
-              "frame": 1,
-              "value": 160
-            }
-          ],
           "y": [
             {
               "frame": 0,
@@ -308,71 +286,93 @@
               "frame": 1,
               "value": -18
             }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": -160
+            },
+            {
+              "frame": 0.25,
+              "value": -40
+            },
+            {
+              "frame": 0.5,
+              "value": -160
+            },
+            {
+              "frame": 0.75,
+              "value": -40
+            },
+            {
+              "frame": 1,
+              "value": -160
+            }
           ]
         }
       },
       "sprite/leftleg/leftfoot": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 80
+              "value": -80
             },
             {
               "frame": 0.25,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.5,
-              "value": 80
+              "value": -80
             },
             {
               "frame": 0.75,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 1,
-              "value": 80
+              "value": -80
             }
           ]
         }
       },
       "sprite/rightarm": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 140
+              "value": -140
             },
             {
               "frame": 0.25,
-              "value": 130
+              "value": -130
             },
             {
               "frame": 0.5,
-              "value": 140
+              "value": -140
             },
             {
               "frame": 0.75,
-              "value": 130
+              "value": -130
             },
             {
               "frame": 1,
-              "value": 140
+              "value": -140
             }
           ]
         }
       },
       "sprite/rightarm/righthand": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.5,
-              "value": -10
+              "value": 10
             },
             {
               "frame": 1,
@@ -383,40 +383,40 @@
       },
       "sprite/leftarm": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 160
+              "value": -160
             },
             {
               "frame": 0.25,
-              "value": 145
+              "value": -145
             },
             {
               "frame": 0.5,
-              "value": 160
+              "value": -160
             },
             {
               "frame": 0.75,
-              "value": 145
+              "value": -145
             },
             {
               "frame": 1,
-              "value": 160
+              "value": -160
             }
           ]
         }
       },
       "sprite/leftarm/lefthand": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.5,
-              "value": -10
+              "value": 10
             },
             {
               "frame": 1,
@@ -437,7 +437,7 @@
       },
       "sprite": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0

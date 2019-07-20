@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "e3f31d22-5b04-4652-8d05-af49b194f3e9",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "howl004": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "ccdc0830-cb60-4c63-a85f-2e7738ccb70e",
       "rawTextureUuid": "e3f31d22-5b04-4652-8d05-af49b194f3e9",
       "trimType": "custom",

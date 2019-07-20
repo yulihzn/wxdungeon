@@ -315,8 +315,7 @@ export default class MeleeWeapon extends cc.Component {
             angle += 360;
         }
         // 将当前物体的角度设置为对应角度
-        // this.node.rotation = this.node.scaleX < 0 ? angle : -angle;
-        this.node.rotation = this.node.scaleX < 0 ? angle : -angle;
+        this.node.angle = this.node.scaleX < 0 ? -angle : angle;
 
     }
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {

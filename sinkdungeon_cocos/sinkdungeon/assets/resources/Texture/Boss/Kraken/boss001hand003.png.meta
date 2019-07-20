@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "3faccd58-6e07-4b12-9bb8-e07cb22b3111",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "boss001hand003": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "72e9623c-83e6-46a4-80fc-23b3aef16ce5",
       "rawTextureUuid": "3faccd58-6e07-4b12-9bb8-e07cb22b3111",
       "trimType": "auto",

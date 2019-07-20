@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "63206da7-116e-41fc-ba94-ddd2b2e2a4e8",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "jungledoor": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "cd5e0807-674f-49ca-930a-cec22ec4c88f",
       "rawTextureUuid": "63206da7-116e-41fc-ba94-ddd2b2e2a4e8",
       "trimType": "custom",

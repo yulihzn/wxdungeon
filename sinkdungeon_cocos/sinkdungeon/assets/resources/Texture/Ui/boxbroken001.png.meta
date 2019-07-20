@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "bc24b2b0-5d46-453f-9122-1708dbe6220f",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "boxbroken001": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b2254f0e-d54a-4e35-8901-71a81c42f90f",
       "rawTextureUuid": "bc24b2b0-5d46-453f-9122-1708dbe6220f",
       "trimType": "custom",

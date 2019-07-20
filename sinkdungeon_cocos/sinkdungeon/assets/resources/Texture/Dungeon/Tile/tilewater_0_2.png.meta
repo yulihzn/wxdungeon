@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "93a7a19c-9551-4e31-a8ee-503ae19e9465",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "tilewater_0_2": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "7e251c23-d4b5-4c99-a10c-a0baa5caa3a0",
       "rawTextureUuid": "93a7a19c-9551-4e31-a8ee-503ae19e9465",
       "trimType": "custom",

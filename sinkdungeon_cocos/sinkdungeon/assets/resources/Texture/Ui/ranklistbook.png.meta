@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "6e34a44a-858a-4e04-be0e-35037e8fbc34",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "ranklistbook": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "2d91eead-6283-4850-ac27-dbae70ccbf85",
       "rawTextureUuid": "6e34a44a-858a-4e04-be0e-35037e8fbc34",
       "trimType": "custom",

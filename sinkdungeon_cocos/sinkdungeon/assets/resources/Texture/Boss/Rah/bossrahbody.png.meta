@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "b5b50d60-f88c-4564-a7db-c6ed550cc639",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "bossrahbody": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "5fd41af7-092b-4f11-9403-4be49d8be858",
       "rawTextureUuid": "b5b50d60-f88c-4564-a7db-c6ed550cc639",
       "trimType": "custom",

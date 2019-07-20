@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "610caac0-6132-4dd7-a4eb-b7bb77572ac5",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "bossslimemustache": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "bdacbd1e-44a6-4d78-9501-cbd54699eef5",
       "rawTextureUuid": "610caac0-6132-4dd7-a4eb-b7bb77572ac5",
       "trimType": "auto",

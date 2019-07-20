@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "6f293028-7e16-4184-bf88-8407201d7986",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "tile_deck004": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "83866165-7e6f-402b-b677-9b92e6fb6060",
       "rawTextureUuid": "6f293028-7e16-4184-bf88-8407201d7986",
       "trimType": "auto",

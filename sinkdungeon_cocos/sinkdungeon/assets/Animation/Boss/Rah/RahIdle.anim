@@ -55,14 +55,14 @@
       },
       "sprite/pants": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.25,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.5,
@@ -70,7 +70,7 @@
             },
             {
               "frame": 0.75,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 1,

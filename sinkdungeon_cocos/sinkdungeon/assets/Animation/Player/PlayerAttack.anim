@@ -231,22 +231,6 @@
       },
       "sprite/body/legs/footleft": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -15,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 0
-            }
-          ],
           "position": [
             {
               "frame": 0,
@@ -279,27 +263,25 @@
                 -1
               ]
             }
-          ]
-        }
-      },
-      "sprite/body/legs/footright": {
-        "props": {
-          "rotation": [
+          ],
+          "angle": [
             {
               "frame": 0,
-              "value": 0,
-              "curve": "constant"
+              "value": 0
             },
             {
               "frame": 0.16666666666666666,
-              "value": 75,
-              "curve": "constant"
+              "value": 15
             },
             {
               "frame": 0.6666666666666666,
               "value": 0
             }
-          ],
+          ]
+        }
+      },
+      "sprite/body/legs/footright": {
+        "props": {
           "position": [
             {
               "frame": 0,
@@ -331,6 +313,20 @@
                 -2,
                 -1
               ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -75
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
             }
           ]
         }

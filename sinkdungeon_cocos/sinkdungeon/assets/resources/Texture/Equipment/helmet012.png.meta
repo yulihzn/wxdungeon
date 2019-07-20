@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "cc343ae6-2205-4494-9e60-0cb8bb239e32",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "helmet012": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "2e06fb6f-b850-42f2-a451-26d1b388fe13",
       "rawTextureUuid": "cc343ae6-2205-4494-9e60-0cb8bb239e32",
       "trimType": "custom",

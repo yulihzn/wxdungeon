@@ -59,7 +59,25 @@
       },
       "sprite/rightarm": {
         "props": {
-          "rotation": [
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 5
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/leftarm": {
+        "props": {
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -75,40 +93,8 @@
           ]
         }
       },
-      "sprite/leftarm": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 5
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 0
-            }
-          ]
-        }
-      },
       "sprite/leftleg": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 5
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": -30
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 5
-            }
-          ],
           "position": [
             {
               "frame": 0,
@@ -131,15 +117,11 @@
                 -5
               ]
             }
-          ]
-        }
-      },
-      "sprite/rightleg": {
-        "props": {
-          "rotation": [
+          ],
+          "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": -5
             },
             {
               "frame": 0.3333333333333333,
@@ -147,9 +129,13 @@
             },
             {
               "frame": 0.6666666666666666,
-              "value": 0
+              "value": -5
             }
-          ],
+          ]
+        }
+      },
+      "sprite/rightleg": {
+        "props": {
           "position": [
             {
               "frame": 0,
@@ -171,6 +157,20 @@
                 8,
                 -5
               ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -30
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
             }
           ]
         }

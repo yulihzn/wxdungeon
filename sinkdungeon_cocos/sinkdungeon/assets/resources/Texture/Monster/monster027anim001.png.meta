@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "cb65addf-7f4c-4205-adff-d2bb3eb9750b",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "monster027anim001": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "f2417032-c31b-4aaf-95b2-0527b9958136",
       "rawTextureUuid": "cb65addf-7f4c-4205-adff-d2bb3eb9750b",
       "trimType": "custom",

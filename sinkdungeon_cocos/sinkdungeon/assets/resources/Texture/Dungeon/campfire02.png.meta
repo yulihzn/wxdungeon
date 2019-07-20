@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "281d8195-c864-41d8-9434-2b849fc52a9b",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "campfire02": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "3b82e58d-aa4c-41e2-a79e-090871ea1ac8",
       "rawTextureUuid": "281d8195-c864-41d8-9434-2b849fc52a9b",
       "trimType": "custom",

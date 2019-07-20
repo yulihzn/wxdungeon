@@ -81,18 +81,18 @@
               "value": 0
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0.6666666666666666,
               "value": 0
             },
             {
               "frame": 1,
-              "value": 180
+              "value": -180
             },
             {
               "frame": 1.3333333333333333,
-              "value": 180
+              "value": -180
             },
             {
               "frame": 2,

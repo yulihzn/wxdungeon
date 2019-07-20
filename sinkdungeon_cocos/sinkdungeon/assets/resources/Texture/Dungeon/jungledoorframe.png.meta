@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "2a6d8828-9f86-4ce2-9d64-43609e8314e4",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "jungledoorframe": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "ef66ab63-9efb-47bd-8685-c113e51a2353",
       "rawTextureUuid": "2a6d8828-9f86-4ce2-9d64-43609e8314e4",
       "trimType": "auto",

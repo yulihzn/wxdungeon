@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "d99b6662-fea8-4a17-b397-527c8c206079",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "playerlegs03": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "15e53e26-31a3-4932-8bfb-49ac86afff8f",
       "rawTextureUuid": "d99b6662-fea8-4a17-b397-527c8c206079",
       "trimType": "custom",

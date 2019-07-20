@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "49058d3a-7494-4ff1-a529-8836cbe2e205",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "dryadtwine03": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "86724705-dd52-4d31-8d93-830e6de8a708",
       "rawTextureUuid": "49058d3a-7494-4ff1-a529-8836cbe2e205",
       "trimType": "custom",

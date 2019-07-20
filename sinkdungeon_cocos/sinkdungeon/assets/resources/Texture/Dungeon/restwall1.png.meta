@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "2fc563d6-dc61-420d-bc30-cd0e8670bf17",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "restwall1": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "5b2d836e-aee5-4537-81c1-5d770ea0fbcd",
       "rawTextureUuid": "2fc563d6-dc61-420d-bc30-cd0e8670bf17",
       "trimType": "custom",

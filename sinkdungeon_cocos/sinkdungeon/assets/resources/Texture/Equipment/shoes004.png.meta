@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "a52eea52-94d5-4158-9471-133bf2a23fec",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "shoes004": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "16b8a376-00b4-4fe0-8423-8a019454ada4",
       "rawTextureUuid": "a52eea52-94d5-4158-9471-133bf2a23fec",
       "trimType": "custom",

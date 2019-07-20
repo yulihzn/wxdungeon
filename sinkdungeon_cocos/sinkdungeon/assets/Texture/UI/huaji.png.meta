@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "76033493-8b2a-4d54-ad2e-9dcfb251ab50",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "trilinear",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "huaji": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "1a8795a2-1c8c-404c-ab7a-14aff01766f3",
       "rawTextureUuid": "76033493-8b2a-4d54-ad2e-9dcfb251ab50",
       "trimType": "custom",

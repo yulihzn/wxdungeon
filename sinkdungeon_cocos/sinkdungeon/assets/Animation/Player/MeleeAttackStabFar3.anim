@@ -133,14 +133,14 @@
       },
       "sprite": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.16666666666666666,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 0.25,
@@ -148,7 +148,7 @@
             },
             {
               "frame": 0.4166666666666667,
-              "value": -15
+              "value": 15
             },
             {
               "frame": 0.5,

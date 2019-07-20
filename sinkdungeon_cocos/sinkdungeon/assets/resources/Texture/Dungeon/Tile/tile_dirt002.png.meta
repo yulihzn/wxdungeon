@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "0690b50f-68ab-4851-9a27-8bb5d30e8385",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "tile_dirt002": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "d8fb4e2a-fce9-4d4a-9a7e-19e5a6794b42",
       "rawTextureUuid": "0690b50f-68ab-4851-9a27-8bb5d30e8385",
       "trimType": "custom",

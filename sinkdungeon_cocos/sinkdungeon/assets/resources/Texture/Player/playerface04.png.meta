@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "8a47c09b-e180-4378-bccc-59b31d2432eb",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "playerface04": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "e38e6b8c-ee17-4063-bbd2-d0758885812b",
       "rawTextureUuid": "8a47c09b-e180-4378-bccc-59b31d2432eb",
       "trimType": "custom",

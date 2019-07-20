@@ -11,14 +11,14 @@
     "paths": {
       "sprite/weapon": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 210
+              "value": -210
             },
             {
               "frame": 0.16666666666666666,
-              "value": -30
+              "value": 30
             }
           ]
         }

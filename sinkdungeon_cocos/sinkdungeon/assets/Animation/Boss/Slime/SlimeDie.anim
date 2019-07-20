@@ -59,25 +59,7 @@
       },
       "sprite/rightarm": {
         "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": -5
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "sprite/leftarm": {
-        "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -93,16 +75,34 @@
           ]
         }
       },
+      "sprite/leftarm": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -5
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
       "shadow": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.5,
-              "value": 90
+              "value": -90
             }
           ]
         }
@@ -123,22 +123,22 @@
       }
     },
     "props": {
-      "rotation": [
+      "angle": [
         {
           "frame": 0,
           "value": 0
         },
         {
           "frame": 0.5,
-          "value": -90
+          "value": 90
         },
         {
           "frame": 0.5833333333333334,
-          "value": -80
+          "value": 80
         },
         {
           "frame": 0.6666666666666666,
-          "value": -90
+          "value": 90
         }
       ]
     }

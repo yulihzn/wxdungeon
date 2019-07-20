@@ -55,14 +55,14 @@
       },
       "sprite/pants": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.25,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.5,
@@ -70,7 +70,7 @@
             },
             {
               "frame": 0.75,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 1,
@@ -81,102 +81,102 @@
       },
       "sprite/leftarm": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 121
+              "value": -121
             },
             {
               "frame": 0.5,
-              "value": 110
+              "value": -110
             },
             {
               "frame": 1,
-              "value": 121
+              "value": -121
             }
           ]
         }
       },
       "sprite/leftarm/lefthand": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 24
+              "value": -24
             },
             {
               "frame": 0.5,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 1,
-              "value": 24
+              "value": -24
             }
           ]
         }
       },
       "sprite/rightarm": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -139
+              "value": 139
             },
             {
               "frame": 0.5,
-              "value": -300
+              "value": 300
             },
             {
               "frame": 0.75,
-              "value": -120
+              "value": 120
             },
             {
               "frame": 1,
-              "value": -139
+              "value": 139
             }
           ]
         }
       },
       "sprite/rightarm/righthand": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 275
+              "value": -275
             },
             {
               "frame": 0.5,
-              "value": 275
+              "value": -275
             },
             {
               "frame": 0.75,
-              "value": 310
+              "value": -310
             },
             {
               "frame": 1,
-              "value": 275
+              "value": -275
             }
           ]
         }
       },
       "sprite/rightarm/righthand/wand": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 50
+              "value": -50
             },
             {
               "frame": 0.5,
-              "value": 50
+              "value": -50
             },
             {
               "frame": 0.75,
-              "value": -45
+              "value": 45
             },
             {
               "frame": 1,
-              "value": 50
+              "value": -50
             }
           ]
         }

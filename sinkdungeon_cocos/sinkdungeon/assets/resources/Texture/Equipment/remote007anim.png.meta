@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "13047808-44e0-4b0c-8169-46b3110dbf65",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "remote007anim": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "2b312ba0-19cb-4988-ac6e-6d5801ea3a3b",
       "rawTextureUuid": "13047808-44e0-4b0c-8169-46b3110dbf65",
       "trimType": "custom",

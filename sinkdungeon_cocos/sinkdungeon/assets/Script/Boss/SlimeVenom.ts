@@ -39,9 +39,9 @@ export default class SlimeVenom extends Actor {
     onEnable() {
         this.isHide = false;
         this.sprite.opacity = 255;
-        this.venom1.rotation = Logic.getRandomNum(0,180);
-        this.venom2.rotation = Logic.getRandomNum(0,180);
-        this.venom2.rotation = Logic.getRandomNum(0,180);
+        this.venom1.angle = Logic.getRandomNum(0,180);
+        this.venom2.angle = Logic.getRandomNum(0,180);
+        this.venom2.angle = Logic.getRandomNum(0,180);
         this.anim.play();
         if(!this.isForever){
             this.scheduleOnce(()=>{

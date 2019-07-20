@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "636a5e83-eeb3-4989-8cce-449fb22218b3",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "clothes006": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "23bffe0d-62ca-4716-ba63-fcb592108a1b",
       "rawTextureUuid": "636a5e83-eeb3-4989-8cce-449fb22218b3",
       "trimType": "custom",

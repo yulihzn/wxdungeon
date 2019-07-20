@@ -125,7 +125,7 @@ export default class DungeonStyleManager extends cc.Component {
                 let posleft = Dungeon.getPosInMap(cc.v2(-1, j));
                 this.doors[2].setPosition(cc.v2(posleft.x, posleft.y));
                 this.doors[2].zIndex = 2000;
-                this.doors[2].rotation = -90;
+                this.doors[2].angle = 90;
                 this.doors[2].setScale(4, 2);
                 this.doors[2].getComponent(Door).wall = wallleft;
                 this.doors[2].getComponent(Door).dir = 2;
@@ -135,7 +135,7 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[3].setPosition(cc.v2(posright.x, posright.y));
                 this.doors[3].zIndex = 2000;
                 this.doors[3].setScale(4, 2);
-                this.doors[3].rotation = 90;
+                this.doors[3].angle = -90;
                 this.doors[3].getComponent(Door).wall = wallright;
                 this.doors[3].getComponent(Door).dir = 3;
             }
@@ -191,7 +191,7 @@ export default class DungeonStyleManager extends cc.Component {
     private getWallBottom(posX: number): cc.Node {
         let wallbottom = cc.instantiate(this.wallBottomDecoration);
         wallbottom.parent = this.node;
-        wallbottom.rotation = -90;
+        wallbottom.angle = 90;
         let posbottom = Dungeon.getPosInMap(cc.v2(posX, -1));
         wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
         wallbottom.zIndex = 2500;

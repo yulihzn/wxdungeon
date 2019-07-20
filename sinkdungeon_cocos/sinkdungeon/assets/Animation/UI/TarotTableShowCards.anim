@@ -47,14 +47,14 @@
               ]
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.75,
-              "value": 30
+              "value": -30
             }
           ]
         }
@@ -77,14 +77,14 @@
               ]
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 1,
-              "value": -30
+              "value": 30
             }
           ]
         }

@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "f2732993-72fb-4ca8-b14c-17ad679039ea",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "bossslimehelmet01": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "16f63745-3ee4-4809-a7e9-e3add081323f",
       "rawTextureUuid": "f2732993-72fb-4ca8-b14c-17ad679039ea",
       "trimType": "custom",

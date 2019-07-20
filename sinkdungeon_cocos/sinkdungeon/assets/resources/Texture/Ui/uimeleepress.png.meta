@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "d2f23b91-77c1-4f93-a207-8994ecd03b42",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "uimeleepress": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "59357df6-1c57-4378-91d0-d75fa5511b54",
       "rawTextureUuid": "d2f23b91-77c1-4f93-a207-8994ecd03b42",
       "trimType": "custom",

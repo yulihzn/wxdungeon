@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "921421df-8bb9-415e-b4fe-baf423a405c2",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "lighttilewater_0_2": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "86ff2dd8-cbe2-4511-abe0-cb2aafc6527a",
       "rawTextureUuid": "921421df-8bb9-415e-b4fe-baf423a405c2",
       "trimType": "custom",

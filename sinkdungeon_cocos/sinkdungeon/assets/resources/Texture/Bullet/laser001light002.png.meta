@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "63869236-ea18-41e6-81a2-dd1faf556fa2",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "laser001light002": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "9d8061cf-d1fe-4003-94ae-ccf472791823",
       "rawTextureUuid": "63869236-ea18-41e6-81a2-dd1faf556fa2",
       "trimType": "custom",

@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "4a87bf00-87ff-4795-a115-f1ffaf928a55",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "chest001": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "da74dde1-dbcd-41c6-9cd6-4ccb34086489",
       "rawTextureUuid": "4a87bf00-87ff-4795-a115-f1ffaf928a55",
       "trimType": "custom",

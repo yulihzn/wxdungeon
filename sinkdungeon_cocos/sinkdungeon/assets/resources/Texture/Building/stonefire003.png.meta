@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "c150a3ab-34c6-47f7-9369-1142fefb339a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "stonefire003": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "322525aa-dc8a-420f-8366-2fcc8b368790",
       "rawTextureUuid": "c150a3ab-34c6-47f7-9369-1142fefb339a",
       "trimType": "custom",

@@ -44,7 +44,10 @@
     "PageView",
     "PageViewIndicator",
     "VideoPlayer",
-    "WebView"
+    "WebView",
+    "Geom Utils",
+    "3D",
+    "3D Primitive"
   ],
   "facebook": {
     "appID": "",

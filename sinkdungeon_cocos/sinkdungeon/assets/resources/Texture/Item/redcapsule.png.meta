@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "b1d694d7-3bf6-465f-8552-691ce875472b",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "redcapsule": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "908c51f9-b713-4845-9a60-ae69f360b588",
       "rawTextureUuid": "b1d694d7-3bf6-465f-8552-691ce875472b",
       "trimType": "auto",

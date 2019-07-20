@@ -119,14 +119,14 @@
       },
       "sprite/body/decorate/eyebrowleft": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.16666666666666666,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.3333333333333333,
@@ -134,7 +134,7 @@
             },
             {
               "frame": 0.5,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.6666666666666666,
@@ -145,14 +145,14 @@
       },
       "sprite/body/decorate/eyebrowright": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.16666666666666666,
-              "value": -5
+              "value": 5
             },
             {
               "frame": 0.3333333333333333,
@@ -160,7 +160,7 @@
             },
             {
               "frame": 0.5,
-              "value": -5
+              "value": 5
             },
             {
               "frame": 0.6666666666666666,
@@ -171,14 +171,14 @@
       },
       "sprite/body/decorate/mustacheleft": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.16666666666666666,
-              "value": 30
+              "value": -30
             },
             {
               "frame": 0.3333333333333333,
@@ -186,7 +186,7 @@
             },
             {
               "frame": 0.5,
-              "value": 30
+              "value": -30
             },
             {
               "frame": 0.6666666666666666,
@@ -197,14 +197,14 @@
       },
       "sprite/body/decorate/mustacheright": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.16666666666666666,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 0.3333333333333333,
@@ -212,7 +212,7 @@
             },
             {
               "frame": 0.5,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 0.6666666666666666,
@@ -269,10 +269,10 @@
       },
       "sprite/dashlight/dashlight2": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 0.16666666666666666,
@@ -280,7 +280,7 @@
             },
             {
               "frame": 0.3333333333333333,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 0.5,
@@ -288,17 +288,17 @@
             },
             {
               "frame": 0.6666666666666666,
-              "value": 15
+              "value": -15
             }
           ]
         }
       },
       "sprite/dashlight/dashlight3": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -15
+              "value": 15
             },
             {
               "frame": 0.16666666666666666,
@@ -306,7 +306,7 @@
             },
             {
               "frame": 0.3333333333333333,
-              "value": -15
+              "value": 15
             },
             {
               "frame": 0.5,
@@ -314,7 +314,7 @@
             },
             {
               "frame": 0.6666666666666666,
-              "value": -15
+              "value": 15
             }
           ]
         }

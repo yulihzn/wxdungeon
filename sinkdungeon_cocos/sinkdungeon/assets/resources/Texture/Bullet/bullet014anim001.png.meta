@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "f7d6155b-bc37-4594-a84a-0e2ee1f110f5",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "bullet014anim001": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "9bb22380-fc7a-49ff-b99f-aeb5c4221f40",
       "rawTextureUuid": "f7d6155b-bc37-4594-a84a-0e2ee1f110f5",
       "trimType": "custom",

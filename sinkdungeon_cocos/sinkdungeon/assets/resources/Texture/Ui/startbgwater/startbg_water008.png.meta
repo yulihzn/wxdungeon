@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "8c0b728f-c675-4cbc-bdaa-89df2dbe8f6c",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "startbg_water008": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "e27f1711-f392-4310-a00e-0092295cb2ff",
       "rawTextureUuid": "8c0b728f-c675-4cbc-bdaa-89df2dbe8f6c",
       "trimType": "custom",

@@ -12,7 +12,7 @@
       "sprite/bighand04": {
         "props": {
           "scale": [],
-          "rotation": []
+          "angle": []
         }
       },
       "sprite/bighand06": {
@@ -59,14 +59,14 @@
               }
             }
           ],
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -120
+              "value": 120
             },
             {
               "frame": 0.5,
-              "value": -90
+              "value": 90
             },
             {
               "frame": 2,
@@ -74,11 +74,11 @@
             },
             {
               "frame": 3.0166666666666666,
-              "value": -90
+              "value": 90
             },
             {
               "frame": 3.5,
-              "value": -120
+              "value": 120
             }
           ]
         }

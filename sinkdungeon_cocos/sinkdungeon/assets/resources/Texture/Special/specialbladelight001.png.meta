@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "94d15f1e-2893-43d3-af84-a4b28b316a00",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "specialbladelight001": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "cf9c7819-b0eb-4e5e-aca1-7f6ce9feb6a7",
       "rawTextureUuid": "94d15f1e-2893-43d3-af84-a4b28b316a00",
       "trimType": "custom",

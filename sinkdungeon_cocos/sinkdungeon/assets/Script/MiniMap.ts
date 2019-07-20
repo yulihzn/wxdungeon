@@ -74,25 +74,25 @@ export default class MiniMap extends cc.Component {
 
 					this.map[i][j].color = this.getColor(isClear?MiniMap.ColorLevel.CLEAR:MiniMap.ColorLevel.NORMAL);
 					
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.BOSS_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.BOSS_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_BOSS, MiniMap.ColorLevel.CLEAR_BOSS);
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.LOOT_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.LOOT_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_LOOT, MiniMap.ColorLevel.CLEAR_LOOT);
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.MERCHANT_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.MERCHANT_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_MERCHANT, MiniMap.ColorLevel.CLEAR_MERCHANT);
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.START_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.START_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_START, MiniMap.ColorLevel.NORMAL_START);
 					if(Logic.level != RectDungeon.LEVEL_3 && Logic.level != RectDungeon.LEVEL_5){
-						this.map[i][j].color = this.getMapColor(roomType, RectDungeon.END_ROOM, isClear
+						this.getMapColor(i,j,roomType, RectDungeon.END_ROOM, isClear
 							, MiniMap.ColorLevel.NORMAL_END, MiniMap.ColorLevel.CLEAR_END);
 					}
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.PUZZLE_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.PUZZLE_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_PUZZLE, MiniMap.ColorLevel.CLEAR_PUZZLE);
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.POKER_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.POKER_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_POKER, MiniMap.ColorLevel.NORMAL_POKER);
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.TAROT_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.TAROT_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_TAROT, MiniMap.ColorLevel.NORMAL_TAROT);
-					this.map[i][j].color = this.getMapColor(roomType, RectDungeon.TEST_ROOM, isClear
+					this.getMapColor(i,j,roomType, RectDungeon.TEST_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_TEST, MiniMap.ColorLevel.NORMAL_TEST);
 					if (roomType == RectDungeon.START_ROOM) {
 						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_START);
@@ -105,11 +105,9 @@ export default class MiniMap extends cc.Component {
 			}
 		}
 	}
-	getMapColor(roomType: number, roomTypeType: number, isClear: boolean, typeNormal: number, typeClear: number): cc.Color {
+	getMapColor(i:number,j:number,roomType: number, roomTypeType: number, isClear: boolean, typeNormal: number, typeClear: number){
 		if (roomType == roomTypeType) {
-			return this.getColor(isClear ? typeClear : typeNormal);
-		} else {
-			return this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);
+			this.map[i][j].color = this.getColor(isClear ? typeClear : typeNormal);
 		}
 	}
 	getColor(t: number): cc.Color {

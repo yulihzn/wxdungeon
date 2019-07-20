@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "a2a3737c-e079-43b9-ba77-676dc28b9caa",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "evileyeleg": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "df134d50-eab4-4185-8f68-6842985e0b22",
       "rawTextureUuid": "a2a3737c-e079-43b9-ba77-676dc28b9caa",
       "trimType": "custom",

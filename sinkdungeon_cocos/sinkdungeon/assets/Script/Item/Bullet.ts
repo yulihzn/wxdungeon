@@ -69,7 +69,7 @@ export default class Bullet extends cc.Component {
         this.boxPCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
-        this.sprite.rotation = 0;
+        this.sprite.angle = 0;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
         this.laserNode = this.node.getChildByName("laser");
@@ -83,7 +83,7 @@ export default class Bullet extends cc.Component {
         this.rigidBody.linearVelocity = cc.v2(0, 0);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
-        this.sprite.rotation = 0;
+        this.sprite.angle = 0;
         this.light = this.node.getChildByName('light');
         this.light.opacity = 0;
         this.laserNode = this.node.getChildByName("laser");
@@ -104,7 +104,7 @@ export default class Bullet extends cc.Component {
             this.checkTimeDelay = 0;
         }
         if(this.data.fixedRotation == 1){
-            this.node.rotation = 0;
+            this.node.angle = 0;
         }
         if(this.data.isDecelerate == 1 && this.isDecelerateDelay){
             this.timeDelay += dt;
@@ -156,7 +156,7 @@ export default class Bullet extends cc.Component {
         }
         this.sprite.opacity = 0;
         this.sprite.getComponent(cc.Sprite).spriteFrame = null;
-        this.sprite.rotation = 0;
+        this.sprite.angle = 0;
         this.laserNode.opacity = 0;
         this.laserSpriteNode.getComponent(cc.Sprite).spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser);
         this.laserHeadSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
@@ -376,7 +376,7 @@ export default class Bullet extends cc.Component {
             return false;
         }
         if(this.data.isLaser != 1){
-            this.node.rotation+=180;
+            this.node.angle+=-180;
             this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.mul(-1);
             this.isFromPlayer = true;
             this.data.isTracking = 0;
@@ -458,7 +458,7 @@ export default class Bullet extends cc.Component {
         let offsetAngle = 90;
         angle += offsetAngle;
         // 将当前物体的角度设置为对应角度
-        this.node.rotation = this.node.scaleX < 0 ? angle : -angle;
+        this.node.angle = this.node.scaleX < 0 ? -angle : angle;
 
     }
 

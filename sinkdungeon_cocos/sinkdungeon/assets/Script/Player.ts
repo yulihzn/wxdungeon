@@ -189,26 +189,26 @@ export default class Player extends Actor {
      * @param stoneLevel 石头等级：0：全身，1：身子和脚，2：脚 
      */
     private turnStone(isStone: boolean, stoneLevel?: number) {
-        let n = isStone ? 1 : 0;
-        this.bodySprite.setState(n);
-        this.hairSprite.setState(n);
-        this.helmetSprite.setState(n);
-        this.clothesSprite.setState(n);
-        this.trousersSprite.setState(n);
-        this.glovesLeftSprite.setState(n);
-        this.shoesLeftSprite.setState(n);
-        this.shoesRightSprite.setState(n);
-        if (stoneLevel == 1) {
-            this.hairSprite.setState(0);
-            this.helmetSprite.setState(0);
-        }
-        if (stoneLevel == 2) {
-            this.bodySprite.setState(0);
-            this.hairSprite.setState(0);
-            this.helmetSprite.setState(0);
-            this.clothesSprite.setState(0);
-            this.glovesLeftSprite.setState(0);
-        }
+        // let n = isStone ? 1 : 0;
+        // this.bodySprite.setState(n);
+        // this.hairSprite.setState(n);
+        // this.helmetSprite.setState(n);
+        // this.clothesSprite.setState(n);
+        // this.trousersSprite.setState(n);
+        // this.glovesLeftSprite.setState(n);
+        // this.shoesLeftSprite.setState(n);
+        // this.shoesRightSprite.setState(n);
+        // if (stoneLevel == 1) {
+        //     this.hairSprite.setState(0);
+        //     this.helmetSprite.setState(0);
+        // }
+        // if (stoneLevel == 2) {
+        //     this.bodySprite.setState(0);
+        //     this.hairSprite.setState(0);
+        //     this.helmetSprite.setState(0);
+        //     this.clothesSprite.setState(0);
+        //     this.glovesLeftSprite.setState(0);
+        // }
     }
 
 
@@ -342,7 +342,7 @@ export default class Player extends Actor {
         if (!this.sprite) {
             return;
         }
-        this.sprite.rotation = 0;
+        this.sprite.angle = 0;
         this.sprite.scale = 5;
         this.sprite.opacity = 255;
         this.sprite.x = 0;
@@ -546,9 +546,9 @@ export default class Player extends Actor {
     resetFoot() {
         this.trousersSprite.spriteFrame = Logic.spriteFrames['playerlegs'];
         this.shoesLeftSprite.node.parent.setPosition(2, -1);
-        this.shoesLeftSprite.node.parent.setRotation(0);
+        this.shoesLeftSprite.node.parent.angle=0;
         this.shoesRightSprite.node.parent.setPosition(-2, -1);
-        this.shoesRightSprite.node.parent.setRotation(0);
+        this.shoesRightSprite.node.parent.angle=0;
     }
     playerAnim(animType: number,speed?:number): void {
         let walkName = "PlayerWalk";

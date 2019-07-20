@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "9f5c8cd8-e3fa-4ae9-9192-e72a8898e427",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "gloves009": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "00a7a58f-a9a1-4118-a861-ed814a51024b",
       "rawTextureUuid": "9f5c8cd8-e3fa-4ae9-9192-e72a8898e427",
       "trimType": "custom",

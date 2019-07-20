@@ -23,8 +23,8 @@ import TalentData from "./TalentData";
 export default class ProfileData {
     //地图数据管理类
     rectDungeon: RectDungeon = new RectDungeon(0);
-    //当前房间下标
-    currentPos: cc.Vec2 = cc.v2(0,0);
+    //当前房间下标 默认1-1
+    currentPos: cc.Vec2 = cc.v2(1,1);
     //根据下标保存普通箱子的位置
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
@@ -48,7 +48,7 @@ export default class ProfileData {
         this.inventoryManager = new InventoryManager();
         this.talentList = new Array();
         this.rectDungeon = new RectDungeon(0);
-        this.currentPos = cc.v2(0,0);
+        this.currentPos = cc.v2(1,1);
         this.boxes = {};
         this.shopTables = {};
         this.chests = {};

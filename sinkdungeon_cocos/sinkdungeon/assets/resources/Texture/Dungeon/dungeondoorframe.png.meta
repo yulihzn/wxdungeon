@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "a56d4263-f267-4bef-b887-541efbccc3ec",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "dungeondoorframe": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "a3736ed9-3475-4fae-bd5f-1d0d4bf05b64",
       "rawTextureUuid": "a56d4263-f267-4bef-b887-541efbccc3ec",
       "trimType": "auto",

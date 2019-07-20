@@ -100,7 +100,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.saveData();
     }
     static resetData() {
-        Logic.profileManager.data = new ProfileData();
+        Logic.profileManager.init();
         Logic.level = Logic.profileManager.data.level;
         Logic.playerData = Logic.profileManager.data.playerData.clone();
         Logic.inventoryManager = Logic.profileManager.data.inventoryManager;

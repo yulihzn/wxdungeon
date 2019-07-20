@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "6c0f3e45-1407-49cc-83d7-b44776007b8a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "joystickbg": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "a982e4f1-39da-4829-86a4-9557dcf25185",
       "rawTextureUuid": "6c0f3e45-1407-49cc-83d7-b44776007b8a",
       "trimType": "auto",

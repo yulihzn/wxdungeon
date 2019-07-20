@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "9f48bdbf-3f29-46d2-b67e-33e4b89d448d",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "portallight": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "10286617-4522-4e61-ab6d-9cbf60f10d0a",
       "rawTextureUuid": "9f48bdbf-3f29-46d2-b67e-33e4b89d448d",
       "trimType": "auto",

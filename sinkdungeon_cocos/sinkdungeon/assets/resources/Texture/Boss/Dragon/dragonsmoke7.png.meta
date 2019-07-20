@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "aa2dadb1-081b-4e3b-9167-84f53b65efe7",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "dragonsmoke7": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "a3c0f498-4bd4-451b-a355-98e29e03b3a8",
       "rawTextureUuid": "aa2dadb1-081b-4e3b-9167-84f53b65efe7",
       "trimType": "custom",

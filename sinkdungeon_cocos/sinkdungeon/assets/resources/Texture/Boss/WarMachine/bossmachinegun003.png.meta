@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "b5238509-0f31-4d3c-aff6-0d7744db1b4f",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "bossmachinegun003": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "1b8e8881-5b0c-43e7-b80d-803a0ed53d1e",
       "rawTextureUuid": "b5238509-0f31-4d3c-aff6-0d7744db1b4f",
       "trimType": "custom",

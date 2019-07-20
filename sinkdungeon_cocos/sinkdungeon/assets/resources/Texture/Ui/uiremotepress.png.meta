@@ -1,13 +1,14 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.1",
   "uuid": "2d023361-be0d-4928-82e7-5a0f58b10efa",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
   "premultiplyAlpha": false,
+  "platformSettings": {},
   "subMetas": {
     "uiremotepress": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "66cd7053-9400-4dc3-8cac-84b38bd148f1",
       "rawTextureUuid": "2d023361-be0d-4928-82e7-5a0f58b10efa",
       "trimType": "custom",
