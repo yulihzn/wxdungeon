@@ -36,10 +36,8 @@ export default class Chapter extends cc.Component {
 
     clickChapter(event, chapter:string) {
         if (chapter) {
-            Logic.profile.clearData();
-            Logic.profile.chapterName = parseInt(chapter);
-            Logic.chapterName = Logic.profile.chapterName;
-            Logic.resetData();
+            Logic.profileManager.clearData();
+            Logic.resetData(parseInt(chapter));
             cc.director.loadScene('loading');
         }
     }

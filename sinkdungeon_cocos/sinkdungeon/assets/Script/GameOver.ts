@@ -34,7 +34,6 @@ export default class GameOver extends cc.Component {
         }
     }
     retry(){
-        Logic.time = '00:00:00';
         Logic.resetData();
         cc.director.loadScene('loading');
     }

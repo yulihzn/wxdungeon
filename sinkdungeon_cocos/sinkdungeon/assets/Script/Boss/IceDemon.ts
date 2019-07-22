@@ -166,11 +166,13 @@ export default class IceDemon extends Boss {
 
         this.meleeSkill.next(() => {
             this.meleeSkill.IsExcuting = true;
+            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
             this.anim.play('IceDemonAttack001');
             this.scheduleOnce(() => {
+                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 let pos = this.getMovePos();
                 if (!pos.equals(cc.Vec2.ZERO)) {
                     pos = pos.normalizeSelf();

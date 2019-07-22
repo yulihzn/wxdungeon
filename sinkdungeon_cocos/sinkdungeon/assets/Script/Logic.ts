@@ -99,30 +99,40 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.saveData();
     }
-    static resetData() {
-        Logic.profileManager.init();
+    static resetData(chapter?:number) {
+        //重置时间
+        Logic.time = '00:00:00';
+        //加载章节名
+        Logic.profileManager.data.chapterName = chapter?chapter:Logic.profileManager.data.chapterName;
+        Logic.chapterName = Logic.profileManager.data.chapterName;
+        //加载存档
+        // Logic.profileManager.loadData();
+        //加载关卡等级
         Logic.level = Logic.profileManager.data.level;
+        //加载玩家数据
         Logic.playerData = Logic.profileManager.data.playerData.clone();
+        //加载装备
         Logic.inventoryManager = Logic.profileManager.data.inventoryManager;
+        //加载技能列表
         Logic.talentList = Logic.profileManager.data.talentList;
+        Logic.initTalentMap();
+        //加载子弹
         Logic.ammo = Logic.profileManager.data.ammo;
-        Logic.hasTalentMap = {};
+        //加载地图
         Logic.mapManager.reset(Logic.level);
-        Logic.mapManager.loadDataFromSave();
+        //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15;
         Dungeon.HEIGHT_SIZE = 9;
+        //加载金币
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c ? parseInt(c) : 0;
+        //重置技能选择状态
         Logic.isPickedTalent = false;
     }
-    static loadList(talentList: TalentData[]) {
-        Logic.talentList = talentList;
+    static initTalentMap() {
         Logic.hasTalentMap = {};
-        for (let t of talentList) {
-            let temp = new TalentData();
-            temp.valueCopy(t);
-            Logic.talentList.push(temp);
-            Logic.hasTalentMap[temp.id] = true;
+        for (let t of Logic.talentList) {
+            Logic.hasTalentMap[t.id] = true;
         }
     }
     static addTalent(id: number) :boolean{

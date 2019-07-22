@@ -77,12 +77,16 @@ export default class MapManager {
         cc.log(this.rectDungeon.getDisPlay());
     }
     reset(level: number) {
+        //地图重新生成
         this.rectDungeon = new RectDungeon(level);
         cc.log(this.rectDungeon.getDisPlay());
+        //有房间数据的情况下重置房间
         this.resetRooms();
+        //设置当前位置为开始房间位置
         this.currentPos = cc.v2(this.rectDungeon.startRoom.x, this.rectDungeon.startRoom.y);
+        //修改当前房间和四周房间状态为发现
         this.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
-        
+        //清空缓存的箱子商店宝箱装备物品数据
         this.boxes = {};
         this.shopTables = {};
         this.chests = {};
@@ -190,10 +194,12 @@ export default class MapManager {
         return this.rectDungeon.map[this.currentPos.x][this.currentPos.y].roomType;
     }
     public loadMap() {
+        //判断是否加载过地图资源
         if (this.allfileRooms00[this.roomStrs[0]]) {
             this.isloaded = true;
             return;
         }
+        //加载五个章节的地图资源
         this.loadChapterMap(0, this.allfileRooms00);
         this.loadChapterMap(1, this.allfileRooms01);
         this.loadChapterMap(2, this.allfileRooms02);
@@ -236,8 +242,10 @@ export default class MapManager {
                     case 3: this.isloaded03 = true; break;
                     case 4: this.isloaded04 = true; break;
                 }
+                //资源全部加载完成时，重置房间数据，加载存档
                 if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04) {
                     this.resetRooms();
+                    this.loadDataFromSave();
                     this.isloaded = true;
                     cc.log('maps loaded');
                 }

@@ -73,7 +73,7 @@ export default class Wall extends Building {
         let s = 'wall002';
         switch(this.mapStr){
             case '##':s = 'wall002';break;
-            case '#0':s = 'wall002';break;
+            case '#0':s = 'wall009';break;
             case '#1':s = 'wall002';break;
         }
         return s;

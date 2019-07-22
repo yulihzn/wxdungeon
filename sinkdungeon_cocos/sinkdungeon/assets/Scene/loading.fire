@@ -390,8 +390,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 392,
-      "height": 64
+      "width": 240,
+      "height": 75.6
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -438,15 +438,13 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "Sink Dungeon",
-    "_N$string": "Sink Dungeon",
+    "_string": "塌陷地牢",
+    "_N$string": "塌陷地牢",
     "_fontSize": 60,
-    "_lineHeight": 16,
+    "_lineHeight": 60,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "850ec44c-81fd-45f3-b6ed-4cf410575571"
-    },
-    "_isSystemFontUsed": false,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,

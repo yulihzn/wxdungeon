@@ -409,6 +409,7 @@ export default class Player extends Actor {
         }
         this.playerAnim(Player.STATE_ATTACK);
         this.meleeWeapon.attack(this.data, isMiss);
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
     }
     remoteRate = 0;
     remoteAttack() {
@@ -695,7 +696,7 @@ export default class Player extends Actor {
     smokeTimeDelay = 0;
     isSmokeTimeDelay(dt: number): boolean {
         this.smokeTimeDelay += dt;
-        if (this.smokeTimeDelay > 0.2) {
+        if (this.smokeTimeDelay > 0.3) {
             this.smokeTimeDelay = 0;
             return true;
         }
@@ -737,6 +738,7 @@ export default class Player extends Actor {
             if (this.touchedEquipment.shopTable) {
                 if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {
                     cc.director.emit(EventConstant.HUD_ADD_COIN, { detail: { count: -this.touchedEquipment.shopTable.data.price } });
+                    cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.COIN}});
                     this.touchedEquipment.taken();
                     this.touchedEquipment.shopTable.data.isSaled = true;
                     this.touchedEquipment = null;

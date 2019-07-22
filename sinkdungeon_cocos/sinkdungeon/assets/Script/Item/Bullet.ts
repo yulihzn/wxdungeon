@@ -11,6 +11,7 @@ import StatusManager from "../Manager/StatusManager";
 import Boom from "./Boom";
 import TalentShield from "../Talent/TalentShield";
 import FlyWheel from "./FlyWheel";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -190,6 +191,7 @@ export default class Bullet extends cc.Component {
         let scaleAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.scaleTo(0.1, 1, 0));
         this.laserNode.runAction(scaleAction);
         this.scheduleOnce(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 0.2);
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.REMOTE_LASER}});
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
@@ -266,7 +268,7 @@ export default class Bullet extends cc.Component {
         if(this.data.isDecelerate == 1){
             this.scheduleOnce(()=>{this.isDecelerateDelay = true;},this.data.delayDecelerate);
         }
-        
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
     }
 
     start() {
@@ -396,6 +398,7 @@ export default class Bullet extends cc.Component {
             boom.parent = this.node.parent;
             boom.setPosition(this.node.position);
             boom.zIndex = 4100;
+            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
 
         }
     }

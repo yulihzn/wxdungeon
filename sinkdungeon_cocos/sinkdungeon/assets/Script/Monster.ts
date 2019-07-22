@@ -596,6 +596,7 @@ export default class Monster extends Actor {
         }
         if (playerDis < pd * this.node.scaleY && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
             this.meleeSkill.next(() => {
+                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 this.meleeSkill.IsExcuting = true;
                 this.showAttackEffect(false);
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
@@ -644,6 +645,7 @@ export default class Monster extends Actor {
         if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && this.data.dash > 0
             && !this.dashSkill.IsExcuting && !this.isDisguising) {
             this.dashSkill.next(() => {
+                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 pos = this.getMovePosFromPlayer();
                 this.showAttackEffect(true);
                 this.move(pos, speed * 1.2);

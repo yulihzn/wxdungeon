@@ -29,7 +29,7 @@ export default class Chest extends Building {
     closeSpriteFrame: cc.SpriteFrame = null;
     private sprite: cc.Node;
     private timeDelay = 0;
-    data:ChestData = new ChestData();
+    data: ChestData = new ChestData();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -39,8 +39,8 @@ export default class Chest extends Building {
     start() {
 
     }
-   
-    setQuality(quality: number,isOpen:boolean) {
+
+    setQuality(quality: number, isOpen: boolean) {
         this.data.quality = quality;
         this.data.isOpen = isOpen;
         if (!this.sprite) {
@@ -58,7 +58,7 @@ export default class Chest extends Building {
         this.openSpriteFrame = openFrame;
         this.closeSpriteFrame = closeFrame;
         this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame;
-        if(isOpen){
+        if (isOpen) {
             this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
         }
     }
@@ -82,19 +82,19 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        if(Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RectDungeon.TEST_ROOM){
-                            dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos,null,this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos,null,this.data.quality);
+                        if (Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RectDungeon.TEST_ROOM) {
+                            dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos,null,this.data.quality);
-                        }else{
+                        } else {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);
-                            dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos,null,this.data.quality);
+                            dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
                         }
                     }
                 }
@@ -102,17 +102,20 @@ export default class Chest extends Building {
         this.sprite.runAction(action);
         let currchests = Logic.mapManager.getCurrentMapChests();
         let newlist = new Array();
-            if (currchests) {
-                for (let tempchest of currchests) {
-                    if (tempchest.pos.equals(this.data.pos)) {
-                        tempchest.isOpen = this.data.isOpen;
-                        tempchest.quality = this.data.quality;
-                    }
+        let needNew = true;
+        if (currchests) {
+            for (let tempchest of currchests) {
+                if (tempchest.pos.equals(this.data.pos)) {
+                    tempchest.isOpen = this.data.isOpen;
+                    tempchest.quality = this.data.quality;
+                    needNew = false;
                 }
-            }else{
-                newlist.push(this.data)
-                Logic.mapManager.setCurrentChestsArr(newlist);
             }
+        }
+        if (needNew) {
+            newlist.push(this.data)
+            Logic.mapManager.setCurrentChestsArr(newlist);
+        }
     }
 
     onCollisionStay(other: cc.Collider, self: cc.Collider) {

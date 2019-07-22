@@ -100,6 +100,7 @@ export default class Dryad extends Boss {
     }
     attack() {
         this.meleeSkill.next(() => {
+            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             this.meleeSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);

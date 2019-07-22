@@ -33,12 +33,10 @@ export default class NewClass extends cc.Component {
         }
     }
     retry(){
-        Logic.time = '00:00:00';
         Logic.resetData();
         cc.director.loadScene('loading');
     }
     home(){
-        Logic.time = '00:00:00';
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }

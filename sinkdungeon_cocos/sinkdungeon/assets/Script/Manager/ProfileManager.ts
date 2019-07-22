@@ -4,6 +4,7 @@ import ChestData from "../Data/ChestData";
 import EquipmentData from "../Data/EquipmentData";
 import ItemData from "../Data/ItemData";
 import ProfileData from "../Data/ProfileData";
+import TalentData from "../Data/TalentData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,13 +20,15 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class ProfileManager{
-    data:ProfileData = null;
+    data:ProfileData = new ProfileData();
     hasSaveData:boolean = false;
     constructor(){
-        this.init();
+        this.loadData();
     }
-    init(){
+    loadData(){
+        //清空当前数据
         this.data = new ProfileData();
+        //读取存档
         this.loadProfile();
     }
    
@@ -59,16 +62,25 @@ export default class ProfileManager{
             return;
         }
         this.hasSaveData = true;
+        //玩家数据
         this.data.playerData.valueCopy(data.playerData);
+        //章节名称
         this.data.chapterName = data.chapterName;
+        //玩家装备列表
         for(let i =0;i<data.inventoryManager.list.length;i++){
             this.data.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
         }
-        // for(let i =0;i<data.talentList.length;i++){
-        //     this.talentList[i].valueCopy(data.talentList[i]);
-        // }
+        //加载技能
+        for(let i =0;i<data.talentList.length;i++){
+            let td = new TalentData();
+            td.valueCopy(data.talentList[i]);
+            this.data.talentList.push(td);
+        }
+        //加载地图数据
         this.data.rectDungeon = this.data.rectDungeon.buildMapFromSave(data.rectDungeon);
+        //加载当前位置
         this.data.currentPos = data.currentPos?cc.v2(data.currentPos.x,data.currentPos.y):cc.v2(0,0);
+        //加载箱子
         for(let key in data.boxes){
            let list = data.boxes[key];
            this.data.boxes[key] = new Array();
@@ -78,6 +90,7 @@ export default class ProfileManager{
                this.data.boxes[key][i] = box;
            }
         }
+        //加载商店
         for(let key in data.shopTables){
             let list = data.shopTables[key];
             this.data.shopTables[key] = new Array();
@@ -87,7 +100,7 @@ export default class ProfileManager{
                 this.data.shopTables[key][i] = tables;
             }
          }
-
+         //加载宝箱
          for(let key in data.chests){
             let list = data.chests[key];
             this.data.chests[key] = new Array();
@@ -97,7 +110,7 @@ export default class ProfileManager{
                 this.data.chests[key][i] = chest;
             }
          }
-        
+         //加载地上装备
          for(let key in data.equipments){
             let list = data.equipments[key];
             this.data.equipments[key] = new Array();
@@ -107,7 +120,7 @@ export default class ProfileManager{
                 this.data.equipments[key][i] = equip;
             }
          }
-
+         //加载地上物品
          for(let key in data.items){
             let list = data.items[key];
             this.data.items[key] = new Array();

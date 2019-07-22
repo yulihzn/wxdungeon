@@ -162,6 +162,7 @@ export default class Dungeon extends cc.Component {
         this.coinManager = this.getComponent(CoinManger);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.dungeonStyleManager.addDecorations();
+        //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
 
@@ -655,6 +656,7 @@ export default class Dungeon extends cc.Component {
             this.coinManager.getValueCoin(count, pos, this.node);
         }
     }
+    /**放置地上的装备 */
     addEquipmentListOnGround() {
         let currequipments = Logic.mapManager.getCurrentMapEquipments();
         if (currequipments) {
@@ -666,6 +668,7 @@ export default class Dungeon extends cc.Component {
         }
 
     }
+    /**放置地上物品 */
     addItemListOnGround() {
         let curritems = Logic.mapManager.getCurrentMapItems();
         Logic.mapManager.setCurrentItemsArr(new Array());

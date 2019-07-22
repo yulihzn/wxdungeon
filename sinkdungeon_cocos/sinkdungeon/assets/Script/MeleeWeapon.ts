@@ -385,7 +385,7 @@ export default class MeleeWeapon extends cc.Component {
         this.isMiss = false;
         //停顿
         this.anim.pause();
-        this.scheduleOnce(()=>{this.anim.resume()},0.05)
+        this.scheduleOnce(()=>{this.anim.resume()},0.02)
     }
     addMonsterAllStatus(monster: Monster) {
         this.addMonsterStatus(this.player.data.getIceRate(), monster, StatusManager.FROZEN);

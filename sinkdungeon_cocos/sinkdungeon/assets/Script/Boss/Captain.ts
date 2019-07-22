@@ -68,6 +68,7 @@ export default class Captain extends Boss {
     //Animation
     AttackStart(){
         this.attackSkill.IsExcuting = true;
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
     }
     //Animation
     AttackFinish(){

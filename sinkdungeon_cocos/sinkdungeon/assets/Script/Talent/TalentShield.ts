@@ -7,6 +7,7 @@ import FlyWheel from "../Item/FlyWheel";
 import Dungeon from "../Dungeon";
 import Talent from "./Talent";
 import Skill from "../Utils/Skill";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 const { ccclass, property } = cc._decorator;
 
@@ -143,7 +144,9 @@ export default class TalentShield extends Talent {
                 if (this.hashTalent(TalentShield.SHIELD_06)) {
                     //乾坤一掷
                     this.throwShield();
-                } 
+                } else{
+                    cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+                }
                 //添加状态
                 this.player.addStatus(statusName);
             }, 0.2);
@@ -159,6 +162,7 @@ export default class TalentShield extends Talent {
     private throwShield() {
         this.shieldBackSprite.node.opacity = 0;
         if (this.flyWheel) {
+            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
             this.flyWheel.show();
         }
     }

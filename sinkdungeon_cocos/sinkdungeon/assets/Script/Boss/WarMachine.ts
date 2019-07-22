@@ -101,9 +101,11 @@ export default class WarMachine extends Boss {
             this.actionCount++;
             let pos = cc.v2(1, 0);
             if (this.actionCount > 10) {
+                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 pos = cc.v2(-1, 0);
             }
             if (this.actionCount > 20) {
+                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 this.actionCount = 0;
             }
             if (!pos.equals(cc.Vec2.ZERO)) {

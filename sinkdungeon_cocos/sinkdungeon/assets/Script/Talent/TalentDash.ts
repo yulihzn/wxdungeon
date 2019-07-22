@@ -9,6 +9,7 @@ import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
 import Shooter from "../Shooter";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 const { ccclass, property } = cc._decorator;
 
@@ -16,12 +17,12 @@ const { ccclass, property } = cc._decorator;
 export default class TalentDash extends Talent {
 
     @property(DashShadow)
-    dashShadow:DashShadow=null;
-    hv:cc.Vec2;
+    dashShadow: DashShadow = null;
+    hv: cc.Vec2;
 
     onLoad() {
     }
-    init(){
+    init() {
         super.init();
         this.dashShadow.node.active = false;
         this.node.parent = this.player.node.parent;
@@ -38,18 +39,19 @@ export default class TalentDash extends Talent {
             return;
         }
         let cooldown = 3;
-        if(this.hashTalent(Talent.DASH_13)){
+        if (this.hashTalent(Talent.DASH_13)) {
             cooldown = 2;
         }
         let speed = 1200;
-        if(this.hashTalent(Talent.DASH_14)){
+        if (this.hashTalent(Talent.DASH_14)) {
             speed = 2400;
         }
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
-            this.schedule(() => { 
+            this.schedule(() => {
+                cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.WALK } });
                 this.player.getWalkSmoke(this.node.parent, this.node.position);
-             }, 0.05, 4, 0);
+            }, 0.05, 4, 0);
             let pos = this.player.rigidbody.linearVelocity.clone();
             this.player.isMoving = false;
             if (pos.equals(cc.Vec2.ZERO)) {
@@ -57,11 +59,11 @@ export default class TalentDash extends Talent {
             } else {
                 pos = pos.normalizeSelf();
             }
-            if(this.hashTalent(Talent.DASH_08)){
+            if (this.hashTalent(Talent.DASH_08)) {
                 speed = 0;
                 this.showShadow(pos);
             }
-            this.hv=pos.clone();
+            this.hv = pos.clone();
             pos = pos.mul(speed);
             this.player.rigidbody.linearVelocity = pos;
             this.scheduleOnce(() => {
@@ -70,12 +72,12 @@ export default class TalentDash extends Talent {
                 this.player.resetFoot();
                 this.IsExcuting = false;
             }, 0.5)
-            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown ,talentType:1} });
+            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1 } });
         }, cooldown, true);
     }
-    
-    showShadow(pos:cc.Vec2){
-        if(this.dashShadow){
+
+    showShadow(pos: cc.Vec2) {
+        if (this.dashShadow) {
             this.dashShadow.setHv(pos.clone());
             this.dashShadow.show();
         }
@@ -100,19 +102,19 @@ export default class TalentDash extends Talent {
         }
     }
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        if(this.hashTalent(Talent.DASH_02)&&!this.hashTalent(Talent.DASH_08)){
-            this.attacking(otherCollider,this.node);
+        if (this.hashTalent(Talent.DASH_02) && !this.hashTalent(Talent.DASH_08)) {
+            this.attacking(otherCollider, this.node);
         }
     }
-    attacking(attackTarget: cc.PhysicsCollider,currentNode:cc.Node) {
+    attacking(attackTarget: cc.PhysicsCollider, currentNode: cc.Node) {
         if (!attackTarget || !currentNode.active) {
             return;
         }
         let damage = new DamageData(1);
-        if(this.hashTalent(Talent.DASH_07)){
+        if (this.hashTalent(Talent.DASH_07)) {
             damage.realDamage = 5;
         }
-        
+
         let damageSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied) {
@@ -133,7 +135,7 @@ export default class TalentDash extends Talent {
 
     }
     beatBack(node: cc.Node) {
-        if(!this.hashTalent(Talent.DASH_04)){
+        if (!this.hashTalent(Talent.DASH_04)) {
             return;
         }
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);

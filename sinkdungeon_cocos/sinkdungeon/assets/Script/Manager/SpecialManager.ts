@@ -107,9 +107,9 @@ export default class SpecialManager extends cc.Component {
         claw.scale = 1;
         let areaScript = claw.getComponent(AreaAttack);
         this.scheduleOnce(() => {
-            areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(1));
+            areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(2));
             this.scheduleOnce(() => {
-                areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(1));
+                areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(3));
             }, 0.2);
         }, 0.5);
     }
@@ -123,7 +123,7 @@ export default class SpecialManager extends cc.Component {
         prefab.scaleX = isFaceRight?1:-1;
         let areaScript = prefab.getComponent(AreaAttack);
         this.scheduleOnce(() => {
-            areaScript.damagePlayer('', this.dungeon.player, new DamageData(2));
+            areaScript.damagePlayer('', this.dungeon.player, new DamageData(3));
         }, 0.5);
     }
 }

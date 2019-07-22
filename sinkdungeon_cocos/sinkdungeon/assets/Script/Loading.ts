@@ -45,6 +45,7 @@ export default class Loading extends cc.Component {
 
 
     onLoad() {
+        //关闭技能树
         this.simpleTree.node.active = false;
         this.shieldTree.node.active = false;
         this.dashTree.node.active = false;
@@ -105,10 +106,12 @@ export default class Loading extends cc.Component {
         }
     }
     start() {
+        //显示加载文字
         this.label.string = `Level ${Logic.chapterName + 1}-${Logic.level}`
         if (Logic.level == 0) {
-            this.label.string = `Sink Dungeon`
+            this.label.string = `深陷地牢`
         }
+        //加载地图，装备，贴图，敌人，状态，子弹，物品资源
         this.isLevelLoaded = false;
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
@@ -120,6 +123,7 @@ export default class Loading extends cc.Component {
         this.loadDebuffs();
         this.loadBullets();
         this.loadItems();
+        //显示过场
         if (Logic.isFirst == 1) {
             this.cutScene.isSkip = true;
             this.cutScene.unregisterClick();

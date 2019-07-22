@@ -24,9 +24,11 @@ export default class Start extends cc.Component {
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }
+        //清除存档
         Logic.profileManager.clearData();
-        Logic.chapterName = Logic.profileManager.data.chapterName;
+        //重置数据
         Logic.resetData();
+        //加载资源
         cc.director.loadScene('loading');
     }
     chooseChapter(){
@@ -39,7 +41,6 @@ export default class Start extends cc.Component {
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }
-        Logic.chapterName = Logic.profileManager.data.chapterName;
         Logic.resetData();
         cc.director.loadScene('loading');
     }

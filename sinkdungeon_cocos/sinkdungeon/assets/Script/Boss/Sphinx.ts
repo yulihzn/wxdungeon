@@ -82,6 +82,7 @@ export default class Sphinx extends Boss {
             return;
         }
         this.summonSkill.next(() => {
+            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             this.summonSkill.IsExcuting = true;
             let pos = Dungeon.getIndexInMap(this.node.position.clone());
             this.dungeon.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, pos.x, pos.y - 1);
