@@ -1,4 +1,7 @@
 import { EventConstant } from "../EventConstant";
+import Random from "./Random";
+import Logic from "../Logic";
+import RectDungeon from "../Rect/RectDungeon";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,6 +27,12 @@ export default class AudioPlayer extends cc.Component {
     public static readonly COIN = 'COIN';
     public static readonly MELEE = 'MELEE';
     public static readonly WALK = 'WALK';
+    public static readonly DASH = 'DASH';
+    public static readonly DIE = 'DIE';
+    public static readonly PICK_ITEM = 'PICK_ITEM';
+    public static readonly EXIT = 'EXIT';
+    public static readonly STOP_BG = 'STOP_BG';
+    public static readonly PLAY_BG = 'PLAY_BG';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -39,14 +48,37 @@ export default class AudioPlayer extends cc.Component {
     @property({ type: cc.AudioClip })
     boom: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
+    dash: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    die: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    exit: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    pickItem: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
     melee: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     walk: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg01: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg02: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg03: cc.AudioClip = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         cc.director.on(EventConstant.PLAY_AUDIO
             , (event) => { this.play(event.detail.name) });
+        this.playbg();
+    }
+    playbg() {
+        let clip = Random.getHalfChance() ? this.bg01 : this.bg03;
+        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM
+            || Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM) {
+            clip = this.bg02;
+        }
+        cc.audioEngine.playMusic(clip, true);
     }
     play(name: string) {
         switch (name) {
@@ -76,6 +108,24 @@ export default class AudioPlayer extends cc.Component {
                 break;
             case AudioPlayer.WALK:
                 cc.audioEngine.playEffect(this.walk, false);
+                break;
+            case AudioPlayer.EXIT:
+                cc.audioEngine.playEffect(this.exit, false);
+                break;
+            case AudioPlayer.DASH:
+                cc.audioEngine.playEffect(this.dash, false);
+                break;
+            case AudioPlayer.DIE:
+                cc.audioEngine.playEffect(this.die, false);
+                break;
+            case AudioPlayer.PICK_ITEM:
+                cc.audioEngine.playEffect(this.pickItem, false);
+                break;
+            case AudioPlayer.STOP_BG:
+                cc.audioEngine.stopMusic();
+                break;
+            case AudioPlayer.STOP_BG:
+                this.playbg();
                 break;
         }
     }

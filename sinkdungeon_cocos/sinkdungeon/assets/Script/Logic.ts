@@ -12,6 +12,7 @@ import ItemData from "./Data/ItemData";
 import Random from "./Utils/Random";
 import TalentData from "./Data/TalentData";
 import ProfileManager from "./Manager/ProfileManager";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -182,6 +183,7 @@ export default class Logic extends cc.Component {
         Logic.level++;
         //最多五层
         if (Logic.level > 5 && Logic.chapterName >= Logic.CHAPTER04) {
+            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
             cc.director.loadScene('gamefinish')
             
         } else {

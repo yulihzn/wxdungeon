@@ -7,6 +7,8 @@ import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
 import Random from "./Utils/Random";
 import Boss from "./Boss/Boss";
+import { EventConstant } from "./EventConstant";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 
 // Learn TypeScript:
@@ -123,6 +125,7 @@ export default class Shooter extends cc.Component {
         if (!this.isAI && this.player && Logic.ammo > 0 && !this.isEx) {
             Logic.ammo--;
         }
+        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
         if (this.data.bulletNets > 0) {
             let bulletType = this.data.bulletType;
             // this.fireNetsBullet(0,bulletType);

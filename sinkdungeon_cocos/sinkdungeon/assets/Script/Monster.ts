@@ -386,7 +386,7 @@ export default class Monster extends Actor {
         this.anim.play('PlayerFall');
     }
     takeDamage(damageData: DamageData): boolean {
-        if (!this.isShow) {
+        if (!this.isShow || this.isHurt) {
             return false;
         }
         if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {

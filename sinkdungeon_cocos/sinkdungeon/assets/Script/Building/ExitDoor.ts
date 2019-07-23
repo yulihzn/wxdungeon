@@ -2,6 +2,7 @@ import Player from "../Player";
 import { EventConstant } from "../EventConstant";
 import Logic from "../Logic";
 import Building from "./Building";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -78,6 +79,7 @@ export default class ExitDoor extends Building {
         if (player) {
             if (this.isOpen) {
                 this.isOpen = false;
+                cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.saveData();
                 cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
             }

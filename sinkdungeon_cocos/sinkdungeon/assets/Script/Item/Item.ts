@@ -4,6 +4,7 @@ import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
 import ItemData from "../Data/ItemData";
 import StatusManager from "../Manager/StatusManager";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -50,6 +51,7 @@ export default class Item extends cc.Component {
     }
     private taken(player:Player):void{
         if(!this.data.isTaken && this.anim){
+            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
             this.getEffect(player);

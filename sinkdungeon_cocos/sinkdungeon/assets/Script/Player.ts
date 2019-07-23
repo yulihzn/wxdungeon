@@ -664,8 +664,10 @@ export default class Player extends Actor {
         this.isDied = true;
         this.anim.play('PlayerDie');
         cc.director.emit(EventConstant.HUD_STOP_COUNTTIME);
+        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
         this.scheduleOnce(() => {
             Logic.profileManager.data.clearData();
+            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.STOP_BG}});
             cc.director.loadScene('gameover');
         }, 1);
     }

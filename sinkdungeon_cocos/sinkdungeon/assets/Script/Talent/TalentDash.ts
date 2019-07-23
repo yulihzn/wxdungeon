@@ -1,14 +1,11 @@
 import { EventConstant } from "../EventConstant";
-import Logic from "../Logic";
 import Talent from "./Talent";
 import DashShadow from "../Item/DashShadow";
-import Dungeon from "../Dungeon";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
-import Shooter from "../Shooter";
 import AudioPlayer from "../Utils/AudioPlayer";
 
 const { ccclass, property } = cc._decorator;
@@ -48,8 +45,8 @@ export default class TalentDash extends Talent {
         }
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
+            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
             this.schedule(() => {
-                cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.WALK } });
                 this.player.getWalkSmoke(this.node.parent, this.node.position);
             }, 0.05, 4, 0);
             let pos = this.player.rigidbody.linearVelocity.clone();

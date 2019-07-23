@@ -6,6 +6,7 @@ import Logic from "../Logic";
 import ChestData from "../Data/ChestData";
 import Building from "./Building";
 import RectDungeon from "../Rect/RectDungeon";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 
 // Learn TypeScript:
@@ -74,7 +75,7 @@ export default class Chest extends Building {
             return;
         }
         this.data.isOpen = true;
-
+        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         let action = cc.sequence(cc.moveTo(0.1, 5, 16)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 0, 0), cc.callFunc(() => {

@@ -268,7 +268,7 @@ export default class Bullet extends cc.Component {
         if(this.data.isDecelerate == 1){
             this.scheduleOnce(()=>{this.isDecelerateDelay = true;},this.data.delayDecelerate);
         }
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
+        
     }
 
     start() {
