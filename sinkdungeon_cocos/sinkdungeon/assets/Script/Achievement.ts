@@ -89,9 +89,6 @@ export default class Achievements extends cc.Component {
     static addMonsterKillAchievement(name:string){
         let data:AchievementData = Achievements.getAchievementData();
         data.monsters[name] = 1;
-        let ss = JSON.stringify(data);
-        cc.log(data.monsters);
-        cc.log(data);
         Achievements.saveAchievementData(data);
     }
     // update (dt) {}

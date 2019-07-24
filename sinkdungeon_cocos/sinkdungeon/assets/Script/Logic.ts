@@ -99,6 +99,7 @@ export default class Logic extends cc.Component {
     static saveData(){
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.saveData();
+        cc.sys.localStorage.setItem("coin",Logic.coins);
     }
     static resetData(chapter?:number) {
         //重置时间

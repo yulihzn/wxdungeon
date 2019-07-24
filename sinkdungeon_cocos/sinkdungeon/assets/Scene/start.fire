@@ -3520,6 +3520,9 @@
     "_components": [
       {
         "__id__": 82
+      },
+      {
+        "__id__": 83
       }
     ],
     "_prefab": null,
@@ -3576,5 +3579,69 @@
     },
     "_enabled": true,
     "_id": "edg5VaBEZDe63znsLUAoir"
+  },
+  {
+    "__type__": "76c8da4ThVB/L/QkXaZyrPc",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 81
+    },
+    "_enabled": true,
+    "monsterHit": {
+      "__uuid__": "4a830729-028b-430d-a986-2c396127ce81"
+    },
+    "pickUp": {
+      "__uuid__": "86b97b0d-8b27-44b6-9d48-cab70ab74862"
+    },
+    "playerHit": {
+      "__uuid__": "f45397a8-bd5d-46dc-97c9-c65e6a88486a"
+    },
+    "remoteLaser": {
+      "__uuid__": "9c688b93-a1ff-4f73-b735-656988d2a439"
+    },
+    "shoot": {
+      "__uuid__": "30082970-859c-4491-9ba1-8c7f776099c2"
+    },
+    "coin": {
+      "__uuid__": "fc0e26d9-47f5-487e-9d8d-6d714316eccf"
+    },
+    "boom": {
+      "__uuid__": "30808f4a-fb97-426e-aca5-ab949a60abbb"
+    },
+    "dash": {
+      "__uuid__": "a1f7c992-841b-4096-aa02-df939e77aede"
+    },
+    "die": {
+      "__uuid__": "82224a67-0829-43ff-8440-59aa6e16329a"
+    },
+    "exit": {
+      "__uuid__": "4c1f6e9a-a745-41b8-8027-b62ac52abe28"
+    },
+    "pickItem": {
+      "__uuid__": "57c1c4de-b941-4ebb-976d-e2880155abd7"
+    },
+    "melee": {
+      "__uuid__": "01be743b-b5e6-44a1-80d5-149a9862cb5f"
+    },
+    "walk": {
+      "__uuid__": "04c968f6-680b-4019-a3dd-8c53597c6571"
+    },
+    "blink": {
+      "__uuid__": "6a941c0f-257f-4896-b4d6-bc9f4c1cf128"
+    },
+    "select": {
+      "__uuid__": "a4072bfc-8965-4709-ad48-ce845d454957"
+    },
+    "bg01": {
+      "__uuid__": "e3eea0d2-34fe-44f6-afb1-801aa5d669a7"
+    },
+    "bg02": {
+      "__uuid__": "298a3b35-a603-4752-b461-6123d1ce3eb5"
+    },
+    "bg03": {
+      "__uuid__": "3ba51881-939c-4612-bf6f-a2c58185658d"
+    },
+    "_id": "a6IQjVTvdI/oYAE/QsKvyM"
   }
 ]

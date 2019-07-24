@@ -256,7 +256,6 @@ export default class MeleeWeapon extends cc.Component {
             }
             this.hv = pos;
         } else if ((this.hv.x != 0 || this.hv.y != 0) && !this.isAttacking) {
-            // this.node.position = cc.v2(25, 45);
             let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
@@ -384,8 +383,8 @@ export default class MeleeWeapon extends cc.Component {
         }, 1, true);
         this.isMiss = false;
         //停顿
-        this.anim.pause();
-        this.scheduleOnce(()=>{this.anim.resume()},0.02)
+        // this.anim.pause();
+        // this.scheduleOnce(()=>{this.anim.resume()},0.02)
     }
     addMonsterAllStatus(monster: Monster) {
         this.addMonsterStatus(this.player.data.getIceRate(), monster, StatusManager.FROZEN);

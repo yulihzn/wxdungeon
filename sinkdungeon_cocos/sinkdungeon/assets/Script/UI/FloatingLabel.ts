@@ -38,14 +38,14 @@ export default class FloatingLabel extends cc.Component {
         this.anim.play('FontFloating');
     }
     showMiss(){
-        this.showLabel('丢失',cc.color(255, 255, 255),1);
+        this.showLabel('丢失',cc.color(255, 255, 255),0.75);
     }
     showDoge(){
-        this.showLabel('闪避',cc.color(255, 255, 255),1);
+        this.showLabel('闪避',cc.color(255, 255, 255),0.75);
     }
     showDamage(damage:number){
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
-        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,1+Math.abs(damage/20));
+        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,0.75+Math.abs(damage/50));
     }
 
     hideLabel(){

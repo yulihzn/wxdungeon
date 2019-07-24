@@ -1,5 +1,7 @@
 import Logic from "./Logic";
 import WxHelper from "./WxHelper";
+import { EventConstant } from "./EventConstant";
+import AudioPlayer from "./Utils/AudioPlayer";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -35,6 +37,7 @@ export default class GameOver extends cc.Component {
     }
     retry(){
         Logic.resetData();
+        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
         cc.director.loadScene('loading');
     }
     home(){
@@ -42,6 +45,7 @@ export default class GameOver extends cc.Component {
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }
+        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
         cc.director.loadScene('start');
     }
 

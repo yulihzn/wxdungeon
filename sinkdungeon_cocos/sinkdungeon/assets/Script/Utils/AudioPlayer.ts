@@ -33,6 +33,8 @@ export default class AudioPlayer extends cc.Component {
     public static readonly EXIT = 'EXIT';
     public static readonly STOP_BG = 'STOP_BG';
     public static readonly PLAY_BG = 'PLAY_BG';
+    public static readonly SELECT = 'SELECT';
+    public static readonly BLINK = 'BLINK';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -60,6 +62,10 @@ export default class AudioPlayer extends cc.Component {
     @property({ type: cc.AudioClip })
     walk: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
+    blink: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    select: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
     bg01: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     bg02: cc.AudioClip = null;
@@ -70,7 +76,6 @@ export default class AudioPlayer extends cc.Component {
     onLoad() {
         cc.director.on(EventConstant.PLAY_AUDIO
             , (event) => { this.play(event.detail.name) });
-        this.playbg();
     }
     playbg() {
         let clip = Random.getHalfChance() ? this.bg01 : this.bg03;
@@ -121,10 +126,16 @@ export default class AudioPlayer extends cc.Component {
             case AudioPlayer.PICK_ITEM:
                 cc.audioEngine.playEffect(this.pickItem, false);
                 break;
+            case AudioPlayer.SELECT:
+                cc.audioEngine.playEffect(this.select, false);
+                break;
+            case AudioPlayer.BLINK:
+                cc.audioEngine.playEffect(this.blink, false);
+                break;
             case AudioPlayer.STOP_BG:
                 cc.audioEngine.stopMusic();
                 break;
-            case AudioPlayer.STOP_BG:
+            case AudioPlayer.PLAY_BG:
                 this.playbg();
                 break;
         }

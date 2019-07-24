@@ -86,6 +86,7 @@ export default class Kraken extends Boss {
         if(this.isDied||!this.isShow){
             return false;
         }
+        
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;

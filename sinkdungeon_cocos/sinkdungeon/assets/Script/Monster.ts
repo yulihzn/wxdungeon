@@ -386,7 +386,7 @@ export default class Monster extends Actor {
         this.anim.play('PlayerFall');
     }
     takeDamage(damageData: DamageData): boolean {
-        if (!this.isShow || this.isHurt) {
+        if (!this.isShow) {
             return false;
         }
         if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
@@ -540,6 +540,7 @@ export default class Monster extends Actor {
                     boom.parent = this.node.parent;
                     boom.setPosition(this.node.position);
                     boom.zIndex = 4100;
+                    cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
                 }
                 this.node.active = false;
             }
@@ -554,6 +555,7 @@ export default class Monster extends Actor {
     blink() {
         if (this.data.blink > 0) {
             this.blinkSkill.next(() => {
+                cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
                 this.blinkSkill.IsExcuting = true;
                 let body = this.sprite.getChildByName('body');
                 let action = cc.sequence(cc.fadeOut(0.5)

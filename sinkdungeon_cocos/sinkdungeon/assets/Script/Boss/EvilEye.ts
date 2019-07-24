@@ -82,6 +82,7 @@ export default class EvilEye extends Boss {
         if (this.isDied || !this.isShow || this.anim.getAnimationState('EvilEyeHurt').isPlaying) {
             return false;
         }
+        
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;

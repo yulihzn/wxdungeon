@@ -2,11 +2,9 @@ import Boss from "./Boss";
 import DamageData from "../Data/DamageData";
 import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
-import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
-import BossAttackCollider from "./BossAttackCollider";
 import Random from "../Utils/Random";
 import { EventConstant } from "../EventConstant";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -53,6 +51,7 @@ export default class Dragon extends Boss {
         if (this.isDied || !this.isShow || this.rainSkill.IsExcuting) {
             return false;
         }
+        
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;

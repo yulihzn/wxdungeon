@@ -53,6 +53,7 @@ export default class Rah extends Boss {
         if (this.isDied || !this.isShow || this.blinkSkill.IsExcuting) {
             return false;
         }
+    
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
@@ -114,6 +115,7 @@ export default class Rah extends Boss {
  
     blink(): void {
         this.blinkSkill.next(() => {
+            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
             this.blinkSkill.IsExcuting = true;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             let action = cc.sequence(cc.callFunc(() => { }),

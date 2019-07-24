@@ -36,6 +36,7 @@ import DryadGrass from "./Boss/DryadGrass";
 import DecorationFloor from "./Building/DecorationFloor";
 import Saw from "./Building/Saw";
 import TileWaterPool from "./Building/TileWaterPool";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -126,6 +127,7 @@ export default class Dungeon extends cc.Component {
     bosses: Boss[] = [];
 
     onLoad() {
+        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听

@@ -37,7 +37,6 @@ export default class Captain extends Boss {
     isFaceRight = true;
     isMoving = false;
     private timeDelay = 0;
-    isHurt = false;
     isFall = false;
     shooter: Shooter = null;
     exshooter:Shooter = null;
@@ -158,7 +157,7 @@ export default class Captain extends Boss {
         }
         if (this.dungeon) {
             let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-            if (playerDis < 64 && !this.isHurt) {
+            if (playerDis < 64) {
                 this.rigidbody.linearVelocity = cc.v2(0, 0);
             }
         }
@@ -181,7 +180,6 @@ export default class Captain extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         
-        this.isHurt = true;
         // this.anim.playAdditive('CaptainHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
@@ -276,8 +274,7 @@ export default class Captain extends Boss {
         this.isMoving = h != 0 || v != 0;
     }
     move(pos: cc.Vec2, speed: number) {
-        if (this.isDied || this.isHurt) {
-            this.isHurt = false;
+        if (this.isDied) {
             return;
         }
         if (this.attackSkill.IsExcuting && !pos.equals(cc.Vec2.ZERO)) {
