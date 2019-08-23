@@ -92,8 +92,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -175,8 +173,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -237,8 +233,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -346,8 +340,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 134,
-    "_rotationY": 134,
     "_id": ""
   },
   {
@@ -402,14 +394,12 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": -90
+      "z": -93
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 93,
-    "_rotationY": 93,
     "_id": ""
   },
   {
@@ -554,14 +544,12 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 180
+      "z": -180
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 180,
-    "_rotationY": 180,
     "_id": ""
   },
   {
@@ -622,8 +610,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 16,
-    "_rotationY": 16,
     "_id": ""
   },
   {
@@ -770,8 +756,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -875,8 +859,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -978,14 +960,12 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": -59
+      "z": -121
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 121,
-    "_rotationY": 121,
     "_id": ""
   },
   {
@@ -1040,14 +1020,12 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": -24.000000000000004
+      "z": -24
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 24,
-    "_rotationY": 24,
     "_id": ""
   },
   {
@@ -1192,14 +1170,12 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 139.00000000000003
+      "z": 139
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": -139,
-    "_rotationY": -139,
     "_id": ""
   },
   {
@@ -1258,14 +1234,12 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 85.00000000000009
+      "z": -275
     },
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 275,
-    "_rotationY": 275,
     "_id": ""
   },
   {
@@ -1326,8 +1300,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 50,
-    "_rotationY": 50,
     "_id": ""
   },
   {
@@ -1517,8 +1489,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 90,
-    "_rotationY": 90,
     "_id": ""
   },
   {
@@ -1633,8 +1603,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -1738,8 +1706,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {
@@ -1828,8 +1794,6 @@
     "_skewY": 0,
     "_is3DNode": false,
     "groupIndex": 0,
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_id": ""
   },
   {

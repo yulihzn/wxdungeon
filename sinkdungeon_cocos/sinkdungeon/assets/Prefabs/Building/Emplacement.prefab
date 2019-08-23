@@ -84,8 +84,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -146,8 +144,6 @@
       "y": 6,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -247,8 +243,6 @@
       "y": 5,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -355,8 +349,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -417,8 +409,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -567,8 +557,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 180,
-    "_rotationY": 180,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -576,9 +564,9 @@
     "_id": "",
     "_eulerAngles": {
       "__type__": "cc.Vec3",
-      "x": 180,
-      "y": 180,
-      "z": -7.016709298534876e-15
+      "x": 0,
+      "y": 0,
+      "z": -180
     }
   },
   {
@@ -629,8 +617,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -779,8 +765,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": -90,
-    "_rotationY": -90,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -841,8 +825,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -991,8 +973,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 90,
-    "_rotationY": 90,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,
@@ -1053,8 +1033,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "_zIndex": 0,

@@ -53,8 +53,6 @@
       "width": 0,
       "height": 0
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_scaleX": 1,
     "_scaleY": 1,
     "_position": {
@@ -67,7 +65,13 @@
     "_localZOrder": 0,
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
-    "groupIndex": 0
+    "groupIndex": 0,
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
   },
   {
     "__type__": "cc.Node",
@@ -107,8 +111,6 @@
       "width": 16,
       "height": 16
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_scaleX": 1,
     "_scaleY": 1,
     "_position": {
@@ -121,7 +123,13 @@
     "_localZOrder": 0,
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
-    "groupIndex": 0
+    "groupIndex": 0,
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    }
   },
   {
     "__type__": "cc.Sprite",

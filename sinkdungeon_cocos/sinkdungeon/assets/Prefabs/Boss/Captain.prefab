@@ -87,8 +87,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -148,8 +146,6 @@
       "y": 4,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -263,8 +259,6 @@
       "y": 4,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -324,8 +318,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -424,8 +416,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -524,8 +514,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 5,
-    "_rotationY": 5,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -534,7 +522,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": -5.000000000000001
+      "z": -5
     }
   },
   {
@@ -624,8 +612,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -724,8 +710,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -828,8 +812,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -895,8 +877,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -1101,8 +1081,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -1162,8 +1140,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -1307,8 +1283,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -1432,8 +1406,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
@@ -1493,8 +1465,6 @@
       "y": 1,
       "z": 1
     },
-    "_rotationX": 0,
-    "_rotationY": 0,
     "_skewX": 0,
     "_skewY": 0,
     "groupIndex": 0,
