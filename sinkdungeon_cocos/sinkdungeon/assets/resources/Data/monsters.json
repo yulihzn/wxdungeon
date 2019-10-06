@@ -7,10 +7,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 15,
+            "maxHealth": 45,
             "damageMin": 1
         },
-        "currentHealth": 15,
+        "currentHealth": 45,
         "invisible": 0,
         "remote": 0,
         "melee": 0,
@@ -24,10 +24,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 500,
-            "maxHealth": 15,
+            "maxHealth": 45,
             "damageMin": 1
         },
-        "currentHealth": 15,
+        "currentHealth": 45,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -43,11 +43,11 @@
         "bulletArcExNum":1,
         "common": {
             "moveSpeed": 100,
-            "maxHealth": 25,
+            "maxHealth": 75,
             "curseRate":100,
             "damageMin": 3
         },
-        "currentHealth": 25,
+        "currentHealth": 75,
         "invisible": 0,
         "remote": 2,
         "melee": 1,
@@ -61,10 +61,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 25,
+            "maxHealth": 75,
             "damageMin": 3
         },
-        "currentHealth": 25,
+        "currentHealth": 75,
         "invisible": 1,
         "remote": 0,
         "melee": 1,
@@ -78,10 +78,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 10,
+            "maxHealth": 30,
             "damageMin": 1
         },
-        "currentHealth": 10,
+        "currentHealth": 30,
         "invisible": 0,
         "remote": 0,
         "melee": 0.5,
@@ -95,10 +95,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 10,
+            "maxHealth": 30,
             "damageMin": 1
         },
-        "currentHealth": 10,
+        "currentHealth": 30,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -113,10 +113,10 @@
         "bulletType":"bullet031",
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 15,
+            "maxHealth": 45,
             "damageMin": 1
         },
-        "currentHealth": 15,
+        "currentHealth": 45,
         "invisible": 0,
         "remote": 1,
         "melee": 0,
@@ -132,10 +132,10 @@
         "specialAttack":5,
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 5,
+            "maxHealth": 15,
             "damageMin": 1
         },
-        "currentHealth": 5,
+        "currentHealth": 15,
         "invisible": 0,
         "remote": 2,
         "melee": 1,
@@ -152,10 +152,10 @@
         "specialDistance":64,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 15,
+            "maxHealth": 45,
             "damageMin": 1
         },
-        "currentHealth": 15,
+        "currentHealth": 45,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -170,10 +170,10 @@
         "sizeType":0.7,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 20,
+            "maxHealth": 30,
             "damageMin": 1
         },
-        "currentHealth": 20,
+        "currentHealth": 30,
         "invisible": 0,
         "remote": 0,
         "remoterate": 0,
@@ -189,10 +189,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 450,
-            "maxHealth": 35,
+            "maxHealth": 70,
             "damageMin": 1
         },
-        "currentHealth": 35,
+        "currentHealth": 70,
         "invisible": 0,
         "remote": 0,
         "melee": 0.5,
@@ -209,10 +209,10 @@
         "bulletType":"bullet020",
         "common": {
             "moveSpeed": 50,
-            "maxHealth": 5,
+            "maxHealth": 15,
             "damageMin": 1
         },
-        "currentHealth": 5,
+        "currentHealth": 15,
         "invisible": 0,
         "remote": 3,
         "melee": 0,
@@ -228,11 +228,11 @@
         "sizeType":0.3,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 5,
+            "maxHealth": 15,
             "damageMin": 0.1,
             "curseRate":10
         },
-        "currentHealth": 5,
+        "currentHealth": 15,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -248,10 +248,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 15,
+            "maxHealth": 45,
             "damageMin": 1
         },
-        "currentHealth": 15,
+        "currentHealth": 45,
         "invisible": 0,
         "remote": 5,
         "melee": 0,
@@ -268,10 +268,10 @@
         "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 500,
-            "maxHealth": 5,
+            "maxHealth": 15,
             "damageMin": 1
         },
-        "currentHealth": 5,
+        "currentHealth": 15,
         "isLineAim":1,
         "invisible": 0,
         "remote": 3,
@@ -288,12 +288,12 @@
         "specialType":"special015",
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 20,
+            "maxHealth": 60,
             "lifeRecovery":1,
             "realRate":50,
             "damageMin": 1
         },
-        "currentHealth": 20,
+        "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -327,10 +327,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 5,
+            "maxHealth": 15,
             "damageMin": 1
         },
-        "currentHealth": 5,
+        "currentHealth": 15,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -344,10 +344,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 5,
+            "maxHealth": 15,
             "damageMin": 1
         },
-        "currentHealth": 5,
+        "currentHealth": 15,
         "invisible": 0,
         "remote": 0,
         "melee": 1,
@@ -364,11 +364,11 @@
         "specialDistance":64,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 5,
+            "maxHealth": 15,
             "toxicRate":100,
             "damageMin": 2
         },
-        "currentHealth": 5,
+        "currentHealth": 15,
         "invisible": 0,
         "remote": 0,
         "melee": 2,
@@ -382,7 +382,7 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 10,
+            "maxHealth": 30,
             "lighteningRate":100,
             "damageMin": 2
         },
@@ -390,7 +390,7 @@
         "bulletLineExNum":0,
         "specialAttack":5,
         "specialBulletArcExNum":4,
-        "currentHealth": 10,
+        "currentHealth": 30,
         "bulletType":"bullet019",
         "invisible": 0,
         "remote": 2,
@@ -406,10 +406,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 15,
+            "maxHealth": 45,
             "damageMin": 1
         },
-        "currentHealth": 15,
+        "currentHealth": 45,
         "invisible": 0,
         "remote": 0,
         "melee": 2,
@@ -427,10 +427,10 @@
         "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 20,
+            "maxHealth": 60,
             "damageMin": 2
         },
-        "currentHealth": 20,
+        "currentHealth": 60,
         "invisible": 0,
         "remote": 4,
         "melee": 2,
@@ -446,11 +446,11 @@
         "isLineAim":0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 20,
+            "maxHealth": 60,
             "toxicRate":100,
             "damageMin": 2
         },
-        "currentHealth": 20,
+        "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
         "melee": 2,
@@ -468,10 +468,10 @@
         "specialType":"special024",
         "common": {
             "moveSpeed": 100,
-            "maxHealth": 40,
+            "maxHealth": 80,
             "damageMin": 5
         },
-        "currentHealth": 40,
+        "currentHealth": 80,
         "invisible": 0,
         "remote": 0,
         "melee": 2,
@@ -489,10 +489,10 @@
         "bulletType":"bullet100",
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 35,
+            "maxHealth": 70,
             "damageMin": 2
         },
-        "currentHealth": 35,
+        "currentHealth": 70,
         "invisible": 0,
         "remote": 4,
         "melee": 0,
@@ -508,12 +508,12 @@
         "bulletType":"bullet024",
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 30,
+            "maxHealth": 80,
             "toxicRate":100,
             "toxicDamage":1,
             "damageMin": 1
         },
-        "currentHealth": 30,
+        "currentHealth": 80,
         "invisible": 0,
         "remote": 3,
         "melee": 2,
@@ -530,11 +530,11 @@
         "bulletType":"bullet028",
         "common": {
             "moveSpeed": 500,
-            "maxHealth": 15,
+            "maxHealth": 45,
             "damageMin": 1
         },
         "isBoom":1,
-        "currentHealth": 15,
+        "currentHealth": 45,
         "invisible": 0,
         "remote": 3,
         "melee": 0,
@@ -549,12 +549,12 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 20,
+            "maxHealth": 60,
             "damageMin": 2,
             "curseRate":100,
             "curseDamage":1
         },
-        "currentHealth": 20,
+        "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
         "melee": 1,

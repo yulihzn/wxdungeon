@@ -1,10 +1,12 @@
 {
-  "ver": "2.3.1",
+  "ver": "2.3.3",
   "uuid": "76033493-8b2a-4d54-ad2e-9dcfb251ab50",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "trilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "huaji": {
