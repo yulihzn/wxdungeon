@@ -2,6 +2,7 @@
   "android-instant": {
     "REMOTE_SERVER_ROOT": "",
     "host": "",
+    "packageName": "org.cocos2d.sinkdungeon",
     "pathPattern": "",
     "recordPath": "",
     "scheme": "https",
@@ -45,5 +46,15 @@
     "subContext": "wx-open-data-project"
   },
   "xxteaKey": "2d1fdad3-d4ec-43",
-  "zipCompressJs": true
+  "zipCompressJs": true,
+  "android": {
+    "packageName": "org.cocos2d.sinkdungeon"
+  },
+  "ios": {
+    "packageName": "org.cocos2d.sinkdungeon"
+  },
+  "mac": {
+    "packageName": "org.cocos2d.sinkdungeon"
+  },
+  "win32": {}
 }

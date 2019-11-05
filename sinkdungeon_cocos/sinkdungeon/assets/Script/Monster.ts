@@ -56,6 +56,8 @@ export default class Monster extends Actor {
     boom: cc.Prefab = null;
     @property(cc.Node)
     dangerZone: cc.Node = null;
+    @property(cc.Node)
+    dangerTips:cc.Node = null;
     private sprite: cc.Node;
     private bodySprite: cc.Sprite;
     private shadow: cc.Node;
@@ -128,6 +130,7 @@ export default class Monster extends Actor {
         if (this.data.isHeavy > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
+        this.dangerTips.opacity = 0;
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
@@ -135,7 +138,10 @@ export default class Monster extends Actor {
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
     }
-
+    showDangerTips(){
+        this.dangerTips.opacity = 255;
+        this.scheduleOnce(()=>{this.dangerTips.opacity = 0;},1)
+    }
     showCircle() {
         let r = 0;
         this.schedule(() => {
@@ -182,7 +188,7 @@ export default class Monster extends Actor {
         this.node.position = Dungeon.getPosInMap(this.pos);
     }
     transportPlayer(x: number, y: number) {
-        this.sprite.rotation = 0;
+        this.sprite.angle = 0;
         this.sprite.scale = 1;
         this.sprite.opacity = 255;
         this.sprite.x = 0;
@@ -282,6 +288,7 @@ export default class Monster extends Actor {
         let allAction = cc.sequence(action1, afterAction);
         if (isSpecial) {
             allAction = cc.sequence(action2, afterAction);
+            this.showDangerTips();
         }
         this.sprite.runAction(allAction);
     }
@@ -589,7 +596,9 @@ export default class Monster extends Actor {
         let pos = newPos.clone();
        
         if (this.data.specialAttack > 0) {
-            this.specialSkill.next(() => { this.specialSkill.IsExcuting = true; }, this.data.specialAttack, true);
+            this.specialSkill.next(() => { 
+                this.specialSkill.IsExcuting = true;
+             }, this.data.specialAttack, true);
         }
         //近战
         let pd = 100;
@@ -618,7 +627,6 @@ export default class Monster extends Actor {
                     }
                     this.specialSkill.IsExcuting = false;
                     if (isSpecial) {
-
                     }
                 }, this.specialSkill.IsExcuting)
 

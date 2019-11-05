@@ -213,8 +213,8 @@ export default class MeleeWeapon extends cc.Component {
         }
         for (let i = 0; i < ps.length; i++) {
             let psp = ps[i];
-            psp = this.node.convertToWorldSpace(psp);
-            psp = dungeonNode.convertToNodeSpace(psp);
+            psp = this.node.convertToWorldSpaceAR(psp);
+            psp = dungeonNode.convertToNodeSpaceAR(psp);
             ps[i] = psp.clone();
         }
         firePrefab.parent = dungeonNode;
@@ -320,8 +320,10 @@ export default class MeleeWeapon extends cc.Component {
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         // this.attacking(otherCollider);
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        this.attacking(other);
+    onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
+        if(self.radius>0){
+            this.attacking(other);
+        }
     }
     beatBack(node: cc.Node) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);

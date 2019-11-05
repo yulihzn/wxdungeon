@@ -3,10 +3,10 @@
   "_name": "MeleeAttackFarReverse1",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1,
+  "_duration": 0.6666666666666666,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "1",
+  "wrapMode": 1,
   "curveData": {
     "paths": {
       "sprite/weapon": {
@@ -29,23 +29,7 @@
               "value": -245
             },
             {
-              "frame": 0.3333333333333333,
-              "value": -240
-            },
-            {
-              "frame": 0.4166666666666667,
-              "value": -245
-            },
-            {
-              "frame": 0.5,
-              "value": -240
-            },
-            {
-              "frame": 0.5833333333333334,
-              "value": -245
-            },
-            {
-              "frame": 1,
+              "frame": 0.6666666666666666,
               "value": 60
             }
           ]
@@ -62,13 +46,13 @@
                 }
               },
               {
-                "frame": 0.75,
+                "frame": 0.4166666666666667,
                 "value": {
                   "__uuid__": "318bed80-b551-4eef-8d2d-84c8ce9fe3e8"
                 }
               },
               {
-                "frame": 0.9166666666666666,
+                "frame": 0.5833333333333334,
                 "value": {
                   "__uuid__": "05310cce-3ed7-4f3b-b7b9-c6eee0289955"
                 }
@@ -83,15 +67,15 @@
               "value": 0
             },
             {
-              "frame": 0.6666666666666666,
+              "frame": 0.3333333333333333,
               "value": 0
             },
             {
-              "frame": 0.8333333333333334,
+              "frame": 0.5,
               "value": 255
             },
             {
-              "frame": 1,
+              "frame": 0.6666666666666666,
               "value": 0
             }
           ],
@@ -119,15 +103,15 @@
               "value": 0
             },
             {
-              "frame": 0.6666666666666666,
+              "frame": 0.3333333333333333,
               "value": 16
             },
             {
-              "frame": 0.9833333333333333,
+              "frame": 0.65,
               "value": 32
             },
             {
-              "frame": 1,
+              "frame": 0.6666666666666666,
               "value": 0
             }
           ]
@@ -142,15 +126,15 @@
             "value": 0
           },
           {
-            "frame": 0.6666666666666666,
+            "frame": 0.3333333333333333,
             "value": 0
           },
           {
-            "frame": 0.8333333333333334,
+            "frame": 0.5,
             "value": 160
           },
           {
-            "frame": 1,
+            "frame": 0.6666666666666666,
             "value": 0
           }
         ],
@@ -164,7 +148,7 @@
             }
           },
           {
-            "frame": 0.6666666666666666,
+            "frame": 0.3333333333333333,
             "value": {
               "__type__": "cc.Vec2",
               "x": 0,
@@ -172,7 +156,7 @@
             }
           },
           {
-            "frame": 1,
+            "frame": 0.6666666666666666,
             "value": {
               "__type__": "cc.Vec2",
               "x": 150,
@@ -185,12 +169,12 @@
   },
   "events": [
     {
-      "frame": 0.8333333333333334,
+      "frame": 0.5,
       "func": "ExAttackTime",
       "params": []
     },
     {
-      "frame": 1,
+      "frame": 0.6666666666666666,
       "func": "MeleeAttackFinish",
       "params": [
         true

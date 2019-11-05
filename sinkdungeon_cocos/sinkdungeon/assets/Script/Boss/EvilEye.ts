@@ -161,8 +161,8 @@ export default class EvilEye extends Boss {
     }
     fireViceBullet(){
         for (let i = 0; i < this.viceShooters.length; i++) {
-            let p = this.viceEyes[i].convertToWorldSpace(cc.v2(0, 0));
-            p = this.node.convertToNodeSpace(p);
+            let p = this.viceEyes[i].convertToWorldSpaceAR(cc.v2(0, 0));
+            p = this.node.convertToNodeSpaceAR(p);
             this.viceShooters[i].node.setPosition(p);
             let pos = this.node.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
@@ -178,8 +178,8 @@ export default class EvilEye extends Boss {
         this.mainEyesFireSkill.next(() => {
             this.mainEyesFireSkill.IsExcuting = true;
             this.scheduleOnce(()=>{this.mainEyesFireSkill.IsExcuting = false;},3);
-            let p = this.shooter.node.convertToWorldSpace(cc.v2(0, 0));
-            p = this.node.convertToNodeSpace(p);
+            let p = this.shooter.node.convertToWorldSpaceAR(cc.v2(0, 0));
+            p = this.node.convertToNodeSpaceAR(p);
             this.shooter.node.setPosition(p);
             let pos = this.node.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);

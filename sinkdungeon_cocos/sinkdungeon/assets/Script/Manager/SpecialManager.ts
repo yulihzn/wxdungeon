@@ -41,8 +41,8 @@ export default class SpecialManager extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        let pos = this.node.convertToWorldSpace(cc.v2(distance, 0));
-        pos = this.dungeon.node.convertToNodeSpace(pos);
+        let pos = this.node.convertToWorldSpaceAR(cc.v2(distance, 0));
+        pos = this.dungeon.node.convertToNodeSpaceAR(pos);
 
         switch (placeType) {
             case SpecialManager.AFTER_VENOM:
@@ -60,8 +60,8 @@ export default class SpecialManager extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        let pos = this.node.convertToWorldSpace(cc.v2(distance, 0));
-        pos = this.dungeon.node.convertToNodeSpace(pos);
+        let pos = this.node.convertToWorldSpaceAR(cc.v2(distance, 0));
+        pos = this.dungeon.node.convertToNodeSpaceAR(pos);
 
         switch (placeType) {
             case SpecialManager.BEFORE_HOWL:

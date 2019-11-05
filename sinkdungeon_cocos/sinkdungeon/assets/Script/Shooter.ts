@@ -213,8 +213,8 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(prefab);
         }
         bulletPrefab.parent = this.node;
-        let pos = this.node.convertToWorldSpace(defaultPos ? defaultPos : cc.v2(30, 0));
-        pos = this.dungeon.node.convertToNodeSpace(pos);
+        let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v2(30, 0));
+        pos = this.dungeon.node.convertToNodeSpaceAR(pos);
         bulletPrefab.parent = this.dungeon.node;
         bulletPrefab.position = pos;
         bulletPrefab.scaleX = 1;

@@ -28,8 +28,8 @@ export default class FloatinglabelManager extends cc.Component {
     }
     getFloaingLabel(parentNode:cc.Node){
         let p = this.node.position.clone();
-        p = this.node.convertToWorldSpace(p);
-        p = parentNode.convertToNodeSpace(p);
+        p = this.node.convertToWorldSpaceAR(p);
+        p = parentNode.convertToNodeSpaceAR(p);
         let labelPrefab:cc.Node = null;
         if (this.labelPool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             labelPrefab = this.labelPool.get();
