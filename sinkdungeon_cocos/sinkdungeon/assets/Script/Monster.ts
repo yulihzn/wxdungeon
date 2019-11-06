@@ -58,6 +58,9 @@ export default class Monster extends Actor {
     dangerZone: cc.Node = null;
     @property(cc.Node)
     dangerTips:cc.Node = null;
+    @property(cc.Prefab)
+    attrPrefab:cc.Prefab = null;
+    private attrNode:cc.Node;
     private sprite: cc.Node;
     private bodySprite: cc.Sprite;
     private shadow: cc.Node;
@@ -99,6 +102,7 @@ export default class Monster extends Actor {
     isAttackAnimExcuting = false;
     //躲避目标位置
     moveTarget:cc.Vec2 = cc.v2(0,0);
+    attrmap: { [key: string]: number } = {};
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -123,6 +127,7 @@ export default class Monster extends Actor {
         this.particleLightening = this.node.getChildByName('Effect').getChildByName('lightening').getComponent(cc.ParticleSystem);
         this.particleToxic = this.node.getChildByName('Effect').getChildByName('toxic').getComponent(cc.ParticleSystem);
         this.particleCurse = this.node.getChildByName('Effect').getChildByName('curse').getComponent(cc.ParticleSystem);
+        this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
         this.scheduleOnce(() => { this.isShow = true; }, 0.5);
@@ -131,12 +136,24 @@ export default class Monster extends Actor {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
         this.dangerTips.opacity = 0;
+        
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
         // this.graphics.strokeColor = cc.Color.RED;
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
+    }
+    addAttrIcon(){
+        if(!this.attrNode){
+            this.attrNode = this.node.getChildByName('attr');
+        }
+        this.attrNode.removeAllChildren();
+        for(let key in this.attrmap){
+            let attr = cc.instantiate(this.attrPrefab);
+            attr.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[key];
+            this.attrNode.addChild(attr);
+        }
     }
     showDangerTips(){
         this.dangerTips.opacity = 255;
@@ -764,6 +781,9 @@ export default class Monster extends Actor {
         //变异为紫色
         this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
         this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);
+        if(this.attrNode){
+            this.attrNode.opacity = this.healthBar.node.opacity;
+        }
     }
     actorName() {
         return this.data.nameCn;

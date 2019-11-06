@@ -120,6 +120,7 @@ export default class MonsterManager extends cc.Component {
         if (Random.rand() < 0.1) {
             this.monsterRandomAttr.addRandomAttrs(3);
             data = this.monsterRandomAttr.updateMonsterData(data);
+            monster.attrmap = this.monsterRandomAttr.attrmap;
         }
         //5%的几率变异
         let variationRate = 5;
@@ -172,6 +173,7 @@ export default class MonsterManager extends cc.Component {
         } else {
             monster.changeBodyRes(resName);
         }
+        monster.addAttrIcon();
         
         return monster;
     }

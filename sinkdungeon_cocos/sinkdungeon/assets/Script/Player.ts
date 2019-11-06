@@ -178,7 +178,12 @@ export default class Player extends Actor {
             this.playerAnim(Player.STATE_WALK);
         }
         if(Logic.isCheatMode){
-            this.scheduleOnce(()=>{this.addStatus(StatusManager.PERFECTDEFENCE)},0.2);
+            this.scheduleOnce(()=>{
+                this.addStatus(StatusManager.PERFECTDEFENCE);
+                this.data.currentHealth = 999;
+                this.data.Common.maxHealth = 999;
+                this.data.Common.damageMin = 99;
+            },0.2);
         }
     }
     actorName():string{

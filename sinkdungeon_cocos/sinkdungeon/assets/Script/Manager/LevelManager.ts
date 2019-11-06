@@ -9,7 +9,7 @@
 第四章 1x1 2x2 3x3 4x4 5x5
 第五章 1x1 2x2 3x3 4x4 5x5
 */
-export default class MapManager {
+export default class LevelManager {
     public static readonly CHAPTER00 = "chapter00"
     public static readonly CHAPTER01 = "chapter01"
     public static readonly CHAPTER02 = "chapter02"
@@ -17,7 +17,7 @@ export default class MapManager {
     public static readonly CHAPTER04 = "chapter04"
 
     level = 0;
-    chapter = MapManager.CHAPTER00;
+    chapter = LevelManager.CHAPTER00;
     constructor(){
 
     }

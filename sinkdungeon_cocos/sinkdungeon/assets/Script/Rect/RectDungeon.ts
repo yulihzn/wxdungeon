@@ -234,8 +234,10 @@ export default class RectDungeon {
             let randomtype = roomType[this.getRandomNum(0, roomType.length - 1)];
             if (this.level == RectDungeon.LEVEL_1) {
                 room.roomType = randomtype;
-            } else if (this.getHalfChance()) {
+            } else if (this.getOneTenthChance()) {//1/10生成额外房间
                 room.roomType = randomtype;
+            } else {
+                room.roomType = RectDungeon.EMPTY_ROOM;
             }
             //去掉出口的次级房间
             // let neighbor1 = this.getNeighborRoomType(room.x,room.y,0);
@@ -479,9 +481,11 @@ export default class RectDungeon {
     private getTypeStringLog(type: number): string {
         switch (type) {
             case RectDungeon.EMPTY_ROOM:
-                return "　";
+                return "Ｏ";
             case RectDungeon.START_ROOM:
                 return "Ｓ";
+            case RectDungeon.PRIMARY_ROOM:
+                return "Ｘ";
             case RectDungeon.END_ROOM:
                 return "Ｅ";
             case RectDungeon.TRAP_ROOM:
@@ -503,12 +507,15 @@ export default class RectDungeon {
             case RectDungeon.TEST_ROOM:
                 return "Ａ";
         }
-        return "　";
+        return "Ｏ";
     }
     getRandomNum(min, max): number {//生成一个随机数从[min,max]
         return min + Math.round(Random.rand() * (max - min));
     }
     getHalfChance(): boolean {
         return Random.rand() > 0.5;
+    }
+    getOneTenthChance(): boolean {
+        return Random.rand() > 0.9;
     }
 }
