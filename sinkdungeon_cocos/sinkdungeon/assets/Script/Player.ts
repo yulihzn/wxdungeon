@@ -31,6 +31,7 @@ import FlyWheel from './Item/FlyWheel';
 import Talent from './Talent/Talent';
 import AudioPlayer from './Utils/AudioPlayer';
 import FromData from './Data/FromData';
+import Achievements from './Achievement';
 
 @ccclass
 export default class Player extends Actor {
@@ -686,12 +687,13 @@ export default class Player extends Actor {
         this.anim.play('PlayerDie');
         cc.director.emit(EventConstant.HUD_STOP_COUNTTIME);
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
+        Achievements.addPlayerDiedLifesAchievement();
         this.scheduleOnce(() => {
             Logic.profileManager.clearData();
             Logic.dieFrom.valueCopy(from);
             cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.STOP_BG}});
             cc.director.loadScene('gameover');
-        }, 1);
+        }, 1.5);
     }
     //玩家行动
     playerAction(dir: number, pos: cc.Vec2, dt: number, dungeon: Dungeon) {

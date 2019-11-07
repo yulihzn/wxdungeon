@@ -19,6 +19,8 @@ export default class Achievements extends cc.Component {
     content: cc.Node = null;
     @property(cc.Prefab)
     prefab: cc.Prefab = null;
+    @property(cc.Label)
+    lifesLabel:cc.Label = null;
     //图片资源
     spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     // LIFE-CYCLE CALLBACKS:
@@ -34,6 +36,10 @@ export default class Achievements extends cc.Component {
             this.iconList.push(sprite.getComponent(cc.Sprite));
         }
         this.loadSpriteFrames();
+        let data:AchievementData = Achievements.getAchievementData();
+        if(this.lifesLabel&&data.playerLifes){
+            this.lifesLabel.string = `死亡次数：${data.playerLifes}`;
+        }
     }
     loadSpriteFrames() {
         if (this.spriteFrames) {
@@ -49,6 +55,9 @@ export default class Achievements extends cc.Component {
         })
     }
     show(){
+        if(!this.iconList){
+            return;
+        }
         let data:AchievementData = Achievements.getAchievementData();
         for(let i = 0;i < this.iconList.length;i++){
             let name = `monster${i<10?'00'+i:'0'+i}`;
@@ -57,10 +66,14 @@ export default class Achievements extends cc.Component {
                 this.iconList[i].node.width = 96;
                 this.iconList[i].node.height = 96;
                 this.iconList[i].spriteFrame = this.spriteFrames[name];
-                if(data&&data.monsters&&data.monsters[name]&&data.monsters[name] == 1){
+                let labe = this.iconList[i].node.getComponentInChildren(cc.Label);
+                labe.string = ``;
+                if(data&&data.monsters&&data.monsters[name]&&data.monsters[name] > 0){
                     this.iconList[i].node.color = cc.color(255,255,255);
+                    labe.string = `x${data.monsters[name]}`;
                 }else{
                     this.iconList[i].node.color = cc.color(0,0,0);
+                    
                 }
 
             }
@@ -88,7 +101,20 @@ export default class Achievements extends cc.Component {
     }
     static addMonsterKillAchievement(name:string){
         let data:AchievementData = Achievements.getAchievementData();
-        data.monsters[name] = 1;
+        if(data.monsters[name]){
+            data.monsters[name] = data.monsters[name]+1;
+        }else{
+            data.monsters[name] = 1;
+        }
+        Achievements.saveAchievementData(data);
+    }
+    static addPlayerDiedLifesAchievement(){
+        let data:AchievementData = Achievements.getAchievementData();
+        if(data.playerLifes){
+            data.playerLifes = data.playerLifes +1;
+        }else{
+            data.playerLifes = 1;
+        }
         Achievements.saveAchievementData(data);
     }
     // update (dt) {}

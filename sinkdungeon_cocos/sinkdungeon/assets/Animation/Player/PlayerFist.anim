@@ -6,7 +6,7 @@
   "_duration": 1.0166666666666666,
   "sample": 60,
   "speed": 3,
-  "wrapMode": "1",
+  "wrapMode": 1,
   "curveData": {
     "paths": {
       "sprite/body": {
@@ -44,10 +44,10 @@
             {
               "frame": 0.5,
               "value": [
-                -3.5,
-                7
-              ],
-              "curve": "constant"
+                5,
+                7,
+                0
+              ]
             },
             {
               "frame": 1,

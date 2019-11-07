@@ -118,7 +118,7 @@ export default class MonsterManager extends cc.Component {
         data.valueCopy(Logic.monsters[resName]);
         //10%几率随机属性
         if (Random.rand() < 0.1) {
-            this.monsterRandomAttr.addRandomAttrs(3);
+            this.monsterRandomAttr.addRandomAttrs(2);
             data = this.monsterRandomAttr.updateMonsterData(data);
             monster.attrmap = this.monsterRandomAttr.attrmap;
         }

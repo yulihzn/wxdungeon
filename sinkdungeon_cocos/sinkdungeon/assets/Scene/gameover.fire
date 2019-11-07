@@ -195,7 +195,7 @@
       "array": [
         0,
         0,
-        265.0037841796875,
+        257.1154479980469,
         0,
         0,
         0,
@@ -1082,7 +1082,7 @@
       "ctor": "Float32Array",
       "array": [
         0,
-        16.420000076293945,
+        39.52899932861328,
         0,
         0,
         0,
@@ -1483,7 +1483,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 220,
+      "width": 820,
       "height": 60
     },
     "_anchorPoint": {
@@ -1496,7 +1496,7 @@
       "ctor": "Float32Array",
       "array": [
         0,
-        -122.9010009765625,
+        -178.36199951171875,
         0,
         0,
         0,
@@ -1545,7 +1545,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
+      "width": 720,
       "height": 37.8
     },
     "_anchorPoint": {
@@ -1596,8 +1596,8 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "死于非命",
-    "_N$string": "死于非命",
+    "_string": "死于非命死于非命死于非命死于非命死于非命死于非命",
+    "_N$string": "死于非命死于非命死于非命死于非命死于非命死于非命",
     "_fontSize": 30,
     "_lineHeight": 30,
     "_enableWrapText": true,
@@ -1622,7 +1622,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 220,
+      "width": 820,
       "height": 60
     },
     "_resize": 1,
