@@ -4,6 +4,7 @@ import Player from "../Player";
 import Shooter from "../Shooter";
 import Logic from "../Logic";
 import Building from "./Building";
+import FromData from "../Data/FromData";
 
 
 // Learn TypeScript:
@@ -54,6 +55,11 @@ export default class Emplacement extends Building {
         this.setShooterHv(this.shooterBottom, cc.v2(0, -1));
         this.setShooterHv(this.shooterLeft, cc.v2(-1, 0));
         this.setShooterHv(this.shooterRight, cc.v2(1, 0));
+        let from = FromData.getClone('炮台','emplacement');
+        this.shooterTop.from.valueCopy(from);
+        this.shooterBottom.from.valueCopy(from);
+        this.shooterLeft.from.valueCopy(from);
+        this.shooterRight.from.valueCopy(from);
     }
     setDirType(mapStr:string){
         switch(mapStr){

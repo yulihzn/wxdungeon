@@ -7,6 +7,7 @@ import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
 import Box from "../Building/Box";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -218,9 +219,9 @@ export default class FlyWheel extends cc.Component {
         this.addBossStatus(TalentShield.SHIELD_10, boss, StatusManager.BLEEDING);
     }
     addMonsterStatus(talentType: number, monster: Monster, statusType) {
-        if (this.dungeon.player.talentShield.hashTalent(talentType)) { monster.addStatus(statusType); }
+        if (this.dungeon.player.talentShield.hashTalent(talentType)) { monster.addStatus(statusType,new FromData()); }
     }
     addBossStatus(talentType: number, boss: Boss, statusType) {
-        if (this.dungeon.player.talentShield.hashTalent(talentType)) { boss.addStatus(statusType); }
+        if (this.dungeon.player.talentShield.hashTalent(talentType)) { boss.addStatus(statusType,new FromData()); }
     }
 }

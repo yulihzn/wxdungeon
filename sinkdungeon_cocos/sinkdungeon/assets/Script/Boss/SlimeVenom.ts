@@ -3,6 +3,7 @@ import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import { EventConstant } from "../EventConstant";
 import Actor from "../Base/Actor";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,6 +27,7 @@ export default class SlimeVenom extends Actor {
     sprite:cc.Node;
     isHide = false;
     isForever = false;
+    from:FromData = FromData.getClone('史莱姆毒液','venom');
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -52,7 +54,7 @@ export default class SlimeVenom extends Actor {
                 }
             },3);
         }
-        this.damagePlayer();
+        this.damagePlayer(this.from);
     }
     start() {
 
@@ -73,14 +75,14 @@ export default class SlimeVenom extends Actor {
     }
     update (dt) {
         if (this.isCheckTimeDelay(dt)) {
-            this.damagePlayer();
+            this.damagePlayer(this.from);
         }
     }
-    damagePlayer(){
+    private damagePlayer(from:FromData){
         if (this.player&&this.getNearPlayerDistance(this.player.node)<60*this.node.scale&&this.node.active && !this.isHide) {
             let dd = new DamageData();
             dd.toxicDamage = 1;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:from}});
         }
     }
     takeDamage(damge:DamageData){

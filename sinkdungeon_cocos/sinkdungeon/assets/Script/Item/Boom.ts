@@ -2,6 +2,7 @@ import Player from "../Player";
 import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,7 +56,7 @@ export default class Boom extends cc.Component {
         }
         let player = attackTarget.getComponent(Player);
         if (player && !player.isDied) {
-            player.takeDamage(damage);
+            player.takeDamage(damage,FromData.getClone('爆炸','boom000anim001'));
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {

@@ -5,6 +5,7 @@ import DamageData from "../Data/DamageData";
 import ItemData from "../Data/ItemData";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -74,12 +75,12 @@ export default class Item extends cc.Component {
     }
     private getEffect(player:Player){
         switch(this.data.resName){
-            case Item.HEART:player.addStatus(StatusManager.HEALING);break;
+            case Item.HEART:player.addStatus(StatusManager.HEALING,FromData.getClone(this.data.nameCn,this.data.resName));break;
             case Item.AMMO:Logic.ammo+=30;break;
-            case Item.REDCAPSULE:player.addStatus(StatusManager.FASTATTACK);break;
-            case Item.BLUECAPSULE:player.addStatus(StatusManager.FASTMOVE);break;
-            case Item.SHIELD:player.addStatus(StatusManager.PERFECTDEFENCE);break;
-            case Item.GOLDAPPLE:player.addStatus(StatusManager.GOLDAPPLE);break;
+            case Item.REDCAPSULE:player.addStatus(StatusManager.FASTATTACK,FromData.getClone(this.data.nameCn,this.data.resName));break;
+            case Item.BLUECAPSULE:player.addStatus(StatusManager.FASTMOVE,FromData.getClone(this.data.nameCn,this.data.resName));break;
+            case Item.SHIELD:player.addStatus(StatusManager.PERFECTDEFENCE,FromData.getClone(this.data.nameCn,this.data.resName));break;
+            case Item.GOLDAPPLE:player.addStatus(StatusManager.GOLDAPPLE,FromData.getClone(this.data.nameCn,this.data.resName));break;
         }
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){

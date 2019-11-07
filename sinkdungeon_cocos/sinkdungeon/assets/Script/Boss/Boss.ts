@@ -7,6 +7,7 @@ import { EventConstant } from "../EventConstant";
 import EquipmentManager from "../Manager/EquipmentManager";
 import Actor from "../Base/Actor";
 import Shooter from "../Shooter";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,9 +34,9 @@ export default abstract class Boss extends Actor {
     abstract killed();
     abstract bossAction(): void;
     /**添加状态 */
-    addStatus(statusType: string) {
+    addStatus(statusType: string,from:FromData) {
         if (this.statusManager) {
-            this.statusManager.addStatus(statusType);
+            this.statusManager.addStatus(statusType,from);
         }
     }
     /**获取玩家距离 */

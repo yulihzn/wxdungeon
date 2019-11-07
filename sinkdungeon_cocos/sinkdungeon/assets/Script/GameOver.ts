@@ -1,5 +1,4 @@
 import Logic from "./Logic";
-import WxHelper from "./WxHelper";
 import { EventConstant } from "./EventConstant";
 import AudioPlayer from "./Utils/AudioPlayer";
 // Learn TypeScript:
@@ -17,22 +16,33 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class GameOver extends cc.Component {
 
-    @property(WxHelper)
-    wxhelper:WxHelper = null;
+    @property(cc.Label)
+    info:cc.Label = null;
+    @property(cc.Sprite)
+    infoIcon:cc.Sprite = null;
     @property(cc.Label)
     level: cc.Label = null;
     @property(cc.Label)
     clock: cc.Label = null;
     // LIFE-CYCLE CALLBACKS:
-
     // onLoad () {}
 
     start () {
         if (this.clock) {
-            this.clock.string = `${Logic.time}`;
+            this.clock.string = `用时：${Logic.time}`;
         }
         if (this.level) {
-            this.level.string = `Level ${Logic.chapterName + 1}-${Logic.level}`;
+            this.level.string = `${Logic.chapterName + 1}-${Logic.level}`;
+        }
+        let dieinfo = `死于非命`
+        if(Logic.dieFrom.name.length>0){
+            dieinfo = `被 ${Logic.dieFrom.name} 在${Logic.chapterName + 1}-${Logic.level}击倒`
+        }
+        if(this.infoIcon&&Logic.dieFrom.res.length>0){
+            this.infoIcon.spriteFrame = Logic.spriteFrames[Logic.dieFrom.res];
+        }
+        if(this.info){
+            this.info.string = dieinfo;
         }
     }
     retry(){
@@ -42,9 +52,6 @@ export default class GameOver extends cc.Component {
     }
     home(){
         Logic.time = '00:00:00';
-        if(this.wxhelper){
-            this.wxhelper.CloseDialog();
-        }
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
         cc.director.loadScene('start');
     }

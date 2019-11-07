@@ -1,6 +1,7 @@
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,7 +33,7 @@ export default class KrakenSwingHand extends cc.Component {
             this.node.stopAllActions();
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd,actorName:this.actorName()}});
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:FromData.getClone(this.actorName(),'boss001')}});
         }
     }
     actorName(){

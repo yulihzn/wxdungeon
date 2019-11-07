@@ -4,6 +4,7 @@ import DamageData from "../Data/DamageData";
 import { EventConstant } from "../EventConstant";
 import Actor from "../Base/Actor";
 import StatusManager from "../Manager/StatusManager";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -62,8 +63,9 @@ export default class DryadGrass extends Actor {
         if (player) {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
-                player.takeDamage(new DamageData(2));
-                player.addStatus(StatusManager.TWINE);
+                let from = FromData.getClone(this.actorName(),'dryadtwine03');
+                player.takeDamage(new DamageData(2),from);
+                player.addStatus(StatusManager.TWINE,from);
             }
             
         }

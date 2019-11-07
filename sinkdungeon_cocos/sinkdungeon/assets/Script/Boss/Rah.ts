@@ -8,6 +8,7 @@ import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import { EventConstant } from "../EventConstant";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,6 +45,7 @@ export default class Rah extends Boss {
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'bossrahhead'));
     }
 
     start() {
@@ -272,7 +274,7 @@ export default class Rah extends Boss {
         if (player && this.meleeSkill.IsExcuting&&!this.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
-            player.takeDamage(d);
+            player.takeDamage(d,FromData.getClone(this.actorName(),'bossrahhead'));
         }
     }
     actorName(){

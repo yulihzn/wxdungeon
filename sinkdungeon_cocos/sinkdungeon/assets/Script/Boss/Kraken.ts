@@ -10,6 +10,7 @@ import Boss from "./Boss";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,6 +47,7 @@ export default class Kraken extends Boss {
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 0;
         this.shooter = this.getComponentInChildren(Shooter);
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'boss001'));
 
     }
     updatePlayerPos() {

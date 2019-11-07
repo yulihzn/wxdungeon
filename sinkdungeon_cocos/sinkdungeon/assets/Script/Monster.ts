@@ -27,6 +27,7 @@ import Achievements from './Achievement';
 import EquipmentManager from './Manager/EquipmentManager';
 import AudioPlayer from './Utils/AudioPlayer';
 import SpecialManager from './Manager/SpecialManager';
+import FromData from './Data/FromData';
 
 @ccclass
 export default class Monster extends Actor {
@@ -137,6 +138,7 @@ export default class Monster extends Actor {
         }
         this.dangerTips.opacity = 0;
         
+        
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
@@ -242,6 +244,7 @@ export default class Monster extends Actor {
         if (!hv.equals(cc.Vec2.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
+            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn,this.data.resName));
             if (this.isVariation) {
                 this.shooter.data.bulletSize = 0.5;
             }
@@ -283,14 +286,14 @@ export default class Monster extends Actor {
         let action2 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK03) }),
             cc.callFunc(() => {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance,this.isFaceRight);
+                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance,this.isFaceRight,FromData.getClone(this.data.nameCn,this.data.resName));
             }),
             cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0), cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0),
             cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0), cc.moveBy(0.1, 5, 0), cc.moveBy(0.1, -5, 0),
             cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK04); }),
             cc.callFunc(() => {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance,this.isFaceRight);
+                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance,this.isFaceRight,FromData.getClone(this.data.nameCn,this.data.resName));
             }),
             cc.delayTime(0.5));
         let afterAction = cc.sequence(cc.callFunc(() => {
@@ -457,7 +460,7 @@ export default class Monster extends Actor {
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
         this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false);
         if (this.data.Common.lifeRecovery > 0 && this.isHurt) {
-            this.addStatus(StatusManager.RECOVERY);
+            this.addStatus(StatusManager.RECOVERY,new FromData());
         }
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         return this.isHurt;
@@ -488,8 +491,8 @@ export default class Monster extends Actor {
         c3.setB(b > 255 ? 255 : b);
         return '#' + c3.toHEX('#rrggbb');
     }
-    addStatus(statusType: string) {
-        this.statusManager.addStatus(statusType);
+    addStatus(statusType: string,from:FromData) {
+        this.statusManager.addStatus(statusType,from);
     }
     showAttackEffect(isDashing: boolean) {
         if (!this.particleIce) {
@@ -515,13 +518,13 @@ export default class Monster extends Actor {
         this.particleToxic.stopSystem();
         this.particleCurse.stopSystem();
     }
-    addPlayerStatus(player: Player) {
-        if (Logic.getRandomNum(0, 100) < this.data.getIceRate()) { player.addStatus(StatusManager.FROZEN); }
-        if (Logic.getRandomNum(0, 100) < this.data.getFireRate()) { player.addStatus(StatusManager.BURNING); }
-        if (Logic.getRandomNum(0, 100) < this.data.getLighteningRate()) { player.addStatus(StatusManager.DIZZ); }
-        if (Logic.getRandomNum(0, 100) < this.data.getToxicRate()) { player.addStatus(StatusManager.TOXICOSIS); }
-        if (Logic.getRandomNum(0, 100) < this.data.getCurseRate()) { player.addStatus(StatusManager.CURSING); }
-        if (Logic.getRandomNum(0, 100) < this.data.getRealRate()) { player.addStatus(StatusManager.BLEEDING); }
+    addPlayerStatus(player: Player,from:FromData) {
+        if (Logic.getRandomNum(0, 100) < this.data.getIceRate()) { player.addStatus(StatusManager.FROZEN,from); }
+        if (Logic.getRandomNum(0, 100) < this.data.getFireRate()) { player.addStatus(StatusManager.BURNING,from); }
+        if (Logic.getRandomNum(0, 100) < this.data.getLighteningRate()) { player.addStatus(StatusManager.DIZZ,from); }
+        if (Logic.getRandomNum(0, 100) < this.data.getToxicRate()) { player.addStatus(StatusManager.TOXICOSIS,from); }
+        if (Logic.getRandomNum(0, 100) < this.data.getCurseRate()) { player.addStatus(StatusManager.CURSING,from); }
+        if (Logic.getRandomNum(0, 100) < this.data.getRealRate()) { player.addStatus(StatusManager.BLEEDING,from); }
     }
     killed() {
         if (this.isDied) {
@@ -639,8 +642,9 @@ export default class Monster extends Actor {
                     let isBehind = this.isFaceRight ? !isPlayerAtRight : isPlayerAtRight;
                     let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
                     if (newdis < 80 * this.node.scaleY && !isMiss && !isBehind) {
-                        this.addPlayerStatus(this.dungeon.player);
-                        this.dungeon.player.takeDamage(this.data.getAttackPoint(), this);
+                        let from = FromData.getClone(this.data.nameCn,this.data.resName);
+                        this.addPlayerStatus(this.dungeon.player,from);
+                        this.dungeon.player.takeDamage(this.data.getAttackPoint(),from,this);
                     }
                     this.specialSkill.IsExcuting = false;
                     if (isSpecial) {
@@ -719,9 +723,10 @@ export default class Monster extends Actor {
         if (player && this.dashSkill.IsExcuting && this.dungeon && !this.isHurt && !this.isDied) {
             this.dashSkill.IsExcuting = false;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            this.addPlayerStatus(this.dungeon.player);
+            let from = FromData.getClone(this.data.nameCn,this.data.resName);
+            this.addPlayerStatus(this.dungeon.player,from);
             this.stopAttackEffect();
-            this.dungeon.player.takeDamage(this.data.getAttackPoint(), this);
+            this.dungeon.player.takeDamage(this.data.getAttackPoint(),from, this);
         }
     }
 

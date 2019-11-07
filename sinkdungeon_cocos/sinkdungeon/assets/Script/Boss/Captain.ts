@@ -12,6 +12,7 @@ import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -50,6 +51,8 @@ export default class Captain extends Boss {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.exshooter = this.node.getChildByName('ExShooter').getComponent(Shooter);
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'captain_head'));
+        this.exshooter.from.valueCopy(FromData.getClone(this.actorName(),'captain_head'));
         this.updatePlayerPos();
     }
 
@@ -142,7 +145,7 @@ export default class Captain extends Boss {
                 this.isFall = false;
                 let dd = new DamageData();
                 dd.physicalDamage = 2;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: dd } });
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: dd,from:FromData.getClone(this.actorName(),'captain_head') } });
             }
         }
     }

@@ -3,6 +3,7 @@ import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import Building from "./Building";
+import FromData from "../Data/FromData";
 
 
 // Learn TypeScript:
@@ -65,7 +66,7 @@ export default class Trap extends Building {
         if(other.tag == 3){
             if(this.isOpen && this.isPlayerIn){
                 this.isOpen = false;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:new DamageData(1)}});
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:new DamageData(1),from:FromData.getClone(this.actorName(),'trap001')}});
             }
         }
     }

@@ -13,6 +13,7 @@ import PlayerData from "./Data/PlayerData";
 import Boss from "./Boss/Boss";
 import Random from "./Utils/Random";
 import Skill from "./Utils/Skill";
+import FromData from "./Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -405,10 +406,10 @@ export default class MeleeWeapon extends cc.Component {
         this.addBossStatus(this.player.data.getRealRate(), boss, StatusManager.BLEEDING);
     }
     addMonsterStatus(rate: number, monster: Monster, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType); }
+        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType,new FromData()); }
     }
     addBossStatus(rate: number, boss: Boss, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType); }
+        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType,new FromData()); }
     }
 
 }

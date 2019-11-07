@@ -8,6 +8,7 @@ import Dungeon from "../Dungeon";
 import Talent from "./Talent";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -148,7 +149,7 @@ export default class TalentShield extends Talent {
                     cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 }
                 //添加状态
-                this.player.addStatus(statusName);
+                this.player.addStatus(statusName,new FromData());
             }, 0.2);
             this.scheduleOnce(() => {
                 this.talentSkill.IsExcuting = false;

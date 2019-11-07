@@ -3,6 +3,7 @@ import { EventConstant } from "../EventConstant";
 import DamageData from "../Data/DamageData";
 import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -65,7 +66,7 @@ export default class FallStone extends Building {
         if (player) {
             if (this.isFall&&this.isValid) {
                 this.isFall = false;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: new DamageData(2) } });
+                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: new DamageData(2),from:FromData.getClone('落石','stone') } });
             }
             
         }

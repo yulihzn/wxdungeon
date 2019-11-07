@@ -7,6 +7,7 @@ import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -153,10 +154,10 @@ export default class TalentDash extends Talent {
         this.addBossStatus(Talent.DASH_03, boss, StatusManager.BLEEDING);
     }
     addMonsterStatus(talentType: number, monster: Monster, statusType) {
-        if (this.hashTalent(talentType)) { monster.addStatus(statusType); }
+        if (this.hashTalent(talentType)) { monster.addStatus(statusType,new FromData()); }
     }
     addBossStatus(talentType: number, boss: Boss, statusType) {
-        if (this.hashTalent(talentType)) { boss.addStatus(statusType); }
+        if (this.hashTalent(talentType)) { boss.addStatus(statusType,new FromData()); }
     }
     takeDamage() {
 

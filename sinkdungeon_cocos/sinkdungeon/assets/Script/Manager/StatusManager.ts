@@ -5,6 +5,7 @@ import DamageData from "../Data/DamageData";
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import Monster from "../Monster";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,12 +56,13 @@ export default class StatusManager extends cc.Component {
     start() {
 
     }
-    addStatus(resName:string) {
+    addStatus(resName:string,from:FromData) {
         if(resName.length<1){
             return;
         }
         let sd = new StatusData();
         sd.valueCopy(Logic.debuffs[resName])
+        sd.From.valueCopy(from);
         this.showStatus(sd);
     }
     hasStatus(resName:string):boolean{

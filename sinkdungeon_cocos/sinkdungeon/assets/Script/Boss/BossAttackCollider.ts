@@ -1,6 +1,7 @@
 import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,6 +19,7 @@ const {ccclass, property} = cc._decorator;
 export default class BossAttackCollider extends cc.Component {
     @property
     damage = 2;
+    from:FromData = new FromData();
     // LIFE-CYCLE CALLBACKS:
     private isShow = false;
 
@@ -42,7 +44,7 @@ export default class BossAttackCollider extends cc.Component {
             this.isShow = false;
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd}});
+            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:this.from}});
         }
     }
     // update (dt) {}

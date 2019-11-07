@@ -16,6 +16,7 @@ import Player from './Player';
 import EquipmentDialog from './Equipment/EquipmentDialog';
 import InventoryManager from './Manager/InventoryManager';
 import Dungeon from './Dungeon';
+import FromData from './Data/FromData';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -194,7 +195,7 @@ export default class Inventory extends cc.Component {
             this.dungeon.player.getComponent(Player).inventoryManager = this.inventoryManager;
             this.dungeon.player.getComponent(Player).changeEquipment(equipmentDataNew,spriteFrame);
             if(equipmentDataNew.statusInterval>0&&equipmentDataNew.statusName.length>0){
-                this.dungeon.player.addStatus(equipmentDataNew.statusName);
+                this.dungeon.player.addStatus(equipmentDataNew.statusName,FromData.getClone(equipmentDataNew.nameCn,equipmentDataNew.img));
             }
         }
     }
@@ -203,7 +204,7 @@ export default class Inventory extends cc.Component {
             return;
         }
         if(equipmentData.statusInterval>0&&equipmentData.statusName.length>0){
-            this.dungeon.player.addStatus(equipmentData.statusName);
+            this.dungeon.player.addStatus(equipmentData.statusName,FromData.getClone(equipmentData.nameCn,equipmentData.img));
         }
     }
     secondTimeDelay = 0;

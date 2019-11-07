@@ -1,6 +1,7 @@
 import Logic from "../Logic";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,11 +26,11 @@ export default class AreaAttack extends cc.Component {
         let dis = Logic.getDistance(this.node.position, playerNode.position);
         return dis;
     }
-    damagePlayer(status: string, player: Player,data:DamageData) {
+    damagePlayer(status: string, player: Player,data:DamageData,from:FromData) {
         if (this.node&&player && this.getNearPlayerDistance(player.node) < 64 * this.node.scale) {
-            player.takeDamage(data);
+            player.takeDamage(data,from);
             if(status.length>0){
-                player.addStatus(status);
+                player.addStatus(status,from);
             }
         }
         if(!this.node){

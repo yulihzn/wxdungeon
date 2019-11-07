@@ -5,6 +5,7 @@ import DamageData from "../Data/DamageData";
 import Building from "./Building";
 import StatusManager from "../Manager/StatusManager";
 import Random from "../Utils/Random";
+import FromData from "../Data/FromData";
 
 
 // Learn TypeScript:
@@ -49,10 +50,11 @@ export default class Saw extends Building {
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
-            player.takeDamage(new DamageData(1));
+            let from = FromData.getClone(this.actorName(),'saw002');
+            player.takeDamage(new DamageData(1),from);
             //1/10几率流血
             if(Random.rand()<0.1){
-                player.addStatus(StatusManager.BLEEDING);
+                player.addStatus(StatusManager.BLEEDING,from);
             }
             this.sprite.spriteFrame = this.bloodSpriteFrame;
         }

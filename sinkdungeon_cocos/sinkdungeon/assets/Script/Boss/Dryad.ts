@@ -9,6 +9,7 @@ import Skill from "../Utils/Skill";
 import BossAttackCollider from "./BossAttackCollider";
 import { EventConstant } from "../EventConstant";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,8 +54,14 @@ export default class Dryad extends Boss {
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
         this.shooter02 = this.node.getChildByName('Shooter02').getComponent(Shooter);
         this.shooter03 = this.node.getChildByName('Shooter03').getComponent(Shooter);
+        let from = FromData.getClone(this.actorName(),'dryadflower04');
+        this.shooter01.from.valueCopy(from);
+        this.shooter02.from.valueCopy(from);
+        this.shooter03.from.valueCopy(from);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
+        this.hand01.from.valueCopy(from);
+        this.hand02.from.valueCopy(from);
     }
 
     start() {

@@ -12,6 +12,7 @@ import Boom from "./Boom";
 import TalentShield from "../Talent/TalentShield";
 import FlyWheel from "./FlyWheel";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -344,8 +345,8 @@ export default class Bullet extends cc.Component {
                 isReverse = this.revserseBullet();
             }
             if(!isReverse){
-                damageSuccess = player.takeDamage(damage);
-                if (damageSuccess) { this.addPlayerAllStatus(player) }
+                damageSuccess = player.takeDamage(damage,this.data.from);
+                if (damageSuccess) { this.addPlayerAllStatus(player,this.data.from) }
                 isDestory = true;
             }
         }
@@ -483,23 +484,23 @@ export default class Bullet extends cc.Component {
         this.addBossStatus(this.data.damage.realRate, boss, StatusManager.BLEEDING);
         this.addBossStatus(this.data.statusRate,boss,this.data.statusType);
     }
-    addPlayerAllStatus(player: Player) {
-        this.addPlayerStatus(this.data.damage.iceRate, player, StatusManager.FROZEN);
-        this.addPlayerStatus(this.data.damage.fireRate, player, StatusManager.BURNING);
-        this.addPlayerStatus(this.data.damage.lighteningRate, player, StatusManager.DIZZ);
-        this.addPlayerStatus(this.data.damage.toxicRate, player, StatusManager.TOXICOSIS);
-        this.addPlayerStatus(this.data.damage.curseRate, player, StatusManager.CURSING);
-        this.addPlayerStatus(this.data.damage.realRate, player, StatusManager.BLEEDING);
-        this.addPlayerStatus(this.data.damage.stoneRate, player, StatusManager.STONE);
-        this.addPlayerStatus(this.data.statusRate, player, this.data.statusType);
+    addPlayerAllStatus(player: Player,from:FromData) {
+        this.addPlayerStatus(this.data.damage.iceRate, player, StatusManager.FROZEN,from);
+        this.addPlayerStatus(this.data.damage.fireRate, player, StatusManager.BURNING,from);
+        this.addPlayerStatus(this.data.damage.lighteningRate, player, StatusManager.DIZZ,from);
+        this.addPlayerStatus(this.data.damage.toxicRate, player, StatusManager.TOXICOSIS,from);
+        this.addPlayerStatus(this.data.damage.curseRate, player, StatusManager.CURSING,from);
+        this.addPlayerStatus(this.data.damage.realRate, player, StatusManager.BLEEDING,from);
+        this.addPlayerStatus(this.data.damage.stoneRate, player, StatusManager.STONE,from);
+        this.addPlayerStatus(this.data.statusRate, player, this.data.statusType,from);
     }
     addMonsterStatus(rate: number, monster: Monster, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType); }
+        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType,new FromData()); }
     }
     addBossStatus(rate: number, boss: Boss, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType); }
+        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType,new FromData()); }
     }
-    addPlayerStatus(rate: number, player: Player, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { player.addStatus(statusType); }
+    addPlayerStatus(rate: number, player: Player, statusType:string,from:FromData) {
+        if (Logic.getRandomNum(0, 100) < rate) { player.addStatus(statusType,from); }
     }
 }

@@ -3,6 +3,7 @@ import { EventConstant } from "../EventConstant";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
+import FromData from "../Data/FromData";
 
 
 // Learn TypeScript:
@@ -60,8 +61,9 @@ export default class IceDemonThron extends cc.Component {
         if (player) {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
-                player.takeDamage(new DamageData(2));
-                player.addStatus(StatusManager.FROZEN);
+                let from = FromData.getClone('冰刺','bossicethron02');
+                player.takeDamage(new DamageData(2),from);
+                player.addStatus(StatusManager.FROZEN,from);
             }
             
         }

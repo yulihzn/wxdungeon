@@ -12,6 +12,7 @@ import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -72,6 +73,11 @@ export default class EvilEye extends Boss {
         this.viceShooters.push(this.node.getChildByName('Shooter4').getComponent(Shooter));
         this.viceShooters.push(this.node.getChildByName('Shooter5').getComponent(Shooter));
         this.viceShooters.push(this.node.getChildByName('Shooter6').getComponent(Shooter));
+        let from = FromData.getClone(this.actorName(),'evileyeeye');
+        this.shooter.from.valueCopy(from);
+        for(let vice of this.viceShooters){
+            vice.from.valueCopy(from);
+        }
     }
 
     start() {
@@ -280,8 +286,9 @@ export default class EvilEye extends Boss {
         if (player && (this.dashSkill.IsExcuting)) {
             let d = new DamageData();
             d.physicalDamage = 5;
-            player.takeDamage(d);
-            player.addStatus(StatusManager.BLEEDING);
+            let from = FromData.getClone(this.actorName(),'evileyeeye');
+            player.takeDamage(d,from);
+            player.addStatus(StatusManager.BLEEDING,from);
         }
     }
     actorName(){

@@ -1,7 +1,6 @@
 import Boss from "./Boss";
 import DamageData from "../Data/DamageData";
 import HealthBar from "../HealthBar";
-import Shooter from "../Shooter";
 import Player from "../Player";
 import { EventConstant } from "../EventConstant";
 import EquipmentManager from "../Manager/EquipmentManager";
@@ -12,6 +11,7 @@ import Monster from "../Monster";
 import MonsterManager from "../Manager/MonsterManager";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -112,14 +112,14 @@ export default class Slime extends Boss {
         this.meleeSkill.IsExcuting = false;
         let attackRange = 64 + 50 * this.scaleSize;
         let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-        if (newdis < attackRange) { this.dungeon.player.takeDamage(this.data.getAttackPoint()); }
+        if (newdis < attackRange) { this.dungeon.player.takeDamage(this.data.getAttackPoint(),FromData.getClone(this.actorName(),'bossslimehelmet')); }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.getComponent(Player);
         if (player && this.isDashing && this.dungeon && !this.isHurt && !this.isDied) {
             this.isDashing = false;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            this.dungeon.player.takeDamage(this.data.getAttackPoint());
+            this.dungeon.player.takeDamage(this.data.getAttackPoint(),FromData.getClone(this.actorName(),'bossslimehelmet'));
         }
     }
     venomTimeDelay = 0;

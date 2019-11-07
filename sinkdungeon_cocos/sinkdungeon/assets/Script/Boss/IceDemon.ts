@@ -12,6 +12,7 @@ import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,6 +47,7 @@ export default class IceDemon extends Boss {
         this.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'bossicepart01'));
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
     }
@@ -310,8 +312,9 @@ export default class IceDemon extends Boss {
         if (player && (this.meleeSkill.IsExcuting||this.dashSkill.IsExcuting)&&!this.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
-            player.takeDamage(d);
-            player.addStatus(StatusManager.FROZEN);
+            let from = FromData.getClone(this.actorName(),'bossicepart01');
+            player.takeDamage(d,from);
+            player.addStatus(StatusManager.FROZEN,from);
         }
     }
     actorName(){

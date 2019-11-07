@@ -13,6 +13,7 @@ import Random from "./Utils/Random";
 import TalentData from "./Data/TalentData";
 import ProfileManager from "./Manager/ProfileManager";
 import AudioPlayer from "./Utils/AudioPlayer";
+import FromData from "./Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -65,6 +66,8 @@ export default class Logic extends cc.Component {
     static seed = 5;
     static isFirst = 0;
     static isCheatMode = false;//作弊
+    static dieFrom:FromData = new FromData();
+    
 
     static profileManager:ProfileManager = new ProfileManager();
 

@@ -75,7 +75,7 @@ export default class Status extends cc.Component {
         let player = this.target.getComponent(Player);
         let takeD = dd.getTotalDamage() != 0;
         if(player){
-            if(takeD){player.takeDamage(dd);}
+            if(takeD){player.takeDamage(dd,this.data.From);}
             player.dizzCharacter(dizzDuration);
             return;
         }

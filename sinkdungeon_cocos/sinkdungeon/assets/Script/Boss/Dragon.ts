@@ -8,6 +8,7 @@ import Skill from "../Utils/Skill";
 import Random from "../Utils/Random";
 import { EventConstant } from "../EventConstant";
 import AudioPlayer from "../Utils/AudioPlayer";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,6 +41,7 @@ export default class Dragon extends Boss {
         this.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
+        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(),'dragonhead'));
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         this.physicBox = this.getComponent(cc.PhysicsBoxCollider);
@@ -200,7 +202,7 @@ export default class Dragon extends Boss {
         if(player&&!this.isDied && !this.physicBox.sensor){
             let d = new DamageData();
             d.physicalDamage = 3;
-            player.takeDamage(d);
+            player.takeDamage(d,FromData.getClone(this.actorName(),'dragonhead'));
         }
     }
     actorName(){

@@ -1,4 +1,5 @@
 import DamageData from "./DamageData";
+import FromData from "./FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +36,7 @@ export default class BulletData {
     statusType:string = "";//附加状态
     statusRate = 0;//状态几率
     damage:DamageData = new DamageData();
+    from:FromData = new FromData();//来源
     valueCopy(data:BulletData){
         this.speed = data.speed?data.speed:0;
         this.isRect = data.isRect?data.isRect:0;
@@ -58,6 +60,7 @@ export default class BulletData {
         this.statusRate = data.statusRate?data.statusRate:0;
         this.lightColor = data.lightColor?data.lightColor:'#ffffff'
         this.damage.valueCopy(data.damage);
+        this.from.valueCopy(data.from);
     }
     clone():BulletData{
         let e = new BulletData();
@@ -83,6 +86,7 @@ export default class BulletData {
         e.statusType = this.statusType;
         e.statusRate = this.statusRate;
         e.damage = this.damage.clone();
+        e.from = this.from.clone();
         return e;
     }
 }

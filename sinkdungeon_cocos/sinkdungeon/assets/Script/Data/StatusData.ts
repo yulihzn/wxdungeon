@@ -1,4 +1,5 @@
 import CommonData from "./CommonData";
+import FromData from "./FromData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,15 +42,21 @@ export default class StatusData {
     curseDamageOvertime = 0;//持续诅咒元素伤害
     dizzDurationDirect = 0;//瞬间眩晕时长
     dizzDurationOvertime = 0;//持续眩晕时长
+    private from:FromData;//来源
     constructor(){
         this.common = new CommonData();
+        this.from = new FromData();
     }
 
     get Common(){
         return this.common;
     }
+    get From(){
+        return this.from;
+    }
     public valueCopy(data: StatusData): void {
         this.common.valueCopy(data.common);
+        this.from.valueCopy(data.from);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
         this.statusType = data.statusType;
@@ -77,6 +84,7 @@ export default class StatusData {
     public clone(): StatusData {
         let e = new StatusData();
         e.common = this.common.clone();
+        e.from = this.from.clone();
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
         e.statusType = this.statusType;

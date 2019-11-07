@@ -7,6 +7,7 @@ import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import { EventConstant } from "../EventConstant";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,6 +54,13 @@ export default class WarMachine extends Boss {
         this.shooter05 = this.node.getChildByName('Shooter05').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
+        let from = FromData.getClone(this.actorName(),'bossmachinehead');
+        this.shooter01.from.valueCopy(from);
+        this.shooter02.from.valueCopy(from);
+        this.shooter03.from.valueCopy(from);
+        this.shooter04.from.valueCopy(from);
+        this.shooter05.from.valueCopy(from);
+        
     }
 
     start() {
@@ -252,7 +260,7 @@ export default class WarMachine extends Boss {
         if(player&&!this.isDied){
             let d = new DamageData();
             d.physicalDamage = 2;
-            player.takeDamage(d);
+            player.takeDamage(d,FromData.getClone(this.actorName(),'bossmachinehead'));
         }
     }
     actorName(){

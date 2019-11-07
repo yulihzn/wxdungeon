@@ -6,10 +6,10 @@ import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
-import BossAttackCollider from "./BossAttackCollider";
 import MonsterManager from "../Manager/MonsterManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import { EventConstant } from "../EventConstant";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,6 +42,7 @@ export default class Sphinx extends Boss {
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
+        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(),'sphinxhead'));
     }
 
     start() {

@@ -9,6 +9,7 @@ import Random from "./Utils/Random";
 import Boss from "./Boss/Boss";
 import { EventConstant } from "./EventConstant";
 import AudioPlayer from "./Utils/AudioPlayer";
+import FromData from "./Data/FromData";
 
 
 // Learn TypeScript:
@@ -47,6 +48,7 @@ export default class Shooter extends cc.Component {
     isAiming = false;//是否在瞄准
     //玩家远程伤害
     remoteDamagePlayer = 0;
+    from:FromData = new FromData();
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -236,6 +238,7 @@ export default class Shooter extends cc.Component {
         if(bd.speed + this.data.bulletExSpeed > 50){
             bd.speed+=this.data.bulletExSpeed;
         }
+        bd.from.valueCopy(this.from);
         bullet.changeBullet(bd);
         this.bulletName = bullet.name + bd.resName;
         bullet.enabled = true;

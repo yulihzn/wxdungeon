@@ -7,6 +7,7 @@ import { EventConstant } from "../EventConstant";
 import StatusManager from "./StatusManager";
 import Monster from "../Monster";
 import AreaAttack from "../Item/AreaAttack";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,7 +38,7 @@ export default class SpecialManager extends cc.Component {
     blade: cc.Prefab = null;
     dungeon: Dungeon;
 
-    addPlacement(placeType: string, distance: number,isFaceRight:boolean) {
+    addPlacement(placeType: string, distance: number,isFaceRight:boolean,from:FromData) {
         if (!this.dungeon) {
             return;
         }
@@ -46,17 +47,17 @@ export default class SpecialManager extends cc.Component {
 
         switch (placeType) {
             case SpecialManager.AFTER_VENOM:
-                this.addVenom(pos,isFaceRight);
+                this.addVenom(pos,isFaceRight,from);
                 break;
             case SpecialManager.AFTER_CLAW:
-                this.addClaw(pos,isFaceRight);
+                this.addClaw(pos,isFaceRight,from);
                 break;
             case SpecialManager.AFTER_BLADE:
-                this.addBlade(pos,isFaceRight);
+                this.addBlade(pos,isFaceRight,from);
                 break;
         }
     }
-    addEffect(placeType: string, distance: number,isFaceRight:boolean) {
+    addEffect(placeType: string, distance: number,isFaceRight:boolean,from:FromData) {
         if (!this.dungeon) {
             return;
         }
@@ -65,15 +66,16 @@ export default class SpecialManager extends cc.Component {
 
         switch (placeType) {
             case SpecialManager.BEFORE_HOWL:
-                this.addHowl(pos,isFaceRight);
+                this.addHowl(pos,isFaceRight,from);
                 break;
         }
     }
 
-    private addVenom(pos: cc.Vec2,isFaceRight:boolean) {
+    private addVenom(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
         let venom = cc.instantiate(this.venom);
         venom.getComponent(SlimeVenom).player = this.dungeon.player;
         venom.getComponent(SlimeVenom).isForever = false;
+        venom.getComponent(SlimeVenom).from.valueCopy(from);
         venom.parent = this.dungeon.node;
         venom.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
@@ -81,7 +83,7 @@ export default class SpecialManager extends cc.Component {
         venom.scale = 0;
         venom.runAction(cc.scaleTo(0.5, 2, 2))
     }
-    private addHowl(pos: cc.Vec2,isFaceRight:boolean) {
+    private addHowl(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
         let howl = cc.instantiate(this.howl);
         howl.parent = this.dungeon.node;
         howl.position = pos;
@@ -90,14 +92,14 @@ export default class SpecialManager extends cc.Component {
         howl.scale = 2;
         let monster = this.node.parent.getComponent(Monster);
         if (monster) {
-            monster.addStatus(StatusManager.WEREWOLFDEFENCE);
+            monster.addStatus(StatusManager.WEREWOLFDEFENCE,from);
         }
         let howlScript = howl.getComponent(AreaAttack);
         this.scheduleOnce(() => {
-            howlScript.damagePlayer(StatusManager.DIZZ, this.dungeon.player, new DamageData(1));
+            howlScript.damagePlayer(StatusManager.DIZZ, this.dungeon.player, new DamageData(1),from);
         }, 1);
     }
-    private addClaw(pos: cc.Vec2,isFaceRight:boolean) {
+    private addClaw(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
         let claw = cc.instantiate(this.claw);
         claw.parent = this.dungeon.node;
         pos.y += 32;
@@ -107,13 +109,13 @@ export default class SpecialManager extends cc.Component {
         claw.scale = 1;
         let areaScript = claw.getComponent(AreaAttack);
         this.scheduleOnce(() => {
-            areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(2));
+            areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(2),from);
             this.scheduleOnce(() => {
-                areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(3));
+                areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(3),from);
             }, 0.2);
         }, 0.5);
     }
-    private addBlade(pos: cc.Vec2,isFaceRight:boolean) {
+    private addBlade(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
         let prefab = cc.instantiate(this.blade);
         prefab.parent = this.dungeon.node;
         prefab.position = pos;
@@ -123,7 +125,7 @@ export default class SpecialManager extends cc.Component {
         prefab.scaleX = isFaceRight?1:-1;
         let areaScript = prefab.getComponent(AreaAttack);
         this.scheduleOnce(() => {
-            areaScript.damagePlayer('', this.dungeon.player, new DamageData(3));
+            areaScript.damagePlayer('', this.dungeon.player, new DamageData(3),from);
         }, 0.5);
     }
 }

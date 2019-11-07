@@ -30,6 +30,7 @@ import Actor from './Base/Actor';
 import FlyWheel from './Item/FlyWheel';
 import Talent from './Talent/Talent';
 import AudioPlayer from './Utils/AudioPlayer';
+import FromData from './Data/FromData';
 
 @ccclass
 export default class Player extends Actor {
@@ -142,7 +143,7 @@ export default class Player extends Actor {
         cc.director.on(EventConstant.PLAYER_STATUSUPDATE
             , (event) => { this.statusUpdate() });
         cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
-            , (event) => { this.takeDamage(event.detail.damage) });
+            , (event) => { this.takeDamage(event.detail.damage,event.detail.from) });
     
         if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
             Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
@@ -179,7 +180,7 @@ export default class Player extends Actor {
         }
         if(Logic.isCheatMode){
             this.scheduleOnce(()=>{
-                this.addStatus(StatusManager.PERFECTDEFENCE);
+                this.addStatus(StatusManager.PERFECTDEFENCE,new FromData());
                 this.data.currentHealth = 999;
                 this.data.Common.maxHealth = 999;
                 this.data.Common.damageMin = 99;
@@ -360,13 +361,13 @@ export default class Player extends Actor {
     changeZIndex(pos: cc.Vec2) {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
-    addStatus(statusType: string) {
+    addStatus(statusType: string,from:FromData) {
         if (this.talentShield.IsExcuting) {
             if (this.talentShield.canAddStatus(statusType)) {
-                this.statusManager.addStatus(statusType);
+                this.statusManager.addStatus(statusType,from);
             }
         } else {
-            this.statusManager.addStatus(statusType);
+            this.statusManager.addStatus(statusType,from);
         }
     }
     meleeAttack() {
@@ -618,11 +619,17 @@ export default class Player extends Actor {
             this.resetFoot();
             let dd = new DamageData();
             dd.realDamage = 1;
-            this.takeDamage(dd);
+            this.takeDamage(dd,FromData.getClone('跌落',''));
             this.isFall = false;
         }, 2);
     }
-    takeDamage(damageData: DamageData, actor?: Actor): boolean {
+    /**
+     * 挨打
+     * @param damageData 伤害
+     * @param from 来源信息
+     * @param actor 来源单位(目前只有monster)
+     */
+    takeDamage(damageData: DamageData, from?:FromData, actor?: Actor): boolean {
         if (!this.data) {
             return false;
         }
@@ -645,7 +652,7 @@ export default class Player extends Actor {
         Logic.playerData.currentHealth = health.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false);
         if (Logic.playerData.currentHealth <= 0) {
-            this.killed();
+            this.killed(from);
         }
         let valid = !isDodge && dd.getTotalDamage() > 0;
         if (valid) {
@@ -671,7 +678,7 @@ export default class Player extends Actor {
             flabel.hideLabel();
         }
     }
-    killed() {
+    killed(from?: FromData) {
         if (this.isDied) {
             return;
         }
@@ -680,7 +687,8 @@ export default class Player extends Actor {
         cc.director.emit(EventConstant.HUD_STOP_COUNTTIME);
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
         this.scheduleOnce(() => {
-            Logic.profileManager.data.clearData();
+            Logic.profileManager.clearData();
+            Logic.dieFrom.valueCopy(from);
             cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.STOP_BG}});
             cc.director.loadScene('gameover');
         }, 1);
