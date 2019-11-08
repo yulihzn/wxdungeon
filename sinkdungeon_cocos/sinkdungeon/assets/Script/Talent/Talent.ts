@@ -39,14 +39,29 @@ export default abstract class Talent extends cc.Component {
     public static readonly SHIELD_13 = 2000013;//坚韧不屈（缩短cd）1
     public static readonly SHIELD_14 = 2000014;//龟甲铜墙（举盾时间变长，非乾坤一掷）1
 
+    public static readonly MAGIC_01 = 3000001;//元素飞弹
+    public static readonly MAGIC_02 = 3000002;
+    public static readonly MAGIC_03 = 3000003;
+    public static readonly MAGIC_04 = 3000004;
+    public static readonly MAGIC_05 = 3000005;
+    public static readonly MAGIC_06 = 3000006;
+    public static readonly MAGIC_07 = 3000007;
+    public static readonly MAGIC_08 = 3000008;
+    public static readonly MAGIC_09 = 3000009;
+    public static readonly MAGIC_10 = 3000010;
+    public static readonly MAGIC_11 = 3000011;
+    public static readonly MAGIC_12 = 3000012;
+    public static readonly MAGIC_13 = 3000013;
+    public static readonly MAGIC_14 = 3000014;
+
     public static readonly DASH_DESC = ['冲刺\n向前冲刺一段距离','突刺冲撞\n冲刺并造成1点伤害','鱼肠刺僚\n冲刺造成流血效果'
-    ,'螳臂当车\n冲刺造成击退效果','醉舞矛戈\n冲刺造成减速效果','野蛮冲撞(开发中)\n冲刺造成眩晕效果'
-    ,'突刺鹰击\n冲刺并造成5点伤害','移形换影\n本体不冲刺而是幻影替代随后瞬移到幻影的位置','火焰舞者(开发中)\n划过路径留下一道3秒的火焰'
-    ,'冰霜之城(开发中)\n划过路径留下一道3秒的冰墙','元素湍流(开发中)\n扩大路径面积','灵姿鬼步\n冲刺期间无敌'
+    ,'螳臂当车\n冲刺造成击退效果','醉舞矛戈\n冲刺造成减速效果','野蛮冲撞\n冲刺造成眩晕效果'
+    ,'突刺鹰击\n冲刺并造成5点伤害','移形换影\n本体不冲刺而是幻影替代随后瞬移到幻影的位置','火焰舞者\n划过路径留下一道3秒的火焰'
+    ,'冰霜之城\n划过路径留下一道3秒的冰墙','元素湍流\n扩大路径面积','灵姿鬼步\n冲刺期间无敌'
     ,'坚韧意志\n缩短冲刺冷却','飞燕如梭\n冲刺速度提高距离变远']
     public static readonly SHIELD_DESC = ['举盾\n举起盾牌防御','迅捷反击\n盾牌反击1点伤害','镜面偏转\n反弹子弹'
     ,'元素晶盾\n受到的元素效果无效','强力盾反\n盾牌反击5点伤害','乾坤一掷\n盾牌可以飞掷'
-    ,'九转回旋\n盾牌飞掷造成减速效果','平地惊雷(开发中)\n盾牌飞掷造成眩晕效果','四两千斤\n盾牌飞掷造成击退效果'
+    ,'九转回旋\n盾牌飞掷造成减速效果','平地惊雷\n盾牌飞掷造成眩晕效果','四两千斤\n盾牌飞掷造成击退效果'
     ,'见血封喉\n盾牌飞掷造成流血效果','阴阳遁形\n盾牌飞掷距离变远','敏捷身法\n移除减速损耗'
     ,'坚韧不屈\n缩短举盾冷却','龟甲铜墙\n举盾时间变长']
     talentSkill = new Skill();

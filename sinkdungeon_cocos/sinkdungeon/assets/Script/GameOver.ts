@@ -45,7 +45,7 @@ export default class GameOver extends cc.Component {
         }
         let dieinfo = `死于非命`
         if (Logic.dieFrom.name.length > 0) {
-            dieinfo = `第${ach.playerLifes}次死亡，被 ${Logic.dieFrom.name} 在${Logic.chapterName + 1}-${Logic.level}击倒`
+            dieinfo = `第${ach.playerLifes}次死亡，在${Logic.chapterName + 1}-${Logic.level}被 ${Logic.dieFrom.name} 击倒`
         }
         if (this.infoIcon && Logic.dieFrom.res.length > 0) {
             this.infoIcon.spriteFrame = Logic.spriteFrames[Logic.dieFrom.res];
@@ -63,7 +63,7 @@ export default class GameOver extends cc.Component {
                     count = str.length;
                 }
                 this.tips.string = str.substr(0,count);
-            },0.1,str.length,1);
+            },0.05,str.length,0.2);
             
         }
     }
