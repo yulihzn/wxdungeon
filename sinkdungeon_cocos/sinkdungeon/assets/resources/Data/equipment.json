@@ -256,7 +256,7 @@
             "moveSpeed": 0,
             "attackSpeed": 10,
             "fireDamage": 2,
-            "fireRate":20,
+            "fireRate":80,
             "maxHealth": 0
         },
         "desc": "很高兴很开心"

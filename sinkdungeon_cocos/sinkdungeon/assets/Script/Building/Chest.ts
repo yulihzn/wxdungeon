@@ -87,7 +87,7 @@ export default class Chest extends Building {
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos, null, this.data.quality);
                             dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.data.pos,null,this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos,null,this.data.quality);

@@ -3,7 +3,7 @@
   "_name": "MeleeAttackFar3",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.6666666666666666,
+  "_duration": 1.5,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -18,15 +18,15 @@
             },
             {
               "frame": 0.16666666666666666,
-              "value": 90
-            },
-            {
-              "frame": 0.5,
-              "value": 20
+              "value": 120
             },
             {
               "frame": 0.6666666666666666,
-              "value": -240
+              "value": -630
+            },
+            {
+              "frame": 1.5,
+              "value": -670
             }
           ]
         }
@@ -48,7 +48,7 @@
                 }
               },
               {
-                "frame": 0.65,
+                "frame": 0.6666666666666666,
                 "value": {
                   "__uuid__": "05310cce-3ed7-4f3b-b7b9-c6eee0289955"
                 }
@@ -68,7 +68,7 @@
             },
             {
               "frame": 0.5833333333333334,
-              "value": 255
+              "value": 0
             },
             {
               "frame": 0.6666666666666666,
@@ -104,15 +104,23 @@
             "value": 0
           },
           {
-            "frame": 0.5,
+            "frame": 0.16666666666666666,
             "value": 0
           },
           {
-            "frame": 0.5833333333333334,
-            "value": 120
+            "frame": 0.4166666666666667,
+            "value": 160
+          },
+          {
+            "frame": 0.5,
+            "value": 60
           },
           {
             "frame": 0.6666666666666666,
+            "value": 160
+          },
+          {
+            "frame": 0.75,
             "value": 0
           }
         ],
@@ -124,22 +132,6 @@
               "x": 0,
               "y": 0
             }
-          },
-          {
-            "frame": 0.5833333333333334,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 80,
-              "y": 0
-            }
-          },
-          {
-            "frame": 0.6666666666666666,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 150,
-              "y": 0
-            }
           }
         ]
       }
@@ -147,12 +139,12 @@
   },
   "events": [
     {
-      "frame": 0.5833333333333334,
+      "frame": 0.5,
       "func": "ExAttackTime",
       "params": []
     },
     {
-      "frame": 0.6666666666666666,
+      "frame": 1.5,
       "func": "MeleeAttackFinish",
       "params": [
         false

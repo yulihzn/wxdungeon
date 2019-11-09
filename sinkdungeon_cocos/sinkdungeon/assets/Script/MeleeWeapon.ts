@@ -61,7 +61,6 @@ export default class MeleeWeapon extends cc.Component {
     glovesWaveSprite:cc.Sprite = null;
 
 
-    private isReverse = false;
     private anim: cc.Animation;
     isAttacking: boolean = false;
     private hv: cc.Vec2 = cc.v2(1, 0);
@@ -105,7 +104,7 @@ export default class MeleeWeapon extends cc.Component {
             this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
         } else {
-            this.hv = hv;
+            this.hv = hv.normalizeSelf();
         }
     }
     getHv(): cc.Vec2 {
@@ -158,7 +157,7 @@ export default class MeleeWeapon extends cc.Component {
             , data.getToxicDamage() > 0 && ran < data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
             , data.getCurseDamage() > 0 && ran < data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
         for (let w of waves) {
-            this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar, this.isReverse);
+            this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
         }
         return true;
 
@@ -170,9 +169,9 @@ export default class MeleeWeapon extends cc.Component {
         } else if (this.isFar && this.isStab) {
             name = "MeleeAttackStabFar";
         } else if (this.isFar && !this.isStab) {
-            this.isReverse ? name = "MeleeAttackFarReverse" : name = "MeleeAttackFar";
+            name = "MeleeAttackFar";
         } else {
-            this.isReverse ? name = "MeleeAttackReverse" : name = "MeleeAttack";
+            name = "MeleeAttack";
         }
         return name+this.getComboSuffix();
     }
@@ -187,7 +186,7 @@ export default class MeleeWeapon extends cc.Component {
             return '1';
         }
     }
-    private getWaveLight(dungeonNode: cc.Node, p: cc.Vec2, elementType: number, isStab: boolean, isFar: boolean, isReverse: boolean) {
+    private getWaveLight(dungeonNode: cc.Node, p: cc.Vec2, elementType: number, isStab: boolean, isFar: boolean) {
         let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight];
         if (elementType < 1 || elementType > lights.length || !this.dungeon) {
             return;
@@ -206,11 +205,10 @@ export default class MeleeWeapon extends cc.Component {
             }
             yoffset += 10;
         }
-        let notStab1 = [cc.v2(p.x, -p.y - yoffset), cc.v2(p.x + xoffset * 0.9, -p.y - yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset * 0.9, p.y + yoffset / 2), cc.v2(p.x, p.y + yoffset)];
-        let notStab2 = [cc.v2(p.x, p.y + yoffset), cc.v2(p.x + xoffset * 0.9, p.y + yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset * 0.9, -p.y - yoffset / 2), cc.v2(p.x, -p.y - yoffset)];
+        let notStab1 = [cc.v2(p.x, p.y + yoffset), cc.v2(p.x + xoffset * 0.9, p.y + yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset * 0.9, -p.y - yoffset / 2), cc.v2(p.x, -p.y - yoffset)];
         let ps = [cc.v2(p.x - xoffset * 2, p.y), cc.v2(p.x - xoffset * 0.5, p.y), cc.v2(p.x, p.y), cc.v2(p.x + xoffset * 0.5, p.y), cc.v2(p.x + xoffset, p.y)];
         if (!isStab) {
-            ps = isReverse ? notStab1 : notStab2;
+            ps = notStab1;
         }
         for (let i = 0; i < ps.length; i++) {
             let psp = ps[i];
@@ -228,9 +226,8 @@ export default class MeleeWeapon extends cc.Component {
 
     }
     //Anim
-    MeleeAttackFinish(reverse: boolean) {
+    MeleeAttackFinish() {
         this.isAttacking = false;
-        this.isReverse = !reverse;
         this.scheduleOnce(()=>{
             if(!this.isAttacking){
                 this.isComboing = false;

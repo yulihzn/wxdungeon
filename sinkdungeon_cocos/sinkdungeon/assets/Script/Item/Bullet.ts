@@ -242,6 +242,8 @@ export default class Bullet extends cc.Component {
             this.rigidBody = this.getComponent(cc.RigidBody);
         }
         this.rigidBody.linearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
+        cc.log(hv);
+        cc.log(this.data.speed);
         //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         this.sprite.stopAllActions();
@@ -282,7 +284,7 @@ export default class Bullet extends cc.Component {
         let boss = otherCollider.node.getComponent(Boss);
         let bullet = otherCollider.node.getComponent(Bullet);
 
-        //子弹玩家怪物boss不销毁
+        //子弹玩家怪物boss武器不销毁
         if (player || monster || boss || bullet) {
             isDestory = false;
         }

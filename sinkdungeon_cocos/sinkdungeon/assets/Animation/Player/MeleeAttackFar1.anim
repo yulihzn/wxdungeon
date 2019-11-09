@@ -3,7 +3,7 @@
   "_name": "MeleeAttackFar1",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.6833333333333333,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -27,6 +27,10 @@
             {
               "frame": 0.6666666666666666,
               "value": -240
+            },
+            {
+              "frame": 1,
+              "value": 60
             }
           ]
         }
@@ -152,7 +156,7 @@
       "params": []
     },
     {
-      "frame": 0.6666666666666666,
+      "frame": 1,
       "func": "MeleeAttackFinish",
       "params": [
         false

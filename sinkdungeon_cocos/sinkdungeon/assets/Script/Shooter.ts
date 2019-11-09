@@ -93,7 +93,7 @@ export default class Shooter extends cc.Component {
             this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
         } else {
-            this.hv = hv;
+            this.hv = hv.normalizeSelf();
         }
     }
     fireBullet(angleOffset?: number,defaultPos?: cc.Vec2) {
