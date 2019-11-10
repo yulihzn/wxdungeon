@@ -7,6 +7,7 @@ import Dungeon from "./Dungeon";
 import TalentTree from "./UI/TalentTree";
 import CutScene from "./UI/CutScene";
 import EquipmentStringData from "./Data/EquipmentStringData";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,6 +32,10 @@ export default class Loading extends cc.Component {
     shieldTree: TalentTree = null;
     @property(TalentTree)
     dashTree: TalentTree = null;
+    @property(cc.Node)
+    talentInfo:cc.Node = null;
+    @property(cc.Button)
+    confirmButton:cc.Button = null;
     @property(CutScene)
     cutScene: CutScene = null;
     private timeDelay = 0;
@@ -49,8 +54,20 @@ export default class Loading extends cc.Component {
         this.simpleTree.node.active = false;
         this.shieldTree.node.active = false;
         this.dashTree.node.active = false;
+        this.talentInfo.active = false;
         this.label.node.setPosition(cc.v2(0, 0));
-
+        this.confirmButton.interactable = false;
+        cc.director.on(EventConstant.TALENT_TREE_SELECT
+            , (event) => { if(this.node){this.confirmButton.interactable = true;} });
+    }
+    confirmTalent(){
+        if (this.simpleTree.node.active) {
+            this.simpleTree.talentClick();
+        }else if (this.dashTree.node.active) {
+            this.dashTree.talentClick();
+        }else if (this.shieldTree.node.active) {
+            this.shieldTree.talentClick();
+        }
     }
 
     showTalentPick() {
@@ -58,20 +75,22 @@ export default class Loading extends cc.Component {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
             this.dashTree.node.active = false;
+            this.talentInfo.active = false;
             return true;
         }
+        this.talentInfo.active = true;
         if (Logic.talentList.length < 1) {
             this.simpleTree.node.active = true;
         }
         if (Logic.talentList.length >= 1) {
-            this.simpleTree.node.active = false
+            this.simpleTree.node.active = false;
             if (Logic.talentList[0].id < 2000001) {
                 this.dashTree.node.active = true;
             } else {
                 this.shieldTree.node.active = true;
             }
-            this.label.node.setPosition(cc.v2(-400, 0));
         }
+        this.label.node.setPosition(cc.v2(0, 320));
         if (Logic.talentList.length > 9) {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;

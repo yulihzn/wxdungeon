@@ -323,6 +323,7 @@ export default class MeleeWeapon extends cc.Component {
             this.attacking(other);
         }
     }
+    
     beatBack(node: cc.Node) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.getHv().clone();

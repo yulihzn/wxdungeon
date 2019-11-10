@@ -25,12 +25,16 @@ export default class TalentTree extends cc.Component {
     public static readonly TREE_SIMPLE = 3;
     @property(cc.Label)
     labelDesc: cc.Label = null;
+    @property(cc.Label)
+    labelTitle: cc.Label = null;
     @property()
     treeType = 0;
     private talentShield:cc.Node[] = [];
     private talentDash:cc.Node[] = [];
     hasPicked = false;
     static TEXT_PICKSKILL = '选择合适的技能（按住查看技能）';
+    private selectIcon:TalentIcon;
+    
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -81,6 +85,9 @@ export default class TalentTree extends cc.Component {
         cc.director.on(EventConstant.TALENT_TREE_UPDATE
             , (event) => { if(this.node&&this.node.active){this.hasPicked = true;} });
     }
+    get SelectIcon(){
+        return this.selectIcon;
+    }
     initTalentSprite(name:string,talentList:cc.Node[]){
         for(let i = 0;i < 14;i++){
             if(this.treeType == TalentTree.TREE_SIMPLE && i >0){
@@ -92,18 +99,26 @@ export default class TalentTree extends cc.Component {
             node.color = cc.color(51, 51, 51);
             node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
                 if(this.labelDesc)this.labelDesc.string = node.getComponent(TalentIcon).data.desc;
+                if(this.labelTitle)this.labelTitle.string = node.getComponent(TalentIcon).data.nameCn;
             }, this);
             node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch)=> {
-                if(this.labelDesc)this.labelDesc.string = '';
             }, this);
             node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch)=> {
-                this.talentClick(node);
+                let t = node.getComponent(TalentIcon);
+                if(!t.isOpen){
+                    if(this.selectIcon)this.selectIcon.node.color = cc.color(51, 51, 51);
+                    this.selectIcon = node.getComponent(TalentIcon);
+                    node.color = cc.color(255, 255, 255);
+                    cc.director.emit(EventConstant.TALENT_TREE_SELECT);
+                }
             }, this);
             talentList.push(node);
         }
     }
-    talentClick(node:cc.Node):boolean{
-        return node.getComponent(TalentIcon).onClick();
+    talentClick(){
+        if(this.selectIcon){
+            this.selectIcon.onClick();
+        }
     }
     initShieldNode(id:number,index:number,parentIndexs:number[],childrenIndexs:number[]){
         if(this.treeType == TalentTree.TREE_DASH){
@@ -123,9 +138,11 @@ export default class TalentTree extends cc.Component {
         icon.data = new TalentData();
         icon.data.id = id;
         if(id<2000000){
-            icon.data.desc = Talent.DASH_DESC[id%1000000-1];
+            icon.data.nameCn = Talent.DASH_DESC[id%1000000-1].split(';')[0];
+            icon.data.desc = Talent.DASH_DESC[id%1000000-1].split(';')[1];
         }else{
-            icon.data.desc = Talent.SHIELD_DESC[id%2000000-1];
+            icon.data.nameCn = Talent.SHIELD_DESC[id%2000000-1].split(';')[0];
+            icon.data.desc = Talent.SHIELD_DESC[id%2000000-1].split(';')[1];
         }
         icon.isOpen = Logic.hashTalent(id);
         if(icon.isOpen){
