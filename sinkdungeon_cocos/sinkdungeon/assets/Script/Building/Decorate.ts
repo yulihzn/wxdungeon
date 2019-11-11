@@ -2,6 +2,8 @@ import Dungeon from "../Dungeon";
 import BoxData from "../Data/BoxData";
 import Logic from "../Logic";
 import Building from "./Building";
+import { EventConstant } from "../EventConstant";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,7 +18,7 @@ import Building from "./Building";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Box extends Building {
+export default class Decorate extends Building {
 
     static readonly BOX = 0;
     static readonly PLANT = 1;
@@ -25,31 +27,24 @@ export default class Box extends Building {
     anim: cc.Animation;
     private timeDelay = 0;
     private isBreaking = false;
-    boxType = 0;
+    decorateType = 0;
     onLoad() {
-        this.anim = this.getComponent(cc.Animation);
-        this.anim.play('BoxShow');
     }
     data: BoxData = new BoxData();
 
     start() {
-        let resName = 'box';
-        switch(this.boxType){
-            case Box.BOX:resName = 'box';break;
-            case Box.PLANT:resName = 'plant';break;
-            case Box.BOXBREAKABLE:resName = 'box';break;
-        }
         switch(Logic.chapterName){
-            case Logic.CHAPTER00:this.changeRes(`${resName}000`);break;
-            case Logic.CHAPTER01:this.changeRes(`${resName}001`);break;
-            case Logic.CHAPTER02:this.changeRes(`${resName}002`);break;
-            case Logic.CHAPTER03:this.changeRes(`${resName}003`);break;
-            case Logic.CHAPTER04:this.changeRes(`${resName}004`);break;
+            case Logic.CHAPTER00:this.changeRes(`decorate000${this.decorateType}`);break;
+            case Logic.CHAPTER01:this.changeRes(`decorate010${this.decorateType}`);break;
+            case Logic.CHAPTER02:this.changeRes(`decorate020${this.decorateType}`);break;
+            case Logic.CHAPTER03:this.changeRes(`decorate030${this.decorateType}`);break;
+            case Logic.CHAPTER04:this.changeRes(`decorate040${this.decorateType}`);break;
         }
     }
     changeRes(resName: string) {
         let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         let spriteFrame = Logic.spriteFrames[resName];
+        sprite.node.opacity = 255;
         sprite.spriteFrame = spriteFrame;
     }
     setPos(pos: cc.Vec2) {
@@ -68,11 +63,14 @@ export default class Box extends Building {
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation);
         }
-        this.anim.play('BoxBroken');
+        this.anim.play();
         this.isBreaking = true;
+        if(Random.rand()>0.8){
+            cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
+        }
     }
     reset() {
-        this.node.position = Dungeon.getPosInMap(this.data.defaultPos);
+        this.node.position = Dungeon.getPosInMap(cc.v2(-10,-10));
         this.isBreaking = false;
     }
 
@@ -81,7 +79,7 @@ export default class Box extends Building {
         if (this.timeDelay > 0.2) {
             this.data.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.position = this.node.position;
-            this.data.onelife = false;
+            this.data.onelife = true;
             let currboxes = Logic.mapManager.getCurrentMapBoxes();
             if (currboxes) {
                 for (let tempbox of currboxes) {

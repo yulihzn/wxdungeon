@@ -37,6 +37,7 @@ import DecorationFloor from "./Building/DecorationFloor";
 import Saw from "./Building/Saw";
 import TileWaterPool from "./Building/TileWaterPool";
 import AudioPlayer from "./Utils/AudioPlayer";
+import Decorate from "./Building/Decorate";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -68,6 +69,8 @@ export default class Dungeon extends cc.Component {
     chest: cc.Prefab = null;
     @property(cc.Prefab)
     box: cc.Prefab = null;
+    @property(cc.Prefab)
+    decorate: cc.Prefab = null;
     @property(cc.Prefab)
     item: cc.Prefab = null;
     @property(cc.Prefab)
@@ -342,7 +345,28 @@ export default class Dungeon extends cc.Component {
                         boxes.push(b.data);
                     }
                 }
-               
+               //生成可破坏装饰 并且根据之前记录的位置放置
+               if (this.isThe(mapData[i][j],'D')) {
+                let decorate = cc.instantiate(this.decorate);
+                decorate.parent = this.node;
+                let d = decorate.getComponent(Decorate);
+                d.data.defaultPos = cc.v2(i, j);
+                d.data.onelife = true;
+                d.setPos(cc.v2(i, j));
+                d.decorateType = parseInt(mapData[i][j][1]);
+                //设置对应存档盒子的位置
+                let currboxes = Logic.mapManager.getCurrentMapBoxes();
+                if (currboxes) {
+                    for (let tempbox of currboxes) {
+                        if (tempbox.defaultPos.equals(d.data.defaultPos)) {
+                            d.setPos(tempbox.pos);
+                            d.node.position = tempbox.position.clone();
+                        }
+                    }
+                } else {
+                    boxes.push(d.data);
+                }
+            }
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear()|| Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     //生成心

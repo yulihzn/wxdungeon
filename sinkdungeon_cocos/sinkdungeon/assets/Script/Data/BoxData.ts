@@ -14,9 +14,11 @@ export default class BoxData {
     pos:cc.Vec2;
     defaultPos:cc.Vec2;
     position:cc.Vec2;
+    onelife:boolean = false;
     valueCopy(data:BoxData){
         this.pos = data.pos?cc.v2(data.pos.x,data.pos.y):cc.v2(0,0);
         this.defaultPos = data.defaultPos?cc.v2(data.defaultPos.x,data.defaultPos.y):cc.v2(0,0);
         this.position = data.position?cc.v2(data.position.x,data.position.y):cc.v2(0,0);
+        this.onelife = data.onelife?data.onelife:false;
     }
 }

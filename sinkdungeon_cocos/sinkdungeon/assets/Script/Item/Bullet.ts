@@ -242,8 +242,6 @@ export default class Bullet extends cc.Component {
             this.rigidBody = this.getComponent(cc.RigidBody);
         }
         this.rigidBody.linearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
-        cc.log(hv);
-        cc.log(this.data.speed);
         //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         this.sprite.stopAllActions();

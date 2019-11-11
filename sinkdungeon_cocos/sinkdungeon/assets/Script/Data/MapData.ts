@@ -43,6 +43,7 @@ export default class MapData {
         }
         this.map = turnArr;
     }
+    
     clone():MapData{
         let data = new MapData('');
         data.map = data.map.concat(this.map);

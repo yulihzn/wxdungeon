@@ -10,6 +10,7 @@ import OilLake from "../Oil/OilLake";
 import MonsterData from "../Data/MonsterData";
 import ChestData from "../Data/ChestData";
 import ItemData from "../Data/ItemData";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -228,7 +229,7 @@ export default class MapManager {
                         let a: MapData[] = new Array();
                         for (let j = 0; j < temparr.length; j++) {
                             let tempstr = temparr[j];
-                            a.push(new MapData(tempstr));
+                            a.push(this.addGenerateThings(new MapData(tempstr),index));
                         }
                         //按顺序排列的room类型名来保存该类型的地图数组
                         allfileRooms[this.roomStrs[index]] = a;
@@ -251,6 +252,30 @@ export default class MapManager {
                 }
             }
         })
+    }
+    /**添加随机元素 */
+    private addGenerateThings(mapData:MapData,index:number):MapData{
+        if(RectDungeon.TEST_ROOM != index+1&&RectDungeon.TAROT_ROOM != index+1&&RectDungeon.START_ROOM != index+1){
+            this.addDecorate(mapData);
+        }
+        return mapData;
+    }
+    private addDecorate(mapData:MapData){
+        let pos = [];
+        for(let i = 0;i<3;i++){
+            let dx = Random.getRandomNum(0,mapData.map.length-1);
+            let dy = Random.getRandomNum(0,mapData.map[0].length-1);
+            pos.push(cc.v2(dx,0));
+            pos.push(cc.v2(0,dy));
+            pos.push(cc.v2(dx,dy));
+            
+        }
+        for(let p of pos){
+            if(mapData.map[p.x][p.y] == '**'){
+                mapData.map[p.x][p.y] = `D${Random.getRandomNum(0,2)}`;
+            }
+        }
+        
     }
     private getAllFileRooms():{ [key: string]: MapData[] }{
         let allfileRooms = this.allfileRooms00;

@@ -14,6 +14,7 @@ import Boss from "./Boss/Boss";
 import Random from "./Utils/Random";
 import Skill from "./Utils/Skill";
 import FromData from "./Data/FromData";
+import Decorate from "./Building/Decorate";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -374,6 +375,10 @@ export default class MeleeWeapon extends cc.Component {
         let box = attackTarget.node.getComponent(Box);
         if (box) {
             box.breakBox();
+        }
+        let decorate = attackTarget.node.getComponent(Decorate);
+        if(decorate){
+            decorate.breakBox();
         }
         //生命汲取,内置1s cd
         this.drainSkill.next(() => {

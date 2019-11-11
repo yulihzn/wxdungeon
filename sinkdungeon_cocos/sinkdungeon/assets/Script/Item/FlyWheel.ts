@@ -8,6 +8,7 @@ import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
 import Box from "../Building/Box";
 import FromData from "../Data/FromData";
+import Decorate from "../Building/Decorate";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -171,6 +172,10 @@ export default class FlyWheel extends cc.Component {
         let box = attackTarget.node.getComponent(Box);
         if (box) {
             box.breakBox();
+        }
+        let decorate = attackTarget.node.getComponent(Decorate);
+        if(decorate){
+            decorate.breakBox();
         }
 
     }
