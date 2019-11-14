@@ -53,6 +53,8 @@ export default abstract class Talent extends cc.Component {
     public static readonly MAGIC_12 = 3000012;
     public static readonly MAGIC_13 = 3000013;
     public static readonly MAGIC_14 = 3000014;
+    public static readonly MAGIC_15 = 3000015;
+    public static readonly MAGIC_16 = 3000016;
 
     public static readonly DASH_DESC = ['冲刺;向前冲刺一段距离','突刺冲撞;冲刺并造成1点伤害','鱼肠刺僚;冲刺造成流血效果'
     ,'螳臂当车;冲刺造成击退效果','醉舞矛戈;冲刺造成减速效果','野蛮冲撞;冲刺造成眩晕效果'
@@ -64,6 +66,11 @@ export default abstract class Talent extends cc.Component {
     ,'九转回旋;盾牌飞掷造成减速效果','平地惊雷;盾牌飞掷造成眩晕效果','四两千斤;盾牌飞掷造成击退效果'
     ,'见血封喉;盾牌飞掷造成流血效果','阴阳遁形;盾牌飞掷距离变远','敏捷身法;移除减速损耗'
     ,'坚韧不屈;缩短举盾冷却','龟甲铜墙;举盾时间变长']
+    public static readonly MAGIC_DESC = ['元素飞弹;发射一枚普通的元素飞弹','多重施法;火球变多，扇形冰锥，双重雷暴，多重飞弹','快速吟唱;施法吟唱时间变短'
+    ,'冷静冥想;缩短施法间隔','灵活移动;移动速度提高，施法可以移动','武器附魔;给武器附近元素伤害'
+    ,'火球术;施放一个火球砸向地面','惊天陨石;施放一个大火球砸向地面','火焰精灵;产生火焰精灵漂浮在身边对敌人发起进攻'
+    ,'冰晶锥;发射一个能减速的冰锥','大冰晶柱;发射一个能冻结的冰柱','冰晶护盾;生成一个冰甲抵消一次伤害并减速周围'
+    ,'雷电球;在前方生成一个延迟爆炸的电球并眩晕周围敌人','高压雷暴;雷电球范围变大，延迟变低','雷暴线圈;定时爆发出雷环眩晕周围敌人']
     talentSkill = new Skill();
     player: Player;
     talentList: TalentData[];

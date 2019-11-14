@@ -23,6 +23,8 @@ export default class TalentTree extends cc.Component {
     public static readonly TREE_SHIELD = 1;
     public static readonly TREE_DASH = 2;
     public static readonly TREE_SIMPLE = 3;
+    public static readonly TREE_MAGIC = 4;
+    public static readonly TREE_ARCHER = 5;
     @property(cc.Label)
     labelDesc: cc.Label = null;
     @property(cc.Label)
@@ -81,6 +83,23 @@ export default class TalentTree extends cc.Component {
             this.initDashNode(Talent.DASH_12,11,[0],[12]);
             this.initDashNode(Talent.DASH_13,12,[11],[13]);
             this.initDashNode(Talent.DASH_14,13,[12],[]);
+
+            this.initMagicNode(Talent.MAGIC_01,0,[],[]);
+            this.initMagicNode(Talent.MAGIC_02,1,[],[]);
+            this.initMagicNode(Talent.MAGIC_03,2,[],[]);
+            this.initMagicNode(Talent.MAGIC_04,3,[],[]);
+            this.initMagicNode(Talent.MAGIC_05,4,[],[]);
+            this.initMagicNode(Talent.MAGIC_06,5,[],[]);
+            this.initMagicNode(Talent.MAGIC_07,6,[],[]);
+            this.initMagicNode(Talent.MAGIC_08,7,[],[]);
+            this.initMagicNode(Talent.MAGIC_09,8,[],[]);
+            this.initMagicNode(Talent.MAGIC_10,9,[],[]);
+            this.initMagicNode(Talent.MAGIC_11,10,[],[]);
+            this.initMagicNode(Talent.MAGIC_12,11,[],[]);
+            this.initMagicNode(Talent.MAGIC_13,12,[],[]);
+            this.initMagicNode(Talent.MAGIC_14,13,[],[]);
+            this.initMagicNode(Talent.MAGIC_15,14,[],[]);
+            this.initMagicNode(Talent.MAGIC_16,15,[],[]);
         }
         cc.director.on(EventConstant.TALENT_TREE_UPDATE
             , (event) => { if(this.node&&this.node.active){this.hasPicked = true;} });
@@ -132,6 +151,12 @@ export default class TalentTree extends cc.Component {
          }
         this.initTalentNode(id,this.talentDash,index,parentIndexs,childrenIndexs);
     }
+    initMagicNode(id:number,index:number,parentIndexs:number[],childrenIndexs:number[]){
+        if(this.treeType == TalentTree.TREE_MAGIC){
+            return; 
+         }
+        this.initTalentNode(id,this.talentDash,index,parentIndexs,childrenIndexs);
+    }
     initTalentNode(id:number,talentList:cc.Node[],index:number,parentIndexs:number[],childrenIndexs:number[]){
         let icon = talentList[index].getComponent(TalentIcon);
         icon.parents = new Array();
@@ -140,9 +165,12 @@ export default class TalentTree extends cc.Component {
         if(id<2000000){
             icon.data.nameCn = Talent.DASH_DESC[id%1000000-1].split(';')[0];
             icon.data.desc = Talent.DASH_DESC[id%1000000-1].split(';')[1];
-        }else{
+        }else if(id<3000000){
             icon.data.nameCn = Talent.SHIELD_DESC[id%2000000-1].split(';')[0];
             icon.data.desc = Talent.SHIELD_DESC[id%2000000-1].split(';')[1];
+        }else if(id<4000000){
+            icon.data.nameCn = Talent.MAGIC_DESC[id%3000000-1].split(';')[0];
+            icon.data.desc = Talent.MAGIC_DESC[id%3000000-1].split(';')[1];
         }
         icon.isOpen = Logic.hashTalent(id);
         if(icon.isOpen){
