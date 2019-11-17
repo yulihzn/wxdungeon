@@ -4,6 +4,7 @@ import Logic from "../Logic";
 import Building from "./Building";
 import { EventConstant } from "../EventConstant";
 import Random from "../Utils/Random";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -65,6 +66,7 @@ export default class Decorate extends Building {
         }
         this.anim.play();
         this.isBreaking = true;
+        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         if(Random.rand()>0.8){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
         }

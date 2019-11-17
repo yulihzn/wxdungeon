@@ -234,7 +234,7 @@ export default class RectDungeon {
             let randomtype = roomType[this.getRandomNum(0, roomType.length - 1)];
             if (this.level == RectDungeon.LEVEL_1) {
                 room.roomType = randomtype;
-            } else if (this.getOneTenthChance()) {//1/10生成额外房间
+            } else if (this.getOneThreeChance()) {//1/10生成额外房间
                 room.roomType = randomtype;
             } else {
                 room.roomType = RectDungeon.EMPTY_ROOM;
@@ -515,7 +515,7 @@ export default class RectDungeon {
     getHalfChance(): boolean {
         return Random.rand() > 0.5;
     }
-    getOneTenthChance(): boolean {
-        return Random.rand() > 0.9;
+    getOneThreeChance(): boolean {
+        return Random.rand() > 0.7;
     }
 }

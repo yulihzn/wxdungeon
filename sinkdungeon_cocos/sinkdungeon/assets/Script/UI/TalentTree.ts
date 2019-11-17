@@ -55,7 +55,7 @@ export default class TalentTree extends cc.Component {
             this.initTalentNode(Talent.SHIELD_01,this.talentShield,0,[],[]);
             this.initTalentNode(Talent.DASH_01,this.talentDash,0,[],[]);
             this.initTalentNode(Talent.MAGIC_01,this.talentMagic,0,[],[]);
-        }else{
+        }else if(this.treeType == TalentTree.TREE_SHIELD){
             this.initShieldNode(Talent.SHIELD_01,0,[],[1,5,11]);
             this.initShieldNode(Talent.SHIELD_02,1,[0],[2,3]);
             this.initShieldNode(Talent.SHIELD_03,2,[1],[4]);
@@ -70,7 +70,7 @@ export default class TalentTree extends cc.Component {
             this.initShieldNode(Talent.SHIELD_12,11,[0],[12]);
             this.initShieldNode(Talent.SHIELD_13,12,[11],[13]);
             this.initShieldNode(Talent.SHIELD_14,13,[12],[]);
-
+        }else if(this.treeType == TalentTree.TREE_DASH){
             this.initDashNode(Talent.DASH_01,0,[],[1,7,12]);
             this.initDashNode(Talent.DASH_02,1,[0],[2,3,4,5]);
             this.initDashNode(Talent.DASH_03,2,[1],[6]);
@@ -85,7 +85,7 @@ export default class TalentTree extends cc.Component {
             this.initDashNode(Talent.DASH_12,11,[0],[12]);
             this.initDashNode(Talent.DASH_13,12,[11],[13]);
             this.initDashNode(Talent.DASH_14,13,[12],[]);
-
+        }else if(this.treeType == TalentTree.TREE_MAGIC){
             this.initMagicNode(Talent.MAGIC_01,0,[],[2,4,7,10,13]);
             this.initMagicNode(Talent.MAGIC_02,1,[9,12,15],[]);
             this.initMagicNode(Talent.MAGIC_03,2,[0],[3]);
@@ -122,7 +122,8 @@ export default class TalentTree extends cc.Component {
             let index = i<9?`0${i+1}`:`${i+1}`;
             let node = this.node.getChildByName('layout').getChildByName('talentempty').getChildByName(`${name}${index}`);
             if(!node){
-                continue;
+                cc.log('worng skill name');
+                break;
             }
             node.addComponent(TalentIcon);
             node.color = cc.color(51, 51, 51);
@@ -151,11 +152,11 @@ export default class TalentTree extends cc.Component {
         if(!this.graphics){
             return;
         }
-        this.graphics.lineWidth = 10;
+        this.graphics.lineWidth = 2;
         this.graphics.moveTo(pos1.x,pos1.y);
         this.graphics.lineTo(pos2.x,pos2.y);
-        this.graphics.fill();
-
+        this.graphics.close();
+        this.graphics.stroke();
     }
     talentClick(){
         if(this.selectIcon){
@@ -163,19 +164,19 @@ export default class TalentTree extends cc.Component {
         }
     }
     initShieldNode(id:number,index:number,parentIndexs:number[],childrenIndexs:number[]){
-        if(this.treeType == TalentTree.TREE_DASH){
+        if(this.treeType != TalentTree.TREE_SHIELD){
            return; 
         }
         this.initTalentNode(id,this.talentShield,index,parentIndexs,childrenIndexs);
     }
     initDashNode(id:number,index:number,parentIndexs:number[],childrenIndexs:number[]){
-        if(this.treeType == TalentTree.TREE_SHIELD){
+        if(this.treeType != TalentTree.TREE_DASH){
             return; 
          }
         this.initTalentNode(id,this.talentDash,index,parentIndexs,childrenIndexs);
     }
     initMagicNode(id:number,index:number,parentIndexs:number[],childrenIndexs:number[]){
-        if(this.treeType == TalentTree.TREE_MAGIC){
+        if(this.treeType != TalentTree.TREE_MAGIC){
             return; 
          }
         this.initTalentNode(id,this.talentMagic,index,parentIndexs,childrenIndexs);
@@ -208,8 +209,10 @@ export default class TalentTree extends cc.Component {
         icon.children = new Array();
         for(let i of childrenIndexs){
             icon.children.push(talentList[i]);
-            let p1 = this.node.convertToNodeSpaceAR(icon.node.position);
-            let p2 = this.node.convertToNodeSpaceAR(talentList[i].position);
+            let p1 = icon.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+            p1 = this.node.convertToNodeSpaceAR(p1);
+            let p2 = talentList[i].convertToWorldSpaceAR(cc.Vec2.ZERO);
+            p2 = this.node.convertToNodeSpaceAR(p2);
             this.drawLines(p1,p2);
         }
     }

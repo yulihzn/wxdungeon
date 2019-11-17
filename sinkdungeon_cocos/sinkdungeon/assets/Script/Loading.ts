@@ -32,10 +32,12 @@ export default class Loading extends cc.Component {
     shieldTree: TalentTree = null;
     @property(TalentTree)
     dashTree: TalentTree = null;
+    @property(TalentTree)
+    magicTree: TalentTree = null;
     @property(cc.Node)
-    talentInfo:cc.Node = null;
+    talentInfo: cc.Node = null;
     @property(cc.Button)
-    confirmButton:cc.Button = null;
+    confirmButton: cc.Button = null;
     @property(CutScene)
     cutScene: CutScene = null;
     private timeDelay = 0;
@@ -54,19 +56,22 @@ export default class Loading extends cc.Component {
         this.simpleTree.node.active = false;
         this.shieldTree.node.active = false;
         this.dashTree.node.active = false;
+        this.magicTree.node.active = false;
         this.talentInfo.active = false;
         this.label.node.setPosition(cc.v2(0, 0));
         this.confirmButton.interactable = false;
         cc.director.on(EventConstant.TALENT_TREE_SELECT
-            , (event) => { if(this.node){this.confirmButton.interactable = true;} });
+            , (event) => { if (this.node) { this.confirmButton.interactable = true; } });
     }
-    confirmTalent(){
+    confirmTalent() {
         if (this.simpleTree.node.active) {
             this.simpleTree.talentClick();
-        }else if (this.dashTree.node.active) {
+        } else if (this.dashTree.node.active) {
             this.dashTree.talentClick();
-        }else if (this.shieldTree.node.active) {
+        } else if (this.shieldTree.node.active) {
             this.shieldTree.talentClick();
+        } else if (this.magicTree.node.active) {
+            this.magicTree.talentClick();
         }
     }
 
@@ -75,6 +80,7 @@ export default class Loading extends cc.Component {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
             this.dashTree.node.active = false;
+            this.magicTree.node.active = false;
             this.talentInfo.active = false;
             return true;
         }
@@ -86,8 +92,10 @@ export default class Loading extends cc.Component {
             this.simpleTree.node.active = false;
             if (Logic.talentList[0].id < 2000001) {
                 this.dashTree.node.active = true;
-            } else {
+            } else if (Logic.talentList[0].id < 3000001) {
                 this.shieldTree.node.active = true;
+            } else if (Logic.talentList[0].id < 4000001) {
+                this.magicTree.node.active = true;
             }
         }
         this.label.node.setPosition(cc.v2(0, 320));
@@ -95,6 +103,7 @@ export default class Loading extends cc.Component {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
             this.dashTree.node.active = false;
+            this.magicTree.node.active = false;
         }
 
     }
@@ -116,7 +125,10 @@ export default class Loading extends cc.Component {
             if (this.shieldTree.node.active && this.shieldTree.hasPicked) {
                 isPicked = true;
             }
-            if (!this.simpleTree.node.active && !this.dashTree.node.active && !this.shieldTree.node.active) {
+            if (this.magicTree.node.active && this.magicTree.hasPicked) {
+                isPicked = true;
+            }
+            if (!this.simpleTree.node.active && !this.dashTree.node.active && !this.shieldTree.node.active && !this.magicTree.node.active) {
                 isPicked = true;
             }
             return isPicked;
@@ -165,7 +177,7 @@ export default class Loading extends cc.Component {
                 this.isEquipmentLoaded = true;
                 cc.log('equipment loaded');
                 Logic.equipmentNameList = new Array();
-                for(let key in resource.json){
+                for (let key in resource.json) {
                     Logic.equipmentNameList.push(key);
                 }
                 // let stringmap = new Array();
