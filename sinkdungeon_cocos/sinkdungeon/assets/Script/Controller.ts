@@ -106,6 +106,7 @@ export default class Controller extends cc.Component {
         }
         let td = this.coolDown.getChildByName('talentdash01');
         let ts = this.coolDown.getChildByName('talentshield01');
+        let tm = this.coolDown.getChildByName('talentmagic01');
         let p = this.coolDown.convertToWorldSpaceAR(cc.Vec2.ZERO);
         p = this.node.convertToNodeSpaceAR(p);
         let height = 64;
@@ -121,13 +122,20 @@ export default class Controller extends cc.Component {
             if (talentType == 1) {
                 td.opacity = 255;
                 ts.opacity = 0;
-            } else {
+                tm.opacity = 0;
+            } else if(talentType == 2) {
                 td.opacity = 0;
                 ts.opacity = 255;
+                tm.opacity = 0;
+            }else if(talentType == 3){
+                td.opacity = 0;
+                ts.opacity = 0;
+                tm.opacity = 255;
             }
             if (height < 0) {
                 td.opacity = 0;
                 ts.opacity = 0;
+                tm.opacity = 0;
                 if (this.graphics) {
                     this.graphics.clear();
                 }
