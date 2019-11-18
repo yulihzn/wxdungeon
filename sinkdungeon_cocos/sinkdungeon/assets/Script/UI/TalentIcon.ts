@@ -39,82 +39,54 @@ export default class TalentIcon extends cc.Component {
         }
         return false;
     }
-    needAndNot(id: number, needs?: number[], not?: number[]): boolean {
-        let isCan = this.data.id == id;
+    needAndNot(prefix: number, id: number, needs?: number[], not?: number[]): boolean {
+        let isCan = this.data.id == prefix + id;
+        if (!isCan) {
+            return false;
+        }
         for (let i of needs) {
-            if (this.hasTalent(i)) {
+            if (this.hasTalent(prefix + i)) {
                 isCan = true;
             }
         }
         if (not) {
             for (let i of not) {
-                if (this.hasTalent(i)) {
+                if (this.hasTalent(prefix + i)) {
                     isCan = false;
                 }
             }
         }
         return isCan;
     }
-    checkCanOpen(): boolean {
-        if (this.needAndNot(Talent.SHIELD_01, [], [])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_02, [Talent.SHIELD_01])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_03, [Talent.SHIELD_02], [Talent.SHIELD_04])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_04,[Talent.SHIELD_02],[Talent.SHIELD_03])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_05,[Talent.SHIELD_03,Talent.SHIELD_04],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_06,[Talent.SHIELD_01],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_07,[Talent.SHIELD_06],[Talent.SHIELD_08,Talent.SHIELD_09,Talent.SHIELD_10])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_08,[Talent.SHIELD_06],[Talent.SHIELD_07,Talent.SHIELD_09,Talent.SHIELD_10])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_09,[Talent.SHIELD_06],[Talent.SHIELD_07,Talent.SHIELD_08,Talent.SHIELD_10])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_10,[Talent.SHIELD_06],[Talent.SHIELD_07,Talent.SHIELD_08,Talent.SHIELD_09])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_11,[Talent.SHIELD_07,Talent.SHIELD_08,Talent.SHIELD_09,Talent.SHIELD_10],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_12,[Talent.SHIELD_01],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_13,[Talent.SHIELD_12],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.SHIELD_14,[Talent.SHIELD_13],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_01,[],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_02,[Talent.DASH_01],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_03,[Talent.DASH_02],[Talent.DASH_04,Talent.DASH_05,Talent.DASH_06])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_04,[Talent.DASH_02],[Talent.DASH_03,Talent.DASH_05,Talent.DASH_06])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_05,[Talent.DASH_02],[Talent.DASH_03,Talent.DASH_04,Talent.DASH_06])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_06,[Talent.DASH_02],[Talent.DASH_03,Talent.DASH_04,Talent.DASH_05])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_07,[Talent.DASH_03,Talent.DASH_04,Talent.DASH_05,Talent.DASH_06],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_08,[Talent.DASH_01],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_09,[Talent.DASH_08],[Talent.DASH_10])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_10,[Talent.DASH_08],[Talent.DASH_09])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_11,[Talent.DASH_09,Talent.DASH_10],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_12,[Talent.DASH_01],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_13,[Talent.DASH_12],[])) {
-            return true;
-        } else if (this.needAndNot(Talent.DASH_14,[Talent.DASH_13],[])) {
-            return true;
-        } else {
-            return false;
+    parseOpenMapAndCanOpen(prefix: number,info: string): boolean {
+        let arr = info.split(';');
+        let needs = [];
+        let nots = [];
+        if (arr[1] && arr[1].length > 0) {
+            needs = arr[1].split(',');
         }
+        if (arr[1] && arr[2].length > 0) {
+            nots = arr[2].split(',');
+        }
+        if (this.needAndNot(prefix, parseInt(arr[0]), needs, nots)) {
+            return true;
+        }
+        return false;
+    }
+
+    checkCanOpen(): boolean {
+        for (let info of Talent.DASH_CAN_OPEN_MAP) {
+            if(this.parseOpenMapAndCanOpen(Talent.DASH,info)){
+                return true;
+            }
+        }
+        for (let info of Talent.SHIELD_CAN_OPEN_MAP) {
+            if(this.parseOpenMapAndCanOpen(Talent.SHIELD,info)){
+                return true;
+            }
+        }
+        return false;
+
     }
     hasTalent(id: number): boolean {
         return Logic.hashTalent(id);

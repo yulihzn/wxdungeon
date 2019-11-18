@@ -189,15 +189,15 @@ export default class TalentTree extends cc.Component {
         icon.parents = new Array();
         icon.data = new TalentData();
         icon.data.id = id;
-        if(id<2000000){
-            icon.data.nameCn = Talent.DASH_DESC[id%1000000-1].split(';')[0];
-            icon.data.desc = Talent.DASH_DESC[id%1000000-1].split(';')[1];
-        }else if(id<3000000){
-            icon.data.nameCn = Talent.SHIELD_DESC[id%2000000-1].split(';')[0];
-            icon.data.desc = Talent.SHIELD_DESC[id%2000000-1].split(';')[1];
-        }else if(id<4000000){
-            icon.data.nameCn = Talent.MAGIC_DESC[id%3000000-1].split(';')[0];
-            icon.data.desc = Talent.MAGIC_DESC[id%3000000-1].split(';')[1];
+        if(id<Talent.SHIELD){
+            icon.data.nameCn = Talent.DASH_DESC[id%Talent.DASH-1].split(';')[0];
+            icon.data.desc = Talent.DASH_DESC[id%Talent.DASH-1].split(';')[1];
+        }else if(id<Talent.MAGIC){
+            icon.data.nameCn = Talent.SHIELD_DESC[id%Talent.SHIELD-1].split(';')[0];
+            icon.data.desc = Talent.SHIELD_DESC[id%Talent.SHIELD-1].split(';')[1];
+        }else if(id<Talent.ARCHER){
+            icon.data.nameCn = Talent.MAGIC_DESC[id%Talent.MAGIC-1].split(';')[0];
+            icon.data.desc = Talent.MAGIC_DESC[id%Talent.MAGIC-1].split(';')[1];
         }
         icon.isOpen = Logic.hashTalent(id);
         if(icon.isOpen){
