@@ -103,12 +103,14 @@ export default class Equipment extends cc.Component {
         let player = other.node.getComponent(Player);
         if (player) {
             this.equipmentDialog.hideDialog();
+            // cc.director.emit(EventConstant.HUD_GROUND_EQUIPMENT_INFO_HIDE);
         }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
             this.equipmentDialog.showDialog();
+            // cc.director.emit(EventConstant.HUD_GROUND_EQUIPMENT_INFO_SHOW,{detail:{equipData:this.data}});
         }
     }
     // update (dt) {}

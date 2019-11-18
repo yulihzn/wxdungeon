@@ -24,6 +24,8 @@ export class EventConstant extends cc.Component{
     public static readonly HUD_DARK_CONTROLLER = 'HUD_DARK_CONTROLLER';
     public static readonly HUD_CONTROLLER_COOLDOWN = 'HUD_CONTROLLER_COOLDOWN';
     public static readonly HUD_DAMAGE_CORNER_SHOW = 'HUD_DAMAGE_CORNER_SHOW';
+    public static readonly HUD_GROUND_EQUIPMENT_INFO_SHOW = 'HUD_GROUND_EQUIPMENT_INFO_SHOW';
+    public static readonly HUD_GROUND_EQUIPMENT_INFO_HIDE = 'HUD_GROUND_EQUIPMENT_INFO_HIDE';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';
     public static readonly DUNGEON_ADD_COIN = 'DUNGEON_ADD_COIN';
