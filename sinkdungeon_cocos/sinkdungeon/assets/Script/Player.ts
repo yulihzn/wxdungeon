@@ -529,6 +529,9 @@ export default class Player extends Actor {
         if (this.isHeavyMeleeAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.01);
         }
+        if(this.talentMagic&&this.talentMagic.magiccircle.isShow&&!this.talentMagic.hashTalent(Talent.MAGIC_05)){
+            pos = pos.mul(0.2);
+        }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);

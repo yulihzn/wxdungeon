@@ -41,10 +41,9 @@ export default class StatusManager extends cc.Component {
     public static readonly SHIELD_LONG_SPEED = "status018";
     public static readonly WEREWOLFDEFENCE = "status021";
     public static readonly GOLDAPPLE = "status022";
-    public static readonly MAGIC_CIRCLE = "status023";
-    public static readonly MAGIC_CIRCLE_SHORT = "status024";
-    public static readonly MAGIC_WEAPON = "status025";
-    public static readonly MAGIC_WEAPON_STRONG = "status026";
+    public static readonly MAGIC_WEAPON = "status023";
+    public static readonly MAGIC_WEAPON_STRONG = "status024";
+    public static readonly FROZEN_STRONG = "status025";
     
 
     @property(cc.Prefab)

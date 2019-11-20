@@ -264,43 +264,21 @@
         "common": {}
     },
     "status023": {
-        "nameCn": "魔法阵",
-        "nameEn": "magic circle",
-        "spriteFrameName": "status023",
-        "statusType": 23,
-        "desc": "",
-        "duration": 2,
-        "common": {
-            "moveSpeed": -200
-        }
-    },
-    "status024": {
-        "nameCn": "魔法阵(更短)",
-        "nameEn": "magic circle",
-        "spriteFrameName": "status023",
-        "statusType": 24,
-        "desc": "",
-        "duration": 1,
-        "common": {
-            "moveSpeed": -200
-        }
-    },
-    "status025": {
         "nameCn": "武器附魔",
         "nameEn": "weapon magic",
         "spriteFrameName": "status024",
-        "statusType": 25,
+        "statusType": 23,
         "desc": "",
         "duration": 999,
         "common": {
             "realDamage": 2
         }
     },
-    "status026": {
+    "status024": {
         "nameCn": "强力武器附魔",
         "nameEn": "weapon magic",
         "spriteFrameName": "status024",
-        "statusType": 26,
+        "statusType": 24,
         "desc": "",
         "duration": 999,
         "common": {
@@ -308,11 +286,11 @@
             "realRate":100
         }
     },
-    "status027": {
+    "status025": {
         "nameCn": "冻结",
         "nameEn": "frozen",
         "spriteFrameName": "status001",
-        "statusType": 27,
+        "statusType": 25,
         "desc": "",
         "duration": 15,
         "common": {

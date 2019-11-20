@@ -17,6 +17,7 @@ export default class MagicCircle extends cc.Component {
 
     anim:cc.Animation;
     talentMaigc:TalentMagic;
+    isShow = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -28,12 +29,14 @@ export default class MagicCircle extends cc.Component {
         }
         this.anim.play();
         this.anim.getAnimationState('PlayerMagicShow').speed = speed;
+        this.isShow = true;
     }
     //anim
     MagicFinish(){
         if(this.talentMaigc){
             this.talentMaigc.MagicFinish();
         }
+        this.isShow = false;
     }
 
     // update (dt) {}
