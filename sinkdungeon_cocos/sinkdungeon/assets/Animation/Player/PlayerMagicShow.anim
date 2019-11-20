@@ -1,0 +1,112 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "PlayerMagicShow",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.3333333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {},
+    "props": {
+      "y": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.16666666666666666,
+          "value": 4
+        },
+        {
+          "frame": 0.3333333333333333,
+          "value": 0
+        },
+        {
+          "frame": 0.5,
+          "value": 4
+        },
+        {
+          "frame": 0.6666666666666666,
+          "value": 0
+        },
+        {
+          "frame": 0.8333333333333334,
+          "value": 4
+        },
+        {
+          "frame": 1,
+          "value": 0
+        },
+        {
+          "frame": 1.3333333333333333,
+          "value": 16
+        }
+      ],
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.3333333333333333,
+          "value": 255
+        },
+        {
+          "frame": 0.8333333333333334,
+          "value": 255
+        },
+        {
+          "frame": 0.9166666666666666,
+          "value": 0
+        },
+        {
+          "frame": 1,
+          "value": 255
+        },
+        {
+          "frame": 1.0833333333333333,
+          "value": 0
+        },
+        {
+          "frame": 1.1666666666666667,
+          "value": 255
+        },
+        {
+          "frame": 1.25,
+          "value": 0
+        },
+        {
+          "frame": 1.3333333333333333,
+          "value": 0
+        }
+      ]
+    },
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "14b261c8-ed92-447e-a63c-f68fa90bc70a"
+            }
+          },
+          {
+            "frame": 0.8333333333333334,
+            "value": {
+              "__uuid__": "0eb7227a-0063-4d7d-aca5-f936c4ab6ab6"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 1,
+      "func": "MagicFinish",
+      "params": []
+    }
+  ]
+}

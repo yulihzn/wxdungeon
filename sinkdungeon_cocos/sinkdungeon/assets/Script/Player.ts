@@ -32,6 +32,7 @@ import Talent from './Talent/Talent';
 import AudioPlayer from './Utils/AudioPlayer';
 import FromData from './Data/FromData';
 import Achievements from './Achievement';
+import TalentMagic from './Talent/TalentMagic';
 
 @ccclass
 export default class Player extends Actor {
@@ -101,6 +102,7 @@ export default class Player extends Actor {
     talentDash: TalentDash;
     talentShield: TalentShield;
     flyWheel: FlyWheel;
+    talentMagic:TalentMagic;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -175,6 +177,19 @@ export default class Player extends Actor {
         this.talentDash.init();
         this.talentDash.loadList(Logic.talentList);
         // this.talentDash.addTalent(Talent.DASH_11);
+        this.talentMagic = this.getComponent(TalentMagic);
+        this.talentMagic.init();
+        this.talentMagic.loadList(Logic.talentList);
+        // this.talentMagic.addTalent(Talent.MAGIC_01);
+        // this.talentMagic.addTalent(Talent.MAGIC_02);
+        // this.talentMagic.addTalent(Talent.MAGIC_03);
+        // this.talentMagic.addTalent(Talent.MAGIC_04);
+        // this.talentMagic.addTalent(Talent.MAGIC_05);
+        // this.talentMagic.addTalent(Talent.MAGIC_06);
+        // this.talentMagic.addTalent(Talent.MAGIC_07);
+        // this.talentMagic.addTalent(Talent.MAGIC_11);
+        // this.talentMagic.addTalent(Talent.MAGIC_12);
+        // this.talentMagic.addTalent(Talent.MAGIC_13);
         if (this.anim) {
             this.resetFoot();
             this.playerAnim(Player.STATE_WALK);
@@ -636,11 +651,16 @@ export default class Player extends Actor {
         }
         //盾牌
         this.talentShield.takeDamage(damageData, actor);
+        //冰盾
+        let isIceTaken = this.talentMagic.takeIce(actor);
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
         if (this.talentDash.hashTalent(Talent.DASH_12) && this.talentDash.IsExcuting && dd.getTotalDamage() > 0) {
+            isDodge = true;
+        }
+        if(isIceTaken){
             isDodge = true;
         }
         dd = isDodge ? new DamageData() : dd;
@@ -754,6 +774,10 @@ export default class Player extends Actor {
         } else if (Logic.hashTalent(Talent.DASH_01)) {
             if (this.talentDash) {
                 this.talentDash.useDash();
+            }
+        }else if(Logic.hashTalent(Talent.MAGIC_01)){
+            if(this.talentMagic){
+                this.talentMagic.useMagic();
             }
         }
 

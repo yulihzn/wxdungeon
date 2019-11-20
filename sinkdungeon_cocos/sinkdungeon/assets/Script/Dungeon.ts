@@ -201,6 +201,9 @@ export default class Dungeon extends cc.Component {
                     //开启踩踏掉落
                     this.map[i][j].isAutoShow = true;
                 }
+                if(this.isThe(mapData[i][j],"*")){
+                    this.map[i][j].tileType = mapData[i][j];
+                }
                 //生成墙
                 if (this.isThe(mapData[i][j],'#')) {
                     let w = cc.instantiate(this.wall);
@@ -269,6 +272,14 @@ export default class Dungeon extends cc.Component {
                             bed.scale = 6;
                             bed.position = Dungeon.getPosInMap(cc.v2(i, j));
                             bed.zIndex = 5000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                        }
+                    }else if(this.isThe(mapData[i][j],'+2')){
+                        if(Logic.level == 0){
+                            let arrow = cc.instantiate(this.floorDecoration);
+                            arrow.parent = this.node;
+                            arrow.position = Dungeon.getPosInMap(cc.v2(i, j));
+                            arrow.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                            arrow.getComponent(DecorationFloor).changeRes('exitarrow');
                         }
                     }else{
                         let fd = cc.instantiate(this.floorDecoration);

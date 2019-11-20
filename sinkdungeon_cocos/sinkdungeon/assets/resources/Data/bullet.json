@@ -596,6 +596,7 @@
         "size": 2,
         "isBoom":0,
         "statusType":"status001",
+        "statusRate":100,
         "damage": {
             "physicalDamage": 1
         }
@@ -616,6 +617,122 @@
         "isBoom":0,
         "damage": {
             "physicalDamage": 1
+        }
+    },
+    "bullet035": {
+        "name":"元素飞弹",
+        "resName": "bullet035",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "size": 5,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 3
+        }
+    },
+    "bullet135": {
+        "name":"强力元素飞弹",
+        "resName": "bullet035",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 600,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "size": 6,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 5
+        }
+    },
+    "bullet036": {
+        "name":"冰锥",
+        "resName": "bullet036",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 700,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "size": 5,
+        "isBoom":0,
+        "statusType":"status001",
+        "statusRate":100,
+        "damage": {
+            "iceDamage": 3
+        }
+    },
+    "bullet136": {
+        "name":"加强冰锥",
+        "resName": "bullet036",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 700,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "size": 6,
+        "isBoom":0,
+        "statusType":"status001",
+        "statusRate":100,
+        "damage": {
+            "iceDamage": 5
+        }
+    },
+    "bullet037": {
+        "name":"大冰锥",
+        "resName": "bullet037",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 700,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "size": 5,
+        "isBoom":0,
+        "statusType":"status027",
+        "statusRate":100,
+        "damage": {
+            "iceDamage": 4
+        }
+    },
+    "bullet137": {
+        "name":"加强大冰锥",
+        "resName": "bullet037",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 700,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":0,
+        "isTracking":0,
+        "size": 6,
+        "isBoom":0,
+        "statusType":"status027",
+        "statusRate":100,
+        "damage": {
+            "iceDamage": 5
         }
     },
     "laser001": {

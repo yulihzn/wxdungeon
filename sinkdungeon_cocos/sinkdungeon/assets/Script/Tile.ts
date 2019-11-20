@@ -25,6 +25,7 @@ export default class Tile extends cc.Component {
     //正在瓦解
     isBreakingNow = false;
     floor:cc.Sprite;
+    tileType = '**';
     onLoad () {
         this.isAutoShow = true;
         this.anim = this.getComponent(cc.Animation);
@@ -34,7 +35,7 @@ export default class Tile extends cc.Component {
     start () {
         //休息区 轮船 丛林 金字塔 地牢
         switch(Logic.chapterName){
-            case Logic.CHAPTER00:this.changeRes('tile000');break;
+            case Logic.CHAPTER00:this.changeRes(this.getLabRes());break;
             case Logic.CHAPTER01:this.changeRes(this.getDeckRes());break;
             case Logic.CHAPTER02:this.changeRes(this.getDirtRes());break;
             case Logic.CHAPTER03:this.changeRes('tile003');break;
@@ -43,35 +44,33 @@ export default class Tile extends cc.Component {
         // Logic.setAlias(this.node);
 
     }
-    getGrassRes():string{
-       let r =  Logic.getRandomNum(0,2);
-       let s = 'tile_grass001';
-       switch(r){
-           case 0:s = 'tile_grass001';break;
-           case 1:s = 'tile_grass002';break;
-           case 2:s = 'tile_grass003';break;
-       }
-       return s;
-    }
+    getLabRes():string{
+        let s = 'tile_lab001';
+        switch(this.tileType){
+            case '**':s = 'tile_lab001';break;
+            case '*0':s = 'tile_lab002';break;
+            case '*1':s = 'tile_lab003';break;
+            case '*2':s = 'tile_lab003';break;
+        }
+        return s;
+     }
     getDirtRes():string{
-        let r =  Logic.getRandomNum(0,3);
         let s = 'tile_dirt001';
-        switch(r){
-            case 0:s = 'tile_dirt001';break;
-            case 1:s = 'tile_dirt002';break;
-            case 2:s = 'tile_dirt003';break;
-            case 3:s = 'tile_dirt004';break;
+        switch(this.tileType){
+            case '**':s = 'tile_dirt001';break;
+            case '*0':s = 'tile_dirt002';break;
+            case '*1':s = 'tile_dirt003';break;
+            case '*2':s = 'tile_dirt004';break;
         }
         return s;
      }
      getDeckRes():string{
-        let r =  Logic.getRandomNum(0,3);
         let s = 'tile_deck001';
-        switch(r){
-            case 0:s = 'tile_deck001';break;
-            case 1:s = 'tile_deck002';break;
-            case 2:s = 'tile_deck003';break;
-            case 3:s = 'tile_deck004';break;
+        switch(this.tileType){
+            case '**':s = 'tile_deck001';break;
+            case '*0':s = 'tile_deck002';break;
+            case '*1':s = 'tile_deck003';break;
+            case '*2':s = 'tile_deck004';break;
         }
         return s;
      }

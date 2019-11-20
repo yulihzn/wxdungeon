@@ -255,10 +255,27 @@ export default class MapManager {
     }
     /**添加随机元素 */
     private addGenerateThings(mapData:MapData,index:number):MapData{
+        this.addRandomTile(mapData);
         if(RectDungeon.TEST_ROOM != index+1&&RectDungeon.TAROT_ROOM != index+1&&RectDungeon.START_ROOM != index+1){
             this.addDecorate(mapData);
         }
         return mapData;
+    }
+    private addRandomTile(mapData:MapData){
+        let pos = [];
+        for(let i = 0;i<10;i++){
+            let dx = Random.getRandomNum(0,mapData.map.length-1);
+            let dy = Random.getRandomNum(0,mapData.map[0].length-1);
+            pos.push(cc.v2(dx,0));
+            pos.push(cc.v2(0,dy));
+            pos.push(cc.v2(dx,dy));
+            
+        }
+        for(let p of pos){
+            if(mapData.map[p.x][p.y] == '**'){
+                mapData.map[p.x][p.y] = `*${Random.getRandomNum(0,2)}`;
+            }
+        }
     }
     private addDecorate(mapData:MapData){
         let pos = [];
@@ -271,7 +288,7 @@ export default class MapManager {
             
         }
         for(let p of pos){
-            if(mapData.map[p.x][p.y] == '**'){
+            if(mapData.map[p.x][p.y].indexOf('*')!=-1){
                 mapData.map[p.x][p.y] = `D${Random.getRandomNum(0,2)}`;
             }
         }

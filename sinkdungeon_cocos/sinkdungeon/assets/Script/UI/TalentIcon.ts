@@ -85,6 +85,11 @@ export default class TalentIcon extends cc.Component {
                 return true;
             }
         }
+        for (let info of Talent.MAGIC_CAN_OPEN_MAP) {
+            if(this.parseOpenMapAndCanOpen(Talent.MAGIC,info)){
+                return true;
+            }
+        }
         return false;
 
     }

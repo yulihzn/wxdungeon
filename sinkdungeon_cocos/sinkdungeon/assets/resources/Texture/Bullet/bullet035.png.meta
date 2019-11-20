@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "80174509-f328-46e3-ba28-ad95c086952f",
+  "uuid": "2ccf456a-dd64-46cb-8ce6-9b38469d6159",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -9,10 +9,10 @@
   "packable": true,
   "platformSettings": {},
   "subMetas": {
-    "startbg01": {
+    "bullet035": {
       "ver": "1.0.4",
-      "uuid": "a289b6d7-1107-48e9-acc3-1e63838c0f2e",
-      "rawTextureUuid": "80174509-f328-46e3-ba28-ad95c086952f",
+      "uuid": "91990355-4063-4235-bd11-50a05177548c",
+      "rawTextureUuid": "2ccf456a-dd64-46cb-8ce6-9b38469d6159",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
@@ -20,10 +20,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 128,
-      "height": 64,
-      "rawWidth": 128,
-      "rawHeight": 64,
+      "width": 32,
+      "height": 32,
+      "rawWidth": 32,
+      "rawHeight": 32,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

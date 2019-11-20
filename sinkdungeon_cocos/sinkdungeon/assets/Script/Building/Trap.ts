@@ -25,6 +25,8 @@ export default class Trap extends Building {
     openSpriteFrame:cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
     closeSpriteFrame:cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    halfSpriteFrame:cc.SpriteFrame = null;
     isOpen:boolean = false;
     pos:cc.Vec2 = cc.v2(0,0);
     private sprite: cc.Node;
@@ -54,10 +56,14 @@ export default class Trap extends Building {
         // this.openSpriteFrame.getTexture().setAliasTexParameters();
         this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame;
         this.scheduleOnce(() => {
-            if(this.closeSpriteFrame){
-                // this.closeSpriteFrame.getTexture().setAliasTexParameters();
-                this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
-                this.isOpen = false;
+            this.isOpen = false;
+            if(this.halfSpriteFrame){
+                this.sprite.getComponent(cc.Sprite).spriteFrame = this.halfSpriteFrame;
+                this.scheduleOnce(()=>{
+                    if(this.closeSpriteFrame){
+                        this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
+                    }
+                },0.2)
             }
         }, 0.5);
     }
@@ -85,7 +91,7 @@ export default class Trap extends Building {
 
     update (dt) {
         this.timeDelay += dt;
-        if (this.timeDelay > 2) {
+        if (this.timeDelay > 3) {
             this.openTrap();
             this.timeDelay = 0;
         }
