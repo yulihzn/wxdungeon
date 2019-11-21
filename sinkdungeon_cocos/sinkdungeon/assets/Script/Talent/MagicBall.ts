@@ -113,6 +113,7 @@ export default class MagicBall extends cc.Component {
             return;
         }
         let damage = new DamageData();
+        let status = StatusManager.BURNING;
         let d = 1;
         if(this.player&&this.player.talentMagic.hashTalent(Talent.MAGIC_06)){
             d = 2;
@@ -121,17 +122,18 @@ export default class MagicBall extends cc.Component {
             damage.fireDamage = d;
         }else{
             damage.lighteningDamage = d;
+            status = StatusManager.DIZZ;
         }
         
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             monster.takeDamage(damage);
-            monster.addStatus(StatusManager.BURNING,new FromData());
+            monster.addStatus(status,new FromData());
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {
             boss.takeDamage(damage);
-            boss.addStatus(StatusManager.BURNING,new FromData());
+            boss.addStatus(status,new FromData());
         }
     }
     checkTimeDelay = 0;
