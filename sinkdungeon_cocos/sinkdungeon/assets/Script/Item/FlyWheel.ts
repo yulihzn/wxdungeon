@@ -118,7 +118,7 @@ export default class FlyWheel extends cc.Component {
         this.node.active = true;
         this.node.parent = this.dungeon.node;
         this.node.setPosition(this.getPlayerPosition());
-        let speed = 1000;
+        let speed = 1500;
         this.rigidBody.linearDamping = 3;
         if(this.dungeon.player.talentShield.hashTalent(TalentShield.SHIELD_11)){
             speed = 3000;

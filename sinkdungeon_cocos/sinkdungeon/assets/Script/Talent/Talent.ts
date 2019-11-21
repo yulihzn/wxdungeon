@@ -44,20 +44,20 @@ export default abstract class Talent extends cc.Component {
     public static readonly SHIELD_14 = Talent.SHIELD + 14;//龟甲铜墙（举盾时间变长，非乾坤一掷）1
 
     public static readonly MAGIC_01 = Talent.MAGIC + 1;//元素飞弹 1
-    public static readonly MAGIC_02 = Talent.MAGIC + 2;//多重施法
+    public static readonly MAGIC_02 = Talent.MAGIC + 2;//多重施法 1
     public static readonly MAGIC_03 = Talent.MAGIC + 3;//快速吟唱 1
     public static readonly MAGIC_04 = Talent.MAGIC + 4;//冷静冥想 1
     public static readonly MAGIC_05 = Talent.MAGIC + 5;//灵活移动 1
     public static readonly MAGIC_06 = Talent.MAGIC + 6;//法力增强 1
     public static readonly MAGIC_07 = Talent.MAGIC + 7;//武器附魔 1
-    public static readonly MAGIC_08 = Talent.MAGIC + 8;//火球术
-    public static readonly MAGIC_09 = Talent.MAGIC + 9;//惊天陨石
+    public static readonly MAGIC_08 = Talent.MAGIC + 8;//火球术 1
+    public static readonly MAGIC_09 = Talent.MAGIC + 9;//惊天陨石 1
     public static readonly MAGIC_10 = Talent.MAGIC + 10;//火焰精灵
     public static readonly MAGIC_11 = Talent.MAGIC + 11;//冰晶锥 1
     public static readonly MAGIC_12 = Talent.MAGIC + 12;//大冰晶柱 2
-    public static readonly MAGIC_13 = Talent.MAGIC + 13;//冰晶护盾
-    public static readonly MAGIC_14 = Talent.MAGIC + 14;//雷电球
-    public static readonly MAGIC_15 = Talent.MAGIC + 15;//高压雷暴
+    public static readonly MAGIC_13 = Talent.MAGIC + 13;//冰晶护盾 1
+    public static readonly MAGIC_14 = Talent.MAGIC + 14;//雷电球 1
+    public static readonly MAGIC_15 = Talent.MAGIC + 15;//高压雷暴 1
     public static readonly MAGIC_16 = Talent.MAGIC + 16;//雷暴线圈
 
     public static readonly DASH_DESC = ['冲刺;向前冲刺一段距离', '突刺冲撞;冲刺并造成1点伤害', '鱼肠刺僚;冲刺造成流血效果'
@@ -72,7 +72,7 @@ export default abstract class Talent extends cc.Component {
         , '坚韧不屈;缩短举盾冷却', '龟甲铜墙;举盾时间变长']
     public static readonly MAGIC_DESC = ['元素飞弹;发射一枚普通的元素飞弹', '多重施法;火球变多，扇形冰锥，双重雷暴', '快速吟唱;施法吟唱时间变短'
         , '冷静冥想;缩短施法间隔', '灵活移动;移动速度提高，施法可以移动', '法力增强;提高法术伤害', '武器附魔;给武器附加元素伤害'
-        , '火球术;施放一个火球砸向地面', '惊天陨石;施放一个大火球砸向地面', '火焰精灵;产生火焰精灵漂浮在身边对敌人发起进攻'
+        , '火球术;施放一个火球', '炎爆术;施放一个大火球', '火焰精灵;产生火焰精灵漂浮在身边对敌人发起进攻'
         , '冰晶锥;发射一个能减速的冰锥', '大冰晶柱;发射一个能冻结的冰柱', '冰晶护盾;生成一个冰甲抵消一次伤害并减速周围'
         , '雷电球;在前方生成一个延迟爆炸的电球并眩晕周围敌人', '高压雷暴;雷电球范围变大，延迟变低', '雷暴线圈;定时爆发出雷环眩晕周围敌人']
 

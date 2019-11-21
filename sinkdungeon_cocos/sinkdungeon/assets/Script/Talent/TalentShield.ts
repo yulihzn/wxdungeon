@@ -111,7 +111,6 @@ export default class TalentShield extends Talent {
         }
         this.talentSkill.next(() => {
             let statusName = StatusManager.SHIELD_NORMAL;
-            let isNormalSpeed = this.hashTalent(TalentShield.SHIELD_12);
             let animOverTime = 0.1;
             this.talentSkill.IsExcuting = true;
             let y = this.shieldFrontSprite.node.y;
@@ -120,16 +119,9 @@ export default class TalentShield extends Talent {
             this.shieldBackSprite.node.opacity = 255;
             this.shieldFrontSprite.node.opacity = 255;
             this.shieldFrontSprite.node.x = -8;
-
-            if (isNormalSpeed) {
-                statusName = StatusManager.SHIELD_NORMAL_SPEED;
-            }
             if (this.hashTalent(TalentShield.SHIELD_14)) {
                 statusName = StatusManager.SHIELD_LONG;
                 invulnerabilityTime = 2;
-                if (isNormalSpeed) {
-                    statusName = StatusManager.SHIELD_LONG_SPEED;
-                }
             }
             if (this.hashTalent(TalentShield.SHIELD_06)) {
                 invulnerabilityTime = 0;

@@ -167,8 +167,7 @@
             "fireDefence": 100,
             "lighteningDefence": 100,
             "toxicDefence": 100,
-            "curseDefence": 100,
-            "moveSpeed":-100
+            "curseDefence": 100
         }
     },
     "status016": {
@@ -184,12 +183,11 @@
             "fireDefence": 100,
             "lighteningDefence": 100,
             "toxicDefence": 100,
-            "curseDefence": 100,
-            "moveSpeed":-100
+            "curseDefence": 100
         }
     },
     "status017": {
-        "nameCn": "普通盾牌防御(无减速)",
+        "nameCn": "普通盾牌防御(废弃)",
         "nameEn": "defence perfect",
         "spriteFrameName": "icondefence",
         "statusType": 17,
@@ -205,7 +203,7 @@
         }
     },
     "status018": {
-        "nameCn": "加长盾牌防御(无减速)",
+        "nameCn": "加长盾牌防御(废弃)",
         "nameEn": "defence perfect",
         "spriteFrameName": "icondefence",
         "statusType": 18,

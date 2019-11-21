@@ -189,7 +189,8 @@ export default class Player extends Actor {
         // this.talentMagic.addTalent(Talent.MAGIC_07);
         // this.talentMagic.addTalent(Talent.MAGIC_11);
         // this.talentMagic.addTalent(Talent.MAGIC_12);
-        // this.talentMagic.addTalent(Talent.MAGIC_13);
+        // this.talentMagic.addTalent(Talent.MAGIC_08);
+        // this.talentMagic.addTalent(Talent.MAGIC_09);
         if (this.anim) {
             this.resetFoot();
             this.playerAnim(Player.STATE_WALK);
@@ -521,7 +522,7 @@ export default class Player extends Actor {
         }
 
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
-            pos = pos.mul(0.1);
+            pos = pos.mul(0.3);
         }
         if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.01);
@@ -530,7 +531,10 @@ export default class Player extends Actor {
             pos = pos.mul(0.01);
         }
         if(this.talentMagic&&this.talentMagic.magiccircle.isShow&&!this.talentMagic.hashTalent(Talent.MAGIC_05)){
-            pos = pos.mul(0.2);
+            pos = pos.mul(0.3);
+        }
+        if(this.talentShield&&this.talentShield.IsExcuting&&!this.talentMagic.hashTalent(Talent.SHIELD_12)){
+            pos = pos.mul(0.3);
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));
@@ -542,7 +546,7 @@ export default class Player extends Actor {
             this.shooterEx.setHv(cc.v2(pos.x, pos.y));
         }
         //调整武器方向
-        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO) && !this.meleeWeapon.isAttacking) {
             this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
         }
         //调整盾牌方向

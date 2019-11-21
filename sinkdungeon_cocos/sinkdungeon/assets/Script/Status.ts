@@ -95,7 +95,7 @@ export default class Status extends cc.Component {
   
     update (dt) {
         this.label.string = `${this.data.duration}`;
-        this.label.node.opacity = this.data.duration == -1?0:255;
+        this.label.node.opacity = this.data.duration <0||this.data.duration >500?0:255;
         if(this.isTimeDelay(dt)){
             if(this.data.duration > 0){
                 if(this.data.duration != -1){
