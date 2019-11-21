@@ -14,7 +14,6 @@ import TalentData from "./Data/TalentData";
 import ProfileManager from "./Manager/ProfileManager";
 import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
-import Bullet from "./Item/Bullet";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -68,8 +67,6 @@ export default class Logic extends cc.Component {
     static isFirst = 0;
     static isCheatMode = false;//作弊
     static dieFrom:FromData = new FromData();
-    static bulletPool = new cc.NodePool(Bullet);
-    
 
     static profileManager:ProfileManager = new ProfileManager();
 
@@ -135,7 +132,6 @@ export default class Logic extends cc.Component {
         Logic.coins = c ? parseInt(c) : 0;
         //重置技能选择状态
         Logic.isPickedTalent = false;
-        Logic.bulletPool.clear();
     }
     static initTalentMap() {
         Logic.hasTalentMap = {};

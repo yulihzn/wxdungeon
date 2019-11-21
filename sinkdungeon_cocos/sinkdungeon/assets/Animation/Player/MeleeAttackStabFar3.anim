@@ -6,7 +6,7 @@
   "_duration": 0.75,
   "sample": 60,
   "speed": 2,
-  "wrapMode": "1",
+  "wrapMode": 1,
   "curveData": {
     "paths": {
       "sprite/stabweapon": {
@@ -257,8 +257,18 @@
   },
   "events": [
     {
+      "frame": 0.25,
+      "func": "RefreshTime",
+      "params": []
+    },
+    {
       "frame": 0.5,
       "func": "ExAttackTime",
+      "params": []
+    },
+    {
+      "frame": 0.5,
+      "func": "RefreshTime",
       "params": []
     },
     {

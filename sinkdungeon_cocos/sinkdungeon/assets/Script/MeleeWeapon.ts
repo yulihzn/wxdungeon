@@ -77,7 +77,7 @@ export default class MeleeWeapon extends cc.Component {
     static readonly COMBO3:number = 3;
     comboType = 0;
     isComboing = false;
-
+    hasTargetMap: { [key: string]: number } = {};
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
@@ -131,6 +131,7 @@ export default class MeleeWeapon extends cc.Component {
         if (this.isAttacking) {
             return false;
         }
+        this.hasTargetMap = {};
         this.updateCombo();
         
         this.isMiss = isMiss;
@@ -239,6 +240,10 @@ export default class MeleeWeapon extends cc.Component {
     ExAttackTime(){
         this.player.remoteExAttack(this.comboType);
     }
+    /**Anim 清空攻击列表*/
+    RefreshTime(){
+        this.hasTargetMap = {};
+    }
     start() {
     }
 
@@ -316,15 +321,23 @@ export default class MeleeWeapon extends cc.Component {
         this.node.angle = this.node.scaleX < 0 ? -angle : angle;
 
     }
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        // this.attacking(otherCollider);
-    }
-    onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
+    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    // }
+    // onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
+    //     if(self.radius>0){
+    //         this.attacking(other);
+    //     }
+    // }
+    onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
         if(self.radius>0){
-            this.attacking(other);
+            if(this.hasTargetMap[other.node.uuid]&&this.hasTargetMap[other.node.uuid]>0){
+                this.hasTargetMap[other.node.uuid]++;
+            }else{
+                this.hasTargetMap[other.node.uuid] = 1;
+                this.attacking(other);
+            }
         }
     }
-    
     beatBack(node: cc.Node) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.getHv().clone();

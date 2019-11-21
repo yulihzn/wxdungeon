@@ -169,7 +169,7 @@ export default class Monster extends Actor {
             this.graphics.circle(0, 0, r);
             r += 2;
             this.graphics.stroke();
-            if (r > 80) {
+            if (r > 80 * this.node.scaleY) {
                 this.graphics.clear();
             }
         }, 0.016, 40);
@@ -410,7 +410,7 @@ export default class Monster extends Actor {
         let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
         collider.sensor = true;
         collider.apply();
-        this.anim.play('PlayerFall');
+        // this.anim.play('PlayerFall');
     }
     takeDamage(damageData: DamageData): boolean {
         if (!this.isShow) {
@@ -634,7 +634,7 @@ export default class Monster extends Actor {
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true)
                 }
-                // this.showCircle();
+                this.showCircle();
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();

@@ -52,7 +52,7 @@ export default class Shooter extends cc.Component {
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
-        this.bulletPool = Logic.bulletPool;
+        this.bulletPool = new cc.NodePool(Bullet);
         this.sprite = this.node.getChildByName('sprite');
         cc.director.on('destorybullet', (event) => {
             this.destroyBullet(event.detail.bulletNode);
