@@ -44,6 +44,9 @@ export default class TalentIcon extends cc.Component {
         if (this.data.id != prefix + id) {
             return false;
         }
+        if (1==id) {
+            return true;
+        }
         for (let i of needs) {
             if (this.hasTalent(prefix + parseInt(i))) {
                 isCan = true;

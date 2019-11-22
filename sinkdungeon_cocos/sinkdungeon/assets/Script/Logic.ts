@@ -186,6 +186,7 @@ export default class Logic extends cc.Component {
         Logic.level++;
         //最多五层
         if (Logic.level > 5 && Logic.chapterName >= Logic.CHAPTER04) {
+            Logic.profileManager.clearData();
             cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
             cc.director.loadScene('gamefinish')
             
