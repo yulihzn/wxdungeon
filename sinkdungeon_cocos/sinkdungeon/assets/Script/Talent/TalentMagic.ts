@@ -13,6 +13,8 @@ import MagicCircle from "./MagicCircle";
 import MagicIce from "./MagicIce";
 import Actor from "../Base/Actor";
 import MagicBall from "./MagicBall";
+import FireGhost from "./FireGhost";
+import Logic from "../Logic";
 
 const { ccclass, property } = cc._decorator;
 
@@ -25,21 +27,48 @@ export default class TalentMagic extends Talent {
     magicice: MagicIce = null;
     @property(cc.Prefab)
     magicball: cc.Prefab = null;
-    hv: cc.Vec2;
-
+    @property(cc.Prefab)
+    fireGhost: cc.Prefab = null;
+    @property(cc.Node)
+    magicLightening: cc.Node = null;
+    fireGhostNum = 0;
+    ghostPool: cc.NodePool;
     onLoad() {
+        this.ghostPool = new cc.NodePool(FireGhost);
+        cc.director.on('destoryfireghost', (event) => {
+            this.destroyGhost(event.detail.coinNode);
+        })
+    }
+    destroyGhost(ghostNode: cc.Node) {
+        if (!ghostNode) {
+            return;
+        }
+        ghostNode.active = false;
+        if (this.ghostPool) {
+            this.ghostPool.put(ghostNode);
+            this.fireGhostNum--;
+            cc.log('destroyGhost');
+        }
     }
     init() {
+        this.magicLightening.opacity = 0;
         super.init();
         this.scheduleOnce(() => {
             if (this.hashTalent(Talent.MAGIC_07)) {
                 this.player.addStatus(this.hashTalent(TalentMagic.MAGIC_06) ? StatusManager.MAGIC_WEAPON_STRONG : StatusManager.MAGIC_WEAPON, new FromData());
             }
-            if (this.hashTalent(Talent.MAGIC_13)) {
+            if (this.hashTalent(Talent.MAGIC_13) && !this.magicice.isShow) {
                 this.magicice.showIce();
+            }
+            if (this.hashTalent(Talent.MAGIC_10)) {
+                this.initFireGhosts();
+            }
+            if (this.hashTalent(TalentMagic.MAGIC_16)) {
+                this.showLightening();
             }
         }, 0.2)
     }
+
     useSKill() {
         this.useMagic();
     }
@@ -101,23 +130,74 @@ export default class TalentMagic extends Talent {
     changePerformance() {
 
     }
-    takeIce(actor): boolean {
-        if (actor) {
-            if (this.hashTalent(Talent.SHIELD_13) && this.magicice.isShow) {
-                let monster = actor.node.getComponent(Monster);
-                let boss = actor.node.getComponent(Boss);
-                if (monster) {
-                    monster.addStatus(StatusManager.FROZEN, new FromData());
-                }
-                if (boss) {
-                    boss.addStatus(StatusManager.FROZEN, new FromData());
-                }
-                return true;
-            }
+    takeIce(): boolean {
+        if (this.hashTalent(Talent.MAGIC_13) && this.magicice.isShow) {
+            this.addStatus2NearEnemy(StatusManager.FROZEN, 300);
+            this.magicice.breakIce();
+            return true;
         }
         return false;
     }
     takeDamage(damageData: DamageData, actor?: Actor) {
 
+    }
+    showLightening() {
+        this.magicLightening.opacity = 128;
+        this.magicLightening.scale = 1;
+        this.magicLightening.runAction(cc.sequence(cc.scaleTo(1, 10), cc.callFunc(() => {
+            this.addStatus2NearEnemy(StatusManager.DIZZ, 300);
+            this.magicLightening.opacity = 0;
+            this.magicLightening.scale = 1;
+        })));
+    }
+    initFireGhosts() {
+        let length = 5;
+        let count = this.fireGhostNum;
+        for (let i = 0; i < length-count; i++) {
+            let ghostNode: cc.Node = null;
+            if (this.ghostPool.size() > 0) {
+                ghostNode = this.ghostPool.get();
+            }
+            if (!ghostNode || ghostNode.active) {
+                ghostNode = cc.instantiate(this.fireGhost);
+            }
+            this.fireGhostNum++;
+            ghostNode.active = true;
+            let fg = ghostNode.getComponent(FireGhost);
+            this.player.node.parent.addChild(fg.node);
+            fg.init(this.player, i * 72);
+        }
+    }
+
+    addStatus2NearEnemy(statusName: string, range: number) {
+        if (!this.player) {
+            return cc.Vec2.ZERO;
+        }
+        for (let monster of this.player.meleeWeapon.dungeon.monsters) {
+            let dis = Logic.getDistance(this.node.position, monster.node.position);
+            if (dis < range && !monster.isDied && !monster.isDisguising) {
+                monster.addStatus(statusName, new FromData());
+            }
+        }
+        for (let boss of this.player.meleeWeapon.dungeon.bosses) {
+            let dis = Logic.getDistance(this.node.position, boss.node.position);
+            if (dis < range && !boss.isDied) {
+                boss.addStatus(statusName, new FromData());
+            }
+        }
+    }
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 10) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    update(dt) {
+        if (this.isCheckTimeDelay(dt)) {
+            this.init();
+        }
     }
 }

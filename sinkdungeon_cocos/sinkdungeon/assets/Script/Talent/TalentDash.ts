@@ -58,7 +58,7 @@ export default class TalentDash extends Talent {
                 pos = pos.normalizeSelf();
             }
             if (this.hashTalent(Talent.DASH_08)) {
-                speed = 0;
+                speed = 100;
                 this.showShadow(pos);
             }
             this.hv = pos.clone();

@@ -52,13 +52,13 @@ export default abstract class Talent extends cc.Component {
     public static readonly MAGIC_07 = Talent.MAGIC + 7;//武器附魔 1
     public static readonly MAGIC_08 = Talent.MAGIC + 8;//火球术 1
     public static readonly MAGIC_09 = Talent.MAGIC + 9;//惊天陨石 1
-    public static readonly MAGIC_10 = Talent.MAGIC + 10;//火焰精灵
+    public static readonly MAGIC_10 = Talent.MAGIC + 10;//火焰精灵 1
     public static readonly MAGIC_11 = Talent.MAGIC + 11;//冰晶锥 1
     public static readonly MAGIC_12 = Talent.MAGIC + 12;//大冰晶柱 2
     public static readonly MAGIC_13 = Talent.MAGIC + 13;//冰晶护盾 1
     public static readonly MAGIC_14 = Talent.MAGIC + 14;//雷电球 1
     public static readonly MAGIC_15 = Talent.MAGIC + 15;//高压雷暴 1
-    public static readonly MAGIC_16 = Talent.MAGIC + 16;//雷暴线圈
+    public static readonly MAGIC_16 = Talent.MAGIC + 16;//雷暴线圈 1
 
     public static readonly DASH_DESC = ['冲刺;向前冲刺一段距离', '突刺冲撞;冲刺并造成1点伤害', '鱼肠刺僚;冲刺造成流血效果'
         , '螳臂当车;冲刺造成击退效果', '醉舞矛戈;冲刺造成减速效果', '野蛮冲撞;冲刺造成眩晕效果'

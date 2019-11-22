@@ -24,7 +24,6 @@ export default class MagicBall extends cc.Component {
     static readonly FIRE = 0;
     static readonly LIGHTENING = 1;
     rigidBody:cc.RigidBody;
-    hv:cc.Vec2 = cc.v2(1,0);
     hasTargetMap: { [key: string]: number } = {};
     ballType = 0;
     @property(cc.ParticleSystem)
@@ -84,12 +83,12 @@ export default class MagicBall extends cc.Component {
     }
     getPlayerFarPosition(player:Player,distance:number,angleOffset:number):cc.Vec2{
         let hv = player.meleeWeapon.getHv().clone();
-        let pos = hv.normalizeSelf().rotateSelf(angleOffset * Math.PI / 180).mul(distance);
+        let pos = cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180).mul(distance);
         return player.node.position.clone().addSelf(cc.v2(8,48).addSelf(pos));
     }
     getPlayerHv(player:Player,angleOffset:number):cc.Vec2{
         let hv = player.meleeWeapon.getHv().clone();
-        let pos = hv.normalizeSelf().rotateSelf(angleOffset * Math.PI / 180);
+        let pos = cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180);
         return pos.normalizeSelf();
     }
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {

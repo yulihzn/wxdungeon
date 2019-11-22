@@ -39,19 +39,19 @@ export default class TalentIcon extends cc.Component {
         }
         return false;
     }
-    needAndNot(prefix: number, id: number, needs?: number[], not?: number[]): boolean {
-        let isCan = this.data.id == prefix + id;
-        if (!isCan) {
+    needAndNot(prefix: number, id: number, needs: string[], not: string[]): boolean {
+        let isCan = false;
+        if (this.data.id != prefix + id) {
             return false;
         }
         for (let i of needs) {
-            if (this.hasTalent(prefix + i)) {
+            if (this.hasTalent(prefix + parseInt(i))) {
                 isCan = true;
             }
         }
         if (not) {
             for (let i of not) {
-                if (this.hasTalent(prefix + i)) {
+                if (this.hasTalent(prefix + parseInt(i))) {
                     isCan = false;
                 }
             }

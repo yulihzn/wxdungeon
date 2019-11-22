@@ -180,15 +180,15 @@ export default class Player extends Actor {
         this.talentMagic = this.getComponent(TalentMagic);
         this.talentMagic.init();
         this.talentMagic.loadList(Logic.talentList);
-        // this.talentMagic.addTalent(Talent.MAGIC_01);
         // this.talentMagic.addTalent(Talent.MAGIC_02);
         // this.talentMagic.addTalent(Talent.MAGIC_03);
         // this.talentMagic.addTalent(Talent.MAGIC_04);
         // this.talentMagic.addTalent(Talent.MAGIC_05);
         // this.talentMagic.addTalent(Talent.MAGIC_06);
-        // this.talentMagic.addTalent(Talent.MAGIC_07);
-        // this.talentMagic.addTalent(Talent.MAGIC_11);
-        // this.talentMagic.addTalent(Talent.MAGIC_12);
+        // this.talentMagic.addTalent(Talent.MAGIC_10);
+        // this.talentMagic.addTalent(Talent.MAGIC_14);
+        // this.talentMagic.addTalent(Talent.MAGIC_15);
+        // this.talentMagic.addTalent(Talent.MAGIC_16);
         // this.talentMagic.addTalent(Talent.MAGIC_08);
         // this.talentMagic.addTalent(Talent.MAGIC_09);
         if (this.anim) {
@@ -198,8 +198,8 @@ export default class Player extends Actor {
         if(Logic.isCheatMode){
             this.scheduleOnce(()=>{
                 this.addStatus(StatusManager.PERFECTDEFENCE,new FromData());
-                this.data.currentHealth = 999;
-                this.data.Common.maxHealth = 999;
+                this.data.currentHealth = 99;
+                this.data.Common.maxHealth = 99;
                 this.data.Common.damageMin = 99;
             },0.2);
         }
@@ -522,7 +522,11 @@ export default class Player extends Actor {
         }
 
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
-            pos = pos.mul(0.3);
+            if(!this.meleeWeapon.isFar&&this.meleeWeapon.isStab){
+                pos = pos.mul(0.7);
+            }else{
+                pos = pos.mul(0.3); 
+            }
         }
         if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.01);
@@ -659,13 +663,16 @@ export default class Player extends Actor {
         //盾牌
         this.talentShield.takeDamage(damageData, actor);
         //冰盾
-        let isIceTaken = this.talentMagic.takeIce(actor);
         let dd = this.data.getDamage(damageData);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
         if (this.talentDash.hashTalent(Talent.DASH_12) && this.talentDash.IsExcuting && dd.getTotalDamage() > 0) {
             isDodge = true;
+        }
+        let isIceTaken = false;
+        if(dd.getTotalDamage() > 0){
+            isIceTaken = this.talentMagic.takeIce();
         }
         if(isIceTaken){
             isDodge = true;

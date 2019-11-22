@@ -38,10 +38,10 @@ export default class FloatingLabel extends cc.Component {
         this.anim.play('FontFloating');
     }
     showMiss(){
-        this.showLabel('丢失',cc.color(255, 255, 255),0.75);
+        this.showLabel('miss',cc.color(255, 255, 255),0.75);
     }
     showDoge(){
-        this.showLabel('闪避',cc.color(255, 255, 255),0.75);
+        this.showLabel('dodge',cc.color(255, 255, 255),0.75);
     }
     showDamage(damage:number){
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
