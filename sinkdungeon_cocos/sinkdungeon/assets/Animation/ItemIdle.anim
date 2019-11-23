@@ -2,11 +2,11 @@
   "__type__": "cc.AnimationClip",
   "_name": "ItemIdle",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 1,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "2",
+  "wrapMode": 2,
   "curveData": {
     "paths": {
       "sprite": {
@@ -56,6 +56,36 @@
                 "__type__": "cc.Vec2",
                 "x": 0.9,
                 "y": 0.9
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ]
+        }
+      },
+      "shadow": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1.2000000476837158,
+                "y": 1.2000000476837158
               }
             },
             {

@@ -119,7 +119,7 @@ export default class Bullet extends cc.Component {
     }
    
     private checkTraking(): void {
-        if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay) {
+        if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay&&!this.isHit) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec2.ZERO)) {
                 this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));

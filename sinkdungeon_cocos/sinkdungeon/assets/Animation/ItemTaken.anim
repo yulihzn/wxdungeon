@@ -2,7 +2,7 @@
   "__type__": "cc.AnimationClip",
   "_name": "ItemTaken",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 0.5,
   "sample": 60,
   "speed": 1,
@@ -40,6 +40,36 @@
                 "__type__": "cc.Vec2",
                 "x": 1.1,
                 "y": 1.1
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0,
+                "y": 0
+              }
+            }
+          ]
+        }
+      },
+      "shadow": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.25,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.800000011920929,
+                "y": 0.800000011920929
               }
             },
             {

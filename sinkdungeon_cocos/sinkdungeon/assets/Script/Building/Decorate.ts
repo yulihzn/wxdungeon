@@ -67,9 +67,14 @@ export default class Decorate extends Building {
         this.anim.play();
         this.isBreaking = true;
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
-        if(Random.rand()>0.8){
+        let rand = Random.rand();
+        if(rand>0.7&&rand<0.8){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
-        }
+        }else if (rand >= 0.8 && rand < 0.825) {
+            cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
+        } else if (rand >= 0.825 && rand < 0.85) {
+            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
+        } 
     }
     reset() {
         this.node.position = Dungeon.getPosInMap(cc.v2(-10,-10));

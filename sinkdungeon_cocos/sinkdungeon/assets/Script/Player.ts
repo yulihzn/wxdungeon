@@ -307,7 +307,7 @@ export default class Player extends Actor {
                     this.weaponStabSprite.spriteFrame = null;
                 }
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.color);
-                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.color).fromHEX(this.inventoryManager.weapon.lightcolor);
+                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.lightcolor);
                 this.weaponSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color2;
                 this.weaponStabSprite.node.color = color2;

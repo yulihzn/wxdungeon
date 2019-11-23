@@ -156,19 +156,19 @@
         }
     },
     "bullet012": {
-        "name":"追踪导弹",
-        "speed": 500,
+        "name":"小型震荡导弹",
+        "speed": 700,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 2,
-        "isTracking":1,
+        "size": 3,
         "resName":"bullet012",
         "lightName": "bulletlight001",
-        "lightColor": "#C72C2C",
+        "lightColor": "#00cffe",
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 1,
+            "lighteningRate":100
         }
     },
     "bullet013": {

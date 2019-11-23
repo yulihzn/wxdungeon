@@ -803,6 +803,7 @@
             "maxHealth": 0
         },
         "stab":1,
+        "far":1,
         "desc": "R P G"
     },
     "remote007": {

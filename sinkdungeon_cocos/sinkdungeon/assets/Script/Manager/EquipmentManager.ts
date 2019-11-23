@@ -482,6 +482,11 @@ export default class EquipmentManager extends cc.Component {
             data.titlecolor = desc.titlecolor;
             if (desc.color != "#ffffff") {
                 data.color = desc.color;
+                if(data.lightcolor != "#ffffff"){
+                    data.lightcolor = this.getMixColor(desc.color,data.lightcolor);
+                }else{
+                    data.lightcolor = desc.color;
+                }
             }
             data.level = desc.level;
             if (shopTable) {

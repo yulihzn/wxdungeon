@@ -85,6 +85,9 @@ export default class WarMachine extends Boss {
         if (this.isDied) {
             return;
         }
+        if(this.anim){
+            this.anim.pause();
+        }
         Achievements.addMonsterKillAchievement(this.data.resName);
         this.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
