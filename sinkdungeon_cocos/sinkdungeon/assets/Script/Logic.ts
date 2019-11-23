@@ -85,8 +85,7 @@ export default class Logic extends cc.Component {
         // cc.PhysicsManager.DrawBits.e_pairBit |
         // cc.PhysicsManager.DrawBits.e_centerOfMassBit |
         // cc.PhysicsManager.DrawBits.e_jointBit |
-        // cc.PhysicsManager.DrawBits.e_shapeBit
-        ;
+        // cc.PhysicsManager.DrawBits.e_shapeBit;
         cc.director.on(EventConstant.LOADINGNEXTLEVEL, (event) => {
             this.loadingNextLevel();
         });

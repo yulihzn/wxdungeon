@@ -250,7 +250,6 @@ export default class Shooter extends cc.Component {
         let bullet = bulletNode.getComponent(Bullet);
         if (this.bulletPool && bullet.name == this.bulletName) {
             this.bulletPool.put(bulletNode);
-            cc.log(this.bulletPool.size());
         }
     }
 

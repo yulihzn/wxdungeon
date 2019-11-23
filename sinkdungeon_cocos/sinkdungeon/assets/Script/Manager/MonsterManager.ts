@@ -130,9 +130,15 @@ export default class MonsterManager extends cc.Component {
             data.Common.maxHealth = data.Common.maxHealth * 2;
             data.Common.damageMin = data.Common.damageMin * 2;
             data.currentHealth = data.currentHealth * 2;
-            data.melee = data.melee > 2 ? data.melee - 0.5 : 0;
-            data.remote = data.remote > 2 ? data.remote - 0.5 : 0;
-            data.dash = data.dash > 1 ? data.dash - 0.5 : 0;
+            if(data.melee>0){
+                data.melee = data.melee > 1 ? data.melee - 1 : 1;
+            }
+            if(data.remote>0){
+                data.remote = data.remote > 1 ? data.remote - 1 : 1;
+            }
+            if(data.dash>0){
+                data.dash = data.dash > 1 ? data.dash - 1 : 1;
+            }
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100) : 0;
         }
         let rand = Random.rand();

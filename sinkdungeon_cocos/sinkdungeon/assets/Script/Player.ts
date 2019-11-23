@@ -551,10 +551,7 @@ export default class Player extends Actor {
         if (this.shooterEx && !pos.equals(cc.Vec2.ZERO)) {
             this.shooterEx.setHv(cc.v2(pos.x, pos.y));
         }
-        //调整武器方向
-        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO) && !this.meleeWeapon.isAttacking) {
-            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
-        }
+        
         //调整盾牌方向
         if (this.talentShield && !pos.equals(cc.Vec2.ZERO)) {
             this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
@@ -574,8 +571,13 @@ export default class Player extends Actor {
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
+        
         if (this.isMoving&&!this.isAttacking&&!this.meleeWeapon.isAttacking) {
-            this.isFaceRight = h > 0;
+            this.isFaceRight = this.meleeWeapon.getHv().x > 0;
+        }
+        //调整武器方向
+        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO) && !this.meleeWeapon.isAttacking) {
+            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
         }
         if (this.isMoving && !this.isStone) {
             this.playerAnim(Player.STATE_WALK);
