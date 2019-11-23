@@ -296,6 +296,7 @@ export default class Player extends Actor {
                 this.meleeWeapon.isStab = equipData.stab == 1;
                 this.meleeWeapon.isFar = equipData.far == 1;
                 this.meleeWeapon.isReflect = equipData.isReflect == 1;
+                this.meleeWeapon.isFist = false;
                 this.meleeWeapon.setHands();
                 if (equipData.stab == 1) {
                     this.weaponSprite.spriteFrame = null;
@@ -306,10 +307,11 @@ export default class Player extends Actor {
                     this.weaponStabSprite.spriteFrame = null;
                 }
                 let color1 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.color);
+                let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.color).fromHEX(this.inventoryManager.weapon.lightcolor);
                 this.weaponSprite.node.color = color1;
-                this.weaponLightSprite.node.color = color1;
-                this.weaponStabSprite.node.color = color1;
-                this.weaponStabLightSprite.node.color = color1;
+                this.weaponLightSprite.node.color = color2;
+                this.weaponStabSprite.node.color = color2;
+                this.weaponStabLightSprite.node.color = color2;
                 break;
             case 'remote': this.shooter.data = equipData.clone();
                 this.shooter.changeRes(this.shooter.data.img);
@@ -523,16 +525,16 @@ export default class Player extends Actor {
 
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             if(!this.meleeWeapon.isFar&&this.meleeWeapon.isStab){
-                pos = pos.mul(0.7);
+                pos = pos.mul(0.6);
             }else{
                 pos = pos.mul(0.3); 
             }
         }
         if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec2.ZERO)) {
-            pos = pos.mul(0.01);
+            pos = pos.mul(0.1);
         }
         if (this.isHeavyMeleeAttacking && !pos.equals(cc.Vec2.ZERO)) {
-            pos = pos.mul(0.01);
+            pos = pos.mul(0.1);
         }
         if(this.talentMagic&&this.talentMagic.magiccircle.isShow&&!this.talentMagic.hashTalent(Talent.MAGIC_05)){
             pos = pos.mul(0.3);

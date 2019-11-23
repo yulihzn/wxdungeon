@@ -67,6 +67,7 @@ export default class MeleeWeapon extends cc.Component {
     private hv: cc.Vec2 = cc.v2(1, 0);
     isStab = true;//刺
     isFar = false;//近程
+    isFist = true;//空手 
     dungeon: Dungeon;
     weaponFirePoint: cc.Node;//剑尖
     isMiss = false;
@@ -115,6 +116,9 @@ export default class MeleeWeapon extends cc.Component {
     updateCombo(){
         if(this.comboType == MeleeWeapon.COMBO1){
             this.comboType = MeleeWeapon.COMBO2;
+            if(this.isFist){
+                this.comboType = MeleeWeapon.COMBO1;
+            }
         }else if(this.comboType == MeleeWeapon.COMBO2){
             this.comboType = MeleeWeapon.COMBO3;
         }else if(this.comboType == MeleeWeapon.COMBO3){

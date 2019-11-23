@@ -10,6 +10,7 @@ import BossAttackCollider from "./BossAttackCollider";
 import { EventConstant } from "../EventConstant";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import Achievements from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -84,6 +85,7 @@ export default class Dryad extends Boss {
         if (this.isDied) {
             return;
         }
+        Achievements.addMonsterKillAchievement(this.data.resName);
         this.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();

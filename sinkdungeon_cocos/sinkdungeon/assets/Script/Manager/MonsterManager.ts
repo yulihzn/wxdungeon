@@ -185,6 +185,7 @@ export default class MonsterManager extends cc.Component {
         let iceDemon = icePrefab.getComponent(IceDemon);
         iceDemon.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss000";
         data.updateHA(this.maxHealth00, this.maxHealth00, 0);
         iceDemon.data = data;
         iceDemon.transportBoss(posIndex.x, posIndex.y);
@@ -200,6 +201,7 @@ export default class MonsterManager extends cc.Component {
         let evil = evilEyePrefab.getComponent(EvilEye);
         evil.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss008";
         data.updateHA(this.maxHealth08, this.maxHealth08, 0);
         evil.data = data;
         evil.transportBoss(posIndex.x, posIndex.y);
@@ -215,6 +217,7 @@ export default class MonsterManager extends cc.Component {
         let machine = machinePrefab.getComponent(WarMachine);
         machine.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss001";
         data.updateHA(this.maxHealth01, this.maxHealth01, 2);
         machine.data = data;
         machine.transportBoss(posIndex.x, posIndex.y);
@@ -230,6 +233,7 @@ export default class MonsterManager extends cc.Component {
         let dryad = dryadPrefab.getComponent(Dryad);
         dryad.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss005";
         data.updateHA(this.maxHealth05, this.maxHealth05, 2);
         dryad.data = data;
         dryad.transportBoss(posIndex.x, posIndex.y);
@@ -245,6 +249,7 @@ export default class MonsterManager extends cc.Component {
         let sphinx = sphinxPrefab.getComponent(Sphinx);
         sphinx.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss007";
         data.updateHA(this.maxHealth07, this.maxHealth07, 2);
         sphinx.data = data;
         sphinx.transportBoss(posIndex.x, posIndex.y);
@@ -260,6 +265,7 @@ export default class MonsterManager extends cc.Component {
         let dragon = dragonPrefab.getComponent(Dragon);
         dragon.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss009";
         data.updateHA(this.maxHealth09, this.maxHealth09, 5);
         dragon.data = data;
         dragon.transportBoss(posIndex.x, posIndex.y);
@@ -275,6 +281,7 @@ export default class MonsterManager extends cc.Component {
         let rah = rahPrefab.getComponent(Rah);
         rah.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss006";
         data.updateHA(this.maxHealth06, this.maxHealth06, 0);
         rah.data = data;
         rah.transportBoss(posIndex.x, posIndex.y);
@@ -290,6 +297,7 @@ export default class MonsterManager extends cc.Component {
         let kraken = krakenPrefab.getComponent(Kraken);
         kraken.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss003";
         data.updateHA(this.maxHealth03, this.maxHealth03, 2);
         kraken.data = data;
         kraken.transportBoss(posIndex.x, posIndex.y);
@@ -305,6 +313,7 @@ export default class MonsterManager extends cc.Component {
         let captain = captainPrefab.getComponent(Captain);
         captain.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss002";
         data.updateHA(this.maxHealth02, this.maxHealth02, 2);
         captain.data = data;
         captain.transportBoss(posIndex.x, posIndex.y);
@@ -320,6 +329,7 @@ export default class MonsterManager extends cc.Component {
         let slime = slimePrefab.getComponent(Slime);
         slime.dungeon = dungeon;
         let data = new MonsterData();
+        data.resName = "iconboss004";
         data.Common.moveSpeed = 200;
         switch (type) {
             case 0: data.updateHA(this.maxHealth04, this.maxHealth04, 2); slime.scaleSize = 2; break;

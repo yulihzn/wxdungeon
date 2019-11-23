@@ -11,6 +11,7 @@ import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import Achievements from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -111,6 +112,7 @@ export default class Kraken extends Boss {
         if (this.isDied) {
             return;
         }
+        Achievements.addMonsterKillAchievement(this.data.resName);
         this.isDied = true;
         this.changeZIndex();
         let hands = this.getComponentsInChildren(KrakenSwingHand);

@@ -13,6 +13,7 @@ import Boss from "./Boss";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import Achievements from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -108,6 +109,7 @@ export default class EvilEye extends Boss {
         if (this.isDied) {
             return;
         }
+        Achievements.addMonsterKillAchievement(this.data.resName);
         this.node.runAction(cc.fadeOut(3));
         this.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);

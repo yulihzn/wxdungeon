@@ -12,6 +12,7 @@ import MonsterManager from "../Manager/MonsterManager";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import Achievements from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -220,6 +221,7 @@ export default class Slime extends Boss {
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         if (this.dungeon) {
             if (this.slimeType == 0) {
+                Achievements.addMonsterKillAchievement(this.data.resName);
                 cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
                 cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
                 this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 3);

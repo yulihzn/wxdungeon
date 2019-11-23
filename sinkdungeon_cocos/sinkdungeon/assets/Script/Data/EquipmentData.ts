@@ -22,6 +22,7 @@ export default class EquipmentData extends BaseData{
     prefix:string = '';
     desc: string = '';
     color:string  ='#ffffff';
+    lightcolor:string = '#ffffff';//刀光的颜色
     titlecolor:string = '#ffffff';
     img:string = 'emptyequipment';
     level:number = 0;
@@ -89,6 +90,7 @@ export default class EquipmentData extends BaseData{
         this.desc = data.desc?data.desc:'';
         this.color  =data.color?data.color:'#ffffff';
         this.titlecolor = data.titlecolor?data.titlecolor:'#ffffff';
+        this.lightcolor = data.lightcolor?data.lightcolor:'#ffffff';
         this.img = data.img?data.img:'emptyequipment';
         this.stab = data.stab?data.stab:0;
         this.far = data.far?data.far:0;
@@ -147,6 +149,7 @@ export default class EquipmentData extends BaseData{
   
         e.color  =this.color;
         e.titlecolor = this.titlecolor;
+        e.lightcolor = this.lightcolor;
         e.img = this.img;
         e.stab = this.stab;
         e.far = this.far;

@@ -15,6 +15,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Achievements extends cc.Component {
 
+    readonly MONSTER_SIZE = 25;
+    readonly BOSS_SIZE = 9;
     @property(cc.Node)
     content: cc.Node = null;
     @property(cc.Prefab)
@@ -23,12 +25,15 @@ export default class Achievements extends cc.Component {
     lifesLabel:cc.Label = null;
     //图片资源
     spriteFrames: { [key: string]: cc.SpriteFrame } = null;
+    bossSpriteFrames :{ [key: string]: cc.SpriteFrame } = null;
     // LIFE-CYCLE CALLBACKS:
     iconList:cc.Sprite[] = new Array();
+    isMonsterLoaded = false;
+    isBossLoaded = false;
 
     onLoad() {
         this.content.removeAllChildren();
-        for(let i =0;i < 25;i++){
+        for(let i =0;i < this.MONSTER_SIZE+this.BOSS_SIZE;i++){
             let icon = cc.instantiate(this.prefab);
             this.content.addChild(icon)
             let sprite = icon.getChildByName('sprite');
@@ -36,6 +41,7 @@ export default class Achievements extends cc.Component {
             this.iconList.push(sprite.getComponent(cc.Sprite));
         }
         this.loadSpriteFrames();
+        this.loadBossSpriteFrames();
         let data:AchievementData = Achievements.getAchievementData();
         if(this.lifesLabel&&data.playerLifes){
             this.lifesLabel.string = `死亡次数：${data.playerLifes}`;
@@ -43,6 +49,7 @@ export default class Achievements extends cc.Component {
     }
     loadSpriteFrames() {
         if (this.spriteFrames) {
+            this.isMonsterLoaded = true;
             return;
         }
         cc.loader.loadResDir('Texture/Monster', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
@@ -50,8 +57,22 @@ export default class Achievements extends cc.Component {
             for (let frame of assert) {
                 this.spriteFrames[frame.name] = frame;
             }
-            this.show();
-            cc.log('texture loaded');
+            this.isMonsterLoaded = true;
+            cc.log('monster texture loaded');
+        })
+    }
+    loadBossSpriteFrames() {
+        if (this.bossSpriteFrames) {
+            this.isBossLoaded = true;
+            return;
+        }
+        cc.loader.loadResDir('OtherTexture/Boss', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
+            this.bossSpriteFrames = {};
+            for (let frame of assert) {
+                this.bossSpriteFrames[frame.name] = frame;
+            }
+            this.isBossLoaded = true;
+            cc.log('boss texture loaded');
         })
     }
     show(){
@@ -61,11 +82,18 @@ export default class Achievements extends cc.Component {
         let data:AchievementData = Achievements.getAchievementData();
         for(let i = 0;i < this.iconList.length;i++){
             let name = `monster${i<10?'00'+i:'0'+i}`;
-            let fr = this.spriteFrames[name]
+            let fr = this.spriteFrames[name];
+            if(i>this.MONSTER_SIZE-1){
+                name = `iconboss00${i-this.MONSTER_SIZE}`;
+                fr = this.bossSpriteFrames[name];
+            }
             if(fr){
                 this.iconList[i].node.width = 96;
                 this.iconList[i].node.height = 96;
                 this.iconList[i].spriteFrame = this.spriteFrames[name];
+                if(i>this.MONSTER_SIZE-1){
+                    this.iconList[i].spriteFrame = this.bossSpriteFrames[name];
+                }
                 let labe = this.iconList[i].node.getComponentInChildren(cc.Label);
                 labe.string = ``;
                 if(data&&data.monsters&&data.monsters[name]&&data.monsters[name] > 0){
@@ -117,5 +145,11 @@ export default class Achievements extends cc.Component {
         }
         Achievements.saveAchievementData(data);
     }
-    // update (dt) {}
+    update (dt) {
+        if(this.isBossLoaded&&this.isMonsterLoaded){
+            this.isBossLoaded = true;
+            this.isMonsterLoaded = true;
+            this.show();
+        }
+    }
 }

@@ -29,6 +29,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon000",
         "stab": 1,
         "common": {
@@ -53,6 +54,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon001",
         "common": {
             "damageMin": 1,
@@ -76,6 +78,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon002",
         "common": {
             "damageMin": 2,
@@ -99,6 +102,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon003",
         "common": {
             "damageMin": 3,
@@ -123,6 +127,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon004",
         "common": {
             "damageMin": 1,
@@ -148,6 +153,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon005",
         "common": {
             "damageMin": 4,
@@ -172,6 +178,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon006",
         "common": {
             "damageMin": 1,
@@ -197,6 +204,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon007",
         "isReflect":1,
         "common": {
@@ -221,6 +229,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon008",
         "common": {
             "damageMin": 1,
@@ -245,6 +254,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ff5800",
         "img": "weapon009",
         "common": {
             "damageMin": 0,
@@ -269,6 +279,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#e0f0ec",
         "img": "weapon010",
         "common": {
             "damageMin": 0,
@@ -293,6 +304,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#fdcc00",
         "img": "weapon011",
         "common": {
             "damageMin": 1,
@@ -320,6 +332,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#7f7963",
         "img": "weapon012",
         "common": {
             "damageMin": 1,
@@ -347,6 +360,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#86726d",
         "img": "weapon013",
         "common": {
             "damageMin": 1,
@@ -372,6 +386,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon014",
         "common": {
             "damageMin": 1,
@@ -399,6 +414,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#cbdbfc",
         "img": "weapon015",
         "common": {
             "damageMin": 1,
@@ -423,6 +439,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#6d492e",
         "img": "weapon016",
         "bulletArcExNum":2,
         "exBulletTypeAttack":"bullet029",
@@ -455,6 +472,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon017",
         "exBulletCombo3":1,
         "exBulletTypeAttack":"bullet030",
@@ -484,6 +502,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
         "img": "weapon018",
         "exBulletCombo2":1,
         "exBulletTypeAttack":"bullet032",
@@ -513,6 +532,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#333333",
         "img": "weapon019",
         "exBulletCombo1":1,
         "exBulletTypeAttack":"bullet034",
@@ -542,6 +562,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#991212",
         "img": "weapon020",
         "common": {
             "damageMin": 3,
@@ -567,6 +588,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#cad1c8",
         "img": "weapon021",
         "exBulletCombo2":0,
         "exBulletOffsetX":0,
@@ -595,6 +617,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
+        "lightcolor": "#fe931f",
         "img": "weapon022",
         "exBulletCombo2":0,
         "exBulletOffsetX":0,

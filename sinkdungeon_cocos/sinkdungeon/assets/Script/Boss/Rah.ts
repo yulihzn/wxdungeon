@@ -9,6 +9,7 @@ import Skill from "../Utils/Skill";
 import { EventConstant } from "../EventConstant";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import Achievements from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -69,6 +70,7 @@ export default class Rah extends Boss {
         if (this.isDied) {
             return;
         }
+        Achievements.addMonsterKillAchievement(this.data.resName);
         this.node.runAction(cc.fadeOut(3));
         this.isDied = true;
         this.dungeon.fog.runAction(cc.scaleTo(1, 1.5));

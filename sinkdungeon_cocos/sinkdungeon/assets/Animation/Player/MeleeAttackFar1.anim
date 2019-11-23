@@ -48,7 +48,7 @@
               {
                 "frame": 0.5833333333333334,
                 "value": {
-                  "__uuid__": "318bed80-b551-4eef-8d2d-84c8ce9fe3e8"
+                  "__uuid__": "d1cc8d7c-779c-4d02-b36e-6a527a0da16e"
                 }
               },
               {
@@ -88,7 +88,7 @@
           "x": [
             {
               "frame": 0,
-              "value": 0
+              "value": 32
             }
           ],
           "scaleX": [

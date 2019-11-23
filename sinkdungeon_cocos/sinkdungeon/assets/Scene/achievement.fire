@@ -183,7 +183,7 @@
       "array": [
         0,
         0,
-        257.1154479980469,
+        256.3299865722656,
         0,
         0,
         0,
@@ -558,7 +558,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 1200,
-      "height": 720
+      "height": 128
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -909,9 +909,9 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 1200,
-      "height": 720
+      "height": 128
     },
-    "_resize": 2,
+    "_resize": 1,
     "_N$layoutType": 3,
     "_N$padding": 0,
     "_N$cellSize": {
