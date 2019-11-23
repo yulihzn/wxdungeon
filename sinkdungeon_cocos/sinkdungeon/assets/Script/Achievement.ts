@@ -19,6 +19,8 @@ export default class Achievements extends cc.Component {
     readonly BOSS_SIZE = 9;
     @property(cc.Node)
     content: cc.Node = null;
+    @property(cc.Node)
+    contentBottom: cc.Node = null;
     @property(cc.Prefab)
     prefab: cc.Prefab = null;
     @property(cc.Label)
@@ -33,9 +35,14 @@ export default class Achievements extends cc.Component {
 
     onLoad() {
         this.content.removeAllChildren();
+        this.contentBottom.removeAllChildren();
         for(let i =0;i < this.MONSTER_SIZE+this.BOSS_SIZE;i++){
             let icon = cc.instantiate(this.prefab);
-            this.content.addChild(icon)
+            if(i>this.MONSTER_SIZE-1){
+                this.contentBottom.addChild(icon);
+            }else{
+                this.content.addChild(icon);
+            }
             let sprite = icon.getChildByName('sprite');
             sprite.color = cc.color(0,0,0);
             this.iconList.push(sprite.getComponent(cc.Sprite));
@@ -94,11 +101,11 @@ export default class Achievements extends cc.Component {
                 if(i>this.MONSTER_SIZE-1){
                     this.iconList[i].spriteFrame = this.bossSpriteFrames[name];
                 }
-                let labe = this.iconList[i].node.getComponentInChildren(cc.Label);
+                let labe = this.iconList[i].node.parent.getComponentInChildren(cc.Label);
                 labe.string = ``;
                 if(data&&data.monsters&&data.monsters[name]&&data.monsters[name] > 0){
                     this.iconList[i].node.color = cc.color(255,255,255);
-                    labe.string = `x${data.monsters[name]}`;
+                    labe.string = `${data.monsters[name]}`;
                 }else{
                     this.iconList[i].node.color = cc.color(0,0,0);
                     
