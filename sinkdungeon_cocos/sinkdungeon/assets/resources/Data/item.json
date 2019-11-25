@@ -1,21 +1,53 @@
-{"item000": {
+{
+    "emptyitem": {
+        "nameCn": "空",
+        "nameEn": "empty",
+        "resName": "emptyitem",
+        "price": 0
+    },
+    "heart": {
         "nameCn": "红心",
         "nameEn": "heart",
-        "resName": "heart"
+        "resName": "heart",
+        "price": 20
     },
-    "item001": {
+    "ammo": {
         "nameCn": "子弹",
         "nameEn": "ammo",
-        "resName": "ammo"
+        "resName": "ammo",
+        "price": 30
     },
-    "item002": {
+    "redcapsule": {
         "nameCn": "红色攻击药丸",
         "nameEn": "red capsule",
-        "resName": "redcapsule"
+        "resName": "redcapsule",
+        "price": 10
     },
-    "item003": {
+    "bluecapsule": {
         "nameCn": "蓝色加速药丸",
         "nameEn": "blue capsule",
-        "resName": "bluecapsule"
+        "resName": "bluecapsule",
+        "price": 10
+    },
+    "bottle001": {
+        "nameCn": "治疗瓶",
+        "nameEn": "healing bottle",
+        "resName": "bottle001",
+        "canSave":1,
+        "price": 30
+    },
+    "bottle002": {
+        "nameCn": "移速瓶",
+        "nameEn": "move speed bottle",
+        "resName": "bottle002",
+        "canSave":1,
+        "price": 20
+    },
+    "bottle003": {
+        "nameCn": "攻速瓶",
+        "nameEn": "attack speed bottle",
+        "resName": "bottle003",
+        "canSave":1,
+        "price": 20
     }
 }

@@ -1,4 +1,5 @@
 import EquipmentData from "./EquipmentData";
+import ItemData from "./ItemData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,15 +15,26 @@ import EquipmentData from "./EquipmentData";
 export default class ShopTableData {
     pos:cc.Vec2;
     equipdata:EquipmentData;
+    itemdata:ItemData;
     price = 60;
+    shopType = 0;//0:equip 1:item
     isSaled = false;//是否卖出
     valueCopy(data:ShopTableData){
         this.pos = data.pos?cc.v2(data.pos.x,data.pos.y):cc.v2(0,0);
         if(!this.equipdata){
             this.equipdata = new EquipmentData();
         }
-        this.equipdata.valueCopy(data.equipdata);
+        if(!this.itemdata){
+            this.itemdata = new ItemData();
+        }
+        if(data.equipdata){
+            this.equipdata.valueCopy(data.equipdata);
+        }
+        if(data.itemdata){
+            this.itemdata.valueCopy(data.itemdata);
+        }
         this.price = this.price;
         this.isSaled = data.isSaled;
+        this.shopType = data.shopType;
     }
 }

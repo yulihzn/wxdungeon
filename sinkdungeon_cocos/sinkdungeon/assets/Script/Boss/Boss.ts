@@ -8,6 +8,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 import Actor from "../Base/Actor";
 import Shooter from "../Shooter";
 import FromData from "../Data/FromData";
+import Item from "../Item/Item";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -86,8 +87,8 @@ export default abstract class Boss extends Actor {
     getLoot(){
         if(this.dungeon){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 19 } });
-            cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
-            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
+            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
+            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.AMMO } });
             this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos,null,3);
         }
     }

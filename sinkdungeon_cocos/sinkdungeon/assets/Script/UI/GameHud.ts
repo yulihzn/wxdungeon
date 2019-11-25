@@ -66,6 +66,7 @@ export default class GameHud extends cc.Component {
             this.pauseGame();
         });
     }
+  
     private statusUpdate(data: PlayerData) {
         if (!this.playerInfoDialog) {
             return;
@@ -110,6 +111,9 @@ export default class GameHud extends cc.Component {
                 this.clock.string = `${Logic.time}`;
             }
         }
+    }
+    useItem(){
+
     }
     changeTime() {
         this.second = this.second + 1;

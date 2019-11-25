@@ -188,11 +188,6 @@ export default class Monster extends Actor {
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
         this.bodySprite.spriteFrame = spriteFrame;
-        // body.width = spriteFrame.getRect().width;
-        // body.height = spriteFrame.getRect().height;
-        let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-        // body.width = body.width * scaleNum;
-        // body.height = body.height * scaleNum;
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
@@ -550,11 +545,11 @@ export default class Monster extends Actor {
             } else if (rand >= 0.825 && rand < 0.85) {
                 this.dungeon.addItem(this.node.position.clone(), Item.AMMO);
             } else if (rand >= 0.85 && rand < 0.875) {
-                this.dungeon.addItem(this.node.position.clone(), Item.REDCAPSULE);
+                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_ATTACKSPEED);
             } else if (rand >= 0.875 && rand < 0.9) {
-                this.dungeon.addItem(this.node.position.clone(), Item.BLUECAPSULE);
+                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_MOVESPEED);
             } else if (rand >= 0.9 && rand < 0.925) {
-                // this.dungeon.addItem(this.node.position.clone(), Item.SHIELD);
+                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_HEALING);
             } else if (rand >= 0.925 && rand < 1) {
                 this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 1);
             }
@@ -634,7 +629,9 @@ export default class Monster extends Actor {
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true)
                 }
-                this.showCircle();
+                if(!this.specialSkill.IsExcuting){
+                    this.showCircle();
+                }
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();

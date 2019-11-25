@@ -109,7 +109,7 @@ export default class KeyboardController extends cc.Component {
             cc.director.emit(EventConstant.PLAYER_REMOTEATTACK);
         }
         if(this.isC){
-            cc.director.emit(EventConstant.PLAYER_USEITEM);
+            cc.director.emit(EventConstant.PLAYER_TRIGGER);
         }
         if(this.isD){
             cc.director.emit(EventConstant.PLAYER_SKILL);

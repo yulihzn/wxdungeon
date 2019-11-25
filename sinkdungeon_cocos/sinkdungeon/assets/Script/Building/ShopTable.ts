@@ -22,6 +22,8 @@ const { ccclass, property } = cc._decorator;
 export default class ShopTable extends Building {
 
     // LIFE-CYCLE CALLBACKS:
+    static readonly EQUIPMENT = 0;
+    static readonly ITEM = 1;
     info: cc.Node;
     label: cc.Label;
     data: ShopTableData = new ShopTableData();
@@ -39,7 +41,11 @@ export default class ShopTable extends Building {
         if (this.node.parent && !this.data.isSaled) {
             let dungeon = this.node.parent.getComponent(Dungeon);
             if (dungeon) {
-                dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, this.data.equipdata, 3, this);
+                if(this.data.shopType == ShopTable.EQUIPMENT){
+                    dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, this.data.equipdata, 3, this);
+                }else if(this.data.shopType == ShopTable.ITEM){
+                    dungeon.addItem(Dungeon.getPosInMap(this.data.pos),Logic.getRandomItemType(),this);
+                }
             }
         }
     }

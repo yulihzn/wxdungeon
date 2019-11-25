@@ -141,14 +141,11 @@ export default class Dungeon extends cc.Component {
         cc.director.on(EventConstant.DUNGEON_ADD_COIN, (event) => {
             this.addCoin(event.detail.pos, event.detail.count);
         })
-        cc.director.on(EventConstant.DUNGEON_ADD_HEART, (event) => {
-            this.addItem(event.detail.pos, Item.HEART);
+        cc.director.on(EventConstant.DUNGEON_ADD_ITEM, (event) => {
+            this.addItem(event.detail.pos, event.detail.res);
         })
         cc.director.on(EventConstant.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
-        })
-        cc.director.on(EventConstant.DUNGEON_ADD_AMMO, (event) => {
-            this.addItem(event.detail.pos, Item.AMMO);
         })
         cc.director.on(EventConstant.DUNGEON_SHAKEONCE, (event) => {
             if (this.anim) {
@@ -404,6 +401,18 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'A5') {
                         this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.GOLDAPPLE);
                     }
+                    //治疗瓶
+                    if (mapData[i][j] == 'Aa') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_HEALING);
+                    }
+                    //移速瓶
+                    if (mapData[i][j] == 'Ab') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_MOVESPEED);
+                    }
+                    //攻速瓶
+                    if (mapData[i][j] == 'Ac') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_ATTACKSPEED);
+                    }
                 }
                 //生成商店
                 if (mapData[i][j] == 'S0') {
@@ -411,12 +420,19 @@ export default class Dungeon extends cc.Component {
                     table.parent = this.node;
                     let ta = table.getComponent(ShopTable);
                     ta.setPos(cc.v2(i, j));
+                    ta.data.shopType = Random.getHalfChance()?ShopTable.EQUIPMENT:ShopTable.ITEM;
                     let currshoptables = Logic.mapManager.getCurrentMapShopTables();
                     if (currshoptables) {
                         for (let temptable of currshoptables) {
                             if (temptable.pos.equals(ta.data.pos)) {
-                                ta.data.equipdata = temptable.equipdata.clone();
+                                if(temptable.equipdata){
+                                    ta.data.equipdata = temptable.equipdata.clone();
+                                }
+                                if(temptable.itemdata){
+                                    ta.data.itemdata = temptable.itemdata.clone();
+                                }
                                 ta.data.isSaled = temptable.isSaled;
+                                ta.data.shopType = temptable.shopType;
                                 ta.data.price = temptable.price;
                             }
                         }
@@ -603,7 +619,7 @@ export default class Dungeon extends cc.Component {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
-    addItem(pos: cc.Vec2, resName: string) {
+    addItem(pos: cc.Vec2, resName: string,shopTable?: ShopTable) {
         if (!this.item) {
             return;
         }
@@ -612,8 +628,7 @@ export default class Dungeon extends cc.Component {
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
-        item.getComponent(Item).init(resName, indexpos.clone());
-
+        item.getComponent(Item).init(resName, indexpos.clone(),shopTable);
         let data = item.getComponent(Item).data;
         let curritems = Logic.mapManager.getCurrentMapItems();
         if (curritems) {

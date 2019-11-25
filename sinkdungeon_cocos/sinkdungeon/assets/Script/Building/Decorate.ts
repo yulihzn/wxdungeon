@@ -5,6 +5,7 @@ import Building from "./Building";
 import { EventConstant } from "../EventConstant";
 import Random from "../Utils/Random";
 import AudioPlayer from "../Utils/AudioPlayer";
+import Item from "../Item/Item";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -71,9 +72,9 @@ export default class Decorate extends Building {
         if(rand>0.7&&rand<0.8){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
         }else if (rand >= 0.8 && rand < 0.825) {
-            cc.director.emit(EventConstant.DUNGEON_ADD_HEART, { detail: { pos: this.node.position } });
+            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
         } else if (rand >= 0.825 && rand < 0.85) {
-            cc.director.emit(EventConstant.DUNGEON_ADD_AMMO, { detail: { pos: this.node.position } });
+            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.AMMO } });
         } 
     }
     reset() {

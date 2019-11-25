@@ -17,6 +17,9 @@ import EquipmentDialog from './Equipment/EquipmentDialog';
 import InventoryManager from './Manager/InventoryManager';
 import Dungeon from './Dungeon';
 import FromData from './Data/FromData';
+import ItemData from './Data/ItemData';
+import Item from './Item/Item';
+import Random from './Utils/Random';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -42,6 +45,12 @@ export default class Inventory extends cc.Component {
     shoes: cc.Sprite = null;
     @property(cc.Sprite)
     cloak: cc.Sprite = null;
+    @property(cc.Sprite)
+    item1: cc.Sprite = null;
+    @property(cc.Sprite)
+    item2: cc.Sprite = null;
+    @property(cc.Sprite)
+    item3: cc.Sprite = null;
 
     @property(EquipmentDialog)
     equipmentDialog: EquipmentDialog = null;
@@ -66,17 +75,19 @@ export default class Inventory extends cc.Component {
         this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventConstant.PLAYER_CHANGEEQUIPMENT
             , (event) => { this.refreshEquipment(event.detail.equipData, true) });
-            if(this.equipmentGroundDialog){this.equipmentGroundDialog.hideDialog();}
+        if (this.equipmentGroundDialog) { this.equipmentGroundDialog.hideDialog(); }
+        cc.director.on(EventConstant.PLAYER_CHANGEITEM
+            , (event) => { this.refreshItem(event.detail.itemData) });
         cc.director.on(EventConstant.HUD_GROUND_EQUIPMENT_INFO_SHOW
             , (event) => {
-                if(this.equipmentGroundDialog){
+                if (this.equipmentGroundDialog) {
                     this.equipmentGroundDialog.refreshDialog(event.detail.equipData);
                     this.equipmentGroundDialog.showDialog();
                 }
             });
         cc.director.on(EventConstant.HUD_GROUND_EQUIPMENT_INFO_HIDE
             , (event) => {
-                if(this.equipmentGroundDialog){
+                if (this.equipmentGroundDialog) {
                     this.equipmentGroundDialog.hideDialog();
                 }
             });
@@ -109,9 +120,10 @@ export default class Inventory extends cc.Component {
         this.refreshEquipment(this.inventoryManager.gloves, false);
         this.refreshEquipment(this.inventoryManager.shoes, false);
         this.refreshEquipment(this.inventoryManager.cloak, false);
+        this.refreshItemRes();
     }
     addSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
-        sprite.node.on(cc.Node.EventType.TOUCH_START, () => {
+        sprite.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
             if (sprite.spriteFrame == null) {
                 return;
             }
@@ -129,10 +141,10 @@ export default class Inventory extends cc.Component {
             this.equipmentDialog.refreshDialog(equipData)
             this.equipmentDialog.showDialog();
         })
-        sprite.node.on(cc.Node.EventType.TOUCH_END, () => {
+        sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentDialog.hideDialog();
         })
-        sprite.node.on(cc.Node.EventType.TOUCH_CANCEL, () => {
+        sprite.node.parent.on(cc.Node.EventType.TOUCH_CANCEL, () => {
             this.equipmentDialog.hideDialog();
         })
     }
@@ -140,8 +152,8 @@ export default class Inventory extends cc.Component {
         let index = parseInt(customEventData);
         this.tabselect.y = index * 64;
         let tab: cc.Node = event.currentTarget;
-        cc.director.emit(EventConstant.INVENTORY_CHANGEITEM
-            , { detail: { spriteFrame: tab.getComponentInChildren(cc.Sprite).spriteFrame } })
+        // cc.director.emit(EventConstant.INVENTORY_CHANGEITEM
+        //     , { detail: { spriteFrame: tab.getComponentInChildren(cc.Sprite).spriteFrame } })
 
     }
     setEquipment(equipDataNew: EquipmentData, equipmentData: EquipmentData, isChange: boolean) {
@@ -278,6 +290,59 @@ export default class Inventory extends cc.Component {
         }
         if (this.isTimeDelay(dt, this.inventoryManager.cloak)) {
             this.addPlayerStatus(this.inventoryManager.cloak);
+        }
+    }
+
+    //item button
+    userItem(event, itemIndex) {
+        let item = this.inventoryManager.itemList[itemIndex].clone();
+        this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
+        this.refreshItemRes();
+        cc.director.emit(EventConstant.PLAYER_USEITEM, { detail: { itemData: item } });
+    }
+    refreshItem(itemDataNew: ItemData) {
+        if (!this.node) {
+            return;
+        }
+        let isRefreshed = false;
+
+        //填补空缺位置
+        for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
+            let item = this.inventoryManager.itemList[i];
+            if (item.resName == Item.EMPTY) {
+                item.valueCopy(itemDataNew);
+                isRefreshed = true;
+                break;
+            }
+        }
+        //先进先出
+        if (!isRefreshed) {
+            let item0 = this.inventoryManager.itemList[0].clone();
+            let item1 = this.inventoryManager.itemList[1].clone();
+            let item2 = this.inventoryManager.itemList[2].clone();
+            this.inventoryManager.itemList[0].valueCopy(item1);
+            this.inventoryManager.itemList[1].valueCopy(item2);
+            this.inventoryManager.itemList[2].valueCopy(itemDataNew);
+            this.setItem(item0);
+        }
+        this.refreshItemRes();
+    }
+    private refreshItemRes() {
+        let itemSpriteList = [this.item1, this.item2, this.item3];
+        for (let i = 0; i < itemSpriteList.length; i++) {
+            let item = this.inventoryManager.itemList[i];
+            itemSpriteList[i].spriteFrame = Logic.spriteFrames[item.resName];
+        }
+    }
+    setItem(itemData: ItemData) {
+        let p = this.dungeon.player.pos.clone();
+        if (p.x < 1) {
+        } else {
+            p.x -= 1;
+        }
+        if (itemData.resName != Item.EMPTY) {
+            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM
+                , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName } })
         }
     }
 }

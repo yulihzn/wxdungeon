@@ -120,7 +120,7 @@ export default class MapManager {
     /** 获取当前房间地图数据copy*/
     public getCurrentMapData(): MapData {
         let room = this.getCurrentRoom();
-        if(!room.map){
+        if(!room.map||room.map == null){
             let index = room.roomType - 1;
             let r = this.getAllFileRooms()[this.roomStrs[index]];
             if(r){

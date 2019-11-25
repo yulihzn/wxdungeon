@@ -187,20 +187,14 @@
         }
     },
     "status017": {
-        "nameCn": "普通盾牌防御(废弃)",
-        "nameEn": "defence perfect",
-        "spriteFrameName": "icondefence",
+        "nameCn": "药瓶恢复",
+        "nameEn": "healing",
+        "spriteFrameName": "iconhealthrecovery",
         "statusType": 17,
         "desc": "",
-        "duration": 1,
-        "common": {
-            "defence": 9999,
-            "iceDefence": 100,
-            "fireDefence": 100,
-            "lighteningDefence": 100,
-            "toxicDefence": 100,
-            "curseDefence": 100
-        }
+        "duration": 3,
+        "realDamageDirect": -1,
+        "common": {}
     },
     "status018": {
         "nameCn": "加长盾牌防御(废弃)",

@@ -4,6 +4,7 @@ const {ccclass, property} = cc._decorator;
 export class EventConstant extends cc.Component{
     public static readonly PLAYER_MOVE = 'PLAYER_MOVE';
     public static readonly PLAYER_ROTATE = 'PLAYER_ROTATE';
+    public static readonly PLAYER_TRIGGER = 'PLAYER_TRIGGER';
     public static readonly PLAYER_USEITEM = 'PLAYER_USEITEM';
     public static readonly PLAYER_SKILL = 'PLAYER_SKILL';
     public static readonly PLAYER_ATTACK = 'PLAYER_ATTACK';
@@ -11,7 +12,7 @@ export class EventConstant extends cc.Component{
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM';
     public static readonly PLAYER_TAPTIPS = 'PLAYER_TAPTIPS';
     public static readonly PLAYER_TAKEDAMAGE= 'PLAYER_TAKEDAMAGE';
-    public static readonly PLAYER_CHANGEWEAPON= 'PLAYER_CHANGEWEAPON';
+    public static readonly PLAYER_CHANGEITEM= 'PLAYER_CHANGEITEM';
     public static readonly PLAYER_CHANGEEQUIPMENT= 'PLAYER_CHANGEEQUIPMENT';
     public static readonly PLAYER_STATUSUPDATE = 'PLAYER_STATUSUPDATE';
     public static readonly INVENTORY_CHANGEITEM = 'INVENTORY_CHANGEITEM';
@@ -27,10 +28,9 @@ export class EventConstant extends cc.Component{
     public static readonly HUD_GROUND_EQUIPMENT_INFO_SHOW = 'HUD_GROUND_EQUIPMENT_INFO_SHOW';
     public static readonly HUD_GROUND_EQUIPMENT_INFO_HIDE = 'HUD_GROUND_EQUIPMENT_INFO_HIDE';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
+    public static readonly DUNGEON_ADD_ITEM = 'DUNGEON_ADD_ITEM';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';
     public static readonly DUNGEON_ADD_COIN = 'DUNGEON_ADD_COIN';
-    public static readonly DUNGEON_ADD_HEART = 'DUNGEON_ADD_HEART';
-    public static readonly DUNGEON_ADD_AMMO = 'DUNGEON_ADD_AMMO';
     public static readonly DUNGEON_ADD_FALLSTONE = 'DUNGEON_ADD_FALLSTONE';
     public static readonly MONSTER_STATUSUPDATE = 'MONSTER_STATUSUPDATE';
     public static readonly BOSS_ADDSLIME = 'BOSS_ADDSLIME';

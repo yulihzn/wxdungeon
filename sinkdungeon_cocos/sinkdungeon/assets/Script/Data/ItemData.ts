@@ -20,8 +20,10 @@ export default class ItemData extends BaseData {
     nameEn: string = '';
     duration: number = 0;//持续时间
     desc: string = '';
-    resName:string = '';
+    resName:string = 'emptyitem';
+    price:number = 0;
     isTaken = false;
+    canSave = 0;
 
     public valueCopy(data: ItemData): void {
         this.uuid = data.uuid?data.uuid:'';
@@ -29,9 +31,11 @@ export default class ItemData extends BaseData {
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
         this.duration = data.duration;
-        this.resName = data.resName;
+        this.resName = data.resName?data.resName:'emptyitem';
         this.desc = data.desc;
         this.isTaken = data.isTaken?data.isTaken:false;
+        this.canSave = data.canSave?data.canSave:0;
+        this.price = data.price?data.price:0;
       
     }
     public clone(): ItemData {
@@ -44,6 +48,8 @@ export default class ItemData extends BaseData {
         e.desc = this.desc;
         e.resName = this.resName;
         e.isTaken = this.isTaken;
+        e.canSave = this.canSave;
+        e.price = this.price;
         return e;
     }
     

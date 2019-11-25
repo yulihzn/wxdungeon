@@ -70,6 +70,10 @@ export default class ProfileManager{
         for(let i =0;i<data.inventoryManager.list.length;i++){
             this.data.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
         }
+        //玩家物品列表
+        for(let i=0;i<data.inventoryManager.itemList.length;i++){
+            this.data.inventoryManager.itemList[i].valueCopy(data.inventoryManager.itemList[i]);
+        }
         //加载技能
         for(let i =0;i<data.talentList.length;i++){
             let td = new TalentData();

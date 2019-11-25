@@ -247,6 +247,12 @@ export default class Loading extends cc.Component {
                 cc.error(err);
             } else {
                 Logic.items = resource.json;
+                Logic.itemNameList = new Array();
+                for (let key in resource.json) {
+                    if(Logic.items[key].canSave){
+                        Logic.itemNameList.push(key);
+                    }
+                }
                 this.isItemsLoaded = true;
                 cc.log('items loaded');
             }

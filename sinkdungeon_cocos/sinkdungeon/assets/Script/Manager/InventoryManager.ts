@@ -1,5 +1,6 @@
 import EquipmentData from "../Data/EquipmentData";
 import DamageData from "../Data/DamageData";
+import ItemData from "../Data/ItemData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,9 +25,14 @@ export default class InventoryManager {
     //buffer效果
     buffer:EquipmentData = new EquipmentData();
     list:EquipmentData[] = [];
+    itemList:ItemData[] = [];
+    
    
     constructor(){
         this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.buffer,this.remote];
+        this.itemList.push(new ItemData());
+        this.itemList.push(new ItemData());
+        this.itemList.push(new ItemData());
     }
     //初始速度300,最大速度600 最小速度为10
     getMoveSpeed():number{

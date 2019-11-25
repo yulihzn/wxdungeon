@@ -203,7 +203,7 @@ export default class Controller extends cc.Component {
                 cc.director.emit(EventConstant.PLAYER_REMOTEATTACK);
             }
             if (this.interactActionTouched) {
-                cc.director.emit(EventConstant.PLAYER_USEITEM);
+                cc.director.emit(EventConstant.PLAYER_TRIGGER);
             }
             if (this.skillActionTouched) {
                 cc.director.emit(EventConstant.PLAYER_SKILL);

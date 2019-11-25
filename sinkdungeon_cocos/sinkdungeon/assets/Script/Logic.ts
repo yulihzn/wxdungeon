@@ -37,6 +37,7 @@ export default class Logic extends cc.Component {
     static readonly CHAPTER04: number = 4;
     static equipments: { [key: string]: EquipmentData } = null;
     static equipmentNameList:string[] = [];
+    static itemNameList:string[] = [];
     //怪物json
     static monsters: { [key: string]: MonsterData } = null;
     //图片资源
@@ -45,7 +46,7 @@ export default class Logic extends cc.Component {
     static debuffs: { [key: string]: StatusData } = null;
     //子弹json
     static bullets: { [key: string]: BulletData } = null;
-    //子弹json
+    //物品json
     static items: { [key: string]: ItemData } = null;
 
     static level = 0;
@@ -227,5 +228,9 @@ export default class Logic extends cc.Component {
     /**随机装备名字 */
     static getRandomEquipType():string{
         return Logic.equipmentNameList[Random.getRandomNum(1,Logic.equipmentNameList.length-1)];
+    }
+    /**随机可拾取物品 */
+    static getRandomItemType():string{
+        return Logic.itemNameList[Random.getRandomNum(1,Logic.itemNameList.length-1)];
     }
 }
