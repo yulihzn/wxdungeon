@@ -19,7 +19,8 @@ export default class ItemData extends BaseData {
     nameCn: string = '';
     nameEn: string = '';
     duration: number = 0;//持续时间
-    desc: string = '';
+    desc: string = '';//描述
+    info:string='';//功能介绍
     resName:string = 'emptyitem';
     price:number = 0;
     isTaken = false;
@@ -32,7 +33,8 @@ export default class ItemData extends BaseData {
         this.nameEn = data.nameEn;
         this.duration = data.duration;
         this.resName = data.resName?data.resName:'emptyitem';
-        this.desc = data.desc;
+        this.info = data.info?data.info:'';
+        this.desc = data.desc?data.desc:'';
         this.isTaken = data.isTaken?data.isTaken:false;
         this.canSave = data.canSave?data.canSave:0;
         this.price = data.price?data.price:0;
@@ -45,6 +47,7 @@ export default class ItemData extends BaseData {
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
         e.duration = this.duration;
+        e.info = this.info;
         e.desc = this.desc;
         e.resName = this.resName;
         e.isTaken = this.isTaken;

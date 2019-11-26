@@ -7,6 +7,7 @@ import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import ShopTable from "../Building/ShopTable";
+import ItemDialog from "./ItemDialog";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,6 +37,8 @@ export default class Item extends cc.Component {
     anim:cc.Animation;
     data:ItemData = new ItemData();
     shopTable: ShopTable;
+    @property(ItemDialog)
+    itemDialog:ItemDialog = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -60,6 +63,7 @@ export default class Item extends cc.Component {
             sprite.node.width = spriteFrame.getRect().width*2;
             sprite.node.height = spriteFrame.getRect().height*2;
         }
+        this.itemDialog.refreshDialog(this.data);
     }
     public taken(player:Player):void{
         if(!this.data.isTaken && this.anim){
@@ -87,6 +91,7 @@ export default class Item extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentItemsArr(newlist);
+        this.itemDialog.node.active = false;
     }
     static userIt(data:ItemData,player:Player){
         let from = FromData.getClone(data.nameCn,data.resName);
@@ -104,9 +109,21 @@ export default class Item extends cc.Component {
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let player = other.node.getComponent(Player);
-        if(player && !this.data.canSave){
-            this.taken(player);
+        if(player){
+            if(this.data.canSave){
+                this.itemDialog.showDialog();
+            }else{
+                this.taken(player);
+            }
+        }
+        
+    }
+    onCollisionExit(other: cc.Collider, self: cc.Collider) {
+        let player = other.node.getComponent(Player);
+        if (player) {
+            this.itemDialog.hideDialog();
         }
     }
+  
     // update (dt) {}
 }

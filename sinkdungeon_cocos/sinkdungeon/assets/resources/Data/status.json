@@ -193,7 +193,7 @@
         "statusType": 17,
         "desc": "",
         "duration": 3,
-        "realDamageDirect": -1,
+        "realDamageOvertime": -1,
         "common": {}
     },
     "status018": {

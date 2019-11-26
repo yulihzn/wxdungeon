@@ -15,7 +15,7 @@ import EquipmentData from "../Data/EquipmentData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class EquipmentDialogNew extends cc.Component {
+export default class EquipmentDialog extends cc.Component {
     @property(cc.Label)
     labelTile: cc.Label = null;
     @property(cc.Label)
@@ -34,8 +34,6 @@ export default class EquipmentDialogNew extends cc.Component {
     infoSuit3: cc.Label = null;//套装附加词条3
     @property(cc.Label)
     infoDesc: cc.Label = null;//描述
-    alpha = 0;
-    showSpeed = 3;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -43,9 +41,8 @@ export default class EquipmentDialogNew extends cc.Component {
 
     start() {
         // Logic.setAlias(this.node);
-        this.alpha = 0;
         this.node.opacity = 0;
-        this.showSpeed = 30;
+        this.node.active = false;
     }
     refreshDialog(equipment: EquipmentData) {
         this.labelTile.string = equipment.prefix  + equipment.nameCn;
@@ -74,11 +71,11 @@ export default class EquipmentDialogNew extends cc.Component {
         this.infoSuit3.node.active = this.infoSuit3.string.length>0;
     }
     showDialog() {
-        this.showSpeed = 3;
+        this.node.active = true;
         this.node.opacity = 255;
     }
     hideDialog() {
-        this.showSpeed = 30;
+        this.node.active = false;
         this.node.opacity = 0;
     }
 
