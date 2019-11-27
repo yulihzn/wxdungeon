@@ -38,12 +38,12 @@
         "price": 10
     },
     "bottle001": {
-        "nameCn": "攻击瓶",
-        "nameEn": "attack bottle",
+        "nameCn": "回复瓶",
+        "nameEn": "attack speed bottle",
         "resName": "bottle001",
         "canSave":1,
-        "info":"攻击力+5",
-        "desc":"神欲使之灭亡,必先使之疯狂",
+        "info":"回复3点生命",
+        "desc":"像油湖水一样的诡异绿色，感受到一丝生命力",
         "price": 30
     },
     "bottle002": {
@@ -56,12 +56,12 @@
         "price": 20
     },
     "bottle003": {
-        "nameCn": "回复瓶",
-        "nameEn": "attack speed bottle",
+        "nameCn": "攻击瓶",
+        "nameEn": "attack bottle",
         "resName": "bottle003",
         "canSave":1,
-        "info":"回复3点生命",
-        "desc":"像油湖水一样的诡异绿色，感受到一丝生命力",
+        "info":"攻击力+5",
+        "desc":"神欲使之灭亡,必先使之疯狂",
         "price": 30
     }
 }
