@@ -29,7 +29,6 @@ export default class ItemDialog extends cc.Component {
 
     start() {
         this.node.opacity = 0;
-        this.node.active = false;
     }
     refreshDialog(item: ItemData) {
         this.labelTitle.string = item.nameCn;
@@ -38,10 +37,8 @@ export default class ItemDialog extends cc.Component {
     }
     showDialog() {
         this.node.opacity = 255;
-        this.node.active = true;
     }
     hideDialog() {
         this.node.opacity = 0;
-        this.node.active = false;
     }
 }

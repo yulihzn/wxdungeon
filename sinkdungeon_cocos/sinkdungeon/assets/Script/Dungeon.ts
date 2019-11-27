@@ -158,6 +158,7 @@ export default class Dungeon extends cc.Component {
         //设置雾气层级
         this.fog.zIndex = 9000;
         this.fog.scale = 1.5;
+        Logic.changeDungeonSize();
         let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
@@ -436,10 +437,11 @@ export default class Dungeon extends cc.Component {
                                 ta.data.price = temptable.price;
                             }
                         }
+                        ta.showItem();
                     } else {
+                        ta.showItem();
                         shopTables.push(ta.data);
                     }
-                    ta.showItem();
                 }
                 //生成下一层传送门(暂时废弃)
                 if (mapData[i][j] == 'P0') {

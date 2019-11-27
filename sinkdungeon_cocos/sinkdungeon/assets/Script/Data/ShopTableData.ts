@@ -33,7 +33,7 @@ export default class ShopTableData {
         if(data.itemdata){
             this.itemdata.valueCopy(data.itemdata);
         }
-        this.price = this.price;
+        this.price = data.price;
         this.isSaled = data.isSaled;
         this.shopType = data.shopType;
     }

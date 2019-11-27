@@ -53,7 +53,8 @@ export default class Item extends cc.Component {
         this.data.pos = pos;
         if (shopTable) {
             this.shopTable = shopTable;
-            shopTable.data.itemdata = Logic.items[resName];
+            shopTable.data.itemdata =new ItemData();
+            shopTable.data.itemdata.valueCopy(Logic.items[resName]);
             shopTable.data.price = this.data.price;
         }
         let spriteFrame = Logic.spriteFrames[this.data.resName];

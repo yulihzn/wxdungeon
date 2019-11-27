@@ -220,7 +220,7 @@
         "desc": "",
         "duration": 1,
         "common": {
-            "moveSpeed": 200
+            "moveSpeed": 100
         }
     },
     "status020": {

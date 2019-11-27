@@ -71,11 +71,9 @@ export default class EquipmentDialog extends cc.Component {
         this.infoSuit3.node.active = this.infoSuit3.string.length>0;
     }
     showDialog() {
-        this.node.active = true;
         this.node.opacity = 255;
     }
     hideDialog() {
-        this.node.active = false;
         this.node.opacity = 0;
     }
 

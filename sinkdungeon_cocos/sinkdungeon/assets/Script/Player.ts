@@ -77,7 +77,6 @@ export default class Player extends Actor {
     isMoving = false;//是否移动中
     isAttacking = false;//是否近战攻击中
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
-    isHeavyMeleeAttacking = false;//是否是重型近战武器,比如大剑
     private sprite: cc.Node;
     anim: cc.Animation;
     isDied = false;//是否死亡
@@ -424,10 +423,6 @@ export default class Player extends Actor {
                 speed = 300;
             }
         }
-        if (!this.meleeWeapon.isStab && this.meleeWeapon.isFar) {
-            this.isHeavyMeleeAttacking = true;
-            this.scheduleOnce(() => { this.isHeavyMeleeAttacking = false }, 1);
-        }
         if (speed > PlayerData.DefAULT_SPEED * 10) { speed = PlayerData.DefAULT_SPEED * 10; }
         let spritePos = this.sprite.position.clone();
         let action = cc.sequence(cc.moveBy(0.1, -pos.x, -pos.y), cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
@@ -530,21 +525,22 @@ export default class Player extends Actor {
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
                 pos = pos.mul(0.6);
-            } else {
+            } else if (this.meleeWeapon.isFar && this.meleeWeapon.isStab){
                 pos = pos.mul(0.3);
+            }else if (!this.meleeWeapon.isFar && !this.meleeWeapon.isStab){
+                pos = pos.mul(0.3);
+            }else {
+                pos = pos.mul(0.1);
             }
         }
         if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec2.ZERO)) {
             pos = pos.mul(0.1);
         }
-        if (this.isHeavyMeleeAttacking && !pos.equals(cc.Vec2.ZERO)) {
-            pos = pos.mul(0.1);
-        }
         if (this.talentMagic && this.talentMagic.magiccircle.isShow && !this.talentMagic.hashTalent(Talent.MAGIC_05)) {
-            pos = pos.mul(0.3);
+            pos = pos.mul(0.5);
         }
         if (this.talentShield && this.talentShield.IsExcuting && !this.talentMagic.hashTalent(Talent.SHIELD_12)) {
-            pos = pos.mul(0.3);
+            pos = pos.mul(0.5);
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
             this.shooter.setHv(cc.v2(pos.x, pos.y));

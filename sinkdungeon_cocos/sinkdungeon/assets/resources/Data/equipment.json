@@ -2284,7 +2284,7 @@
             "defence": 0,
             "lifeDrain": 0,
             "lifeRecovery": 0,
-            "moveSpeed": 80,
+            "moveSpeed": 40,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
