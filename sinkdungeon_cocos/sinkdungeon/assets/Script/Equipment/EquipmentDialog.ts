@@ -42,7 +42,6 @@ export default class EquipmentDialog extends cc.Component {
     start() {
         // Logic.setAlias(this.node);
         this.node.opacity = 0;
-        this.node.active = false;
     }
     refreshDialog(equipment: EquipmentData) {
         this.labelTile.string = equipment.prefix  + equipment.nameCn;
