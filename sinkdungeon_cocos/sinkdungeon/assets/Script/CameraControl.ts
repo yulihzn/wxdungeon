@@ -38,9 +38,13 @@ export default class CameraControl extends cc.Component {
     lateUpdate(){
         let targetPos = this.dungeon.player.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
         this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1)
+        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio,this.dungeon.isZoomCamera?0.7:1,0.05);
         // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
         // let ratio = targetPos.y / cc.winSize.height;
         // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
+    }
+    lerpNumber(a, b, r) {
+        return a + (b - a) * r;
     }
     lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
         let out = cc.v2(0,0);

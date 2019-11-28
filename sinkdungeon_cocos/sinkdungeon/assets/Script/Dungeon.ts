@@ -126,6 +126,7 @@ export default class Dungeon extends cc.Component {
     dungeonStyleManager: DungeonStyleManager = null;//装饰管理
     coinManager: CoinManger = null;//金币管理
     anim: cc.Animation;
+    isZoomCamera = false;
 
     bosses: Boss[] = [];
 
@@ -852,12 +853,13 @@ export default class Dungeon extends cc.Component {
         if (!this.bosses) {
             return;
         }
+        this.dungeonStyleManager.changeTopWalls(false);
+        this.isZoomCamera = true;
         let boss = this.monsterManager.getKraken(this, index.clone());
         this.bosses.push(boss);
         this.anim.playAdditive('DungeonShakeOnce');
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2);
-        this.scheduleOnce(() => { this.breakHalfTiles(); }, 0.1);
 
         this.scheduleOnce(() => {
             boss.showBoss();
@@ -968,7 +970,8 @@ export default class Dungeon extends cc.Component {
             if (this.dungeonStyleManager && this.dungeonStyleManager.exitdoor
                 && this.dungeonStyleManager.exitdoor
                 && !RectDungeon.isRoomEqual(Logic.mapManager.getCurrentRoom(), Logic.mapManager.rectDungeon.startRoom)) {
-                this.dungeonStyleManager.exitdoor.openGate();
+                    this.dungeonStyleManager.changeTopWalls(true);
+                    this.dungeonStyleManager.exitdoor.openGate();
             }
             this.openDoors();
         }

@@ -33,6 +33,8 @@ export default class Kraken extends Boss {
     hand1:KrakenSwingHand = null;
     @property(KrakenSwingHand)
     hand2:KrakenSwingHand = null;
+    @property(cc.Prefab)
+    krakenHead:cc.Prefab = null;
     private sprite: cc.Node;
     private anim: cc.Animation;
     private timeDelay = 0;
@@ -49,7 +51,14 @@ export default class Kraken extends Boss {
         this.sprite.opacity = 0;
         this.shooter = this.getComponentInChildren(Shooter);
         this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'boss001'));
-
+        this.addHead();
+    }
+    addHead(){
+        let head = cc.instantiate(this.krakenHead);
+        this.dungeon.node.addChild(head);
+        let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+4));
+        head.setPosition(pos);
+        head.zIndex = 101;
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;

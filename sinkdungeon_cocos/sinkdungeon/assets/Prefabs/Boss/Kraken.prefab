@@ -1115,7 +1115,7 @@
         1,
         20,
         20,
-        1
+        20
       ]
     },
     "_eulerAngles": {
@@ -1146,9 +1146,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "3ab6ca15-f165-4801-8d5d-6bc36911929f"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -1171,7 +1169,7 @@
     "asset": {
       "__uuid__": "39972c8e-0375-4ac6-b98d-5388b1a3e99c"
     },
-    "fileId": "8daTFCDYxBnp3F8+SaxvfU",
+    "fileId": "d94zurVPRHGo6grOnwJtd5",
     "sync": false
   },
   {
@@ -1977,6 +1975,9 @@
     },
     "hand2": {
       "__id__": 29
+    },
+    "krakenHead": {
+      "__uuid__": "7ad7c931-a291-49c6-9f0a-2530bdef788b"
     },
     "_id": ""
   },

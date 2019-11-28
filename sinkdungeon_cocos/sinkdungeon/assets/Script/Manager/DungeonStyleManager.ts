@@ -6,6 +6,7 @@ import RectDungeon from "../Rect/RectDungeon";
 import ExitDoor from "../Building/ExitDoor";
 import DecorateRoom from "../Building/DecorateRoom";
 import RectRoom from "../Rect/RectRoom";
+import ParallexBackground from "../UI/ParallaxBackground";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,13 +39,13 @@ export default class DungeonStyleManager extends cc.Component {
     @property(cc.Prefab)
     exitdoorPrefab: cc.Prefab = null;
     @property(cc.Prefab)
-    decorateRoom: cc.Prefab = null;
-
+    parallaxBackground: cc.Prefab = null;
     exitdoor: ExitDoor = null;
 
     doorRes: string = null;
     styleData: DungeonStyleData;
     doors: cc.Node[] = new Array();
+    walltops:cc.Node[] = new Array();
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -63,6 +64,12 @@ export default class DungeonStyleManager extends cc.Component {
 
     start() {
 
+    }
+    changeTopWalls(isShow:boolean){
+        for(let w of this.walltops){
+            w.opacity = isShow?255:0;
+        }
+        this.doors[0].opacity = isShow?255:0;
     }
     runBackgroundAnim(resName: string) {
         if (!this.background01) {
@@ -96,6 +103,7 @@ export default class DungeonStyleManager extends cc.Component {
         this.doors = new Array(4);
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             let walltop = this.getWallTop(i);
+            this.walltops.push(walltop);
             let wallbottom = this.getWallBottom(i);
             if (i == Math.floor(Dungeon.WIDTH_SIZE / 2)) {
                 this.doors[0] = cc.instantiate(this.doorDecoration);
@@ -119,6 +127,10 @@ export default class DungeonStyleManager extends cc.Component {
         for (let j = -1; j < Dungeon.HEIGHT_SIZE + 4; j++) {
             let wallleft = this.getWallLeft(j);
             let wallright = this.getWallRight(j);
+            if(j>Dungeon.HEIGHT_SIZE-1){
+                this.walltops.push(wallleft);
+                this.walltops.push(wallright);
+            }
             if (j == Math.floor(Dungeon.HEIGHT_SIZE / 2)) {
                 this.doors[2] = cc.instantiate(this.doorDecoration);
                 this.doors[2].parent = this.node;
@@ -171,6 +183,7 @@ export default class DungeonStyleManager extends cc.Component {
                 this.exitdoor = exit.getComponent(ExitDoor);
                 this.exitdoor.wall1 = walltop;
                 this.exitdoor.hideWall();
+                this.walltops.push(exit);
             }
         }
         if (posX == otherIndex && this.exitdoor) {
@@ -196,7 +209,7 @@ export default class DungeonStyleManager extends cc.Component {
         wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
         wallbottom.zIndex = 2500;
         wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
-        wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+        wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
         return wallbottom;
     }
     private getWallLeft(posY: number): cc.Node {
@@ -219,16 +232,17 @@ export default class DungeonStyleManager extends cc.Component {
         return wallright;
     }
 
-    private addDecorateBg(): cc.Node {
-        let room = cc.instantiate(this.decorateRoom);
-        room.parent = this.node;
+    private addDecorateBg(){
+        let bg = cc.instantiate(this.parallaxBackground);
+        bg.parent = this.node;
         let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE/2));
-        room.setPosition(pos);
-        room.zIndex = 100;
-        room.width = 40*Dungeon.WIDTH_SIZE;
-        room.height = 40*(Dungeon.HEIGHT_SIZE+4);
-        room.color = cc.Color.WHITE.fromHEX(this.styleData.bg02color);
-        return room;
+        bg.setPosition(pos);
+        bg.zIndex = 100;
+        let pbg = bg.getComponent(ParallexBackground);
+        pbg.background.width = 32*Dungeon.WIDTH_SIZE;
+        pbg.background.height = 32*(Dungeon.HEIGHT_SIZE+4);
+        pbg.background.color = cc.Color.WHITE.fromHEX(this.styleData.bg02color);
+        pbg.init();
     }
 
     setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
