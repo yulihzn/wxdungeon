@@ -12,6 +12,7 @@ import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
+import KrakenHead from "./KrakenHead";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,11 +36,15 @@ export default class Kraken extends Boss {
     hand2:KrakenSwingHand = null;
     @property(cc.Prefab)
     krakenHead:cc.Prefab = null;
+    @property(cc.Prefab)
+    swingHand:cc.Prefab = null;
     private sprite: cc.Node;
     private anim: cc.Animation;
     private timeDelay = 0;
     shooter: Shooter;
     remoteSkill = new Skill();
+
+    head:KrakenHead;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -54,11 +59,22 @@ export default class Kraken extends Boss {
         this.addHead();
     }
     addHead(){
-        let head = cc.instantiate(this.krakenHead);
-        this.dungeon.node.addChild(head);
+        let h = cc.instantiate(this.krakenHead);
+        this.dungeon.node.addChild(h);
         let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+4));
-        head.setPosition(pos);
-        head.zIndex = 101;
+        h.setPosition(pos);
+        h.zIndex = 101;
+        this.head = h.getComponent(KrakenHead);
+        this.addHand(pos,false);
+        this.addHand(cc.v2(pos.x-200,pos.y),false);
+        this.addHand(cc.v2(pos.x+200,pos.y),false);
+    }
+    addHand(pos:cc.Vec2,isFront:boolean){
+        let hand = cc.instantiate(this.swingHand);
+        this.dungeon.node.addChild(hand);
+        hand.setPosition(pos);
+        hand.scale = 4;
+        hand.zIndex = 101;
     }
     updatePlayerPos() {
         this.node.x = this.pos.x * 64 + 32;
@@ -138,6 +154,9 @@ export default class Kraken extends Boss {
         let hands = this.getComponentsInChildren(KrakenSwingHand);
         for (let hand of hands) {
             hand.isShow = true;
+        }
+        if(this.head){
+            this.head.show();
         }
         this.anim.play('KrakenIdle');
         this.changeZIndex();
