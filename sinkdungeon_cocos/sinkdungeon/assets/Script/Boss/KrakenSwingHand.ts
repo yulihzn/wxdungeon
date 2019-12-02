@@ -21,8 +21,14 @@ export default class KrakenSwingHand extends cc.Component {
     damage = 2;
     // LIFE-CYCLE CALLBACKS:
     isShow = false;
+    anim:cc.Animation;
 
-    // onLoad () {}
+    onLoad () {
+        this.anim = this.node.parent.getComponent(cc.Animation);
+    }
+    swing(){
+        this.anim.play();
+    }
 
     start () {
         this.isShow = false;

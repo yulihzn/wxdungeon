@@ -152,7 +152,7 @@ export default class EquipmentManager extends cc.Component {
         let desc = new EquipmentDescData();
 
         // let arr = ['rough', 'normal', 'good', 'excellent', 'epic', 'legend']
-        let arr = ['粗糙的', '普通的', '精良的', '优秀的', '史诗的', '传说的']
+        let arr = ['', '普通的', '精良的', '优秀的', '史诗的', '传说的']
         let colors = ['#dcdcdc', '#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500']
         let level = 0;
         //暴击0-50减去装备自带

@@ -201,7 +201,7 @@
       "array": [
         0,
         0,
-        249.41531372070312,
+        244.2191619873047,
         0,
         0,
         0,
@@ -1276,7 +1276,7 @@
       "__uuid__": "89ae4080-6cef-4cdc-a7b1-bea5b647c43d"
     },
     "kraken": {
-      "__uuid__": "39972c8e-0375-4ac6-b98d-5388b1a3e99c"
+      "__uuid__": "7ad7c931-a291-49c6-9f0a-2530bdef788b"
     },
     "captain": {
       "__uuid__": "a9a8c0ed-b0ae-4c19-baa7-f38b2fa864a9"
@@ -18352,7 +18352,11 @@
       "__id__": 387
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
@@ -18442,7 +18446,11 @@
       "__id__": 389
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
@@ -18480,15 +18488,15 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 202,
+      "g": 194,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 142.5,
-      "height": 100
+      "width": 152,
+      "height": 106.67
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -18532,7 +18540,11 @@
       "__id__": 391
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_useOriginalSize": false,
     "_string": "???/???",
     "_N$string": "???/???",
@@ -18560,7 +18572,11 @@
       "__id__": 38
     },
     "_enabled": true,
-    "_materials": [],
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
@@ -18796,7 +18812,7 @@
       "array": [
         0,
         0,
-        249.41531372070312,
+        244.2191619873047,
         0,
         0,
         0,

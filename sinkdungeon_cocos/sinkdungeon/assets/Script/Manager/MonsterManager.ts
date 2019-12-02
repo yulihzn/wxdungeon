@@ -306,7 +306,7 @@ export default class MonsterManager extends cc.Component {
         data.resName = "iconboss003";
         data.updateHA(this.maxHealth03, this.maxHealth03, 2);
         kraken.data = data;
-        kraken.transportBoss(Math.floor(Dungeon.WIDTH_SIZE/2), Dungeon.HEIGHT_SIZE-1);
+        kraken.transportBoss(Math.floor(Dungeon.WIDTH_SIZE/2), Dungeon.HEIGHT_SIZE+4);
         kraken.healthBar = dungeon.bossHealthBar;
         kraken.node.active = true;
         return kraken;

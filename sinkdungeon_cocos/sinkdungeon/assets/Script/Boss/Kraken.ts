@@ -12,7 +12,7 @@ import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
-import KrakenHead from "./KrakenHead";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,80 +30,55 @@ const { ccclass, property } = cc._decorator;
 export default class Kraken extends Boss {
     @property(cc.Label)
     label: cc.Label = null;
-    @property(KrakenSwingHand)
-    hand1:KrakenSwingHand = null;
-    @property(KrakenSwingHand)
-    hand2:KrakenSwingHand = null;
-    @property(cc.Prefab)
-    krakenHead:cc.Prefab = null;
     @property(cc.Prefab)
     swingHand:cc.Prefab = null;
-    private sprite: cc.Node;
-    private anim: cc.Animation;
     private timeDelay = 0;
     shooter: Shooter;
     remoteSkill = new Skill();
-
-    head:KrakenHead;
+    handSkill = new Skill();
+    anim: cc.Animation;
+    hand01:KrakenSwingHand;
+    hand02:KrakenSwingHand;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.isDied = false;
         this.isShow = false;
-        this.anim = this.getComponent(cc.Animation);
-        this.sprite = this.node.getChildByName('sprite');
-        this.sprite.opacity = 0;
         this.shooter = this.getComponentInChildren(Shooter);
         this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'boss001'));
-        this.addHead();
+        this.anim = this.getComponent(cc.Animation);
+        
     }
-    addHead(){
-        let h = cc.instantiate(this.krakenHead);
-        this.dungeon.node.addChild(h);
-        let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+4));
-        h.setPosition(pos);
-        h.zIndex = 101;
-        this.head = h.getComponent(KrakenHead);
-        this.addHand(pos,false);
-        this.addHand(cc.v2(pos.x-200,pos.y),false);
-        this.addHand(cc.v2(pos.x+200,pos.y),false);
+    //anim
+    ShowFinish() {
+        this.anim.play('KrakenHeadIdle');
+        this.isShow = true;
+        let pos1 = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE+4, -10));
+        let pos2 = Dungeon.getPosInMap(cc.v2(-4, -10));
+        this.hand01 = this.addHand(pos1,true);
+        this.hand02 = this.addHand(pos2,false);
     }
-    addHand(pos:cc.Vec2,isFront:boolean){
+    addHand(pos:cc.Vec2,isReverse:boolean){
         let hand = cc.instantiate(this.swingHand);
         this.dungeon.node.addChild(hand);
         hand.setPosition(pos);
-        hand.scale = 4;
-        hand.zIndex = 101;
+        hand.scaleX = isReverse?-50:50;
+        hand.scaleY = -50;
+        hand.zIndex = 5000;
+        let h = hand.getComponentInChildren(KrakenSwingHand);
+        this.scheduleOnce(()=>{
+            h.isShow = true;
+        },2)
+        return h;
     }
     updatePlayerPos() {
-        this.node.x = this.pos.x * 64 + 32;
-        this.node.y = this.pos.y * 64 + 64;
+        let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+4));
+        this.node.setPosition(pos);
     }
     
     changeZIndex() {
-        this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
-        if (this.isShow && !this.isDied) {
-            this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
-        }
-    }
-    attack(dir, finish) {
-        if (this.isDied) {
-            return;
-        }
-        let x = 0;
-        let y = 0;
-        switch (dir) {
-            case 0: y += 32; break;
-            case 1: y -= 32; break;
-            case 2: x -= 32; break;
-            case 3: x += 32; break;
-            case 4: break;
-        }
-        let action = cc.sequence(cc.moveBy(0.1, x, y), cc.callFunc(() => {
-            if (finish) { finish(this.data.Common.damageMin); }
-        }), cc.moveTo(0.1, 0, 0));
-        this.sprite.runAction(action);
+        this.node.zIndex = 101;
     }
 
     start() {
@@ -119,16 +94,7 @@ export default class Kraken extends Boss {
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
-        this.anim.playAdditive('KrakenHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        if(this.dungeon){
-            let pos = this.dungeon.player.pos;
-            if (pos.x > this.pos.x && !this.anim.getAnimationState("KrakenSwingRight").isPlaying) {
-                this.anim.playAdditive('KrakenSwingRight');
-            } else if (pos.x < this.pos.x && !this.anim.getAnimationState("KrakenSwingLeft").isPlaying) {
-                this.anim.playAdditive('KrakenSwingLeft');
-            }
-        }
         cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
@@ -144,33 +110,19 @@ export default class Kraken extends Boss {
         for (let hand of hands) {
             hand.isShow = false;
         }
-        this.anim.play('KrakenDie');
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
-    //Animation
-    BossShow() {
-        this.isShow = true;
-        let hands = this.getComponentsInChildren(KrakenSwingHand);
-        for (let hand of hands) {
-            hand.isShow = true;
-        }
-        if(this.head){
-            this.head.show();
-        }
-        this.anim.play('KrakenIdle');
-        this.changeZIndex();
-    }
-    //Animation
-    BossHit() {
-
-    }
+   
     showBoss() {
-        this.anim.play('KrakenShow');
         if(this.healthBar){
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             this.healthBar.node.active = !this.isDied;
         }
+        if (!this.anim) {
+            this.anim = this.getComponent(cc.Animation);
+        }
+        this.anim.play('KrakenHeadShow');
     }
     actionTimeDelay = 0;
     isActionTimeDelay(dt: number): boolean {
@@ -182,31 +134,32 @@ export default class Kraken extends Boss {
         return false;
     }
     update(dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > 0.016) {
-            this.timeDelay = 0;
-            this.updatePlayerPos();
-        }
         if(this.isActionTimeDelay(dt)){
             this.bossAction();
         }
         if (this.data.currentHealth < 1) {
             this.killed();
-            this.hand1.isShow = false;
-            this.hand2.isShow = false;
         }
+       
         if (this.label) {
             this.label.string = "" + this.node.zIndex;
         }
         this.healthBar.node.active = !this.isDied;
     }
     bossAction() {
-        if (this.isDied||!this.isShow) {
+        if (this.isDied||!this.isShow||!this.dungeon) {
             return;
         }
-        this.changeZIndex();
-        if(this.shooter&&this.dungeon){
+        
+        if(this.hand01){
+            this.hand01.node.parent.y = Logic.lerp(this.hand01.node.y,this.dungeon.player.node.y,0.1);
+        }
+        if(this.hand02){
+            this.hand02.node.parent.y = Logic.lerp(this.hand02.node.y,this.dungeon.player.node.y,0.1);
+        }
+        if(this.shooter){
             this.remoteSkill.next(()=>{
+                this.shooter.skipTopwall = true;
                 let pos  = this.node.position.clone().add(this.shooter.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if(!hv.equals(cc.Vec2.ZERO)){
@@ -225,9 +178,20 @@ export default class Kraken extends Boss {
                     this.shooter.fireBullet(15);
                     this.shooter.fireBullet(-15);
                 }
-            },1);
+            },2);
             
         }
+        this.handSkill.next(()=>{
+            if(this.dungeon.player.pos.x>Dungeon.WIDTH_SIZE/2){
+                if(this.hand01){
+                    this.hand01.swing();
+                }
+            }else{
+                if(this.hand02){
+                    this.hand02.swing();
+                }
+            }
+        },10)
         
 
     }

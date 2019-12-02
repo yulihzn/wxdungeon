@@ -59,6 +59,7 @@ export default class Bullet extends cc.Component {
     isDecelerateDelay = false;//是否延迟减速
     isHit = false;
     isReserved = false;//是否已经反弹，防止多次碰撞弹射
+    skipTopwall = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -292,6 +293,9 @@ export default class Bullet extends cc.Component {
         }
         //上面的墙不销毁
         if (otherCollider.tag == 2) {
+            isDestory = false;
+        }
+        if(this.skipTopwall&&otherCollider.tag == 6){
             isDestory = false;
         }
         //飞轮需要销毁
