@@ -84,10 +84,12 @@ export default class PlayerData {
         let damageMin = this.getDamageMin();
         let damageMax = this.getDamageMax();
         let chance = this.getCriticalStrikeRate();
-        let attack = Random.rand() > chance ? damageMin : damageMin + damageMax;
+        let isCritical = Random.rand() < chance;
+        let attack = isCritical ? damageMin + damageMax : damageMin;
         if (attack < 0) {
             attack = 0;
         }
+        dd.isCriticalStrike = isCritical;
         dd.physicalDamage = attack;
         dd.realDamage = this.getRealDamage();
         dd.iceDamage = this.getIceDamage();
@@ -98,14 +100,18 @@ export default class PlayerData {
         return dd;
     }
     //获取最终远程伤害
-    getFinalRemoteDamage(): number {
+    getFinalRemoteDamage(): DamageData {
+        let dd = new DamageData();
         let remoteDamage = this.getRemoteDamage();
         let chance = this.getRemoteCritRate();
-        let attack = Random.rand() > chance ? remoteDamage : remoteDamage+remoteDamage;
+        let isCritical = Random.rand() < chance;
+        let attack = isCritical ? remoteDamage+remoteDamage : remoteDamage;
         if (attack < 0) {
             attack = 0;
         }
-        return attack;
+        dd.physicalDamage = attack;
+        dd.isCriticalStrike = isCritical;
+        return dd;
     }
     //伤害减免
     getDamage(damageData: DamageData): DamageData {

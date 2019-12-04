@@ -43,8 +43,11 @@ export default class FloatingLabel extends cc.Component {
     showDoge(){
         this.showLabel('dodge',cc.color(255, 255, 255),0.75);
     }
-    showDamage(damage:number){
+    showDamage(damage:number,isCritical:boolean){
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
+        if(isCritical){
+            color = cc.color(255,255,0);
+        }
         this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,0.75+Math.abs(damage/50));
     }
 

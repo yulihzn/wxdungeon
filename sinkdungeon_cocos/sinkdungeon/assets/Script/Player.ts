@@ -204,6 +204,7 @@ export default class Player extends Actor {
                 this.data.currentHealth = 99;
                 this.data.Common.maxHealth = 99;
                 this.data.Common.damageMin = 99;
+                this.data.Common.remoteCritRate = 50;
             }, 0.2);
         }
     }
@@ -434,7 +435,7 @@ export default class Player extends Actor {
         this.sprite.runAction(action);
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
         if (isMiss) {
-            this.showFloatFont(this.node.parent, 0, false, true)
+            this.showFloatFont(this.node.parent, 0, false, true,false);
         }
         this.playerAnim(Player.STATE_ATTACK);
         this.meleeWeapon.attack(this.data, isMiss);
@@ -689,7 +690,7 @@ export default class Player extends Actor {
         }
         cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
         Logic.playerData.currentHealth = health.x;
-        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false);
+        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false,false);
         if (Logic.playerData.currentHealth <= 0) {
             this.killed(from);
         }
@@ -702,7 +703,7 @@ export default class Player extends Actor {
         return valid;
     }
 
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean) {
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean,isCritical:boolean) {
         if (!this.floatinglabelManager) {
             return;
         }
@@ -712,7 +713,7 @@ export default class Player extends Actor {
         } else if (isMiss) {
             flabel.showMiss();
         } else if (d != 0) {
-            flabel.showDamage(-d)
+            flabel.showDamage(-d,isCritical);
         } else {
             flabel.hideLabel();
         }

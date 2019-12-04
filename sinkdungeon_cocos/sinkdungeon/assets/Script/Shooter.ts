@@ -10,6 +10,7 @@ import Boss from "./Boss/Boss";
 import { EventConstant } from "./EventConstant";
 import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
+import DamageData from "./Data/DamageData";
 
 
 // Learn TypeScript:
@@ -47,7 +48,7 @@ export default class Shooter extends cc.Component {
     private hv: cc.Vec2 = cc.v2(1, 0);
     isAiming = false;//是否在瞄准
     //玩家远程伤害
-    remoteDamagePlayer = 0;
+    remoteDamagePlayer = new DamageData();
     from: FromData = new FromData();
     skipTopwall = false;
 
@@ -233,7 +234,8 @@ export default class Shooter extends cc.Component {
         let bd = new BulletData();
         bd.valueCopy(Logic.bullets[bulletType])
         if (bullet.isFromPlayer && this.player && !this.isEx) {
-            bd.damage.physicalDamage = this.remoteDamagePlayer;
+            bd.damage.physicalDamage = this.remoteDamagePlayer.physicalDamage;
+            bd.damage.isCriticalStrike = this.remoteDamagePlayer.isCriticalStrike;
         }
         bd.size += this.data.bulletSize;
         bd.speed += this.data.bulletExSpeed;
