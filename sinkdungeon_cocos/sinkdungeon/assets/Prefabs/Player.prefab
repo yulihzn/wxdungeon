@@ -2566,7 +2566,7 @@
       "ctor": "Float32Array",
       "array": [
         16,
-        24,
+        32,
         0,
         0,
         0,
@@ -2756,6 +2756,9 @@
     "_clips": [
       {
         "__uuid__": "dd5882a4-57bc-4786-95b6-9021f568f1a1"
+      },
+      {
+        "__uuid__": "fda5248b-6e74-4393-b568-aa6619bcbfb8"
       }
     ],
     "playOnLoad": false,

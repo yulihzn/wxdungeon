@@ -51,6 +51,7 @@ export default class Shooter extends cc.Component {
     remoteDamagePlayer = new DamageData();
     from: FromData = new FromData();
     skipTopwall = false;
+    anim:cc.Animation;
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -59,7 +60,19 @@ export default class Shooter extends cc.Component {
         cc.director.on('destorybullet', (event) => {
             this.destroyBullet(event.detail.bulletNode);
         })
+        this.anim = this.getComponent(cc.Animation);
 
+    }
+    playWalk(isPlay:boolean){
+        if(!this.anim){
+            return;
+        }
+        if(isPlay){
+            this.anim.play('ShooterWalk')
+        }else{
+            this.anim.pause();
+            this.sprite.y = 0;
+        }
     }
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {

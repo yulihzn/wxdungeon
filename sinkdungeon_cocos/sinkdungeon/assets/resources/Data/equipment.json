@@ -796,7 +796,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote002",
-        "bulletType":"bullet003",
+        "bulletType":"bullet103",
         "common": {
             "remoteDamage":1,
             "damageMin": 0,
@@ -813,6 +813,7 @@
             "maxHealth": 0
         },
         "stab":1,
+        "far":1,
         "desc": "普通的长弓"
     },
     "remote003": {
@@ -897,6 +898,7 @@
             "maxHealth": 0
         },
         "stab":1,
+        "far":1,
         "desc": "Family Business"
     },
     "remote006": {
@@ -982,6 +984,7 @@
             "maxHealth": 0
         },
         "stab":1,
+        "far":1,
         "desc": "这好像是一只母鸡"
     },
     "helmet002": {

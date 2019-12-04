@@ -604,6 +604,7 @@ export default class Player extends Actor {
             case Player.STATE_IDLE:
                 if (this.anim.getAnimationState(walkName).isPlaying) {
                     this.anim.play('PlayerIdle');
+                    this.shooter.playWalk(false);
                 }
                 break;
             case Player.STATE_WALK:
@@ -611,6 +612,7 @@ export default class Player extends Actor {
                     && !this.anim.getAnimationState('PlayerFist').isPlaying
                     && !this.anim.getAnimationState('PlayerAttack').isPlaying) {
                     this.anim.play(walkName);
+                    this.shooter.playWalk(true);
                 }
                 break;
             case Player.STATE_ATTACK:
@@ -624,6 +626,7 @@ export default class Player extends Actor {
                 } else {
                     this.anim.play('PlayerAttack');
                 }
+                this.shooter.playWalk(true);
                 break;
             case Player.STATE_FALL: break;
             case Player.STATE_DIE: break;

@@ -50,6 +50,19 @@
             "physicalDamage": 1
         }
     },
+    "bullet103": {
+        "name":"普通箭矢",
+        "resName": "bullet003",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 600,
+        "isRect": 1,
+        "isRotate": 0,
+        "size": 2,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "bullet004": {
         "name":"泡泡",
         "resName": "bullet004",

@@ -84,8 +84,10 @@ export default class Chest extends Building {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
                         if (Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RectDungeon.TEST_ROOM) {
-                            dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_FRUITKNIFE, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.REMOTE_WINCHESTER, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.REMOTE_CHICKEN, this.data.pos, null, this.data.quality);
                             dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KNIFE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);

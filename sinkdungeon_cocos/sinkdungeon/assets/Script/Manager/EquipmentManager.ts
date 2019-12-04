@@ -58,6 +58,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly REMOTE_WINCHESTER = "remote005";
     public static readonly REMOTE_RPG = "remote006";
     public static readonly REMOTE_SHURIKEN = "remote007";
+    public static readonly REMOTE_CHICKEN = "remote008";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
     public static readonly CLOTHES_NAVY = "clothes003";
