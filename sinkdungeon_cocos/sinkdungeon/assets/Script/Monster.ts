@@ -165,10 +165,10 @@ export default class Monster extends Actor {
         let r = 0;
         this.schedule(() => {
             this.graphics.clear();
-            this.graphics.strokeColor = cc.Color.RED;
-            this.graphics.circle(0, 0, r);
+            this.graphics.fillColor = cc.color(255,0,0,80);
+            this.graphics.arc(0,0,r,Math.PI/2,Math.PI+Math.PI/2);
             r += 2;
-            this.graphics.stroke();
+            this.graphics.fill();
             if (r > 80 * this.node.scaleY) {
                 this.graphics.clear();
             }
@@ -271,7 +271,7 @@ export default class Monster extends Actor {
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }
-        pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 32 : -32);
+        pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 64 : -64);
         this.sprite.stopAllActions();
         this.idleAction = null;
         let action1 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01) }),
@@ -446,7 +446,7 @@ export default class Monster extends Actor {
                 this.isHurt = false;
                 this.changeBodyColor();
             }
-        }, 0.1);
+        }, 0.2);
         this.sprite.opacity = 255;
         this.data.currentHealth -= dd.getTotalDamage();
         if (this.data.currentHealth > this.data.getHealth().y) {

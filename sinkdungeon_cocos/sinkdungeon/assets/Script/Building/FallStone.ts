@@ -4,6 +4,7 @@ import DamageData from "../Data/DamageData";
 import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import Monster from "../Monster";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -66,9 +67,15 @@ export default class FallStone extends Building {
         if (player) {
             if (this.isFall&&this.isValid) {
                 this.isFall = false;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: new DamageData(2),from:FromData.getClone('落石','stone') } });
+                player.takeDamage(new DamageData(2),FromData.getClone('落石','stone'));
             }
-            
+        }
+        let monster = other.getComponent(Monster);
+        if(monster){
+            if (this.isFall&&this.isValid) {
+                this.isFall = false;
+                monster.takeDamage(new DamageData(2));
+            }
         }
     }
     // update (dt) {}

@@ -130,13 +130,13 @@ export default class MonsterManager extends cc.Component {
             data.Common.maxHealth = data.Common.maxHealth * 2;
             data.Common.damageMin = data.Common.damageMin * 2;
             data.currentHealth = data.currentHealth * 2;
-            if(data.melee>0){
+            if (data.melee > 0) {
                 data.melee = data.melee > 1 ? data.melee - 1 : 1;
             }
-            if(data.remote>0){
+            if (data.remote > 0) {
                 data.remote = data.remote > 1 ? data.remote - 1 : 1;
             }
-            if(data.dash>0){
+            if (data.dash > 0) {
                 data.dash = data.dash > 1 ? data.dash - 1 : 1;
             }
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100) : 0;
@@ -180,7 +180,7 @@ export default class MonsterManager extends cc.Component {
             monster.changeBodyRes(resName);
         }
         monster.addAttrIcon();
-        
+
         return monster;
     }
     getIceDemon(dungeon: Dungeon, posIndex: cc.Vec2): IceDemon {
@@ -306,7 +306,7 @@ export default class MonsterManager extends cc.Component {
         data.resName = "iconboss003";
         data.updateHA(this.maxHealth03, this.maxHealth03, 2);
         kraken.data = data;
-        kraken.transportBoss(Math.floor(Dungeon.WIDTH_SIZE/2), Dungeon.HEIGHT_SIZE+4);
+        kraken.transportBoss(Math.floor(Dungeon.WIDTH_SIZE / 2), Dungeon.HEIGHT_SIZE + 4);
         kraken.healthBar = dungeon.bossHealthBar;
         kraken.node.active = true;
         return kraken;
@@ -378,9 +378,8 @@ export default class MonsterManager extends cc.Component {
                 num = Random.getRandomNum(3, 6); break;
         }
         for (let i = 0; i <= num; i++) {
-            dungeon.addMonsterFromData(arr[Random.getRandomNum(0, arr.length - 1)]
-                , Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1)
-                , Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))
+            let pos = dungeon.floorIndexmap[Random.getRandomNum(0, dungeon.floorIndexmap.length - 1)];
+            dungeon.addMonsterFromData(arr[Random.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
         }
     }
 

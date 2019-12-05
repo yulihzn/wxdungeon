@@ -24,33 +24,33 @@ export default class Achievements extends cc.Component {
     @property(cc.Prefab)
     prefab: cc.Prefab = null;
     @property(cc.Label)
-    lifesLabel:cc.Label = null;
+    lifesLabel: cc.Label = null;
     //图片资源
     spriteFrames: { [key: string]: cc.SpriteFrame } = null;
-    bossSpriteFrames :{ [key: string]: cc.SpriteFrame } = null;
+    bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null;
     // LIFE-CYCLE CALLBACKS:
-    iconList:cc.Sprite[] = new Array();
+    iconList: cc.Sprite[] = new Array();
     isMonsterLoaded = false;
     isBossLoaded = false;
 
     onLoad() {
         this.content.removeAllChildren();
         this.contentBottom.removeAllChildren();
-        for(let i =0;i < this.MONSTER_SIZE+this.BOSS_SIZE;i++){
+        for (let i = 0; i < this.MONSTER_SIZE + this.BOSS_SIZE; i++) {
             let icon = cc.instantiate(this.prefab);
-            if(i>this.MONSTER_SIZE-1){
+            if (i > this.MONSTER_SIZE - 1) {
                 this.contentBottom.addChild(icon);
-            }else{
+            } else {
                 this.content.addChild(icon);
             }
             let sprite = icon.getChildByName('sprite');
-            sprite.color = cc.color(0,0,0);
+            sprite.color = cc.color(0, 0, 0);
             this.iconList.push(sprite.getComponent(cc.Sprite));
         }
         this.loadSpriteFrames();
         this.loadBossSpriteFrames();
-        let data:AchievementData = Achievements.getAchievementData();
-        if(this.lifesLabel&&data.playerLifes){
+        let data: AchievementData = Achievements.getAchievementData();
+        if (this.lifesLabel && data.playerLifes) {
             this.lifesLabel.string = `死亡次数：${data.playerLifes}`;
         }
     }
@@ -82,33 +82,56 @@ export default class Achievements extends cc.Component {
             cc.log('boss texture loaded');
         })
     }
-    show(){
-        if(!this.iconList){
+    show() {
+        if (!this.iconList) {
             return;
         }
-        let data:AchievementData = Achievements.getAchievementData();
-        for(let i = 0;i < this.iconList.length;i++){
-            let name = `monster${i<10?'00'+i:'0'+i}`;
+        let colors = ['#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500'];
+        let data: AchievementData = Achievements.getAchievementData();
+        for (let i = 0; i < this.iconList.length; i++) {
+            let name = `monster${i < 10 ? '00' + i : '0' + i}`;
             let fr = this.spriteFrames[name];
-            if(i>this.MONSTER_SIZE-1){
-                name = `iconboss00${i-this.MONSTER_SIZE}`;
+            if (i > this.MONSTER_SIZE - 1) {
+                name = `iconboss00${i - this.MONSTER_SIZE}`;
                 fr = this.bossSpriteFrames[name];
             }
-            if(fr){
+            if (fr) {
                 this.iconList[i].node.width = 96;
                 this.iconList[i].node.height = 96;
                 this.iconList[i].spriteFrame = this.spriteFrames[name];
-                if(i>this.MONSTER_SIZE-1){
+                if (i > this.MONSTER_SIZE - 1) {
                     this.iconList[i].spriteFrame = this.bossSpriteFrames[name];
                 }
-                let labe = this.iconList[i].node.parent.getComponentInChildren(cc.Label);
-                labe.string = ``;
-                if(data&&data.monsters&&data.monsters[name]&&data.monsters[name] > 0){
-                    this.iconList[i].node.color = cc.color(255,255,255);
-                    labe.string = `${data.monsters[name]}`;
-                }else{
-                    this.iconList[i].node.color = cc.color(0,0,0);
-                    
+                let label = this.iconList[i].node.parent.getComponentInChildren(cc.Label);
+                label.string = ``;
+                if (data && data.monsters && data.monsters[name] && data.monsters[name] > 0) {
+                    this.iconList[i].node.color = cc.color(255, 255, 255);
+                    label.node.color = cc.color(255, 255, 255);
+                    label.string = `${data.monsters[name]}`;
+                    let num = 0;
+                    if (data.monsters[name] && data.monsters[name] > 0) {
+                        num = data.monsters[name];
+                    }
+                    label.string = '';
+                    if (num > 0) {
+                        let length = num % 20;
+                        if (num > 100) {
+                            length = 20;
+                        }
+                        let str = '';
+                        for (let i = 0; i < length; i += 4) {
+                            str += '★';
+                        }
+                        label.string = str;
+                        let count = Math.floor(num / 20);
+                        if (count > colors.length - 1) {
+                            count = colors.length - 1;
+                        }
+                        label.node.color = cc.Color.WHITE.fromHEX(colors[count]);
+                    }
+                } else {
+                    this.iconList[i].node.color = cc.color(0, 0, 0);
+
                 }
 
             }
@@ -120,40 +143,40 @@ export default class Achievements extends cc.Component {
     backToHome() {
         cc.director.loadScene('start');
     }
-    static getAchievementData():AchievementData{
-        let s:string = cc.sys.localStorage.getItem("achievement");
-        if(!s){
+    static getAchievementData(): AchievementData {
+        let s: string = cc.sys.localStorage.getItem("achievement");
+        if (!s) {
             s = '{}'
         }
-        let data:AchievementData = JSON.parse(s);
-        if(!data||!data.monsters){
+        let data: AchievementData = JSON.parse(s);
+        if (!data || !data.monsters) {
             data = new AchievementData();
         }
         return data;
     }
-    static saveAchievementData(data:AchievementData):void{
-        cc.sys.localStorage.setItem("achievement",JSON.stringify(data));
+    static saveAchievementData(data: AchievementData): void {
+        cc.sys.localStorage.setItem("achievement", JSON.stringify(data));
     }
-    static addMonsterKillAchievement(name:string){
-        let data:AchievementData = Achievements.getAchievementData();
-        if(data.monsters[name]){
-            data.monsters[name] = data.monsters[name]+1;
-        }else{
+    static addMonsterKillAchievement(name: string) {
+        let data: AchievementData = Achievements.getAchievementData();
+        if (data.monsters[name]) {
+            data.monsters[name] = data.monsters[name] + 1;
+        } else {
             data.monsters[name] = 1;
         }
         Achievements.saveAchievementData(data);
     }
-    static addPlayerDiedLifesAchievement(){
-        let data:AchievementData = Achievements.getAchievementData();
-        if(data.playerLifes){
-            data.playerLifes = data.playerLifes +1;
-        }else{
+    static addPlayerDiedLifesAchievement() {
+        let data: AchievementData = Achievements.getAchievementData();
+        if (data.playerLifes) {
+            data.playerLifes = data.playerLifes + 1;
+        } else {
             data.playerLifes = 1;
         }
         Achievements.saveAchievementData(data);
     }
-    update (dt) {
-        if(this.isBossLoaded&&this.isMonsterLoaded){
+    update(dt) {
+        if (this.isBossLoaded && this.isMonsterLoaded) {
             this.isBossLoaded = true;
             this.isMonsterLoaded = true;
             this.show();

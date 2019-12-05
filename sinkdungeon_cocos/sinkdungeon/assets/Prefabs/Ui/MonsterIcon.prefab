@@ -56,7 +56,7 @@
     },
     "_trs": {
       "__type__": "TypedArray",
-      "ctor": "Float32Array",
+      "ctor": "Float64Array",
       "array": [
         0,
         0,
@@ -120,7 +120,7 @@
     },
     "_trs": {
       "__type__": "TypedArray",
-      "ctor": "Float32Array",
+      "ctor": "Float64Array",
       "array": [
         0,
         24,
@@ -221,7 +221,7 @@
     },
     "_trs": {
       "__type__": "TypedArray",
-      "ctor": "Float32Array",
+      "ctor": "Float64Array",
       "array": [
         0,
         -60,
@@ -319,7 +319,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 60
+      "height": 38.4
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -328,9 +328,9 @@
     },
     "_trs": {
       "__type__": "TypedArray",
-      "ctor": "Float32Array",
+      "ctor": "Float64Array",
       "array": [
-        17,
+        0,
         -61,
         0,
         0,
@@ -371,8 +371,8 @@
     "_useOriginalSize": false,
     "_string": "",
     "_N$string": "",
-    "_fontSize": 30,
-    "_lineHeight": 30,
+    "_fontSize": 24,
+    "_lineHeight": 24,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "850ec44c-81fd-45f3-b6ed-4cf410575571"

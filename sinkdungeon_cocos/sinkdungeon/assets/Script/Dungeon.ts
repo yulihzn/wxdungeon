@@ -109,6 +109,7 @@ export default class Dungeon extends cc.Component {
     wallmap: Wall[][] = new Array();//墙列表
     trapmap: Trap[][] = new Array();//陷阱列表
     footboards: FootBoard[] = new Array();//踏板列表
+    floorIndexmap:cc.Vec2[] = new Array();//地板下标列表
     waterlist:TileWaterPool[] = new Array();//水池
     static WIDTH_SIZE: number = 15;
     static HEIGHT_SIZE: number = 9;
@@ -177,6 +178,7 @@ export default class Dungeon extends cc.Component {
         this.trapmap = new Array();
         this.footboards = new Array();
         this.waterlist = new Array();
+        this.floorIndexmap = new Array();
         let boxes: BoxData[] = new Array();
         let shopTables: ShopTableData[] = new Array();
         let chests: ChestData[] = new Array();
@@ -199,9 +201,11 @@ export default class Dungeon extends cc.Component {
                 if (mapData[i][j] == '--') {
                     //开启踩踏掉落
                     this.map[i][j].isAutoShow = true;
+                    this.floorIndexmap.push(cc.v2(i,j));
                 }
                 if(this.isThe(mapData[i][j],"*")){
                     this.map[i][j].tileType = mapData[i][j];
+                    this.floorIndexmap.push(cc.v2(i,j));
                 }
                 //生成墙
                 if (this.isThe(mapData[i][j],'#')) {

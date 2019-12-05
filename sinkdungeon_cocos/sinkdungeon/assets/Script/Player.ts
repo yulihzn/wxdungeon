@@ -201,9 +201,9 @@ export default class Player extends Actor {
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());
-                this.data.currentHealth = 99;
-                this.data.Common.maxHealth = 99;
-                this.data.Common.damageMin = 99;
+                this.data.currentHealth = 1;
+                this.data.Common.maxHealth = 1;
+                this.data.Common.damageMin = 9999;
                 this.data.Common.remoteCritRate = 50;
             }, 0.2);
         }

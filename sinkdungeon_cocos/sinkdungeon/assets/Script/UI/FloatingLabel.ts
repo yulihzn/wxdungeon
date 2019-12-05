@@ -29,6 +29,9 @@ export default class FloatingLabel extends cc.Component {
     }
     showLabel(text:string,color:cc.Color,scale:number){
         if(scale){
+            if(scale>3){
+                scale = 3;
+            }
             this.node.scale = scale;
         }
         this.label.node.opacity = 255;
@@ -38,10 +41,10 @@ export default class FloatingLabel extends cc.Component {
         this.anim.play('FontFloating');
     }
     showMiss(){
-        this.showLabel('miss',cc.color(255, 255, 255),0.75);
+        this.showLabel('丢失',cc.color(255, 255, 255),0.75);
     }
     showDoge(){
-        this.showLabel('dodge',cc.color(255, 255, 255),0.75);
+        this.showLabel('闪避',cc.color(255, 255, 255),0.75);
     }
     showDamage(damage:number,isCritical:boolean){
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
