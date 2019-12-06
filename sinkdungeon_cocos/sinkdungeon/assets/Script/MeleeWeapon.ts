@@ -233,7 +233,9 @@ export default class MeleeWeapon extends cc.Component {
     }
     //Anim
     MeleeAttackFinish() {
-        this.isAttacking = false;
+        this.scheduleOnce(()=>{
+            this.isAttacking = false;
+        },0.05);
         this.scheduleOnce(()=>{
             if(!this.isAttacking){
                 this.isComboing = false;

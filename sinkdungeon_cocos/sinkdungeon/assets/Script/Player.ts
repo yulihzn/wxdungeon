@@ -733,7 +733,7 @@ export default class Player extends Actor {
         this.scheduleOnce(() => {
             Logic.profileManager.clearData();
             Logic.dieFrom.valueCopy(from);
-            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.STOP_BG } });
+            cc.audioEngine.stopMusic();
             cc.director.loadScene('gameover');
         }, 1.5);
     }
