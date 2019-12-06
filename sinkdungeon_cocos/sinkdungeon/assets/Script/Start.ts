@@ -14,7 +14,10 @@ export default class Start extends cc.Component {
     wxhelper:WxHelper = null;
     @property(cc.Node)
     cheatButton:cc.Node = null;
+    @property(cc.Node)
+    debugButton:cc.Node = null;
     cheatClickCount = 0;
+    debugClickCount = 0;
     start () {
         cc.view.enableAntiAlias(false)
         // init logic
@@ -55,13 +58,30 @@ export default class Start extends cc.Component {
             return;
         }
         this.cheatClickCount++;
-        if(this.cheatClickCount>3){
+        if(this.cheatClickCount>2){
             this.cheatClickCount = 0;
             Logic.isCheatMode = true;
             this.cheatButton.opacity = Logic.isCheatMode?255:0;
         }else{
             Logic.isCheatMode = false;
             this.cheatButton.opacity = 0;
+        }
+    }
+    debugModeChange(){
+        if(!this.debugButton){
+            return;
+        }
+        this.debugClickCount++;
+        if(this.debugClickCount>2){
+            this.debugClickCount = 0;
+            Logic.isDebug = true;
+            this.debugButton.opacity = Logic.isDebug?255:0;
+            cc.director.getCollisionManager().enabledDebugDraw = true;
+        }else{
+            Logic.isDebug = false;
+            this.debugButton.opacity = 0;
+            cc.director.getCollisionManager().enabledDebugDraw = false;
+            
         }
     }
     

@@ -71,6 +71,22 @@ export default class AudioPlayer extends cc.Component {
     bg02: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     bg03: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg04: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg05: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg06: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg07: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg08: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg09: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg10: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bg11: cc.AudioClip = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -78,11 +94,13 @@ export default class AudioPlayer extends cc.Component {
             , (event) => { this.play(event.detail.name) });
     }
     playbg() {
-        let clip = Random.getHalfChance() ? this.bg01 : this.bg03;
-        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM
-            || Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM) {
-            clip = this.bg02;
-        }
+        let bgms = [this.bg01,this.bg02,this.bg03,this.bg04,this.bg05,this.bg06,this.bg07,this.bg08,this.bg09,this.bg10,
+            this.bg11,]
+        let clip = bgms[Random.getRandomNum(0,bgms.length-1)];
+        // if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM
+        //     || Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM) {
+        //     clip = this.bg02;
+        // }
         cc.audioEngine.playMusic(clip, true);
     }
     play(name: string) {

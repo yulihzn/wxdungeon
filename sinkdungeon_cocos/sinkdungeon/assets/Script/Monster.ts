@@ -163,16 +163,21 @@ export default class Monster extends Actor {
     }
     showCircle() {
         let r = 0;
-        this.schedule(() => {
+        let call = () => {
             this.graphics.clear();
             this.graphics.fillColor = cc.color(255,0,0,80);
             this.graphics.arc(0,0,r,Math.PI/2,Math.PI+Math.PI/2);
             r += 2;
             this.graphics.fill();
             if (r > 80 * this.node.scaleY) {
+                r = 80 * this.node.scaleY;
+            }
+            if(this.isHurt){
+                this.unschedule(call);
                 this.graphics.clear();
             }
-        }, 0.016, 40);
+        }
+        this.schedule(call, 0.016, 40);
     }
     getCurrentBodyRes(): string {
         if (!this.sprite) {
@@ -275,7 +280,7 @@ export default class Monster extends Actor {
         this.sprite.stopAllActions();
         this.idleAction = null;
         let action1 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01) }),
-            cc.moveBy(0.4, -pos.x / 2, -pos.y / 2),
+            cc.moveBy(0.5, -pos.x / 2, -pos.y / 2),
             cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02); }),
             cc.moveBy(0.2, pos.x, pos.y));
         let action2 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK03) }),
@@ -364,7 +369,7 @@ export default class Monster extends Actor {
             pos = pos.mul(0.1);
         }
         if (isDodge) {
-            pos = pos.mul(3);
+            pos = pos.mul(2.5);
         }
 
         if (!pos.equals(cc.Vec2.ZERO)) {
@@ -635,6 +640,9 @@ export default class Monster extends Actor {
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();
+                    if(this.graphics){
+                        this.graphics.clear();
+                    }
                     let isPlayerAtRight = this.dungeon.player.node.position.x > this.node.x;
                     let isBehind = this.isFaceRight ? !isPlayerAtRight : isPlayerAtRight;
                     let newdis = this.getNearPlayerDistance(this.dungeon.player.node);

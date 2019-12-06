@@ -67,6 +67,7 @@ export default class Logic extends cc.Component {
     static seed = 5;
     static isFirst = 0;
     static isCheatMode = false;//作弊
+    static isDebug = false;//调试
     static dieFrom:FromData = new FromData();
 
     static profileManager:ProfileManager = new ProfileManager();
