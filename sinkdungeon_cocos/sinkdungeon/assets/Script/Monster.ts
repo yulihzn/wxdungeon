@@ -67,6 +67,7 @@ export default class Monster extends Actor {
     private shadow: cc.Node;
     private dashlight: cc.Node;
     private anim: cc.Animation;
+    private boxCollider:cc.BoxCollider;
     rigidbody: cc.RigidBody;
     graphics: cc.Graphics;
     isFaceRight = true;
@@ -113,6 +114,7 @@ export default class Monster extends Actor {
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
+        this.boxCollider = this.getComponent(cc.BoxCollider);
         if (this.isVariation) {
             let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
             this.node.scale = Monster.SCALE_NUM * scaleNum;
@@ -191,8 +193,34 @@ export default class Monster extends Actor {
             this.sprite = this.node.getChildByName('sprite');
             this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         }
+        if(!this.boxCollider){
+            this.boxCollider = this.getComponent(cc.BoxCollider);
+        }
+        if(!this.shadow){
+            this.shadow = this.sprite.getChildByName('shadow');
+        }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
         this.bodySprite.spriteFrame = spriteFrame;
+        this.bodySprite.node.width = spriteFrame.getRect().width;
+        this.bodySprite.node.height = spriteFrame.getRect().height;
+        let y = 48,w = 80,h = 80;
+        switch(this.data.boxType){
+            case 0:y=32;w=80;h=64;break;
+            case 1:y=48;w=48;h=96;break;
+            case 2:y=48;w=80;h=80;break;
+            case 3:y=64;w=80;h=128;break;
+            case 4:y=32;w=128;h=48;break;
+            case 5:y=48;w=80;h=112;break;
+            default:y=48;w=80;h=80;break;
+        }
+        this.boxCollider.offset = cc.v2(0,y);
+        this.boxCollider.size.width = w;
+        this.boxCollider.size.height = h;
+        if(this.data.boxType>2){
+            this.shadow.scale = 3;
+        }else{
+            this.shadow.scale = 2;
+        }
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
@@ -668,6 +696,7 @@ export default class Monster extends Actor {
         if (playerDis < 600 && this.data.remote > 0 && this.shooter && !this.isDisguising && !this.meleeSkill.IsExcuting) {
             this.remoteSkill.next(() => {
                 this.remoteSkill.IsExcuting = true;
+                this.changeFaceRight();
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.remoteAttack(isSpecial);
                     this.specialSkill.IsExcuting = false;
@@ -771,7 +800,7 @@ export default class Monster extends Actor {
         }
         this.healthBar.node.opacity = this.isDisguising ? 0 : 255;
         if (this.shadow) {
-            this.shadow.opacity = this.isDisguising ? 0 : 255;
+            this.shadow.opacity = this.isDisguising ? 0 : 128;
         }
         if (this.isDisguising && this.anim) { this.anim.pause(); }
         if (this.data.invisible > 0) {
@@ -788,6 +817,7 @@ export default class Monster extends Actor {
         this.healthBar.node.scaleX = this.node.scaleX > 0 ? 1 : -1;
         //防止错位
         this.healthBar.node.x = -30 * this.node.scaleX;
+        this.healthBar.node.y = this.data.boxType==3||this.data.boxType==5?150:120;
         //变异为紫色
         this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
         this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);

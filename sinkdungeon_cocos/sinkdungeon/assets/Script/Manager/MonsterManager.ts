@@ -47,7 +47,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_TERRORDRONE = 'monster014';
     public static readonly MONSTER_WEREWOLF = 'monster015';
     public static readonly MONSTER_DUMMY = 'monster016';
-    public static readonly MONSTER_CONNAR = 'monster017';
+    public static readonly MONSTER_ZEBRA = 'monster017';
     public static readonly MONSTER_EZIO = 'monster018';
     public static readonly MONSTER_ZOOMBIE = 'monster019';
     public static readonly MONSTER_ELECTRICEYE = 'monster020';

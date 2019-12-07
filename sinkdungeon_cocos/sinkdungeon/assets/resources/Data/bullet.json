@@ -748,6 +748,21 @@
             "iceDamage": 5
         }
     },
+    "bullet038": {
+        "name":"大号霰弹",
+        "speed": 400,
+        "isLaser":0,
+        "isRect": 1,
+        "lifeTime":1,
+        "isRotate": 0,
+        "size": 2,
+        "resName":"bullet038",
+        "lightName": "bulletlight001",
+        "lightColor": "#ff787f",
+        "damage": {
+            "physicalDamage": 2
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
