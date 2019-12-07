@@ -475,7 +475,7 @@ export default class Dungeon extends cc.Component {
                 //房间未清理时加载怪物
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     if (mapData[i][j] == 'a0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_ZEBRA, i, j);
                     }
                     if (mapData[i][j] == 'a1') {
                         this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, i, j);
@@ -490,7 +490,7 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
                     }
                     if (mapData[i][j] == 'a5') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ZEBRA, i, j);
+                        this.addMonsterFromData(MonsterManager.MONSTER_GIRAFFE, i, j);
                     }
                     if (mapData[i][j] == 'b0') {
                         this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
@@ -524,6 +524,12 @@ export default class Dungeon extends cc.Component {
                     }
                     if (mapData[i][j] == 'c4') {
                         this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, i, j);
+                    }
+                    if (mapData[i][j] == 'c5') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, i, j);
+                    }
+                    if (mapData[i][j] == 'c6') {
+                        this.addMonsterFromData(MonsterManager.MONSTER_HIPPO, i, j);
                     }
                     if (mapData[i][j] == 'd0') {
                         this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);

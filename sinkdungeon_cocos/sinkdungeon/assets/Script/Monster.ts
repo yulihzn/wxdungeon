@@ -662,9 +662,7 @@ export default class Monster extends Actor {
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true,false);
                 }
-                if (!this.specialSkill.IsExcuting) {
-                    this.showCircle();
-                }
+                this.showCircle();
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();
@@ -677,11 +675,14 @@ export default class Monster extends Actor {
                     if (newdis < 80 * this.node.scaleY && !isMiss && !isBehind) {
                         let from = FromData.getClone(this.data.nameCn, this.data.resName);
                         this.addPlayerStatus(this.dungeon.player, from);
-                        this.dungeon.player.takeDamage(this.data.getAttackPoint(), from, this);
+                        let dd = this.data.getAttackPoint();
+                        if (isSpecial) {
+                            dd.physicalDamage=dd.physicalDamage*2;
+                        }
+                        this.dungeon.player.takeDamage(dd, from, this);
                     }
                     this.specialSkill.IsExcuting = false;
-                    if (isSpecial) {
-                    }
+                    
                 }, this.specialSkill.IsExcuting)
 
                 this.sprite.opacity = 255;

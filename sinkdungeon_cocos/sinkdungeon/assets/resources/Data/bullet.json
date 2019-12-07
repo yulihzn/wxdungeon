@@ -753,12 +753,31 @@
         "speed": 400,
         "isLaser":0,
         "isRect": 1,
-        "lifeTime":1,
+        "lifeTime":0.5,
         "isRotate": 0,
         "size": 2,
         "resName":"bullet038",
         "lightName": "bulletlight001",
         "lightColor": "#ff787f",
+        "damage": {
+            "physicalDamage": 2
+        }
+    },
+    "bullet039": {
+        "name":"混合光圈",
+        "resName": "bullet039",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 400,
+        "isRect": 0,
+        "isRotate": 1,
+        "rotateAngle":180,
+        "lifeTime":5,
+        "isPhysical":0,
+        "isDecelerate":1,
+        "isTracking":0,
+        "size": 3,
+        "isBoom":0,
         "damage": {
             "physicalDamage": 2
         }

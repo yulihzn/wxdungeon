@@ -358,21 +358,24 @@
         "dash": 0
     },
     "monster018": {
-        "nameCn": "E叔",
-        "nameEn": "Ezio",
+        "nameCn": "长颈鹿",
+        "nameEn": "giraffe",
         "resName": "monster018",
         "chapter": 0,
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 15,
+            "maxHealth": 25,
             "damageMin": 1
         },
-        "currentHealth": 15,
+        "bulletType":"bullet039",
+        "specialAttack":10,
+        "specialBulletArcExNum":2,
+        "currentHealth": 25,
         "invisible": 0,
-        "remote": 0,
-        "melee": 1,
-        "boxType":1,
+        "remote": 3,
+        "melee": 0,
+        "boxType":3,
         "dash": 0
     },
     "monster019": {
@@ -592,5 +595,25 @@
         "dash": 0,
         "boxType":1,
         "disguise": 200
+    },
+    "monster029": {
+        "nameCn": "河马",
+        "nameEn": "hippo",
+        "resName": "monster029",
+        "chapter": 0,
+        "stageLevel": 0,
+        "specialAttack":10,
+        "common": {
+            "moveSpeed": 300,
+            "maxHealth": 55,
+            "damageMin": 2
+        },
+        "currentHealth": 55,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 3,
+        "sizeType":1.5,
+        "boxType":4,
+        "dash": 10
     }
 }

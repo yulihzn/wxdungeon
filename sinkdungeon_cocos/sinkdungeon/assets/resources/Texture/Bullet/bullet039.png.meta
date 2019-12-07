@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "8b52cca0-2305-4cb2-add4-0e61f201a550",
+  "uuid": "25ef212a-6972-4faa-8682-2672b05b0967",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -9,10 +9,10 @@
   "packable": true,
   "platformSettings": {},
   "subMetas": {
-    "monster018hit001": {
+    "bullet039": {
       "ver": "1.0.4",
-      "uuid": "0ca29837-f4b6-4774-a32b-1cf02eaf2886",
-      "rawTextureUuid": "8b52cca0-2305-4cb2-add4-0e61f201a550",
+      "uuid": "548ce811-c079-45c8-99e8-1fef9515b86a",
+      "rawTextureUuid": "25ef212a-6972-4faa-8682-2672b05b0967",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

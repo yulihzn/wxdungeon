@@ -48,7 +48,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_WEREWOLF = 'monster015';
     public static readonly MONSTER_DUMMY = 'monster016';
     public static readonly MONSTER_ZEBRA = 'monster017';
-    public static readonly MONSTER_EZIO = 'monster018';
+    public static readonly MONSTER_GIRAFFE = 'monster018';
     public static readonly MONSTER_ZOOMBIE = 'monster019';
     public static readonly MONSTER_ELECTRICEYE = 'monster020';
     public static readonly MONSTER_FISH = 'monster021';
@@ -59,6 +59,7 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_SPIDER = 'monster026'
     public static readonly MONSTER_BOOMER = 'monster027'
     public static readonly MONSTER_SANDSTATUE = 'monster028'
+    public static readonly MONSTER_HIPPO = 'monster029'
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -359,8 +360,8 @@ export default class MonsterManager extends cc.Component {
         let arr = new Array();
         let num = Random.getRandomNum(1, 3);
         switch (Logic.chapterName) {
-            case Logic.CHAPTER00: arr = [MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
-                , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE];
+            case Logic.CHAPTER00: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
+                , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE,MonsterManager.MONSTER_GIRAFFE];
                 num = Random.getRandomNum(1, 3);
                 break;
             case Logic.CHAPTER01: arr = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
@@ -368,7 +369,7 @@ export default class MonsterManager extends cc.Component {
                 , MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
                 num = Random.getRandomNum(2, 3); break;
             case Logic.CHAPTER02: arr = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
-                , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE];
+                , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE,MonsterManager.MONSTER_CHICKEN,MonsterManager.MONSTER_HIPPO];
                 num = Random.getRandomNum(2, 4); break;
             case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
                 , MonsterManager.MONSTER_SANDSTATUE];
