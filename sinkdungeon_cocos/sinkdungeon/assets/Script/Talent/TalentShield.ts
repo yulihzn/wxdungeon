@@ -103,11 +103,11 @@ export default class TalentShield extends Talent {
         if (this.talentSkill.IsExcuting) {
             return;
         }
-        let cooldown = 5;
+        let cooldown = 7;
         let invulnerabilityTime = 1;
 
         if (this.hashTalent(TalentShield.SHIELD_13)) {
-            cooldown = 3;
+            cooldown = 5;
         }
         this.talentSkill.next(() => {
             let statusName = StatusManager.SHIELD_NORMAL;

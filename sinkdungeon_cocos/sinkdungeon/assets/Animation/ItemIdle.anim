@@ -98,20 +98,6 @@
             }
           ]
         }
-      },
-      "ItemDialog": {
-        "props": {
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                -120,
-                180,
-                0
-              ]
-            }
-          ]
-        }
       }
     }
   },
