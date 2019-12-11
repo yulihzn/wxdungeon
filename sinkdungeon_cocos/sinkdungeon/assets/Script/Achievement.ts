@@ -51,7 +51,7 @@ export default class Achievements extends cc.Component {
         this.loadBossSpriteFrames();
         let data: AchievementData = Achievements.getAchievementData();
         if (this.lifesLabel && data.playerLifes) {
-            this.lifesLabel.string = `死亡次数：${data.playerLifes}`;
+            this.lifesLabel.string = `${data.playerLifes}`;
         }
     }
     loadSpriteFrames() {

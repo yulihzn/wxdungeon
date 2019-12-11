@@ -49,8 +49,8 @@
         0,
         0,
         1,
-        0.4681857638888889,
-        0.4681857638888889,
+        1,
+        1,
         1
       ]
     },
@@ -183,7 +183,7 @@
       "array": [
         0,
         0,
-        254.61146545410156,
+        381.05117766515303,
         0,
         0,
         0,
@@ -239,6 +239,7 @@
       "height": 1
     },
     "_renderStages": 1,
+    "_alignWithScreen": true,
     "_id": "248ksP3ZpEi7SuxPa8MNbr"
   },
   {
@@ -2181,6 +2182,8 @@
       "__id__": 51
     },
     "_enabled": true,
+    "_normalMaterial": null,
+    "_grayMaterial": null,
     "duration": 0.1,
     "zoomScale": 1.2,
     "clickEvents": [
@@ -2296,7 +2299,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1100,
+      "width": 400,
       "height": 80
     },
     "_anchorPoint": {
@@ -2351,9 +2354,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 189,
+      "r": 99,
       "g": 0,
-      "b": 15,
+      "b": 8,
       "a": 255
     },
     "_contentSize": {
@@ -2411,7 +2414,7 @@
     "_useOriginalSize": false,
     "_string": "",
     "_N$string": "",
-    "_fontSize": 60,
+    "_fontSize": 40,
     "_lineHeight": 60,
     "_enableWrapText": true,
     "_N$file": null,

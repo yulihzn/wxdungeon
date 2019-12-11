@@ -133,6 +133,8 @@ export default class TalentShield extends Talent {
                 , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 0, 1));
             this.shieldBackSprite.node.runAction(backAction);
             this.shieldFrontSprite.node.runAction(frontAction);
+            //添加状态
+            this.player.addStatus(statusName,new FromData());
             this.scheduleOnce(() => {
                 if (this.hashTalent(TalentShield.SHIELD_06)) {
                     //乾坤一掷
@@ -140,8 +142,6 @@ export default class TalentShield extends Talent {
                 } else{
                     cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 }
-                //添加状态
-                this.player.addStatus(statusName,new FromData());
             }, 0.2);
             this.scheduleOnce(() => {
                 this.talentSkill.IsExcuting = false;
