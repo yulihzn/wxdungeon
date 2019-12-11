@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "8417534c-917c-4d4b-a0df-825840d5f3a2",
+  "uuid": "bd321be0-ad4b-4788-985d-033b599aa099",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -9,10 +9,10 @@
   "packable": true,
   "platformSettings": {},
   "subMetas": {
-    "monster030": {
+    "monster019anim005": {
       "ver": "1.0.4",
-      "uuid": "856b5ed4-2980-4632-bca5-c206b17f994c",
-      "rawTextureUuid": "8417534c-917c-4d4b-a0df-825840d5f3a2",
+      "uuid": "7f9afa5d-2542-45ed-ad8d-3b0ce1691191",
+      "rawTextureUuid": "bd321be0-ad4b-4788-985d-033b599aa099",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
@@ -20,10 +20,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 48,
-      "height": 48,
-      "rawWidth": 48,
-      "rawHeight": 48,
+      "width": 21,
+      "height": 21,
+      "rawWidth": 21,
+      "rawHeight": 21,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

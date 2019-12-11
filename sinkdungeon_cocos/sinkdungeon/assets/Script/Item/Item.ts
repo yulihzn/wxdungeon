@@ -92,6 +92,7 @@ export default class Item extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentItemsArr(newlist);
+        this.itemDialog.node.active = false;
     }
     static userIt(data:ItemData,player:Player){
         let from = FromData.getClone(data.nameCn,data.resName);

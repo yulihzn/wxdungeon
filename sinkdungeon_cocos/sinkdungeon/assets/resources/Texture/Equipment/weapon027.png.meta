@@ -1,6 +1,6 @@
 {
   "ver": "2.3.3",
-  "uuid": "8417534c-917c-4d4b-a0df-825840d5f3a2",
+  "uuid": "3f4ee93a-6046-4338-ab99-4edbe3cc115e",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -9,10 +9,10 @@
   "packable": true,
   "platformSettings": {},
   "subMetas": {
-    "monster030": {
+    "weapon027": {
       "ver": "1.0.4",
-      "uuid": "856b5ed4-2980-4632-bca5-c206b17f994c",
-      "rawTextureUuid": "8417534c-917c-4d4b-a0df-825840d5f3a2",
+      "uuid": "8093ce27-fbc8-4f1b-a2c6-bb1834b30e64",
+      "rawTextureUuid": "3f4ee93a-6046-4338-ab99-4edbe3cc115e",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
@@ -20,9 +20,9 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 48,
+      "width": 32,
       "height": 48,
-      "rawWidth": 48,
+      "rawWidth": 32,
       "rawHeight": 48,
       "borderTop": 0,
       "borderBottom": 0,
