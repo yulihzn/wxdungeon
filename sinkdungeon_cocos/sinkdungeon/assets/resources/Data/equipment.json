@@ -461,6 +461,7 @@
             "maxHealth": 0
         },
         "stab":1,
+        "extraInfo":"丛林种子",
         "desc": "树!!!",
         "far": 1
     },
@@ -491,6 +492,7 @@
             "maxHealth": 0
         },
         "stab":1,
+        "extraInfo":"四面八方千本针",
         "desc": "nininininja",
         "far": 0
     },
@@ -521,6 +523,7 @@
             "maxHealth": 0
         },
         "stab":0,
+        "extraInfo":"死亡的气息",
         "desc": "死亡",
         "far": 1
     },
@@ -551,6 +554,7 @@
             "maxHealth": 0
         },
         "stab":0,
+        "extraInfo":"剑影",
         "desc": "影子",
         "far": 0
     },
@@ -1087,7 +1091,7 @@
         "img": "helmet006",
         "hideHair":0,
         "exBulletTypeHurt":"bullet014",
-        "exBulletRate":20,
+        "exBulletRate":50,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1102,7 +1106,8 @@
             "curseDefence":20,
             "maxHealth": 0
         },
-        "desc": "啊..不朽..毒蛇"
+        "extraInfo":"反击毒蛇",
+        "desc": "啊..不朽"
     },
     "helmet007": {
         "nameCn": "猫咪面具",
@@ -1731,7 +1736,8 @@
             "dodge": 0,
             "maxHealth": 2
         },
-        "desc": "树...生命缓慢的回复"
+        "extraInfo":"生命缓慢的回复",
+        "desc": "绿色的丛林衣服"
     },
     "clothes011": {
         "nameCn": "法老上衣",
@@ -2439,7 +2445,8 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "恶魔靴子...每隔5秒获得一个短暂加速"
+        "extraInfo":"短暂加速",
+        "desc": "恶魔靴子..."
     },
     "shoes004": {
         "nameCn": "绝缘防辐射鞋",

@@ -750,7 +750,7 @@
     },
     "bullet038": {
         "name":"大号霰弹",
-        "speed": 400,
+        "speed": 300,
         "isLaser":0,
         "isRect": 1,
         "lifeTime":0.5,
@@ -768,7 +768,7 @@
         "resName": "bullet039",
         "lightName": "bulletlight001",
         "lightColor": "#ffffff",
-        "speed": 400,
+        "speed": 300,
         "isRect": 0,
         "isRotate": 1,
         "rotateAngle":180,

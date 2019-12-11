@@ -345,7 +345,7 @@ export default class Shooter extends cc.Component {
                 this.graphics.clear();
                 this.isAiming = false;
             } else {
-                this.drawLine(cc.color(255, 0, 0, 200), p.x, width);
+                this.drawLine(cc.color(255, 0, 0, 128), p.x, width);
             }
             if (width > 10 && !isOver) {
                 isOver = true;
@@ -356,7 +356,7 @@ export default class Shooter extends cc.Component {
             }
 
         }
-        this.schedule(fun, 0.01, 30);
+        this.schedule(fun, 0.015, 40);
     }
     private drawArc(angle: number) {
         if (!this.graphics) {

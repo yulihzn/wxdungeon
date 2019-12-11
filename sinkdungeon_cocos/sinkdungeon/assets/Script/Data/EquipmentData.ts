@@ -58,7 +58,7 @@ export default class EquipmentData extends BaseData{
     info1:string = '';
     info2:string = '';
     info3:string = '';
-    info4:string = '';
+    extraInfo:string = '';
     suit1:string = '';
     suit2:string = '';
     suit3:string = '';
@@ -123,6 +123,7 @@ export default class EquipmentData extends BaseData{
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
         this.info3 = data.info3?data.info3:'';
+        this.extraInfo = data.extraInfo?data.extraInfo:'';
         this.suit1 = data.suit1?data.suit1:'';
         this.suit2 = data.suit2?data.suit2:'';
         this.suit3 = data.suit3?data.suit3:'';
@@ -180,6 +181,7 @@ export default class EquipmentData extends BaseData{
         e.info1 = this.info1;
         e.info2 = this.info2;
         e.info3 = this.info3;
+        e.extraInfo = this.extraInfo;
         e.suit1 = this.suit1;
         e.suit2 = this.suit2;
         e.suit3 = this.suit3;

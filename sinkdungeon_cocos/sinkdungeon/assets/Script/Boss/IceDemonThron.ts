@@ -44,7 +44,7 @@ export default class IceDemonThron extends cc.Component {
             if(this.node){
                 this.node.destroy();
             }
-            }, 5);
+            }, 2);
         
     }
     start() {

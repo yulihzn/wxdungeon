@@ -27,6 +27,8 @@ export default class EquipmentDialog extends cc.Component {
     @property(cc.Label)
     info3: cc.Label = null;//附加词条3
     @property(cc.Label)
+    extraInfo: cc.Label = null;//附加词条4
+    @property(cc.Label)
     infoSuit1: cc.Label = null;//套装附加词条1
     @property(cc.Label)
     infoSuit2: cc.Label = null;//套装附加词条2
@@ -54,6 +56,7 @@ export default class EquipmentDialog extends cc.Component {
         this.info2.node.color=this.info2.node.color.fromHEX(equipment.infocolor2);
         this.info3.string = equipment.info3;
         this.info3.node.color=this.info3.node.color.fromHEX(equipment.infocolor3);
+        this.extraInfo.string = equipment.extraInfo;
         this.infoSuit1.string = equipment.suit1;
         this.infoSuit1.node.color=this.infoSuit1.node.color.fromHEX(equipment.suitcolor1);
         this.infoSuit2.string = equipment.suit2;
@@ -65,6 +68,7 @@ export default class EquipmentDialog extends cc.Component {
         this.info1.node.active = this.info1.string.length>0;
         this.info2.node.active = this.info2.string.length>0;
         this.info3.node.active = this.info3.string.length>0;
+        this.extraInfo.node.active = this.extraInfo.string.length>0;
         this.infoSuit1.node.active = this.infoSuit1.string.length>0;
         this.infoSuit2.node.active = this.infoSuit2.string.length>0;
         this.infoSuit3.node.active = this.infoSuit3.string.length>0;

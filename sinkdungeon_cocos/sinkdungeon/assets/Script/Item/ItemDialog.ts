@@ -37,6 +37,7 @@ export default class ItemDialog extends cc.Component {
     }
     showDialog() {
         this.node.opacity = 255;
+        this.node.position = cc.v2(-120,180);
     }
     hideDialog() {
         this.node.opacity = 0;
