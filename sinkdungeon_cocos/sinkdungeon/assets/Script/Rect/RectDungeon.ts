@@ -18,6 +18,7 @@ export default class RectDungeon {
     public static readonly LEVEL_3 = 3;
     public static readonly LEVEL_4 = 4;
     public static readonly LEVEL_5 = 5;
+    public static readonly LEVEL_6 = 6;
     public static readonly PRIMARY = 1000;
     public static readonly SECONDARY = 2000;
     public static readonly EMPTY_ROOM = 0;
@@ -33,6 +34,7 @@ export default class RectDungeon {
     public static readonly POKER_ROOM = 10;
     public static readonly TAROT_ROOM = 11;
     public static readonly TEST_ROOM = 12;
+    public static readonly FINAL_ROOM = 13;
     public level: number = 1;
     public map: RectRoom[][];
     public size: number;
@@ -43,9 +45,14 @@ export default class RectDungeon {
     public merChantRoom: RectRoom;
     public puzzleRoom: RectRoom;
     private isLevelZero = false;
+    private isLevelFinal = false;
 
     public constructor(level: number) {
         this.isLevelZero = level == 0;
+        this.isLevelFinal = level == 6;
+        if(this.isLevelFinal){
+            level = 1;
+        }
         if (this.isLevelZero) {
             this.level = 1;
         } else {
@@ -59,6 +66,7 @@ export default class RectDungeon {
 
     buildMapFromSave(dungeon: RectDungeon): RectDungeon {
         this.isLevelZero = dungeon.isLevelZero;
+        this.isLevelFinal = dungeon.isLevelFinal;
         this.level = dungeon.level;
         this.size = dungeon.size;
         this.map = new Array();
@@ -98,6 +106,7 @@ export default class RectDungeon {
         this.buildPrimaryRoomsType();
         this.buildSecondaryRoomsType();
         this.buildZeroRoomsType();
+        this.buildFinalRoomType();
         this.addLootKeys();
         this.addDoors();
     }
@@ -234,7 +243,9 @@ export default class RectDungeon {
             let randomtype = roomType[this.getRandomNum(0, roomType.length - 1)];
             if (this.level == RectDungeon.LEVEL_1) {
                 room.roomType = randomtype;
-            } else if (this.getOneThreeChance()) {//1/10生成额外房间
+            }if (this.level == RectDungeon.LEVEL_6) {
+                room.roomType = RectDungeon.EMPTY_ROOM;
+            } else if (this.getRandomRoomChance()) {//生成额外房间
                 room.roomType = randomtype;
             } else {
                 room.roomType = RectDungeon.EMPTY_ROOM;
@@ -291,8 +302,12 @@ export default class RectDungeon {
         this.secondaryRooms[2].roomType = RectDungeon.TAROT_ROOM;
         this.secondaryRooms[3].roomType = RectDungeon.TEST_ROOM;
         this.endRoom = this.secondaryRooms[2];
-
-
+    }
+    buildFinalRoomType():void{
+        if(!this.isLevelFinal){
+            return;
+        }
+        this.primaryRooms[0].roomType = RectDungeon.FINAL_ROOM;
     }
     addMerchantRoom(): void {
         let index = this.getRandomNum(0, this.secondaryRooms.length - 1);
@@ -506,6 +521,8 @@ export default class RectDungeon {
                 return "Ｂ";
             case RectDungeon.TEST_ROOM:
                 return "Ａ";
+            case RectDungeon.FINAL_ROOM:
+                return "Ｆ"
         }
         return "Ｏ";
     }
@@ -515,7 +532,13 @@ export default class RectDungeon {
     getHalfChance(): boolean {
         return Random.rand() > 0.5;
     }
-    getOneThreeChance(): boolean {
+    getRandomRoomChance(): boolean {
+        switch(this.level){
+            case RectDungeon.LEVEL_2:Random.rand() > 0.5;break;
+            case RectDungeon.LEVEL_3:Random.rand() > 0.8;break;
+            case RectDungeon.LEVEL_4:Random.rand() > 0.5;break;
+            case RectDungeon.LEVEL_5:Random.rand() > 0.5;break;
+        }
         return Random.rand() > 0.7;
     }
 }

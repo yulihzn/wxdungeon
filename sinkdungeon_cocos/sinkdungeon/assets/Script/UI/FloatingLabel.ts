@@ -51,7 +51,7 @@ export default class FloatingLabel extends cc.Component {
         if(isCritical){
             color = cc.color(255,255,0);
         }
-        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,0.75+Math.abs(damage/50));
+        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,1+Math.abs(damage/50));
     }
 
     hideLabel(){

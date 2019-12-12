@@ -168,12 +168,13 @@ export default class DungeonStyleManager extends cc.Component {
         let isPuzzleRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
         let isBossRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM;
         let isTarotRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM;
+        let isFinalRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.FINAL_ROOM;
         if (isStartRoom) {
             oneIndex = 1;
             otherIndex = 2;
         }
         if (posX == oneIndex) {
-            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom || isTarotRoom;
+            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom || isTarotRoom||isFinalRoom;
             if (needAdd) {
                 let postop = Dungeon.getPosInMap(cc.v2(oneIndex, Dungeon.HEIGHT_SIZE));
                 let exit = cc.instantiate(this.exitdoorPrefab);

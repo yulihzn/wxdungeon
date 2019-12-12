@@ -400,16 +400,21 @@ export default class MeleeWeapon extends cc.Component {
             decorate.breakBox();
         }
         //生命汲取,内置1s cd
-        this.drainSkill.next(() => {
-            let drain = this.player.data.getLifeDrain();
-            if (drain > 0 && damageSuccess) {
-                this.player.takeDamage(new DamageData(-drain));
-            }
-        }, 1, true);
+        if(damageSuccess){
+            this.drainSkill.next(() => {
+                let drain = this.player.data.getLifeDrain();
+                if (drain > 0) {
+                    this.player.takeDamage(new DamageData(-drain));
+                }
+            }, 1, true);
+        }
+        
         this.isMiss = false;
         //停顿
-        // this.anim.pause();
-        // this.scheduleOnce(()=>{this.anim.resume()},0.02)
+        if(damageSuccess){
+            this.anim.pause();
+            this.scheduleOnce(()=>{this.anim.resume()},0.05)
+        }
     }
     addMonsterAllStatus(monster: Monster) {
         this.addMonsterStatus(this.player.data.getIceRate(), monster, StatusManager.FROZEN);

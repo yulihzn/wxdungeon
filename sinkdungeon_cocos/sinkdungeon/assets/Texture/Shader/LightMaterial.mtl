@@ -4,13 +4,19 @@
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
-    "__uuid__": "2874f8dd-416c-4440-81b7-555975426e93"
+    "__uuid__": "068c267c-e29d-4db5-8129-fe7e4e937f52"
   },
   "_defines": {
-    "USE_TEXTURE": true,
+    "USE_NORMAL_TEXTURE": true,
+    "USE_DIFFUSE_TEXTURE": true,
     "USE_ALPHA_TEST": true
   },
   "_props": {
-    "texture": null
+    "diffuseTexture": {
+      "__uuid__": "ece8b552-8a6f-4a6e-913b-b0fdb6b502be"
+    },
+    "normalTexture": {
+      "__uuid__": "2f3ddf3e-213a-4ac8-9a84-d41c4525234d"
+    }
   }
 }

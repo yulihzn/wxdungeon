@@ -405,26 +405,28 @@ export default class Player extends Actor {
         }
         pos = pos.normalizeSelf().mul(15);
         pos.x = this.isFaceRight ? pos.x : -pos.x;
-        let speed = PlayerData.DefAULT_SPEED - this.data.getAttackSpeed();
+        let speed = PlayerData.DefAULT_SPEED-this.data.getAttackSpeed();
         if (speed < 1) {
             //匕首上限
             if (this.meleeWeapon.isStab && !this.meleeWeapon.isFar) {
-                speed = 1;
+                speed = 0+speed;
             }
             //长剑上限
             if (!this.meleeWeapon.isStab && !this.meleeWeapon.isFar) {
-                speed = 100;
+                speed = 100+speed;
             }
             //长枪上限
             if (this.meleeWeapon.isStab && this.meleeWeapon.isFar) {
-                speed = 200;
+                speed = 150+speed;
             }
             //大剑上限
             if (!this.meleeWeapon.isStab && this.meleeWeapon.isFar) {
-                speed = 300;
+                speed = 300+speed;
             }
         }
-        if (speed > PlayerData.DefAULT_SPEED * 10) { speed = PlayerData.DefAULT_SPEED * 10; }
+        if(speed<0){
+            speed = 0;
+        }
         let spritePos = this.sprite.position.clone();
         let action = cc.sequence(cc.moveBy(0.1, -pos.x, -pos.y), cc.moveBy(0.1, pos.x, pos.y), cc.callFunc(() => {
             this.scheduleOnce(() => {

@@ -227,13 +227,13 @@ export default class EquipmentManager extends cc.Component {
             desc.color = this.getMixColor(desc.color
                 , lifeRecovery.y > 2 ? EquipmentManager.COLOR_RECOVERY : '#000000');
         }
-        //移动速度0-50减去装备自带移动速度
+        //移动速度0-80减去装备自带移动速度
         let moveSpeed = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
             , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
             && data.Common.moveSpeed > 0) {
-            let ms = 50 - data.Common.moveSpeed;
-            if (ms < 5) { ms = 5; }
+            let ms = 80 - data.Common.moveSpeed;
+            if (ms < 10) { ms = 10; }
             moveSpeed = this.getRandomQuality(0, ms, chestQuality);
             level = moveSpeed.y > level ? moveSpeed.y : level;
             desc.prefix += moveSpeed.y > 2 ? '灵动' : '';
@@ -261,7 +261,7 @@ export default class EquipmentManager extends cc.Component {
             , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
             && data.Common.dodge > 0) {
             let d1 = 30 - data.Common.dodge;
-            if (d1 < 5) { d1 = 5; }
+            if (d1 < 10) { d1 = 10; }
             dodge = this.getRandomQuality(0, d1, chestQuality);
             level = dodge.y > level ? dodge.y : level;
             desc.prefix += dodge.y > 2 ? '飘逸' : '';

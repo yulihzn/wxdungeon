@@ -12,7 +12,6 @@ CCEffect %{
         cullMode: none
       properties:
         texture: { value: white }
-        normalTexture: { value: white }
         alphaThreshold: { value: 0.5 }
 }%
 
@@ -62,7 +61,6 @@ CCProgram fs %{
   #if USE_TEXTURE
   in vec2 v_uv0;
   uniform sampler2D texture;
-  uniform sampler2D normalTexture;
   #endif
 
   void main () {
