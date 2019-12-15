@@ -468,32 +468,6 @@ export default class RectDungeon {
         return room1.x == room2.x && room1.y == room2.y;
     }
 
-    public static getTypeString(type: number): string {
-        if (type != RectDungeon.EMPTY_ROOM) {
-            return "Room";
-        }
-        //		switch (type) {
-        //		case EMPTY_ROOM:
-        //		return "RoomEmpty";break;
-        //		case START_ROOM:
-        //		return "RoomStart";break;
-        //		case END_ROOM:
-        //			return "RoomEnd";
-        //		case TRAP_ROOM:
-        //			return "RoomTrap";
-        //		case LOOT_ROOM:
-        //			return "RoomLoot";
-        //		case DANGER_ROOM:
-        //			return "RoomDanger";
-        //		case PUZZLE_ROOM:
-        //			return "RoomPuzzle";
-        //		case MERCHANT_ROOM:
-        //			return "RoomMerchant";
-        //		case BOSS_ROOM:
-        //			return "RoomBoss";
-        //		}
-        return "RoomEmpty";
-    }
     private getTypeStringLog(type: number): string {
         switch (type) {
             case RectDungeon.EMPTY_ROOM:

@@ -37,8 +37,6 @@ export default class RectRoom {
     isPrimary: boolean = false;
     x: number;
     y: number;
-    // map: number[][];
-    map: MapData;
     enemyCount: number = 0;
     /// The Key 是否包含钥匙
     hasKey: boolean;
@@ -52,6 +50,8 @@ export default class RectRoom {
     isInit: boolean = true;
     //保存地图数据下标
     saveIndex = 0;
+    //伪随机数种子
+    seed = new Date().getTime();
 
     constructor(isPrimary: boolean, index: number, x: number, y: number, roomType: number) {
         this.x = x;
@@ -79,6 +79,7 @@ export default class RectRoom {
         this.enemyCount = room.enemyCount;
         this.hasKey = room.hasKey;
         this.saveIndex = room.saveIndex;
+        this.seed = room.seed?room.seed:new Date().getTime();
 
         // this.randomTiles = room.randomTiles;
 

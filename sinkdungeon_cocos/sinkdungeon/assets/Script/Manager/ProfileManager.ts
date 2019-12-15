@@ -56,7 +56,7 @@ export default class ProfileManager{
             this.hasSaveData = false;
             return;
         }
-        if(!data.playerData||!data.inventoryManager||!data.rectDungeon||!data.currentPos||!data.shopTables
+        if(!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeon||!data.currentPos||!data.shopTables
         ||!data.boxes||!data.chests||!data.equipments||!data.items||!data.talentList){
             this.hasSaveData = false;
             return;
@@ -68,13 +68,13 @@ export default class ProfileManager{
         this.data.chapterName = data.chapterName;
         this.data.level = data.level;
         //玩家装备列表
-        for(let i =0;i<data.inventoryManager.list.length;i++){
-            this.data.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);
+        for(let i =0;i<data.playerEquipList.length;i++){
+            this.data.playerEquipList[i]=data.playerEquipList[i];
         }
         //玩家物品列表
-        if(data.inventoryManager.itemList){
-            for(let i=0;i<data.inventoryManager.itemList.length;i++){
-                this.data.inventoryManager.itemList[i].valueCopy(data.inventoryManager.itemList[i]);
+        if(data.playerItemList){
+            for(let i=0;i<data.playerItemList.length;i++){
+                this.data.playerItemList[i]=data.playerItemList[i];
             }
         }
         //加载技能

@@ -11,6 +11,7 @@ import MonsterData from "../Data/MonsterData";
 import ChestData from "../Data/ChestData";
 import ItemData from "../Data/ItemData";
 import Random from "../Utils/Random";
+import Random4Save from "../Utils/Random4Save";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -120,14 +121,10 @@ export default class MapManager {
     /** 获取当前房间地图数据copy*/
     public getCurrentMapData(): MapData {
         let room = this.getCurrentRoom();
-        if(!room.map||room.map == null){
-            let index = room.roomType - 1;
-            let r = this.getAllFileRooms()[this.roomStrs[index]];
-            if(r){
-                room.map = r[room.saveIndex];
-            }
-        }
-        return this.getCurrentRoom().map.clone();
+        let index = room.roomType - 1;
+        let r = this.getAllFileRooms()[this.roomStrs[index]];
+        let map = this.addGenerateThings(r[room.saveIndex].clone(),room.roomType,room.seed);
+        return map;
     }
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {
@@ -229,7 +226,7 @@ export default class MapManager {
                         let a: MapData[] = new Array();
                         for (let j = 0; j < temparr.length; j++) {
                             let tempstr = temparr[j];
-                            a.push(this.addGenerateThings(new MapData(tempstr),index));
+                            a.push(new MapData(tempstr));
                         }
                         //按顺序排列的room类型名来保存该类型的地图数组
                         allfileRooms[this.roomStrs[index]] = a;
@@ -254,18 +251,19 @@ export default class MapManager {
         })
     }
     /**添加随机元素 */
-    private addGenerateThings(mapData:MapData,index:number):MapData{
-        this.addRandomTile(mapData);
-        if(RectDungeon.TEST_ROOM != index+1&&RectDungeon.TAROT_ROOM != index+1&&RectDungeon.START_ROOM != index+1){
-            this.addDecorate(mapData);
+    private addGenerateThings(mapData:MapData,roomType:number,seed:number):MapData{
+        let rand4save = new Random4Save(seed);
+        this.addRandomTile(mapData,rand4save);
+        if(RectDungeon.TEST_ROOM != roomType&&RectDungeon.TAROT_ROOM != roomType&&RectDungeon.START_ROOM != roomType){
+            this.addDecorate(mapData,rand4save);
         }
         return mapData;
     }
-    private addRandomTile(mapData:MapData){
+    private addRandomTile(mapData:MapData,rand4save:Random4Save){
         let pos = [];
         for(let i = 0;i<10;i++){
-            let dx = Random.getRandomNum(0,mapData.map.length-1);
-            let dy = Random.getRandomNum(0,mapData.map[0].length-1);
+            let dx = rand4save.getRandomNum(0,mapData.map.length-1);
+            let dy = rand4save.getRandomNum(0,mapData.map[0].length-1);
             pos.push(cc.v2(dx,0));
             pos.push(cc.v2(0,dy));
             pos.push(cc.v2(dx,dy));
@@ -273,15 +271,15 @@ export default class MapManager {
         }
         for(let p of pos){
             if(mapData.map[p.x][p.y] == '**'){
-                mapData.map[p.x][p.y] = `*${Random.getRandomNum(0,2)}`;
+                mapData.map[p.x][p.y] = `*${rand4save.getRandomNum(0,2)}`;
             }
         }
     }
-    private addDecorate(mapData:MapData){
+    private addDecorate(mapData:MapData,rand4save:Random4Save){
         let pos = [];
         for(let i = 0;i<3;i++){
-            let dx = Random.getRandomNum(0,mapData.map.length-1);
-            let dy = Random.getRandomNum(0,mapData.map[0].length-1);
+            let dx = rand4save.getRandomNum(0,mapData.map.length-1);
+            let dy = rand4save.getRandomNum(0,mapData.map[0].length-1);
             pos.push(cc.v2(dx,0));
             pos.push(cc.v2(0,dy));
             pos.push(cc.v2(dx,dy));
@@ -289,7 +287,7 @@ export default class MapManager {
         }
         for(let p of pos){
             if(mapData.map[p.x][p.y].indexOf('*')!=-1){
-                mapData.map[p.x][p.y] = `D${Random.getRandomNum(0,2)}`;
+                mapData.map[p.x][p.y] = `D${rand4save.getRandomNum(0,2)}`;
             }
         }
         
@@ -316,19 +314,18 @@ export default class MapManager {
                         let r = allfileRooms[this.roomStrs[index]]
                         //随机取出一个该类型的房间数据
                         room.saveIndex = Logic.getRandomNum(0, r.length - 1);
-                        let roomInex = Logic.getRandomNum(0, r.length - 1);
                         if(room.roomType == RectDungeon.PRIMARY_ROOM){
                             if(this.rectDungeon.isPrimaryHorizontal(i,j)){
-                                roomInex = 0;
+                                room.saveIndex = 0;
                             }
                             if(this.rectDungeon.isPrimaryVertical(i,j)){
-                                roomInex = 1;
+                                room.saveIndex = 1;
                             }
                             if(this.rectDungeon.isPrimaryRoomCorner(i,j)){
-                                roomInex = r.length - 1;
+                                room.saveIndex = r.length - 1;
                             }
                         }
-                        room.map = r[roomInex];
+                        // room.map = r[roomInex];
                     }
                 }
             }

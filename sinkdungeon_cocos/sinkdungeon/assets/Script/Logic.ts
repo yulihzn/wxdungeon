@@ -99,6 +99,8 @@ export default class Logic extends cc.Component {
     }
     static saveData(){
         Logic.profileManager.data.playerData = Logic.playerData.clone();
+        Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
+        Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin",Logic.coins);
     }
@@ -115,7 +117,13 @@ export default class Logic extends cc.Component {
         //加载玩家数据
         Logic.playerData = Logic.profileManager.data.playerData.clone();
         //加载装备
-        Logic.inventoryManager = Logic.profileManager.data.inventoryManager;
+        Logic.inventoryManager = new InventoryManager();
+        for(let i =0;i<Logic.profileManager.data.playerEquipList.length;i++){
+            Logic.inventoryManager.list[i].valueCopy(Logic.profileManager.data.playerEquipList[i]);
+        }
+        for(let i =0;i<Logic.profileManager.data.playerItemList.length;i++){
+            Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i]);
+        }
         //加载技能列表
         Logic.talentList = Logic.profileManager.data.talentList;
         Logic.initTalentMap();

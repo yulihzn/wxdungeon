@@ -37,7 +37,10 @@ export default class ProfileData {
     items:{[key:string]:ItemData[]}={};
     chapterName:number = 0;
     playerData:PlayerData = new PlayerData();
-    inventoryManager: InventoryManager = new InventoryManager();
+    //玩家装备列表
+    playerEquipList:EquipmentData[] = new Array();
+    //玩家物品列表
+    playerItemList:ItemData[] = new Array();
     talentList:TalentData[] = new Array();
     ammo = 30;//子弹
     level = 0;
@@ -45,8 +48,9 @@ export default class ProfileData {
         cc.sys.localStorage.setItem('profileData','');
         this.chapterName = 0;
         this.playerData = new PlayerData();
-        this.inventoryManager = new InventoryManager();
         this.talentList = new Array();
+        this.playerEquipList = new Array();
+        this.playerItemList = new Array();
         this.rectDungeon = new RectDungeon(0);
         this.currentPos = cc.v2(1,1);
         this.boxes = {};
