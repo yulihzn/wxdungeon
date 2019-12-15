@@ -101,7 +101,9 @@ export default class AudioPlayer extends cc.Component {
         //     || Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM) {
         //     clip = this.bg02;
         // }
-        cc.audioEngine.playMusic(clip, true);
+        if(clip){
+            cc.audioEngine.playMusic(clip, true);
+        }
     }
     play(name: string) {
         switch (name) {
