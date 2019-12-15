@@ -33,7 +33,7 @@ export default class MiniMap extends cc.Component {
 		cc.director.on(EventConstant.CHANGE_MINIMAP, (event) => {
 			this.changeMap(event.detail.x, event.detail.y);
 		});
-		this.level = Logic.level < 1 ? 1 : Logic.level;
+		this.level = (Logic.level < 1||Logic.level>5) ? 1 : Logic.level;
 		this.size = this.level + 2;
 		if (this.size < 3) {
 			this.size = 3;

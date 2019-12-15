@@ -66,6 +66,7 @@ export default class ProfileManager{
         this.data.playerData.valueCopy(data.playerData);
         //章节名称
         this.data.chapterName = data.chapterName;
+        this.data.level = data.level;
         //玩家装备列表
         for(let i =0;i<data.inventoryManager.list.length;i++){
             this.data.inventoryManager.list[i].valueCopy(data.inventoryManager.list[i]);

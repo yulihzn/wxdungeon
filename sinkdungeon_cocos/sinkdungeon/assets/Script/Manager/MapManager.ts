@@ -31,7 +31,7 @@ export default class MapManager {
     private allfileRooms02: { [key: string]: MapData[] } = {};
     private allfileRooms03: { [key: string]: MapData[] } = {};
     private allfileRooms04: { [key: string]: MapData[] } = {};
-    private roomStrs = ['startroom', 'endroom','primaryroom', 'traproom', 'lootroom', 'dangerroom', 'merchantroom', 'puzzleroom', 'bossroom', 'pokerroom', 'tarotroom', 'testroom'];
+    private roomStrs = ['startroom', 'endroom','primaryroom', 'traproom', 'lootroom', 'dangerroom', 'merchantroom', 'puzzleroom', 'bossroom', 'pokerroom', 'tarotroom', 'testroom','finalroom'];
     //文件是否加载成功
     isloaded: boolean = false;
     isloaded00: boolean = false;

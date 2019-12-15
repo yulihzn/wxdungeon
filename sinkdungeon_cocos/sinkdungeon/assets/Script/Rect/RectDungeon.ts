@@ -50,10 +50,8 @@ export default class RectDungeon {
     public constructor(level: number) {
         this.isLevelZero = level == 0;
         this.isLevelFinal = level == 6;
-        if(this.isLevelFinal){
-            level = 1;
-        }
-        if (this.isLevelZero) {
+       
+        if (this.isLevelZero||this.isLevelFinal) {
             this.level = 1;
         } else {
             this.level = level;
@@ -307,7 +305,10 @@ export default class RectDungeon {
         if(!this.isLevelFinal){
             return;
         }
-        this.primaryRooms[0].roomType = RectDungeon.FINAL_ROOM;
+        this.secondaryRooms[0].roomType = RectDungeon.EMPTY_ROOM;
+        this.secondaryRooms[1].roomType = RectDungeon.EMPTY_ROOM;
+        this.secondaryRooms[2].roomType = RectDungeon.FINAL_ROOM;
+        this.secondaryRooms[3].roomType = RectDungeon.EMPTY_ROOM;
     }
     addMerchantRoom(): void {
         let index = this.getRandomNum(0, this.secondaryRooms.length - 1);
@@ -537,7 +538,7 @@ export default class RectDungeon {
             case RectDungeon.LEVEL_2:Random.rand() > 0.5;break;
             case RectDungeon.LEVEL_3:Random.rand() > 0.8;break;
             case RectDungeon.LEVEL_4:Random.rand() > 0.5;break;
-            case RectDungeon.LEVEL_5:Random.rand() > 0.5;break;
+            case RectDungeon.LEVEL_5:Random.rand() > 0.8;break;
         }
         return Random.rand() > 0.7;
     }
