@@ -289,19 +289,23 @@
           "angle": [
             {
               "frame": 0,
-              "value": 75
+              "value": 75,
+              "curve": "constant"
             },
             {
               "frame": 0.16666666666666666,
-              "value": 0
+              "value": 0,
+              "curve": "constant"
             },
             {
               "frame": 0.3333333333333333,
-              "value": 15
+              "value": 15,
+              "curve": "constant"
             },
             {
               "frame": 0.5,
-              "value": -75
+              "value": -75,
+              "curve": "constant"
             },
             {
               "frame": 0.6666666666666666,
