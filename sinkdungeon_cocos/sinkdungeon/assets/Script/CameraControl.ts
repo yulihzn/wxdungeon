@@ -1,4 +1,5 @@
 import Dungeon from "./Dungeon";
+import { EventConstant } from "./EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,11 +20,15 @@ export default class CameraControl extends cc.Component {
     dungeon: Dungeon = null;
 
     camera:cc.Camera;
+    isShaking = false;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.camera = this.getComponent(cc.Camera);
+        cc.director.on(EventConstant.CAMERA_SHAKE, (event) => {
+            this.shakeCamera();
+        })
     }
     onEnable(){
         // cc.director.getPhysicsManager().attachDebugDrawToCamera(this.camera);
@@ -37,11 +42,24 @@ export default class CameraControl extends cc.Component {
     }
     lateUpdate(){
         let targetPos = this.dungeon.player.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
-        this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1)
+        if(!this.isShaking){
+            this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1)
+        }
         this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio,this.dungeon.isZoomCamera?0.7:1,0.05);
         // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
         // let ratio = targetPos.y / cc.winSize.height;
         // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
+    }
+    shakeCamera(){
+        if(!this.node){
+            return;
+        }
+        this.isShaking = true;
+        this.node.runAction(cc.sequence(cc.moveBy(0.1,0,2)
+        ,cc.moveBy(0.1,0,-4),cc.moveBy(0.1,2,0)
+        ,cc.moveBy(0.1,-4,0),cc.moveBy(0.1,2,0),cc.callFunc(()=>{
+            this.isShaking = false;
+        })))
     }
     lerpNumber(a, b, r) {
         return a + (b - a) * r;

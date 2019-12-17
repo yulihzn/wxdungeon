@@ -360,6 +360,9 @@ export default class MeleeWeapon extends cc.Component {
         } else {
             power = 50;
         }
+        if(this.comboType == MeleeWeapon.COMBO3){
+            power+=50;
+        }
         pos = pos.normalizeSelf().mul(power);
         rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
     }
@@ -413,7 +416,7 @@ export default class MeleeWeapon extends cc.Component {
         //停顿
         if(damageSuccess){
             this.anim.pause();
-            this.scheduleOnce(()=>{this.anim.resume()},0.05)
+            this.scheduleOnce(()=>{this.anim.resume()},0.1)
         }
     }
     addMonsterAllStatus(monster: Monster) {

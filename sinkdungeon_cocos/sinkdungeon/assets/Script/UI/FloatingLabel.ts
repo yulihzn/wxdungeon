@@ -41,17 +41,19 @@ export default class FloatingLabel extends cc.Component {
         this.anim.play('FontFloating');
     }
     showMiss(){
-        this.showLabel('丢失',cc.color(255, 255, 255),0.75);
+        this.showLabel('丢失',cc.color(255, 255, 255),1);
     }
     showDoge(){
-        this.showLabel('闪避',cc.color(255, 255, 255),0.75);
+        this.showLabel('闪避',cc.color(255, 255, 255),1);
     }
     showDamage(damage:number,isCritical:boolean){
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
+        let baseScale = 1;
         if(isCritical){
             color = cc.color(255,255,0);
+            baseScale = 2;
         }
-        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,1+Math.abs(damage/50));
+        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,baseScale+Math.abs(damage/50));
     }
 
     hideLabel(){
