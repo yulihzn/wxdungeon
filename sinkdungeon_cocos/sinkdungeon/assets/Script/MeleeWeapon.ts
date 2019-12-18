@@ -377,6 +377,7 @@ export default class MeleeWeapon extends cc.Component {
             damage = this.player.data.getFinalAttackPoint();
         }
         let damageSuccess = false;
+        let attackSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied && !this.isMiss) {
             damageSuccess = monster.takeDamage(damage);
@@ -396,10 +397,12 @@ export default class MeleeWeapon extends cc.Component {
 
         let box = attackTarget.node.getComponent(Box);
         if (box) {
+            attackSuccess = true;
             box.breakBox();
         }
         let decorate = attackTarget.node.getComponent(Decorate);
         if(decorate){
+            attackSuccess = true;
             decorate.breakBox();
         }
         //生命汲取,内置1s cd
@@ -414,9 +417,10 @@ export default class MeleeWeapon extends cc.Component {
         
         this.isMiss = false;
         //停顿
-        if(damageSuccess){
+        if(damageSuccess||attackSuccess){
             this.anim.pause();
-            this.scheduleOnce(()=>{this.anim.resume()},0.1)
+            cc.director.emit(EventConstant.CAMERA_SHAKE,{detail:{isHeavyShaking:this.comboType==MeleeWeapon.COMBO3}});
+            this.scheduleOnce(()=>{this.anim.resume()},0.1);
         }
     }
     addMonsterAllStatus(monster: Monster) {

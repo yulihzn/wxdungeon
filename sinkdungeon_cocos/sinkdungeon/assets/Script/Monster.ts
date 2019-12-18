@@ -94,6 +94,7 @@ export default class Monster extends Actor {
     particleLightening: cc.ParticleSystem;
     particleToxic: cc.ParticleSystem;
     particleCurse: cc.ParticleSystem;
+    particleBlood: cc.ParticleSystem;
     effectNode: cc.Node;
 
     remoteSkill = new Skill();
@@ -130,6 +131,7 @@ export default class Monster extends Actor {
         this.particleLightening = this.node.getChildByName('Effect').getChildByName('lightening').getComponent(cc.ParticleSystem);
         this.particleToxic = this.node.getChildByName('Effect').getChildByName('toxic').getComponent(cc.ParticleSystem);
         this.particleCurse = this.node.getChildByName('Effect').getChildByName('curse').getComponent(cc.ParticleSystem);
+        this.particleBlood = this.node.getChildByName('Effect').getChildByName('blood').getComponent(cc.ParticleSystem);
         this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
@@ -139,7 +141,7 @@ export default class Monster extends Actor {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
         this.dangerTips.opacity = 0;
-
+        this.stopAttackEffect();
 
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
@@ -473,6 +475,7 @@ export default class Monster extends Actor {
         //100ms后修改受伤
         if (dd.getTotalDamage() > 0) {
             this.bodySprite.node.color = cc.color(255, 0, 0);
+            this.showBloodEffect();
         }
         this.scheduleOnce(() => {
             if (this.node) {
@@ -546,6 +549,10 @@ export default class Monster extends Actor {
         this.particleToxic.stopSystem();
         this.particleCurse.stopSystem();
     }
+    showBloodEffect(){
+        this.particleBlood.resetSystem();
+        this.scheduleOnce(()=>{this.particleBlood.stopSystem()},0.5);
+    }
     addPlayerStatus(player: Player, from: FromData) {
         if (Logic.getRandomNum(0, 100) < this.data.getIceRate()) { player.addStatus(StatusManager.FROZEN, from); }
         if (Logic.getRandomNum(0, 100) < this.data.getFireRate()) { player.addStatus(StatusManager.BURNING, from); }
@@ -597,7 +604,7 @@ export default class Monster extends Actor {
                     boom.zIndex = 4100;
                     cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } });
                 }
-                this.node.active = false;
+                this.scheduleOnce(()=>{this.node.active = false;},25);
             }
         }, 2);
 

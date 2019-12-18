@@ -701,7 +701,7 @@ export default class Player extends Actor {
         }
         let valid = !isDodge && dd.getTotalDamage() > 0;
         if (valid) {
-            cc.director.emit(EventConstant.CAMERA_SHAKE);
+            cc.director.emit(EventConstant.CAMERA_SHAKE,{detail:{isHeavyShaking:false}});
             cc.director.emit(EventConstant.HUD_DAMAGE_CORNER_SHOW);
             this.remoteExHurt();
             cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAYER_HIT } });

@@ -126,6 +126,13 @@ export default class MapManager {
         let map = this.addGenerateThings(r[room.saveIndex].clone(),room.roomType,room.seed);
         return map;
     }
+    public getCurrentMapSize():cc.Vec2{
+        let room = this.getCurrentRoom();
+        let index = room.roomType - 1;
+        let r = this.getAllFileRooms()[this.roomStrs[index]];
+        let map = r[room.saveIndex].clone();
+        return cc.v2(map.map.length,map.map[0].length)
+    }
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {
         return this.rectDungeon.map[this.currentPos.x][this.currentPos.y];
@@ -253,8 +260,10 @@ export default class MapManager {
     /**添加随机元素 */
     private addGenerateThings(mapData:MapData,roomType:number,seed:number):MapData{
         let rand4save = new Random4Save(seed);
+        cc.log(`seed:${seed}`);
         this.addRandomTile(mapData,rand4save);
         if(RectDungeon.TEST_ROOM != roomType&&RectDungeon.TAROT_ROOM != roomType&&RectDungeon.START_ROOM != roomType){
+            rand4save = new Random4Save(seed);
             this.addDecorate(mapData,rand4save);
         }
         return mapData;
@@ -277,17 +286,17 @@ export default class MapManager {
     }
     private addDecorate(mapData:MapData,rand4save:Random4Save){
         let pos = [];
-        for(let i = 0;i<3;i++){
+        for(let i = 0;i<2;i++){
             let dx = rand4save.getRandomNum(0,mapData.map.length-1);
             let dy = rand4save.getRandomNum(0,mapData.map[0].length-1);
             pos.push(cc.v2(dx,0));
             pos.push(cc.v2(0,dy));
             pos.push(cc.v2(dx,dy));
-            
         }
         for(let p of pos){
             if(mapData.map[p.x][p.y].indexOf('*')!=-1){
                 mapData.map[p.x][p.y] = `D${rand4save.getRandomNum(0,2)}`;
+                cc.log(`addDecorate:${p}`);
             }
         }
         

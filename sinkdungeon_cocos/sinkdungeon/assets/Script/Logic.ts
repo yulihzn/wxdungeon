@@ -168,10 +168,10 @@ export default class Logic extends cc.Component {
     }
     
     static changeDungeonSize() {
-        let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;
-        if (mapData && mapData.length > 0) {
-            Dungeon.WIDTH_SIZE = mapData.length;
-            Dungeon.HEIGHT_SIZE = mapData[0].length;
+        let size = Logic.mapManager.getCurrentMapSize();
+        if (size) {
+            Dungeon.WIDTH_SIZE = size.x;
+            Dungeon.HEIGHT_SIZE = size.y;
         }
     }
     loadingNextRoom(dir: number) {
