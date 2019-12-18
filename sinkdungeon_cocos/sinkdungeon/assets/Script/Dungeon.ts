@@ -1041,13 +1041,6 @@ export default class Dungeon extends cc.Component {
             if (monster.isDied) {
                 return;
             }
-            let tile = this.map[monster.pos.x][monster.pos.y];
-            if (tile && tile.isBroken) {
-                monster.fall();
-            }
-            // if (tile.isBroken && !monster.isMoving) {
-            //     monster.fall();
-            // }
         }
 
     }

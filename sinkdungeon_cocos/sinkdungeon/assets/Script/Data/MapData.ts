@@ -46,7 +46,7 @@ export default class MapData {
     
     clone():MapData{
         let data = new MapData('');
-        data.map = data.map.concat(this.map);
+        data.map = this.map.slice();
         return data;
     }
     valueCopy(data:MapData):MapData{

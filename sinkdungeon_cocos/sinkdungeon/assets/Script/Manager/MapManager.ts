@@ -294,7 +294,7 @@ export default class MapManager {
             pos.push(cc.v2(dx,dy));
         }
         for(let p of pos){
-            if(mapData.map[p.x][p.y].indexOf('*')!=-1){
+            if(mapData.map[p.x][p.y].indexOf('*')!=-1||mapData.map[p.x][p.y].indexOf('D')!=-1){
                 mapData.map[p.x][p.y] = `D${rand4save.getRandomNum(0,2)}`;
                 cc.log(`addDecorate:${p}`);
             }

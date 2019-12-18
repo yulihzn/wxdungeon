@@ -343,7 +343,7 @@ export default class Monster extends Actor {
         this.sprite.runAction(allAction);
     }
     actionSpriteFrameIdle() {
-        if (!this.sprite || this.meleeSkill.IsExcuting || this.remoteSkill.IsExcuting || this.isDied || this.isHurt || this.isDisguising) {
+        if (!this.sprite || this.meleeSkill.IsExcuting || this.remoteSkill.IsExcuting || this.isDied ||this.isFall||this.isHurt || this.isDisguising) {
             return;
         }
         let spriteframe1 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK01];
@@ -432,15 +432,20 @@ export default class Monster extends Actor {
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
     }
     fall() {
-        if (this.isFall) {
+        if (this.isDied) {
             return;
         }
         this.isFall = true;
-        this.isDied = true;
-        let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
-        collider.sensor = true;
-        collider.apply();
-        // this.anim.play('PlayerFall');
+        this.bodySprite.node.angle = -75;
+        this.anim.play('MonsterFall');
+    }
+    //Anim
+    FallFinish(){
+        this.isFall = false;
+        this.bodySprite.node.angle = 0;
+        this.sprite.y = 0;
+        this.sprite.x = 0;
+        this.anim.play('MonsterIdle');
     }
     takeDamage(damageData: DamageData): boolean {
         if (!this.isShow) {
@@ -468,21 +473,27 @@ export default class Monster extends Actor {
             this.meleeSkill.IsExcuting = false;
             this.remoteSkill.IsExcuting = false;
             this.isAttackAnimExcuting = false;
-            this.changeBodyRes(this.data.resName, Monster.RES_HIT01);
+            if (dd.getTotalDamage() > 0) {
+                this.changeBodyRes(this.data.resName, Monster.RES_HIT01);
+            }
             this.sprite.stopAllActions();
+            if(damageData.isCriticalStrike){
+                this.fall();
+            }
         }
         this.idleAction = null;
         //100ms后修改受伤
         if (dd.getTotalDamage() > 0) {
             this.bodySprite.node.color = cc.color(255, 0, 0);
             this.showBloodEffect();
+            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+            this.scheduleOnce(() => {
+                if (this.node) {
+                    this.isHurt = false;
+                    this.changeBodyColor();
+                }
+            }, 0.2);
         }
-        this.scheduleOnce(() => {
-            if (this.node) {
-                this.isHurt = false;
-                this.changeBodyColor();
-            }
-        }, 0.2);
         this.sprite.opacity = 255;
         this.data.currentHealth -= dd.getTotalDamage();
         if (this.data.currentHealth > this.data.getHealth().y) {
@@ -493,7 +504,6 @@ export default class Monster extends Actor {
         if (this.data.Common.lifeRecovery > 0 && this.isHurt) {
             this.addStatus(StatusManager.RECOVERY, new FromData());
         }
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         return this.isHurt;
     }
     changeBodyColor(): void {
@@ -638,7 +648,7 @@ export default class Monster extends Actor {
         }
     }
     monsterAction() {
-        if (this.isDied || !this.dungeon || this.isHurt || !this.isShow || this.isDizz) {
+        if (this.isDied || !this.dungeon || this.isHurt || this.isFall || !this.isShow || this.isDizz) {
             return;
         }
         this.node.position = Dungeon.fixOuterMap(this.node.position);
