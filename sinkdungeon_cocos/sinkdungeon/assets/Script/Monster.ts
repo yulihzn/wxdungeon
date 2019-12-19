@@ -28,6 +28,7 @@ import EquipmentManager from './Manager/EquipmentManager';
 import AudioPlayer from './Utils/AudioPlayer';
 import SpecialManager from './Manager/SpecialManager';
 import FromData from './Data/FromData';
+import MonsterDangerBox from './Actor/MonsterDangerBox';
 
 @ccclass
 export default class Monster extends Actor {
@@ -55,8 +56,8 @@ export default class Monster extends Actor {
     specialManager: SpecialManager = null;
     @property(cc.Prefab)
     boom: cc.Prefab = null;
-    @property(cc.Node)
-    dangerZone: cc.Node = null;
+    @property(MonsterDangerBox)
+    dangerBox: MonsterDangerBox = null;
     @property(cc.Node)
     dangerTips: cc.Node = null;
     @property(cc.Prefab)

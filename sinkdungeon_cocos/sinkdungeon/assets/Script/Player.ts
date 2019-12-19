@@ -846,7 +846,11 @@ export default class Player extends Actor {
         this.isAttacking = false;
 
     }
-
+    onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void{
+        if(otherCollider.tag == 10){
+            contact.disabledOnce = true;
+        }
+    }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
     //     let equipment = otherCollider.body.node.getComponent(Equipment);
     //     if (equipment) {

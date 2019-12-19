@@ -145,8 +145,8 @@ export default class MonsterManager extends cc.Component {
         let rand = Random.rand();
         let df = Logic.getRandomNum(80, 100);
         let er = Logic.getRandomNum(80, 100);
-        //0.5%几率添加元素
-        if (rand < 0.005) {
+        //5%几率添加元素
+        if (rand < 0.05) {
             data.Common.iceDamage += 1;
             data.Common.iceDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
             data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
