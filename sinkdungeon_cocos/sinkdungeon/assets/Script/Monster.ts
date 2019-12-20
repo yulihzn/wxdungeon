@@ -68,7 +68,7 @@ export default class Monster extends Actor {
     private shadow: cc.Node;
     private dashlight: cc.Node;
     private anim: cc.Animation;
-    private boxCollider:cc.BoxCollider;
+    private boxCollider: cc.BoxCollider;
     rigidbody: cc.RigidBody;
     graphics: cc.Graphics;
     isFaceRight = true;
@@ -141,8 +141,8 @@ export default class Monster extends Actor {
         if (this.data.isHeavy > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
-        this.dangerTips.opacity = 0;
         this.stopAttackEffect();
+        this.dangerBox.init(this);
 
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
@@ -170,14 +170,14 @@ export default class Monster extends Actor {
         let r = 0;
         let call = () => {
             this.graphics.clear();
-            this.graphics.fillColor = cc.color(255,0,0,80);
-            this.graphics.arc(0,0,r,Math.PI/2,Math.PI+Math.PI/2);
+            this.graphics.fillColor = cc.color(255, 0, 0, 80);
+            this.graphics.arc(0, 0, r, Math.PI / 2, Math.PI + Math.PI / 2);
             r += 2;
             this.graphics.fill();
             if (r > 80 * this.node.scaleY) {
                 r = 80 * this.node.scaleY;
             }
-            if(this.isHurt){
+            if (this.isHurt) {
                 this.unschedule(call);
                 this.graphics.clear();
             }
@@ -196,32 +196,32 @@ export default class Monster extends Actor {
             this.sprite = this.node.getChildByName('sprite');
             this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         }
-        if(!this.boxCollider){
+        if (!this.boxCollider) {
             this.boxCollider = this.getComponent(cc.BoxCollider);
         }
-        if(!this.shadow){
+        if (!this.shadow) {
             this.shadow = this.sprite.getChildByName('shadow');
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
         this.bodySprite.spriteFrame = spriteFrame;
         this.bodySprite.node.width = spriteFrame.getRect().width;
         this.bodySprite.node.height = spriteFrame.getRect().height;
-        let y = 48,w = 80,h = 80;
-        switch(this.data.boxType){
-            case 0:y=32;w=80;h=64;break;
-            case 1:y=48;w=48;h=96;break;
-            case 2:y=48;w=80;h=80;break;
-            case 3:y=64;w=80;h=128;break;
-            case 4:y=32;w=128;h=48;break;
-            case 5:y=48;w=80;h=112;break;
-            default:y=48;w=80;h=80;break;
+        let y = 48, w = 80, h = 80;
+        switch (this.data.boxType) {
+            case 0: y = 32; w = 80; h = 64; break;
+            case 1: y = 48; w = 48; h = 96; break;
+            case 2: y = 48; w = 80; h = 80; break;
+            case 3: y = 64; w = 80; h = 128; break;
+            case 4: y = 32; w = 128; h = 48; break;
+            case 5: y = 48; w = 80; h = 112; break;
+            default: y = 48; w = 80; h = 80; break;
         }
-        this.boxCollider.offset = cc.v2(0,y);
+        this.boxCollider.offset = cc.v2(0, y);
         this.boxCollider.size.width = w;
         this.boxCollider.size.height = h;
-        if(this.data.boxType>2){
+        if (this.data.boxType > 2) {
             this.shadow.scale = 3;
-        }else{
+        } else {
             this.shadow.scale = 2;
         }
     }
@@ -294,7 +294,7 @@ export default class Monster extends Actor {
             this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5, cc.v2(this.data.shooterOffsetX, this.data.shooterOffsetY));
         }
     }
-    showAttackAnim(finish: Function, isSpecial: boolean) {
+    showAttackAnim(finish: Function, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
         if (this.isAttackAnimExcuting) {
             return;
         }
@@ -310,10 +310,22 @@ export default class Monster extends Actor {
         pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 48 : -48);
         this.sprite.stopAllActions();
         this.idleAction = null;
-        let action1 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01) }),
+        let action1 = cc.sequence(cc.callFunc(() => {
+            this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01);
+            if (isMelee) { this.dangerBox.show(this.data.attackType); };
+        }),
             cc.moveBy(0.5, -pos.x / 2, -pos.y / 2),
-            cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02); }),
-            cc.moveBy(0.2, pos.x, pos.y));
+            cc.callFunc(() => {
+                this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02);
+                if (isMelee) { 
+                    this.dangerBox.hide(isMiss);
+                    if(this.data.attackType == MonsterDangerBox.ATTACK_STAB){
+                        this.moveTarget = this.dangerBox.hv.mul(this.dangerBox.node.width);
+                        this.move(this.moveTarget,800);
+                    }
+                 };
+            }),
+            cc.moveBy(0.2, pos.x, pos.y), cc.callFunc(() => { this.dangerBox.finish();this.moveTarget = cc.Vec2.ZERO }));
         let action2 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK03) }),
             cc.callFunc(() => {
                 this.specialManager.dungeon = this.dungeon;
@@ -344,7 +356,7 @@ export default class Monster extends Actor {
         this.sprite.runAction(allAction);
     }
     actionSpriteFrameIdle() {
-        if (!this.sprite || this.meleeSkill.IsExcuting || this.remoteSkill.IsExcuting || this.isDied ||this.isFall||this.isHurt || this.isDisguising) {
+        if (!this.sprite || this.meleeSkill.IsExcuting || this.remoteSkill.IsExcuting || this.isDied || this.isFall || this.isHurt || this.isDisguising) {
             return;
         }
         let spriteframe1 = Logic.spriteFrames[this.data.resName + Monster.RES_WALK01];
@@ -441,7 +453,7 @@ export default class Monster extends Actor {
         this.anim.play('MonsterFall');
     }
     //Anim
-    FallFinish(){
+    FallFinish() {
         this.isFall = false;
         this.bodySprite.node.angle = 0;
         this.sprite.y = 0;
@@ -478,13 +490,14 @@ export default class Monster extends Actor {
                 this.changeBodyRes(this.data.resName, Monster.RES_HIT01);
             }
             this.sprite.stopAllActions();
-            if(damageData.isCriticalStrike){
+            if (damageData.isCriticalStrike) {
                 this.fall();
             }
         }
         this.idleAction = null;
         //100ms后修改受伤
         if (dd.getTotalDamage() > 0) {
+            this.dangerBox.finish();
             this.bodySprite.node.color = cc.color(255, 0, 0);
             this.showBloodEffect();
             cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
@@ -501,7 +514,7 @@ export default class Monster extends Actor {
             this.data.currentHealth = this.data.getHealth().y;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
-        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false,damageData.isCriticalStrike);
+        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike);
         if (this.data.Common.lifeRecovery > 0 && this.isHurt) {
             this.addStatus(StatusManager.RECOVERY, new FromData());
         }
@@ -560,9 +573,9 @@ export default class Monster extends Actor {
         this.particleToxic.stopSystem();
         this.particleCurse.stopSystem();
     }
-    showBloodEffect(){
+    showBloodEffect() {
         this.particleBlood.resetSystem();
-        this.scheduleOnce(()=>{this.particleBlood.stopSystem()},0.5);
+        this.scheduleOnce(() => { this.particleBlood.stopSystem() }, 0.5);
     }
     addPlayerStatus(player: Player, from: FromData) {
         if (Logic.getRandomNum(0, 100) < this.data.getIceRate()) { player.addStatus(StatusManager.FROZEN, from); }
@@ -615,7 +628,7 @@ export default class Monster extends Actor {
                     boom.zIndex = 4100;
                     cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } });
                 }
-                this.scheduleOnce(()=>{this.node.active = false;},25);
+                this.scheduleOnce(() => { this.node.active = false; }, 25);
             }
         }, 2);
 
@@ -678,30 +691,30 @@ export default class Monster extends Actor {
                 this.showAttackEffect(false);
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
                 if (isMiss) {
-                    this.showFloatFont(this.dungeon.node, 0, false, true,false);
+                    this.showFloatFont(this.dungeon.node, 0, false, true, false);
                 }
-                this.showCircle();
+                // this.showCircle();
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();
-                    if(this.graphics){
+                    if (this.graphics) {
                         this.graphics.clear();
                     }
-                    let isPlayerAtRight = this.dungeon.player.node.position.x > this.node.x;
-                    let isBehind = this.isFaceRight ? !isPlayerAtRight : isPlayerAtRight;
-                    let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
-                    if (newdis < 80 * this.node.scaleY && !isMiss && !isBehind) {
-                        let from = FromData.getClone(this.data.nameCn, this.data.resName);
-                        this.addPlayerStatus(this.dungeon.player, from);
-                        let dd = this.data.getAttackPoint();
-                        if (isSpecial) {
-                            dd.physicalDamage=dd.physicalDamage*2;
-                        }
-                        this.dungeon.player.takeDamage(dd, from, this);
-                    }
+                    // let isPlayerAtRight = this.dungeon.player.node.position.x > this.node.x;
+                    // let isBehind = this.isFaceRight ? !isPlayerAtRight : isPlayerAtRight;
+                    // let newdis = this.getNearPlayerDistance(this.dungeon.player.node);
+                    // if (newdis < 80 * this.node.scaleY && !isMiss && !isBehind) {
+                    //     let from = FromData.getClone(this.data.nameCn, this.data.resName);
+                    //     this.addPlayerStatus(this.dungeon.player, from);
+                    //     let dd = this.data.getAttackPoint();
+                    //     if (isSpecial) {
+                    //         dd.physicalDamage = dd.physicalDamage * 2;
+                    //     }
+                    //     this.dungeon.player.takeDamage(dd, from, this);
+                    // }
                     this.specialSkill.IsExcuting = false;
-                    
-                }, this.specialSkill.IsExcuting)
+
+                }, this.specialSkill.IsExcuting, true, isMiss)
 
                 this.sprite.opacity = 255;
             }, this.data.melee);
@@ -719,7 +732,7 @@ export default class Monster extends Actor {
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.remoteAttack(isSpecial);
                     this.specialSkill.IsExcuting = false;
-                }, this.specialSkill.IsExcuting);
+                }, this.specialSkill.IsExcuting, false, false);
                 this.sprite.opacity = 255;
             }, this.data.remote, true);
         }
@@ -836,7 +849,7 @@ export default class Monster extends Actor {
         this.healthBar.node.scaleX = this.node.scaleX > 0 ? 1 : -1;
         //防止错位
         this.healthBar.node.x = -30 * this.node.scaleX;
-        this.healthBar.node.y = this.data.boxType==3||this.data.boxType==5?150:120;
+        this.healthBar.node.y = this.data.boxType == 3 || this.data.boxType == 5 ? 150 : 120;
         //变异为紫色
         this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
         this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);

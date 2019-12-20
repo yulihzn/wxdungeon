@@ -208,6 +208,7 @@
         "melee": 0.5,
         "dash": 0,
         "boxType":2,
+        "attackType":1,
         "disguise": 200
     },
     "monster011": {
