@@ -47,7 +47,8 @@ export default class MonsterDangerBox extends cc.Component {
         this.attackType = attackType;
         this.changeBoxSize(attackType);
         this.node.opacity = 80;
-        let hv = this.monster.dungeon.player.getCenterPosition().sub(this.node.position.add(this.node.position.clone()));
+        let p = this.node.position.clone();
+        let hv = this.monster.dungeon.player.getCenterPosition().sub(this.monster.node.position.add(p));
         this.setHv(hv);
     }
     private changeBoxSize(attackType: number) {
@@ -56,26 +57,31 @@ export default class MonsterDangerBox extends cc.Component {
         this.node.anchorX = 0;
         this.node.width = length;
         this.node.height = length;
+        this.node.position = cc.v2(-16,32);
         this.collider.offset = offset;
         this.collider.size.width = length;
         this.collider.size.height = length;
         switch (attackType) {
             case MonsterDangerBox.ATTACK_NORMAL:
                 break;
-                case MonsterDangerBox.ATTACK_STAB:
+            case MonsterDangerBox.ATTACK_STAB:
                 this.node.width = 300;
+                this.collider.offset = cc.v2(0, 0);
                 break;
-                case MonsterDangerBox.ATTACK_AREA:
+            case MonsterDangerBox.ATTACK_AREA:
                 this.node.anchorX = 0.5;
                 length = 160;
                 this.node.width = length;
                 this.node.height = length;
-                this.collider.offset = cc.v2(0,0);
+                this.node.position = cc.v2(0,32);
+                this.collider.size.width = length;
+                this.collider.size.height = length;
+                this.collider.offset = cc.v2(0, 0);
                 break;
         }
     }
     //隐藏
-    hide(isMiss:boolean) {
+    hide(isMiss: boolean) {
         this.isAttacking = !isMiss;
         this.node.opacity = 0;
     }
@@ -114,7 +120,7 @@ export default class MonsterDangerBox extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        // this.node.scaleX = this.monster.node.scaleX > 0 ? 1 : -1;
+        this.node.scaleX = this.monster.node.scaleX > 0 ? 1 : -1;
         // this.node.scaleY = this.monster.node.scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         this.node.angle = this.node.scaleX == -1 ? -angle : angle;

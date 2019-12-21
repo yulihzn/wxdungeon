@@ -205,7 +205,7 @@
         "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
-        "melee": 0.5,
+        "melee": 3,
         "dash": 0,
         "boxType":2,
         "attackType":1,

@@ -310,22 +310,33 @@ export default class Monster extends Actor {
         pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 48 : -48);
         this.sprite.stopAllActions();
         this.idleAction = null;
+        let stabDelay = 0;
+        if (this.data.attackType == MonsterDangerBox.ATTACK_STAB && isMelee) {
+            stabDelay = 0.8;
+        }
+        //普通近战
         let action1 = cc.sequence(cc.callFunc(() => {
             this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01);
             if (isMelee) { this.dangerBox.show(this.data.attackType); };
         }),
+            cc.delayTime(stabDelay),
             cc.moveBy(0.5, -pos.x / 2, -pos.y / 2),
             cc.callFunc(() => {
                 this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02);
-                if (isMelee) { 
+                if (isMelee) {
                     this.dangerBox.hide(isMiss);
-                    if(this.data.attackType == MonsterDangerBox.ATTACK_STAB){
+                    if (this.data.attackType == MonsterDangerBox.ATTACK_STAB) {
                         this.moveTarget = this.dangerBox.hv.mul(this.dangerBox.node.width);
-                        this.move(this.moveTarget,800);
+                        this.move(this.moveTarget, 5000);
                     }
-                 };
+                };
             }),
-            cc.moveBy(0.2, pos.x, pos.y), cc.callFunc(() => { this.dangerBox.finish();this.moveTarget = cc.Vec2.ZERO }));
+            cc.delayTime(stabDelay),
+            cc.moveBy(0.2, pos.x, pos.y), cc.callFunc(() => {
+                this.dangerBox.finish();
+                this.moveTarget = cc.Vec2.ZERO;
+            }));
+        //特殊攻击
         let action2 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK03) }),
             cc.callFunc(() => {
                 this.specialManager.dungeon = this.dungeon;
@@ -498,6 +509,7 @@ export default class Monster extends Actor {
         //100ms后修改受伤
         if (dd.getTotalDamage() > 0) {
             this.dangerBox.finish();
+            this.moveTarget = cc.Vec2.ZERO;
             this.bodySprite.node.color = cc.color(255, 0, 0);
             this.showBloodEffect();
             cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
@@ -683,6 +695,9 @@ export default class Monster extends Actor {
         let pd = 100;
         if (this.specialSkill.IsExcuting) {
             pd = 200;
+        }
+        if (this.data.attackType == MonsterDangerBox.ATTACK_STAB) {
+            pd = 300;
         }
         if (playerDis < pd * this.node.scaleY && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
             this.meleeSkill.next(() => {
