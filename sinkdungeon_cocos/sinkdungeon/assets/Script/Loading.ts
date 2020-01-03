@@ -104,11 +104,12 @@ export default class Loading extends cc.Component {
             this.shieldTree.node.active = false;
             this.dashTree.node.active = false;
             this.magicTree.node.active = false;
+            Logic.isPickedTalent = true;
         }
 
     }
     isTalentLevel(): boolean {
-        return Logic.level == 1 || Logic.level == 4;
+        return Logic.level > 0;
     }
     isPickedTalent(): boolean {
         if (Logic.isPickedTalent) {

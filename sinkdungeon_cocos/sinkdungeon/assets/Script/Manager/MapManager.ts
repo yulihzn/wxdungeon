@@ -123,7 +123,17 @@ export default class MapManager {
         let room = this.getCurrentRoom();
         let index = room.roomType - 1;
         let r = this.getAllFileRooms()[this.roomStrs[index]];
-        let map = this.addGenerateThings(r[room.saveIndex].clone(),room.roomType,room.seed);
+        let md = r[room.saveIndex];
+        let m = new Array();
+        for(let i = 0;i<md.map.length;i++){
+            m[i] = new Array();
+            for(let j =0;j<md.map[0].length;j++){
+                m[i][j]=md.map[i][j];
+            }
+        }
+        let mdd = new MapData('');
+        mdd.map = m;
+        let map = this.addGenerateThings(mdd,room.roomType,room.seed);
         return map;
     }
     public getCurrentMapSize():cc.Vec2{
@@ -287,10 +297,10 @@ export default class MapManager {
     private addDecorate(mapData:MapData,rand4save:Random4Save){
         let pos = [];
         for(let i = 0;i<2;i++){
-            let dx = rand4save.getRandomNum(0,mapData.map.length-1);
-            let dy = rand4save.getRandomNum(0,mapData.map[0].length-1);
-            pos.push(cc.v2(dx,0));
-            pos.push(cc.v2(0,dy));
+            let dx = rand4save.getRandomNum(1,mapData.map.length-2);
+            let dy = rand4save.getRandomNum(1,mapData.map[0].length-2);
+            pos.push(cc.v2(dx,1));
+            pos.push(cc.v2(1,dy));
             pos.push(cc.v2(dx,dy));
         }
         for(let p of pos){
