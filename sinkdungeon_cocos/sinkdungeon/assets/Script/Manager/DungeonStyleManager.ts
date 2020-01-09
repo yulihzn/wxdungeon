@@ -250,7 +250,7 @@ export default class DungeonStyleManager extends cc.Component {
     }
     private addFloor(){
         this.floor.width = 16*Dungeon.WIDTH_SIZE;
-        this.floor.height = 16*Dungeon.WIDTH_SIZE;
+        this.floor.height = 16*Dungeon.HEIGHT_SIZE;
         this.floor.position = Dungeon.getPosInMap(cc.v2(0, 0));
         this.floor.zIndex = 101;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.styleData.floor];
