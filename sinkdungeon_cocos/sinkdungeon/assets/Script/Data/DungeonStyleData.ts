@@ -16,14 +16,14 @@ export default class DungeonStyleData {
     sidewall: string;
     door: string;
     bg02color: string;
-    d2: string;
-    constructor(background: string, topwall: string,sidewall: string, door: string, doorframe: string, bg02color: string, d2: string) {
+    floor: string;
+    constructor(background: string, topwall: string,sidewall: string, door: string, doorframe: string, bg02color: string, floor: string) {
         this.background = background;
         this.topwall = topwall;
         this.doorframe = doorframe;
         this.sidewall = sidewall;
         this.door = door;
         this.bg02color = bg02color;
-        this.d2 = d2;
+        this.floor = floor;
     }
 }

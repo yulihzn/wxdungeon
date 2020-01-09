@@ -26,6 +26,8 @@ export default class DungeonStyleManager extends cc.Component {
 
     @property(cc.Node)
     background01: cc.Node = null;
+    @property(cc.Node)
+    floor:cc.Node = null;
 
 
     @property(cc.Prefab)
@@ -91,15 +93,16 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', '#323c39', null); break;
-            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', '#12222e', 'null'); break;
-            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', '#1b300d', null); break;
-            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', '#c8bc69', null); break;
-            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', '#1f1e1e', null); break;
+            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', '#323c39', 'tile_lab001'); break;
+            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', '#12222e', 'tile_deck001'); break;
+            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', '#1b300d', 'tile_dirt001'); break;
+            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', '#c8bc69', 'tile003'); break;
+            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', '#1f1e1e', 'tile004'); break;
         }
         if (!this.styleData) {
             return;
         }
+        this.addFloor();
         this.doors = new Array(4);
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             let walltop = this.getWallTop(i);
@@ -244,6 +247,13 @@ export default class DungeonStyleManager extends cc.Component {
         pbg.background.height = 32*(Dungeon.HEIGHT_SIZE+4);
         pbg.background.color = cc.Color.WHITE.fromHEX(this.styleData.bg02color);
         pbg.init();
+    }
+    private addFloor(){
+        this.floor.width = 16*Dungeon.WIDTH_SIZE;
+        this.floor.height = 16*Dungeon.WIDTH_SIZE;
+        this.floor.position = Dungeon.getPosInMap(cc.v2(0, 0));
+        this.floor.zIndex = 101;
+        this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.styleData.floor];
     }
 
     setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
