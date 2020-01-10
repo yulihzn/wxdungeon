@@ -41,6 +41,7 @@ export class EventConstant extends cc.Component{
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO';
     public static readonly CAMERA_SHAKE = 'CAMERA_SHAKE';
     public static readonly CAMERA_LOOK = 'CAMERA_LOOK';
+    public static readonly CHUNK_LOAD = 'CHUNK_LOAD';
     public static eventHandler:cc.Node = new cc.Node();
     // LIFE-CYCLE CALLBACKS:
 

@@ -1,4 +1,5 @@
 import Chunk from "./Chunk";
+import { EventConstant } from "../EventConstant";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,6 +24,13 @@ export default class ChunkWorld extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        const CENTER = Math.floor(ChunkWorld.SIZE/2);
+        cc.director.on(EventConstant.CHUNK_LOAD, (event) => {
+            let pos = event.detail.pos;
+            let p = ChunkWorld.getIndexInMap(pos,this.map[0][0].targetPosition);
+            cc.log(p);
+            this.changeMap(p.x,p.y);
+        })
         this.initMap();
     }
     private initMap(){
@@ -39,22 +47,25 @@ export default class ChunkWorld extends cc.Component {
                 this.map[i][j] = chunk;
                 chunk.targetPosition = c.position.clone();
                 chunk.loadMap();
-                chunk.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
-                    chunk.onClicked();
-                    cc.log(cc.v2(chunk.data.x,chunk.data.y));
-                    this.changeMap(chunk.data.x,chunk.data.y);
-                }, this);
+                // chunk.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
+                //     chunk.onClicked();
+                //     cc.log(cc.v2(chunk.data.x,chunk.data.y));
+                //     this.changeMap(chunk.data.x,chunk.data.y);
+                // }, this);
             }
         }
         this.printMapIndex();
     }
 
+    getTargetChunkPos(targetPosition:cc.Vec2){
+        let leftBottomPos = cc.v2(this.map[0][0].data.x,this.map[0][0].data.y);
+    }
     private changeMap(x:number,y:number){
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
-        // if(x==CENTER&&y==CENTER){
-        //     return;
-        // }
-        let selectPosition = ChunkWorld.getPosInMap(cc.v2(x,y));
+        if(x==CENTER&&y==CENTER){
+            return;
+        }
+        let selectPosition = this.map[x][y].targetPosition.clone();
         let tempMap:Chunk[][] = new Array();
         for (let i = 0; i < ChunkWorld.SIZE; i++) {
             tempMap[i] = new Array(i);
@@ -64,25 +75,13 @@ export default class ChunkWorld extends cc.Component {
                 tempMap[i][j] = this.map[pos.x][pos.y];
                 tempMap[i][j].data.x = i;
                 tempMap[i][j].data.y = j;
-                // let offset = cc.v2(i, j).subSelf(cc.v2(CENTER,CENTER));
-                // let offsetPos = ChunkWorld.getPosInMap(offset);
-                // tempMap[i][j].targetPosition =selectPosition.clone().addSelf(offsetPos);
-                // tempMap[i][j].targetPosition = ChunkWorld.getPosInMap(cc.v2(i,j));
-                // if(i==x&&j==y){
-                //     cc.log(`${tempMap[i][j].targetPosition}`);
-                //     cc.log(`${tempMap[i][j].node.position}`);
-                // }
-                // tempMap[i][j].loadMap();
-            }
-        }
-        for (let i = 0; i < ChunkWorld.SIZE; i++) {
-            for (let j = 0; j < ChunkWorld.SIZE; j++) {
                 let offset = cc.v2(i, j).subSelf(cc.v2(CENTER,CENTER));
                 let offsetPos = ChunkWorld.getPosInMap(offset);
                 tempMap[i][j].targetPosition =selectPosition.clone().addSelf(offsetPos);
                 tempMap[i][j].loadMap();
             }
         }
+        
         this.printMapIndex();
         this.map = tempMap;
     }
@@ -104,8 +103,8 @@ export default class ChunkWorld extends cc.Component {
     private getCorrectIndex(select:cc.Vec2,target:cc.Vec2):cc.Vec2{
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
         let pos = target.clone();
-        let offsetX = CENTER-select.x;
-        let offsetY = CENTER-select.y;
+        let offsetX = select.x-CENTER;
+        let offsetY = select.y-CENTER;
         pos.x = pos.x+offsetX;
         pos.y = pos.y+offsetY;
         if(pos.x<0){
@@ -123,6 +122,32 @@ export default class ChunkWorld extends cc.Component {
     static getPosInMap(pos: cc.Vec2) {
         let x = pos.x * Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE;
         let y = pos.y * Chunk.HEIGHT*Chunk.TILE_SCALE*Chunk.TILE_SIZE;
+        return cc.v2(x, y);
+    }
+    //获取不超出地图的坐标
+    static fixOuterMap(pos: cc.Vec2,offset:cc.Vec2): cc.Vec2 {
+        let x = (pos.x - offset.x) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
+        let y = (pos.y - offset.y) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
+        x = Math.round(x);
+        y = Math.round(y);
+        let isOuter = false;
+        if (x < 0) { x = 0; isOuter = true; }
+        if (x >= ChunkWorld.SIZE) { x = ChunkWorld.SIZE - 1; isOuter = true; }
+        if (y < 0) { y = 0; isOuter = true; }
+        if (y >= ChunkWorld.SIZE) { y = ChunkWorld.SIZE - 1; isOuter = true; }
+        if (isOuter) {
+            return ChunkWorld.getPosInMap(cc.v2(x, y));
+        } else {
+            return pos;
+        }
+    }
+    static getIndexInMap(pos: cc.Vec2, offset:cc.Vec2) {
+        let x = (pos.x - offset.x) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
+        let y = (pos.y - offset.y) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
+        x = Math.round(x);
+        y = Math.round(y);
+        if (x < 0) { x = 0 }; if (x >= ChunkWorld.SIZE) { x = ChunkWorld.SIZE - 1 };
+            if (y < 0) { y = 0 }; if (y >= ChunkWorld.SIZE) { y = ChunkWorld.SIZE - 1 };
         return cc.v2(x, y);
     }
     start () {

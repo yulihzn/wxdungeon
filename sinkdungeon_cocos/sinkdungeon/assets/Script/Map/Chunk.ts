@@ -20,6 +20,8 @@ export default class Chunk extends cc.Component {
     floor:cc.Node = null;
     @property(cc.Label)
     label:cc.Label = null;
+    @property(cc.Node)
+    select:cc.Node = null;
     static readonly WIDTH = 5;
     static readonly HEIGHT = 5;
     static readonly TILE_SIZE = 16;
@@ -37,24 +39,29 @@ export default class Chunk extends cc.Component {
         this.floor.scale = Chunk.TILE_SCALE;
         this.floor.width = Chunk.TILE_SIZE*Chunk.WIDTH;
         this.floor.height = Chunk.TILE_SIZE*Chunk.HEIGHT;
+        this.select.scale = Chunk.TILE_SCALE;
+        this.select.width = Chunk.TILE_SIZE*Chunk.WIDTH;
+        this.select.height = Chunk.TILE_SIZE*Chunk.HEIGHT;
         this.node.width = Chunk.TILE_SCALE*Chunk.TILE_SIZE*Chunk.WIDTH;
         this.node.height = Chunk.TILE_SCALE*Chunk.TILE_SIZE*Chunk.HEIGHT;
         
+        
     }
     onClicked(){
-        cc.director.emit(EventConstant.CAMERA_LOOK, { detail: { position: this.node.convertToWorldSpaceAR(cc.v2(this.floor.width/2,this.floor.height/2)) } });
+        // cc.director.emit(EventConstant.CAMERA_LOOK, { detail: { position: this.node.convertToWorldSpaceAR(cc.v2(this.floor.width/2,this.floor.height/2)) } });
         this.floor.color = cc.Color.GREEN;
         this.scheduleOnce(()=>{this.floor.color = cc.Color.WHITE;},1)
     }
     loadMap(){
         this.label.node.position = cc.v2(this.node.width/2,this.node.height/2);
         this.label.string = `${this.targetPosition.x},${this.targetPosition.y}\n${this.data.x},${this.data.y}`
+        this.node.position = this.targetPosition.clone();
     }
 
     lateUpdate(){
-        if(this.targetPosition){
-            this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(this.targetPosition),0.02);
-        }
+        // if(this.targetPosition){
+        //     this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(this.targetPosition),0.5);
+        // }
     }
     lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
         let out = cc.v2(0,0);

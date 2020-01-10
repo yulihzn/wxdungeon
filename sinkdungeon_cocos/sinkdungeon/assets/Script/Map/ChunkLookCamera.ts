@@ -15,6 +15,8 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class ChunkLookCamera extends cc.Component {
     camera:cc.Camera;
+    @property(cc.Node)
+    target:cc.Node = null;
 
     targetPosition:cc.Vec2;
     // LIFE-CYCLE CALLBACKS:
@@ -30,8 +32,8 @@ export default class ChunkLookCamera extends cc.Component {
     }
     lateUpdate(){
         if(this.targetPosition){
-            // this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(this.targetPosition),0.1);
         }
+        this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(this.target.convertToWorldSpaceAR(cc.Vec2.ZERO)),0.1);
     }
     lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
         let out = cc.v2(0,0);
