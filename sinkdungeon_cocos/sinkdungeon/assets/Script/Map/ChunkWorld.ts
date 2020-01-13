@@ -13,6 +13,12 @@ import { EventConstant } from "../EventConstant";
 
 const {ccclass, property} = cc._decorator;
 
+/**
+ * 大地图
+ * 生成一个指定大小的地图，地图的元素按块加载，每次以角色为中心加载25个地图块
+ * 不足25个地图块按空地图块来算
+ * 目前需要加入的场景是：油湖全貌，实验室内部，金字塔内部，地牢内部，船舱内部
+ */
 @ccclass
 export default class ChunkWorld extends cc.Component {
 
@@ -75,10 +81,12 @@ export default class ChunkWorld extends cc.Component {
                 tempMap[i][j] = this.map[pos.x][pos.y];
                 tempMap[i][j].data.x = i;
                 tempMap[i][j].data.y = j;
-                let offset = cc.v2(i, j).subSelf(cc.v2(CENTER,CENTER));
-                let offsetPos = ChunkWorld.getPosInMap(offset);
-                tempMap[i][j].targetPosition =selectPosition.clone().addSelf(offsetPos);
-                tempMap[i][j].loadMap();
+                if(pos.z==1){
+                    let offset = cc.v2(i, j).subSelf(cc.v2(CENTER,CENTER));
+                    let offsetPos = ChunkWorld.getPosInMap(offset);
+                    tempMap[i][j].targetPosition =selectPosition.clone().addSelf(offsetPos);
+                    tempMap[i][j].loadMap();
+                }
             }
         }
         
@@ -100,24 +108,31 @@ export default class ChunkWorld extends cc.Component {
      * @param select 当前选择位置
      * @param target 需要修改的位置
      */
-    private getCorrectIndex(select:cc.Vec2,target:cc.Vec2):cc.Vec2{
+    private getCorrectIndex(select:cc.Vec2,target:cc.Vec2):cc.Vec3{
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
         let pos = target.clone();
         let offsetX = select.x-CENTER;
         let offsetY = select.y-CENTER;
+        // let offsetX = CENTER-select.x;
+        // let offsetY = CENTER-select.y;
         pos.x = pos.x+offsetX;
         pos.y = pos.y+offsetY;
+        let isOuter = false;
         if(pos.x<0){
             pos.x = pos.x+ChunkWorld.SIZE;
+            isOuter = true;
         }else if(pos.x>=ChunkWorld.SIZE){
             pos.x = pos.x-ChunkWorld.SIZE;
+            isOuter = true;
         }
         if(pos.y<0){
             pos.y = pos.y+ChunkWorld.SIZE;
+            isOuter = true;
         }else if(pos.y>=ChunkWorld.SIZE){
             pos.y = pos.y-ChunkWorld.SIZE;
+            isOuter = true;
         }
-        return pos;
+        return new cc.Vec3(pos.x,pos.y,isOuter?1:0);
     }
     static getPosInMap(pos: cc.Vec2) {
         let x = pos.x * Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE;
