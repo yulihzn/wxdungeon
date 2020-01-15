@@ -18,6 +18,13 @@ const {ccclass, property} = cc._decorator;
  * 生成一个指定大小的地图，地图的元素按块加载，每次以角色为中心加载25个地图块
  * 不足25个地图块按空地图块来算
  * 目前需要加入的场景是：油湖全貌，实验室内部，金字塔内部，地牢内部，船舱内部
+ * 
+ * 生成策略
+ * 
+ * 油湖全貌：32x32地图,地形元素：陆地和水，交接处，上下左右四个拐角八种类型
+ * 实验室内部：7x7地图，五层
+ * 金字塔内部：16x16随机生成，五层
+ * 船舱内部：3x3地图三层
  */
 @ccclass
 export default class ChunkWorld extends cc.Component {
@@ -25,15 +32,15 @@ export default class ChunkWorld extends cc.Component {
     static readonly SIZE = 5;
     @property(cc.Prefab)
     chunkPrefab: cc.Prefab = null;
-
-    map:Chunk[][] = new Array();
+    worldMap:string[][] = new Array();
+    currentMap:Chunk[][] = new Array();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
         cc.director.on(EventConstant.CHUNK_LOAD, (event) => {
             let pos = event.detail.pos;
-            let p = ChunkWorld.getIndexInMap(pos,this.map[0][0].targetPosition);
+            let p = ChunkWorld.getIndexInMap(pos,this.currentMap[0][0].targetPosition);
             cc.log(p);
             this.changeMap(p.x,p.y);
         })
@@ -41,7 +48,7 @@ export default class ChunkWorld extends cc.Component {
     }
     private initMap(){
         for (let i = 0; i < ChunkWorld.SIZE; i++) {
-            this.map[i] = new Array(i);
+            this.currentMap[i] = new Array(i);
             for (let j = 0; j < ChunkWorld.SIZE; j++) {
                 let c = cc.instantiate(this.chunkPrefab);
                 c.parent = this.node;
@@ -50,7 +57,7 @@ export default class ChunkWorld extends cc.Component {
                 let chunk = c.getComponent(Chunk);
                 chunk.data.x = i;
                 chunk.data.y = j;
-                this.map[i][j] = chunk;
+                this.currentMap[i][j] = chunk;
                 chunk.targetPosition = c.position.clone();
                 chunk.loadMap();
                 // chunk.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
@@ -64,21 +71,21 @@ export default class ChunkWorld extends cc.Component {
     }
 
     getTargetChunkPos(targetPosition:cc.Vec2){
-        let leftBottomPos = cc.v2(this.map[0][0].data.x,this.map[0][0].data.y);
+        let leftBottomPos = cc.v2(this.currentMap[0][0].data.x,this.currentMap[0][0].data.y);
     }
     private changeMap(x:number,y:number){
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
         if(x==CENTER&&y==CENTER){
             return;
         }
-        let selectPosition = this.map[x][y].targetPosition.clone();
+        let selectPosition = this.currentMap[x][y].targetPosition.clone();
         let tempMap:Chunk[][] = new Array();
         for (let i = 0; i < ChunkWorld.SIZE; i++) {
             tempMap[i] = new Array(i);
             for (let j = 0; j < ChunkWorld.SIZE; j++) {
                 //获取对应旧map的chunk并改变下标
                 let pos = this.getCorrectIndex(cc.v2(x,y),cc.v2(i,j));
-                tempMap[i][j] = this.map[pos.x][pos.y];
+                tempMap[i][j] = this.currentMap[pos.x][pos.y];
                 tempMap[i][j].data.x = i;
                 tempMap[i][j].data.y = j;
                 if(pos.z==1){
@@ -91,13 +98,13 @@ export default class ChunkWorld extends cc.Component {
         }
         
         this.printMapIndex();
-        this.map = tempMap;
+        this.currentMap = tempMap;
     }
     private printMapIndex(){
         let str = '';
         for (let i = ChunkWorld.SIZE-1; i >=0; i--) {
             for (let j = 0; j < ChunkWorld.SIZE; j++) {
-                str+=`(${this.map[j][i].data.x},${this.map[j][i].data.y})`;
+                str+=`(${this.currentMap[j][i].data.x},${this.currentMap[j][i].data.y})`;
             }
             str+='\n';
         }
