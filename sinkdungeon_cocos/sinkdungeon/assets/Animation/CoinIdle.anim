@@ -2,11 +2,11 @@
   "__type__": "cc.AnimationClip",
   "_name": "CoinIdle",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 0.8333333333333334,
   "sample": 60,
   "speed": 0.5,
-  "wrapMode": "2",
+  "wrapMode": 2,
   "curveData": {
     "paths": {
       "sprite": {
@@ -27,6 +27,30 @@
             {
               "frame": 0.8333333333333334,
               "value": 2
+            }
+          ]
+        }
+      },
+      "sprite/cover": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 255,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 0
             }
           ]
         }

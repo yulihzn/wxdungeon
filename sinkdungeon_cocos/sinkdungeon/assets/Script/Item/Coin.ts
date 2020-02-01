@@ -33,11 +33,11 @@ export default class Coin extends cc.Component {
     onEnable(){
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
-        let speed = 800;
+        let speed = 1200;
         let x = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
         let y = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
         this.rigidBody.linearVelocity = cc.v2(x,y);
-        this.rigidBody.linearDamping = 30;
+        this.rigidBody.linearDamping = 10;
         this.isReady = false;
         this.scheduleOnce(()=>{this.isReady = true;},0.5);
     }
