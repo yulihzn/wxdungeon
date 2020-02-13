@@ -93,11 +93,11 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall', 'restsides', 'restdoor', 'restdoorframe', '#323c39', 'tile_lab001'); break;
-            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall', 'shipsides', 'shipdoor', 'shipdoorframe', '#12222e', 'tile_deck001'); break;
-            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall', 'junglesides', 'jungledoor', 'jungledoorframe', '#1b300d', 'tile_dirt001'); break;
-            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', '#c8bc69', 'tile003'); break;
-            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', '#1f1e1e', 'tile004'); break;
+            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'darksides', 'restdoor', 'restdoorframe', '#323c39', 'tile_lab001'); break;
+            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall1', 'darksides', 'shipdoor', 'shipdoorframe', '#12222e', 'tile_deck001'); break;
+            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall1', 'darksides', 'jungledoor', 'jungledoorframe', '#1b300d', 'tile_dirt001'); break;
+            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall1', 'darksides', 'pyramiddoor', 'pyramiddoorframe', '#c8bc69', 'tile003'); break;
+            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall1', 'darksides', 'dungeondoor', 'dungeondoorframe', '#1f1e1e', 'tile004'); break;
         }
         if (!this.styleData) {
             return;
@@ -249,18 +249,27 @@ export default class DungeonStyleManager extends cc.Component {
         pbg.init();
     }
     private addFloor(){
-        this.floor.width = 16*Dungeon.WIDTH_SIZE;
-        this.floor.height = 16*Dungeon.HEIGHT_SIZE;
-        this.floor.position = Dungeon.getPosInMap(cc.v2(0, 0));
-        this.floor.zIndex = 101;
+        this.floor.width = 16*(Dungeon.WIDTH_SIZE+0);
+        this.floor.height = 16*(Dungeon.HEIGHT_SIZE+0);
+        let pos = Dungeon.getPosInMap(cc.v2(0, 0));
+        this.floor.position = cc.v2(pos.x-32,pos.y-32);
+        this.floor.zIndex = 110;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.styleData.floor];
     }
 
     setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
         let door = this.styleData.door;
+        let floor = this.styleData.floor;
         let frame = this.styleData.doorframe;
-        this.doors[dir].getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = door ? Logic.spriteFrames[door] : null;
-        this.doors[dir].getChildByName('bg').getChildByName('frame').getComponent(cc.Sprite).spriteFrame = frame ? Logic.spriteFrames[frame] : null;
+        let doorSprite = this.doors[dir].getChildByName('sprite').getComponent(cc.Sprite);
+        let bg = this.doors[dir].getChildByName('bg').getComponent(cc.Sprite);
+        let frameSprite = this.doors[dir].getChildByName('bg').getChildByName('frame').getComponent(cc.Sprite);
+        bg.spriteFrame = floor ? Logic.spriteFrames[floor] : null;
+        doorSprite.spriteFrame = door ? Logic.spriteFrames[door] : null;
+        frameSprite.spriteFrame = frame ? Logic.spriteFrames[frame] : null;
+        doorSprite.node.color = dir == 0?cc.Color.WHITE:cc.Color.BLACK;
+        frameSprite.node.color = dir == 0?cc.Color.WHITE:cc.Color.BLACK;
+        bg.node.color = dir != 0?cc.Color.WHITE:cc.Color.BLACK;
         let theDoor: Door = this.doors[dir].getComponent(Door);
         if (theDoor) {
             theDoor.isDoor = isDoor;
