@@ -17,7 +17,7 @@ export default class EquipmentDescData{
     criticalStrikeRate: number = 0;
     defence: number = 0;
     lifeDrain: number = 0;
-    lifeRecovery:number = 0;
+    damageBack:number = 0;
     moveSpeed: number = 0;
     attackSpeed: number = 0;
     dodge: number = 0;

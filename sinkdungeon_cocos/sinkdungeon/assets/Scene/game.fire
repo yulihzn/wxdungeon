@@ -4746,7 +4746,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "lifeRecovery",
+    "_name": "damageBack",
     "_objFlags": 0,
     "_parent": {
       "__id__": 62
@@ -4981,7 +4981,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "a60d6f32-eb21-4202-8246-b827277bcae2"
+      "__uuid__": "f2a134d1-8062-461f-8ea2-3f0fe25abc59"
     },
     "_type": 0,
     "_sizeMode": 1,

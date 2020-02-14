@@ -20,7 +20,7 @@ export default class PlayerInfoDialog extends cc.Component {
     criticalStrikeRate: cc.Label = null;
     defence: cc.Label = null;
     lifeDrain: cc.Label = null;
-    lifeRecovery: cc.Label = null;
+    damageBack: cc.Label = null;
     moveSpeed: cc.Label = null;
     attackSpeed: cc.Label = null;
     dodge: cc.Label = null;
@@ -53,7 +53,7 @@ export default class PlayerInfoDialog extends cc.Component {
         this.criticalStrikeRate = this.node.getChildByName('layout').getChildByName('criticalStrikeRate').getChildByName('label').getComponent(cc.Label);
         this.defence = this.node.getChildByName('layout').getChildByName('defence').getChildByName('label').getComponent(cc.Label);
         this.lifeDrain = this.node.getChildByName('layout').getChildByName('lifeDrain').getChildByName('label').getComponent(cc.Label);
-        this.lifeRecovery = this.node.getChildByName('layout').getChildByName('lifeRecovery').getChildByName('label').getComponent(cc.Label);
+        this.damageBack = this.node.getChildByName('layout').getChildByName('damageBack').getChildByName('label').getComponent(cc.Label);
         this.moveSpeed = this.node.getChildByName('layout').getChildByName('moveSpeed').getChildByName('label').getComponent(cc.Label);
         this.attackSpeed = this.node.getChildByName('layout').getChildByName('attackSpeed').getChildByName('label').getComponent(cc.Label);
         this.dodge = this.node.getChildByName('layout').getChildByName('dodge').getChildByName('label').getComponent(cc.Label);
@@ -88,7 +88,7 @@ export default class PlayerInfoDialog extends cc.Component {
         this.criticalStrikeRate.string = this.getInfo(playerData.Common.criticalStrikeRate,equipmentData.Common.criticalStrikeRate,statusData.Common.criticalStrikeRate,true);
         this.defence.string = this.getInfo(playerData.Common.defence,equipmentData.Common.defence,statusData.Common.defence);
         this.lifeDrain.string = this.getInfo(playerData.Common.lifeDrain,equipmentData.Common.lifeDrain,statusData.Common.lifeDrain,true);
-        this.lifeRecovery.string = this.getInfo(playerData.Common.lifeRecovery,equipmentData.Common.lifeRecovery,statusData.Common.lifeRecovery);
+        this.damageBack.string = this.getInfo(playerData.Common.damageBack,equipmentData.Common.damageBack,statusData.Common.damageBack);
         this.moveSpeed.string = this.getInfo(playerData.Common.moveSpeed,equipmentData.Common.moveSpeed,statusData.Common.moveSpeed);
         this.attackSpeed.string = this.getInfo(playerData.Common.attackSpeed,equipmentData.Common.attackSpeed,statusData.Common.attackSpeed,true);
         this.dodge.string = this.getInfo(playerData.Common.dodge,equipmentData.Common.dodge,statusData.Common.dodge,true);

@@ -93,7 +93,6 @@ export default class Player extends Actor {
     touchedTips: Tips;
     inventoryManager: InventoryManager;
     data: PlayerData;
-    recoveryTimeDelay = 0;
 
     isFaceRight = true;
 
@@ -203,7 +202,8 @@ export default class Player extends Actor {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());
                 // this.data.currentHealth = 1;
                 // this.data.Common.maxHealth = 1;
-                this.data.Common.damageMin = 99;
+                // this.data.Common.damageMin = 99;
+                this.data.Common.criticalStrikeRate = 100;
                 this.data.Common.remoteCritRate = 50;
             }, 0.2);
         }
@@ -546,8 +546,8 @@ export default class Player extends Actor {
             pos = pos.mul(0.5);
         }
         if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
-            this.shooter.setHv(cc.v2(pos.x, pos.y));
             this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.shooter.setHv(cc.v2(pos.x, pos.y));
             //存档系统保存玩家位置
             Logic.profileManager.data.playerData.pos = this.pos.clone();
         }
@@ -755,15 +755,7 @@ export default class Player extends Actor {
             this.move(dir, pos, dt);
         }
     }
-    //30秒回复一次
-    isRecoveryTimeDelay(dt: number): boolean {
-        this.recoveryTimeDelay += dt;
-        if (this.recoveryTimeDelay > 30) {
-            this.recoveryTimeDelay = 0;
-            return true;
-        }
-        return false;
-    }
+
     smokeTimeDelay = 0;
     isSmokeTimeDelay(dt: number): boolean {
         this.smokeTimeDelay += dt;
@@ -776,14 +768,6 @@ export default class Player extends Actor {
 
     update(dt) {
 
-        if (this.isRecoveryTimeDelay(dt)) {
-            let re = this.data.getLifeRecovery();
-            if (re > 0) {
-                let dd = new DamageData();
-                dd.realDamage = -re;
-                this.takeDamage(dd);
-            }
-        }
         if (this.isSmokeTimeDelay(dt) && this.isMoving) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }

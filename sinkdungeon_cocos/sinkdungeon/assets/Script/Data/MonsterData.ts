@@ -37,6 +37,7 @@ export default class MonsterData{
     blink = 0;//是否闪烁大于0 数字代表cd
     isBoom = 0;//是否死亡爆炸
     isHeavy = 0;//是否很重 如果很重是转向的
+    isRecovery = 0;//是否生命回复
     shooterOffsetX =0;//远程位置x
     shooterOffsetY =0;//远程位置y
     specialAttack = 0 ;//是否特殊攻击大于0
@@ -103,6 +104,7 @@ export default class MonsterData{
         this.specialBulletLineExNum = data.specialBulletLineExNum?data.specialBulletLineExNum:0;
         this.boxType = data.boxType?data.boxType:0;
         this.attackType = data.attackType?data.attackType:0;
+        this.isRecovery = data.isRecovery?data.isRecovery:0;
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -139,6 +141,7 @@ export default class MonsterData{
         e.specialBulletLineExNum = this.specialBulletLineExNum;
         e.boxType = this.boxType;
         e.attackType = this.attackType;
+        e.isRecovery = this.isRecovery;
         return e;
     }
     getAttackPoint():DamageData{
@@ -443,15 +446,6 @@ export default class MonsterData{
         rate = rate < 0 ? 0 : rate;
         rate = rate > 100 ? 100 : rate;
         return rate;
-    }
-
-    //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
-    getLifeRecovery(): number {
-        let lifeRecovery = 0;
-        for (let data of this.getCommonList()) {
-            lifeRecovery += data.lifeRecovery;
-        }
-        return lifeRecovery > 0 ? lifeRecovery : 0;
     }
 
     getLifeDrainRate(): number {

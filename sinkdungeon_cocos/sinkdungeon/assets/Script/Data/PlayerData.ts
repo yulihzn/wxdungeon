@@ -19,6 +19,7 @@ export default class PlayerData {
     static DEFAULT_HEALTH = 10;
     static DefAULT_SPEED = 300;
     static DefAULT_ATTACK = 1;
+    static DefAULT_BACK_ATTACK = 1;
     name: string = '';
     pos: cc.Vec2 = cc.v2(7, 4);
 
@@ -35,6 +36,7 @@ export default class PlayerData {
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = PlayerData.DefAULT_SPEED;
         this.common.damageMin = PlayerData.DefAULT_ATTACK;
+        this.common.damageBack = PlayerData.DefAULT_BACK_ATTACK;
     }
     get EquipmentTotalData() {
         return this.equipmentTotalData;
@@ -433,13 +435,13 @@ export default class PlayerData {
         return rate;
     }
 
-    //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
-    getLifeRecovery(): number {
-        let lifeRecovery = 0;
+    //背刺伤害
+    getDamageBack(): number {
+        let damageBack = 0;
         for (let data of this.getCommonList()) {
-            lifeRecovery += data.lifeRecovery;
+            damageBack += data.damageBack;
         }
-        return lifeRecovery > 0 ? lifeRecovery : 0;
+        return damageBack > 0 ? damageBack : 0;
     }
 
     getLifeDrainRate(): number {

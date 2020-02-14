@@ -251,7 +251,7 @@ export default class Monster extends Actor {
     changeZIndex() {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y) * 10 + 2;
     }
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean) {
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean,isBackStab:boolean) {
         if (!this.floatinglabelManager) {
             return;
         }
@@ -261,7 +261,7 @@ export default class Monster extends Actor {
         } else if (isMiss) {
             flabel.showMiss();
         } else if (d != 0) {
-            flabel.showDamage(-d, isCritical);
+            flabel.showDamage(-d, isCritical,isBackStab);
         } else {
             flabel.hideLabel();
         }
@@ -455,12 +455,17 @@ export default class Monster extends Actor {
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
     }
+    isPlayerBehind():boolean{
+        let isPlayerRight = this.dungeon.player.pos.x > this.pos.x;
+        let isSelfFaceRight = this.node.scaleX>0;
+        return (isPlayerRight&&!isSelfFaceRight)||(!isPlayerRight&&isSelfFaceRight);
+    }
     fall() {
         if (this.isDied) {
             return;
         }
         this.isFall = true;
-        this.bodySprite.node.angle = -75;
+        this.bodySprite.node.angle = this.isPlayerBehind()?-75:105;
         this.anim.play('MonsterFall');
     }
     //Anim
@@ -476,11 +481,11 @@ export default class Monster extends Actor {
             return false;
         }
         if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike);
+            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike,false);
             return false;
         }
         if (this.blinkSkill.IsExcuting) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike);
+            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike,false);
             return false;
         }
         let dd = this.data.getDamage(damageData);
@@ -488,7 +493,7 @@ export default class Monster extends Actor {
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         dd = isDodge ? new DamageData() : dd;
         if (isDodge) {
-            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike);
+            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike,false);
             return false;
         }
         this.isHurt = dd.getTotalDamage() > 0;
@@ -526,8 +531,8 @@ export default class Monster extends Actor {
             this.data.currentHealth = this.data.getHealth().y;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
-        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike);
-        if (this.data.Common.lifeRecovery > 0 && this.isHurt) {
+        this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike,damageData.isBackAttack);
+        if (this.data.isRecovery > 0 && this.isHurt) {
             this.addStatus(StatusManager.RECOVERY, new FromData());
         }
         return this.isHurt;
@@ -565,7 +570,7 @@ export default class Monster extends Actor {
         if (!this.particleIce) {
             return;
         }
-        this.effectNode.setPosition(cc.v2(0, 16));
+        this.effectNode.setPosition(cc.v2(0, 32));
         if (!isDashing) {
             this.effectNode.runAction(cc.sequence(cc.moveTo(0.2, 32, 32), cc.moveTo(0.2, 0, 16)));
         }
@@ -607,6 +612,7 @@ export default class Monster extends Actor {
         }
         this.isDisguising = false;
         this.dashSkill.IsExcuting = false;
+        this.bodySprite.node.angle = 0;
         this.anim.play('MonsterDie');
         this.idleAction = null;
         this.sprite.stopAllActions();
@@ -640,7 +646,7 @@ export default class Monster extends Actor {
                     boom.zIndex = 4100;
                     cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } });
                 }
-                this.scheduleOnce(() => { this.node.active = false; }, 25);
+                this.scheduleOnce(() => { this.node.active = false; }, 5);
             }
         }, 2);
 
@@ -706,7 +712,7 @@ export default class Monster extends Actor {
                 this.showAttackEffect(false);
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
                 if (isMiss) {
-                    this.showFloatFont(this.dungeon.node, 0, false, true, false);
+                    this.showFloatFont(this.dungeon.node, 0, false, true, false,false);
                 }
                 // this.showCircle();
                 this.showAttackAnim((isSpecial: boolean) => {
@@ -762,7 +768,7 @@ export default class Monster extends Actor {
                 this.showAttackEffect(true);
                 this.move(pos, speed * 1.2);
                 this.dashSkill.IsExcuting = true;
-                this.scheduleOnce(() => { if (this.node) { this.dashSkill.IsExcuting = false; this.stopAttackEffect(); } }, 3);
+                this.scheduleOnce(() => { if (this.node) { this.dashSkill.IsExcuting = false; this.stopAttackEffect(); } }, 2);
             }, this.data.dash);
 
         }

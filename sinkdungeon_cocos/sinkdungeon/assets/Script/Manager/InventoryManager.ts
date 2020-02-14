@@ -227,13 +227,13 @@ export default class InventoryManager {
         }
         return rate;
     }
-    //30s生命恢复不可以为负数(加入状态以后考虑拿掉)
-    getLifeRecovery():number{
-        let lifeRecovery = 0;
+    //背刺伤害
+    getDamageBack():number{
+        let damageBack = 0;
         for(let data of this.list){
-            lifeRecovery += data.Common.lifeRecovery;
+            damageBack += data.Common.damageBack;
         }
-        return lifeRecovery;
+        return damageBack;
     }
     getLifeDrainRate():number{
         let rate = 1;
@@ -260,7 +260,7 @@ export default class InventoryManager {
         e.Common.criticalStrikeRate = this.getCriticalStrikeRate();
         e.Common.defence = this.getDefence();
         e.Common.lifeDrain = this.getLifeDrainRate();
-        e.Common.lifeRecovery = this.getLifeRecovery();
+        e.Common.damageBack = this.getDamageBack();
         e.Common.moveSpeed = this.getMoveSpeed();
         e.Common.attackSpeed = this.getAttackSpeed();
         e.Common.remoteSpeed = this.getRemoteSpeed();

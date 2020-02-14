@@ -380,6 +380,10 @@ export default class MeleeWeapon extends cc.Component {
         let attackSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied && !this.isMiss) {
+            damage.isBackAttack = monster.isPlayerBehind();
+            if(damage.isBackAttack){
+                damage.realDamage += this.player.data.getDamageBack();
+            }
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(monster.node);

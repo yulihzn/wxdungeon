@@ -152,7 +152,7 @@ export default class StatusManager extends cc.Component {
             e.Common.criticalStrikeRate *= s.data.Common.criticalStrikeRate?(1-s.data.Common.criticalStrikeRate/100):1;
             e.Common.lifeDrain *= s.data.Common.lifeDrain?(1-s.data.Common.lifeDrain/100):1;
             e.Common.dodge *= s.data.Common.dodge?(1-s.data.Common.dodge/100):1;
-            e.Common.lifeRecovery += s.data.Common.lifeRecovery?s.data.Common.lifeRecovery:0;
+            e.Common.damageBack += s.data.Common.damageBack?s.data.Common.damageBack:0;
             e.Common.moveSpeed += s.data.Common.moveSpeed?s.data.Common.moveSpeed:0;
             e.Common.attackSpeed += s.data.Common.attackSpeed?s.data.Common.attackSpeed:0;
             e.Common.maxHealth += s.data.Common.maxHealth?s.data.Common.maxHealth:0;

@@ -26,7 +26,7 @@ export default class EquipmentStringData {
     criticalStrikeRate: number = 0;//暴击
     defence: number = 0;//物理防御
     lifeDrain: number = 0;//吸血
-    lifeRecovery: number = 0;//生命回复
+    damageBack: number = 0;//生命回复
     moveSpeed: number = 0;//移速
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避
@@ -74,7 +74,7 @@ export default class EquipmentStringData {
         this.criticalStrikeRate = data.Common.criticalStrikeRate ? data.Common.criticalStrikeRate : 0;
         this.defence = data.Common.defence ? data.Common.defence : 0;
         this.lifeDrain = data.Common.lifeDrain ? data.Common.lifeDrain : 0;
-        this.lifeRecovery = data.Common.lifeRecovery ? data.Common.lifeRecovery : 0;
+        this.damageBack = data.Common.damageBack ? data.Common.damageBack : 0;
         this.moveSpeed = data.Common.moveSpeed ? data.Common.moveSpeed : 0;
         this.attackSpeed = data.Common.attackSpeed ? data.Common.attackSpeed : 0;
         this.remoteSpeed = data.Common.remoteSpeed?data.Common.remoteSpeed:0;
@@ -144,7 +144,7 @@ export default class EquipmentStringData {
         e.criticalStrikeRate = this.criticalStrikeRate;
         e.defence = this.defence;
         e.lifeDrain = this.lifeDrain;
-        e.lifeRecovery = this.lifeRecovery;
+        e.damageBack = this.damageBack;
         e.moveSpeed = this.moveSpeed;
         e.attackSpeed = this.attackSpeed;
         e.remoteSpeed = this.remoteSpeed;

@@ -13,10 +13,10 @@ export default class CommonData  {
     maxHealth: number = 0;//最大生命
     damageMin: number = 0;//最小攻击
     damageMax: number = 0;//最大攻击
+    damageBack: number = 0;//背面额外攻击伤害
     criticalStrikeRate: number = 0;//暴击
     defence: number = 0;//物理防御
     lifeDrain: number = 0;//吸血
-    lifeRecovery: number = 0;//生命回复
     moveSpeed: number = 0;//移速
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避
@@ -51,7 +51,7 @@ export default class CommonData  {
         this.remoteCritRate = data.remoteCritRate ? data.remoteCritRate : 0;
         this.defence = data.defence ? data.defence : 0;
         this.lifeDrain = data.lifeDrain ? data.lifeDrain : 0;
-        this.lifeRecovery = data.lifeRecovery ? data.lifeRecovery : 0;
+        this.damageBack = data.damageBack ? data.damageBack : 0;
         this.moveSpeed = data.moveSpeed ? data.moveSpeed : 0;
         this.attackSpeed = data.attackSpeed ? data.attackSpeed : 0;
         this.remoteSpeed = data.remoteSpeed?data.remoteSpeed:0;
@@ -82,7 +82,7 @@ export default class CommonData  {
         e.criticalStrikeRate = this.criticalStrikeRate;
         e.defence = this.defence;
         e.lifeDrain = this.lifeDrain;
-        e.lifeRecovery = this.lifeRecovery;
+        e.damageBack = this.damageBack;
         e.moveSpeed = this.moveSpeed;
         e.attackSpeed = this.attackSpeed;
         e.remoteSpeed = this.remoteSpeed;

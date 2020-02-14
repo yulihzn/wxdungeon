@@ -30,6 +30,7 @@ export default class DamageData {
     curseRate = 0;//诅咒元素释放几率
     stoneRate = 0;//石化释放几率(目前仅限于boss眼魔激光使用)
     isCriticalStrike = false;
+    isBackAttack = false;
 
     constructor(realDamage?:number){
         this.realDamage = realDamage?realDamage:0;
@@ -51,6 +52,7 @@ export default class DamageData {
         this.curseRate = data.curseRate?data.curseRate:0;
         this.stoneRate = data.stoneRate?data.stoneRate:0;
         this.isCriticalStrike = data.isCriticalStrike?true:false;
+        this.isBackAttack = data.isBackAttack?true:false;
     }
    
     public clone(): DamageData {
@@ -70,6 +72,7 @@ export default class DamageData {
         e.curseRate = this.curseRate;
         e.stoneRate = this.stoneRate;
         e.isCriticalStrike = this.isCriticalStrike;
+        e.isBackAttack = this.isBackAttack;
         return e;
     }
     public getTotalDamage():number{

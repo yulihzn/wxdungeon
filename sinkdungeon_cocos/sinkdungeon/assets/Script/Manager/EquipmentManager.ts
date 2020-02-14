@@ -130,13 +130,13 @@ export default class EquipmentManager extends cc.Component {
     //坚固的(防御力)
     public static readonly COLOR_STABLE = "#DEB887";//结实的树棕色
     //强力的(攻击力)
-    public static readonly COLOR_POWERFUL = "#9370DB";//适中的兰花紫
+    public static readonly COLOR_POWERFUL = "#ADFF2F";//绿黄色
     //健康的(最大生命值)
     public static readonly COLOR_HEALTHY = "#90EE90";//淡绿色
     //邪恶的(生命汲取)
     public static readonly COLOR_LIFEDRAIN = "#FFC0CB";//粉红
-    //温暖的(生命恢复)
-    public static readonly COLOR_RECOVERY = "#ADFF2F";//绿黄色
+    //阴冷的(背刺)
+    public static readonly COLOR_BACK = "#9370DB";//适中的兰花紫
     @property(cc.Prefab)
     equipment: cc.Prefab = null;
 
@@ -214,18 +214,16 @@ export default class EquipmentManager extends cc.Component {
             desc.color = this.getMixColor(desc.color
                 , lifeDrain.y > 2 ? EquipmentManager.COLOR_LIFEDRAIN : '#000000');
         }
-        //生命回复10% 0-5
-        //为了防止过于imba只有1/10的可能回血
-        let lifeRecovery = cc.v2(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
-            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
-            && data.Common.lifeRecovery > 0) {
-            lifeRecovery = Random.rand() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
-            level = lifeRecovery.y > level ? lifeRecovery.y : level;
-            desc.prefix += lifeRecovery.y > 2 ? '温暖' : '';
+        //背刺伤害10% 0-5
+        let damageBack = cc.v2(0, 0);
+        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
+            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
+            && data.Common.damageBack > 0) {
+            damageBack = this.getRandomQuality(0, 5, chestQuality);
+            level = damageBack.y > level ? damageBack.y : level;
+            desc.prefix += damageBack.y > 2 ? '阴冷' : '';
             desc.color = this.getMixColor(desc.color
-                , lifeRecovery.y > 2 ? EquipmentManager.COLOR_RECOVERY : '#000000');
+                , damageBack.y > 2 ? EquipmentManager.COLOR_BACK : '#000000');
         }
         //移动速度0-80减去装备自带移动速度
         let moveSpeed = cc.v2(0, 0);
@@ -358,7 +356,7 @@ export default class EquipmentManager extends cc.Component {
         desc.damageMax = damageMax.x;
         desc.defence = defence.x;
         desc.lifeDrain = lifeDrain.x;
-        desc.lifeRecovery = lifeRecovery.x;
+        desc.damageBack = damageBack.x;
         desc.moveSpeed = moveSpeed.x;
         desc.attackSpeed = attackSpeed.x;
         desc.dodge = dodge.x;
@@ -459,7 +457,7 @@ export default class EquipmentManager extends cc.Component {
             data.Common.damageMax += desc.damageMax;
             data.Common.defence += desc.defence;
             data.Common.lifeDrain += desc.lifeDrain;
-            data.Common.lifeRecovery += desc.lifeRecovery;
+            data.Common.damageBack += desc.damageBack;
             data.Common.moveSpeed += desc.moveSpeed;
             data.Common.attackSpeed += desc.attackSpeed;
             data.Common.dodge += desc.dodge;
@@ -521,7 +519,7 @@ export default class EquipmentManager extends cc.Component {
         let info = ``;
         info += data.Common.criticalStrikeRate + desc.criticalStrikeRate == 0 ? `` : `暴击${data.Common.criticalStrikeRate}${desc.criticalStrikeRate == 0 ? '' : '+' + desc.criticalStrikeRate}%\n`;
         info += data.Common.lifeDrain + desc.lifeDrain == 0 ? `` : `吸血${data.Common.lifeDrain}${desc.lifeDrain == 0 ? '' : '+' + desc.lifeDrain}%\n`;
-        info += data.Common.lifeRecovery + desc.lifeRecovery == 0 ? `` : `回复${data.Common.lifeRecovery}${desc.lifeRecovery == 0 ? '' : '+' + desc.lifeRecovery}\n`;
+        info += data.Common.damageBack + desc.damageBack == 0 ? `` : `背刺${data.Common.damageBack}${desc.damageBack == 0 ? '' : '+' + desc.damageBack}\n`;
         info += data.Common.moveSpeed + desc.moveSpeed == 0 ? `` : `移速${data.Common.moveSpeed}${desc.moveSpeed == 0 ? '' : '+' + desc.moveSpeed}\n`;
         info += data.Common.attackSpeed + desc.attackSpeed == 0 ? `` : `攻速${data.Common.attackSpeed}${desc.attackSpeed == 0 ? '' : '+' + desc.attackSpeed}\n`;
         info += data.Common.dodge + desc.dodge == 0 ? `` : `闪避${data.Common.dodge}${desc.dodge == 0 ? '' : '+' + desc.dodge}%\n`;
