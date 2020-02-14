@@ -1079,7 +1079,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "魔法帽"
+        "desc": "很显眼的白色兜帽"
     },
     "helmet006": {
         "nameCn": "法老面具",
@@ -2182,7 +2182,7 @@
         "titlecolor": "#ffffff",
         "img": "gloves001",
         "common": {
-            "damageMin": 0,
+            "damageMin": 1,
             "damageMax": 0,
             "criticalStrikeRate": 10,
             "defence": 0,
@@ -2210,7 +2210,7 @@
             "criticalStrikeRate": 10,
             "defence": 0,
             "lifeDrain": 0,
-            "damageBack": 0,
+            "damageBack": 1,
             "moveSpeed": 0,
             "attackSpeed": 60,
             "dodge": 0,
@@ -2233,7 +2233,7 @@
             "criticalStrikeRate": 10,
             "defence": 0,
             "lifeDrain": 0,
-            "damageBack": 0,
+            "damageBack": 3,
             "moveSpeed": 0,
             "attackSpeed": 60,
             "dodge": 0,
@@ -2348,7 +2348,7 @@
             "criticalStrikeRate": 20,
             "defence": 0,
             "lifeDrain": 0,
-            "damageBack": 0,
+            "damageBack": 2,
             "moveSpeed": 0,
             "attackSpeed": 20,
             "dodge": 0,

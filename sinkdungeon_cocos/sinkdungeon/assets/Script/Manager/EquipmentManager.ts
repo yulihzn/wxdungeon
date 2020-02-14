@@ -449,9 +449,9 @@ export default class EquipmentManager extends cc.Component {
             data.info2 = this.getEquipmentInfo2(desc, data);
             data.info3 = this.getEquipmentInfo3(desc, data);
             data.infobasecolor = '#fffff0';//象牙
-            data.infocolor1 = '#98FB98';//苍白的绿色
+            data.infocolor1 = '#9370DB';//适中的紫色
             data.infocolor2 = '#87CEFA';//淡蓝色
-            data.infocolor3 = '#9370DB';//适中的紫色
+            data.infocolor3 = '#BC8F8F';//玫瑰棕色
             data.Common.criticalStrikeRate += desc.criticalStrikeRate;
             data.Common.damageMin += desc.damageMin;
             data.Common.damageMax += desc.damageMax;

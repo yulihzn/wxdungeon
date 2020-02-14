@@ -14479,7 +14479,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 310,
-      "height": 296.75999999999993
+      "height": 308.1
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -14597,7 +14597,7 @@
     "_string": "12121313",
     "_N$string": "12121313",
     "_fontSize": 26,
-    "_lineHeight": 20,
+    "_lineHeight": 26,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -14794,7 +14794,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 300,
-      "height": 25.2
+      "height": 26.46
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -14806,7 +14806,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -61.6,
+        -62.230000000000004,
         0,
         0,
         0,
@@ -14847,7 +14847,7 @@
     "_string": "攻击力",
     "_N$string": "攻击力",
     "_fontSize": 20,
-    "_lineHeight": 20,
+    "_lineHeight": 21,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -14930,7 +14930,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -76.7,
+        -77.96000000000001,
         0,
         0,
         0,
@@ -15044,7 +15044,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 300,
-      "height": 20.16
+      "height": 26.46
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -15056,7 +15056,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -89.28,
+        -93.69000000000001,
         0,
         0,
         0,
@@ -15097,7 +15097,7 @@
     "_string": "12123333333333333333333333",
     "_N$string": "12123333333333333333333333",
     "_fontSize": 20,
-    "_lineHeight": 16,
+    "_lineHeight": 21,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -15168,7 +15168,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 300,
-      "height": 25.2
+      "height": 26.46
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -15180,7 +15180,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -113.96,
+        -122.15000000000002,
         0,
         0,
         0,
@@ -15221,7 +15221,7 @@
     "_string": "1212",
     "_N$string": "1212",
     "_fontSize": 20,
-    "_lineHeight": 20,
+    "_lineHeight": 21,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -15292,7 +15292,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 300,
-      "height": 25.2
+      "height": 26.46
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -15304,7 +15304,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -141.16,
+        -150.61,
         0,
         0,
         0,
@@ -15345,7 +15345,7 @@
     "_string": "1212",
     "_N$string": "1212",
     "_fontSize": 20,
-    "_lineHeight": 20,
+    "_lineHeight": 21,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -15416,7 +15416,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 300,
-      "height": 25.2
+      "height": 26.46
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -15428,7 +15428,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -168.35999999999999,
+        -179.07,
         0,
         0,
         0,
@@ -15469,7 +15469,7 @@
     "_string": "1212",
     "_N$string": "1212",
     "_fontSize": 20,
-    "_lineHeight": 20,
+    "_lineHeight": 21,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -15552,7 +15552,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -195.55999999999997,
+        -206.89999999999998,
         0,
         0,
         0,
@@ -15676,7 +15676,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -222.75999999999996,
+        -234.09999999999997,
         0,
         0,
         0,
@@ -15800,7 +15800,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -249.95999999999995,
+        -261.29999999999995,
         0,
         0,
         0,
@@ -15924,7 +15924,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -265.05999999999995,
+        -276.4,
         0,
         0,
         0,
@@ -16050,7 +16050,7 @@
       "ctor": "Float64Array",
       "array": [
         8,
-        -280.15999999999997,
+        -291.5,
         0,
         0,
         0,
@@ -16144,7 +16144,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 310,
-      "height": 296.75999999999993
+      "height": 308.1
     },
     "_resize": 1,
     "_N$layoutType": 2,

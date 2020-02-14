@@ -143,7 +143,7 @@ export default class Monster extends Actor {
         }
         this.stopAttackEffect();
         this.dangerBox.init(this);
-
+        this.dangerTips.opacity = 0;
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
@@ -456,7 +456,7 @@ export default class Monster extends Actor {
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
     }
     isPlayerBehind():boolean{
-        let isPlayerRight = this.dungeon.player.pos.x > this.pos.x;
+        let isPlayerRight = this.dungeon.player.node.position.x > this.node.position.x;
         let isSelfFaceRight = this.node.scaleX>0;
         return (isPlayerRight&&!isSelfFaceRight)||(!isPlayerRight&&isSelfFaceRight);
     }
@@ -516,7 +516,9 @@ export default class Monster extends Actor {
             this.dangerBox.finish();
             this.moveTarget = cc.Vec2.ZERO;
             this.bodySprite.node.color = cc.color(255, 0, 0);
-            this.showBloodEffect();
+            if(damageData.isBackAttack){
+                this.showBloodEffect();
+            }
             cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.scheduleOnce(() => {
                 if (this.node) {

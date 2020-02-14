@@ -431,7 +431,7 @@ export default class Dungeon extends cc.Component {
                     table.parent = this.node;
                     let ta = table.getComponent(ShopTable);
                     ta.setPos(cc.v2(i, j));
-                    ta.data.shopType = Random.rand() > 0.3 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+                    ta.data.shopType = Random.rand() > 0.1 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
                     let currshoptables = Logic.mapManager.getCurrentMapShopTables();
                     if (currshoptables) {
                         for (let temptable of currshoptables) {
