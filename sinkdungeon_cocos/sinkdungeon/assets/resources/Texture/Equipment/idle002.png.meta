@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "a4269582-54ff-4eaa-867e-226e4dcf9252",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 21,
+  "height": 21,
   "platformSettings": {},
   "subMetas": {
     "idle002": {

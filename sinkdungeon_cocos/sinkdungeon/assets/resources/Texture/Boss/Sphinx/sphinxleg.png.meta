@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "acf0053b-f051-4656-a52c-c2b234d7c5f7",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 16,
+  "height": 16,
   "platformSettings": {},
   "subMetas": {
     "sphinxleg": {

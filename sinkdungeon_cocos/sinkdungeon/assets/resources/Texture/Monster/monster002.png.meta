@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "8010d832-7280-4ec2-af03-9db286536181",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 21,
+  "height": 21,
   "platformSettings": {},
   "subMetas": {
     "monster002": {

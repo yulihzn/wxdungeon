@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "97007f24-d5ae-4010-b28b-5f5ab80d28d0",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 16,
+  "height": 16,
   "platformSettings": {},
   "subMetas": {
     "bullet028anim001": {

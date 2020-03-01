@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "7e9221c1-14d7-4aad-bf5d-3ca50a87b00e",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 11,
+  "height": 11,
   "platformSettings": {},
   "subMetas": {
     "helmet006": {

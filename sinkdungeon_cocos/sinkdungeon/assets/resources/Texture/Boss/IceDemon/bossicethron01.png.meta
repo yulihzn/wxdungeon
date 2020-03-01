@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "0798ad84-da0a-4bf2-997d-1a9574c54eee",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 16,
+  "height": 32,
   "platformSettings": {},
   "subMetas": {
     "bossicethron01": {

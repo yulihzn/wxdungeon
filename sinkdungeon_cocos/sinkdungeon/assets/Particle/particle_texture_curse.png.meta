@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "403d668e-5311-464c-a6a9-9e91bf7475e0",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 62,
+  "height": 53,
   "platformSettings": {},
   "subMetas": {
     "particle_texture_curse": {

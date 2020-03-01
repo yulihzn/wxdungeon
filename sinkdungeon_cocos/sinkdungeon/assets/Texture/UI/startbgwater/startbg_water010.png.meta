@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "d1d1d55c-37fd-4e26-b457-e7c2969fb5de",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 18,
+  "height": 9,
   "platformSettings": {},
   "subMetas": {
     "startbg_water010": {

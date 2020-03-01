@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "2cce1d05-99f0-4ba8-8ec1-b3674f1d0789",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 5,
+  "height": 5,
   "platformSettings": {},
   "subMetas": {
     "inventorygloves": {

@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "9ab88a4f-e40a-4868-a6f6-98cad092d8af",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 11,
+  "height": 11,
   "platformSettings": {},
   "subMetas": {
     "clothes010": {

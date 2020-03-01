@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "e105fc8e-5b42-42c2-8a2c-714b14a4f806",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 11,
+  "height": 11,
   "platformSettings": {},
   "subMetas": {
     "playerhair103": {

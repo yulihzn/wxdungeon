@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "782bb544-4591-4673-9cd8-dd2507cfb7d8",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 8,
+  "height": 8,
   "platformSettings": {},
   "subMetas": {
     "shoes008": {

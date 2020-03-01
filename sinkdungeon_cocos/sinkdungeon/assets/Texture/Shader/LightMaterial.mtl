@@ -1,20 +1,24 @@
 {
   "__type__": "cc.Material",
-  "_name": "",
+  "_name": "LightMaterial",
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
     "__uuid__": "84cda3d4-753c-4d8c-a01a-88b007959407"
   },
-  "_defines": {
-    "USE_ALPHA_TEST": true
-  },
-  "_props": {
-    "diffuseTexture": {
-      "__uuid__": "ece8b552-8a6f-4a6e-913b-b0fdb6b502be"
-    },
-    "normalTexture": {
-      "__uuid__": "2f3ddf3e-213a-4ac8-9a84-d41c4525234d"
+  "_techniqueData": {
+    "0": {
+      "props": {
+        "diffuseTexture": {
+          "__uuid__": "ece8b552-8a6f-4a6e-913b-b0fdb6b502be"
+        },
+        "normalTexture": {
+          "__uuid__": "2f3ddf3e-213a-4ac8-9a84-d41c4525234d"
+        }
+      },
+      "defines": {
+        "USE_ALPHA_TEST": true
+      }
     }
   }
 }

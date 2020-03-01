@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "2e1c7ce7-ee5f-470c-9c46-0b47edc19d0c",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 8,
+  "height": 8,
   "platformSettings": {},
   "subMetas": {
     "gloves001": {

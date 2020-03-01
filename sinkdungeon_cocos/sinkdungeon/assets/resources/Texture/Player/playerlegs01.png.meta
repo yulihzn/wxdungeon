@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "5487a7e1-9133-4cc0-9f02-3e23608bdb4b",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 9,
+  "height": 3,
   "platformSettings": {},
   "subMetas": {
     "playerlegs01": {

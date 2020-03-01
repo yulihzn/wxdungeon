@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "23eb4114-a719-4839-b3e0-f0c63fc1200e",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 10,
+  "height": 15,
   "platformSettings": {},
   "subMetas": {
     "boss001hand002": {

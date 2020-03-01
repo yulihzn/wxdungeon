@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "2fad0c85-c769-4209-8e78-4f7fe0d25677",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 9,
+  "height": 14,
   "platformSettings": {},
   "subMetas": {
     "captain_rightleg": {

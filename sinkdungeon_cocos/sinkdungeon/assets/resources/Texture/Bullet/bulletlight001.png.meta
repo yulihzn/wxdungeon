@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "4edc4c8d-d631-45e3-9094-afeef792233d",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 24,
+  "height": 24,
   "platformSettings": {},
   "subMetas": {
     "bulletlight001": {

@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "f327cb1d-8e48-4407-a95a-3352149c88ea",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 54,
+  "height": 62,
   "platformSettings": {},
   "subMetas": {
     "particle_texture_ice": {

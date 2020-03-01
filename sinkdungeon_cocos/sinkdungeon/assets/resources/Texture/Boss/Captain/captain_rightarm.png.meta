@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "b932e958-9870-422b-8f1f-084c27f1ab28",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 30,
+  "height": 22,
   "platformSettings": {},
   "subMetas": {
     "captain_rightarm": {

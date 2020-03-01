@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.4",
   "uuid": "610caac0-6132-4dd7-a4eb-b7bb77572ac5",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 4,
+  "height": 6,
   "platformSettings": {},
   "subMetas": {
     "bossslimemustache": {
