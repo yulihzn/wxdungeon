@@ -26,29 +26,34 @@ export default class Decorate extends Building {
     static readonly PLANT = 1;
     static readonly BOXBREAKABLE = 2;
     // LIFE-CYCLE CALLBACKS:
-    anim: cc.Animation;
     private timeDelay = 0;
     private isBreaking = false;
     decorateType = 0;
+    resName = "decorate000";
     onLoad() {
     }
     data: BoxData = new BoxData();
 
     start() {
-        switch(Logic.chapterName){
-            case Logic.CHAPTER00:this.changeRes(`decorate000${this.decorateType}`);break;
-            case Logic.CHAPTER01:this.changeRes(`decorate010${this.decorateType}`);break;
-            case Logic.CHAPTER02:this.changeRes(`decorate020${this.decorateType}`);break;
-            case Logic.CHAPTER03:this.changeRes(`decorate030${this.decorateType}`);break;
-            case Logic.CHAPTER04:this.changeRes(`decorate040${this.decorateType}`);break;
+        switch (Logic.chapterName) {
+            case Logic.CHAPTER00: this.resName = `decorate000${this.decorateType}`; break;
+            case Logic.CHAPTER01: this.resName = `decorate010${this.decorateType}`; break;
+            case Logic.CHAPTER02: this.resName = `decorate020${this.decorateType}`; break;
+            case Logic.CHAPTER03: this.resName = `decorate030${this.decorateType}`; break;
+            case Logic.CHAPTER04: this.resName = `decorate040${this.decorateType}`; break;
         }
+        this.changeRes(this.resName);
     }
-    changeRes(resName: string) {
+    changeRes(resName: string, suffix?: string) {
         let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         let spriteFrame = Logic.spriteFrames[resName];
+        if (suffix && Logic.spriteFrames[resName + suffix]) {
+            spriteFrame = Logic.spriteFrames[resName + suffix];
+        }
         sprite.node.opacity = 255;
         sprite.spriteFrame = spriteFrame;
     }
+
     setPos(pos: cc.Vec2) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(this.data.pos);
@@ -59,26 +64,38 @@ export default class Decorate extends Building {
         this.reset();
     }
     breakBox() {
-        if(this.isBreaking){
+        if (this.isBreaking) {
             return;
         }
-        if (!this.anim) {
-            this.anim = this.getComponent(cc.Animation);
-        }
-        this.anim.play();
         this.isBreaking = true;
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
-        let rand = Random.rand();
-        if(rand>0.7&&rand<0.8){
-            cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
-        }else if (rand >= 0.8 && rand < 0.825) {
-            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
-        } else if (rand >= 0.825 && rand < 0.85) {
-            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.AMMO } });
-        } 
+        this.node.runAction(cc.sequence(cc.delayTime(0.2), cc.callFunc(() => {
+            this.changeRes(this.resName, 'anim001');
+        }), cc.delayTime(0.1), cc.callFunc(() => {
+            this.changeRes(this.resName, 'anim002');
+        }), cc.delayTime(0.1), cc.callFunc(() => {
+            this.changeRes(this.resName, 'anim003');
+        }), cc.delayTime(0.1), cc.callFunc(() => {
+            this.changeRes(this.resName, 'anim004');
+            let collider = this.getComponent(cc.PhysicsBoxCollider);
+            if(collider){
+                collider.sensor = true;
+                collider.apply();
+            }
+            let rand = Random.rand();
+            if (rand > 0.7 && rand < 0.8) {
+                cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
+            } else if (rand >= 0.8 && rand < 0.825) {
+                cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
+            } else if (rand >= 0.825 && rand < 0.85) {
+                cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.AMMO } });
+            }
+        }), cc.delayTime(10), cc.callFunc(() => {
+            this.reset();
+        })))
     }
     reset() {
-        this.node.position = Dungeon.getPosInMap(cc.v2(-10,-10));
+        this.node.position = Dungeon.getPosInMap(cc.v2(-10, -10));
         this.isBreaking = false;
     }
 

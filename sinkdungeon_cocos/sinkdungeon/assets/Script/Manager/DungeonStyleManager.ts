@@ -28,6 +28,8 @@ export default class DungeonStyleManager extends cc.Component {
     background01: cc.Node = null;
     @property(cc.Node)
     floor:cc.Node = null;
+    @property(cc.Node)
+    floorShadow:cc.Node = null;
 
 
     @property(cc.Prefab)
@@ -93,7 +95,7 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'darksides', 'restdoor', 'restdoorframe', '#323c39', 'tile_lab001'); break;
+            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'darksides', 'restdoor', 'restdoorframe', '#000000', 'tile_lab001'); break;
             case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall1', 'darksides', 'shipdoor', 'shipdoorframe', '#12222e', 'tile_deck001'); break;
             case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall1', 'darksides', 'jungledoor', 'jungledoorframe', '#1b300d', 'tile_dirt001'); break;
             case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall1', 'darksides', 'pyramiddoor', 'pyramiddoorframe', '#c8bc69', 'tile003'); break;
@@ -255,6 +257,11 @@ export default class DungeonStyleManager extends cc.Component {
         this.floor.position = cc.v2(pos.x-32,pos.y-32);
         this.floor.zIndex = 110;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.styleData.floor];
+        this.floorShadow.width = 16*(Dungeon.WIDTH_SIZE+0);
+        this.floorShadow.height = 16*(Dungeon.HEIGHT_SIZE+0);
+        this.floorShadow.position = cc.v2(pos.x-32,pos.y-32);
+        this.floorShadow.opacity = 128;
+        this.floorShadow.zIndex = 2000;
     }
 
     setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
@@ -267,9 +274,9 @@ export default class DungeonStyleManager extends cc.Component {
         bg.spriteFrame = floor ? Logic.spriteFrames[floor] : null;
         doorSprite.spriteFrame = door ? Logic.spriteFrames[door] : null;
         frameSprite.spriteFrame = frame ? Logic.spriteFrames[frame] : null;
-        doorSprite.node.color = dir == 0?cc.Color.WHITE:cc.Color.BLACK;
-        frameSprite.node.color = dir == 0?cc.Color.WHITE:cc.Color.BLACK;
-        bg.node.color = dir != 0?cc.Color.WHITE:cc.Color.BLACK;
+        doorSprite.node.color = cc.Color.GRAY;
+        frameSprite.node.color = cc.Color.GRAY;
+        bg.node.color = dir != 0?cc.Color.GRAY:cc.Color.BLACK;
         let theDoor: Door = this.doors[dir].getComponent(Door);
         if (theDoor) {
             theDoor.isDoor = isDoor;
