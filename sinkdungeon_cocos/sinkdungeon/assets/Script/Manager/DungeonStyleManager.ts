@@ -27,9 +27,9 @@ export default class DungeonStyleManager extends cc.Component {
     @property(cc.Node)
     background01: cc.Node = null;
     @property(cc.Node)
-    floor:cc.Node = null;
+    floor: cc.Node = null;
     @property(cc.Node)
-    floorShadow:cc.Node = null;
+    floorShadow: cc.Node = null;
 
 
     @property(cc.Prefab)
@@ -49,7 +49,8 @@ export default class DungeonStyleManager extends cc.Component {
     doorRes: string = null;
     styleData: DungeonStyleData;
     doors: cc.Node[] = new Array();
-    walltops:cc.Node[] = new Array();
+    walltops: cc.Node[] = new Array();
+    readonly darksides = 'darksides';
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -69,11 +70,11 @@ export default class DungeonStyleManager extends cc.Component {
     start() {
 
     }
-    changeTopWalls(isShow:boolean){
-        for(let w of this.walltops){
-            w.opacity = isShow?255:0;
+    changeTopWalls(isShow: boolean) {
+        for (let w of this.walltops) {
+            w.opacity = isShow ? 255 : 0;
         }
-        this.doors[0].opacity = isShow?255:0;
+        this.doors[0].opacity = isShow ? 255 : 0;
     }
     runBackgroundAnim(resName: string) {
         if (!this.background01) {
@@ -95,22 +96,24 @@ export default class DungeonStyleManager extends cc.Component {
     }
     addDecorations() {
         switch (Logic.chapterName) {
-            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'darksides', 'restdoor', 'restdoorframe', '#000000', 'tile_lab001'); break;
-            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall1', 'darksides', 'shipdoor', 'shipdoorframe', '#12222e', 'tile_deck001'); break;
-            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall1', 'darksides', 'jungledoor', 'jungledoorframe', '#1b300d', 'tile_dirt001'); break;
-            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall1', 'darksides', 'pyramiddoor', 'pyramiddoorframe', '#c8bc69', 'tile003'); break;
-            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall1', 'darksides', 'dungeondoor', 'dungeondoorframe', '#1f1e1e', 'tile004'); break;
+            case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'restsides', 'restdoor', 'restdoorframe', '#000000', 'tile_lab001'); break;
+            case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall1', 'shipsides', 'shipdoor', 'shipdoorframe', '#000000', 'tile_deck001'); break;
+            case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall1', 'junglesides', 'jungledoor', 'jungledoorframe', '#000000', 'tile_dirt001'); break;
+            case Logic.CHAPTER03: this.styleData = new DungeonStyleData('sandsea', 'pyramidwall1', 'pyramidsides', 'pyramiddoor', 'pyramiddoorframe', '#000000', 'tile003'); break;
+            case Logic.CHAPTER04: this.styleData = new DungeonStyleData('magmasea', 'dungeonwall1', 'dungeonsides', 'dungeondoor', 'dungeondoorframe', '#000000', 'tile004'); break;
         }
         if (!this.styleData) {
             return;
         }
         this.addFloor();
         this.doors = new Array(4);
-        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
+        for (let i = -1; i < Dungeon.WIDTH_SIZE+1; i++) {
             let walltop = this.getWallTop(i);
             this.walltops.push(walltop);
-            let wallbottom = this.getWallBottom(i);
+            let wallbottom = this.getWallBottom(i,-1);
+            let wb = this.getWallBottom(i,-2);
             if (i == Math.floor(Dungeon.WIDTH_SIZE / 2)) {
+                wb.y-=16;
                 this.doors[0] = cc.instantiate(this.doorDecoration);
                 this.doors[0].parent = this.node;
                 let postop = Dungeon.getPosInMap(cc.v2(i, Dungeon.HEIGHT_SIZE));
@@ -122,17 +125,18 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[1].parent = this.node;
                 let posbottom = Dungeon.getPosInMap(cc.v2(i, -1));
                 this.doors[1].setPosition(cc.v2(posbottom.x, posbottom.y));
-                this.doors[1].setScale(4, 2);
+                this.doors[1].setScale(4, -2);
                 this.doors[1].zIndex = 2000;
                 this.doors[1].getComponent(Door).wall = wallbottom;
                 this.doors[1].getComponent(Door).dir = 1;
             }
             this.addExitDoor(i, walltop);
         }
-        for (let j = -1; j < Dungeon.HEIGHT_SIZE + 4; j++) {
+
+        for (let j = -1; j < Dungeon.HEIGHT_SIZE + 3; j++) {
             let wallleft = this.getWallLeft(j);
             let wallright = this.getWallRight(j);
-            if(j>Dungeon.HEIGHT_SIZE-1){
+            if (j > Dungeon.HEIGHT_SIZE - 1) {
                 this.walltops.push(wallleft);
                 this.walltops.push(wallright);
             }
@@ -142,8 +146,8 @@ export default class DungeonStyleManager extends cc.Component {
                 let posleft = Dungeon.getPosInMap(cc.v2(-1, j));
                 this.doors[2].setPosition(cc.v2(posleft.x, posleft.y));
                 this.doors[2].zIndex = 2000;
-                this.doors[2].angle = 90;
-                this.doors[2].setScale(4, 2);
+                this.doors[2].angle = -90;
+                this.doors[2].setScale(4, -2);
                 this.doors[2].getComponent(Door).wall = wallleft;
                 this.doors[2].getComponent(Door).dir = 2;
                 this.doors[3] = cc.instantiate(this.doorDecoration);
@@ -156,8 +160,23 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[3].getComponent(Door).wall = wallright;
                 this.doors[3].getComponent(Door).dir = 3;
             }
+            if(j>Dungeon.HEIGHT_SIZE / 2&&j<Dungeon.HEIGHT_SIZE / 2+2){
+                wallleft.zIndex = 2500;
+                wallright.zIndex = 2500;
+            }
         }
-
+        let walltopleft = this.getWallTop(0);
+        let walltopright = this.getWallTop(0);
+        let leftpos = Dungeon.getPosInMap(cc.v2(-1, Math.floor(Dungeon.HEIGHT_SIZE / 2) + 1));
+        leftpos.y += 32;
+        let rightpos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, Math.floor(Dungeon.HEIGHT_SIZE / 2) + 1));
+        rightpos.y += 32;
+        walltopleft.setPosition(leftpos);
+        walltopright.setPosition(rightpos);
+        this.walltops.push(walltopleft);
+        this.walltops.push(walltopright);
+        this.doors[2].getComponent(Door).sideWall = walltopleft;
+        this.doors[3].getComponent(Door).sideWall = walltopright;
         this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
         this.runBackgroundAnim(this.styleData.background);
         this.addDecorateBg();
@@ -169,7 +188,7 @@ export default class DungeonStyleManager extends cc.Component {
         //     return;
         // }
         let isStartRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.START_ROOM;
-        let isEndRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM&&Logic.level != 3&&Logic.level != 5;
+        let isEndRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM && Logic.level != 3 && Logic.level != 5;
         let isPuzzleRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
         let isBossRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM;
         let isTarotRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM;
@@ -179,7 +198,7 @@ export default class DungeonStyleManager extends cc.Component {
             otherIndex = 2;
         }
         if (posX == oneIndex) {
-            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom || isTarotRoom||isFinalRoom;
+            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom || isTarotRoom || isFinalRoom;
             if (needAdd) {
                 let postop = Dungeon.getPosInMap(cc.v2(oneIndex, Dungeon.HEIGHT_SIZE));
                 let exit = cc.instantiate(this.exitdoorPrefab);
@@ -207,15 +226,15 @@ export default class DungeonStyleManager extends cc.Component {
         walltop.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
         return walltop;
     }
-    private getWallBottom(posX: number): cc.Node {
+    private getWallBottom(posX: number,posY:number): cc.Node {
         let wallbottom = cc.instantiate(this.wallBottomDecoration);
         wallbottom.parent = this.node;
-        wallbottom.angle = 90;
-        let posbottom = Dungeon.getPosInMap(cc.v2(posX, -1));
+        wallbottom.angle = 180;
+        let posbottom = Dungeon.getPosInMap(cc.v2(posX, posY));
         wallbottom.setPosition(cc.v2(posbottom.x, posbottom.y));
-        wallbottom.zIndex = 2500;
+        wallbottom.zIndex = 4100;
         wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
-        wallbottom.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+        wallbottom.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[posY<-1?this.darksides:'darksidesbottom'];
         return wallbottom;
     }
     private getWallLeft(posY: number): cc.Node {
@@ -223,8 +242,11 @@ export default class DungeonStyleManager extends cc.Component {
         wallleft.parent = this.node;
         let posleft = Dungeon.getPosInMap(cc.v2(-1, posY));
         wallleft.setPosition(cc.v2(posleft.x, posleft.y));
-        wallleft.zIndex = 2500;
+        wallleft.zIndex = 4000;
         wallleft.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+        if(posY<0){
+            wallleft.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.darksides];
+        }
         return wallleft;
     }
     private getWallRight(posY: number): cc.Node {
@@ -232,34 +254,37 @@ export default class DungeonStyleManager extends cc.Component {
         wallright.parent = this.node;
         let posright = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE, posY));
         wallright.setPosition(cc.v2(posright.x, posright.y));
-        wallright.zIndex = 2500;
+        wallright.zIndex = 4000;
         wallright.setScale(-4, 4);
         wallright.getComponent(cc.Sprite).spriteFrame = this.styleData.sidewall ? Logic.spriteFrames[this.styleData.sidewall] : null;
+        if(posY<0){
+            wallright.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.darksides];
+        }
         return wallright;
     }
 
-    private addDecorateBg(){
+    private addDecorateBg() {
         let bg = cc.instantiate(this.parallaxBackground);
         bg.parent = this.node;
-        let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE/2));
+        let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE / 2, Dungeon.HEIGHT_SIZE / 2));
         bg.setPosition(pos);
         bg.zIndex = 100;
         let pbg = bg.getComponent(ParallexBackground);
-        pbg.background.width = 32*Dungeon.WIDTH_SIZE;
-        pbg.background.height = 32*(Dungeon.HEIGHT_SIZE+4);
+        pbg.background.width = 32 * Dungeon.WIDTH_SIZE;
+        pbg.background.height = 32 * (Dungeon.HEIGHT_SIZE + 4);
         pbg.background.color = cc.Color.WHITE.fromHEX(this.styleData.bg02color);
         pbg.init();
     }
-    private addFloor(){
-        this.floor.width = 16*(Dungeon.WIDTH_SIZE+0);
-        this.floor.height = 16*(Dungeon.HEIGHT_SIZE+0);
+    private addFloor() {
+        this.floor.width = 16 * (Dungeon.WIDTH_SIZE + 0);
+        this.floor.height = 16 * (Dungeon.HEIGHT_SIZE + 0);
         let pos = Dungeon.getPosInMap(cc.v2(0, 0));
-        this.floor.position = cc.v2(pos.x-32,pos.y-32);
+        this.floor.position = cc.v2(pos.x - 32, pos.y - 32);
         this.floor.zIndex = 110;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.styleData.floor];
-        this.floorShadow.width = 16*(Dungeon.WIDTH_SIZE+0);
-        this.floorShadow.height = 16*(Dungeon.HEIGHT_SIZE+0);
-        this.floorShadow.position = cc.v2(pos.x-32,pos.y-32);
+        this.floorShadow.width = 16 * (Dungeon.WIDTH_SIZE + 0);
+        this.floorShadow.height = 16 * (Dungeon.HEIGHT_SIZE + 0);
+        this.floorShadow.position = cc.v2(pos.x - 32, pos.y - 32);
         this.floorShadow.opacity = 128;
         this.floorShadow.zIndex = 2000;
     }
@@ -274,9 +299,9 @@ export default class DungeonStyleManager extends cc.Component {
         bg.spriteFrame = floor ? Logic.spriteFrames[floor] : null;
         doorSprite.spriteFrame = door ? Logic.spriteFrames[door] : null;
         frameSprite.spriteFrame = frame ? Logic.spriteFrames[frame] : null;
-        doorSprite.node.color = cc.Color.GRAY;
+        doorSprite.node.color = isDoor?cc.Color.GRAY:cc.Color.BLACK;
         frameSprite.node.color = cc.Color.GRAY;
-        bg.node.color = dir != 0?cc.Color.GRAY:cc.Color.BLACK;
+        bg.node.color = dir > 1 ? cc.Color.GRAY : cc.Color.BLACK;
         let theDoor: Door = this.doors[dir].getComponent(Door);
         if (theDoor) {
             theDoor.isDoor = isDoor;

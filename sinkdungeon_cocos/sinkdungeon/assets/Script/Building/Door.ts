@@ -25,6 +25,7 @@ export default class Door extends Building {
     //0top1bottom2left3right
     dir = 0;
     wall: cc.Node = null;
+    sideWall:cc.Node = null;
     private bg:cc.Node = null;
     private sprite:cc.Node = null;
 
@@ -43,9 +44,12 @@ export default class Door extends Building {
     }
     setOpen(isOpen: boolean) {
         if (!this.isDoor) {
-            this.wall.zIndex = 3000;
+            this.wall.zIndex = this.dir==1?4100:3000;
             this.wall.getComponent(cc.PhysicsBoxCollider).sensor = false;
             this.wall.getComponent(cc.PhysicsBoxCollider).apply();
+            if(this.sideWall){
+                this.sideWall.opacity = 0;
+            }
             return;
         }
         this.wall.zIndex = 500;

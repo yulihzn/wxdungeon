@@ -30,7 +30,10 @@ export default class Decorate extends Building {
     private isBreaking = false;
     decorateType = 0;
     resName = "decorate000";
+    sprite: cc.Sprite;
     onLoad() {
+        this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+
     }
     data: BoxData = new BoxData();
 
@@ -45,13 +48,15 @@ export default class Decorate extends Building {
         this.changeRes(this.resName);
     }
     changeRes(resName: string, suffix?: string) {
-        let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        if (!this.sprite) {
+            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        }
         let spriteFrame = Logic.spriteFrames[resName];
         if (suffix && Logic.spriteFrames[resName + suffix]) {
             spriteFrame = Logic.spriteFrames[resName + suffix];
         }
-        sprite.node.opacity = 255;
-        sprite.spriteFrame = spriteFrame;
+        this.sprite.node.opacity = 255;
+        this.sprite.spriteFrame = spriteFrame;
     }
 
     setPos(pos: cc.Vec2) {
@@ -69,30 +74,31 @@ export default class Decorate extends Building {
         }
         this.isBreaking = true;
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
-        this.node.runAction(cc.sequence(cc.delayTime(0.2), cc.callFunc(() => {
-            this.changeRes(this.resName, 'anim001');
-        }), cc.delayTime(0.1), cc.callFunc(() => {
-            this.changeRes(this.resName, 'anim002');
-        }), cc.delayTime(0.1), cc.callFunc(() => {
-            this.changeRes(this.resName, 'anim003');
-        }), cc.delayTime(0.1), cc.callFunc(() => {
-            this.changeRes(this.resName, 'anim004');
-            let collider = this.getComponent(cc.PhysicsBoxCollider);
-            if(collider){
-                collider.sensor = true;
-                collider.apply();
-            }
-            let rand = Random.rand();
-            if (rand > 0.7 && rand < 0.8) {
-                cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
-            } else if (rand >= 0.8 && rand < 0.825) {
-                cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
-            } else if (rand >= 0.825 && rand < 0.85) {
-                cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.AMMO } });
-            }
-        }), cc.delayTime(10), cc.callFunc(() => {
-            this.reset();
-        })))
+        this.sprite.node.runAction(cc.sequence(
+             cc.callFunc(() => {
+                this.changeRes(this.resName, 'anim001');
+            }), cc.delayTime(0.15), cc.callFunc(() => {
+                this.changeRes(this.resName, 'anim002');
+            }), cc.delayTime(0.15), cc.callFunc(() => {
+                this.changeRes(this.resName, 'anim003');
+            }), cc.delayTime(0.15), cc.callFunc(() => {
+                this.changeRes(this.resName, 'anim004');
+                let collider = this.getComponent(cc.PhysicsBoxCollider);
+                if (collider) {
+                    collider.sensor = true;
+                    collider.apply();
+                }
+                let rand = Random.rand();
+                if (rand > 0.7 && rand < 0.8) {
+                    cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
+                } else if (rand >= 0.8 && rand < 0.825) {
+                    cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
+                } else if (rand >= 0.825 && rand < 0.85) {
+                    cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.AMMO } });
+                }
+            }), cc.delayTime(10), cc.callFunc(() => {
+                this.reset();
+            })))
     }
     reset() {
         this.node.position = Dungeon.getPosInMap(cc.v2(-10, -10));
