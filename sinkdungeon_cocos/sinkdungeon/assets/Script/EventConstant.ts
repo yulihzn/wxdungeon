@@ -20,6 +20,7 @@ export class EventConstant extends cc.Component{
     public static readonly CHANGE_MINIMAP= 'CHANGE_MINIMAP';
     public static readonly LOADINGROOM= 'LOADINGROOM';
     public static readonly HUD_ADD_COIN = 'HUD_ADD_COIN';
+    public static readonly HUD_ADD_OILGOLD = 'HUD_ADD_OILGOLD';
     public static readonly HUD_STOP_COUNTTIME = 'HUD_STOP_COUNTTIME';
     public static readonly HUD_LIGHT_CONTROLLER = 'HUD_LIGHT_CONTROLLER';
     public static readonly HUD_DARK_CONTROLLER = 'HUD_DARK_CONTROLLER';
@@ -31,6 +32,7 @@ export class EventConstant extends cc.Component{
     public static readonly DUNGEON_ADD_ITEM = 'DUNGEON_ADD_ITEM';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';
     public static readonly DUNGEON_ADD_COIN = 'DUNGEON_ADD_COIN';
+    public static readonly DUNGEON_ADD_OILGOLD = 'DUNGEON_ADD_OILGOLD';
     public static readonly DUNGEON_ADD_FALLSTONE = 'DUNGEON_ADD_FALLSTONE';
     public static readonly MONSTER_STATUSUPDATE = 'MONSTER_STATUSUPDATE';
     public static readonly BOSS_ADDSLIME = 'BOSS_ADDSLIME';

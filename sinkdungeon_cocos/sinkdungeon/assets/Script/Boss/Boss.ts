@@ -87,6 +87,7 @@ export default abstract class Boss extends Actor {
     getLoot(){
         if(this.dungeon){
             cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 19 } });
+            cc.director.emit(EventConstant.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 29) } });
             cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
             cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.AMMO } });
             this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos,null,3);

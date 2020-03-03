@@ -61,6 +61,7 @@ export default class Logic extends cc.Component {
 
     static mapManager: MapManager = new MapManager();
     static coins = 0;//金币
+    static oilGolds = 0;//油金
     static ammo = 30;//子弹
     static killCount = 0;//杀敌数
     static time = '00:00:00';
@@ -103,6 +104,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin",Logic.coins);
+        cc.sys.localStorage.setItem("oilgold",Logic.oilGolds);
     }
     static resetData(chapter?:number) {
         //重置时间
@@ -137,6 +139,8 @@ export default class Logic extends cc.Component {
         //加载金币
         let c = cc.sys.localStorage.getItem('coin');
         Logic.coins = c ? parseInt(c) : 0;
+        let o = cc.sys.localStorage.getItem('oilgold');
+        Logic.oilGolds = o ? parseInt(o) : 0;
         //重置技能选择状态
         Logic.isPickedTalent = false;
     }

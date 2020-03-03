@@ -98,6 +98,9 @@ export default class Chest extends Building {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);
                             dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
+                            if(Logic.getHalfChance()){
+                                cc.director.emit(EventConstant.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+                            }
                         }
                     }
                 }

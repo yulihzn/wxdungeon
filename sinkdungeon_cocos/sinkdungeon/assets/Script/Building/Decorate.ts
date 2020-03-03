@@ -91,6 +91,9 @@ export default class Decorate extends Building {
                 let rand = Random.rand();
                 if (rand > 0.7 && rand < 0.8) {
                     cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
+                    if(Logic.getHalfChance()){
+                        cc.director.emit(EventConstant.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+                    }
                 } else if (rand >= 0.8 && rand < 0.825) {
                     cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
                 } else if (rand >= 0.825 && rand < 0.85) {

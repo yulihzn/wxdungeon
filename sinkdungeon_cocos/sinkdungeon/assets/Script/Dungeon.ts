@@ -143,6 +143,9 @@ export default class Dungeon extends cc.Component {
         cc.director.on(EventConstant.DUNGEON_ADD_COIN, (event) => {
             this.addCoin(event.detail.pos, event.detail.count);
         })
+        cc.director.on(EventConstant.DUNGEON_ADD_OILGOLD, (event) => {
+            this.addOilGold(event.detail.pos, event.detail.count);
+        })
         cc.director.on(EventConstant.DUNGEON_ADD_ITEM, (event) => {
             this.addItem(event.detail.pos, event.detail.res);
         })
@@ -727,6 +730,12 @@ export default class Dungeon extends cc.Component {
     addCoin(pos: cc.Vec2, count: number) {
         if (this.coinManager) {
             this.coinManager.getValueCoin(count, pos, this.node);
+        }
+    }
+    /**掉落油金 */
+    addOilGold(pos: cc.Vec2, count: number) {
+        if (this.coinManager) {
+            this.coinManager.getValueOilGold(count, pos, this.node);
         }
     }
     /**放置地上的装备 */

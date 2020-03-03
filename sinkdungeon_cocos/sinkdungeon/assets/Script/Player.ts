@@ -400,6 +400,7 @@ export default class Player extends Actor {
 
         this.isAttacking = true;
         let pos = this.meleeWeapon.getHv().clone();
+        this.isFaceRight = pos.x > 0;
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = cc.v2(1, 0);
         }

@@ -624,6 +624,7 @@ export default class Monster extends Actor {
         if (this.dungeon) {
             if (rand < 0.8) {
                 cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+                cc.director.emit(EventConstant.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 29) } });
             } else if (rand >= 0.8 && rand < 0.825) {
                 this.dungeon.addItem(this.node.position.clone(), Item.HEART);
             } else if (rand >= 0.825 && rand < 0.85) {
