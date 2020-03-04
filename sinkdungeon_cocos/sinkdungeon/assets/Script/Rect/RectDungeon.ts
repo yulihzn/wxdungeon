@@ -514,6 +514,6 @@ export default class RectDungeon {
             case RectDungeon.LEVEL_4:Random.rand() > 0.5;break;
             case RectDungeon.LEVEL_5:Random.rand() > 0.8;break;
         }
-        return Random.rand() > 0.7;
+        return Random.rand() > 0.3;
     }
 }
