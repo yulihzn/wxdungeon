@@ -19,7 +19,6 @@ import Dungeon from './Dungeon';
 import FromData from './Data/FromData';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
-import Random from './Utils/Random';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -54,6 +53,8 @@ export default class Inventory extends cc.Component {
 
     @property(EquipmentDialog)
     equipmentDialog: EquipmentDialog = null;
+    @property(cc.Label)
+    modeLabel:cc.Label = null;
     @property(EquipmentDialog)
     equipmentGroundDialog: EquipmentDialog = null;
 
@@ -67,6 +68,8 @@ export default class Inventory extends cc.Component {
     glovesTimeDelay = 0;
     shoesTimeDelay = 0;
     cloakTimeDelay = 0;
+
+    isUpgradeMode = false;
 
 
     // LIFE-CYCLE CALLBACKS:
@@ -121,6 +124,20 @@ export default class Inventory extends cc.Component {
         this.refreshEquipment(this.inventoryManager.shoes, false);
         this.refreshEquipment(this.inventoryManager.cloak, false);
         this.refreshItemRes();
+        this.changeAllUpgradeLabel(false);
+    }
+    changeUpgradeLabel(sprite: cc.Sprite,isShow:boolean){
+        sprite.node.parent.getChildByName('upgradelabel').opacity = isShow?255:0;
+    }
+    changeAllUpgradeLabel(isShow:boolean){
+        this.changeUpgradeLabel(this.weapon, isShow);
+        this.changeUpgradeLabel(this.remote, isShow);
+        this.changeUpgradeLabel(this.helmet, isShow);
+        this.changeUpgradeLabel(this.clothes, isShow);
+        this.changeUpgradeLabel(this.trousers, isShow);
+        this.changeUpgradeLabel(this.gloves, isShow);
+        this.changeUpgradeLabel(this.shoes, isShow);
+        this.changeUpgradeLabel(this.cloak, isShow);
     }
     addSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
         sprite.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
@@ -344,5 +361,11 @@ export default class Inventory extends cc.Component {
             cc.director.emit(EventConstant.DUNGEON_ADD_ITEM
                 , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName } })
         }
+    }
+    //button event
+    openEquipmentUpgrade(){
+        this.isUpgradeMode = !this.isUpgradeMode;
+        this.modeLabel.string = this.isUpgradeMode?'UPGRADE MODE':'SHOW MODE'
+        this.changeAllUpgradeLabel(this.isUpgradeMode);
     }
 }

@@ -327,13 +327,13 @@
         "common": {
             "moveSpeed": 0,
             "maxHealth": 9999,
-            "defence":0,
+            "defence":10,
             "damageMin": 1
         },
         "currentHealth": 9999,
         "invisible": 0,
         "remote": 0,
-        "melee": 0,
+        "melee": 1,
         "boxType":1,
         "dash": 0
     },

@@ -84,7 +84,7 @@ export default class PlayerInfoDialog extends cc.Component {
     }
     refreshDialog(playerData: PlayerData, equipmentData: EquipmentData,statusData:StatusData) {
         if(!this.attack){return;}
-        this.attack.string = this.getInfo(playerData.Common.damageMin,equipmentData.Common.damageMin,statusData.Common.damageMin)+'->'+this.getInfo(playerData.Common.damageMax,equipmentData.Common.damageMax,statusData.Common.damageMax);
+        this.attack.string = this.getInfo(playerData.Common.damageMin,equipmentData.Common.damageMin,statusData.Common.damageMin)+'    MAX:'+this.getInfo(playerData.Common.damageMax,equipmentData.Common.damageMax,statusData.Common.damageMax);
         this.criticalStrikeRate.string = this.getInfo(playerData.Common.criticalStrikeRate,equipmentData.Common.criticalStrikeRate,statusData.Common.criticalStrikeRate,true);
         this.defence.string = this.getInfo(playerData.Common.defence,equipmentData.Common.defence,statusData.Common.defence);
         this.lifeDrain.string = this.getInfo(playerData.Common.lifeDrain,equipmentData.Common.lifeDrain,statusData.Common.lifeDrain,true);
