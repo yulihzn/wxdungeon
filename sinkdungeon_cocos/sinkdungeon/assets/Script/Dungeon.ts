@@ -35,7 +35,6 @@ import IceDemonThron from "./Boss/IceDemonThron";
 import DryadGrass from "./Boss/DryadGrass";
 import DecorationFloor from "./Building/DecorationFloor";
 import Saw from "./Building/Saw";
-import TileWaterPool from "./Building/TileWaterPool";
 import AudioPlayer from "./Utils/AudioPlayer";
 import Decorate from "./Building/Decorate";
 
@@ -98,8 +97,6 @@ export default class Dungeon extends cc.Component {
     dryadGrass: cc.Prefab = null;
     @property(cc.Prefab)
     saw: cc.Prefab = null;
-    @property(cc.Prefab)
-    waterPool: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
@@ -110,7 +107,6 @@ export default class Dungeon extends cc.Component {
     trapmap: Trap[][] = new Array();//陷阱列表
     footboards: FootBoard[] = new Array();//踏板列表
     floorIndexmap: cc.Vec2[] = new Array();//地板下标列表
-    waterlist: TileWaterPool[] = new Array();//水池
     static WIDTH_SIZE: number = 15;
     static HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
@@ -180,7 +176,6 @@ export default class Dungeon extends cc.Component {
         this.wallmap = new Array();
         this.trapmap = new Array();
         this.footboards = new Array();
-        this.waterlist = new Array();
         this.floorIndexmap = new Array();
         let boxes: BoxData[] = new Array();
         let shopTables: ShopTableData[] = new Array();
@@ -232,16 +227,6 @@ export default class Dungeon extends cc.Component {
                     trap.position = Dungeon.getPosInMap(cc.v2(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.trapmap[i][j] = trap.getComponent(Trap);
-                }
-                //生成水池
-                if (mapData[i][j] == '~~') {
-                    let wp = cc.instantiate(this.waterPool);
-                    wp.parent = this.node;
-                    wp.position = Dungeon.getPosInMap(cc.v2(i, j));
-                    wp.zIndex = 2000;
-                    let w = wp.getComponent(TileWaterPool);
-                    w.setTiles(i, j, mapData);
-                    this.waterlist.push(w);
                 }
                 //生成电锯,占据5个格子
                 if (mapData[i][j] == 'X0') {
@@ -1082,9 +1067,6 @@ export default class Dungeon extends cc.Component {
         }
         if (this.isCheckTimeDelay(dt)) {
             this.checkRoomClear();
-            for (let w of this.waterlist) {
-                w.changeWaterLight();
-            }
         }
 
     }
