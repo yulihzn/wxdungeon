@@ -19,7 +19,7 @@ export default class PlayerData {
     static DEFAULT_HEALTH = 10;
     static DefAULT_SPEED = 300;
     static DefAULT_ATTACK = 1;
-    static DefAULT_BACK_ATTACK = 1;
+    static DefAULT_BACK_ATTACK = 0;
     name: string = '';
     pos: cc.Vec2 = cc.v2(7, 4);
 

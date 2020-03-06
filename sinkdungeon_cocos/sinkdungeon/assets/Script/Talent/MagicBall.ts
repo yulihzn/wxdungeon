@@ -47,7 +47,6 @@ export default class MagicBall extends cc.Component {
         this.ballType = ballType;
         this.player = player;
         let lifeTime = 3;
-        let distance = 100;
         this.node.active = true;
         this.node.parent = player.node.parent;
         this.node.setPosition(this.getPlayerPosition(player));
@@ -57,15 +56,17 @@ export default class MagicBall extends cc.Component {
             this.node.scale = 1.5;
             lifeTime = 6;
         }
+        if(player.talentMagic.hashTalent(Talent.MAGIC_14)){
+            speed = 50;
+        }
         if(player.talentMagic.hashTalent(Talent.MAGIC_15)){
             this.node.scale = 1.5;
-            distance = 200;
+            speed = 100;
             lifeTime = 6;
         }
         if(this.ballType == MagicBall.LIGHTENING){
             this.lightening.node.active = true;
-            speed = 0;
-            this.node.setPosition(this.getPlayerFarPosition(player,distance,angle));
+            this.node.setPosition(this.getPlayerFarPosition(player,0,angle));
             this.node.scale = 0.1;
             this.node.runAction(cc.sequence(cc.scaleTo(1,0.2),cc.callFunc(()=>{this.isAttacking = true;}),cc.scaleTo(1,1)));
         }else{

@@ -454,6 +454,13 @@ export default class MonsterData{
             rate *= (1 - data.lifeDrain / 100);
         }
         return 1 - rate;
-
+    }
+    //背刺伤害
+    getDamageBack(): number {
+        let damageBack = 0;
+        for (let data of this.getCommonList()) {
+            damageBack += data.damageBack;
+        }
+        return damageBack > 0 ? damageBack : 0;
     }
 }

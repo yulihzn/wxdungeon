@@ -36,7 +36,7 @@
     "orientation": "portrait"
   },
   "startScene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
-  "title": "cocossinkdungeon",
+  "title": "SinkDungeon",
   "webOrientation": "landscape",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",

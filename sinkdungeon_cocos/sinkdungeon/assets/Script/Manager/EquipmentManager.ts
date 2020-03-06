@@ -156,12 +156,12 @@ export default class EquipmentManager extends cc.Component {
         let arr = ['', '普通的', '精良的', '优秀的', '史诗的', '传说的']
         let colors = ['#dcdcdc', '#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500']
         let level = 0;
-        //暴击0-50减去装备自带
+        //暴击0-20减去装备自带
         let criticalStrikeRate = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_REMOTE])
             && data.Common.criticalStrikeRate > 0) {
-                let csk = 50 - data.Common.criticalStrikeRate;
+                let csk = 20 - data.Common.criticalStrikeRate;
                 if(csk<5){csk=5;}
             criticalStrikeRate = this.getRandomQuality(0, csk, chestQuality);
             level = criticalStrikeRate.y > level ? criticalStrikeRate.y : level;
@@ -189,17 +189,17 @@ export default class EquipmentManager extends cc.Component {
             desc.color = this.getMixColor(desc.color
                 , damageMax.y > 2 ? EquipmentManager.COLOR_POWERFUL : '#000000');
         }
-        //物理防御0-5
+        //物理防御0-10
         let defence = cc.v2(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET, EquipmentManager.TYPE_GLOVES
             , EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS, EquipmentManager.TYPE_SHOES
             , EquipmentManager.TYPE_CLOTHES])
             && data.Common.defence > 0) {
-            defence = this.getRandomQuality(0, 5, chestQuality);
+            defence = this.getRandomQuality(0, 10, chestQuality);
             level = defence.y > level ? defence.y : level;
             desc.prefix += defence.y > 2 ? '坚固' : '';
             desc.color = this.getMixColor(desc.color
-                , defence.y > 2 ? EquipmentManager.COLOR_STABLE : '#000000');
+                , defence.y > 5 ? EquipmentManager.COLOR_STABLE : '#000000');
         }
         //吸血0%-50%
         let lifeDrain = cc.v2(0, 0);

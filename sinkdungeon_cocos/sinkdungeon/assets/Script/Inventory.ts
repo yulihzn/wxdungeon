@@ -53,8 +53,6 @@ export default class Inventory extends cc.Component {
 
     @property(EquipmentDialog)
     equipmentDialog: EquipmentDialog = null;
-    @property(cc.Label)
-    modeLabel:cc.Label = null;
     @property(EquipmentDialog)
     equipmentGroundDialog: EquipmentDialog = null;
 
@@ -68,9 +66,6 @@ export default class Inventory extends cc.Component {
     glovesTimeDelay = 0;
     shoesTimeDelay = 0;
     cloakTimeDelay = 0;
-
-    isUpgradeMode = false;
-
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -361,11 +356,5 @@ export default class Inventory extends cc.Component {
             cc.director.emit(EventConstant.DUNGEON_ADD_ITEM
                 , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName } })
         }
-    }
-    //button event
-    openEquipmentUpgrade(){
-        this.isUpgradeMode = !this.isUpgradeMode;
-        this.modeLabel.string = this.isUpgradeMode?'UPGRADE MODE':'SHOW MODE'
-        this.changeAllUpgradeLabel(this.isUpgradeMode);
     }
 }

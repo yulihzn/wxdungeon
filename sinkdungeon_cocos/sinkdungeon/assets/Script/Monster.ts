@@ -455,17 +455,28 @@ export default class Monster extends Actor {
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
     }
-    isPlayerBehind():boolean{
+    /**
+     * 是否玩家背后攻击
+     */
+    isPlayerBehindAttack():boolean{
         let isPlayerRight = this.dungeon.player.node.position.x > this.node.position.x;
         let isSelfFaceRight = this.node.scaleX>0;
         return (isPlayerRight&&!isSelfFaceRight)||(!isPlayerRight&&isSelfFaceRight);
+    }
+    /**
+     * 玩家是否背面朝着怪物
+     */
+    isFacePlayerBehind():boolean{
+        let isPlayerRight = this.dungeon.player.node.position.x > this.node.position.x;
+        let isPlayerFaceRight = this.dungeon.player.node.scaleX>0;
+        return (isPlayerRight&&isPlayerFaceRight)||(!isPlayerRight&&!isPlayerFaceRight);
     }
     fall() {
         if (this.isDied) {
             return;
         }
         this.isFall = true;
-        this.bodySprite.node.angle = this.isPlayerBehind()?-75:105;
+        this.bodySprite.node.angle = this.isPlayerBehindAttack()?-75:105;
         this.anim.play('MonsterFall');
     }
     //Anim
@@ -717,7 +728,6 @@ export default class Monster extends Actor {
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true, false,false);
                 }
-                // this.showCircle();
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.meleeSkill.IsExcuting = false;
                     this.stopAttackEffect();

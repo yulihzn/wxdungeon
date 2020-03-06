@@ -142,34 +142,38 @@ export default class MonsterManager extends cc.Component {
             }
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100) : 0;
         }
-        let rand = Random.rand();
+        //5%几率添加元素
+        let rand = Logic.getRandomNum(0, 100);
         let df = Logic.getRandomNum(80, 100);
         let er = Logic.getRandomNum(80, 100);
-        //5%几率添加元素
-        if (rand < 0.05) {
-            data.Common.iceDamage += 1;
-            data.Common.iceDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
-            data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
-        } else if (rand >= 0.005 && rand < 0.01) {
-            data.Common.fireDamage += 1;
-            data.Common.fireDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
-            data.Common.fireRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
-        } else if (rand >= 0.01 && rand < 0.015) {
-            data.Common.fireDamage += 1;
-            data.Common.fireDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
-            data.Common.fireRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
-        } else if (rand >= 0.015 && rand < 0.02) {
-            data.Common.lighteningDamage += 1;
-            data.Common.lighteningDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
-            data.Common.lighteningRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
-        } else if (rand >= 0.02 && rand < 0.025) {
-            data.Common.toxicDamage += 1;
-            data.Common.toxicDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
-            data.Common.toxicRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
-        } else if (rand >= 0.025 && rand < 0.03) {
-            data.Common.curseDamage += 1;
-            data.Common.curseDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
-            data.Common.curseRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
+        let isAddElement = rand <= 5;
+        rand = Logic.getRandomNum(0, 4);
+        if (isAddElement) {
+            switch (rand) {
+                case 0:
+                    data.Common.iceDamage += 1;
+                    data.Common.iceDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
+                    data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
+                    break;
+                case 1:
+                    data.Common.fireDamage += 1;
+                    data.Common.fireDefence = data.Common.fireDefence + df > 100 ? 100 : data.Common.fireDefence + df;
+                    data.Common.fireRate = data.Common.fireRate + er > 100 ? 100 : data.Common.fireRate + er;
+                    break;
+                case 2:
+                    data.Common.lighteningDamage += 1;
+                    data.Common.lighteningDefence = data.Common.lighteningDefence + df > 100 ? 100 : data.Common.lighteningDefence + df;
+                    data.Common.lighteningRate = data.Common.lighteningRate + er > 100 ? 100 : data.Common.lighteningRate + er;
+                    break;
+                case 3: data.Common.toxicDamage += 1;
+                    data.Common.toxicDefence = data.Common.toxicDefence + df > 100 ? 100 : data.Common.toxicDefence + df;
+                    data.Common.toxicRate = data.Common.toxicRate + er > 100 ? 100 : data.Common.toxicRate + er; break;
+                case 4:
+                    data.Common.curseDamage += 1;
+                    data.Common.curseDefence = data.Common.curseDefence + df > 100 ? 100 : data.Common.curseDefence + df;
+                    data.Common.curseRate = data.Common.curseRate + er > 100 ? 100 : data.Common.curseRate + er;
+                    break;
+            }
         }
 
         monster.data = data;
@@ -361,7 +365,7 @@ export default class MonsterManager extends cc.Component {
         let num = Random.getRandomNum(1, 3);
         switch (Logic.chapterName) {
             case Logic.CHAPTER00: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
-                , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE,MonsterManager.MONSTER_GIRAFFE];
+                , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
                 num = Random.getRandomNum(1, 3);
                 break;
             case Logic.CHAPTER01: arr = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
@@ -369,7 +373,7 @@ export default class MonsterManager extends cc.Component {
                 , MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
                 num = Random.getRandomNum(2, 3); break;
             case Logic.CHAPTER02: arr = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
-                , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE,MonsterManager.MONSTER_CHICKEN,MonsterManager.MONSTER_HIPPO];
+                , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO];
                 num = Random.getRandomNum(2, 4); break;
             case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
                 , MonsterManager.MONSTER_SANDSTATUE];

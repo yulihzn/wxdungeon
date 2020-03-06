@@ -2,7 +2,7 @@ import Random from "../Utils/Random";
 import MonsterData from "../Data/MonsterData";
 
 export default class MonsterRandomAttr {
-    public static readonly ATTR_01 = 'attr_01';//命悬一线：怪物血量为1
+    public static readonly ATTR_01 = 'attr_01';//命悬一线：怪物血量为1防御+50
     public static readonly ATTR_02 = 'attr_02';//致命打击：：怪物基础攻击加5
     public static readonly ATTR_03 = 'attr_03';//皮糙肉厚：怪物血量加5
     public static readonly ATTR_04 = 'attr_04';//体弱无力：怪物基础攻击变为1
@@ -16,7 +16,7 @@ export default class MonsterRandomAttr {
     public static readonly ATTR_12 = 'attr_12';//强弩之末：怪物远程子弹速度-100
     public static readonly ATTR_13 = 'attr_13';//狙击猎人：怪物远程子弹速度+100
     public static readonly ATTR_14 = 'attr_14';//灵活闪步：怪物增加50%闪避
-    public static readonly ATTR_15 = 'attr_15';//大地回春：怪物生命回复+1(废弃)
+    public static readonly ATTR_15 = 'attr_15';//暗箭难防：怪物背后一击伤害+5
     public static readonly ATTR_16 = 'attr_16';//恶魔之吻：恶魔之力逃逸，生物们行踪飘忽不定起来。怪物拥有一个五秒cd的瞬移，如果是已经拥有瞬移的生物，瞬移cd降低至2s
     public static readonly ATTR_17 = 'attr_17';//冰霜雪人：怪物添加冰属性攻击几率为100%
     public static readonly ATTR_18 = 'attr_18';//炙火热炎：怪物添加火属性攻击几率为100%
@@ -53,6 +53,7 @@ export default class MonsterRandomAttr {
         if(this.hasAttr(MonsterRandomAttr.ATTR_01)){
             data.Common.maxHealth = 1;
             data.currentHealth = 1;
+            data.Common.defence+=50;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_02)){
             data.Common.damageMin +=5;
@@ -115,7 +116,7 @@ export default class MonsterRandomAttr {
             }
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_15)){
-            data.Common.damageBack = 1;
+            data.Common.damageBack = 5;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_16)){
             if(data.blink>0){
