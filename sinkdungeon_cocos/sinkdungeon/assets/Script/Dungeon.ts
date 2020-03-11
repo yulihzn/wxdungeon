@@ -412,6 +412,10 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'Ac') {
                         this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_ATTACKSPEED);
                     }
+                    //隐身瓶
+                    if (mapData[i][j] == 'Ad') {
+                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_INVISIBLE);
+                    }
                 }
                 //生成商店
                 if (mapData[i][j] == 'S0') {

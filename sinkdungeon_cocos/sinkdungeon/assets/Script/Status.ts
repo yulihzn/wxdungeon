@@ -77,6 +77,9 @@ export default class Status extends cc.Component {
         if(player){
             if(takeD){player.takeDamage(dd,this.data.From);}
             player.dizzCharacter(dizzDuration);
+            if(this.data.invisibleDuratonDirect){
+                player.hideCharacter(this.data.invisibleDuratonDirect);
+            }
             return;
         }
         let monster = this.target.getComponent(Monster);

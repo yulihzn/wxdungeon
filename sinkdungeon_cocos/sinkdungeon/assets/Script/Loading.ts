@@ -141,7 +141,7 @@ export default class Loading extends cc.Component {
         //显示加载文字
         this.label.string = `Level ${Logic.chapterName + 1}-${Logic.level}`
         if (Logic.level == 0) {
-            this.label.string = `深陷地牢`
+            this.label.string = `Sink Dungeon`
         }
         //加载地图，装备，贴图，敌人，状态，子弹，物品资源
         this.isLevelLoaded = false;

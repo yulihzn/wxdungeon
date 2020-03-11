@@ -25,6 +25,10 @@ export default class Achievements extends cc.Component {
     prefab: cc.Prefab = null;
     @property(cc.Label)
     lifesLabel: cc.Label = null;
+    @property(cc.Label)
+    coinLabel: cc.Label = null;
+    @property(cc.Label)
+    goldLabel: cc.Label = null;
     //图片资源
     spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null;
@@ -51,7 +55,15 @@ export default class Achievements extends cc.Component {
         this.loadBossSpriteFrames();
         let data: AchievementData = Achievements.getAchievementData();
         if (this.lifesLabel && data.playerLifes) {
-            this.lifesLabel.string = `${data.playerLifes}`;
+            this.lifesLabel.string = `DIE ${data.playerLifes}`;
+        }
+        if(this.goldLabel){
+            let o = cc.sys.localStorage.getItem('oilgold');
+            this.goldLabel.string = `${o ? parseInt(o) : 0}`;
+        }
+        if(this.coinLabel){
+            let c = cc.sys.localStorage.getItem('coin');
+            this.coinLabel.string = `${c ? parseInt(c) : 0}`;
         }
     }
     loadSpriteFrames() {

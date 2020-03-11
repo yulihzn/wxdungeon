@@ -63,5 +63,14 @@
         "info":"攻击力+5",
         "desc":"神欲使之灭亡,必先使之疯狂",
         "price": 30
+    },
+    "bottle004": {
+        "nameCn": "隐身瓶",
+        "nameEn": "hide bottle",
+        "resName": "bottle004",
+        "canSave":1,
+        "info":"隐身30秒，破隐一击",
+        "desc":"真正的刺客大师",
+        "price": 30
     }
 }

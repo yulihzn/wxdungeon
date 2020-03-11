@@ -83,6 +83,7 @@ export default class Player extends Actor {
     isFall = false;//是否跌落
     isStone = false;//是否石化
     isDizz = false;//是否眩晕
+    invisible = false;//是否隐身
     baseAttackPoint: number = 1;
 
     //触碰到的装备
@@ -258,6 +259,19 @@ export default class Player extends Actor {
             }, dizzDuration)
         }
     }
+    hideCharacter(hideDuration:number){
+        if (hideDuration > 0) {
+            this.invisible = true;
+            this.scheduleOnce(() => {
+                this.stopHiding();
+            }, hideDuration)
+        }
+    }
+    stopHiding(){
+        this.invisible = false;
+        this.statusManager.stopStatus(StatusManager.BOTTLE_INVISIBLE);
+    }
+    
     private statusUpdate() {
         if (!this.inventoryManager) {
             return;
@@ -443,6 +457,7 @@ export default class Player extends Actor {
         this.playerAnim(Player.STATE_ATTACK);
         this.meleeWeapon.attack(this.data, isMiss);
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+        this.stopHiding();
 
     }
     remoteRate = 0;
@@ -468,6 +483,7 @@ export default class Player extends Actor {
             this.shooter.remoteDamagePlayer = this.data.getFinalRemoteDamage();
             this.shooter.fireBullet(0);
         }
+        this.stopHiding();
     }
     //特效攻击
     remoteExAttack(comboType: number): void {
@@ -775,6 +791,7 @@ export default class Player extends Actor {
         this.isStone = this.statusManager.hasStatus(StatusManager.STONE);
         this.turnStone(this.isStone);
         this.node.scaleX = this.isFaceRight ? 1 : -1;
+        this.node.opacity = this.invisible?80:255;
     }
     private useSkill(): void {
         if (Logic.hashTalent(Talent.SHIELD_01)) {

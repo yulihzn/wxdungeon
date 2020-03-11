@@ -287,5 +287,19 @@
         "common": {
             "moveSpeed": -500
         }
+    },
+    "status026": {
+        "nameCn": "隐身",
+        "nameEn": "hide",
+        "spriteFrameName": "bottle004",
+        "statusType": 26,
+        "desc": "",
+        "duration": 30,
+        "invisibleDuratonDirect":30,
+        "common": {
+            "moveSpeed": 50,
+            "criticalStrikeRate":100,
+            "remoteCritRate":100
+        }
     }
 }

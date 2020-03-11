@@ -119,21 +119,8 @@ export default class Inventory extends cc.Component {
         this.refreshEquipment(this.inventoryManager.shoes, false);
         this.refreshEquipment(this.inventoryManager.cloak, false);
         this.refreshItemRes();
-        this.changeAllUpgradeLabel(false);
     }
-    changeUpgradeLabel(sprite: cc.Sprite,isShow:boolean){
-        sprite.node.parent.getChildByName('upgradelabel').opacity = isShow?255:0;
-    }
-    changeAllUpgradeLabel(isShow:boolean){
-        this.changeUpgradeLabel(this.weapon, isShow);
-        this.changeUpgradeLabel(this.remote, isShow);
-        this.changeUpgradeLabel(this.helmet, isShow);
-        this.changeUpgradeLabel(this.clothes, isShow);
-        this.changeUpgradeLabel(this.trousers, isShow);
-        this.changeUpgradeLabel(this.gloves, isShow);
-        this.changeUpgradeLabel(this.shoes, isShow);
-        this.changeUpgradeLabel(this.cloak, isShow);
-    }
+
     addSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
         sprite.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
             if (sprite.spriteFrame == null) {

@@ -14,7 +14,7 @@ import FromData from "./FromData";
 /**
  * 状态
  * 负面：冰冻、燃烧、减速、中毒、诅咒、流血、道具
- * 正面：祝福、道具、天赋
+ * 正面：祝福、道具、天赋、隐身
  */
 export default class StatusData {
     private common:CommonData;
@@ -42,6 +42,7 @@ export default class StatusData {
     curseDamageOvertime = 0;//持续诅咒元素伤害
     dizzDurationDirect = 0;//瞬间眩晕时长
     dizzDurationOvertime = 0;//持续眩晕时长
+    invisibleDuratonDirect = 0;//隐身持续时长
     private from:FromData;//来源
     constructor(){
         this.common = new CommonData();
@@ -80,6 +81,7 @@ export default class StatusData {
         this.curseDamageOvertime = data.curseDamageOvertime;
         this.dizzDurationDirect = data.dizzDurationDirect;
         this.dizzDurationOvertime = data.dizzDurationOvertime;
+        this.invisibleDuratonDirect = data.invisibleDuratonDirect;
     }
     public clone(): StatusData {
         let e = new StatusData();
@@ -108,6 +110,7 @@ export default class StatusData {
         e.spriteFrameName = this.spriteFrameName;
         e.dizzDurationDirect = this.dizzDurationDirect;
         e.dizzDurationOvertime = this.dizzDurationOvertime;
+        e.invisibleDuratonDirect = this.invisibleDuratonDirect;
         return e;
     }
 }

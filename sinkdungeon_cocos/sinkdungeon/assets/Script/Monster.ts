@@ -646,7 +646,9 @@ export default class Monster extends Actor {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_MOVESPEED);
             } else if (rand >= 0.9 && rand < 0.925) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_HEALING);
-            } else if (rand >= 0.925 && rand < 1) {
+            } else if (rand >= 0.925 && rand < 0.95) {
+                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_INVISIBLE);
+            } else if (rand >= 0.95 && rand < 1) {
                 this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 1);
             }
         }
@@ -719,7 +721,8 @@ export default class Monster extends Actor {
         if (this.data.attackType == MonsterDangerBox.ATTACK_STAB) {
             pd = 300;
         }
-        if (playerDis < pd * this.node.scaleY && !this.dungeon.player.isDied && this.data.melee > 0 && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
+        if (playerDis < pd * this.node.scaleY && !this.dungeon.player.isDied && !this.dungeon.player.invisible && this.data.melee > 0 
+            && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
             this.meleeSkill.next(() => {
                 cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.meleeSkill.IsExcuting = true;
@@ -755,11 +758,11 @@ export default class Monster extends Actor {
 
         }
         this.blink();
-        if (this.data.melee > 0) {
+        if (this.data.melee > 0 && !this.dungeon.player.invisible) {
             pos = this.getMovePosFromPlayer();
         }
         //远程
-        if (playerDis < 600 && this.data.remote > 0 && this.shooter && !this.isDisguising && !this.meleeSkill.IsExcuting) {
+        if (playerDis < 600 && this.data.remote > 0 && this.shooter && !this.isDisguising && !this.meleeSkill.IsExcuting&& !this.dungeon.player.invisible) {
             this.remoteSkill.next(() => {
                 this.remoteSkill.IsExcuting = true;
                 this.changeFaceRight();
@@ -773,7 +776,7 @@ export default class Monster extends Actor {
 
         //冲刺
         let speed = this.data.getMoveSpeed();
-        if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && this.data.dash > 0
+        if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && !this.dungeon.player.invisible && this.data.dash > 0
             && !this.dashSkill.IsExcuting && !this.isDisguising) {
             this.dashSkill.next(() => {
                 cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
@@ -785,7 +788,7 @@ export default class Monster extends Actor {
             }, this.data.dash);
 
         }
-        if (this.data.disguise > 0 && playerDis < this.data.disguise && !this.dungeon.player.isDied && this.isDisguising) {
+        if (this.data.disguise > 0 && playerDis < this.data.disguise && !this.dungeon.player.isDied && !this.dungeon.player.invisible && this.isDisguising) {
             this.changeBodyRes(this.data.resName);
             this.isDisguising = false;
         }

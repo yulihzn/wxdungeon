@@ -44,6 +44,7 @@ export default class StatusManager extends cc.Component {
     public static readonly MAGIC_WEAPON = "status023";
     public static readonly MAGIC_WEAPON_STRONG = "status024";
     public static readonly FROZEN_STRONG = "status025";
+    public static readonly BOTTLE_INVISIBLE = "status026";
     
 
     @property(cc.Prefab)
@@ -80,6 +81,17 @@ export default class StatusManager extends cc.Component {
             }
         }
         return hasStatus;
+    }
+    stopStatus(resName:string):void{
+        let sd = new StatusData();
+        sd.valueCopy(Logic.debuffs[resName]);
+        for (let i = this.statusList.length - 1; i >= 0; i--) {
+            let s = this.statusList[i];
+            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == sd.statusType) {
+                s.stopStatus();
+            }
+        }
+        return undefined;
     }
     private showStatus(data: StatusData) {
         //去除已经失效的状态

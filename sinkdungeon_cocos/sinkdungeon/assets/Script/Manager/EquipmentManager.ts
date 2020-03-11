@@ -279,30 +279,31 @@ export default class EquipmentManager extends cc.Component {
                 , health.y > 2 ? EquipmentManager.COLOR_HEALTHY : '#000000');
         }
         let damageRate = 0.1;
+        let damage = 5;
         //流血伤害0-5
-        let realDamage = Random.rand() < damageRate ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        let realDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
         level = realDamage.y > level ? realDamage.y : level;
-        desc.prefix += realDamage.y > 2 ? '锋利' : '';
+        desc.prefix += realDamage.y > damage/2 ? '锋利' : '';
         //冰伤害0-5
-        let iceDamage = Random.rand() < damageRate ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        let iceDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
         level = iceDamage.y > level ? iceDamage.y : level;
-        desc.prefix += iceDamage.y > 2 ? '寒冷' : '';
+        desc.prefix += iceDamage.y > damage/2 ? '寒冷' : '';
         //火伤害0-5
-        let fireDamage = Random.rand() < damageRate ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        let fireDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
         level = fireDamage.y > level ? fireDamage.y : level;
-        desc.prefix += fireDamage.y > 2 ? '炎热' : '';
+        desc.prefix += fireDamage.y > damage/2 ? '炎热' : '';
         //雷伤害0-5
-        let lighteningDamage = Random.rand() < damageRate ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        let lighteningDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
         level = lighteningDamage.y > level ? lighteningDamage.y : level;
-        desc.prefix += lighteningDamage.y > 2 ? '闪电' : '';
+        desc.prefix += lighteningDamage.y > damage/2 ? '闪电' : '';
         //毒伤害0-5
-        let toxicDamage = Random.rand() < damageRate ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        let toxicDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
         level = toxicDamage.y > level ? toxicDamage.y : level;
-        desc.prefix += toxicDamage.y > 2 ? '毒素' : '';
+        desc.prefix += toxicDamage.y > damage/2 ? '毒素' : '';
         //诅咒伤害0-5
-        let curseDamage = Random.rand() < 0.1 ? this.getRandomQuality(0, 5, chestQuality) : cc.v2(0, 0);
+        let curseDamage = Random.rand() < 0.1 ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
         level = curseDamage.y > level ? curseDamage.y : level;
-        desc.prefix += curseDamage.y > 2 ? '诅咒' : '';
+        desc.prefix += curseDamage.y > damage/2 ? '诅咒' : '';
 
         let defenceMax = 60;
         let defenceMin = 30;
