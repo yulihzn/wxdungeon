@@ -66,7 +66,7 @@ export default class TalentDash extends Talent {
             this.player.rigidbody.linearVelocity = pos;
             this.scheduleOnce(() => {
                 this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
-                this.player.playerAnim(Player.STATE_IDLE);
+                this.player.playerAnim(Player.STATE_IDLE,this.player.currentDir);
                 this.player.resetFoot();
                 this.IsExcuting = false;
             }, 0.5)

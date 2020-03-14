@@ -89,13 +89,14 @@ export default class Player extends Actor {
     //触碰到的装备
     touchedEquipment: Equipment;
     //触碰到的物品
-    touchedItem:Item;
+    touchedItem: Item;
     //触碰到的提示
     touchedTips: Tips;
     inventoryManager: InventoryManager;
     data: PlayerData;
 
     isFaceRight = true;
+    currentDir = 1;
 
     attackTarget: cc.Collider;
     rigidbody: cc.RigidBody;
@@ -139,7 +140,7 @@ export default class Player extends Actor {
         cc.director.on(EventConstant.PLAYER_TRIGGER
             , (event) => { this.triggerThings() });
         cc.director.on(EventConstant.PLAYER_USEITEM
-            , (event) => {this.useItem(event.detail.itemData)});
+            , (event) => { this.useItem(event.detail.itemData) });
         cc.director.on(EventConstant.PLAYER_SKILL
             , (event) => { this.useSkill() });
         cc.director.on(EventConstant.PLAYER_ATTACK
@@ -196,7 +197,7 @@ export default class Player extends Actor {
         // this.talentMagic.addTalent(Talent.MAGIC_09);
         if (this.anim) {
             this.resetFoot();
-            this.playerAnim(Player.STATE_WALK);
+            this.playerAnim(Player.STATE_WALK, this.currentDir);
         }
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
@@ -253,13 +254,13 @@ export default class Player extends Actor {
             this.isDizz = true;
             this.resetFoot();
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            this.playerAnim(Player.STATE_IDLE);
+            this.playerAnim(Player.STATE_IDLE, this.currentDir);
             this.scheduleOnce(() => {
                 this.isDizz = false;
             }, dizzDuration)
         }
     }
-    hideCharacter(hideDuration:number){
+    hideCharacter(hideDuration: number) {
         if (hideDuration > 0) {
             this.invisible = true;
             this.scheduleOnce(() => {
@@ -267,11 +268,11 @@ export default class Player extends Actor {
             }, hideDuration)
         }
     }
-    stopHiding(){
+    stopHiding() {
         this.invisible = false;
         this.statusManager.stopStatus(StatusManager.BOTTLE_INVISIBLE);
     }
-    
+
     private statusUpdate() {
         if (!this.inventoryManager) {
             return;
@@ -396,7 +397,7 @@ export default class Player extends Actor {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
     addStatus(statusType: string, from: FromData) {
-        if(!this.node){
+        if (!this.node) {
             return;
         }
         if (this.talentShield.IsExcuting) {
@@ -420,26 +421,26 @@ export default class Player extends Actor {
         }
         pos = pos.normalizeSelf().mul(15);
         pos.x = this.isFaceRight ? pos.x : -pos.x;
-        let speed = PlayerData.DefAULT_SPEED-this.data.getAttackSpeed();
+        let speed = PlayerData.DefAULT_SPEED - this.data.getAttackSpeed();
         if (speed < 1) {
             //匕首上限
             if (this.meleeWeapon.isStab && !this.meleeWeapon.isFar) {
-                speed = 0+speed;
+                speed = 0 + speed;
             }
             //长剑上限
             if (!this.meleeWeapon.isStab && !this.meleeWeapon.isFar) {
-                speed = 100+speed;
+                speed = 100 + speed;
             }
             //长枪上限
             if (this.meleeWeapon.isStab && this.meleeWeapon.isFar) {
-                speed = 150+speed;
+                speed = 150 + speed;
             }
             //大剑上限
             if (!this.meleeWeapon.isStab && this.meleeWeapon.isFar) {
-                speed = 300+speed;
+                speed = 300 + speed;
             }
         }
-        if(speed<0){
+        if (speed < 0) {
             speed = 0;
         }
         let spritePos = this.sprite.position.clone();
@@ -452,9 +453,9 @@ export default class Player extends Actor {
         this.sprite.runAction(action);
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
         if (isMiss) {
-            this.showFloatFont(this.node.parent, 0, false, true,false);
+            this.showFloatFont(this.node.parent, 0, false, true, false);
         }
-        this.playerAnim(Player.STATE_ATTACK);
+        this.playerAnim(Player.STATE_ATTACK, this.currentDir);
         this.meleeWeapon.attack(this.data, isMiss);
         cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
         this.stopHiding();
@@ -541,15 +542,19 @@ export default class Player extends Actor {
         if (this.isDied || this.isFall || this.isDizz) {
             return;
         }
+        if(dir != 4){
+            this.currentDir = dir;
+            this.meleeWeapon.node.zIndex = dir==0?this.sprite.zIndex-1:this.sprite.zIndex+1;
 
+        }
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
                 pos = pos.mul(0.6);
-            } else if (this.meleeWeapon.isFar && this.meleeWeapon.isStab){
+            } else if (this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
                 pos = pos.mul(0.3);
-            }else if (!this.meleeWeapon.isFar && !this.meleeWeapon.isStab){
+            } else if (!this.meleeWeapon.isFar && !this.meleeWeapon.isStab) {
                 pos = pos.mul(0.3);
-            }else {
+            } else {
                 pos = pos.mul(0.1);
             }
         }
@@ -600,11 +605,10 @@ export default class Player extends Actor {
             this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
         }
         if (this.isMoving && !this.isStone) {
-            this.playerAnim(Player.STATE_WALK);
+            this.playerAnim(Player.STATE_WALK, dir);
         } else {
-            this.playerAnim(Player.STATE_IDLE);
+            this.playerAnim(Player.STATE_IDLE, dir);
         }
-
         let isUpDown = dir == 1 || dir == 0;
         if (isUpDown) {
             this.changeZIndex(this.pos);
@@ -617,33 +621,70 @@ export default class Player extends Actor {
         this.shoesRightSprite.node.parent.setPosition(-2, -1);
         this.shoesRightSprite.node.parent.angle = 0;
     }
-    playerAnim(animType: number, speed?: number): void {
-        let walkName = "PlayerWalk";
+
+    playerAnim(animType: number, dir: number): void {
+        let walkName = 'PlayerWalk';
+        let suffix = '';
+        let needChange = false;
         switch (animType) {
             case Player.STATE_IDLE:
                 if (this.anim.getAnimationState(walkName).isPlaying) {
-                    this.anim.play('PlayerIdle');
+                    needChange = true;
+                }
+                if (this.anim.getAnimationState(walkName + 'Down').isPlaying) {
+                    needChange = true;
+                    suffix = 'Down';
+                }
+                if (this.anim.getAnimationState(walkName + 'Up').isPlaying) {
+                    needChange = true;
+                    suffix = 'Up';
+                }
+                if (needChange) {
+                    this.anim.play('PlayerIdle' + suffix);
                     this.shooter.playWalk(false);
                 }
                 break;
             case Player.STATE_WALK:
-                if (!this.anim.getAnimationState(walkName).isPlaying
-                    && !this.anim.getAnimationState('PlayerFist').isPlaying
-                    && !this.anim.getAnimationState('PlayerAttack').isPlaying) {
-                    this.anim.play(walkName);
+                suffix = '';
+                if (dir == 0) {
+                    suffix = 'Up';
+                    if (!this.anim.getAnimationState(walkName + 'Up').isPlaying) {
+                        needChange = true;
+                    }
+                } else if (dir == 1) {
+                    suffix = 'Down';
+                    if (!this.anim.getAnimationState(walkName + 'Down').isPlaying) {
+                        needChange = true;
+                    }
+                } else if (!this.anim.getAnimationState(walkName).isPlaying) {
+                    needChange = true;
+                }
+                if (needChange && !this.anim.getAnimationState('PlayerFist').isPlaying
+                && !this.anim.getAnimationState('PlayerFistUp').isPlaying
+                && !this.anim.getAnimationState('PlayerFistDown').isPlaying
+                    && !this.anim.getAnimationState('PlayerAttack').isPlaying
+                    && !this.anim.getAnimationState('PlayerAttackUp').isPlaying
+                && !this.anim.getAnimationState('PlayerAttackDown').isPlaying) {
+                    this.anim.play(walkName + suffix);
                     this.shooter.playWalk(true);
                 }
                 break;
             case Player.STATE_ATTACK:
+                suffix = '';
+                if (dir == 0) {
+                    suffix = 'Up';
+                } else if (dir == 1) {
+                    suffix = 'Down';
+                }
                 if ((!this.meleeWeapon.isFar && this.meleeWeapon.isStab) || (this.meleeWeapon.isFar && !this.meleeWeapon.isStab)) {
-                    this.anim.play('PlayerFist');
+                    this.anim.play('PlayerFist'+suffix);
                     if (this.meleeWeapon.isFar && !this.meleeWeapon.isStab) {
-                        this.anim.getAnimationState('PlayerFist').speed = 1;
+                        this.anim.getAnimationState('PlayerFist'+suffix).speed = 1;
                     } else {
-                        this.anim.getAnimationState('PlayerFist').speed = 2;
+                        this.anim.getAnimationState('PlayerFist'+suffix).speed = 2;
                     }
                 } else {
-                    this.anim.play('PlayerAttack');
+                    this.anim.play('PlayerAttack'+suffix);
                 }
                 this.shooter.playWalk(true);
                 break;
@@ -669,7 +710,7 @@ export default class Player extends Actor {
         this.isAttacking = false;
         this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos);
-            this.playerAnim(Player.STATE_IDLE);
+            this.playerAnim(Player.STATE_IDLE, 1);
             this.resetFoot();
             let dd = new DamageData();
             dd.realDamage = 1;
@@ -712,13 +753,13 @@ export default class Player extends Actor {
         }
         cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
         Logic.playerData.currentHealth = health.x;
-        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false,false);
+        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false);
         if (Logic.playerData.currentHealth <= 0) {
             this.killed(from);
         }
         let valid = !isDodge && dd.getTotalDamage() > 0;
         if (valid) {
-            cc.director.emit(EventConstant.CAMERA_SHAKE,{detail:{isHeavyShaking:false}});
+            cc.director.emit(EventConstant.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
             cc.director.emit(EventConstant.HUD_DAMAGE_CORNER_SHOW);
             this.remoteExHurt();
             cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAYER_HIT } });
@@ -726,7 +767,7 @@ export default class Player extends Actor {
         return valid;
     }
 
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean,isCritical:boolean) {
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean) {
         if (!this.floatinglabelManager) {
             return;
         }
@@ -736,7 +777,7 @@ export default class Player extends Actor {
         } else if (isMiss) {
             flabel.showMiss();
         } else if (d != 0) {
-            flabel.showDamage(-d,isCritical);
+            flabel.showDamage(-d, isCritical);
         } else {
             flabel.hideLabel();
         }
@@ -791,7 +832,7 @@ export default class Player extends Actor {
         this.isStone = this.statusManager.hasStatus(StatusManager.STONE);
         this.turnStone(this.isStone);
         this.node.scaleX = this.isFaceRight ? 1 : -1;
-        this.node.opacity = this.invisible?80:255;
+        this.node.opacity = this.invisible ? 80 : 255;
     }
     private useSkill(): void {
         if (Logic.hashTalent(Talent.SHIELD_01)) {
@@ -846,10 +887,9 @@ export default class Player extends Actor {
     //anim
     AttackFinish() {
         this.isAttacking = false;
-
     }
-    onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void{
-        if(otherCollider.tag == 10){
+    onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
+        if (otherCollider.tag == 10) {
             contact.disabledOnce = true;
         }
     }
@@ -878,7 +918,7 @@ export default class Player extends Actor {
             this.touchedEquipment = equipment;
         }
         let item = other.node.getComponent(Item);
-        if(item){
+        if (item) {
             this.touchedItem = item;
         }
         let tips = other.node.getComponent(Tips);
@@ -887,8 +927,8 @@ export default class Player extends Actor {
         }
     }
 
-    useItem(data:ItemData){
-        Item.userIt(data,this);
+    useItem(data: ItemData) {
+        Item.userIt(data, this);
     }
 
 }
