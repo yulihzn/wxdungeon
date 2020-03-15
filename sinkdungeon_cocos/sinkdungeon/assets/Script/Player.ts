@@ -361,6 +361,7 @@ export default class Player extends Actor {
                 this.updateEquipMent(this.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
                 break;
         }
+        this.changeEquipDirSpriteFrame(this.currentDir);
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
         cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
         let health = this.data.getHealth();
@@ -538,6 +539,22 @@ export default class Player extends Actor {
     //         this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
     //     }
     // }
+    changeEquipDirSpriteFrame(dir:number){
+        if(dir == 0&&Logic.spriteFrames[this.inventoryManager.helmet.img+'behind']){
+            this.helmetSprite.spriteFrame = Logic.spriteFrames[this.inventoryManager.helmet.img+'behind'];
+        }else if(dir == 1&&Logic.spriteFrames[this.inventoryManager.helmet.img+'front']){
+            this.helmetSprite.spriteFrame = Logic.spriteFrames[this.inventoryManager.helmet.img+'front'];
+        }else{
+            this.helmetSprite.spriteFrame = Logic.spriteFrames[this.inventoryManager.helmet.img];
+        }
+        if(dir == 0&&Logic.spriteFrames[this.inventoryManager.clothes.img+'behind']){
+            this.clothesSprite.spriteFrame = Logic.spriteFrames[this.inventoryManager.clothes.img+'behind'];
+        }else if(dir == 1&&Logic.spriteFrames[this.inventoryManager.clothes.img+'front']){
+            this.clothesSprite.spriteFrame = Logic.spriteFrames[this.inventoryManager.clothes.img+'front'];
+        }else{
+            this.clothesSprite.spriteFrame = Logic.spriteFrames[this.inventoryManager.clothes.img];
+        }
+    }
     move(dir: number, pos: cc.Vec2, dt: number) {
         if (this.isDied || this.isFall || this.isDizz) {
             return;
@@ -545,7 +562,8 @@ export default class Player extends Actor {
         if(dir != 4){
             this.currentDir = dir;
             this.meleeWeapon.node.zIndex = dir==0?this.sprite.zIndex-1:this.sprite.zIndex+1;
-
+            this.cloakSprite.node.zIndex = dir==0?this.bodySprite.node.zIndex+1:this.bodySprite.node.zIndex-1;
+            this.changeEquipDirSpriteFrame(dir);
         }
         if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
             if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
