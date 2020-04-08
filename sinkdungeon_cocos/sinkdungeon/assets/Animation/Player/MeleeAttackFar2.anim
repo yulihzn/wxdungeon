@@ -18,35 +18,39 @@
             },
             {
               "frame": 0.16666666666666666,
-              "value": -30
+              "value": 90
             },
             {
               "frame": 0.2,
-              "value": -20
+              "value": 80
             },
             {
               "frame": 0.23333333333333334,
-              "value": -30
+              "value": 90
             },
             {
               "frame": 0.26666666666666666,
-              "value": -40
+              "value": 80
             },
             {
               "frame": 0.3333333333333333,
-              "value": -30
+              "value": 90
             },
             {
               "frame": 0.4166666666666667,
-              "value": 300
+              "value": -120
+            },
+            {
+              "frame": 0.5,
+              "value": -140
             },
             {
               "frame": 0.6666666666666666,
-              "value": 450
+              "value": -145
             },
             {
               "frame": 1,
-              "value": 400
+              "value": 60
             }
           ]
         }
@@ -58,13 +62,19 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "1b2fb0d5-0e3f-41dc-95a7-c918209c5131"
+                  "__uuid__": "318bed80-b551-4eef-8d2d-84c8ce9fe3e8"
                 }
               },
               {
                 "frame": 0.4166666666666667,
                 "value": {
                   "__uuid__": "318bed80-b551-4eef-8d2d-84c8ce9fe3e8"
+                }
+              },
+              {
+                "frame": 0.5,
+                "value": {
+                  "__uuid__": "2af72d10-edac-44e8-962d-b44bcb9d1f99"
                 }
               },
               {
@@ -88,11 +98,11 @@
             },
             {
               "frame": 0.4166666666666667,
-              "value": 80
+              "value": 200
             },
             {
               "frame": 0.5,
-              "value": 255
+              "value": 200
             },
             {
               "frame": 0.8333333333333334,
@@ -102,7 +112,7 @@
           "scaleY": [
             {
               "frame": 0,
-              "value": -7
+              "value": 7
             }
           ],
           "x": [
