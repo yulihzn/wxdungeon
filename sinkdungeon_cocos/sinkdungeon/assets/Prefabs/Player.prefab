@@ -1044,7 +1044,7 @@
         0,
         1,
         1,
-        1,
+        2,
         1
       ]
     },
@@ -4357,7 +4357,6 @@
     },
     "_resize": 1,
     "_N$layoutType": 1,
-    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,

@@ -19,7 +19,7 @@ export default class Start extends cc.Component {
     cheatClickCount = 0;
     debugClickCount = 0;
     start () {
-        cc.view.enableAntiAlias(false)
+        cc.view.enableAntiAlias(false);
         // init logic
         if(this.continueButton){
             this.continueButton.active = Logic.profileManager.hasSaveData;
