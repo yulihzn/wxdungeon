@@ -111,7 +111,7 @@ export default class Rah extends Boss {
         if (playerDis < 100 && !this.blinkSkill.IsExcuting) {
             this.attack();
         }
-        if (!pos.equals(cc.Vec2.ZERO) && !this.meleeSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 100) {
+        if (!pos.equals(cc.Vec3.ZERO) && !this.meleeSkill.IsExcuting && !this.blinkSkill.IsExcuting && playerDis > 100) {
             pos = pos.normalizeSelf();
             this.move(pos, 100);
         }
@@ -168,10 +168,10 @@ export default class Rah extends Boss {
     }
     fireSnake() {
         this.snakeSkill.next(() => {
-            this.shooter.setHv(cc.v2(0, -1));
+            this.shooter.setHv(cc.v3(0, -1));
             let pos = this.node.position.clone().add(this.shooter.node.position);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
-            if (!hv.equals(cc.Vec2.ZERO)) {
+            if (!hv.equals(cc.Vec3.ZERO)) {
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
                 this.fireShooter(this.shooter, "bullet014", 1, 0);
@@ -188,7 +188,7 @@ export default class Rah extends Boss {
             this.shooter.data.bulletLineInterval = 0.5;
             let pos = this.node.position.clone().add(this.shooter.node.position);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
-            if (!hv.equals(cc.Vec2.ZERO)) {
+            if (!hv.equals(cc.Vec3.ZERO)) {
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
             }
@@ -204,7 +204,7 @@ export default class Rah extends Boss {
 
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
         shooter.dungeon = this.dungeon;
-        // shooter.setHv(cc.v2(0, -1))
+        // shooter.setHv(cc.v3(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
@@ -244,11 +244,11 @@ export default class Rah extends Boss {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
 
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {
             return;
         }
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;

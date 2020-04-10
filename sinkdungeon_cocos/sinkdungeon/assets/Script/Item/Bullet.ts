@@ -35,9 +35,9 @@ export default class Bullet extends cc.Component {
 
     anim: cc.Animation;
     dir = 0;
-    tagetPos = cc.v2(0, 0);
+    tagetPos = cc.v3(0, 0);
     rigidBody: cc.RigidBody;
-    hv = cc.v2(0, 0);
+    hv = cc.v3(0, 0);
     isFromPlayer = false;
 
     sprite: cc.Node;
@@ -53,7 +53,7 @@ export default class Bullet extends cc.Component {
     laserNode: cc.Node;
     dungeon: Dungeon;
 
-    startPos: cc.Vec2 = cc.v2(0, 0);//子弹起始位置
+    startPos: cc.Vec3 = cc.v3(0, 0);//子弹起始位置
 
     isTrackDelay = false;//是否延迟追踪
     isDecelerateDelay = false;//是否延迟减速
@@ -82,7 +82,7 @@ export default class Bullet extends cc.Component {
 
     }
     onEnable() {
-        this.tagetPos = cc.v2(0, 0);
+        this.tagetPos = cc.v3(0, 0);
         this.rigidBody.linearVelocity = cc.v2(0, 0);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
@@ -122,8 +122,8 @@ export default class Bullet extends cc.Component {
     private checkTraking(): void {
         if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay&&!this.isHit) {
             let pos = this.hasNearEnemy();
-            if (!pos.equals(cc.Vec2.ZERO)) {
-                this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+            if (!pos.equals(cc.Vec3.ZERO)) {
+                this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
                 this.hv = pos;
                 this.rigidBody.linearVelocity = cc.v2(this.data.speed * this.hv.x, this.data.speed * this.hv.y);
             }
@@ -136,7 +136,7 @@ export default class Bullet extends cc.Component {
         this.boxCollider.enabled = data.isRect == 1;
         this.circlePCollider.enabled = data.isRect != 1;
         this.boxPCollider.enabled = data.isRect == 1;
-        this.light.position = data.isRect==1 ? cc.v2(8, 0) : cc.v2(0, 0);
+        this.light.position = data.isRect==1 ? cc.v3(8, 0) : cc.v3(0, 0);
         this.node.scale = data.size > 0 ? data.size : 1;
         if (this.circlePCollider.enabled) {
             this.circlePCollider.sensor = data.isPhysical == 0;
@@ -177,14 +177,14 @@ export default class Bullet extends cc.Component {
             return;
         }
         //碰撞终点
-        let endPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        let endPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));
         let distance = Logic.getDistance(this.startPos, endPos);
         let offset = 32;
         //激光的宽度是两点之间的距离加贴图的宽度,激光的起始点是减去当前距离的点
         let finalwidth = distance - offset;
         this.laserSpriteNode.width = finalwidth/this.node.scaleY;
-        this.laserSpriteNode.setPosition(cc.v2(-finalwidth/this.node.scaleY, 0));
-        this.laserHeadSprite.node.setPosition(cc.v2(-finalwidth/this.node.scaleY, 0));
+        this.laserSpriteNode.setPosition(cc.v3(-finalwidth/this.node.scaleY, 0));
+        this.laserHeadSprite.node.setPosition(cc.v3(-finalwidth/this.node.scaleY, 0));
         this.laserNode.opacity = 255;
         this.sprite.opacity = 0;
         this.laserNode.scaleX = 1;
@@ -229,22 +229,22 @@ export default class Bullet extends cc.Component {
         cc.director.emit('destorybullet', { detail: { bulletNode: this.node } });
     }
     //animation
-    showBullet(hv: cc.Vec2) {
+    showBullet(hv: cc.Vec3) {
         this.hv = hv;
-        this.rotateColliderManager(cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y));
+        this.rotateColliderManager(cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y));
         this.fire(this.hv.clone());
     }
     //animation
     BulletDestory() {
         cc.director.emit('destorybullet', { detail: { bulletNode: this.node } });
     }
-    fire(hv: cc.Vec2) {
+    fire(hv: cc.Vec3) {
         if (!this.rigidBody) {
             this.rigidBody = this.getComponent(cc.RigidBody);
         }
         this.rigidBody.linearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
         //记录发射点
-        this.startPos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        this.startPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));
         this.sprite.stopAllActions();
         this.node.stopAllActions();
         let ss = this.sprite.getComponent(cc.Sprite);
@@ -409,10 +409,10 @@ export default class Bullet extends cc.Component {
     }
     hasNearEnemy() {
         if (this.data.isTracking != 1 || this.data.isLaser == 1 || !this.dungeon) {
-            return cc.Vec2.ZERO;
+            return cc.Vec3.ZERO;
         }
         let olddis = 1000;
-        let pos = cc.v2(0, 0);
+        let pos = cc.v3(0, 0);
         if (this.isFromPlayer) {
             for (let monster of this.dungeon.monsters) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
@@ -423,7 +423,7 @@ export default class Bullet extends cc.Component {
                     pos = monster.node.position.sub(p);
                 }
             }
-            if (pos.equals(cc.Vec2.ZERO)) {
+            if (pos.equals(cc.Vec3.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
                     let dis = Logic.getDistance(this.node.position, boss.node.position);
                     if (dis < 500 && dis < olddis && !boss.isDied) {
@@ -451,7 +451,7 @@ export default class Bullet extends cc.Component {
         return pos;
     }
 
-    rotateColliderManager(target: cc.Vec2) {
+    rotateColliderManager(target: cc.Vec3) {
         if(this.data.fixedRotation == 1){
             return;
         }

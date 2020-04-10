@@ -35,7 +35,7 @@ export default class FloatingLabel extends cc.Component {
             this.node.scale = scale;
         }
         this.label.node.opacity = 255;
-        this.label.node.position = cc.v2(0,0);
+        this.label.node.position = cc.v3(0,0);
         this.label.string = text;
         this.label.node.color = color;
         this.anim.play('FontFloating');

@@ -86,7 +86,7 @@ export default class ProfileManager{
         //加载地图数据
         this.data.rectDungeon = this.data.rectDungeon.buildMapFromSave(data.rectDungeon);
         //加载当前位置
-        this.data.currentPos = data.currentPos?cc.v2(data.currentPos.x,data.currentPos.y):cc.v2(0,0);
+        this.data.currentPos = data.currentPos?cc.v3(data.currentPos.x,data.currentPos.y):cc.v3(0,0);
         //加载箱子
         for(let key in data.boxes){
            let list = data.boxes[key];

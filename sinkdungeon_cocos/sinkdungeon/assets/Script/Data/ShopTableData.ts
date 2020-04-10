@@ -13,14 +13,14 @@ import ItemData from "./ItemData";
 
 
 export default class ShopTableData {
-    pos:cc.Vec2;
+    pos:cc.Vec3;
     equipdata:EquipmentData;
     itemdata:ItemData;
     price = 60;
     shopType = 0;//0:equip 1:item
     isSaled = false;//是否卖出
     valueCopy(data:ShopTableData){
-        this.pos = data.pos?cc.v2(data.pos.x,data.pos.y):cc.v2(0,0);
+        this.pos = data.pos?cc.v3(data.pos.x,data.pos.y):cc.v3(0,0);
         if(!this.equipdata){
             this.equipdata = new EquipmentData();
         }

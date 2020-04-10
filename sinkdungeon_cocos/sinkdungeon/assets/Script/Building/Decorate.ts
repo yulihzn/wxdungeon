@@ -59,7 +59,7 @@ export default class Decorate extends Building {
         this.sprite.spriteFrame = spriteFrame;
     }
 
-    setPos(pos: cc.Vec2) {
+    setPos(pos: cc.Vec3) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(this.data.pos);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
@@ -104,7 +104,7 @@ export default class Decorate extends Building {
             })))
     }
     reset() {
-        this.node.position = Dungeon.getPosInMap(cc.v2(-10, -10));
+        this.node.position = Dungeon.getPosInMap(cc.v3(-10, -10));
         this.isBreaking = false;
     }
 

@@ -43,8 +43,8 @@ export default class Player extends Actor {
     static readonly STATE_ATTACK = 2;
     static readonly STATE_FALL = 3;
     static readonly STATE_DIE = 4;
-    @property(cc.Vec2)
-    pos: cc.Vec2 = cc.v2(0, 0);
+    @property(cc.Vec3)
+    pos: cc.Vec3 = cc.v3(0, 0);
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
     @property(cc.Prefab)
@@ -101,7 +101,7 @@ export default class Player extends Actor {
     attackTarget: cc.Collider;
     rigidbody: cc.RigidBody;
 
-    defaultPos = cc.v2(0, 0);
+    defaultPos = cc.v3(0, 0);
 
     talentDash: TalentDash;
     talentShield: TalentShield;
@@ -115,7 +115,7 @@ export default class Player extends Actor {
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData;
         this.statusUpdate();
-        this.pos = cc.v2(0, 0);
+        this.pos = cc.v3(0, 0);
         this.isDied = false;
         this.isStone = false;
         this.anim = this.getComponent(cc.Animation);
@@ -153,7 +153,7 @@ export default class Player extends Actor {
             , (event) => { this.takeDamage(event.detail.damage, event.detail.from) });
 
         if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
-            Logic.playerData.pos = cc.v2(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
+            Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
         }
         this.pos = Logic.playerData.pos.clone();
         this.defaultPos = Logic.playerData.pos.clone();
@@ -280,7 +280,7 @@ export default class Player extends Actor {
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
         cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
-    getWalkSmoke(parentNode: cc.Node, pos: cc.Vec2) {
+    getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3) {
         let smokePrefab: cc.Node = null;
         if (this.smokePool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             smokePrefab = this.smokePool.get();
@@ -373,15 +373,15 @@ export default class Player extends Actor {
         sprite.node.color = c;
     }
     /**获取中心位置 */
-    getCenterPosition(): cc.Vec2 {
-        return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
+    getCenterPosition(): cc.Vec3 {
+        return this.node.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
     }
     updatePlayerPos() {
         // this.node.x = this.pos.x * 64 + 32;
         // this.node.y = this.pos.y * 64 + 32;
         this.node.position = Dungeon.getPosInMap(this.pos);
     }
-    transportPlayer(pos: cc.Vec2) {
+    transportPlayer(pos: cc.Vec3) {
         if (!this.sprite) {
             return;
         }
@@ -394,7 +394,7 @@ export default class Player extends Actor {
         this.changeZIndex(this.pos);
         this.updatePlayerPos();
     }
-    changeZIndex(pos: cc.Vec2) {
+    changeZIndex(pos: cc.Vec3) {
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
     addStatus(statusType: string, from: FromData) {
@@ -417,8 +417,8 @@ export default class Player extends Actor {
         this.isAttacking = true;
         let pos = this.meleeWeapon.getHv().clone();
         this.isFaceRight = pos.x > 0;
-        if (pos.equals(cc.Vec2.ZERO)) {
-            pos = cc.v2(1, 0);
+        if (pos.equals(cc.Vec3.ZERO)) {
+            pos = cc.v3(1, 0);
         }
         pos = pos.normalizeSelf().mul(15);
         pos.x = this.isFaceRight ? pos.x : -pos.x;
@@ -505,7 +505,7 @@ export default class Player extends Actor {
                 this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
                 this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
                 this.shooterEx.data.bulletSize = data.bulletSize;
-                this.shooterEx.fireBullet(0, cc.v2(data.exBulletOffsetX, 24));
+                this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
             }
         }
     }
@@ -525,18 +525,18 @@ export default class Player extends Actor {
         return this.shooter.data.isHeavy == 1;
     }
     //暂时不用
-    // rotatePlayer(dir: number, pos: cc.Vec2, dt: number) {
+    // rotatePlayer(dir: number, pos: cc.Vec3, dt: number) {
     //     if (!this.node || this.isDied || this.isFall) {
     //         return;
     //     }
-    //     // if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
-    //     //     this.shooter.setHv(cc.v2(pos.x, pos.y));
+    //     // if (this.shooter && !pos.equals(cc.Vec3.ZERO)) {
+    //     //     this.shooter.setHv(cc.v3(pos.x, pos.y));
     //     // }
-    //     if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO)) {
-    //         this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
+    //     if (this.meleeWeapon && !pos.equals(cc.Vec3.ZERO)) {
+    //         this.meleeWeapon.setHv(cc.v3(pos.x, pos.y));
     //     }
-    //     if (this.talentShield && !pos.equals(cc.Vec2.ZERO)) {
-    //         this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
+    //     if (this.talentShield && !pos.equals(cc.Vec3.ZERO)) {
+    //         this.talentShield.flyWheel.setHv(cc.v3(pos.x, pos.y));
     //     }
     // }
     changeEquipDirSpriteFrame(dir:number){
@@ -555,7 +555,7 @@ export default class Player extends Actor {
             this.clothesSprite.spriteFrame = Logic.spriteFrames[this.inventoryManager.clothes.img];
         }
     }
-    move(dir: number, pos: cc.Vec2, dt: number) {
+    move(dir: number, pos: cc.Vec3, dt: number) {
         if (this.isDied || this.isFall || this.isDizz) {
             return;
         }
@@ -565,7 +565,7 @@ export default class Player extends Actor {
             this.cloakSprite.node.zIndex = dir==0?this.bodySprite.node.zIndex+1:this.bodySprite.node.zIndex-1;
             this.changeEquipDirSpriteFrame(dir);
         }
-        if (this.isAttacking && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.isAttacking && !pos.equals(cc.Vec3.ZERO)) {
             if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
                 pos = pos.mul(0.6);
             } else if (this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
@@ -576,7 +576,7 @@ export default class Player extends Actor {
                 pos = pos.mul(0.1);
             }
         }
-        if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.1);
         }
         if (this.talentMagic && this.talentMagic.magiccircle.isShow && !this.talentMagic.hashTalent(Talent.MAGIC_05)) {
@@ -585,19 +585,19 @@ export default class Player extends Actor {
         if (this.talentShield && this.talentShield.IsExcuting && !this.talentMagic.hashTalent(Talent.SHIELD_12)) {
             pos = pos.mul(0.5);
         }
-        if (this.shooter && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.shooter && !pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
-            this.shooter.setHv(cc.v2(pos.x, pos.y));
+            this.shooter.setHv(cc.v3(pos.x, pos.y));
             //存档系统保存玩家位置
             Logic.profileManager.data.playerData.pos = this.pos.clone();
         }
-        if (this.shooterEx && !pos.equals(cc.Vec2.ZERO)) {
-            this.shooterEx.setHv(cc.v2(pos.x, pos.y));
+        if (this.shooterEx && !pos.equals(cc.Vec3.ZERO)) {
+            this.shooterEx.setHv(cc.v3(pos.x, pos.y));
         }
 
         //调整盾牌方向
-        if (this.talentShield && !pos.equals(cc.Vec2.ZERO)) {
-            this.talentShield.flyWheel.setHv(cc.v2(pos.x, pos.y));
+        if (this.talentShield && !pos.equals(cc.Vec3.ZERO)) {
+            this.talentShield.flyWheel.setHv(cc.v3(pos.x, pos.y));
         }
         let h = pos.x;
         let v = pos.y;
@@ -619,8 +619,8 @@ export default class Player extends Actor {
             this.isFaceRight = this.meleeWeapon.getHv().x > 0;
         }
         //调整武器方向
-        if (this.meleeWeapon && !pos.equals(cc.Vec2.ZERO) && !this.meleeWeapon.isAttacking) {
-            this.meleeWeapon.setHv(cc.v2(pos.x, pos.y));
+        if (this.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.meleeWeapon.isAttacking) {
+            this.meleeWeapon.setHv(cc.v3(pos.x, pos.y));
         }
         if (this.isMoving && !this.isStone) {
             this.playerAnim(Player.STATE_WALK, dir);
@@ -817,7 +817,7 @@ export default class Player extends Actor {
         }, 1.5);
     }
     //玩家行动
-    playerAction(dir: number, pos: cc.Vec2, dt: number, dungeon: Dungeon) {
+    playerAction(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {
         if (this.meleeWeapon && !this.meleeWeapon.dungeon) {
             this.meleeWeapon.dungeon = dungeon;
         }

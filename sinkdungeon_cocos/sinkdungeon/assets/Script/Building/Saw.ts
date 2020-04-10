@@ -27,7 +27,7 @@ export default class Saw extends Building {
     normalSpriteFrame:cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
     bloodSpriteFrame:cc.SpriteFrame = null;
-    pos:cc.Vec2 = cc.v2(0,0);
+    pos:cc.Vec3 = cc.v3(0,0);
     private sprite: cc.Sprite;
     // LIFE-CYCLE CALLBACKS:
 
@@ -40,10 +40,10 @@ export default class Saw extends Building {
         
     }
     
-    setPos(pos:cc.Vec2){
+    setPos(pos:cc.Vec3){
         this.pos = pos;
         let p = Dungeon.getPosInMap(pos);
-        this.node.position = cc.v2(p.x,p.y);
+        this.node.position = cc.v3(p.x,p.y);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
     }
     

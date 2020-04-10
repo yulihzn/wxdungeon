@@ -22,7 +22,7 @@ export default class Portal extends Building {
 
     anim:cc.Animation;
     isOpen:boolean = false;
-    pos:cc.Vec2 = cc.v2(4,4);
+    pos:cc.Vec3 = cc.v3(4,4);
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -32,7 +32,7 @@ export default class Portal extends Building {
         this.anim = this.getComponent(cc.Animation);
         this.anim.play('PortalCloseIdle');
     }
-    setPos(pos:cc.Vec2){
+    setPos(pos:cc.Vec3){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
@@ -58,7 +58,7 @@ export default class Portal extends Building {
         this.anim.play('PortalClose');
     }
 
-    transportPlayer(playerPos:cc.Vec2){
+    transportPlayer(playerPos:cc.Vec3){
         if(playerPos.x==this.pos.x&&playerPos.y==this.pos.y && this.isOpen){
         }
     }

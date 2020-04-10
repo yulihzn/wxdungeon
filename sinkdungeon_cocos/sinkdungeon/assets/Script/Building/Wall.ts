@@ -17,7 +17,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Wall extends Building {
 
-    pos:cc.Vec2;
+    pos:cc.Vec3;
     half = false;
     wallsprite:cc.Sprite;
     mapStr:string = '##';
@@ -36,7 +36,7 @@ export default class Wall extends Building {
     changeRes(resName:string){
         this.wallsprite.spriteFrame = Logic.spriteFrames[resName];
     }
-    setPos(pos:cc.Vec2){
+    setPos(pos:cc.Vec3){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
     }

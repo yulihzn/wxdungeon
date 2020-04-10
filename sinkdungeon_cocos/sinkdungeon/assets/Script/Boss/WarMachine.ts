@@ -113,16 +113,16 @@ export default class WarMachine extends Boss {
         this.fireGatling(isHalf);
         if (isHalf) {
             this.actionCount++;
-            let pos = cc.v2(1, 0);
+            let pos = cc.v3(1, 0);
             if (this.actionCount > 10) {
                 cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
-                pos = cc.v2(-1, 0);
+                pos = cc.v3(-1, 0);
             }
             if (this.actionCount > 20) {
                 cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 this.actionCount = 0;
             }
-            if (!pos.equals(cc.Vec2.ZERO)) {
+            if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf();
                 this.move(pos, 500);
             }
@@ -133,14 +133,14 @@ export default class WarMachine extends Boss {
         this.isMainGunCoolDown = false;
         this.isGatlingCoolDown = false;
         this.isMissileCoolDown = false;
-        this.shooter01.setHv(cc.v2(0, -1));
-        this.shooter02.setHv(cc.v2(0, -1));
-        this.shooter03.setHv(cc.v2(0, -1));
-        this.shooter04.setHv(cc.v2(0, -1));
-        this.shooter05.setHv(cc.v2(0, -1));
+        this.shooter01.setHv(cc.v3(0, -1));
+        this.shooter02.setHv(cc.v3(0, -1));
+        this.shooter03.setHv(cc.v3(0, -1));
+        this.shooter04.setHv(cc.v3(0, -1));
+        this.shooter05.setHv(cc.v3(0, -1));
         let pos = this.node.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
-        if (!hv.equals(cc.Vec2.ZERO)) {
+        if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter01.setHv(hv);
         }
@@ -150,10 +150,10 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isMainGunCoolDown = true;
-        this.shooter01.setHv(cc.v2(0, -1));
+        this.shooter01.setHv(cc.v3(0, -1));
         let pos = this.node.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
-        if (!hv.equals(cc.Vec2.ZERO)) {
+        if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter01.setHv(hv);
             this.fireShooter(this.shooter01, "bullet016", 0, 0);
@@ -166,8 +166,8 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isGatlingCoolDown = true;
-        this.shooter02.setHv(cc.v2(0, -1));
-        this.shooter03.setHv(cc.v2(0, -1));
+        this.shooter02.setHv(cc.v3(0, -1));
+        this.shooter03.setHv(cc.v3(0, -1));
         this.shooter02.data.bulletLineInterval = 0.5;
         this.shooter03.data.bulletLineInterval = 0.5;
         let cooldown = 3;
@@ -188,15 +188,15 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isMissileCoolDown = true;
-        this.shooter04.setHv(cc.v2(0, -1));
-        this.shooter05.setHv(cc.v2(0, -1));
+        this.shooter04.setHv(cc.v3(0, -1));
+        this.shooter05.setHv(cc.v3(0, -1));
         this.fireShooter(this.shooter04, "bullet015", 0, 0);
         this.fireShooter(this.shooter05, "bullet015", 0, 0);
         this.scheduleOnce(() => { this.isMissileCoolDown = false; }, 8);
     }
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
         shooter.dungeon = this.dungeon;
-        // shooter.setHv(cc.v2(0, -1))
+        // shooter.setHv(cc.v3(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
@@ -233,11 +233,11 @@ export default class WarMachine extends Boss {
         this.healthBar.node.active = !this.isDied;
     }
 
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {
             return;
         }
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;

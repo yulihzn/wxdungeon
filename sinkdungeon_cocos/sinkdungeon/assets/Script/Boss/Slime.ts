@@ -78,7 +78,7 @@ export default class Slime extends Boss {
             this.decorate.opacity = 0;
         }
     }
-    private getVenom(parentNode: cc.Node, pos: cc.Vec2) {
+    private getVenom(parentNode: cc.Node, pos: cc.Vec3) {
         if (this.scaleSize < 1 || this.isDied) {
             return;
         }
@@ -241,7 +241,7 @@ export default class Slime extends Boss {
         if (this.isDied || !this.dungeon || this.isHurt) {
             return;
         }
-        let newPos = cc.v2(0, 0);
+        let newPos = cc.v3(0, 0);
         newPos.x += Logic.getRandomNum(0, 2000) - 1000;
         newPos.y += Logic.getRandomNum(0, 2000) - 1000;
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
@@ -255,7 +255,7 @@ export default class Slime extends Boss {
         if (playerDis < attackRange && !this.dungeon.player.isDied && !this.isDashing && this.isShow && this.scaleSize >= 1) {
             // cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
-            if (!pos.equals(cc.Vec2.ZERO)) {
+            if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf();
             }
             let isPlayAttack = this.anim.getAnimationState("SlimeAttack").isPlaying;
@@ -281,18 +281,18 @@ export default class Slime extends Boss {
         }
     }
 
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied || this.isHurt || this.isDashing || !this.isShow || this.meleeSkill.IsExcuting) {
             return;
         }
-        if (pos.equals(cc.Vec2.ZERO)) {
+        if (pos.equals(cc.Vec3.ZERO)) {
             return;
         }
         pos = pos.normalizeSelf();
-        if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.5);
         }
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;

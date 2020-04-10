@@ -21,7 +21,7 @@ export default class PlayerData {
     static DefAULT_ATTACK = 1;
     static DefAULT_BACK_ATTACK = 0;
     name: string = '';
-    pos: cc.Vec2 = cc.v2(7, 4);
+    pos: cc.Vec3 = cc.v3(7, 4);
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH;
 
@@ -50,7 +50,7 @@ export default class PlayerData {
     private getCommonList():CommonData[]{
         return [this.common, this.equipmentTotalData.Common, this.statusTotalData.Common];
     }
-    updateHA(health: cc.Vec2, attackPoint: number) {
+    updateHA(health: cc.Vec3, attackPoint: number) {
         this.currentHealth = health.x;
         this.common.maxHealth = health.y;
         this.common.damageMin = this.common.damageMin;
@@ -60,7 +60,7 @@ export default class PlayerData {
 
     public valueCopy(data: PlayerData): void {
         this.common.valueCopy(data.common);
-        this.pos = data.pos ? cc.v2(data.pos.x,data.pos.y) : cc.v2(4, 7);
+        this.pos = data.pos ? cc.v3(data.pos.x,data.pos.y) : cc.v3(4, 7);
         this.name = data.name ? data.name : '';
         this.equipmentTotalData.valueCopy(data.equipmentTotalData);
         this.statusTotalData.valueCopy(data.statusTotalData);
@@ -240,7 +240,7 @@ export default class PlayerData {
     }
 
     //生命值
-    getHealth(): cc.Vec2 {
+    getHealth(): cc.Vec3 {
         let rate = 1;
         let maxHealth = 0;
         for (let data of this.getCommonList()) {
@@ -249,9 +249,9 @@ export default class PlayerData {
         if (maxHealth > 0) {
             rate = this.currentHealth / maxHealth;
         } else {
-            return cc.v2(1, 1);
+            return cc.v3(1, 1);
         }
-        return cc.v2(maxHealth * rate, maxHealth);
+        return cc.v3(maxHealth * rate, maxHealth);
     }
 
     getIceDefence(): number {

@@ -23,7 +23,7 @@ const { ccclass, property } = cc._decorator;
 export default class TarotTable extends Building {
 
     // LIFE-CYCLE CALLBACKS:
-    pos: cc.Vec2;
+    pos: cc.Vec3;
     anim: cc.Animation;
     tips: Tips;
 
@@ -49,7 +49,7 @@ export default class TarotTable extends Building {
         }
         this.anim.play();
     }
-    setPos(pos: cc.Vec2) {
+    setPos(pos: cc.Vec3) {
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;

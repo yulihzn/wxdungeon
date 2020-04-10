@@ -43,7 +43,7 @@ export default class MapManager {
     //地图数据管理类
     rectDungeon: RectDungeon = new RectDungeon(1);
     //当前房间下标
-    currentPos: cc.Vec2 = cc.v2(0, 0);
+    currentPos: cc.Vec3 = cc.v3(0, 0);
     //根据下标保存普通箱子的位置
     boxes: { [key: string]: BoxData[] } = {};
     //根据下标保存商店状态
@@ -85,7 +85,7 @@ export default class MapManager {
         //有房间数据的情况下重置房间
         this.resetRooms();
         //设置当前位置为开始房间位置
-        this.currentPos = cc.v2(this.rectDungeon.startRoom.x, this.rectDungeon.startRoom.y);
+        this.currentPos = cc.v3(this.rectDungeon.startRoom.x, this.rectDungeon.startRoom.y);
         //修改当前房间和四周房间状态为发现
         this.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
         //清空缓存的箱子商店宝箱装备物品数据
@@ -102,7 +102,7 @@ export default class MapManager {
     loadingNextRoom(dir: number): RectRoom {
         let room = this.rectDungeon.getNeighborRoomType(this.currentPos.x, this.currentPos.y, dir)
         if (room && room.roomType != 0) {
-            this.currentPos = cc.v2(room.x, room.y);
+            this.currentPos = cc.v3(room.x, room.y);
             Logic.profileManager.data.currentPos = this.currentPos.clone();
             this.changeRoomsIsFound(room.x, room.y);
         }
@@ -136,12 +136,12 @@ export default class MapManager {
         let map = this.addGenerateThings(mdd,room.roomType,room.seed);
         return map;
     }
-    public getCurrentMapSize():cc.Vec2{
+    public getCurrentMapSize():cc.Vec3{
         let room = this.getCurrentRoom();
         let index = room.roomType - 1;
         let r = this.getAllFileRooms()[this.roomStrs[index]];
         let map = r[room.saveIndex].clone();
-        return cc.v2(map.map.length,map.map[0].length)
+        return cc.v3(map.map.length,map.map[0].length)
     }
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {
@@ -283,9 +283,9 @@ export default class MapManager {
         for(let i = 0;i<10;i++){
             let dx = rand4save.getRandomNum(0,mapData.map.length-1);
             let dy = rand4save.getRandomNum(0,mapData.map[0].length-1);
-            pos.push(cc.v2(dx,0));
-            pos.push(cc.v2(0,dy));
-            pos.push(cc.v2(dx,dy));
+            pos.push(cc.v3(dx,0));
+            pos.push(cc.v3(0,dy));
+            pos.push(cc.v3(dx,dy));
             
         }
         for(let p of pos){
@@ -299,9 +299,9 @@ export default class MapManager {
         for(let i = 0;i<2;i++){
             let dx = rand4save.getRandomNum(1,mapData.map.length-2);
             let dy = rand4save.getRandomNum(1,mapData.map[0].length-2);
-            pos.push(cc.v2(dx,1));
-            pos.push(cc.v2(1,dy));
-            pos.push(cc.v2(dx,dy));
+            pos.push(cc.v3(dx,1));
+            pos.push(cc.v3(1,dy));
+            pos.push(cc.v3(dx,dy));
         }
         for(let p of pos){
             if(mapData.map[p.x][p.y].indexOf('*')!=-1||mapData.map[p.x][p.y].indexOf('D')!=-1){

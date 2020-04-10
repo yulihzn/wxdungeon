@@ -183,10 +183,10 @@ export default class Logic extends cc.Component {
         if (room) {
             Logic.changeDungeonSize();
             switch (dir) {
-                case 0: Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), 0); break;
-                case 1: Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Dungeon.HEIGHT_SIZE - 1); break;
-                case 2: Logic.playerData.pos = cc.v2(Dungeon.WIDTH_SIZE - 1, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
-                case 3: Logic.playerData.pos = cc.v2(0, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
+                case 0: Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), 0); break;
+                case 1: Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Dungeon.HEIGHT_SIZE - 1); break;
+                case 2: Logic.playerData.pos = cc.v3(Dungeon.WIDTH_SIZE - 1, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
+                case 3: Logic.playerData.pos = cc.v3(0, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
             }
             cc.director.loadScene('loading');
             
@@ -211,7 +211,7 @@ export default class Logic extends cc.Component {
             Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
             
             Logic.changeDungeonSize();
-            Logic.playerData.pos = cc.v2(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
+            Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
             Logic.isPickedTalent = false;
             cc.director.loadScene('loading');
         }

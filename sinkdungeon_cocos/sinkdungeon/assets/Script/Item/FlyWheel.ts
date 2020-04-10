@@ -26,7 +26,7 @@ const {ccclass, property} = cc._decorator;
 export default class FlyWheel extends cc.Component {
     rigidBody:cc.RigidBody;
     dungeon:Dungeon;
-    hv:cc.Vec2 = cc.v2(1,0);
+    hv:cc.Vec3 = cc.v3(1,0);
     private sprites: cc.Sprite[];
     isFlyOut = false;
     // LIFE-CYCLE CALLBACKS:
@@ -106,8 +106,8 @@ export default class FlyWheel extends cc.Component {
         }
         return false;
     }
-    getPlayerPosition():cc.Vec2{
-        return this.dungeon.player.node.position.clone().addSelf(cc.v2(8,48));
+    getPlayerPosition():cc.Vec3{
+        return this.dungeon.player.node.position.clone().addSelf(cc.v3(8,48));
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
@@ -124,7 +124,8 @@ export default class FlyWheel extends cc.Component {
             speed = 3000;
             this.rigidBody.linearDamping = 12;
         }
-        this.rigidBody.linearVelocity = this.hv.mul(speed);
+        let hs = this.hv.mul(speed);
+        this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
         this.isFlyOut = true;
         this.node.zIndex = 4000;
         this.scheduleOnce(()=>{
@@ -138,9 +139,9 @@ export default class FlyWheel extends cc.Component {
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         this.attacking(otherCollider);
     }
-    setHv(hv: cc.Vec2) {
-        if(hv.equals(cc.Vec2.ZERO)){
-            this.hv = cc.v2(1,0);
+    setHv(hv: cc.Vec3) {
+        if(hv.equals(cc.Vec3.ZERO)){
+            this.hv = cc.v3(1,0);
         }else{
             this.hv = hv;
         }
@@ -186,12 +187,12 @@ export default class FlyWheel extends cc.Component {
         }
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.hv.clone();
-        if (pos.equals(cc.Vec2.ZERO)) {
-            pos = cc.v2(1, 0);
+        if (pos.equals(cc.Vec3.ZERO)) {
+            pos = cc.v3(1, 0);
         }
         let power = 1000;
         pos = pos.normalizeSelf().mul(power);
-        rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
+        rigidBody.applyLinearImpulse(cc.v2(pos.x,pos.y), rigidBody.getLocalCenter(), true);
     }
     update (dt) { 
         if(this.isCheckTimeDelay(dt)){
@@ -199,10 +200,10 @@ export default class FlyWheel extends cc.Component {
                 let p = this.getPlayerPosition();
                 p.y+=10;
                 let pos = p.sub(this.node.position);
-                if (!pos.equals(cc.Vec2.ZERO)) {
+                if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf();
                     pos = pos.mul(2000);
-                    this.rigidBody.linearVelocity = pos;
+                    this.rigidBody.linearVelocity = cc.v2(pos.x,pos.y);
                     this.rigidBody.linearDamping = 1;
                 }
             }

@@ -22,7 +22,7 @@ export default class Seeker extends cc.Component {
         this.node.zIndex = 1000;
         cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.move(event.detail.dir, event.detail.pos, event.detail.dt) });
     }
-    move(dir: number, pos: cc.Vec2, dt: number) {
+    move(dir: number, pos: cc.Vec3, dt: number) {
         let h = pos.x;
         let v = pos.y;
         let absh = Math.abs(h);

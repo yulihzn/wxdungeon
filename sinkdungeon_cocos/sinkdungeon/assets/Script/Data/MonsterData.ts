@@ -15,7 +15,7 @@ import Random from "../Utils/Random";
 
 
 export default class MonsterData{
-    defaultPos:cc.Vec2;
+    defaultPos:cc.Vec3;
     nameCn:string = '';//名字
     nameEn:string = '';
     resName:string = '';//资源名字
@@ -45,7 +45,7 @@ export default class MonsterData{
     specialDistance = 0;//特殊类型位置x
     specialBulletArcExNum = 0;//特殊额外扇形喷射子弹数量,为0的时候不计入,最大18
     specialBulletLineExNum = 0;//特殊额外线性喷射子弹数量，为0的时候不计入
-    pos:cc.Vec2 = cc.v2(0,0);
+    pos:cc.Vec3 = cc.v3(0,0);
     currentHealth:number=0;
     /**box规格 爬行的21x21 0:y32w80h64，站立的21x21 1:y48w48h96，占满的21x21 2:y48w80h80，站立的32x32 3:y64w80h128，爬行的32x32 4:y32w128h48，站立的48x48 5:y48w80h112*/
     boxType = 0;
@@ -82,7 +82,7 @@ export default class MonsterData{
         this.remote = data.remote?data.remote:0;
         this.melee = data.melee?data.melee:0;
         this.dash = data.dash?data.dash:0;
-        this.pos = data.pos ? cc.v2(data.pos.x,data.pos.y) : cc.v2(0, 0);
+        this.pos = data.pos ? cc.v3(data.pos.x,data.pos.y) : cc.v3(0, 0);
         this.disguise = data.disguise?data.disguise:0;
         this.sizeType = data.sizeType?data.sizeType:0;
         this.bulletType = data.bulletType;
@@ -253,7 +253,7 @@ export default class MonsterData{
     }
 
     //生命值
-    getHealth(): cc.Vec2 {
+    getHealth(): cc.Vec3 {
         let rate = 1;
         let maxHealth = 0;
         for (let data of this.getCommonList()) {
@@ -262,9 +262,9 @@ export default class MonsterData{
         if (maxHealth > 0) {
             rate = this.currentHealth / maxHealth;
         } else {
-            return cc.v2(1, 1);
+            return cc.v3(1, 1);
         }
-        return cc.v2(maxHealth * rate, maxHealth);
+        return cc.v3(maxHealth * rate, maxHealth);
     }
 
     getIceDefence(): number {

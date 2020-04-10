@@ -16,7 +16,7 @@ export default class TalentDash extends Talent {
 
     @property(DashShadow)
     dashShadow: DashShadow = null;
-    hv: cc.Vec2;
+    hv: cc.Vec3;
 
     onLoad() {
     }
@@ -57,11 +57,12 @@ export default class TalentDash extends Talent {
             } else {
                 pos = pos.normalizeSelf();
             }
+            let posv3 = cc.v3(pos.x,pos.y);
             if (this.hashTalent(Talent.DASH_08)) {
                 speed = 100;
-                this.showShadow(pos);
+                this.showShadow(posv3);
             }
-            this.hv = pos.clone();
+            this.hv = posv3.clone();
             pos = pos.mul(speed);
             this.player.rigidbody.linearVelocity = pos;
             this.scheduleOnce(() => {
@@ -74,7 +75,7 @@ export default class TalentDash extends Talent {
         }, cooldown, true);
     }
 
-    showShadow(pos: cc.Vec2) {
+    showShadow(pos: cc.Vec3) {
         if (this.dashShadow) {
             this.dashShadow.setHv(pos.clone());
             this.dashShadow.show();
@@ -140,7 +141,7 @@ export default class TalentDash extends Talent {
         let pos = this.hv.clone();
         let power = 1000;
         pos = pos.normalizeSelf().mul(power);
-        rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
+        rigidBody.applyLinearImpulse(cc.v2(pos.x,pos.y), rigidBody.getLocalCenter(), true);
     }
 
     addMonsterAllStatus(monster: Monster) {

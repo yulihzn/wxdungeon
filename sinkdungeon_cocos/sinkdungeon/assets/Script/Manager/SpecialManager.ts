@@ -42,7 +42,7 @@ export default class SpecialManager extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        let pos = this.node.convertToWorldSpaceAR(cc.v2(distance, 0));
+        let pos = this.node.convertToWorldSpaceAR(cc.v3(distance, 0));
         pos = this.dungeon.node.convertToNodeSpaceAR(pos);
 
         switch (placeType) {
@@ -61,7 +61,7 @@ export default class SpecialManager extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        let pos = this.node.convertToWorldSpaceAR(cc.v2(distance, 0));
+        let pos = this.node.convertToWorldSpaceAR(cc.v3(distance, 0));
         pos = this.dungeon.node.convertToNodeSpaceAR(pos);
 
         switch (placeType) {
@@ -71,7 +71,7 @@ export default class SpecialManager extends cc.Component {
         }
     }
 
-    private addVenom(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
+    private addVenom(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let venom = cc.instantiate(this.venom);
         venom.getComponent(SlimeVenom).player = this.dungeon.player;
         venom.getComponent(SlimeVenom).isForever = false;
@@ -83,7 +83,7 @@ export default class SpecialManager extends cc.Component {
         venom.scale = 0;
         venom.runAction(cc.scaleTo(0.5, 2, 2))
     }
-    private addHowl(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
+    private addHowl(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let howl = cc.instantiate(this.howl);
         howl.parent = this.dungeon.node;
         howl.position = pos;
@@ -99,7 +99,7 @@ export default class SpecialManager extends cc.Component {
             howlScript.damagePlayer(StatusManager.DIZZ, this.dungeon.player, new DamageData(1),from);
         }, 1);
     }
-    private addClaw(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
+    private addClaw(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let claw = cc.instantiate(this.claw);
         claw.parent = this.dungeon.node;
         pos.y += 32;
@@ -115,7 +115,7 @@ export default class SpecialManager extends cc.Component {
             }, 0.2);
         }, 0.5);
     }
-    private addBlade(pos: cc.Vec2,isFaceRight:boolean,from:FromData) {
+    private addBlade(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let prefab = cc.instantiate(this.blade);
         prefab.parent = this.dungeon.node;
         prefab.position = pos;

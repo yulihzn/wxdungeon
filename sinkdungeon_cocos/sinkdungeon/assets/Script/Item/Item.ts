@@ -48,7 +48,7 @@ export default class Item extends cc.Component {
     start () {
         this.anim = this.getComponent(cc.Animation);
     }
-    init(resName:string,pos:cc.Vec2,shopTable?:ShopTable){
+    init(resName:string,pos:cc.Vec3,shopTable?:ShopTable){
         this.data.valueCopy(Logic.items[resName]);
         this.data.uuid = this.data.genNonDuplicateID();
         this.data.pos = pos;

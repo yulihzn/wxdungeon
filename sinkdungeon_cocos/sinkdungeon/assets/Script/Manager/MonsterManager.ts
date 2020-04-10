@@ -188,7 +188,7 @@ export default class MonsterManager extends cc.Component {
 
         return monster;
     }
-    getIceDemon(dungeon: Dungeon, posIndex: cc.Vec2): IceDemon {
+    getIceDemon(dungeon: Dungeon, posIndex: cc.Vec3): IceDemon {
         let icePrefab: cc.Node = null;
         icePrefab = cc.instantiate(this.iceDemon);
         icePrefab.active = false;
@@ -204,7 +204,7 @@ export default class MonsterManager extends cc.Component {
         iceDemon.node.active = true;
         return iceDemon;
     }
-    getEvilEye(dungeon: Dungeon, posIndex: cc.Vec2): EvilEye {
+    getEvilEye(dungeon: Dungeon, posIndex: cc.Vec3): EvilEye {
         let evilEyePrefab: cc.Node = null;
         evilEyePrefab = cc.instantiate(this.evilEye);
         evilEyePrefab.active = false;
@@ -220,7 +220,7 @@ export default class MonsterManager extends cc.Component {
         evil.node.active = true;
         return evil;
     }
-    getWarMachine(dungeon: Dungeon, posIndex: cc.Vec2): WarMachine {
+    getWarMachine(dungeon: Dungeon, posIndex: cc.Vec3): WarMachine {
         let machinePrefab: cc.Node = null;
         machinePrefab = cc.instantiate(this.warmachine);
         machinePrefab.active = false;
@@ -236,7 +236,7 @@ export default class MonsterManager extends cc.Component {
         machine.node.active = true;
         return machine;
     }
-    getDryad(dungeon: Dungeon, posIndex: cc.Vec2): Dryad {
+    getDryad(dungeon: Dungeon, posIndex: cc.Vec3): Dryad {
         let dryadPrefab: cc.Node = null;
         dryadPrefab = cc.instantiate(this.dryad);
         dryadPrefab.active = false;
@@ -252,7 +252,7 @@ export default class MonsterManager extends cc.Component {
         dryad.node.active = true;
         return dryad;
     }
-    getSphinx(dungeon: Dungeon, posIndex: cc.Vec2): Sphinx {
+    getSphinx(dungeon: Dungeon, posIndex: cc.Vec3): Sphinx {
         let sphinxPrefab: cc.Node = null;
         sphinxPrefab = cc.instantiate(this.sphinx);
         sphinxPrefab.active = false;
@@ -268,7 +268,7 @@ export default class MonsterManager extends cc.Component {
         sphinx.node.active = true;
         return sphinx;
     }
-    getDragon(dungeon: Dungeon, posIndex: cc.Vec2): Dragon {
+    getDragon(dungeon: Dungeon, posIndex: cc.Vec3): Dragon {
         let dragonPrefab: cc.Node = null;
         dragonPrefab = cc.instantiate(this.dragon);
         dragonPrefab.active = false;
@@ -284,7 +284,7 @@ export default class MonsterManager extends cc.Component {
         dragon.node.active = true;
         return dragon;
     }
-    getRah(dungeon: Dungeon, posIndex: cc.Vec2): Rah {
+    getRah(dungeon: Dungeon, posIndex: cc.Vec3): Rah {
         let rahPrefab: cc.Node = null;
         rahPrefab = cc.instantiate(this.rah);
         rahPrefab.active = false;
@@ -300,7 +300,7 @@ export default class MonsterManager extends cc.Component {
         rah.node.active = true;
         return rah;
     }
-    getKraken(dungeon: Dungeon, posIndex: cc.Vec2): Kraken {
+    getKraken(dungeon: Dungeon, posIndex: cc.Vec3): Kraken {
         let krakenPrefab: cc.Node = null;
         krakenPrefab = cc.instantiate(this.kraken);
         krakenPrefab.active = false;
@@ -316,7 +316,7 @@ export default class MonsterManager extends cc.Component {
         kraken.node.active = true;
         return kraken;
     }
-    getCaptain(dungeon: Dungeon, posIndex: cc.Vec2): Captain {
+    getCaptain(dungeon: Dungeon, posIndex: cc.Vec3): Captain {
         let captainPrefab: cc.Node = null;
         captainPrefab = cc.instantiate(this.captain);
         captainPrefab.active = false;
@@ -332,7 +332,7 @@ export default class MonsterManager extends cc.Component {
         captain.node.active = true;
         return captain;
     }
-    getSlime(dungeon: Dungeon, posIndex: cc.Vec2, type: number): Slime {
+    getSlime(dungeon: Dungeon, posIndex: cc.Vec3, type: number): Slime {
         let slimePrefab: cc.Node = null;
         slimePrefab = cc.instantiate(this.slime);
         slimePrefab.active = false;

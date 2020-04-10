@@ -31,24 +31,24 @@ export default class JoyController extends cc.Component {
  
  
     private touchID:number;//触摸事件ID（多点触控）
-    private touchArea:cc.Vec2;//触摸区域大小
+    private touchArea:cc.Vec3;//触摸区域大小
  
  
-    private fixedPointMoveCenterPos:cc.Vec2;//固定点移动中心
+    private fixedPointMoveCenterPos:cc.Vec3;//固定点移动中心
     private fixedPointMoveRadius:number;//固定点移动半径
-    private movePointMoveCenterPos:cc.Vec2;//移动点移动中心
+    private movePointMoveCenterPos:cc.Vec3;//移动点移动中心
  
  
-    private joystickInputDir:cc.Vec2;
+    private joystickInputDir:cc.Vec3;
  
  
     onLoad() {
         let nodeSize = this.node.getContentSize()
-        this.touchArea = new cc.Vec2(nodeSize.width,nodeSize.height)
+        this.touchArea = new cc.Vec3(nodeSize.width,nodeSize.height)
  
  
         //固定点位置范围
-        this.fixedPointMoveCenterPos = cc.v2(0,0);
+        this.fixedPointMoveCenterPos = cc.v3(0,0);
         this.fixedPointMoveRadius = this.touchArea.x/2 - this.movePointMoveRadius;
  
  
@@ -56,7 +56,7 @@ export default class JoyController extends cc.Component {
             if (this.touchID==-1){
                 //触摸位置
                 let touchStartPos = event.getLocation()
-                let _pos = new cc.Vec2(touchStartPos.x,touchStartPos.y)
+                let _pos = new cc.Vec3(touchStartPos.x,touchStartPos.y)
                 _pos.subSelf(this.node.position)
  
  
@@ -75,7 +75,7 @@ export default class JoyController extends cc.Component {
             if (this.touchID==event.getID()){
                 //触摸位置
                 let nowPos = event.getLocation()
-                let _pos = new cc.Vec2(nowPos.x,nowPos.y)
+                let _pos = new cc.Vec3(nowPos.x,nowPos.y)
                 _pos.subSelf(this.node.position)
  
  
@@ -109,7 +109,7 @@ export default class JoyController extends cc.Component {
      */
     init(){
         this.touchID = -1;
-        this.joystickInputDir = new cc.Vec2()
+        this.joystickInputDir = new cc.Vec3()
         
         this.setFixedPointPos(this.fixedPointMoveCenterPos)
         this.setMovePointPos(this.fixedPointMoveCenterPos)
@@ -119,8 +119,8 @@ export default class JoyController extends cc.Component {
     /**
      * 设置固定点位置
      */
-    public setFixedPointPos(pos:cc.Vec2){
-        this.fixedPoint.setPosition(cc.v2(0,0));//固定位置
+    public setFixedPointPos(pos:cc.Vec3){
+        this.fixedPoint.setPosition(cc.v3(0,0));//固定位置
     }
  
  
@@ -135,7 +135,7 @@ export default class JoyController extends cc.Component {
     /**
      * 设置移动点位置
      */
-    public setMovePointPos(pos:cc.Vec2){
+    public setMovePointPos(pos:cc.Vec3){
         this.movePoint.setPosition(pos)
     }
  
@@ -154,7 +154,7 @@ export default class JoyController extends cc.Component {
      * @param centerPos 限制中心位置
      * @param radius 限制半径
      */
-    public clampPos(pos:cc.Vec2,centerPos:cc.Vec2,radius:number):cc.Vec2{
+    public clampPos(pos:cc.Vec3,centerPos:cc.Vec3,radius:number):cc.Vec3{
         let dpos = pos.sub(centerPos)
         if (dpos.mag()>radius){
             return dpos.normalize().mul(radius).add(centerPos)

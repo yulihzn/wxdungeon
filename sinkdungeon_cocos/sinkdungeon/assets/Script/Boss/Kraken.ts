@@ -54,12 +54,12 @@ export default class Kraken extends Boss {
     ShowFinish() {
         this.anim.play('KrakenHeadIdle');
         this.isShow = true;
-        let pos1 = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE+4, -10));
-        let pos2 = Dungeon.getPosInMap(cc.v2(-4, -10));
+        let pos1 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE+4, -10));
+        let pos2 = Dungeon.getPosInMap(cc.v3(-4, -10));
         this.hand01 = this.addHand(pos1,true);
         this.hand02 = this.addHand(pos2,false);
     }
-    addHand(pos:cc.Vec2,isReverse:boolean){
+    addHand(pos:cc.Vec3,isReverse:boolean){
         let hand = cc.instantiate(this.swingHand);
         this.dungeon.node.addChild(hand);
         hand.setPosition(pos);
@@ -73,7 +73,7 @@ export default class Kraken extends Boss {
         return h;
     }
     updatePlayerPos() {
-        let pos = Dungeon.getPosInMap(cc.v2(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+4));
+        let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+4));
         this.node.setPosition(pos);
     }
     
@@ -162,7 +162,7 @@ export default class Kraken extends Boss {
                 this.shooter.skipTopwall = true;
                 let pos  = this.node.position.clone().add(this.shooter.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
-                if(!hv.equals(cc.Vec2.ZERO)){
+                if(!hv.equals(cc.Vec3.ZERO)){
                     hv = hv.normalizeSelf();
                     this.shooter.setHv(hv);
                     this.shooter.dungeon = this.dungeon;

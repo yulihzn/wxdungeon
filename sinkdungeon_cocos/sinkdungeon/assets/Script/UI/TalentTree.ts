@@ -145,7 +145,7 @@ export default class TalentTree extends cc.Component {
             talentList.push(node);
         }
     }
-    private drawLines(pos1:cc.Vec2,pos2:cc.Vec2){
+    private drawLines(pos1:cc.Vec3,pos2:cc.Vec3){
         if(!this.graphics){
             this.graphics = this.getComponent(cc.Graphics);
         }
@@ -209,9 +209,9 @@ export default class TalentTree extends cc.Component {
         icon.children = new Array();
         for(let i of childrenIndexs){
             icon.children.push(talentList[i]);
-            let p1 = icon.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+            let p1 = icon.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             p1 = this.node.convertToNodeSpaceAR(p1);
-            let p2 = talentList[i].convertToWorldSpaceAR(cc.Vec2.ZERO);
+            let p2 = talentList[i].convertToWorldSpaceAR(cc.Vec3.ZERO);
             p2 = this.node.convertToNodeSpaceAR(p2);
             this.drawLines(p1,p2);
         }

@@ -28,7 +28,7 @@ export default class Trap extends Building {
     @property(cc.SpriteFrame)
     halfSpriteFrame:cc.SpriteFrame = null;
     isOpen:boolean = false;
-    pos:cc.Vec2 = cc.v2(0,0);
+    pos:cc.Vec3 = cc.v3(0,0);
     private sprite: cc.Node;
     private timeDelay = 0;
     isPlayerIn = false;
@@ -42,7 +42,7 @@ export default class Trap extends Building {
         
     }
     
-    setPos(pos:cc.Vec2){
+    setPos(pos:cc.Vec3){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;

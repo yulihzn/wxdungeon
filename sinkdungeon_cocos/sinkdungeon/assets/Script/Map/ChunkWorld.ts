@@ -52,7 +52,7 @@ export default class ChunkWorld extends cc.Component {
             for (let j = 0; j < ChunkWorld.SIZE; j++) {
                 let c = cc.instantiate(this.chunkPrefab);
                 c.parent = this.node;
-                c.position = ChunkWorld.getPosInMap(cc.v2(i, j));
+                c.position = ChunkWorld.getPosInMap(cc.v3(i, j));
                 c.zIndex = 100;
                 let chunk = c.getComponent(Chunk);
                 chunk.data.x = i;
@@ -62,7 +62,7 @@ export default class ChunkWorld extends cc.Component {
                 chunk.loadMap();
                 // chunk.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch)=> {
                 //     chunk.onClicked();
-                //     cc.log(cc.v2(chunk.data.x,chunk.data.y));
+                //     cc.log(cc.v3(chunk.data.x,chunk.data.y));
                 //     this.changeMap(chunk.data.x,chunk.data.y);
                 // }, this);
             }
@@ -70,8 +70,8 @@ export default class ChunkWorld extends cc.Component {
         this.printMapIndex();
     }
 
-    getTargetChunkPos(targetPosition:cc.Vec2){
-        let leftBottomPos = cc.v2(this.currentMap[0][0].data.x,this.currentMap[0][0].data.y);
+    getTargetChunkPos(targetPosition:cc.Vec3){
+        let leftBottomPos = cc.v3(this.currentMap[0][0].data.x,this.currentMap[0][0].data.y);
     }
     private changeMap(x:number,y:number){
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
@@ -84,12 +84,12 @@ export default class ChunkWorld extends cc.Component {
             tempMap[i] = new Array(i);
             for (let j = 0; j < ChunkWorld.SIZE; j++) {
                 //获取对应旧map的chunk并改变下标
-                let pos = this.getCorrectIndex(cc.v2(x,y),cc.v2(i,j));
+                let pos = this.getCorrectIndex(cc.v3(x,y),cc.v3(i,j));
                 tempMap[i][j] = this.currentMap[pos.x][pos.y];
                 tempMap[i][j].data.x = i;
                 tempMap[i][j].data.y = j;
                 if(pos.z==1){
-                    let offset = cc.v2(i, j).subSelf(cc.v2(CENTER,CENTER));
+                    let offset = cc.v3(i, j).subSelf(cc.v3(CENTER,CENTER));
                     let offsetPos = ChunkWorld.getPosInMap(offset);
                     tempMap[i][j].targetPosition =selectPosition.clone().addSelf(offsetPos);
                     tempMap[i][j].loadMap();
@@ -115,7 +115,7 @@ export default class ChunkWorld extends cc.Component {
      * @param select 当前选择位置
      * @param target 需要修改的位置
      */
-    private getCorrectIndex(select:cc.Vec2,target:cc.Vec2):cc.Vec3{
+    private getCorrectIndex(select:cc.Vec3,target:cc.Vec3):cc.Vec3{
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
         let pos = target.clone();
         let offsetX = select.x-CENTER;
@@ -141,13 +141,13 @@ export default class ChunkWorld extends cc.Component {
         }
         return new cc.Vec3(pos.x,pos.y,isOuter?1:0);
     }
-    static getPosInMap(pos: cc.Vec2) {
+    static getPosInMap(pos: cc.Vec3) {
         let x = pos.x * Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE;
         let y = pos.y * Chunk.HEIGHT*Chunk.TILE_SCALE*Chunk.TILE_SIZE;
-        return cc.v2(x, y);
+        return cc.v3(x, y);
     }
     //获取不超出地图的坐标
-    static fixOuterMap(pos: cc.Vec2,offset:cc.Vec2): cc.Vec2 {
+    static fixOuterMap(pos: cc.Vec3,offset:cc.Vec3): cc.Vec3 {
         let x = (pos.x - offset.x) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
         let y = (pos.y - offset.y) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
         x = Math.round(x);
@@ -158,19 +158,19 @@ export default class ChunkWorld extends cc.Component {
         if (y < 0) { y = 0; isOuter = true; }
         if (y >= ChunkWorld.SIZE) { y = ChunkWorld.SIZE - 1; isOuter = true; }
         if (isOuter) {
-            return ChunkWorld.getPosInMap(cc.v2(x, y));
+            return ChunkWorld.getPosInMap(cc.v3(x, y));
         } else {
             return pos;
         }
     }
-    static getIndexInMap(pos: cc.Vec2, offset:cc.Vec2) {
+    static getIndexInMap(pos: cc.Vec3, offset:cc.Vec3) {
         let x = (pos.x - offset.x) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
         let y = (pos.y - offset.y) / (Chunk.WIDTH*Chunk.TILE_SCALE*Chunk.TILE_SIZE);
         x = Math.round(x);
         y = Math.round(y);
         if (x < 0) { x = 0 }; if (x >= ChunkWorld.SIZE) { x = ChunkWorld.SIZE - 1 };
             if (y < 0) { y = 0 }; if (y >= ChunkWorld.SIZE) { y = ChunkWorld.SIZE - 1 };
-        return cc.v2(x, y);
+        return cc.v3(x, y);
     }
     start () {
 

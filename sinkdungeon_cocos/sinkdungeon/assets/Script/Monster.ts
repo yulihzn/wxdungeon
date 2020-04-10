@@ -43,8 +43,8 @@ export default class Monster extends Actor {
     public static readonly RES_ATTACK04 = 'anim007';//图片资源 特殊攻击
 
     static readonly SCALE_NUM = 1.5;
-    @property(cc.Vec2)
-    pos: cc.Vec2 = cc.v2(0, 0);
+    @property(cc.Vec3)
+    pos: cc.Vec3 = cc.v3(0, 0);
 
     @property(HealthBar)
     healthBar: HealthBar = null;
@@ -105,7 +105,7 @@ export default class Monster extends Actor {
     blinkSkill = new Skill();
     isAttackAnimExcuting = false;
     //躲避目标位置
-    moveTarget: cc.Vec2 = cc.v2(0, 0);
+    moveTarget: cc.Vec3 = cc.v3(0, 0);
     attrmap: { [key: string]: number } = {};
 
     onLoad() {
@@ -272,7 +272,7 @@ export default class Monster extends Actor {
         let p = this.shooter.node.position.clone();
         p.x = this.shooter.node.scaleX > 0 ? p.x + 30 : -p.x - 30;
         let hv = this.dungeon.player.getCenterPosition().sub(this.node.position.add(p));
-        if (!hv.equals(cc.Vec2.ZERO)) {
+        if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName));
@@ -291,7 +291,7 @@ export default class Monster extends Actor {
             this.shooter.data.isLineAim = this.data.isLineAim;
             this.shooter.data.bulletType = this.data.bulletType ? this.data.bulletType : "bullet001";
             this.shooter.data.bulletExSpeed = this.data.bulletExSpeed;
-            this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5, cc.v2(this.data.shooterOffsetX, this.data.shooterOffsetY));
+            this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5, cc.v3(this.data.shooterOffsetX, this.data.shooterOffsetY));
         }
     }
     showAttackAnim(finish: Function, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
@@ -300,12 +300,12 @@ export default class Monster extends Actor {
         }
         this.isAttackAnimExcuting = true;
         let pos = this.dungeon.player.node.position.clone().sub(this.node.position);
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
         }
         this.anim.pause();
-        if (pos.equals(cc.Vec2.ZERO)) {
-            pos = cc.v2(1, 0);
+        if (pos.equals(cc.Vec3.ZERO)) {
+            pos = cc.v3(1, 0);
         }
         pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 48 : -48);
         this.sprite.stopAllActions();
@@ -334,7 +334,7 @@ export default class Monster extends Actor {
             cc.delayTime(stabDelay),
             cc.moveBy(0.2, pos.x, pos.y), cc.callFunc(() => {
                 this.dangerBox.finish();
-                this.moveTarget = cc.Vec2.ZERO;
+                this.moveTarget = cc.Vec3.ZERO;
             }));
         //特殊攻击
         let action2 = cc.sequence(cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_ATTACK03) }),
@@ -406,27 +406,27 @@ export default class Monster extends Actor {
         return dis;
     }
     //移动，返回速度
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied || this.isFall || this.isHurt || this.dashSkill.IsExcuting || this.isDisguising) {
             return;
         }
-        if (pos.equals(cc.Vec2.ZERO)) {
+        if (pos.equals(cc.Vec3.ZERO)) {
             return;
         }
         let isDodge = false;
-        if (!this.moveTarget.equals(cc.Vec2.ZERO)) {
+        if (!this.moveTarget.equals(cc.Vec3.ZERO)) {
             pos = this.moveTarget.clone();
             isDodge = true;
         }
         pos = pos.normalizeSelf();
-        if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.1);
         }
         if (isDodge) {
             pos = pos.mul(2.5);
         }
 
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;
@@ -525,7 +525,7 @@ export default class Monster extends Actor {
         //100ms后修改受伤
         if (dd.getTotalDamage() > 0) {
             this.dangerBox.finish();
-            this.moveTarget = cc.Vec2.ZERO;
+            this.moveTarget = cc.Vec3.ZERO;
             this.bodySprite.node.color = cc.color(255, 0, 0);
             if(damageData.isBackAttack){
                 this.showBloodEffect();
@@ -583,7 +583,7 @@ export default class Monster extends Actor {
         if (!this.particleIce) {
             return;
         }
-        this.effectNode.setPosition(cc.v2(0, 32));
+        this.effectNode.setPosition(cc.v3(0, 32));
         if (!isDashing) {
             this.effectNode.runAction(cc.sequence(cc.moveTo(0.2, 32, 32), cc.moveTo(0.2, 0, 16)));
         }
@@ -669,8 +669,8 @@ export default class Monster extends Actor {
     }
 
     /**获取中心位置 */
-    getCenterPosition(): cc.Vec2 {
-        return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
+    getCenterPosition(): cc.Vec3 {
+        return this.node.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
     }
     blink() {
         if (this.data.blink > 0) {
@@ -682,9 +682,9 @@ export default class Monster extends Actor {
                     , cc.callFunc(() => {
                         let newPos = this.dungeon.player.pos.clone();
                         if (this.dungeon.player.pos.x > this.pos.x) {
-                            newPos = newPos.addSelf(cc.v2(1, 0));
+                            newPos = newPos.addSelf(cc.v3(1, 0));
                         } else {
-                            newPos = newPos.addSelf(cc.v2(-1, 0));
+                            newPos = newPos.addSelf(cc.v3(-1, 0));
                         }
                         let pos = Dungeon.getPosInMap(newPos);
                         this.node.setPosition(pos);
@@ -702,7 +702,7 @@ export default class Monster extends Actor {
         this.node.position = Dungeon.fixOuterMap(this.node.position);
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
-        let newPos = cc.v2(0, 0);
+        let newPos = cc.v3(0, 0);
         newPos.x += Logic.getRandomNum(0, 200) - 100;
         newPos.y += Logic.getRandomNum(0, 200) - 100;
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
@@ -798,12 +798,12 @@ export default class Monster extends Actor {
         }
 
     }
-    getMovePosFromPlayer(): cc.Vec2 {
+    getMovePosFromPlayer(): cc.Vec3 {
         let newPos = this.dungeon.player.pos.clone();
         if (this.dungeon.player.pos.x > this.pos.x) {
-            newPos = newPos.addSelf(cc.v2(1, 0));
+            newPos = newPos.addSelf(cc.v3(1, 0));
         } else {
-            newPos = newPos.addSelf(cc.v2(-1, 0));
+            newPos = newPos.addSelf(cc.v3(-1, 0));
         }
         let pos = Dungeon.getPosInMap(newPos);
         pos = pos.sub(this.node.position);

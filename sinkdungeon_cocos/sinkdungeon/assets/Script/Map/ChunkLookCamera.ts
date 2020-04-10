@@ -18,7 +18,7 @@ export default class ChunkLookCamera extends cc.Component {
     @property(cc.Node)
     target:cc.Node = null;
 
-    targetPosition:cc.Vec2;
+    targetPosition:cc.Vec3;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -33,10 +33,10 @@ export default class ChunkLookCamera extends cc.Component {
     lateUpdate(){
         if(this.targetPosition){
         }
-        this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(this.target.convertToWorldSpaceAR(cc.Vec2.ZERO)),0.1);
+        this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(this.target.convertToWorldSpaceAR(cc.Vec3.ZERO)),0.1);
     }
-    lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
-        let out = cc.v2(0,0);
+    lerp(self:cc.Vec3,to:cc.Vec3, ratio:number):cc.Vec3 {
+        let out = cc.v3(0,0);
         let x = self.x;
         let y = self.y;
         out.x = x + (to.x - x) * ratio;

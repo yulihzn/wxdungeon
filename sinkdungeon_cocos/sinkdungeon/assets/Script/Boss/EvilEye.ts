@@ -136,18 +136,18 @@ export default class EvilEye extends Boss {
         if (!this.dashSkill.IsExcuting) {
             this.fireWithMainEye();
         }
-        if (!pos.equals(cc.Vec2.ZERO)
+        if (!pos.equals(cc.Vec3.ZERO)
             && playerDis > 100 && !this.shooter.isAiming && !this.dashSkill.IsExcuting) {
             pos = pos.normalizeSelf();
             this.move(pos, 20);
         }
     }
-    getMovePos(): cc.Vec2 {
+    getMovePos(): cc.Vec3 {
         let newPos = this.dungeon.player.pos.clone();
         // if (this.dungeon.player.pos.x > this.pos.x) {
-        //     newPos = newPos.addSelf(cc.v2(1, 1));
+        //     newPos = newPos.addSelf(cc.v3(1, 1));
         // } else {
-        //     newPos = newPos.addSelf(cc.v2(-1, 1));
+        //     newPos = newPos.addSelf(cc.v3(-1, 1));
         // }
         let pos = Dungeon.getPosInMap(newPos);
         pos.y += 32;
@@ -169,15 +169,15 @@ export default class EvilEye extends Boss {
     }
     fireViceBullet(){
         for (let i = 0; i < this.viceShooters.length; i++) {
-            let p = this.viceEyes[i].convertToWorldSpaceAR(cc.v2(0, 0));
+            let p = this.viceEyes[i].convertToWorldSpaceAR(cc.v3(0, 0));
             p = this.node.convertToNodeSpaceAR(p);
             this.viceShooters[i].node.setPosition(p);
             let pos = this.node.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
-            if (!hv.equals(cc.Vec2.ZERO)) {
+            if (!hv.equals(cc.Vec3.ZERO)) {
                 hv = hv.normalizeSelf();
                 this.viceShooters[i].setHv(hv);
-                this.fireShooter(this.viceShooters[i], 'bullet001', 0, 0, 0, cc.v2(0, 0));
+                this.fireShooter(this.viceShooters[i], 'bullet001', 0, 0, 0, cc.v3(0, 0));
                 
             }
         }
@@ -186,16 +186,16 @@ export default class EvilEye extends Boss {
         this.mainEyesFireSkill.next(() => {
             this.mainEyesFireSkill.IsExcuting = true;
             this.scheduleOnce(()=>{this.mainEyesFireSkill.IsExcuting = false;},3);
-            let p = this.shooter.node.convertToWorldSpaceAR(cc.v2(0, 0));
+            let p = this.shooter.node.convertToWorldSpaceAR(cc.v3(0, 0));
             p = this.node.convertToNodeSpaceAR(p);
             this.shooter.node.setPosition(p);
             let pos = this.node.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
-            if (!hv.equals(cc.Vec2.ZERO)) {
+            if (!hv.equals(cc.Vec3.ZERO)) {
                 hv = hv.normalizeSelf();
                 this.shooter.setHv(hv);
                 this.shooter.data.isLineAim = 1;
-                this.fireShooter(this.shooter, 'laser003', 0, 3, 0, cc.v2(0, 0));
+                this.fireShooter(this.shooter, 'laser003', 0, 3, 0, cc.v3(0, 0));
                 this.anim.playAdditive("EvilEyeStone");
             }
 
@@ -210,7 +210,7 @@ export default class EvilEye extends Boss {
             }
             this.anim.play('EvilEyeBite');
             let pos = this.getMovePos();
-            if (!pos.equals(cc.Vec2.ZERO)) {
+            if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf();
             }
             let h = pos.x;
@@ -224,7 +224,7 @@ export default class EvilEye extends Boss {
         }, 3, true);
 
     }
-    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number, defaultPos?: cc.Vec2): void {
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number, defaultPos?: cc.Vec3): void {
         shooter.dungeon = this.dungeon;
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
@@ -264,11 +264,11 @@ export default class EvilEye extends Boss {
         }
     }
 
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {
             return;
         }
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;

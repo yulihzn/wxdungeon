@@ -171,7 +171,7 @@ export default class TalentMagic extends Talent {
 
     addStatus2NearEnemy(statusName: string, range: number) {
         if (!this.player) {
-            return cc.Vec2.ZERO;
+            return cc.Vec3.ZERO;
         }
         for (let monster of this.player.meleeWeapon.dungeon.monsters) {
             let dis = Logic.getDistance(this.node.position, monster.node.position);

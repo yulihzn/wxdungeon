@@ -73,23 +73,24 @@ export default class MagicBall extends cc.Component {
             this.fire.node.active = true;
             this.isAttacking = true;
         }
-        this.rigidBody.linearVelocity = this.getPlayerHv(player,angle).mul(speed);
+        let hs = this.getPlayerHv(player,angle).mul(speed);
+        this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
         this.node.zIndex = 4000;
         this.scheduleOnce(() => { if (this.node) this.node.destroy(); }, lifeTime);
         
         
     }
-    getPlayerPosition(player:Player):cc.Vec2{
-        return player.node.position.clone().addSelf(cc.v2(8,48));
+    getPlayerPosition(player:Player):cc.Vec3{
+        return player.node.position.clone().addSelf(cc.v3(8,48));
     }
-    getPlayerFarPosition(player:Player,distance:number,angleOffset:number):cc.Vec2{
+    getPlayerFarPosition(player:Player,distance:number,angleOffset:number):cc.Vec3{
         let hv = player.meleeWeapon.getHv().clone();
-        let pos = cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180).mul(distance);
-        return player.node.position.clone().addSelf(cc.v2(8,48).addSelf(pos));
+        let pos = cc.v3(hv).rotateSelf(angleOffset * Math.PI / 180).mul(distance);
+        return player.node.position.clone().addSelf(cc.v3(8,48).addSelf(pos));
     }
-    getPlayerHv(player:Player,angleOffset:number):cc.Vec2{
+    getPlayerHv(player:Player,angleOffset:number):cc.Vec3{
         let hv = player.meleeWeapon.getHv().clone();
-        let pos = cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180);
+        let pos = cc.v3(hv).rotateSelf(angleOffset * Math.PI / 180);
         return pos.normalizeSelf();
     }
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {

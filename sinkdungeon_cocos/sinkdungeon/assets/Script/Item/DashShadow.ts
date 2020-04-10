@@ -28,7 +28,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class DashShadow extends cc.Component {
     rigidBody: cc.RigidBody;
-    hv: cc.Vec2 = cc.v2(1, 0);
+    hv: cc.Vec3 = cc.v3(1, 0);
     private motionStreak: cc.MotionStreak;
     private sprite: cc.Node;
     talentDash: TalentDash;
@@ -59,8 +59,8 @@ export default class DashShadow extends cc.Component {
 
     }
 
-    getPlayerPosition(): cc.Vec2 {
-        return this.talentDash.player.node.position.clone().addSelf(cc.v2(8, 8));
+    getPlayerPosition(): cc.Vec3 {
+        return this.talentDash.player.node.position.clone().addSelf(cc.v3(8, 8));
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
@@ -79,7 +79,8 @@ export default class DashShadow extends cc.Component {
             speed = 2000;
             this.rigidBody.linearDamping = 1;
         }
-        this.rigidBody.linearVelocity = this.hv.mul(speed);
+        let hs = this.hv.mul(speed);
+        this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
         this.node.zIndex = 4000;
         this.fire(this.shooter);
         this.scheduleOnce(() => {
@@ -113,13 +114,13 @@ export default class DashShadow extends cc.Component {
             shooter.data.bulletType = "bullet026";
         }
         if (isOpenFire) {
-            shooter.fireBullet(0, cc.v2(0, 0));
+            shooter.fireBullet(0, cc.v3(0, 0));
 
         }
     }
-    setHv(hv: cc.Vec2) {
-        if (hv.equals(cc.Vec2.ZERO)) {
-            this.hv = cc.v2(1, 0);
+    setHv(hv: cc.Vec3) {
+        if (hv.equals(cc.Vec3.ZERO)) {
+            this.hv = cc.v3(1, 0);
         } else {
             this.hv = hv;
         }

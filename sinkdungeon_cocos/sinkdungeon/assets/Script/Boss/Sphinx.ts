@@ -103,7 +103,7 @@ export default class Sphinx extends Boss {
             this.scheduleOnce(() => {
                 let pos = this.node.position.clone().add(this.shooter01.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
-                if (!hv.equals(cc.Vec2.ZERO)) {
+                if (!hv.equals(cc.Vec3.ZERO)) {
                     hv = hv.normalizeSelf();
                     this.shooter01.setHv(hv);
                     this.fireShooter(this.shooter01, "bullet023", 0, -20);
@@ -119,7 +119,7 @@ export default class Sphinx extends Boss {
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(angle, cc.Vec2.ZERO);
+        shooter.fireBullet(angle, cc.Vec3.ZERO);
     }
     showBoss() {
         this.isShow = true;

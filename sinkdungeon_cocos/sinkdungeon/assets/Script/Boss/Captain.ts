@@ -94,7 +94,7 @@ export default class Captain extends Boss {
             return;
         }
         let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
-        if (!hv.equals(cc.Vec2.ZERO)) {
+        if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.exshooter.setHv(hv);
             this.exshooter.dungeon = this.dungeon;
@@ -104,7 +104,7 @@ export default class Captain extends Boss {
             if(this.data.currentHealth<this.data.Common.maxHealth/2){
                 this.exshooter.data.bulletLineExNum = 1;
             }
-            this.exshooter.fireBullet(0,cc.v2(0,0));
+            this.exshooter.fireBullet(0,cc.v3(0,0));
 
         }
     }
@@ -113,7 +113,7 @@ export default class Captain extends Boss {
             return;
         }
         let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
-        if (!hv.equals(cc.Vec2.ZERO)) {
+        if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.dungeon = this.dungeon;
@@ -162,7 +162,7 @@ export default class Captain extends Boss {
         if (this.dungeon) {
             let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
             if (playerDis < 64) {
-                this.rigidbody.linearVelocity = cc.v2(0, 0);
+                this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             }
         }
         if (this.isDied) {
@@ -244,7 +244,7 @@ export default class Captain extends Boss {
                 
             }
           
-            if (!pos.equals(cc.Vec2.ZERO)&&!isPlayJump && !this.attackSkill.IsExcuting) {
+            if (!pos.equals(cc.Vec3.ZERO)&&!isPlayJump && !this.attackSkill.IsExcuting) {
                 pos = pos.normalizeSelf();
                 this.move(pos, speed);
             }
@@ -259,7 +259,7 @@ export default class Captain extends Boss {
         }
         let newPos = this.dungeon.player.pos.clone();
         let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
             pos = pos.normalizeSelf();
             
@@ -278,15 +278,15 @@ export default class Captain extends Boss {
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
     }
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {
             return;
         }
-        if (this.attackSkill.IsExcuting && !pos.equals(cc.Vec2.ZERO)) {
+        if (this.attackSkill.IsExcuting && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.5);
         }
 
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;

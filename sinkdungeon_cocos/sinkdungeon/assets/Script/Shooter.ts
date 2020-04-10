@@ -45,7 +45,7 @@ export default class Shooter extends cc.Component {
     sprite: cc.Node;
     data: EquipmentData = new EquipmentData();
     parentNode: cc.Node;//该node为dungeon下发射器的载体
-    private hv: cc.Vec2 = cc.v2(1, 0);
+    private hv: cc.Vec3 = cc.v3(1, 0);
     isAiming = false;//是否在瞄准
     //玩家远程伤害
     remoteDamagePlayer = new DamageData();
@@ -102,16 +102,16 @@ export default class Shooter extends cc.Component {
         }
         return spriteFrame;
     }
-    setHv(hv: cc.Vec2) {
+    setHv(hv: cc.Vec3) {
         let pos = this.hasNearEnemy();
-        if (!pos.equals(cc.Vec2.ZERO)) {
-            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+        if (!pos.equals(cc.Vec3.ZERO)) {
+            this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
         } else {
             this.hv = hv.normalizeSelf();
         }
     }
-    fireBullet(angleOffset?: number, defaultPos?: cc.Vec2) {
+    fireBullet(angleOffset?: number, defaultPos?: cc.Vec3) {
         if (this.data.isArcAim == 1 && this.graphics) {
             this.aimTargetArc(angleOffset, defaultPos);
         } else if (this.data.isLineAim == 1 && this.graphics) {
@@ -120,10 +120,10 @@ export default class Shooter extends cc.Component {
             this.fireBulletDo(angleOffset, defaultPos);
         }
     }
-    private fireBulletDo(angleOffset?: number, defaultPos?: cc.Vec2) {
+    private fireBulletDo(angleOffset?: number, defaultPos?: cc.Vec3) {
         if (this.sprite) {
             this.sprite.stopAllActions();
-            this.sprite.position = cc.Vec2.ZERO;
+            this.sprite.position = cc.Vec3.ZERO;
             // this.changeRes(this.data.img);
             let action = cc.sequence(cc.moveBy(0.1, 10, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim') }, this)
                 , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.changeRes(this.data.img) }, this));
@@ -155,7 +155,7 @@ export default class Shooter extends cc.Component {
             this.fireLinecBullet(this.data.bulletType, angleOffset, defaultPos);
         }
     }
-    private fireArcBullet(bulletType: string, defaultPos: cc.Vec2): void {
+    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3): void {
         if (this.data.bulletArcExNum <= 0) {
             return;
         }
@@ -185,7 +185,7 @@ export default class Shooter extends cc.Component {
         }
 
     }
-    private fireLinecBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec2): void {
+    private fireLinecBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3): void {
         if (this.data.bulletLineExNum == 0) {
             return;
         }
@@ -201,14 +201,14 @@ export default class Shooter extends cc.Component {
     //暂时不用，待完善
     private fireNetsBullet(dir: number, bulletType: string) {
         switch (dir) {
-            case 0: this.setHv(cc.v2(0, 1)); break;
-            case 1: this.setHv(cc.v2(0, -1)); break;
-            case 2: this.setHv(cc.v2(-1, 0)); break;
-            case 3: this.setHv(cc.v2(1, 0)); break;
+            case 0: this.setHv(cc.v3(0, 1)); break;
+            case 1: this.setHv(cc.v3(0, -1)); break;
+            case 2: this.setHv(cc.v3(-1, 0)); break;
+            case 3: this.setHv(cc.v3(1, 0)); break;
         }
         let poses = [0, 128, -128, 256, -256];
         for (let i = 0; i < poses.length; i++) {
-            this.fire(bulletType, this.bullet, this.bulletPool, 0, this.hv.clone(), cc.v2(64, poses[i]));
+            this.fire(bulletType, this.bullet, this.bulletPool, 0, this.hv.clone(), cc.v3(64, poses[i]));
         }
     }
 
@@ -218,9 +218,9 @@ export default class Shooter extends cc.Component {
      * @param pool 线程池
      * @param angleOffset 角度
      * @param hv 方向向量
-     * @param defaultPos 初始位置默认cc.v2(30, 0)
+     * @param defaultPos 初始位置默认cc.v3(30, 0)
      */
-    private fire(bulletType: string, prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number, hv: cc.Vec2, defaultPos?: cc.Vec2) {
+    private fire(bulletType: string, prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number, hv: cc.Vec3, defaultPos?: cc.Vec3) {
         let bulletPrefab: cc.Node = null;
         if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             bulletPrefab = pool.get();
@@ -230,7 +230,7 @@ export default class Shooter extends cc.Component {
             bulletPrefab = cc.instantiate(prefab);
         }
         bulletPrefab.parent = this.node;
-        let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v2(30, 0));
+        let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v3(30, 0));
         pos = this.dungeon.node.convertToNodeSpaceAR(pos);
         bulletPrefab.parent = this.dungeon.node;
         bulletPrefab.position = pos;
@@ -259,7 +259,7 @@ export default class Shooter extends cc.Component {
         bullet.changeBullet(bd);
         this.bulletName = bullet.name + bd.resName;
         bullet.enabled = true;
-        bullet.showBullet(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180));
+        bullet.showBullet(cc.v3(hv).rotateSelf(angleOffset * Math.PI / 180));
     }
     destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
@@ -283,18 +283,18 @@ export default class Shooter extends cc.Component {
         this.graphics.rect(0, -width / 2, range, width);
         this.graphics.fill();
     }
-    private getRayCastPoint(range?: number, startPos?: cc.Vec2): cc.Vec2 {
-        let s = startPos ? startPos : cc.v2(0, 0);
+    private getRayCastPoint(range?: number, startPos?: cc.Vec3): cc.Vec3 {
+        let s = startPos ? startPos : cc.v3(0, 0);
         let r = range ? range : 3000;
-        let p = cc.v2(r, 0);
+        let p = cc.v3(r, 0);
         let p1 = this.node.convertToWorldSpaceAR(s);
         let p2 = this.node.convertToWorldSpaceAR(p);
-        let results = cc.director.getPhysicsManager().rayCast(p1, p2, cc.RayCastType.All);
-        let arr: cc.Vec2[] = new Array();
+        let results = cc.director.getPhysicsManager().rayCast(cc.v2(p1), cc.v2(p2), cc.RayCastType.All);
+        let arr: cc.Vec3[] = new Array();
         if (results.length > 0) {
             for (let result of results) {
                 if (this.isValidRayCastCollider(result.collider)) {
-                    p = this.node.convertToNodeSpaceAR(result.point);
+                    p = this.node.convertToNodeSpaceAR(cc.v3(result.point));
                     arr.push(p);
                 }
             }
@@ -327,7 +327,7 @@ export default class Shooter extends cc.Component {
         return !isInvalid;
     }
     //线性瞄准
-    private aimTargetLine(angleOffset?: number, defaultPos?: cc.Vec2) {
+    private aimTargetLine(angleOffset?: number, defaultPos?: cc.Vec3) {
         if (this.isAiming) {
             return;
         }
@@ -369,8 +369,8 @@ export default class Shooter extends cc.Component {
         let r = 1000;
         let startAngle = -angle * 2 * Math.PI / 360;
         let endAngle = angle * 2 * Math.PI / 360;
-        let startPos = cc.v2(r * Math.cos(startAngle), r * Math.sin(startAngle));
-        let endPos = cc.v2(r * Math.cos(endAngle), r * Math.sin(endAngle));
+        let startPos = cc.v3(r * Math.cos(startAngle), r * Math.sin(startAngle));
+        let endPos = cc.v3(r * Math.cos(endAngle), r * Math.sin(endAngle));
         this.graphics.arc(0, 0, r, 2 * Math.PI - startAngle, 2 * Math.PI - endAngle);
         this.graphics.fill();
         this.graphics.moveTo(0, 0);
@@ -380,7 +380,7 @@ export default class Shooter extends cc.Component {
         this.graphics.fill();
     }
     //圆弧瞄准
-    private aimTargetArc(angleOffset?: number, defaultPos?: cc.Vec2) {
+    private aimTargetArc(angleOffset?: number, defaultPos?: cc.Vec3) {
         if (this.isAiming) {
             return;
         }
@@ -402,11 +402,11 @@ export default class Shooter extends cc.Component {
 
     update(dt) {
         let pos = this.hasNearEnemy();
-        if (!pos.equals(cc.Vec2.ZERO)) {
-            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+        if (!pos.equals(cc.Vec3.ZERO)) {
+            this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
         } else if (this.hv.x != 0 || this.hv.y != 0) {
-            let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
+            let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
     }
@@ -419,10 +419,10 @@ export default class Shooter extends cc.Component {
     }
     hasNearEnemy() {
         if (!this.isAutoAim) {
-            return cc.Vec2.ZERO;
+            return cc.Vec3.ZERO;
         }
         let olddis = 1000;
-        let pos = cc.v2(0, 0);
+        let pos = cc.v3(0, 0);
         if (this.isAI) {
         } else if (this.dungeon) {
             for (let monster of this.dungeon.monsters) {
@@ -436,7 +436,7 @@ export default class Shooter extends cc.Component {
                     pos = mp.sub(this.getParentNode().position.add(p));
                 }
             }
-            if (pos.equals(cc.Vec2.ZERO)) {
+            if (pos.equals(cc.Vec3.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
                     let dis = Logic.getDistance(this.getParentNode().position, boss.node.position);
                     if (dis < 600 && dis < olddis && !boss.isDied) {
@@ -456,7 +456,7 @@ export default class Shooter extends cc.Component {
         }
         return pos;
     }
-    rotateColliderManager(target: cc.Vec2) {
+    rotateColliderManager(target: cc.Vec3) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
         // 两者取差得到方向向量

@@ -25,7 +25,7 @@ export default class MonsterDangerBox extends cc.Component {
     collider: cc.BoxCollider
     isAttacking = false;
     monster: Monster;
-    hv: cc.Vec2 = cc.v2(1, 0);
+    hv: cc.Vec3 = cc.v3(1, 0);
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -57,7 +57,7 @@ export default class MonsterDangerBox extends cc.Component {
         this.node.anchorX = 0;
         this.node.width = length;
         this.node.height = length;
-        this.node.position = cc.v2(-16,32);
+        this.node.position = cc.v3(-16,32);
         this.collider.offset = offset;
         this.collider.size.width = length;
         this.collider.size.height = length;
@@ -73,7 +73,7 @@ export default class MonsterDangerBox extends cc.Component {
                 length = 160;
                 this.node.width = length;
                 this.node.height = length;
-                this.node.position = cc.v2(0,32);
+                this.node.position = cc.v3(0,32);
                 this.collider.size.width = length;
                 this.collider.size.height = length;
                 this.collider.offset = cc.v2(0, 0);
@@ -103,10 +103,10 @@ export default class MonsterDangerBox extends cc.Component {
             this.monster.dungeon.player.takeDamage(dd, from, this.monster);
         }
     }
-    setHv(hv: cc.Vec2) {
+    setHv(hv: cc.Vec3) {
         this.hv = hv.normalizeSelf();
         if (this.hv.x != 0 || this.hv.y != 0) {
-            let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
+            let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
     }
@@ -119,7 +119,7 @@ export default class MonsterDangerBox extends cc.Component {
         }
         return false;
     }
-    rotateColliderManager(target: cc.Vec2) {
+    rotateColliderManager(target: cc.Vec3) {
         let direction = target.sub(this.node.position);
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;

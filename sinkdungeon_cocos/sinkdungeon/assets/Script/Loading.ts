@@ -58,7 +58,7 @@ export default class Loading extends cc.Component {
         this.dashTree.node.active = false;
         this.magicTree.node.active = false;
         this.talentInfo.active = false;
-        this.label.node.setPosition(cc.v2(0, 0));
+        this.label.node.setPosition(cc.v3(0, 0));
         this.confirmButton.interactable = false;
         cc.director.on(EventConstant.TALENT_TREE_SELECT
             , (event) => { if (this.node) { this.confirmButton.interactable = true; } });
@@ -98,7 +98,7 @@ export default class Loading extends cc.Component {
                 this.magicTree.node.active = true;
             }
         }
-        this.label.node.setPosition(cc.v2(0, 320));
+        this.label.node.setPosition(cc.v3(0, 320));
         if (Logic.talentList.length > 9) {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;

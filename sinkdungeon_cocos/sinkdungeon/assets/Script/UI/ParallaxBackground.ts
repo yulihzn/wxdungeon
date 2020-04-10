@@ -43,12 +43,12 @@ export default class ParallexBackground extends cc.Component {
     }
 
     lateUpdate(){
-        let targetPos = this.getPlayer().node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        let targetPos = this.getPlayer().node.convertToWorldSpaceAR(cc.Vec3.ZERO);
         this.layer1.position = this.lerp(this.layer1.position,this.node.convertToNodeSpaceAR(targetPos),0.005);
         this.layer2.position = this.lerp(this.layer2.position,this.node.convertToNodeSpaceAR(targetPos),0.015);
     }
-    lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
-        let out = cc.v2(0,0);
+    lerp(self:cc.Vec3,to:cc.Vec3, ratio:number):cc.Vec3 {
+        let out = cc.v3(0,0);
         let x = self.x;
         let y = self.y;
         out.x = x + (to.x - x) * ratio;

@@ -106,7 +106,7 @@ export default class Dungeon extends cc.Component {
     wallmap: Wall[][] = new Array();//墙列表
     trapmap: Trap[][] = new Array();//陷阱列表
     footboards: FootBoard[] = new Array();//踏板列表
-    floorIndexmap: cc.Vec2[] = new Array();//地板下标列表
+    floorIndexmap: cc.Vec3[] = new Array();//地板下标列表
     static WIDTH_SIZE: number = 15;
     static HEIGHT_SIZE: number = 9;
     static readonly MAPX: number = 32;
@@ -192,29 +192,29 @@ export default class Dungeon extends cc.Component {
                 if (mapData[i][j] == '--') {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;
-                    t.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    t.position = Dungeon.getPosInMap(cc.v3(i, j));
                     //越往下层级越高，j是行，i是列
                     t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.map[i][j] = t.getComponent(Tile);
                     //开启踩踏掉落
                     this.map[i][j].isAutoShow = true;
-                    this.floorIndexmap.push(cc.v2(i, j));
+                    this.floorIndexmap.push(cc.v3(i, j));
                 }
                 if (this.isThe(mapData[i][j], "*") && mapData[i][j] != '**') {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;
-                    t.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    t.position = Dungeon.getPosInMap(cc.v3(i, j));
                     t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.map[i][j] = t.getComponent(Tile);
                     this.map[i][j].isAutoShow = false;
                     this.map[i][j].tileType = mapData[i][j];
-                    this.floorIndexmap.push(cc.v2(i, j));
+                    this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //生成墙
                 if (this.isThe(mapData[i][j], '#')) {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
-                    w.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    w.position = Dungeon.getPosInMap(cc.v3(i, j));
                     w.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     w.opacity = 255;
                     this.wallmap[i][j] = w.getComponent(Wall);
@@ -224,7 +224,7 @@ export default class Dungeon extends cc.Component {
                 if (mapData[i][j] == 'T0') {
                     let trap = cc.instantiate(this.trap);
                     trap.parent = this.node;
-                    trap.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    trap.position = Dungeon.getPosInMap(cc.v3(i, j));
                     trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.trapmap[i][j] = trap.getComponent(Trap);
                 }
@@ -232,13 +232,13 @@ export default class Dungeon extends cc.Component {
                 if (mapData[i][j] == 'X0') {
                     let saw = cc.instantiate(this.saw);
                     saw.parent = this.node;
-                    saw.getComponent(Saw).setPos(cc.v2(i, j));
+                    saw.getComponent(Saw).setPos(cc.v3(i, j));
                 }
                 //生成炮台
                 if (this.isThe(mapData[i][j], 'E')) {
                     let emplacement = cc.instantiate(this.emplacement);
                     emplacement.parent = this.node;
-                    emplacement.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    emplacement.position = Dungeon.getPosInMap(cc.v3(i, j));
                     emplacement.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     let em = emplacement.getComponent(Emplacement);
                     em.setDirType(mapData[i][j]);
@@ -246,7 +246,7 @@ export default class Dungeon extends cc.Component {
                 }
                 //生成落石
                 if (mapData[i][j] == 'F0') {
-                    this.addFallStone(Dungeon.getPosInMap(cc.v2(i, j)), false);
+                    this.addFallStone(Dungeon.getPosInMap(cc.v3(i, j)), false);
                 }
                 //生成装饰
                 if (this.isThe(mapData[i][j], '+')) {
@@ -254,11 +254,11 @@ export default class Dungeon extends cc.Component {
                     if (this.isThe(mapData[i][j], '+0')) {
                         let camp = cc.instantiate(this.campFire);
                         camp.parent = this.node;
-                        camp.position = Dungeon.getPosInMap(cc.v2(i, j));
+                        camp.position = Dungeon.getPosInMap(cc.v3(i, j));
                         camp.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 - 2;
                         let shadow = camp.getChildByName('sprite').getChildByName('shadow');
-                        shadow.position = Dungeon.getPosInMap(cc.v2(i, j));
-                        shadow.position = cc.v2(shadow.position.x, shadow.position.y + 40);
+                        shadow.position = Dungeon.getPosInMap(cc.v3(i, j));
+                        shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
                         shadow.parent = this.node;
                         shadow.zIndex = 3000;
                     } else if (this.isThe(mapData[i][j], '+1')) {
@@ -266,21 +266,21 @@ export default class Dungeon extends cc.Component {
                             let bed = cc.instantiate(this.bed);
                             bed.parent = this.node;
                             bed.scale = 6;
-                            bed.position = Dungeon.getPosInMap(cc.v2(i, j));
+                            bed.position = Dungeon.getPosInMap(cc.v3(i, j));
                             bed.zIndex = 5000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                         }
                     } else if (this.isThe(mapData[i][j], '+2')) {
                         if (Logic.level == 0) {
                             let arrow = cc.instantiate(this.floorDecoration);
                             arrow.parent = this.node;
-                            arrow.position = Dungeon.getPosInMap(cc.v2(i, j));
+                            arrow.position = Dungeon.getPosInMap(cc.v3(i, j));
                             arrow.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                             arrow.getComponent(DecorationFloor).changeRes('exitarrow');
                         }
                     } else {
                         let fd = cc.instantiate(this.floorDecoration);
                         fd.parent = this.node;
-                        fd.position = Dungeon.getPosInMap(cc.v2(i, j));
+                        fd.position = Dungeon.getPosInMap(cc.v3(i, j));
                         fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                         let df = fd.getComponent(DecorationFloor);
                         if (this.isThe(mapData[i][j], '++')) {
@@ -294,20 +294,20 @@ export default class Dungeon extends cc.Component {
                 if (mapData[i][j] == '@@') {
                     let foot = cc.instantiate(this.footboard);
                     foot.parent = this.node;
-                    foot.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    foot.position = Dungeon.getPosInMap(cc.v3(i, j));
                     foot.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.footboards.push(foot.getComponent(FootBoard));
                 }
                 //生成毒液
                 if (mapData[i][j] == 'V0') {
-                    this.addVenom(Dungeon.getPosInMap(cc.v2(i, j)));
+                    this.addVenom(Dungeon.getPosInMap(cc.v3(i, j)));
 
                 }
                 //生成塔罗
                 if (mapData[i][j] == 'Q0') {
                     let tarottable = cc.instantiate(this.tarotTable);
                     tarottable.parent = this.node;
-                    tarottable.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    tarottable.position = Dungeon.getPosInMap(cc.v3(i, j));
                     tarottable.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成宝箱 房间清理的情况下箱子是打开的
@@ -315,7 +315,7 @@ export default class Dungeon extends cc.Component {
                     let chest = cc.instantiate(this.chest);
                     chest.parent = this.node;
                     let c = chest.getComponent(Chest)
-                    c.setPos(cc.v2(i, j));
+                    c.setPos(cc.v3(i, j));
                     c.setQuality(Logic.getRandomNum(1, 3), false);
                     let currchests = Logic.mapManager.getCurrentMapChests();
                     if (currchests) {
@@ -333,8 +333,8 @@ export default class Dungeon extends cc.Component {
                     let box = cc.instantiate(this.box);
                     box.parent = this.node;
                     let b = box.getComponent(Box)
-                    b.data.defaultPos = cc.v2(i, j);
-                    b.setPos(cc.v2(i, j));
+                    b.data.defaultPos = cc.v3(i, j);
+                    b.setPos(cc.v3(i, j));
                     //生成植物
                     if (this.isThe(mapData[i][j], 'B1')) {
                         b.boxType = Box.PLANT;
@@ -357,9 +357,9 @@ export default class Dungeon extends cc.Component {
                     let decorate = cc.instantiate(this.decorate);
                     decorate.parent = this.node;
                     let d = decorate.getComponent(Decorate);
-                    d.data.defaultPos = cc.v2(i, j);
+                    d.data.defaultPos = cc.v3(i, j);
                     d.data.onelife = true;
-                    d.setPos(cc.v2(i, j));
+                    d.setPos(cc.v3(i, j));
                     d.decorateType = parseInt(mapData[i][j][1]);
                     //设置对应存档盒子的位置
                     let currboxes = Logic.mapManager.getCurrentMapBoxes();
@@ -378,43 +378,43 @@ export default class Dungeon extends cc.Component {
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
                     //生成心
                     if (mapData[i][j] == 'A2') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.HEART);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.HEART);
                     }
                     //生成弹药
                     if (mapData[i][j] == 'A0') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.AMMO);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.AMMO);
                     }
                     //生成红色药丸
                     if (mapData[i][j] == 'A3') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.REDCAPSULE);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.REDCAPSULE);
                     }
                     //生成蓝色药丸
                     if (mapData[i][j] == 'A1') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BLUECAPSULE);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BLUECAPSULE);
                     }
                     //生成无敌盾
                     if (mapData[i][j] == 'A4') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.SHIELD);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.SHIELD);
                     }
                     //生成金苹果
                     if (mapData[i][j] == 'A5') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.GOLDAPPLE);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.GOLDAPPLE);
                     }
                     //治疗瓶
                     if (mapData[i][j] == 'Aa') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_HEALING);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_HEALING);
                     }
                     //移速瓶
                     if (mapData[i][j] == 'Ab') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_MOVESPEED);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_MOVESPEED);
                     }
                     //攻速瓶
                     if (mapData[i][j] == 'Ac') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_ATTACKSPEED);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_ATTACKSPEED);
                     }
                     //隐身瓶
                     if (mapData[i][j] == 'Ad') {
-                        this.addItem(Dungeon.getPosInMap(cc.v2(i, j)), Item.BOTTLE_INVISIBLE);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_INVISIBLE);
                     }
                 }
                 //生成商店
@@ -422,7 +422,7 @@ export default class Dungeon extends cc.Component {
                     let table = cc.instantiate(this.shoptable);
                     table.parent = this.node;
                     let ta = table.getComponent(ShopTable);
-                    ta.setPos(cc.v2(i, j));
+                    ta.setPos(cc.v3(i, j));
                     ta.data.shopType = Random.rand() > 0.1 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
                     let currshoptables = Logic.mapManager.getCurrentMapShopTables();
                     if (currshoptables) {
@@ -458,7 +458,7 @@ export default class Dungeon extends cc.Component {
                         portalP.parent = this.node;
                         this.portal = portalP.getComponent(Portal);
                         if (this.portal) {
-                            this.portal.setPos(cc.v2(i, j));
+                            this.portal.setPos(cc.v3(i, j));
                         }
                     }
                 }
@@ -466,7 +466,7 @@ export default class Dungeon extends cc.Component {
                 if (mapData[i][j] == 'S1') {
                     let shop = cc.instantiate(this.shop);
                     shop.parent = this.node;
-                    shop.position = Dungeon.getPosInMap(cc.v2(i, j));
+                    shop.position = Dungeon.getPosInMap(cc.v3(i, j));
                     shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 + 1;
                 }
                 //房间未清理时加载怪物
@@ -569,34 +569,34 @@ export default class Dungeon extends cc.Component {
                         this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, i, j);
                     }
                     if (mapData[i][j] == 'z0') {
-                        this.addBossIceDemon(cc.v2(i, j));
+                        this.addBossIceDemon(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z1') {
-                        this.addBossWarMachine(cc.v2(i, j));
+                        this.addBossWarMachine(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z2') {
-                        this.addBossCaptain(cc.v2(i, j));
+                        this.addBossCaptain(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z3') {
-                        this.addBossKraken(cc.v2(i, j));
+                        this.addBossKraken(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z4') {
-                        this.addBossSlime(0, cc.v2(i, j));
+                        this.addBossSlime(0, cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z5') {
-                        this.addBossDryad(cc.v2(i, j));
+                        this.addBossDryad(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z6') {
-                        this.addBossRah(cc.v2(i, j));
+                        this.addBossRah(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z7') {
-                        this.addBossSphinx(cc.v2(i, j));
+                        this.addBossSphinx(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z8') {
-                        this.addBossEvilEye(cc.v2(i, j));
+                        this.addBossEvilEye(cc.v3(i, j));
                     }
                     if (mapData[i][j] == 'z9') {
-                        this.addBossDragon(cc.v2(i, j));
+                        this.addBossDragon(cc.v3(i, j));
                     }
                 }
 
@@ -632,7 +632,7 @@ export default class Dungeon extends cc.Component {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
-    addItem(pos: cc.Vec2, resName: string, shopTable?: ShopTable) {
+    addItem(pos: cc.Vec3, resName: string, shopTable?: ShopTable) {
         if (!this.item) {
             return;
         }
@@ -655,7 +655,7 @@ export default class Dungeon extends cc.Component {
     }
 
     /**掉落石头 */
-    addFallStone(pos: cc.Vec2, isAuto: boolean, withFire?: boolean) {
+    addFallStone(pos: cc.Vec3, isAuto: boolean, withFire?: boolean) {
         if (!this.fallStone) {
             return;
         }
@@ -671,7 +671,7 @@ export default class Dungeon extends cc.Component {
         }
 
     }
-    addVenom(pos: cc.Vec2) {
+    addVenom(pos: cc.Vec3) {
         let venom = cc.instantiate(this.venom);
         venom.getComponent(SlimeVenom).player = this.player;
         venom.getComponent(SlimeVenom).isForever = true;
@@ -681,7 +681,7 @@ export default class Dungeon extends cc.Component {
         venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
     }
     /**冰刺 */
-    addIceThron(pos: cc.Vec2, isAuto: boolean) {
+    addIceThron(pos: cc.Vec3, isAuto: boolean) {
         if (!this.iceThron) {
             return;
         }
@@ -698,7 +698,7 @@ export default class Dungeon extends cc.Component {
 
     }
     /**树根缠绕 */
-    addTwineGrass(pos: cc.Vec2, isAuto: boolean) {
+    addTwineGrass(pos: cc.Vec3, isAuto: boolean) {
         if (!this.dryadGrass) {
             return;
         }
@@ -716,13 +716,13 @@ export default class Dungeon extends cc.Component {
     }
 
     /**掉落金币 */
-    addCoin(pos: cc.Vec2, count: number) {
+    addCoin(pos: cc.Vec3, count: number) {
         if (this.coinManager) {
             this.coinManager.getValueCoin(count, pos, this.node);
         }
     }
     /**掉落油金 */
-    addOilGold(pos: cc.Vec2, count: number) {
+    addOilGold(pos: cc.Vec3, count: number) {
         if (this.coinManager) {
             this.coinManager.getValueOilGold(count, pos, this.node);
         }
@@ -753,7 +753,7 @@ export default class Dungeon extends cc.Component {
 
     }
     /**添加装备 */
-    addEquipment(equipType: string, pos: cc.Vec2, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable) {
+    addEquipment(equipType: string, pos: cc.Vec3, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable) {
         if (this.equipmentManager) {
             let data = this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality, shopTable).data;
             let currequipments = Logic.mapManager.getCurrentMapEquipments();
@@ -769,33 +769,33 @@ export default class Dungeon extends cc.Component {
     /**添加怪物 */
     addMonsterFromData(resName: string, i: number, j: number) {
         this.addMonster(this.monsterManager.getMonster(resName, this)
-            , cc.v2(i, j));
+            , cc.v3(i, j));
     }
 
     private breakHalfTiles(): void {
         for (let i = 1; i < Dungeon.WIDTH_SIZE - 1; i++) {
             for (let j = 6; j < Dungeon.HEIGHT_SIZE - 1; j++) {
                 this.map[i][j].isAutoShow = false;
-                this.breakTile(cc.v2(i, j));
+                this.breakTile(cc.v3(i, j));
                 this.scheduleOnce(() => {
-                    this.breakTile(cc.v2(i, j));
+                    this.breakTile(cc.v3(i, j));
                 }, 0.1 * Random.rand())
             }
         }
     }
-    addBossSlime(type: number, index: cc.Vec2) {
+    addBossSlime(type: number, index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
         this.bosses.push(this.monsterManager.getSlime(this, index.clone(), type));
     }
-    private addBossCaptain(index: cc.Vec2) {
+    private addBossCaptain(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
         this.bosses.push(this.monsterManager.getCaptain(this, index.clone()));
     }
-    private addBossWarMachine(index: cc.Vec2) {
+    private addBossWarMachine(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -805,7 +805,7 @@ export default class Dungeon extends cc.Component {
             boss.showBoss();
         }, 3.5);
     }
-    private addBossDryad(index: cc.Vec2) {
+    private addBossDryad(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -815,7 +815,7 @@ export default class Dungeon extends cc.Component {
             boss.showBoss();
         }, 2);
     }
-    private addBossDragon(index: cc.Vec2) {
+    private addBossDragon(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -825,7 +825,7 @@ export default class Dungeon extends cc.Component {
             boss.showBoss();
         }, 2);
     }
-    private addBossSphinx(index: cc.Vec2) {
+    private addBossSphinx(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -835,7 +835,7 @@ export default class Dungeon extends cc.Component {
             boss.showBoss();
         }, 2);
     }
-    private addBossRah(index: cc.Vec2) {
+    private addBossRah(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -845,7 +845,7 @@ export default class Dungeon extends cc.Component {
             boss.showBoss();
         }, 2);
     }
-    private addBossIceDemon(index: cc.Vec2) {
+    private addBossIceDemon(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -855,7 +855,7 @@ export default class Dungeon extends cc.Component {
             boss.showBoss();
         }, 2);
     }
-    private addBossEvilEye(index: cc.Vec2) {
+    private addBossEvilEye(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -865,7 +865,7 @@ export default class Dungeon extends cc.Component {
             boss.showBoss();
         }, 2);
     }
-    private addBossKraken(index: cc.Vec2) {
+    private addBossKraken(index: cc.Vec3) {
         if (!this.bosses) {
             return;
         }
@@ -882,7 +882,7 @@ export default class Dungeon extends cc.Component {
             // this.anim.play('DungeonWave');
         }, 3.5);
     }
-    private addMonster(monster: Monster, pos: cc.Vec2) {
+    private addMonster(monster: Monster, pos: cc.Vec3) {
         //激活
         monster.node.active = true;
         monster.pos = pos;
@@ -890,13 +890,13 @@ export default class Dungeon extends cc.Component {
         this.monsters.push(monster);
     }
     //获取地图里下标的坐标
-    static getPosInMap(pos: cc.Vec2) {
+    static getPosInMap(pos: cc.Vec3) {
         let x = Dungeon.MAPX + pos.x * Dungeon.TILE_SIZE;
         let y = Dungeon.MAPY + pos.y * Dungeon.TILE_SIZE;
-        return cc.v2(x, y);
+        return cc.v3(x, y);
     }
     //获取坐标在地图里的下标,canOuter:是否可以超出
-    static getIndexInMap(pos: cc.Vec2, canOuter?: boolean) {
+    static getIndexInMap(pos: cc.Vec3, canOuter?: boolean) {
         let x = (pos.x - Dungeon.MAPX) / Dungeon.TILE_SIZE;
         let y = (pos.y - Dungeon.MAPY) / Dungeon.TILE_SIZE;
         x = Math.round(x);
@@ -905,10 +905,10 @@ export default class Dungeon extends cc.Component {
             if (x < 0) { x = 0 }; if (x >= Dungeon.WIDTH_SIZE) { x = Dungeon.WIDTH_SIZE - 1 };
             if (y < 0) { y = 0 }; if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1 };
         }
-        return cc.v2(x, y);
+        return cc.v3(x, y);
     }
     //获取不超出地图的坐标
-    static fixOuterMap(pos: cc.Vec2): cc.Vec2 {
+    static fixOuterMap(pos: cc.Vec3): cc.Vec3 {
         let x = (pos.x - Dungeon.MAPX) / Dungeon.TILE_SIZE;
         let y = (pos.y - Dungeon.MAPY) / Dungeon.TILE_SIZE;
         x = Math.round(x);
@@ -919,7 +919,7 @@ export default class Dungeon extends cc.Component {
         if (y < 0) { y = 0; isOuter = true; }
         if (y >= Dungeon.HEIGHT_SIZE) { y = Dungeon.HEIGHT_SIZE - 1; isOuter = true; }
         if (isOuter) {
-            return Dungeon.getPosInMap(cc.v2(x, y));
+            return Dungeon.getPosInMap(cc.v3(x, y));
         } else {
             return pos;
         }
@@ -933,14 +933,14 @@ export default class Dungeon extends cc.Component {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false);
         }
     }
-    breakTile(pos: cc.Vec2) {
+    breakTile(pos: cc.Vec3) {
         let tile = this.map[pos.x][pos.y];
         if (tile&&!tile.isBroken) {
             tile.breakTile();
         }
     }
     /** 玩家在地牢移动 */
-    playerAction(dir: number, pos: cc.Vec2, dt: number) {
+    playerAction(dir: number, pos: cc.Vec3, dt: number) {
         if (this.player) {
             this.player.playerAction(dir, pos, dt, this)
         }
@@ -1031,8 +1031,8 @@ export default class Dungeon extends cc.Component {
             this.breakTile(pos);
         }
     }
-    lerp(self: cc.Vec2, to: cc.Vec2, ratio: number): cc.Vec2 {
-        let out = cc.v2(0, 0);
+    lerp(self: cc.Vec3, to: cc.Vec3, ratio: number): cc.Vec3 {
+        let out = cc.v3(0, 0);
         let x = self.x;
         let y = self.y;
         out.x = x + (to.x - x) * ratio;

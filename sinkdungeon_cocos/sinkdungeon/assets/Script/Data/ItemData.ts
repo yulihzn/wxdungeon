@@ -15,7 +15,7 @@ import BaseData from "./BaseData";
  */
 export default class ItemData extends BaseData {
     uuid:string = '';//唯一标识，用来存档
-    pos:cc.Vec2 = cc.v2(0,0);//下标
+    pos:cc.Vec3 = cc.v3(0,0);//下标
     nameCn: string = '';
     nameEn: string = '';
     duration: number = 0;//持续时间
@@ -28,7 +28,7 @@ export default class ItemData extends BaseData {
 
     public valueCopy(data: ItemData): void {
         this.uuid = data.uuid?data.uuid:'';
-        this.pos = data.pos?cc.v2(data.pos.x,data.pos.y):cc.v2(0,0);
+        this.pos = data.pos?cc.v3(data.pos.x,data.pos.y):cc.v3(0,0);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
         this.duration = data.duration;

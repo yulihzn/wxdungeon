@@ -107,7 +107,7 @@ export default class Controller extends cc.Component {
         let td = this.coolDown.getChildByName('talentdash01');
         let ts = this.coolDown.getChildByName('talentshield01');
         let tm = this.coolDown.getChildByName('talentmagic01');
-        let p = this.coolDown.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        let p = this.coolDown.convertToWorldSpaceAR(cc.Vec3.ZERO);
         p = this.node.convertToNodeSpaceAR(p);
         let height = 64;
         let delta = 0.1;
@@ -144,12 +144,12 @@ export default class Controller extends cc.Component {
         }
         this.schedule(func, delta, cc.macro.REPEAT_FOREVER);
     }
-    private drawRect(height, center: cc.Vec2) {
+    private drawRect(height, center: cc.Vec3) {
         this.graphics.fillColor = cc.color(0, 255, 0, 200);
         this.graphics.rect(center.x - 32, center.y - 32, 64, height);
         this.graphics.fill();
     }
-    private drawArc(angle: number, center: cc.Vec2) {
+    private drawArc(angle: number, center: cc.Vec3) {
         if (!this.graphics) {
             return;
         }

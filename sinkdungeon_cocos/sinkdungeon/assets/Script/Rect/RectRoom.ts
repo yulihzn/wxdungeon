@@ -45,7 +45,7 @@ export default class RectRoom {
     /// The is found.是否被发现
     isFound: boolean = false;
     //用来取随机tile的列表
-    // randomTiles: cc.Vec2[];
+    // randomTiles: cc.Vec3[];
     /// The is init.是否是初始化
     isInit: boolean = true;
     //保存地图数据下标
@@ -102,7 +102,7 @@ export default class RectRoom {
         //     this.randomTiles = new Array(i);
         //     for (let j = 0; j < RectRoom.ROOM_HEIGHT; j++) {
         //         // this.map[i][j] = 0;
-        //         this.randomTiles.push(cc.v2(i, j));
+        //         this.randomTiles.push(cc.v3(i, j));
         //     }
         // }
     }
@@ -118,7 +118,7 @@ export default class RectRoom {
     }
 
 
-    // public randomTile(): cc.Vec2 {
+    // public randomTile(): cc.Vec3 {
     //     if (this.randomTiles.length > 0) {
     //         let index = Logic.getRandomNum(0, this.randomTiles.length - 1);
     //         let p = this.randomTiles[index];

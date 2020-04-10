@@ -34,18 +34,18 @@ export default class MonsterDetector extends cc.Component {
             pos = pos.sub(monster.node.position);
             monster.moveTarget = pos.clone();
             monster.monsterAction();
-            this.scheduleOnce(()=>{monster.moveTarget = cc.Vec2.ZERO;},0.1);
+            this.scheduleOnce(()=>{monster.moveTarget = cc.Vec3.ZERO;},0.1);
         }
     }
     /**
      * A绕B旋转90度的坐标 
      * x=x2+(x1-x2)cosb-(y1-y2)sinb 
      * y = y2+(y1-y2)cosb+(x1-x2)sinb*/
-    getRoate90Point(posA:cc.Vec2,posB:cc.Vec2,reverse?:boolean):cc.Vec2{
+    getRoate90Point(posA:cc.Vec3,posB:cc.Vec3,reverse?:boolean):cc.Vec3{
         if(reverse){
-            return cc.v2(posB.x+posA.y-posB.y,posB.y-posA.x+posB.x);
+            return cc.v3(posB.x+posA.y-posB.y,posB.y-posA.x+posB.x);
         }else {
-           return cc.v2(posB.x-posA.y+posB.y,posB.y+posA.x-posB.x);
+           return cc.v3(posB.x-posA.y+posB.y,posB.y+posA.x-posB.x);
         }
     }
 }

@@ -104,7 +104,7 @@ export default class IceDemon extends Boss {
         if (!this.meleeSkill.IsExcuting && !this.defenceSkill.IsExcuting && !this.dashSkill.IsExcuting) {
             this.thron(isHalf);
         }
-        if (!pos.equals(cc.Vec2.ZERO)
+        if (!pos.equals(cc.Vec3.ZERO)
             && !this.meleeSkill.IsExcuting
             && !this.defenceSkill.IsExcuting
             && !this.thronSkill.IsExcuting
@@ -114,12 +114,12 @@ export default class IceDemon extends Boss {
             this.move(pos, 500);
         }
     }
-    getMovePos(): cc.Vec2 {
+    getMovePos(): cc.Vec3 {
         let newPos = this.dungeon.player.pos.clone();
         if (this.dungeon.player.pos.x > this.pos.x) {
-            newPos = newPos.addSelf(cc.v2(1, -1));
+            newPos = newPos.addSelf(cc.v3(1, -1));
         } else {
-            newPos = newPos.addSelf(cc.v2(-1, -1));
+            newPos = newPos.addSelf(cc.v3(-1, -1));
         }
         let pos = Dungeon.getPosInMap(newPos);
         pos.y+=32;
@@ -138,8 +138,8 @@ export default class IceDemon extends Boss {
             let count = 1;
             this.schedule(() => {
                 let p = this.pos.clone()
-                let ps = [cc.v2(p.x, p.y + count), cc.v2(p.x, p.y - count), cc.v2(p.x + count, p.y + count), cc.v2(p.x + count, p.y - count),
-                cc.v2(p.x + count, p.y), cc.v2(p.x - count, p.y), cc.v2(p.x - count, p.y + count), cc.v2(p.x - count, p.y - count)]
+                let ps = [cc.v3(p.x, p.y + count), cc.v3(p.x, p.y - count), cc.v3(p.x + count, p.y + count), cc.v3(p.x + count, p.y - count),
+                cc.v3(p.x + count, p.y), cc.v3(p.x - count, p.y), cc.v3(p.x - count, p.y + count), cc.v3(p.x - count, p.y - count)]
                 for (let i = 0; i < ps.length; i++) {
                     this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
                 }
@@ -148,16 +148,16 @@ export default class IceDemon extends Boss {
             if(isHalf){
                 this.scheduleOnce(()=>{
                     let p = this.pos.clone();
-                    let ps = [cc.v2(p.x+2,p.y+1),cc.v2(p.x+2,p.y-1),cc.v2(p.x-2,p.y+1),cc.v2(p.x-2,p.y-1)
-                        ,cc.v2(p.x+4,p.y+2),cc.v2(p.x+4,p.y-2),cc.v2(p.x-4,p.y+2),cc.v2(p.x-4,p.y-2)
-                        ,cc.v2(p.x+5,p.y+3),cc.v2(p.x+5,p.y-3),cc.v2(p.x-5,p.y+3),cc.v2(p.x-5,p.y-3)
-                        ,cc.v2(p.x+6,p.y+2),cc.v2(p.x+6,p.y-2),cc.v2(p.x-6,p.y+2),cc.v2(p.x-6,p.y-2)
-                        ,cc.v2(p.x+6,p.y+4),cc.v2(p.x+6,p.y-4),cc.v2(p.x-6,p.y+4),cc.v2(p.x-6,p.y-4)
-                        ,cc.v2(p.x+1,p.y+2),cc.v2(p.x+1,p.y-2),cc.v2(p.x-1,p.y+2),cc.v2(p.x-1,p.y-2)
-                        ,cc.v2(p.x+2,p.y+4),cc.v2(p.x+2,p.y-4),cc.v2(p.x-2,p.y+4),cc.v2(p.x-2,p.y-4)
-                        ,cc.v2(p.x+3,p.y+5),cc.v2(p.x+3,p.y-5),cc.v2(p.x-3,p.y+5),cc.v2(p.x-3,p.y-5)
-                        ,cc.v2(p.x+2,p.y+6),cc.v2(p.x+2,p.y-6),cc.v2(p.x-2,p.y+6),cc.v2(p.x-2,p.y-6)
-                        ,cc.v2(p.x+4,p.y+6),cc.v2(p.x+4,p.y-6),cc.v2(p.x-4,p.y+6),cc.v2(p.x-4,p.y-6)];
+                    let ps = [cc.v3(p.x+2,p.y+1),cc.v3(p.x+2,p.y-1),cc.v3(p.x-2,p.y+1),cc.v3(p.x-2,p.y-1)
+                        ,cc.v3(p.x+4,p.y+2),cc.v3(p.x+4,p.y-2),cc.v3(p.x-4,p.y+2),cc.v3(p.x-4,p.y-2)
+                        ,cc.v3(p.x+5,p.y+3),cc.v3(p.x+5,p.y-3),cc.v3(p.x-5,p.y+3),cc.v3(p.x-5,p.y-3)
+                        ,cc.v3(p.x+6,p.y+2),cc.v3(p.x+6,p.y-2),cc.v3(p.x-6,p.y+2),cc.v3(p.x-6,p.y-2)
+                        ,cc.v3(p.x+6,p.y+4),cc.v3(p.x+6,p.y-4),cc.v3(p.x-6,p.y+4),cc.v3(p.x-6,p.y-4)
+                        ,cc.v3(p.x+1,p.y+2),cc.v3(p.x+1,p.y-2),cc.v3(p.x-1,p.y+2),cc.v3(p.x-1,p.y-2)
+                        ,cc.v3(p.x+2,p.y+4),cc.v3(p.x+2,p.y-4),cc.v3(p.x-2,p.y+4),cc.v3(p.x-2,p.y-4)
+                        ,cc.v3(p.x+3,p.y+5),cc.v3(p.x+3,p.y-5),cc.v3(p.x-3,p.y+5),cc.v3(p.x-3,p.y-5)
+                        ,cc.v3(p.x+2,p.y+6),cc.v3(p.x+2,p.y-6),cc.v3(p.x-2,p.y+6),cc.v3(p.x-2,p.y-6)
+                        ,cc.v3(p.x+4,p.y+6),cc.v3(p.x+4,p.y-6),cc.v3(p.x-4,p.y+6),cc.v3(p.x-4,p.y-6)];
                         for (let i = 0; i < ps.length; i++) {
                             this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
                         }
@@ -180,7 +180,7 @@ export default class IceDemon extends Boss {
             this.scheduleOnce(() => {
                 cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 let pos = this.getMovePos();
-                if (!pos.equals(cc.Vec2.ZERO)) {
+                if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf();
                 }
                 let h = pos.x;
@@ -202,7 +202,7 @@ export default class IceDemon extends Boss {
             this.anim.play('IceDemonDash');
             this.scheduleOnce(() => {
                 let pos = this.getMovePos();
-                if (!pos.equals(cc.Vec2.ZERO)) {
+                if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf();
                 }
                 let h = pos.x;
@@ -243,7 +243,7 @@ export default class IceDemon extends Boss {
 
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number): void {
         shooter.dungeon = this.dungeon;
-        // shooter.setHv(cc.v2(0, -1))
+        // shooter.setHv(cc.v3(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
@@ -283,11 +283,11 @@ export default class IceDemon extends Boss {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
 
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {
             return;
         }
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;

@@ -64,7 +64,7 @@ export default class MeleeWeapon extends cc.Component {
 
     private anim: cc.Animation;
     isAttacking: boolean = false;
-    private hv: cc.Vec2 = cc.v2(1, 0);
+    private hv: cc.Vec3 = cc.v3(1, 0);
     isStab = true;//刺
     isFar = false;//近程
     isFist = true;//空手 
@@ -100,16 +100,16 @@ export default class MeleeWeapon extends cc.Component {
             this.handWave.opacity = 255;
         }
     }
-    setHv(hv: cc.Vec2) {
+    setHv(hv: cc.Vec3) {
         let pos = this.hasNearEnemy();
-        if (!pos.equals(cc.Vec2.ZERO)) {
-            this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+        if (!pos.equals(cc.Vec3.ZERO)) {
+            this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
         } else {
             this.hv = hv.normalizeSelf();
         }
     }
-    getHv(): cc.Vec2 {
+    getHv(): cc.Vec3 {
         return this.hv;
     }
 
@@ -192,7 +192,7 @@ export default class MeleeWeapon extends cc.Component {
             return '1';
         }
     }
-    private getWaveLight(dungeonNode: cc.Node, p: cc.Vec2, elementType: number, isStab: boolean, isFar: boolean) {
+    private getWaveLight(dungeonNode: cc.Node, p: cc.Vec3, elementType: number, isStab: boolean, isFar: boolean) {
         let lights = [this.iceLight, this.fireLight, this.lighteningLight, this.toxicLight, this.curseLight];
         if (elementType < 1 || elementType > lights.length || !this.dungeon) {
             return;
@@ -211,8 +211,8 @@ export default class MeleeWeapon extends cc.Component {
             }
             yoffset += 10;
         }
-        let notStab1 = [cc.v2(p.x, p.y + yoffset), cc.v2(p.x + xoffset * 0.9, p.y + yoffset / 2), cc.v2(p.x + xoffset, p.y), cc.v2(p.x + xoffset * 0.9, -p.y - yoffset / 2), cc.v2(p.x, -p.y - yoffset)];
-        let ps = [cc.v2(p.x - xoffset * 2, p.y), cc.v2(p.x - xoffset * 0.5, p.y), cc.v2(p.x, p.y), cc.v2(p.x + xoffset * 0.5, p.y), cc.v2(p.x + xoffset, p.y)];
+        let notStab1 = [cc.v3(p.x, p.y + yoffset), cc.v3(p.x + xoffset * 0.9, p.y + yoffset / 2), cc.v3(p.x + xoffset, p.y), cc.v3(p.x + xoffset * 0.9, -p.y - yoffset / 2), cc.v3(p.x, -p.y - yoffset)];
+        let ps = [cc.v3(p.x - xoffset * 2, p.y), cc.v3(p.x - xoffset * 0.5, p.y), cc.v3(p.x, p.y), cc.v3(p.x + xoffset * 0.5, p.y), cc.v3(p.x + xoffset, p.y)];
         if (!isStab) {
             ps = notStab1;
         }
@@ -227,7 +227,7 @@ export default class MeleeWeapon extends cc.Component {
         firePrefab.zIndex = 4000;
         firePrefab.opacity = 255;
         firePrefab.active = true;
-        let action = cc.sequence(cc.moveTo(0.025, ps[1]), cc.moveTo(0.05, ps[2]), cc.moveTo(0.075, ps[3]), cc.moveTo(0.1, ps[4]));
+        let action = cc.sequence(cc.moveTo(0.025, cc.v2(ps[1])), cc.moveTo(0.05, cc.v2(ps[2])), cc.moveTo(0.075, cc.v2(ps[3])), cc.moveTo(0.1, cc.v2(ps[4])));
         firePrefab.runAction(action);
 
     }
@@ -260,20 +260,20 @@ export default class MeleeWeapon extends cc.Component {
     update(dt) {
 
         let pos = this.hasNearEnemy();
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             if(!this.isAttacking){
-                this.rotateColliderManager(cc.v2(this.node.position.x + pos.x, this.node.position.y + pos.y));
+                this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             }
             this.hv = pos;
         } else if ((this.hv.x != 0 || this.hv.y != 0) && !this.isAttacking) {
-            let olderTarget = cc.v2(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
+            let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
     }
     hasNearEnemy() {
 
         let olddis = 1000;
-        let pos = cc.v2(0, 0);
+        let pos = cc.v3(0, 0);
         if (this.dungeon) {
             for (let monster of this.dungeon.monsters) {
                 let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
@@ -285,7 +285,7 @@ export default class MeleeWeapon extends cc.Component {
                 }
             }
 
-            if (pos.equals(cc.Vec2.ZERO)) {
+            if (pos.equals(cc.Vec3.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
                     let dis = Logic.getDistance(this.node.parent.position, boss.node.position);
                     if (dis < 200 && dis < olddis && !boss.isDied) {
@@ -304,7 +304,7 @@ export default class MeleeWeapon extends cc.Component {
         return pos;
     }
 
-    rotateColliderManager(target: cc.Vec2) {
+    rotateColliderManager(target: cc.Vec3) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
         // 两者取差得到方向向量
@@ -347,8 +347,8 @@ export default class MeleeWeapon extends cc.Component {
     beatBack(node: cc.Node) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.getHv().clone();
-        if (pos.equals(cc.Vec2.ZERO)) {
-            pos = cc.v2(1, 0);
+        if (pos.equals(cc.Vec3.ZERO)) {
+            pos = cc.v3(1, 0);
         }
         let power = 50;
         if (!this.isFar && this.isStab) {
@@ -364,7 +364,7 @@ export default class MeleeWeapon extends cc.Component {
             power+=50;
         }
         pos = pos.normalizeSelf().mul(power);
-        rigidBody.applyLinearImpulse(pos, rigidBody.getLocalCenter(), true);
+        rigidBody.applyLinearImpulse(cc.v2(pos.x,pos.y), rigidBody.getLocalCenter(), true);
     }
     attacking(attackTarget: cc.Collider) {
         if (!attackTarget || !this.isAttacking) {

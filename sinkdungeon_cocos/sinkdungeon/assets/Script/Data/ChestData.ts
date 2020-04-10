@@ -13,11 +13,11 @@ import Chest from "../Building/Chest";
 
 
 export default class ChestData {
-    pos: cc.Vec2 = cc.v2(0, 0);//下标
+    pos: cc.Vec3 = cc.v3(0, 0);//下标
     isOpen = false;//是否打开
     quality = 1;
     valueCopy(data:ChestData){
-        this.pos = data.pos?cc.v2(data.pos.x,data.pos.y):cc.v2(0,0);
+        this.pos = data.pos?cc.v3(data.pos.x,data.pos.y):cc.v3(0,0);
         this.isOpen = data.isOpen;
         this.quality = data.quality;
     }

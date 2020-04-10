@@ -31,7 +31,7 @@ export default class Emplacement extends Building {
     @property(Shooter)
     shooterRight: Shooter = null;
     isOpen: boolean = false;
-    pos: cc.Vec2 = cc.v2(0, 0);
+    pos: cc.Vec3 = cc.v3(0, 0);
     private sprite: cc.Node;
     private timeDelay = 0;
     dungeon: Dungeon;
@@ -51,10 +51,10 @@ export default class Emplacement extends Building {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.setShooterHv(this.shooterTop, cc.v2(0, 1));
-        this.setShooterHv(this.shooterBottom, cc.v2(0, -1));
-        this.setShooterHv(this.shooterLeft, cc.v2(-1, 0));
-        this.setShooterHv(this.shooterRight, cc.v2(1, 0));
+        this.setShooterHv(this.shooterTop, cc.v3(0, 1));
+        this.setShooterHv(this.shooterBottom, cc.v3(0, -1));
+        this.setShooterHv(this.shooterLeft, cc.v3(-1, 0));
+        this.setShooterHv(this.shooterRight, cc.v3(1, 0));
         let from = FromData.getClone('炮台','emplacement');
         this.shooterTop.from.valueCopy(from);
         this.shooterBottom.from.valueCopy(from);
@@ -81,7 +81,7 @@ export default class Emplacement extends Building {
         this.scheduleOnce(() => { this.fire() }, 1);
     }
 
-    setPos(pos: cc.Vec2) {
+    setPos(pos: cc.Vec3) {
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
@@ -163,7 +163,7 @@ export default class Emplacement extends Building {
         }
         shooter.fireBullet();
     }
-    setShooterHv(shooter: Shooter, hv: cc.Vec2) {
+    setShooterHv(shooter: Shooter, hv: cc.Vec3) {
         shooter.setHv(hv);
     }
     update(dt) {

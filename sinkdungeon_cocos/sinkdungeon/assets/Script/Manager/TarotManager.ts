@@ -27,7 +27,7 @@ export default class TarotManager extends cc.Component{
     public static readonly THE_WORLD = "tarot21";
     @property(cc.Prefab)
     card: cc.Prefab = null;
-    getCard(resName: string, pos: cc.Vec2):TarotCard{
+    getCard(resName: string, pos: cc.Vec3):TarotCard{
         let cardPrefab = cc.instantiate(this.card);
         cardPrefab.parent = this.node;
         cardPrefab.position = Dungeon.getPosInMap(pos);

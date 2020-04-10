@@ -127,10 +127,10 @@ export default class TalentShield extends Talent {
                 invulnerabilityTime = 0;
                 animOverTime = 0;
             }
-            let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 1, 1));
-            let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 0, 1));
+            let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v3(-16, y))
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v3(-8, y)), cc.scaleTo(animOverTime, 1, 1));
+            let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v3(8, y))
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v3(-8, y)), cc.scaleTo(animOverTime, 0, 1));
             this.shieldBackSprite.node.runAction(backAction);
             this.shieldFrontSprite.node.runAction(frontAction);
             //添加状态

@@ -157,7 +157,7 @@ export default class EquipmentManager extends cc.Component {
         let colors = ['#dcdcdc', '#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500']
         let level = 0;
         //暴击0-20减去装备自带
-        let criticalStrikeRate = cc.v2(0, 0);
+        let criticalStrikeRate = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_REMOTE])
             && data.Common.criticalStrikeRate > 0) {
@@ -171,7 +171,7 @@ export default class EquipmentManager extends cc.Component {
         }
 
         //基础攻击0-5
-        let damageMin = cc.v2(0, 0);
+        let damageMin = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
             , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
             && data.Common.damageMin > 0) {
@@ -179,7 +179,7 @@ export default class EquipmentManager extends cc.Component {
             level = damageMin.y > level ? damageMin.y : level;
         }
         //最大攻击0-5
-        let damageMax = cc.v2(0, 0);
+        let damageMax = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
             , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
             && data.Common.damageMax > 0) {
@@ -190,7 +190,7 @@ export default class EquipmentManager extends cc.Component {
                 , damageMax.y > 2 ? EquipmentManager.COLOR_POWERFUL : '#000000');
         }
         //物理防御0-10
-        let defence = cc.v2(0, 0);
+        let defence = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET, EquipmentManager.TYPE_GLOVES
             , EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS, EquipmentManager.TYPE_SHOES
             , EquipmentManager.TYPE_CLOTHES])
@@ -202,7 +202,7 @@ export default class EquipmentManager extends cc.Component {
                 , defence.y > 5 ? EquipmentManager.COLOR_STABLE : '#000000');
         }
         //吸血0%-50%
-        let lifeDrain = cc.v2(0, 0);
+        let lifeDrain = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_REMOTE])
             && data.Common.lifeDrain > 0) {
@@ -215,7 +215,7 @@ export default class EquipmentManager extends cc.Component {
                 , lifeDrain.y > 2 ? EquipmentManager.COLOR_LIFEDRAIN : '#000000');
         }
         //背刺伤害10% 0-5
-        let damageBack = cc.v2(0, 0);
+        let damageBack = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
             , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
             && data.Common.damageBack > 0) {
@@ -226,7 +226,7 @@ export default class EquipmentManager extends cc.Component {
                 , damageBack.y > 2 ? EquipmentManager.COLOR_BACK : '#000000');
         }
         //移动速度0-80减去装备自带移动速度
-        let moveSpeed = cc.v2(0, 0);
+        let moveSpeed = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
             , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
             && data.Common.moveSpeed > 0) {
@@ -239,7 +239,7 @@ export default class EquipmentManager extends cc.Component {
                 , moveSpeed.y > 2 ? EquipmentManager.COLOR_MOVESPEED : '#000000');
         }
         //攻击速度0-30减去装备自带攻速
-        let attackSpeed = cc.v2(0, 0);
+        let attackSpeed = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOTHES
             , EquipmentManager.TYPE_REMOTE])
@@ -253,7 +253,7 @@ export default class EquipmentManager extends cc.Component {
                 , attackSpeed.y > 2 ? EquipmentManager.COLOR_ATTACKSPPED : '#000000');
         }
         //闪避0-30减去装备自带闪避
-        let dodge = cc.v2(0, 0);
+        let dodge = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
             , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
@@ -267,7 +267,7 @@ export default class EquipmentManager extends cc.Component {
                 , dodge.y > 2 ? EquipmentManager.COLOR_DODGE : '#000000');
         }
         //生命值0-5
-        let health = cc.v2(0, 0);
+        let health = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
             , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
             , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
@@ -281,27 +281,27 @@ export default class EquipmentManager extends cc.Component {
         let damageRate = 0.1;
         let damage = 5;
         //流血伤害0-5
-        let realDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
+        let realDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
         level = realDamage.y > level ? realDamage.y : level;
         desc.prefix += realDamage.y > damage/2 ? '锋利' : '';
         //冰伤害0-5
-        let iceDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
+        let iceDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
         level = iceDamage.y > level ? iceDamage.y : level;
         desc.prefix += iceDamage.y > damage/2 ? '寒冷' : '';
         //火伤害0-5
-        let fireDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
+        let fireDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
         level = fireDamage.y > level ? fireDamage.y : level;
         desc.prefix += fireDamage.y > damage/2 ? '炎热' : '';
         //雷伤害0-5
-        let lighteningDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
+        let lighteningDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
         level = lighteningDamage.y > level ? lighteningDamage.y : level;
         desc.prefix += lighteningDamage.y > damage/2 ? '闪电' : '';
         //毒伤害0-5
-        let toxicDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
+        let toxicDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
         level = toxicDamage.y > level ? toxicDamage.y : level;
         desc.prefix += toxicDamage.y > damage/2 ? '毒素' : '';
         //诅咒伤害0-5
-        let curseDamage = Random.rand() < 0.1 ? this.getRandomQuality(0, damage, chestQuality) : cc.v2(0, 0);
+        let curseDamage = Random.rand() < 0.1 ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
         level = curseDamage.y > level ? curseDamage.y : level;
         desc.prefix += curseDamage.y > damage/2 ? '诅咒' : '';
 
@@ -309,41 +309,41 @@ export default class EquipmentManager extends cc.Component {
         let defenceMin = 30;
         let defenceRate = 0.1;
         //冰抗性30-60 0.1几率
-        let iceDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v2(0, 0);
+        let iceDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
         level = iceDefence.y > level ? iceDefence.y : level;
         //火抗性30-60 0.1几率
-        let fireDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v2(0, 0);
+        let fireDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
         level = fireDefence.y > level ? fireDefence.y : level;
         //雷抗性30-60 0.1几率
-        let lighteningDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v2(0, 0);
+        let lighteningDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
         level = lighteningDefence.y > level ? lighteningDefence.y : level;
         //毒抗性30-60 0.1几率
-        let toxicDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v2(0, 0);
+        let toxicDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
         level = toxicDefence.y > level ? toxicDefence.y : level;
         //诅咒抗性30-60 0.1几率
-        let curseDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v2(0, 0);
+        let curseDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
         level = curseDefence.y > level ? curseDefence.y : level;
 
         let rateMax = 60;
         let rateMin = 10;
         let rateRate = 0.05;
         //流血几率0-60
-        let realRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v2(0, 0);
+        let realRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = realRate.y > level ? realRate.y : level;
         //冰几率0-60
-        let iceRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v2(0, 0);
+        let iceRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = iceRate.y > level ? iceRate.y : level;
         //火几率0-60
-        let fireRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v2(0, 0);
+        let fireRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = fireRate.y > level ? fireRate.y : level;
         //雷几率0-60
-        let lighteningRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v2(0, 0);
+        let lighteningRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = lighteningRate.y > level ? lighteningRate.y : level;
         //毒几率0-60
-        let toxicRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v2(0, 0);
+        let toxicRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = toxicRate.y > level ? toxicRate.y : level;
         //诅咒几率0-60
-        let curseRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v2(0, 0);
+        let curseRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = curseRate.y > level ? curseRate.y : level;
 
         desc.prefix = arr[level] + desc.prefix;
@@ -393,7 +393,7 @@ export default class EquipmentManager extends cc.Component {
     //0.5% 0.25% 0.1% 0.05% 0.01%
     //white 0-0.05 green 0.05-0.075 blue 0.075-0.085 purple 0.085-0.009 orange 0.09-0.0091
     //x:qulity y:level 1-5
-    getRandomQuality(min: number, max: number, chestQuality: number): cc.Vec2 {
+    getRandomQuality(min: number, max: number, chestQuality: number): cc.Vec3 {
         let per = (max - min) / 5;
         let quality = Random.rand();
         //箱子出来的物品有10%的几率生成和箱子属性相关的优质属性
@@ -404,7 +404,7 @@ export default class EquipmentManager extends cc.Component {
                 case 3: quality = Random.rand() > 0.2 ? 0.086 : 0.09; break;
             }
         }
-        let data = cc.v2(0, 0);
+        let data = cc.v3(0, 0);
         if (quality < 0.05) {
             data.x = Logic.getRandomNum(0, per);
             data.y = 1;
@@ -424,7 +424,7 @@ export default class EquipmentManager extends cc.Component {
         data.x = parseFloat(data.x.toFixed(0));
         return data;
     }
-    getEquipment(equipType: string, pos: cc.Vec2, parent: cc.Node, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable): Equipment {
+    getEquipment(equipType: string, pos: cc.Vec3, parent: cc.Node, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable): Equipment {
         let equipmentPrefab = cc.instantiate(this.equipment);
         equipmentPrefab.parent = parent;
         equipmentPrefab.position = Dungeon.getPosInMap(pos);

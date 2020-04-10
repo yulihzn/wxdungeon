@@ -78,7 +78,7 @@ export default class Dragon extends Boss {
             this.fireSkill.IsExcuting = true;
             this.anim.play('DragonFire');
             this.scheduleOnce(() => {
-                this.shooter01.setHv(cc.v2(0, -1));
+                this.shooter01.setHv(cc.v3(0, -1));
                 this.shooter01.data.bulletLineInterval = 0.5;
                 this.fireShooter(this.shooter01, "bullet200", 2, 5);
             }, 1.1);
@@ -109,9 +109,9 @@ export default class Dragon extends Boss {
             }, 15);
             this.schedule(() => {
                 this.dungeon.addFallStone(this.dungeon.player.node.position, true,true);
-                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
-                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
-                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v2(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
             }, 0.5, 20, 2);
         }, 20)
     }
@@ -128,14 +128,14 @@ export default class Dragon extends Boss {
         }
         if (!this.rainSkill.IsExcuting) {
             this.actionCount++;
-            let pos = cc.v2(1, 0);
+            let pos = cc.v3(1, 0);
             if (this.actionCount > 10) {
-                pos = cc.v2(-1, 0);
+                pos = cc.v3(-1, 0);
             }
             if (this.actionCount > 20) {
                 this.actionCount = 0;
             }
-            if (!pos.equals(cc.Vec2.ZERO)) {
+            if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf();
                 this.move(pos, 800);
             }
@@ -144,11 +144,11 @@ export default class Dragon extends Boss {
     changeZIndex() {
         this.node.zIndex = 4000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
     }
-    move(pos: cc.Vec2, speed: number) {
+    move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {
             return;
         }
-        if (!pos.equals(cc.Vec2.ZERO)) {
+        if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;
@@ -165,8 +165,8 @@ export default class Dragon extends Boss {
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.setHv(cc.v2(0, -1));
-        shooter.fireBullet(angle, cc.Vec2.ZERO);
+        shooter.setHv(cc.v3(0, -1));
+        shooter.fireBullet(angle, cc.Vec3.ZERO);
     }
     showBoss() {
         this.isShow = true;
@@ -197,7 +197,6 @@ export default class Dragon extends Boss {
             this.killed();
         }
         this.healthBar.node.active = !this.isDied;
-        // this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let player = other.node.getComponent(Player);

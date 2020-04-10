@@ -46,7 +46,7 @@ export default class MiniMap extends cc.Component {
 				node.group = 'ui'
 				this.map[i][j] = node;
 				this.map[i][j].parent = this.node;
-				this.map[i][j].position = cc.v2(i * node.width, j * node.height);
+				this.map[i][j].position = cc.v3(i * node.width, j * node.height);
 				this.map[i][j].color = cc.Color.BLACK;
 				this.map[i][j].opacity = 0;
 			}

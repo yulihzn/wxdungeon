@@ -48,7 +48,7 @@ export default class Chunk extends cc.Component {
     static readonly TILE_SCALE = 4;
 
     data:ChunkData = new ChunkData();
-    targetPosition:cc.Vec2 = cc.v2(0,0);
+    targetPosition:cc.Vec3 = cc.v3(0,0);
 
     onLoad () {
         this.layer = this.node.getChildByName('layer');
@@ -68,7 +68,7 @@ export default class Chunk extends cc.Component {
         this.scheduleOnce(()=>{this.floor.color = cc.Color.WHITE;},1)
     }
     loadMap(){
-        this.label.node.position = cc.v2(this.node.width/2,this.node.height/2);
+        this.label.node.position = cc.v3(this.node.width/2,this.node.height/2);
         // this.label.string = `${this.targetPosition.x},${this.targetPosition.y}\n${this.data.x},${this.data.y}`
         this.label.string = `${this.targetPosition.x},${this.targetPosition.y}`;
         this.node.position = this.targetPosition.clone();
@@ -76,7 +76,7 @@ export default class Chunk extends cc.Component {
         for(let i = 0;i<2;i++){
             let w = cc.instantiate(this.wall);
             w.parent = this.layer;
-            w.position = cc.v2(Random.getRandomNum(0,this.node.width),Random.getRandomNum(0,this.node.height));
+            w.position = cc.v3(Random.getRandomNum(0,this.node.width),Random.getRandomNum(0,this.node.height));
             w.zIndex = 100;
         }
     }
@@ -86,8 +86,8 @@ export default class Chunk extends cc.Component {
         //     this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(this.targetPosition),0.5);
         // }
     }
-    lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
-        let out = cc.v2(0,0);
+    lerp(self:cc.Vec3,to:cc.Vec3, ratio:number):cc.Vec3 {
+        let out = cc.v3(0,0);
         let x = self.x;
         let y = self.y;
         out.x = x + (to.x - x) * ratio;

@@ -52,7 +52,7 @@ export default class Box extends Building {
         let spriteFrame = Logic.spriteFrames[resName];
         sprite.spriteFrame = spriteFrame;
     }
-    setPos(pos: cc.Vec2) {
+    setPos(pos: cc.Vec3) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(this.data.pos);
         this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;

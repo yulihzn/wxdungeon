@@ -35,7 +35,7 @@ export default class CoinManger extends cc.Component {
             this.destroyOilGold(event.detail.oilGoldNode);
         });
     }
-    getValueCoin(count:number,pos:cc.Vec2,parentNode:cc.Node){
+    getValueCoin(count:number,pos:cc.Vec3,parentNode:cc.Node){
         let updateValue = Coin.FACE_VALUE;
         let v = count%updateValue;
         for(let i = 0;i < v;i++){
@@ -46,7 +46,7 @@ export default class CoinManger extends cc.Component {
             this.getItem(updateValue,pos,parentNode,true);
         }
     }
-    getValueOilGold(count:number,pos:cc.Vec2,parentNode:cc.Node){
+    getValueOilGold(count:number,pos:cc.Vec3,parentNode:cc.Node){
         let updateValue = OilGold.FACE_VALUE;
         let v = count%updateValue;
         for(let i = 0;i < v;i++){
@@ -58,7 +58,7 @@ export default class CoinManger extends cc.Component {
         }
     }
     
-    private getItem(value:number,pos:cc.Vec2,parentNode:cc.Node,isCoin:boolean){
+    private getItem(value:number,pos:cc.Vec3,parentNode:cc.Node,isCoin:boolean){
         let pool = isCoin?this.coinPool:this.oilPool;
         let prefab = isCoin?this.coin:this.oilGold;
         let player;

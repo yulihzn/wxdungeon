@@ -23,8 +23,8 @@ export default class CameraControl extends cc.Component {
     isShaking = false;
     isHeavyShaking = false;
     offsetIndex = 0;
-    offsetArr = [cc.v2(0,2),cc.v2(0,2),cc.v2(0,-3),cc.v2(0,-3),cc.v2(1,2),cc.v2(1,2),cc.v2(-1,-1),cc.v2(-1,-1)];
-    offsetArr1 = [cc.v2(0,3),cc.v2(0,3),cc.v2(0,-6),cc.v2(0,-6),cc.v2(3,6),cc.v2(3,6),cc.v2(-3,-3),cc.v2(-3,-3)];
+    offsetArr = [cc.v3(0,2),cc.v3(0,2),cc.v3(0,-3),cc.v3(0,-3),cc.v3(1,2),cc.v3(1,2),cc.v3(-1,-1),cc.v3(-1,-1)];
+    offsetArr1 = [cc.v3(0,3),cc.v3(0,3),cc.v3(0,-6),cc.v3(0,-6),cc.v3(3,6),cc.v3(3,6),cc.v3(-3,-3),cc.v3(-3,-3)];
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -45,7 +45,7 @@ export default class CameraControl extends cc.Component {
 
     }
     lateUpdate(){
-        let targetPos = this.dungeon.player.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        let targetPos = this.dungeon.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
         this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1);
         if(this.isShaking){
             if(this.offsetIndex>this.offsetArr.length-1){
@@ -70,8 +70,8 @@ export default class CameraControl extends cc.Component {
     lerpNumber(a, b, r) {
         return a + (b - a) * r;
     }
-    lerp(self:cc.Vec2,to:cc.Vec2, ratio:number):cc.Vec2 {
-        let out = cc.v2(0,0);
+    lerp(self:cc.Vec3,to:cc.Vec3, ratio:number):cc.Vec3 {
+        let out = cc.v3(0,0);
         let x = self.x;
         let y = self.y;
         out.x = x + (to.x - x) * ratio;

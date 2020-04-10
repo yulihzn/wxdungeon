@@ -28,7 +28,7 @@ export default abstract class Boss extends Actor {
     statusManager: StatusManager = null;
     healthBar: HealthBar = null;
     dungeon: Dungeon;
-    pos: cc.Vec2 = cc.v2(0, 0);
+    pos: cc.Vec3 = cc.v3(0, 0);
     data: MonsterData = new MonsterData();
     isDied = false;
     isShow = false;
@@ -41,7 +41,7 @@ export default abstract class Boss extends Actor {
         }
     }
     /**获取玩家距离 */
-    getNearPlayerDistance(playerNode: cc.Node,offset?:cc.Vec2): number {
+    getNearPlayerDistance(playerNode: cc.Node,offset?:cc.Vec3): number {
         let p = this.node.position.clone();
         if(offset){
             p.addSelf(offset);
@@ -50,13 +50,13 @@ export default abstract class Boss extends Actor {
         return dis;
     }
     /**获取中心位置 */
-    getCenterPosition(): cc.Vec2 {
-        return this.node.position.clone().addSelf(cc.v2(0, 32 * this.node.scaleY));
+    getCenterPosition(): cc.Vec3 {
+        return this.node.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
     }
     playHit(sprite:cc.Node){
         if(sprite){
             sprite.stopAllActions();
-            sprite.position = cc.v2(0,0);
+            sprite.position = cc.v3(0,0);
             sprite.runAction(cc.sequence(cc.moveTo(0.1,2,0),cc.moveTo(0.1,-2,0),cc.moveTo(0.1,2,0),
             cc.moveTo(0.1,-2,0),cc.moveTo(0.1,0,2),cc.moveTo(0.1,0,-2),cc.moveTo(0.1,0,2),cc.moveTo(0.1,0,0)));
         }

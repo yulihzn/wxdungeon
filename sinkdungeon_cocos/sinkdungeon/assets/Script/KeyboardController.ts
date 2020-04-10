@@ -68,11 +68,11 @@ export default class KeyboardController extends cc.Component {
     }
     sendMoveMessageToPlayer(dt:number){
         
-        let pos = cc.v2(0,0);
-        if(this.isUp){pos.addSelf(cc.v2(0,0.9));}
-        if(this.isDown){pos.addSelf(cc.v2(0,-0.9));}
-        if(this.isLeft){pos.addSelf(cc.v2(-0.9,0));}
-        if(this.isRight){pos.addSelf(cc.v2(0.9,0));}
+        let pos = cc.v3(0,0);
+        if(this.isUp){pos.addSelf(cc.v3(0,0.9));}
+        if(this.isDown){pos.addSelf(cc.v3(0,-0.9));}
+        if(this.isLeft){pos.addSelf(cc.v3(-0.9,0));}
+        if(this.isRight){pos.addSelf(cc.v3(0.9,0));}
         if (pos.mag()>0){
             pos.normalizeSelf();
         }
@@ -94,7 +94,7 @@ export default class KeyboardController extends cc.Component {
                 dir = 3;
             }
         }
-        if(!pos.equals(cc.Vec2.ZERO)){
+        if(!pos.equals(cc.Vec3.ZERO)){
             this.stopCount = 0;
         }else{
             this.stopCount++;

@@ -59,8 +59,8 @@ export default class InventoryManager {
         return speed;
     }
     //获取最大最小攻击力
-    getAttackPoint():cc.Vec2{
-        let attackPoint = cc.v2(0,0);
+    getAttackPoint():cc.Vec3{
+        let attackPoint = cc.v3(0,0);
         for(let data of this.list){
             attackPoint.x += data.Common.damageMin;
             attackPoint.y += data.Common.damageMax;

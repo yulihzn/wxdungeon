@@ -27,7 +27,7 @@ export default class Equipment extends cc.Component {
     private sprite: cc.Node;
     @property(EquipmentDialog)
     equipmentDialog: EquipmentDialog = null;
-    pos: cc.Vec2 = cc.v2(0, 0);
+    pos: cc.Vec3 = cc.v3(0, 0);
     isTaken = false;
     shopTable: ShopTable;
     // LIFE-CYCLE CALLBACKS:
