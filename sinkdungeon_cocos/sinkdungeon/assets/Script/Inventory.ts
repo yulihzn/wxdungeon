@@ -89,6 +89,9 @@ export default class Inventory extends cc.Component {
                     this.equipmentGroundDialog.hideDialog();
                 }
             });
+        cc.director.on(EventConstant.USEITEM_KEYBOARD, (event) => {
+                    this.userItem(null,event.detail.index);
+                });
     }
 
     start() {
@@ -294,6 +297,9 @@ export default class Inventory extends cc.Component {
 
     //item button
     userItem(event, itemIndex) {
+        if(!this.inventoryManager||!this.inventoryManager.itemList||itemIndex>this.inventoryManager.itemList.length-1){
+            return;
+        }
         let item = this.inventoryManager.itemList[itemIndex].clone();
         this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
         this.refreshItemRes();

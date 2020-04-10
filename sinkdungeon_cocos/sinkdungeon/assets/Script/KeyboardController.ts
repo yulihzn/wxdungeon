@@ -45,6 +45,12 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.k:this.isB = true;break;
             case cc.macro.KEY.i:this.isC = true;break;
             case cc.macro.KEY.l:this.isD = true;break;
+            case cc.macro.KEY.num1:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:0}});break;
+            case cc.macro.KEY.num2:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:1}});break;
+            case cc.macro.KEY.num3:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:2}});break;
+            case 49:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:0}});break;
+            case 50:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:1}});break;
+            case 51:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:2}});break;
         }
     }
     onKeyUp(event:cc.Event.EventKeyboard){

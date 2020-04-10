@@ -678,7 +678,7 @@ export default class Monster extends Actor {
                 cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
                 this.blinkSkill.IsExcuting = true;
                 let body = this.sprite.getChildByName('body');
-                let action = cc.sequence(cc.fadeOut(0.5)
+                let action = cc.sequence(cc.fadeOut(0.2)
                     , cc.callFunc(() => {
                         let newPos = this.dungeon.player.pos.clone();
                         if (this.dungeon.player.pos.x > this.pos.x) {
@@ -689,9 +689,9 @@ export default class Monster extends Actor {
                         let pos = Dungeon.getPosInMap(newPos);
                         this.node.setPosition(pos);
                     })
-                    , cc.fadeIn(0.5));
+                    , cc.fadeIn(0.2));
                 body.runAction(action);
-                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; }, 1.5)
+                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; }, 1)
             }, this.data.blink, true)
         }
     }
