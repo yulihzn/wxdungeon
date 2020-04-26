@@ -107,6 +107,7 @@ export default class Player extends Actor {
     talentShield: TalentShield;
     flyWheel: FlyWheel;
     talentMagic: TalentMagic;
+    isWeaponDashing = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -827,7 +828,7 @@ export default class Player extends Actor {
         if (this.shooterEx && !this.shooterEx.dungeon) {
             this.shooterEx.dungeon = dungeon;
         }
-        if (this.talentDash && !this.talentDash.IsExcuting) {
+        if (this.talentDash && !this.talentDash.IsExcuting && !this.isWeaponDashing) {
             this.move(dir, pos, dt);
         }
     }

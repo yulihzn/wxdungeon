@@ -250,6 +250,31 @@ export default class MeleeWeapon extends cc.Component {
     RefreshTime(){
         this.hasTargetMap = {};
     }
+    /**Anim 冲刺*/
+    DashTime(){
+        let speed = 1000;
+        this.schedule(() => {
+            this.player.getWalkSmoke(this.node.parent, this.node.position);
+        }, 0.05, 4, 0);
+        let pos = cc.v2(this.hv.x,this.hv.y);
+        this.player.isMoving = false;
+        this.player.isWeaponDashing = true;
+        if (pos.equals(cc.Vec2.ZERO)) {
+            pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
+        } else {
+            pos = pos.normalizeSelf();
+        }
+        let posv3 = cc.v3(pos.x,pos.y);
+        this.hv = posv3.clone();
+        pos = pos.mul(speed);
+        this.player.rigidbody.linearVelocity = pos;
+        this.scheduleOnce(() => {
+            this.player.isWeaponDashing = false;
+            this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.player.playerAnim(Player.STATE_IDLE,this.player.currentDir);
+            this.player.resetFoot();
+        }, 0.2)
+    }
     start() {
     }
 

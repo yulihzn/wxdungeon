@@ -115,6 +115,7 @@ export default class SpecialManager extends cc.Component {
             }, 0.2);
         }, 0.5);
     }
+    
     private addBlade(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let prefab = cc.instantiate(this.blade);
         prefab.parent = this.dungeon.node;

@@ -562,6 +562,8 @@
         "stageLevel": 0,
         "sizeType":0.75,
         "bulletType":"bullet028",
+        "specialAttack":10,
+        "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 500,
             "maxHealth": 20,

@@ -259,7 +259,7 @@ export default class Shooter extends cc.Component {
         bullet.changeBullet(bd);
         this.bulletName = bullet.name + bd.resName;
         bullet.enabled = true;
-        bullet.showBullet(cc.v3(hv).rotateSelf(angleOffset * Math.PI / 180));
+        bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
     }
     destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
