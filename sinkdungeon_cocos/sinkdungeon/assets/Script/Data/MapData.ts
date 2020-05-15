@@ -43,7 +43,16 @@ export default class MapData {
         }
         this.map = turnArr;
     }
-    
+    logMap():string{
+        let str = '';
+        for (let j = this.map[0].length - 1; j >= 0; j--) {
+            for (let i = 0; i < this.map.length; i++) {
+                str += `${this.map[i][j]}`;
+            }
+            str += '\n';
+        }
+        return str;
+    }
     clone():MapData{
         let data = new MapData('');
         data.map = this.map.slice();

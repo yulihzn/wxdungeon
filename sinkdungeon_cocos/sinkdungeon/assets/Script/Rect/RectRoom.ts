@@ -16,12 +16,10 @@ import RectDungeon from "./RectDungeon";
 
 
 export default class RectRoom {
-    //未激活
+    //未清理
     public static readonly STATE_SLEEP = 0;
-    //已激活
-    public static readonly STATE_ACTIVE = 1;
     //已清理
-    public static readonly STATE_CLEAR = 2;
+    public static readonly STATE_CLEAR = 1;
 
     public static ROOM_WIDTH = Dungeon.WIDTH_SIZE;
     public static ROOM_HEIGHT = Dungeon.HEIGHT_SIZE;

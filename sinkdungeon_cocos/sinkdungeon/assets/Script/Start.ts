@@ -2,6 +2,7 @@ import Logic from "./Logic";
 import WxHelper from "./WxHelper";
 import { EventConstant } from "./EventConstant";
 import AudioPlayer from "./Utils/AudioPlayer";
+import WorldLoader from "./Map/WorldLoader";
 
 const {ccclass, property} = cc._decorator;
 
@@ -85,7 +86,8 @@ export default class Start extends cc.Component {
         }
     }
     loadTest(){
-        cc.director.loadScene('chunktest');
+        // cc.director.loadScene('chunktest');
+        new WorldLoader().loadMap();
     }
     
 }
