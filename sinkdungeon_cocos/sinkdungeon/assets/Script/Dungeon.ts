@@ -158,7 +158,7 @@ export default class Dungeon extends cc.Component {
         })
         //设置雾气层级
         this.fog.zIndex = 9000;
-        this.fog.scale = 1.5;
+        this.fog.scale = 1.2;
         Logic.changeDungeonSize();
         let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;
         this.monsterManager = this.getComponent(MonsterManager);
