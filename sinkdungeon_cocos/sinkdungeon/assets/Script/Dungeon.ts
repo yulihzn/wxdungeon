@@ -930,7 +930,7 @@ export default class Dungeon extends cc.Component {
             cc.director.emit(EventConstant.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
         }, 0.1)
         for (let door of Logic.mapManager.getCurrentRoom().doors) {
-            this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false);
+            this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false,door.isHidden);
         }
     }
     breakTile(pos: cc.Vec3) {
@@ -1010,7 +1010,7 @@ export default class Dungeon extends cc.Component {
                 needClose = false;
             }
             if (!needClose) {
-                this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true);
+                this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true,door.isHidden);
             }
         }
     }

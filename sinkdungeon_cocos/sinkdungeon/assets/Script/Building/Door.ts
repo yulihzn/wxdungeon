@@ -22,6 +22,7 @@ export default class Door extends Building {
     anim: cc.Animation;
     isOpen: boolean = false;
     isDoor: boolean = true;
+    isHidden: boolean = false;
     //0top1bottom2left3right
     dir = 0;
     wall: cc.Node = null;

@@ -289,7 +289,7 @@ export default class DungeonStyleManager extends cc.Component {
         this.floorShadow.zIndex = 2000;
     }
 
-    setDoor(dir: number, isDoor: boolean, isOpen: boolean) {
+    setDoor(dir: number, isDoor: boolean, isOpen: boolean,isHidden:boolean) {
         let door = this.styleData.door;
         let floor = this.styleData.floor;
         let frame = this.styleData.doorframe;

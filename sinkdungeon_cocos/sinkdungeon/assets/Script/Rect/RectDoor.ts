@@ -14,9 +14,11 @@ export default class RectDoor {
     dir: number;
     isLocked: boolean = false;
     isDoor: boolean = false;
-    constructor(dir: number, isLocked: boolean, isDoor: boolean) {
+    isHidden: boolean = false;
+    constructor(dir: number, isLocked: boolean, isDoor: boolean,isHidden:boolean) {
         this.dir = dir;
         this.isLocked = isLocked;
         this.isDoor = isDoor;
+        this.isHidden = isHidden;
     }
 }

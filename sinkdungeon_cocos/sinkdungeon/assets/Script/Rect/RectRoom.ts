@@ -91,7 +91,7 @@ export default class RectRoom {
         if (this.doors == null) {
             this.doors = new Array(4);
             for (let i = 0; i < 4; i++) {
-                this.doors[i] = new RectDoor(i, false, false);
+                this.doors[i] = new RectDoor(i, false, false,false);
             }
         }
         // this.randomTiles = new Array();

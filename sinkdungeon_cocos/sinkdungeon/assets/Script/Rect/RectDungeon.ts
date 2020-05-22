@@ -33,8 +33,9 @@ export default class RectDungeon {
     public static readonly BOSS_ROOM = 9;
     public static readonly POKER_ROOM = 10;
     public static readonly TAROT_ROOM = 11;
-    public static readonly TEST_ROOM = 12;
-    public static readonly FINAL_ROOM = 13;
+    public static readonly HIDDEN_ROOM = 12;
+    public static readonly TEST_ROOM = 13;
+    public static readonly FINAL_ROOM = 14;
     public level: number = 1;
     public map: RectRoom[][];
     public size: number;
