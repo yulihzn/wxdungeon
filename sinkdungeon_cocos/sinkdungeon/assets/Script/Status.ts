@@ -1,4 +1,4 @@
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 import StatusData from "./Data/StatusData";
 import Logic from "./Logic";
 import Player from "./Player";

@@ -1,7 +1,7 @@
 import Logic from "../Logic";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Actor from "../Base/Actor";
 import StatusManager from "../Manager/StatusManager";
 import FromData from "../Data/FromData";

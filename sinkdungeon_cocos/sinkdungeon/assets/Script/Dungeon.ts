@@ -2,7 +2,7 @@ import Player from "./Player";
 import Tile from "./Tile";
 import Monster from "./Monster";
 import Logic from "./Logic";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 import MonsterManager from "./Manager/MonsterManager";
 import Portal from "./Building/Portal";
 import Wall from "./Building/Wall";
@@ -128,32 +128,32 @@ export default class Dungeon extends cc.Component {
     bosses: Boss[] = [];
 
     onLoad() {
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听
-        cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir, event.detail.pos, event.detail.dt) });
-        cc.director.on(EventConstant.DUNGEON_SETEQUIPMENT, (event) => {
+        cc.director.on(EventHelper.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir, event.detail.pos, event.detail.dt) });
+        cc.director.on(EventHelper.DUNGEON_SETEQUIPMENT, (event) => {
             this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
         });
-        cc.director.on(EventConstant.DUNGEON_ADD_COIN, (event) => {
+        cc.director.on(EventHelper.DUNGEON_ADD_COIN, (event) => {
             this.addCoin(event.detail.pos, event.detail.count);
         })
-        cc.director.on(EventConstant.DUNGEON_ADD_OILGOLD, (event) => {
+        cc.director.on(EventHelper.DUNGEON_ADD_OILGOLD, (event) => {
             this.addOilGold(event.detail.pos, event.detail.count);
         })
-        cc.director.on(EventConstant.DUNGEON_ADD_ITEM, (event) => {
+        cc.director.on(EventHelper.DUNGEON_ADD_ITEM, (event) => {
             this.addItem(event.detail.pos, event.detail.res);
         })
-        cc.director.on(EventConstant.DUNGEON_ADD_FALLSTONE, (event) => {
+        cc.director.on(EventHelper.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
         })
-        cc.director.on(EventConstant.DUNGEON_SHAKEONCE, (event) => {
+        cc.director.on(EventHelper.DUNGEON_SHAKEONCE, (event) => {
             if (this.anim) {
                 this.anim.play('DungeonShakeOnce');
             }
         });
-        cc.director.on(EventConstant.BOSS_ADDSLIME, (event) => {
+        cc.director.on(EventHelper.BOSS_ADDSLIME, (event) => {
             this.addBossSlime(event.detail.slimeType, event.detail.posIndex);
         })
         //设置雾气层级
@@ -927,7 +927,7 @@ export default class Dungeon extends cc.Component {
 
     start() {
         this.scheduleOnce(() => {
-            cc.director.emit(EventConstant.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
+            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
         }, 0.1)
         for (let door of Logic.mapManager.getCurrentRoom().doors) {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false,door.isHidden);

@@ -1,6 +1,6 @@
 import Player from "../Player";
 import Logic from "../Logic";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Random from "../Utils/Random";
 import AudioPlayer from "../Utils/AudioPlayer";
 
@@ -90,8 +90,8 @@ export default class Coin extends cc.Component {
         }
         if (this.player&&this.getNearPlayerDistance(this.player.node)<64&&this.node.active && this.isReady) {
             this.isReady =false;
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.COIN}});
-            cc.director.emit(EventConstant.HUD_ADD_COIN,{detail:{count:this.value}});
+            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.COIN}});
+            cc.director.emit(EventHelper.HUD_ADD_COIN,{detail:{count:this.value}});
             cc.director.emit('destorycoin',{detail:{coinNode:this.node}});
         }
     }

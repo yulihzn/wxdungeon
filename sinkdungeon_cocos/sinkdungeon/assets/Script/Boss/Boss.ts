@@ -3,7 +3,7 @@ import Logic from "../Logic";
 import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import EquipmentManager from "../Manager/EquipmentManager";
 import Actor from "../Base/Actor";
 import Shooter from "../Shooter";
@@ -86,10 +86,10 @@ export default abstract class Boss extends Actor {
     }
     getLoot(){
         if(this.dungeon){
-            cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 19 } });
-            cc.director.emit(EventConstant.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 29) } });
-            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
-            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.AMMO } });
+            cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 19 } });
+            cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 29) } });
+            cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
+            cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.AMMO } });
             this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos,null,3);
         }
     }

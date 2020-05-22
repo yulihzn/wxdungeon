@@ -7,7 +7,7 @@ import Dungeon from "./Dungeon";
 import TalentTree from "./UI/TalentTree";
 import CutScene from "./UI/CutScene";
 import EquipmentStringData from "./Data/EquipmentStringData";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,7 +60,7 @@ export default class Loading extends cc.Component {
         this.talentInfo.active = false;
         this.label.node.setPosition(cc.v3(0, 0));
         this.confirmButton.interactable = false;
-        cc.director.on(EventConstant.TALENT_TREE_SELECT
+        cc.director.on(EventHelper.TALENT_TREE_SELECT
             , (event) => { if (this.node) { this.confirmButton.interactable = true; } });
     }
     confirmTalent() {

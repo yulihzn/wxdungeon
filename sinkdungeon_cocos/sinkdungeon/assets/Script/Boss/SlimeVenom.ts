@@ -1,7 +1,7 @@
 import Logic from "../Logic";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Actor from "../Base/Actor";
 import FromData from "../Data/FromData";
 
@@ -82,7 +82,7 @@ export default class SlimeVenom extends Actor {
         if (this.player&&this.getNearPlayerDistance(this.player.node)<60*this.node.scale&&this.node.active && !this.isHide) {
             let dd = new DamageData();
             dd.toxicDamage = 1;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:from}});
+            cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:from}});
         }
     }
     takeDamage(damge:DamageData){

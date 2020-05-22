@@ -1,4 +1,4 @@
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -90,13 +90,13 @@ export default class JoyController extends cc.Component {
  
         this.node.on(cc.Node.EventType.TOUCH_END, function (event) {
             this.init();
-            cc.director.emit(EventConstant.PLAYER_ATTACK);
+            cc.director.emit(EventHelper.PLAYER_ATTACK);
         }, this)
  
  
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, function (event) {
             this.init();
-            cc.director.emit(EventConstant.PLAYER_ATTACK);
+            cc.director.emit(EventHelper.PLAYER_ATTACK);
         }, this)
  
  
@@ -265,7 +265,7 @@ export default class JoyController extends cc.Component {
             }
         }
         let pos = this.getInputDir();
-        cc.director.emit(EventConstant.PLAYER_ROTATE,{detail:{dir:dir,pos:pos,dt:dt}})
+        cc.director.emit(EventHelper.PLAYER_ROTATE,{detail:{dir:dir,pos:pos,dt:dt}})
         
     }
     timeDelay = 0;

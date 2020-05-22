@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,7 +20,7 @@ export default class Seeker extends cc.Component {
     onLoad() {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.node.zIndex = 1000;
-        cc.director.on(EventConstant.PLAYER_MOVE, (event) => { this.move(event.detail.dir, event.detail.pos, event.detail.dt) });
+        cc.director.on(EventHelper.PLAYER_MOVE, (event) => { this.move(event.detail.dir, event.detail.pos, event.detail.dt) });
     }
     move(dir: number, pos: cc.Vec3, dt: number) {
         let h = pos.x;
@@ -51,7 +51,7 @@ export default class Seeker extends cc.Component {
 
     update(dt) {
         if(this.isCheckTimeDelay(dt)&&this.isMoving){
-            cc.director.emit(EventConstant.CHUNK_LOAD, { detail: { pos: this.node.position.clone()}});
+            cc.director.emit(EventHelper.CHUNK_LOAD, { detail: { pos: this.node.position.clone()}});
         }
     }
     

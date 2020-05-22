@@ -1,7 +1,7 @@
 
 const {ccclass, property} = cc._decorator;
 @ccclass
-export class EventConstant extends cc.Component{
+export class EventHelper extends cc.Component{
     public static readonly PLAYER_MOVE = 'PLAYER_MOVE';
     public static readonly PLAYER_ROTATE = 'PLAYER_ROTATE';
     public static readonly PLAYER_TRIGGER = 'PLAYER_TRIGGER';
@@ -46,13 +46,21 @@ export class EventConstant extends cc.Component{
     public static readonly CAMERA_LOOK = 'CAMERA_LOOK';
     public static readonly CHUNK_LOAD = 'CHUNK_LOAD';
     public static eventHandler:cc.Node = new cc.Node();
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
-
-    // start () {
-
-    // }
-
-    // update (dt) {}
+    
+    /**
+     * 自定义事件发送
+     * @param key 
+     * @param customDetail 
+     */
+    public static emit(key:string,customDetail:any){
+        cc.director.emit(key, { detail: customDetail });
+    }
+    /**
+     * 自定义事件接收
+     * @param key 
+     * @param callback 
+     */
+    public static on(key:string,callback:Function){
+        cc.director.on(key, (event) => { callback(event.detail); });
+    }
 }

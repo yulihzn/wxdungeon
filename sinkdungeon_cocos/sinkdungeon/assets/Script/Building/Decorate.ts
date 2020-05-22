@@ -2,7 +2,7 @@ import Dungeon from "../Dungeon";
 import BoxData from "../Data/BoxData";
 import Logic from "../Logic";
 import Building from "./Building";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Random from "../Utils/Random";
 import AudioPlayer from "../Utils/AudioPlayer";
 import Item from "../Item/Item";
@@ -73,7 +73,7 @@ export default class Decorate extends Building {
             return;
         }
         this.isBreaking = true;
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         this.sprite.node.runAction(cc.sequence(
              cc.callFunc(() => {
                 this.changeRes(this.resName, 'anim001');
@@ -90,14 +90,14 @@ export default class Decorate extends Building {
                 }
                 let rand = Random.rand();
                 if (rand > 0.7 && rand < 0.8) {
-                    cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
+                    cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
                     if(Logic.getHalfChance()){
-                        cc.director.emit(EventConstant.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+                        cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
                     }
                 } else if (rand >= 0.8 && rand < 0.825) {
-                    cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
+                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
                 } else if (rand >= 0.825 && rand < 0.85) {
-                    cc.director.emit(EventConstant.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.AMMO } });
+                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.AMMO } });
                 }
             }), cc.delayTime(10), cc.callFunc(() => {
                 this.reset();

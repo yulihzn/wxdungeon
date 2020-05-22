@@ -9,7 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
-import { EventConstant } from './EventConstant';
+import { EventHelper } from './EventHelper';
 import Logic from './Logic';
 
 @ccclass
@@ -79,11 +79,11 @@ export default class Controller extends cc.Component {
         this.skillAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.skillActionTouched = false;
         }, this)
-        cc.director.on(EventConstant.HUD_DARK_CONTROLLER
+        cc.director.on(EventHelper.HUD_DARK_CONTROLLER
             , (event) => { this.changeRes(event.detail.index, false) });
-        cc.director.on(EventConstant.HUD_DARK_CONTROLLER
+        cc.director.on(EventHelper.HUD_DARK_CONTROLLER
             , (event) => { this.changeRes(event.detail.index, true) });
-        cc.director.on(EventConstant.HUD_CONTROLLER_COOLDOWN
+        cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
             , (event) => { this.drawSkillCoolDown(event.detail.cooldown, event.detail.talentType); });
     }
 
@@ -197,16 +197,16 @@ export default class Controller extends cc.Component {
         this.isSkillTimeDelay(dt);
         if (this.isTimeDelay(dt)) {
             if (this.attackActionTouched) {
-                cc.director.emit(EventConstant.PLAYER_ATTACK);
+                cc.director.emit(EventHelper.PLAYER_ATTACK);
             }
             if (this.shootActionTouched) {
-                cc.director.emit(EventConstant.PLAYER_REMOTEATTACK);
+                cc.director.emit(EventHelper.PLAYER_REMOTEATTACK);
             }
             if (this.interactActionTouched) {
-                cc.director.emit(EventConstant.PLAYER_TRIGGER);
+                cc.director.emit(EventHelper.PLAYER_TRIGGER);
             }
             if (this.skillActionTouched) {
-                cc.director.emit(EventConstant.PLAYER_SKILL);
+                cc.director.emit(EventHelper.PLAYER_SKILL);
             }
         }
     }

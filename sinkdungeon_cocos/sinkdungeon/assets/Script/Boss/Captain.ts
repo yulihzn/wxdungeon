@@ -4,7 +4,7 @@ import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Shooter from "../Shooter";
 import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
@@ -71,7 +71,7 @@ export default class Captain extends Boss {
     //Animation
     AttackStart(){
         this.attackSkill.IsExcuting = true;
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
     }
     //Animation
     AttackFinish(){
@@ -146,7 +146,7 @@ export default class Captain extends Boss {
                 this.isFall = false;
                 let dd = new DamageData();
                 dd.physicalDamage = 2;
-                cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE, { detail: { damage: dd,from:FromData.getClone(this.actorName(),'captain_head') } });
+                cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE, { detail: { damage: dd,from:FromData.getClone(this.actorName(),'captain_head') } });
             }
         }
     }
@@ -186,7 +186,7 @@ export default class Captain extends Boss {
         
         // this.anim.playAdditive('CaptainHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
     

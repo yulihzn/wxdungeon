@@ -9,7 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
-import { EventConstant } from './EventConstant';
+import { EventHelper } from './EventHelper';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
 import MonsterData from './Data/MonsterData';
@@ -530,7 +530,7 @@ export default class Monster extends Actor {
             if(damageData.isBackAttack){
                 this.showBloodEffect();
             }
-            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.scheduleOnce(() => {
                 if (this.node) {
                     this.isHurt = false;
@@ -634,8 +634,8 @@ export default class Monster extends Actor {
         let rand = Random.rand();
         if (this.dungeon) {
             if (rand < 0.8) {
-                cc.director.emit(EventConstant.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
-                cc.director.emit(EventConstant.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 29) } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 29) } });
             } else if (rand >= 0.8 && rand < 0.825) {
                 this.dungeon.addItem(this.node.position.clone(), Item.HEART);
             } else if (rand >= 0.825 && rand < 0.85) {
@@ -660,7 +660,7 @@ export default class Monster extends Actor {
                     boom.parent = this.node.parent;
                     boom.setPosition(this.node.position);
                     boom.zIndex = 4100;
-                    cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } });
+                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } });
                 }
                 this.scheduleOnce(() => { this.node.active = false; }, 5);
             }
@@ -675,7 +675,7 @@ export default class Monster extends Actor {
     blink() {
         if (this.data.blink > 0) {
             this.blinkSkill.next(() => {
-                cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
                 this.blinkSkill.IsExcuting = true;
                 let body = this.sprite.getChildByName('body');
                 let action = cc.sequence(cc.fadeOut(0.2)
@@ -724,7 +724,7 @@ export default class Monster extends Actor {
         if (playerDis < pd * this.node.scaleY && !this.dungeon.player.isDied && !this.dungeon.player.invisible && this.data.melee > 0 
             && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
             this.meleeSkill.next(() => {
-                cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.meleeSkill.IsExcuting = true;
                 this.showAttackEffect(false);
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
@@ -779,7 +779,7 @@ export default class Monster extends Actor {
         if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && !this.dungeon.player.invisible && this.data.dash > 0
             && !this.dashSkill.IsExcuting && !this.isDisguising) {
             this.dashSkill.next(() => {
-                cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 pos = this.getMovePosFromPlayer();
                 this.showAttackEffect(true);
                 this.move(pos, speed * 1.2);

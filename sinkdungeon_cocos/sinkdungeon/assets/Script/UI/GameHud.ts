@@ -1,6 +1,6 @@
 import PlayerInfoDialog from "./PlayerInfoDialog";
 import HealthBar from "../HealthBar";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import PlayerData from "../Data/PlayerData";
 import Logic from "../Logic";
 
@@ -40,18 +40,18 @@ export default class GameHud extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        cc.director.on(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, (event) => {
+        cc.director.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, (event) => {
             let data = new PlayerData();
             data.valueCopy(event.detail.data);
             this.statusUpdate(data);
         })
-        cc.director.on(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, (event) => {
+        cc.director.on(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, (event) => {
             this.healthBarUpdate(event.detail.x, event.detail.y);
         })
-        cc.director.on(EventConstant.HUD_DAMAGE_CORNER_SHOW, (event) => {
+        cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
             this.showDamageCorner();
         })
-        cc.director.on(EventConstant.HUD_STOP_COUNTTIME
+        cc.director.on(EventHelper.HUD_STOP_COUNTTIME
             , (event) => { this.startCountTime = false; });
         if (this.clock) {
             this.clock.string = `${Logic.time}`;

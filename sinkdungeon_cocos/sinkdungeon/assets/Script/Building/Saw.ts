@@ -1,5 +1,5 @@
 import Dungeon from "../Dungeon";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import Building from "./Building";

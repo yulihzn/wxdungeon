@@ -1,5 +1,5 @@
 import PlayerData from "./Data/PlayerData";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 import EquipmentData from "./Data/EquipmentData";
 import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
@@ -87,10 +87,10 @@ export default class Logic extends cc.Component {
         // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
         // cc.PhysicsManager.DrawBits.e_jointBit |
         // cc.PhysicsManager.DrawBits.e_shapeBit;
-        cc.director.on(EventConstant.LOADINGNEXTLEVEL, (event) => {
+        cc.director.on(EventHelper.LOADINGNEXTLEVEL, (event) => {
             this.loadingNextLevel();
         });
-        cc.director.on(EventConstant.LOADINGROOM, (event) => {
+        cc.director.on(EventHelper.LOADINGROOM, (event) => {
             this.loadingNextRoom(event.detail.dir);
         });
     }
@@ -197,7 +197,7 @@ export default class Logic extends cc.Component {
         //最多五层
         if (Logic.level > 6 && Logic.chapterName >= Logic.CHAPTER04) {
             Logic.profileManager.clearData();
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
+            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
             cc.director.loadScene('gamefinish')
             
         } else {

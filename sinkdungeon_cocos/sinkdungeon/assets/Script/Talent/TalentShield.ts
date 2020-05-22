@@ -1,5 +1,5 @@
 import StatusManager from "../Manager/StatusManager";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
 import Actor from "../Base/Actor";
@@ -127,10 +127,10 @@ export default class TalentShield extends Talent {
                 invulnerabilityTime = 0;
                 animOverTime = 0;
             }
-            let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v3(-16, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v3(-8, y)), cc.scaleTo(animOverTime, 1, 1));
-            let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v3(8, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v3(-8, y)), cc.scaleTo(animOverTime, 0, 1));
+            let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 1, 1));
+            let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
+                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 0, 1));
             this.shieldBackSprite.node.runAction(backAction);
             this.shieldFrontSprite.node.runAction(frontAction);
             //添加状态
@@ -140,7 +140,7 @@ export default class TalentShield extends Talent {
                     //乾坤一掷
                     this.throwShield();
                 } else{
-                    cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 }
             }, 0.2);
             this.scheduleOnce(() => {
@@ -149,13 +149,13 @@ export default class TalentShield extends Talent {
             this.scheduleOnce(() => {
                 this.shieldBackSprite.node.opacity = 255;
             }, 1)
-            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown,talentType:2 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown,talentType:2 } });
         }, cooldown, true);
     }
     private throwShield() {
         this.shieldBackSprite.node.opacity = 0;
         if (this.flyWheel) {
-            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
             this.flyWheel.show();
         }
     }

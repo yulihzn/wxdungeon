@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,7 +23,7 @@ export default class ChunkLookCamera extends cc.Component {
 
     onLoad () {
         this.camera = this.getComponent(cc.Camera);
-        cc.director.on(EventConstant.CAMERA_LOOK, (event) => {
+        cc.director.on(EventHelper.CAMERA_LOOK, (event) => {
             this.lookAt(event.detail.position);
         })
     }

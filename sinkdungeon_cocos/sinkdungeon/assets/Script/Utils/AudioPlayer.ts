@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Random from "./Random";
 import Logic from "../Logic";
 import RectDungeon from "../Rect/RectDungeon";
@@ -90,8 +90,7 @@ export default class AudioPlayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        cc.director.on(EventConstant.PLAY_AUDIO
-            , (event) => { this.play(event.detail.name) });
+        EventHelper.on(EventHelper.PLAY_AUDIO,(detail)=>{this.playSound(detail.name);});
     }
     playbg() {
         let bgms = [this.bg01,this.bg02,this.bg03,this.bg04,this.bg05,this.bg06,this.bg07,this.bg08,this.bg09,this.bg10,
@@ -105,7 +104,7 @@ export default class AudioPlayer extends cc.Component {
             cc.audioEngine.playMusic(clip, true);
         }
     }
-    play(name: string) {
+    private playSound(name: string) {
         switch (name) {
             case AudioPlayer.MONSTER_HIT:
                 cc.audioEngine.playEffect(this.monsterHit, false);
@@ -161,9 +160,7 @@ export default class AudioPlayer extends cc.Component {
         }
     }
 
-    start() {
-
+    static play(audioName: string){
+        EventHelper.emit(EventHelper.PLAY_AUDIO,{ name: audioName });
     }
-
-    // update (dt) {}
 }

@@ -1,5 +1,5 @@
 import Logic from "./Logic";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
 import Random from "./Utils/Random";
 import Achievements from "./Achievement";
@@ -69,12 +69,12 @@ export default class GameOver extends cc.Component {
     }
     retry() {
         Logic.resetData();
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
         cc.director.loadScene('loading');
     }
     home() {
         Logic.time = '00:00:00';
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
         cc.director.loadScene('start');
     }
     

@@ -1,5 +1,5 @@
 import Logic from "./Logic";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

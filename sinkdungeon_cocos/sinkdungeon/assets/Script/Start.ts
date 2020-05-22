@@ -1,6 +1,6 @@
 import Logic from "./Logic";
 import WxHelper from "./WxHelper";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
 import WorldLoader from "./Map/WorldLoader";
 
@@ -35,15 +35,15 @@ export default class Start extends cc.Component {
         //重置数据
         Logic.resetData();
         //加载资源
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('loading');
     }
     chooseChapter(){
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('chapter');
     }
     achievementScene(){
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('achievement');
     }
     continueGame(){
@@ -51,7 +51,7 @@ export default class Start extends cc.Component {
             this.wxhelper.CloseDialog();
         }
         Logic.resetData();
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('loading');
     }
     cheatModeChange(){

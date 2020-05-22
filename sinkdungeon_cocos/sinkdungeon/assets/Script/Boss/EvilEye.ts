@@ -4,7 +4,7 @@ import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Shooter from "../Shooter";
 import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
@@ -101,7 +101,7 @@ export default class EvilEye extends Boss {
             this.anim.play("EvilEyeHurt");
             this.scheduleOnce(() => { this.anim.play('EvilEyeBite') }, 2.5)
         }
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 
@@ -203,7 +203,7 @@ export default class EvilEye extends Boss {
     }
     dash() {
         this.dashSkill.next(() => {
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             this.dashSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);

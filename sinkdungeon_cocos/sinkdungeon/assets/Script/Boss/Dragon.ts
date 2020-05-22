@@ -6,7 +6,7 @@ import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import Random from "../Utils/Random";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
@@ -60,7 +60,7 @@ export default class Dragon extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 

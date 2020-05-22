@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,7 +31,7 @@ export default class Tips extends cc.Component {
             return;
         }
         this.isUse = true;
-        cc.director.emit(EventConstant.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType}});
+        cc.director.emit(EventHelper.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType}});
         setTimeout(()=>{this.isUse = false;},0.1);
     }
     onDestroy(){

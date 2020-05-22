@@ -6,7 +6,7 @@ import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
@@ -62,7 +62,7 @@ export default class Rah extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 
@@ -119,7 +119,7 @@ export default class Rah extends Boss {
  
     blink(): void {
         this.blinkSkill.next(() => {
-            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
             this.blinkSkill.IsExcuting = true;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             let action = cc.sequence(cc.callFunc(() => { }),
@@ -146,7 +146,7 @@ export default class Rah extends Boss {
     }
     attack() {
         this.meleeSkill.next(() => {
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             this.meleeSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);

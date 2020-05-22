@@ -8,7 +8,7 @@ import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import MonsterManager from "../Manager/MonsterManager";
 import AudioPlayer from "../Utils/AudioPlayer";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 
@@ -59,7 +59,7 @@ export default class Sphinx extends Boss {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         this.playHit(this.node.getChildByName('sprite'));
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 
@@ -86,7 +86,7 @@ export default class Sphinx extends Boss {
             return;
         }
         this.summonSkill.next(() => {
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             this.summonSkill.IsExcuting = true;
             let pos = Dungeon.getIndexInMap(this.node.position.clone());
             this.dungeon.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, pos.x, pos.y - 1);

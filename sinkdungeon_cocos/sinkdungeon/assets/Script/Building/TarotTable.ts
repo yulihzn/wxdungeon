@@ -2,7 +2,7 @@ import Player from "../Player";
 import Dungeon from "../Dungeon";
 import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import ShopTableData from "../Data/ShopTableData";
 import Tips from "../UI/Tips";
 import Building from "./Building";
@@ -32,7 +32,7 @@ export default class TarotTable extends Building {
         this.anim = this.getComponent(cc.Animation);
         this.tips = this.node.getChildByName("Tips").getComponent(Tips);
         this.tips.tipsType = Tips.TAROT_TABLE;
-        cc.director.on(EventConstant.PLAYER_TAPTIPS
+        cc.director.on(EventHelper.PLAYER_TAPTIPS
             , (event) => {
                 if (event.detail.tipsType == Tips.TAROT_TABLE) {
                     this.showCards();

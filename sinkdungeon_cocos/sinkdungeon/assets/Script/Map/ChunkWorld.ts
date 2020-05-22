@@ -1,5 +1,5 @@
 import Chunk from "./Chunk";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,7 +38,7 @@ export default class ChunkWorld extends cc.Component {
 
     onLoad () {
         const CENTER = Math.floor(ChunkWorld.SIZE/2);
-        cc.director.on(EventConstant.CHUNK_LOAD, (event) => {
+        cc.director.on(EventHelper.CHUNK_LOAD, (event) => {
             let pos = event.detail.pos;
             let p = ChunkWorld.getIndexInMap(pos,this.currentMap[0][0].targetPosition);
             cc.log(p);

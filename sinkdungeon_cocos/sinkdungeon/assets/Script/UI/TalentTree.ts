@@ -2,7 +2,7 @@ import TalentIcon from "./TalentIcon";
 import Talent from "../Talent/Talent";
 import TalentData from "../Data/TalentData";
 import Logic from "../Logic";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -103,7 +103,7 @@ export default class TalentTree extends cc.Component {
             this.initMagicNode(Talent.MAGIC_15,14,[13],[15]);
             this.initMagicNode(Talent.MAGIC_16,15,[14],[1]);
         }
-        cc.director.on(EventConstant.TALENT_TREE_UPDATE
+        cc.director.on(EventHelper.TALENT_TREE_UPDATE
             , (event) => { if(this.node&&this.node.active){this.hasPicked = true;} });
     }
     get SelectIcon(){
@@ -139,7 +139,7 @@ export default class TalentTree extends cc.Component {
                     if(this.selectIcon)this.selectIcon.node.color = cc.color(51, 51, 51);
                     this.selectIcon = node.getComponent(TalentIcon);
                     node.color = cc.color(255, 255, 255);
-                    cc.director.emit(EventConstant.TALENT_TREE_SELECT);
+                    cc.director.emit(EventHelper.TALENT_TREE_SELECT);
                 }
             }, this);
             talentList.push(node);

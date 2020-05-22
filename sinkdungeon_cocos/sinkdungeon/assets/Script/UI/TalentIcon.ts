@@ -1,6 +1,6 @@
 import Logic from "../Logic";
 import TalentData from "../Data/TalentData";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Talent from "../Talent/Talent";
 
 const { ccclass, property } = cc._decorator;
@@ -34,7 +34,7 @@ export default class TalentIcon extends cc.Component {
         this.isOpen = this.checkCanOpen();
         if (this.isOpen) {
             this.node.color = cc.color(255, 255, 255);
-            cc.director.emit(EventConstant.TALENT_TREE_UPDATE);
+            cc.director.emit(EventHelper.TALENT_TREE_UPDATE);
             return Logic.addTalent(this.data.id);
         }
         return false;

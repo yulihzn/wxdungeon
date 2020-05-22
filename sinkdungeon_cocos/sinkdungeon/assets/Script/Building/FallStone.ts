@@ -1,5 +1,5 @@
 import Player from "../Player";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import DamageData from "../Data/DamageData";
 import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -43,7 +43,7 @@ export default class FallStone extends Building {
     }
     //anim
     FallFinish() {
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
         this.isFall = true;
         this.scheduleOnce(() => { this.isFall = false; }, 0.1);
         this.scheduleOnce(() => {

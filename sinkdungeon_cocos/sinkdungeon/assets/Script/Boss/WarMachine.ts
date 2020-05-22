@@ -6,7 +6,7 @@ import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 
@@ -77,7 +77,7 @@ export default class WarMachine extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 
@@ -115,11 +115,11 @@ export default class WarMachine extends Boss {
             this.actionCount++;
             let pos = cc.v3(1, 0);
             if (this.actionCount > 10) {
-                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 pos = cc.v3(-1, 0);
             }
             if (this.actionCount > 20) {
-                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 this.actionCount = 0;
             }
             if (!pos.equals(cc.Vec3.ZERO)) {

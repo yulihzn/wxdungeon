@@ -4,7 +4,7 @@ import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Shooter from "../Shooter";
 import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
@@ -67,7 +67,7 @@ export default class IceDemon extends Boss {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         this.defence();
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
 
@@ -172,13 +172,13 @@ export default class IceDemon extends Boss {
 
         this.meleeSkill.next(() => {
             this.meleeSkill.IsExcuting = true;
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
             this.anim.play('IceDemonAttack001');
             this.scheduleOnce(() => {
-                cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
                 let pos = this.getMovePos();
                 if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf();

@@ -2,7 +2,7 @@ import Status from "../Status";
 import StatusData from "../Data/StatusData";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Monster from "../Monster";
 import FromData from "../Data/FromData";
@@ -132,7 +132,7 @@ export default class StatusManager extends cc.Component {
             let monster = this.node.parent.getComponent(Monster);
             if(this.node.parent&&this.node.parent.getComponent(Player)){
                 Logic.playerData.StatusTotalData.valueCopy(this.updateStatus());
-                cc.director.emit(EventConstant.PLAYER_STATUSUPDATE);
+                cc.director.emit(EventHelper.PLAYER_STATUSUPDATE);
             }else if(this.node.parent&&monster){
                 monster.data.StatusTotalData.valueCopy(this.updateStatus());
             }

@@ -2,7 +2,7 @@ import Logic from "../Logic";
 import EquipmentDialog from "./EquipmentDialog";
 import EquipmentData from "../Data/EquipmentData";
 import EquipmentManager from "../Manager/EquipmentManager";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import ShopTable from "../Building/ShopTable";
 import Dungeon from "../Dungeon";
@@ -66,7 +66,7 @@ export default class Equipment extends cc.Component {
     taken() {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
-        cc.director.emit(EventConstant.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
+        cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
         this.node.getChildByName('shadow').active = false;
         this.equipmentDialog.node.active = false;
         this.scheduleOnce(() => {
@@ -84,7 +84,7 @@ export default class Equipment extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentEquipmentsArr(newlist);
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.PICK_UP}})
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.PICK_UP}})
 
     }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {

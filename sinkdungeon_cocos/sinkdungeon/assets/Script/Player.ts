@@ -9,7 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
-import { EventConstant } from './EventConstant';
+import { EventHelper } from './EventHelper';
 import Shooter from './Shooter';
 import Logic from './Logic';
 import Dungeon from './Dungeon';
@@ -138,19 +138,19 @@ export default class Player extends Actor {
         this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footleft', 'shoes']);
         this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footright', 'shoes']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
-        cc.director.on(EventConstant.PLAYER_TRIGGER
+        cc.director.on(EventHelper.PLAYER_TRIGGER
             , (event) => { this.triggerThings() });
-        cc.director.on(EventConstant.PLAYER_USEITEM
+        cc.director.on(EventHelper.PLAYER_USEITEM
             , (event) => { this.useItem(event.detail.itemData) });
-        cc.director.on(EventConstant.PLAYER_SKILL
+        cc.director.on(EventHelper.PLAYER_SKILL
             , (event) => { this.useSkill() });
-        cc.director.on(EventConstant.PLAYER_ATTACK
+        cc.director.on(EventHelper.PLAYER_ATTACK
             , (event) => { this.meleeAttack() });
-        cc.director.on(EventConstant.PLAYER_REMOTEATTACK
+        cc.director.on(EventHelper.PLAYER_REMOTEATTACK
             , (event) => { this.remoteAttack() });
-        cc.director.on(EventConstant.PLAYER_STATUSUPDATE
+        cc.director.on(EventHelper.PLAYER_STATUSUPDATE
             , (event) => { this.statusUpdate() });
-        cc.director.on(EventConstant.PLAYER_TAKEDAMAGE
+        cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage, event.detail.from) });
 
         if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
@@ -279,7 +279,7 @@ export default class Player extends Actor {
             return;
         }
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
+        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
     getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3) {
         let smokePrefab: cc.Node = null;
@@ -364,9 +364,9 @@ export default class Player extends Actor {
         }
         this.changeEquipDirSpriteFrame(this.currentDir);
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
+        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
         let health = this.data.getHealth();
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
+        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
     private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame): void {
         sprite.spriteFrame = spriteFrame;
@@ -459,7 +459,7 @@ export default class Player extends Actor {
         }
         this.playerAnim(Player.STATE_ATTACK, this.currentDir);
         this.meleeWeapon.attack(this.data, isMiss);
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
         this.stopHiding();
 
     }
@@ -718,7 +718,7 @@ export default class Player extends Actor {
         }
         this.changeZIndex(this.pos);
         let health = this.data.getHealth();
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
+        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
     fall() {
         if (this.isFall) {
@@ -770,7 +770,7 @@ export default class Player extends Actor {
         if (health.x > health.y) {
             health.x = health.y;
         }
-        cc.director.emit(EventConstant.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
+        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
         Logic.playerData.currentHealth = health.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false);
         if (Logic.playerData.currentHealth <= 0) {
@@ -778,10 +778,10 @@ export default class Player extends Actor {
         }
         let valid = !isDodge && dd.getTotalDamage() > 0;
         if (valid) {
-            cc.director.emit(EventConstant.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
-            cc.director.emit(EventConstant.HUD_DAMAGE_CORNER_SHOW);
+            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
+            cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW);
             this.remoteExHurt();
-            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAYER_HIT } });
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAYER_HIT } });
         }
         return valid;
     }
@@ -807,8 +807,8 @@ export default class Player extends Actor {
         }
         this.isDied = true;
         this.anim.play('PlayerDie');
-        cc.director.emit(EventConstant.HUD_STOP_COUNTTIME);
-        cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
+        cc.director.emit(EventHelper.HUD_STOP_COUNTTIME);
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
         Achievements.addPlayerDiedLifesAchievement();
         this.scheduleOnce(() => {
             Logic.profileManager.clearData();
@@ -874,8 +874,8 @@ export default class Player extends Actor {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             if (this.touchedEquipment.shopTable) {
                 if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {
-                    cc.director.emit(EventConstant.HUD_ADD_COIN, { detail: { count: -this.touchedEquipment.shopTable.data.price } });
-                    cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
+                    cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.touchedEquipment.shopTable.data.price } });
+                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
                     this.touchedEquipment.taken();
                     this.touchedEquipment.shopTable.data.isSaled = true;
                     this.touchedEquipment = null;
@@ -888,8 +888,8 @@ export default class Player extends Actor {
         if (this.touchedItem && !this.touchedItem.data.isTaken && this.touchedItem.data.canSave) {
             if (this.touchedItem.shopTable) {
                 if (Logic.coins >= this.touchedItem.shopTable.data.price) {
-                    cc.director.emit(EventConstant.HUD_ADD_COIN, { detail: { count: -this.touchedItem.shopTable.data.price } });
-                    cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
+                    cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.touchedItem.shopTable.data.price } });
+                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
                     this.touchedItem.taken(this);
                     this.touchedItem.shopTable.data.isSaled = true;
                     this.touchedItem = null;

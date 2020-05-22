@@ -1,6 +1,6 @@
 import Dungeon from "../Dungeon";
 import Player from "../Player";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Building from "./Building";
 
@@ -92,7 +92,7 @@ export default class Door extends Building {
         if (player) {
             if (this.isOpen) {
                 Logic.saveData();
-                cc.director.emit(EventConstant.LOADINGROOM, { detail: { dir: this.dir } });
+                cc.director.emit(EventHelper.LOADINGROOM, { detail: { dir: this.dir } });
             }
         }
     }

@@ -2,7 +2,7 @@ import Bullet from "./Item/Bullet";
 import Dungeon from "./Dungeon";
 import Player from "./Player";
 import Monster from "./Monster";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 import Box from "./Building/Box";
 import Logic from "./Logic";
 import MeleeWeaponChild from "./MeleeWeaponChild";
@@ -448,7 +448,7 @@ export default class MeleeWeapon extends cc.Component {
         //停顿
         if(damageSuccess||attackSuccess){
             this.anim.pause();
-            cc.director.emit(EventConstant.CAMERA_SHAKE,{detail:{isHeavyShaking:this.comboType==MeleeWeapon.COMBO3}});
+            cc.director.emit(EventHelper.CAMERA_SHAKE,{detail:{isHeavyShaking:this.comboType==MeleeWeapon.COMBO3}});
             this.scheduleOnce(()=>{this.anim.resume()},0.1);
         }
     }

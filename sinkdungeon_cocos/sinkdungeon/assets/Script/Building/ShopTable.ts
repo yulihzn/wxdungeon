@@ -2,7 +2,7 @@ import Player from "../Player";
 import Dungeon from "../Dungeon";
 import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import ShopTableData from "../Data/ShopTableData";
 import Building from "./Building";
 

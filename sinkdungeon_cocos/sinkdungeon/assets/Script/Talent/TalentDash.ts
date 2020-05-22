@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Talent from "./Talent";
 import DashShadow from "../Item/DashShadow";
 import Player from "../Player";
@@ -46,7 +46,7 @@ export default class TalentDash extends Talent {
         }
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
-            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
             this.schedule(() => {
                 this.player.getWalkSmoke(this.node.parent, this.node.position);
             }, 0.05, 4, 0);
@@ -71,7 +71,7 @@ export default class TalentDash extends Talent {
                 this.player.resetFoot();
                 this.IsExcuting = false;
             }, 0.5)
-            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1 } });
         }, cooldown, true);
     }
 

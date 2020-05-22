@@ -1,7 +1,7 @@
 import HealthBar from "../HealthBar";
 import MonsterData from "../Data/MonsterData";
 import Shooter from "../Shooter";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import KrakenSwingHand from "./KrakenSwingHand";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
@@ -95,7 +95,7 @@ export default class Kraken extends Boss {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
         return true;
     }
     

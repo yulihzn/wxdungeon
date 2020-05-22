@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Monster from "../Monster";
 import Player from "../Player";
 import MeleeWeapon from "../MeleeWeapon";
@@ -193,7 +193,7 @@ export default class Bullet extends cc.Component {
         let scaleAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.scaleTo(0.1, 1, 0));
         this.laserNode.runAction(scaleAction);
         this.scheduleOnce(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 0.2);
-        cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.REMOTE_LASER}});
+        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.REMOTE_LASER}});
     }
 
     private changeRes(resName: string, lightName: string, lightColor: string, suffix?: string) {
@@ -403,7 +403,7 @@ export default class Bullet extends cc.Component {
             boom.parent = this.node.parent;
             boom.setPosition(this.node.position);
             boom.zIndex = 4100;
-            cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
+            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
 
         }
     }

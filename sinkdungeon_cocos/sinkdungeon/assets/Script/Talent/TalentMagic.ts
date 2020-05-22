@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Talent from "./Talent";
 import DashShadow from "../Item/DashShadow";
 import Player from "../Player";
@@ -89,7 +89,7 @@ export default class TalentMagic extends Talent {
             this.magiccircle.talentMaigc = this;
             this.magiccircle.playMagic(this.hashTalent(Talent.MAGIC_03) ? 2 : 1);
             // cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
-            cc.director.emit(EventConstant.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3 } });
         }, cooldown, true);
     }
     //anim

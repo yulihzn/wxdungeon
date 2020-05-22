@@ -1,5 +1,5 @@
 import Dungeon from "./Dungeon";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,7 +30,7 @@ export default class CameraControl extends cc.Component {
 
     onLoad () {
         this.camera = this.getComponent(cc.Camera);
-        cc.director.on(EventConstant.CAMERA_SHAKE, (event) => {
+        cc.director.on(EventHelper.CAMERA_SHAKE, (event) => {
             this.shakeCamera(event.detail.isHeavyShaking);
         })
     }

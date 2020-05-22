@@ -9,7 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
-import { EventConstant } from './EventConstant';
+import { EventHelper } from './EventHelper';
 import Logic from './Logic';
 import EquipmentData from './Data/EquipmentData';
 import Player from './Player';
@@ -71,25 +71,25 @@ export default class Inventory extends cc.Component {
 
     onLoad() {
         this.inventoryManager = Logic.inventoryManager;
-        cc.director.on(EventConstant.PLAYER_CHANGEEQUIPMENT
+        cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
             , (event) => { this.refreshEquipment(event.detail.equipData, true) });
         if (this.equipmentGroundDialog) { this.equipmentGroundDialog.hideDialog(); }
-        cc.director.on(EventConstant.PLAYER_CHANGEITEM
+        cc.director.on(EventHelper.PLAYER_CHANGEITEM
             , (event) => { this.refreshItem(event.detail.itemData) });
-        cc.director.on(EventConstant.HUD_GROUND_EQUIPMENT_INFO_SHOW
+        cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
             , (event) => {
                 if (this.equipmentGroundDialog) {
                     this.equipmentGroundDialog.refreshDialog(event.detail.equipData);
                     this.equipmentGroundDialog.showDialog();
                 }
             });
-        cc.director.on(EventConstant.HUD_GROUND_EQUIPMENT_INFO_HIDE
+        cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE
             , (event) => {
                 if (this.equipmentGroundDialog) {
                     this.equipmentGroundDialog.hideDialog();
                 }
             });
-        cc.director.on(EventConstant.USEITEM_KEYBOARD, (event) => {
+        cc.director.on(EventHelper.USEITEM_KEYBOARD, (event) => {
                     this.userItem(null,event.detail.index);
                 });
     }
@@ -167,7 +167,7 @@ export default class Inventory extends cc.Component {
                 p.y -= 1;
             }
             if (isChange) {
-                cc.director.emit(EventConstant.DUNGEON_SETEQUIPMENT
+                cc.director.emit(EventHelper.DUNGEON_SETEQUIPMENT
                     , { detail: { pos: p, equipmentData: equipmentData } })
             }
         }
@@ -303,7 +303,7 @@ export default class Inventory extends cc.Component {
         let item = this.inventoryManager.itemList[itemIndex].clone();
         this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
         this.refreshItemRes();
-        cc.director.emit(EventConstant.PLAYER_USEITEM, { detail: { itemData: item } });
+        cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
     }
     refreshItem(itemDataNew: ItemData) {
         if (!this.node) {
@@ -346,7 +346,7 @@ export default class Inventory extends cc.Component {
             p.x -= 1;
         }
         if (itemData.resName != Item.EMPTY) {
-            cc.director.emit(EventConstant.DUNGEON_ADD_ITEM
+            cc.director.emit(EventHelper.DUNGEON_ADD_ITEM
                 , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName } })
         }
     }

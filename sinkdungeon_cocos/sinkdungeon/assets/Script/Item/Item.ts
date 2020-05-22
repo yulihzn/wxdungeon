@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
@@ -69,13 +69,13 @@ export default class Item extends cc.Component {
     }
     public taken(player:Player):void{
         if(!this.data.isTaken && this.anim){
-            cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
             if(this.data.canSave<1){
                 Item.userIt(this.data,player);
             }else{
-                cc.director.emit(EventConstant.PLAYER_CHANGEITEM, { detail: { itemData: this.data } })
+                cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.data } })
             }
             this.scheduleOnce(()=>{
                 if(this.node){

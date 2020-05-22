@@ -1,4 +1,4 @@
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
@@ -33,7 +33,7 @@ export default class CaptainSword extends cc.Component {
             this.isShow = false;
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            cc.director.emit(EventConstant.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:FromData.getClone(this.actorName(),'captain_head')}});
+            cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:FromData.getClone(this.actorName(),'captain_head')}});
         }
     }
     actorName(){

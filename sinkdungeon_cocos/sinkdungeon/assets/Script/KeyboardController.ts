@@ -1,4 +1,4 @@
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,12 +45,12 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.k:this.isB = true;break;
             case cc.macro.KEY.i:this.isC = true;break;
             case cc.macro.KEY.l:this.isD = true;break;
-            case cc.macro.KEY.num1:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:0}});break;
-            case cc.macro.KEY.num2:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:1}});break;
-            case cc.macro.KEY.num3:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:2}});break;
-            case 49:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:0}});break;
-            case 50:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:1}});break;
-            case 51:cc.director.emit(EventConstant.USEITEM_KEYBOARD,{detail:{index:2}});break;
+            case cc.macro.KEY.num1:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:0}});break;
+            case cc.macro.KEY.num2:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:1}});break;
+            case cc.macro.KEY.num3:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:2}});break;
+            case 49:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:0}});break;
+            case 50:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:1}});break;
+            case 51:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:2}});break;
         }
     }
     onKeyUp(event:cc.Event.EventKeyboard){
@@ -106,19 +106,19 @@ export default class KeyboardController extends cc.Component {
             this.stopCount++;
         }
         if(this.stopCount<2){
-            cc.director.emit(EventConstant.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
+            cc.director.emit(EventHelper.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
         }
         if(this.isA){
-            cc.director.emit(EventConstant.PLAYER_ATTACK);
+            cc.director.emit(EventHelper.PLAYER_ATTACK);
         }
         if(this.isB){
-            cc.director.emit(EventConstant.PLAYER_REMOTEATTACK);
+            cc.director.emit(EventHelper.PLAYER_REMOTEATTACK);
         }
         if(this.isC){
-            cc.director.emit(EventConstant.PLAYER_TRIGGER);
+            cc.director.emit(EventHelper.PLAYER_TRIGGER);
         }
         if(this.isD){
-            cc.director.emit(EventConstant.PLAYER_SKILL);
+            cc.director.emit(EventHelper.PLAYER_SKILL);
         }
         
     }

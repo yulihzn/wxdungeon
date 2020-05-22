@@ -1,5 +1,5 @@
 import Logic from "./Logic";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,7 +23,7 @@ export default class OilGoldCount extends cc.Component {
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
-        cc.director.on(EventConstant.HUD_ADD_OILGOLD, (event) => {
+        cc.director.on(EventHelper.HUD_ADD_OILGOLD, (event) => {
             this.addCount(event.detail.count);
         })
     }

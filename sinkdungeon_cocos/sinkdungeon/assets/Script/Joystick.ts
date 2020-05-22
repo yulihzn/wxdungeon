@@ -1,4 +1,4 @@
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -272,7 +272,7 @@ export default class NewClass extends cc.Component {
             this.stopCount++;
         }
         if(this.stopCount<2){
-            cc.director.emit(EventConstant.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
+            cc.director.emit(EventHelper.PLAYER_MOVE,{detail:{dir:dir,pos:pos,dt:dt}})
         }
         
     }

@@ -1,5 +1,5 @@
 import Dungeon from "../Dungeon";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Building from "./Building";
 
@@ -67,7 +67,7 @@ export default class Portal extends Building {
         if(player){
             if(this.isOpen){
                 this.closeGate();
-                cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
+                cc.director.emit(EventHelper.LOADINGNEXTLEVEL);
             }
         }
     }

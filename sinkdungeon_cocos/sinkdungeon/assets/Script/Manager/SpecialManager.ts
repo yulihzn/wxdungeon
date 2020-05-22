@@ -3,7 +3,7 @@ import SlimeVenom from "../Boss/SlimeVenom";
 import Player from "../Player";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
-import { EventConstant } from "../EventConstant";
+import { EventHelper } from "../EventHelper";
 import StatusManager from "./StatusManager";
 import Monster from "../Monster";
 import AreaAttack from "../Item/AreaAttack";

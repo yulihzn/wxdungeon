@@ -1,7 +1,7 @@
 import Logic from "./Logic";
 import RectDungeon from "./Rect/RectDungeon";
 import RectRoom from "./Rect/RectRoom";
-import { EventConstant } from "./EventConstant";
+import { EventHelper } from "./EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -30,7 +30,7 @@ export default class MiniMap extends cc.Component {
 	// LIFE-CYCLE CALLBACKS:
 
 	onLoad() {
-		cc.director.on(EventConstant.CHANGE_MINIMAP, (event) => {
+		cc.director.on(EventHelper.CHANGE_MINIMAP, (event) => {
 			this.changeMap(event.detail.x, event.detail.y);
 		});
 		this.level = (Logic.level < 1||Logic.level>5) ? 1 : Logic.level;
