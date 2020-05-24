@@ -102,6 +102,7 @@ export default class AudioPlayer extends cc.Component {
         // }
         if(clip){
             cc.audioEngine.playMusic(clip, true);
+            cc.audioEngine.setMusicVolume(0.1);
         }
     }
     private playSound(name: string) {

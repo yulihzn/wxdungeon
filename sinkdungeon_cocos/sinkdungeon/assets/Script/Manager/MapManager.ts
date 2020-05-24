@@ -222,7 +222,7 @@ export default class MapManager {
         this.loadChapterMap(4, this.allfileRooms04);
     }
     private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
-        cc.loader.loadRes(`Data/rooms0${chapterIndex}`, (err: Error, resource) => {
+        cc.loader.loadRes(`Data/room/rooms0${chapterIndex}`, (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
