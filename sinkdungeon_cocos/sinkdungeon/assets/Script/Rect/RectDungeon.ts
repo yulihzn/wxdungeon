@@ -1,5 +1,7 @@
 import RectRoom from "./RectRoom";
 import Random from "../Utils/Random";
+import RoomData from "../Data/RoomData";
+import RoomType from "./RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,355 +21,52 @@ export default class RectDungeon {
     public static readonly LEVEL_4 = 4;
     public static readonly LEVEL_5 = 5;
     public static readonly LEVEL_6 = 6;
-    public static readonly PRIMARY = 1000;
-    public static readonly SECONDARY = 2000;
-    public static readonly EMPTY_ROOM = 0;
-    public static readonly START_ROOM = 1;
-    public static readonly END_ROOM = 2;
-    public static readonly PRIMARY_ROOM = 3;
-    public static readonly TRAP_ROOM = 4;
-    public static readonly LOOT_ROOM = 5;
-    public static readonly DANGER_ROOM = 6;
-    public static readonly MERCHANT_ROOM = 7;
-    public static readonly PUZZLE_ROOM = 8;
-    public static readonly BOSS_ROOM = 9;
-    public static readonly POKER_ROOM = 10;
-    public static readonly TAROT_ROOM = 11;
-    public static readonly HIDDEN_ROOM = 12;
-    public static readonly TEST_ROOM = 13;
-    public static readonly FINAL_ROOM = 14;
-    public level: number = 1;
+    public roomData: RoomData;
     public map: RectRoom[][];
-    public size: number;
-    public primaryRooms: RectRoom[];
-    public secondaryRooms: RectRoom[];
-    public startRoom: RectRoom;
-    public endRoom: RectRoom;
-    public merChantRoom: RectRoom;
-    public puzzleRoom: RectRoom;
-    private isLevelZero = false;
-    private isLevelFinal = false;
-
-    public constructor(level: number) {
-        this.isLevelZero = level == 0;
-        this.isLevelFinal = level == 6;
-       
-        if (this.isLevelZero||this.isLevelFinal) {
-            this.level = 1;
-        } else {
-            this.level = level;
-        }
-        this.size = this.level + 2;
-        this.primaryRooms = new Array<RectRoom>();
-        this.secondaryRooms = new Array<RectRoom>();
-        this.buildMap();
-    }
+    public startRoom: RectRoom = new RectRoom(0,0,RoomType.START_ROOM);;
+    public endRoom: RectRoom = new RectRoom(0,0,RoomType.END_ROOM);;
 
     buildMapFromSave(dungeon: RectDungeon): RectDungeon {
-        this.isLevelZero = dungeon.isLevelZero;
-        this.isLevelFinal = dungeon.isLevelFinal;
-        this.level = dungeon.level;
-        this.size = dungeon.size;
+        this.roomData = dungeon.roomData;
         this.map = new Array();
-        for (let i = 0; i < this.size; i++) {
+        for (let i = 0; i < this.roomData.map.length; i++) {
             this.map[i] = new Array();
-            for (let j = 0; j < this.size; j++) {
-                this.map[i][j] = new RectRoom(true, 0, i, j, RectDungeon.EMPTY_ROOM).initFromSave(dungeon.map[i][j]);
+            for (let j = 0; j < this.roomData.map[0].length; j++) {
+                this.map[i][j] = new RectRoom(i, j, RoomType.EMPTY_ROOM).initFromSave(dungeon.map[i][j]);
             }
         }
-        for (let i = 0; i < dungeon.primaryRooms.length; i++) {
-            this.primaryRooms[i] = dungeon.primaryRooms[i];
-        }
-        for (let i = 0; i < dungeon.secondaryRooms.length; i++) {
-            this.secondaryRooms[i] = dungeon.secondaryRooms[i];
-        }
-        this.startRoom = new RectRoom(false, 0, 0, 0, RectDungeon.EMPTY_ROOM).initFromSave(dungeon.startRoom);
-        this.endRoom = new RectRoom(false, 0, 0, 0, RectDungeon.EMPTY_ROOM).initFromSave(dungeon.endRoom);
-        this.merChantRoom = new RectRoom(false, 0, 0, 0, RectDungeon.EMPTY_ROOM).initFromSave(dungeon.merChantRoom);
-        this.puzzleRoom = new RectRoom(false, 0, 0, 0, RectDungeon.EMPTY_ROOM).initFromSave(dungeon.puzzleRoom);
+        this.startRoom = new RectRoom(0, 0, RoomType.EMPTY_ROOM).initFromSave(dungeon.startRoom);
+        this.endRoom = new RectRoom(0, 0, RoomType.EMPTY_ROOM).initFromSave(dungeon.endRoom);
         return this;
     }
-    buildMap(): void {
+    buildMap(roomData: RoomData): void {
+        if(!roomData){
+            return;
+        }
+        this.roomData = roomData;
         this.map = new Array();
-        for (let i = 0; i < this.size; i++) {
+        for (let i = 0; i < roomData.map.length; i++) {
             this.map[i] = new Array();
-            for (let j = 0; j < this.size; j++) {
-                this.map[i][j] = null;
-                if ((i == 1 || i == this.level) && j >= 1 && j <= this.level || (j == 1 || j == this.level) && i >= 1 && i <= this.level) {
-                    this.map[i][j] = new RectRoom(true, 0, i, j, RectDungeon.EMPTY_ROOM);
-                } else {
-                    this.map[i][j] = new RectRoom(false, 0, i, j, RectDungeon.EMPTY_ROOM);
+            for (let j = 0; j < roomData.map[0].length; j++) {
+                this.map[i][j] = new RectRoom(i, j, RoomType.getTypeByName(roomData.map[i][j]));
+                if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
+                    this.startRoom = this.map[i][j];
+                    this.startRoom.lockAllDoors(false);
+                    this.startRoom.state = RectRoom.STATE_FOUND;
+                }
+                if (this.map[i][j].roomType.isEqual(RoomType.END_ROOM)) {
+                    this.endRoom = this.map[i][j];
                 }
             }
         }
-        this.addPrimaryRooms();
-        this.addSecondaryRooms();
-        this.buildPrimaryRoomsType();
-        this.buildSecondaryRoomsType();
-        this.buildZeroRoomsType();
-        this.buildFinalRoomType();
-        this.addLootKeys();
-        this.addDoors();
+        this.addDoors(roomData);
     }
-    /// <summary>
-    /// Adds the primary rooms.绕圈
-    /// </summary>
-    addPrimaryRooms(): void {
-
-        //添加主圈序号
-        let index = 1;
-        for (let i = 1; i <= this.level; i++) {
-            let j = 1;
-            if (this.map[i][j].isPrimary) {
-                this.map[i][j].index = index;
-                if (i == 1) {
-                }
-                this.primaryRooms.push(this.map[i][j]);
-                index++;
-            }
-        }
-        for (let j = 2; j <= this.level; j++) {
-            let i = this.level;
-            if (this.map[i][j].isPrimary) {
-                this.map[i][j].index = index;
-                this.primaryRooms.push(this.map[i][j]);
-                index++;
-            }
-        }
-        for (let i = this.level - 1; i > 0; i--) {
-            let j = this.level;
-            if (this.map[i][j].isPrimary) {
-                this.map[i][j].index = index;
-                this.primaryRooms.push(this.map[i][j]);
-                index++;
-            }
-        }
-        for (let j = this.level - 1; j > 1; j--) {
-            let i = 1;
-            if (this.map[i][j].isPrimary) {
-                this.map[i][j].index = index;
-                this.primaryRooms.push(this.map[i][j]);
-                index++;
-            }
-        }
-    }
-    addSecondaryRooms(): void {
-        let index = 1;
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                if (this.isSecondaryRoom(i, j)) {
-                    this.map[i][j].index = index++;
-                    this.secondaryRooms.push(this.map[i][j]);
-                }
-            }
-        }
-    }
-    isSecondaryRoom(i: number, j: number): boolean {
-        if (this.isPrimaryRoom(i, j)) {
-            return false;
-        }
-        if (this.isPrimaryRoom(i + 1, j) || this.isPrimaryRoom(i, j + 1)
-            || this.isPrimaryRoom(i - 1, j) || this.isPrimaryRoom(i, j - 1)) {
-            return true;
-        }
-        return false;
-    }
-    isPrimaryRoom(i: number, j: number): boolean {
-        if (i < this.size - 1 && i > 0 && j < this.size - 1 && j > 0) {
-            if (this.map[i][j].isPrimary) {
-                return true;
-            }
-        }
-        return false;
-    }
-    isPrimaryVertical(i: number, j: number): boolean {
-        if ((i == this.size - 2 || i == 1) && j < this.size - 1 && j > 0) {
-            if (this.map[i][j].isPrimary) {
-                return true;
-            }
-        }
-        return false;
-    }
-    isPrimaryHorizontal(i: number, j: number): boolean {
-        if (i < this.size - 1 && i > 0 && (j == this.size - 2 || j == 1)) {
-            if (this.map[i][j].isPrimary) {
-                return true;
-            }
-        }
-        return false;
-    }
-    isPrimaryRoomCorner(i: number, j: number): boolean {
-        if (i == this.size - 2 && j == 1) {
-            return true;
-        }
-        if (i == this.size - 2 && j == this.size - 2) {
-            return true;
-        }
-        if (i == 1 && j == this.size - 2) {
-            return true;
-        }
-        if (i == 1 && j == 1) {
-            return true;
-        }
-        return false;
-    }
-    /// <summary>
-    /// Builds the type of the primary rooms.只生成一个相邻的S和E,其余是D和T随机
-    /// </summary>
-    buildPrimaryRoomsType(): void {
-        // let roomType: number[] = [RectDungeon.TRAP_ROOM, RectDungeon.DANGER_ROOM];
-        for (let room of this.primaryRooms) {
-            // let randomtype = roomType[this.getRandomNum(0, roomType.length - 1)];
-            room.roomType = RectDungeon.PRIMARY_ROOM;
-        }
-        let startIndex = this.getRandomNum(0, this.primaryRooms.length - 1);
-        //保持在横排
-        // let startIndex = this.primaryRooms.length>1?1:0;
-        let endIndex = startIndex - 1;
-        if (endIndex < 0) {
-            endIndex = this.primaryRooms.length - 1;
-        }
-        this.primaryRooms[endIndex].roomType = RectDungeon.END_ROOM;
-        this.endRoom = this.primaryRooms[endIndex];
-        this.endRoom.lockAllDoors(true);
-        this.primaryRooms[startIndex].roomType = RectDungeon.START_ROOM;
-        this.startRoom = this.primaryRooms[startIndex];
-        this.startRoom.lockAllDoors(false);
-        this.startRoom.isFound = true;
-
-    }
-    buildSecondaryRoomsType(): void {
-        let roomType: number[] = [RectDungeon.TRAP_ROOM, RectDungeon.DANGER_ROOM];
-        for (let room of this.secondaryRooms) {
-            let randomtype = roomType[this.getRandomNum(0, roomType.length - 1)];
-            if (this.level == RectDungeon.LEVEL_1) {
-                room.roomType = randomtype;
-            }if (this.level == RectDungeon.LEVEL_6) {
-                room.roomType = RectDungeon.EMPTY_ROOM;
-            } else if (this.getRandomRoomChance()) {//生成额外房间
-                room.roomType = randomtype;
-            } else {
-                room.roomType = RectDungeon.EMPTY_ROOM;
-            }
-            //去掉出口的次级房间
-            // let neighbor1 = this.getNeighborRoomType(room.x,room.y,0);
-            // let neighbor2 = this.getNeighborRoomType(room.x,room.y,1);
-            // if(neighbor1&&neighbor1.roomType==RectDungeon.END_ROOM){
-            //     room.roomType = RectDungeon.EMPTY_ROOM;
-            // }
-            // if(neighbor2&&neighbor2.roomType==RectDungeon.END_ROOM){
-            //     room.roomType = RectDungeon.EMPTY_ROOM;
-            // }
-            // if(neighbor1&&neighbor1.roomType==RectDungeon.START_ROOM && this.level != RectDungeon.LEVEL_1){
-            //     room.roomType = RectDungeon.EMPTY_ROOM;
-            // }
-            // if(neighbor2&&neighbor2.roomType==RectDungeon.START_ROOM && this.level != RectDungeon.LEVEL_1){
-            //     room.roomType = RectDungeon.EMPTY_ROOM;
-            // }
-        }
-        let endIndex = this.getRandomNum(0, this.secondaryRooms.length - 1);
-        //保持在横排
-        // let endIndex = 0;
-        if (this.level == RectDungeon.LEVEL_1) {
-            this.secondaryRooms[endIndex].roomType = RectDungeon.END_ROOM;
-            this.endRoom = this.secondaryRooms[endIndex];
-            this.endRoom.lockAllDoors(false);//次级的End不关门
-        }
-        if (this.level == RectDungeon.LEVEL_3) {
-            this.map[2][2].roomType = RectDungeon.PUZZLE_ROOM;
-        }
-        if (this.level == RectDungeon.LEVEL_5) {
-            //add boss room
-            this.map[3][3].roomType = RectDungeon.BOSS_ROOM;
-            if (this.map[3][4].roomType == RectDungeon.EMPTY_ROOM && this.map[3][2].roomType == RectDungeon.EMPTY_ROOM
-                && this.map[2][3].roomType == RectDungeon.EMPTY_ROOM && this.map[4][3].roomType == RectDungeon.EMPTY_ROOM) {
-                this.map[3][4].roomType = this.getHalfChance() ? RectDungeon.DANGER_ROOM : RectDungeon.TRAP_ROOM;
-            }
-            //one more loot
-            this.addLootRoom();
-        }
-        this.addMerchantRoom();
-        this.addLootRoom();
-        this.addLootRoom();
 
 
-    }
-    buildZeroRoomsType(): void {
-        if (!this.isLevelZero) {
-            return;
-        }
-        this.secondaryRooms[0].roomType = RectDungeon.POKER_ROOM;
-        this.secondaryRooms[1].roomType = RectDungeon.EMPTY_ROOM;
-        this.secondaryRooms[2].roomType = RectDungeon.TAROT_ROOM;
-        this.secondaryRooms[3].roomType = RectDungeon.TEST_ROOM;
-        this.endRoom = this.secondaryRooms[2];
-    }
-    buildFinalRoomType():void{
-        if(!this.isLevelFinal){
-            return;
-        }
-        this.secondaryRooms[0].roomType = RectDungeon.EMPTY_ROOM;
-        this.secondaryRooms[1].roomType = RectDungeon.EMPTY_ROOM;
-        this.secondaryRooms[2].roomType = RectDungeon.FINAL_ROOM;
-        this.secondaryRooms[3].roomType = RectDungeon.EMPTY_ROOM;
-    }
-    addMerchantRoom(): void {
-        let index = this.getRandomNum(0, this.secondaryRooms.length - 1);
-        let flag = this.secondaryRooms[index].roomType == RectDungeon.TRAP_ROOM
-            || this.secondaryRooms[index].roomType == RectDungeon.DANGER_ROOM
-            || this.secondaryRooms[index].roomType == RectDungeon.EMPTY_ROOM;
-        if (flag) {
-            this.secondaryRooms[index].roomType = RectDungeon.MERCHANT_ROOM;
-        } else {
-            this.addMerchantRoom();
-        }
-    }
-    addLootRoom(): void {
-        let lootCount = 0;
-        let dteRooms = new Array<RectRoom>();
-        for (let room of this.secondaryRooms) {
-            if (room.roomType == RectDungeon.DANGER_ROOM || room.roomType == RectDungeon.TRAP_ROOM || room.roomType == RectDungeon.EMPTY_ROOM) {
-                dteRooms.push(room);
-            }
-            if (room.roomType == RectDungeon.LOOT_ROOM) {
-                lootCount++;
-            }
-        }
-        //loot的数目不能超过DTP的总和
-        if (dteRooms.length > 1 && lootCount < dteRooms.length + 1) {
-            let index = this.getRandomNum(0, dteRooms.length - 1);
-            dteRooms[index].roomType = RectDungeon.LOOT_ROOM;
-            dteRooms[index].lockAllDoors(true);
-        }
-
-    }
-    addLootKeys(): void {
-        let lootCount = 0;
-        let dtRooms = new Array<RectRoom>();
-        for (let room of this.secondaryRooms) {
-            if (room.enemyCount == RectDungeon.DANGER_ROOM || room.roomType == RectDungeon.TRAP_ROOM) {
-                dtRooms.push(room);
-            }
-            if (room.roomType == RectDungeon.LOOT_ROOM) {
-                lootCount++;
-            }
-            if (room.roomType == RectDungeon.MERCHANT_ROOM) {
-                room.hasKey = true;
-            }
-        }
-        for (let i = 0; i < lootCount; i++) {
-            if (dtRooms.length > 0) {
-                let index = this.getRandomNum(0, dtRooms.length - 1);
-                dtRooms[index].hasKey = true;
-                dtRooms.splice(index, 1);
-            }
-        }
-
-    }
-    addDoors(): void {
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                if (this.map[i][j].roomType != RectDungeon.EMPTY_ROOM) {
+    addDoors(roomData:RoomData): void {
+        for (let i = 0; i < roomData.map.length; i++) {
+            for (let j = 0; j < roomData.map[0].length; j++) {
+                if (this.map[i][j].roomType.isNotEqual(RoomType.EMPTY_ROOM)) {
                     this.changeDoor(i, j, RectRoom.TOPDOOR, true);
                     this.changeDoor(i, j, RectRoom.BOTTOMDOOR, true);
                     this.changeDoor(i, j, RectRoom.LEFTDOOR, true);
@@ -375,9 +74,9 @@ export default class RectDungeon {
                 }
             }
         }
-        for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++) {
-                if (this.map[i][j].roomType == RectDungeon.EMPTY_ROOM) {
+        for (let i = 0; i < roomData.map.length; i++) {
+            for (let j = 0; j < roomData.map[0].length; j++) {
+                if (this.map[i][j].roomType.isEqual(RoomType.EMPTY_ROOM)) {
                     this.changeDoor(i, j, RectRoom.TOPDOOR, false);
                     this.changeDoor(i, j, RectRoom.BOTTOMDOOR, false);
                     this.changeDoor(i, j, RectRoom.LEFTDOOR, false);
@@ -387,10 +86,13 @@ export default class RectDungeon {
         }
     }
     changeDoor(i: number, j: number, dir: number, open: boolean): void {
+        if(!this.roomData){
+            return;
+        }
         switch (dir) {
             case RectRoom.TOPDOOR:
                 this.map[i][j].doors[0].isDoor = open;
-                if (j + 1 < this.size) {
+                if (j + 1 < this.roomData.map[0].length) {
                     this.map[i][j + 1].doors[1].isDoor = open;
                 } else {
                     this.map[i][j].doors[0].isDoor = false;
@@ -414,7 +116,7 @@ export default class RectDungeon {
                 break;
             case RectRoom.RIGHTDOOR:
                 this.map[i][j].doors[3].isDoor = open;
-                if (i + 1 < this.size) {
+                if (i + 1 < this.roomData.map.length) {
                     this.map[i + 1][j].doors[2].isDoor = open;
                 } else {
                     this.map[i][j].doors[3].isDoor = false;
@@ -424,9 +126,12 @@ export default class RectDungeon {
     }
     public getDisPlay(): string {
         let str = '';
-        for (let j = this.size - 1; j >= 0; j--) {
-            for (let i = 0; i < this.size; i++) {
-                str += this.getTypeStringLog(this.map[i][j].roomType);
+        if(!this.roomData){
+            return str;
+        }
+        for (let j = this.roomData.map[0].length - 1; j >= 0; j--) {
+            for (let i = 0; i < this.roomData.map.length; i++) {
+                str += this.map[i][j].roomType.NAME;
             }
             str += '\n';
         }
@@ -434,6 +139,9 @@ export default class RectDungeon {
     }
     /** dir为-1就是当前房间 */
     public getNeighborRoomType(i: number, j: number, dir: number): RectRoom {
+        if(!this.roomData){
+            return;
+        }
         let x = i;
         let y = j;
         if (dir == -1) {
@@ -451,17 +159,20 @@ export default class RectDungeon {
         if (dir == 3) {
             x += 1;
         }
-        if (x >= this.size || x < 0 || y >= this.size || y < 0 || dir < 0 || dir > 4) {
+        if (x >= this.roomData.map.length || x < 0 || y >= this.roomData.map[0].length || y < 0 || dir < 0 || dir > 4) {
             return null;
         }
         return this.map[x][y];
     }
     public changeRoomIsFound(x: number, y: number): void {
-        if (x >= this.size || x < 0 || y >= this.size || y < 0) {
+        if(!this.roomData){
             return;
         }
-        if (this.map[x][y].roomType != RectDungeon.EMPTY_ROOM) {
-            this.map[x][y].isFound = true;
+        if (x >= this.roomData.map.length || x < 0 || y >= this.roomData.map[0].length || y < 0) {
+            return;
+        }
+        if (this.map[x][y].roomType.isNotEqual(RoomType.EMPTY_ROOM)) {
+            this.map[x][y].state = RectRoom.STATE_FOUND;
         }
     }
 
@@ -469,52 +180,4 @@ export default class RectDungeon {
         return room1.x == room2.x && room1.y == room2.y;
     }
 
-    private getTypeStringLog(type: number): string {
-        switch (type) {
-            case RectDungeon.EMPTY_ROOM:
-                return "Ｏ";
-            case RectDungeon.START_ROOM:
-                return "Ｓ";
-            case RectDungeon.PRIMARY_ROOM:
-                return "Ｘ";
-            case RectDungeon.END_ROOM:
-                return "Ｅ";
-            case RectDungeon.TRAP_ROOM:
-                return "Ｔ";
-            case RectDungeon.LOOT_ROOM:
-                return "Ｌ";
-            case RectDungeon.DANGER_ROOM:
-                return "Ｄ";
-            case RectDungeon.PUZZLE_ROOM:
-                return "Ｐ";
-            case RectDungeon.MERCHANT_ROOM:
-                return "Ｍ";
-            case RectDungeon.BOSS_ROOM:
-                return "Ｂ";
-            case RectDungeon.POKER_ROOM:
-                return "Ｃ";
-            case RectDungeon.TAROT_ROOM:
-                return "Ｂ";
-            case RectDungeon.TEST_ROOM:
-                return "Ａ";
-            case RectDungeon.FINAL_ROOM:
-                return "Ｆ"
-        }
-        return "Ｏ";
-    }
-    getRandomNum(min, max): number {//生成一个随机数从[min,max]
-        return min + Math.round(Random.rand() * (max - min));
-    }
-    getHalfChance(): boolean {
-        return Random.rand() > 0.5;
-    }
-    getRandomRoomChance(): boolean {
-        switch(this.level){
-            case RectDungeon.LEVEL_2:Random.rand() > 0.5;break;
-            case RectDungeon.LEVEL_3:Random.rand() > 0.8;break;
-            case RectDungeon.LEVEL_4:Random.rand() > 0.5;break;
-            case RectDungeon.LEVEL_5:Random.rand() > 0.8;break;
-        }
-        return Random.rand() > 0.3;
-    }
 }

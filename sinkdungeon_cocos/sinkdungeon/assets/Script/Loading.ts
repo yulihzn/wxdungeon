@@ -44,6 +44,7 @@ export default class Loading extends cc.Component {
     private isEquipmentLoaded = false;
     private isMonsterLoaded = false;
     private isLevelLoaded = false;
+    private isWorldLoaded = false;
     private isSpriteFramesLoaded = false;
     private isDebuffsLoaded = false;
     private isBulletsLoaded = false;
@@ -144,12 +145,12 @@ export default class Loading extends cc.Component {
             this.label.string = `Sink Dungeon`
         }
         //加载地图，装备，贴图，敌人，状态，子弹，物品资源
+        this.isWorldLoaded =false;
         this.isLevelLoaded = false;
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
         this.isDebuffsLoaded = false;
         this.loadWorld();
-        this.loadMap();
         this.loadEquipment();
         this.loadSpriteFrames();
         this.loadMonsters();
@@ -162,10 +163,7 @@ export default class Loading extends cc.Component {
             this.cutScene.unregisterClick();
         }
     }
-    loadMap() {
-        Logic.mapManager.isloaded = false;
-        Logic.mapManager.loadMap();
-    }
+    
     loadWorld() {
         Logic.worldLoader.isloaded = false;
         Logic.worldLoader.loadMap();
@@ -291,16 +289,19 @@ export default class Loading extends cc.Component {
     update(dt) {
         this.timeDelay += dt;
         this.isLevelLoaded = Logic.mapManager.isloaded;
+        this.isWorldLoaded = Logic.worldLoader.isloaded;
         this.showCut();
         if (this.timeDelay > 0.16 && this.isLevelLoaded && this.isEquipmentLoaded
             && this.isSpriteFramesLoaded && this.isMonsterLoaded && this.isDebuffsLoaded
             && this.isBulletsLoaded
             && this.isItemsLoaded
+            && this.isWorldLoaded
             && this.isPickedTalent()
             && this.cutScene.isSkip) {
             this.timeDelay = 0;
             this.cutScene.unregisterClick();
             this.isLevelLoaded = false;
+            this.isWorldLoaded = false;
             this.isEquipmentLoaded = false;
             this.isSpriteFramesLoaded = false;
             this.isDebuffsLoaded = false;

@@ -37,6 +37,7 @@ import DecorationFloor from "./Building/DecorationFloor";
 import Saw from "./Building/Saw";
 import AudioPlayer from "./Utils/AudioPlayer";
 import Decorate from "./Building/Decorate";
+import RoomType from "./Rect/RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -375,7 +376,7 @@ export default class Dungeon extends cc.Component {
                     }
                 }
                 //房间未清理时加载物品
-                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
+                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     //生成心
                     if (mapData[i][j] == 'A2') {
                         this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.HEART);
@@ -470,7 +471,7 @@ export default class Dungeon extends cc.Component {
                     shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 + 1;
                 }
                 //房间未清理时加载怪物
-                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
+                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     if (mapData[i][j] == 'a0') {
                         this.addMonsterFromData(MonsterManager.MONSTER_ZEBRA, i, j);
                     }
@@ -602,14 +603,8 @@ export default class Dungeon extends cc.Component {
 
             }
         }
-        if (!Logic.mapManager.isCurrentRoomStateClear()) {
-            if (Logic.mapManager.getCurrentRoomType() == RectDungeon.DANGER_ROOM
-                || Logic.mapManager.getCurrentRoomType() == RectDungeon.LOOT_ROOM
-                || Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM
-                || Logic.mapManager.getCurrentRoomType() == RectDungeon.TRAP_ROOM
-                || Logic.mapManager.getCurrentRoomType() == RectDungeon.PRIMARY_ROOM) {
-                this.monsterManager.addRandomMonsters(this);
-            }
+        if (!Logic.mapManager.isCurrentRoomStateClear()&&RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
+            this.monsterManager.addRandomMonsters(this);
         }
         //存档的盒子为空，保存当前盒子位置
         let currbs = Logic.mapManager.getCurrentMapBoxes();
@@ -976,7 +971,7 @@ export default class Dungeon extends cc.Component {
             }
         }
         //检查是否是测试房间，测试房间默认不关门
-        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.TEST_ROOM) {
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
             isClear = true;
         }
         if (isClear) {
@@ -1001,7 +996,7 @@ export default class Dungeon extends cc.Component {
             if (RectDungeon.isRoomEqual(Logic.mapManager.getCurrentRoom(), Logic.mapManager.rectDungeon.startRoom)) {
                 if (Logic.mapManager.rectDungeon.endRoom.state != RectRoom.STATE_CLEAR) {
                     let t = Logic.mapManager.rectDungeon.getNeighborRoomType(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y, door.dir);
-                    if (t && t.roomType == RectDungeon.END_ROOM && Logic.level != RectDungeon.LEVEL_5 && Logic.level != RectDungeon.LEVEL_3) {
+                    if (t && t.roomType.isEqual(RoomType.END_ROOM) && Logic.level != RectDungeon.LEVEL_5 && Logic.level != RectDungeon.LEVEL_3) {
                         needClose = true;
                     }
                 }

@@ -134,7 +134,7 @@ export default class Logic extends cc.Component {
         //加载子弹
         Logic.ammo = Logic.profileManager.data.ammo;
         //加载地图
-        Logic.mapManager.reset(Logic.level);
+        Logic.mapManager.reset(Logic.worldLoader.getRandomRoomData(Logic.chapterName,Logic.level));
         //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15;
         Dungeon.HEIGHT_SIZE = 9;
@@ -208,7 +208,7 @@ export default class Logic extends cc.Component {
                 Logic.chapterName++;
                 Logic.level = 1;
             }
-            Logic.mapManager.reset(Logic.level);
+            Logic.mapManager.reset(Logic.worldLoader.getRandomRoomData(Logic.chapterName,Logic.level));
             Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
             Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
             

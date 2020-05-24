@@ -1,10 +1,7 @@
 import PlayerData from "./PlayerData";
-import InventoryManager from "../Manager/InventoryManager";
 import RectDungeon from "../Rect/RectDungeon";
-import RectRoom from "../Rect/RectRoom";
 import BoxData from "./BoxData";
 import ShopTableData from "./ShopTableData";
-import MonsterData from "./MonsterData";
 import ChestData from "./ChestData";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
@@ -22,7 +19,7 @@ import TalentData from "./TalentData";
  */
 export default class ProfileData {
     //地图数据管理类
-    rectDungeon: RectDungeon = new RectDungeon(0);
+    rectDungeon: RectDungeon = new RectDungeon();
     //当前房间下标 默认1-1
     currentPos: cc.Vec3 = cc.v3(1,1);
     //根据下标保存普通箱子的位置
@@ -51,7 +48,7 @@ export default class ProfileData {
         this.talentList = new Array();
         this.playerEquipList = new Array();
         this.playerItemList = new Array();
-        this.rectDungeon = new RectDungeon(0);
+        this.rectDungeon = new RectDungeon();
         this.currentPos = cc.v3(1,1);
         this.boxes = {};
         this.shopTables = {};

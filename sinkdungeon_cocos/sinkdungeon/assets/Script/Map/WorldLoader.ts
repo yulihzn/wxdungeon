@@ -1,28 +1,10 @@
 import ChapterData from "../Data/ChapterData";
 import LevelData from "../Data/LevelData";
 import RoomData from "../Data/RoomData";
+import Random from "../Utils/Random";
+import Logic from "../Logic";
 
 export default class WorldLoader {
-    public static readonly EMPTY_ROOM = 0;//空房间 O
-    public static readonly START_ROOM = 1;//开始房间 S
-    public static readonly END_ROOM = 2;//结束房间 E
-    public static readonly MERCHANT_ROOM = 3;//商店 M
-    public static readonly BOSS_ROOM = 4;//头目房间 B
-    public static readonly ELITE_ROOM = 5;//小头目房间 A
-    public static readonly LOOT_ROOM = 6;//宝箱房间 L
-    public static readonly CROSS_ROOM = 7;//十字通道 C
-    public static readonly VERTICAL_ROOM = 8;//纵向通道 V
-    public static readonly HORIZONTAL_ROOM = 9;//横向通道 H
-    public static readonly NORMAL_ROOM = 10;//正常房间 N
-    public static readonly DANGER_ROOM = 11;//危险房间 D
-    public static readonly INSANE_ROOM = 12;//疯狂房间 I
-    public static readonly PREPARE_ROOM = 13;//准备房间 P
-    public static readonly HIDDEN_ROOM = 14;//隐藏房间 Y
-    public static readonly TEST_ROOM = 15;//测试房间 T
-    public static readonly REST_ROOM = 16;//休息房间 R
-    public static readonly TUTORIAL_ROOM = 17;//教程房间 J
-    public static readonly KEY_ROOM = 18;//钥匙房间 K
-    public static readonly FINAL_ROOM = 19;//最终房间 F
     private worldMap: ChapterData[] = [];
     //文件是否加载成功
     isloaded: boolean = false;
@@ -61,7 +43,38 @@ export default class WorldLoader {
                 }
                 console.log(this.worldMap);
                 this.isloaded = true;
+                Logic.mapManager.isloaded = false;
+                Logic.mapManager.rectDungeon.buildMap(this.getRandomRoomData(Logic.chapterName,Logic.level));
+                Logic.mapManager.loadMap();
             }
         })
+    }
+  
+    getChapterData(chapterIndex:number):ChapterData{
+        if(this.worldMap.length<1){
+            return null;
+        }
+        return this.worldMap[chapterIndex];
+    }
+    getLevelData(chapterIndex:number,levelIndex:number):LevelData{
+        let chapterData = this.getChapterData(chapterIndex);
+        if(!chapterData){
+            return null;
+        }
+        return this.getChapterData(chapterIndex)[levelIndex];
+    }
+    getRoomData(chapterIndex:number,levelIndex:number,roomIndex:number):RoomData{
+        let levelData = this.getLevelData(chapterIndex,levelIndex);
+        if(!levelData){
+            return null;
+        }
+        return levelData[roomIndex];
+    }
+    getRandomRoomData(chapterIndex:number,levelIndex:number):RoomData{
+        let levelData = this.getLevelData(chapterIndex,levelIndex);
+        if(!levelData){
+            return null;
+        }
+        return levelData[Random.getRandomNum(0,levelData.map.length)];
     }
 }
