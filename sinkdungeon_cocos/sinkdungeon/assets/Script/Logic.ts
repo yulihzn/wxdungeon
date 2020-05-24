@@ -14,6 +14,7 @@ import TalentData from "./Data/TalentData";
 import ProfileManager from "./Manager/ProfileManager";
 import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
+import WorldLoader from "./Map/WorldLoader";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,6 +61,7 @@ export default class Logic extends cc.Component {
     static isPickedTalent = false;
 
     static mapManager: MapManager = new MapManager();
+    static worldLoader: WorldLoader = new WorldLoader();
     static coins = 0;//金币
     static oilGolds = 0;//油金
     static ammo = 30;//子弹

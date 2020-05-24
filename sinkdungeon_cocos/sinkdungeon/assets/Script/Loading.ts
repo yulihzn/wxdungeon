@@ -148,6 +148,7 @@ export default class Loading extends cc.Component {
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
         this.isDebuffsLoaded = false;
+        this.loadWorld();
         this.loadMap();
         this.loadEquipment();
         this.loadSpriteFrames();
@@ -164,6 +165,10 @@ export default class Loading extends cc.Component {
     loadMap() {
         Logic.mapManager.isloaded = false;
         Logic.mapManager.loadMap();
+    }
+    loadWorld() {
+        Logic.worldLoader.isloaded = false;
+        Logic.worldLoader.loadMap();
     }
     loadEquipment() {
         if (Logic.equipments) {

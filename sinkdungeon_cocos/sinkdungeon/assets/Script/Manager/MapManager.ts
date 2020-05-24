@@ -2,15 +2,11 @@ import MapData from "../Data/MapData";
 import RectRoom from "../Rect/RectRoom";
 import RectDungeon from "../Rect/RectDungeon";
 import Logic from "../Logic";
-import Box from "../Building/Box";
 import BoxData from "../Data/BoxData";
 import EquipmentData from "../Data/EquipmentData";
 import ShopTableData from "../Data/ShopTableData";
-import OilLake from "../Oil/OilLake";
-import MonsterData from "../Data/MonsterData";
 import ChestData from "../Data/ChestData";
 import ItemData from "../Data/ItemData";
-import Random from "../Utils/Random";
 import Random4Save from "../Utils/Random4Save";
 
 // Learn TypeScript:
