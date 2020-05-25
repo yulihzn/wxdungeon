@@ -1,7 +1,7 @@
 [
     {
         "chapter": 0,
-        "map": [
+        "list": [
             [
                 [
                     "OPO",
@@ -73,7 +73,7 @@
     },
     {
         "chapter": 1,
-        "map": [
+        "list": [
             [
                 [
                     "OPO",
@@ -145,7 +145,7 @@
     },
     {
         "chapter": 2,
-        "map": [
+        "list": [
             [
                 [
                     "OPO",
@@ -217,7 +217,7 @@
     },
     {
         "chapter": 3,
-        "map": [
+        "list": [
             [
                 [
                     "OPO",
@@ -289,7 +289,7 @@
     },
     {
         "chapter": 4,
-        "map": [
+        "list": [
             [
                 [
                     "OPO",
@@ -361,7 +361,7 @@
     },
     {
         "chapter": 5,
-        "map": [
+        "list": [
             [
                 [
                     "OFO",

@@ -66,18 +66,13 @@ export default class RectRoom {
         if (this.doors == null) {
             this.doors = new Array(4);
             for (let i = 0; i < 4; i++) {
-                this.doors[i] = new RectDoor(i, false, false,false);
+                this.doors[i] = new RectDoor(i, false,false);
             }
         }
     }
 
     public isFound():boolean{
         return this.state == RectRoom.STATE_FOUND;
-    }
-    public lockAllDoors(islock: boolean): void {
-        for (let i = 0; i < 4; i++) {
-            this.doors[i].isLocked = islock;
-        }
     }
 
     public get positionStr(): string {

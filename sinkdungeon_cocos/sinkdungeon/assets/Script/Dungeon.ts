@@ -161,7 +161,7 @@ export default class Dungeon extends cc.Component {
         this.fog.zIndex = 9000;
         this.fog.scale = 1.2;
         Logic.changeDungeonSize();
-        let mapData: string[][] = Logic.mapManager.getCurrentMapData().map;
+        let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         this.monsterManager = this.getComponent(MonsterManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
         this.coinManager = this.getComponent(CoinManger);
@@ -970,7 +970,7 @@ export default class Dungeon extends cc.Component {
                 isClear = false;
             }
         }
-        //检查是否是测试房间，测试房间默认不关门
+        //检查是否是测试房间，测试房间默认不关门,开始房间的出口暂时不开放
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
             isClear = true;
         }
@@ -980,7 +980,7 @@ export default class Dungeon extends cc.Component {
             }
             if (this.dungeonStyleManager && this.dungeonStyleManager.exitdoor
                 && this.dungeonStyleManager.exitdoor
-                && !RectDungeon.isRoomEqual(Logic.mapManager.getCurrentRoom(), Logic.mapManager.rectDungeon.startRoom)) {
+                && Logic.mapManager.getCurrentRoom().roomType.isNotEqual(RoomType.START_ROOM)) {
                 this.dungeonStyleManager.changeTopWalls(true);
                 this.dungeonStyleManager.exitdoor.openGate();
             }
@@ -992,21 +992,7 @@ export default class Dungeon extends cc.Component {
     openDoors() {
         for (let door of Logic.mapManager.getCurrentRoom().doors) {
             Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
-            let needClose = false;
-            if (RectDungeon.isRoomEqual(Logic.mapManager.getCurrentRoom(), Logic.mapManager.rectDungeon.startRoom)) {
-                if (Logic.mapManager.rectDungeon.endRoom.state != RectRoom.STATE_CLEAR) {
-                    let t = Logic.mapManager.rectDungeon.getNeighborRoomType(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y, door.dir);
-                    if (t && t.roomType.isEqual(RoomType.END_ROOM) && Logic.level != RectDungeon.LEVEL_5 && Logic.level != RectDungeon.LEVEL_3) {
-                        needClose = true;
-                    }
-                }
-            }
-            if (Logic.level <= 1) {
-                needClose = false;
-            }
-            if (!needClose) {
-                this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true,door.isHidden);
-            }
+            this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true,door.isHidden);
         }
     }
     checkPlayerPos(dt: number) {
