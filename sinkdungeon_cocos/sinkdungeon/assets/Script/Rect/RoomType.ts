@@ -41,7 +41,10 @@ export default class RoomType{
         this.id = id;
         this.name = name;
     }
-
+    valueCopy(data:RoomType){
+        this.id = data.id;
+        this.name = data.name;
+    }
     static getIdByName(name:string){
         return name.charCodeAt(0)-'A'.charCodeAt(0);
     }

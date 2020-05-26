@@ -53,7 +53,8 @@ export default class RectRoom {
         }
         this.x = room.x;
         this.y = room.y;
-        this.roomType = room.roomType;
+        this.roomType = new RoomType(0,'');
+        this.roomType.valueCopy(room.roomType);
         this.doors = room.doors;
         this.state = room.state;
         this.saveIndex = room.saveIndex;
