@@ -5,7 +5,7 @@
             [
                 [
                     "OPO",
-                    "RSO",
+                    "RST",
                     "OOO"
                 ]
             ],
@@ -35,9 +35,9 @@
                     "OOOOYOOOO",
                     "OONNMNNOO",
                     "OOCHSHCOO",
-                    "OOVOOOVOO",
-                    "LDVOAOVDL",
                     "OOVOIOVOO",
+                    "LDVOAOVDL",
+                    "OOVONOVOO",
                     "OOCHNHCOO",
                     "OOOONOOOO",
                     "OOOOLOOOO"
@@ -93,13 +93,13 @@
                     "NHEHN",
                     "LNLHN",
                     "NHDHN",
-                    "CHSHC"
+                    "LDSHC"
                 ],
                 [
                     "NHEHN",
                     "LNLHN",
                     "NHDHN",
-                    "CHSHC"
+                    "CHSDL"
                 ]
             ],
             [
@@ -107,9 +107,9 @@
                     "OOOOYOOOO",
                     "OONNMNNOO",
                     "OOCHSHCOO",
-                    "OOVOOOVOO",
-                    "LDVOAOVDL",
                     "OOVOIOVOO",
+                    "LDVOAOVDL",
+                    "OOVODOVOO",
                     "OOCHNHCOO",
                     "OOOONOOOO",
                     "OOOOLOOOO"
@@ -120,9 +120,9 @@
                     "OOOOYOOOO",
                     "OONNMNNOO",
                     "OOCHSHCOO",
-                    "OOVOOOVOO",
-                    "LDVOEOVDL",
                     "OOVOIOVOO",
+                    "LDVOEOVDL",
+                    "OOVODOVOO",
                     "OOCHNHCOO",
                     "OOOONOOOO",
                     "OOOOLOOOO"

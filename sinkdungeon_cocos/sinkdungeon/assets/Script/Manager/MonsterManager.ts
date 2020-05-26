@@ -14,6 +14,7 @@ import Dryad from "../Boss/Dryad";
 import Sphinx from "../Boss/Sphinx";
 import Dragon from "../Boss/Dragon";
 import MonsterRandomAttr from "./MonsterRandomAttr";
+import RoomType from "../Rect/RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -125,7 +126,14 @@ export default class MonsterManager extends cc.Component {
         }
         //5%的几率变异
         let variationRate = 5;
-        variationRate = variationRate + Logic.chapterIndex * 5 + Logic.level * 2;
+        let up = 0;
+        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)){
+            up = 10;
+        }
+        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)){
+            up = 30;
+        }
+        variationRate = variationRate + Logic.chapterIndex * 2 + Logic.level * 2 + up;
         monster.isVariation = Logic.getRandomNum(0, 100) < variationRate;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
@@ -363,6 +371,13 @@ export default class MonsterManager extends cc.Component {
     addRandomMonsters(dungeon: Dungeon) {
         let arr = new Array();
         let num = Random.getRandomNum(1, 3);
+        let up = 0;
+        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)){
+            up = 2;
+        }
+        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)){
+            up = 5;
+        }
         switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
                 , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
@@ -382,7 +397,7 @@ export default class MonsterManager extends cc.Component {
                 , MonsterManager.MONSTER_SPIDER];
                 num = Random.getRandomNum(3, 6); break;
         }
-        for (let i = 0; i <= num; i++) {
+        for (let i = 0; i <= num+up; i++) {
             let pos = dungeon.floorIndexmap[Random.getRandomNum(0, dungeon.floorIndexmap.length - 1)];
             dungeon.addMonsterFromData(arr[Random.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
         }

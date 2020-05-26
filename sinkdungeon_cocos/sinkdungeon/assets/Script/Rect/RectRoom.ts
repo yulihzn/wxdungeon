@@ -73,7 +73,7 @@ export default class RectRoom {
     }
 
     public isFound():boolean{
-        return this.state == RectRoom.STATE_FOUND;
+        return this.state == RectRoom.STATE_FOUND||this.state == RectRoom.STATE_CLEAR;
     }
 
     public get positionStr(): string {

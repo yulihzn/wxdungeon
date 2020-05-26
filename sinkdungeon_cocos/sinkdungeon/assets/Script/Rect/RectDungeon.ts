@@ -31,7 +31,9 @@ export default class RectDungeon {
                 this.map[i][j] = new RectRoom(i, j, RoomType.EMPTY_ROOM).initFromSave(dungeon.map[i][j]);
                 if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
                     //开始房间默认被发现
-                    this.map[i][j].state = RectRoom.STATE_FOUND;
+                    if(this.map[i][j].state != RectRoom.STATE_CLEAR){
+                        this.map[i][j].state = RectRoom.STATE_FOUND;
+                    }
                     this.startIndex = cc.v2(i,j);
                 }
             }
@@ -50,7 +52,9 @@ export default class RectDungeon {
                 this.map[i][j] = new RectRoom(i, j, RoomType.getTypeByName(levelData.map[i][j]));
                 if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
                     //开始房间默认被发现
-                    this.map[i][j].state = RectRoom.STATE_FOUND;
+                    if(this.map[i][j].state != RectRoom.STATE_CLEAR){
+                        this.map[i][j].state = RectRoom.STATE_FOUND;
+                    }
                     this.startIndex = cc.v2(i,j);
                 }
             }
@@ -169,7 +173,7 @@ export default class RectDungeon {
         if (x >= this.levelData.map.length || x < 0 || y >= this.levelData.map[0].length || y < 0) {
             return;
         }
-        if (this.map[x][y].roomType.isNotEqual(RoomType.EMPTY_ROOM)) {
+        if (this.map[x][y].roomType.isNotEqual(RoomType.EMPTY_ROOM)&&this.map[x][y].state != RectRoom.STATE_CLEAR) {
             this.map[x][y].state = RectRoom.STATE_FOUND;
         }
     }
