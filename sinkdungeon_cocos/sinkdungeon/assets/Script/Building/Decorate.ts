@@ -38,7 +38,7 @@ export default class Decorate extends Building {
     data: BoxData = new BoxData();
 
     start() {
-        switch (Logic.chapterName) {
+        switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: this.resName = `decorate000${this.decorateType}`; break;
             case Logic.CHAPTER01: this.resName = `decorate010${this.decorateType}`; break;
             case Logic.CHAPTER02: this.resName = `decorate020${this.decorateType}`; break;

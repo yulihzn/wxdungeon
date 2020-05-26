@@ -153,7 +153,7 @@ export default class Emplacement extends Building {
             shooter.data.bulletType = "bullet010";
             shooter.data.bulletLineExNum = 0;
 
-            switch (Logic.chapterName) {
+            switch (Logic.chapterIndex) {
                 case Logic.CHAPTER00: shooter.data.bulletLineExNum = 3; shooter.data.bulletType = "laser001"; break;
                 case Logic.CHAPTER01: shooter.data.bulletType = "bullet010"; break;
                 case Logic.CHAPTER02: shooter.data.bulletType = "bullet013"; break;

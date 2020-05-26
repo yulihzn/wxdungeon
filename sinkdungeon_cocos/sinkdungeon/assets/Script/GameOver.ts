@@ -41,11 +41,11 @@ export default class GameOver extends cc.Component {
             this.clock.string = `用时：${Logic.time}`;
         }
         if (this.level) {
-            this.level.string = `${Logic.chapterName + 1}-${Logic.level}`;
+            this.level.string = `${Logic.chapterIndex + 1}-${Logic.level}`;
         }
         let dieinfo = `死于非命`
         if (Logic.dieFrom.name.length > 0) {
-            dieinfo = `第${ach.playerLifes}次死亡，在${Logic.chapterName + 1}-${Logic.level}被 ${Logic.dieFrom.name} 击倒`
+            dieinfo = `第${ach.playerLifes}次死亡，在${Logic.chapterIndex + 1}-${Logic.level}被 ${Logic.dieFrom.name} 击倒`
         }
         if (this.infoIcon && Logic.dieFrom.res.length > 0) {
             this.infoIcon.spriteFrame = Logic.spriteFrames[Logic.dieFrom.res];

@@ -42,7 +42,7 @@ export default class Wall extends Building {
     }
     start () {
         this.node.opacity = 255;
-        switch(Logic.chapterName){
+        switch(Logic.chapterIndex){
             case Logic.CHAPTER00:this.changeRes(this.getRes00());break;
             case Logic.CHAPTER01:this.changeRes(this.getRes01());break;
             case Logic.CHAPTER02:this.changeRes(this.getRes02());break;

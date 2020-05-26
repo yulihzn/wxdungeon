@@ -139,7 +139,7 @@ export default class Loading extends cc.Component {
     }
     start() {
         //显示加载文字
-        this.label.string = `Level ${Logic.chapterName + 1}-${Logic.level}`
+        this.label.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`
         if (Logic.level == 0) {
             this.label.string = `Sink Dungeon`
         }

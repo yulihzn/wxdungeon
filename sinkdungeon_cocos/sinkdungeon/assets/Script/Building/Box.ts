@@ -39,7 +39,7 @@ export default class Box extends Building {
             case Box.PLANT:resName = 'plant';break;
             case Box.BOXBREAKABLE:resName = 'box';break;
         }
-        switch(Logic.chapterName){
+        switch(Logic.chapterIndex){
             case Logic.CHAPTER00:this.changeRes(`${resName}000`);break;
             case Logic.CHAPTER01:this.changeRes(`${resName}001`);break;
             case Logic.CHAPTER02:this.changeRes(`${resName}002`);break;

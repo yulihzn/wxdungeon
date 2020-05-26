@@ -32,7 +32,7 @@ export default class ProfileData {
     equipments:{[key:string]:EquipmentData[]} = {};
     //根据下标+uuid报错地上的物品
     items:{[key:string]:ItemData[]}={};
-    chapterName:number = 0;
+    chapterIndex:number = 0;
     playerData:PlayerData = new PlayerData();
     //玩家装备列表
     playerEquipList:EquipmentData[] = new Array();
@@ -43,7 +43,7 @@ export default class ProfileData {
     level = 0;
     clearData(){
         cc.sys.localStorage.setItem('profileData','');
-        this.chapterName = 0;
+        this.chapterIndex = 0;
         this.playerData = new PlayerData();
         this.talentList = new Array();
         this.playerEquipList = new Array();

@@ -1,5 +1,6 @@
 import Logic from "./Logic";
 import { EventHelper } from "./EventHelper";
+import Dungeon from "./Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,10 +16,6 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
-
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
 
     // start () {
         

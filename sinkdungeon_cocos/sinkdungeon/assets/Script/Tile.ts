@@ -34,7 +34,7 @@ export default class Tile extends cc.Component {
 
     start () {
         //休息区 轮船 丛林 金字塔 地牢
-        switch(Logic.chapterName){
+        switch(Logic.chapterIndex){
             case Logic.CHAPTER00:this.changeRes(this.getLabRes());break;
             case Logic.CHAPTER01:this.changeRes(this.getDeckRes());break;
             case Logic.CHAPTER02:this.changeRes(this.getDirtRes());break;

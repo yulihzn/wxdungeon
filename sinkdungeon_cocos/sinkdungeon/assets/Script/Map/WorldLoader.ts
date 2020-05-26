@@ -41,12 +41,12 @@ export default class WorldLoader {
                 for (let chapter=0;chapter<arr.length;chapter++) {
                     let chapterData = new ChapterData(chapter);
                     chapterData.list = new Array();
-                    let maptemp: string[][][][] = arr[chapter].map;
+                    let maptemp: string[][][][] = arr[chapter].list;
                     for (let level = 0; level < maptemp.length; level++) {
                         let levelList:LevelData[] = new Array();
                         let maparr: string[][][] = maptemp[level];
                         for (let index = 0; index < maparr.length; index++) {
-                            let levelData = new LevelData(chapterData.chapter, level, index, maparr[index]);
+                            let levelData = new LevelData(chapterData.chapter, level, index, this.formatMapArr(maparr[index]));
                             levelList.push(levelData);
                         }
                         chapterData.list.push(levelList);
@@ -57,6 +57,16 @@ export default class WorldLoader {
                 this.loadMap();
             }
         })
+    }
+    private formatMapArr(maptemp:string[][]):string[][]{
+        let map:string[][] = new Array();
+        for (let i = 0; i < maptemp[0].length; i++) {
+            map[i] = new Array();
+            for (let j = 0; j < maptemp.length; j++) {
+                map[i][j] = maptemp[maptemp.length-1-j][i];
+            }
+        }
+        return map;
     }
   
     private loadMap() {
@@ -69,7 +79,7 @@ export default class WorldLoader {
     }
     getAllFileRooms(): { [key: string]: MapData[] } {
         let allfileRooms = this.allfileRooms00;
-        switch (Logic.chapterName) {
+        switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: allfileRooms = this.allfileRooms00; break;
             case Logic.CHAPTER01: allfileRooms = this.allfileRooms01; break;
             case Logic.CHAPTER02: allfileRooms = this.allfileRooms02; break;
@@ -127,7 +137,7 @@ export default class WorldLoader {
     }
     getLevelList(chapterIndex:number,levelIndex:number):LevelData[]{
         let chapterData = this.getChapterData(chapterIndex);
-        return this.getChapterData(chapterIndex)[levelIndex];
+        return this.getChapterData(chapterIndex).list[levelIndex];
     }
     getLevelData(chapterIndex:number,levelIndex:number,roomIndex:number):LevelData{
         let levelList = this.getLevelList(chapterIndex,levelIndex);
@@ -135,6 +145,6 @@ export default class WorldLoader {
     }
     getRandomLevelData(chapterIndex:number,levelIndex:number):LevelData{
         let levelList = this.getLevelList(chapterIndex,levelIndex);
-        return levelList[Random.getRandomNum(0,levelList.length)];
+        return levelList[Random.getRandomNum(0,levelList.length-1)];
     }
 }

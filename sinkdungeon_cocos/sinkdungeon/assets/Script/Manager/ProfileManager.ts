@@ -27,7 +27,7 @@ export default class ProfileManager{
     constructor(){
         this.loadData();
     }
-    loadData(){
+    private loadData(){
         //清空当前数据
         this.data = new ProfileData();
         //读取存档
@@ -67,7 +67,7 @@ export default class ProfileManager{
         //玩家数据
         this.data.playerData.valueCopy(data.playerData);
         //章节名称
-        this.data.chapterName = data.chapterName;
+        this.data.chapterIndex = data.chapterIndex;
         this.data.level = data.level;
         //玩家装备列表
         for(let i =0;i<data.playerEquipList.length;i++){

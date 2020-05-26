@@ -29,9 +29,13 @@ export default class RectDungeon {
             this.map[i] = new Array();
             for (let j = 0; j < this.levelData.map[0].length; j++) {
                 this.map[i][j] = new RectRoom(i, j, RoomType.EMPTY_ROOM).initFromSave(dungeon.map[i][j]);
+                if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
+                    //开始房间默认被发现
+                    this.map[i][j].state = RectRoom.STATE_FOUND;
+                    this.startIndex = cc.v2(i,j);
+                }
             }
         }
-        this.startIndex = dungeon.startIndex?cc.v2(dungeon.startIndex.x,dungeon.startIndex.y):cc.Vec2.ZERO;
         return this;
     }
     buildMap(levelData: LevelData): void {
@@ -47,6 +51,7 @@ export default class RectDungeon {
                 if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
                     //开始房间默认被发现
                     this.map[i][j].state = RectRoom.STATE_FOUND;
+                    this.startIndex = cc.v2(i,j);
                 }
             }
         }

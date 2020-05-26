@@ -49,15 +49,24 @@ export default class MapManager {
         this.isloaded = false;
     }
     
+    /**
+     * 初始化地图数据
+     * 读取指定章节和层数的地图列表，随机选取一个
+     * 
+     */
     public loadMap() {
-        //读取存档
-        this.loadDataFromSave();
-        this.resetRooms();
-            cc.log('maps loaded');
+        if(Logic.isMapReset){
+            Logic.isMapReset = false;
+            //加载地图
+            Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex,Logic.level));
+            //加载存档地图数据
+            Logic.mapManager.loadDataFromSave();
+        }
+        cc.log('maps loaded');
     }
     private resetRooms() {
         if(!this.rectDungeon){
-            this.rectDungeon.buildMap(Logic.worldLoader.getRandomLevelData(Logic.chapterName,Logic.level));
+            this.rectDungeon.buildMap(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex,Logic.level));
         }
         let allfileRooms = Logic.worldLoader.getAllFileRooms();
         if (allfileRooms && allfileRooms[RoomType.getNameById(0)] 
@@ -72,11 +81,11 @@ export default class MapManager {
             }
         }
     }
-    private loadDataFromSave() {
+    loadDataFromSave() {
         if (!Logic.profileManager.hasSaveData) {
             return;
         }
-        this.rectDungeon = Logic.profileManager.data.rectDungeon;
+        this.rectDungeon.buildMapFromSave(Logic.profileManager.data.rectDungeon);
         this.currentPos = Logic.profileManager.data.currentPos.clone();
         this.boxes = Logic.profileManager.data.boxes;
         this.shopTables = Logic.profileManager.data.shopTables;

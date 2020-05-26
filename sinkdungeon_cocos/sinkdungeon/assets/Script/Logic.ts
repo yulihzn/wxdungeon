@@ -51,7 +51,7 @@ export default class Logic extends cc.Component {
     static items: { [key: string]: ItemData } = null;
 
     static level = 0;
-    static chapterName = 0;
+    static chapterIndex = 0;
 
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
@@ -72,6 +72,7 @@ export default class Logic extends cc.Component {
     static isCheatMode = false;//作弊
     static isDebug = false;//调试
     static dieFrom:FromData = new FromData();
+    static isMapReset = false;
 
     static profileManager:ProfileManager = new ProfileManager();
 
@@ -104,6 +105,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
+        Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin",Logic.coins);
         cc.sys.localStorage.setItem("oilgold",Logic.oilGolds);
@@ -112,10 +114,8 @@ export default class Logic extends cc.Component {
         //重置时间
         Logic.time = '00:00:00';
         //加载章节名
-        Logic.profileManager.data.chapterName = chapter?chapter:Logic.profileManager.data.chapterName;
-        Logic.chapterName = Logic.profileManager.data.chapterName;
-        //加载存档
-        // Logic.profileManager.loadData();
+        Logic.profileManager.data.chapterIndex = chapter?chapter:Logic.profileManager.data.chapterIndex;
+        Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
         //加载关卡等级
         Logic.level = Logic.profileManager.data.level;
         //加载玩家数据
@@ -133,8 +133,8 @@ export default class Logic extends cc.Component {
         Logic.initTalentMap();
         //加载子弹
         Logic.ammo = Logic.profileManager.data.ammo;
-        //加载地图
-        Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterName,Logic.level));
+        //设置地图重置状态在loading完成处理地图
+        Logic.isMapReset = true;
         //重置地牢宽高
         Dungeon.WIDTH_SIZE = 15;
         Dungeon.HEIGHT_SIZE = 9;
@@ -146,7 +146,7 @@ export default class Logic extends cc.Component {
         //重置技能选择状态
         Logic.isPickedTalent = false;
     }
-    static initTalentMap() {
+    private static initTalentMap() {
         Logic.hasTalentMap = {};
         for (let t of Logic.talentList) {
             Logic.hasTalentMap[t.id] = true;
@@ -180,7 +180,7 @@ export default class Logic extends cc.Component {
             Dungeon.HEIGHT_SIZE = size.y;
         }
     }
-    loadingNextRoom(dir: number) {
+    private loadingNextRoom(dir: number) {
         let room = Logic.mapManager.loadingNextRoom(dir);
         if (room) {
             Logic.changeDungeonSize();
@@ -194,21 +194,20 @@ export default class Logic extends cc.Component {
             
         }
     }
-    loadingNextLevel() {
+    private loadingNextLevel() {
         Logic.level++;
-        //最多五层
-        if (Logic.level > 6 && Logic.chapterName >= Logic.CHAPTER04) {
+        //层数读取章节关卡列表
+        if (Logic.level > Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length-1 && Logic.chapterIndex >= Logic.CHAPTER04) {
             Logic.profileManager.clearData();
             cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
             cc.director.loadScene('gamefinish')
-            
         } else {
-            if(Logic.chapterName < Logic.CHAPTER04 && Logic.level > 5){
-                Logic.profileManager.data.chapterName++;
-                Logic.chapterName++;
+            if(Logic.chapterIndex < Logic.CHAPTER04 && Logic.level > Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length-1){
+                Logic.profileManager.data.chapterIndex++;
+                Logic.chapterIndex++;
                 Logic.level = 1;
             }
-            Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterName,Logic.level));
+            Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex,Logic.level));
             Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
             Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
             
@@ -219,9 +218,6 @@ export default class Logic extends cc.Component {
         }
     }
     
-    static isBossLevel(level: number): boolean {
-        return level == Logic.BOSS_LEVEL_1;
-    }
     static getRandomNum(min, max): number {//生成一个随机数从[min,max]
         return min + Math.round(Random.rand() * (max - min));
     }

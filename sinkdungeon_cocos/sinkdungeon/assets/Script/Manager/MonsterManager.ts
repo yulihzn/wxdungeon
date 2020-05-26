@@ -125,7 +125,7 @@ export default class MonsterManager extends cc.Component {
         }
         //5%的几率变异
         let variationRate = 5;
-        variationRate = variationRate + Logic.chapterName * 5 + Logic.level * 2;
+        variationRate = variationRate + Logic.chapterIndex * 5 + Logic.level * 2;
         monster.isVariation = Logic.getRandomNum(0, 100) < variationRate;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
@@ -363,7 +363,7 @@ export default class MonsterManager extends cc.Component {
     addRandomMonsters(dungeon: Dungeon) {
         let arr = new Array();
         let num = Random.getRandomNum(1, 3);
-        switch (Logic.chapterName) {
+        switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
                 , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
                 num = Random.getRandomNum(1, 3);

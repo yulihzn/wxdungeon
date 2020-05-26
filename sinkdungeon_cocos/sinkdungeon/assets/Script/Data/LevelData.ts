@@ -18,8 +18,7 @@ export default class LevelData{
              this.map[i] = new Array();
              for (let j = 0; j < data.map[0].length; j++) {
                  this.map[i][j] = data.map[i][j];
-             }
-             
+             } 
          }   
         }
     }

@@ -7,6 +7,7 @@ import ExitDoor from "../Building/ExitDoor";
 import DecorateRoom from "../Building/DecorateRoom";
 import RectRoom from "../Rect/RectRoom";
 import ParallexBackground from "../UI/ParallaxBackground";
+import RoomType from "../Rect/RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -95,7 +96,7 @@ export default class DungeonStyleManager extends cc.Component {
 
     }
     addDecorations() {
-        switch (Logic.chapterName) {
+        switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: this.styleData = new DungeonStyleData('pipeline', 'restwall1', 'restsides', 'restdoor', 'restdoorframe', '#000000', 'tile_lab001'); break;
             case Logic.CHAPTER01: this.styleData = new DungeonStyleData('sea', 'shipwall1', 'shipsides', 'shipdoor', 'shipdoorframe', '#000000', 'tile_deck001'); break;
             case Logic.CHAPTER02: this.styleData = new DungeonStyleData('grass', 'junglewall1', 'junglesides', 'jungledoor', 'jungledoorframe', '#000000', 'tile_dirt001'); break;
@@ -187,18 +188,18 @@ export default class DungeonStyleManager extends cc.Component {
         // if (Logic.chapterName != 'chapter00') {
         //     return;
         // }
-        let isStartRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.START_ROOM;
-        let isEndRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM && Logic.level != 3 && Logic.level != 5;
-        let isPuzzleRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM;
-        let isBossRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM;
-        let isTarotRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.TAROT_ROOM;
-        let isFinalRoom = Logic.mapManager.getCurrentRoomType() == RectDungeon.FINAL_ROOM;
+        let isStartRoom = Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM);
+        let isEndRoom = Logic.mapManager.getCurrentRoomType().isEqual(RoomType.END_ROOM);
+        let isEliteRoom = Logic.mapManager.getCurrentRoomType().isEqual(RoomType.ELITE_ROOM);
+        let isBossRoom = Logic.mapManager.getCurrentRoomType().isEqual(RoomType.BOSS_ROOM);
+        let isPrepareRoom = Logic.mapManager.getCurrentRoomType().isEqual(RoomType.PREPARE_ROOM);
+        let isFinalRoom = Logic.mapManager.getCurrentRoomType().isEqual(RoomType.FINAL_ROOM);
         if (isStartRoom) {
             oneIndex = 1;
             otherIndex = 2;
         }
         if (posX == oneIndex) {
-            let needAdd = isEndRoom || isStartRoom || isPuzzleRoom || isBossRoom || isTarotRoom || isFinalRoom;
+            let needAdd = isEndRoom || isStartRoom || isEliteRoom || isBossRoom || isPrepareRoom || isFinalRoom;
             if (needAdd) {
                 let postop = Dungeon.getPosInMap(cc.v3(oneIndex, Dungeon.HEIGHT_SIZE));
                 let exit = cc.instantiate(this.exitdoorPrefab);

@@ -31,7 +31,7 @@ export default class NewClass extends cc.Component {
             this.clock.string = `${Logic.time}`;
         }
         if (this.level) {
-            this.level.string = `Level ${Logic.chapterName + 1}-${Logic.level}`;
+            this.level.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`;
         }
     }
     retry(){
