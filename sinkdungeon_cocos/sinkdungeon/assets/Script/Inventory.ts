@@ -19,6 +19,7 @@ import Dungeon from './Dungeon';
 import FromData from './Data/FromData';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
+import AudioPlayer from './Utils/AudioPlayer';
 @ccclass
 export default class Inventory extends cc.Component {
 

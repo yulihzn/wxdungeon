@@ -15,6 +15,7 @@ import Random from "./Utils/Random";
 import Skill from "./Utils/Skill";
 import FromData from "./Data/FromData";
 import Decorate from "./Building/Decorate";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -240,7 +241,7 @@ export default class MeleeWeapon extends cc.Component {
             if(!this.isAttacking){
                 this.isComboing = false;
             }
-        },1);
+        },0.6);
     }
     //Anim
     ExAttackTime(){
@@ -252,6 +253,7 @@ export default class MeleeWeapon extends cc.Component {
     }
     /**Anim 冲刺*/
     DashTime(){
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
         let speed = 800;
         this.schedule(() => {
             this.player.getWalkSmoke(this.node.parent, this.node.position);
@@ -430,7 +432,7 @@ export default class MeleeWeapon extends cc.Component {
             box.breakBox();
         }
         let decorate = attackTarget.node.getComponent(Decorate);
-        if(decorate){
+        if(decorate&&decorate.data.status==0){
             attackSuccess = true;
             decorate.breakBox();
         }

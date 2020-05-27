@@ -3181,7 +3181,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 32,
-      "height": 48
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3649,8 +3649,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 16,
-      "height": 16
+      "width": 32,
+      "height": 48
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -7337,9 +7337,10 @@
     },
     "_enabled": true,
     "pos": {
-      "__type__": "cc.Vec2",
+      "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0
+      "y": 0,
+      "z": 0
     },
     "floatinglabelManager": {
       "__id__": 79

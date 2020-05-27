@@ -25,6 +25,8 @@ export default class Coin extends cc.Component {
     valueRes=['gem01','gem02','gem03','gem04'];
     isReady = false;
     player:Player;
+    private soundPlaying = false;
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -64,6 +66,7 @@ export default class Coin extends cc.Component {
         this.checkTimeDelay += dt;
         if (this.checkTimeDelay > 0.2) {
             this.checkTimeDelay = 0;
+            this.soundPlaying = false;
             return true;
         }
         return false;
@@ -90,7 +93,10 @@ export default class Coin extends cc.Component {
         }
         if (this.player&&this.getNearPlayerDistance(this.player.node)<64&&this.node.active && this.isReady) {
             this.isReady =false;
-            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.COIN}});
+            if(!this.soundPlaying){
+                this.soundPlaying = true;
+                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.COIN}});
+            }
             cc.director.emit(EventHelper.HUD_ADD_COIN,{detail:{count:this.value}});
             cc.director.emit('destorycoin',{detail:{coinNode:this.node}});
         }

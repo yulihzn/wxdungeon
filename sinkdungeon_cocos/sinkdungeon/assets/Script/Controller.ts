@@ -85,6 +85,12 @@ export default class Controller extends cc.Component {
             , (event) => { this.changeRes(event.detail.index, true) });
         cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
             , (event) => { this.drawSkillCoolDown(event.detail.cooldown, event.detail.talentType); });
+        if(!cc.sys.isMobile){
+            this.attackAction.active = false;
+            this.shootAction.active = false;
+            this.interactAction.active = false;
+            this.skillAction.active = false;
+        }
     }
 
     changeRes(actionType: number, isLight: boolean) {

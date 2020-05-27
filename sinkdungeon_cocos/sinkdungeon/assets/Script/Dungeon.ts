@@ -141,7 +141,8 @@ export default class Dungeon extends cc.Component {
             this.addCoin(event.detail.pos, event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_OILGOLD, (event) => {
-            this.addOilGold(event.detail.pos, event.detail.count);
+            //暂时屏蔽
+            // this.addOilGold(event.detail.pos, event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_ITEM, (event) => {
             this.addItem(event.detail.pos, event.detail.res);

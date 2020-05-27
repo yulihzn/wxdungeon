@@ -19,7 +19,7 @@ import ItemDialog from "./ItemDialog";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 //物品
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Item extends cc.Component {
@@ -35,53 +35,53 @@ export default class Item extends cc.Component {
     public static readonly BLUECAPSULE = 'bluecapsule';
     public static readonly SHIELD = 'shield';
     public static readonly GOLDAPPLE = 'goldapple';
-    anim:cc.Animation;
-    data:ItemData = new ItemData();
+    anim: cc.Animation;
+    data: ItemData = new ItemData();
     shopTable: ShopTable;
     @property(ItemDialog)
-    itemDialog:ItemDialog = null;
+    itemDialog: ItemDialog = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    start () {
+    start() {
         this.anim = this.getComponent(cc.Animation);
     }
-    init(resName:string,pos:cc.Vec3,shopTable?:ShopTable){
+    init(resName: string, pos: cc.Vec3, shopTable?: ShopTable) {
         this.data.valueCopy(Logic.items[resName]);
         this.data.uuid = this.data.genNonDuplicateID();
         this.data.pos = pos;
         if (shopTable) {
             this.shopTable = shopTable;
-            shopTable.data.itemdata =new ItemData();
+            shopTable.data.itemdata = new ItemData();
             shopTable.data.itemdata.valueCopy(Logic.items[resName]);
             shopTable.data.price = this.data.price;
         }
         let spriteFrame = Logic.spriteFrames[this.data.resName];
-        if(spriteFrame){
+        if (spriteFrame) {
             let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
             this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            sprite.node.width = spriteFrame.getRect().width*2;
-            sprite.node.height = spriteFrame.getRect().height*2;
+            sprite.node.width = spriteFrame.getRect().width * 2;
+            sprite.node.height = spriteFrame.getRect().height * 2;
         }
         this.itemDialog.refreshDialog(this.data);
     }
-    public taken(player:Player):void{
-        if(!this.data.isTaken && this.anim){
+    public taken(player: Player): void {
+        if (!this.data.isTaken && this.anim) {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
-            if(this.data.canSave<1){
-                Item.userIt(this.data,player);
-            }else{
+            if (this.data.canSave < 1) {
+                Item.userIt(this.data, player);
+            } else {
                 cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.data } })
             }
-            this.scheduleOnce(()=>{
-                if(this.node){
+            this.scheduleOnce(() => {
+                if (this.node) {
                     this.node.active = false;
                 }
-            },3);
+            }, 3);
         }
         let curritems = Logic.mapManager.getCurrentMapItems();
         let newlist: ItemData[] = new Array();
@@ -95,31 +95,34 @@ export default class Item extends cc.Component {
         Logic.mapManager.setCurrentItemsArr(newlist);
         this.itemDialog.node.active = false;
     }
-    static userIt(data:ItemData,player:Player){
-        let from = FromData.getClone(data.nameCn,data.resName);
-        switch(data.resName){
-            case Item.HEART:player.addStatus(StatusManager.HEALING,from);break;
-            case Item.BOTTLE_HEALING:player.addStatus(StatusManager.BOTTLE_HEALING,from);break;
-            case Item.BOTTLE_MOVESPEED:player.addStatus(StatusManager.FASTMOVE,from);break;
-            case Item.BOTTLE_ATTACKSPEED:player.addStatus(StatusManager.FASTATTACK,from);break;
-            case Item.BOTTLE_INVISIBLE:player.addStatus(StatusManager.BOTTLE_INVISIBLE,from);break;
-            case Item.AMMO:Logic.ammo+=30;break;
-            case Item.REDCAPSULE:player.addStatus(StatusManager.FASTATTACK,from);break;
-            case Item.BLUECAPSULE:player.addStatus(StatusManager.FASTMOVE,from);break;
-            case Item.SHIELD:player.addStatus(StatusManager.PERFECTDEFENCE,from);break;
-            case Item.GOLDAPPLE:player.addStatus(StatusManager.GOLDAPPLE,from);break;
+    static userIt(data: ItemData, player: Player) {
+        let from = FromData.getClone(data.nameCn, data.resName);
+        if (data.resName != Item.EMPTY && data.canSave) {
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
+        }
+        switch (data.resName) {
+            case Item.HEART: player.addStatus(StatusManager.HEALING, from); break;
+            case Item.BOTTLE_HEALING: player.addStatus(StatusManager.BOTTLE_HEALING, from); break;
+            case Item.BOTTLE_MOVESPEED: player.addStatus(StatusManager.FASTMOVE, from); break;
+            case Item.BOTTLE_ATTACKSPEED: player.addStatus(StatusManager.FASTATTACK, from); break;
+            case Item.BOTTLE_INVISIBLE: player.addStatus(StatusManager.BOTTLE_INVISIBLE, from); break;
+            case Item.AMMO: Logic.ammo += 30; break;
+            case Item.REDCAPSULE: player.addStatus(StatusManager.FASTATTACK, from); break;
+            case Item.BLUECAPSULE: player.addStatus(StatusManager.FASTMOVE, from); break;
+            case Item.SHIELD: player.addStatus(StatusManager.PERFECTDEFENCE, from); break;
+            case Item.GOLDAPPLE: player.addStatus(StatusManager.GOLDAPPLE, from); break;
         }
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if(player){
-            if(this.data.canSave){
+        if (player) {
+            if (this.data.canSave) {
                 this.itemDialog.showDialog();
-            }else{
+            } else {
                 this.taken(player);
             }
         }
-        
+
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
@@ -127,6 +130,6 @@ export default class Item extends cc.Component {
             this.itemDialog.hideDialog();
         }
     }
-  
+
     // update (dt) {}
 }

@@ -2,6 +2,8 @@ import Dungeon from "../Dungeon";
 import BoxData from "../Data/BoxData";
 import Logic from "../Logic";
 import Building from "./Building";
+import { EventHelper } from "../EventHelper";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -65,6 +67,7 @@ export default class Box extends Building {
         if(this.isBreaking){
             return;
         }
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation);
         }
