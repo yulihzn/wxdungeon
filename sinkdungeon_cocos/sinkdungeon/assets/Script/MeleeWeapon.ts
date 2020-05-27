@@ -252,7 +252,7 @@ export default class MeleeWeapon extends cc.Component {
     }
     /**Anim 冲刺*/
     DashTime(){
-        let speed = 1000;
+        let speed = 800;
         this.schedule(() => {
             this.player.getWalkSmoke(this.node.parent, this.node.position);
         }, 0.05, 4, 0);

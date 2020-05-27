@@ -99,6 +99,7 @@ export default class Decorate extends Building {
                 } else if (rand >= 0.825 && rand < 0.85) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.AMMO } });
                 }
+                this.data.status = 1;
             }), cc.delayTime(10), cc.callFunc(() => {
                 this.reset();
             })))
@@ -113,12 +114,12 @@ export default class Decorate extends Building {
         if (this.timeDelay > 0.2) {
             this.data.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.position = this.node.position;
-            this.data.onelife = true;
             let currboxes = Logic.mapManager.getCurrentMapBoxes();
             if (currboxes) {
                 for (let tempbox of currboxes) {
                     if (tempbox.defaultPos.equals(this.data.defaultPos)) {
                         tempbox.pos = this.data.pos;
+                        tempbox.status = this.data.status;
                         tempbox.position = this.data.position;
                     }
                 }

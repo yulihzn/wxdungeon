@@ -35,6 +35,7 @@ import Achievements from './Achievement';
 import TalentMagic from './Talent/TalentMagic';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
+import RoomType from './Rect/RoomType';
 
 @ccclass
 export default class Player extends Actor {
@@ -153,7 +154,7 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage, event.detail.from) });
 
-        if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM) {
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.BOSS_ROOM)) {
             Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
         }
         this.pos = Logic.playerData.pos.clone();
@@ -205,8 +206,8 @@ export default class Player extends Actor {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());
                 // this.data.currentHealth = 1;
                 // this.data.Common.maxHealth = 1;
-                // this.data.Common.damageMin = 99;
-                this.data.Common.criticalStrikeRate = 100;
+                this.data.Common.damageMin = 99;
+                this.data.Common.criticalStrikeRate = 50;
                 this.data.Common.remoteCritRate = 50;
             }, 0.2);
         }

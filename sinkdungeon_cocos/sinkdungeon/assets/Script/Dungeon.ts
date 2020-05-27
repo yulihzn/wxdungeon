@@ -383,7 +383,6 @@ export default class Dungeon extends cc.Component {
                     decorate.parent = this.node;
                     let d = decorate.getComponent(Decorate);
                     d.data.defaultPos = cc.v3(i, j);
-                    d.data.onelife = true;
                     d.setPos(cc.v3(i, j));
                     d.decorateType = parseInt(mapData[i][j][1]);
                     //设置对应存档盒子的位置
@@ -393,6 +392,9 @@ export default class Dungeon extends cc.Component {
                             if (tempbox.defaultPos.equals(d.data.defaultPos)) {
                                 d.setPos(tempbox.pos);
                                 d.node.position = tempbox.position.clone();
+                                if(tempbox.status==1){
+                                    d.reset();
+                                }
                             }
                         }
                     } else {

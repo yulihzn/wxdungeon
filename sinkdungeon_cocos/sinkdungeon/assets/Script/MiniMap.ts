@@ -24,9 +24,9 @@ export default class MiniMap extends cc.Component {
 		HIDE: 0, NORMAL: 1, PLAYER: 2, CLEAR: 3, NORMAL_BOSS: 4, CLEAR_PUZZLE: 5, CLEAR_END: 6, CLEAR_BOSS: 7, NORMAL_LOOT: 8, CLEAR_LOOT: 9,
 		NORMAL_START: 10, NORMAL_END: 11, NORMAL_REST: 12, NORMAL_PREPARE: 13, NORMAL_TEST: 14, NORMAL_PUZZLE: 15, NORMAL_MERCHANT: 16, CLEAR_MERCHANT: 17
 	}
-	size: number = 0;
+	width:number = 0;
+	height:number =0;
 	map: cc.Node[][];
-	private level: number = 1;
 
 	// LIFE-CYCLE CALLBACKS:
 
@@ -34,15 +34,13 @@ export default class MiniMap extends cc.Component {
 		cc.director.on(EventHelper.CHANGE_MINIMAP, (event) => {
 			this.changeMap(event.detail.x, event.detail.y);
 		});
-		this.level = (Logic.level < 1 || Logic.level > 5) ? 1 : Logic.level;
-		this.size = this.level + 2;
-		if (this.size < 3) {
-			this.size = 3;
-		}
+		this.width = Logic.mapManager.rectDungeon.map.length;
+		this.height = Logic.mapManager.rectDungeon.map[0].length;
+		
 		this.map = new Array();
-		for (let i = 0; i < this.size; i++) {
+		for (let i = 0; i < this.width; i++) {
 			this.map[i] = new Array();
-			for (let j = 0; j < this.size; j++) {
+			for (let j = 0; j < this.height; j++) {
 				let node = cc.instantiate(this.miniTile);
 				node.group = 'ui'
 				this.map[i][j] = node;
@@ -61,8 +59,8 @@ export default class MiniMap extends cc.Component {
 		if (!this.map) {
 			return;
 		}
-		for (let j = 0; j < this.size; j++) {
-			for (let i = 0; i < this.size; i++) {
+		for (let j = 0; j < this.height; j++) {
+			for (let i = 0; i < this.width; i++) {
 				let isFound = Logic.mapManager.rectDungeon.map[i][j].isFound();
 				let state = Logic.mapManager.rectDungeon.map[i][j].state;
 				let roomType = Logic.mapManager.rectDungeon.map[i][j].roomType;

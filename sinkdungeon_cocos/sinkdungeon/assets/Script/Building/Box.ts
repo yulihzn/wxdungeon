@@ -81,7 +81,6 @@ export default class Box extends Building {
         if (this.timeDelay > 0.2) {
             this.data.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.position = this.node.position;
-            this.data.onelife = false;
             let currboxes = Logic.mapManager.getCurrentMapBoxes();
             if (currboxes) {
                 for (let tempbox of currboxes) {
