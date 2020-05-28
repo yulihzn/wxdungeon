@@ -13,9 +13,9 @@
         "USE_TEXTURE": true
       },
       "props": {
-        "outlineSize": 5,
-        "textureSizeWidth": 100,
-        "textureSizeHeight": 100
+        "outlineSize": 2,
+        "textureSizeWidth": 96,
+        "textureSizeHeight": 96
       }
     }
   }

@@ -13,9 +13,10 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.5 }
-        outlineSize: {value: 0}
+        outlineSize: {value: 2}
         textureSizeWidth: {value: 1}
         textureSizeHeight: {value: 1}
+        outlineColor: {value: [0,0,0,0]}
 }%
 
 
@@ -67,6 +68,7 @@ CCProgram fs %{
   uniform sampler2D texture;
   #endif
   uniform OutLine{
+    vec4 outlineColor;
     float outlineSize;
     float textureSizeWidth;
     float textureSizeHeight;
@@ -87,13 +89,13 @@ CCProgram fs %{
     return stroke;
   }
   void main () {
-    vec4 myC = texture2D(texture, v_uv0); // 正在处理的这个像素点的颜色
-    if (myC.a >= 0.5) // 不透明，不管，直接返回
+    vec4 curr_color = texture2D(texture, v_uv0); // 正在处理的这个像素点的颜色
+    if (curr_color.a >= 0.5) // 不透明，不管，直接返回
     {
-        gl_FragColor = v_color * myC;
+        gl_FragColor = v_color * curr_color;
         return;
     }
-    // 这里肯定有朋友会问，一个for循环就搞定啦，怎么这么麻烦！其实我一开始也是用for的，但后来在安卓某些机型（如小米4）会直接崩溃，查找资料发现OpenGL es并不是很支持循环，while和for都不要用
+    // OpenGL es并不是很支持循环，while和for都不要用
     int strokeCount = 0;
     strokeCount += getIsStrokeWithAngel(0.0);
     strokeCount += getIsStrokeWithAngel(30.0);
@@ -110,10 +112,8 @@ CCProgram fs %{
 
     if (strokeCount > 0) // 四周围至少有一个点是不透明的，这个点要设成描边颜色
     {
-        myC.rgb = vec3(1,1,1);
-        myC.a = 1.0;
+        curr_color = outlineColor;
     }
-
-    gl_FragColor = v_color * myC;
+    gl_FragColor = v_color * curr_color;
   }
 }%

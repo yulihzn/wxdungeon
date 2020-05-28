@@ -219,7 +219,7 @@
       "array": [
         0,
         0,
-        135.96598839415688,
+        524.8113946933698,
         0,
         0,
         0,
@@ -2061,7 +2061,7 @@
     "_enabled": true,
     "_materials": [
       {
-        "__uuid__": "dd581248-da25-468c-8f88-3714a11663ad"
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
     "_srcBlendFactor": 770,
@@ -2872,7 +2872,7 @@
     "_enabled": true,
     "_materials": [
       {
-        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+        "__uuid__": "dd581248-da25-468c-8f88-3714a11663ad"
       }
     ],
     "_srcBlendFactor": 770,

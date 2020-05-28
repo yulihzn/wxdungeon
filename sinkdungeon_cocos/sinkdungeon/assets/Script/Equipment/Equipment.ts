@@ -30,6 +30,7 @@ export default class Equipment extends cc.Component {
     pos: cc.Vec3 = cc.v3(0, 0);
     isTaken = false;
     shopTable: ShopTable;
+    mat:cc.MaterialVariant;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -48,12 +49,23 @@ export default class Equipment extends cc.Component {
         this.sprite.height = spriteFrame.getRect().height;
         let color = cc.color(255, 255, 255).fromHEX(this.data.color);
         this.sprite.color = color;
+        this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
+        this.mat.setProperty('textureSizeWidth',this.sprite.width*this.sprite.scaleX);
+        this.mat.setProperty('textureSizeHeight',this.sprite.height*this.sprite.scaleY);
+        this.highLight(false);
         if (data.equipmetType == 'remote') {
             this.sprite.width = this.sprite.width / 2;
             this.sprite.height = this.sprite.height / 2;
         }
         this.data.pos = Dungeon.getIndexInMap(this.node.position.clone());
 
+    }
+
+    highLight(isHigh:boolean){
+        if(!this.mat){
+            this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
+        }
+        this.mat.setProperty('outlineColor',isHigh?cc.Color.WHITE:cc.Color.TRANSPARENT);
     }
 
     start() {
@@ -104,12 +116,15 @@ export default class Equipment extends cc.Component {
         if (player) {
             this.equipmentDialog.hideDialog();
             // cc.director.emit(EventConstant.HUD_GROUND_EQUIPMENT_INFO_HIDE);
+            this.highLight(false);
         }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
             this.equipmentDialog.showDialog();
+            this.highLight(true);
+            this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2),cc.delayTime(1),cc.fadeOut(0.2)));
             // cc.director.emit(EventConstant.HUD_GROUND_EQUIPMENT_INFO_SHOW,{detail:{equipData:this.data}});
         }
     }

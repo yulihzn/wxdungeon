@@ -41,9 +41,13 @@ export default class Item extends cc.Component {
     @property(ItemDialog)
     itemDialog: ItemDialog = null;
 
+    sprite:cc.Sprite;
+    mat:cc.MaterialVariant;
+
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+    }
 
     start() {
         this.anim = this.getComponent(cc.Animation);
@@ -60,13 +64,25 @@ export default class Item extends cc.Component {
         }
         let spriteFrame = Logic.spriteFrames[this.data.resName];
         if (spriteFrame) {
-            let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
             this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            sprite.node.width = spriteFrame.getRect().width * 2;
-            sprite.node.height = spriteFrame.getRect().height * 2;
+            this.sprite.node.width = spriteFrame.getRect().width * 2;
+            this.sprite.node.height = spriteFrame.getRect().height * 2;
+            this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
+            this.mat.setProperty('textureSizeWidth',this.sprite.node.width*this.sprite.node.scaleX);
+            this.mat.setProperty('textureSizeHeight',this.sprite.node.height*this.sprite.node.scaleY);
+            this.highLight(false);
         }
         this.itemDialog.refreshDialog(this.data);
     }
+
+    highLight(isHigh:boolean){
+        if(!this.mat){
+            this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
+        }
+        this.mat.setProperty('outlineColor',isHigh?cc.Color.WHITE:cc.Color.TRANSPARENT);
+    }
+
     public taken(player: Player): void {
         if (!this.data.isTaken && this.anim) {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
@@ -118,6 +134,8 @@ export default class Item extends cc.Component {
         if (player) {
             if (this.data.canSave) {
                 this.itemDialog.showDialog();
+                this.highLight(true);
+                this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2),cc.delayTime(1),cc.fadeOut(0.2)));
             } else {
                 this.taken(player);
             }
@@ -127,6 +145,7 @@ export default class Item extends cc.Component {
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
+            this.highLight(false);
             this.itemDialog.hideDialog();
         }
     }
