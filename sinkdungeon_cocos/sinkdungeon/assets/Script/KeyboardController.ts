@@ -34,15 +34,11 @@ export default class KeyboardController extends cc.Component {
         this.mouseArea.on(cc.Node.EventType.MOUSE_DOWN,(event:cc.Event.EventMouse)=>{
             if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
                 this.isA = true;
-            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
-                this.isB = true;
             }
         },this);
         this.mouseArea.on(cc.Node.EventType.MOUSE_UP,(event:cc.Event.EventMouse)=>{
             if(event.getButton() == cc.Event.EventMouse.BUTTON_LEFT){
                 this.isA = false;
-            }else if(event.getButton() == cc.Event.EventMouse.BUTTON_RIGHT){
-                this.isB = false;
             }
         },this);
     }
@@ -58,9 +54,9 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.d:this.isRight =true;break;
 
             // case cc.macro.KEY.j:this.isA = true;break;
-            // case cc.macro.KEY.k:this.isB = true;break;
+            case cc.macro.KEY.space:this.isB = true;break;
             case cc.macro.KEY.e:this.isC = true;break;
-            case cc.macro.KEY.space:this.isD = true;break;
+            case cc.macro.KEY.shift:this.isD = true;break;
             case cc.macro.KEY.num1:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:0}});break;
             case cc.macro.KEY.num2:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:1}});break;
             case cc.macro.KEY.num3:cc.director.emit(EventHelper.USEITEM_KEYBOARD,{detail:{index:2}});break;
@@ -77,9 +73,9 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.d:this.isRight =false;break;
 
             // case cc.macro.KEY.j:this.isA = false;break;
-            // case cc.macro.KEY.k:this.isB = false;break;
+            case cc.macro.KEY.space:this.isB = false;break;
             case cc.macro.KEY.e:this.isC = false;break;
-            case cc.macro.KEY.space:this.isD = false;break;
+            case cc.macro.KEY.shift:this.isD = false;break;
         }
     }
     update (dt) {
