@@ -11,6 +11,11 @@
     "0": {
       "defines": {
         "USE_TEXTURE": true
+      },
+      "props": {
+        "outlineSize": 5,
+        "textureSizeWidth": 100,
+        "textureSizeHeight": 100
       }
     }
   }

@@ -13,9 +13,9 @@ CCEffect %{
       properties:
         texture: { value: white }
         alphaThreshold: { value: 0.5 }
-        outlineSize: { value: 5.0 }
-        textureSize: { value: [1,1] }
-        outlineColor: { value: [0.0, 0.0, 0.0,0.0], editor: { type: color } }
+        outlineSize: {value: 0}
+        textureSizeWidth: {value: 1}
+        textureSizeHeight: {value: 1}
 }%
 
 
@@ -66,35 +66,31 @@ CCProgram fs %{
   in vec2 v_uv0;
   uniform sampler2D texture;
   #endif
-  varying vec4 v_fragmentColor; // vertex shader传入，setColor设置的颜色
-  varying vec2 v_texCoord; // 纹理坐标
-  uniform Outline{
-    vec2 textureSize; // 纹理大小（宽和高），为了计算周围各点的纹理坐标，必须传入它，因为纹理坐标范围是0~1
-    float outlineSize; // 描边宽度，以像素为单位
-    vec3 outlineColor; // 描边颜色
+  uniform OutLine{
+    float outlineSize;
+    float textureSizeWidth;
+    float textureSizeHeight;
   };
-  
-
   // 判断在这个角度上距离为outlineSize那一点是不是透明
   int getIsStrokeWithAngel(float angel)
   {
-      int stroke = 0;
-      float rad = angel * 0.01745329252; // 这个浮点数是 pi / 180，角度转弧度
-      vec2 unit = 1.0 / textureSize.xy;//单位坐标
-      vec2 offset = vec2(outlineSize * cos(rad) * unit.x, outlineSize * sin(rad) * unit.y); //偏移量
-      float a = texture2D(CC_Texture0, v_texCoord + offset).a;
-      if (a >= 0.5)// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
-      {
-          stroke = 1;
-      }
-      return stroke;
+    int stroke = 0;
+    vec2 textureSize = vec2(textureSizeWidth,textureSizeHeight);
+    float rad = angel * 0.01745329252; // 这个浮点数是 pi / 180，角度转弧度
+    vec2 unit = 1.0 / textureSize.xy;//单位坐标
+    vec2 offset = vec2(outlineSize * cos(rad) * unit.x, outlineSize * sin(rad) * unit.y); //偏移量
+    float a = texture2D(texture, v_uv0 + offset).a;
+    if (a >= 0.5)// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
+    {
+        stroke = 1;
+    }
+    return stroke;
   }
-  
   void main () {
-    vec4 myC = texture2D(CC_Texture0, v_texCoord); // 正在处理的这个像素点的颜色
+    vec4 myC = texture2D(texture, v_uv0); // 正在处理的这个像素点的颜色
     if (myC.a >= 0.5) // 不透明，不管，直接返回
     {
-        gl_FragColor = v_fragmentColor * myC;
+        gl_FragColor = v_color * myC;
         return;
     }
     // 这里肯定有朋友会问，一个for循环就搞定啦，怎么这么麻烦！其实我一开始也是用for的，但后来在安卓某些机型（如小米4）会直接崩溃，查找资料发现OpenGL es并不是很支持循环，while和for都不要用
@@ -114,10 +110,10 @@ CCProgram fs %{
 
     if (strokeCount > 0) // 四周围至少有一个点是不透明的，这个点要设成描边颜色
     {
-        myC.rgb = outlineColor;
+        myC.rgb = vec3(1,1,1);
         myC.a = 1.0;
     }
 
-    gl_FragColor = v_fragmentColor * myC;
+    gl_FragColor = v_color * myC;
   }
 }%
