@@ -192,7 +192,7 @@
       "array": [
         0,
         0,
-        527.4094709047232,
+        136.84554544487546,
         0,
         0,
         0,
@@ -1238,7 +1238,6 @@
     },
     "_resize": 1,
     "_N$layoutType": 3,
-    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 128,
@@ -2002,7 +2001,6 @@
     },
     "_resize": 1,
     "_N$layoutType": 1,
-    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 128,
@@ -2753,7 +2751,7 @@
         "__id__": 67
       }
     ],
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": null,
     "_opacity": 255,
