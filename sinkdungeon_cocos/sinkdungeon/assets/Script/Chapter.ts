@@ -31,7 +31,6 @@ export default class Chapter extends cc.Component {
     // onLoad () {}
 
     start() {
-        cc.view.enableAntiAlias(false);
     }
 
     clickChapter(event, chapter:string) {

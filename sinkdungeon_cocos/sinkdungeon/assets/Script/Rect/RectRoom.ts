@@ -1,6 +1,8 @@
 import RectDoor from "./RectDoor";
 import Dungeon from "../Dungeon";
 import RoomType from "./RoomType";
+import Logic from "../Logic";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,12 +40,13 @@ export default class RectRoom {
     //保存地图数据下标
     saveIndex = 0;
     //伪随机数种子
-    seed = new Date().getTime();
+    seed = 0;
 
     constructor(x: number, y: number, roomType: RoomType) {
         this.x = x;
         this.y = y;
         this.roomType = roomType;
+        this.seed = RectRoom.getRandomNum(0,100000000);
         this.init();
     }
 
@@ -58,7 +61,7 @@ export default class RectRoom {
         this.doors = room.doors;
         this.state = room.state;
         this.saveIndex = room.saveIndex;
-        this.seed = room.seed?room.seed:new Date().getTime();
+        this.seed = room.seed?room.seed:RectRoom.getRandomNum(0,100000000);
         return this;
     }
     
@@ -78,6 +81,9 @@ export default class RectRoom {
 
     public get positionStr(): string {
         return `${this.x}${this.y}`;
+    }
+    static getRandomNum(min, max): number {//生成一个随机数从[min,max]
+        return min + Math.round(Random.rand() * (max - min));
     }
 }
 
