@@ -5,29 +5,46 @@
       true,
       true,
       true,
-      true
-    ],
-    [
       true,
-      false,
-      true
-    ],
-    [
-      true,
-      true,
-      true,
+      null,
       true
     ],
     [
       true,
       false,
       true,
+      null,
+      null,
+      true
+    ],
+    [
+      true,
+      true,
+      true,
+      true,
+      null,
+      true
+    ],
+    [
+      true,
+      false,
+      true,
+      false,
+      null,
+      true
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
       false
     ],
     [
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
+      true,
       false,
       false
     ]
@@ -69,7 +86,8 @@
     "floor",
     "actor",
     "building",
-    "ui"
+    "ui",
+    "player"
   ],
   "last-module-event-record-time": 1590494503742,
   "simulator-orientation": false,
