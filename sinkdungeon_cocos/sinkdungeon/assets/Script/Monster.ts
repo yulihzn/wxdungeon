@@ -24,7 +24,6 @@ import Skill from './Utils/Skill';
 import Item from './Item/Item';
 import Actor from './Base/Actor';
 import Achievements from './Achievement';
-import EquipmentManager from './Manager/EquipmentManager';
 import AudioPlayer from './Utils/AudioPlayer';
 import SpecialManager from './Manager/SpecialManager';
 import FromData from './Data/FromData';
@@ -380,19 +379,19 @@ export default class Monster extends Actor {
         if (!this.idleAction) {
             if (isOne) {
                 this.idleAction = cc.repeatForever(cc.sequence(
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) })));
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) })));
             } else if (isTwo) {
                 this.idleAction = cc.repeatForever(cc.sequence(
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) })));
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) })));
             } else if (isThree) {
                 this.idleAction = cc.repeatForever(cc.sequence(
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) }),
-                    cc.moveBy(0.2, 0, 0), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK03) })));
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName) }),
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) }),
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) }),
+                    cc.delayTime(0.2), cc.callFunc(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK03) })));
             }
             this.sprite.runAction(this.idleAction);
         }
@@ -520,6 +519,9 @@ export default class Monster extends Actor {
             if (damageData.isCriticalStrike) {
                 this.fall();
             }
+            if(this.anim.getAnimationState("MonsterIdle").isPlaying){
+                this.anim.pause();
+            }
         }
         this.idleAction = null;
         //100ms后修改受伤
@@ -535,6 +537,7 @@ export default class Monster extends Actor {
                 if (this.node) {
                     this.isHurt = false;
                     this.changeBodyColor();
+                    this.anim.resume();
                 }
             }, 0.2);
         }
