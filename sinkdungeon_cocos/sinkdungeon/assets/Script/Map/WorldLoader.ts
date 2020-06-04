@@ -53,7 +53,6 @@ export default class WorldLoader {
                     }
                     this.worldMap.push(chapterData);
                 }
-                console.log(this.worldMap);
                 this.loadMap();
             }
         })

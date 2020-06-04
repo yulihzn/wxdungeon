@@ -106,6 +106,7 @@ export default class Monster extends Actor {
     //躲避目标位置
     moveTarget: cc.Vec3 = cc.v3(0, 0);
     attrmap: { [key: string]: number } = {};
+    mat:cc.MaterialVariant;
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -115,6 +116,7 @@ export default class Monster extends Actor {
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
+        this.mat = this.bodySprite.getComponent(cc.Sprite).getMaterial(0);
         this.boxCollider = this.getComponent(cc.BoxCollider);
         if (this.isVariation) {
             let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
@@ -136,7 +138,7 @@ export default class Monster extends Actor {
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
         this.scheduleOnce(() => { this.isShow = true; }, 0.5);
-        this.changeBodyColor();
+        this.resetBodyColor();
         if (this.data.isHeavy > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
@@ -149,6 +151,13 @@ export default class Monster extends Actor {
         // this.graphics.strokeColor = cc.Color.RED;
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
+    }
+    hitLight(isHit:boolean){
+        if(!this.mat){
+            this.mat = this.node.getChildByName('sprite').getChildByName('body')
+            .getComponent(cc.Sprite).getMaterial(0);
+        }
+        this.mat.setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
     }
     addAttrIcon() {
         if (!this.attrNode) {
@@ -528,7 +537,7 @@ export default class Monster extends Actor {
         if (dd.getTotalDamage() > 0) {
             this.dangerBox.finish();
             this.moveTarget = cc.Vec3.ZERO;
-            this.bodySprite.node.color = cc.color(255, 0, 0);
+            this.hitLight(true);
             if(damageData.isBackAttack){
                 this.showBloodEffect();
             }
@@ -536,7 +545,8 @@ export default class Monster extends Actor {
             this.scheduleOnce(() => {
                 if (this.node) {
                     this.isHurt = false;
-                    this.changeBodyColor();
+                    this.hitLight(false);
+                    this.resetBodyColor();
                     this.anim.resume();
                 }
             }, 0.2);
@@ -553,7 +563,7 @@ export default class Monster extends Actor {
         }
         return this.isHurt;
     }
-    changeBodyColor(): void {
+    resetBodyColor(): void {
         if (!this.data) {
             return;
         }

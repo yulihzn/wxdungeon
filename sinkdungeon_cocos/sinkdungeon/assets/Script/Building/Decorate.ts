@@ -31,6 +31,7 @@ export default class Decorate extends Building {
     decorateType = 0;
     resName = "decorate000";
     sprite: cc.Sprite;
+    mat:cc.MaterialVariant;
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
 
@@ -68,6 +69,12 @@ export default class Decorate extends Building {
     BreakingFinish() {
         this.reset();
     }
+    hitLight(isHit:boolean){
+        if(!this.mat){
+            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0);
+        }
+        this.mat.setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+    }
     breakBox() {
         if (this.isBreaking) {
             return;
@@ -77,7 +84,9 @@ export default class Decorate extends Building {
         this.sprite.node.runAction(cc.sequence(
              cc.callFunc(() => {
                 this.changeRes(this.resName, 'anim001');
+                this.hitLight(true);
             }), cc.delayTime(0.15), cc.callFunc(() => {
+                this.hitLight(false);
                 this.changeRes(this.resName, 'anim002');
             }), cc.delayTime(0.15), cc.callFunc(() => {
                 this.changeRes(this.resName, 'anim003');

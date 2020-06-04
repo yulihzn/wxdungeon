@@ -57,6 +57,5 @@ export default class ProfileData {
         this.items = {};
         this.ammo = 30;
         this.level = 0;
-        console.log('clear data');
     }
 }

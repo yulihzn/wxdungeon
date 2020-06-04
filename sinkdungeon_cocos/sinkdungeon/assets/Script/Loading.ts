@@ -142,6 +142,7 @@ export default class Loading extends cc.Component {
         this.label.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`
         if (Logic.level == 0) {
             this.label.string = `Sink Dungeon`
+            
         }
         //加载地图，装备，贴图，敌人，状态，子弹，物品资源
         this.isWorldLoaded = false;
@@ -155,11 +156,26 @@ export default class Loading extends cc.Component {
         this.loadDebuffs();
         this.loadBullets();
         this.loadItems();
+        this.showLoadingLabel();
         //显示过场
         if (Logic.isFirst == 1) {
             this.cutScene.isSkip = true;
             this.cutScene.unregisterClick();
         }
+    }
+    showLoadingLabel(){
+        if (this.isSpriteFramesLoaded) {
+            return;
+        }
+        let arr = ['...','..','.',''];
+            let count = 0;
+            this.schedule(()=>{
+                if(count>arr.length-1){
+                    count = 0;
+                }
+                this.label.string = `loading ${arr[count]}`;
+                count++;
+            },1,30,5);
     }
 
     loadWorld() {
