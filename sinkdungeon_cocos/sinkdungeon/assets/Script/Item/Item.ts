@@ -30,7 +30,6 @@ export default class Item extends cc.Component {
     public static readonly BOTTLE_MOVESPEED = 'bottle002';
     public static readonly BOTTLE_ATTACKSPEED = 'bottle003';
     public static readonly BOTTLE_INVISIBLE = 'bottle004';
-    public static readonly AMMO = 'ammo';
     public static readonly REDCAPSULE = 'redcapsule';
     public static readonly BLUECAPSULE = 'bluecapsule';
     public static readonly SHIELD = 'shield';
@@ -122,7 +121,6 @@ export default class Item extends cc.Component {
             case Item.BOTTLE_MOVESPEED: player.addStatus(StatusManager.FASTMOVE, from); break;
             case Item.BOTTLE_ATTACKSPEED: player.addStatus(StatusManager.FASTATTACK, from); break;
             case Item.BOTTLE_INVISIBLE: player.addStatus(StatusManager.BOTTLE_INVISIBLE, from); break;
-            case Item.AMMO: Logic.ammo += 30; break;
             case Item.REDCAPSULE: player.addStatus(StatusManager.FASTATTACK, from); break;
             case Item.BLUECAPSULE: player.addStatus(StatusManager.FASTMOVE, from); break;
             case Item.SHIELD: player.addStatus(StatusManager.PERFECTDEFENCE, from); break;

@@ -39,7 +39,6 @@ export default class Shooter extends cc.Component {
     private graphics: cc.Graphics;
 
     private bulletPool: cc.NodePool;
-    private timeDelay = 0;
     isAutoAim = true;
     bulletName: string = '';
     sprite: cc.Node;
@@ -136,11 +135,8 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (!this.isAI && this.player && !this.isEx && ((Logic.ammo <= 0) || this.player.inventoryManager.remote.equipmetType != 'remote')) {
+        if (!this.isAI || this.player.inventoryManager.remote.equipmetType != 'remote') {
             return;
-        }
-        if (!this.isAI && this.player && Logic.ammo > 0 && !this.isEx) {
-            Logic.ammo--;
         }
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
         if (this.data.bulletNets > 0) {
@@ -168,17 +164,11 @@ export default class Shooter extends cc.Component {
                 circleAngles = [0, 45, 90, 135, 180, 225, 270, 315, 335];
             }
             for (let i = 0; i < circleAngles.length; i++) {
-                if (!this.isAI && Logic.ammo > 0) {
-                    Logic.ammo--;
-                }
                 this.fire(bulletType, this.bullet, this.bulletPool, circleAngles[i], this.hv.clone(), defaultPos);
             }
         } else {
             for (let i = 0; i < this.data.bulletArcExNum; i++) {
                 if (i < angles.length) {
-                    if (!this.isAI && Logic.ammo > 0) {
-                        Logic.ammo--;
-                    }
                     this.fire(bulletType, this.bullet, this.bulletPool, angles[i], this.hv.clone(), defaultPos);
                 }
             }
@@ -190,9 +180,6 @@ export default class Shooter extends cc.Component {
             return;
         }
         this.schedule(() => {
-            if (!this.isAI && Logic.ammo > 0) {
-                Logic.ammo--;
-            }
             this.fire(bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos);
             this.fireArcBullet(bulletType, defaultPos);
         }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, this.data.bulletLineExNum, 0);

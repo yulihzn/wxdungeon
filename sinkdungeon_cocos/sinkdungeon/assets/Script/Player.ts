@@ -564,6 +564,7 @@ export default class Player extends Actor {
         if(dir != 4){
             this.currentDir = dir;
             this.meleeWeapon.node.zIndex = dir==0?this.sprite.zIndex-1:this.sprite.zIndex+1;
+            this.shooter.node.zIndex = dir==0?this.sprite.zIndex-1:this.sprite.zIndex+1;
             this.cloakSprite.node.zIndex = dir==0?this.bodySprite.node.zIndex+1:this.bodySprite.node.zIndex-1;
             this.changeEquipDirSpriteFrame(dir);
         }

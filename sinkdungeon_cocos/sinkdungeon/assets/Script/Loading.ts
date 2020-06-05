@@ -175,7 +175,7 @@ export default class Loading extends cc.Component {
                 }
                 this.label.string = `loading ${arr[count]}`;
                 count++;
-            },1,30,5);
+            },1,100,5);
     }
 
     loadWorld() {

@@ -224,7 +224,6 @@ export default class Slime extends Boss {
             if (this.slimeType == 0) {
                 Achievements.addMonsterKillAchievement(this.data.resName);
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.AMMO } });
                 this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 3);
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {

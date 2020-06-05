@@ -7,6 +7,7 @@ import ChestData from "../Data/ChestData";
 import Building from "./Building";
 import RectDungeon from "../Rect/RectDungeon";
 import AudioPlayer from "../Utils/AudioPlayer";
+import RoomType from "../Rect/RoomType";
 
 
 // Learn TypeScript:
@@ -83,7 +84,7 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        if (Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RectDungeon.TEST_ROOM) {
+                        if (Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RoomType.TEST_ROOM) {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);

@@ -399,12 +399,8 @@ export default class Dungeon extends cc.Component {
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     //生成心
-                    if (mapData[i][j] == 'A2') {
-                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.HEART);
-                    }
-                    //生成弹药
                     if (mapData[i][j] == 'A0') {
-                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.AMMO);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.HEART);
                     }
                     //生成红色药丸
                     if (mapData[i][j] == 'A3') {

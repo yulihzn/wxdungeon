@@ -64,7 +64,6 @@ export default class Logic extends cc.Component {
     static worldLoader: WorldLoader = new WorldLoader();
     static coins = 0;//金币
     static oilGolds = 0;//油金
-    static ammo = 30;//子弹
     static killCount = 0;//杀敌数
     static time = '00:00:00';
     static seed = 5;
@@ -131,8 +130,6 @@ export default class Logic extends cc.Component {
         //加载技能列表
         Logic.talentList = Logic.profileManager.data.talentList;
         Logic.initTalentMap();
-        //加载子弹
-        Logic.ammo = Logic.profileManager.data.ammo;
         //设置地图重置状态在loading完成处理地图
         Logic.isMapReset = true;
         //重置地牢宽高

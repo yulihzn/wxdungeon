@@ -39,7 +39,6 @@ export default class ProfileData {
     //玩家物品列表
     playerItemList:ItemData[] = new Array();
     talentList:TalentData[] = new Array();
-    ammo = 30;//子弹
     level = 0;
     clearData(){
         cc.sys.localStorage.setItem('profileData','');
@@ -55,7 +54,6 @@ export default class ProfileData {
         this.chests = {};
         this.equipments = {};
         this.items = {};
-        this.ammo = 30;
         this.level = 0;
     }
 }

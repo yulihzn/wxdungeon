@@ -105,8 +105,6 @@ export default class Decorate extends Building {
                     }
                 } else if (rand >= 0.8 && rand < 0.825) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
-                } else if (rand >= 0.825 && rand < 0.85) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.AMMO } });
                 }
                 this.data.status = 1;
             }), cc.delayTime(10), cc.callFunc(() => {
