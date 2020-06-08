@@ -570,23 +570,23 @@ export default class Player extends Actor {
         }
         if (this.isAttacking && !pos.equals(cc.Vec3.ZERO)) {
             if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
-                pos = pos.mul(0.6);
+                pos = pos.mul(0.05);
             } else if (this.meleeWeapon.isFar && this.meleeWeapon.isStab) {
-                pos = pos.mul(0.3);
+                pos = pos.mul(0.02);
             } else if (!this.meleeWeapon.isFar && !this.meleeWeapon.isStab) {
-                pos = pos.mul(0.3);
+                pos = pos.mul(0.02);
             } else {
-                pos = pos.mul(0.1);
+                pos = pos.mul(0.01);
             }
         }
         if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec3.ZERO)) {
-            pos = pos.mul(0.1);
+            pos = pos.mul(0.01);
         }
         if (this.talentMagic && this.talentMagic.magiccircle.isShow && !this.talentMagic.hashTalent(Talent.MAGIC_05)) {
-            pos = pos.mul(0.5);
+            pos = pos.mul(0.3);
         }
         if (this.talentShield && this.talentShield.IsExcuting && !this.talentMagic.hashTalent(Talent.SHIELD_12)) {
-            pos = pos.mul(0.5);
+            pos = pos.mul(0.3);
         }
         if (this.shooter && !pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);

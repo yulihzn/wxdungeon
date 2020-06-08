@@ -135,7 +135,7 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (!this.isAI || this.player.inventoryManager.remote.equipmetType != 'remote') {
+        if (!this.isAI && this.player.inventoryManager.remote.equipmetType != 'remote') {
             return;
         }
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
