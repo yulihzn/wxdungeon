@@ -84,7 +84,6 @@ export default class Item extends cc.Component {
 
     public taken(player: Player): void {
         if (!this.data.isTaken && this.anim) {
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
             if (this.data.canSave < 1) {

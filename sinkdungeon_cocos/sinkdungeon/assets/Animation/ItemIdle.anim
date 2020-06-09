@@ -14,15 +14,15 @@
           "y": [
             {
               "frame": 0,
-              "value": 32
+              "value": 64
             },
             {
               "frame": 0.5833333333333334,
-              "value": 16
+              "value": 32
             },
             {
               "frame": 1,
-              "value": 32
+              "value": 64
             }
           ],
           "scale": [

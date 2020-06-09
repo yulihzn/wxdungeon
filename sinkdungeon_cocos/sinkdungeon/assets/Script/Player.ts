@@ -425,22 +425,27 @@ export default class Player extends Actor {
         pos = pos.normalizeSelf().mul(15);
         pos.x = this.isFaceRight ? pos.x : -pos.x;
         let speed = PlayerData.DefAULT_SPEED - this.data.getAttackSpeed();
+        let audiodelay = 0;
         if (speed < 1) {
             //匕首上限
             if (this.meleeWeapon.isStab && !this.meleeWeapon.isFar) {
                 speed = 0 + speed;
+                audiodelay = 0;
             }
             //长剑上限
             if (!this.meleeWeapon.isStab && !this.meleeWeapon.isFar) {
                 speed = 100 + speed;
+                audiodelay = 0.1;
             }
             //长枪上限
             if (this.meleeWeapon.isStab && this.meleeWeapon.isFar) {
                 speed = 150 + speed;
+                audiodelay = 0.1;
             }
             //大剑上限
             if (!this.meleeWeapon.isStab && this.meleeWeapon.isFar) {
                 speed = 300 + speed;
+                audiodelay = 0.2;
             }
         }
         if (speed < 0) {
@@ -460,7 +465,9 @@ export default class Player extends Actor {
         }
         this.playerAnim(Player.STATE_ATTACK, this.currentDir);
         this.meleeWeapon.attack(this.data, isMiss);
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+        this.scheduleOnce(()=>{
+            AudioPlayer.play(AudioPlayer.MELEE);
+        },audiodelay);
         this.stopHiding();
 
     }
@@ -874,6 +881,7 @@ export default class Player extends Actor {
 
     triggerThings() {
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
+            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
             if (this.touchedEquipment.shopTable) {
                 if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {
                     cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.touchedEquipment.shopTable.data.price } });
@@ -888,6 +896,7 @@ export default class Player extends Actor {
             }
         }
         if (this.touchedItem && !this.touchedItem.data.isTaken && this.touchedItem.data.canSave) {
+            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
             if (this.touchedItem.shopTable) {
                 if (Logic.coins >= this.touchedItem.shopTable.data.price) {
                     cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.touchedItem.shopTable.data.price } });
@@ -902,6 +911,7 @@ export default class Player extends Actor {
             }
         }
         if (this.touchedTips) {
+            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
             this.touchedTips.next();
         }
     }
@@ -927,25 +937,36 @@ export default class Player extends Actor {
         this.touchedEquipment = null;
         this.touchedItem = null;
         this.touchedTips = null;
+        // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         this.touchedEquipment = null;
         this.touchedItem = null;
         this.touchedTips = null;
+        // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
+        let isInteract = false;
         let equipment = other.node.getComponent(Equipment);
         if (equipment) {
+            isInteract = true;
             this.touchedEquipment = equipment;
         }
         let item = other.node.getComponent(Item);
         if (item) {
+            isInteract = true;
             this.touchedItem = item;
+            
         }
         let tips = other.node.getComponent(Tips);
         if (tips) {
+            isInteract = true;
             this.touchedTips = tips;
         }
+        if(isInteract){
+            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,true);
+        }
+
     }
 
     useItem(data: ItemData) {

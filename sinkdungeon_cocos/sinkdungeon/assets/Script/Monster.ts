@@ -535,7 +535,9 @@ export default class Monster extends Actor {
         this.idleAction = null;
         //100ms后修改受伤
         if (dd.getTotalDamage() > 0) {
-            this.dangerBox.finish();
+            if(!damageData.isRemote){
+                this.dangerBox.finish();
+            }
             this.moveTarget = cc.Vec3.ZERO;
             this.hitLight(true);
             if(damageData.isBackAttack){

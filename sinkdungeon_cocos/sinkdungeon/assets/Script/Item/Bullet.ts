@@ -334,6 +334,7 @@ export default class Bullet extends cc.Component {
         let damage = new DamageData();
         let damageSuccess = false;
         damage.valueCopy(this.data.damage);
+        damage.isRemote = true;
         let isDestory = false;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {

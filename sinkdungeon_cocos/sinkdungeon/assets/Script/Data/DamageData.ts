@@ -31,6 +31,7 @@ export default class DamageData {
     stoneRate = 0;//石化释放几率(目前仅限于boss眼魔激光使用)
     isCriticalStrike = false;
     isBackAttack = false;
+    isRemote = false;
 
     constructor(realDamage?:number){
         this.realDamage = realDamage?realDamage:0;
@@ -53,6 +54,7 @@ export default class DamageData {
         this.stoneRate = data.stoneRate?data.stoneRate:0;
         this.isCriticalStrike = data.isCriticalStrike?true:false;
         this.isBackAttack = data.isBackAttack?true:false;
+        this.isRemote = data.isRemote?true:false;
     }
    
     public clone(): DamageData {
@@ -73,6 +75,7 @@ export default class DamageData {
         e.stoneRate = this.stoneRate;
         e.isCriticalStrike = this.isCriticalStrike;
         e.isBackAttack = this.isBackAttack;
+        e.isRemote = this.isRemote;
         return e;
     }
     public getTotalDamage():number{

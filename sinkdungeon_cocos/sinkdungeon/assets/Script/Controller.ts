@@ -30,6 +30,8 @@ export default class Controller extends cc.Component {
     coolDown: cc.Node = null;
     skillActionTouched = false;
     graphics: cc.Graphics = null;
+    @property(cc.Button)
+    interactButton:cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -85,10 +87,20 @@ export default class Controller extends cc.Component {
             , (event) => { this.changeRes(event.detail.index, true) });
         cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
             , (event) => { this.drawSkillCoolDown(event.detail.cooldown, event.detail.talentType); });
+        EventHelper.on(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,(isShow:boolean)=>{
+            if(this.interactButton){
+                this.interactButton.interactable = isShow;
+            }
+        })
+        this.interactButton.interactable = false;
+        this.interactButton.node.on('click',()=>{
+            cc.director.emit(EventHelper.PLAYER_TRIGGER);
+            this.interactButton.interactable = false;
+        },this);
         if(!cc.sys.isMobile){
+            this.interactAction.active = false;
             this.attackAction.active = false;
             this.shootAction.active = false;
-            this.interactAction.active = false;
             this.skillAction.active = false;
         }
     }
