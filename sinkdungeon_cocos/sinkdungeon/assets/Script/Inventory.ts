@@ -304,7 +304,9 @@ export default class Inventory extends cc.Component {
         let item = this.inventoryManager.itemList[itemIndex].clone();
         this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
         this.refreshItemRes();
-        cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
+        if(item.resName != Item.EMPTY){
+            cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
+        }
     }
     refreshItem(itemDataNew: ItemData) {
         if (!this.node) {

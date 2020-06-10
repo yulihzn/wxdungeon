@@ -50,8 +50,8 @@ export default class Equipment extends cc.Component {
         let color = cc.color(255, 255, 255).fromHEX(this.data.color);
         this.sprite.color = color;
         this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
-        this.mat.setProperty('textureSizeWidth',this.sprite.width*this.sprite.scaleX);
-        this.mat.setProperty('textureSizeHeight',this.sprite.height*this.sprite.scaleY);
+        this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.scaleX);
+        this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.scaleY);
         this.highLight(false);
         if (data.equipmetType == 'remote') {
             this.sprite.width = this.sprite.width / 2;

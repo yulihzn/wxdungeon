@@ -5,7 +5,7 @@
   "_native": "",
   "_duration": 1,
   "sample": 60,
-  "speed": 1,
+  "speed": 0.5,
   "wrapMode": 2,
   "curveData": {
     "paths": {
@@ -14,15 +14,15 @@
           "y": [
             {
               "frame": 0,
-              "value": 64
-            },
-            {
-              "frame": 0.5833333333333334,
               "value": 32
             },
             {
+              "frame": 0.5833333333333334,
+              "value": 16
+            },
+            {
               "frame": 1,
-              "value": 64
+              "value": 32
             }
           ],
           "scale": [
@@ -30,40 +30,40 @@
               "frame": 0,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
+                "x": 2,
+                "y": 2
               }
             },
             {
               "frame": 0.25,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 0.9,
-                "y": 0.9
+                "x": 2.1,
+                "y": 2.1
               }
             },
             {
               "frame": 0.5,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
+                "x": 2,
+                "y": 2
               }
             },
             {
               "frame": 0.75,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 0.9,
-                "y": 0.9
+                "x": 2.1,
+                "y": 2.1
               }
             },
             {
               "frame": 1,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 1,
-                "y": 1
+                "x": 2,
+                "y": 2
               }
             }
           ]

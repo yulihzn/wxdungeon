@@ -268,12 +268,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -14
+      "y": -20
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 96,
-      "height": 24
+      "width": 64,
+      "height": 2
     },
     "_id": ""
   },

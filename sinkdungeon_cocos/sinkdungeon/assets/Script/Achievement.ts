@@ -71,7 +71,7 @@ export default class Achievements extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.loader.loadResDir('Texture/Auto/Monster', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
+        cc.loader.loadResDir('Texture/Monster', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
             this.spriteFrames = {};
             for (let frame of assert) {
                 this.spriteFrames[frame.name] = frame;

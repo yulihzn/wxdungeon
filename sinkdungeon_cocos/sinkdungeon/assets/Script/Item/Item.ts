@@ -65,11 +65,11 @@ export default class Item extends cc.Component {
         if (spriteFrame) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
             this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            this.sprite.node.width = spriteFrame.getRect().width * 2;
-            this.sprite.node.height = spriteFrame.getRect().height * 2;
+            this.sprite.node.width = spriteFrame.getRect().width;
+            this.sprite.node.height = spriteFrame.getRect().height;
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
-            this.mat.setProperty('textureSizeWidth',this.sprite.node.width*this.sprite.node.scaleX);
-            this.mat.setProperty('textureSizeHeight',this.sprite.node.height*this.sprite.node.scaleY);
+            this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.node.scaleX);
+            this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.node.scaleY);
             this.highLight(false);
         }
         this.itemDialog.refreshDialog(this.data);
@@ -86,6 +86,7 @@ export default class Item extends cc.Component {
         if (!this.data.isTaken && this.anim) {
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
+            AudioPlayer.play(AudioPlayer.PICK_ITEM);
             if (this.data.canSave < 1) {
                 Item.userIt(this.data, player);
             } else {
@@ -112,7 +113,7 @@ export default class Item extends cc.Component {
     static userIt(data: ItemData, player: Player) {
         let from = FromData.getClone(data.nameCn, data.resName);
         if (data.resName != Item.EMPTY && data.canSave) {
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_ITEM } });
+            AudioPlayer.play(AudioPlayer.PICK_ITEM);
         }
         switch (data.resName) {
             case Item.HEART: player.addStatus(StatusManager.HEALING, from); break;

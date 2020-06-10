@@ -8,6 +8,7 @@ import TalentTree from "./UI/TalentTree";
 import CutScene from "./UI/CutScene";
 import EquipmentStringData from "./Data/EquipmentStringData";
 import { EventHelper } from "./EventHelper";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -73,6 +74,7 @@ export default class Loading extends cc.Component {
         } else if (this.magicTree.node.active) {
             this.magicTree.talentClick();
         }
+        AudioPlayer.play(AudioPlayer.SELECT);
     }
 
     showTalentPick() {

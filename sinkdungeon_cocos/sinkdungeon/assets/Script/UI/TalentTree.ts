@@ -3,6 +3,7 @@ import Talent from "../Talent/Talent";
 import TalentData from "../Data/TalentData";
 import Logic from "../Logic";
 import { EventHelper } from "../EventHelper";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -139,6 +140,7 @@ export default class TalentTree extends cc.Component {
                     if(this.selectIcon)this.selectIcon.node.color = cc.color(51, 51, 51);
                     this.selectIcon = node.getComponent(TalentIcon);
                     node.color = cc.color(255, 255, 255);
+                    AudioPlayer.play(AudioPlayer.SELECT);
                     cc.director.emit(EventHelper.TALENT_TREE_SELECT);
                 }
             }, this);

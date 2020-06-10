@@ -114,6 +114,7 @@ CCProgram fs %{
     {
         curr_color = outlineColor;
     }
-    gl_FragColor = v_color * curr_color;
+    gl_FragColor = curr_color;
+    // gl_FragColor = v_color * curr_color;
   }
 }%
