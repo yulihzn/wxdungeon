@@ -79,8 +79,6 @@ export default class Chest extends Building {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         let action = cc.sequence(cc.moveTo(0.1, 5, 16)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
-            , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
-            , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 0, 0), cc.callFunc(() => {
                 this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
                 if (this.node.parent) {
