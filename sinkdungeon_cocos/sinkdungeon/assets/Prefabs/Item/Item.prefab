@@ -1381,8 +1381,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 96,
-      "height": 96
+      "width": 32,
+      "height": 32
     },
     "_id": ""
   },
