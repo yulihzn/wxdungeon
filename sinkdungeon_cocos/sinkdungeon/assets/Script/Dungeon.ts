@@ -336,7 +336,16 @@ export default class Dungeon extends cc.Component {
                     chest.parent = this.node;
                     let c = chest.getComponent(Chest)
                     c.setPos(cc.v3(i, j));
-                    c.setQuality(Logic.getRandomNum(1, 3), false);
+                    let rand = Random.rand();
+                    let quality = 1;
+                    if(rand>0.5&&rand<0.7){
+                        quality = 2;
+                    }else if(rand>0.7&&rand<0.8){
+                        quality = 3;
+                    }else if(rand>0.8&&rand<0.85){
+                        quality = 4;
+                    }
+                    c.setQuality(quality, false);
                     let currchests = Logic.mapManager.getCurrentMapChests();
                     if (currchests) {
                         for (let tempchest of currchests) {

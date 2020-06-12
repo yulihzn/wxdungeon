@@ -396,17 +396,21 @@ export default class EquipmentManager extends cc.Component {
     getRandomQuality(min: number, max: number, chestQuality: number): cc.Vec3 {
         let per = (max - min) / 5;
         let quality = Random.rand();
-        //箱子出来的物品有10%的几率生成和箱子属性相关的优质属性
-        if (chestQuality && quality > 0.9) {
+        //箱子出来的物品属性挂钩相关的优质属性
+        if (chestQuality > 0) {
             switch (chestQuality) {
-                case 1: quality = Random.rand() > 0.2 ? 0.04 : 0.5; break;
-                case 2: quality = Random.rand() > 0.2 ? 0.06 : 0.08; break;
-                case 3: quality = Random.rand() > 0.2 ? 0.086 : 0.09; break;
+                case 1: quality = Random.rand() > 0.2 ? 0.06 : 0.04; break;
+                case 2: quality = Random.rand() > 0.2 ? 0.08 : 0.06; break;
+                case 3: quality = Random.rand() > 0.2 ? 0.086 : 0.08; break;
+                case 4: quality = Random.rand() > 0.2 ? 0.09 : 0.086; break;
             }
         }
         let data = cc.v3(0, 0);
         if (quality < 0.05) {
             data.x = Logic.getRandomNum(0, per);
+            if(per>5&&data.x<5){
+                data.x = 5;
+            }
             data.y = 1;
         } else if (quality >= 0.05 && quality < 0.075) {
             data.x = Logic.getRandomNum(per, per * 2);
@@ -503,13 +507,13 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfoBase(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
-        info += data.Common.remoteDamage + desc.remoteDamage == 0 ? `` : `远程伤害${data.Common.remoteDamage}${desc.remoteDamage == 0 ? '' : '+' + desc.remoteDamage}\n`;
-        info += data.Common.remoteCritRate + desc.remoteCritRate == 0 ? `` : `远程暴击率${data.Common.remoteCritRate}${desc.remoteCritRate == 0 ? '' : '+' + desc.remoteCritRate}\n`;
-        info += data.Common.remoteSpeed + desc.remoteSpeed == 0 ? `` : `远程攻速${data.Common.remoteSpeed}${desc.remoteSpeed == 0 ? '' : '+' + desc.remoteSpeed}\n`;
-        info += data.Common.damageMin + desc.damageMin == 0 ? `` : `攻击${data.Common.damageMin}${desc.damageMin == 0 ? '' : '+' + desc.damageMin} 最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n`;
-        info += data.Common.damageMin + desc.damageMin == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax}${desc.damageMax == 0 ? '' : '+' + desc.damageMax}\n` : ``
-        info += data.Common.defence + desc.defence == 0 ? `` : `防御${data.Common.defence}${desc.defence == 0 ? '' : '+' + desc.defence}\n`;
-        info += data.Common.maxHealth + desc.health == 0 ? `` : `生命${data.Common.maxHealth}${desc.health == 0 ? '' : '+' + desc.health}\n`;
+        info += data.Common.remoteDamage + desc.remoteDamage == 0 ? `` : `远程伤害${data.Common.remoteDamage + desc.remoteDamage}\n`;
+        info += data.Common.remoteCritRate + desc.remoteCritRate == 0 ? `` : `远程暴击率${data.Common.remoteCritRate + desc.remoteCritRate}\n`;
+        info += data.Common.remoteSpeed + desc.remoteSpeed == 0 ? `` : `远程攻速${data.Common.remoteSpeed + desc.remoteSpeed}\n`;
+        info += data.Common.damageMin + desc.damageMin == 0 ? `` : `攻击${data.Common.damageMin + desc.damageMin} 最大攻击力${data.Common.damageMax + desc.damageMax}\n`;
+        info += data.Common.damageMin + desc.damageMin == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax + desc.damageMax}\n` : ``
+        info += data.Common.defence + desc.defence == 0 ? `` : `防御${data.Common.defence + desc.defence}\n`;
+        info += data.Common.maxHealth + desc.health == 0 ? `` : `生命${data.Common.maxHealth + desc.health}\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }
@@ -518,12 +522,12 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfo1(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
-        info += data.Common.criticalStrikeRate + desc.criticalStrikeRate == 0 ? `` : `暴击${data.Common.criticalStrikeRate}${desc.criticalStrikeRate == 0 ? '' : '+' + desc.criticalStrikeRate}%\n`;
-        info += data.Common.lifeDrain + desc.lifeDrain == 0 ? `` : `吸血${data.Common.lifeDrain}${desc.lifeDrain == 0 ? '' : '+' + desc.lifeDrain}%\n`;
-        info += data.Common.damageBack + desc.damageBack == 0 ? `` : `背刺${data.Common.damageBack}${desc.damageBack == 0 ? '' : '+' + desc.damageBack}\n`;
-        info += data.Common.moveSpeed + desc.moveSpeed == 0 ? `` : `移速${data.Common.moveSpeed}${desc.moveSpeed == 0 ? '' : '+' + desc.moveSpeed}\n`;
-        info += data.Common.attackSpeed + desc.attackSpeed == 0 ? `` : `攻速${data.Common.attackSpeed}${desc.attackSpeed == 0 ? '' : '+' + desc.attackSpeed}\n`;
-        info += data.Common.dodge + desc.dodge == 0 ? `` : `闪避${data.Common.dodge}${desc.dodge == 0 ? '' : '+' + desc.dodge}%\n`;
+        info += data.Common.criticalStrikeRate + desc.criticalStrikeRate == 0 ? `` : `暴击${data.Common.criticalStrikeRate + desc.criticalStrikeRate}%\n`;
+        info += data.Common.lifeDrain + desc.lifeDrain == 0 ? `` : `吸血${data.Common.lifeDrain + desc.lifeDrain}%\n`;
+        info += data.Common.damageBack + desc.damageBack == 0 ? `` : `背刺${data.Common.damageBack + desc.damageBack}\n`;
+        info += data.Common.moveSpeed + desc.moveSpeed == 0 ? `` : `移速${data.Common.moveSpeed + desc.moveSpeed}\n`;
+        info += data.Common.attackSpeed + desc.attackSpeed == 0 ? `` : `攻速${data.Common.attackSpeed + desc.attackSpeed}\n`;
+        info += data.Common.dodge + desc.dodge == 0 ? `` : `闪避${data.Common.dodge + desc.dodge}%\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }
@@ -533,18 +537,18 @@ export default class EquipmentManager extends cc.Component {
     getEquipmentInfo2(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
         info += data.isReflect == 0 ? `` : `反弹子弹\n`;
-        info += data.Common.realDamage + desc.realDamage == 0 ? `` : `攻击附加${data.Common.realDamage}${desc.realDamage == 0 ? '' : '+' + desc.realDamage}点流血伤害\n`;
-        info += data.Common.realRate + desc.realRate == 0 ? `` : `攻击有${data.Common.realRate}${desc.realRate == 0 ? '' : '+' + desc.realRate}%几率释放流血\n`;
-        info += data.Common.iceDamage + desc.iceDamage == 0 ? `` : `攻击附加${data.Common.iceDamage}${desc.iceDamage == 0 ? '' : '+' + desc.iceDamage}点冰伤害\n`;
-        info += data.Common.iceRate + desc.iceRate == 0 ? `` : `攻击有${data.Common.iceRate}${desc.iceRate == 0 ? '' : '+' + desc.iceRate}%几率释放冰冻\n`;
-        info += data.Common.fireDamage + desc.fireDamage == 0 ? `` : `攻击附加${data.Common.fireDamage}${desc.fireDamage == 0 ? '' : '+' + desc.fireDamage}点火伤害\n`;
-        info += data.Common.fireRate + desc.fireRate == 0 ? `` : `攻击有${data.Common.fireRate}${desc.fireRate == 0 ? '' : '+' + desc.fireRate}%几率释放燃烧\n`;
-        info += data.Common.lighteningDamage + desc.lighteningDamage == 0 ? `` : `攻击附加${data.Common.lighteningDamage}${desc.lighteningDamage == 0 ? '' : '+' + desc.lighteningDamage}点雷伤害\n`;
-        info += data.Common.lighteningRate + desc.lighteningRate == 0 ? `` : `攻击有${data.Common.lighteningRate}${desc.lighteningRate == 0 ? '' : '+' + desc.lighteningRate}%几率释放闪电\n`;
-        info += data.Common.toxicDamage + desc.toxicDamage == 0 ? `` : `攻击附加${data.Common.toxicDamage}${desc.toxicDamage == 0 ? '' : '+' + desc.toxicDamage}点毒伤害\n`;
-        info += data.Common.toxicRate + desc.toxicRate == 0 ? `` : `毒攻击有${data.Common.toxicRate}${desc.toxicRate == 0 ? '' : '+' + desc.toxicRate}%几率释放毒素\n`;
-        info += data.Common.curseDamage + desc.curseDamage == 0 ? `` : `攻击附加 ${data.Common.curseDamage}${desc.curseDamage == 0 ? '' : '+' + desc.curseDamage}点诅咒伤害\n`;
-        info += data.Common.curseRate + desc.curseRate == 0 ? `` : `攻击有${data.Common.curseRate}${desc.curseRate == 0 ? '' : '+' + desc.curseRate}%几率释放诅咒\n`;
+        info += data.Common.realDamage + desc.realDamage == 0 ? `` : `攻击附加${data.Common.realDamage + desc.realDamage}点流血伤害\n`;
+        info += data.Common.realRate + desc.realRate == 0 ? `` : `攻击有${data.Common.realRate + desc.realRate}%几率释放流血\n`;
+        info += data.Common.iceDamage + desc.iceDamage == 0 ? `` : `攻击附加${data.Common.iceDamage + desc.iceDamage}点冰伤害\n`;
+        info += data.Common.iceRate + desc.iceRate == 0 ? `` : `攻击有${data.Common.iceRate + desc.iceRate}%几率释放冰冻\n`;
+        info += data.Common.fireDamage + desc.fireDamage == 0 ? `` : `攻击附加${data.Common.fireDamage + desc.fireDamage}点火伤害\n`;
+        info += data.Common.fireRate + desc.fireRate == 0 ? `` : `攻击有${data.Common.fireRate + desc.fireRate}%几率释放燃烧\n`;
+        info += data.Common.lighteningDamage + desc.lighteningDamage == 0 ? `` : `攻击附加${data.Common.lighteningDamage + desc.lighteningDamage}点雷伤害\n`;
+        info += data.Common.lighteningRate + desc.lighteningRate == 0 ? `` : `攻击有${data.Common.lighteningRate + desc.lighteningRate}%几率释放闪电\n`;
+        info += data.Common.toxicDamage + desc.toxicDamage == 0 ? `` : `攻击附加${data.Common.toxicDamage+ desc.toxicDamage}点毒伤害\n`;
+        info += data.Common.toxicRate + desc.toxicRate == 0 ? `` : `毒攻击有${data.Common.toxicRate + desc.toxicRate}%几率释放毒素\n`;
+        info += data.Common.curseDamage + desc.curseDamage == 0 ? `` : `攻击附加 ${data.Common.curseDamage + desc.curseDamage}点诅咒伤害\n`;
+        info += data.Common.curseRate + desc.curseRate == 0 ? `` : `攻击有${data.Common.curseRate + desc.curseRate}%几率释放诅咒\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }
@@ -553,11 +557,11 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfo3(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
-        info += data.Common.iceDefence + desc.iceDefence == 0 ? `` : `冰抗性${data.Common.iceDefence}${desc.iceDefence == 0 ? '' : '+' + desc.iceDefence}%\n`;
-        info += data.Common.fireDefence + desc.fireDefence == 0 ? `` : `火抗性${data.Common.fireDefence}${desc.fireDefence == 0 ? '' : '+' + desc.fireDefence}%\n`;
-        info += data.Common.lighteningDefence + desc.lighteningDefence == 0 ? `` : `雷抗性${data.Common.lighteningDefence}${desc.lighteningDefence == 0 ? '' : '+' + desc.lighteningDefence}%\n`;
-        info += data.Common.toxicDefence + desc.toxicDefence == 0 ? `` : `毒抗性${data.Common.toxicDefence}${desc.toxicDefence == 0 ? '' : '+' + desc.toxicDefence}%\n`;
-        info += data.Common.curseDefence + desc.curseDefence == 0 ? `` : `诅咒抗性${data.Common.curseDefence}${desc.curseDefence == 0 ? '' : '+' + desc.curseDefence}%\n`;
+        info += data.Common.iceDefence + desc.iceDefence == 0 ? `` : `冰抗性${data.Common.iceDefence + desc.iceDefence}%\n`;
+        info += data.Common.fireDefence + desc.fireDefence == 0 ? `` : `火抗性${data.Common.fireDefence + desc.fireDefence}%\n`;
+        info += data.Common.lighteningDefence + desc.lighteningDefence == 0 ? `` : `雷抗性${data.Common.lighteningDefence + desc.lighteningDefence}%\n`;
+        info += data.Common.toxicDefence + desc.toxicDefence == 0 ? `` : `毒抗性${data.Common.toxicDefence + desc.toxicDefence}%\n`;
+        info += data.Common.curseDefence + desc.curseDefence == 0 ? `` : `诅咒抗性${data.Common.curseDefence + desc.curseDefence}%\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }

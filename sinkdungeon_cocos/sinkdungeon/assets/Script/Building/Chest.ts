@@ -54,6 +54,7 @@ export default class Chest extends Building {
             case 1: name1 = 'chest001'; name2 = 'chestopen001'; break;
             case 2: name1 = 'chest003'; name2 = 'chestopen003'; break;
             case 3: name1 = 'chest002'; name2 = 'chestopen002'; break;
+            case 4: name1 = 'chest002'; name2 = 'chestopen002'; break;
         }
         let openFrame = Logic.spriteFrames[name1];
         let closeFrame = Logic.spriteFrames[name2];
@@ -84,25 +85,18 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        if (Logic.level < 1 && Logic.mapManager.getCurrentRoomType() != RoomType.TEST_ROOM) {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CHICKEN, this.data.pos, null, this.data.quality);
-                            dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_TOXICDAGGER, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
-                        } else {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);
-                            dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
-                            if(Logic.getHalfChance()){
-                                cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
-                            }
-                        }
+                        dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
                     }
                 }
             }));
