@@ -32,6 +32,7 @@ import Saw from "./Building/Saw";
 import AudioPlayer from "./Utils/AudioPlayer";
 import Decorate from "./Building/Decorate";
 import RoomType from "./Rect/RoomType";
+import MagicLightening from "./Building/MagicLightening";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,6 +56,8 @@ export default class Dungeon extends cc.Component {
     trap: cc.Prefab = null;
     @property(cc.Prefab)
     fallStone: cc.Prefab = null;
+    @property(cc.Prefab)
+    lighteningFall: cc.Prefab = null;
     @property(cc.Prefab)
     emplacement: cc.Prefab = null;
     @property(cc.Prefab)
@@ -144,6 +147,9 @@ export default class Dungeon extends cc.Component {
         cc.director.on(EventHelper.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
         })
+        EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,(detail)=>{
+            this.addLighteningFall(detail.pos, false,detail.needPrepare,detail.showArea);
+        })
         cc.director.on(EventHelper.DUNGEON_SHAKEONCE, (event) => {
             if (this.anim) {
                 this.anim.play('DungeonShakeOnce');
@@ -184,7 +190,6 @@ export default class Dungeon extends cc.Component {
         this.fog.scale = 1.2;
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         Logic.changeDungeonSize();
-        
         this.dungeonStyleManager.addDecorations();
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
@@ -267,6 +272,10 @@ export default class Dungeon extends cc.Component {
                 //生成落石
                 if (mapData[i][j] == 'F0') {
                     this.addFallStone(Dungeon.getPosInMap(cc.v3(i, j)), false);
+                }
+                //生成落雷
+                if (mapData[i][j] == 'F1') {
+                    this.addLighteningFall(Dungeon.getPosInMap(cc.v3(i, j)),false, true,true);
                 }
                 //生成装饰
                 if (this.isThe(mapData[i][j], '+')) {
@@ -654,6 +663,7 @@ export default class Dungeon extends cc.Component {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
+
     addItem(pos: cc.Vec3, resName: string, shopTable?: ShopTable) {
         if (!this.item) {
             return;
@@ -692,6 +702,22 @@ export default class Dungeon extends cc.Component {
             stoneScript.fall(withFire);
         }
 
+    }
+    /**落雷 */
+    addLighteningFall(pos: cc.Vec3,isAuto: boolean,needPrepare: boolean, showArea: boolean) {
+        if (!this.lighteningFall) {
+            return;
+        }
+        let fall = cc.instantiate(this.lighteningFall);
+        let fallScript = fall.getComponent(MagicLightening);
+        fall.parent = this.node;
+        fall.position = pos;
+        let indexpos = Dungeon.getIndexInMap(pos);
+        fall.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        fallScript.isAuto = isAuto;
+        if(fallScript.isAuto){
+            fallScript.fall(needPrepare,showArea);
+        }
     }
     private addVenom(pos: cc.Vec3) {
         let venom = cc.instantiate(this.venom);

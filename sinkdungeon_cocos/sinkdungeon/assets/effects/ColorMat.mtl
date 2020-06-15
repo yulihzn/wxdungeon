@@ -1,6 +1,6 @@
 {
   "__type__": "cc.Material",
-  "_name": "New Material",
+  "_name": "ColorMat",
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
@@ -11,6 +11,15 @@
     "0": {
       "defines": {
         "USE_TEXTURE": true
+      },
+      "props": {
+        "addColor": {
+          "__type__": "cc.Color",
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 255
+        }
       }
     }
   }

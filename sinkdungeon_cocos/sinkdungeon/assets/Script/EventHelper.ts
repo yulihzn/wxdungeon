@@ -36,6 +36,7 @@ export class EventHelper extends cc.Component{
     public static readonly DUNGEON_ADD_COIN = 'DUNGEON_ADD_COIN';
     public static readonly DUNGEON_ADD_OILGOLD = 'DUNGEON_ADD_OILGOLD';
     public static readonly DUNGEON_ADD_FALLSTONE = 'DUNGEON_ADD_FALLSTONE';
+    public static readonly DUNGEON_ADD_LIGHTENINGFALL = 'DUNGEON_ADD_LIGHTENINGFALL';
     public static readonly MONSTER_STATUSUPDATE = 'MONSTER_STATUSUPDATE';
     public static readonly BOSS_ADDSLIME = 'BOSS_ADDSLIME';
     public static readonly HUD_UPDATE_PLAYER_INFODIALOG = 'HUD_UPDATE_PLAYER_INFO_DIALOG';

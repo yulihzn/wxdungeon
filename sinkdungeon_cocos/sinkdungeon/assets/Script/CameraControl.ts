@@ -18,7 +18,7 @@ export default class CameraControl extends cc.Component {
 
     @property(Dungeon)
     dungeon: Dungeon = null;
-
+    
     camera:cc.Camera;
     isShaking = false;
     isHeavyShaking = false;

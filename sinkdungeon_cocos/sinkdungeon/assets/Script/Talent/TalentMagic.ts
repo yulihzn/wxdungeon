@@ -30,7 +30,7 @@ export default class TalentMagic extends Talent {
     @property(cc.Prefab)
     fireGhost: cc.Prefab = null;
     @property(cc.Node)
-    magicLightening: cc.Node = null;
+    magicLighteningCircle: cc.Node = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
     onLoad() {
@@ -51,7 +51,7 @@ export default class TalentMagic extends Talent {
         }
     }
     init() {
-        this.magicLightening.opacity = 0;
+        this.magicLighteningCircle.opacity = 0;
         super.init();
         this.scheduleOnce(() => {
             if (this.hashTalent(Talent.MAGIC_07)) {
@@ -64,7 +64,7 @@ export default class TalentMagic extends Talent {
                 this.initFireGhosts();
             }
             if (this.hashTalent(TalentMagic.MAGIC_16)) {
-                this.showLightening();
+                this.showLighteningCircle();
             }
         }, 0.2)
     }
@@ -103,9 +103,9 @@ export default class TalentMagic extends Talent {
         } else if (this.hashTalent(Talent.MAGIC_11)) {
             this.shoot(this.player.shooterEx, this.hashTalent(Talent.MAGIC_06) ? 'bullet136' : 'bullet036');
         } else if (this.hashTalent(Talent.MAGIC_15)) {
-            this.showMagicBall(MagicBall.LIGHTENING, true);
+            this.addLighteningFall(true);
         } else if (this.hashTalent(Talent.MAGIC_14)) {
-            this.showMagicBall(MagicBall.LIGHTENING, false);
+            this.addLighteningFall(false);
         } else if (this.hashTalent(Talent.MAGIC_01)) {
             this.shoot(this.player.shooterEx, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
         }
@@ -141,13 +141,42 @@ export default class TalentMagic extends Talent {
     takeDamage(damageData: DamageData, actor?: Actor) {
 
     }
-    showLightening() {
-        this.magicLightening.opacity = 128;
-        this.magicLightening.scale = 1;
-        this.magicLightening.runAction(cc.sequence(cc.scaleTo(1, 10), cc.callFunc(() => {
+    addLighteningFall(showArea:boolean){
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,{pos:this.getNearestEnemy(),showArea:showArea,needPrepare:false})
+    }
+    getNearestEnemy():cc.Vec3{
+        let shortdis = 99999;
+        let targetNode:cc.Node;
+        for (let monster of this.player.meleeWeapon.dungeon.monsters) {
+            if (!monster.isDied) {
+                let dis = Logic.getDistance(this.node.position, monster.node.position);
+                if(dis<shortdis){
+                    shortdis = dis;
+                    targetNode = monster.node;
+                }
+            }
+        }
+        for (let boss of this.player.meleeWeapon.dungeon.bosses) {
+            if (!boss.isDied) {
+                let dis = Logic.getDistance(this.node.position, boss.node.position);
+                if(dis<shortdis){
+                    shortdis = dis;
+                    targetNode = boss.node;
+                }
+            }
+        }
+        if(targetNode){
+            return targetNode.position;
+        }
+        return this.node.position;
+    }
+    showLighteningCircle() {
+        this.magicLighteningCircle.opacity = 128;
+        this.magicLighteningCircle.scale = 1;
+        this.magicLighteningCircle.runAction(cc.sequence(cc.scaleTo(1, 10), cc.callFunc(() => {
             this.addStatus2NearEnemy(StatusManager.DIZZ, 300);
-            this.magicLightening.opacity = 0;
-            this.magicLightening.scale = 1;
+            this.magicLighteningCircle.opacity = 0;
+            this.magicLighteningCircle.scale = 1;
         })));
     }
     initFireGhosts() {

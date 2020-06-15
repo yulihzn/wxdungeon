@@ -1,0 +1,26 @@
+{
+  "__type__": "cc.Material",
+  "_name": "FogMat",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "e8a66f7b-df62-4d31-93fb-6f76d3038f9b"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "props": {
+        "radius": 0.5,
+        "center": {
+          "__type__": "cc.Vec2",
+          "x": 0.5,
+          "y": 0.5
+        },
+        "wh_ratio": 1
+      },
+      "defines": {
+        "USE_TEXTURE": true
+      }
+    }
+  }
+}

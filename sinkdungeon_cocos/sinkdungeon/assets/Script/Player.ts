@@ -139,6 +139,7 @@ export default class Player extends Actor {
         this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footleft', 'shoes']);
         this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs', 'footright', 'shoes']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
+        // this.addFog();
         cc.director.on(EventHelper.PLAYER_TRIGGER
             , (event) => { this.triggerThings() });
         cc.director.on(EventHelper.PLAYER_USEITEM
@@ -242,7 +243,13 @@ export default class Player extends Actor {
         //     this.glovesLeftSprite.setState(0);
         // }
     }
-
+    private addFog() {
+        let fogSprite = this.node.getChildByName('fog');
+        let mat = fogSprite.getComponent(cc.Sprite).getMaterial(0);
+        mat.setProperty('wh_ratio',fogSprite.width/fogSprite.height);
+        mat.setProperty('center',cc.v2(0.5,0.5));
+        mat.setProperty('radius',0.5);
+    }
 
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
@@ -328,7 +335,7 @@ export default class Player extends Actor {
                 let color2 = cc.color(255, 255, 255).fromHEX(this.inventoryManager.weapon.lightcolor);
                 this.weaponSprite.node.color = color1;
                 this.weaponLightSprite.node.color = color2;
-                this.weaponStabSprite.node.color = color2;
+                this.weaponStabSprite.node.color = color1;
                 this.weaponStabLightSprite.node.color = color2;
                 break;
             case 'remote': this.shooter.data = equipData.clone();

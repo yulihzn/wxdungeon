@@ -121,6 +121,7 @@ export default class Monster extends Actor {
         if (this.isVariation) {
             let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
             this.node.scale = Monster.SCALE_NUM * scaleNum;
+            this.node.getChildByName('fog').color = cc.color(128,0,128);
         }
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
