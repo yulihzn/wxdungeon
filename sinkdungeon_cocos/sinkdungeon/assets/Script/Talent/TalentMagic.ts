@@ -1,12 +1,7 @@
 import { EventHelper } from "../EventHelper";
 import Talent from "./Talent";
-import DashShadow from "../Item/DashShadow";
-import Player from "../Player";
 import DamageData from "../Data/DamageData";
-import Monster from "../Monster";
-import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
-import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Shooter from "../Shooter";
 import MagicCircle from "./MagicCircle";
@@ -87,7 +82,7 @@ export default class TalentMagic extends Talent {
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
             this.magiccircle.talentMaigc = this;
-            this.magiccircle.playMagic(this.hashTalent(Talent.MAGIC_03) ? 2 : 1);
+            this.magiccircle.playMagic(this.hashTalent(Talent.MAGIC_03) ? 4 : 2);
             // cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3 } });
         }, cooldown, true);
@@ -99,15 +94,19 @@ export default class TalentMagic extends Talent {
         } else if (this.hashTalent(Talent.MAGIC_08)) {
             this.showMagicBall(MagicBall.FIRE, false);
         } else if (this.hashTalent(Talent.MAGIC_12)) {
-            this.shoot(this.player.shooterEx, this.hashTalent(Talent.MAGIC_06) ? 'bullet137' : 'bullet037');
+            this.shoot(this.player.shooterEx,0, this.hashTalent(Talent.MAGIC_06) ? 'bullet137' : 'bullet037');
         } else if (this.hashTalent(Talent.MAGIC_11)) {
-            this.shoot(this.player.shooterEx, this.hashTalent(Talent.MAGIC_06) ? 'bullet136' : 'bullet036');
+            this.shoot(this.player.shooterEx,0,this.hashTalent(Talent.MAGIC_06) ? 'bullet136' : 'bullet036');
         } else if (this.hashTalent(Talent.MAGIC_15)) {
-            this.addLighteningFall(true);
+            this.schedule(()=>{
+                this.addLighteningFall(this.hashTalent(Talent.MAGIC_06),8);
+            },0.2,this.hashTalent(Talent.MAGIC_02)?1:0);
         } else if (this.hashTalent(Talent.MAGIC_14)) {
-            this.addLighteningFall(false);
+            this.schedule(()=>{
+                this.addLighteningFall(this.hashTalent(Talent.MAGIC_06),5);
+            },0.2,this.hashTalent(Talent.MAGIC_02)?1:0);
         } else if (this.hashTalent(Talent.MAGIC_01)) {
-            this.shoot(this.player.shooterEx, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
+            this.shoot(this.player.shooterEx,80, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
         }
     }
     showMagicBall(ballType: number, isBig: boolean) {
@@ -117,11 +116,11 @@ export default class TalentMagic extends Talent {
             cc.instantiate(this.magicball).getComponent(MagicBall).show(this.player, ballType, isBig, -30);
         }
     }
-    private shoot(shooter: Shooter, bulletType: string) {
+    private shoot(shooter: Shooter,bulletArcExNum:number, bulletType: string) {
         shooter.data.bulletType = bulletType;
-        shooter.data.bulletArcExNum = 0;
+        shooter.data.bulletArcExNum = bulletArcExNum;
         if (this.hashTalent(Talent.MAGIC_02)) {
-            shooter.data.bulletArcExNum = 2;
+            shooter.data.bulletArcExNum = bulletArcExNum==80?99:2;
         }
         shooter.data.bulletLineExNum = 0;
         shooter.fireBullet(0);
@@ -141,10 +140,10 @@ export default class TalentMagic extends Talent {
     takeDamage(damageData: DamageData, actor?: Actor) {
 
     }
-    addLighteningFall(showArea:boolean){
-        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,{pos:this.getNearestEnemy(),showArea:showArea,needPrepare:false})
+    addLighteningFall(isArea:boolean,damagePoint:number){
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,{pos:this.getNearestEnemyPosition(),showArea:isArea,damage:damagePoint})
     }
-    getNearestEnemy():cc.Vec3{
+    getNearestEnemyPosition():cc.Vec3{
         let shortdis = 99999;
         let targetNode:cc.Node;
         for (let monster of this.player.meleeWeapon.dungeon.monsters) {
@@ -168,7 +167,7 @@ export default class TalentMagic extends Talent {
         if(targetNode){
             return targetNode.position;
         }
-        return this.node.position;
+        return this.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300,Logic.getRandomNum(0, 600) - 300));
     }
     showLighteningCircle() {
         this.magicLighteningCircle.opacity = 128;

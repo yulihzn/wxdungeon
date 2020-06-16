@@ -633,43 +633,45 @@
         }
     },
     "bullet035": {
-        "name":"元素飞弹",
+        "name":"元素飞弹(技能)",
         "resName": "bullet035",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
-        "speed": 1000,
+        "speed": 150,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
         "isPhysical":0,
         "isDecelerate":0,
-        "isTracking":0,
-        "size": 5,
+        "isTracking":1,
+        "delaytrack":1,
+        "size": 1,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 3
+            "physicalDamage": 1
         }
     },
     "bullet135": {
-        "name":"强力元素飞弹",
+        "name":"强力元素飞弹(技能)",
         "resName": "bullet035",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
-        "speed": 1500,
+        "speed": 200,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
         "isPhysical":0,
         "isDecelerate":0,
-        "isTracking":0,
-        "size": 6,
+        "isTracking":1,
+        "delaytrack":1,
+        "size": 1.5,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 5
+            "physicalDamage": 2
         }
     },
     "bullet036": {
-        "name":"冰锥",
+        "name":"冰锥(技能)",
         "resName": "bullet036",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
@@ -685,11 +687,11 @@
         "statusType":"status001",
         "statusRate":100,
         "damage": {
-            "iceDamage": 3
+            "iceDamage": 5
         }
     },
     "bullet136": {
-        "name":"加强冰锥",
+        "name":"加强冰锥(技能)",
         "resName": "bullet036",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
@@ -705,11 +707,11 @@
         "statusType":"status001",
         "statusRate":100,
         "damage": {
-            "iceDamage": 5
+            "iceDamage": 8
         }
     },
     "bullet037": {
-        "name":"大冰锥",
+        "name":"大冰锥(技能)",
         "resName": "bullet037",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
@@ -725,11 +727,11 @@
         "statusType":"status027",
         "statusRate":100,
         "damage": {
-            "iceDamage": 4
+            "iceDamage": 9
         }
     },
     "bullet137": {
-        "name":"加强大冰锥",
+        "name":"加强大冰锥(技能)",
         "resName": "bullet037",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
@@ -745,7 +747,7 @@
         "statusType":"status027",
         "statusRate":100,
         "damage": {
-            "iceDamage": 5
+            "iceDamage": 12
         }
     },
     "bullet038": {

@@ -148,7 +148,7 @@ export default class Dungeon extends cc.Component {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,(detail)=>{
-            this.addLighteningFall(detail.pos, false,detail.needPrepare,detail.showArea);
+            this.addLighteningFall(detail.pos, false,false,detail.showArea,detail.damage);
         })
         cc.director.on(EventHelper.DUNGEON_SHAKEONCE, (event) => {
             if (this.anim) {
@@ -275,7 +275,7 @@ export default class Dungeon extends cc.Component {
                 }
                 //生成落雷
                 if (mapData[i][j] == 'F1') {
-                    this.addLighteningFall(Dungeon.getPosInMap(cc.v3(i, j)),false, true,true);
+                    this.addLighteningFall(Dungeon.getPosInMap(cc.v3(i, j)),true, true,true);
                 }
                 //生成装饰
                 if (this.isThe(mapData[i][j], '+')) {
@@ -704,7 +704,7 @@ export default class Dungeon extends cc.Component {
 
     }
     /**落雷 */
-    addLighteningFall(pos: cc.Vec3,isAuto: boolean,needPrepare: boolean, showArea: boolean) {
+    addLighteningFall(pos: cc.Vec3,isTrigger: boolean,needPrepare: boolean, showArea: boolean,damagePoint?:number) {
         if (!this.lighteningFall) {
             return;
         }
@@ -714,9 +714,9 @@ export default class Dungeon extends cc.Component {
         fall.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         fall.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
-        fallScript.isAuto = isAuto;
-        if(fallScript.isAuto){
-            fallScript.fall(needPrepare,showArea);
+        fallScript.isTrigger = isTrigger;
+        if(!fallScript.isTrigger){
+            fallScript.fall(needPrepare,showArea,damagePoint);
         }
     }
     private addVenom(pos: cc.Vec3) {

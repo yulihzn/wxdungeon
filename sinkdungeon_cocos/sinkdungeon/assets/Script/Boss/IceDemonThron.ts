@@ -30,6 +30,8 @@ export default class IceDemonThron extends cc.Component {
 
     onLoad() {
         this.isUp = false;
+        let mat:cc.MaterialVariant = this.node.getChildByName('thron').getComponent(cc.Sprite).getMaterial(0);
+        mat.setProperty('addColor',cc.color(194,255,255));
     }
     fall() {
         this.anim = this.getComponent(cc.Animation);
@@ -62,7 +64,7 @@ export default class IceDemonThron extends cc.Component {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
                 let from = FromData.getClone('冰刺','bossicethron02');
-                player.takeDamage(new DamageData(2),from);
+                player.takeDamage(new DamageData(3),from);
                 player.addStatus(StatusManager.FROZEN,from);
             }
             

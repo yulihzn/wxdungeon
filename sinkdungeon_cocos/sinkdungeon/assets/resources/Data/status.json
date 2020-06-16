@@ -262,7 +262,7 @@
         "desc": "",
         "duration": 999,
         "common": {
-            "realDamage": 2
+            "realDamage": 3
         }
     },
     "status024": {
@@ -273,7 +273,7 @@
         "desc": "",
         "duration": 999,
         "common": {
-            "realDamage": 2,
+            "realDamage": 5,
             "realRate":100
         }
     },

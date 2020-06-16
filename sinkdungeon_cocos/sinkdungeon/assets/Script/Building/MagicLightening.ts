@@ -24,32 +24,35 @@ export default class MagicLightening extends cc.Component {
     needPrepare = false;
     showArea = false;
     anim:cc.Animation;
-    isAuto = true;//是否自动下落
-    isFalling = false;//是否下落中
-    isAttacking = false;
+    isTrigger = true;//是否自动下落
+    isAttacked = false;//是否攻击过
+    damagePoint = 5;
     onLoad () {
     }
 
     start() {
     }
-    fall(needPrepare:boolean,showArea:boolean) {
+    fall(needPrepare:boolean,showArea:boolean,damagePoint?:number) {
+        if(damagePoint&&damagePoint>0){
+            this.damagePoint = damagePoint;
+        }
         this.needPrepare = needPrepare;
-        this.isAttacking = true;
-        this.isFalling = true;
+        this.isAttacked = false;
         let animName = 'LighteningFall';
         if(showArea){
             animName = 'LighteningFallArea';
         }
         if(needPrepare){
             animName = 'LighteningPrepareFall';
-            this.isAttacking = false;
+            this.isAttacked = true;
         }
         this.anim = this.getComponent(cc.Animation);
         this.anim.play(animName);
+        AudioPlayer.play(AudioPlayer.BOOM);
     }
     //Anim
     AnimBegin(){
-        this.isAttacking = true;
+        this.isAttacked = false;
     }
     //Anim
     AnimFinish(){
@@ -62,12 +65,13 @@ export default class MagicLightening extends cc.Component {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.getComponent(Player);
-        if(player && !this.isAuto && !this.isFalling){
+        if(player && this.isTrigger){
+            this.isTrigger = false;
             this.fall(true,true);
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
-        if (self.radius > 0&&this.isAttacking) {
+        if (self.radius > 0&&!this.isAttacked) {
             this.attacking(other.node);
         }
     }
@@ -77,26 +81,27 @@ export default class MagicLightening extends cc.Component {
         }
         let damage = new DamageData();
         let status = StatusManager.BURNING;
-        let d = 5;
-        damage.lighteningDamage = d;
+        damage.lighteningDamage = this.damagePoint;
         status = StatusManager.DIZZ;
         
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             monster.takeDamage(damage);
             monster.addStatus(status,new FromData());
-            this.isAttacking = false;
+            this.isAttacked = true;
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {
             boss.takeDamage(damage);
             boss.addStatus(status,new FromData());
-            this.isAttacking = false;
+            this.isAttacked = true;
         }
         let player = attackTarget.getComponent(Player);
         if(player && !player.isDied && this.needPrepare){
-            player.takeDamage(damage,FromData.getClone('闪电','magiclighteningdown1'));
-            this.isAttacking = false;
+            let fd = FromData.getClone('闪电','magiclighteningdown1');
+            player.takeDamage(damage,fd);
+            player.addStatus(status,fd);
+            this.isAttacked = true;
         }
 
     }

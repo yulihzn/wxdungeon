@@ -187,11 +187,13 @@ export default class Player extends Actor {
         this.talentMagic = this.getComponent(TalentMagic);
         this.talentMagic.init();
         this.talentMagic.loadList(Logic.talentList);
+        // this.talentMagic.addTalent(Talent.MAGIC_01);
         // this.talentMagic.addTalent(Talent.MAGIC_02);
         // this.talentMagic.addTalent(Talent.MAGIC_03);
         // this.talentMagic.addTalent(Talent.MAGIC_04);
         // this.talentMagic.addTalent(Talent.MAGIC_05);
         // this.talentMagic.addTalent(Talent.MAGIC_06);
+        // this.talentMagic.addTalent(Talent.MAGIC_11);
         // this.talentMagic.addTalent(Talent.MAGIC_10);
         // this.talentMagic.addTalent(Talent.MAGIC_14);
         // this.talentMagic.addTalent(Talent.MAGIC_15);
