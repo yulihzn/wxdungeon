@@ -37,8 +37,8 @@ export default class Logic extends cc.Component {
     static readonly CHAPTER03: number = 3;
     static readonly CHAPTER04: number = 4;
     static equipments: { [key: string]: EquipmentData } = null;
-    static equipmentNameList:string[] = [];
-    static itemNameList:string[] = [];
+    static equipmentNameList: string[] = [];
+    static itemNameList: string[] = [];
     //怪物json
     static monsters: { [key: string]: MonsterData } = null;
     //图片资源
@@ -56,7 +56,7 @@ export default class Logic extends cc.Component {
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
 
-    static talentList:TalentData[] = new Array();
+    static talentList: TalentData[] = new Array();
     static hasTalentMap: { [key: number]: boolean } = {};
     static isPickedTalent = false;
 
@@ -70,10 +70,10 @@ export default class Logic extends cc.Component {
     static isFirst = 0;
     static isCheatMode = false;//作弊
     static isDebug = false;//调试
-    static dieFrom:FromData = new FromData();
+    static dieFrom: FromData = new FromData();
     static isMapReset = false;
 
-    static profileManager:ProfileManager = new ProfileManager();
+    static profileManager: ProfileManager = new ProfileManager();
 
     onLoad() {
         //关闭调试
@@ -89,31 +89,32 @@ export default class Logic extends cc.Component {
         // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
         // cc.PhysicsManager.DrawBits.e_jointBit |
         // cc.PhysicsManager.DrawBits.e_shapeBit;
-        cc.director.on(EventHelper.LOADINGNEXTLEVEL, (event) => {
-            this.loadingNextLevel();
-        });
+        EventHelper.on(EventHelper.LOADINGNEXTLEVEL, (detail) => {
+            this.loadingNextLevel(detail.isBack);
+        })
+
         cc.director.on(EventHelper.LOADINGROOM, (event) => {
             this.loadingNextRoom(event.detail.dir);
         });
     }
 
     start() {
-       
+
     }
-    static saveData(){
+    static saveData() {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
         Logic.profileManager.saveData();
-        cc.sys.localStorage.setItem("coin",Logic.coins);
-        cc.sys.localStorage.setItem("oilgold",Logic.oilGolds);
+        cc.sys.localStorage.setItem("coin", Logic.coins);
+        cc.sys.localStorage.setItem("oilgold", Logic.oilGolds);
     }
-    static resetData(chapter?:number) {
+    static resetData(chapter?: number) {
         //重置时间
         Logic.time = '00:00:00';
         //加载章节名
-        Logic.profileManager.data.chapterIndex = chapter?chapter:Logic.profileManager.data.chapterIndex;
+        Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex;
         Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
         //加载关卡等级
         Logic.level = Logic.profileManager.data.level;
@@ -121,10 +122,10 @@ export default class Logic extends cc.Component {
         Logic.playerData = Logic.profileManager.data.playerData.clone();
         //加载装备
         Logic.inventoryManager = new InventoryManager();
-        for(let i =0;i<Logic.profileManager.data.playerEquipList.length;i++){
+        for (let i = 0; i < Logic.profileManager.data.playerEquipList.length; i++) {
             Logic.inventoryManager.list[i].valueCopy(Logic.profileManager.data.playerEquipList[i]);
         }
-        for(let i =0;i<Logic.profileManager.data.playerItemList.length;i++){
+        for (let i = 0; i < Logic.profileManager.data.playerItemList.length; i++) {
             Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i]);
         }
         //加载技能列表
@@ -149,16 +150,16 @@ export default class Logic extends cc.Component {
             Logic.hasTalentMap[t.id] = true;
         }
     }
-    static addTalent(id: number) :boolean{
+    static addTalent(id: number): boolean {
         let data = new TalentData();
         data.id = id;
         let hasit = false;
         for (let t of Logic.talentList) {
-            if(id == t.id){
+            if (id == t.id) {
                 hasit = true;
             }
         }
-        if(!hasit){
+        if (!hasit) {
             Logic.talentList.push(data);
             Logic.hasTalentMap[data.id] = true;
             Logic.isPickedTalent = true;
@@ -167,9 +168,9 @@ export default class Logic extends cc.Component {
         return false;
     }
     static hashTalent(id: number): boolean {
-        return Logic.hasTalentMap[id]&&Logic.hasTalentMap[id]==true;
+        return Logic.hasTalentMap[id] && Logic.hasTalentMap[id] == true;
     }
-    
+
     static changeDungeonSize() {
         let size = Logic.mapManager.getCurrentMapSize();
         if (size) {
@@ -188,40 +189,49 @@ export default class Logic extends cc.Component {
                 case 3: Logic.playerData.pos = cc.v3(0, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
             }
             cc.director.loadScene('loading');
-            
+
         }
     }
-    private loadingNextLevel() {
-        Logic.level++;
-        //层数读取章节关卡列表
-        if (Logic.level > Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length-1 && Logic.chapterIndex >= Logic.CHAPTER04) {
+    private loadingNextLevel(isBack: boolean) {
+        Logic.level += isBack ? -1 : 1;
+        let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
+        let chapterLength = Logic.worldLoader.getChapterLength();
+        //如果关卡为负数level为0直接返回
+        if(Logic.level<0){
+            Logic.level = 0;
+            return;
+        }
+        //如果关卡到底了判断是否是最后一章游戏完成
+        if (Logic.level > levelLength - 1 && Logic.chapterIndex >= chapterLength - 1) {
             Logic.profileManager.clearData();
-            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.SHOOT}});
-            cc.director.loadScene('gamefinish')
-        } else {
-            if(Logic.chapterIndex < Logic.CHAPTER04 && Logic.level > Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length-1){
-                Logic.profileManager.data.chapterIndex++;
-                Logic.chapterIndex++;
-                Logic.level = 1;
-            }
-            Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex,Logic.level));
-            Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
-            Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
-            
-            Logic.changeDungeonSize();
-            Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
-            Logic.isPickedTalent = false;
-            cc.director.loadScene('loading');
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
+            cc.director.loadScene('gamefinish');
+            return;
         }
+        if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1) {
+            Logic.profileManager.data.chapterIndex += isBack ? -1 : 1;
+            Logic.chapterIndex += isBack ? -1 : 1;
+            Logic.level = isBack ? Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length - 1 : 1;
+        }
+        
+        Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex, Logic.level));
+        Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
+        Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
+
+        Logic.changeDungeonSize();
+        Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
+        //返回上层不选择技能
+        Logic.isPickedTalent = isBack;
+        cc.director.loadScene('loading');
     }
-    
+
     static getRandomNum(min, max): number {//生成一个随机数从[min,max]
         return min + Math.round(Random.rand() * (max - min));
     }
     static getHalfChance(): boolean {
         return Random.rand() > 0.5;
     }
-    static getChance(rate:number):boolean{
+    static getChance(rate: number): boolean {
         return Logic.getRandomNum(0, 100) < rate;
     }
     static getDistance(v1, v2) {
@@ -232,15 +242,15 @@ export default class Logic extends cc.Component {
     static lerp(a, b, r) {
         return a + (b - a) * r;
     };
-    static genNonDuplicateID():string{
-        return Number(Random.rand().toString().substr(3,16) + Date.now()).toString(36);
-      }
+    static genNonDuplicateID(): string {
+        return Number(Random.rand().toString().substr(3, 16) + Date.now()).toString(36);
+    }
     /**随机装备名字 */
-    static getRandomEquipType():string{
-        return Logic.equipmentNameList[Random.getRandomNum(1,Logic.equipmentNameList.length-1)];
+    static getRandomEquipType(): string {
+        return Logic.equipmentNameList[Random.getRandomNum(1, Logic.equipmentNameList.length - 1)];
     }
     /**随机可拾取物品 */
-    static getRandomItemType():string{
-        return Logic.itemNameList[Random.getRandomNum(1,Logic.itemNameList.length-1)];
+    static getRandomItemType(): string {
+        return Logic.itemNameList[Random.getRandomNum(1, Logic.itemNameList.length - 1)];
     }
 }

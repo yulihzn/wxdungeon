@@ -209,6 +209,7 @@ export default class DungeonStyleManager extends cc.Component {
                 this.exitdoor = exit.getComponent(ExitDoor);
                 this.exitdoor.wall1 = walltop;
                 this.exitdoor.hideWall();
+                this.exitdoor.isBackToUpLevel = isStartRoom;
                 this.walltops.push(exit);
             }
         }

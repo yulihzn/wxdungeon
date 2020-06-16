@@ -1023,7 +1023,7 @@ export default class Dungeon extends cc.Component {
                 isClear = false;
             }
         }
-        //检查是否是测试房间，测试房间默认不关门,开始房间的出口暂时不开放
+        //检查是否是测试房间，测试房间默认不关门
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
             isClear = true;
         }
@@ -1031,9 +1031,11 @@ export default class Dungeon extends cc.Component {
             if (this.portal) {
                 this.portal.openGate();
             }
+            //第一层的开始房间出口不开放
+            let isZeroStartRoom = Logic.mapManager.getCurrentRoom().roomType.isEqual(RoomType.START_ROOM)&&Logic.level<1;
             if (this.dungeonStyleManager && this.dungeonStyleManager.exitdoor
                 && this.dungeonStyleManager.exitdoor
-                && Logic.mapManager.getCurrentRoom().roomType.isNotEqual(RoomType.START_ROOM)) {
+                && !isZeroStartRoom) {
                 this.dungeonStyleManager.changeTopWalls(true);
                 this.dungeonStyleManager.exitdoor.openGate();
             }

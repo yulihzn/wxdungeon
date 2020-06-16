@@ -131,6 +131,9 @@ export default class WorldLoader {
             }
         })
     }
+    getChapterLength():number{
+        return this.worldMap.length;
+    }
     getChapterData(chapterIndex:number):ChapterData{
         return this.worldMap[chapterIndex];
     }

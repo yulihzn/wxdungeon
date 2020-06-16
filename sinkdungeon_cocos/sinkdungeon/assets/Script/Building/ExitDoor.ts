@@ -25,6 +25,7 @@ export default class ExitDoor extends Building {
     bgSprite:cc.Sprite = null;
     closeSprite:cc.Sprite = null;
     openSprite:cc.Sprite = null;
+    isBackToUpLevel = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -81,7 +82,7 @@ export default class ExitDoor extends Building {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.saveData();
-                cc.director.emit(EventHelper.LOADINGNEXTLEVEL);
+                EventHelper.emit(EventHelper.LOADINGNEXTLEVEL,{isBack:this.isBackToUpLevel});
             }
         }
     }
