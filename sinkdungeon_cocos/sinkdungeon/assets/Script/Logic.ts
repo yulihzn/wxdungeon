@@ -209,9 +209,9 @@ export default class Logic extends cc.Component {
             return;
         }
         if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1) {
-            Logic.profileManager.data.chapterIndex += isBack ? -1 : 1;
-            Logic.chapterIndex += isBack ? -1 : 1;
-            Logic.level = isBack ? Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length - 1 : 1;
+            Logic.profileManager.data.chapterIndex++;
+            Logic.chapterIndex++;
+            Logic.level = 1;
         }
         
         Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex, Logic.level));
