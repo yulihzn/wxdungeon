@@ -193,7 +193,8 @@ export default class Logic extends cc.Component {
         }
     }
     private loadingNextLevel(isBack: boolean) {
-        Logic.level += isBack ? -1 : 1;
+        // Logic.level += isBack ? -1 : 1;//暂时不支持回退
+        Logic.level++;
         let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
         let chapterLength = Logic.worldLoader.getChapterLength();
         //如果关卡为负数level为0直接返回

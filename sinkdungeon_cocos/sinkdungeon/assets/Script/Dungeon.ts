@@ -1032,10 +1032,10 @@ export default class Dungeon extends cc.Component {
                 this.portal.openGate();
             }
             //第一层的开始房间出口不开放
-            let isZeroStartRoom = Logic.mapManager.getCurrentRoom().roomType.isEqual(RoomType.START_ROOM)&&Logic.level<1;
+            let isStartRoom = Logic.mapManager.getCurrentRoom().roomType.isEqual(RoomType.START_ROOM);
             if (this.dungeonStyleManager && this.dungeonStyleManager.exitdoor
                 && this.dungeonStyleManager.exitdoor
-                && !isZeroStartRoom) {
+                && !isStartRoom) {
                 this.dungeonStyleManager.changeTopWalls(true);
                 this.dungeonStyleManager.exitdoor.openGate();
             }
