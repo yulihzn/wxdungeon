@@ -48,7 +48,7 @@ export default class FireBall extends cc.Component {
             this.node.scale = 6;
         }
         let direction = this.getPlayerHv(player,exangle);
-        let angle = direction.signAngle(cc.v3(1,0));
+        let angle = direction.signAngle(cc.v3(-1,0));
         let degree = angle / Math.PI * 180;
         this.node.angle = degree;
         this.isAttacking = true;
@@ -56,7 +56,7 @@ export default class FireBall extends cc.Component {
         anim.play();
     }
     getPlayerPosition(player:Player):cc.Vec3{
-        return player.node.position.clone().addSelf(cc.v3(48,48));
+        return player.node.position.clone().mul(1.1);
     }
     
     getPlayerHv(player:Player,angleOffset:number):cc.Vec3{
