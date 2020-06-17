@@ -13,6 +13,7 @@ import TalentShield from "../Talent/TalentShield";
 import FlyWheel from "./FlyWheel";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -180,8 +181,13 @@ export default class Bullet extends cc.Component {
         let endPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));
         let distance = Logic.getDistance(this.startPos, endPos);
         let offset = 32;
+        if(distance <= 0){
+            distance = 0;
+            offset = 0;
+        }
         //激光的宽度是两点之间的距离加贴图的宽度,激光的起始点是减去当前距离的点
         let finalwidth = distance - offset;
+        
         this.laserSpriteNode.width = finalwidth/this.node.scaleY;
         this.laserSpriteNode.setPosition(cc.v3(-finalwidth/this.node.scaleY, 0));
         this.laserHeadSprite.node.setPosition(cc.v3(-finalwidth/this.node.scaleY, 0));
@@ -291,11 +297,12 @@ export default class Bullet extends cc.Component {
         if (otherCollider.sensor) {
             isDestory = false;
         }
-        //上面的墙不销毁
-        if (otherCollider.tag == 2) {
+        //上面的墙下半部分不销毁
+        if (otherCollider.tag == ColliderTag.WALL_TOP_DOWN) {
             isDestory = false;
         }
-        if(this.skipTopwall&&otherCollider.tag == 6){
+        //上面的墙上半部分是否销毁
+        if(this.skipTopwall&&otherCollider.tag == ColliderTag.WALL_TOP_UP){
             isDestory = false;
         }
         //飞轮需要销毁

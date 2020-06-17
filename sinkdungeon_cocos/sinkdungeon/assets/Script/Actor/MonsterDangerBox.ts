@@ -2,6 +2,7 @@ import Monster from "../Monster";
 import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import FromData from "../Data/FromData";
+import { ColliderTag } from "./ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -91,7 +92,7 @@ export default class MonsterDangerBox extends cc.Component {
         this.isAttacking = false;
     }
     onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
-        if (this.isAttacking && this.monster && other.tag == 3) {
+        if (this.isAttacking && this.monster && other.tag == ColliderTag.PLAYER) {
             this.isAttacking = false;
             let from = FromData.getClone(this.monster.data.nameCn, this.monster.data.resName);
             this.monster.addPlayerStatus(this.monster.dungeon.player, from);

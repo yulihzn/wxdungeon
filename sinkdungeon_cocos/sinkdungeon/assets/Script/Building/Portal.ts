@@ -71,14 +71,7 @@ export default class Portal extends Building {
             }
         }
     }
-    // onCollisionEnter(other:cc.Collider,self:cc.Collider){
-    //     if(other.tag == 3){
-    //         if(this.isOpen){
-    //             this.closeGate();
-    //             cc.director.emit(EventConstant.LOADINGNEXTLEVEL);
-    //         }
-    //     }
-    // }
+    
 
     // update (dt) {}
 }

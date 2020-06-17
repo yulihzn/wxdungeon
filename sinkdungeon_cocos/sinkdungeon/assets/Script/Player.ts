@@ -36,6 +36,7 @@ import TalentMagic from './Talent/TalentMagic';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
 import RoomType from './Rect/RoomType';
+import Monster from './Monster';
 
 @ccclass
 export default class Player extends Actor {
@@ -929,7 +930,7 @@ export default class Player extends Actor {
         this.isAttacking = false;
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.tag == 10) {
+        if (otherCollider.node.getComponent(Monster)&&this.talentDash && (this.talentDash.IsExcuting || this.isWeaponDashing)) {
             contact.disabledOnce = true;
         }
     }

@@ -8,6 +8,7 @@ import Building from "./Building";
 import RectDungeon from "../Rect/RectDungeon";
 import AudioPlayer from "../Utils/AudioPlayer";
 import RoomType from "../Rect/RoomType";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 
 // Learn TypeScript:
@@ -120,7 +121,7 @@ export default class Chest extends Building {
     }
 
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == 3) {
+        if (other.tag == ColliderTag.PLAYER) {
             if (!this.data.isOpen) {
                 this.openChest();
             }

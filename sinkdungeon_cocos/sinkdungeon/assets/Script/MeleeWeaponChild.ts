@@ -28,15 +28,5 @@ export default class MeleeWeaponChild extends cc.Component {
     start () {
 
     }
-    // onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-    //     if(this.meleeWeapon&& !this.isAttacking){
-    //         this.meleeWeapon.attacking(other);
-    //     }
-    // }
-    // onCollisionStay(other: cc.Collider, self: cc.Collider) {
-    //     if(this.meleeWeapon && !this.isAttacking){
-    //         this.meleeWeapon.attacking(other);
-    //     }
-    // }
     
 }

@@ -1,6 +1,7 @@
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Building from "./Building";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -100,7 +101,7 @@ export default class Wall extends Building {
         this.node.opacity = 255;
     }
     onCollisionStay(other:cc.Collider,self:cc.Collider) {
-        if(other.tag == 3||other.tag == 4){
+        if(other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.MONSTER){
             this.node.opacity = 128;
         }
     }

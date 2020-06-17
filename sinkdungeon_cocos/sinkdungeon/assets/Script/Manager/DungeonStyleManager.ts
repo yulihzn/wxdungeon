@@ -8,6 +8,7 @@ import DecorateRoom from "../Building/DecorateRoom";
 import RectRoom from "../Rect/RectRoom";
 import ParallexBackground from "../UI/ParallaxBackground";
 import RoomType from "../Rect/RoomType";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -235,7 +236,7 @@ export default class DungeonStyleManager extends cc.Component {
         let posbottom = Dungeon.getPosInMap(cc.v3(posX, posY));
         wallbottom.setPosition(cc.v3(posbottom.x, posbottom.y));
         wallbottom.zIndex = 4100;
-        wallbottom.getComponent('cc.PhysicsBoxCollider').tag = 0;
+        wallbottom.getComponent(cc.PhysicsBoxCollider).tag = ColliderTag.DEFAULT;
         wallbottom.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[posY<-1?this.darksides:'darksidesbottom'];
         return wallbottom;
     }
