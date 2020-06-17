@@ -50,7 +50,9 @@ export default class FireBall extends cc.Component {
         let direction = this.getPlayerHv(player,exangle);
         let angle = direction.signAngle(cc.v3(-1,0));
         let degree = angle / Math.PI * 180;
-        this.node.angle = degree;
+        let offsetAngle = 90;
+        degree += offsetAngle;
+        this.node.angle = this.node.scaleX < 0 ? -degree : degree;
         this.isAttacking = true;
         this.node.zIndex = 4000;
         anim.play();
