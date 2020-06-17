@@ -7,9 +7,9 @@ import Shooter from "../Shooter";
 import MagicCircle from "./MagicCircle";
 import MagicIce from "./MagicIce";
 import Actor from "../Base/Actor";
-import MagicBall from "./MagicBall";
 import FireGhost from "./FireGhost";
 import Logic from "../Logic";
+import FireBall from "./FireBall";
 
 const { ccclass, property } = cc._decorator;
 
@@ -21,7 +21,7 @@ export default class TalentMagic extends Talent {
     @property(MagicIce)
     magicice: MagicIce = null;
     @property(cc.Prefab)
-    magicball: cc.Prefab = null;
+    fireball: cc.Prefab = null;
     @property(cc.Prefab)
     fireGhost: cc.Prefab = null;
     @property(cc.Node)
@@ -90,9 +90,9 @@ export default class TalentMagic extends Talent {
     //anim
     MagicFinish() {
         if (this.hashTalent(Talent.MAGIC_09)) {
-            this.showMagicBall(MagicBall.FIRE, true);
+            this.showFireBall();
         } else if (this.hashTalent(Talent.MAGIC_08)) {
-            this.showMagicBall(MagicBall.FIRE, false);
+            this.showFireBall();
         } else if (this.hashTalent(Talent.MAGIC_12)) {
             this.shoot(this.player.shooterEx,0, this.hashTalent(Talent.MAGIC_06) ? 'bullet137' : 'bullet037');
         } else if (this.hashTalent(Talent.MAGIC_11)) {
@@ -109,11 +109,11 @@ export default class TalentMagic extends Talent {
             this.shoot(this.player.shooterEx,80, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
         }
     }
-    showMagicBall(ballType: number, isBig: boolean) {
-        cc.instantiate(this.magicball).getComponent(MagicBall).show(this.player, ballType, isBig, 0);
+    showFireBall() {
+        cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 0);
         if (this.hashTalent(Talent.MAGIC_02)) {
-            cc.instantiate(this.magicball).getComponent(MagicBall).show(this.player, ballType, isBig, 30);
-            cc.instantiate(this.magicball).getComponent(MagicBall).show(this.player, ballType, isBig, -30);
+            cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 30);
+            cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, -30);
         }
     }
     private shoot(shooter: Shooter,bulletArcExNum:number, bulletType: string) {

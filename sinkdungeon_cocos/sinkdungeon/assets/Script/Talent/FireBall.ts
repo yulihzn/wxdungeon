@@ -3,7 +3,6 @@ import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
-import Dungeon from "../Dungeon";
 import Talent from "./Talent";
 import StatusManager from "../Manager/StatusManager";
 
@@ -20,81 +19,53 @@ import StatusManager from "../Manager/StatusManager";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MagicBall extends cc.Component {
+export default class FireBall extends cc.Component {
     static readonly FIRE = 0;
-    static readonly LIGHTENING = 1;
-    rigidBody:cc.RigidBody;
     hasTargetMap: { [key: string]: number } = {};
-    ballType = 0;
-    @property(cc.ParticleSystem)
-    fire:cc.ParticleSystem = null;
-    @property(cc.ParticleSystem)
-    lightening:cc.ParticleSystem = null;
 
     isAttacking = false;
     // LIFE-CYCLE CALLBACKS:
     player:Player;
 
     onLoad () {
-        this.fire.node.active = false;
-        this.lightening.node.active = false;
-        this.rigidBody = this.getComponent(cc.RigidBody);
     }
 
     start() {
     }
-    show(player:Player,ballType:number,isBig:boolean,angle:number){
-        this.ballType = ballType;
+    //Anim
+    AnimFinish(){
+        this.isAttacking = false;
+        this.scheduleOnce(() => { if (this.node) this.node.destroy(); }, 1);
+    }
+    show(player:Player,exangle:number){
+        let anim = this.getComponent(cc.Animation);
         this.player = player;
-        let lifeTime = 3;
         this.node.active = true;
         this.node.parent = player.node.parent;
         this.node.setPosition(this.getPlayerPosition(player));
-        let speed = 800;
-        
+        this.node.scale = 4;
         if(player.talentMagic.hashTalent(Talent.MAGIC_09)){
-            this.node.scale = 1.5;
-            lifeTime = 6;
+            this.node.scale = 6;
         }
-        if(player.talentMagic.hashTalent(Talent.MAGIC_14)){
-            speed = 50;
-        }
-        if(player.talentMagic.hashTalent(Talent.MAGIC_15)){
-            this.node.scale = 1.5;
-            speed = 200;
-            lifeTime = 6;
-        }
-        if(this.ballType == MagicBall.LIGHTENING){
-            this.lightening.node.active = true;
-            this.node.setPosition(this.getPlayerFarPosition(player,0,angle));
-            this.node.scale = 0.1;
-            this.node.runAction(cc.sequence(cc.scaleTo(0.2,0.2),cc.callFunc(()=>{this.isAttacking = true;}),cc.scaleTo(0.1,1)));
-        }else{
-            this.fire.node.active = true;
-            this.isAttacking = true;
-        }
-        let hs = this.getPlayerHv(player,angle).mul(speed);
-        this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
+        let direction = this.getPlayerHv(player,exangle);
+        let angle = direction.signAngle(cc.v3(1,0));
+        let degree = angle / Math.PI * 180;
+        this.node.angle = degree;
+        this.isAttacking = true;
         this.node.zIndex = 4000;
-        this.scheduleOnce(() => { if (this.node) this.node.destroy(); }, lifeTime);
-        
-        
+        anim.play();
     }
     getPlayerPosition(player:Player):cc.Vec3{
-        return player.node.position.clone().addSelf(cc.v3(8,48));
+        return player.node.position.clone().addSelf(cc.v3(48,48));
     }
-    getPlayerFarPosition(player:Player,distance:number,angleOffset:number):cc.Vec3{
-        let hv = player.meleeWeapon.getHv().clone();
-        let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180).mul(distance));
-        return player.node.position.clone().addSelf(cc.v3(8,48).addSelf(pos));
-    }
+    
     getPlayerHv(player:Player,angleOffset:number):cc.Vec3{
         let hv = player.meleeWeapon.getHv().clone();
         let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180));
         return pos.normalizeSelf();
     }
-    onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
-        if (self.radius > 0 && this.isAttacking) {
+    onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
+        if (!self.size.equals(cc.Size.ZERO) && this.isAttacking) {
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
                 this.hasTargetMap[other.node.uuid]++;
             } else {
@@ -103,8 +74,6 @@ export default class MagicBall extends cc.Component {
                 let boss = other.node.getComponent(Boss);
                 if (monster || boss) {
                     this.attacking(other.node);
-                    this.rigidBody.linearVelocity = cc.Vec2.ZERO;
-                    this.fire.node.angle = 0;
                 }
             }
         }
@@ -119,13 +88,7 @@ export default class MagicBall extends cc.Component {
         if(this.player&&this.player.talentMagic.hashTalent(Talent.MAGIC_06)){
             d = 2;
         }
-        if(this.ballType == MagicBall.FIRE){
-            damage.fireDamage = d;
-        }else{
-            damage.lighteningDamage = d;
-            status = StatusManager.DIZZ;
-        }
-        
+        damage.fireDamage = d;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             monster.takeDamage(damage);
