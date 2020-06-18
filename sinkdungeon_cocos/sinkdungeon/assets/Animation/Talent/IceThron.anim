@@ -1,0 +1,157 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "IceThron",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.6833333333333333,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "comps": {
+      "cc.BoxCollider": {
+        "offset": [
+          {
+            "frame": 0,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 8
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": -3,
+              "y": 8
+            }
+          },
+          {
+            "frame": 1.5,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": -3,
+              "y": 8
+            }
+          }
+        ],
+        "size": [
+          {
+            "frame": 0,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 16,
+              "height": 16
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 20,
+              "height": 16
+            }
+          },
+          {
+            "frame": 1.5,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 20,
+              "height": 16
+            }
+          },
+          {
+            "frame": 1.6666666666666667,
+            "value": {
+              "__type__": "cc.Size",
+              "width": 0,
+              "height": 0
+            }
+          }
+        ]
+      }
+    },
+    "paths": {
+      "sprite": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "1064a0ee-91ab-4ed9-81d9-5aa87fb7796c"
+                }
+              },
+              {
+                "frame": 0.16666666666666666,
+                "value": {
+                  "__uuid__": "574fde03-436f-414d-a51e-aa65a2ef9da9"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "a6a70270-3086-4351-92aa-4e6d9c1bd7fc"
+                }
+              },
+              {
+                "frame": 0.5,
+                "value": {
+                  "__uuid__": "311d3cb5-40e3-427f-b360-69ae586a0f87"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "b46a1c3c-4ab0-4144-bbab-1f68450c33c9"
+                }
+              },
+              {
+                "frame": 0.8333333333333334,
+                "value": {
+                  "__uuid__": "742b0dbf-7bc0-4b71-b42d-3c5a12342ab5"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "bbf9fdf2-cc4a-4b08-9df4-070529630a48"
+                }
+              },
+              {
+                "frame": 1.1666666666666667,
+                "value": {
+                  "__uuid__": "53d825f3-efd1-4e9b-8791-1609670521af"
+                }
+              },
+              {
+                "frame": 1.3333333333333333,
+                "value": {
+                  "__uuid__": "5a5d4960-2cfc-410e-bdff-c181dee652d5"
+                }
+              },
+              {
+                "frame": 1.5,
+                "value": {
+                  "__uuid__": "b24bd521-e047-4dd2-b9aa-029fe779e198"
+                }
+              },
+              {
+                "frame": 1.6666666666666667,
+                "value": null
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 1.5,
+      "func": "AnimFinish",
+      "params": []
+    }
+  ]
+}

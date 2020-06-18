@@ -16,49 +16,49 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "756641c7-ed07-4c55-aecf-90ba7c8d8d0f"
+                  "__uuid__": "234eb8ec-951a-46d6-be35-0e8648ac3e1c"
                 }
               },
               {
                 "frame": 0.08333333333333333,
                 "value": {
-                  "__uuid__": "98586187-1c57-4c6d-8061-ce009338d016"
+                  "__uuid__": "c949c017-8c80-4878-91a7-b344ccb7731b"
                 }
               },
               {
                 "frame": 0.16666666666666666,
                 "value": {
-                  "__uuid__": "f8868372-24d1-4312-9fdd-d1852f18599c"
+                  "__uuid__": "3f59e7e9-32d4-4ffb-b70e-7cb04dff850d"
                 }
               },
               {
                 "frame": 0.25,
                 "value": {
-                  "__uuid__": "e8214049-5d0f-44bf-bbbd-ff639c41a1d1"
+                  "__uuid__": "88681510-750c-464b-af30-90cf5c81c861"
                 }
               },
               {
                 "frame": 0.3333333333333333,
                 "value": {
-                  "__uuid__": "b6a7cdd8-dcba-4f54-ae30-38acf782b422"
+                  "__uuid__": "1d390a13-7077-4a44-90ee-b635e64788d3"
                 }
               },
               {
                 "frame": 0.4166666666666667,
                 "value": {
-                  "__uuid__": "91a6ebc4-5840-43d3-a5d8-03c2de653efd"
+                  "__uuid__": "9f90f7c0-b69a-436c-b77a-05ca4aa22133"
                 }
               },
               {
                 "frame": 0.5,
                 "value": {
-                  "__uuid__": "e14c507f-20d8-4526-ae32-69dbda1b7814"
+                  "__uuid__": "ef736dd1-c5d9-4dfa-b555-e0a3df5aae67"
                 }
               },
               {
                 "frame": 0.5833333333333334,
                 "value": {
-                  "__uuid__": "d137d0a6-d3c9-4ac3-bc78-e4c34b397c95"
+                  "__uuid__": "57158bff-850e-4bb7-8596-7bae24b5dd7e"
                 }
               }
             ]
@@ -80,6 +80,16 @@
           {
             "frame": 0.5833333333333334,
             "value": 0
+          }
+        ],
+        "offset": [
+          {
+            "frame": 0,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 0
+            }
           }
         ]
       }

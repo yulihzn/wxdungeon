@@ -19,6 +19,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Boom extends cc.Component {
 
+
     isFromPlayer = false;
 
     // LIFE-CYCLE CALLBACKS:
@@ -26,7 +27,7 @@ export default class Boom extends cc.Component {
     // onLoad () {}
 
     start () {
-        this.scheduleOnce(()=>{if(this.node)this.node.destroy();},0.5);
+        this.scheduleOnce(()=>{if(this.node)this.node.destroy();},1);
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let isAttack = true;
@@ -56,7 +57,7 @@ export default class Boom extends cc.Component {
         }
         let player = attackTarget.getComponent(Player);
         if (player && !player.isDied) {
-            player.takeDamage(damage,FromData.getClone('爆炸','boom000anim001'));
+            player.takeDamage(damage,FromData.getClone('爆炸','boom000anim004'));
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {

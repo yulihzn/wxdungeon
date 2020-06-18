@@ -22,7 +22,7 @@ export default class BulletData {
     isDecelerate = 0;//是否减速
     decelerateDelta = 0;//减速系数
     delayDecelerate = 0;//延迟减速
-    isBoom = 0;//是否爆炸
+    isBoom = 0;//是否爆炸1 2
     isPhysical = 0;//是否有碰撞
     delaytrack = 0;//延迟追踪s
     isTracking = 0;//是否跟踪 不能和激光同时存在 激光大于跟踪

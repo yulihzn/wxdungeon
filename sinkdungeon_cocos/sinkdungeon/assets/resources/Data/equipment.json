@@ -903,7 +903,7 @@
         },
         "stab":1,
         "far":1,
-        "desc": "Family Business"
+        "desc": "Saving people,Hunting things,Family business"
     },
     "remote006": {
         "nameCn": "R P G",
@@ -944,6 +944,7 @@
         "titlecolor": "#ffffff",
         "img": "remote007",
         "bulletType":"bullet027",
+        "bulletLineExNum":2,
         "isHeavy":0,
         "common": {
             "remoteDamage":1,
@@ -955,7 +956,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":100,
+            "remoteSpeed":-500,
             "dodge": 0,
             "maxHealth": 0
         },

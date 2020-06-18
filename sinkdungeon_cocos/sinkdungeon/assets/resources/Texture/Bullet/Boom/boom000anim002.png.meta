@@ -1,6 +1,6 @@
 {
   "ver": "2.3.4",
-  "uuid": "96df36a8-a21d-442d-826f-e3a383f78dcd",
+  "uuid": "14d7117d-7c33-4963-8d84-8826ad6a8ee9",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -13,8 +13,8 @@
   "subMetas": {
     "boom000anim002": {
       "ver": "1.0.4",
-      "uuid": "98586187-1c57-4c6d-8061-ce009338d016",
-      "rawTextureUuid": "96df36a8-a21d-442d-826f-e3a383f78dcd",
+      "uuid": "c949c017-8c80-4878-91a7-b344ccb7731b",
+      "rawTextureUuid": "14d7117d-7c33-4963-8d84-8826ad6a8ee9",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

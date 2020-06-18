@@ -5,6 +5,7 @@ import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import Talent from "./Talent";
 import StatusManager from "../Manager/StatusManager";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +20,7 @@ import StatusManager from "../Manager/StatusManager";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class FireBall extends cc.Component {
+export default class IceThron extends cc.Component {
     hasTargetMap: { [key: string]: number } = {};
 
     isAttacking = false;
@@ -36,33 +37,25 @@ export default class FireBall extends cc.Component {
         this.isAttacking = false;
         this.scheduleOnce(() => { if (this.node) this.node.destroy(); }, 1);
     }
-    show(player:Player,exangle:number){
+    show(player:Player,angle:number,distance:number,scale:number){
         this.player = player;
         this.node.active = true;
         this.node.parent = player.node.parent;
-        this.node.setPosition(this.getPlayerPosition(player));
-        this.node.scale = 4;
-        if(player.talentMagic.hashTalent(Talent.MAGIC_09)){
-            this.node.scale = 6;
+        this.node.setPosition(this.getPlayerPosition(player,angle,distance));
+        this.node.scale = scale;
+        if(angle>90&&angle<270){
+            this.node.scaleX = -this.node.scaleX;
         }
-        let direction = this.getPlayerHv(player,exangle);
-        let angle = direction.signAngle(cc.v3(1,0));
-        let degree = cc.misc.radiansToDegrees(angle);
-        this.node.angle = 360-degree;
-
         this.isAttacking = true;
-        this.node.zIndex = 4000;
+        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - Dungeon.getIndexInMap(this.node.position.clone()).y) * 10 + 2;
     }
-    getPlayerPosition(player:Player):cc.Vec3{
+    getPlayerPosition(player:Player,angleOffset:number,distance:number):cc.Vec3{
         let hv = player.meleeWeapon.getHv().clone();
-        return player.node.position.clone().addSelf(cc.v3(0,32)).addSelf(hv.mulSelf(32));
+        let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)).normalizeSelf();
+        return player.node.position.clone().addSelf(pos.mulSelf(distance));
     }
     
-    getPlayerHv(player:Player,angleOffset:number):cc.Vec3{
-        let hv = player.meleeWeapon.getHv().clone();
-        let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180));
-        return pos.normalizeSelf();
-    }
+   
     onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
         if (!self.size.equals(cc.Size.ZERO) && this.isAttacking) {
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
@@ -82,10 +75,13 @@ export default class FireBall extends cc.Component {
             return;
         }
         let damage = new DamageData();
-        let status = StatusManager.BURNING;
-        let d = 2;
+        let status = StatusManager.FROZEN;
+        if(this.player&&this.player.talentMagic.hashTalent(Talent.MAGIC_12)){
+            status = StatusManager.FROZEN_STRONG;
+        }
+        let d = 4;
         if(this.player&&this.player.talentMagic.hashTalent(Talent.MAGIC_06)){
-            d = 3;
+            d = 6;
         }
         damage.fireDamage = d;
         let monster = attackTarget.getComponent(Monster);
@@ -102,7 +98,7 @@ export default class FireBall extends cc.Component {
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 0.1) {
+        if (this.checkTimeDelay > 0.5) {
             this.checkTimeDelay = 0;
             return true;
         }

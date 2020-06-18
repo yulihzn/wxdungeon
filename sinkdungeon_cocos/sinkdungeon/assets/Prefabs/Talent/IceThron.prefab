@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Boom",
+    "_name": "IceThron",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -65,8 +65,8 @@
         0,
         0,
         1,
-        1.5,
-        1.5,
+        1,
+        1,
         1
       ]
     },
@@ -116,21 +116,21 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 0
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
         0,
-        16,
+        0,
         0,
         0,
         0,
         0,
         1,
-        4,
-        4,
+        1,
+        1,
         1
       ]
     },
@@ -162,9 +162,11 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "1064a0ee-91ab-4ed9-81d9-5aa87fb7796c"
+    },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -183,37 +185,10 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "d876d450-5edd-4ce5-ae3a-298945d3c014"
+      "__uuid__": "b72dd778-c238-421a-b32f-7e7936575a6c"
     },
-    "fileId": "59MCpkrgRAMrkBif0Dv53L",
+    "fileId": "04T68UpwxKSZCOlpg6CERJ",
     "sync": false
-  },
-  {
-    "__type__": "d213dKARTpOJaVCOXgf0gmT",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 50,
-    "_id": ""
   },
   {
     "__type__": "cc.Animation",
@@ -224,14 +199,45 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "e8c6f65c-906e-4cfc-8436-c2af0b1dcdf7"
+      "__uuid__": "d6cb5c2c-52cb-43f1-8e5c-b21ab4105d82"
     },
     "_clips": [
       {
-        "__uuid__": "e8c6f65c-906e-4cfc-8436-c2af0b1dcdf7"
+        "__uuid__": "d6cb5c2c-52cb-43f1-8e5c-b21ab4105d82"
       }
     ],
     "playOnLoad": true,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.BoxCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 8
+    },
+    "_size": {
+      "__type__": "cc.Size",
+      "width": 16,
+      "height": 16
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "732e0QfOMxFu5eXTn+nHJEI",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {
@@ -240,9 +246,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "d876d450-5edd-4ce5-ae3a-298945d3c014"
+      "__uuid__": "b72dd778-c238-421a-b32f-7e7936575a6c"
     },
-    "fileId": "d2f46LXwJNzY5e2t71LaiX",
+    "fileId": "75fNdGIt5DpJXRX1iPbgzR",
     "sync": false
   }
 ]

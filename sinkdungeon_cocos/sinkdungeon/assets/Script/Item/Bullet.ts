@@ -405,7 +405,7 @@ export default class Bullet extends cc.Component {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }
-        if (this.data.isBoom == 1) {
+        if (this.data.isBoom > 0) {
             let boom = cc.instantiate(this.boom);
             boom.getComponent(Boom).isFromPlayer = this.isFromPlayer;
             boom.parent = this.node.parent;

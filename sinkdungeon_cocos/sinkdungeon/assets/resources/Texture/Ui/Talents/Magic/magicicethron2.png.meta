@@ -1,6 +1,6 @@
 {
   "ver": "2.3.4",
-  "uuid": "9d89123f-6fe0-4ff6-b547-0f983cc3eebd",
+  "uuid": "00b10f67-67aa-4333-b5e2-e9b0fd96af50",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -11,10 +11,10 @@
   "height": 32,
   "platformSettings": {},
   "subMetas": {
-    "boom000anim006": {
+    "magicicethron2": {
       "ver": "1.0.4",
-      "uuid": "9f90f7c0-b69a-436c-b77a-05ca4aa22133",
-      "rawTextureUuid": "9d89123f-6fe0-4ff6-b547-0f983cc3eebd",
+      "uuid": "574fde03-436f-414d-a51e-aa65a2ef9da9",
+      "rawTextureUuid": "00b10f67-67aa-4333-b5e2-e9b0fd96af50",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,

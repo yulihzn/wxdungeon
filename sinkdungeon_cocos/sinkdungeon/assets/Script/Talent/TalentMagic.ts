@@ -10,6 +10,7 @@ import Actor from "../Base/Actor";
 import FireGhost from "./FireGhost";
 import Logic from "../Logic";
 import FireBall from "./FireBall";
+import IceThron from "./IceThron";
 
 const { ccclass, property } = cc._decorator;
 
@@ -22,6 +23,8 @@ export default class TalentMagic extends Talent {
     magicice: MagicIce = null;
     @property(cc.Prefab)
     fireball: cc.Prefab = null;
+    @property(cc.Prefab)
+    icethron: cc.Prefab = null;
     @property(cc.Prefab)
     fireGhost: cc.Prefab = null;
     @property(cc.Node)
@@ -82,7 +85,7 @@ export default class TalentMagic extends Talent {
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
             this.magiccircle.talentMaigc = this;
-            this.magiccircle.playMagic(this.hashTalent(Talent.MAGIC_03) ? 4 : 2);
+            this.magiccircle.playMagic(this.hashTalent(Talent.MAGIC_03) ? 6 : 3);
             // cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3 } });
         }, cooldown, true);
@@ -94,9 +97,9 @@ export default class TalentMagic extends Talent {
         } else if (this.hashTalent(Talent.MAGIC_08)) {
             this.showFireBall();
         } else if (this.hashTalent(Talent.MAGIC_12)) {
-            this.shoot(this.player.shooterEx,0, this.hashTalent(Talent.MAGIC_06) ? 'bullet137' : 'bullet037');
+            this.showIceThron();
         } else if (this.hashTalent(Talent.MAGIC_11)) {
-            this.shoot(this.player.shooterEx,0,this.hashTalent(Talent.MAGIC_06) ? 'bullet136' : 'bullet036');
+            this.showIceThron();
         } else if (this.hashTalent(Talent.MAGIC_15)) {
             this.schedule(()=>{
                 this.addLighteningFall(this.hashTalent(Talent.MAGIC_06),8);
@@ -115,6 +118,46 @@ export default class TalentMagic extends Talent {
             cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 30);
             cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, -30);
         }
+    }
+    
+    showIceThron() {
+        const angles1 = [0,45,90,135,180,225,270,315];
+        const angles2 = [15,60,105,150,195,240,285,330];
+        let distance1 = [100];
+        let distance2 = [100,150];
+        let distance3 = [100,150,200];
+        let scale1 = [3];
+        let scale2 = [3,4];
+        let scale3 = [3,4,5];
+        let scale4 = [3,5];
+        let a1 = [angles1];
+        let a2 = [angles1,angles2];
+        let a3 = [angles1,angles2,angles1];
+        let a = a1;
+        let scale = scale1;
+        let distance = distance1;
+        if (this.hashTalent(Talent.MAGIC_02)) {
+            a = a2;
+            scale = scale2;
+            distance = distance2;
+        }
+        if (this.hashTalent(Talent.MAGIC_12)) {
+            a = a2;
+            scale = scale4;
+            distance = distance2;
+            if (this.hashTalent(Talent.MAGIC_02)) {
+                a = a3;
+                scale = scale3;
+                distance = distance3;
+            }
+        }
+        let index = 0;
+        this.schedule(()=>{
+            for(let i = 0;i<a[index].length;i++){
+                cc.instantiate(this.icethron).getComponent(IceThron).show(this.player, a[index][i],distance[index],scale[index]);
+            }
+            index++;
+        },0.5,a.length-1);
     }
     private shoot(shooter: Shooter,bulletArcExNum:number, bulletType: string) {
         shooter.data.bulletType = bulletType;

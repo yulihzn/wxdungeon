@@ -28,6 +28,7 @@ import AudioPlayer from './Utils/AudioPlayer';
 import SpecialManager from './Manager/SpecialManager';
 import FromData from './Data/FromData';
 import MonsterDangerBox from './Actor/MonsterDangerBox';
+import Boom from './Item/Boom';
 
 @ccclass
 export default class Monster extends Actor {
@@ -671,7 +672,7 @@ export default class Monster extends Actor {
         Achievements.addMonsterKillAchievement(this.data.resName);
         this.scheduleOnce(() => {
             if (this.node) {
-                if (this.data.isBoom == 1) {
+                if (this.data.isBoom > 0) {
                     let boom = cc.instantiate(this.boom);
                     boom.parent = this.node.parent;
                     boom.setPosition(this.node.position);

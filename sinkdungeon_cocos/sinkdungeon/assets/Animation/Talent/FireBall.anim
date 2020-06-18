@@ -3,7 +3,7 @@
   "_name": "FireBall",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.5166666666666666,
+  "_duration": 1.6833333333333333,
   "sample": 60,
   "speed": 2,
   "wrapMode": 1,
@@ -70,6 +70,10 @@
                 "value": {
                   "__uuid__": "dc8713aa-c46d-4717-bf7e-8a6ad16e9157"
                 }
+              },
+              {
+                "frame": 1.6666666666666667,
+                "value": null
               }
             ]
           }
