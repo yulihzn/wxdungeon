@@ -29,6 +29,7 @@ import SpecialManager from './Manager/SpecialManager';
 import FromData from './Data/FromData';
 import MonsterDangerBox from './Actor/MonsterDangerBox';
 import Boom from './Item/Boom';
+import IndexZ from './Utils/IndexZ';
 
 @ccclass
 export default class Monster extends Actor {
@@ -259,7 +260,7 @@ export default class Monster extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y) * 10 + 2;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - this.pos.y) * 10 + 2;
     }
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean,isBackStab:boolean) {
         if (!this.floatinglabelManager) {
@@ -676,7 +677,7 @@ export default class Monster extends Actor {
                     let boom = cc.instantiate(this.boom);
                     boom.parent = this.node.parent;
                     boom.setPosition(this.node.position);
-                    boom.zIndex = 4100;
+                    boom.zIndex = IndexZ.BOOM;
                     cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } });
                 }
                 this.scheduleOnce(() => { this.node.active = false; }, 5);

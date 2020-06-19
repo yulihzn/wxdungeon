@@ -4,6 +4,7 @@ import Logic from "../Logic";
 import Building from "./Building";
 import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,7 +58,7 @@ export default class Box extends Building {
     setPos(pos: cc.Vec3) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(this.data.pos);
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
     }
     //Animation
     BreakingFinish() {
@@ -93,7 +94,7 @@ export default class Box extends Building {
                     }
                 }
             }
-            this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.data.pos.y) * 10 + 1;
+            this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - this.data.pos.y) * 10 + 1;
         }
     }
 }

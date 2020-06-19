@@ -9,6 +9,7 @@ import Actor from "../Base/Actor";
 import Shooter from "../Shooter";
 import FromData from "../Data/FromData";
 import Item from "../Item/Item";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -73,7 +74,7 @@ export default abstract class Boss extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
     }
 
     start() {

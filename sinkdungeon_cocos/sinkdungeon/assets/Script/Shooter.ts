@@ -11,6 +11,7 @@ import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
 import DamageData from "./Data/DamageData";
+import IndexZ from "./Utils/IndexZ";
 
 
 // Learn TypeScript:
@@ -227,7 +228,7 @@ export default class Shooter extends cc.Component {
         let bullet = bulletPrefab.getComponent(Bullet);
         // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
-        bullet.node.zIndex = 4000;
+        bullet.node.zIndex = IndexZ.BULLET;
         bullet.isFromPlayer = !this.isAI;
         bullet.dungeon = this.dungeon;
         bullet.skipTopwall = this.skipTopwall;

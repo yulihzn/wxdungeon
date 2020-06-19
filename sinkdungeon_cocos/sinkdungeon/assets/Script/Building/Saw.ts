@@ -6,6 +6,7 @@ import Building from "./Building";
 import StatusManager from "../Manager/StatusManager";
 import Random from "../Utils/Random";
 import FromData from "../Data/FromData";
+import IndexZ from "../Utils/IndexZ";
 
 
 // Learn TypeScript:
@@ -44,7 +45,7 @@ export default class Saw extends Building {
         this.pos = pos;
         let p = Dungeon.getPosInMap(pos);
         this.node.position = cc.v3(p.x,p.y);
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
     }
     
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {

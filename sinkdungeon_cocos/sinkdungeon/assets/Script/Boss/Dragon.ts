@@ -10,6 +10,7 @@ import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -142,7 +143,7 @@ export default class Dragon extends Boss {
         }
     }
     changeZIndex() {
-        this.node.zIndex = 4000 + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
+        this.node.zIndex = IndexZ.DRAGON + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
     }
     move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {

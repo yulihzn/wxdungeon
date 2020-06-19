@@ -2,6 +2,7 @@ import Dungeon from "../Dungeon";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Building from "./Building";
+import IndexZ from "../Utils/IndexZ";
 
 
 // Learn TypeScript:
@@ -35,7 +36,7 @@ export default class Portal extends Building {
     setPos(pos:cc.Vec3){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
+        this.node.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
     }
     AnimGateClose(){
         this.anim.play('PortalCloseIdle');

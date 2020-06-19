@@ -5,6 +5,7 @@ import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import Talent from "./Talent";
 import StatusManager from "../Manager/StatusManager";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -51,7 +52,7 @@ export default class FireBall extends cc.Component {
         this.node.angle = 360-degree;
 
         this.isAttacking = true;
-        this.node.zIndex = 4000;
+        this.node.zIndex = IndexZ.EFFECT;
     }
     getPlayerPosition(player:Player):cc.Vec3{
         let hv = player.meleeWeapon.getHv().clone();

@@ -37,6 +37,7 @@ import ItemData from './Data/ItemData';
 import Item from './Item/Item';
 import RoomType from './Rect/RoomType';
 import Monster from './Monster';
+import IndexZ from './Utils/IndexZ';
 
 @ccclass
 export default class Player extends Actor {
@@ -303,7 +304,7 @@ export default class Player extends Actor {
         }
         smokePrefab.parent = parentNode;
         smokePrefab.position = pos;
-        smokePrefab.zIndex = 4000;
+        smokePrefab.zIndex = IndexZ.EFFECT;
         smokePrefab.opacity = 255;
         smokePrefab.active = true;
     }
@@ -407,7 +408,7 @@ export default class Player extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex(pos: cc.Vec3) {
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
     }
     addStatus(statusType: string, from: FromData) {
         if (!this.node) {

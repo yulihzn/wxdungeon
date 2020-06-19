@@ -8,6 +8,7 @@ import StatusManager from "./StatusManager";
 import Monster from "../Monster";
 import AreaAttack from "../Item/AreaAttack";
 import FromData from "../Data/FromData";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -79,7 +80,7 @@ export default class SpecialManager extends cc.Component {
         venom.parent = this.dungeon.node;
         venom.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        venom.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
         venom.scale = 0;
         venom.runAction(cc.scaleTo(0.5, 2, 2))
     }
@@ -88,7 +89,7 @@ export default class SpecialManager extends cc.Component {
         howl.parent = this.dungeon.node;
         howl.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        howl.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        howl.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
         howl.scale = 2;
         let monster = this.node.parent.getComponent(Monster);
         if (monster) {
@@ -105,7 +106,7 @@ export default class SpecialManager extends cc.Component {
         pos.y += 32;
         claw.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        claw.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        claw.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
         claw.scale = 1;
         let areaScript = claw.getComponent(AreaAttack);
         this.scheduleOnce(() => {
@@ -122,7 +123,7 @@ export default class SpecialManager extends cc.Component {
         prefab.position = pos;
         pos.y += 64;
         let indexpos = Dungeon.getIndexInMap(pos);
-        prefab.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        prefab.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
         prefab.scaleX = isFaceRight?1:-1;
         let areaScript = prefab.getComponent(AreaAttack);
         this.scheduleOnce(() => {

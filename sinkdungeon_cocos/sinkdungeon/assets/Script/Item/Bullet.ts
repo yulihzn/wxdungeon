@@ -14,6 +14,7 @@ import FlyWheel from "./FlyWheel";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import { ColliderTag } from "../Actor/ColliderTag";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -410,7 +411,7 @@ export default class Bullet extends cc.Component {
             boom.getComponent(Boom).isFromPlayer = this.isFromPlayer;
             boom.parent = this.node.parent;
             boom.setPosition(this.node.position);
-            boom.zIndex = 4100;
+            boom.zIndex = IndexZ.BOOM;
             cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
 
         }

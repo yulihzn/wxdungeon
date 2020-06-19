@@ -1,6 +1,7 @@
 import Coin from "../Item/Coin";
 import Dungeon from "../Dungeon";
 import OilGold from "../Item/OilGold";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -79,7 +80,7 @@ export default class CoinManger extends cc.Component {
         let item = isCoin?itemPrefab.getComponent(Coin):itemPrefab.getComponent(OilGold);
         item.player = player;
         item.changeValue(value);
-        item.node.zIndex = 4000;
+        item.node.zIndex = IndexZ.EFFECT;
         itemPrefab.active = true;
     }
     destroyCoin(coinNode: cc.Node) {

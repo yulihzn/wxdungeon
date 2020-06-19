@@ -5,6 +5,7 @@ import TalentShield from "../Talent/TalentShield";
 import Talent from "../Talent/Talent";
 import TalentDash from "../Talent/TalentDash";
 import Shooter from "../Shooter";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -74,7 +75,7 @@ export default class DashShadow extends cc.Component {
         }
         let hs = this.hv.mul(speed);
         this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
-        this.node.zIndex = 4000;
+        this.node.zIndex = IndexZ.EFFECT;
         this.fire(this.shooter);
         this.scheduleOnce(() => {
             this.hide();

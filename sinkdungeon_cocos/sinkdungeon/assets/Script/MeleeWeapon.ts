@@ -16,6 +16,7 @@ import Skill from "./Utils/Skill";
 import FromData from "./Data/FromData";
 import Decorate from "./Building/Decorate";
 import AudioPlayer from "./Utils/AudioPlayer";
+import IndexZ from "./Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -225,7 +226,7 @@ export default class MeleeWeapon extends cc.Component {
         }
         firePrefab.parent = dungeonNode;
         firePrefab.position = ps[0];
-        firePrefab.zIndex = 4000;
+        firePrefab.zIndex = IndexZ.EFFECT;
         firePrefab.opacity = 255;
         firePrefab.active = true;
         let action = cc.sequence(cc.moveTo(0.025, cc.v2(ps[1])), cc.moveTo(0.05, cc.v2(ps[2])), cc.moveTo(0.075, cc.v2(ps[3])), cc.moveTo(0.1, cc.v2(ps[4])));

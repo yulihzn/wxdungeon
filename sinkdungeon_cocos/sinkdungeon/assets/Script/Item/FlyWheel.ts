@@ -9,6 +9,7 @@ import StatusManager from "../Manager/StatusManager";
 import Box from "../Building/Box";
 import FromData from "../Data/FromData";
 import Decorate from "../Building/Decorate";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -127,7 +128,7 @@ export default class FlyWheel extends cc.Component {
         let hs = this.hv.mul(speed);
         this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
         this.isFlyOut = true;
-        this.node.zIndex = 4000;
+        this.node.zIndex = IndexZ.EFFECT;
         this.scheduleOnce(()=>{
             this.isFlyOut = false;
         },0.5)

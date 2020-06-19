@@ -33,6 +33,7 @@ import AudioPlayer from "./Utils/AudioPlayer";
 import Decorate from "./Building/Decorate";
 import RoomType from "./Rect/RoomType";
 import MagicLightening from "./Building/MagicLightening";
+import IndexZ from "./Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -186,7 +187,7 @@ export default class Dungeon extends cc.Component {
      */
     init(): void {
         //设置雾气层级
-        this.fog.zIndex = 9000;
+        this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 1.2;
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         Logic.changeDungeonSize();
@@ -219,7 +220,7 @@ export default class Dungeon extends cc.Component {
                     t.parent = this.node;
                     t.position = Dungeon.getPosInMap(cc.v3(i, j));
                     //越往下层级越高，j是行，i是列
-                    t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.map[i][j] = t.getComponent(Tile);
                     //开启踩踏掉落
                     this.map[i][j].isAutoShow = true;
@@ -229,7 +230,7 @@ export default class Dungeon extends cc.Component {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;
                     t.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    t.zIndex = 1000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.map[i][j] = t.getComponent(Tile);
                     this.map[i][j].isAutoShow = false;
                     this.map[i][j].tileType = mapData[i][j];
@@ -240,7 +241,7 @@ export default class Dungeon extends cc.Component {
                     let w = cc.instantiate(this.wall);
                     w.parent = this.node;
                     w.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    w.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    w.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - j) * 10;
                     w.opacity = 255;
                     this.wallmap[i][j] = w.getComponent(Wall);
                     this.wallmap[i][j].mapStr = mapData[i][j];
@@ -250,7 +251,7 @@ export default class Dungeon extends cc.Component {
                     let trap = cc.instantiate(this.trap);
                     trap.parent = this.node;
                     trap.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    trap.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    trap.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.trapmap[i][j] = trap.getComponent(Trap);
                 }
                 //生成电锯,占据5个格子
@@ -264,7 +265,7 @@ export default class Dungeon extends cc.Component {
                     let emplacement = cc.instantiate(this.emplacement);
                     emplacement.parent = this.node;
                     emplacement.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    emplacement.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    emplacement.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - j) * 10;
                     let em = emplacement.getComponent(Emplacement);
                     em.setDirType(mapData[i][j]);
                     em.dungeon = this;
@@ -284,33 +285,33 @@ export default class Dungeon extends cc.Component {
                         let camp = cc.instantiate(this.campFire);
                         camp.parent = this.node;
                         camp.position = Dungeon.getPosInMap(cc.v3(i, j));
-                        camp.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 - 2;
+                        camp.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - j) * 10 - 2;
                         let shadow = camp.getChildByName('sprite').getChildByName('shadow');
                         shadow.position = Dungeon.getPosInMap(cc.v3(i, j));
                         shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
                         shadow.parent = this.node;
-                        shadow.zIndex = 3000;
+                        shadow.zIndex = IndexZ.ACTOR;
                     } else if (this.isThe(mapData[i][j], '+1')) {
                         if (Logic.level == 0) {
                             let bed = cc.instantiate(this.bed);
                             bed.parent = this.node;
                             bed.scale = 6;
                             bed.position = Dungeon.getPosInMap(cc.v3(i, j));
-                            bed.zIndex = 5000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                            bed.zIndex = IndexZ.BED + (Dungeon.HEIGHT_SIZE - j) * 10;
                         }
                     } else if (this.isThe(mapData[i][j], '+2')) {
                         if (Logic.level == 0) {
                             let arrow = cc.instantiate(this.floorDecoration);
                             arrow.parent = this.node;
                             arrow.position = Dungeon.getPosInMap(cc.v3(i, j));
-                            arrow.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                            arrow.zIndex = IndexZ.FLOOR + (Dungeon.HEIGHT_SIZE - j) * 10;
                             arrow.getComponent(DecorationFloor).changeRes('exitarrow');
                         }
                     } else {
                         let fd = cc.instantiate(this.floorDecoration);
                         fd.parent = this.node;
                         fd.position = Dungeon.getPosInMap(cc.v3(i, j));
-                        fd.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                        fd.zIndex = IndexZ.FLOOR + (Dungeon.HEIGHT_SIZE - j) * 10;
                         let df = fd.getComponent(DecorationFloor);
                         if (this.isThe(mapData[i][j], '++')) {
                             df.changeRes('exitarrow');
@@ -324,7 +325,7 @@ export default class Dungeon extends cc.Component {
                     let foot = cc.instantiate(this.footboard);
                     foot.parent = this.node;
                     foot.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    foot.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    foot.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - j) * 10;
                     this.footboards.push(foot.getComponent(FootBoard));
                 }
                 //生成毒液
@@ -337,7 +338,7 @@ export default class Dungeon extends cc.Component {
                     let tarottable = cc.instantiate(this.tarotTable);
                     tarottable.parent = this.node;
                     tarottable.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    tarottable.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10;
+                    tarottable.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - j) * 10;
                 }
                 //生成宝箱 房间清理的情况下箱子是打开的
                 if (mapData[i][j] == 'C0') {
@@ -503,7 +504,7 @@ export default class Dungeon extends cc.Component {
                     let shop = cc.instantiate(this.shop);
                     shop.parent = this.node;
                     shop.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    shop.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - j) * 10 + 1;
+                    shop.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - j) * 10 + 1;
                 }
                 //房间未清理时加载怪物
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
@@ -672,7 +673,7 @@ export default class Dungeon extends cc.Component {
         item.parent = this.node;
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        item.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        item.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         item.getComponent(Item).init(resName, indexpos.clone(), shopTable);
         let data = item.getComponent(Item).data;
         let curritems = Logic.mapManager.getCurrentMapItems();
@@ -697,7 +698,7 @@ export default class Dungeon extends cc.Component {
         stone.parent = this.node;
         stone.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        stone.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        stone.zIndex = IndexZ.FLOOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         if (stoneScript.isAuto) {
             stoneScript.fall(withFire);
         }
@@ -713,7 +714,7 @@ export default class Dungeon extends cc.Component {
         fall.parent = this.node;
         fall.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        fall.zIndex = 2000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        fall.zIndex = IndexZ.FLOOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         fallScript.isTrigger = isTrigger;
         if(!fallScript.isTrigger){
             fallScript.fall(needPrepare,showArea,damagePoint);
@@ -726,7 +727,7 @@ export default class Dungeon extends cc.Component {
         venom.parent = this.node;
         venom.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        venom.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        venom.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
     }
     /**冰刺 */
     addIceThron(pos: cc.Vec3, isAuto: boolean) {
@@ -739,7 +740,7 @@ export default class Dungeon extends cc.Component {
         thron.parent = this.node;
         thron.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        thron.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        thron.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         if (stoneScript.isAuto) {
             stoneScript.fall();
         }
@@ -756,7 +757,7 @@ export default class Dungeon extends cc.Component {
         grass.parent = this.node;
         grass.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
-        grass.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
+        grass.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10 + 3;
         if (dryadGrassScript.isAuto) {
             dryadGrassScript.fall();
         }

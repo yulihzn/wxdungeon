@@ -5,6 +5,7 @@ import Shooter from "../Shooter";
 import Logic from "../Logic";
 import Building from "./Building";
 import FromData from "../Data/FromData";
+import IndexZ from "../Utils/IndexZ";
 
 
 // Learn TypeScript:
@@ -84,7 +85,7 @@ export default class Emplacement extends Building {
     setPos(pos: cc.Vec3) {
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
     }
     //Animation
     OpenFire() {

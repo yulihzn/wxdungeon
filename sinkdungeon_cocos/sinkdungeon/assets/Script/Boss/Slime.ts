@@ -14,6 +14,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import Item from "../Item/Item";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -94,7 +95,7 @@ export default class Slime extends Boss {
         venomPrefab.position = pos;
         venomPrefab.scale = this.slimeType == 0 ? 1.5 : 1;
         venomPrefab.getComponent(SlimeVenom).player = this.dungeon.player;
-        venomPrefab.zIndex = 3000;
+        venomPrefab.zIndex = IndexZ.ACTOR;
         venomPrefab.opacity = 255;
         venomPrefab.active = true;
     }

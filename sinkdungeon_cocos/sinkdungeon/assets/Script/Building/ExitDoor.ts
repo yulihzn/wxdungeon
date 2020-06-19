@@ -3,6 +3,7 @@ import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,8 +34,8 @@ export default class ExitDoor extends Building {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);
         this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite);
         this.openSprite = this.node.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite);
-        this.openSprite.node.zIndex = 2000;
-        this.closeSprite.node.zIndex = 3000;
+        this.openSprite.node.zIndex = IndexZ.FLOOR;
+        this.closeSprite.node.zIndex = IndexZ.ACTOR;
     }
 
     start () {
@@ -48,12 +49,12 @@ export default class ExitDoor extends Building {
     }
     hideWall() {
         if(this.wall1){
-            this.wall1.zIndex = 1000;
+            this.wall1.zIndex = IndexZ.BASE;
             this.wall1.getComponent(cc.PhysicsBoxCollider).sensor = true;
             this.wall1.getComponent(cc.PhysicsBoxCollider).apply();
         }
         if(this.wall2){
-            this.wall2.zIndex = 1000;
+            this.wall2.zIndex = IndexZ.BASE;
             this.wall2.getComponent(cc.PhysicsBoxCollider).sensor = true;
             this.wall2.getComponent(cc.PhysicsBoxCollider).apply();
         }

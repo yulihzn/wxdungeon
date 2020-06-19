@@ -1,4 +1,5 @@
 import FloatingLabel from "../UI/FloatingLabel";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +42,7 @@ export default class FloatinglabelManager extends cc.Component {
         labelPrefab.parent = parentNode;
         labelPrefab.position = p.clone();
         let label = labelPrefab.getComponent(FloatingLabel);
-        labelPrefab.zIndex = 5000;
+        labelPrefab.zIndex = IndexZ.FLOATLABEL;
         labelPrefab.opacity = 255;
         labelPrefab.active = true;
         return label;

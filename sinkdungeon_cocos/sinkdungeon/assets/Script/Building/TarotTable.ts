@@ -6,6 +6,7 @@ import { EventHelper } from "../EventHelper";
 import ShopTableData from "../Data/ShopTableData";
 import Tips from "../UI/Tips";
 import Building from "./Building";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,7 +53,7 @@ export default class TarotTable extends Building {
     setPos(pos: cc.Vec3) {
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
     }
     update(dt) {
 

@@ -6,6 +6,7 @@ import FromData from "../Data/FromData";
 import Talent from "./Talent";
 import StatusManager from "../Manager/StatusManager";
 import Dungeon from "../Dungeon";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,7 +48,7 @@ export default class IceThron extends cc.Component {
             this.node.scaleX = -this.node.scaleX;
         }
         this.isAttacking = true;
-        this.node.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - Dungeon.getIndexInMap(this.node.position.clone()).y) * 10 + 2;
+        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - Dungeon.getIndexInMap(this.node.position.clone()).y) * 10 + 2;
     }
     getPlayerPosition(player:Player,angleOffset:number,distance:number):cc.Vec3{
         let hv = player.meleeWeapon.getHv().clone();

@@ -6,6 +6,7 @@ import StatusManager from "../Manager/StatusManager";
 import Talent from "./Talent";
 import FromData from "../Data/FromData";
 import Logic from "../Logic";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +42,7 @@ export default class FireGhost extends cc.Component {
     init(player: Player, angleOffset: number) {
         this.player = player;
         this.node.setPosition(player.node.position.clone());
-        this.node.zIndex = 5000;
+        this.node.zIndex = IndexZ.FIREGHOST;
         this.angleOffset = angleOffset;
         this.scheduleOnce(() => {
             this.node.setPosition(this.getPlayerFarPosition(this.player, 50, this.angle + this.angleOffset));

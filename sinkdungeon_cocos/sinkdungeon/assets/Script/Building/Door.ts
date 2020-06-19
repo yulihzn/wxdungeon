@@ -3,6 +3,7 @@ import Player from "../Player";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Building from "./Building";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -34,9 +35,9 @@ export default class Door extends Building {
 
     onLoad() {
         this.bg = this.node.getChildByName('bg');
-        this.bg.zIndex = 1000;
+        this.bg.zIndex = IndexZ.BASE;
         this.sprite = this.node.getChildByName('sprite');
-        this.sprite.zIndex = 2000;
+        this.sprite.zIndex = IndexZ.FLOOR;
         this.anim = this.getComponent(cc.Animation);
     }
 
@@ -45,7 +46,7 @@ export default class Door extends Building {
     }
     setOpen(isOpen: boolean) {
         if (!this.isDoor) {
-            this.wall.zIndex = this.dir==1?4100:3000;
+            this.wall.zIndex = this.dir==1?IndexZ.DOORWALL:IndexZ.ACTOR;
             this.wall.getComponent(cc.PhysicsBoxCollider).sensor = false;
             this.wall.getComponent(cc.PhysicsBoxCollider).apply();
             if(this.sideWall){
@@ -53,7 +54,7 @@ export default class Door extends Building {
             }
             return;
         }
-        this.wall.zIndex = 500;
+        this.wall.zIndex = IndexZ.DOORWALLBEHIND;
         this.wall.getComponent(cc.PhysicsBoxCollider).sensor = true;
         this.wall.getComponent(cc.PhysicsBoxCollider).apply();
         // this.wall.active=false;

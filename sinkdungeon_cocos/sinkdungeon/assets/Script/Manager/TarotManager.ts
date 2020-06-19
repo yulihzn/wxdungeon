@@ -1,5 +1,6 @@
 import TarotCard from "../Item/TarotCard";
 import Dungeon from "../Dungeon";
+import IndexZ from "../Utils/IndexZ";
 
 const { ccclass, property } = cc._decorator;
 export default class TarotManager extends cc.Component{
@@ -31,7 +32,7 @@ export default class TarotManager extends cc.Component{
         let cardPrefab = cc.instantiate(this.card);
         cardPrefab.parent = this.node;
         cardPrefab.position = Dungeon.getPosInMap(pos);
-        cardPrefab.zIndex = 3000 + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 3;
+        cardPrefab.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 3;
         let card = cardPrefab.getComponent(TarotCard);
         card.data.resName = resName;
         return card;
