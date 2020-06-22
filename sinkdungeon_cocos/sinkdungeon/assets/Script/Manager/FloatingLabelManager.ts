@@ -42,7 +42,7 @@ export default class FloatinglabelManager extends cc.Component {
         labelPrefab.parent = parentNode;
         labelPrefab.position = p.clone();
         let label = labelPrefab.getComponent(FloatingLabel);
-        labelPrefab.zIndex = IndexZ.FLOATLABEL;
+        labelPrefab.zIndex = IndexZ.UI;
         labelPrefab.opacity = 255;
         labelPrefab.active = true;
         return label;

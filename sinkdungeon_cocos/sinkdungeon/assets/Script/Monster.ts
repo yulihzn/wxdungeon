@@ -260,7 +260,7 @@ export default class Monster extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - this.pos.y) * 10 + 2;
+        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean,isBackStab:boolean) {
         if (!this.floatinglabelManager) {
@@ -677,7 +677,7 @@ export default class Monster extends Actor {
                     let boom = cc.instantiate(this.boom);
                     boom.parent = this.node.parent;
                     boom.setPosition(this.node.position);
-                    boom.zIndex = IndexZ.BOOM;
+                    boom.zIndex = IndexZ.OVERHEAD;
                     cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BOOM } });
                 }
                 this.scheduleOnce(() => { this.node.active = false; }, 5);

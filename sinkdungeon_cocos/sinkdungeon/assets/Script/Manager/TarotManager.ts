@@ -32,7 +32,7 @@ export default class TarotManager extends cc.Component{
         let cardPrefab = cc.instantiate(this.card);
         cardPrefab.parent = this.node;
         cardPrefab.position = Dungeon.getPosInMap(pos);
-        cardPrefab.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 3;
+        cardPrefab.zIndex = IndexZ.getActorZIndex(cardPrefab.position);
         let card = cardPrefab.getComponent(TarotCard);
         card.data.resName = resName;
         return card;

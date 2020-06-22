@@ -42,7 +42,7 @@ export default class FireGhost extends cc.Component {
     init(player: Player, angleOffset: number) {
         this.player = player;
         this.node.setPosition(player.node.position.clone());
-        this.node.zIndex = IndexZ.FIREGHOST;
+        this.node.zIndex = IndexZ.OVERHEAD;
         this.angleOffset = angleOffset;
         this.scheduleOnce(() => {
             this.node.setPosition(this.getPlayerFarPosition(this.player, 50, this.angle + this.angleOffset));

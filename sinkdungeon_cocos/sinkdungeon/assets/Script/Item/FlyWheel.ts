@@ -128,7 +128,7 @@ export default class FlyWheel extends cc.Component {
         let hs = this.hv.mul(speed);
         this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
         this.isFlyOut = true;
-        this.node.zIndex = IndexZ.EFFECT;
+        this.node.zIndex = IndexZ.OVERHEAD;
         this.scheduleOnce(()=>{
             this.isFlyOut = false;
         },0.5)

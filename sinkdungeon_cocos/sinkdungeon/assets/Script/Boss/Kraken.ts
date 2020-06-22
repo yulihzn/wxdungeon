@@ -66,7 +66,7 @@ export default class Kraken extends Boss {
         hand.setPosition(pos);
         hand.scaleX = isReverse?-50:50;
         hand.scaleY = -50;
-        hand.zIndex = IndexZ.KRAKENHAND;
+        hand.zIndex = IndexZ.OVERHEAD;
         let h = hand.getComponentInChildren(KrakenSwingHand);
         this.scheduleOnce(()=>{
             h.isShow = true;

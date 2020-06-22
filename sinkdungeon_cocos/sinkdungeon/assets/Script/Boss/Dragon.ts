@@ -143,7 +143,7 @@ export default class Dragon extends Boss {
         }
     }
     changeZIndex() {
-        this.node.zIndex = IndexZ.DRAGON + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
+        this.node.zIndex = IndexZ.OVERHEAD;
     }
     move(pos: cc.Vec3, speed: number) {
         if (this.isDied) {

@@ -411,7 +411,7 @@ export default class Bullet extends cc.Component {
             boom.getComponent(Boom).isFromPlayer = this.isFromPlayer;
             boom.parent = this.node.parent;
             boom.setPosition(this.node.position);
-            boom.zIndex = IndexZ.BOOM;
+            boom.zIndex = IndexZ.OVERHEAD;
             cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
 
         }

@@ -228,7 +228,7 @@ export default class Shooter extends cc.Component {
         let bullet = bulletPrefab.getComponent(Bullet);
         // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
-        bullet.node.zIndex = IndexZ.BULLET;
+        bullet.node.zIndex = IndexZ.OVERHEAD;
         bullet.isFromPlayer = !this.isAI;
         bullet.dungeon = this.dungeon;
         bullet.skipTopwall = this.skipTopwall;

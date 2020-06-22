@@ -53,7 +53,7 @@ export default class ShopTable extends Building {
     setPos(pos: cc.Vec3) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
+        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     timeDelay = 0;
     update(dt) {

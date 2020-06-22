@@ -79,8 +79,7 @@ export default class SpecialManager extends cc.Component {
         venom.getComponent(SlimeVenom).from.valueCopy(from);
         venom.parent = this.dungeon.node;
         venom.position = pos;
-        let indexpos = Dungeon.getIndexInMap(pos);
-        venom.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        venom.zIndex = IndexZ.getActorZIndex(venom.position);
         venom.scale = 0;
         venom.runAction(cc.scaleTo(0.5, 2, 2))
     }
@@ -88,8 +87,7 @@ export default class SpecialManager extends cc.Component {
         let howl = cc.instantiate(this.howl);
         howl.parent = this.dungeon.node;
         howl.position = pos;
-        let indexpos = Dungeon.getIndexInMap(pos);
-        howl.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        howl.zIndex = IndexZ.getActorZIndex(howl.position);
         howl.scale = 2;
         let monster = this.node.parent.getComponent(Monster);
         if (monster) {
@@ -105,8 +103,7 @@ export default class SpecialManager extends cc.Component {
         claw.parent = this.dungeon.node;
         pos.y += 32;
         claw.position = pos;
-        let indexpos = Dungeon.getIndexInMap(pos);
-        claw.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        claw.zIndex = IndexZ.getActorZIndex(claw.position);
         claw.scale = 1;
         let areaScript = claw.getComponent(AreaAttack);
         this.scheduleOnce(() => {
@@ -122,8 +119,7 @@ export default class SpecialManager extends cc.Component {
         prefab.parent = this.dungeon.node;
         prefab.position = pos;
         pos.y += 64;
-        let indexpos = Dungeon.getIndexInMap(pos);
-        prefab.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - indexpos.y) * 10;
+        prefab.zIndex = IndexZ.getActorZIndex(prefab.position);
         prefab.scaleX = isFaceRight?1:-1;
         let areaScript = prefab.getComponent(AreaAttack);
         this.scheduleOnce(() => {

@@ -2,41 +2,36 @@ export default class IndexZ{
     /** 背景*/
     static readonly BACKGROUND = 100;
     /** 海妖身躯*/
-    static readonly KRAKENBODY = 101;
+    static readonly KRAKENBODY = 200;
     /** 背景地板*/
-    static readonly BACKGROUNDFLOOR = 110;
+    static readonly BACKGROUNDFLOOR = 300;
     /** 门后的墙*/
-    static readonly DOORWALLBEHIND = 500;
+    static readonly DOORWALLBEHIND = 400;
     /**底层 */
-    static readonly BASE = 1000;
+    static readonly BASE = 500;
     /**地板 */
-    static readonly FLOOR = 2000;
+    static readonly FLOOR = 600;
     /**边墙 */
-    static readonly WALLSIDEBEHIND = 2500;
+    static readonly WALL = 700;
     /** 角色*/
-    static readonly ACTOR = 3000;
-    /** 效果*/
-    static readonly EFFECT = 4000;
-    /** 子弹*/
-    static readonly BULLET = 4000;
-    /** 龙*/
-    static readonly DRAGON = 4000;
+    static readonly ACTOR = 2000;
+    
     /**边墙 */
-    static readonly WALLSIDEFRONT = 4000;
-    /**边墙 */
-    static readonly WALLBOTTOMFRONT = 4100;
+    static readonly WALLSIDEFRONT = 5000;
+
     /** 门上的墙*/
-    static readonly DOORWALL = 4100;
-    /** 爆炸*/
-    static readonly BOOM = 4100;
-    /** 火影精灵*/
-    static readonly FIREGHOST = 5000;
-    /** 床*/
-    static readonly BED = 5000;
-    /** 海妖触角*/
-    static readonly KRAKENHAND = 5000;
-    /** 漂浮文字*/
-    static readonly FLOATLABEL = 5000;
+    static readonly DOORWALL = 5100;
+    /**头上 */
+    static readonly OVERHEAD = 6000;
+    /**屋顶 */
+    static readonly ROOF = 6100;
     /** 雾*/
-    static readonly FOG = 9000;
+    static readonly FOG = 6200;
+    /**UI */
+    static readonly UI = 6300;
+
+    static getActorZIndex(pos:cc.Vec3):number{
+        let index = IndexZ.ACTOR+3000-pos.y;
+        return index;
+    }
 }

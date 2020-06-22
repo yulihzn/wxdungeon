@@ -80,7 +80,7 @@ export default class CoinManger extends cc.Component {
         let item = isCoin?itemPrefab.getComponent(Coin):itemPrefab.getComponent(OilGold);
         item.player = player;
         item.changeValue(value);
-        item.node.zIndex = IndexZ.EFFECT;
+        item.node.zIndex = IndexZ.OVERHEAD;
         itemPrefab.active = true;
     }
     destroyCoin(coinNode: cc.Node) {

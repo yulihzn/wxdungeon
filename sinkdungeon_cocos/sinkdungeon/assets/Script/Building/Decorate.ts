@@ -64,7 +64,7 @@ export default class Decorate extends Building {
     setPos(pos: cc.Vec3) {
         this.data.pos = pos;
         this.node.position = Dungeon.getPosInMap(this.data.pos);
-        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 100 + 1;
+        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     //Animation
     BreakingFinish() {
@@ -132,7 +132,7 @@ export default class Decorate extends Building {
                     }
                 }
             }
-            this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - this.data.pos.y) * 10 + 1;
+            this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
         }
     }
 }

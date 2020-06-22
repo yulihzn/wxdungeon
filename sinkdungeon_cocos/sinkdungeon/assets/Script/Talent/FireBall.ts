@@ -52,7 +52,7 @@ export default class FireBall extends cc.Component {
         this.node.angle = 360-degree;
 
         this.isAttacking = true;
-        this.node.zIndex = IndexZ.EFFECT;
+        this.node.zIndex = IndexZ.OVERHEAD;
     }
     getPlayerPosition(player:Player):cc.Vec3{
         let hv = player.meleeWeapon.getHv().clone();

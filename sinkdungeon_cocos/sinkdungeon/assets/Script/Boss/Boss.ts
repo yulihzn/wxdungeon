@@ -74,7 +74,7 @@ export default abstract class Boss extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - this.pos.y - 1) * 10 + 2;
+        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
 
     start() {

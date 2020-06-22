@@ -164,8 +164,8 @@ export default class DungeonStyleManager extends cc.Component {
                 this.doors[3].getComponent(Door).dir = 3;
             }
             if(j>Dungeon.HEIGHT_SIZE / 2&&j<Dungeon.HEIGHT_SIZE / 2+2){
-                wallleft.zIndex = IndexZ.WALLSIDEBEHIND;
-                wallright.zIndex = IndexZ.WALLSIDEBEHIND;
+                wallleft.zIndex = IndexZ.WALL;
+                wallright.zIndex = IndexZ.WALL;
             }
         }
         let walltopleft = this.getWallTop(0);
@@ -226,7 +226,7 @@ export default class DungeonStyleManager extends cc.Component {
         walltop.parent = this.node;
         let postop = Dungeon.getPosInMap(cc.v3(posX, Dungeon.HEIGHT_SIZE));
         walltop.setPosition(cc.v3(postop.x, postop.y + 32));
-        walltop.zIndex = IndexZ.WALLSIDEBEHIND;
+        walltop.zIndex = IndexZ.WALL;
         walltop.getComponent(cc.Sprite).spriteFrame = this.styleData.topwall ? Logic.spriteFrames[this.styleData.topwall] : null;
         return walltop;
     }
@@ -236,7 +236,7 @@ export default class DungeonStyleManager extends cc.Component {
         wallbottom.angle = 180;
         let posbottom = Dungeon.getPosInMap(cc.v3(posX, posY));
         wallbottom.setPosition(cc.v3(posbottom.x, posbottom.y));
-        wallbottom.zIndex = IndexZ.WALLBOTTOMFRONT;
+        wallbottom.zIndex = IndexZ.ROOF;
         wallbottom.getComponent(cc.PhysicsBoxCollider).tag = ColliderTag.DEFAULT;
         wallbottom.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[posY<-1?this.darksides:'darksidesbottom'];
         return wallbottom;

@@ -304,7 +304,7 @@ export default class Player extends Actor {
         }
         smokePrefab.parent = parentNode;
         smokePrefab.position = pos;
-        smokePrefab.zIndex = IndexZ.EFFECT;
+        smokePrefab.zIndex = IndexZ.ACTOR;
         smokePrefab.opacity = 255;
         smokePrefab.active = true;
     }
@@ -408,7 +408,7 @@ export default class Player extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex(pos: cc.Vec3) {
-        this.node.zIndex = IndexZ.ACTOR + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 2;
+        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     addStatus(statusType: string, from: FromData) {
         if (!this.node) {

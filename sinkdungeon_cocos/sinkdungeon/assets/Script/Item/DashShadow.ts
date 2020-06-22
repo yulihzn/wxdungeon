@@ -75,7 +75,7 @@ export default class DashShadow extends cc.Component {
         }
         let hs = this.hv.mul(speed);
         this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
-        this.node.zIndex = IndexZ.EFFECT;
+        this.node.zIndex = IndexZ.OVERHEAD;
         this.fire(this.shooter);
         this.scheduleOnce(() => {
             this.hide();
