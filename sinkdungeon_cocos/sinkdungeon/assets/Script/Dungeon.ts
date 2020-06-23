@@ -290,7 +290,13 @@ export default class Dungeon extends cc.Component {
                         shadow.position = Dungeon.getPosInMap(cc.v3(i, j));
                         shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
                         shadow.parent = this.node;
-                        shadow.zIndex = IndexZ.ACTOR;
+                        shadow.zIndex = IndexZ.FLOOR;
+                        let fallentree = camp.getChildByName('sprite').getChildByName('fallentree');
+                        fallentree.position = Dungeon.getPosInMap(cc.v3(i, j));
+                        fallentree.position = cc.v3(shadow.position.x, shadow.position.y + 40);
+                        fallentree.parent = this.node;
+                        fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
+                        fallentree.setScale(6,4);
                     } else if (this.isThe(mapData[i][j], '+1')) {
                         if (Logic.level == 0) {
                             let bed = cc.instantiate(this.bed);

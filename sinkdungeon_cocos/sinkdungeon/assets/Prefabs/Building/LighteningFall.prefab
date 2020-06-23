@@ -109,7 +109,7 @@
     "_prefab": {
       "__id__": 4
     },
-    "_opacity": 255,
+    "_opacity": 128,
     "_color": {
       "__type__": "cc.Color",
       "r": 0,
@@ -166,13 +166,13 @@
     "_enabled": true,
     "_materials": [
       {
-        "__uuid__": "d682ca22-fc0b-4fa8-aa01-8209368d30a6"
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "410fb916-8721-4663-bab8-34397391ace7"
+      "__uuid__": "9b8ffacd-c57d-4adb-a8f2-9193da21ba28"
     },
     "_type": 0,
     "_sizeMode": 0,

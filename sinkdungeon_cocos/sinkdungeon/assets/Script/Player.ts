@@ -64,6 +64,10 @@ export default class Player extends Actor {
     statusManager: StatusManager = null;
     // private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
+    headSprite: cc.Sprite = null;
+    faceSprite: cc.Sprite = null;
+    legsSprite: cc.Sprite = null;
+    handleftSprite: cc.Sprite = null;
     weaponSprite: cc.Sprite = null;
     weaponLightSprite: cc.Sprite = null;
     weaponStabSprite: cc.Sprite = null;
@@ -129,6 +133,10 @@ export default class Player extends Actor {
         this.bodySprite = this.getSpriteChildSprite(['sprite', 'body', 'body']);
         // this.playerItemSprite = this.getSpriteChildSprite(['sprite', 'righthand', 'item']);
         this.hairSprite = this.getSpriteChildSprite(['sprite', 'body', 'head', 'hair']);
+        this.headSprite = this.getSpriteChildSprite(['sprite', 'body', 'head']);
+        this.faceSprite = this.getSpriteChildSprite(['sprite', 'body', 'head', 'face']);
+        this.legsSprite = this.getSpriteChildSprite(['sprite', 'body', 'legs']);
+        this.handleftSprite = this.getSpriteChildSprite(['sprite', 'body', 'handleft']);
         this.weaponSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'weapon']);
         this.weaponLightSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'meleelight']);
         this.weaponStabSprite = this.getSpriteChildSprite(['MeleeWeapon', 'sprite', 'stabweapon']);
@@ -226,35 +234,17 @@ export default class Player extends Actor {
      * @param stoneLevel 石头等级：0：全身，1：身子和脚，2：脚 
      */
     private turnStone(isStone: boolean, stoneLevel?: number) {
-        // let n = isStone ? 1 : 0;
-        // this.bodySprite.setState(n);
-        // this.hairSprite.setState(n);
-        // this.helmetSprite.setState(n);
-        // this.clothesSprite.setState(n);
-        // this.trousersSprite.setState(n);
-        // this.glovesLeftSprite.setState(n);
-        // this.shoesLeftSprite.setState(n);
-        // this.shoesRightSprite.setState(n);
-        // if (stoneLevel == 1) {
-        //     this.hairSprite.setState(0);
-        //     this.helmetSprite.setState(0);
-        // }
-        // if (stoneLevel == 2) {
-        //     this.bodySprite.setState(0);
-        //     this.hairSprite.setState(0);
-        //     this.helmetSprite.setState(0);
-        //     this.clothesSprite.setState(0);
-        //     this.glovesLeftSprite.setState(0);
-        // }
-    }
-    private addFog() {
-        let fogSprite = this.node.getChildByName('fog');
-        let mat = fogSprite.getComponent(cc.Sprite).getMaterial(0);
-        mat.setProperty('wh_ratio',fogSprite.width/fogSprite.height);
-        mat.setProperty('center',cc.v2(0.5,0.5));
-        mat.setProperty('radius',0.5);
+        this.hitLight(isStone);
     }
 
+    hitLight(isHit:boolean){
+        this.bodySprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.headSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.hairSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.faceSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.legsSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.handleftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+    }
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
         for (let name of childNames) {
@@ -868,8 +858,11 @@ export default class Player extends Actor {
         if (this.isSmokeTimeDelay(dt) && this.isMoving) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
+        let stone = this.isStone;
         this.isStone = this.statusManager.hasStatus(StatusManager.STONE);
-        this.turnStone(this.isStone);
+        if(stone == !this.isStone){
+            this.turnStone(this.isStone);
+        }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
         this.node.opacity = this.invisible ? 80 : 255;
     }
