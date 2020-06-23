@@ -822,17 +822,6 @@ export default class Dungeon extends cc.Component {
             , cc.v3(i, j));
     }
 
-    private breakHalfTiles(): void {
-        for (let i = 1; i < Dungeon.WIDTH_SIZE - 1; i++) {
-            for (let j = 6; j < Dungeon.HEIGHT_SIZE - 1; j++) {
-                this.map[i][j].isAutoShow = false;
-                this.breakTile(cc.v3(i, j));
-                this.scheduleOnce(() => {
-                    this.breakTile(cc.v3(i, j));
-                }, 0.1 * Random.rand())
-            }
-        }
-    }
     private addBossSlime(type: number, index: cc.Vec3) {
         if (!this.bosses) {
             return;
