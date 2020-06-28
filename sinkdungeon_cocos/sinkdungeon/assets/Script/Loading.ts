@@ -189,7 +189,7 @@ export default class Loading extends cc.Component {
             this.isEquipmentLoaded = true;
             return;
         }
-        cc.resources.load('Data/equipment', (err: Error, resource) => {
+        cc.resources.load('Data/equipment', (err: Error, resource:cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -217,7 +217,7 @@ export default class Loading extends cc.Component {
             this.isDebuffsLoaded = true;
             return;
         }
-        cc.resources.load('Data/status', (err: Error, resource) => {
+        cc.resources.load('Data/status', (err: Error, resource:cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -232,7 +232,7 @@ export default class Loading extends cc.Component {
             this.isBulletsLoaded = true;
             return;
         }
-        cc.resources.load('Data/bullet', (err: Error, resource) => {
+        cc.resources.load('Data/bullet', (err: Error, resource:cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -247,7 +247,7 @@ export default class Loading extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.resources.load('Data/monsters', (err: Error, resource) => {
+        cc.resources.load('Data/monsters', (err: Error, resource:cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -262,7 +262,7 @@ export default class Loading extends cc.Component {
             this.isItemsLoaded = true;
             return;
         }
-        cc.resources.load('Data/item', (err: Error, resource) => {
+        cc.resources.load('Data/item', (err: Error, resource:cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {

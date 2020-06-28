@@ -32,7 +32,7 @@ export default class WorldLoader {
             this.isloaded = true;
             return;
         }
-        cc.resources.load(`Data/worlds`, (err: Error, resource) => {
+        cc.resources.load(`Data/worlds`, (err: Error, resource:cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -88,7 +88,7 @@ export default class WorldLoader {
         return allfileRooms;
     }
     private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
-        cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource) => {
+        cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource:cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
