@@ -189,7 +189,7 @@ export default class Loading extends cc.Component {
             this.isEquipmentLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/equipment', (err: Error, resource) => {
+        cc.resources.load('Data/equipment', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -217,7 +217,7 @@ export default class Loading extends cc.Component {
             this.isDebuffsLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/status', (err: Error, resource) => {
+        cc.resources.load('Data/status', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -232,7 +232,7 @@ export default class Loading extends cc.Component {
             this.isBulletsLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/bullet', (err: Error, resource) => {
+        cc.resources.load('Data/bullet', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -247,7 +247,7 @@ export default class Loading extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/monsters', (err: Error, resource) => {
+        cc.resources.load('Data/monsters', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -262,7 +262,7 @@ export default class Loading extends cc.Component {
             this.isItemsLoaded = true;
             return;
         }
-        cc.loader.loadRes('Data/item', (err: Error, resource) => {
+        cc.resources.load('Data/item', (err: Error, resource) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -284,7 +284,7 @@ export default class Loading extends cc.Component {
             this.showTalentPick();
             return;
         }
-        cc.loader.loadResDir('Texture', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
+        cc.resources.loadDir('Texture', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
             Logic.spriteFrames = {};
             for (let frame of assert) {
                 // frame.getTexture().setAliasTexParameters();

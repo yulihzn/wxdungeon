@@ -71,7 +71,7 @@ export default class Achievements extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.loader.loadResDir('Texture/Monster', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
+        cc.resources.loadDir('Texture/Monster', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
             this.spriteFrames = {};
             for (let frame of assert) {
                 this.spriteFrames[frame.name] = frame;
@@ -85,7 +85,7 @@ export default class Achievements extends cc.Component {
             this.isBossLoaded = true;
             return;
         }
-        cc.loader.loadResDir('OtherTexture/Boss', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
+        cc.resources.loadDir('OtherTexture/Boss', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
             this.bossSpriteFrames = {};
             for (let frame of assert) {
                 this.bossSpriteFrames[frame.name] = frame;

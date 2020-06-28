@@ -67,7 +67,8 @@
     "3D Primitive",
     "3D Physics/cannon.js",
     "3D Physics/Builtin",
-    "3D Particle"
+    "3D Particle",
+    "SafeArea"
   ],
   "facebook": {
     "appID": "",
@@ -98,5 +99,7 @@
   "start-scene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
   "use-customize-simulator": true,
   "use-project-simulator-setting": false,
-  "migrate-history": []
+  "migrate-history": [
+    "cloud-function"
+  ]
 }
