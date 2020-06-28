@@ -268,6 +268,8 @@ export default class Bullet extends cc.Component {
 
         if (this.data.lifeTime > 0) {
             this.scheduleOnce(()=>{this.bulletHit();},this.data.lifeTime);
+        }else{
+            this.scheduleOnce(()=>{this.bulletHit();},30);
         }
         this.isTrackDelay = false;
         if(this.data.isTracking == 1){

@@ -956,7 +956,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":-500,
+            "remoteSpeed":-2000,
             "dodge": 0,
             "maxHealth": 0
         },

@@ -88,7 +88,7 @@ export default class WorldLoader {
         return allfileRooms;
     }
     private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
-        cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource:cc.JsonAsset) => {
+        cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource:cc.TextAsset) => {
             if (err) {
                 cc.error(err);
             } else {
