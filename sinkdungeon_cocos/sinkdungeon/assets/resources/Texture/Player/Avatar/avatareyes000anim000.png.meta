@@ -1,6 +1,6 @@
 {
   "ver": "2.3.5",
-  "uuid": "ff83cb51-d101-4f02-9170-410abfdb5fdb",
+  "uuid": "4a28d4cb-c885-4c04-983d-75e0892c64f2",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -11,10 +11,10 @@
   "height": 6,
   "platformSettings": {},
   "subMetas": {
-    "avatarface000anim001": {
+    "avatareyes000anim000": {
       "ver": "1.0.4",
-      "uuid": "908352d1-f771-47da-907a-eace51e111ba",
-      "rawTextureUuid": "ff83cb51-d101-4f02-9170-410abfdb5fdb",
+      "uuid": "5ec8e8cd-ef60-4926-a458-2103bdc78d59",
+      "rawTextureUuid": "4a28d4cb-c885-4c04-983d-75e0892c64f2",
       "trimType": "custom",
       "trimThreshold": 1,
       "rotated": false,
