@@ -41,11 +41,15 @@ export default class Loading extends cc.Component {
     confirmButton: cc.Button = null;
     @property(CutScene)
     cutScene: CutScene = null;
+    private static readonly KEY_AUTO = 'auto';
+    private static readonly KEY_MONSTER = 'monster';
+    private static readonly KEY_EQUIPMENT = 'equipment';
+    private static readonly KEY_BULLET = 'bullet';
+    private spriteFrameNames: { [key: string]: boolean } = null;
     private timeDelay = 0;
     private isEquipmentLoaded = false;
     private isMonsterLoaded = false;
     private isWorldLoaded = false;
-    private isSpriteFramesLoaded = false;
     private isDebuffsLoaded = false;
     private isBulletsLoaded = false;
     private isItemsLoaded = false;
@@ -53,6 +57,10 @@ export default class Loading extends cc.Component {
 
 
     onLoad() {
+        this.setAllSpriteFramesUnload();
+        if(!Logic.spriteFrames){
+            Logic.spriteFrames = {};
+        }
         //关闭技能树
         this.simpleTree.node.active = false;
         this.shieldTree.node.active = false;
@@ -78,6 +86,9 @@ export default class Loading extends cc.Component {
     }
 
     showTalentPick() {
+        if(!this.isAllSpriteFramesLoaded()){
+            return;
+        }
         if (Logic.isPickedTalent || !this.isTalentLevel()) {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
@@ -153,7 +164,8 @@ export default class Loading extends cc.Component {
         this.isDebuffsLoaded = false;
         this.loadWorld();
         this.loadEquipment();
-        this.loadSpriteFrames();
+        this.loadAutoSpriteFrames();
+        this.loadSpriteAtlas('texures','monster000');
         this.loadMonsters();
         this.loadDebuffs();
         this.loadBullets();
@@ -165,8 +177,22 @@ export default class Loading extends cc.Component {
             this.cutScene.unregisterClick();
         }
     }
+    isAllSpriteFramesLoaded(){
+        for(let loadedName in this.spriteFrameNames){
+            if(!this.spriteFrameNames[loadedName]){
+                return false;
+            }
+        }
+        return true;
+    }
+    setAllSpriteFramesUnload(){
+        this.spriteFrameNames = {};
+        this.spriteFrameNames[Loading.KEY_AUTO] = false;
+        this.spriteFrameNames[Loading.KEY_MONSTER] = false;
+        this.spriteFrameNames[Loading.KEY_EQUIPMENT] = false;
+    }
     showLoadingLabel(){
-        if (this.isSpriteFramesLoaded) {
+        if (this.isAllSpriteFramesLoaded()) {
             return;
         }
         let arr = ['...','..','.',''];
@@ -278,26 +304,40 @@ export default class Loading extends cc.Component {
             }
         })
     }
-    loadSpriteFrames() {
-        if (Logic.spriteFrames) {
-            this.isSpriteFramesLoaded = true;
+    private loadAutoSpriteFrames() {
+        if (Logic.spriteFrames&&Logic.spriteFrames['singleColor']) {
+            this.spriteFrameNames[Loading.KEY_AUTO] = true;
             this.showTalentPick();
             return;
         }
-        cc.resources.loadDir('Texture', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
-            Logic.spriteFrames = {};
+        cc.resources.loadDir('Texture/Auto', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
             for (let frame of assert) {
-                // frame.getTexture().setAliasTexParameters();
                 Logic.spriteFrames[frame.name] = frame;
             }
-            this.isSpriteFramesLoaded = true;
-            this.showTalentPick();
-            cc.log('texture loaded');
+            this.spriteFrameNames[Loading.KEY_AUTO] = true;
+            if(this.isAllSpriteFramesLoaded()){
+                this.showTalentPick();
+            }
+            cc.log('auto texture loaded');
         })
     }
-
+    private loadSpriteAtlas(typeKey:string,hasKey:string){
+        if (Logic.spriteFrames&&Logic.spriteFrames[hasKey]) {
+            this.spriteFrameNames[typeKey] = true;
+            this.showTalentPick();
+            return;
+        }
+        cc.resources.load(`Texture/${typeKey}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+            for (let frame of atlas.getSpriteFrames()) {
+                Logic.spriteFrames[frame.name] = frame;
+            }
+            this.spriteFrameNames[typeKey] = true;
+            this.showTalentPick();
+            cc.log(`${typeKey} texture loaded`);
+        })
+    }
     showCut(): void {
-        if (this.isSpriteFramesLoaded && Logic.isFirst != 1) {
+        if (this.isAllSpriteFramesLoaded() && Logic.isFirst != 1) {
             Logic.isFirst = 1;
             this.cutScene.playShow();
         }
@@ -308,7 +348,7 @@ export default class Loading extends cc.Component {
         this.showCut();
         if (this.timeDelay > 0.16
             && this.isEquipmentLoaded
-            && this.isSpriteFramesLoaded
+            && this.isAllSpriteFramesLoaded()
             && this.isMonsterLoaded
             && this.isDebuffsLoaded
             && this.isBulletsLoaded
@@ -320,7 +360,7 @@ export default class Loading extends cc.Component {
             this.cutScene.unregisterClick();
             this.isWorldLoaded = false;
             this.isEquipmentLoaded = false;
-            this.isSpriteFramesLoaded = false;
+            this.setAllSpriteFramesUnload();
             this.isDebuffsLoaded = false;
             this.isBulletsLoaded = false;
             this.isItemsLoaded = false;

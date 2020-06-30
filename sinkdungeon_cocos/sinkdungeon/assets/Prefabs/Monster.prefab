@@ -639,7 +639,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "3b298635-9b81-42e4-a655-369d5f81e9c3"
+      "__uuid__": "52baed48-6dd2-4484-98de-59c8bda61db8"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -652,7 +652,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": false,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -1366,6 +1368,8 @@
     },
     "_enabled": true,
     "_materials": [],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "Label",
     "_N$string": "Label",
@@ -3433,6 +3437,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "5/5",
     "_N$string": "5/5",

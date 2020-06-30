@@ -71,9 +71,9 @@ export default class Achievements extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.resources.loadDir('Texture/Monster', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
+        cc.resources.load('Texture/monster', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
             this.spriteFrames = {};
-            for (let frame of assert) {
+            for (let frame of atlas.getSpriteFrames()) {
                 this.spriteFrames[frame.name] = frame;
             }
             this.isMonsterLoaded = true;
@@ -85,9 +85,9 @@ export default class Achievements extends cc.Component {
             this.isBossLoaded = true;
             return;
         }
-        cc.resources.loadDir('OtherTexture/Boss', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
+        cc.resources.load('OtherTexture/bossicons', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
             this.bossSpriteFrames = {};
-            for (let frame of assert) {
+            for (let frame of atlas.getSpriteFrames()) {
                 this.bossSpriteFrames[frame.name] = frame;
             }
             this.isBossLoaded = true;
