@@ -119,22 +119,13 @@ export default class Status extends cc.Component {
         let dd = new DamageData();
         dd.realDamage = this.data.realDamageDirect?this.data.realDamageDirect:0;
         dd.physicalDamage = this.data.physicalDamageDirect?this.data.physicalDamageDirect:0;
-        dd.iceDamage = this.data.iceDamageDirect?this.data.iceDamageDirect:0;
-        dd.fireDamage = this.data.fireDamageDirect?this.data.fireDamageDirect:0;
-        dd.lighteningDamage = this.data.lighteningDamageDirect?this.data.lighteningDamageDirect:0;
-        dd.toxicDamage = this.data.toxicDamageDirect?this.data.toxicDamageDirect:0;
-        dd.curseDamage = this.data.curseDamageDirect?this.data.curseDamageDirect:0;
+        dd.magicDamage = this.data.magicDamageDirect?this.data.magicDamageDirect:0;
         return dd;
     }
     getDamageOverTime():DamageData{
         let dd = new DamageData();
         dd.realDamage = this.data.realDamageOvertime?this.data.realDamageOvertime:0;
         dd.physicalDamage = this.data.physicalDamageOvertime?this.data.physicalDamageOvertime:0;
-        dd.iceDamage = this.data.iceDamageOvertime?this.data.iceDamageOvertime:0;
-        dd.fireDamage = this.data.fireDamageOvertime?this.data.fireDamageOvertime:0;
-        dd.lighteningDamage = this.data.lighteningDamageOvertime?this.data.lighteningDamageOvertime:0;
-        dd.toxicDamage = this.data.toxicDamageOvertime?this.data.toxicDamageOvertime:0;
-        dd.curseDamage = this.data.curseDamageOvertime?this.data.curseDamageOvertime:0;
         return dd;
     }
 }

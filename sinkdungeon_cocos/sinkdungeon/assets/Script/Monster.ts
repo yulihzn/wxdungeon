@@ -572,11 +572,11 @@ export default class Monster extends Actor {
             return;
         }
         let c = '#000000';
-        c = this.getMixColor(c, this.data.getIceDefence() + this.data.getIceDamage() > 0 ? '#CCFFFF' : '#000000');
-        c = this.getMixColor(c, this.data.getFireDefence() + this.data.getFireDamage() > 0 ? '#FF6633' : '#000000');
-        c = this.getMixColor(c, this.data.getLighteningDefence() + this.data.getLighteningDamage() > 0 ? '#0099FF' : '#000000');
-        c = this.getMixColor(c, this.data.getToxicDefence() + this.data.getToxicDamage() > 0 ? '#66CC00' : '#000000');
-        c = this.getMixColor(c, this.data.getCurseDefence() + this.data.getCurseDamage() > 0 ? '#660099' : '#000000');
+        c = this.getMixColor(c, this.data.getIceRate() > 0 ? '#CCFFFF' : '#000000');
+        c = this.getMixColor(c, this.data.getFireRate() > 0 ? '#FF6633' : '#000000');
+        c = this.getMixColor(c, this.data.getLighteningRate() > 0 ? '#0099FF' : '#000000');
+        c = this.getMixColor(c, this.data.getToxicRate() > 0 ? '#66CC00' : '#000000');
+        c = this.getMixColor(c, this.data.getCurseRate() > 0 ? '#660099' : '#000000');
         c = c == '#000000' ? '#ffffff' : c;
         this.bodySprite.node.color = cc.color(255, 255, 255).fromHEX(c);
     }
@@ -604,11 +604,11 @@ export default class Monster extends Actor {
         if (!isDashing) {
             this.effectNode.runAction(cc.sequence(cc.moveTo(0.2, 32, 32), cc.moveTo(0.2, 0, 16)));
         }
-        this.data.getIceDamage() > 0 ? this.particleIce.resetSystem() : this.particleIce.stopSystem();
-        this.data.getFireDamage() > 0 ? this.particleFire.resetSystem() : this.particleFire.stopSystem();
-        this.data.getLighteningDamage() > 0 ? this.particleLightening.resetSystem() : this.particleLightening.stopSystem();
-        this.data.getToxicDamage() > 0 ? this.particleToxic.resetSystem() : this.particleToxic.stopSystem();
-        this.data.getCurseDamage() > 0 ? this.particleCurse.resetSystem() : this.particleCurse.stopSystem();
+        this.data.getIceRate()+this.data.getMagicDamage() > 0 ? this.particleIce.resetSystem() : this.particleIce.stopSystem();
+        this.data.getFireRate()+this.data.getMagicDamage() > 0 ? this.particleFire.resetSystem() : this.particleFire.stopSystem();
+        this.data.getLighteningRate()+this.data.getMagicDamage() > 0 ? this.particleLightening.resetSystem() : this.particleLightening.stopSystem();
+        this.data.getToxicRate()+this.data.getMagicDamage() > 0 ? this.particleToxic.resetSystem() : this.particleToxic.stopSystem();
+        this.data.getCurseRate()+this.data.getMagicDamage() > 0 ? this.particleCurse.resetSystem() : this.particleCurse.stopSystem();
     }
     stopAttackEffect() {
         if (!this.particleIce) {

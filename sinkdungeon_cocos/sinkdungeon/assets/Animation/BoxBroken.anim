@@ -2,7 +2,7 @@
   "__type__": "cc.AnimationClip",
   "_name": "BoxBroken",
   "_objFlags": 0,
-  "_rawFiles": null,
+  "_native": "",
   "_duration": 0.5,
   "sample": 60,
   "speed": 1,
@@ -34,19 +34,19 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "b2254f0e-d54a-4e35-8901-71a81c42f90f"
+                  "__uuid__": "53c1e549-60b7-468b-975b-36b2c5aad7c9"
                 }
               },
               {
                 "frame": 0.16666666666666666,
                 "value": {
-                  "__uuid__": "d4bf2f02-1f3b-46a4-b04f-b91695af3e11"
+                  "__uuid__": "3630c54d-6b4a-4662-a2f5-e7649f9acfec"
                 }
               },
               {
                 "frame": 0.3333333333333333,
                 "value": {
-                  "__uuid__": "f663c780-02c9-4911-b3f9-3763ed45ac29"
+                  "__uuid__": "eb13ae29-87c2-4fab-8605-93f8cd95d387"
                 }
               }
             ]

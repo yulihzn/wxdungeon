@@ -265,7 +265,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 10,
-            "fireDamage": 2,
+            "magicDamage": 2,
             "fireRate":80,
             "maxHealth": 0
         },
@@ -290,7 +290,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 10,
-            "iceDamage": 2,
+            "magicDamage": 2,
             "iceRate":20,
             "maxHealth": 0
         },
@@ -314,7 +314,7 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
-            "curseDamage":1,
+            "magicDamage":1,
             "curseRate":20,
             "attackSpeed": -100,
             "dodge": 0,
@@ -344,7 +344,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "toxicRate":20,
-            "toxicDamage":1,
+            "magicDamage":1,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -425,7 +425,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": -100,
-            "lighteningDamage": 1,
+            "magicDamage": 1,
             "lighteningRate":20,
             "maxHealth": 0
         },
@@ -665,7 +665,7 @@
             "moveSpeed": 0,
             "attackSpeed": -100,
             "dodge": 0,
-            "lighteningDamage": 2,
+            "magicDamage": 2,
             "lighteningRate":30,
             "maxHealth": 0
         },
@@ -696,7 +696,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "iceDamage": 2,
+            "magicDamage": 2,
             "iceRate":30,
             "maxHealth": 0
         },
@@ -1104,7 +1104,7 @@
             "attackSpeed": 0,
             "dodge": 0,
             "curseRate":20,
-            "curseDefence":20,
+            "magicDefence":20,
             "maxHealth": 0
         },
         "extraInfo":"反击毒蛇",
@@ -1289,8 +1289,7 @@
             "damageBack": 0,
             "moveSpeed": -20,
             "attackSpeed": -20,
-            "toxicDefence":20,
-            "lighteningDefence":20,
+            "magicDefence":20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1361,7 +1360,7 @@
             "damageBack": 0,
             "moveSpeed": -10,
             "attackSpeed": -10,
-            "curseDefence":20,
+            "magicDefence":20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1708,8 +1707,7 @@
             "damageBack": 0,
             "moveSpeed": -20,
             "attackSpeed": -20,
-            "toxicDefence":20,
-            "lighteningDefence":20,
+            "magicDefence":20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1781,7 +1779,7 @@
             "moveSpeed": -20,
             "attackSpeed": 0,
             "dodge": 0,
-            "curseDefence":20,
+            "magicDefence":20,
             "maxHealth": 1
         },
         "desc": "骑士精神"
@@ -2004,8 +2002,7 @@
             "damageBack": 0,
             "moveSpeed": -20,
             "attackSpeed": -20,
-            "toxicDefence":20,
-            "lighteningDefence":20,
+            "magicDefence":20,
             "maxHealth": 0
         },
         "desc": "十分笨重",
@@ -2075,7 +2072,7 @@
             "damageBack": 0,
             "moveSpeed": -20,
             "attackSpeed": 0,
-            "curseDefence":20,
+            "magicDefence":20,
             "dodge": 0,
             "maxHealth": 1
         },
@@ -2260,8 +2257,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": -20,
-            "lighteningDefence":20,
-            "toxicDefence":20,
+            "magicDefence":20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -2330,7 +2326,7 @@
             "moveSpeed": -20,
             "attackSpeed": 20,
             "dodge": 0,
-            "curseDefence":20,
+            "magicDefence":20,
             "maxHealth": 0
         },
         "desc": "骑士精神"
@@ -2467,8 +2463,7 @@
             "moveSpeed": -10,
             "attackSpeed": 0,
             "dodge": 0,
-            "lighteningDefence":20,
-            "toxicDefence":20,
+            "magicDefence":20,
             "maxHealth": 0
         },
         "desc": "十分笨重"
@@ -2535,7 +2530,7 @@
             "damageBack": 0,
             "moveSpeed": -20,
             "attackSpeed": 0,
-            "curseDefence":20,
+            "magicDefence":20,
             "dodge": 0,
             "maxHealth": 0
         },

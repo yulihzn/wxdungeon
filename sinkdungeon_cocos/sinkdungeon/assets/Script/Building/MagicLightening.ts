@@ -81,7 +81,7 @@ export default class MagicLightening extends cc.Component {
         }
         let damage = new DamageData();
         let status = StatusManager.BURNING;
-        damage.lighteningDamage = this.damagePoint;
+        damage.magicDamage = this.damagePoint;
         status = StatusManager.DIZZ;
         
         let monster = attackTarget.getComponent(Monster);

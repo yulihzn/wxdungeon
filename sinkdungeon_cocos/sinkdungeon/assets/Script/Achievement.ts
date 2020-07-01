@@ -71,13 +71,13 @@ export default class Achievements extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.resources.load('Texture/monster', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+        cc.resources.load('Texture/texures', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
             this.spriteFrames = {};
             for (let frame of atlas.getSpriteFrames()) {
                 this.spriteFrames[frame.name] = frame;
             }
             this.isMonsterLoaded = true;
-            cc.log('monster texture loaded');
+            cc.log('texures spriteatlas loaded');
         })
     }
     loadBossSpriteFrames() {
@@ -91,7 +91,7 @@ export default class Achievements extends cc.Component {
                 this.bossSpriteFrames[frame.name] = frame;
             }
             this.isBossLoaded = true;
-            cc.log('boss texture loaded');
+            cc.log('bossicons spriteatlas loaded');
         })
     }
     show() {

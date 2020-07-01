@@ -211,7 +211,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "344d76b5-9c3c-444b-b641-bcfcde2785c9"
+      "__uuid__": "6af3639b-4c06-408b-837a-e20ff082825c"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -224,7 +224,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -3039,7 +3041,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "df1692eb-ff88-4beb-b892-25d0c702812e"
+      "__uuid__": "444e6cc4-8359-4f85-8105-ed10760abae6"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -3052,7 +3054,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -3226,7 +3230,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "a1497406-f864-4471-8892-3e1e531c51ed"
+      "__uuid__": "8b1f2161-7625-419a-894a-91821a939814"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3239,7 +3243,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -3333,7 +3339,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "0c8da991-4fac-45f7-9e33-d866688d843b"
+      "__uuid__": "1aa84be8-f0aa-40df-90f1-d32cc4de9e64"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3346,7 +3352,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -3487,7 +3495,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "b2b4e830-41e5-486b-87b8-e9b82f2f4618"
+      "__uuid__": "fa17103c-b3a0-4071-ab18-b9340f059005"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3500,7 +3508,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {

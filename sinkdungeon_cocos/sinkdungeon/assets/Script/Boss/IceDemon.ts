@@ -223,19 +223,11 @@ export default class IceDemon extends Boss {
             }
             this.anim.play('IceDemonDefence');
             this.data.Common.defence = 9999;
-            this.data.Common.fireDefence = 9999;
-            this.data.Common.iceDefence = 9999;
-            this.data.Common.toxicDefence = 9999;
-            this.data.Common.lighteningDamage = 9999;
-            this.data.Common.curseDefence = 9999;
+            this.data.Common.magicDefence = 9999;
             this.scheduleOnce(() => {
                 this.defenceSkill.IsExcuting = false;
                 this.data.Common.defence = 0;
-                this.data.Common.fireDefence = 0;
-                this.data.Common.iceDefence = 0;
-                this.data.Common.toxicDefence = 0;
-                this.data.Common.lighteningDamage = 0;
-                this.data.Common.curseDefence = 0;
+                this.data.Common.magicDefence = 0;
             }, 3);
         }, 6, true);
     }

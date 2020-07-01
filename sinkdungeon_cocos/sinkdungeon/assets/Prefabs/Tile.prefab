@@ -340,7 +340,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "ce10826d-3591-4b50-af72-e0ce957b9160"
+      "__uuid__": "56619074-7cad-4314-9ab6-4bbdfb9a5627"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -353,7 +353,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -447,7 +449,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "3957fc27-ad05-41a4-b6fc-441ae7d6eb87"
+      "__uuid__": "80aa87bb-2f99-427c-a58e-06a26eb2f35c"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -460,7 +462,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -558,6 +562,8 @@
     },
     "_enabled": true,
     "_materials": [],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "0",
     "_N$string": "0",
@@ -570,6 +576,8 @@
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",

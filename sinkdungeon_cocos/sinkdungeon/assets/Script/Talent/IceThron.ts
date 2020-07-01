@@ -84,7 +84,7 @@ export default class IceThron extends cc.Component {
         if(this.player&&this.player.talentMagic.hashTalent(Talent.MAGIC_06)){
             d = 6;
         }
-        damage.fireDamage = d;
+        damage.magicDamage = d;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             monster.takeDamage(damage);

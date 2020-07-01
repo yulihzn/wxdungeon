@@ -110,8 +110,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 12,
-      "height": 14
+      "width": 16,
+      "height": 16
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -163,7 +163,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "efe91fe4-7c88-47d1-ba4f-8c609cab42a4"
+      "__uuid__": "f5527a02-6930-4fcd-9f5d-7e00ca03bc77"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -176,7 +176,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -267,6 +269,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "9999",
     "_N$string": "9999",
@@ -277,6 +281,8 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
+    "_styleFlags": 0,
+    "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",

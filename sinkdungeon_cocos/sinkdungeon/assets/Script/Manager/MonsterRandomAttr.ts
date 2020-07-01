@@ -126,23 +126,23 @@ export default class MonsterRandomAttr {
             }
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_17)){
-            data.Common.iceDamage += 1;
+            data.Common.magicDamage += 1;
             data.Common.iceRate = 100;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_18)){
-            data.Common.fireDamage += 1;
+            data.Common.magicDamage += 1;
             data.Common.fireRate = 100;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_19)){
-            data.Common.lighteningDamage += 1;
+            data.Common.magicDamage += 1;
             data.Common.lighteningRate = 100;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_20)){
-            data.Common.toxicDamage += 1;
+            data.Common.magicDamage += 1;
             data.Common.toxicRate = 100;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_21)){
-            data.Common.curseDamage += 1;
+            data.Common.magicDamage += 1;
             data.Common.curseRate = 100;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_22)){

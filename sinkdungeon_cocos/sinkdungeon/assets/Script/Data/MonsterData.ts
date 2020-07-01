@@ -148,22 +148,15 @@ export default class MonsterData{
         let dd = new DamageData();
         dd.realDamage = this.common.realDamage;
         dd.physicalDamage = this.common.damageMin;
-        dd.iceDamage = this.common.iceDamage;
-        dd.fireDamage = this.common.fireDamage;
-        dd.lighteningDamage = this.common.lighteningDamage;
-        dd.toxicDamage = this.common.toxicDamage;
-        dd.curseDamage = this.common.curseDamage;
+        dd.magicDamage = this.common.magicDamage;
+        
         return dd;
     }
     //伤害减免
     getDamage(damageData:DamageData):DamageData{
         let finalDamageData = damageData.clone();
         let defence = this.getDefence();
-        let defenceIce = this.getIceDefence();
-        let defenceFire = this.getFireDefence();
-        let defenceLightening = this.getLighteningDefence();
-        let defenceToxic = this.getToxicDefence();
-        let defenceCurse = this.getCurseDefence();
+        let defecneMagic = this.getMagicDefence();
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
         //伤害 = 攻击 + 攻击*(2-0.94^(-护甲))
         if(defence>=0){
@@ -171,11 +164,7 @@ export default class MonsterData{
         }else{
             finalDamageData.physicalDamage = finalDamageData.physicalDamage * (2-Math.pow(0.94,-defence));
         }
-        finalDamageData.iceDamage = finalDamageData.iceDamage*(1-defenceIce/100);
-        finalDamageData.fireDamage = finalDamageData.fireDamage*(1-defenceFire/100);
-        finalDamageData.lighteningDamage = finalDamageData.lighteningDamage*(1-defenceLightening/100);
-        finalDamageData.toxicDamage = finalDamageData.toxicDamage*(1-defenceToxic/100);
-        finalDamageData.curseDamage = finalDamageData.curseDamage*(1-defenceCurse/100);
+        finalDamageData.magicDamage = finalDamageData.magicDamage*(1-defecneMagic/100);
         return finalDamageData;
     }
 
@@ -266,55 +255,10 @@ export default class MonsterData{
         }
         return cc.v3(maxHealth * rate, maxHealth);
     }
-
-    getIceDefence(): number {
+    getMagicDefence(): number {
         let defence = 0;
         for (let data of this.getCommonList()) {
-            defence += data.iceDefence;
-        }
-        if (defence > 100) {
-            defence = 100;
-        }
-        return defence;
-    }
-
-    getFireDefence(): number {
-        let defence = 0;
-        for (let data of this.getCommonList()) {
-            defence += data.fireDefence;
-        }
-        if (defence > 100) {
-            defence = 100;
-        }
-        return defence;
-    }
-
-    getLighteningDefence(): number {
-        let defence = 0;
-        for (let data of this.getCommonList()) {
-            defence += data.lighteningDefence;
-        }
-        if (defence > 100) {
-            defence = 100;
-        }
-        return defence;
-    }
-
-    getToxicDefence(): number {
-        let defence = 0;
-        for (let data of this.getCommonList()) {
-            defence += data.toxicDefence;
-        }
-        if (defence > 100) {
-            defence = 100;
-        }
-        return defence;
-    }
-
-    getCurseDefence(): number {
-        let defence = 0;
-        for (let data of this.getCommonList()) {
-            defence += data.curseDefence;
+            defence += data.magicDefence;
         }
         if (defence > 100) {
             defence = 100;
@@ -332,55 +276,10 @@ export default class MonsterData{
         }
         return damage;
     }
-
-    getIceDamage(): number {
+    getMagicDamage(): number {
         let damage = 0;
         for (let data of this.getCommonList()) {
-            damage += data.iceDamage;
-        }
-        if (damage < 0) {
-            damage = 0;
-        }
-        return damage;
-    }
-
-    getFireDamage(): number {
-        let damage = 0;
-        for (let data of this.getCommonList()) {
-            damage += data.fireDamage;
-        }
-        if (damage < 0) {
-            damage = 0;
-        }
-        return damage;
-    }
-
-    getLighteningDamage(): number {
-        let damage = 0;
-        for (let data of this.getCommonList()) {
-            damage += data.lighteningDamage;
-        }
-        if (damage < 0) {
-            damage = 0;
-        }
-        return damage;
-    }
-
-    getToxicDamage(): number {
-        let damage = 0;
-        for (let data of this.getCommonList()) {
-            damage += data.toxicDamage;
-        }
-        if (damage < 0) {
-            damage = 0;
-        }
-        return damage;
-    }
-
-    getCurseDamage(): number {
-        let damage = 0;
-        for (let data of this.getCommonList()) {
-            damage += data.curseDamage;
+            damage += data.magicDamage;
         }
         if (damage < 0) {
             damage = 0;

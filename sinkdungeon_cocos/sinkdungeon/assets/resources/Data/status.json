@@ -39,7 +39,7 @@
         "spriteFrameName": "status004",
         "statusType": 4,
         "desc": "",
-        "toxicDamageOvertime": 1,
+        "magicDamageOvertime": 1,
         "duration": 3,
         "common": {
         }
@@ -162,11 +162,7 @@
         "duration": 2,
         "common": {
             "defence": 9999,
-            "iceDefence": 100,
-            "fireDefence": 100,
-            "lighteningDefence": 100,
-            "toxicDefence": 100,
-            "curseDefence": 100
+            "magicDefence": 100
         }
     },
     "status016": {
@@ -178,11 +174,7 @@
         "duration": 4,
         "common": {
             "defence": 9999,
-            "iceDefence": 100,
-            "fireDefence": 100,
-            "lighteningDefence": 100,
-            "toxicDefence": 100,
-            "curseDefence": 100
+            "magicDefence": 100
         }
     },
     "status017": {
@@ -204,11 +196,7 @@
         "duration": 2,
         "common": {
             "defence": 9999,
-            "iceDefence": 100,
-            "fireDefence": 100,
-            "lighteningDefence": 100,
-            "toxicDefence": 100,
-            "curseDefence": 100
+            "magicDefence": 100
         }
     },
     "status019": {

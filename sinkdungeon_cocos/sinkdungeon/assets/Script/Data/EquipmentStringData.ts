@@ -34,20 +34,12 @@ export default class EquipmentStringData {
 
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
-    iceDamage = 0;//冰元素伤害
-    iceDefence = 0;//冰元素抗性
+    magicDamage = 0;//魔法伤害
+    magicDefence = 0;//魔法抗性
     iceRate = 0;//冰元素几率
-    fireDamage = 0;//火元素伤害
-    fireDefence = 0;//火元素抗性
     fireRate = 0;//火元素几率
-    lighteningDamage = 0;//雷元素伤害
-    lighteningDefence = 0;//雷元素抗性
     lighteningRate = 0;//雷元素几率
-    toxicDamage = 0;//毒元素伤害
-    toxicDefence = 0;//毒元素抗性
     toxicRate = 0;//毒元素几率
-    curseDamage = 0;//诅咒元素伤害
-    curseDefence = 0;//诅咒元素抗性
     curseRate = 0;//诅咒元素几率
 
     stab = 0;//是否突刺
@@ -81,20 +73,12 @@ export default class EquipmentStringData {
         this.dodge = data.Common.dodge ? data.Common.dodge : 0;
         this.realDamage = data.Common.realDamage ? data.Common.realDamage : 0;
         this.realRate = data.Common.realRate ? data.Common.realRate : 0;
-        this.iceDamage = data.Common.iceDamage ? data.Common.iceDamage : 0;
-        this.iceDefence = data.Common.iceDefence ? data.Common.iceDefence : 0;
+        this.magicDefence = data.Common.magicDefence ? data.Common.magicDefence : 0;
         this.iceRate = data.Common.iceRate ? data.Common.iceRate : 0;
-        this.fireDamage = data.Common.fireDamage ? data.Common.fireDamage : 0;
-        this.fireDefence = data.Common.fireDefence ? data.Common.fireDefence : 0;
+        this.magicDamage = data.Common.magicDamage ? data.Common.magicDamage : 0;
         this.fireRate = data.Common.fireRate ? data.Common.fireRate : 0;
-        this.lighteningDamage = data.Common.lighteningDamage ? data.Common.lighteningDamage : 0;
-        this.lighteningDefence = data.Common.lighteningDefence ? data.Common.lighteningDefence : 0;
         this.lighteningRate = data.Common.lighteningRate ? data.Common.lighteningRate : 0;
-        this.toxicDamage = data.Common.toxicDamage ? data.Common.toxicDamage : 0;
-        this.toxicDefence = data.Common.toxicDefence ? data.Common.toxicDefence : 0;
         this.toxicRate = data.Common.toxicRate ? data.Common.toxicRate : 0;
-        this.curseDamage = data.Common.curseDamage ? data.Common.curseDamage : 0;
-        this.curseDefence = data.Common.curseDefence ? data.Common.curseDefence : 0;
         this.curseRate = data.Common.curseRate ? data.Common.curseRate : 0;
         this.nameCn = data.nameCn?data.nameCn:'';
         this.nameEn = data.nameEn?data.nameEn:'';
@@ -151,20 +135,12 @@ export default class EquipmentStringData {
         e.dodge = this.dodge;
         e.realDamage = this.realDamage;
         e.realRate = this.realRate;
-        e.iceDamage = this.iceDamage;
-        e.iceDefence = this.iceDefence;
+        e.magicDefence = this.magicDefence;
         e.iceRate = this.iceRate;
-        e.fireDamage = this.fireDamage;
-        e.fireDefence = this.fireDefence;
+        e.magicDamage = this.magicDamage;
         e.fireRate = this.fireRate;
-        e.lighteningDamage = this.lighteningDamage;
-        e.lighteningDefence = this.lighteningDefence;
         e.lighteningRate = this.lighteningRate;
-        e.toxicDamage = this.toxicDamage;
-        e.toxicDefence = this.toxicDefence;
         e.toxicRate = this.toxicRate;
-        e.curseDamage = this.curseDamage;
-        e.curseDefence = this.curseDefence;
         e.curseRate = this.curseRate;
         return e;
     }

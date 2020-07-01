@@ -4,7 +4,6 @@ import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import { EventHelper } from "../EventHelper";
-import EquipmentManager from "../Manager/EquipmentManager";
 import Actor from "../Base/Actor";
 import Shooter from "../Shooter";
 import FromData from "../Data/FromData";

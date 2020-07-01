@@ -159,11 +159,11 @@ export default class MeleeWeapon extends cc.Component {
         }
         let p = this.weaponFirePoint.position.clone();
         let ran = Logic.getRandomNum(0, 100);
-        let waves = [data.getIceDamage() > 0 && ran < data.getIceRate() ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
-            , data.getFireDamage() > 0 && ran < data.getFireRate() ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
-            , data.getLighteningDamage() > 0 && ran < data.getLighteningRate() ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
-            , data.getToxicDamage() > 0 && ran < data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
-            , data.getCurseDamage() > 0 && ran < data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
+        let waves = [data.getMagicDamage() > 0 && ran < data.getIceRate() ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
+            , data.getMagicDamage() > 0 && ran < data.getFireRate() ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
+            , data.getMagicDamage() > 0 && ran < data.getLighteningRate() ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
+            , data.getMagicDamage() > 0 && ran < data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
+            , data.getMagicDamage() > 0 && ran < data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
         for (let w of waves) {
             this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
         }

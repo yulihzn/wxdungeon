@@ -8,7 +8,8 @@
       "__id__": 1
     },
     "optimizationPolicy": 0,
-    "asyncLoadAssets": false
+    "asyncLoadAssets": false,
+    "readonly": false
   },
   {
     "__type__": "cc.Node",
@@ -27,7 +28,6 @@
       }
     ],
     "_active": true,
-    "_level": 1,
     "_components": [
       {
         "__id__": 11
@@ -60,16 +60,6 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
@@ -80,12 +70,24 @@
         0,
         0,
         0,
-        0,
+        1,
         1,
         1,
         1
       ]
-    }
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
   },
   {
     "__type__": "cc.Node",
@@ -96,7 +98,6 @@
     },
     "_children": [],
     "_active": true,
-    "_level": 2,
     "_components": [
       {
         "__id__": 3
@@ -123,16 +124,6 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
@@ -143,12 +134,24 @@
         0,
         0,
         0,
-        0,
+        1,
         1,
         1,
         1
       ]
-    }
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
   },
   {
     "__type__": "cc.Sprite",
@@ -158,8 +161,15 @@
       "__id__": 2
     },
     "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "14df5e9d-492e-4d94-bb8d-3c63e5f9d7a2"
+      "__uuid__": "14de073f-cd28-4900-9336-0dcb3ee96a57"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -172,10 +182,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_state": 0,
-    "_atlas": null,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -198,7 +207,6 @@
     },
     "_children": [],
     "_active": true,
-    "_level": 2,
     "_components": [
       {
         "__id__": 6
@@ -225,16 +233,6 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
@@ -245,12 +243,24 @@
         0,
         0,
         0,
-        0,
+        1,
         1,
         1,
         1
       ]
-    }
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
   },
   {
     "__type__": "cc.Sprite",
@@ -260,8 +270,15 @@
       "__id__": 5
     },
     "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "60fff64b-2e06-4f4d-9c7a-65afce396594"
+      "__uuid__": "47ae73f4-0227-4a77-b8b5-9d0ce4e3722e"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -274,10 +291,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_state": 0,
-    "_atlas": null,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -300,7 +316,6 @@
     },
     "_children": [],
     "_active": true,
-    "_level": 2,
     "_components": [
       {
         "__id__": 9
@@ -327,16 +342,6 @@
       "x": 0.5,
       "y": 0.5
     },
-    "_skewX": 0,
-    "_skewY": 0,
-    "groupIndex": 0,
-    "_id": "",
-    "_eulerAngles": {
-      "__type__": "cc.Vec3",
-      "x": 0,
-      "y": 0,
-      "z": 0
-    },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
@@ -347,12 +352,24 @@
         0,
         0,
         0,
-        0,
+        1,
         1,
         1,
         1
       ]
-    }
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 0,
+    "groupIndex": 0,
+    "_id": ""
   },
   {
     "__type__": "cc.Sprite",
@@ -362,8 +379,15 @@
       "__id__": 8
     },
     "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "14df5e9d-492e-4d94-bb8d-3c63e5f9d7a2"
+      "__uuid__": "14de073f-cd28-4900-9336-0dcb3ee96a57"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -376,10 +400,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_state": 0,
-    "_atlas": null,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -438,10 +461,10 @@
     },
     "_enabled": true,
     "normalSpriteFrame": {
-      "__uuid__": "60fff64b-2e06-4f4d-9c7a-65afce396594"
+      "__uuid__": "47ae73f4-0227-4a77-b8b5-9d0ce4e3722e"
     },
     "bloodSpriteFrame": {
-      "__uuid__": "3179fd45-7d31-4eab-9e7a-0f9697b56ee2"
+      "__uuid__": "7f66b19c-4c81-40df-bed2-42c904942375"
     },
     "_id": ""
   },

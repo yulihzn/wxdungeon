@@ -157,28 +157,21 @@ export default class MonsterManager extends cc.Component {
         let isAddElement = rand <= 5;
         rand = Logic.getRandomNum(0, 4);
         if (isAddElement) {
+            data.Common.magicDamage += 1;
+            data.Common.magicDefence = data.Common.magicDefence + df > 100 ? 100 : data.Common.magicDefence + df;
             switch (rand) {
                 case 0:
-                    data.Common.iceDamage += 1;
-                    data.Common.iceDefence = data.Common.iceDefence + df > 100 ? 100 : data.Common.iceDefence + df;
                     data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
                     break;
                 case 1:
-                    data.Common.fireDamage += 1;
-                    data.Common.fireDefence = data.Common.fireDefence + df > 100 ? 100 : data.Common.fireDefence + df;
                     data.Common.fireRate = data.Common.fireRate + er > 100 ? 100 : data.Common.fireRate + er;
                     break;
                 case 2:
-                    data.Common.lighteningDamage += 1;
-                    data.Common.lighteningDefence = data.Common.lighteningDefence + df > 100 ? 100 : data.Common.lighteningDefence + df;
                     data.Common.lighteningRate = data.Common.lighteningRate + er > 100 ? 100 : data.Common.lighteningRate + er;
                     break;
-                case 3: data.Common.toxicDamage += 1;
-                    data.Common.toxicDefence = data.Common.toxicDefence + df > 100 ? 100 : data.Common.toxicDefence + df;
+                case 3:
                     data.Common.toxicRate = data.Common.toxicRate + er > 100 ? 100 : data.Common.toxicRate + er; break;
                 case 4:
-                    data.Common.curseDamage += 1;
-                    data.Common.curseDefence = data.Common.curseDefence + df > 100 ? 100 : data.Common.curseDefence + df;
                     data.Common.curseRate = data.Common.curseRate + er > 100 ? 100 : data.Common.curseRate + er;
                     break;
             }

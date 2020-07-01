@@ -192,7 +192,7 @@
       "array": [
         0,
         0,
-        136.84554544487546,
+        257.3042664525172,
         0,
         0,
         0,
@@ -1107,6 +1107,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "",
     "_N$string": "",
@@ -1870,6 +1872,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "",
     "_N$string": "",
@@ -2430,6 +2434,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "",
     "_N$string": "",
@@ -2624,7 +2630,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "efe91fe4-7c88-47d1-ba4f-8c609cab42a4"
+      "__uuid__": "f5527a02-6930-4fcd-9f5d-7e00ca03bc77"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2637,7 +2643,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": "aenJKmRp1Pu5dEmL6Nwm17"
   },
   {
@@ -2715,6 +2723,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "9999",
     "_N$string": "9999",
@@ -2879,7 +2889,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "986876c7-4946-4cb0-85a7-57e9622a7b32"
+      "__uuid__": "36ff97e5-7855-434d-96bc-06b46256c078"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -2892,7 +2902,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": "dchalq14ZJ/KqMIBSzXr6H"
   },
   {
@@ -2970,6 +2982,8 @@
         "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
       }
     ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
     "_useOriginalSize": false,
     "_string": "9999",
     "_N$string": "9999",

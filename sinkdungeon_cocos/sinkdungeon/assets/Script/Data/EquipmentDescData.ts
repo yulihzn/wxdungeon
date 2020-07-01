@@ -32,20 +32,12 @@ export default class EquipmentDescData{
     remoteSpeed = 0;//远程攻速
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
-    iceDamage = 0;//冰元素伤害
-    iceDefence = 0;//冰元素抗性
+    magicDamage = 0;//魔法伤害
+    magicDefence = 0;//魔法抗性
     iceRate = 0;//冰元素几率
-    fireDamage = 0;//火元素伤害
-    fireDefence = 0;//火元素抗性
     fireRate = 0;//火元素几率
-    lighteningDamage = 0;//雷元素伤害
-    lighteningDefence = 0;//雷元素抗性
     lighteningRate = 0;//雷元素几率
-    toxicDamage = 0;//毒元素伤害
-    toxicDefence = 0;//毒元素抗性
     toxicRate = 0;//毒元素几率
-    curseDamage = 0;//诅咒元素伤害
-    curseDefence = 0;//诅咒元素抗性
     curseRate = 0;//诅咒元素几率
 
     info1:string = '';

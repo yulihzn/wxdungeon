@@ -1,7 +1,6 @@
 import Status from "../Status";
 import StatusData from "../Data/StatusData";
 import Logic from "../Logic";
-import DamageData from "../Data/DamageData";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Monster from "../Monster";
@@ -170,20 +169,12 @@ export default class StatusManager extends cc.Component {
             e.Common.maxHealth += s.data.Common.maxHealth?s.data.Common.maxHealth:0;
             e.Common.realDamage += s.data.Common.realDamage?s.data.Common.realDamage:0;
             e.Common.realRate += s.data.Common.realRate?s.data.Common.realRate:0;
-            e.Common.iceDamage += s.data.Common.iceDamage?s.data.Common.iceDamage:0;
-            e.Common.iceDefence += s.data.Common.iceDefence?s.data.Common.iceDefence:0;
+            e.Common.magicDamage += s.data.Common.magicDamage?s.data.Common.magicDamage:0;
+            e.Common.magicDefence += s.data.Common.magicDefence?s.data.Common.magicDefence:0;
             e.Common.iceRate += s.data.Common.iceRate?s.data.Common.iceRate:0;
-            e.Common.fireDamage += s.data.Common.fireDamage?s.data.Common.fireDamage:0;
-            e.Common.fireDefence += s.data.Common.fireDefence?s.data.Common.fireDefence:0;
             e.Common.fireRate += s.data.Common.fireRate?s.data.Common.fireRate:0;
-            e.Common.lighteningDamage += s.data.Common.lighteningDamage?s.data.Common.lighteningDamage:0;
-            e.Common.lighteningDefence += s.data.Common.lighteningDefence?s.data.Common.lighteningDefence:0;
             e.Common.lighteningRate += s.data.Common.lighteningRate?s.data.Common.lighteningRate:0;
-            e.Common.toxicDamage += s.data.Common.toxicDamage?s.data.Common.toxicDamage:0;
-            e.Common.toxicDefence += s.data.Common.toxicDefence?s.data.Common.toxicDefence:0;
             e.Common.toxicRate += s.data.Common.toxicRate?s.data.Common.toxicRate:0;
-            e.Common.curseDamage += s.data.Common.curseDamage?s.data.Common.curseDamage:0;
-            e.Common.curseDefence += s.data.Common.curseDefence?s.data.Common.curseDefence:0;
             e.Common.curseRate += s.data.Common.curseRate?s.data.Common.curseRate:0;
         }
         e.Common.criticalStrikeRate=(1-e.Common.criticalStrikeRate)*100;

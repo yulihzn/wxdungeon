@@ -16,12 +16,7 @@
 export default class DamageData {
     realDamage:number = 0;//真实伤害
     physicalDamage: number = 0;//物理伤害
-    iceDamage = 0;//冰元素伤害
-    fireDamage = 0;//火元素伤害
-    lighteningDamage = 0;//雷元素伤害
-    toxicDamage = 0;//毒元素伤害
-    curseDamage = 0;//诅咒元素伤害
-
+    magicDamage:number = 0;//魔法伤害
     realRate = 0;//真实伤害释放几率
     iceRate = 0;//冰元素释放几率
     fireRate = 0;//火元素释放几率
@@ -40,11 +35,7 @@ export default class DamageData {
     public valueCopy(data: DamageData): void {
         this.realDamage = data.realDamage?data.realDamage:0;
         this.physicalDamage = data.physicalDamage?data.physicalDamage:0;
-        this.iceDamage = data.iceDamage?data.iceDamage:0;
-        this.fireDamage = data.fireDamage?data.fireDamage:0;
-        this.lighteningDamage = data.lighteningDamage?data.lighteningDamage:0;
-        this.toxicDamage = data.toxicDamage?data.toxicDamage:0;
-        this.curseDamage = data.curseDamage?data.curseDamage:0;
+        this.magicDamage = data.magicDamage?data.magicDamage:0;
         this.realRate = data.realRate?data.realRate:0;
         this.iceRate = data.iceRate?data.iceRate:0;
         this.fireRate = data.fireRate?data.fireRate:0;
@@ -61,11 +52,7 @@ export default class DamageData {
         let e = new DamageData();
         e.realDamage = this.realDamage;
         e.physicalDamage = this.physicalDamage;
-        e.iceDamage = this.iceDamage;
-        e.fireDamage = this.fireDamage;
-        e.lighteningDamage = this.lighteningDamage;
-        e.toxicDamage = this.toxicDamage;
-        e.curseDamage = this.curseDamage;
+        e.magicDamage = this.magicDamage;
         e.realRate = this.realRate;
         e.iceRate = this.iceRate;
         e.fireRate = this.fireRate;
@@ -79,7 +66,7 @@ export default class DamageData {
         return e;
     }
     public getTotalDamage():number{
-        let d = this.physicalDamage+this.iceDamage+this.fireDamage+this.lighteningDamage+this.toxicDamage+this.curseDamage+this.realDamage;
+        let d = this.physicalDamage+this.magicDamage+this.realDamage;
         if(d == NaN){
             console.log(d);
         }

@@ -589,7 +589,7 @@
             "maxHealth": 50,
             "damageMin": 2,
             "curseRate":100,
-            "curseDamage":1
+            "magicDamage":1
         },
         "currentHealth": 50,
         "invisible": 0,

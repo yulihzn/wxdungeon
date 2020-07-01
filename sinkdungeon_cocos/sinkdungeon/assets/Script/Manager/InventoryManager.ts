@@ -108,41 +108,14 @@ export default class InventoryManager {
         }
         return defence;
     }
-    getIceDefence():number{
+    getMagicDefence():number{
         let defence = 0;
         for(let data of this.list){
-            defence += data.Common.iceDefence;
+            defence += data.Common.magicDefence;
         }
         return defence;
     }
-    getFireDefence():number{
-        let defence = 0;
-        for(let data of this.list){
-            defence += data.Common.fireDefence;
-        }
-        return defence;
-    }
-    getLighteningDefence():number{
-        let defence = 0;
-        for(let data of this.list){
-            defence += data.Common.lighteningDefence;
-        }
-        return defence;
-    }
-    getToxicDefence():number{
-        let defence = 0;
-        for(let data of this.list){
-            defence += data.Common.toxicDefence;
-        }
-        return defence;
-    }
-    getCurseDefence():number{
-        let defence = 0;
-        for(let data of this.list){
-            defence += data.Common.curseDefence;
-        }
-        return defence;
-    }
+   
     getRealDamage():number{
         let damage = 0;
         for(let data of this.list){
@@ -150,41 +123,14 @@ export default class InventoryManager {
         }
         return damage;
     }
-    getIceDamage():number{
+    getMagicDamage():number{
         let damage = 0;
         for(let data of this.list){
-            damage += data.Common.iceDamage;
+            damage += data.Common.magicDamage;
         }
         return damage;
     }
-    getFireDamage():number{
-        let damage = 0;
-        for(let data of this.list){
-            damage += data.Common.fireDamage;
-        }
-        return damage;
-    }
-    getLighteningDamage():number{
-        let damage = 0;
-        for(let data of this.list){
-            damage += data.Common.lighteningDamage;
-        }
-        return damage;
-    }
-    getToxicDamage():number{
-        let damage = 0;
-        for(let data of this.list){
-            damage += data.Common.toxicDamage;
-        }
-        return damage;
-    }
-    getCurseDamage():number{
-        let damage = 0;
-        for(let data of this.list){
-            damage += data.Common.curseDamage;
-        }
-        return damage;
-    }
+    
     getRealRate():number{
         let rate = 0;
         for(let data of this.list){
@@ -270,20 +216,12 @@ export default class InventoryManager {
         e.Common.maxHealth = this.getHealth();
         e.Common.realDamage = this.getRealDamage();
         e.Common.realRate = this.getRealRate();
-        e.Common.iceDamage = this.getIceDamage();
-        e.Common.iceDefence = this.getIceDefence();
+        e.Common.magicDamage = this.getMagicDamage();
+        e.Common.magicDefence = this.getMagicDefence();
         e.Common.iceRate = this.getIceRate();
-        e.Common.fireDamage = this.getFireDamage();
-        e.Common.fireDefence = this.getFireDefence();
         e.Common.fireRate = this.getFireRate();
-        e.Common.lighteningDamage = this.getLighteningDamage();
-        e.Common.lighteningDefence = this.getLighteningDefence();
         e.Common.lighteningRate = this.getLighteningRate();
-        e.Common.toxicDamage = this.getToxicDamage();
-        e.Common.toxicDefence = this.getToxicDefence();
         e.Common.toxicRate = this.getToxicRate();
-        e.Common.curseDamage = this.getCurseDamage();
-        e.Common.curseDefence = this.getCurseDefence();
         e.Common.curseRate = this.getCurseRate();
         return e;
     }

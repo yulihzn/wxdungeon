@@ -300,7 +300,7 @@
         "lightColor": "#cbdbfc",
         "damage": {
             "physicalDamage": 0,
-            "lighteningDamage":1,
+            "magicDamage":1,
             "lighteningRate":100
         }
     },
@@ -431,7 +431,7 @@
         "fixedRotation":1,
         "damage": {
             "fireRate": 100,
-            "fireDamage":1
+            "magicDamage":1
         }
     },
     "bullet200": {
@@ -446,7 +446,7 @@
         "fixedRotation":1,
         "damage": {
             "fireRate": 100,
-            "fireDamage":1
+            "magicDamage":1
         }
     },
     "bullet024": {
@@ -687,7 +687,7 @@
         "statusType":"status001",
         "statusRate":100,
         "damage": {
-            "iceDamage": 5
+            "magicDamage": 5
         }
     },
     "bullet136": {
@@ -707,7 +707,7 @@
         "statusType":"status001",
         "statusRate":100,
         "damage": {
-            "iceDamage": 8
+            "magicDamage": 8
         }
     },
     "bullet037": {
@@ -727,7 +727,7 @@
         "statusType":"status027",
         "statusRate":100,
         "damage": {
-            "iceDamage": 9
+            "magicDamage": 9
         }
     },
     "bullet137": {
@@ -747,7 +747,7 @@
         "statusType":"status027",
         "statusRate":100,
         "damage": {
-            "iceDamage": 12
+            "magicDamage": 12
         }
     },
     "bullet038": {

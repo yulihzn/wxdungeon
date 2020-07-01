@@ -286,53 +286,20 @@ export default class EquipmentManager extends cc.Component {
             let realDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
             level = realDamage.y > level ? realDamage.y : level;
             desc.prefix += realDamage.y > damage / 2 ? '锋利' : '';
-            //冰伤害0-5
-            let iceDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
-            level = iceDamage.y > level ? iceDamage.y : level;
-            desc.prefix += iceDamage.y > damage / 2 ? '寒冷' : '';
-            //火伤害0-5
-            let fireDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
-            level = fireDamage.y > level ? fireDamage.y : level;
-            desc.prefix += fireDamage.y > damage / 2 ? '炎热' : '';
-            //雷伤害0-5
-            let lighteningDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
-            level = lighteningDamage.y > level ? lighteningDamage.y : level;
-            desc.prefix += lighteningDamage.y > damage / 2 ? '闪电' : '';
-            //毒伤害0-5
-            let toxicDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
-            level = toxicDamage.y > level ? toxicDamage.y : level;
-            desc.prefix += toxicDamage.y > damage / 2 ? '剧毒' : '';
-            //诅咒伤害0-5
-            let curseDamage = Random.rand() < 0.1 ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
-            level = curseDamage.y > level ? curseDamage.y : level;
-            desc.prefix += curseDamage.y > damage / 2 ? '诅咒' : '';
+            //魔法伤害0-5
+            let magicDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
+            level = magicDamage.y > level ? magicDamage.y : level;
+            desc.prefix += magicDamage.y > damage / 2 ? '神秘' : '';
 
             desc.realDamage = realDamage.x;
-            desc.iceDamage = iceDamage.x;
-            desc.fireDamage = fireDamage.x;
-            desc.lighteningDamage = lighteningDamage.x;
-            desc.toxicDamage = toxicDamage.x;
-            desc.curseDamage = curseDamage.x;
+            desc.magicDamage = magicDamage.x;
         }
         let defenceMax = 60;
         let defenceMin = 30;
         let defenceRate = 0.1;
-        //冰抗性30-60 0.1几率
-        let iceDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
-        level = iceDefence.y > level ? iceDefence.y : level;
-        //火抗性30-60 0.1几率
-        let fireDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
-        level = fireDefence.y > level ? fireDefence.y : level;
-        //雷抗性30-60 0.1几率
-        let lighteningDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
-        level = lighteningDefence.y > level ? lighteningDefence.y : level;
-        //毒抗性30-60 0.1几率
-        let toxicDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
-        level = toxicDefence.y > level ? toxicDefence.y : level;
-        //诅咒抗性30-60 0.1几率
-        let curseDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
-        level = curseDefence.y > level ? curseDefence.y : level;
-
+        //魔法抗性30-60 0.1几率
+        let magicDefence = Random.rand() < defenceRate ? this.getRandomQuality(defenceMin, defenceMax, chestQuality) : cc.v3(0, 0);
+        level = magicDefence.y > level ? magicDefence.y : level;
         let rateMax = 60;
         let rateMin = 10;
         let rateRate = 0.05;
@@ -342,19 +309,23 @@ export default class EquipmentManager extends cc.Component {
         //冰几率0-60
         let iceRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = iceRate.y > level ? iceRate.y : level;
+        desc.prefix += iceRate.y > rateMax / 2 ? '寒冷' : '';
         //火几率0-60
         let fireRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = fireRate.y > level ? fireRate.y : level;
+        desc.prefix += fireRate.y > rateMax / 2 ? '炎热' : '';
         //雷几率0-60
         let lighteningRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = lighteningRate.y > level ? lighteningRate.y : level;
+        desc.prefix += lighteningRate.y > rateMax / 2 ? '闪电' : '';
         //毒几率0-60
         let toxicRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = toxicRate.y > level ? toxicRate.y : level;
+        desc.prefix += toxicRate.y > rateMax / 2 ? '剧毒' : '';
         //诅咒几率0-60
         let curseRate = Random.rand() < rateRate ? this.getRandomQuality(rateMin, rateMax, chestQuality) : cc.v3(0, 0);
         level = curseRate.y > level ? curseRate.y : level;
-
+        desc.prefix += curseRate.y > rateMax / 2 ? '诅咒' : '';
         desc.prefix = arr[level] + desc.prefix;
         desc.titlecolor = colors[level];
         desc.level = level;
@@ -372,11 +343,7 @@ export default class EquipmentManager extends cc.Component {
         desc.dodge = dodge.x;
         desc.health = health.x;
       
-        desc.iceDefence = iceDefence.x;
-        desc.fireDefence = fireDefence.x;
-        desc.lighteningDefence = lighteningDefence.x;
-        desc.toxicDefence = toxicDefence.x;
-        desc.curseDefence = curseDefence.x;
+        desc.magicDefence = magicDefence.x;
         desc.realRate = realRate.x;
         desc.iceRate = iceRate.x;
         desc.fireRate = fireRate.x;
@@ -472,16 +439,8 @@ export default class EquipmentManager extends cc.Component {
             data.Common.dodge += desc.dodge;
             data.Common.maxHealth += desc.health;
             data.Common.realDamage += desc.realDamage;
-            data.Common.iceDamage += desc.iceDamage;
-            data.Common.fireDamage += desc.fireDamage;
-            data.Common.lighteningDamage += desc.lighteningDamage;
-            data.Common.toxicDamage += desc.toxicDamage;
-            data.Common.curseDamage += desc.curseDamage;
-            data.Common.iceDefence += desc.iceDefence;
-            data.Common.fireDefence += desc.fireDefence;
-            data.Common.lighteningDefence += desc.lighteningDefence;
-            data.Common.toxicDefence += desc.toxicDefence;
-            data.Common.curseDefence += desc.curseDefence;
+            data.Common.magicDamage += desc.magicDamage;
+            data.Common.magicDefence += desc.magicDefence;
             data.Common.realRate += desc.realRate;
             data.Common.iceRate += desc.iceRate;
             data.Common.fireRate += desc.fireRate;
@@ -543,15 +502,11 @@ export default class EquipmentManager extends cc.Component {
         info += data.isReflect == 0 ? `` : `反弹子弹\n`;
         info += data.Common.realDamage + desc.realDamage == 0 ? `` : `攻击附加${data.Common.realDamage + desc.realDamage}点流血伤害\n`;
         info += data.Common.realRate + desc.realRate == 0 ? `` : `攻击有${data.Common.realRate + desc.realRate}%几率释放流血\n`;
-        info += data.Common.iceDamage + desc.iceDamage == 0 ? `` : `攻击附加${data.Common.iceDamage + desc.iceDamage}点冰伤害\n`;
+        info += data.Common.magicDamage + desc.magicDamage == 0 ? `` : `攻击附加${data.Common.magicDamage + desc.magicDamage}点元素伤害\n`;
         info += data.Common.iceRate + desc.iceRate == 0 ? `` : `攻击有${data.Common.iceRate + desc.iceRate}%几率释放冰冻\n`;
-        info += data.Common.fireDamage + desc.fireDamage == 0 ? `` : `攻击附加${data.Common.fireDamage + desc.fireDamage}点火伤害\n`;
         info += data.Common.fireRate + desc.fireRate == 0 ? `` : `攻击有${data.Common.fireRate + desc.fireRate}%几率释放燃烧\n`;
-        info += data.Common.lighteningDamage + desc.lighteningDamage == 0 ? `` : `攻击附加${data.Common.lighteningDamage + desc.lighteningDamage}点雷伤害\n`;
         info += data.Common.lighteningRate + desc.lighteningRate == 0 ? `` : `攻击有${data.Common.lighteningRate + desc.lighteningRate}%几率释放闪电\n`;
-        info += data.Common.toxicDamage + desc.toxicDamage == 0 ? `` : `攻击附加${data.Common.toxicDamage + desc.toxicDamage}点毒伤害\n`;
         info += data.Common.toxicRate + desc.toxicRate == 0 ? `` : `毒攻击有${data.Common.toxicRate + desc.toxicRate}%几率释放毒素\n`;
-        info += data.Common.curseDamage + desc.curseDamage == 0 ? `` : `攻击附加 ${data.Common.curseDamage + desc.curseDamage}点诅咒伤害\n`;
         info += data.Common.curseRate + desc.curseRate == 0 ? `` : `攻击有${data.Common.curseRate + desc.curseRate}%几率释放诅咒\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
@@ -561,11 +516,7 @@ export default class EquipmentManager extends cc.Component {
     }
     getEquipmentInfo3(desc: EquipmentDescData, data: EquipmentData): string {
         let info = ``;
-        info += data.Common.iceDefence + desc.iceDefence == 0 ? `` : `冰抗性${data.Common.iceDefence + desc.iceDefence}%\n`;
-        info += data.Common.fireDefence + desc.fireDefence == 0 ? `` : `火抗性${data.Common.fireDefence + desc.fireDefence}%\n`;
-        info += data.Common.lighteningDefence + desc.lighteningDefence == 0 ? `` : `雷抗性${data.Common.lighteningDefence + desc.lighteningDefence}%\n`;
-        info += data.Common.toxicDefence + desc.toxicDefence == 0 ? `` : `毒抗性${data.Common.toxicDefence + desc.toxicDefence}%\n`;
-        info += data.Common.curseDefence + desc.curseDefence == 0 ? `` : `诅咒抗性${data.Common.curseDefence + desc.curseDefence}%\n`;
+        info += data.Common.magicDefence + desc.magicDefence == 0 ? `` : `元素抗性${data.Common.magicDefence + desc.magicDefence}%\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }

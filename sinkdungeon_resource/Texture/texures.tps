@@ -56,7 +56,7 @@
         <key>jxrCompressionLevel</key>
         <uint>0</uint>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -211,6 +211,40 @@
             <key type="filename">attr/attr_21.png</key>
             <key type="filename">attr/attr_22.png</key>
             <key type="filename">attr/attr_23.png</key>
+            <key type="filename">building/box000.png</key>
+            <key type="filename">building/box001.png</key>
+            <key type="filename">building/box002.png</key>
+            <key type="filename">building/box003.png</key>
+            <key type="filename">building/box004.png</key>
+            <key type="filename">building/campfire01.png</key>
+            <key type="filename">building/campfire02.png</key>
+            <key type="filename">building/chest001.png</key>
+            <key type="filename">building/chest002.png</key>
+            <key type="filename">building/chest003.png</key>
+            <key type="filename">building/chest004.png</key>
+            <key type="filename">building/chestopen001.png</key>
+            <key type="filename">building/chestopen002.png</key>
+            <key type="filename">building/chestopen003.png</key>
+            <key type="filename">building/chestopen004.png</key>
+            <key type="filename">building/exitarrow.png</key>
+            <key type="filename">building/floor000center.png</key>
+            <key type="filename">building/floor000corner.png</key>
+            <key type="filename">building/floor000side.png</key>
+            <key type="filename">building/footboard.png</key>
+            <key type="filename">building/footboardpress.png</key>
+            <key type="filename">building/plant000.png</key>
+            <key type="filename">building/plant001.png</key>
+            <key type="filename">building/plant002.png</key>
+            <key type="filename">building/plant003.png</key>
+            <key type="filename">building/plant004.png</key>
+            <key type="filename">building/portallight.png</key>
+            <key type="filename">building/sawtable.png</key>
+            <key type="filename">building/stonefire001.png</key>
+            <key type="filename">building/stonefire002.png</key>
+            <key type="filename">building/stonefire003.png</key>
+            <key type="filename">building/trap001.png</key>
+            <key type="filename">building/trap002.png</key>
+            <key type="filename">building/trap003.png</key>
             <key type="filename">bullet/bullet000.png</key>
             <key type="filename">bullet/bullet001.png</key>
             <key type="filename">bullet/bullet001anim001.png</key>
@@ -256,7 +290,70 @@
             <key type="filename">bullet/laser003light001.png</key>
             <key type="filename">bullet/laser003light002.png</key>
             <key type="filename">bullet/laser003light003.png</key>
+            <key type="filename">dungeon/darksides.png</key>
+            <key type="filename">dungeon/darksidesbottom.png</key>
+            <key type="filename">dungeon/dungeonsides.png</key>
+            <key type="filename">dungeon/grass.png</key>
+            <key type="filename">dungeon/grass1.png</key>
+            <key type="filename">dungeon/handrail.png</key>
+            <key type="filename">dungeon/junglesides.png</key>
+            <key type="filename">dungeon/labbg.png</key>
+            <key type="filename">dungeon/magmasea.png</key>
+            <key type="filename">dungeon/magmasea1.png</key>
+            <key type="filename">dungeon/outertips1.png</key>
+            <key type="filename">dungeon/outertips2.png</key>
+            <key type="filename">dungeon/outertips3.png</key>
+            <key type="filename">dungeon/pipeline.png</key>
+            <key type="filename">dungeon/pipeline1.png</key>
+            <key type="filename">dungeon/pyramidsides.png</key>
+            <key type="filename">dungeon/restsides.png</key>
+            <key type="filename">dungeon/shadow.png</key>
+            <key type="filename">dungeon/shipsides.png</key>
+            <key type="filename">dungeon/tile000.png</key>
+            <key type="filename">dungeon/tile001.png</key>
+            <key type="filename">dungeon/tile002.png</key>
+            <key type="filename">dungeon/tile003.png</key>
+            <key type="filename">dungeon/tile004.png</key>
             <key type="filename">equipment/cloak001.png</key>
+            <key type="filename">hud/damagecorner.png</key>
+            <key type="filename">hud/dialogbg.png</key>
+            <key type="filename">hud/hud_pause.png</key>
+            <key type="filename">hud/hud_pause_pressed.png</key>
+            <key type="filename">hud/iconattack.png</key>
+            <key type="filename">hud/iconattackspeed.png</key>
+            <key type="filename">hud/iconattackstatus000.png</key>
+            <key type="filename">hud/iconattackstatus001.png</key>
+            <key type="filename">hud/iconattackstatus002.png</key>
+            <key type="filename">hud/iconattackstatus003.png</key>
+            <key type="filename">hud/iconattackstatus004.png</key>
+            <key type="filename">hud/iconattackstatus005.png</key>
+            <key type="filename">hud/iconattackstatus006.png</key>
+            <key type="filename">hud/iconcriticalstrike.png</key>
+            <key type="filename">hud/icondamageback.png</key>
+            <key type="filename">hud/icondefence.png</key>
+            <key type="filename">hud/icondefencestatus000.png</key>
+            <key type="filename">hud/icondefencestatus001.png</key>
+            <key type="filename">hud/icondefencestatus002.png</key>
+            <key type="filename">hud/icondefencestatus003.png</key>
+            <key type="filename">hud/icondefencestatus004.png</key>
+            <key type="filename">hud/icondefencestatus005.png</key>
+            <key type="filename">hud/icondefencestatus006.png</key>
+            <key type="filename">hud/icondodge.png</key>
+            <key type="filename">hud/icondrain.png</key>
+            <key type="filename">hud/iconhealth.png</key>
+            <key type="filename">hud/iconhealthrecovery.png</key>
+            <key type="filename">hud/iconmovespeed.png</key>
+            <key type="filename">hud/iconratestatus001.png</key>
+            <key type="filename">hud/iconratestatus002.png</key>
+            <key type="filename">hud/iconratestatus003.png</key>
+            <key type="filename">hud/iconratestatus004.png</key>
+            <key type="filename">hud/iconratestatus005.png</key>
+            <key type="filename">hud/iconratestatus006.png</key>
+            <key type="filename">hud/infohead.png</key>
+            <key type="filename">hud/progressbar.png</key>
+            <key type="filename">hud/progressbar1.png</key>
+            <key type="filename">hud/progressbar2.png</key>
+            <key type="filename">hud/progressbar_bg.png</key>
             <key type="filename">item/ammo.png</key>
             <key type="filename">item/bottle001.png</key>
             <key type="filename">item/bottle002.png</key>
@@ -281,6 +378,28 @@
             <key type="filename">status/status014.png</key>
             <key type="filename">status/status023.png</key>
             <key type="filename">status/status024.png</key>
+            <key type="filename">tile/tile.png</key>
+            <key type="filename">tile/tile_deck001.png</key>
+            <key type="filename">tile/tile_deck002.png</key>
+            <key type="filename">tile/tile_deck003.png</key>
+            <key type="filename">tile/tile_deck004.png</key>
+            <key type="filename">tile/tile_dirt001.png</key>
+            <key type="filename">tile/tile_dirt002.png</key>
+            <key type="filename">tile/tile_dirt003.png</key>
+            <key type="filename">tile/tile_dirt004.png</key>
+            <key type="filename">tile/tile_grass001.png</key>
+            <key type="filename">tile/tile_grass002.png</key>
+            <key type="filename">tile/tile_grass003.png</key>
+            <key type="filename">tile/tile_lab001.png</key>
+            <key type="filename">tile/tile_lab002.png</key>
+            <key type="filename">tile/tile_lab003.png</key>
+            <key type="filename">tile/tilewall.png</key>
+            <key type="filename">ui/boxbroken001.png</key>
+            <key type="filename">ui/boxbroken002.png</key>
+            <key type="filename">ui/boxbroken003.png</key>
+            <key type="filename">ui/dangertips.png</key>
+            <key type="filename">ui/tabbackground.png</key>
+            <key type="filename">ui/tabselect.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -295,6 +414,112 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">building/bed.png</key>
+            <key type="filename">building/bed1.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,5,8,11</rect>
+                <key>scale9Paddings</key>
+                <rect>4,5,8,11</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/decorate0000.png</key>
+            <key type="filename">building/decorate0000anim001.png</key>
+            <key type="filename">building/decorate0000anim002.png</key>
+            <key type="filename">building/decorate0000anim003.png</key>
+            <key type="filename">building/decorate0000anim004.png</key>
+            <key type="filename">building/decorate0001.png</key>
+            <key type="filename">building/decorate0001anim001.png</key>
+            <key type="filename">building/decorate0001anim002.png</key>
+            <key type="filename">building/decorate0001anim003.png</key>
+            <key type="filename">building/decorate0001anim004.png</key>
+            <key type="filename">building/decorate0002.png</key>
+            <key type="filename">building/decorate0002anim001.png</key>
+            <key type="filename">building/decorate0002anim002.png</key>
+            <key type="filename">building/decorate0002anim003.png</key>
+            <key type="filename">building/decorate0002anim004.png</key>
+            <key type="filename">building/decorate0100.png</key>
+            <key type="filename">building/decorate0100anim001.png</key>
+            <key type="filename">building/decorate0100anim002.png</key>
+            <key type="filename">building/decorate0100anim003.png</key>
+            <key type="filename">building/decorate0100anim004.png</key>
+            <key type="filename">building/decorate0101.png</key>
+            <key type="filename">building/decorate0101anim001.png</key>
+            <key type="filename">building/decorate0101anim002.png</key>
+            <key type="filename">building/decorate0101anim003.png</key>
+            <key type="filename">building/decorate0101anim004.png</key>
+            <key type="filename">building/decorate0102.png</key>
+            <key type="filename">building/decorate0102anim001.png</key>
+            <key type="filename">building/decorate0102anim002.png</key>
+            <key type="filename">building/decorate0102anim003.png</key>
+            <key type="filename">building/decorate0102anim004.png</key>
+            <key type="filename">building/decorate0200.png</key>
+            <key type="filename">building/decorate0200anim001.png</key>
+            <key type="filename">building/decorate0200anim002.png</key>
+            <key type="filename">building/decorate0200anim003.png</key>
+            <key type="filename">building/decorate0200anim004.png</key>
+            <key type="filename">building/decorate0201.png</key>
+            <key type="filename">building/decorate0201anim001.png</key>
+            <key type="filename">building/decorate0201anim002.png</key>
+            <key type="filename">building/decorate0201anim003.png</key>
+            <key type="filename">building/decorate0201anim004.png</key>
+            <key type="filename">building/decorate0202.png</key>
+            <key type="filename">building/decorate0202anim001.png</key>
+            <key type="filename">building/decorate0202anim002.png</key>
+            <key type="filename">building/decorate0202anim003.png</key>
+            <key type="filename">building/decorate0202anim004.png</key>
+            <key type="filename">building/decorate0300.png</key>
+            <key type="filename">building/decorate0300anim001.png</key>
+            <key type="filename">building/decorate0300anim002.png</key>
+            <key type="filename">building/decorate0300anim003.png</key>
+            <key type="filename">building/decorate0300anim004.png</key>
+            <key type="filename">building/decorate0301.png</key>
+            <key type="filename">building/decorate0301anim001.png</key>
+            <key type="filename">building/decorate0301anim002.png</key>
+            <key type="filename">building/decorate0301anim003.png</key>
+            <key type="filename">building/decorate0301anim004.png</key>
+            <key type="filename">building/decorate0302.png</key>
+            <key type="filename">building/decorate0302anim001.png</key>
+            <key type="filename">building/decorate0302anim002.png</key>
+            <key type="filename">building/decorate0302anim003.png</key>
+            <key type="filename">building/decorate0302anim004.png</key>
+            <key type="filename">building/decorate0400.png</key>
+            <key type="filename">building/decorate0400anim001.png</key>
+            <key type="filename">building/decorate0400anim002.png</key>
+            <key type="filename">building/decorate0400anim003.png</key>
+            <key type="filename">building/decorate0400anim004.png</key>
+            <key type="filename">building/decorate0401.png</key>
+            <key type="filename">building/decorate0401anim001.png</key>
+            <key type="filename">building/decorate0401anim002.png</key>
+            <key type="filename">building/decorate0401anim003.png</key>
+            <key type="filename">building/decorate0401anim004.png</key>
+            <key type="filename">building/decorate0402.png</key>
+            <key type="filename">building/decorate0402anim001.png</key>
+            <key type="filename">building/decorate0402anim002.png</key>
+            <key type="filename">building/decorate0402anim003.png</key>
+            <key type="filename">building/decorate0402anim004.png</key>
+            <key type="filename">building/saw001.png</key>
+            <key type="filename">building/saw002.png</key>
+            <key type="filename">building/shop.png</key>
+            <key type="filename">building/shopkeeper.png</key>
+            <key type="filename">building/shoppet.png</key>
+            <key type="filename">building/shoptable.png</key>
+            <key type="filename">building/shoptable1.png</key>
+            <key type="filename">bullet/boom000anim001.png</key>
+            <key type="filename">bullet/boom000anim002.png</key>
+            <key type="filename">bullet/boom000anim003.png</key>
+            <key type="filename">bullet/boom000anim004.png</key>
+            <key type="filename">bullet/boom000anim005.png</key>
+            <key type="filename">bullet/boom000anim006.png</key>
+            <key type="filename">bullet/boom000anim007.png</key>
+            <key type="filename">bullet/boom000anim008.png</key>
             <key type="filename">bullet/bullet002.png</key>
             <key type="filename">bullet/bullet003.png</key>
             <key type="filename">bullet/bullet011.png</key>
@@ -339,6 +564,26 @@
             <key type="filename">bullet/bullet039.png</key>
             <key type="filename">bullet/bullet039anim001.png</key>
             <key type="filename">bullet/bullet039anim002.png</key>
+            <key type="filename">dungeon/exit000bg.png</key>
+            <key type="filename">dungeon/exit000close.png</key>
+            <key type="filename">dungeon/exit000open.png</key>
+            <key type="filename">dungeon/exit001bg.png</key>
+            <key type="filename">dungeon/exit001close.png</key>
+            <key type="filename">dungeon/exit001open.png</key>
+            <key type="filename">dungeon/exit002bg.png</key>
+            <key type="filename">dungeon/exit002close.png</key>
+            <key type="filename">dungeon/exit002open.png</key>
+            <key type="filename">dungeon/exit003bg.png</key>
+            <key type="filename">dungeon/exit003close.png</key>
+            <key type="filename">dungeon/exit003open.png</key>
+            <key type="filename">dungeon/exit004bg.png</key>
+            <key type="filename">dungeon/exit004close.png</key>
+            <key type="filename">dungeon/exit004open.png</key>
+            <key type="filename">dungeon/floorshadow.png</key>
+            <key type="filename">dungeon/sandsea.png</key>
+            <key type="filename">dungeon/sandsea1.png</key>
+            <key type="filename">dungeon/sea.png</key>
+            <key type="filename">dungeon/sea1.png</key>
             <key type="filename">equipment/helmet024.png</key>
             <key type="filename">equipment/helmet024behind.png</key>
             <key type="filename">equipment/helmet024front.png</key>
@@ -357,6 +602,30 @@
             <key type="filename">equipment/remote007anim.png</key>
             <key type="filename">equipment/remote008.png</key>
             <key type="filename">equipment/remote008anim.png</key>
+            <key type="filename">hud/uimelee.png</key>
+            <key type="filename">hud/uimeleelight.png</key>
+            <key type="filename">hud/uimeleepress.png</key>
+            <key type="filename">hud/uipickup.png</key>
+            <key type="filename">hud/uipickup1.png</key>
+            <key type="filename">hud/uiremote.png</key>
+            <key type="filename">hud/uiremotelight.png</key>
+            <key type="filename">hud/uiremotepress.png</key>
+            <key type="filename">hud/uiskill.png</key>
+            <key type="filename">hud/uiskilllight.png</key>
+            <key type="filename">hud/uiskillpress.png</key>
+            <key type="filename">hud/uiswitch.png</key>
+            <key type="filename">hud/uiswitchlight.png</key>
+            <key type="filename">hud/uiswitchpress.png</key>
+            <key type="filename">meleelight/meleelight.png</key>
+            <key type="filename">meleelight/meleelight1.png</key>
+            <key type="filename">meleelight/meleelight2.png</key>
+            <key type="filename">meleelight/meleelight3.png</key>
+            <key type="filename">meleelight/meleelight4.png</key>
+            <key type="filename">meleelight/meleelightfar.png</key>
+            <key type="filename">meleelight/meleelightline.png</key>
+            <key type="filename">meleelight/meleelightline1.png</key>
+            <key type="filename">meleelight/stablight.png</key>
+            <key type="filename">meleelight/stablight1.png</key>
             <key type="filename">monster/monster015.png</key>
             <key type="filename">monster/monster015anim001.png</key>
             <key type="filename">monster/monster015anim002.png</key>
@@ -404,6 +673,89 @@
             <key type="filename">special/howl004.png</key>
             <key type="filename">special/specialbladelight001.png</key>
             <key type="filename">special/specialbladelight002.png</key>
+            <key type="filename">talents/magiccircle.png</key>
+            <key type="filename">talents/magiccircle1.png</key>
+            <key type="filename">talents/magicice.png</key>
+            <key type="filename">talents/magicice1.png</key>
+            <key type="filename">talents/magicice2.png</key>
+            <key type="filename">talents/magicicethron1.png</key>
+            <key type="filename">talents/magicicethron10.png</key>
+            <key type="filename">talents/magicicethron2.png</key>
+            <key type="filename">talents/magicicethron3.png</key>
+            <key type="filename">talents/magicicethron4.png</key>
+            <key type="filename">talents/magicicethron5.png</key>
+            <key type="filename">talents/magicicethron6.png</key>
+            <key type="filename">talents/magicicethron7.png</key>
+            <key type="filename">talents/magicicethron8.png</key>
+            <key type="filename">talents/magicicethron9.png</key>
+            <key type="filename">talents/magiclightening.png</key>
+            <key type="filename">talents/magiclighteningarea1.png</key>
+            <key type="filename">talents/magiclighteningarea2.png</key>
+            <key type="filename">talents/magiclighteningarea3.png</key>
+            <key type="filename">talents/magiclighteningarea4.png</key>
+            <key type="filename">talents/magiclighteningarea5.png</key>
+            <key type="filename">talents/magiclighteningprepare1.png</key>
+            <key type="filename">talents/magiclighteningprepare2.png</key>
+            <key type="filename">talents/magiclighteningprepare3.png</key>
+            <key type="filename">talents/magiclighteningprepare4.png</key>
+            <key type="filename">talents/magiclighteningprepare5.png</key>
+            <key type="filename">talents/shield01.png</key>
+            <key type="filename">talents/shield02.png</key>
+            <key type="filename">talents/shield03.png</key>
+            <key type="filename">talents/shield04.png</key>
+            <key type="filename">talents/shield05.png</key>
+            <key type="filename">talents/shield06.png</key>
+            <key type="filename">talents/shield09.png</key>
+            <key type="filename">talents/shield12.png</key>
+            <key type="filename">talents/shield13.png</key>
+            <key type="filename">talents/shield14.png</key>
+            <key type="filename">talents/talentdash01.png</key>
+            <key type="filename">talents/talentdash02.png</key>
+            <key type="filename">talents/talentdash03.png</key>
+            <key type="filename">talents/talentdash04.png</key>
+            <key type="filename">talents/talentdash05.png</key>
+            <key type="filename">talents/talentdash06.png</key>
+            <key type="filename">talents/talentdash07.png</key>
+            <key type="filename">talents/talentdash08.png</key>
+            <key type="filename">talents/talentdash09.png</key>
+            <key type="filename">talents/talentdash10.png</key>
+            <key type="filename">talents/talentdash11.png</key>
+            <key type="filename">talents/talentdash12.png</key>
+            <key type="filename">talents/talentdash13.png</key>
+            <key type="filename">talents/talentdash14.png</key>
+            <key type="filename">talents/talentempty.png</key>
+            <key type="filename">talents/talentmagic01.png</key>
+            <key type="filename">talents/talentmagic02.png</key>
+            <key type="filename">talents/talentmagic03.png</key>
+            <key type="filename">talents/talentmagic04.png</key>
+            <key type="filename">talents/talentmagic05.png</key>
+            <key type="filename">talents/talentmagic06.png</key>
+            <key type="filename">talents/talentmagic07.png</key>
+            <key type="filename">talents/talentmagic08.png</key>
+            <key type="filename">talents/talentmagic09.png</key>
+            <key type="filename">talents/talentmagic10.png</key>
+            <key type="filename">talents/talentmagic11.png</key>
+            <key type="filename">talents/talentmagic12.png</key>
+            <key type="filename">talents/talentmagic13.png</key>
+            <key type="filename">talents/talentmagic14.png</key>
+            <key type="filename">talents/talentmagic15.png</key>
+            <key type="filename">talents/talentmagic16.png</key>
+            <key type="filename">talents/talentshield01.png</key>
+            <key type="filename">talents/talentshield02.png</key>
+            <key type="filename">talents/talentshield03.png</key>
+            <key type="filename">talents/talentshield04.png</key>
+            <key type="filename">talents/talentshield05.png</key>
+            <key type="filename">talents/talentshield06.png</key>
+            <key type="filename">talents/talentshield07.png</key>
+            <key type="filename">talents/talentshield08.png</key>
+            <key type="filename">talents/talentshield09.png</key>
+            <key type="filename">talents/talentshield10.png</key>
+            <key type="filename">talents/talentshield11.png</key>
+            <key type="filename">talents/talentshield12.png</key>
+            <key type="filename">talents/talentshield13.png</key>
+            <key type="filename">talents/talentshield14.png</key>
+            <key type="filename">ui/dashlight.png</key>
+            <key type="filename">ui/dashlight1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -415,6 +767,120 @@
                 <rect>8,8,16,16</rect>
                 <key>scale9Paddings</key>
                 <rect>8,8,16,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/dev.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>16,8,32,16</rect>
+                <key>scale9Paddings</key>
+                <rect>16,8,32,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/emplacement.png</key>
+            <key type="filename">building/emplacement1.png</key>
+            <key type="filename">building/emplacement2.png</key>
+            <key type="filename">building/portal.png</key>
+            <key type="filename">item/shield.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,4,7,7</rect>
+                <key>scale9Paddings</key>
+                <rect>4,4,7,7</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/fallentree01.png</key>
+            <key type="filename">building/fallentree02.png</key>
+            <key type="filename">building/tarottable001.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,4,16,8</rect>
+                <key>scale9Paddings</key>
+                <rect>8,4,16,8</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/wall000.png</key>
+            <key type="filename">building/wall001.png</key>
+            <key type="filename">building/wall006.png</key>
+            <key type="filename">building/wall007.png</key>
+            <key type="filename">building/wall008.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,6,8,12</rect>
+                <key>scale9Paddings</key>
+                <rect>4,6,8,12</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/wall002.png</key>
+            <key type="filename">building/wall003.png</key>
+            <key type="filename">building/wall004.png</key>
+            <key type="filename">building/wall009.png</key>
+            <key type="filename">dungeon/dungeondoor.png</key>
+            <key type="filename">dungeon/dungeondoorframe.png</key>
+            <key type="filename">dungeon/jungledoor.png</key>
+            <key type="filename">dungeon/jungledoorframe.png</key>
+            <key type="filename">dungeon/pyramiddoor.png</key>
+            <key type="filename">dungeon/pyramiddoorframe.png</key>
+            <key type="filename">dungeon/restdoor.png</key>
+            <key type="filename">dungeon/restdoorframe.png</key>
+            <key type="filename">dungeon/restwall2.png</key>
+            <key type="filename">dungeon/shipdoor.png</key>
+            <key type="filename">dungeon/shipdoorframe.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,8,8,16</rect>
+                <key>scale9Paddings</key>
+                <rect>4,8,8,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/wall005.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,6,9,11</rect>
+                <key>scale9Paddings</key>
+                <rect>4,6,9,11</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -431,6 +897,61 @@
                 <rect>6,6,12,12</rect>
                 <key>scale9Paddings</key>
                 <rect>6,6,12,12</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">dungeon/beddecorate.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>30,8,61,16</rect>
+                <key>scale9Paddings</key>
+                <rect>30,8,61,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">dungeon/dungeonwall.png</key>
+            <key type="filename">dungeon/dungeonwall1.png</key>
+            <key type="filename">dungeon/junglewall.png</key>
+            <key type="filename">dungeon/junglewall1.png</key>
+            <key type="filename">dungeon/pyramidwall.png</key>
+            <key type="filename">dungeon/pyramidwall1.png</key>
+            <key type="filename">dungeon/restwall.png</key>
+            <key type="filename">dungeon/restwall1.png</key>
+            <key type="filename">dungeon/shipwall.png</key>
+            <key type="filename">dungeon/shipwall1.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,16,8,32</rect>
+                <key>scale9Paddings</key>
+                <rect>4,16,8,32</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">dungeon/restdecoration01.png</key>
+            <key type="filename">dungeon/swimring.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,4,7,8</rect>
+                <key>scale9Paddings</key>
+                <rect>4,4,7,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -730,6 +1251,7 @@
             <key type="filename">monster/monster028anim005.png</key>
             <key type="filename">monster/monster028disguise.png</key>
             <key type="filename">monster/monster028hit001.png</key>
+            <key type="filename">talents/dashshadow.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -842,8 +1364,9 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">item/bluecapsule.png</key>
-            <key type="filename">item/redcapsule.png</key>
+            <key type="filename">hud/btn_disabled.png</key>
+            <key type="filename">hud/btn_normal.png</key>
+            <key type="filename">hud/btn_pressed.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -852,12 +1375,13 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>3,7,5,13</rect>
+                <rect>10,10,20,20</rect>
                 <key>scale9Paddings</key>
-                <rect>3,7,5,13</rect>
+                <rect>10,10,20,20</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">hud/heartempty.png</key>
             <key type="filename">item/heart.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -873,7 +1397,8 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">item/shield.png</key>
+            <key type="filename">hud/minitile.png</key>
+            <key type="filename">ui/panel.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -882,9 +1407,40 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>4,4,7,7</rect>
+                <rect>5,5,10,10</rect>
                 <key>scale9Paddings</key>
-                <rect>4,4,7,7</rect>
+                <rect>5,5,10,10</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">hud/taketips.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>9,9,17,17</rect>
+                <key>scale9Paddings</key>
+                <rect>9,9,17,17</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">item/bluecapsule.png</key>
+            <key type="filename">item/redcapsule.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>3,7,5,13</rect>
+                <key>scale9Paddings</key>
+                <rect>3,7,5,13</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -913,6 +1469,151 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">parallax/chapter00layer1.png</key>
+            <key type="filename">parallax/chapter00layer2.png</key>
+            <key type="filename">parallax/chapter01layer1.png</key>
+            <key type="filename">parallax/chapter01layer2.png</key>
+            <key type="filename">parallax/chapter02layer1.png</key>
+            <key type="filename">parallax/chapter02layer2.png</key>
+            <key type="filename">parallax/chapter03layer1.png</key>
+            <key type="filename">parallax/chapter03layer2.png</key>
+            <key type="filename">parallax/chapter04layer1.png</key>
+            <key type="filename">parallax/chapter04layer2.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9Paddings</key>
+                <rect>16,16,32,32</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">talents/magicfireball1.png</key>
+            <key type="filename">talents/magicfireball2.png</key>
+            <key type="filename">talents/magicfireball3.png</key>
+            <key type="filename">talents/magicfireball4.png</key>
+            <key type="filename">talents/magicfireball5.png</key>
+            <key type="filename">talents/magicfireball6.png</key>
+            <key type="filename">talents/magicfireball7.png</key>
+            <key type="filename">talents/magicfireball8.png</key>
+            <key type="filename">talents/magicfireball9.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,8,24,16</rect>
+                <key>scale9Paddings</key>
+                <rect>12,8,24,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">talents/magiclighteningdown1.png</key>
+            <key type="filename">talents/magiclighteningdown2.png</key>
+            <key type="filename">talents/magiclighteningdown3.png</key>
+            <key type="filename">talents/magiclighteningdown4.png</key>
+            <key type="filename">talents/magiclighteningdown5.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,12,9,24</rect>
+                <key>scale9Paddings</key>
+                <rect>4,12,9,24</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ui/bling.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>2,2,3,3</rect>
+                <key>scale9Paddings</key>
+                <rect>2,2,3,3</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ui/dangerbox.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>2,2,4,4</rect>
+                <key>scale9Paddings</key>
+                <rect>2,2,4,4</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ui/dangerzone.png</key>
+            <key type="filename">ui/fadeColor.png</key>
+            <key type="filename">ui/fog.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>5,5,9,9</rect>
+                <key>scale9Paddings</key>
+                <rect>5,5,9,9</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ui/halfblack.png</key>
+            <key type="filename">ui/singleColor.png</key>
+            <key type="filename">ui/sprite_splash.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>1,1,1,1</rect>
+                <key>scale9Paddings</key>
+                <rect>1,1,1,1</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">ui/tips.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,2,7,5</rect>
+                <key>scale9Paddings</key>
+                <rect>4,2,7,5</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileList</key>
         <array>
@@ -923,6 +1624,14 @@
             <filename>status</filename>
             <filename>attr</filename>
             <filename>equipment</filename>
+            <filename>tile</filename>
+            <filename>meleelight</filename>
+            <filename>parallax</filename>
+            <filename>building</filename>
+            <filename>hud</filename>
+            <filename>talents</filename>
+            <filename>dungeon</filename>
+            <filename>ui</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
