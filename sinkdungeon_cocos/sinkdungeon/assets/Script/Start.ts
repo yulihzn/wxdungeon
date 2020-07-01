@@ -86,7 +86,7 @@ export default class Start extends cc.Component {
     }
     loadTest(){
         // cc.director.loadScene('chunktest');
-        cc.director.loadScene('test');
+        cc.director.loadScene('pickavatar');
     }
     
 }
