@@ -420,7 +420,13 @@
             </struct>
             <key type="filename">avatar/avatarbed.png</key>
             <key type="filename">avatar/avatarbed000.png</key>
+            <key type="filename">avatar/avatarbed001.png</key>
+            <key type="filename">avatar/avatarbed002.png</key>
+            <key type="filename">avatar/avatarbed003.png</key>
             <key type="filename">avatar/avatarcover000.png</key>
+            <key type="filename">avatar/avatarcover001.png</key>
+            <key type="filename">avatar/avatarcover002.png</key>
+            <key type="filename">avatar/avatarcover003.png</key>
             <key type="filename">equipment/weapon000.png</key>
             <key type="filename">equipment/weapon001.png</key>
             <key type="filename">equipment/weapon002.png</key>

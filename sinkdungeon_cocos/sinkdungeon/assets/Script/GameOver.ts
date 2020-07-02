@@ -30,7 +30,7 @@ export default class GameOver extends cc.Component {
     tips: cc.Label = null;
     tipsStr = '';
     static TIPS = [`当你凝视深渊的时候,深渊也在凝视着你`, `YOU SHALL NOT PASS`, `犹豫就会...`, `我们躬耕于月下，却服侍于太阳`,
-        `油湖的水很冰冷`, `DON'T WORRY,BE HAPPY`, `这里需要的不是英雄，而是专家`, `电眼会麻痹你的思维`, `上帝欲使其灭亡 必先使其疯狂`, `激光有一个短暂的瞄准期，抓住机会再补一刀`
+        `翠湖的水很冰冷`, `DON'T WORRY,BE HAPPY`, `这里需要的不是英雄，而是专家`, `电眼会麻痹你的思维`, `上帝欲使其灭亡 必先使其疯狂`, `激光有一个短暂的瞄准期，抓住机会再补一刀`
         , `冰魔的刺会阻挡你的行动`, '武士刀可以反击子弹', `你的头盖骨被哥布林做成了碗`, `与其感慨路难行，不如马上出发`];
     // LIFE-CYCLE CALLBACKS:
     // onLoad () {}
