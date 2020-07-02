@@ -21,6 +21,8 @@ export default class AttributeSelector extends cc.Component {
     arrowRight:cc.Node = null;
     @property(cc.Label)
     label:cc.Label = null;
+    @property(cc.Label)
+    title:cc.Label = null;
     nameList:AttributeData[] = [];
     currentIndex = 0;
     selectorCallback:Function;
@@ -34,7 +36,8 @@ export default class AttributeSelector extends cc.Component {
             this.updateAttribute();
         });
     }
-    init(nameList:AttributeData[],defaultIndex?:number){
+    init(title:string,nameList:AttributeData[],defaultIndex?:number){
+        this.title.string = title;
         this.nameList = nameList;
         this.currentIndex = defaultIndex?defaultIndex:0;
         this.updateAttribute();
