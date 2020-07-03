@@ -27,6 +27,8 @@ export default class Loading extends cc.Component {
 
     @property(cc.Label)
     label: cc.Label = null;
+    @property(cc.Node)
+    loadingIcon:cc.Node = null;
     @property(TalentTree)
     simpleTree: TalentTree = null;
     @property(TalentTree)
@@ -66,6 +68,7 @@ export default class Loading extends cc.Component {
         this.magicTree.node.active = false;
         this.talentInfo.active = false;
         this.label.node.setPosition(cc.v3(0, 0));
+        this.loadingIcon.active = true;
         this.confirmButton.interactable = false;
         cc.director.on(EventHelper.TALENT_TREE_SELECT
             , (event) => { if (this.node) { this.confirmButton.interactable = true; } });
@@ -110,6 +113,7 @@ export default class Loading extends cc.Component {
             }
         }
         this.label.node.setPosition(cc.v3(0, 320));
+        this.loadingIcon.active = false;
         if (Logic.talentList.length > 9) {
             this.simpleTree.node.active = false;
             this.shieldTree.node.active = false;
@@ -192,15 +196,8 @@ export default class Loading extends cc.Component {
         if (this.isAllSpriteFramesLoaded()) {
             return;
         }
-        let arr = ['...','..','.',''];
-            let count = 0;
-            this.schedule(()=>{
-                if(count>arr.length-1){
-                    count = 0;
-                }
-                this.label.string = `loading ${arr[count]}`;
-                count++;
-            },1,100,5);
+        this.label.string = ``;
+        this.loadingIcon.active = true;
     }
 
     loadWorld() {

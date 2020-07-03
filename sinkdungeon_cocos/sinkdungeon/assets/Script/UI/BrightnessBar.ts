@@ -15,7 +15,14 @@ export default class BrightnessBar extends cc.Component {
     @property(cc.Slider)
     slider:cc.Slider = null;
     private selectorCallback:Function;
+    colorType:number;
+    static readonly SKIN = 0;
+    static readonly SKIN_COLORS = ['#ffe8d2','#ffe1c5','#ebcaac','#e0c1a4','#ccad8f','#ad9075'
+    ,'#997be5','#664e38','#473524','#291404','#1f1711']
     onLoad() {
+    }
+    init(){
+
     }
     setSelectorCallback(callback:Function){
         this.selectorCallback = callback;
@@ -23,8 +30,9 @@ export default class BrightnessBar extends cc.Component {
     }
     updateAttribute(){
         if(this.selectorCallback){
+            let colors = BrightnessBar.SKIN_COLORS;
             let num = Math.floor(this.slider.progress*10);
-            this.selectorCallback(num);
+            this.selectorCallback(cc.Color.WHITE.fromHEX(colors[num]));
         }
     }
     

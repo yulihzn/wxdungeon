@@ -56,6 +56,8 @@ export default class PickAvatar extends cc.Component {
     faceSprite:cc.Sprite;
     handSprite1:cc.Sprite;
     handSprite2:cc.Sprite;
+    legSprite1:cc.Sprite;
+    legSprite2:cc.Sprite;
     underWearSprite:cc.Sprite;
     onLoad() {
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable,['bed']);
@@ -64,6 +66,8 @@ export default class PickAvatar extends cc.Component {
         this.underWearSprite = this.getSpriteChildSprite(this.avatarTable,['avatar','body','underwear']);
         this.handSprite1 = this.getSpriteChildSprite(this.avatarTable,['avatar','body','hand1']);
         this.handSprite2 = this.getSpriteChildSprite(this.avatarTable,['avatar','body','hand2']);
+        this.legSprite1 = this.getSpriteChildSprite(this.avatarTable,['avatar','body','leg1']);
+        this.legSprite2 = this.getSpriteChildSprite(this.avatarTable,['avatar','body','leg2']);
         this.headSprite = this.getSpriteChildSprite(this.avatarTable,['avatar','head']);
         this.hairSprite = this.getSpriteChildSprite(this.avatarTable,['avatar','head','hair']);
         this.faceSprite = this.getSpriteChildSprite(this.avatarTable,['avatar','head','face']);
@@ -111,11 +115,13 @@ export default class PickAvatar extends cc.Component {
 
         };
         //皮肤颜色
-        this.addBrightnessBar().setSelectorCallback((index:number)=>{
-            this.bodySprite.spriteFrame = this.spriteFrames[`avatarbody0${index>9?'':'0'}${index}`];
-            this.headSprite.spriteFrame = this.spriteFrames[`avatarbody0${index>9?'':'0'}${index}`];
-            this.handSprite1.spriteFrame = this.spriteFrames[`avatarhand0${index>9?'':'0'}${index}`];
-            this.handSprite2.spriteFrame = this.spriteFrames[`avatarhand0${index>9?'':'0'}${index}`];
+        this.addBrightnessBar().setSelectorCallback((color:cc.Color)=>{
+            this.bodySprite.node.color = color;
+            this.headSprite.node.color = color;
+            this.handSprite1.node.color = color;
+            this.handSprite2.node.color = color;
+            this.legSprite1.node.color = color;
+            this.legSprite2.node.color = color;
         });
         //发型
         let hairList = [];

@@ -81,8 +81,9 @@ CCProgram fs %{
     float rad = angel * 0.01745329252; // 这个浮点数是 pi / 180，角度转弧度
     vec2 unit = 1.0 / textureSize.xy;//单位坐标
     vec2 offset = vec2(outlineSize * cos(rad) * unit.x, outlineSize * sin(rad) * unit.y); //偏移量
-    float a = texture2D(texture, v_uv0 + offset).a;
-    if (a >= 0.5)// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
+    vec2 v = v_uv0 + offset;
+    float a = texture2D(texture, v).a;
+    if (a >= 0.5 && v.x<1.0 && v.x>0.0 && v.y<1.0 && v.y>0.0)// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
     {
         stroke = 1;
     }

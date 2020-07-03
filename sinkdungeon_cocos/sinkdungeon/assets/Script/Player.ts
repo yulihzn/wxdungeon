@@ -16,7 +16,6 @@ import Dungeon from './Dungeon';
 import Equipment from './Equipment/Equipment';
 import EquipmentData from './Data/EquipmentData';
 import MeleeWeapon from './MeleeWeapon';
-import RectDungeon from './Rect/RectDungeon';
 import StatusManager from './Manager/StatusManager';
 import DamageData from './Data/DamageData';
 import InventoryManager from './Manager/InventoryManager';
