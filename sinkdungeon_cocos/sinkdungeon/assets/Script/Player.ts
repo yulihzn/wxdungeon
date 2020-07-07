@@ -37,6 +37,7 @@ import Item from './Item/Item';
 import RoomType from './Rect/RoomType';
 import Monster from './Monster';
 import IndexZ from './Utils/IndexZ';
+import PlayerAvatar from './PlayerAvatar';
 
 @ccclass
 export default class Player extends Actor {
@@ -61,6 +62,8 @@ export default class Player extends Actor {
     shooterEx: Shooter = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
+    @property(PlayerAvatar)
+    avatar:PlayerAvatar = null;
     // private playerItemSprite: cc.Sprite;
     hairSprite: cc.Sprite = null;
     headSprite: cc.Sprite = null;
@@ -212,6 +215,7 @@ export default class Player extends Actor {
         if (this.anim) {
             this.resetFoot();
             this.playerAnim(Player.STATE_WALK, this.currentDir);
+            this.avatar.playAnim(PlayerAvatar.WALK,this.currentDir);
         }
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
@@ -257,6 +261,7 @@ export default class Player extends Actor {
             this.resetFoot();
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.playerAnim(Player.STATE_IDLE, this.currentDir);
+            this.avatar.playAnim(PlayerAvatar.IDLE,this.currentDir);
             this.scheduleOnce(() => {
                 this.isDizz = false;
             }, dizzDuration)
@@ -464,6 +469,7 @@ export default class Player extends Actor {
             this.showFloatFont(this.node.parent, 0, false, true, false);
         }
         this.playerAnim(Player.STATE_ATTACK, this.currentDir);
+        this.avatar.playAnim(PlayerAvatar.ATTACK,this.currentDir);
         this.meleeWeapon.attack(this.data, isMiss);
         this.scheduleOnce(()=>{
             AudioPlayer.play(AudioPlayer.MELEE);
@@ -634,8 +640,10 @@ export default class Player extends Actor {
         }
         if (this.isMoving && !this.isStone) {
             this.playerAnim(Player.STATE_WALK, dir);
+            this.avatar.playAnim(PlayerAvatar.WALK,dir);
         } else {
             this.playerAnim(Player.STATE_IDLE, dir);
+            this.avatar.playAnim(PlayerAvatar.IDLE,dir);
         }
         let isUpDown = dir == 1 || dir == 0;
         if (isUpDown) {
@@ -739,6 +747,7 @@ export default class Player extends Actor {
         this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos);
             this.playerAnim(Player.STATE_IDLE, 1);
+            this.avatar.playAnim(PlayerAvatar.IDLE,1);
             this.resetFoot();
             let dd = new DamageData();
             dd.realDamage = 1;
