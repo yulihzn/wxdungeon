@@ -343,15 +343,19 @@ export default class Player extends Actor {
                 break;
             case 'helmet':
                 this.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
+                this.avatar.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
                 this.updateEquipMent(this.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
+                this.updateEquipMent(this.avatar.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
                 break;
             case 'clothes':
                 this.updateEquipMent(this.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
+                this.updateEquipMent(this.avatar.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
                 break;
             case 'trousers':
                 let isLong = this.inventoryManager.trousers.trouserslong == 1;
                 this.updateEquipMent(this.trousersSprite, isLong ? this.inventoryManager.trousers.color : '#ffffff', Logic.spriteFrames['playerlegs']);
                 this.updateEquipMent(this.pantsSprite, this.inventoryManager.trousers.color, spriteFrame);
+                this.updateEquipMent(this.avatar.pantsSprite, this.inventoryManager.trousers.color, spriteFrame);
                 break;
             case 'gloves':
                 this.updateEquipMent(this.glovesLeftSprite, this.inventoryManager.gloves.color, spriteFrame);
@@ -363,12 +367,16 @@ export default class Player extends Actor {
             case 'shoes':
                 this.updateEquipMent(this.shoesLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
                 this.updateEquipMent(this.shoesRightSprite, this.inventoryManager.shoes.color, spriteFrame);
+                this.updateEquipMent(this.avatar.shoesLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
+                this.updateEquipMent(this.avatar.shoesRightSprite, this.inventoryManager.shoes.color, spriteFrame);
                 break;
             case 'cloak':
                 this.updateEquipMent(this.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
+                this.updateEquipMent(this.avatar.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
                 break;
         }
         this.changeEquipDirSpriteFrame(this.currentDir);
+        this.avatar.changeEquipDirSpriteFrame(this.inventoryManager,this.currentDir);
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
         let health = this.data.getHealth();
@@ -580,6 +588,7 @@ export default class Player extends Actor {
             this.shooter.node.zIndex = dir==0?this.sprite.zIndex-1:this.sprite.zIndex+1;
             this.cloakSprite.node.zIndex = dir==0?this.bodySprite.node.zIndex+1:this.bodySprite.node.zIndex-1;
             this.changeEquipDirSpriteFrame(dir);
+            this.avatar.changeEquipDirSpriteFrame(this.inventoryManager,this.currentDir);
         }
         if (this.isAttacking && !pos.equals(cc.Vec3.ZERO)) {
             if (!this.meleeWeapon.isFar && this.meleeWeapon.isStab) {

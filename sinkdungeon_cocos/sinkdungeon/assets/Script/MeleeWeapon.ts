@@ -6,7 +6,6 @@ import { EventHelper } from "./EventHelper";
 import Box from "./Building/Box";
 import Logic from "./Logic";
 import MeleeWeaponChild from "./MeleeWeaponChild";
-import EquipmentData from "./Data/EquipmentData";
 import DamageData from "./Data/DamageData";
 import StatusManager from "./Manager/StatusManager";
 import PlayerData from "./Data/PlayerData";
@@ -63,6 +62,8 @@ export default class MeleeWeapon extends cc.Component {
     glovesStabSprite:cc.Sprite = null;
     glovesWaveSprite:cc.Sprite = null;
 
+    meleeLightSprite:cc.Sprite = null;
+
 
     private anim: cc.Animation;
     isAttacking: boolean = false;
@@ -89,7 +90,7 @@ export default class MeleeWeapon extends cc.Component {
         this.handWave = this.waveWeapon.node.getChildByName('hand');
         this.glovesStabSprite = this.handStab.getChildByName('gloves').getComponent(cc.Sprite);
         this.glovesWaveSprite= this.handWave .getChildByName('gloves').getComponent(cc.Sprite);
-
+        this.meleeLightSprite = this.node.getChildByName('meleelight').getComponent(cc.Sprite);
         // this.stabWeapon.meleeWeapon = this;
         // this.waveWeapon.meleeWeapon = this;
     }
@@ -167,8 +168,21 @@ export default class MeleeWeapon extends cc.Component {
         for (let w of waves) {
             this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
         }
+        this.playAttackAnim();
         return true;
 
+    }
+    private playAttackAnim(){
+        this.meleeLightSprite.node.stopAllActions();
+        let index = 0;
+        this.schedule(()=>{
+            this.meleeLightSprite.node.opacity = 255;
+            if(index >3){
+                this.meleeLightSprite.node.opacity = 0;
+            }else{
+                this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${index++}`];
+            }
+        },0.1,4);
     }
     private getAttackAnimName(): string {
         let name = "MeleeAttackStab";
