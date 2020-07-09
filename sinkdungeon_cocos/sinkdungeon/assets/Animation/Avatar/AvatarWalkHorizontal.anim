@@ -37,8 +37,8 @@
             {
               "frame": 0,
               "value": [
-                3,
-                5,
+                2.5,
+                4.5,
                 0
               ],
               "curve": "constant"
@@ -73,11 +73,10 @@
             {
               "frame": 1.3333333333333333,
               "value": [
-                3,
-                5,
+                2.5,
+                4.5,
                 0
-              ],
-              "curve": "constant"
+              ]
             }
           ],
           "angle": [
@@ -98,48 +97,12 @@
             },
             {
               "frame": 1,
-              "value": 15,
+              "value": 5,
               "curve": "constant"
             },
             {
               "frame": 1.3333333333333333,
               "value": 45,
-              "curve": "constant"
-            }
-          ]
-        }
-      },
-      "sprite/avatar/legleft/footleft": {
-        "props": {
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                0,
-                -2,
-                0
-              ]
-            }
-          ],
-          "angle": [
-            {
-              "frame": 0,
-              "value": -15,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 0,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 0,
-              "curve": "constant"
-            },
-            {
-              "frame": 1.3333333333333333,
-              "value": -15,
               "curve": "constant"
             }
           ]
@@ -206,7 +169,7 @@
               "frame": 1,
               "value": [
                 -2,
-                6,
+                7,
                 0
               ],
               "curve": "constant"
@@ -218,42 +181,6 @@
                 5,
                 0
               ],
-              "curve": "constant"
-            }
-          ]
-        }
-      },
-      "sprite/avatar/legright/footright": {
-        "props": {
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                0,
-                -2,
-                0
-              ]
-            }
-          ],
-          "angle": [
-            {
-              "frame": 0,
-              "value": -30,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 5,
-              "curve": "constant"
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 5,
-              "curve": "constant"
-            },
-            {
-              "frame": 1.3333333333333333,
-              "value": -30,
               "curve": "constant"
             }
           ]
@@ -332,6 +259,88 @@
             }
           ]
         }
+      },
+      "sprite/avatar/legleft/foot": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                -2,
+                0
+              ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0,
+              "curve": "constant"
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": -15,
+              "curve": "constant"
+            }
+          ]
+        },
+        "comps": {}
+      },
+      "sprite/avatar/legright/foot": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0.171,
+                -2.406,
+                0
+              ]
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": [
+                0.171,
+                -2.406,
+                0
+              ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": -30,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 5,
+              "curve": "constant"
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 5,
+              "curve": "constant"
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": -30,
+              "curve": "constant"
+            }
+          ]
+        },
+        "comps": {}
       }
     }
   },

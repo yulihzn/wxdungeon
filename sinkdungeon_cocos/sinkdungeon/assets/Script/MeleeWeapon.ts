@@ -63,7 +63,8 @@ export default class MeleeWeapon extends cc.Component {
     glovesWaveSprite:cc.Sprite = null;
 
     meleeLightSprite:cc.Sprite = null;
-
+    meleeLightLeftPos = cc.v3(8,0);
+    meleeLightRightPos = cc.v3(-8,0);
 
     private anim: cc.Animation;
     isAttacking: boolean = false;
@@ -91,6 +92,9 @@ export default class MeleeWeapon extends cc.Component {
         this.glovesStabSprite = this.handStab.getChildByName('gloves').getComponent(cc.Sprite);
         this.glovesWaveSprite= this.handWave .getChildByName('gloves').getComponent(cc.Sprite);
         this.meleeLightSprite = this.node.getChildByName('meleelight').getComponent(cc.Sprite);
+        this.meleeLightSprite.node.opacity = 0;
+        this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
+        this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos));
         // this.stabWeapon.meleeWeapon = this;
         // this.waveWeapon.meleeWeapon = this;
     }
@@ -168,21 +172,31 @@ export default class MeleeWeapon extends cc.Component {
         for (let w of waves) {
             this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
         }
-        this.playAttackAnim();
         return true;
 
     }
-    private playAttackAnim(){
-        this.meleeLightSprite.node.stopAllActions();
-        let index = 0;
-        this.schedule(()=>{
+    playAttackAnim(isRightHand:boolean){
+        this.meleeLightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
+        this.meleeLightSprite.node.position = isRightHand?this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightRightPos))
+        :this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
+        cc.tween(this.meleeLightSprite.node).stop();
+        cc.tween(this.meleeLightSprite.node)
+        .call(()=>{
             this.meleeLightSprite.node.opacity = 255;
-            if(index >3){
-                this.meleeLightSprite.node.opacity = 0;
-            }else{
-                this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${index++}`];
-            }
-        },0.1,4);
+            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${0}`];
+        }).delay(0.1)
+        .call(()=>{
+            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${1}`];
+        }).delay(0.1)
+        .call(()=>{
+            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${2}`];
+        }).delay(0.1)
+        .call(()=>{
+            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${3}`];
+        }).delay(0.1)
+        .call(()=>{
+            this.meleeLightSprite.node.opacity = 0;
+        }).start();
     }
     private getAttackAnimName(): string {
         let name = "MeleeAttackStab";

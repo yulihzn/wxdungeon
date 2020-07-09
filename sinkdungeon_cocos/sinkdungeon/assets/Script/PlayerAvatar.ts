@@ -17,13 +17,13 @@ export default class PlayerAvatar extends cc.Component {
     static readonly DIR_DOWN = 1;
     static readonly DIR_LEFT = 2;
     static readonly DIR_RIGHT = 3;
-    static readonly IDLE = 0;
-    static readonly WALK = 1;
-    static readonly HURT = 2;
-    static readonly ATTACK = 3;
-    static readonly DIED = 4;
+    static readonly STATE_IDLE = 0;
+    static readonly STATE_WALK = 1;
+    static readonly STATE_ATTACK = 2;
+    static readonly STATE_FALL = 3;
+    static readonly STATE_DIE = 4;
     dir = PlayerAvatar.DIR_RIGHT;
-    status = PlayerAvatar.IDLE;
+    status = PlayerAvatar.STATE_IDLE;
     anim: cc.Animation;
     cloakSprite: cc.Sprite = null;
     legLeftSprite: cc.Sprite = null;
@@ -36,8 +36,6 @@ export default class PlayerAvatar extends cc.Component {
     gloveRightSprite: cc.Sprite = null;
     handLeftSprite: cc.Sprite = null;
     handRightSprite: cc.Sprite = null;
-    weaponLeftSprite: cc.Sprite = null;
-    weaponRightSprite: cc.Sprite = null;
     meleeLeftSprite: cc.Sprite = null;
     meleeRightSprite: cc.Sprite = null;
     headSprite: cc.Sprite = null;
@@ -48,7 +46,11 @@ export default class PlayerAvatar extends cc.Component {
     bodySprite: cc.Sprite = null;
     pantsSprite: cc.Sprite = null;
     clothesSprite: cc.Sprite = null;
+    weaponRightNode: cc.Node = null;
+    weaponLeftNode: cc.Node = null;
     avatarNode: cc.Node = null;
+    spriteNode: cc.Node = null;
+    isAttackByRightHand = true;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -56,7 +58,8 @@ export default class PlayerAvatar extends cc.Component {
     }
     private init() {
         this.anim = this.getComponent(cc.Animation);
-        this.avatarNode = this.node.getChildByName('sprite').getChildByName('avatar');
+        this.avatarNode = this.getSpriteChildNode(['sprite', 'avatar']);
+        this.spriteNode = this.getSpriteChildNode(['sprite']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
         this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft']);
         this.legRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright']);
@@ -72,15 +75,17 @@ export default class PlayerAvatar extends cc.Component {
         this.bodySprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body']);
         this.pantsSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'pants']);
         this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes']);
+        this.weaponLeftNode = this.getSpriteChildNode(['sprite', 'avatar', 'weaponleft']);
+        this.weaponRightNode = this.getSpriteChildNode(['sprite', 'avatar', 'weaponright']);
         this.hairSprite.node.stopAllActions();
         this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
         let index = 0;
-        this.schedule(()=>{
+        this.schedule(() => {
             this.hairSprite.spriteFrame = Logic.spriteFrames[this.hairprefix + this.idlehair[index++]];
-            if(index > 1){
+            if (index > 1) {
                 index = 0;
             }
-        },0.2,cc.macro.REPEAT_FOREVER,0.1);
+        }, 0.2, cc.macro.REPEAT_FOREVER, 0.1);
     }
     private getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
@@ -89,24 +94,38 @@ export default class PlayerAvatar extends cc.Component {
         }
         return node.getComponent(cc.Sprite);
     }
+    private getSpriteChildNode(childNames: string[]): cc.Node {
+        let node = this.node;
+        for (let name of childNames) {
+            node = node.getChildByName(name);
+        }
+        return node;
+    }
     playAnim(status: number, dir: number) {
         if (!this.anim) {
             this.init();
         }
         switch (status) {
-            case PlayerAvatar.IDLE:
+            case PlayerAvatar.STATE_IDLE:
                 if (this.status != status) {
                     this.playIdle(dir);
                 }
                 break;
-            case PlayerAvatar.WALK:
-                if (this.status != status || this.dir != dir) {
+            case PlayerAvatar.STATE_WALK:
+                if ((this.status != status || this.dir != dir)&&PlayerAvatar.STATE_ATTACK!=this.status) {
                     this.playWalk(dir);
                 }
                 break;
             case PlayerAvatar.HURT: break;
-            case PlayerAvatar.ATTACK: break;
-            case PlayerAvatar.DIED: break;
+            case PlayerAvatar.STATE_ATTACK:
+                this.playAttack(dir);
+                break;
+            case PlayerAvatar.STATE_DIE: 
+            this.playDie();
+            break;
+            case PlayerAvatar.STATE_FALL:
+                this.anim.play('AvatarFall');    
+            break;
         }
         this.status = status;
         this.dir = dir;
@@ -128,6 +147,9 @@ export default class PlayerAvatar extends cc.Component {
             this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img];
         }
     }
+    private playDie(){
+        this.anim.play('AvatarDie');
+    }
     private playIdle(dir: number) {
         this.anim.play('AvatarIdle');
         this.changeAvatarByDir(dir);
@@ -135,7 +157,7 @@ export default class PlayerAvatar extends cc.Component {
     }
     hairprefix = 'avatarhair000anim00';
     idlehair = [0, 1];
-    changeAvatarByDir(dir: number){
+    changeAvatarByDir(dir: number) {
         let eyesprefix = 'avatareyes000anim00';
         let faceprefix = 'avatarface000anim00';
         switch (dir) {
@@ -143,28 +165,77 @@ export default class PlayerAvatar extends cc.Component {
                 this.idlehair = [2, 3];
                 this.eyesSprite.spriteFrame = null;
                 this.faceSprite.spriteFrame = null;
+                this.weaponLeftNode.zIndex = this.headSprite.node.zIndex - 1;
+                this.weaponRightNode.zIndex = this.headSprite.node.zIndex - 1;
+                this.weaponRightNode.scaleX = -1;
+                this.weaponRightNode.position = cc.v3(-4, 8);
                 break;
             case PlayerAvatar.DIR_DOWN:
                 this.idlehair = [0, 1];
-                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix+0];
-                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix+0];
+                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 0];
+                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 0];
+                this.weaponLeftNode.zIndex = this.bodySprite.node.zIndex + 1;
+                this.weaponRightNode.zIndex = this.bodySprite.node.zIndex + 1;
+                this.weaponRightNode.scaleX = -1;
+                this.weaponRightNode.position = cc.v3(-4, 8);
                 break;
             case PlayerAvatar.DIR_LEFT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix+1];
-                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix+1];
+                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 1];
+                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 1];
+                this.weaponLeftNode.zIndex = this.headSprite.node.zIndex - 1;
+                this.weaponRightNode.zIndex = this.bodySprite.node.zIndex + 1;
+                this.weaponRightNode.scaleX = 1;
+                this.weaponRightNode.position = cc.v3(-3, 8);
                 break;
             case PlayerAvatar.DIR_RIGHT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix+1];
-                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix+1];
+                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 1];
+                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 1];
+                this.weaponLeftNode.zIndex = this.headSprite.node.zIndex - 1;
+                this.weaponRightNode.zIndex = this.bodySprite.node.zIndex + 1;
+                this.weaponRightNode.scaleX = 1;
+                this.weaponRightNode.position = cc.v3(-3, 8);
                 break;
         }
-        
+
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');
         this.changeAvatarByDir(dir);
+    }
+    private playAttack(dir: number) {
+        this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarAttackVertical' : 'AvatarAttackHorizontal');
+        let offsetX = 0;
+        let offsetY = 0;
+        switch (dir) {
+            case PlayerAvatar.DIR_UP:
+                offsetY = -16;
+                break;
+            case PlayerAvatar.DIR_DOWN:
+                offsetY = 16;
+                break;
+            case PlayerAvatar.DIR_LEFT:
+                offsetX = -16;
+                break;
+            case PlayerAvatar.DIR_RIGHT:
+                offsetX = -16;
+                break;
+        }
+        cc.tween(this.spriteNode).stop();
+        cc.tween(this.spriteNode).to(0.1, { position: cc.v3(offsetX, offsetY) })
+            .to(0.1, { position: cc.v3(-offsetX, -offsetY) })
+            .to(0.1, { position: cc.v3(0, 0) }).delay(0.1).call(() => {
+                this.weaponRightNode.opacity = 255;
+                this.weaponLeftNode.opacity = 255;
+                this.playAnim(PlayerAvatar.STATE_IDLE,this.dir);
+            }).start();
+        this.isAttackByRightHand = !this.isAttackByRightHand;
+        if (this.isAttackByRightHand) {
+            this.weaponRightNode.opacity = 0;
+        } else {
+            this.weaponLeftNode.opacity = 0;
+        }
     }
 
     start() {

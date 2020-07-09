@@ -105,7 +105,7 @@ export default class Player extends Actor {
     data: PlayerData;
 
     isFaceRight = true;
-    currentDir = 1;
+    currentDir = 3;
 
     attackTarget: cc.Collider;
     rigidbody: cc.RigidBody;
@@ -215,7 +215,6 @@ export default class Player extends Actor {
         if (this.anim) {
             this.resetFoot();
             this.playerAnim(Player.STATE_WALK, this.currentDir);
-            this.avatar.playAnim(PlayerAvatar.WALK,this.currentDir);
         }
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
@@ -261,7 +260,6 @@ export default class Player extends Actor {
             this.resetFoot();
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.playerAnim(Player.STATE_IDLE, this.currentDir);
-            this.avatar.playAnim(PlayerAvatar.IDLE,this.currentDir);
             this.scheduleOnce(() => {
                 this.isDizz = false;
             }, dizzDuration)
@@ -477,8 +475,8 @@ export default class Player extends Actor {
             this.showFloatFont(this.node.parent, 0, false, true, false);
         }
         this.playerAnim(Player.STATE_ATTACK, this.currentDir);
-        this.avatar.playAnim(PlayerAvatar.ATTACK,this.currentDir);
         this.meleeWeapon.attack(this.data, isMiss);
+        this.meleeWeapon.playAttackAnim(this.avatar.isAttackByRightHand);
         this.scheduleOnce(()=>{
             AudioPlayer.play(AudioPlayer.MELEE);
         },audiodelay);
@@ -649,10 +647,8 @@ export default class Player extends Actor {
         }
         if (this.isMoving && !this.isStone) {
             this.playerAnim(Player.STATE_WALK, dir);
-            this.avatar.playAnim(PlayerAvatar.WALK,dir);
         } else {
             this.playerAnim(Player.STATE_IDLE, dir);
-            this.avatar.playAnim(PlayerAvatar.IDLE,dir);
         }
         let isUpDown = dir == 1 || dir == 0;
         if (isUpDown) {
@@ -667,75 +663,28 @@ export default class Player extends Actor {
         this.shoesRightSprite.node.parent.angle = 0;
     }
 
-    playerAnim(animType: number, dir: number): void {
-        let walkName = 'PlayerWalk';
-        let suffix = '';
-        let needChange = false;
-        switch (animType) {
+    playerAnim(status: number, dir: number): void {
+        if(status == PlayerAvatar.STATE_IDLE && this.avatar.status != PlayerAvatar.STATE_IDLE){
+            this.shooter.playWalk(false);
+        }
+        switch (status) {
             case Player.STATE_IDLE:
-                if (this.anim.getAnimationState(walkName).isPlaying) {
-                    needChange = true;
-                }
-                if (this.anim.getAnimationState(walkName + 'Down').isPlaying) {
-                    needChange = true;
-                    suffix = 'Down';
-                }
-                if (this.anim.getAnimationState(walkName + 'Up').isPlaying) {
-                    needChange = true;
-                    suffix = 'Up';
-                }
-                if (needChange) {
-                    this.anim.play('PlayerIdle' + suffix);
-                    this.shooter.playWalk(false);
-                }
+               if(this.avatar.status != PlayerAvatar.STATE_IDLE){
+                this.shooter.playWalk(false);
+               }
                 break;
             case Player.STATE_WALK:
-                suffix = '';
-                if (dir == 0) {
-                    suffix = 'Up';
-                    if (!this.anim.getAnimationState(walkName + 'Up').isPlaying) {
-                        needChange = true;
-                    }
-                } else if (dir == 1) {
-                    suffix = 'Down';
-                    if (!this.anim.getAnimationState(walkName + 'Down').isPlaying) {
-                        needChange = true;
-                    }
-                } else if (!this.anim.getAnimationState(walkName).isPlaying) {
-                    needChange = true;
-                }
-                if (needChange && !this.anim.getAnimationState('PlayerFist').isPlaying
-                && !this.anim.getAnimationState('PlayerFistUp').isPlaying
-                && !this.anim.getAnimationState('PlayerFistDown').isPlaying
-                    && !this.anim.getAnimationState('PlayerAttack').isPlaying
-                    && !this.anim.getAnimationState('PlayerAttackUp').isPlaying
-                && !this.anim.getAnimationState('PlayerAttackDown').isPlaying) {
-                    this.anim.play(walkName + suffix);
+                if(this.avatar.status != PlayerAvatar.STATE_ATTACK){
                     this.shooter.playWalk(true);
-                }
+                   }
                 break;
             case Player.STATE_ATTACK:
-                suffix = '';
-                if (dir == 0) {
-                    suffix = 'Up';
-                } else if (dir == 1) {
-                    suffix = 'Down';
-                }
-                if ((!this.meleeWeapon.isFar && this.meleeWeapon.isStab) || (this.meleeWeapon.isFar && !this.meleeWeapon.isStab)) {
-                    this.anim.play('PlayerFist'+suffix);
-                    if (this.meleeWeapon.isFar && !this.meleeWeapon.isStab) {
-                        this.anim.getAnimationState('PlayerFist'+suffix).speed = 1;
-                    } else {
-                        this.anim.getAnimationState('PlayerFist'+suffix).speed = 2;
-                    }
-                } else {
-                    this.anim.play('PlayerAttack'+suffix);
-                }
                 this.shooter.playWalk(true);
                 break;
             case Player.STATE_FALL: break;
             case Player.STATE_DIE: break;
         }
+        this.avatar.playAnim(status,dir);
     }
 
     start() {
@@ -751,12 +700,11 @@ export default class Player extends Actor {
             return;
         }
         this.isFall = true;
-        this.anim.play('PlayerFall');
+        this.avatar.playAnim(PlayerAvatar.STATE_FALL,this.currentDir);
         this.isAttacking = false;
         this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos);
             this.playerAnim(Player.STATE_IDLE, 1);
-            this.avatar.playAnim(PlayerAvatar.IDLE,1);
             this.resetFoot();
             let dd = new DamageData();
             dd.realDamage = 1;
@@ -833,7 +781,7 @@ export default class Player extends Actor {
             return;
         }
         this.isDied = true;
-        this.anim.play('PlayerDie');
+        this.avatar.playAnim(PlayerAvatar.STATE_DIE,this.currentDir);
         cc.director.emit(EventHelper.HUD_STOP_COUNTTIME);
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
         Achievements.addPlayerDiedLifesAchievement();
