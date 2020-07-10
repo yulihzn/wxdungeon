@@ -8,6 +8,7 @@ import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
+import PlayerAvatar from "../PlayerAvatar";
 
 const { ccclass, property } = cc._decorator;
 
@@ -67,8 +68,7 @@ export default class TalentDash extends Talent {
             this.player.rigidbody.linearVelocity = pos;
             this.scheduleOnce(() => {
                 this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
-                this.player.playerAnim(Player.STATE_IDLE,this.player.currentDir);
-                this.player.resetFoot();
+                this.player.playerAnim(PlayerAvatar.STATE_IDLE,this.player.currentDir);
                 this.IsExcuting = false;
             }, 0.5)
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1 } });

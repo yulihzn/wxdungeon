@@ -36,8 +36,8 @@ export default class PlayerAvatar extends cc.Component {
     gloveRightSprite: cc.Sprite = null;
     handLeftSprite: cc.Sprite = null;
     handRightSprite: cc.Sprite = null;
-    meleeLeftSprite: cc.Sprite = null;
-    meleeRightSprite: cc.Sprite = null;
+    weaponLeftSprite: cc.Sprite = null;
+    weaponRightSprite: cc.Sprite = null;
     headSprite: cc.Sprite = null;
     faceSprite: cc.Sprite = null;
     eyesSprite: cc.Sprite = null;
@@ -75,6 +75,12 @@ export default class PlayerAvatar extends cc.Component {
         this.bodySprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body']);
         this.pantsSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'pants']);
         this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes']);
+        this.handLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponleft', 'hand']);
+        this.handRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'hand']);
+        this.gloveLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponleft', 'hand','glove']);
+        this.gloveRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'hand','glove']);
+        this.weaponLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'weapon']);
+        this.weaponRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'weapon']);
         this.weaponLeftNode = this.getSpriteChildNode(['sprite', 'avatar', 'weaponleft']);
         this.weaponRightNode = this.getSpriteChildNode(['sprite', 'avatar', 'weaponright']);
         this.hairSprite.node.stopAllActions();
@@ -112,23 +118,51 @@ export default class PlayerAvatar extends cc.Component {
                 }
                 break;
             case PlayerAvatar.STATE_WALK:
-                if ((this.status != status || this.dir != dir)&&PlayerAvatar.STATE_ATTACK!=this.status) {
+                if ((this.status != status || this.dir != dir) && PlayerAvatar.STATE_ATTACK != this.status) {
                     this.playWalk(dir);
                 }
                 break;
-            case PlayerAvatar.HURT: break;
             case PlayerAvatar.STATE_ATTACK:
                 this.playAttack(dir);
                 break;
-            case PlayerAvatar.STATE_DIE: 
-            this.playDie();
-            break;
+            case PlayerAvatar.STATE_DIE:
+                this.playDie();
+                break;
             case PlayerAvatar.STATE_FALL:
-                this.anim.play('AvatarFall');    
-            break;
+                this.anim.play('AvatarFall');
+                break;
         }
         this.status = status;
         this.dir = dir;
+    }
+
+    changeLegColor(isLong:boolean,colorHex:string){
+        if(isLong){
+            this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
+            this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
+            this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
+            this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
+        }else{
+            this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
+            this.legRightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
+            this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
+            this.footRightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
+        }
+        
+    }
+    hitLight(isHit:boolean){
+        this.bodySprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.headSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.hairSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.faceSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.eyesSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.handLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.handRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.legLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.legRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.footLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.footLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+
     }
     changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
         this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
@@ -147,7 +181,7 @@ export default class PlayerAvatar extends cc.Component {
             this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img];
         }
     }
-    private playDie(){
+    private playDie() {
         this.anim.play('AvatarDie');
     }
     private playIdle(dir: number) {
@@ -198,7 +232,7 @@ export default class PlayerAvatar extends cc.Component {
                 this.weaponRightNode.position = cc.v3(-3, 8);
                 break;
         }
-
+        this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');
@@ -228,7 +262,7 @@ export default class PlayerAvatar extends cc.Component {
             .to(0.1, { position: cc.v3(0, 0) }).delay(0.1).call(() => {
                 this.weaponRightNode.opacity = 255;
                 this.weaponLeftNode.opacity = 255;
-                this.playAnim(PlayerAvatar.STATE_IDLE,this.dir);
+                this.playAnim(PlayerAvatar.STATE_IDLE, this.dir);
             }).start();
         this.isAttackByRightHand = !this.isAttackByRightHand;
         if (this.isAttackByRightHand) {

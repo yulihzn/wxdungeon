@@ -87,9 +87,13 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.TROUSERS_LONG, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.SHOES_DEATH, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.GLOVES_DEATH, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.CLOTHES_JUNGLE, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CHICKEN, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_TOXICDAGGER, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);

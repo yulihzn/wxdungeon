@@ -16,6 +16,7 @@ import FromData from "./Data/FromData";
 import Decorate from "./Building/Decorate";
 import AudioPlayer from "./Utils/AudioPlayer";
 import IndexZ from "./Utils/IndexZ";
+import PlayerAvatar from "./PlayerAvatar";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,11 +58,6 @@ export default class MeleeWeapon extends cc.Component {
     @property(cc.Prefab)
     curseLight: cc.Prefab = null;
 
-    handStab:cc.Node = null;
-    handWave:cc.Node = null;
-    glovesStabSprite:cc.Sprite = null;
-    glovesWaveSprite:cc.Sprite = null;
-
     meleeLightSprite:cc.Sprite = null;
     meleeLightLeftPos = cc.v3(8,0);
     meleeLightRightPos = cc.v3(-8,0);
@@ -87,10 +83,6 @@ export default class MeleeWeapon extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
         this.weaponFirePoint = this.node.getChildByName('firepoint');
-        this.handStab = this.stabWeapon.node.getChildByName('hand');
-        this.handWave = this.waveWeapon.node.getChildByName('hand');
-        this.glovesStabSprite = this.handStab.getChildByName('gloves').getComponent(cc.Sprite);
-        this.glovesWaveSprite= this.handWave .getChildByName('gloves').getComponent(cc.Sprite);
         this.meleeLightSprite = this.node.getChildByName('meleelight').getComponent(cc.Sprite);
         this.meleeLightSprite.node.opacity = 0;
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
@@ -98,15 +90,7 @@ export default class MeleeWeapon extends cc.Component {
         // this.stabWeapon.meleeWeapon = this;
         // this.waveWeapon.meleeWeapon = this;
     }
-    setHands(){
-        if(this.isStab){
-            this.handStab.opacity = 255;
-            this.handWave.opacity = 0;
-        }else{
-            this.handStab.opacity = 0;
-            this.handWave.opacity = 255;
-        }
-    }
+    
     setHv(hv: cc.Vec3) {
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -302,8 +286,7 @@ export default class MeleeWeapon extends cc.Component {
         this.scheduleOnce(() => {
             this.player.isWeaponDashing = false;
             this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            this.player.playerAnim(Player.STATE_IDLE,this.player.currentDir);
-            this.player.resetFoot();
+            this.player.playerAnim(PlayerAvatar.STATE_IDLE,this.player.currentDir);
         }, 0.2)
     }
     start() {

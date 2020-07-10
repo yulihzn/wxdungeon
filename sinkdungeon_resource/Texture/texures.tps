@@ -373,7 +373,6 @@
             <key type="filename">item/oilgold.png</key>
             <key type="filename">item/oilgold1.png</key>
             <key type="filename">item/stone.png</key>
-            <key type="filename">player/meleetips.png</key>
             <key type="filename">status/status001.png</key>
             <key type="filename">status/status002.png</key>
             <key type="filename">status/status003.png</key>
@@ -403,6 +402,7 @@
             <key type="filename">ui/boxbroken002.png</key>
             <key type="filename">ui/boxbroken003.png</key>
             <key type="filename">ui/dangertips.png</key>
+            <key type="filename">ui/meleetips.png</key>
             <key type="filename">ui/tabbackground.png</key>
             <key type="filename">ui/tabselect.png</key>
             <struct type="IndividualSpriteSettings">
@@ -496,19 +496,6 @@
             <key type="filename">avatar/avatarface003anim001.png</key>
             <key type="filename">avatar/avatarface003anim002.png</key>
             <key type="filename">avatar/avatarunderwear000.png</key>
-            <key type="filename">player/playerbody.png</key>
-            <key type="filename">player/playerface.png</key>
-            <key type="filename">player/playerface01.png</key>
-            <key type="filename">player/playerface02.png</key>
-            <key type="filename">player/playerface03.png</key>
-            <key type="filename">player/playerface04.png</key>
-            <key type="filename">player/playerface05.png</key>
-            <key type="filename">player/playerface06.png</key>
-            <key type="filename">player/playerface07.png</key>
-            <key type="filename">player/playerface08.png</key>
-            <key type="filename">player/playerface09.png</key>
-            <key type="filename">player/playerhead.png</key>
-            <key type="filename">player/playerpants.png</key>
             <key type="filename">ui/bling.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -681,18 +668,6 @@
             <key type="filename">equipment/shoes007.png</key>
             <key type="filename">equipment/shoes008.png</key>
             <key type="filename">equipment/shoes009.png</key>
-            <key type="filename">player/playerhair.png</key>
-            <key type="filename">player/playerhair01.png</key>
-            <key type="filename">player/playerhair02.png</key>
-            <key type="filename">player/playerhair03.png</key>
-            <key type="filename">player/playerhair04.png</key>
-            <key type="filename">player/playerhair05.png</key>
-            <key type="filename">player/playerhair101.png</key>
-            <key type="filename">player/playerhair102.png</key>
-            <key type="filename">player/playerhair103.png</key>
-            <key type="filename">player/playerhair201.png</key>
-            <key type="filename">player/playerhair202.png</key>
-            <key type="filename">player/playerhair203.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -708,8 +683,6 @@
                 <false/>
             </struct>
             <key type="filename">avatar/avatarhand000.png</key>
-            <key type="filename">player/playerhand.png</key>
-            <key type="filename">player/playerhandhalf.png</key>
             <key type="filename">ui/halfblack.png</key>
             <key type="filename">ui/singleColor.png</key>
             <key type="filename">ui/sprite_splash.png</key>
@@ -1486,19 +1459,6 @@
             <key type="filename">equipment/trousers008.png</key>
             <key type="filename">equipment/trousers009.png</key>
             <key type="filename">equipment/trousers010.png</key>
-            <key type="filename">player/playerleg201.png</key>
-            <key type="filename">player/playerleg202.png</key>
-            <key type="filename">player/playerlegdown201.png</key>
-            <key type="filename">player/playerlegdown202.png</key>
-            <key type="filename">player/playerlegs.png</key>
-            <key type="filename">player/playerlegs01.png</key>
-            <key type="filename">player/playerlegs02.png</key>
-            <key type="filename">player/playerlegs03.png</key>
-            <key type="filename">player/playerlegs04.png</key>
-            <key type="filename">player/playerlegsdown01.png</key>
-            <key type="filename">player/playerlegsdown02.png</key>
-            <key type="filename">player/playerlegsdown03.png</key>
-            <key type="filename">player/playerlegsdown04.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -1773,7 +1733,6 @@
             <filename>dungeon</filename>
             <filename>ui</filename>
             <filename>avatar</filename>
-            <filename>player</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
