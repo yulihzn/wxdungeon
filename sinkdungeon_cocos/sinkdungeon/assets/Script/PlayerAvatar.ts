@@ -32,12 +32,6 @@ export default class PlayerAvatar extends cc.Component {
     footRightSprite: cc.Sprite = null;
     shoesLeftSprite: cc.Sprite = null;
     shoesRightSprite: cc.Sprite = null;
-    gloveLeftSprite: cc.Sprite = null;
-    gloveRightSprite: cc.Sprite = null;
-    handLeftSprite: cc.Sprite = null;
-    handRightSprite: cc.Sprite = null;
-    weaponLeftSprite: cc.Sprite = null;
-    weaponRightSprite: cc.Sprite = null;
     headSprite: cc.Sprite = null;
     faceSprite: cc.Sprite = null;
     eyesSprite: cc.Sprite = null;
@@ -46,11 +40,8 @@ export default class PlayerAvatar extends cc.Component {
     bodySprite: cc.Sprite = null;
     pantsSprite: cc.Sprite = null;
     clothesSprite: cc.Sprite = null;
-    weaponRightNode: cc.Node = null;
-    weaponLeftNode: cc.Node = null;
     avatarNode: cc.Node = null;
     spriteNode: cc.Node = null;
-    isAttackByRightHand = true;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -75,14 +66,6 @@ export default class PlayerAvatar extends cc.Component {
         this.bodySprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body']);
         this.pantsSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'pants']);
         this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes']);
-        this.handLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponleft', 'hand']);
-        this.handRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'hand']);
-        this.gloveLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponleft', 'hand','glove']);
-        this.gloveRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'hand','glove']);
-        this.weaponLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'weapon']);
-        this.weaponRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'weaponright', 'weapon']);
-        this.weaponLeftNode = this.getSpriteChildNode(['sprite', 'avatar', 'weaponleft']);
-        this.weaponRightNode = this.getSpriteChildNode(['sprite', 'avatar', 'weaponright']);
         this.hairSprite.node.stopAllActions();
         this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
         let index = 0;
@@ -156,8 +139,8 @@ export default class PlayerAvatar extends cc.Component {
         this.hairSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
         this.faceSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
         this.eyesSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.handLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.handRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        // this.handLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        // this.handRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
         this.legLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
         this.legRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
         this.footLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
@@ -199,40 +182,26 @@ export default class PlayerAvatar extends cc.Component {
                 this.idlehair = [2, 3];
                 this.eyesSprite.spriteFrame = null;
                 this.faceSprite.spriteFrame = null;
-                this.weaponLeftNode.zIndex = this.headSprite.node.zIndex - 1;
-                this.weaponRightNode.zIndex = this.headSprite.node.zIndex - 1;
-                this.weaponRightNode.scaleX = -1;
-                this.weaponRightNode.position = cc.v3(-4, 8);
                 break;
             case PlayerAvatar.DIR_DOWN:
                 this.idlehair = [0, 1];
                 this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 0];
                 this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 0];
-                this.weaponLeftNode.zIndex = this.bodySprite.node.zIndex + 1;
-                this.weaponRightNode.zIndex = this.bodySprite.node.zIndex + 1;
-                this.weaponRightNode.scaleX = -1;
-                this.weaponRightNode.position = cc.v3(-4, 8);
                 break;
             case PlayerAvatar.DIR_LEFT:
                 this.idlehair = [4, 5];
                 this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 1];
                 this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 1];
-                this.weaponLeftNode.zIndex = this.headSprite.node.zIndex - 1;
-                this.weaponRightNode.zIndex = this.bodySprite.node.zIndex + 1;
-                this.weaponRightNode.scaleX = 1;
-                this.weaponRightNode.position = cc.v3(-3, 8);
                 break;
             case PlayerAvatar.DIR_RIGHT:
                 this.idlehair = [4, 5];
                 this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 1];
                 this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 1];
-                this.weaponLeftNode.zIndex = this.headSprite.node.zIndex - 1;
-                this.weaponRightNode.zIndex = this.bodySprite.node.zIndex + 1;
-                this.weaponRightNode.scaleX = 1;
-                this.weaponRightNode.position = cc.v3(-3, 8);
                 break;
         }
-        this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
+        if(dir != 4){
+            this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
+        }
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');
@@ -260,16 +229,8 @@ export default class PlayerAvatar extends cc.Component {
         cc.tween(this.spriteNode).to(0.1, { position: cc.v3(offsetX, offsetY) })
             .to(0.1, { position: cc.v3(-offsetX, -offsetY) })
             .to(0.1, { position: cc.v3(0, 0) }).delay(0.1).call(() => {
-                this.weaponRightNode.opacity = 255;
-                this.weaponLeftNode.opacity = 255;
-                this.playAnim(PlayerAvatar.STATE_IDLE, this.dir);
+                this.playAnim(PlayerAvatar.STATE_IDLE, dir);
             }).start();
-        this.isAttackByRightHand = !this.isAttackByRightHand;
-        if (this.isAttackByRightHand) {
-            this.weaponRightNode.opacity = 0;
-        } else {
-            this.weaponLeftNode.opacity = 0;
-        }
     }
 
     start() {

@@ -249,7 +249,7 @@ export default class Shooter extends cc.Component {
         bullet.enabled = true;
         bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
     }
-    destroyBullet(bulletNode: cc.Node) {
+    private destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
         bulletNode.active = false;
         let bullet = bulletNode.getComponent(Bullet);
@@ -384,9 +384,6 @@ export default class Shooter extends cc.Component {
         }
         this.schedule(fun, 0.025, 45);
     }
-    getRandomNum(min, max): number {//生成一个随机数从[min,max]
-        return min + Math.round(Random.rand() * (max - min));
-    }
 
     update(dt) {
         let pos = this.hasNearEnemy();
@@ -398,14 +395,14 @@ export default class Shooter extends cc.Component {
             this.rotateColliderManager(olderTarget);
         }
     }
-    getParentNode(): cc.Node {
+    private getParentNode(): cc.Node {
         if (this.parentNode) {
             return this.parentNode;
         } else {
             return this.node.parent;
         }
     }
-    hasNearEnemy() {
+    private hasNearEnemy() {
         if (!this.isAutoAim) {
             return cc.Vec3.ZERO;
         }
@@ -444,7 +441,7 @@ export default class Shooter extends cc.Component {
         }
         return pos;
     }
-    rotateColliderManager(target: cc.Vec3) {
+    private rotateColliderManager(target: cc.Vec3) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
         // 两者取差得到方向向量

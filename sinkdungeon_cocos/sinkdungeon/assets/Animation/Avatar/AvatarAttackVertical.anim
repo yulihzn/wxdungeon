@@ -93,26 +93,6 @@
           ]
         }
       },
-      "sprite/avatar/legleft/footleft": {
-        "props": {
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                0,
-                -2,
-                0
-              ]
-            }
-          ],
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
       "sprite/avatar/legright": {
         "props": {
           "angle": [
@@ -173,26 +153,6 @@
                 0
               ],
               "curve": "constant"
-            }
-          ]
-        }
-      },
-      "sprite/avatar/legright/footright": {
-        "props": {
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                0,
-                -2,
-                0
-              ]
-            }
-          ],
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
             }
           ]
         }

@@ -193,15 +193,16 @@
           ]
         }
       },
-      "sprite/stabweapon/hand": {
+      "sprite/hand": {
+        "comps": {},
         "props": {
           "scale": [
             {
               "frame": 0,
               "value": {
                 "__type__": "cc.Vec2",
-                "x": 1.5,
-                "y": 1.5
+                "x": 1,
+                "y": 1
               }
             },
             {

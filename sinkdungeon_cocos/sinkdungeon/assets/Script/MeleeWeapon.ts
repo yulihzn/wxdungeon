@@ -17,6 +17,8 @@ import Decorate from "./Building/Decorate";
 import AudioPlayer from "./Utils/AudioPlayer";
 import IndexZ from "./Utils/IndexZ";
 import PlayerAvatar from "./PlayerAvatar";
+import EquipmentData from "./Data/EquipmentData";
+import InventoryManager from "./Manager/InventoryManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,6 +39,9 @@ export default class MeleeWeapon extends cc.Component {
     public static readonly ELEMENT_TYPE_LIGHTENING = 3;
     public static readonly ELEMENT_TYPE_TOXIC = 4;
     public static readonly ELEMENT_TYPE_CURSE = 5;
+    public static readonly COMBO1: number = 1;
+    public static readonly COMBO2: number = 2;
+    public static readonly COMBO3: number = 3;
 
     @property(cc.Node)
     playerNode: cc.Node = null;
@@ -58,40 +63,53 @@ export default class MeleeWeapon extends cc.Component {
     @property(cc.Prefab)
     curseLight: cc.Prefab = null;
 
-    meleeLightSprite:cc.Sprite = null;
-    meleeLightLeftPos = cc.v3(8,0);
-    meleeLightRightPos = cc.v3(-8,0);
+    private meleeLightLeftPos = cc.v3(8, 0);
+    private meleeLightRightPos = cc.v3(-8, 0);
 
     private anim: cc.Animation;
-    isAttacking: boolean = false;
+    private isAttacking: boolean = false;
     private hv: cc.Vec3 = cc.v3(1, 0);
-    isStab = true;//刺
-    isFar = false;//近程
-    isFist = true;//空手 
+    private isStab = true;//刺
+    private isFar = false;//近程
+    private isFist = true;//空手 
     dungeon: Dungeon;
-    weaponFirePoint: cc.Node;//剑尖
-    isMiss = false;
-    drainSkill = new Skill();
-    isReflect = false;//子弹偏转
-    static readonly COMBO1:number = 1;
-    static readonly COMBO2:number = 2;
-    static readonly COMBO3:number = 3;
-    comboType = 0;
-    isComboing = false;
-    hasTargetMap: { [key: string]: number } = {};
+    private weaponFirePoint: cc.Node;//剑尖
+    private isMiss = false;
+    private drainSkill = new Skill();
+    private isReflect = false;//子弹偏转
+    private weaponSprite: cc.Sprite = null;
+    private weaponStabSprite: cc.Sprite = null;
+    private weaponStabLightSprite: cc.Sprite = null;
+    private weaponLightSprite: cc.Sprite = null;
+    private handSprite: cc.Sprite = null;
+    private gloveSprite: cc.Sprite = null;
+    private comboType = 0;
+    private isComboing = false;
+    private hasTargetMap: { [key: string]: number } = {};
+    get IsAttacking() {
+        return this.isAttacking;
+    }
+    get IsReflect() {
+        return this.isReflect;
+    }
+    get GloveSprite() {
+        return this.gloveSprite;
+    }
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
         this.weaponFirePoint = this.node.getChildByName('firepoint');
-        this.meleeLightSprite = this.node.getChildByName('meleelight').getComponent(cc.Sprite);
-        this.meleeLightSprite.node.opacity = 0;
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos));
-        // this.stabWeapon.meleeWeapon = this;
-        // this.waveWeapon.meleeWeapon = this;
+        this.weaponSprite = this.getSpriteChildSprite(['sprite', 'weapon']);
+        this.weaponStabSprite = this.getSpriteChildSprite( ['sprite', 'stabweapon']);
+        this.weaponStabLightSprite = this.getSpriteChildSprite(['sprite', 'stablight']);
+        this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight']);
+        this.handSprite = this.getSpriteChildSprite(['sprite', 'hand']);
+        this.gloveSprite = this.getSpriteChildSprite(['sprite', 'hand', 'glove']);
     }
-    
-    setHv(hv: cc.Vec3) {
+
+    set Hv(hv: cc.Vec3) {
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
@@ -100,24 +118,54 @@ export default class MeleeWeapon extends cc.Component {
             this.hv = hv.normalizeSelf();
         }
     }
-    getHv(): cc.Vec3 {
+    get Hv(): cc.Vec3 {
         return this.hv;
     }
-
-    updateCombo(){
-        if(this.comboType == MeleeWeapon.COMBO1){
+    private getSpriteChildSprite(childNames: string[]): cc.Sprite {
+        let node = this.node;
+        for (let name of childNames) {
+            node = node.getChildByName(name);
+        }
+        return node.getComponent(cc.Sprite);
+    }
+    changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame, inventoryManager: InventoryManager) {
+        if ('weapon' != equipData.equipmetType) {
+            cc.log('its not a weapon');
+            return;
+        }
+        this.isStab = equipData.stab == 1;
+        this.isFar = equipData.far == 1;
+        this.isReflect = equipData.isReflect == 1;
+        this.isFist = false;
+        if (equipData.stab == 1) {
+            this.weaponSprite.spriteFrame = null;
+            this.weaponStabSprite.spriteFrame = spriteFrame;
+            this.weaponStabLightSprite.spriteFrame = this.isFar ? Logic.spriteFrames['stablight'] : Logic.spriteFrames['stablight1'];
+        } else {
+            this.weaponSprite.spriteFrame = spriteFrame;
+            this.weaponStabSprite.spriteFrame = null;
+        }
+        let color1 = cc.color(255, 255, 255).fromHEX(inventoryManager.weapon.color);
+        let color2 = cc.color(255, 255, 255).fromHEX(inventoryManager.weapon.lightcolor);
+        this.weaponSprite.node.color = color1;
+        this.weaponStabSprite.node.color = color1;
+        this.weaponStabLightSprite.node.color = color2;
+        this.weaponLightSprite.node.color = color2;
+    }
+    private updateCombo() {
+        if (this.comboType == MeleeWeapon.COMBO1) {
             this.comboType = MeleeWeapon.COMBO2;
-            if(this.isFist){
+            if (this.isFist) {
                 this.comboType = MeleeWeapon.COMBO1;
             }
-        }else if(this.comboType == MeleeWeapon.COMBO2){
+        } else if (this.comboType == MeleeWeapon.COMBO2) {
             this.comboType = MeleeWeapon.COMBO3;
-        }else if(this.comboType == MeleeWeapon.COMBO3){
+        } else if (this.comboType == MeleeWeapon.COMBO3) {
             this.comboType = MeleeWeapon.COMBO1;
-        }else{
-            this.comboType = MeleeWeapon.COMBO1; 
+        } else {
+            this.comboType = MeleeWeapon.COMBO1;
         }
-        if(!this.isComboing){
+        if (!this.isComboing) {
             this.comboType = MeleeWeapon.COMBO1;
             this.isComboing = true;
         }
@@ -126,9 +174,39 @@ export default class MeleeWeapon extends cc.Component {
         if (this.isAttacking) {
             return false;
         }
+        let speed = PlayerData.DefAULT_SPEED - data.getAttackSpeed();
+        let audiodelay = 0;
+        if (speed < 1) {
+            //匕首
+            if (this.isStab && !this.isFar) {
+                speed = 0 + speed;
+                audiodelay = 0;
+            }
+            //长剑
+            if (!this.isStab && !this.isFar) {
+                speed = 100 + speed;
+                audiodelay = 0.1;
+            }
+            //长枪
+            if (this.isStab && this.isFar) {
+                speed = 150 + speed;
+                audiodelay = 0.1;
+            }
+            //大剑
+            if (!this.isStab && this.isFar) {
+                speed = 300 + speed;
+                audiodelay = 0.2;
+            }
+        }
+        if (speed < 0) {
+            speed = 0;
+        }
+        this.scheduleOnce(() => {
+            AudioPlayer.play(AudioPlayer.MELEE);
+        }, audiodelay);
         this.hasTargetMap = {};
         this.updateCombo();
-        
+
         this.isMiss = isMiss;
         this.isAttacking = true;
         let animSpeed = 1 + data.getAttackSpeed() / 1000;
@@ -140,7 +218,7 @@ export default class MeleeWeapon extends cc.Component {
         if (animSpeed > 3) {
             animSpeed = 3;
         }
-        
+
         if (this.anim) {
             let animname = this.getAttackAnimName();
             this.anim.play(animname);
@@ -159,29 +237,40 @@ export default class MeleeWeapon extends cc.Component {
         return true;
 
     }
-    playAttackAnim(isRightHand:boolean){
-        this.meleeLightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
-        this.meleeLightSprite.node.position = isRightHand?this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightRightPos))
-        :this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
-        cc.tween(this.meleeLightSprite.node).stop();
-        cc.tween(this.meleeLightSprite.node)
-        .call(()=>{
-            this.meleeLightSprite.node.opacity = 255;
-            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${0}`];
-        }).delay(0.1)
-        .call(()=>{
-            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${1}`];
-        }).delay(0.1)
-        .call(()=>{
-            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${2}`];
-        }).delay(0.1)
-        .call(()=>{
-            this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${3}`];
-        }).delay(0.1)
-        .call(()=>{
-            this.meleeLightSprite.node.opacity = 0;
-        }).start();
+    getMeleeSlowRatio(): number {
+        if (!this.isFar && this.isStab) {
+            return 0.05;
+        } else if (this.isFar && this.isStab) {
+            return 0.02;
+        } else if (!this.isFar && !this.isStab) {
+            return 0.02;
+        } else {
+            return 0.01;
+        }
     }
+    // playAttackAnim(isRightHand: boolean) {
+    //     this.meleeLightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
+    //     this.meleeLightSprite.node.position = isRightHand ? this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightRightPos))
+    //         : this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
+    //     cc.tween(this.meleeLightSprite.node).stop();
+    //     cc.tween(this.meleeLightSprite.node)
+    //         .call(() => {
+    //             this.meleeLightSprite.node.opacity = 255;
+    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${0}`];
+    //         }).delay(0.1)
+    //         .call(() => {
+    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${1}`];
+    //         }).delay(0.1)
+    //         .call(() => {
+    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${2}`];
+    //         }).delay(0.1)
+    //         .call(() => {
+    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${3}`];
+    //         }).delay(0.1)
+    //         .call(() => {
+    //             this.meleeLightSprite.node.opacity = 0;
+    //         }).start();
+    // }
     private getAttackAnimName(): string {
         let name = "MeleeAttackStab";
         if (!this.isFar && this.isStab) {
@@ -193,16 +282,16 @@ export default class MeleeWeapon extends cc.Component {
         } else {
             name = "MeleeAttack";
         }
-        return name+this.getComboSuffix();
+        return name + this.getComboSuffix();
     }
-    private getComboSuffix():string{
-        if(this.comboType == MeleeWeapon.COMBO1){
+    private getComboSuffix(): string {
+        if (this.comboType == MeleeWeapon.COMBO1) {
             return '1';
-        }else if(this.comboType == MeleeWeapon.COMBO2){
+        } else if (this.comboType == MeleeWeapon.COMBO2) {
             return '2';
-        }else if(this.comboType == MeleeWeapon.COMBO3){
+        } else if (this.comboType == MeleeWeapon.COMBO3) {
             return '3';
-        }else{
+        } else {
             return '1';
         }
     }
@@ -247,31 +336,31 @@ export default class MeleeWeapon extends cc.Component {
     }
     //Anim
     MeleeAttackFinish() {
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             this.isAttacking = false;
-        },0.05);
-        this.scheduleOnce(()=>{
-            if(!this.isAttacking){
+        }, 0.05);
+        this.scheduleOnce(() => {
+            if (!this.isAttacking) {
                 this.isComboing = false;
             }
-        },0.6);
+        }, 0.6);
     }
     //Anim
-    ExAttackTime(){
+    ExAttackTime() {
         this.player.remoteExAttack(this.comboType);
     }
     /**Anim 清空攻击列表*/
-    RefreshTime(){
+    RefreshTime() {
         this.hasTargetMap = {};
     }
     /**Anim 冲刺*/
-    DashTime(){
+    DashTime() {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
         let speed = 800;
         this.schedule(() => {
-            this.player.getWalkSmoke(this.node.parent, this.node.position);
+            this.player.getWalkSmoke(this.player.node, this.node.position);
         }, 0.05, 4, 0);
-        let pos = cc.v2(this.hv.x,this.hv.y);
+        let pos = cc.v2(this.hv.x, this.hv.y);
         this.player.isMoving = false;
         this.player.isWeaponDashing = true;
         if (pos.equals(cc.Vec2.ZERO)) {
@@ -279,28 +368,22 @@ export default class MeleeWeapon extends cc.Component {
         } else {
             pos = pos.normalizeSelf();
         }
-        let posv3 = cc.v3(pos.x,pos.y);
+        let posv3 = cc.v3(pos.x, pos.y);
         this.hv = posv3.clone();
         pos = pos.mul(speed);
         this.player.rigidbody.linearVelocity = pos;
         this.scheduleOnce(() => {
             this.player.isWeaponDashing = false;
             this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            this.player.playerAnim(PlayerAvatar.STATE_IDLE,this.player.currentDir);
+            this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir);
         }, 0.2)
-    }
-    start() {
-    }
-
-    getRandomNum(min, max): number {//生成一个随机数从[min,max]
-        return min + Math.round(Random.rand() * (max - min));
     }
 
     update(dt) {
 
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
-            if(!this.isAttacking){
+            if (!this.isAttacking) {
                 this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             }
             this.hv = pos;
@@ -309,29 +392,28 @@ export default class MeleeWeapon extends cc.Component {
             this.rotateColliderManager(olderTarget);
         }
     }
-    hasNearEnemy() {
-
+    private hasNearEnemy() {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         if (this.dungeon) {
             for (let monster of this.dungeon.monsters) {
-                let dis = Logic.getDistance(this.node.parent.position, monster.node.position);
+                let dis = Logic.getDistance(this.player.node.position, monster.node.position);
                 if (dis < 200 && dis < olddis && !monster.isDied) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = monster.getCenterPosition().sub(this.node.parent.position.add(p));
+                    pos = monster.getCenterPosition().sub(this.player.node.position.add(p));
                 }
             }
 
             if (pos.equals(cc.Vec3.ZERO)) {
                 for (let boss of this.dungeon.bosses) {
-                    let dis = Logic.getDistance(this.node.parent.position, boss.node.position);
+                    let dis = Logic.getDistance(this.player.node.position, boss.node.position);
                     if (dis < 200 && dis < olddis && !boss.isDied) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        pos = boss.getCenterPosition().sub(this.node.parent.position.add(p));
+                        pos = boss.getCenterPosition().sub(this.player.node.position.add(p));
                     }
                 }
 
@@ -343,7 +425,7 @@ export default class MeleeWeapon extends cc.Component {
         return pos;
     }
 
-    rotateColliderManager(target: cc.Vec3) {
+    private rotateColliderManager(target: cc.Vec3) {
         // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
         // 物体坐标默认就是世界坐标
         // 两者取差得到方向向量
@@ -352,7 +434,7 @@ export default class MeleeWeapon extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        this.node.scaleX = this.node.parent.scaleX;
+        this.node.scaleX = this.player.node.scaleX;
         let sy = Math.abs(this.node.scaleY);
         this.node.scaleY = this.node.scaleX < 0 ? -sy : sy;
         angle += offsetAngle;
@@ -366,26 +448,20 @@ export default class MeleeWeapon extends cc.Component {
         this.node.angle = this.node.scaleX < 0 ? -angle : angle;
 
     }
-    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-    // }
-    // onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
-    //     if(self.radius>0){
-    //         this.attacking(other);
-    //     }
-    // }
+
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
-        if(self.radius>0){
-            if(this.hasTargetMap[other.node.uuid]&&this.hasTargetMap[other.node.uuid]>0){
+        if (self.radius > 0) {
+            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
                 this.hasTargetMap[other.node.uuid]++;
-            }else{
+            } else {
                 this.hasTargetMap[other.node.uuid] = 1;
                 this.attacking(other);
             }
         }
     }
-    beatBack(node: cc.Node) {
+    private beatBack(node: cc.Node) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
-        let pos = this.getHv().clone();
+        let pos = this.Hv.clone();
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
         }
@@ -399,11 +475,11 @@ export default class MeleeWeapon extends cc.Component {
         } else {
             power = 50;
         }
-        if(this.comboType == MeleeWeapon.COMBO3){
-            power+=50;
+        if (this.comboType == MeleeWeapon.COMBO3) {
+            power += 50;
         }
         pos = pos.normalizeSelf().mul(power);
-        rigidBody.applyLinearImpulse(cc.v2(pos.x,pos.y), rigidBody.getLocalCenter(), true);
+        rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
     }
     attacking(attackTarget: cc.Collider) {
         if (!attackTarget || !this.isAttacking) {
@@ -419,8 +495,8 @@ export default class MeleeWeapon extends cc.Component {
         let attackSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied && !this.isMiss) {
-            damage.isBackAttack = monster.isPlayerBehindAttack()&&this.player.data.getDamageBack()>0;
-            if(damage.isBackAttack){
+            damage.isBackAttack = monster.isPlayerBehindAttack() && this.player.data.getDamageBack() > 0;
+            if (damage.isBackAttack) {
                 damage.realDamage += this.player.data.getDamageBack();
             }
             damageSuccess = monster.takeDamage(damage);
@@ -444,12 +520,12 @@ export default class MeleeWeapon extends cc.Component {
             box.breakBox();
         }
         let decorate = attackTarget.node.getComponent(Decorate);
-        if(decorate&&decorate.data.status==0){
+        if (decorate && decorate.data.status == 0) {
             attackSuccess = true;
             decorate.breakBox();
         }
         //生命汲取,内置1s cd
-        if(damageSuccess){
+        if (damageSuccess) {
             this.drainSkill.next(() => {
                 let drain = this.player.data.getLifeDrain();
                 if (drain > 0) {
@@ -457,16 +533,16 @@ export default class MeleeWeapon extends cc.Component {
                 }
             }, 1, true);
         }
-        
+
         this.isMiss = false;
         //停顿
-        if(damageSuccess||attackSuccess){
+        if (damageSuccess || attackSuccess) {
             this.anim.pause();
-            cc.director.emit(EventHelper.CAMERA_SHAKE,{detail:{isHeavyShaking:this.comboType==MeleeWeapon.COMBO3}});
-            this.scheduleOnce(()=>{this.anim.resume()},0.1);
+            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 } });
+            this.scheduleOnce(() => { this.anim.resume() }, 0.1);
         }
     }
-    addMonsterAllStatus(monster: Monster) {
+    private addMonsterAllStatus(monster: Monster) {
         this.addMonsterStatus(this.player.data.getIceRate(), monster, StatusManager.FROZEN);
         this.addMonsterStatus(this.player.data.getFireRate(), monster, StatusManager.BURNING);
         this.addMonsterStatus(this.player.data.getLighteningRate(), monster, StatusManager.DIZZ);
@@ -474,7 +550,7 @@ export default class MeleeWeapon extends cc.Component {
         this.addMonsterStatus(this.player.data.getCurseRate(), monster, StatusManager.CURSING);
         this.addMonsterStatus(this.player.data.getRealRate(), monster, StatusManager.BLEEDING);
     }
-    addBossAllStatus(boss: Boss) {
+    private addBossAllStatus(boss: Boss) {
         this.addBossStatus(this.player.data.getIceRate(), boss, StatusManager.FROZEN);
         this.addBossStatus(this.player.data.getFireRate(), boss, StatusManager.BURNING);
         this.addBossStatus(this.player.data.getLighteningRate(), boss, StatusManager.DIZZ);
@@ -482,11 +558,11 @@ export default class MeleeWeapon extends cc.Component {
         this.addBossStatus(this.player.data.getCurseRate(), boss, StatusManager.CURSING);
         this.addBossStatus(this.player.data.getRealRate(), boss, StatusManager.BLEEDING);
     }
-    addMonsterStatus(rate: number, monster: Monster, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType,new FromData()); }
+    private addMonsterStatus(rate: number, monster: Monster, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType, new FromData()); }
     }
-    addBossStatus(rate: number, boss: Boss, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType,new FromData()); }
+    private addBossStatus(rate: number, boss: Boss, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType, new FromData()); }
     }
 
 }

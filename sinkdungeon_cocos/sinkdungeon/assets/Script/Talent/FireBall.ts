@@ -55,12 +55,12 @@ export default class FireBall extends cc.Component {
         this.node.zIndex = IndexZ.OVERHEAD;
     }
     getPlayerPosition(player:Player):cc.Vec3{
-        let hv = player.meleeWeapon.getHv().clone();
+        let hv = player.weaponRight.meleeWeapon.Hv.clone();
         return player.node.position.clone().addSelf(cc.v3(0,32)).addSelf(hv.mulSelf(32));
     }
     
     getPlayerHv(player:Player,angleOffset:number):cc.Vec3{
-        let hv = player.meleeWeapon.getHv().clone();
+        let hv = player.weaponRight.meleeWeapon.Hv.clone();
         let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180));
         return pos.normalizeSelf();
     }

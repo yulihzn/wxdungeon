@@ -50,7 +50,7 @@ export default class FireGhost extends cc.Component {
         }, 0.2);
     }
     getPlayerFarPosition(player: Player, distance: number, angleOffset: number): cc.Vec3 {
-        let hv = player.meleeWeapon.getHv().clone();
+        let hv = player.weaponRight.meleeWeapon.Hv.clone();
         let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180).mul(distance));
         return player.node.position.clone().addSelf(cc.v3(8, 48).addSelf(pos));
     }
@@ -123,7 +123,7 @@ export default class FireGhost extends cc.Component {
         }
         let olddis = 1000;
         let pos = cc.v3(0, 0);
-        for (let monster of this.player.meleeWeapon.dungeon.monsters) {
+        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsters) {
             let dis = Logic.getDistance(this.node.position, monster.node.position);
             if (dis < 400 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                 olddis = dis;
@@ -133,7 +133,7 @@ export default class FireGhost extends cc.Component {
             }
         }
         if (pos.equals(cc.Vec3.ZERO)) {
-            for (let boss of this.player.meleeWeapon.dungeon.bosses) {
+            for (let boss of this.player.weaponRight.meleeWeapon.dungeon.bosses) {
                 let dis = Logic.getDistance(this.node.position, boss.node.position);
                 if (dis < 400 && dis < olddis && !boss.isDied) {
                     olddis = dis;

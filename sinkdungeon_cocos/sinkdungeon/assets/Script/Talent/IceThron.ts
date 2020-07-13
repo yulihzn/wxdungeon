@@ -51,7 +51,7 @@ export default class IceThron extends cc.Component {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     getPlayerPosition(player:Player,angleOffset:number,distance:number):cc.Vec3{
-        let hv = player.meleeWeapon.getHv().clone();
+        let hv = player.weaponRight.meleeWeapon.Hv.clone();
         let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)).normalizeSelf();
         return player.node.position.clone().addSelf(pos.mulSelf(distance));
     }
