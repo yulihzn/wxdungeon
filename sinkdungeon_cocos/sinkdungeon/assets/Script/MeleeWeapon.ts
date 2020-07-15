@@ -86,6 +86,12 @@ export default class MeleeWeapon extends cc.Component {
     private comboType = 0;
     private isComboing = false;
     private hasTargetMap: { [key: string]: number } = {};
+    get IsFist(){
+        return this.isFist;
+    }
+    get IsComboing(){
+        return this.isComboing;
+    }
     get IsAttacking() {
         return this.isAttacking;
     }
@@ -237,6 +243,11 @@ export default class MeleeWeapon extends cc.Component {
         return true;
 
     }
+    attackIdle(){
+        if (this.anim) {
+            this.anim.play('MeleeAttackIdle');
+        }
+    }
     getMeleeSlowRatio(): number {
         if (!this.isFar && this.isStab) {
             return 0.05;
@@ -248,33 +259,11 @@ export default class MeleeWeapon extends cc.Component {
             return 0.01;
         }
     }
-    // playAttackAnim(isRightHand: boolean) {
-    //     this.meleeLightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
-    //     this.meleeLightSprite.node.position = isRightHand ? this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightRightPos))
-    //         : this.node.convertToNodeSpaceAR(this.player.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
-    //     cc.tween(this.meleeLightSprite.node).stop();
-    //     cc.tween(this.meleeLightSprite.node)
-    //         .call(() => {
-    //             this.meleeLightSprite.node.opacity = 255;
-    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${0}`];
-    //         }).delay(0.1)
-    //         .call(() => {
-    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${1}`];
-    //         }).delay(0.1)
-    //         .call(() => {
-    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${2}`];
-    //         }).delay(0.1)
-    //         .call(() => {
-    //             this.meleeLightSprite.spriteFrame = Logic.spriteFrames[`meleelight000anim00${3}`];
-    //         }).delay(0.1)
-    //         .call(() => {
-    //             this.meleeLightSprite.node.opacity = 0;
-    //         }).start();
-    // }
+
     private getAttackAnimName(): string {
         let name = "MeleeAttackStab";
         if (!this.isFar && this.isStab) {
-            name = "MeleeAttackStab";
+            name = this.isFist?"MeleeAttackFist":"MeleeAttackStab";
         } else if (this.isFar && this.isStab) {
             name = "MeleeAttackStabFar";
         } else if (this.isFar && !this.isStab) {

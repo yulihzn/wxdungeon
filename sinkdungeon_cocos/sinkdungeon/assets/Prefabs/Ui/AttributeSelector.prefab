@@ -49,8 +49,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 300,
-      "height": 64
+      "width": 400,
+      "height": 52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -128,7 +128,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        106,
+        156,
         0,
         0,
         0,
@@ -404,7 +404,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -106,
+        -156,
         0,
         0,
         0,
@@ -522,9 +522,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 201,
-      "g": 201,
-      "b": 201,
+      "r": 255,
+      "g": 211,
+      "b": 211,
       "a": 255
     },
     "_contentSize": {
@@ -541,7 +541,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -175.52999999999997,
+        -225.52999999999997,
         0,
         0,
         0,

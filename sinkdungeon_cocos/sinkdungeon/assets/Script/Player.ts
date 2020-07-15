@@ -92,6 +92,8 @@ export default class Player extends Actor {
     flyWheel: FlyWheel;
     talentMagic: TalentMagic;
     isWeaponDashing = false;
+    
+    fistCombo = 0;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -187,7 +189,24 @@ export default class Player extends Actor {
     private turnStone(isStone: boolean, stoneLevel?: number) {
         this.avatar.hitLight(isStone);
     }
-
+    private updateCombo() {
+        if(!this.weaponRight.meleeWeapon.IsFist){
+            this.fistCombo = MeleeWeapon.COMBO1;
+            return;
+        }
+        if (this.fistCombo == MeleeWeapon.COMBO1) {
+            this.fistCombo = MeleeWeapon.COMBO2;
+        } else if (this.fistCombo == MeleeWeapon.COMBO2) {
+            this.fistCombo = MeleeWeapon.COMBO3;
+        } else if (this.fistCombo == MeleeWeapon.COMBO3) {
+            this.fistCombo = MeleeWeapon.COMBO1;
+        } else {
+            this.fistCombo = MeleeWeapon.COMBO1;
+        }
+        if (!this.weaponLeft.meleeWeapon.IsComboing&&!this.weaponRight.meleeWeapon.IsComboing) {
+            this.fistCombo = MeleeWeapon.COMBO1;
+        }
+    }
     dizzCharacter(dizzDuration: number) {
         if (dizzDuration > 0) {
             this.isDizz = true;
@@ -327,7 +346,9 @@ export default class Player extends Actor {
         }
     }
     meleeAttack() {
-        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall || this.weaponRight.meleeWeapon.IsAttacking) {
+        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall 
+            || this.weaponRight.meleeWeapon.IsAttacking
+            || this.weaponLeft.meleeWeapon.IsAttacking) {
             return;
         }
         let pos = this.weaponRight.meleeWeapon.Hv.clone();
@@ -338,7 +359,19 @@ export default class Player extends Actor {
         if (isMiss) {
             this.showFloatFont(this.node.parent, 0, false, true, false);
         }
-        this.weaponRight.meleeWeapon.attack(this.data, isMiss);
+        this.updateCombo();
+        if(this.fistCombo == MeleeWeapon.COMBO1){
+            this.weaponRight.meleeWeapon.attack(this.data, isMiss);
+            this.weaponLeft.meleeWeapon.attackIdle();
+        }else if(this.fistCombo == MeleeWeapon.COMBO2){
+            this.weaponRight.meleeWeapon.attackIdle();
+            this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
+        }else if(this.fistCombo == MeleeWeapon.COMBO3){
+            this.weaponRight.meleeWeapon.attack(this.data, isMiss);
+            this.scheduleOnce(()=>{
+                this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
+            },0.15);
+        }
         this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
 
         this.stopHiding();

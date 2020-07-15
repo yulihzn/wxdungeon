@@ -83,7 +83,7 @@ CCProgram fs %{
     vec2 offset = vec2(outlineSize * cos(rad) * unit.x, outlineSize * sin(rad) * unit.y); //偏移量
     vec2 v = v_uv0 + offset;
     float a = texture2D(texture, v).a;
-    if (a >= 0.5 )// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
+    if (a < 0.5 )// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
     {
         stroke = 1;
     }
@@ -111,7 +111,7 @@ CCProgram fs %{
     strokeCount += getIsStrokeWithAngel(300.0);
     strokeCount += getIsStrokeWithAngel(330.0);
 
-    if (strokeCount <12) // 四周围至少有一个点是不透明的，这个点要设成描边颜色
+    if (strokeCount > 0) // 四周围至少有一个点是不透明的，这个点要设成描边颜色
     {
         curr_color = outlineColor;
     }

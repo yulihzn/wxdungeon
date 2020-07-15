@@ -89,11 +89,11 @@ export default class Chest extends Building {
                     if (dungeon) {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos, null, this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.WEAPON_CHOPPER, this.data.pos, null, this.data.quality);
-                            dungeon.addEquipment(EquipmentManager.CLOAK_WARRIOR, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.WEAPON_CHOPPER, this.data.pos, null, this.data.quality);
+                            // dungeon.addEquipment(EquipmentManager.CLOAK_WARRIOR, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CHICKEN, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_TOXICDAGGER, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);

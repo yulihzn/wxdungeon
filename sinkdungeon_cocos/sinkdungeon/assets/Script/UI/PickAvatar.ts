@@ -40,6 +40,8 @@ export default class PickAvatar extends cc.Component {
     avatarTable:cc.Node = null;
     @property(cc.Node)
     attributeLayout:cc.Node = null;
+    @property(cc.Node)
+    randomLayout:cc.Node = null;
     @property(cc.Prefab)
     selectorPrefab:cc.Prefab = null;
     @property(cc.Prefab)
@@ -200,5 +202,13 @@ export default class PickAvatar extends cc.Component {
             this.isSpirteLoaded = false;
             this.show();
         }
+    }
+
+    ButtonSwitch(){
+        this.randomLayout.opacity = this.randomLayout.opacity==0?255:0;
+        this.attributeLayout.opacity = this.randomLayout.opacity==0?255:0;
+    }
+    ButtonRandom(){
+
     }
 }
