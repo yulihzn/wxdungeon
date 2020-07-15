@@ -149,17 +149,17 @@ export default class PlayerAvatar extends cc.Component {
     }
     changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
         this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
-        if (dir == 0 && Logic.spriteFrames[inventoryManager.helmet.img + 'behind']) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img + 'behind'];
-        } else if (dir == 1 && Logic.spriteFrames[inventoryManager.helmet.img + 'front']) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img + 'front'];
+        if (dir == 0 && Logic.spriteFrames[ 'behind'+inventoryManager.helmet.img]) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrames['behind'+inventoryManager.helmet.img];
+        } else if (dir == 1 && Logic.spriteFrames['front'+inventoryManager.helmet.img]) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrames['front'+inventoryManager.helmet.img];
         } else {
             this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img];
         }
-        if (dir == 0 && Logic.spriteFrames[inventoryManager.clothes.img + 'behind']) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img + 'behind'];
-        } else if (dir == 1 && Logic.spriteFrames[inventoryManager.clothes.img + 'front']) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img + 'front'];
+        if (dir == 0 && Logic.spriteFrames['behind'+inventoryManager.clothes.img]) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrames['behind'+inventoryManager.clothes.img];
+        } else if (dir == 1 && Logic.spriteFrames['front'+inventoryManager.clothes.img]) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrames['front'+inventoryManager.clothes.img];
         } else {
             this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img];
         }

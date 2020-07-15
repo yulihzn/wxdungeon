@@ -83,7 +83,7 @@ CCProgram fs %{
     vec2 offset = vec2(outlineSize * cos(rad) * unit.x, outlineSize * sin(rad) * unit.y); //偏移量
     vec2 v = v_uv0 + offset;
     float a = texture2D(texture, v).a;
-    if (a >= 0.5 && v.x<0.9 && v.x>0.1 && v.y<0.9 && v.y>0.1)// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
+    if (a >= 0.5 )// 我把alpha值大于0.5都视为不透明，小于0.5都视为透明
     {
         stroke = 1;
     }
@@ -91,7 +91,7 @@ CCProgram fs %{
   }
   void main () {
     vec4 curr_color = texture2D(texture, v_uv0); // 正在处理的这个像素点的颜色
-    if (curr_color.a >= 0.5) // 不透明，不管，直接返回
+    if (curr_color.a < 0.5) // 不透明，不管，直接返回
     {
         gl_FragColor = v_color * curr_color;
         return;
@@ -111,7 +111,7 @@ CCProgram fs %{
     strokeCount += getIsStrokeWithAngel(300.0);
     strokeCount += getIsStrokeWithAngel(330.0);
 
-    if (strokeCount > 0) // 四周围至少有一个点是不透明的，这个点要设成描边颜色
+    if (strokeCount <12) // 四周围至少有一个点是不透明的，这个点要设成描边颜色
     {
         curr_color = outlineColor;
     }
