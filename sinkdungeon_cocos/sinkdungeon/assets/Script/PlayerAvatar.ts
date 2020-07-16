@@ -210,6 +210,7 @@ export default class PlayerAvatar extends cc.Component {
                 this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 1];
                 break;
         }
+        this.hairSprite.spriteFrame = Logic.spriteFrames[this.data.hairResName + this.idlehair[0]];
         if(dir != 4){
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
         }
