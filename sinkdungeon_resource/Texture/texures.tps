@@ -533,55 +533,22 @@
             <key type="filename">avatar/avatarhair003anim002.png</key>
             <key type="filename">avatar/avatarhair003anim003.png</key>
             <key type="filename">equipment/clothes001.png</key>
-            <key type="filename">equipment/clothes001front.png</key>
             <key type="filename">equipment/clothes002.png</key>
-            <key type="filename">equipment/clothes002behind.png</key>
-            <key type="filename">equipment/clothes002front.png</key>
             <key type="filename">equipment/clothes003.png</key>
-            <key type="filename">equipment/clothes003behind.png</key>
-            <key type="filename">equipment/clothes003front.png</key>
             <key type="filename">equipment/clothes004.png</key>
-            <key type="filename">equipment/clothes004behind.png</key>
-            <key type="filename">equipment/clothes004front.png</key>
             <key type="filename">equipment/clothes005.png</key>
-            <key type="filename">equipment/clothes005behind.png</key>
-            <key type="filename">equipment/clothes005front.png</key>
             <key type="filename">equipment/clothes006.png</key>
-            <key type="filename">equipment/clothes006behind.png</key>
-            <key type="filename">equipment/clothes006front.png</key>
             <key type="filename">equipment/clothes007.png</key>
-            <key type="filename">equipment/clothes007behind.png</key>
-            <key type="filename">equipment/clothes007front.png</key>
             <key type="filename">equipment/clothes008.png</key>
-            <key type="filename">equipment/clothes008behind.png</key>
-            <key type="filename">equipment/clothes008front.png</key>
             <key type="filename">equipment/clothes009.png</key>
-            <key type="filename">equipment/clothes009behind.png</key>
-            <key type="filename">equipment/clothes009front.png</key>
             <key type="filename">equipment/clothes010.png</key>
-            <key type="filename">equipment/clothes010behind.png</key>
-            <key type="filename">equipment/clothes010front.png</key>
             <key type="filename">equipment/clothes011.png</key>
-            <key type="filename">equipment/clothes011behind.png</key>
-            <key type="filename">equipment/clothes011front.png</key>
             <key type="filename">equipment/clothes012.png</key>
-            <key type="filename">equipment/clothes012behind.png</key>
-            <key type="filename">equipment/clothes012front.png</key>
             <key type="filename">equipment/clothes013.png</key>
-            <key type="filename">equipment/clothes013behind.png</key>
-            <key type="filename">equipment/clothes013front.png</key>
             <key type="filename">equipment/clothes014.png</key>
-            <key type="filename">equipment/clothes014behind.png</key>
-            <key type="filename">equipment/clothes014front.png</key>
             <key type="filename">equipment/clothes015.png</key>
-            <key type="filename">equipment/clothes015behind.png</key>
-            <key type="filename">equipment/clothes015front.png</key>
             <key type="filename">equipment/clothes016.png</key>
-            <key type="filename">equipment/clothes016behind.png</key>
-            <key type="filename">equipment/clothes016front.png</key>
             <key type="filename">equipment/clothes017.png</key>
-            <key type="filename">equipment/clothes017behind.png</key>
-            <key type="filename">equipment/clothes017front.png</key>
             <key type="filename">equipment/clothes018.png</key>
             <key type="filename">equipment/emptyequipment.png</key>
             <key type="filename">equipment/gloves001.png</key>
@@ -594,71 +561,27 @@
             <key type="filename">equipment/gloves008.png</key>
             <key type="filename">equipment/gloves009.png</key>
             <key type="filename">equipment/helmet002.png</key>
-            <key type="filename">equipment/helmet002behind.png</key>
-            <key type="filename">equipment/helmet002front.png</key>
             <key type="filename">equipment/helmet003.png</key>
-            <key type="filename">equipment/helmet003behind.png</key>
-            <key type="filename">equipment/helmet003front.png</key>
             <key type="filename">equipment/helmet004.png</key>
-            <key type="filename">equipment/helmet004behind.png</key>
-            <key type="filename">equipment/helmet004front.png</key>
             <key type="filename">equipment/helmet005.png</key>
-            <key type="filename">equipment/helmet005behind.png</key>
-            <key type="filename">equipment/helmet005front.png</key>
             <key type="filename">equipment/helmet006.png</key>
-            <key type="filename">equipment/helmet006behind.png</key>
-            <key type="filename">equipment/helmet006front.png</key>
             <key type="filename">equipment/helmet007.png</key>
-            <key type="filename">equipment/helmet007behind.png</key>
-            <key type="filename">equipment/helmet007front.png</key>
             <key type="filename">equipment/helmet008.png</key>
-            <key type="filename">equipment/helmet008behind.png</key>
-            <key type="filename">equipment/helmet008front.png</key>
             <key type="filename">equipment/helmet009.png</key>
-            <key type="filename">equipment/helmet009behind.png</key>
-            <key type="filename">equipment/helmet009front.png</key>
             <key type="filename">equipment/helmet010.png</key>
-            <key type="filename">equipment/helmet010behind.png</key>
-            <key type="filename">equipment/helmet010front.png</key>
             <key type="filename">equipment/helmet011.png</key>
-            <key type="filename">equipment/helmet011behind.png</key>
-            <key type="filename">equipment/helmet011front.png</key>
             <key type="filename">equipment/helmet012.png</key>
-            <key type="filename">equipment/helmet012behind.png</key>
-            <key type="filename">equipment/helmet012front.png</key>
             <key type="filename">equipment/helmet013.png</key>
-            <key type="filename">equipment/helmet013behind.png</key>
-            <key type="filename">equipment/helmet013front.png</key>
             <key type="filename">equipment/helmet014.png</key>
-            <key type="filename">equipment/helmet014behind.png</key>
-            <key type="filename">equipment/helmet014front.png</key>
             <key type="filename">equipment/helmet015.png</key>
-            <key type="filename">equipment/helmet015behind.png</key>
-            <key type="filename">equipment/helmet015front.png</key>
             <key type="filename">equipment/helmet016.png</key>
-            <key type="filename">equipment/helmet016behind.png</key>
-            <key type="filename">equipment/helmet016front.png</key>
             <key type="filename">equipment/helmet017.png</key>
-            <key type="filename">equipment/helmet017behind.png</key>
-            <key type="filename">equipment/helmet017front.png</key>
             <key type="filename">equipment/helmet018.png</key>
-            <key type="filename">equipment/helmet018behind.png</key>
-            <key type="filename">equipment/helmet018front.png</key>
             <key type="filename">equipment/helmet019.png</key>
-            <key type="filename">equipment/helmet019behind.png</key>
-            <key type="filename">equipment/helmet019front.png</key>
             <key type="filename">equipment/helmet020.png</key>
-            <key type="filename">equipment/helmet020behind.png</key>
-            <key type="filename">equipment/helmet020front.png</key>
             <key type="filename">equipment/helmet021.png</key>
-            <key type="filename">equipment/helmet021behind.png</key>
-            <key type="filename">equipment/helmet021front.png</key>
             <key type="filename">equipment/helmet022.png</key>
-            <key type="filename">equipment/helmet022behind.png</key>
-            <key type="filename">equipment/helmet022front.png</key>
             <key type="filename">equipment/helmet023.png</key>
-            <key type="filename">equipment/helmet023behind.png</key>
-            <key type="filename">equipment/helmet023front.png</key>
             <key type="filename">equipment/shoes001.png</key>
             <key type="filename">equipment/shoes002.png</key>
             <key type="filename">equipment/shoes003.png</key>
@@ -885,24 +808,25 @@
             <key type="filename">dungeon/sandsea1.png</key>
             <key type="filename">dungeon/sea.png</key>
             <key type="filename">dungeon/sea1.png</key>
-            <key type="filename">equipment/helmet024.png</key>
-            <key type="filename">equipment/helmet024behind.png</key>
-            <key type="filename">equipment/helmet024front.png</key>
+            <key type="filename">equipment/animremote001.png</key>
+            <key type="filename">equipment/animremote002.png</key>
+            <key type="filename">equipment/animremote003.png</key>
+            <key type="filename">equipment/animremote004.png</key>
+            <key type="filename">equipment/animremote005.png</key>
+            <key type="filename">equipment/animremote006.png</key>
+            <key type="filename">equipment/animremote007.png</key>
+            <key type="filename">equipment/animremote008.png</key>
+            <key type="filename">equipment/behindotherhelmet024.png</key>
+            <key type="filename">equipment/frontotherhelmet024.png</key>
+            <key type="filename">equipment/otherhelmet024.png</key>
             <key type="filename">equipment/remote001.png</key>
             <key type="filename">equipment/remote002.png</key>
-            <key type="filename">equipment/remote002anim.png</key>
             <key type="filename">equipment/remote003.png</key>
-            <key type="filename">equipment/remote003anim.png</key>
             <key type="filename">equipment/remote004.png</key>
-            <key type="filename">equipment/remote004anim.png</key>
             <key type="filename">equipment/remote005.png</key>
-            <key type="filename">equipment/remote005anim.png</key>
             <key type="filename">equipment/remote006.png</key>
-            <key type="filename">equipment/remote006anim.png</key>
             <key type="filename">equipment/remote007.png</key>
-            <key type="filename">equipment/remote007anim.png</key>
             <key type="filename">equipment/remote008.png</key>
-            <key type="filename">equipment/remote008anim.png</key>
             <key type="filename">hud/uimelee.png</key>
             <key type="filename">hud/uimeleelight.png</key>
             <key type="filename">hud/uimeleepress.png</key>
@@ -1256,7 +1180,84 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">equipment/clothes001behind.png</key>
+            <key type="filename">equipment/behindclothes001.png</key>
+            <key type="filename">equipment/behindclothes002.png</key>
+            <key type="filename">equipment/behindclothes003.png</key>
+            <key type="filename">equipment/behindclothes004.png</key>
+            <key type="filename">equipment/behindclothes005.png</key>
+            <key type="filename">equipment/behindclothes006.png</key>
+            <key type="filename">equipment/behindclothes007.png</key>
+            <key type="filename">equipment/behindclothes008.png</key>
+            <key type="filename">equipment/behindclothes009.png</key>
+            <key type="filename">equipment/behindclothes010.png</key>
+            <key type="filename">equipment/behindclothes011.png</key>
+            <key type="filename">equipment/behindclothes012.png</key>
+            <key type="filename">equipment/behindclothes013.png</key>
+            <key type="filename">equipment/behindclothes014.png</key>
+            <key type="filename">equipment/behindclothes015.png</key>
+            <key type="filename">equipment/behindclothes016.png</key>
+            <key type="filename">equipment/behindclothes017.png</key>
+            <key type="filename">equipment/behindhelmet002.png</key>
+            <key type="filename">equipment/behindhelmet003.png</key>
+            <key type="filename">equipment/behindhelmet004.png</key>
+            <key type="filename">equipment/behindhelmet005.png</key>
+            <key type="filename">equipment/behindhelmet006.png</key>
+            <key type="filename">equipment/behindhelmet007.png</key>
+            <key type="filename">equipment/behindhelmet008.png</key>
+            <key type="filename">equipment/behindhelmet009.png</key>
+            <key type="filename">equipment/behindhelmet010.png</key>
+            <key type="filename">equipment/behindhelmet011.png</key>
+            <key type="filename">equipment/behindhelmet012.png</key>
+            <key type="filename">equipment/behindhelmet013.png</key>
+            <key type="filename">equipment/behindhelmet014.png</key>
+            <key type="filename">equipment/behindhelmet015.png</key>
+            <key type="filename">equipment/behindhelmet016.png</key>
+            <key type="filename">equipment/behindhelmet017.png</key>
+            <key type="filename">equipment/behindhelmet018.png</key>
+            <key type="filename">equipment/behindhelmet019.png</key>
+            <key type="filename">equipment/behindhelmet020.png</key>
+            <key type="filename">equipment/behindhelmet021.png</key>
+            <key type="filename">equipment/behindhelmet022.png</key>
+            <key type="filename">equipment/behindhelmet023.png</key>
+            <key type="filename">equipment/frontclothes001.png</key>
+            <key type="filename">equipment/frontclothes002.png</key>
+            <key type="filename">equipment/frontclothes003.png</key>
+            <key type="filename">equipment/frontclothes004.png</key>
+            <key type="filename">equipment/frontclothes005.png</key>
+            <key type="filename">equipment/frontclothes006.png</key>
+            <key type="filename">equipment/frontclothes007.png</key>
+            <key type="filename">equipment/frontclothes008.png</key>
+            <key type="filename">equipment/frontclothes009.png</key>
+            <key type="filename">equipment/frontclothes010.png</key>
+            <key type="filename">equipment/frontclothes011.png</key>
+            <key type="filename">equipment/frontclothes012.png</key>
+            <key type="filename">equipment/frontclothes013.png</key>
+            <key type="filename">equipment/frontclothes014.png</key>
+            <key type="filename">equipment/frontclothes015.png</key>
+            <key type="filename">equipment/frontclothes016.png</key>
+            <key type="filename">equipment/frontclothes017.png</key>
+            <key type="filename">equipment/fronthelmet002.png</key>
+            <key type="filename">equipment/fronthelmet003.png</key>
+            <key type="filename">equipment/fronthelmet004.png</key>
+            <key type="filename">equipment/fronthelmet005.png</key>
+            <key type="filename">equipment/fronthelmet006.png</key>
+            <key type="filename">equipment/fronthelmet007.png</key>
+            <key type="filename">equipment/fronthelmet008.png</key>
+            <key type="filename">equipment/fronthelmet009.png</key>
+            <key type="filename">equipment/fronthelmet010.png</key>
+            <key type="filename">equipment/fronthelmet011.png</key>
+            <key type="filename">equipment/fronthelmet012.png</key>
+            <key type="filename">equipment/fronthelmet013.png</key>
+            <key type="filename">equipment/fronthelmet014.png</key>
+            <key type="filename">equipment/fronthelmet015.png</key>
+            <key type="filename">equipment/fronthelmet016.png</key>
+            <key type="filename">equipment/fronthelmet017.png</key>
+            <key type="filename">equipment/fronthelmet018.png</key>
+            <key type="filename">equipment/fronthelmet019.png</key>
+            <key type="filename">equipment/fronthelmet020.png</key>
+            <key type="filename">equipment/fronthelmet021.png</key>
+            <key type="filename">equipment/fronthelmet022.png</key>
+            <key type="filename">equipment/fronthelmet023.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -1271,13 +1272,9 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">equipment/halfnakeplayer.png</key>
+            <key type="filename">equipment/behindhelmet001.png</key>
+            <key type="filename">equipment/fronthelmet001.png</key>
             <key type="filename">equipment/helmet001.png</key>
-            <key type="filename">equipment/helmet001behind.png</key>
-            <key type="filename">equipment/helmet001front.png</key>
-            <key type="filename">equipment/idle001.png</key>
-            <key type="filename">equipment/idle002.png</key>
-            <key type="filename">equipment/nakeplayer.png</key>
             <key type="filename">monster/monster000.png</key>
             <key type="filename">monster/monster000anim001.png</key>
             <key type="filename">monster/monster000hit001.png</key>
@@ -1433,21 +1430,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">equipment/remote001anim.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>8,4,16,7</rect>
-                <key>scale9Paddings</key>
-                <rect>8,4,16,7</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">equipment/trousers000.png</key>
             <key type="filename">equipment/trousers001.png</key>
             <key type="filename">equipment/trousers002.png</key>
@@ -1550,29 +1532,6 @@
                 <rect>3,7,5,13</rect>
                 <key>scale9Paddings</key>
                 <rect>3,7,5,13</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">meleelight/meleelight000anim000.png</key>
-            <key type="filename">meleelight/meleelight000anim001.png</key>
-            <key type="filename">meleelight/meleelight000anim002.png</key>
-            <key type="filename">meleelight/meleelight000anim003.png</key>
-            <key type="filename">meleelight/meleelight001anim000.png</key>
-            <key type="filename">meleelight/meleelight001anim001.png</key>
-            <key type="filename">meleelight/meleelight001anim002.png</key>
-            <key type="filename">meleelight/meleelight001anim003.png</key>
-            <key type="filename">meleelight/meleelight002anim000.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>12,4,24,8</rect>
-                <key>scale9Paddings</key>
-                <rect>12,4,24,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

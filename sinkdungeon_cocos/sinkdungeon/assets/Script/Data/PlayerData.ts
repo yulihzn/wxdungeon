@@ -3,6 +3,7 @@ import DamageData from "./DamageData";
 import StatusData from "./StatusData";
 import CommonData from "./CommonData";
 import Random from "../Utils/Random";
+import AvatarData from "./AvatarData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,11 +28,13 @@ export default class PlayerData {
 
     private common: CommonData;
     private equipmentTotalData: EquipmentData;
-    private statusTotalData: StatusData;    
+    private statusTotalData: StatusData;
+    private avatarData:AvatarData;
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
         this.statusTotalData = new StatusData();
+        this.avatarData = new AvatarData();
         this.common = new CommonData();
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = PlayerData.DefAULT_SPEED;
@@ -43,6 +46,12 @@ export default class PlayerData {
     }
     get StatusTotalData() {
         return this.statusTotalData;
+    }
+    get AvatarData(){
+        return this.avatarData;
+    }
+    set AvatarData(data:AvatarData){
+        this.avatarData = data;
     }
     get Common() {
         return this.common;
@@ -64,6 +73,7 @@ export default class PlayerData {
         this.name = data.name ? data.name : '';
         this.equipmentTotalData.valueCopy(data.equipmentTotalData);
         this.statusTotalData.valueCopy(data.statusTotalData);
+        this.avatarData.valueCopy(data.avatarData);
         this.currentHealth = data.currentHealth ? data.currentHealth : PlayerData.DEFAULT_HEALTH;
         this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 300;
@@ -76,6 +86,7 @@ export default class PlayerData {
         e.currentHealth = this.currentHealth;
         e.equipmentTotalData = this.equipmentTotalData;
         e.statusTotalData = this.statusTotalData;
+        e.avatarData = this.avatarData;
         return e;
     }
 

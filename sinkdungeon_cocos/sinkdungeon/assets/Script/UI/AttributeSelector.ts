@@ -9,6 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import AttributeData from "../Data/AttributeData";
+import Logic from "../Logic";
 
 
 const { ccclass, property } = cc._decorator;
@@ -36,13 +37,17 @@ export default class AttributeSelector extends cc.Component {
             this.updateAttribute();
         });
     }
+    selectRandom(){
+        this.currentIndex = Logic.getRandomNum(0,this.nameList.length-1);
+        this.updateAttribute();
+    }
     init(title:string,nameList:AttributeData[],defaultIndex?:number){
         this.title.string = title;
         this.nameList = nameList;
         this.currentIndex = defaultIndex?defaultIndex:0;
         this.updateAttribute();
     }
-    updateAttribute(){
+    private updateAttribute(){
         if(this.currentIndex<0){
             this.currentIndex = this.nameList.length-1;
         }else if(this.currentIndex>this.nameList.length-1){

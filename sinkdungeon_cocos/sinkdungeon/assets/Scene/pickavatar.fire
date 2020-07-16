@@ -1038,7 +1038,7 @@
     "_active": true,
     "_components": [],
     "_prefab": null,
-    "_opacity": 0,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -2374,9 +2374,9 @@
     "_opacity": 0,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 200,
+      "g": 200,
+      "b": 200,
       "a": 255
     },
     "_contentSize": {
@@ -3172,7 +3172,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        3,
+        2.5,
         0,
         0,
         0,
@@ -4005,6 +4005,9 @@
     },
     "randomLayout": {
       "__id__": 21
+    },
+    "randomLabel": {
+      "__id__": 24
     },
     "selectorPrefab": {
       "__uuid__": "432dbd89-9dc1-4e18-9377-e79f4a82c1b2"

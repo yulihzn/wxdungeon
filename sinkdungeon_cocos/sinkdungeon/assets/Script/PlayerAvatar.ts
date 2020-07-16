@@ -7,6 +7,7 @@
 
 import Logic from "./Logic";
 import InventoryManager from "./Manager/InventoryManager";
+import AvatarData from "./Data/AvatarData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -42,12 +43,14 @@ export default class PlayerAvatar extends cc.Component {
     clothesSprite: cc.Sprite = null;
     avatarNode: cc.Node = null;
     spriteNode: cc.Node = null;
+    data:AvatarData;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.init();
     }
     private init() {
+        this.data = Logic.playerData.AvatarData.clone();
         this.anim = this.getComponent(cc.Animation);
         this.avatarNode = this.getSpriteChildNode(['sprite', 'avatar']);
         this.spriteNode = this.getSpriteChildNode(['sprite']);
@@ -66,11 +69,16 @@ export default class PlayerAvatar extends cc.Component {
         this.bodySprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body']);
         this.pantsSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'pants']);
         this.clothesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'body', 'clothes']);
+        this.headSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+        this.faceSprite.node.color = cc.Color.WHITE.fromHEX(this.data.faceColor);
+        this.eyesSprite.node.color = cc.Color.WHITE.fromHEX(this.data.eyesColor);
+        this.hairSprite.node.color = cc.Color.WHITE.fromHEX(this.data.hairColor);
+        this.bodySprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.hairSprite.node.stopAllActions();
         this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
         let index = 0;
         this.schedule(() => {
-            this.hairSprite.spriteFrame = Logic.spriteFrames[this.hairprefix + this.idlehair[index++]];
+            this.hairSprite.spriteFrame = Logic.spriteFrames[this.data.hairResName + this.idlehair[index++]];
             if (index > 1) {
                 index = 0;
             }
@@ -126,10 +134,10 @@ export default class PlayerAvatar extends cc.Component {
             this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
             this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
         }else{
-            this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
-            this.legRightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
-            this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
-            this.footRightSprite.node.color = cc.Color.WHITE.fromHEX('#ffe1c5');
+            this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+            this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+            this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+            this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         }
         
     }
@@ -172,11 +180,10 @@ export default class PlayerAvatar extends cc.Component {
         this.changeAvatarByDir(dir);
 
     }
-    hairprefix = 'avatarhair000anim00';
     idlehair = [0, 1];
     changeAvatarByDir(dir: number) {
-        let eyesprefix = 'avatareyes000anim00';
-        let faceprefix = 'avatarface000anim00';
+        let eyesprefix = this.data.eyesResName;
+        let faceprefix = this.data.faceResName;
         switch (dir) {
             case PlayerAvatar.DIR_UP:
                 this.idlehair = [2, 3];

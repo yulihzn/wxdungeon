@@ -75,6 +75,7 @@ export default class Player extends Actor {
     touchedItem: Item;
     //触碰到的提示
     touchedTips: Tips;
+    private touchDelay = false;
     inventoryManager: InventoryManager;
     data: PlayerData;
 
@@ -362,12 +363,13 @@ export default class Player extends Actor {
         this.updateCombo();
         if(this.fistCombo == MeleeWeapon.COMBO1){
             this.weaponRight.meleeWeapon.attack(this.data, isMiss);
-            this.weaponLeft.meleeWeapon.attackIdle();
+            this.weaponLeft.meleeWeapon.attackIdle(false);
         }else if(this.fistCombo == MeleeWeapon.COMBO2){
-            this.weaponRight.meleeWeapon.attackIdle();
+            this.weaponRight.meleeWeapon.attackIdle(true);
             this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
         }else if(this.fistCombo == MeleeWeapon.COMBO3){
             this.weaponRight.meleeWeapon.attack(this.data, isMiss);
+            this.weaponRight.meleeWeapon.DashTime(400);
             this.scheduleOnce(()=>{
                 this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
             },0.15);
@@ -773,6 +775,9 @@ export default class Player extends Actor {
         // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
+        if(this.touchDelay){
+            return;
+        }
         let isInteract = false;
         let equipment = other.node.getComponent(Equipment);
         if (equipment) {
@@ -792,6 +797,8 @@ export default class Player extends Actor {
         }
         if (isInteract) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,true);
+            this.touchDelay = true;
+            this.scheduleOnce(()=>{this.touchDelay = false;},0.2);
         }
 
     }

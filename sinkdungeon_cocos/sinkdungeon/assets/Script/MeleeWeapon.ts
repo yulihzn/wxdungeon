@@ -243,9 +243,9 @@ export default class MeleeWeapon extends cc.Component {
         return true;
 
     }
-    attackIdle(){
+    attackIdle(isReverse:boolean){
         if (this.anim) {
-            this.anim.play('MeleeAttackIdle');
+            this.anim.play(isReverse?'MeleeAttackIdleReverse':'MeleeAttackIdle');
         }
     }
     getMeleeSlowRatio(): number {
@@ -343,9 +343,11 @@ export default class MeleeWeapon extends cc.Component {
         this.hasTargetMap = {};
     }
     /**Anim 冲刺*/
-    DashTime() {
+    DashTime(speed?:number) {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
-        let speed = 800;
+        if(!speed){
+            speed = 800;
+        }
         this.schedule(() => {
             this.player.getWalkSmoke(this.player.node, this.node.position);
         }, 0.05, 4, 0);

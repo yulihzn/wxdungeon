@@ -8,6 +8,8 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import Logic from "../Logic";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -26,6 +28,10 @@ export default class BrightnessBar extends cc.Component {
     }
     setSelectorCallback(callback:Function){
         this.selectorCallback = callback;
+        this.updateAttribute();
+    }
+    selectRandom(){
+        this.slider.progress = Logic.getRandomNum(0,10)/10;
         this.updateAttribute();
     }
     updateAttribute(){

@@ -14,6 +14,7 @@ import AttributeSelector from "./AttributeSelector";
 import AttributeData from "../Data/AttributeData";
 import BrightnessBar from "./BrightnessBar";
 import PaletteSelector from "./PaletteSelector";
+import AvatarData from "../Data/AvatarData";
 
 
 const { ccclass, property } = cc._decorator;
@@ -31,9 +32,9 @@ export default class PickAvatar extends cc.Component {
     readonly SELECTOR_BODY = 8;
     readonly PROGRESS_SKIN_COLOR = 9;
     readonly SELECTOR_PROFESSION = 10;
-    isSpirteLoaded = false;
+    private isSpirteLoaded = false;
     //图片资源
-    spriteFrames: { [key: string]: cc.SpriteFrame } = null;
+    private spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     @property(cc.Node)
     loadingBackground:cc.Node = null;
     @property(cc.Node)
@@ -42,6 +43,8 @@ export default class PickAvatar extends cc.Component {
     attributeLayout:cc.Node = null;
     @property(cc.Node)
     randomLayout:cc.Node = null;
+    @property(cc.Label)
+    randomLabel:cc.Label = null;
     @property(cc.Prefab)
     selectorPrefab:cc.Prefab = null;
     @property(cc.Prefab)
@@ -49,19 +52,33 @@ export default class PickAvatar extends cc.Component {
     @property(cc.Prefab)
     palettePrefab:cc.Prefab = null;
 
-    bedSprite:cc.Sprite;
-    coverSprite:cc.Sprite;
-    bodySprite:cc.Sprite;
-    headSprite:cc.Sprite;
-    hairSprite:cc.Sprite;
-    eyesSprite:cc.Sprite;
-    faceSprite:cc.Sprite;
-    handSprite1:cc.Sprite;
-    handSprite2:cc.Sprite;
-    legSprite1:cc.Sprite;
-    legSprite2:cc.Sprite;
-    underWearSprite:cc.Sprite;
+    private bedSprite:cc.Sprite;
+    private coverSprite:cc.Sprite;
+    private bodySprite:cc.Sprite;
+    private headSprite:cc.Sprite;
+    private hairSprite:cc.Sprite;
+    private eyesSprite:cc.Sprite;
+    private faceSprite:cc.Sprite;
+    private handSprite1:cc.Sprite;
+    private handSprite2:cc.Sprite;
+    private legSprite1:cc.Sprite;
+    private legSprite2:cc.Sprite;
+    private underWearSprite:cc.Sprite;
+
+    private organizationSelector:AttributeSelector;
+    private genderSelector:AttributeSelector;
+    private bodySizeSelector:AttributeSelector;
+    private skinSelector:BrightnessBar;
+    private hairSelector:AttributeSelector;
+    private hairColorSelector:PaletteSelector;
+    private eyesSelector:AttributeSelector;
+    private eyesColorSelector:PaletteSelector;
+    private faceSelector:AttributeSelector;
+    private faceColorSelector:PaletteSelector;
+    private data:AvatarData;
+
     onLoad() {
+        this.data = new AvatarData();
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable,['bed']);
         this.coverSprite = this.getSpriteChildSprite(this.avatarTable,['cover']);
         this.bodySprite = this.getSpriteChildSprite(this.avatarTable,['avatar','body']);
@@ -76,6 +93,7 @@ export default class PickAvatar extends cc.Component {
         this.eyesSprite = this.getSpriteChildSprite(this.avatarTable,['avatar','head','eyes']);
         this.loadingBackground.active = true;
         this.loadSpriteFrames();
+        this.attributeLayout.active = false;
     }
     private getSpriteChildSprite(node:cc.Node,childNames: string[]): cc.Sprite {
         for (let name of childNames) {
@@ -105,61 +123,81 @@ export default class PickAvatar extends cc.Component {
         for(let i=0;i<organization.length;i++){
             organList.push(new AttributeData(i,organization[i],''));
         }
-        this.addAttributeSelector('组织：',organList).selectorCallback = (data:AttributeData)=>{
+        this.organizationSelector = this.addAttributeSelector('组织：',organList)
+        this.organizationSelector.selectorCallback = (data:AttributeData)=>{
+            this.data.organizationIndex = data.id;
             this.bedSprite.spriteFrame = this.spriteFrames[`avatarbed00${data.id}`];
             this.coverSprite.spriteFrame = this.spriteFrames[`avatarcover00${data.id}`];
+            this.randomLabel.string = data.name;
         };
         //性别
-        this.addAttributeSelector('性别：',[new AttributeData(0,'男性',''),new AttributeData(1,'女性','')]).selectorCallback = (data:AttributeData)=>{
+        this.genderSelector = this.addAttributeSelector('性别：',[new AttributeData(0,'男性',''),new AttributeData(1,'女性','')])
+        this.genderSelector.selectorCallback = (data:AttributeData)=>{
             this.underWearSprite.node.opacity = data.id == 0?0:255;
+            this.data.gender = data.id;
         };
-        this.addAttributeSelector('身体：',[new AttributeData(0,'正常',''),new AttributeData(1,'瘦小',''),new AttributeData(2,'高大','')]).selectorCallback = (data:AttributeData)=>{
-
+        this.bodySizeSelector = this.addAttributeSelector('身体：',[new AttributeData(0,'正常',''),new AttributeData(1,'瘦小',''),new AttributeData(2,'高大','')])
+        this.bodySizeSelector.selectorCallback = (data:AttributeData)=>{
+            this.data.bodySize = data.id;
         };
         //皮肤颜色
-        this.addBrightnessBar().setSelectorCallback((color:cc.Color)=>{
+        this.skinSelector = this.addBrightnessBar()
+        this.skinSelector.setSelectorCallback((color:cc.Color)=>{
             this.bodySprite.node.color = color;
             this.headSprite.node.color = color;
             this.handSprite1.node.color = color;
             this.handSprite2.node.color = color;
             this.legSprite1.node.color = color;
             this.legSprite2.node.color = color;
+            this.data.skinColor = color.toHEX('#rrggbb');
         });
         //发型
         let hairList = [];
         for(let i=0;i<4;i++){
-            hairList.push(new AttributeData(i,`样式${i}`,`avatarhair0${i>9?'':'0'}${i}anim000`));
+            hairList.push(new AttributeData(i,`样式${i}`,`avatarhair0${i>9?'':'0'}${i}anim00`));
         }
-        this.addAttributeSelector('发型：',hairList).selectorCallback = (data:AttributeData)=>{
-            this.hairSprite.spriteFrame = this.spriteFrames[data.resName];
+        this.hairSelector = this.addAttributeSelector('发型：',hairList)
+        this.hairSelector.selectorCallback = (data:AttributeData)=>{
+            this.hairSprite.spriteFrame = this.spriteFrames[data.resName+'0'];
+            this.data.hairResName = data.resName;
         };
         //头发颜色
-        this.addPaletteSelector(PaletteSelector.TYPE_HAIR).setSelectorCallback((color:cc.Color)=>{
+        this.hairColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_HAIR)
+        this.hairColorSelector.setSelectorCallback((color:cc.Color)=>{
             this.hairSprite.node.color = color;
+            this.data.hairColor = color.toHEX('#rrggbb');
         })
         //眼睛
         let eyesList = [];
         for(let i=0;i<4;i++){
-            eyesList.push(new AttributeData(i,`样式${i}`,`avatareyes0${i>9?'':'0'}${i}anim000`));
+            eyesList.push(new AttributeData(i,`样式${i}`,`avatareyes0${i>9?'':'0'}${i}anim00`));
         }
-        this.addAttributeSelector('眼睛：',eyesList).selectorCallback = (data:AttributeData)=>{
-            this.eyesSprite.spriteFrame = this.spriteFrames[data.resName];
+        this.eyesSelector = this.addAttributeSelector('眼睛：',eyesList)
+        this.eyesSelector.selectorCallback = (data:AttributeData)=>{
+            this.eyesSprite.spriteFrame = this.spriteFrames[data.resName+'0'];
+            this.data.eyesResName = data.resName;
         };
         //眼睛颜色
-        this.addPaletteSelector(PaletteSelector.TYPE_EYES).setSelectorCallback((color:cc.Color)=>{
+        this.eyesColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_EYES)
+        this.eyesColorSelector.setSelectorCallback((color:cc.Color)=>{
             this.eyesSprite.node.color = color;
+            this.data.eyesColor = color.toHEX('#rrggbb');
         })
         //面颊
         let faceList = [];
         for(let i=0;i<4;i++){
-            faceList.push(new AttributeData(i,`样式${i}`,`avatarface0${i>9?'':'0'}${i}anim000`));
+            faceList.push(new AttributeData(i,`样式${i}`,`avatarface0${i>9?'':'0'}${i}anim00`));
         }
-        this.addAttributeSelector('面颊：',faceList).selectorCallback = (data:AttributeData)=>{
-            this.faceSprite.spriteFrame = this.spriteFrames[data.resName];
+        this.faceSelector = this.addAttributeSelector('面颊：',faceList)
+        this.faceSelector.selectorCallback = (data:AttributeData)=>{
+            this.faceSprite.spriteFrame = this.spriteFrames[data.resName+'0'];
+            this.data.faceResName = data.resName;
         };
         //脸部颜色
-        this.addPaletteSelector(PaletteSelector.TYPE_FACE).setSelectorCallback((color:cc.Color)=>{
+        this.faceColorSelector = this.addPaletteSelector(PaletteSelector.TYPE_FACE)
+        this.faceColorSelector.setSelectorCallback((color:cc.Color)=>{
             this.faceSprite.node.color = color;
+            this.data.faceColor = color.toHEX('#rrggbb');
         })
         
     }
@@ -171,6 +209,7 @@ export default class PickAvatar extends cc.Component {
         Logic.resetData();
         //加载资源
         AudioPlayer.play(AudioPlayer.SELECT);
+        Logic.playerData.AvatarData = this.data.clone();
         cc.director.loadScene('loading');
     }
     backToHome() {
@@ -205,10 +244,19 @@ export default class PickAvatar extends cc.Component {
     }
 
     ButtonSwitch(){
-        this.randomLayout.opacity = this.randomLayout.opacity==0?255:0;
-        this.attributeLayout.opacity = this.randomLayout.opacity==0?255:0;
+        this.randomLayout.active = this.randomLayout.active?false:true;
+        this.attributeLayout.active = this.attributeLayout.active?false:true;
     }
     ButtonRandom(){
-
+        this.organizationSelector.selectRandom();
+        this.genderSelector.selectRandom();
+        this.bodySizeSelector.selectRandom();
+        this.skinSelector.selectRandom();
+        this.hairSelector.selectRandom();
+        this.hairColorSelector.selectRandom();
+        this.eyesSelector.selectRandom();
+        this.eyesColorSelector.selectRandom();
+        this.faceSelector.selectRandom();
+        this.faceColorSelector.selectRandom();
     }
 }

@@ -6,7 +6,6 @@ import Dungeon from "./Dungeon";
 import MonsterData from "./Data/MonsterData";
 import StatusData from "./Data/StatusData";
 import InventoryManager from "./Manager/InventoryManager";
-import ProfileData from "./Data/ProfileData";
 import BulletData from "./Data/BulletData";
 import ItemData from "./Data/ItemData";
 import Random from "./Utils/Random";

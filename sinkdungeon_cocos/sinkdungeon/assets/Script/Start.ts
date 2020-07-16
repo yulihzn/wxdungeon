@@ -1,8 +1,6 @@
 import Logic from "./Logic";
 import WxHelper from "./WxHelper";
-import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
-import WorldLoader from "./Map/WorldLoader";
 
 const {ccclass, property} = cc._decorator;
 
@@ -29,13 +27,15 @@ export default class Start extends cc.Component {
         if(this.wxhelper){
             this.wxhelper.CloseDialog();
         }
-        //清除存档
-        Logic.profileManager.clearData();
-        //重置数据
-        Logic.resetData();
-        //加载资源
-        AudioPlayer.play(AudioPlayer.SELECT);
-        cc.director.loadScene('loading');
+        // //清除存档
+        // Logic.profileManager.clearData();
+        // //重置数据
+        // Logic.resetData();
+        // //加载资源
+        // AudioPlayer.play(AudioPlayer.SELECT);
+        // cc.director.loadScene('loading');
+        //进入选择页面
+        cc.director.loadScene('pickavatar');
     }
     chooseChapter(){
         AudioPlayer.play(AudioPlayer.SELECT);

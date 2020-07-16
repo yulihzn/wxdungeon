@@ -8,6 +8,8 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import Logic from "../Logic";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -50,6 +52,10 @@ export default class PaletteSelector extends cc.Component {
                 this.updateAttribute(palette.color);
             });
         }
+        this.updateAttribute(cc.Color.WHITE.fromHEX(this.colors[this.currentIndex]));
+    }
+    selectRandom(){
+        this.currentIndex = Logic.getRandomNum(0,this.colors.length-1);
         this.updateAttribute(cc.Color.WHITE.fromHEX(this.colors[this.currentIndex]));
     }
     setSelectorCallback(callback:Function){
