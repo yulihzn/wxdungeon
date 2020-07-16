@@ -136,6 +136,12 @@ export default class Monster extends Actor {
         this.particleToxic = this.node.getChildByName('Effect').getChildByName('toxic').getComponent(cc.ParticleSystem);
         this.particleCurse = this.node.getChildByName('Effect').getChildByName('curse').getComponent(cc.ParticleSystem);
         this.particleBlood = this.node.getChildByName('Effect').getChildByName('blood').getComponent(cc.ParticleSystem);
+        this.particleIce.stopSystem();
+        this.particleFire.stopSystem();
+        this.particleLightening.stopSystem();
+        this.particleCurse.stopSystem();
+        this.particleToxic.stopSystem();
+        this.particleBlood.stopSystem();
         this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();

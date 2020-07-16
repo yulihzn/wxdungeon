@@ -34,21 +34,16 @@ export default class PlayerWeapon extends cc.Component {
     init(player: Player,isLeftHand:boolean) {
         this.isLeftHand = isLeftHand;
         this.player = player;
-        this.initHand();
         this.initMelee();
         this.initShooter();
     }
     private initMelee() {
         this.meleeWeapon = this.getComponentInChildren(MeleeWeapon);
-
     }
     private initShooter() {
         this.shooter = this.getComponentInChildren(Shooter);
         this.shooter.player = this.player;
         this.shooter.parentNode = this.player.node;
-    }
-    private initHand() {
-
     }
     
     changeZIndexByDir(avatarZindex:number,dir: number) {

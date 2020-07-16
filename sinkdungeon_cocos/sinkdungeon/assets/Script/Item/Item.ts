@@ -1,7 +1,6 @@
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Logic from "../Logic";
-import DamageData from "../Data/DamageData";
 import ItemData from "../Data/ItemData";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -70,6 +69,7 @@ export default class Item extends cc.Component {
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
             this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.node.scaleX);
             this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.node.scaleY);
+            this.mat.setProperty('outlineColor',cc.Color.WHITE);
             this.highLight(false);
         }
         this.itemDialog.refreshDialog(this.data);
@@ -79,7 +79,7 @@ export default class Item extends cc.Component {
         if(!this.mat){
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
         }
-        this.mat.setProperty('outlineColor',isHigh?cc.Color.WHITE:cc.Color.TRANSPARENT);
+        this.mat.setProperty('openOutline',isHigh?1:0);
     }
 
     public taken(player: Player): void {

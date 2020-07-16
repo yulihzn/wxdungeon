@@ -1,7 +1,6 @@
 import Logic from "../Logic";
 import EquipmentDialog from "./EquipmentDialog";
 import EquipmentData from "../Data/EquipmentData";
-import EquipmentManager from "../Manager/EquipmentManager";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import ShopTable from "../Building/ShopTable";
@@ -52,6 +51,7 @@ export default class Equipment extends cc.Component {
         this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
         this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.scaleX);
         this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.scaleY);
+        this.mat.setProperty('outlineColor',cc.Color.WHITE);
         this.highLight(false);
         if (data.equipmetType == 'remote') {
             this.sprite.width = this.sprite.width / 2;
@@ -65,7 +65,7 @@ export default class Equipment extends cc.Component {
         if(!this.mat){
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
         }
-        this.mat.setProperty('outlineColor',isHigh?cc.Color.WHITE:cc.Color.TRANSPARENT);
+        this.mat.setProperty('openOutline',isHigh?1:0);
     }
 
     start() {

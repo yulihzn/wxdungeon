@@ -26,7 +26,7 @@ export default class PaletteSelector extends cc.Component {
     static readonly HAIRCOLORS = ['#000000','#222034','#45283c','#663931','#fbf236','#6abe30','#37946e'
     ,'#524b24','#306082','#5b6ee1','#639bff','#5fcde4','#cbdbfc','#ffc500'
     ,'#ffffff','#9badb7','#76428a','#ac3232','#d95763','#8f974a','#c20000'];
-    static readonly FACECOLORS = ['#d77bba','#d95763','#818185','#d9a066','#663931','#fbf236','#6abe30','#37946e'
+    static readonly FACECOLORS = ['#FBA1DE','#d95763','#818185','#d9a066','#663931','#fbf236','#6abe30','#37946e'
     ,'#524b24','#306082','#5b6ee1','#639bff','#5fcde4','#cbdbfc','#ffc500'
     ,'#ffffff','#9badb7','#76428a','#ac3232','#8f974a','#c20000'];
     private selectorCallback:Function;

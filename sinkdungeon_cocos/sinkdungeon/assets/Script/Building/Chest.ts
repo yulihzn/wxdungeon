@@ -87,18 +87,12 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_SADICE, this.data.pos, null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.data.pos, null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_CHOPPER, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.CLOAK_WARRIOR, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.REMOTE_CHICKEN, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_TOXICDAGGER, this.data.pos,null,this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, this.data.pos,null,this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.WEAPON_KUNAI, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);

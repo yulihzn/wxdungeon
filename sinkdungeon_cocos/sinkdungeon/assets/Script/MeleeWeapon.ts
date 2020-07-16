@@ -101,6 +101,7 @@ export default class MeleeWeapon extends cc.Component {
     get GloveSprite() {
         return this.gloveSprite;
     }
+    
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
@@ -113,6 +114,8 @@ export default class MeleeWeapon extends cc.Component {
         this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight']);
         this.handSprite = this.getSpriteChildSprite(['sprite', 'hand']);
         this.gloveSprite = this.getSpriteChildSprite(['sprite', 'hand', 'glove']);
+        this.handSprite.node.color = cc.Color.WHITE.fromHEX(this.player.avatar.data.skinColor);
+
     }
 
     set Hv(hv: cc.Vec3) {
@@ -318,6 +321,7 @@ export default class MeleeWeapon extends cc.Component {
         firePrefab.position = ps[0];
         firePrefab.zIndex = IndexZ.OVERHEAD;
         firePrefab.opacity = 255;
+        firePrefab.setScale(0.2);
         firePrefab.active = true;
         let action = cc.sequence(cc.moveTo(0.025, cc.v2(ps[1])), cc.moveTo(0.05, cc.v2(ps[2])), cc.moveTo(0.075, cc.v2(ps[3])), cc.moveTo(0.1, cc.v2(ps[4])));
         firePrefab.runAction(action);

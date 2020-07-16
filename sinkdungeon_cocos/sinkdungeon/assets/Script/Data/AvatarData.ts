@@ -8,7 +8,7 @@ export default class AvatarData {
     eyesResName: string = 'avatareyes000anim00';
     eyesColor: string = '#000000';
     faceResName: string = 'avatarface000anim00';
-    faceColor: string = '#d77bba';
+    faceColor: string = '#FBA1DE';
 
     public valueCopy(data: AvatarData): void {
         if(!data){

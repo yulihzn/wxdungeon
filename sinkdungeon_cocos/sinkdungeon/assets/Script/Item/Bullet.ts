@@ -140,6 +140,11 @@ export default class Bullet extends cc.Component {
         this.boxPCollider.enabled = data.isRect == 1;
         this.light.position = data.isRect==1 ? cc.v3(8, 0) : cc.v3(0, 0);
         this.node.scale = data.size > 0 ? data.size : 1;
+        if(data.size>1){
+            this.circlePCollider.radius = this.circlePCollider.radius/this.node.scale;
+            this.boxPCollider.size.width = this.boxPCollider.size.width/this.node.scale;
+            this.boxPCollider.size.height = this.boxPCollider.size.height/this.node.scale;
+        }
         if (this.circlePCollider.enabled) {
             this.circlePCollider.sensor = data.isPhysical == 0;
             this.circlePCollider.apply();

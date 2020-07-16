@@ -74,6 +74,10 @@ export default class PlayerAvatar extends cc.Component {
         this.eyesSprite.node.color = cc.Color.WHITE.fromHEX(this.data.eyesColor);
         this.hairSprite.node.color = cc.Color.WHITE.fromHEX(this.data.hairColor);
         this.bodySprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+        this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+        this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+        this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+        this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.hairSprite.node.stopAllActions();
         this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
         let index = 0;
