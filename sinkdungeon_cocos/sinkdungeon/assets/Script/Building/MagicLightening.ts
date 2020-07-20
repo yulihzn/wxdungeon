@@ -56,7 +56,6 @@ export default class MagicLightening extends cc.Component {
     }
     //Anim
     AnimFinish(){
-        AudioPlayer.play(AudioPlayer.BOOM);
         this.scheduleOnce(() => {
             if(this.node){
                 this.node.destroy();

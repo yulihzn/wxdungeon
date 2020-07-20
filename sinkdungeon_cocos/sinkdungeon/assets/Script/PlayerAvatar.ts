@@ -43,7 +43,7 @@ export default class PlayerAvatar extends cc.Component {
     clothesSprite: cc.Sprite = null;
     avatarNode: cc.Node = null;
     spriteNode: cc.Node = null;
-    data:AvatarData;
+    data: AvatarData;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -108,70 +108,79 @@ export default class PlayerAvatar extends cc.Component {
         }
         switch (status) {
             case PlayerAvatar.STATE_IDLE:
-                if (this.status != status) {
+                if (this.status != status
+                    && PlayerAvatar.STATE_DIE != this.status) {
                     this.playIdle(dir);
                 }
                 break;
             case PlayerAvatar.STATE_WALK:
-                if ((this.status != status || this.dir != dir) && PlayerAvatar.STATE_ATTACK != this.status) {
+                if ((this.status != status || this.dir != dir)
+                    && PlayerAvatar.STATE_ATTACK != this.status
+                    && PlayerAvatar.STATE_DIE != this.status) {
                     this.playWalk(dir);
                 }
                 break;
             case PlayerAvatar.STATE_ATTACK:
-                this.playAttack(dir);
+                if (PlayerAvatar.STATE_DIE != this.status) {
+                    this.playAttack(dir);
+                }
                 break;
             case PlayerAvatar.STATE_DIE:
-                this.playDie();
+                if (PlayerAvatar.STATE_DIE != this.status) {
+                    this.playDie();
+                }
                 break;
             case PlayerAvatar.STATE_FALL:
-                this.anim.play('AvatarFall');
+                if (PlayerAvatar.STATE_DIE != this.status) {
+                    this.anim.play('AvatarFall');
+                }
                 break;
         }
         this.status = status;
         this.dir = dir;
     }
 
-    changeLegColor(isLong:boolean,colorHex:string){
-        if(isLong){
+    changeLegColor(isLong: boolean, colorHex: string) {
+        if (isLong) {
             this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
             this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
             this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
             this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(colorHex);
-        }else{
+        } else {
             this.legLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
             this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
             this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
             this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         }
-        
+
     }
-    hitLight(isHit:boolean){
-        this.bodySprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.headSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.hairSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.faceSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.eyesSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+    hitLight(isHit: boolean) {
+        this.bodySprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.headSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.hairSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.faceSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.eyesSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
         // this.handLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
         // this.handRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.legLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.legRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.footLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        this.footLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.legLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.legRightSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.footLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.footLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
 
     }
     changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
         this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
-        if (dir == 0 && Logic.spriteFrames[ 'behind'+inventoryManager.helmet.img]) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames['behind'+inventoryManager.helmet.img];
-        } else if (dir == 1 && Logic.spriteFrames['front'+inventoryManager.helmet.img]) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames['front'+inventoryManager.helmet.img];
+        if (dir == 0 && Logic.spriteFrames['behind' + inventoryManager.helmet.img]) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrames['behind' + inventoryManager.helmet.img];
+        } else if (dir == 1 && Logic.spriteFrames['front' + inventoryManager.helmet.img]) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrames['front' + inventoryManager.helmet.img];
         } else {
             this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img];
         }
-        if (dir == 0 && Logic.spriteFrames['behind'+inventoryManager.clothes.img]) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames['behind'+inventoryManager.clothes.img];
-        } else if (dir == 1 && Logic.spriteFrames['front'+inventoryManager.clothes.img]) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames['front'+inventoryManager.clothes.img];
+        if (dir == 0 && Logic.spriteFrames['behind' + inventoryManager.clothes.img]) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrames['behind' + inventoryManager.clothes.img];
+        } else if (dir == 1 && Logic.spriteFrames['front' + inventoryManager.clothes.img]) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrames['front' + inventoryManager.clothes.img];
         } else {
             this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img];
         }
@@ -211,7 +220,7 @@ export default class PlayerAvatar extends cc.Component {
                 break;
         }
         this.hairSprite.spriteFrame = Logic.spriteFrames[this.data.hairResName + this.idlehair[0]];
-        if(dir != 4){
+        if (dir != 4) {
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
         }
     }
