@@ -97,7 +97,7 @@ export default class Status extends cc.Component {
     }
   
     update (dt) {
-        this.label.string = `${this.data.duration}`;
+        this.label.string = `${this.data.duration>0?this.data.duration:''}`;
         this.label.node.opacity = this.data.duration <0||this.data.duration >500?0:255;
         if(this.isTimeDelay(dt)){
             if(this.data.duration > 0){
@@ -126,6 +126,7 @@ export default class Status extends cc.Component {
         let dd = new DamageData();
         dd.realDamage = this.data.realDamageOvertime?this.data.realDamageOvertime:0;
         dd.physicalDamage = this.data.physicalDamageOvertime?this.data.physicalDamageOvertime:0;
+        dd.magicDamage = this.data.magicDamageOvertime?this.data.magicDamageOvertime:0;
         return dd;
     }
 }

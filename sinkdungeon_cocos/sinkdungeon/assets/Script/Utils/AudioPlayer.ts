@@ -103,6 +103,7 @@ export default class AudioPlayer extends cc.Component {
         //     clip = this.bg02;
         // }
         if(clip){
+            cc.audioEngine.stopMusic();
             cc.audioEngine.playMusic(clip, true);
         }
         

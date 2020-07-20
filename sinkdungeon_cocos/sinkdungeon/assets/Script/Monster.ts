@@ -91,11 +91,6 @@ export default class Monster extends Actor {
     currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
     isVariation: boolean = false;//是否变异
 
-    particleIce: cc.ParticleSystem;
-    particleFire: cc.ParticleSystem;
-    particleLightening: cc.ParticleSystem;
-    particleToxic: cc.ParticleSystem;
-    particleCurse: cc.ParticleSystem;
     particleBlood: cc.ParticleSystem;
     effectNode: cc.Node;
 
@@ -130,17 +125,7 @@ export default class Monster extends Actor {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.effectNode = this.node.getChildByName('Effect');
-        this.particleIce = this.node.getChildByName('Effect').getChildByName('ice').getComponent(cc.ParticleSystem);
-        this.particleFire = this.node.getChildByName('Effect').getChildByName('fire').getComponent(cc.ParticleSystem);
-        this.particleLightening = this.node.getChildByName('Effect').getChildByName('lightening').getComponent(cc.ParticleSystem);
-        this.particleToxic = this.node.getChildByName('Effect').getChildByName('toxic').getComponent(cc.ParticleSystem);
-        this.particleCurse = this.node.getChildByName('Effect').getChildByName('curse').getComponent(cc.ParticleSystem);
         this.particleBlood = this.node.getChildByName('Effect').getChildByName('blood').getComponent(cc.ParticleSystem);
-        this.particleIce.stopSystem();
-        this.particleFire.stopSystem();
-        this.particleLightening.stopSystem();
-        this.particleCurse.stopSystem();
-        this.particleToxic.stopSystem();
         this.particleBlood.stopSystem();
         this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
@@ -150,9 +135,9 @@ export default class Monster extends Actor {
         if (this.data.isHeavy > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
-        this.stopAttackEffect();
         this.dangerBox.init(this);
         this.dangerTips.opacity = 0;
+        this.specialSkill.delay(5);
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
@@ -577,14 +562,7 @@ export default class Monster extends Actor {
         if (!this.data) {
             return;
         }
-        let c = '#000000';
-        c = this.getMixColor(c, this.data.getIceRate() > 0 ? '#CCFFFF' : '#000000');
-        c = this.getMixColor(c, this.data.getFireRate() > 0 ? '#FF6633' : '#000000');
-        c = this.getMixColor(c, this.data.getLighteningRate() > 0 ? '#0099FF' : '#000000');
-        c = this.getMixColor(c, this.data.getToxicRate() > 0 ? '#66CC00' : '#000000');
-        c = this.getMixColor(c, this.data.getCurseRate() > 0 ? '#660099' : '#000000');
-        c = c == '#000000' ? '#ffffff' : c;
-        this.bodySprite.node.color = cc.color(255, 255, 255).fromHEX(c);
+        this.bodySprite.node.color = cc.color(255, 255, 255).fromHEX(this.data.bodyColor);
     }
     getMixColor(color1: string, color2: string): string {
         let c1 = cc.color().fromHEX(color1);
@@ -603,32 +581,15 @@ export default class Monster extends Actor {
         this.statusManager.addStatus(statusType, from);
     }
     showAttackEffect(isDashing: boolean) {
-        if (!this.particleIce) {
-            return;
-        }
         this.effectNode.setPosition(cc.v3(0, 32));
         if (!isDashing) {
             this.effectNode.runAction(cc.sequence(cc.moveTo(0.2, 32, 32), cc.moveTo(0.2, 0, 16)));
         }
-        this.data.getIceRate()+this.data.getMagicDamage() > 0 ? this.particleIce.resetSystem() : this.particleIce.stopSystem();
-        this.data.getFireRate()+this.data.getMagicDamage() > 0 ? this.particleFire.resetSystem() : this.particleFire.stopSystem();
-        this.data.getLighteningRate()+this.data.getMagicDamage() > 0 ? this.particleLightening.resetSystem() : this.particleLightening.stopSystem();
-        this.data.getToxicRate()+this.data.getMagicDamage() > 0 ? this.particleToxic.resetSystem() : this.particleToxic.stopSystem();
-        this.data.getCurseRate()+this.data.getMagicDamage() > 0 ? this.particleCurse.resetSystem() : this.particleCurse.stopSystem();
     }
-    stopAttackEffect() {
-        if (!this.particleIce) {
-            return;
-        }
-        this.particleIce.stopSystem();
-        this.particleFire.stopSystem();
-        this.particleLightening.stopSystem();
-        this.particleToxic.stopSystem();
-        this.particleCurse.stopSystem();
-    }
+   
     showBloodEffect() {
         this.particleBlood.resetSystem();
-        this.scheduleOnce(() => { this.particleBlood.stopSystem() }, 0.5);
+        this.scheduleOnce(() => { this.particleBlood.stopSystem(); }, 0.5);
     }
     addPlayerStatus(player: Player, from: FromData) {
         if (Logic.getRandomNum(0, 100) < this.data.getIceRate()) { player.addStatus(StatusManager.FROZEN, from); }
@@ -756,7 +717,6 @@ export default class Monster extends Actor {
                 }
                 this.showAttackAnim((isSpecial: boolean) => {
                     this.meleeSkill.IsExcuting = false;
-                    this.stopAttackEffect();
                     if (this.graphics) {
                         this.graphics.clear();
                     }
@@ -807,7 +767,7 @@ export default class Monster extends Actor {
                 this.showAttackEffect(true);
                 this.move(pos, speed * 1.2);
                 this.dashSkill.IsExcuting = true;
-                this.scheduleOnce(() => { if (this.node) { this.dashSkill.IsExcuting = false; this.stopAttackEffect(); } }, 2);
+                this.scheduleOnce(() => { if (this.node) { this.dashSkill.IsExcuting = false; } }, 2);
             }, this.data.dash);
 
         }
@@ -851,7 +811,6 @@ export default class Monster extends Actor {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             let from = FromData.getClone(this.data.nameCn, this.data.resName);
             this.addPlayerStatus(this.dungeon.player, from);
-            this.stopAttackEffect();
             this.dungeon.player.takeDamage(this.data.getAttackPoint(), from, this);
         }
     }

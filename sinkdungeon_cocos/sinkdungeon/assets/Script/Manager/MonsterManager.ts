@@ -162,17 +162,23 @@ export default class MonsterManager extends cc.Component {
             switch (rand) {
                 case 0:
                     data.Common.iceRate = data.Common.iceRate + er > 100 ? 100 : data.Common.iceRate + er;
+                    data.bodyColor = '#CCFFFF';
                     break;
                 case 1:
                     data.Common.fireRate = data.Common.fireRate + er > 100 ? 100 : data.Common.fireRate + er;
+                    data.bodyColor = '#FF6633';
                     break;
                 case 2:
                     data.Common.lighteningRate = data.Common.lighteningRate + er > 100 ? 100 : data.Common.lighteningRate + er;
+                    data.bodyColor = '#0099FF';
                     break;
                 case 3:
-                    data.Common.toxicRate = data.Common.toxicRate + er > 100 ? 100 : data.Common.toxicRate + er; break;
+                    data.Common.toxicRate = data.Common.toxicRate + er > 100 ? 100 : data.Common.toxicRate + er;
+                    data.bodyColor = '#66CC00';
+                    break;
                 case 4:
                     data.Common.curseRate = data.Common.curseRate + er > 100 ? 100 : data.Common.curseRate + er;
+                    data.bodyColor = '#660099';
                     break;
             }
         }

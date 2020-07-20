@@ -80,7 +80,9 @@ export default class StatusData {
         e.physicalDamageOvertime = this.physicalDamageOvertime;
         e.missRate = this.missRate;
         e.realDamageDirect = this.realDamageDirect;
-        e.realDamageOvertime = this.realDamageDirect;
+        e.realDamageOvertime = this.realDamageOvertime;
+        e.magicDamageDirect = this.magicDamageDirect
+        e.magicDamageOvertime = this.magicDamageOvertime;
         e.spriteFrameName = this.spriteFrameName;
         e.dizzDurationDirect = this.dizzDurationDirect;
         e.dizzDurationOvertime = this.dizzDurationOvertime;

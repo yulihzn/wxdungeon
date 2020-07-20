@@ -174,6 +174,7 @@ export default class Player extends Actor {
                 // this.data.currentHealth = 1;
                 // this.data.Common.maxHealth = 1;
                 this.data.Common.damageMin = 99;
+                this.data.Common.damageBack = 2;
                 this.data.Common.criticalStrikeRate = 50;
                 this.data.Common.remoteCritRate = 50;
             }, 0.2);
@@ -542,7 +543,8 @@ export default class Player extends Actor {
                 this.weaponRight.shooter.playWalk(true);
                 break;
             case PlayerAvatar.STATE_FALL: break;
-            case PlayerAvatar.STATE_DIE: break;
+            case PlayerAvatar.STATE_DIE:
+                 break;
         }
         this.avatar.playAnim(status, dir);
     }
@@ -643,6 +645,8 @@ export default class Player extends Actor {
         cc.director.emit(EventHelper.HUD_STOP_COUNTTIME);
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
         Achievements.addPlayerDiedLifesAchievement();
+        this.weaponLeft.node.opacity = 0;
+        this.weaponRight.node.opacity = 0;
         this.scheduleOnce(() => {
             Logic.profileManager.clearData();
             Logic.dieFrom.valueCopy(from);

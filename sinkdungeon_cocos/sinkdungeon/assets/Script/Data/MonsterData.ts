@@ -45,6 +45,7 @@ export default class MonsterData{
     specialDistance = 0;//特殊类型位置x
     specialBulletArcExNum = 0;//特殊额外扇形喷射子弹数量,为0的时候不计入,最大18
     specialBulletLineExNum = 0;//特殊额外线性喷射子弹数量，为0的时候不计入
+    bodyColor = '#ffffff';
     pos:cc.Vec3 = cc.v3(0,0);
     currentHealth:number=0;
     /**box规格 爬行的21x21 0:y32w80h64，站立的21x21 1:y48w48h96，占满的21x21 2:y48w80h80，站立的32x32 3:y64w80h128，爬行的32x32 4:y32w128h48，站立的48x48 5:y48w80h112*/
@@ -105,6 +106,7 @@ export default class MonsterData{
         this.boxType = data.boxType?data.boxType:0;
         this.attackType = data.attackType?data.attackType:0;
         this.isRecovery = data.isRecovery?data.isRecovery:0;
+        this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff'
     }
     public clone():MonsterData{
         let e = new MonsterData();
@@ -142,6 +144,7 @@ export default class MonsterData{
         e.boxType = this.boxType;
         e.attackType = this.attackType;
         e.isRecovery = this.isRecovery;
+        e.bodyColor = this.bodyColor;
         return e;
     }
     getAttackPoint():DamageData{

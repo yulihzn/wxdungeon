@@ -1,9 +1,9 @@
-import Dungeon from "../Dungeon";
 import Player from "../Player";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -93,6 +93,7 @@ export default class Door extends Building {
         if (player) {
             if (this.isOpen) {
                 Logic.saveData();
+                AudioPlayer.play(AudioPlayer.EXIT);
                 cc.director.emit(EventHelper.LOADINGROOM, { detail: { dir: this.dir } });
             }
         }
