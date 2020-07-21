@@ -19,6 +19,7 @@ import IndexZ from "./Utils/IndexZ";
 import PlayerAvatar from "./PlayerAvatar";
 import EquipmentData from "./Data/EquipmentData";
 import InventoryManager from "./Manager/InventoryManager";
+import Equipment from "./Equipment/Equipment";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -108,7 +109,7 @@ export default class MeleeWeapon extends cc.Component {
         this.weaponFirePoint = this.node.getChildByName('firepoint');
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos));
-        this.weaponSprite = this.getSpriteChildSprite(['sprite', 'weapon']);
+        this.weaponSprite = this.getSpriteChildSprite(['sprite', Equipment.WEAPON]);
         this.weaponStabSprite = this.getSpriteChildSprite( ['sprite', 'stabweapon']);
         this.weaponStabLightSprite = this.getSpriteChildSprite(['sprite', 'stablight']);
         this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight']);
@@ -138,7 +139,7 @@ export default class MeleeWeapon extends cc.Component {
         return node.getComponent(cc.Sprite);
     }
     changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame, inventoryManager: InventoryManager) {
-        if ('weapon' != equipData.equipmetType) {
+        if (Equipment.WEAPON != equipData.equipmetType) {
             cc.log('its not a weapon');
             return;
         }

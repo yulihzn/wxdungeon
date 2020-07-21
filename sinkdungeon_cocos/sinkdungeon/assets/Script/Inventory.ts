@@ -19,7 +19,7 @@ import Dungeon from './Dungeon';
 import FromData from './Data/FromData';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
-import AudioPlayer from './Utils/AudioPlayer';
+import Equipment from './Equipment/Equipment';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -33,6 +33,8 @@ export default class Inventory extends cc.Component {
     weapon: cc.Sprite = null;
     @property(cc.Sprite)
     remote: cc.Sprite = null;
+    @property(cc.Sprite)
+    shield: cc.Sprite = null;
     @property(cc.Sprite)
     helmet: cc.Sprite = null;
     @property(cc.Sprite)
@@ -61,6 +63,7 @@ export default class Inventory extends cc.Component {
 
     weaponTimeDelay = 0;
     remoteTimeDelay = 0;
+    shieldTimeDelay = 0;
     helmetTimeDelay = 0;
     clothesTimeDelay = 0;
     trousersTimeDelay = 0;
@@ -100,22 +103,25 @@ export default class Inventory extends cc.Component {
         this.tabselect.x = 0;
         this.weapon.spriteFrame = null;
         this.remote.spriteFrame = null;
+        this.shield.spriteFrame = null;
         this.helmet.spriteFrame = null;
         this.clothes.spriteFrame = null;
         this.trousers.spriteFrame = null;
         this.gloves.spriteFrame = null;
         this.shoes.spriteFrame = null;
         this.cloak.spriteFrame = null;
-        this.addSpriteTouchEvent(this.weapon, 'weapon');
-        this.addSpriteTouchEvent(this.remote, 'remote');
-        this.addSpriteTouchEvent(this.helmet, 'helmet');
-        this.addSpriteTouchEvent(this.clothes, 'clothes');
-        this.addSpriteTouchEvent(this.trousers, 'trousers');
-        this.addSpriteTouchEvent(this.gloves, 'gloves');
-        this.addSpriteTouchEvent(this.shoes, 'shoes');
-        this.addSpriteTouchEvent(this.cloak, 'cloak');
+        this.addSpriteTouchEvent(this.weapon, Equipment.WEAPON);
+        this.addSpriteTouchEvent(this.remote, Equipment.REMOTE);
+        this.addSpriteTouchEvent(this.shield, Equipment.SHIELD);
+        this.addSpriteTouchEvent(this.helmet, Equipment.HELMET);
+        this.addSpriteTouchEvent(this.clothes, Equipment.CLOTHES);
+        this.addSpriteTouchEvent(this.trousers, Equipment.TROUSERS);
+        this.addSpriteTouchEvent(this.gloves, Equipment.GLOVES);
+        this.addSpriteTouchEvent(this.shoes, Equipment.SHOES);
+        this.addSpriteTouchEvent(this.cloak, Equipment.CLOAK);
         this.refreshEquipment(this.inventoryManager.weapon, false);
         this.refreshEquipment(this.inventoryManager.remote, false);
+        this.refreshEquipment(this.inventoryManager.shield, false);
         this.refreshEquipment(this.inventoryManager.helmet, false);
         this.refreshEquipment(this.inventoryManager.clothes, false);
         this.refreshEquipment(this.inventoryManager.trousers, false);
@@ -132,14 +138,15 @@ export default class Inventory extends cc.Component {
             }
             let equipData = new EquipmentData();
             switch (equipmetType) {
-                case 'weapon': equipData = this.inventoryManager.weapon.clone(); break;
-                case 'remote': equipData = this.inventoryManager.remote.clone(); break;
-                case 'helmet': equipData = this.inventoryManager.helmet.clone(); break;
-                case 'clothes': equipData = this.inventoryManager.clothes.clone(); break;
-                case 'trousers': equipData = this.inventoryManager.trousers.clone(); break;
-                case 'gloves': equipData = this.inventoryManager.gloves.clone(); break;
-                case 'shoes': equipData = this.inventoryManager.shoes.clone(); break;
-                case 'cloak': equipData = this.inventoryManager.cloak.clone(); break;
+                case Equipment.WEAPON: equipData = this.inventoryManager.weapon.clone(); break;
+                case Equipment.REMOTE: equipData = this.inventoryManager.remote.clone(); break;
+                case Equipment.SHIELD: equipData = this.inventoryManager.shield.clone(); break;
+                case Equipment.HELMET: equipData = this.inventoryManager.helmet.clone(); break;
+                case Equipment.CLOTHES: equipData = this.inventoryManager.clothes.clone(); break;
+                case Equipment.TROUSERS: equipData = this.inventoryManager.trousers.clone(); break;
+                case Equipment.GLOVES: equipData = this.inventoryManager.gloves.clone(); break;
+                case Equipment.SHOES: equipData = this.inventoryManager.shoes.clone(); break;
+                case Equipment.CLOAK: equipData = this.inventoryManager.cloak.clone(); break;
             }
             this.equipmentDialog.refreshDialog(equipData)
             this.equipmentDialog.showDialog();
@@ -180,43 +187,48 @@ export default class Inventory extends cc.Component {
         let color = cc.color(255, 255, 255).fromHEX(equipmentDataNew.color);
         let spriteFrame = Logic.spriteFrames[equipmentDataNew.img];
         switch (equipmentDataNew.equipmetType) {
-            case 'weapon': this.weapon.spriteFrame = spriteFrame;
+            case Equipment.WEAPON: this.weapon.spriteFrame = spriteFrame;
                 this.weapon.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.weapon, isChange);
                 this.inventoryManager.weapon.valueCopy(equipmentDataNew);
                 break;
-            case 'remote': this.remote.spriteFrame = spriteFrame;
+            case Equipment.REMOTE: this.remote.spriteFrame = spriteFrame;
                 this.remote.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.remote, isChange);
                 this.inventoryManager.remote.valueCopy(equipmentDataNew);
                 break;
-            case 'helmet': this.helmet.spriteFrame = spriteFrame;
+            case Equipment.SHIELD: this.shield.spriteFrame = spriteFrame;
+                this.shield.node.color = color;
+                this.setEquipment(equipmentDataNew, this.inventoryManager.shield, isChange);
+                this.inventoryManager.shield.valueCopy(equipmentDataNew);
+                break;
+            case Equipment.HELMET: this.helmet.spriteFrame = spriteFrame;
                 this.helmet.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.helmet, isChange);
                 this.inventoryManager.helmet.valueCopy(equipmentDataNew);
                 break;
-            case 'clothes': this.clothes.spriteFrame = spriteFrame;
+            case Equipment.CLOTHES: this.clothes.spriteFrame = spriteFrame;
                 this.clothes.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.clothes, isChange);
                 this.inventoryManager.clothes.valueCopy(equipmentDataNew);
                 break;
-            case 'trousers':
+            case Equipment.TROUSERS:
                 this.trousers.spriteFrame = equipmentDataNew.trouserslong == 1 ? Logic.spriteFrames['trousers000'] : spriteFrame;
                 this.trousers.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.trousers, isChange);
                 this.inventoryManager.trousers.valueCopy(equipmentDataNew);
                 break;
-            case 'gloves': this.gloves.spriteFrame = spriteFrame;
+            case Equipment.GLOVES: this.gloves.spriteFrame = spriteFrame;
                 this.gloves.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.gloves, isChange);
                 this.inventoryManager.gloves.valueCopy(equipmentDataNew);
                 break;
-            case 'shoes': this.shoes.spriteFrame = spriteFrame;
+            case Equipment.SHOES: this.shoes.spriteFrame = spriteFrame;
                 this.shoes.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.shoes, isChange);
                 this.inventoryManager.shoes.valueCopy(equipmentDataNew);
                 break;
-            case 'cloak': this.cloak.spriteFrame = spriteFrame;
+            case Equipment.CLOAK: this.cloak.spriteFrame = spriteFrame;
                 this.cloak.node.color = color;
                 this.setEquipment(equipmentDataNew, this.inventoryManager.cloak, isChange);
                 this.inventoryManager.cloak.valueCopy(equipmentDataNew);
@@ -250,21 +262,23 @@ export default class Inventory extends cc.Component {
     isTimeDelay(dt: number, equipmentData: EquipmentData) {
         let timeDelay = -1;
         switch (equipmentData.equipmetType) {
-            case 'weapon': this.weaponTimeDelay = this.getTimeDelay(this.weaponTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.WEAPON: this.weaponTimeDelay = this.getTimeDelay(this.weaponTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.weaponTimeDelay; break;
-            case 'remote': this.remoteTimeDelay = this.getTimeDelay(this.remoteTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.REMOTE: this.remoteTimeDelay = this.getTimeDelay(this.remoteTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.remoteTimeDelay; break;
-            case 'helmet': this.helmetTimeDelay = this.getTimeDelay(this.helmetTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.SHIELD: this.shieldTimeDelay = this.getTimeDelay(this.shieldTimeDelay, equipmentData.statusInterval, dt);
+                timeDelay = this.shieldTimeDelay; break;
+            case Equipment.HELMET: this.helmetTimeDelay = this.getTimeDelay(this.helmetTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.helmetTimeDelay; break;
-            case 'clothes': this.clothesTimeDelay = this.getTimeDelay(this.clothesTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.CLOTHES: this.clothesTimeDelay = this.getTimeDelay(this.clothesTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.clothesTimeDelay; break;
-            case 'trousers': this.trousersTimeDelay = this.getTimeDelay(this.trousersTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.TROUSERS: this.trousersTimeDelay = this.getTimeDelay(this.trousersTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.trousersTimeDelay; break;
-            case 'gloves': this.glovesTimeDelay = this.getTimeDelay(this.glovesTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.GLOVES: this.glovesTimeDelay = this.getTimeDelay(this.glovesTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.glovesTimeDelay; break;
-            case 'shoes': this.shoesTimeDelay = this.getTimeDelay(this.shoesTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.SHOES: this.shoesTimeDelay = this.getTimeDelay(this.shoesTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.shoesTimeDelay; break;
-            case 'cloak': this.cloakTimeDelay = this.getTimeDelay(this.cloakTimeDelay, equipmentData.statusInterval, dt);
+            case Equipment.CLOAK: this.cloakTimeDelay = this.getTimeDelay(this.cloakTimeDelay, equipmentData.statusInterval, dt);
                 timeDelay = this.cloakTimeDelay; break;
         }
         return timeDelay == 0;
@@ -275,6 +289,9 @@ export default class Inventory extends cc.Component {
         }
         if (this.isTimeDelay(dt, this.inventoryManager.remote)) {
             this.addPlayerStatus(this.inventoryManager.remote);
+        }
+        if (this.isTimeDelay(dt, this.inventoryManager.shield)) {
+            this.addPlayerStatus(this.inventoryManager.shield);
         }
         if (this.isTimeDelay(dt, this.inventoryManager.helmet)) {
             this.addPlayerStatus(this.inventoryManager.helmet);

@@ -24,6 +24,7 @@ import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Tips from './UI/Tips';
 import Random from './Utils/Random';
 import TalentShield from './Talent/TalentShield';
+import Shield from './Shield';
 import TalentDash from './Talent/TalentDash';
 import Actor from './Base/Actor';
 import FlyWheel from './Item/FlyWheel';
@@ -59,6 +60,8 @@ export default class Player extends Actor {
     statusManager: StatusManager = null;
     @property(PlayerAvatar)
     avatar: PlayerAvatar = null;
+    @property(Shield)
+    shield:Shield=null;
 
     isMoving = false;//是否移动中
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
@@ -267,35 +270,39 @@ export default class Player extends Actor {
 
     changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         switch (equipData.equipmetType) {
-            case 'weapon':
+            case Equipment.WEAPON:
                 this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame, this.inventoryManager);
                 break;
-            case 'remote': this.weaponLeft.shooter.data = equipData.clone();
+            case Equipment.REMOTE: this.weaponLeft.shooter.data = equipData.clone();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);
                 this.weaponLeft.shooter.changeResColor(c);
                 break;
-            case 'helmet':
+            case Equipment.SHIELD: this.weaponLeft.shooter.data = equipData.clone();
+                this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
+                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color, spriteFrame);
+                break;
+            case Equipment.HELMET:
                 this.avatar.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
                 this.updateEquipMent(this.avatar.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
                 break;
-            case 'clothes':
+            case Equipment.CLOTHES:
                 this.updateEquipMent(this.avatar.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
                 break;
-            case 'trousers':
+            case Equipment.TROUSERS:
                 let isLong = this.inventoryManager.trousers.trouserslong == 1;
                 this.avatar.changeLegColor(isLong, this.inventoryManager.trousers.color);
                 this.updateEquipMent(this.avatar.pantsSprite, this.inventoryManager.trousers.color, spriteFrame);
                 break;
-            case 'gloves':
+            case Equipment.GLOVES:
                 this.updateEquipMent(this.weaponRight.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
                 this.updateEquipMent(this.weaponLeft.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
                 break;
-            case 'shoes':
+            case Equipment.SHOES:
                 this.updateEquipMent(this.avatar.shoesLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
                 this.updateEquipMent(this.avatar.shoesRightSprite, this.inventoryManager.shoes.color, spriteFrame);
                 break;
-            case 'cloak':
+            case Equipment.CLOAK:
                 this.updateEquipMent(this.avatar.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
                 break;
         }

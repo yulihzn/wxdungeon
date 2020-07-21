@@ -2579,5 +2579,27 @@
             "maxHealth": 0
         },
         "desc": "看着眼熟"
+    },
+    "shield000": {
+        "nameCn": "圆盾",
+        "nameEn": "Shield",
+        "equipmetType": "shield",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "shield000",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 10,
+            "maxHealth": 0
+        },
+        "desc": "简单实用"
     }
 }

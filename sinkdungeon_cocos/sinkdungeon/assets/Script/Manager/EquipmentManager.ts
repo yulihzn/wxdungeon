@@ -21,14 +21,6 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class EquipmentManager extends cc.Component {
-    public static readonly TYPE_WEAPON = 'weapon';
-    public static readonly TYPE_REMOTE = 'remote';
-    public static readonly TYPE_CLOTHES = 'clothes';
-    public static readonly TYPE_HELMET = 'helmet';
-    public static readonly TYPE_CLOAK = 'cloak';
-    public static readonly TYPE_TROUSERS = 'trousers';
-    public static readonly TYPE_SHOES = 'shoes';
-    public static readonly TYPE_GLOVES = 'gloves';
 
     public static readonly EMPTY = "emptyequipment";
     public static readonly WEAPON_DINNERFORK = "weapon000";
@@ -60,6 +52,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly REMOTE_RPG = "remote006";
     public static readonly REMOTE_SHURIKEN = "remote007";
     public static readonly REMOTE_CHICKEN = "remote008";
+    public static readonly SHIELD_CIRCLE = "shield000";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
     public static readonly CLOTHES_NAVY = "clothes003";
@@ -159,8 +152,8 @@ export default class EquipmentManager extends cc.Component {
         let level = 0;
         //暴击0-20减去装备自带
         let criticalStrikeRate = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
-            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_REMOTE])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.HELMET
+            , Equipment.GLOVES, Equipment.CLOAK, Equipment.REMOTE])
             && data.Common.criticalStrikeRate > 0) {
             let csk = 20 - data.Common.criticalStrikeRate;
             if (csk < 5) { csk = 5; }
@@ -173,16 +166,16 @@ export default class EquipmentManager extends cc.Component {
 
         //基础攻击0-5
         let damageMin = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
-            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.GLOVES
+            , Equipment.CLOTHES, Equipment.REMOTE])
             && data.Common.damageMin > 0) {
             damageMin = this.getRandomQuality(0, 5, chestQuality);
             level = damageMin.y > level ? damageMin.y : level;
         }
         //最大攻击0-5
         let damageMax = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
-            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.GLOVES
+            , Equipment.CLOTHES, Equipment.REMOTE])
             && data.Common.damageMax > 0) {
             damageMax = this.getRandomQuality(damageMin.x, damageMin.x + 5, chestQuality);
             level = damageMax.y > level ? damageMax.y : level;
@@ -192,9 +185,9 @@ export default class EquipmentManager extends cc.Component {
         }
         //物理防御0-10
         let defence = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET, EquipmentManager.TYPE_GLOVES
-            , EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS, EquipmentManager.TYPE_SHOES
-            , EquipmentManager.TYPE_CLOTHES])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.HELMET, Equipment.GLOVES
+            , Equipment.CLOAK, Equipment.TROUSERS, Equipment.SHOES
+            , Equipment.CLOTHES])
             && data.Common.defence > 0) {
             defence = this.getRandomQuality(0, 10, chestQuality);
             level = defence.y > level ? defence.y : level;
@@ -204,8 +197,8 @@ export default class EquipmentManager extends cc.Component {
         }
         //吸血0%-50%
         let lifeDrain = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_HELMET
-            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_REMOTE])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.HELMET
+            , Equipment.GLOVES, Equipment.REMOTE])
             && data.Common.lifeDrain > 0) {
             let ld = 50 - data.Common.lifeDrain;
             if (ld < 5) { ld = 5; }
@@ -217,8 +210,8 @@ export default class EquipmentManager extends cc.Component {
         }
         //背刺伤害10% 0-5
         let damageBack = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON, EquipmentManager.TYPE_GLOVES
-            , EquipmentManager.TYPE_CLOTHES, EquipmentManager.TYPE_REMOTE])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.GLOVES
+            , Equipment.CLOTHES, Equipment.REMOTE])
             && data.Common.damageBack > 0) {
             damageBack = this.getRandomQuality(0, 5, chestQuality);
             level = damageBack.y > level ? damageBack.y : level;
@@ -228,8 +221,8 @@ export default class EquipmentManager extends cc.Component {
         }
         //移动速度0-80减去装备自带移动速度
         let moveSpeed = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.CLOAK, Equipment.TROUSERS
+            , Equipment.SHOES, Equipment.CLOTHES])
             && data.Common.moveSpeed > 0) {
             let ms = 80 - data.Common.moveSpeed;
             if (ms < 10) { ms = 10; }
@@ -241,9 +234,9 @@ export default class EquipmentManager extends cc.Component {
         }
         //攻击速度0-30减去装备自带攻速
         let attackSpeed = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_WEAPON
-            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOTHES
-            , EquipmentManager.TYPE_REMOTE])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.WEAPON
+            , Equipment.GLOVES, Equipment.CLOTHES
+            , Equipment.REMOTE])
             && data.Common.attackSpeed > 0) {
             let as = 30 - data.Common.attackSpeed;
             if (as < 5) { as = 5; }
@@ -255,9 +248,9 @@ export default class EquipmentManager extends cc.Component {
         }
         //闪避0-30减去装备自带闪避
         let dodge = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
-            , EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.HELMET
+            , Equipment.CLOAK, Equipment.TROUSERS
+            , Equipment.SHOES, Equipment.CLOTHES])
             && data.Common.dodge > 0) {
             let d1 = 30 - data.Common.dodge;
             if (d1 < 10) { d1 = 10; }
@@ -269,9 +262,9 @@ export default class EquipmentManager extends cc.Component {
         }
         //生命值0-5
         let health = cc.v3(0, 0);
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_HELMET
-            , EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_CLOAK, EquipmentManager.TYPE_TROUSERS
-            , EquipmentManager.TYPE_SHOES, EquipmentManager.TYPE_CLOTHES])
+        if (this.isTheEquipType(data.equipmetType, [Equipment.HELMET
+            , Equipment.GLOVES, Equipment.CLOAK, Equipment.TROUSERS
+            , Equipment.SHOES, Equipment.CLOTHES])
             && data.Common.maxHealth > 0) {
             health = this.getRandomQuality(0, 5, chestQuality);
             level = health.y > level ? health.y : level;
@@ -281,7 +274,7 @@ export default class EquipmentManager extends cc.Component {
         }
         let damageRate = 0.1;
         let damage = 5;
-        if (this.isTheEquipType(data.equipmetType, [EquipmentManager.TYPE_GLOVES, EquipmentManager.TYPE_REMOTE, EquipmentManager.TYPE_WEAPON])) {
+        if (this.isTheEquipType(data.equipmetType, [Equipment.GLOVES, Equipment.REMOTE, Equipment.WEAPON])) {
             //流血伤害0-5
             let realDamage = Random.rand() < damageRate ? this.getRandomQuality(0, damage, chestQuality) : cc.v3(0, 0);
             level = realDamage.y > level ? realDamage.y : level;

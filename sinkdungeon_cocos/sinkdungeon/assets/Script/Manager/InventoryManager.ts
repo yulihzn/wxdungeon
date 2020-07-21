@@ -22,6 +22,7 @@ export default class InventoryManager {
     gloves:EquipmentData = new EquipmentData();
     shoes:EquipmentData = new EquipmentData();
     cloak:EquipmentData = new EquipmentData();
+    shield:EquipmentData = new EquipmentData();
     //buffer效果
     buffer:EquipmentData = new EquipmentData();
     list:EquipmentData[] = [];
@@ -29,7 +30,7 @@ export default class InventoryManager {
     
    
     constructor(){
-        this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.buffer,this.remote];
+        this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.shield,this.buffer,this.remote];
         this.itemList.push(new ItemData());
         this.itemList.push(new ItemData());
         this.itemList.push(new ItemData());

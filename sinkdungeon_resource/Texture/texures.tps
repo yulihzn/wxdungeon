@@ -319,6 +319,7 @@
             <key type="filename">dungeon/tile003.png</key>
             <key type="filename">dungeon/tile004.png</key>
             <key type="filename">equipment/cloak001.png</key>
+            <key type="filename">equipment/shield000.png</key>
             <key type="filename">hud/damagecorner.png</key>
             <key type="filename">hud/dialogbg.png</key>
             <key type="filename">hud/hud_pause.png</key>

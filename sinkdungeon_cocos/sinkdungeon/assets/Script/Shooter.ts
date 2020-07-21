@@ -12,6 +12,7 @@ import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
 import DamageData from "./Data/DamageData";
 import IndexZ from "./Utils/IndexZ";
+import Equipment from "./Equipment/Equipment";
 
 
 // Learn TypeScript:
@@ -136,7 +137,7 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (!this.isAI &&!this.isEx && this.player.inventoryManager.remote.equipmetType != 'remote') {
+        if (!this.isAI &&!this.isEx && this.player.inventoryManager.remote.equipmetType != Equipment.REMOTE) {
             return;
         }
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
