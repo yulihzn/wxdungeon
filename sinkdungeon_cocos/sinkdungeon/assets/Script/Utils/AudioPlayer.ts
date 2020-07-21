@@ -2,6 +2,7 @@ import { EventHelper } from "../EventHelper";
 import Random from "./Random";
 import Logic from "../Logic";
 import RectDungeon from "../Rect/RectDungeon";
+import RoomType from "../Rect/RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -87,6 +88,8 @@ export default class AudioPlayer extends cc.Component {
     bg10: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     bg11: cc.AudioClip = null;
+    lastName = '';
+    isSoundNeedPause = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -97,11 +100,14 @@ export default class AudioPlayer extends cc.Component {
     playbg() {
         let bgms = [this.bg01,this.bg02,this.bg03,this.bg04,this.bg05,this.bg06,this.bg07,this.bg08,this.bg09,this.bg10,
             this.bg11,]
-        let clip = bgms[Random.getRandomNum(0,bgms.length-1)];
-        // if (Logic.mapManager.getCurrentRoomType() == RectDungeon.BOSS_ROOM
-        //     || Logic.mapManager.getCurrentRoomType() == RectDungeon.PUZZLE_ROOM) {
-        //     clip = this.bg02;
-        // }
+        if(Logic.lastBgmIndex == -1||Logic.lastBgmIndex>bgms.length-1){
+            Logic.lastBgmIndex = Random.getRandomNum(0,bgms.length-1);
+        }
+        let clip = bgms[Logic.lastBgmIndex];
+        if (Logic.mapManager.getCurrentRoomType() == RoomType.BOSS_ROOM
+            || Logic.mapManager.getCurrentRoomType() == RoomType.ELITE_ROOM) {
+            clip = this.bg02;
+        }
         if(clip){
             cc.audioEngine.stopMusic();
             cc.audioEngine.playMusic(clip, true);
@@ -109,6 +115,9 @@ export default class AudioPlayer extends cc.Component {
         
     }
     private playSound(name: string) {
+        if(name == this.lastName&&this.isSoundNeedPause){
+            return;
+        }
         switch (name) {
             case AudioPlayer.MONSTER_HIT:
                 cc.audioEngine.playEffect(this.monsterHit, false);
@@ -162,6 +171,11 @@ export default class AudioPlayer extends cc.Component {
                 this.playbg();
                 break;
         }
+        this.lastName = name;
+        this.isSoundNeedPause = true;
+        this.scheduleOnce(()=>{
+            this.isSoundNeedPause = false;
+        },0.1)
     }
 
     static play(audioName: string){

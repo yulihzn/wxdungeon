@@ -1,4 +1,5 @@
 import AchievementData from "./Data/AchievementData";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -154,6 +155,7 @@ export default class Achievements extends cc.Component {
     }
     backToHome() {
         cc.director.loadScene('start');
+        AudioPlayer.play(AudioPlayer.SELECT);
     }
     static getAchievementData(): AchievementData {
         let s: string = cc.sys.localStorage.getItem("achievement");

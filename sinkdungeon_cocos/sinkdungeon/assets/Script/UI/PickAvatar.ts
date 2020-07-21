@@ -214,6 +214,7 @@ export default class PickAvatar extends cc.Component {
     }
     backToHome() {
         cc.director.loadScene('start');
+        AudioPlayer.play(AudioPlayer.SELECT);
     }
     
     addBrightnessBar():BrightnessBar{
@@ -246,6 +247,7 @@ export default class PickAvatar extends cc.Component {
     ButtonSwitch(){
         this.randomLayout.active = this.randomLayout.active?false:true;
         this.attributeLayout.active = this.attributeLayout.active?false:true;
+        AudioPlayer.play(AudioPlayer.SELECT);
     }
     ButtonRandom(){
         this.organizationSelector.selectRandom();
@@ -258,5 +260,6 @@ export default class PickAvatar extends cc.Component {
         this.eyesColorSelector.selectRandom();
         this.faceSelector.selectRandom();
         this.faceColorSelector.selectRandom();
+        AudioPlayer.play(AudioPlayer.SELECT);
     }
 }

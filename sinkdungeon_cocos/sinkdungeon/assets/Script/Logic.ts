@@ -71,6 +71,7 @@ export default class Logic extends cc.Component {
     static isDebug = false;//调试
     static dieFrom: FromData = new FromData();
     static isMapReset = false;
+    static lastBgmIndex = 0;
 
     static profileManager: ProfileManager = new ProfileManager();
 
@@ -142,6 +143,8 @@ export default class Logic extends cc.Component {
         Logic.oilGolds = o ? parseInt(o) : 0;
         //重置技能选择状态
         Logic.isPickedTalent = false;
+        //重置bgm
+        Logic.lastBgmIndex = -1;
     }
     private static initTalentMap() {
         Logic.hasTalentMap = {};
@@ -222,6 +225,7 @@ export default class Logic extends cc.Component {
         Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
         //返回上层不选择技能
         Logic.isPickedTalent = isBack;
+        Logic.lastBgmIndex = -1;
         cc.director.loadScene('loading');
     }
 

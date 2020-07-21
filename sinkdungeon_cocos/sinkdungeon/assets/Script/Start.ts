@@ -32,7 +32,7 @@ export default class Start extends cc.Component {
         // //重置数据
         // Logic.resetData();
         // //加载资源
-        // AudioPlayer.play(AudioPlayer.SELECT);
+        AudioPlayer.play(AudioPlayer.SELECT);
         // cc.director.loadScene('loading');
         //进入选择页面
         cc.director.loadScene('pickavatar');
@@ -86,7 +86,7 @@ export default class Start extends cc.Component {
     }
     loadTest(){
         // cc.director.loadScene('chunktest');
-        cc.director.loadScene('pickavatar');
+        cc.director.loadScene('test');
     }
     
 }
