@@ -79,7 +79,7 @@ export default class Chest extends Building {
             return;
         }
         this.data.isOpen = true;
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_UP } });
         let action = cc.sequence(cc.moveTo(0.1, 5, 16)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
             , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 0, 0), cc.callFunc(() => {
@@ -89,7 +89,8 @@ export default class Chest extends Building {
                     if (dungeon) {
                         dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, this.data.pos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.data.pos, null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.REMOTE_LONGBOW, this.data.pos, null, this.data.quality);
+                        dungeon.addEquipment(EquipmentManager.REMOTE_SHURIKEN, this.data.pos, null, this.data.quality);
+                        dungeon.addEquipment(EquipmentManager.REMOTE_WINCHESTER, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos, null, this.data.quality);

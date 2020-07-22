@@ -36,6 +36,17 @@ export default class AudioPlayer extends cc.Component {
     public static readonly PLAY_BG = 'PLAY_BG';
     public static readonly SELECT = 'SELECT';
     public static readonly BLINK = 'BLINK';
+    public static readonly BOSS_ICEDEMON_DASH = 'BOSS_ICEDEMON_DASH';
+    public static readonly BOSS_ICEDEMON_DEFEND = 'BOSS_ICEDEMON_DEFEND';
+    public static readonly BOSS_ICEDEMON_HIT = 'BOSS_ICEDEMON_HIT';
+    public static readonly BOSS_ICEDEMON_THRON = 'BOSS_ICEDEMON_THRON';
+    public static readonly BOOS_ICEDEMON_ATTACK = 'BOOS_ICEDEMON_ATTACK';
+    public static readonly MELEE_REFLECT = 'MELEE_REFLECT';
+    public static readonly RAINDROP = 'RAINDROP';
+    public static readonly SKILL_FIREBALL = 'SKILL_FIREBALL';
+    public static readonly SKILL_ICETHRON = 'SKILL_ICETHRON';
+    public static readonly SKILL_MAGICBALL = 'SKILL_MAGICBALL';
+    public static readonly SKILL_MAGICBALL1 = 'SKILL_MAGICBALL';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -67,6 +78,28 @@ export default class AudioPlayer extends cc.Component {
     @property({ type: cc.AudioClip })
     select: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
+    bossicedemonattack: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    meleereflect: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    raindrop: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    skillfireball: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    skillicethron: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    skillmagicball: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    skillmagicball1: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bossicedemondash: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bossicedemondefend: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bossicedemonhit: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    bossicedemonthron: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
     bg01: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     bg02: cc.AudioClip = null;
@@ -93,29 +126,29 @@ export default class AudioPlayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        EventHelper.on(EventHelper.PLAY_AUDIO,(detail)=>{this.playSound(detail.name);});
+        EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name); });
         cc.audioEngine.setMusicVolume(0.1);
         cc.audioEngine.setEffectsVolume(0.5);
     }
     playbg() {
-        let bgms = [this.bg01,this.bg02,this.bg03,this.bg04,this.bg05,this.bg06,this.bg07,this.bg08,this.bg09,this.bg10,
-            this.bg11,]
-        if(Logic.lastBgmIndex == -1||Logic.lastBgmIndex>bgms.length-1){
-            Logic.lastBgmIndex = Random.getRandomNum(0,bgms.length-1);
+        let bgms = [this.bg01, this.bg02, this.bg03, this.bg04, this.bg05, this.bg06, this.bg07, this.bg08, this.bg09, this.bg10,
+        this.bg11,]
+        if (Logic.lastBgmIndex == -1 || Logic.lastBgmIndex > bgms.length - 1) {
+            Logic.lastBgmIndex = Random.getRandomNum(0, bgms.length - 1);
         }
         let clip = bgms[Logic.lastBgmIndex];
         if (Logic.mapManager.getCurrentRoomType() == RoomType.BOSS_ROOM
             || Logic.mapManager.getCurrentRoomType() == RoomType.ELITE_ROOM) {
             clip = this.bg02;
         }
-        if(clip){
+        if (clip) {
             cc.audioEngine.stopMusic();
             cc.audioEngine.playMusic(clip, true);
         }
-        
+
     }
     private playSound(name: string) {
-        if(name == this.lastName&&this.isSoundNeedPause){
+        if (name == this.lastName && this.isSoundNeedPause) {
             return;
         }
         switch (name) {
@@ -164,6 +197,39 @@ export default class AudioPlayer extends cc.Component {
             case AudioPlayer.BLINK:
                 cc.audioEngine.playEffect(this.blink, false);
                 break;
+            case AudioPlayer.BOSS_ICEDEMON_DASH:
+                cc.audioEngine.playEffect(this.bossicedemondash, false);
+                break;
+            case AudioPlayer.BOSS_ICEDEMON_DEFEND:
+                cc.audioEngine.playEffect(this.bossicedemondefend, false);
+                break;
+            case AudioPlayer.BOSS_ICEDEMON_HIT:
+                cc.audioEngine.playEffect(this.bossicedemonhit, false);
+                break;
+            case AudioPlayer.BOSS_ICEDEMON_THRON:
+                cc.audioEngine.playEffect(this.bossicedemonthron, false);
+                break;
+            case AudioPlayer.BOOS_ICEDEMON_ATTACK:
+                cc.audioEngine.playEffect(this.bossicedemonattack, false);
+                break;
+            case AudioPlayer.MELEE_REFLECT:
+                cc.audioEngine.playEffect(this.meleereflect, false);
+                break;
+            case AudioPlayer.RAINDROP:
+                cc.audioEngine.playEffect(this.raindrop, false);
+                break;
+            case AudioPlayer.SKILL_FIREBALL:
+                cc.audioEngine.playEffect(this.skillfireball, false);
+                break;
+            case AudioPlayer.SKILL_ICETHRON:
+                cc.audioEngine.playEffect(this.skillicethron, false);
+                break;
+            case AudioPlayer.SKILL_MAGICBALL:
+                cc.audioEngine.playEffect(this.skillmagicball, false);
+                break;
+            case AudioPlayer.SKILL_MAGICBALL1:
+                cc.audioEngine.playEffect(this.skillmagicball1, false);
+                break;
             case AudioPlayer.STOP_BG:
                 cc.audioEngine.stopMusic();
                 break;
@@ -173,12 +239,12 @@ export default class AudioPlayer extends cc.Component {
         }
         this.lastName = name;
         this.isSoundNeedPause = true;
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             this.isSoundNeedPause = false;
-        },0.1)
+        }, 0.1)
     }
 
-    static play(audioName: string){
-        EventHelper.emit(EventHelper.PLAY_AUDIO,{ name: audioName });
+    static play(audioName: string,delayTime?:number) {
+        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: audioName });
     }
 }

@@ -156,11 +156,12 @@
     },
     "bullet011": {
         "name":"霰弹",
-        "speed": 500,
+        "speed": 700,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
-        "size": 1,
+        "lifeTime":1,
+        "size": 2,
         "resName":"bullet011",
         "lightName": "bulletlight001",
         "lightColor": "#FFFF00",
@@ -788,6 +789,7 @@
         "name":"红色激光",
         "speed": 5000,
         "isLaser":1,
+        "lifeTime":2,
         "resNameLaser":"laser001",
         "damage": {
             "physicalDamage": 1

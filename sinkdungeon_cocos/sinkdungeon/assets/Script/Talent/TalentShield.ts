@@ -3,10 +3,7 @@ import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
 import Actor from "../Base/Actor";
-import FlyWheel from "../Item/FlyWheel";
-import Dungeon from "../Dungeon";
 import Talent from "./Talent";
-import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 
@@ -18,10 +15,6 @@ export default class TalentShield extends Talent {
     private shieldBackSprite: cc.Sprite = null;
     private shieldFrontSprite: cc.Sprite = null;
     private sprites: cc.Sprite[];
-    @property(FlyWheel)
-    flyWheel: FlyWheel = null;
-    private flyWhellSkill = new Skill();
-   
     onLoad() {
 
     }
@@ -38,10 +31,6 @@ export default class TalentShield extends Talent {
             sprite.node.opacity = 0;
             this.sprites.push(sprite);
         }
-        this.flyWheel.dungeon = this.player.node.parent.getComponent(Dungeon);
-        this.flyWheel.node.active = false;
-        this.node.parent = this.flyWheel.dungeon.node;
-        this.flyWheel.init();
     }
     
     changePerformance() {
@@ -83,7 +72,6 @@ export default class TalentShield extends Talent {
             }
         }
         this.changeRes(isThrow ? 'shield06' : 'shield01');
-        this.flyWheel.changeShieldPerformance(this.talentList);
     }
    
     changeRes(resName: string) {
@@ -136,12 +124,7 @@ export default class TalentShield extends Talent {
             //添加状态
             this.player.addStatus(statusName,new FromData());
             this.scheduleOnce(() => {
-                if (this.hashTalent(TalentShield.SHIELD_06)) {
-                    //乾坤一掷
-                    this.throwShield();
-                } else{
-                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
-                }
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             }, 0.2);
             this.scheduleOnce(() => {
                 this.talentSkill.IsExcuting = false;
@@ -152,14 +135,6 @@ export default class TalentShield extends Talent {
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown,talentType:2 } });
         }, cooldown, true);
     }
-    private throwShield() {
-        this.shieldBackSprite.node.opacity = 0;
-        if (this.flyWheel) {
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
-            this.flyWheel.show();
-        }
-    }
-  
     hashTalent(id: number): boolean {
         return this.hasTalentMap[id] && this.hasTalentMap[id] == true;
     }

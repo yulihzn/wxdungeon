@@ -11,6 +11,7 @@ import FireGhost from "./FireGhost";
 import Logic from "../Logic";
 import FireBall from "./FireBall";
 import IceThron from "./IceThron";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 const { ccclass, property } = cc._decorator;
 
@@ -109,10 +110,12 @@ export default class TalentMagic extends Talent {
                 this.addLighteningFall(this.hashTalent(Talent.MAGIC_06),5);
             },0.2,this.hashTalent(Talent.MAGIC_02)?1:0);
         } else if (this.hashTalent(Talent.MAGIC_01)) {
+            AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
             this.shoot(this.player.shooterEx,80, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
         }
     }
     showFireBall() {
+        AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 0);
         if (this.hashTalent(Talent.MAGIC_02)) {
             cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 30);
@@ -121,6 +124,7 @@ export default class TalentMagic extends Talent {
     }
     
     showIceThron() {
+        this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.SKILL_ICETHRON);},1);
         const angles1 = [0,45,90,135,180,225,270,315];
         const angles2 = [15,60,105,150,195,240,285,330];
         let distance1 = [100];

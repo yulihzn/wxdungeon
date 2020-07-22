@@ -10,7 +10,6 @@ import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import Boom from "./Boom";
 import TalentShield from "../Talent/TalentShield";
-import FlyWheel from "./FlyWheel";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import { ColliderTag } from "../Actor/ColliderTag";
@@ -312,11 +311,6 @@ export default class Bullet extends cc.Component {
         //上面的墙上半部分是否销毁
         if(this.skipTopwall&&otherCollider.tag == ColliderTag.WALL_TOP_UP){
             isDestory = false;
-        }
-        //飞轮需要销毁
-        let flyWheel = otherCollider.node.getComponent(FlyWheel);
-        if(flyWheel){
-            isDestory = true;
         }
         if (isDestory) {
             this.bulletHit();

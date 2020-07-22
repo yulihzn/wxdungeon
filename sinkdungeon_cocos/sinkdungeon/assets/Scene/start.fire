@@ -210,7 +210,7 @@
       "array": [
         0,
         0,
-        174.93713156445662,
+        174.07110616067217,
         0,
         0,
         0,
@@ -3989,6 +3989,39 @@
     },
     "select": {
       "__uuid__": "a4072bfc-8965-4709-ad48-ce845d454957"
+    },
+    "bossicedemonattack": {
+      "__uuid__": "b61bd677-fed3-4a96-af22-6cf204292500"
+    },
+    "meleereflect": {
+      "__uuid__": "6bbea99d-991f-48fe-8d33-b3fd7134f499"
+    },
+    "raindrop": {
+      "__uuid__": "ca8916e8-b311-44b7-8cb0-4709d6e1f52d"
+    },
+    "skillfireball": {
+      "__uuid__": "1b2fb8bd-a460-425a-b4d6-bc4c078fa9fa"
+    },
+    "skillicethron": {
+      "__uuid__": "a2e832c5-9d04-4618-8c48-b111fbad7d99"
+    },
+    "skillmagicball": {
+      "__uuid__": "ffc269c4-5971-4e96-8964-218c8fd931df"
+    },
+    "skillmagicball1": {
+      "__uuid__": "94e49290-f9a7-41ea-a023-c1eec4529276"
+    },
+    "bossicedemondash": {
+      "__uuid__": "8146cffe-5aca-40a4-ae3a-3eaf37355039"
+    },
+    "bossicedemondefend": {
+      "__uuid__": "3019cb62-35e6-4d86-9160-cc84ea4d0f29"
+    },
+    "bossicedemonhit": {
+      "__uuid__": "5d855197-120f-46df-90de-70d4679b6853"
+    },
+    "bossicedemonthron": {
+      "__uuid__": "3555a54d-635c-4043-a0ec-d576a0f9a1e6"
     },
     "bg01": {
       "__uuid__": "e3eea0d2-34fe-44f6-afb1-801aa5d669a7"

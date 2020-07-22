@@ -27,7 +27,6 @@ import TalentShield from './Talent/TalentShield';
 import Shield from './Shield';
 import TalentDash from './Talent/TalentDash';
 import Actor from './Base/Actor';
-import FlyWheel from './Item/FlyWheel';
 import Talent from './Talent/Talent';
 import AudioPlayer from './Utils/AudioPlayer';
 import FromData from './Data/FromData';
@@ -93,7 +92,6 @@ export default class Player extends Actor {
 
     talentDash: TalentDash;
     talentShield: TalentShield;
-    flyWheel: FlyWheel;
     talentMagic: TalentMagic;
     isWeaponDashing = false;
     
@@ -121,7 +119,13 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.PLAYER_ATTACK
             , (event) => { this.meleeAttack() });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK
-            , (event) => { this.remoteAttack() });
+            , (event) => { 
+                if (this.shield&&this.shield.data.equipmetType == Equipment.SHIELD) {
+                    this.shield.use(true);
+                }else{
+                    this.remoteAttack();
+                }
+             });
         cc.director.on(EventHelper.PLAYER_STATUSUPDATE
             , (event) => { this.statusUpdate() });
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
@@ -268,19 +272,27 @@ export default class Player extends Actor {
         }
     }
 
-    changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+    public changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         switch (equipData.equipmetType) {
             case Equipment.WEAPON:
                 this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame, this.inventoryManager);
                 break;
-            case Equipment.REMOTE: this.weaponLeft.shooter.data = equipData.clone();
+            case Equipment.REMOTE: 
+                this.weaponLeft.shooter.data = equipData.clone();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);
                 this.weaponLeft.shooter.changeResColor(c);
+
+                this.shield.data = new EquipmentData();
+                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color, Logic.spriteFrames[Equipment.EMPTY]);
                 break;
-            case Equipment.SHIELD: this.weaponLeft.shooter.data = equipData.clone();
+            case Equipment.SHIELD: 
+                this.shield.data = equipData.clone();
                 this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
                 this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color, spriteFrame);
+
+                this.weaponLeft.shooter.data = new EquipmentData();
+                this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 break;
             case Equipment.HELMET:
                 this.avatar.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
@@ -387,6 +399,16 @@ export default class Player extends Actor {
         this.stopHiding();
 
     }
+    useShield(){
+        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall 
+            || this.weaponRight.meleeWeapon.IsAttacking
+            || this.weaponLeft.meleeWeapon.IsAttacking) {
+            return;
+        }
+        if (this.shield.Status==Shield.STATUS_REFLECT||this.shield.Status==Shield.STATUS_TRANSFORM){
+            return;
+        }
+    }
     remoteRate = 0;
     remoteAttack() {
         let canFire = false;
@@ -452,11 +474,12 @@ export default class Player extends Actor {
         if (this.isDied || this.isFall || this.isDizz) {
             return;
         }
-        if (dir != 4) {
+        if (dir != 4&&this.shield.Status!=Shield.STATUS_REFLECT&&this.shield.Status!=Shield.STATUS_TRANSFORM) {
             this.currentDir = dir;
             this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex,dir);
             this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex,dir);
             this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
+            this.shield.changeZIndexByDir(this.weaponLeft.node.zIndex,dir);
         }
         if (this.weaponRight.meleeWeapon.IsAttacking && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponRight.meleeWeapon.getMeleeSlowRatio());
@@ -484,10 +507,6 @@ export default class Player extends Actor {
             this.weaponRight.shooter.setHv(cc.v3(pos.x, pos.y));
         }
 
-        //调整盾牌方向
-        if (this.talentShield && !pos.equals(cc.Vec3.ZERO)) {
-            this.talentShield.flyWheel.setHv(cc.v3(pos.x, pos.y));
-        }
         let h = pos.x;
         let v = pos.y;
         let absh = Math.abs(h);
@@ -809,7 +828,7 @@ export default class Player extends Actor {
         if (isInteract) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,true);
             this.touchDelay = true;
-            this.scheduleOnce(()=>{this.touchDelay = false;},0.2);
+            this.scheduleOnce(()=>{this.touchDelay = false;},0.1);
         }
 
     }

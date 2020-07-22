@@ -21,6 +21,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Equipment extends cc.Component {
+    public static readonly EMPTY = 'empty';
     public static readonly WEAPON = 'weapon';
     public static readonly REMOTE = 'remote';
     public static readonly SHIELD= 'shield';

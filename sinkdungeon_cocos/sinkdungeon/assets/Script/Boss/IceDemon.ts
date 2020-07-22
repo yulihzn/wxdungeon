@@ -67,7 +67,11 @@ export default class IceDemon extends Boss {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         this.defence();
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        if(this.defenceSkill.IsExcuting){
+            AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
+        }else{
+            AudioPlayer.play(AudioPlayer.MONSTER_HIT);
+        }
         return true;
     }
 
@@ -136,6 +140,8 @@ export default class IceDemon extends Boss {
             }
             this.anim.play('IceDemonThron');
             let count = 1;
+            this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_THRON);},1);
+            this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_THRON);},2);
             this.schedule(() => {
                 let p = this.pos.clone()
                 let ps = [cc.v3(p.x, p.y + count), cc.v3(p.x, p.y - count), cc.v3(p.x + count, p.y + count), cc.v3(p.x + count, p.y - count),
@@ -178,7 +184,7 @@ export default class IceDemon extends Boss {
             }
             this.anim.play('IceDemonAttack001');
             this.scheduleOnce(() => {
-                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+                AudioPlayer.play(AudioPlayer.BOOS_ICEDEMON_ATTACK);
                 let pos = this.getMovePos();
                 if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf();
@@ -199,6 +205,7 @@ export default class IceDemon extends Boss {
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
+            this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DASH);},2.5);
             this.anim.play('IceDemonDash');
             this.scheduleOnce(() => {
                 let pos = this.getMovePos();
@@ -224,6 +231,7 @@ export default class IceDemon extends Boss {
             this.anim.play('IceDemonDefence');
             this.data.Common.defence = 9999;
             this.data.Common.magicDefence = 9999;
+            AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DEFEND);
             this.scheduleOnce(() => {
                 this.defenceSkill.IsExcuting = false;
                 this.data.Common.defence = 0;
