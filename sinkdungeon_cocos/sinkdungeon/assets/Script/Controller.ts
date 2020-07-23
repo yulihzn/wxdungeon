@@ -54,10 +54,12 @@ export default class Controller extends cc.Component {
 
         this.shootAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             this.shootActionTouched = false;
+            cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
         }, this)
 
         this.shootAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.shootActionTouched = false;
+            cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
         }, this)
         this.interactAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.interactActionTouched = true;

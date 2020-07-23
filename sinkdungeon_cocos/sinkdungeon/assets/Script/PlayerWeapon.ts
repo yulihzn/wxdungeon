@@ -9,10 +9,8 @@ import Player from "./Player";
 import MeleeWeapon from "./MeleeWeapon";
 import Shooter from "./Shooter";
 import EquipmentData from "./Data/EquipmentData";
-import Logic from "./Logic";
 import InventoryManager from "./Manager/InventoryManager";
 import PlayerData from "./Data/PlayerData";
-import AudioPlayer from "./Utils/AudioPlayer";
 import PlayerAvatar from "./PlayerAvatar";
 import Equipment from "./Equipment/Equipment";
 

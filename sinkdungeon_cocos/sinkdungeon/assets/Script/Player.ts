@@ -60,7 +60,7 @@ export default class Player extends Actor {
     @property(PlayerAvatar)
     avatar: PlayerAvatar = null;
     @property(Shield)
-    shield:Shield=null;
+    shield: Shield = null;
 
     isMoving = false;//是否移动中
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
@@ -94,7 +94,7 @@ export default class Player extends Actor {
     talentShield: TalentShield;
     talentMagic: TalentMagic;
     isWeaponDashing = false;
-    
+
     fistCombo = 0;
 
     // LIFE-CYCLE CALLBACKS:
@@ -107,8 +107,8 @@ export default class Player extends Actor {
         this.isDied = false;
         this.isStone = false;
         this.rigidbody = this.getComponent(cc.RigidBody);
-        this.weaponLeft.init(this,true);
-        this.weaponRight.init(this,false);
+        this.weaponLeft.init(this, true);
+        this.weaponRight.init(this, false);
         // this.addFog();
         cc.director.on(EventHelper.PLAYER_TRIGGER
             , (event) => { this.triggerThings() });
@@ -118,14 +118,20 @@ export default class Player extends Actor {
             , (event) => { this.useSkill() });
         cc.director.on(EventHelper.PLAYER_ATTACK
             , (event) => { this.meleeAttack() });
+        cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
+            , (event) => {
+                if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
+                    this.shield.cancel();
+                }
+            });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK
-            , (event) => { 
-                if (this.shield&&this.shield.data.equipmetType == Equipment.SHIELD) {
-                    this.shield.use(true);
-                }else{
+            , (event) => {
+                if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
+                    this.shield.use();
+                } else {
                     this.remoteAttack();
                 }
-             });
+            });
         cc.director.on(EventHelper.PLAYER_STATUSUPDATE
             , (event) => { this.statusUpdate() });
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
@@ -141,7 +147,7 @@ export default class Player extends Actor {
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
         this.smokePool = new cc.NodePool();
-        cc.director.on('destorysmoke', (event) => {
+        cc.director.on(EventHelper.POOL_DESTORY_WALKSMOKE, (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
         // this.addComponent(TalentShield);
@@ -199,7 +205,7 @@ export default class Player extends Actor {
         this.avatar.hitLight(isStone);
     }
     private updateCombo() {
-        if(!this.weaponRight.meleeWeapon.IsFist){
+        if (!this.weaponRight.meleeWeapon.IsFist) {
             this.fistCombo = MeleeWeapon.COMBO1;
             return;
         }
@@ -212,7 +218,7 @@ export default class Player extends Actor {
         } else {
             this.fistCombo = MeleeWeapon.COMBO1;
         }
-        if (!this.weaponLeft.meleeWeapon.IsComboing&&!this.weaponRight.meleeWeapon.IsComboing) {
+        if (!this.weaponLeft.meleeWeapon.IsComboing && !this.weaponRight.meleeWeapon.IsComboing) {
             this.fistCombo = MeleeWeapon.COMBO1;
         }
     }
@@ -277,7 +283,7 @@ export default class Player extends Actor {
             case Equipment.WEAPON:
                 this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame, this.inventoryManager);
                 break;
-            case Equipment.REMOTE: 
+            case Equipment.REMOTE:
                 this.weaponLeft.shooter.data = equipData.clone();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);
@@ -286,7 +292,7 @@ export default class Player extends Actor {
                 this.shield.data = new EquipmentData();
                 this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color, Logic.spriteFrames[Equipment.EMPTY]);
                 break;
-            case Equipment.SHIELD: 
+            case Equipment.SHIELD:
                 this.shield.data = equipData.clone();
                 this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
                 this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color, spriteFrame);
@@ -319,6 +325,7 @@ export default class Player extends Actor {
                 break;
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
+        this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir);
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
         let health = this.data.getHealth();
@@ -367,13 +374,17 @@ export default class Player extends Actor {
         }
     }
     meleeAttack() {
-        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall 
+        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall
             || this.weaponRight.meleeWeapon.IsAttacking
-            || this.weaponLeft.meleeWeapon.IsAttacking) {
+            || this.weaponLeft.meleeWeapon.IsAttacking
+            || this.shield.Status == Shield.STATUS_REFLECT
+            || this.shield.Status == Shield.STATUS_DEFEND) {
             return;
         }
         let pos = this.weaponRight.meleeWeapon.Hv.clone();
-        this.isFaceRight = pos.x > 0;
+        if(!this.shield.isAniming){
+            this.isFaceRight = pos.x > 0;
+        }
         this.isFaceUp = pos.y > 0;
 
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
@@ -381,31 +392,31 @@ export default class Player extends Actor {
             this.showFloatFont(this.node.parent, 0, false, true, false);
         }
         this.updateCombo();
-        if(this.fistCombo == MeleeWeapon.COMBO1){
+        if (this.fistCombo == MeleeWeapon.COMBO1) {
             this.weaponRight.meleeWeapon.attack(this.data, isMiss);
             this.weaponLeft.meleeWeapon.attackIdle(false);
-        }else if(this.fistCombo == MeleeWeapon.COMBO2){
+        } else if (this.fistCombo == MeleeWeapon.COMBO2) {
             this.weaponRight.meleeWeapon.attackIdle(true);
             this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
-        }else if(this.fistCombo == MeleeWeapon.COMBO3){
+        } else if (this.fistCombo == MeleeWeapon.COMBO3) {
             this.weaponRight.meleeWeapon.attack(this.data, isMiss);
             this.weaponRight.meleeWeapon.DashTime(400);
-            this.scheduleOnce(()=>{
+            this.scheduleOnce(() => {
                 this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
-            },0.15);
+            }, 0.15);
         }
         this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
 
         this.stopHiding();
 
     }
-    useShield(){
-        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall 
+    useShield() {
+        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking) {
             return;
         }
-        if (this.shield.Status==Shield.STATUS_REFLECT||this.shield.Status==Shield.STATUS_TRANSFORM){
+        if (this.shield.Status == Shield.STATUS_REFLECT || this.shield.Status == Shield.STATUS_PUTDOWN) {
             return;
         }
     }
@@ -474,13 +485,7 @@ export default class Player extends Actor {
         if (this.isDied || this.isFall || this.isDizz) {
             return;
         }
-        if (dir != 4&&this.shield.Status!=Shield.STATUS_REFLECT&&this.shield.Status!=Shield.STATUS_TRANSFORM) {
-            this.currentDir = dir;
-            this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex,dir);
-            this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex,dir);
-            this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
-            this.shield.changeZIndexByDir(this.weaponLeft.node.zIndex,dir);
-        }
+        
         if (this.weaponRight.meleeWeapon.IsAttacking && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponRight.meleeWeapon.getMeleeSlowRatio());
         }
@@ -524,7 +529,9 @@ export default class Player extends Actor {
         this.isMoving = h != 0 || v != 0;
 
         if (this.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
-            this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0;
+            if(!this.shield.isAniming){
+                this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0;
+            }
             this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0;
         }
         //调整武器方向
@@ -539,10 +546,22 @@ export default class Player extends Actor {
         } else {
             this.playerAnim(PlayerAvatar.STATE_IDLE, dir);
         }
-        let isUpDown = dir == 1 || dir == 0;
+        let isUpDown = dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN;
         if (isUpDown) {
             this.changeZIndex(this.pos);
-            this.avatar.changeAvatarByDir(this.isFaceUp ? PlayerAvatar.DIR_UP : PlayerAvatar.DIR_DOWN);
+        }
+        if (dir != 4 && !this.shield.isAniming) {
+            this.currentDir = dir;
+            if(dir == PlayerAvatar.DIR_DOWN && this.isFaceUp){
+                dir = PlayerAvatar.DIR_UP;
+            }else if(dir == PlayerAvatar.DIR_UP && !this.isFaceUp){
+                dir = PlayerAvatar.DIR_DOWN;
+            }
+            this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir);
+            this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir);
+            this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, dir);
+            this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir);
+            this.avatar.changeAvatarByDir(dir);
         }
     }
 
@@ -570,7 +589,7 @@ export default class Player extends Actor {
                 break;
             case PlayerAvatar.STATE_FALL: break;
             case PlayerAvatar.STATE_DIE:
-                 break;
+                break;
         }
         this.avatar.playAnim(status, dir);
     }
@@ -610,8 +629,9 @@ export default class Player extends Actor {
         }
         //盾牌
         this.talentShield.takeDamage(damageData, actor);
+        let blockLevel = this.shield.blockDamage(this.node.parent,actor);
         //冰盾
-        let dd = this.data.getDamage(damageData);
+        let dd = this.data.getDamage(damageData,blockLevel);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
@@ -805,7 +825,7 @@ export default class Player extends Actor {
         // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if(this.touchDelay){
+        if (this.touchDelay) {
             return;
         }
         let isInteract = false;
@@ -828,7 +848,7 @@ export default class Player extends Actor {
         if (isInteract) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,true);
             this.touchDelay = true;
-            this.scheduleOnce(()=>{this.touchDelay = false;},0.1);
+            this.scheduleOnce(() => { this.touchDelay = false; }, 0.1);
         }
 
     }

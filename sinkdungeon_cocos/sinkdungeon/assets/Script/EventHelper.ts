@@ -10,6 +10,7 @@ export class EventHelper extends cc.Component{
     public static readonly PLAYER_SKILL = 'PLAYER_SKILL';
     public static readonly PLAYER_ATTACK = 'PLAYER_ATTACK';
     public static readonly PLAYER_REMOTEATTACK = 'PLAYER_REMOTEATTACK';
+    public static readonly PLAYER_REMOTEATTACK_CANCEL = 'PLAYER_REMOTEATTACK_CANCEL';
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM';
     public static readonly PLAYER_TAPTIPS = 'PLAYER_TAPTIPS';
     public static readonly PLAYER_TAKEDAMAGE= 'PLAYER_TAKEDAMAGE';
@@ -47,6 +48,8 @@ export class EventHelper extends cc.Component{
     public static readonly CAMERA_SHAKE = 'CAMERA_SHAKE';
     public static readonly CAMERA_LOOK = 'CAMERA_LOOK';
     public static readonly CHUNK_LOAD = 'CHUNK_LOAD';
+    public static readonly POOL_DESTORY_WALKSMOKE = 'destorysmoke';
+    public static readonly POOL_DESTORY_BLOCKLIGHT = 'destoryblocklight';
     public static eventHandler:cc.Node = new cc.Node();
     
     /**

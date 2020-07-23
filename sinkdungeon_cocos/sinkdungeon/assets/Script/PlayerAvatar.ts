@@ -190,11 +190,10 @@ export default class PlayerAvatar extends cc.Component {
     }
     private playIdle(dir: number) {
         this.anim.play('AvatarIdle');
-        this.changeAvatarByDir(dir);
 
     }
     idlehair = [0, 1];
-    changeAvatarByDir(dir: number) {
+    changeAvatarByDir(dir: number,isFaceUp?:number) {
         let eyesprefix = this.data.eyesResName;
         let faceprefix = this.data.faceResName;
         switch (dir) {
@@ -226,7 +225,6 @@ export default class PlayerAvatar extends cc.Component {
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');
-        this.changeAvatarByDir(dir);
     }
     private playAttack(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarAttackVertical' : 'AvatarAttackHorizontal');

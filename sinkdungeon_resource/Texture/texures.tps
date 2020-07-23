@@ -983,6 +983,10 @@
             <key type="filename">talents/talentshield12.png</key>
             <key type="filename">talents/talentshield13.png</key>
             <key type="filename">talents/talentshield14.png</key>
+            <key type="filename">ui/block000anim000.png</key>
+            <key type="filename">ui/block000anim001.png</key>
+            <key type="filename">ui/block000anim002.png</key>
+            <key type="filename">ui/block000anim003.png</key>
             <key type="filename">ui/dashlight.png</key>
             <key type="filename">ui/dashlight1.png</key>
             <struct type="IndividualSpriteSettings">

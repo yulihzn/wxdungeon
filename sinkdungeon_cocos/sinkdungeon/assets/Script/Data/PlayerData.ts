@@ -4,6 +4,7 @@ import StatusData from "./StatusData";
 import CommonData from "./CommonData";
 import Random from "../Utils/Random";
 import AvatarData from "./AvatarData";
+import Shield from "../Shield";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -123,10 +124,11 @@ export default class PlayerData {
         return dd;
     }
     //伤害减免
-    getDamage(damageData: DamageData): DamageData {
+    getDamage(damageData: DamageData,blockLevel:number): DamageData {
         let finalDamageData = damageData.clone();
         let defence = this.getDefence();
         let defenceMagic = this.getMagicDefence();
+        let blockReduction = this.getBlockReduction();
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
         //伤害 = 攻击 + 2-0.94^(-护甲)
         if(defence>=0){
@@ -135,6 +137,12 @@ export default class PlayerData {
             finalDamageData.physicalDamage = finalDamageData.physicalDamage * (2-Math.pow(0.94,-defence));
         }
         finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - defenceMagic / 100);
+        if(blockLevel == Shield.BLOCK_NORMAL){
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - blockReduction / 100);
+        }else if(blockLevel == Shield.BLOCK_REFLECT){
+            finalDamageData.physicalDamage = 0;
+            finalDamageData.magicDamage = 0;
+        }
         return finalDamageData;
     }
 
@@ -236,6 +244,17 @@ export default class PlayerData {
             defence += data.defence;
         }
         return defence;
+    }
+
+    getBlockReduction(): number {
+        let block = 0;
+        for (let data of this.getCommonList()) {
+            block += data.blockReduction;
+        }
+        if (block > 100) {
+            block = 100;
+        }
+        return block;
     }
 
     //生命值
