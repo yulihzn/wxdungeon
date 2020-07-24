@@ -316,8 +316,9 @@ export default class IceDemon extends Boss {
             let d = new DamageData();
             d.physicalDamage = 3;
             let from = FromData.getClone(this.actorName(),'bossicepart01');
-            player.takeDamage(d,from);
-            player.addStatus(StatusManager.FROZEN,from);
+            if(player.takeDamage(d,from,this)){
+                player.addStatus(StatusManager.FROZEN,from);
+            }
         }
     }
     actorName(){

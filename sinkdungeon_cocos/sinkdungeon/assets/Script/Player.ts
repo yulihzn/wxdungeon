@@ -290,12 +290,14 @@ export default class Player extends Actor {
                 this.weaponLeft.shooter.changeResColor(c);
 
                 this.shield.data = new EquipmentData();
-                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color, Logic.spriteFrames[Equipment.EMPTY]);
+                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
+                    , Logic.spriteFrames[Equipment.EMPTY],this.shield.data.isHeavy==1?80:64);
                 break;
             case Equipment.SHIELD:
                 this.shield.data = equipData.clone();
                 this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
-                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color, spriteFrame);
+                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
+                    , spriteFrame,this.shield.data.isHeavy==1?80:64);
 
                 this.weaponLeft.shooter.data = new EquipmentData();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
@@ -331,8 +333,10 @@ export default class Player extends Actor {
         let health = this.data.getHealth();
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
-    private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame): void {
+    private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame,size?:number): void {
         sprite.spriteFrame = spriteFrame;
+        sprite.node.width = size;
+        sprite.node.height = size;
         let c = cc.color(255, 255, 255).fromHEX(color);
         sprite.node.color = c;
     }
@@ -382,7 +386,7 @@ export default class Player extends Actor {
             return;
         }
         let pos = this.weaponRight.meleeWeapon.Hv.clone();
-        if(!this.shield.isAniming){
+        if (!this.shield.isAniming) {
             this.isFaceRight = pos.x > 0;
         }
         this.isFaceUp = pos.y > 0;
@@ -485,7 +489,7 @@ export default class Player extends Actor {
         if (this.isDied || this.isFall || this.isDizz) {
             return;
         }
-        
+
         if (this.weaponRight.meleeWeapon.IsAttacking && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponRight.meleeWeapon.getMeleeSlowRatio());
         }
@@ -494,6 +498,9 @@ export default class Player extends Actor {
         }
         if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.01);
+        }
+        if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
+            pos = pos.mul(0.5);
         }
         if (this.talentMagic && this.talentMagic.magiccircle.isShow && !this.talentMagic.hashTalent(Talent.MAGIC_05)) {
             pos = pos.mul(0.3);
@@ -529,7 +536,7 @@ export default class Player extends Actor {
         this.isMoving = h != 0 || v != 0;
 
         if (this.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
-            if(!this.shield.isAniming){
+            if (!this.shield.isAniming) {
                 this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0;
             }
             this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0;
@@ -552,9 +559,9 @@ export default class Player extends Actor {
         }
         if (dir != 4 && !this.shield.isAniming) {
             this.currentDir = dir;
-            if(dir == PlayerAvatar.DIR_DOWN && this.isFaceUp){
+            if (dir == PlayerAvatar.DIR_DOWN && this.isFaceUp) {
                 dir = PlayerAvatar.DIR_UP;
-            }else if(dir == PlayerAvatar.DIR_UP && !this.isFaceUp){
+            } else if (dir == PlayerAvatar.DIR_UP && !this.isFaceUp) {
                 dir = PlayerAvatar.DIR_DOWN;
             }
             this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir);
@@ -621,7 +628,7 @@ export default class Player extends Actor {
      * 挨打
      * @param damageData 伤害
      * @param from 来源信息
-     * @param actor 来源单位(目前只有monster)
+     * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
         if (!this.data) {
@@ -629,9 +636,10 @@ export default class Player extends Actor {
         }
         //盾牌
         this.talentShield.takeDamage(damageData, actor);
-        let blockLevel = this.shield.blockDamage(this.node.parent,actor);
+        let blockLevel = this.shield.blockDamage(this.node.parent, actor);
+        
         //冰盾
-        let dd = this.data.getDamage(damageData,blockLevel);
+        let dd = this.data.getDamage(damageData, blockLevel);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
@@ -657,14 +665,26 @@ export default class Player extends Actor {
         if (Logic.playerData.currentHealth <= 0) {
             this.killed(from);
         }
-        let valid = !isDodge && dd.getTotalDamage() > 0;
+        let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_REFLECT;
         if (valid) {
-            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
-            cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW);
-            this.remoteExHurt();
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAYER_HIT } });
+            this.showDamageEffect(blockLevel);
+        }else if(blockLevel == Shield.BLOCK_REFLECT){
+            this.showDamageEffect(blockLevel);
         }
         return valid;
+    }
+    private showDamageEffect(blockLevel:number){
+        this.remoteExHurt();
+        cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
+        if(blockLevel == Shield.BLOCK_NORMAL){
+            AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
+            cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW);
+        }else if(blockLevel == Shield.BLOCK_REFLECT){
+            AudioPlayer.play(AudioPlayer.MELEE_REFLECT);
+        }else{
+            AudioPlayer.play(AudioPlayer.PLAYER_HIT);
+            cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW);
+        }
     }
 
     showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean) {

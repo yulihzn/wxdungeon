@@ -2,6 +2,7 @@ import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
+import Kraken from "./Kraken";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -39,7 +40,7 @@ export default class KrakenSwingHand extends cc.Component {
             this.node.stopAllActions();
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:FromData.getClone(this.actorName(),'boss001')}});
+            player.takeDamage(dd,FromData.getClone(this.actorName(),'boss001'),this.node.parent.getComponent(Kraken));
         }
     }
     actorName(){

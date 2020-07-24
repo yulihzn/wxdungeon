@@ -810,8 +810,9 @@ export default class Monster extends Actor {
             this.dashSkill.IsExcuting = false;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             let from = FromData.getClone(this.data.nameCn, this.data.resName);
-            this.addPlayerStatus(this.dungeon.player, from);
-            this.dungeon.player.takeDamage(this.data.getAttackPoint(), from, this);
+            if(this.dungeon.player.takeDamage(this.data.getAttackPoint(), from, this)){
+                this.addPlayerStatus(this.dungeon.player, from);
+            }
         }
     }
 

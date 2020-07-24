@@ -204,7 +204,7 @@ export default class Dragon extends Boss {
         if(player&&!this.isDied && !this.physicBox.sensor){
             let d = new DamageData();
             d.physicalDamage = 3;
-            player.takeDamage(d,FromData.getClone(this.actorName(),'dragonhead'));
+            player.takeDamage(d,FromData.getClone(this.actorName(),'dragonhead'),this);
         }
     }
     actorName(){

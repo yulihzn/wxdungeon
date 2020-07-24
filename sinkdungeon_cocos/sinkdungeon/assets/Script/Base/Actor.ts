@@ -1,4 +1,5 @@
 import DamageData from "../Data/DamageData";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,4 +17,5 @@ const {ccclass, property} = cc._decorator;
 export default abstract class Actor extends cc.Component {
     abstract takeDamage(damage: DamageData): boolean;
     abstract actorName():string;
+    abstract addStatus(statusType: string, from: FromData);
 }

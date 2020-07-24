@@ -53,6 +53,8 @@ export default class EquipmentManager extends cc.Component {
     public static readonly REMOTE_SHURIKEN = "remote007";
     public static readonly REMOTE_CHICKEN = "remote008";
     public static readonly SHIELD_CIRCLE = "shield000";
+    public static readonly SHIELD_CARDOOR = "shield001";
+    public static readonly SHIELD_POLICE = "shield002";
     public static readonly CLOTHES_VEST = "clothes001";
     public static readonly CLOTHES_SHIRT = "clothes002";
     public static readonly CLOTHES_NAVY = "clothes003";
@@ -186,7 +188,7 @@ export default class EquipmentManager extends cc.Component {
         //物理防御0-10
         let defence = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [Equipment.HELMET, Equipment.GLOVES
-            , Equipment.CLOAK, Equipment.TROUSERS, Equipment.SHOES
+            , Equipment.CLOAK, Equipment.TROUSERS, Equipment.SHOES,Equipment.SHIELD
             , Equipment.CLOTHES])
             && data.Common.defence > 0) {
             defence = this.getRandomQuality(0, 10, chestQuality);
@@ -263,7 +265,7 @@ export default class EquipmentManager extends cc.Component {
         //生命值0-5
         let health = cc.v3(0, 0);
         if (this.isTheEquipType(data.equipmetType, [Equipment.HELMET
-            , Equipment.GLOVES, Equipment.CLOAK, Equipment.TROUSERS
+            , Equipment.GLOVES, Equipment.CLOAK, Equipment.TROUSERS,Equipment.SHIELD
             , Equipment.SHOES, Equipment.CLOTHES])
             && data.Common.maxHealth > 0) {
             health = this.getRandomQuality(0, 5, chestQuality);
@@ -484,6 +486,9 @@ export default class EquipmentManager extends cc.Component {
         info += data.Common.moveSpeed + desc.moveSpeed == 0 ? `` : `移速${data.Common.moveSpeed + desc.moveSpeed}\n`;
         info += data.Common.attackSpeed + desc.attackSpeed == 0 ? `` : `攻速${data.Common.attackSpeed + desc.attackSpeed}\n`;
         info += data.Common.dodge + desc.dodge == 0 ? `` : `闪避${data.Common.dodge + desc.dodge}%\n`;
+        info += data.Common.blockDamage + desc.blockDamage == 0 ? `` : `弹反伤害${data.Common.blockDamage + desc.blockDamage}\n`;
+        info += data.Common.blockPhysical + desc.blockPhysical == 0 ? `` : `格挡物免${data.Common.blockPhysical + desc.blockPhysical}%\n`;
+        info += data.Common.blockMagic + desc.blockMagic == 0 ? `` : `格挡魔免${data.Common.blockMagic + desc.blockMagic}%\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }

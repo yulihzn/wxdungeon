@@ -87,10 +87,11 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, this.data.pos, null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, this.data.pos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.data.pos, null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.REMOTE_SHURIKEN, this.data.pos, null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.REMOTE_WINCHESTER, this.data.pos, null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.REMOTE_SHURIKEN, this.data.pos, null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.SHIELD_POLICE, this.data.pos, null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos, null, this.data.quality);

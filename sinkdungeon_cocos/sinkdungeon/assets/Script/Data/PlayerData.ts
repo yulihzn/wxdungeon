@@ -128,7 +128,8 @@ export default class PlayerData {
         let finalDamageData = damageData.clone();
         let defence = this.getDefence();
         let defenceMagic = this.getMagicDefence();
-        let blockReduction = this.getBlockReduction();
+        let blockPhysical = this.getBlockPhysical();
+        let blockMagic = this.getBlockMagic();
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
         //伤害 = 攻击 + 2-0.94^(-护甲)
         if(defence>=0){
@@ -138,10 +139,12 @@ export default class PlayerData {
         }
         finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - defenceMagic / 100);
         if(blockLevel == Shield.BLOCK_NORMAL){
-            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - blockReduction / 100);
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - blockPhysical / 100);
+            finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - blockMagic / 100);
         }else if(blockLevel == Shield.BLOCK_REFLECT){
             finalDamageData.physicalDamage = 0;
             finalDamageData.magicDamage = 0;
+            finalDamageData.realDamage = 0;
         }
         return finalDamageData;
     }
@@ -246,17 +249,26 @@ export default class PlayerData {
         return defence;
     }
 
-    getBlockReduction(): number {
+    getBlockPhysical(): number {
         let block = 0;
         for (let data of this.getCommonList()) {
-            block += data.blockReduction;
+            block += data.blockPhysical;
         }
         if (block > 100) {
             block = 100;
         }
         return block;
     }
-
+    getBlockMagic(): number {
+        let block = 0;
+        for (let data of this.getCommonList()) {
+            block += data.blockMagic;
+        }
+        if (block > 100) {
+            block = 100;
+        }
+        return block;
+    }
     //生命值
     getHealth(): cc.Vec3 {
         let rate = 1;

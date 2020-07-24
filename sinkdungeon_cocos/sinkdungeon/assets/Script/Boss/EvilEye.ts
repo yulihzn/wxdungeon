@@ -289,8 +289,9 @@ export default class EvilEye extends Boss {
             let d = new DamageData();
             d.physicalDamage = 5;
             let from = FromData.getClone(this.actorName(),'evileyeeye');
-            player.takeDamage(d,from);
-            player.addStatus(StatusManager.BLEEDING,from);
+            if(player.takeDamage(d,from,this)){
+                player.addStatus(StatusManager.BLEEDING,from);
+            }
         }
     }
     actorName(){

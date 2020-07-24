@@ -95,13 +95,14 @@ export default class MonsterDangerBox extends cc.Component {
         if (this.isAttacking && this.monster && other.tag == ColliderTag.PLAYER) {
             this.isAttacking = false;
             let from = FromData.getClone(this.monster.data.nameCn, this.monster.data.resName);
-            this.monster.addPlayerStatus(this.monster.dungeon.player, from);
             let dd = this.monster.data.getAttackPoint();
             dd.isBackAttack = this.monster.isFacePlayerBehind()&&this.monster.data.getDamageBack()>0;
             if(dd.isBackAttack){
                 dd.realDamage += this.monster.data.getDamageBack();
             }
-            this.monster.dungeon.player.takeDamage(dd, from, this.monster);
+            if(this.monster.dungeon.player.takeDamage(dd, from, this.monster)){
+                this.monster.addPlayerStatus(this.monster.dungeon.player, from);
+            }
         }
     }
     setHv(hv: cc.Vec3) {

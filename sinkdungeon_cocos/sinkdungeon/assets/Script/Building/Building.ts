@@ -1,5 +1,6 @@
 import Actor from "../Base/Actor";
 import DamageData from "../Data/DamageData";
+import FromData from "../Data/FromData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,6 +18,8 @@ const {ccclass, property} = cc._decorator;
 export abstract default class Building extends Actor {
     takeDamage(damage: DamageData):boolean{
         return false;
+    }
+    addStatus(statusType: string, from: FromData) {
     }
     actorName(){
         return '';

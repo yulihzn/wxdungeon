@@ -147,7 +147,7 @@ export default class Captain extends Boss {
                 this.isFall = false;
                 let dd = new DamageData();
                 dd.physicalDamage = 2;
-                cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE, { detail: { damage: dd,from:FromData.getClone(this.actorName(),'captain_head') } });
+                player.takeDamage(dd,FromData.getClone(this.actorName(),'captain_head'),this);
             }
         }
     }

@@ -38,7 +38,7 @@ export default class EquipmentData extends BaseData{
     bulletLineInterval = 0;//线性喷射间隔时间（秒）
     bulletNets = 0;//是否排状子弹11发并排数量为发射次数 为0的时候不触发 
     showShooter = 0;//是否显示发射器
-    isHeavy = 0;//是否是重型武器比如激光,具体影响是开枪时候减速
+    isHeavy = 0;//是否是重型武器比如 激光,具体影响是开枪时候减速 大盾牌 影响巨盾速度
     isArcAim = 0;//是否是扇形瞄准
     isLineAim = 0;//是否是线性瞄准
     hideHair = 0;//是否隐藏头发

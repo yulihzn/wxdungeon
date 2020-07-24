@@ -128,7 +128,7 @@ export default class AudioPlayer extends cc.Component {
     onLoad() {
         EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name); });
         cc.audioEngine.setMusicVolume(0.1);
-        cc.audioEngine.setEffectsVolume(0.5);
+        cc.audioEngine.setEffectsVolume(0.3);
     }
     playbg() {
         let bgms = [this.bg01, this.bg02, this.bg03, this.bg04, this.bg05, this.bg06, this.bg07, this.bg08, this.bg09, this.bg10,

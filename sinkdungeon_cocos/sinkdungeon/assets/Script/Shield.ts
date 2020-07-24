@@ -9,6 +9,9 @@ import Player from "./Player";
 import Dungeon from "./Dungeon";
 import BlockLight from "./Effect/BlockLight";
 import DamageData from "./Data/DamageData";
+import Monster from "./Monster";
+import StatusManager from "./Manager/StatusManager";
+import FromData from "./Data/FromData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -29,8 +32,8 @@ export default class Shield extends cc.Component {
     static readonly STATUS_PUTDOWN = 3;
     private static readonly ZOFFSET = 2;
     private static readonly DEFAULT_POS = [cc.v3(0,32),cc.v3(0,48),cc.v3(-8,48),cc.v3(-8,48)];
-    private static readonly TRANSFORM_POS = [cc.v3(32,40),cc.v3(32,40),cc.v3(20,44),cc.v3(20,44)];
-    private static readonly DEFEND_POS = [cc.v3(0,48),cc.v3(0,32),cc.v3(32,40),cc.v3(32,40)];
+    private static readonly TRANSFORM_POS = [cc.v3(32,40),cc.v3(32,40),cc.v3(10,44),cc.v3(10,44)];
+    private static readonly DEFEND_POS = [cc.v3(0,48),cc.v3(0,32),cc.v3(24,40),cc.v3(24,40)];
     data: EquipmentData = new EquipmentData();
     private isBehind = false;
     private avatarZindex = 0;
@@ -73,6 +76,10 @@ export default class Shield extends cc.Component {
         }
         let pos = parentNode.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec2.ZERO));
         this.getBlockLight(parentNode,cc.v3(pos.x,pos.y));
+        if(actor&&this.status == Shield.STATUS_REFLECT){
+            actor.addStatus(StatusManager.SHIELD_REFLECT,new FromData());
+            actor.takeDamage(new DamageData(this.data.Common.blockDamage));
+        }
         return this.status == Shield.STATUS_REFLECT?Shield.BLOCK_REFLECT:Shield.BLOCK_NORMAL;
     }
     private destroySmoke(targetNode: cc.Node) {
@@ -94,7 +101,8 @@ export default class Shield extends cc.Component {
         this.status = Shield.STATUS_IDLE;
         cc.log(`等待 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`);
         this.sprite.node.stopAllActions();
-        let idle = cc.tween().to(0.2, { y: 2 }).to(0.2, { y: -2 });
+        let duration = this.data.isHeavy==1?0.4:0.2;
+        let idle = cc.tween().to(duration, { y: 2 }).to(duration, { y: -2 });
         cc.tween(this.sprite.node).repeatForever(idle).start();
     }
     private playReflect() {
@@ -104,11 +112,13 @@ export default class Shield extends cc.Component {
             return;
         }
         this.status = Shield.STATUS_REFLECT;
+        let duration = this.data.isHeavy==1?0.15:0.1;
+        let durationdelay = this.data.isHeavy==1?0.1:0.15;
         cc.log(`举起 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`);
-        cc.tween(this.node).to(0.1,{position:Shield.TRANSFORM_POS[this.dir]}).call(()=>{
+        cc.tween(this.node).to(duration,{position:Shield.TRANSFORM_POS[this.dir]}).call(()=>{
             this.node.zIndex = this.isBehind?this.avatarZindex+Shield.ZOFFSET:this.avatarZindex-Shield.ZOFFSET;
             this.sprite.node.color = this.isBehind?cc.Color.WHITE:cc.color(32,32,32);
-        }).to(0.1,{position:Shield.DEFEND_POS[this.dir]}).delay(0.2).call(()=>{
+        }).to(duration,{position:Shield.DEFEND_POS[this.dir]}).delay(durationdelay).call(()=>{
             if(this.isButtonPressing){
                 this.playDefend();
             }else{
@@ -131,11 +141,12 @@ export default class Shield extends cc.Component {
         }
         let isBehindTemp = this.isBehindChange?!this.isBehind:this.isBehind;
         this.status = Shield.STATUS_PUTDOWN;
+        let duration = this.data.isHeavy==1?0.2:0.1;
         cc.log(`放下 isBehind:${this.isBehind} isBehindTemp:${isBehindTemp} zIndex:${this.node.zIndex}`);
-        cc.tween(this.node).to(0.1,{position:Shield.TRANSFORM_POS[this.dir]}).call(()=>{
+        cc.tween(this.node).to(duration,{position:Shield.TRANSFORM_POS[this.dir]}).call(()=>{
             this.node.zIndex = isBehindTemp?this.avatarZindex-Shield.ZOFFSET:this.avatarZindex+Shield.ZOFFSET;
             this.sprite.node.color = isBehindTemp?cc.color(32,32,32):cc.Color.WHITE;
-        }).to(0.1,{position:Shield.DEFAULT_POS[this.dir]}).call(()=>{
+        }).to(duration,{position:Shield.DEFAULT_POS[this.dir]}).call(()=>{
             this.playIdle();
         }).start();
     }
@@ -195,6 +206,8 @@ export default class Shield extends cc.Component {
             return;
         }
         this.sprite.spriteFrame = Logic.spriteFrames[resName];
+        this.sprite.node.width = this.data.isHeavy==1?80:64;
+        this.sprite.node.height = this.data.isHeavy==1?80:64;
         if(this.data.equipmetType == Equipment.SHIELD){
             this.playIdle();
         }

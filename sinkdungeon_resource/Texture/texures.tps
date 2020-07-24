@@ -320,6 +320,7 @@
             <key type="filename">dungeon/tile004.png</key>
             <key type="filename">equipment/cloak001.png</key>
             <key type="filename">equipment/shield000.png</key>
+            <key type="filename">equipment/shield003.png</key>
             <key type="filename">hud/damagecorner.png</key>
             <key type="filename">hud/dialogbg.png</key>
             <key type="filename">hud/hud_pause.png</key>
@@ -655,6 +656,23 @@
                 <rect>4,5,8,11</rect>
                 <key>scale9Paddings</key>
                 <rect>4,5,8,11</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/car1.png</key>
+            <key type="filename">building/car2.png</key>
+            <key type="filename">building/car3.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,6,16,12</rect>
+                <key>scale9Paddings</key>
+                <rect>8,6,16,12</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -1283,6 +1301,8 @@
             <key type="filename">equipment/behindhelmet001.png</key>
             <key type="filename">equipment/fronthelmet001.png</key>
             <key type="filename">equipment/helmet001.png</key>
+            <key type="filename">equipment/shield001.png</key>
+            <key type="filename">equipment/shield002.png</key>
             <key type="filename">monster/monster000.png</key>
             <key type="filename">monster/monster000anim001.png</key>
             <key type="filename">monster/monster000hit001.png</key>

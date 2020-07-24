@@ -265,7 +265,7 @@ export default class WarMachine extends Boss {
         if(player&&!this.isDied){
             let d = new DamageData();
             d.physicalDamage = 2;
-            player.takeDamage(d,FromData.getClone(this.actorName(),'bossmachinehead'));
+            player.takeDamage(d,FromData.getClone(this.actorName(),'bossmachinehead'),this);
         }
     }
     actorName(){

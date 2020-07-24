@@ -56,8 +56,7 @@ export default class SlimeVenom extends Actor {
         }
         this.damagePlayer(this.from);
     }
-    start() {
-
+    addStatus(statusType: string, from: FromData) {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
@@ -82,7 +81,7 @@ export default class SlimeVenom extends Actor {
         if (this.player&&this.getNearPlayerDistance(this.player.node)<60*this.node.scale&&this.node.active && !this.isHide) {
             let dd = new DamageData();
             dd.magicDamage = 1;
-            cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:from}});
+            this.player.takeDamage(dd,from);
         }
     }
     takeDamage(damge:DamageData){

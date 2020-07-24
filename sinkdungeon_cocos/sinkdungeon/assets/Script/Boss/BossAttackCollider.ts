@@ -1,7 +1,7 @@
-import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,6 +19,8 @@ const {ccclass, property} = cc._decorator;
 export default class BossAttackCollider extends cc.Component {
     @property
     damage = 2;
+    @property(cc.Node)
+    parentNode:cc.Node = null;
     from:FromData = new FromData();
     // LIFE-CYCLE CALLBACKS:
     private isShow = false;
@@ -44,7 +46,7 @@ export default class BossAttackCollider extends cc.Component {
             this.isShow = false;
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE,{detail:{damage:dd,from:this.from}});
+            player.takeDamage(dd,this.from,this.parentNode.getComponent(Actor));
         }
     }
     // update (dt) {}

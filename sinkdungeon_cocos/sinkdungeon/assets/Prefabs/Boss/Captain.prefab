@@ -1042,6 +1042,9 @@
     },
     "_enabled": true,
     "damage": 2,
+    "parentNode": {
+      "__id__": 1
+    },
     "_id": ""
   },
   {

@@ -16,7 +16,9 @@ export default class CommonData  {
     damageBack: number = 0;//背面额外攻击伤害
     criticalStrikeRate: number = 0;//暴击
     defence: number = 0;//物理防御
-    blockReduction:number = 0;//格挡比例
+    blockPhysical:number = 0;//物理格百分比
+    blockMagic:number = 0;//魔法格挡百分比
+    blockDamage:number = 0;//弹反伤害
     lifeDrain: number = 0;//吸血
     moveSpeed: number = 0;//移速
     attackSpeed: number = 0;//攻速
@@ -58,7 +60,9 @@ export default class CommonData  {
         this.lighteningRate = data.lighteningRate ? data.lighteningRate : 0;
         this.toxicRate = data.toxicRate ? data.toxicRate : 0;
         this.curseRate = data.curseRate ? data.curseRate : 0;
-        this.blockReduction = data.blockReduction ? data.blockReduction : 0;
+        this.blockPhysical = data.blockPhysical ? data.blockPhysical : 0;
+        this.blockMagic = data.blockMagic?data.blockMagic:0;
+        this.blockDamage = data.blockDamage?data.blockDamage:0;
     }
     public clone(): CommonData {
         let e = new CommonData();
@@ -83,7 +87,9 @@ export default class CommonData  {
         e.curseRate = this.curseRate;
         e.remoteDamage = this.remoteDamage;
         e.remoteCritRate = this.remoteCritRate;
-        e.blockReduction = this.blockReduction;
+        e.blockPhysical = this.blockPhysical;
+        e.blockMagic = this.blockMagic;
+        e.blockDamage = this.blockDamage;
         return e;
     }
 }

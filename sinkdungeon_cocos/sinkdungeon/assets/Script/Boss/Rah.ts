@@ -276,7 +276,7 @@ export default class Rah extends Boss {
         if (player && this.meleeSkill.IsExcuting&&!this.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
-            player.takeDamage(d,FromData.getClone(this.actorName(),'bossrahhead'));
+            player.takeDamage(d,FromData.getClone(this.actorName(),'bossrahhead'),this);
         }
     }
     actorName(){

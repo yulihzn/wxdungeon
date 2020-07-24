@@ -20,6 +20,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class DryadGrass extends Actor {
+    
     // LIFE-CYCLE CALLBACKS:
 
     isUp = false;//是否已经上升
@@ -64,11 +65,14 @@ export default class DryadGrass extends Actor {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
                 let from = FromData.getClone(this.actorName(),'dryadtwine03');
-                player.takeDamage(new DamageData(2),from);
-                player.addStatus(StatusManager.TWINE,from);
+                if(player.takeDamage(new DamageData(2),from)){
+                    player.addStatus(StatusManager.TWINE,from);
+                }
             }
             
         }
+    }
+    addStatus(statusType: string, from: FromData) {
     }
     actorName(){
         return '树根缠绕';

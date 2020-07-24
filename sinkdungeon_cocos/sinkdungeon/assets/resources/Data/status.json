@@ -289,5 +289,19 @@
             "criticalStrikeRate":100,
             "remoteCritRate":100
         }
+    },
+    "status027": {
+        "nameCn": "盾反",
+        "nameEn": "shield reflect",
+        "spriteFrameName": "status027",
+        "statusType": 27,
+        "desc": "",
+        "duration": 1,
+        "dizzDurationDirect":1,
+        "common": {
+            "moveSpeed": -300,
+            "defence":-100,
+            "attackSpeed":-300
+        }
     }
 }

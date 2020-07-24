@@ -64,8 +64,9 @@ export default class IceDemonThron extends cc.Component {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
                 let from = FromData.getClone('冰刺','bossicethron02');
-                player.takeDamage(new DamageData(3),from);
-                player.addStatus(StatusManager.FROZEN,from);
+                if(player.takeDamage(new DamageData(3),from)){
+                    player.addStatus(StatusManager.FROZEN,from);
+                }
             }
             
         }

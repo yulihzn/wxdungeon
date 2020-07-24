@@ -26,7 +26,9 @@ export default class EquipmentDescData{
     color:string = '#ffffff'
     prefix:string = '';
     level:number = 0;
-
+    blockPhysical = 0;//物理格挡
+    blockMagic = 0;//魔法格挡
+    blockDamage = 0;//弹反伤害
     remoteDamage = 0;//远程伤害
     remoteCritRate = 0;//远程暴击
     remoteSpeed = 0;//远程攻速
