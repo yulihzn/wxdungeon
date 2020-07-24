@@ -2656,5 +2656,31 @@
             "maxHealth": 0
         },
         "desc": "简单实用"
+    },
+    "shield003": {
+        "nameCn": "简易木板盾",
+        "nameEn": "Wood Shield",
+        "equipmetType": "shield",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "shield003",
+        "isHeavy":0,
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "blockDamage":5,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "blockPhysical":40,
+            "blockMagic":90,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "desc": "十分简单但是意外的好用"
     }
 }
