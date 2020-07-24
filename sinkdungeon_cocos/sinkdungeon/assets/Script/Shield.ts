@@ -71,7 +71,7 @@ export default class Shield extends cc.Component {
         prefab.getComponent(BlockLight).show();
     }
     public blockDamage(parentNode:cc.Node, actor:Actor):number{
-        if(this.status == Shield.STATUS_IDLE||this.status == Shield.STATUS_PUTDOWN){
+        if(this.status<0||this.status == Shield.STATUS_IDLE||this.status == Shield.STATUS_PUTDOWN){
             return 0;
         }
         let pos = parentNode.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec2.ZERO));

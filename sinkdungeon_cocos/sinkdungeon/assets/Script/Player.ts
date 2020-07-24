@@ -335,8 +335,10 @@ export default class Player extends Actor {
     }
     private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame,size?:number): void {
         sprite.spriteFrame = spriteFrame;
-        sprite.node.width = size;
-        sprite.node.height = size;
+        if(size&&size>0){
+            sprite.node.width = size;
+            sprite.node.height = size;
+        }
         let c = cc.color(255, 255, 255).fromHEX(color);
         sprite.node.color = c;
     }

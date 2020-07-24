@@ -138,14 +138,17 @@ export default class PlayerData {
             finalDamageData.physicalDamage = finalDamageData.physicalDamage * (2-Math.pow(0.94,-defence));
         }
         finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - defenceMagic / 100);
-        if(blockLevel == Shield.BLOCK_NORMAL){
-            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - blockPhysical / 100);
-            finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - blockMagic / 100);
-        }else if(blockLevel == Shield.BLOCK_REFLECT){
-            finalDamageData.physicalDamage = 0;
-            finalDamageData.magicDamage = 0;
-            finalDamageData.realDamage = 0;
+        if(finalDamageData.physicalDamage>0||finalDamageData.magicDamage>0){
+            if(blockLevel == Shield.BLOCK_NORMAL){
+                finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - blockPhysical / 100);
+                finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - blockMagic / 100);
+            }else if(blockLevel == Shield.BLOCK_REFLECT){
+                finalDamageData.physicalDamage = 0;
+                finalDamageData.magicDamage = 0;
+                finalDamageData.realDamage = 0;
+            }
         }
+        
         return finalDamageData;
     }
 
