@@ -321,6 +321,12 @@
             <key type="filename">equipment/cloak001.png</key>
             <key type="filename">equipment/shield000.png</key>
             <key type="filename">equipment/shield003.png</key>
+            <key type="filename">equipment/shield004.png</key>
+            <key type="filename">equipment/shield005.png</key>
+            <key type="filename">equipment/shield006.png</key>
+            <key type="filename">equipment/shield007.png</key>
+            <key type="filename">equipment/shield008.png</key>
+            <key type="filename">equipment/shield009.png</key>
             <key type="filename">hud/damagecorner.png</key>
             <key type="filename">hud/dialogbg.png</key>
             <key type="filename">hud/hud_pause.png</key>
@@ -384,6 +390,7 @@
             <key type="filename">status/status014.png</key>
             <key type="filename">status/status023.png</key>
             <key type="filename">status/status024.png</key>
+            <key type="filename">status/status027.png</key>
             <key type="filename">tile/tile.png</key>
             <key type="filename">tile/tile_deck001.png</key>
             <key type="filename">tile/tile_deck002.png</key>

@@ -96,6 +96,8 @@ export default class Inventory extends cc.Component {
         cc.director.on(EventHelper.USEITEM_KEYBOARD, (event) => {
             this.userItem(null, event.detail.index);
         });
+        this.remote.node.parent.active = true;
+        this.shield.node.parent.active = false;
     }
 
     start() {
