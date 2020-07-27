@@ -99,9 +99,9 @@
     "_stopped": true,
     "playOnLoad": true,
     "autoRemoveOnFinish": true,
-    "totalParticles": 100,
+    "totalParticles": 50,
     "duration": 0.5,
-    "emissionRate": 100,
+    "emissionRate": 50,
     "life": 1,
     "lifeVar": 0.5,
     "_startColor": {
@@ -134,9 +134,9 @@
     },
     "angle": -180,
     "angleVar": 180,
-    "startSize": 80,
-    "startSizeVar": 108,
-    "endSize": 40,
+    "startSize": 40,
+    "startSizeVar": 20,
+    "endSize": 10,
     "endSizeVar": 0,
     "startSpin": 37,
     "startSpinVar": 243,
@@ -149,8 +149,8 @@
     },
     "posVar": {
       "__type__": "cc.Vec2",
-      "x": 15,
-      "y": 15
+      "x": 10,
+      "y": 10
     },
     "_positionType": 1,
     "positionType": 1,
@@ -160,8 +160,8 @@
       "x": 0,
       "y": 0
     },
-    "speed": 121,
-    "speedVar": 51,
+    "speed": 60,
+    "speedVar": 20,
     "tangentialAccel": 20,
     "tangentialAccelVar": 20,
     "radialAccel": 0,

@@ -16,6 +16,7 @@ export default class WorldLoader {
     private allfileRooms02: { [key: string]: MapData[] } = {};
     private allfileRooms03: { [key: string]: MapData[] } = {};
     private allfileRooms04: { [key: string]: MapData[] } = {};
+    private allfileRooms05: { [key: string]: MapData[] } = {};
     //文件是否加载成功
     isloaded: boolean = false;
     isloaded00: boolean = false;
@@ -75,6 +76,7 @@ export default class WorldLoader {
         this.loadChapterMap(2, this.allfileRooms02);
         this.loadChapterMap(3, this.allfileRooms03);
         this.loadChapterMap(4, this.allfileRooms04);
+        this.loadChapterMap(5, this.allfileRooms05);
     }
     getAllFileRooms(): { [key: string]: MapData[] } {
         let allfileRooms = this.allfileRooms00;
@@ -84,6 +86,7 @@ export default class WorldLoader {
             case Logic.CHAPTER02: allfileRooms = this.allfileRooms02; break;
             case Logic.CHAPTER03: allfileRooms = this.allfileRooms03; break;
             case Logic.CHAPTER04: allfileRooms = this.allfileRooms04; break;
+            case Logic.CHAPTER05: allfileRooms = this.allfileRooms05; break;
         }
         return allfileRooms;
     }
@@ -138,7 +141,6 @@ export default class WorldLoader {
         return this.worldMap[chapterIndex];
     }
     getLevelList(chapterIndex:number,levelIndex:number):LevelData[]{
-        let chapterData = this.getChapterData(chapterIndex);
         return this.getChapterData(chapterIndex).list[levelIndex];
     }
     getLevelData(chapterIndex:number,levelIndex:number,roomIndex:number):LevelData{

@@ -49,6 +49,7 @@ export default class Wall extends Building {
             case Logic.CHAPTER02:this.changeRes(this.getRes02());break;
             case Logic.CHAPTER03:this.changeRes(this.getRes03());break;
             case Logic.CHAPTER04:this.changeRes(this.getRes04());break;
+            case Logic.CHAPTER05:this.changeRes(this.getRes04());break;
         }
     }
     

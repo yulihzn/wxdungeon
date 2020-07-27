@@ -518,19 +518,19 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 1,
-    "_custom": false,
+    "_custom": true,
     "_file": {
       "__uuid__": "ae8e633b-f9c4-4edf-ac6b-9e1ea20523f1"
     },
     "_spriteFrame": null,
     "_texture": null,
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
-    "totalParticles": 100,
+    "totalParticles": 50,
     "duration": -1,
-    "emissionRate": 100,
-    "life": 1,
+    "emissionRate": 50,
+    "life": 0.5,
     "lifeVar": 0.25,
     "_startColor": {
       "__type__": "cc.Color",
@@ -562,8 +562,8 @@
     },
     "angle": 90,
     "angleVar": 10,
-    "startSize": 54,
-    "startSizeVar": 10,
+    "startSize": 10,
+    "startSizeVar": 5,
     "endSize": -1,
     "endSizeVar": 0,
     "startSpin": 0,
@@ -577,8 +577,8 @@
     },
     "posVar": {
       "__type__": "cc.Vec2",
-      "x": 20,
-      "y": 20
+      "x": 5,
+      "y": 5
     },
     "_positionType": 1,
     "positionType": 1,
@@ -588,8 +588,8 @@
       "x": 0,
       "y": 0
     },
-    "speed": 60,
-    "speedVar": 20,
+    "speed": 20,
+    "speedVar": 5,
     "tangentialAccel": 0,
     "tangentialAccelVar": 0,
     "radialAccel": 0,

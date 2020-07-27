@@ -241,9 +241,12 @@ export default class MeleeWeapon extends cc.Component {
             , data.getMagicDamage() > 0 && ran < data.getLighteningRate() ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
             , data.getMagicDamage() > 0 && ran < data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
             , data.getMagicDamage() > 0 && ran < data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
-        for (let w of waves) {
-            this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
-        }
+        let delay = (!this.isStab&&this.isFar)?0.5:0;
+        this.scheduleOnce(()=>{
+            for (let w of waves) {
+                this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
+            }
+        },delay)
         return true;
 
     }

@@ -35,6 +35,7 @@ export default class Logic extends cc.Component {
     static readonly CHAPTER02: number = 2;
     static readonly CHAPTER03: number = 3;
     static readonly CHAPTER04: number = 4;
+    static readonly CHAPTER05: number = 5;
     static equipments: { [key: string]: EquipmentData } = null;
     static equipmentNameList: string[] = [];
     static itemNameList: string[] = [];

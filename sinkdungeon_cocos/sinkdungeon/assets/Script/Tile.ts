@@ -40,6 +40,7 @@ export default class Tile extends cc.Component {
             case Logic.CHAPTER02:this.changeRes(this.getDirtRes());break;
             case Logic.CHAPTER03:this.changeRes('tile003');break;
             case Logic.CHAPTER04:this.changeRes('tile004');break;
+            case Logic.CHAPTER05:this.changeRes('tile004');break;
         }
         // Logic.setAlias(this.node);
 

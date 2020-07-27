@@ -14,6 +14,7 @@ import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import Random from "../Utils/Random";
 import IndexZ from "../Utils/IndexZ";
+import Item from "../Item/Item";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -114,7 +115,16 @@ export default class Kraken extends Boss {
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
-   
+    getLoot(){
+        if(this.dungeon){
+            let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
+            let pos = Dungeon.getPosInMap(p);
+            cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } });
+            cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: pos, count: Logic.getRandomNum(1, 29) } });
+            cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: pos, res:Item.HEART } });
+            this.dungeon.addEquipment(Logic.getRandomEquipType(), p,null,3);
+        }
+    }
     showBoss() {
         if(this.healthBar){
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);

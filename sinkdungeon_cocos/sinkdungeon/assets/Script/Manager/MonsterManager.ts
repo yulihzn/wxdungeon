@@ -127,10 +127,10 @@ export default class MonsterManager extends cc.Component {
         //5%的几率变异
         let variationRate = 5;
         let up = 0;
-        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)){
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {
             up = 10;
         }
-        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)){
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)) {
             up = 30;
         }
         variationRate = variationRate + Logic.chapterIndex * 2 + Logic.level * 2 + up;
@@ -371,10 +371,10 @@ export default class MonsterManager extends cc.Component {
         let arr = new Array();
         let num = Random.getRandomNum(1, 3);
         let up = 0;
-        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)){
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {
             up = 2;
         }
-        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)){
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)) {
             up = 5;
         }
         switch (Logic.chapterIndex) {
@@ -395,8 +395,11 @@ export default class MonsterManager extends cc.Component {
             case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
                 , MonsterManager.MONSTER_SPIDER];
                 num = Random.getRandomNum(3, 6); break;
+            case Logic.CHAPTER05: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
+                , MonsterManager.MONSTER_SPIDER];
+                num = Random.getRandomNum(3, 6); break;
         }
-        for (let i = 0; i <= num+up; i++) {
+        for (let i = 0; i <= num + up; i++) {
             let pos = dungeon.floorIndexmap[Random.getRandomNum(0, dungeon.floorIndexmap.length - 1)];
             dungeon.addMonsterFromData(arr[Random.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
         }

@@ -186,7 +186,8 @@ export default class Player extends Actor {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());
                 // this.data.currentHealth = 1;
                 // this.data.Common.maxHealth = 1;
-                this.data.Common.damageMin = 99;
+                this.data.Common.damageMin = 999;
+                this.data.Common.moveSpeed = 999;
                 this.data.Common.damageBack = 2;
                 this.data.Common.criticalStrikeRate = 50;
                 this.data.Common.remoteCritRate = 50;
