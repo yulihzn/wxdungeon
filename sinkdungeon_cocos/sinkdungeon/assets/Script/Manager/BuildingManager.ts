@@ -211,7 +211,7 @@ export default class BuildingManager extends cc.Component {
             let hitBuilding = this.addBuilding(this.hitBuilding, indexPos);
             let h = hitBuilding.getComponent(HitBuilding);
             h.setDefaultPos(indexPos);
-            h.init(dungeon, 'car', '', 'shield003', 5, 5);
+            h.init(dungeon, 'car', '', 'shield001', 5, 5);
             let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
             if (saveHit) {
                 h.init(dungeon, 'car', '', 'shield001', 5, saveHit.currentHealth);
