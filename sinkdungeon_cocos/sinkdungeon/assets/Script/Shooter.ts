@@ -411,7 +411,7 @@ export default class Shooter extends cc.Component {
         let pos = cc.v3(0, 0);
         if (this.isAI) {
         } else if (this.dungeon) {
-            for (let monster of this.dungeon.monsters) {
+            for (let monster of this.dungeon.monsterManager.monsterList) {
                 let dis = Logic.getDistance(this.getParentNode().position, monster.node.position);
                 if (dis < 600 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
@@ -423,7 +423,7 @@ export default class Shooter extends cc.Component {
                 }
             }
             if (pos.equals(cc.Vec3.ZERO)) {
-                for (let boss of this.dungeon.bosses) {
+                for (let boss of this.dungeon.monsterManager.bossList) {
                     let dis = Logic.getDistance(this.getParentNode().position, boss.node.position);
                     if (dis < 600 && dis < olddis && !boss.isDied) {
                         olddis = dis;

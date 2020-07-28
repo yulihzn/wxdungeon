@@ -3,11 +3,9 @@ import DamageData from "../Data/DamageData";
 import HealthBar from "../HealthBar";
 import Player from "../Player";
 import { EventHelper } from "../EventHelper";
-import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
 import Dungeon from "../Dungeon";
 import SlimeVenom from "./SlimeVenom";
-import Monster from "../Monster";
 import MonsterManager from "../Manager/MonsterManager";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -175,12 +173,12 @@ export default class Slime extends Boss {
         }
         if (this.isChildSlimeTimeDelay(dt) && !this.isDied && this.slimeType == 0 && this.dungeon) {
             let count = 0;
-            for (let m of this.dungeon.monsters) {
+            for (let m of this.dungeon.monsterManager.monsterList) {
                 if (!m.isDied) {
                     count++;
                 }
             }
-            if (count < 10 && this.dungeon.monsters.length < 50) {
+            if (count < 10 && this.dungeon.monsterManager.monsterList.length < 50) {
                 let pos = Dungeon.getIndexInMap(this.node.position.clone());
                 this.dungeon.addMonsterFromData(MonsterManager.MONSTER_SLIME, pos.x, pos.y);
             }

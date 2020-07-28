@@ -123,7 +123,7 @@ export default class FireGhost extends cc.Component {
         }
         let olddis = 1000;
         let pos = cc.v3(0, 0);
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsters) {
+        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
             let dis = Logic.getDistance(this.node.position, monster.node.position);
             if (dis < 400 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                 olddis = dis;
@@ -133,7 +133,7 @@ export default class FireGhost extends cc.Component {
             }
         }
         if (pos.equals(cc.Vec3.ZERO)) {
-            for (let boss of this.player.weaponRight.meleeWeapon.dungeon.bosses) {
+            for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
                 let dis = Logic.getDistance(this.node.position, boss.node.position);
                 if (dis < 400 && dis < olddis && !boss.isDied) {
                     olddis = dis;

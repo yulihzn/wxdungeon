@@ -14,6 +14,8 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import { ColliderTag } from "../Actor/ColliderTag";
 import IndexZ from "../Utils/IndexZ";
+import Decorate from "../Building/Decorate";
+import HitBuilding from "../Building/HitBuilding";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -382,6 +384,16 @@ export default class Bullet extends cc.Component {
                 isDestory = true;
             }
         }
+        let decorate = attackTarget.getComponent(Decorate);
+        if (this.data.canBreakBuilding == 1&&decorate) {
+            damageSuccess = true;
+            decorate.takeDamage(damage);
+        }
+        let hitBuilding = attackTarget.getComponent(HitBuilding);
+        if (this.data.canBreakBuilding == 1&&hitBuilding) {
+            damageSuccess = true;
+            hitBuilding.takeDamage(damage);
+        }
         if (isDestory) {
             this.bulletHit();
         }
@@ -424,7 +436,7 @@ export default class Bullet extends cc.Component {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         if (this.isFromPlayer) {
-            for (let monster of this.dungeon.monsters) {
+            for (let monster of this.dungeon.monsterManager.monsterList) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
                 if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
                     olddis = dis;
@@ -434,7 +446,7 @@ export default class Bullet extends cc.Component {
                 }
             }
             if (pos.equals(cc.Vec3.ZERO)) {
-                for (let boss of this.dungeon.bosses) {
+                for (let boss of this.dungeon.monsterManager.bossList) {
                     let dis = Logic.getDistance(this.node.position, boss.node.position);
                     if (dis < 500 && dis < olddis && !boss.isDied) {
                         olddis = dis;

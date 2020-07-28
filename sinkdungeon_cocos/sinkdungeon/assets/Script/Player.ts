@@ -556,8 +556,7 @@ export default class Player extends Actor {
         } else {
             this.playerAnim(PlayerAvatar.STATE_IDLE, dir);
         }
-        let isUpDown = dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN;
-        if (isUpDown) {
+        if (dir != 4) {
             this.changeZIndex(this.pos);
         }
         if (dir != 4 && !this.shield.isAniming) {

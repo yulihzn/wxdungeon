@@ -1,11 +1,9 @@
 import Player from "../Player";
 import Dungeon from "../Dungeon";
-import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
-import { EventHelper } from "../EventHelper";
-import ShopTableData from "../Data/ShopTableData";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
+import BuildingData from "../Data/BuildingData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,8 +25,6 @@ export default class ShopTable extends Building {
     static readonly ITEM = 1;
     info: cc.Node;
     label: cc.Label;
-    data: ShopTableData = new ShopTableData();
-
 
     onLoad() {
         this.info = this.node.getChildByName('info');
@@ -43,16 +39,16 @@ export default class ShopTable extends Building {
             let dungeon = this.node.parent.getComponent(Dungeon);
             if (dungeon) {
                 if(this.data.shopType == ShopTable.EQUIPMENT){
-                    dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, this.data.equipdata, 3, this);
+                    dungeon.addEquipment(Logic.getRandomEquipType(), this.data.defaultPos, this.data.equipdata, 3, this);
                 }else if(this.data.shopType == ShopTable.ITEM){
-                    dungeon.addItem(Dungeon.getPosInMap(this.data.pos),Logic.getRandomItemType(),this);
+                    dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos),Logic.getRandomItemType(),this);
                 }
             }
         }
     }
-    setPos(pos: cc.Vec3) {
-        this.data.pos = pos;
-        this.node.position = Dungeon.getPosInMap(pos);
+    setDefaultPos(defaultPos: cc.Vec3) {
+        this.data.defaultPos = defaultPos;
+        this.node.position = Dungeon.getPosInMap(defaultPos);
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     timeDelay = 0;
@@ -61,14 +57,10 @@ export default class ShopTable extends Building {
         if (this.timeDelay > 0.2) {
             this.label.string = `${this.data.price}`;
             this.info.opacity = this.data.isSaled ? 0 : 255;
-            let currtables = Logic.mapManager.getCurrentMapShopTables();
-            if (currtables) {
-                for (let temptable of currtables) {
-                    if (temptable.pos.equals(this.data.pos)) {
-                        temptable.isSaled = this.data.isSaled;
-                        temptable.price = this.data.price;
-                    }
-                }
+            let saveTable = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
+            if (saveTable) {
+                saveTable.isSaled = this.data.isSaled;
+                saveTable.price = this.data.price;
             }
         }
     }

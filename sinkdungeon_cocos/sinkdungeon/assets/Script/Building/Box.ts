@@ -1,10 +1,11 @@
 import Dungeon from "../Dungeon";
-import BoxData from "../Data/BoxData";
 import Logic from "../Logic";
 import Building from "./Building";
 import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
+import BuildingData from "../Data/BuildingData";
+import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,7 +34,6 @@ export default class Box extends Building {
         this.anim = this.getComponent(cc.Animation);
         this.anim.play('BoxShow');
     }
-    data: BoxData = new BoxData();
 
     start() {
         let resName = 'box';
@@ -56,15 +56,16 @@ export default class Box extends Building {
         let spriteFrame = Logic.spriteFrames[resName];
         sprite.spriteFrame = spriteFrame;
     }
-    setPos(pos: cc.Vec3) {
-        this.data.pos = pos;
-        this.node.position = Dungeon.getPosInMap(this.data.pos);
+    setDefaultPos(defaultPos: cc.Vec3) {
+        this.data.defaultPos = defaultPos;
+        this.node.position = Dungeon.getPosInMap(defaultPos);
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     //Animation
     BreakingFinish() {
         this.reset();
     }
+   
     breakBox() {
         if(this.isBreaking){
             return;
@@ -84,16 +85,10 @@ export default class Box extends Building {
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.2) {
-            this.data.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.position = this.node.position;
-            let currboxes = Logic.mapManager.getCurrentMapBoxes();
-            if (currboxes) {
-                for (let tempbox of currboxes) {
-                    if (tempbox.defaultPos.equals(this.data.defaultPos)) {
-                        tempbox.pos = this.data.pos;
-                        tempbox.position = this.data.position;
-                    }
-                }
+            let saveBox = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
+            if (saveBox) {
+                saveBox.position = this.data.position;
             }
             this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
         }

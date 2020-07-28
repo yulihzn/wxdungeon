@@ -35,6 +35,7 @@ export default class BulletData {
     fixedRotation = 0;//是否固定方向
     statusType:string = "";//附加状态
     statusRate = 0;//状态几率
+    canBreakBuilding = 0;//是否可以打破部分建筑
     damage:DamageData = new DamageData();
     from:FromData = new FromData();//来源
     valueCopy(data:BulletData){
@@ -58,6 +59,7 @@ export default class BulletData {
         this.lightName = data.lightName?data.lightName:'';
         this.statusType = data.statusType?data.statusType:'';
         this.statusRate = data.statusRate?data.statusRate:0;
+        this.canBreakBuilding = data.canBreakBuilding?data.canBreakBuilding:0;
         this.lightColor = data.lightColor?data.lightColor:'#ffffff'
         this.damage.valueCopy(data.damage);
         this.from.valueCopy(data.from);
@@ -85,6 +87,7 @@ export default class BulletData {
         e.fixedRotation = this.fixedRotation;
         e.statusType = this.statusType;
         e.statusRate = this.statusRate;
+        e.canBreakBuilding = this.canBreakBuilding;
         e.damage = this.damage.clone();
         e.from = this.from.clone();
         return e;

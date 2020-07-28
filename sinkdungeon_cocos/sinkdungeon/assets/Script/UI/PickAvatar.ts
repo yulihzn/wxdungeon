@@ -199,7 +199,7 @@ export default class PickAvatar extends cc.Component {
             this.faceSprite.node.color = color;
             this.data.faceColor = color.toHEX('#rrggbb');
         })
-        
+        this.ButtonRandom();
     }
     
     startGame(){

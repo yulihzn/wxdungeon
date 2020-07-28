@@ -193,7 +193,7 @@ export default class TalentMagic extends Talent {
     getNearestEnemyPosition():cc.Vec3{
         let shortdis = 99999;
         let targetNode:cc.Node;
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsters) {
+        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
             if (!monster.isDied) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
                 if(dis<shortdis){
@@ -202,7 +202,7 @@ export default class TalentMagic extends Talent {
                 }
             }
         }
-        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.bosses) {
+        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
             if (!boss.isDied) {
                 let dis = Logic.getDistance(this.node.position, boss.node.position);
                 if(dis<shortdis){
@@ -248,13 +248,13 @@ export default class TalentMagic extends Talent {
         if (!this.player) {
             return cc.Vec3.ZERO;
         }
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsters) {
+        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
             let dis = Logic.getDistance(this.node.position, monster.node.position);
             if (dis < range && !monster.isDied && !monster.isDisguising) {
                 monster.addStatus(statusName, new FromData());
             }
         }
-        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.bosses) {
+        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
             let dis = Logic.getDistance(this.node.position, boss.node.position);
             if (dis < range && !boss.isDied) {
                 boss.addStatus(statusName, new FromData());

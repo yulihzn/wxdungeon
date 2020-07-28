@@ -1,39 +1,21 @@
 import Player from "./Player";
 import Tile from "./Tile";
-import Monster from "./Monster";
 import Logic from "./Logic";
 import { EventHelper } from "./EventHelper";
 import MonsterManager from "./Manager/MonsterManager";
-import Portal from "./Building/Portal";
-import Wall from "./Building/Wall";
-import Trap from "./Building/Trap";
 import Item from "./Item/Item";
 import EquipmentManager from "./Manager/EquipmentManager";
 import EquipmentData from "./Data/EquipmentData";
 import DungeonStyleManager from "./Manager/DungeonStyleManager";
-import Chest from "./Building/Chest";
 import ShopTable from "./Building/ShopTable";
 import CoinManger from "./Manager/CoinManager";
-import Box from "./Building/Box";
-import FootBoard from "./Building/FootBoard";
-import BoxData from "./Data/BoxData";
-import ShopTableData from "./Data/ShopTableData";
 import HealthBar from "./HealthBar";
-import FallStone from "./Building/FallStone";
-import Emplacement from "./Building/Emplacement";
-import Boss from "./Boss/Boss";
-import SlimeVenom from "./Boss/SlimeVenom";
-import ChestData from "./Data/ChestData";
-import Random from "./Utils/Random";
 import IceDemonThron from "./Boss/IceDemonThron";
 import DryadGrass from "./Boss/DryadGrass";
-import DecorationFloor from "./Building/DecorationFloor";
-import Saw from "./Building/Saw";
 import AudioPlayer from "./Utils/AudioPlayer";
-import Decorate from "./Building/Decorate";
 import RoomType from "./Rect/RoomType";
-import MagicLightening from "./Building/MagicLightening";
 import IndexZ from "./Utils/IndexZ";
+import BuildingManager from "./Manager/BuildingManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,59 +34,19 @@ export default class Dungeon extends cc.Component {
     @property(cc.Prefab)
     tile: cc.Prefab = null;
     @property(cc.Prefab)
-    wall: cc.Prefab = null;
-    @property(cc.Prefab)
-    trap: cc.Prefab = null;
-    @property(cc.Prefab)
-    fallStone: cc.Prefab = null;
-    @property(cc.Prefab)
-    lighteningFall: cc.Prefab = null;
-    @property(cc.Prefab)
-    emplacement: cc.Prefab = null;
-    @property(cc.Prefab)
-    footboard: cc.Prefab = null;
-    @property(cc.Prefab)
-    chest: cc.Prefab = null;
-    @property(cc.Prefab)
-    box: cc.Prefab = null;
-    @property(cc.Prefab)
-    decorate: cc.Prefab = null;
-    @property(cc.Prefab)
     item: cc.Prefab = null;
     @property(cc.Prefab)
-    shop: cc.Prefab = null;
-    @property(cc.Prefab)
-    shoptable: cc.Prefab = null;
-    @property(cc.Prefab)
-    floorDecoration: cc.Prefab = null;
-    @property(cc.Prefab)
     playerPrefab: cc.Prefab = null;
-    @property(cc.Prefab)
-    portalPrefab: cc.Prefab = null;
-    portal: Portal = null;
-    @property(cc.Prefab)
-    bed: cc.Prefab = null;
-    @property(cc.Prefab)
-    campFire: cc.Prefab = null;
-    @property(cc.Prefab)
-    tarotTable: cc.Prefab = null;
-    @property(cc.Prefab)
-    venom: cc.Prefab = null;
     @property(cc.Prefab)
     iceThron: cc.Prefab = null;
     @property(cc.Prefab)
     dryadGrass: cc.Prefab = null;
-    @property(cc.Prefab)
-    saw: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
     @property(HealthBar)
     bossHealthBar: HealthBar = null;
 
     map: Tile[][] = new Array();//地图列表
-    wallmap: Wall[][] = new Array();//墙列表
-    trapmap: Trap[][] = new Array();//陷阱列表
-    footboards: FootBoard[] = new Array();//踏板列表
     floorIndexmap: cc.Vec3[] = new Array();//地板下标列表
     static WIDTH_SIZE: number = 15;
     static HEIGHT_SIZE: number = 9;
@@ -115,16 +57,14 @@ export default class Dungeon extends cc.Component {
     private checkTimeDelay = 0;
 
     player: Player = null;
-    monsters: Monster[];//房间怪物列表
     // public monsterReswpanPoints: { [key: string]: string } = {};//怪物重生点
     monsterManager: MonsterManager = null;//怪物管理
     equipmentManager: EquipmentManager = null;//装备管理
     dungeonStyleManager: DungeonStyleManager = null;//装饰管理
     coinManager: CoinManger = null;//金币管理
+    buildingManager: BuildingManager = null;//建筑管理
     anim: cc.Animation;
     isZoomCamera = false;
-
-    bosses: Boss[] = [];
 
     onLoad() {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
@@ -148,8 +88,8 @@ export default class Dungeon extends cc.Component {
         cc.director.on(EventHelper.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
         })
-        EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,(detail)=>{
-            this.addLighteningFall(detail.pos, false,false,detail.showArea,detail.damage);
+        EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, (detail) => {
+            this.addLighteningFall(detail.pos, false, false, detail.showArea, detail.damage);
         })
         cc.director.on(EventHelper.DUNGEON_SHAKEONCE, (event) => {
             if (this.anim) {
@@ -163,6 +103,7 @@ export default class Dungeon extends cc.Component {
         this.equipmentManager = this.getComponent(EquipmentManager);
         this.coinManager = this.getComponent(CoinManger);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
+        this.buildingManager = this.getComponent(BuildingManager);
         this.init();
     }
     /**
@@ -196,25 +137,14 @@ export default class Dungeon extends cc.Component {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
 
-        this.bosses = new Array();
-        this.monsters = new Array();
         this.map = new Array();
-        this.wallmap = new Array();
-        this.trapmap = new Array();
-        this.footboards = new Array();
         this.floorIndexmap = new Array();
-        let boxes: BoxData[] = new Array();
-        let shopTables: ShopTableData[] = new Array();
-        let chests: ChestData[] = new Array();
         //放置之前留在地上的物品和装备
         this.addItemListOnGround();
         this.addEquipmentListOnGround();
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
-            this.wallmap[i] = new Array(i);
-            this.trapmap[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
-
                 if (mapData[i][j] == '--') {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;
@@ -236,191 +166,8 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].tileType = mapData[i][j];
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
-                //生成墙
-                if (this.isThe(mapData[i][j], '#')) {
-                    let w = cc.instantiate(this.wall);
-                    w.parent = this.node;
-                    w.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    w.zIndex = IndexZ.getActorZIndex(w.position);
-                    w.opacity = 255;
-                    this.wallmap[i][j] = w.getComponent(Wall);
-                    this.wallmap[i][j].mapStr = mapData[i][j];
-                }
-                //生成陷阱
-                if (mapData[i][j] == 'T0') {
-                    let trap = cc.instantiate(this.trap);
-                    trap.parent = this.node;
-                    trap.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    trap.zIndex = IndexZ.getActorZIndex(trap.position);
-                    this.trapmap[i][j] = trap.getComponent(Trap);
-                }
-                //生成电锯,占据5个格子
-                if (mapData[i][j] == 'X0') {
-                    let saw = cc.instantiate(this.saw);
-                    saw.parent = this.node;
-                    saw.getComponent(Saw).setPos(cc.v3(i, j));
-                }
-                //生成炮台
-                if (this.isThe(mapData[i][j], 'E')) {
-                    let emplacement = cc.instantiate(this.emplacement);
-                    emplacement.parent = this.node;
-                    emplacement.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    emplacement.zIndex = IndexZ.getActorZIndex(emplacement.position);
-                    let em = emplacement.getComponent(Emplacement);
-                    em.setDirType(mapData[i][j]);
-                    em.dungeon = this;
-                }
-                //生成落石
-                if (mapData[i][j] == 'F0') {
-                    this.addFallStone(Dungeon.getPosInMap(cc.v3(i, j)), false);
-                }
-                //生成落雷
-                if (mapData[i][j] == 'F1') {
-                    this.addLighteningFall(Dungeon.getPosInMap(cc.v3(i, j)),true, true,true);
-                }
-                //生成装饰
-                if (this.isThe(mapData[i][j], '+')) {
-                    //生成营火
-                    if (this.isThe(mapData[i][j], '+0')) {
-                        let camp = cc.instantiate(this.campFire);
-                        camp.parent = this.node;
-                        camp.position = Dungeon.getPosInMap(cc.v3(i, j));
-                        camp.zIndex = IndexZ.getActorZIndex(camp.position);
-                        let shadow = camp.getChildByName('sprite').getChildByName('shadow');
-                        shadow.position = Dungeon.getPosInMap(cc.v3(i, j));
-                        shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
-                        shadow.parent = this.node;
-                        shadow.zIndex = IndexZ.FLOOR;
-                        let fallentree = camp.getChildByName('sprite').getChildByName('fallentree');
-                        fallentree.position = Dungeon.getPosInMap(cc.v3(i, j));
-                        fallentree.position = cc.v3(shadow.position.x, shadow.position.y + 40);
-                        fallentree.parent = this.node;
-                        fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
-                        fallentree.setScale(6,4);
-                    } else if (this.isThe(mapData[i][j], '+1')) {
-                        if (Logic.level == 0) {
-                            let bed = cc.instantiate(this.bed);
-                            bed.parent = this.node;
-                            bed.scale = 6;
-                            bed.position = Dungeon.getPosInMap(cc.v3(i, j));
-                            bed.zIndex = IndexZ.OVERHEAD;
-                        }
-                    } else if (this.isThe(mapData[i][j], '+2')) {
-                        if (Logic.level == 0) {
-                            let arrow = cc.instantiate(this.floorDecoration);
-                            arrow.parent = this.node;
-                            arrow.position = Dungeon.getPosInMap(cc.v3(i, j));
-                            arrow.zIndex = IndexZ.FLOOR;
-                            arrow.getComponent(DecorationFloor).changeRes('exitarrow');
-                        }
-                    } else {
-                        let fd = cc.instantiate(this.floorDecoration);
-                        fd.parent = this.node;
-                        fd.position = Dungeon.getPosInMap(cc.v3(i, j));
-                        fd.zIndex = IndexZ.FLOOR;
-                        let df = fd.getComponent(DecorationFloor);
-                        if (this.isThe(mapData[i][j], '++')) {
-                            df.changeRes('exitarrow');
-                        } else {
-                            df.changeRes('dev');
-                        }
-                    }
-                }
-                //生成踏板
-                if (mapData[i][j] == '@@') {
-                    let foot = cc.instantiate(this.footboard);
-                    foot.parent = this.node;
-                    foot.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    foot.zIndex = IndexZ.FLOOR;
-                    this.footboards.push(foot.getComponent(FootBoard));
-                }
-                //生成毒液
-                if (mapData[i][j] == 'V0') {
-                    this.addVenom(Dungeon.getPosInMap(cc.v3(i, j)));
-
-                }
-                //生成塔罗
-                if (mapData[i][j] == 'Q0') {
-                    let tarottable = cc.instantiate(this.tarotTable);
-                    tarottable.parent = this.node;
-                    tarottable.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    tarottable.zIndex = IndexZ.getActorZIndex(tarottable.position);
-                }
-                //生成宝箱 房间清理的情况下箱子是打开的
-                if (mapData[i][j] == 'C0') {
-                    let chest = cc.instantiate(this.chest);
-                    chest.parent = this.node;
-                    let c = chest.getComponent(Chest)
-                    c.setPos(cc.v3(i, j));
-                    let rand = Random.rand();
-                    let quality = 1;
-                    if(rand>0.5&&rand<0.7){
-                        quality = 2;
-                    }else if(rand>0.7&&rand<0.8){
-                        quality = 3;
-                    }else if(rand>0.8&&rand<0.85){
-                        quality = 4;
-                    }
-                    c.setQuality(quality, false);
-                    let currchests = Logic.mapManager.getCurrentMapChests();
-                    if (currchests) {
-                        for (let tempchest of currchests) {
-                            if (tempchest.pos.equals(c.data.pos)) {
-                                c.setQuality(tempchest.quality, tempchest.isOpen);
-                            }
-                        }
-                    } else {
-                        chests.push(c.data);
-                    }
-                }
-                //生成木盒子 并且根据之前记录的位置放置
-                if (this.isThe(mapData[i][j], 'B')) {
-                    let box = cc.instantiate(this.box);
-                    box.parent = this.node;
-                    let b = box.getComponent(Box)
-                    b.data.defaultPos = cc.v3(i, j);
-                    b.setPos(cc.v3(i, j));
-                    //生成植物
-                    if (this.isThe(mapData[i][j], 'B1')) {
-                        b.boxType = Box.PLANT;
-                    }
-                    //设置对应存档盒子的位置
-                    let currboxes = Logic.mapManager.getCurrentMapBoxes();
-                    if (currboxes) {
-                        for (let tempbox of currboxes) {
-                            if (tempbox.defaultPos.equals(b.data.defaultPos)) {
-                                b.setPos(tempbox.pos);
-                                b.node.position = tempbox.position.clone();
-                            }
-                        }
-                    } else {
-                        boxes.push(b.data);
-                    }
-                }
-                //生成可破坏装饰 并且根据之前记录的位置放置
-                if (this.isThe(mapData[i][j], 'D')) {
-                    let decorate = cc.instantiate(this.decorate);
-                    decorate.parent = this.node;
-                    let d = decorate.getComponent(Decorate);
-                    d.data.defaultPos = cc.v3(i, j);
-                    d.setPos(cc.v3(i, j));
-                    d.decorateType = parseInt(mapData[i][j][1]);
-                    //设置对应存档盒子的位置
-                    let currboxes = Logic.mapManager.getCurrentMapBoxes();
-                    if (currboxes) {
-                        for (let tempbox of currboxes) {
-                            if (tempbox.defaultPos.equals(d.data.defaultPos)) {
-                                d.setPos(tempbox.pos);
-                                d.node.position = tempbox.position.clone();
-                                if(tempbox.status==1){
-                                    d.reset();
-                                }
-                            }
-                        }
-                    } else {
-                        boxes.push(d.data);
-                    }
-                }
+                //加载建筑
+                this.buildingManager.addBuildingsFromMap(this, mapData[i][j], cc.v3(i, j));
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     //生成心
@@ -460,210 +207,20 @@ export default class Dungeon extends cc.Component {
                         this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_INVISIBLE);
                     }
                 }
-                //生成商店
-                if (mapData[i][j] == 'S0') {
-                    let table = cc.instantiate(this.shoptable);
-                    table.parent = this.node;
-                    let ta = table.getComponent(ShopTable);
-                    ta.setPos(cc.v3(i, j));
-                    ta.data.shopType = Random.rand() > 0.1 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
-                    let currshoptables = Logic.mapManager.getCurrentMapShopTables();
-                    if (currshoptables) {
-                        for (let temptable of currshoptables) {
-                            if (temptable.pos.equals(ta.data.pos)) {
-                                if (temptable.equipdata) {
-                                    ta.data.equipdata = temptable.equipdata.clone();
-                                }
-                                if (temptable.itemdata) {
-                                    ta.data.itemdata = temptable.itemdata.clone();
-                                }
-                                ta.data.isSaled = temptable.isSaled;
-                                ta.data.shopType = temptable.shopType;
-                                ta.data.price = temptable.price;
-                            }
-                        }
-                        ta.showItem();
-                    } else {
-                        ta.showItem();
-                        shopTables.push(ta.data);
-                    }
-                }
-                //生成下一层传送门(暂时废弃)
-                if (mapData[i][j] == 'P0') {
-                    let needAdd = false;
-                    // if((Logic.level==RectDungeon.LEVEL_5||Logic.level==RectDungeon.LEVEL_3||
-                    // Logic.chapterName=='chapter00')&&Logic.mapManager.getCurrentRoomType() == RectDungeon.END_ROOM){
-                    //     needAdd = false;
-                    // }
 
-                    if (needAdd) {
-                        let portalP = cc.instantiate(this.portalPrefab);
-                        portalP.parent = this.node;
-                        this.portal = portalP.getComponent(Portal);
-                        if (this.portal) {
-                            this.portal.setPos(cc.v3(i, j));
-                        }
-                    }
-                }
-                //生成店主
-                if (mapData[i][j] == 'S1') {
-                    let shop = cc.instantiate(this.shop);
-                    shop.parent = this.node;
-                    shop.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    shop.zIndex = IndexZ.getActorZIndex(shop.position);
-                }
                 //房间未清理时加载怪物
-                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
-                    if (mapData[i][j] == 'a0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ZEBRA, i, j);
-                    }
-                    if (mapData[i][j] == 'a1') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, i, j);
-                    }
-                    if (mapData[i][j] == 'a2') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_KILLER, i, j);
-                    }
-                    if (mapData[i][j] == 'a3') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ZOOMBIE, i, j);
-                    }
-                    if (mapData[i][j] == 'a4') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
-                    }
-                    if (mapData[i][j] == 'a5') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_GIRAFFE, i, j);
-                    }
-                    if (mapData[i][j] == 'b0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, i, j);
-                    }
-                    if (mapData[i][j] == 'b1') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SAILOR, i, j);
-                    }
-                    if (mapData[i][j] == 'b2') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, i, j);
-                    }
-                    if (mapData[i][j] == 'b3') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_FISH, i, j);
-                    }
-                    if (mapData[i][j] == 'b4') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_BOOMER, i, j);
-                    }
-                    if (mapData[i][j] == 'b5') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_STRONGSAILOR, i, j);
-                    }
-                    if (mapData[i][j] == 'c0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SLIME, i, j);
-                    }
-                    if (mapData[i][j] == 'c1') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, i, j);
-                    }
-                    if (mapData[i][j] == 'c2') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, i, j);
-                    }
-                    if (mapData[i][j] == 'c3') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SNAKE, i, j);
-                    }
-                    if (mapData[i][j] == 'c4') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, i, j);
-                    }
-                    if (mapData[i][j] == 'c5') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, i, j);
-                    }
-                    if (mapData[i][j] == 'c6') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_HIPPO, i, j);
-                    }
-                    if (mapData[i][j] == 'd0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, i, j);
-                    }
-                    if (mapData[i][j] == 'd1') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, i, j);
-                    }
-                    if (mapData[i][j] == 'd2') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                        this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, i, j);
-                    }
-                    if (mapData[i][j] == 'd3') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_CROCODILE, i, j);
-                    }
-                    if (mapData[i][j] == 'd4') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, i, j);
-                    }
-                    if (mapData[i][j] == 'e0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, i, j);
-                    }
-                    if (mapData[i][j] == 'e1') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_DEMON, i, j);
-                    }
-                    if (mapData[i][j] == 'e2') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_WARLOCK, i, j);
-                    }
-                    if (mapData[i][j] == 'e3') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_SPIDER, i, j);
-                    }
-                    if (mapData[i][j] == 'e4') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, i, j);
-                    }
-                    if (mapData[i][j] == 'f0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_CHEST, i, j);
-                    }
-                    if (mapData[i][j] == 'g0') {
-                        this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, i, j);
-                    }
-                    if (mapData[i][j] == 'z0') {
-                        this.addBossIceDemon(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z1') {
-                        this.addBossWarMachine(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z2') {
-                        this.addBossCaptain(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z3') {
-                        this.addBossKraken(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z4') {
-                        this.addBossSlime(0, cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z5') {
-                        this.addBossDryad(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z6') {
-                        this.addBossRah(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z7') {
-                        this.addBossSphinx(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z8') {
-                        this.addBossEvilEye(cc.v3(i, j));
-                    }
-                    if (mapData[i][j] == 'z9') {
-                        this.addBossDragon(cc.v3(i, j));
-                    }
+                if (!Logic.mapManager.isCurrentRoomStateClear()
+                    || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
+                    this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j))
                 }
 
             }
         }
-        if (!Logic.mapManager.isCurrentRoomStateClear() && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
+        //加载随机怪物
+        if (!Logic.mapManager.isCurrentRoomStateClear()
+            && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
             this.monsterManager.addRandomMonsters(this);
         }
-        //存档的盒子为空，保存当前盒子位置
-        let currbs = Logic.mapManager.getCurrentMapBoxes();
-        if (!currbs && boxes.length > 0) {
-            Logic.mapManager.setCurrentBoxesArr(boxes);
-        }
-        //存档的商店为空，保存当前商店状态
-        let currts = Logic.mapManager.getCurrentMapShopTables();
-        if (!currts && shopTables.length > 0) {
-            Logic.mapManager.setCurrentShopTableArr(shopTables);
-        }
-        //存档的宝箱为空，保存当前宝箱状态
-        let currcs = Logic.mapManager.getCurrentMapChests();
-        if (!currcs && chests.length > 0) {
-            Logic.mapManager.setCurrentChestsArr(chests);
-        }
-        
         cc.log('load finished');
     }
     isThe(mapStr: string, typeStr: string): boolean {
@@ -694,46 +251,16 @@ export default class Dungeon extends cc.Component {
     }
 
     /**掉落石头 */
-    addFallStone(pos: cc.Vec3, isAuto: boolean, withFire?: boolean) {
-        if (!this.fallStone) {
-            return;
-        }
-        let stone = cc.instantiate(this.fallStone);
-        let stoneScript = stone.getComponent(FallStone);
-        stoneScript.isAuto = isAuto;
-        stone.parent = this.node;
-        stone.position = pos;
-        stone.zIndex = IndexZ.FLOOR;
-        if (stoneScript.isAuto) {
-            stoneScript.fall(withFire);
-        }
-
+    public addFallStone(pos: cc.Vec3, isAuto: boolean, withFire?: boolean) {
+        this.buildingManager.addFallStone(pos,isAuto,withFire);
     }
     /**落雷 */
-    addLighteningFall(pos: cc.Vec3,isTrigger: boolean,needPrepare: boolean, showArea: boolean,damagePoint?:number) {
-        if (!this.lighteningFall) {
-            return;
-        }
-        let fall = cc.instantiate(this.lighteningFall);
-        let fallScript = fall.getComponent(MagicLightening);
-        fall.parent = this.node;
-        fall.position = pos;
-        fall.zIndex = IndexZ.FLOOR;
-        fallScript.isTrigger = isTrigger;
-        if(!fallScript.isTrigger){
-            fallScript.fall(needPrepare,showArea,damagePoint);
-        }
+    private addLighteningFall(pos: cc.Vec3, isTrigger: boolean, needPrepare: boolean, showArea: boolean, damagePoint?: number) {
+        this.buildingManager.addLighteningFall(pos,isTrigger,needPrepare,showArea,damagePoint);
     }
-    private addVenom(pos: cc.Vec3) {
-        let venom = cc.instantiate(this.venom);
-        venom.getComponent(SlimeVenom).player = this.player;
-        venom.getComponent(SlimeVenom).isForever = true;
-        venom.parent = this.node;
-        venom.position = pos;
-        venom.zIndex = IndexZ.ACTOR;
-    }
+
     /**冰刺 */
-    addIceThron(pos: cc.Vec3, isAuto: boolean) {
+    public addIceThron(pos: cc.Vec3, isAuto: boolean) {
         if (!this.iceThron) {
             return;
         }
@@ -749,7 +276,7 @@ export default class Dungeon extends cc.Component {
 
     }
     /**树根缠绕 */
-    addTwineGrass(pos: cc.Vec3, isAuto: boolean) {
+    public addTwineGrass(pos: cc.Vec3, isAuto: boolean) {
         if (!this.dryadGrass) {
             return;
         }
@@ -818,116 +345,21 @@ export default class Dungeon extends cc.Component {
     }
     /**添加怪物 */
     addMonsterFromData(resName: string, i: number, j: number) {
-        this.addMonster(this.monsterManager.getMonster(resName, this)
-            , cc.v3(i, j));
+        this.monsterManager.addMonsterFromData(resName, cc.v3(i, j), this);
     }
 
     private addBossSlime(type: number, index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        this.bosses.push(this.monsterManager.getSlime(this, index.clone(), type));
+        this.monsterManager.addBossSlime(type, index, this);
     }
-    private addBossCaptain(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        this.bosses.push(this.monsterManager.getCaptain(this, index.clone()));
-    }
-    private addBossWarMachine(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        let boss = this.monsterManager.getWarMachine(this, index.clone());
-        this.bosses.push(boss);
-        this.scheduleOnce(() => {
-            boss.showBoss();
-        }, 3.5);
-    }
-    private addBossDryad(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        let boss = this.monsterManager.getDryad(this, index.clone());
-        this.bosses.push(boss);
-        this.scheduleOnce(() => {
-            boss.showBoss();
-        }, 2);
-    }
-    private addBossDragon(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        let boss = this.monsterManager.getDragon(this, index.clone());
-        this.bosses.push(boss);
-        this.scheduleOnce(() => {
-            boss.showBoss();
-        }, 2);
-    }
-    private addBossSphinx(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        let boss = this.monsterManager.getSphinx(this, index.clone());
-        this.bosses.push(boss);
-        this.scheduleOnce(() => {
-            boss.showBoss();
-        }, 2);
-    }
-    private addBossRah(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        let boss = this.monsterManager.getRah(this, index.clone());
-        this.bosses.push(boss);
-        this.scheduleOnce(() => {
-            boss.showBoss();
-        }, 2);
-    }
-    private addBossIceDemon(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        let boss = this.monsterManager.getIceDemon(this, index.clone());
-        this.bosses.push(boss);
-        this.scheduleOnce(() => {
-            boss.showBoss();
-        }, 2);
-    }
-    private addBossEvilEye(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
-        let boss = this.monsterManager.getEvilEye(this, index.clone());
-        this.bosses.push(boss);
-        this.scheduleOnce(() => {
-            boss.showBoss();
-        }, 2);
-    }
-    private addBossKraken(index: cc.Vec3) {
-        if (!this.bosses) {
-            return;
-        }
+
+    public shakeForKraken() {
         this.dungeonStyleManager.changeTopWalls(false);
         this.isZoomCamera = true;
-        let boss = this.monsterManager.getKraken(this, index.clone());
-        this.bosses.push(boss);
         this.anim.playAdditive('DungeonShakeOnce');
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2);
+    }
 
-        this.scheduleOnce(() => {
-            boss.showBoss();
-            // this.anim.play('DungeonWave');
-        }, 3.5);
-    }
-    private addMonster(monster: Monster, pos: cc.Vec3) {
-        //激活
-        monster.node.active = true;
-        monster.pos = pos;
-        monster.node.position = Dungeon.getPosInMap(pos);
-        this.monsters.push(monster);
-    }
     //获取地图里下标的坐标
     static getPosInMap(pos: cc.Vec3) {
         let x = Dungeon.MAPX + pos.x * Dungeon.TILE_SIZE;
@@ -965,9 +397,9 @@ export default class Dungeon extends cc.Component {
     }
 
     start() {
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
-        },0.1)
+        }, 0.1)
         for (let door of Logic.mapManager.getCurrentRoom().doors) {
             this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false, door.isHidden);
         }
@@ -986,12 +418,12 @@ export default class Dungeon extends cc.Component {
     }
     getMonsterAliveNum(): number {
         let count = 0;
-        for (let monster of this.monsters) {
+        for (let monster of this.monsterManager.monsterList) {
             if (monster.isDied) {
                 count++;
             }
         }
-        return this.monsters.length - count;
+        return this.monsterManager.monsterList.length - count;
     }
     /**检查房间是否清理 */
     checkRoomClear() {
@@ -999,17 +431,17 @@ export default class Dungeon extends cc.Component {
         //检查怪物是否清理
         let count = this.getMonsterAliveNum();
         isClear = count <= 0;
-        if (this.bosses.length > 0) {
+        if (this.monsterManager.bossList.length > 0) {
             count = 0;
-            for (let boss of this.bosses) {
+            for (let boss of this.monsterManager.bossList) {
                 if (boss.isDied) {
                     count++;
                 }
             }
-            isClear = count >= this.bosses.length;
+            isClear = count >= this.monsterManager.bossList.length;
         }
         //检查踏板是否触发
-        for (let footboard of this.footboards) {
+        for (let footboard of this.buildingManager.footboards) {
             if (!footboard.isOpen) {
                 isClear = false;
             }
@@ -1019,9 +451,6 @@ export default class Dungeon extends cc.Component {
             isClear = true;
         }
         if (isClear) {
-            if (this.portal) {
-                this.portal.openGate();
-            }
             //第一层的开始房间出口不开放
             let isStartRoom = Logic.mapManager.getCurrentRoom().roomType.isEqual(RoomType.START_ROOM);
             if (this.dungeonStyleManager && this.dungeonStyleManager.exitdoor
@@ -1067,7 +496,7 @@ export default class Dungeon extends cc.Component {
         return out;
     }
     checkMonstersPos() {
-        for (let monster of this.monsters) {
+        for (let monster of this.monsterManager.monsterList) {
             if (monster.isDied) {
                 return;
             }
@@ -1094,7 +523,6 @@ export default class Dungeon extends cc.Component {
     update(dt) {
         if (this.isTimeDelay(dt)) {
             this.checkPlayerPos(dt);
-            // this.checkMonstersPos();
         }
         if (this.isCheckTimeDelay(dt)) {
             this.checkRoomClear();

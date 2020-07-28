@@ -1,16 +1,10 @@
 import Dungeon from "../Dungeon";
 import { EventHelper } from "../EventHelper";
-import Player from "../Player";
-import EquipmentManager from "../Manager/EquipmentManager";
 import Logic from "../Logic";
-import ChestData from "../Data/ChestData";
 import Building from "./Building";
-import RectDungeon from "../Rect/RectDungeon";
 import AudioPlayer from "../Utils/AudioPlayer";
-import RoomType from "../Rect/RoomType";
 import { ColliderTag } from "../Actor/ColliderTag";
 import IndexZ from "../Utils/IndexZ";
-
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,8 +26,6 @@ export default class Chest extends Building {
     @property(cc.SpriteFrame)
     closeSpriteFrame: cc.SpriteFrame = null;
     private sprite: cc.Node;
-    private timeDelay = 0;
-    data: ChestData = new ChestData();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -68,9 +60,9 @@ export default class Chest extends Building {
         }
     }
 
-    setPos(pos: cc.Vec3) {
-        this.data.pos = pos;
-        this.node.position = Dungeon.getPosInMap(pos);
+    seDefaultPos(defaultPos: cc.Vec3) {
+        this.data.defaultPos = defaultPos;
+        this.node.position = Dungeon.getPosInMap(defaultPos);
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
 
@@ -98,26 +90,22 @@ export default class Chest extends Building {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);
-                        dungeon.addEquipment(Logic.getRandomEquipType(), this.data.pos, null, this.data.quality);
+                        dungeon.addEquipment(Logic.getRandomEquipType(), this.data.defaultPos, null, this.data.quality);
                     }
                 }
             }));
         this.sprite.runAction(action);
-        let currchests = Logic.mapManager.getCurrentMapChests();
+        let saveChest = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
         let newlist = new Array();
         let needNew = true;
-        if (currchests) {
-            for (let tempchest of currchests) {
-                if (tempchest.pos.equals(this.data.pos)) {
-                    tempchest.isOpen = this.data.isOpen;
-                    tempchest.quality = this.data.quality;
-                    needNew = false;
-                }
-            }
+        if (saveChest) {
+            saveChest.isOpen = this.data.isOpen;
+            saveChest.quality = this.data.quality;
+            needNew = false;
         }
         if (needNew) {
             newlist.push(this.data)
-            Logic.mapManager.setCurrentChestsArr(newlist);
+            Logic.mapManager.setCurrentBuildingData(this.data);
         }
     }
 

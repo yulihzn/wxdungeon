@@ -1,11 +1,9 @@
 import PlayerData from "./PlayerData";
 import RectDungeon from "../Rect/RectDungeon";
-import BoxData from "./BoxData";
-import ShopTableData from "./ShopTableData";
-import ChestData from "./ChestData";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
 import TalentData from "./TalentData";
+import BuildingData from "./BuildingData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -22,12 +20,8 @@ export default class ProfileData {
     rectDungeon: RectDungeon = new RectDungeon();
     //当前房间下标 默认1-1
     currentPos: cc.Vec3 = cc.v3(1,1);
-    //根据下标保存普通箱子的位置
-    boxes: { [key: string]: BoxData[] } = {};
-    //根据下标保存商店状态
-    shopTables: { [key: string]: ShopTableData[] } = {};
-    //根据下标保存箱子信息
-    chests:{[key:string]:ChestData[]} = {};
+    //根据下标保存建筑信息
+    buildings: { [key: string]: { [key: string]: BuildingData} } = {};
     //根据下标+uuid保存地上的装备
     equipments:{[key:string]:EquipmentData[]} = {};
     //根据下标+uuid报错地上的物品
@@ -49,9 +43,7 @@ export default class ProfileData {
         this.playerItemList = new Array();
         this.rectDungeon = new RectDungeon();
         this.currentPos = cc.v3(1,1);
-        this.boxes = {};
-        this.shopTables = {};
-        this.chests = {};
+        this.buildings = {};
         this.equipments = {};
         this.items = {};
         this.level = 0;

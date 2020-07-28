@@ -17,17 +17,11 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class DecorationFloor extends Building {
 
-    pos:cc.Vec3;
-
     changeRes(resName:string){
         let sprite = this.getComponent(cc.Sprite);
         sprite.spriteFrame = Logic.spriteFrames[resName];
         this.node.width = sprite.spriteFrame.getRect().width;
         this.node.height = sprite.spriteFrame.getRect().height;
 
-    }
-    setPos(pos:cc.Vec3){
-        this.pos = pos;
-        this.node.position = Dungeon.getPosInMap(pos);
     }
 }

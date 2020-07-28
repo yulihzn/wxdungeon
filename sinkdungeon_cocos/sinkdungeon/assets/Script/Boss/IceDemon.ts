@@ -1,12 +1,7 @@
-import CaptainSword from "./CaptainSword";
-import HealthBar from "../HealthBar";
-import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
-import Logic from "../Logic";
 import Player from "../Player";
 import { EventHelper } from "../EventHelper";
 import Shooter from "../Shooter";
-import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";

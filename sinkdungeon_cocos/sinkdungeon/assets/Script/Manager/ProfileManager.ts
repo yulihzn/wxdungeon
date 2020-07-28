@@ -1,10 +1,8 @@
-import BoxData from "../Data/BoxData";
-import ShopTableData from "../Data/ShopTableData";
-import ChestData from "../Data/ChestData";
 import EquipmentData from "../Data/EquipmentData";
 import ItemData from "../Data/ItemData";
 import ProfileData from "../Data/ProfileData";
 import TalentData from "../Data/TalentData";
+import BuildingData from "../Data/BuildingData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -58,8 +56,8 @@ export default class ProfileManager{
             this.hasSaveData = false;
             return;
         }
-        if(!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeon||!data.currentPos||!data.shopTables
-        ||!data.boxes||!data.chests||!data.equipments||!data.items||!data.talentList){
+        if(!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeon||!data.currentPos
+        ||!data.buildings||!data.equipments||!data.items||!data.talentList){
             this.hasSaveData = false;
             return;
         }
@@ -89,36 +87,16 @@ export default class ProfileManager{
         this.data.rectDungeon = this.data.rectDungeon.buildMapFromSave(data.rectDungeon);
         //加载当前位置
         this.data.currentPos = data.currentPos?cc.v3(data.currentPos.x,data.currentPos.y):cc.v3(0,0);
-        //加载箱子
-        for(let key in data.boxes){
-           let list = data.boxes[key];
-           this.data.boxes[key] = new Array();
-           for(let i = 0;i < list.length;i++){
-               let box = new BoxData();
-               box.valueCopy(list[i]);
-               this.data.boxes[key][i] = box;
+        //加载建筑
+        for(let key1 in data.buildings){
+           let map = data.buildings[key1];
+           this.data.buildings[key1] = {};
+           for(let key2 in map){
+            let data = new BuildingData();
+            data.valueCopy(map[key2]);
+            this.data.buildings[key1][key2] = data;
            }
         }
-        //加载商店
-        for(let key in data.shopTables){
-            let list = data.shopTables[key];
-            this.data.shopTables[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let tables = new ShopTableData();
-                tables.valueCopy(list[i]);
-                this.data.shopTables[key][i] = tables;
-            }
-         }
-         //加载宝箱
-         for(let key in data.chests){
-            let list = data.chests[key];
-            this.data.chests[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let chest = new ChestData();
-                chest.valueCopy(list[i]);
-                this.data.chests[key][i] = chest;
-            }
-         }
          //加载地上装备
          for(let key in data.equipments){
             let list = data.equipments[key];

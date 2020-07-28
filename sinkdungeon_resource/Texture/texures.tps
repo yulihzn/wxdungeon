@@ -666,9 +666,9 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">building/car.png</key>
+            <key type="filename">building/car0.png</key>
             <key type="filename">building/car1.png</key>
-            <key type="filename">building/car2.png</key>
-            <key type="filename">building/car3.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

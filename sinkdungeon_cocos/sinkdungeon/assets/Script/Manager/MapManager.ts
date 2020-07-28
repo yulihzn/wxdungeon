@@ -2,14 +2,12 @@ import MapData from "../Data/MapData";
 import RectRoom from "../Rect/RectRoom";
 import RectDungeon from "../Rect/RectDungeon";
 import Logic from "../Logic";
-import BoxData from "../Data/BoxData";
 import EquipmentData from "../Data/EquipmentData";
-import ShopTableData from "../Data/ShopTableData";
-import ChestData from "../Data/ChestData";
 import ItemData from "../Data/ItemData";
 import Random4Save from "../Utils/Random4Save";
 import RoomType from "../Rect/RoomType";
 import LevelData from "../Data/LevelData";
+import BuildingData from "../Data/BuildingData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,12 +27,8 @@ export default class MapManager {
     rectDungeon: RectDungeon = null;
     //当前房间下标
     currentPos: cc.Vec3 = cc.v3(0, 0);
-    //根据下标保存普通箱子的位置
-    boxes: { [key: string]: BoxData[] } = {};
-    //根据下标保存商店状态
-    shopTables: { [key: string]: ShopTableData[] } = {};
-    //根据下标保存箱子信息
-    chests: { [key: string]: ChestData[] } = {};
+    //根据下标保存建筑信息
+    buildings: { [key: string]: { [key: string]: BuildingData} } = {};
     //根据下标+uuid保存地上的装备
     equipments: { [key: string]: EquipmentData[] } = {};
     //根据下标+uuid保存地上的物品
@@ -87,12 +81,9 @@ export default class MapManager {
         }
         this.rectDungeon.buildMapFromSave(Logic.profileManager.data.rectDungeon);
         this.currentPos = Logic.profileManager.data.currentPos.clone();
-        this.boxes = Logic.profileManager.data.boxes;
-        this.shopTables = Logic.profileManager.data.shopTables;
-        this.chests = Logic.profileManager.data.chests;
+        this.buildings = Logic.profileManager.data.buildings;
         this.equipments = Logic.profileManager.data.equipments;
         this.items = Logic.profileManager.data.items;
-        let levelData = this.rectDungeon.levelData;
         this.rectDungeon.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
         cc.log('load');
         cc.log(this.rectDungeon.getDisPlay());
@@ -109,9 +100,7 @@ export default class MapManager {
         //修改当前房间和四周房间状态为发现
         this.rectDungeon.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
         //清空缓存的箱子商店宝箱装备物品数据
-        this.boxes = {};
-        this.shopTables = {};
-        this.chests = {};
+        this.buildings = {};
         this.equipments = {};
         this.items = {};
         // let oillake:OilLake = new OilLake();
@@ -157,33 +146,25 @@ export default class MapManager {
     public getCurrentRoom(): RectRoom {
         return this.rectDungeon.map[this.currentPos.x][this.currentPos.y];
     }
-    /** 获取当前房间箱子*/
-    public getCurrentMapBoxes(): BoxData[] {
-        return this.boxes[`x=${this.currentPos.x}y=${this.currentPos.y}`];
+    /** 获取当前房间指定建筑*/
+    public getCurrentMapBuilding(defaultPos:cc.Vec3): BuildingData {
+        let buildings = this.buildings[`x=${this.currentPos.x}y=${this.currentPos.y}`];
+        if(buildings){
+            return buildings[`x=${defaultPos.x}y=${defaultPos.y}`];
+        }
+        return null;
     }
-    /** 设置当前房间箱子*/
-    public setCurrentBoxesArr(arr: BoxData[]) {
-        this.boxes[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profileManager.data.boxes = this.boxes;
+    /** 设置当前房间建筑*/
+    public setCurrentBuildingData(data: BuildingData) {
+        let buildings = this.buildings[`x=${this.currentPos.x}y=${this.currentPos.y}`];
+        if(!buildings){
+            buildings = {}
+            this.buildings[`x=${this.currentPos.x}y=${this.currentPos.y}`] = buildings;
+        }
+        buildings[`x=${data.defaultPos.x}y=${data.defaultPos.y}`] = data;
+        Logic.profileManager.data.buildings = this.buildings;
     }
-    /** 获取当前房间商店*/
-    public getCurrentMapShopTables(): ShopTableData[] {
-        return this.shopTables[`x=${this.currentPos.x}y=${this.currentPos.y}`];
-    }
-    /** 设置当前房间商店*/
-    public setCurrentShopTableArr(arr: ShopTableData[]) {
-        this.shopTables[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profileManager.data.shopTables = this.shopTables;
-    }
-    /** 获取当前房间箱子*/
-    public getCurrentMapChests(): ChestData[] {
-        return this.chests[`x=${this.currentPos.x}y=${this.currentPos.y}`];
-    }
-    /** 设置当前房间箱子*/
-    public setCurrentChestsArr(arr: ChestData[]) {
-        this.chests[`x=${this.currentPos.x}y=${this.currentPos.y}`] = arr;
-        Logic.profileManager.data.chests = this.chests;
-    }
+    
     /** 获取当前房间装备*/
     public getCurrentMapEquipments(): EquipmentData[] {
         return this.equipments[`x=${this.currentPos.x}y=${this.currentPos.y}`];

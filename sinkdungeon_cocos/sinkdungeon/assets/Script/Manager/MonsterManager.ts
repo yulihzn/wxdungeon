@@ -1,20 +1,12 @@
 import Monster from "../Monster";
 import MonsterData from "../Data/MonsterData";
-import Kraken from "../Boss/Kraken";
 import Dungeon from "../Dungeon";
-import Captain from "../Boss/Captain";
 import Logic from "../Logic";
 import Slime from "../Boss/Slime";
-import WarMachine from "../Boss/WarMachine";
-import Rah from "../Boss/Rah";
 import Random from "../Utils/Random";
-import IceDemon from "../Boss/IceDemon";
-import EvilEye from "../Boss/EvilEye";
-import Dryad from "../Boss/Dryad";
-import Sphinx from "../Boss/Sphinx";
-import Dragon from "../Boss/Dragon";
 import MonsterRandomAttr from "./MonsterRandomAttr";
 import RoomType from "../Rect/RoomType";
+import Boss from "../Boss/Boss";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -100,8 +92,150 @@ export default class MonsterManager extends cc.Component {
     readonly maxHealth08 = 600;
     readonly maxHealth09 = 800;
 
+    private monsters: Monster[] = new Array();//房间怪物列表
+    private bosses: Boss[] = new Array();
+    get monsterList() {
+        return this.monsters;
+    }
+    get bossList() {
+        return this.bosses;
+    }
     monsterRandomAttr: MonsterRandomAttr = new MonsterRandomAttr;
-    onLoad() {
+
+    /**添加怪物 */
+    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon) {
+        this.addMonster(this.getMonster(resName, dungeon), indexPos);
+    }
+    public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+        if (mapDataStr == 'a0') {
+            this.addMonsterFromData(MonsterManager.MONSTER_ZEBRA, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'a1') {
+            this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'a2') {
+            this.addMonsterFromData(MonsterManager.MONSTER_KILLER, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'a3') {
+            this.addMonsterFromData(MonsterManager.MONSTER_ZOOMBIE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'a4') {
+            this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'a5') {
+            this.addMonsterFromData(MonsterManager.MONSTER_GIRAFFE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'b0') {
+            this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'b1') {
+            this.addMonsterFromData(MonsterManager.MONSTER_SAILOR, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'b2') {
+            this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'b3') {
+            this.addMonsterFromData(MonsterManager.MONSTER_FISH, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'b4') {
+            this.addMonsterFromData(MonsterManager.MONSTER_BOOMER, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'b5') {
+            this.addMonsterFromData(MonsterManager.MONSTER_STRONGSAILOR, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'c0') {
+            this.addMonsterFromData(MonsterManager.MONSTER_SLIME, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'c1') {
+            this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'c2') {
+            this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'c3') {
+            this.addMonsterFromData(MonsterManager.MONSTER_SNAKE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'c4') {
+            this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'c5') {
+            this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'c6') {
+            this.addMonsterFromData(MonsterManager.MONSTER_HIPPO, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'd0') {
+            this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'd1') {
+            this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'd2') {
+            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
+            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
+            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
+            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
+            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'd3') {
+            this.addMonsterFromData(MonsterManager.MONSTER_CROCODILE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'd4') {
+            this.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'e0') {
+            this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'e1') {
+            this.addMonsterFromData(MonsterManager.MONSTER_DEMON, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'e2') {
+            this.addMonsterFromData(MonsterManager.MONSTER_WARLOCK, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'e3') {
+            this.addMonsterFromData(MonsterManager.MONSTER_SPIDER, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'e4') {
+            this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'f0') {
+            this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'g0') {
+            this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'z0') {
+            this.addBoss(this.iceDemon,'iconboss000',this.maxHealth00,0,2,indexPos,dungeon);
+        }
+        else if (mapDataStr == 'z1') {
+            this.addBoss(this.warmachine,'iconboss001',this.maxHealth01,2,3.5,indexPos,dungeon);
+        }
+        else if (mapDataStr == 'z2') {
+            this.addBoss(this.captain,'iconboss002',this.maxHealth02,2,0,indexPos,dungeon);
+        }
+        else if (mapDataStr == 'z3') {
+            dungeon.shakeForKraken();
+            this.addBoss(this.kraken,'iconboss003',this.maxHealth03,2,3.5
+            ,cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Dungeon.HEIGHT_SIZE + 4),dungeon);
+        }
+        else if (mapDataStr == 'z4') {
+            this.addBossSlime(0, indexPos, dungeon);
+        }
+        else if (mapDataStr == 'z5') {
+            this.addBoss(this.dryad,'iconboss005',this.maxHealth05,2,2,indexPos,dungeon);
+        }
+        else if (mapDataStr == 'z6') {
+            this.addBoss(this.rah,'iconboss006',this.maxHealth06,2,2,indexPos,dungeon);
+        }
+        else if (mapDataStr == 'z7') {
+            this.addBoss(this.sphinx,'iconboss007',this.maxHealth07,2,2,indexPos,dungeon);
+        }
+        else if (mapDataStr == 'z8') {
+            this.addBoss(this.evilEye,'iconboss008',this.maxHealth08,2,2,indexPos,dungeon);
+        }
+        else if (mapDataStr == 'z9') {
+            this.addBoss(this.dragon,'iconboss009',this.maxHealth09,5,2,indexPos,dungeon);
+        }
     }
     /**
      * 
@@ -109,7 +243,7 @@ export default class MonsterManager extends cc.Component {
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    getMonster(resName: string, dungeon: Dungeon): Monster {
+    private getMonster(resName: string, dungeon: Dungeon): Monster {
         let monsterPrefab: cc.Node = null;
         monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;
@@ -195,156 +329,45 @@ export default class MonsterManager extends cc.Component {
 
         return monster;
     }
-    getIceDemon(dungeon: Dungeon, posIndex: cc.Vec3): IceDemon {
-        let icePrefab: cc.Node = null;
-        icePrefab = cc.instantiate(this.iceDemon);
-        icePrefab.active = false;
-        icePrefab.parent = dungeon.node;
-        let iceDemon = icePrefab.getComponent(IceDemon);
-        iceDemon.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss000";
-        data.updateHA(this.maxHealth00, this.maxHealth00, 0);
-        iceDemon.data = data;
-        iceDemon.transportBoss(posIndex.x, posIndex.y);
-        iceDemon.healthBar = dungeon.bossHealthBar;
-        iceDemon.node.active = true;
-        return iceDemon;
+    private addMonster(monster: Monster, pos: cc.Vec3) {
+        //激活
+        monster.node.active = true;
+        monster.pos = pos;
+        monster.node.position = Dungeon.getPosInMap(pos);
+        this.monsterList.push(monster);
     }
-    getEvilEye(dungeon: Dungeon, posIndex: cc.Vec3): EvilEye {
-        let evilEyePrefab: cc.Node = null;
-        evilEyePrefab = cc.instantiate(this.evilEye);
-        evilEyePrefab.active = false;
-        evilEyePrefab.parent = dungeon.node;
-        let evil = evilEyePrefab.getComponent(EvilEye);
-        evil.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss008";
-        data.updateHA(this.maxHealth08, this.maxHealth08, 0);
-        evil.data = data;
-        evil.transportBoss(posIndex.x, posIndex.y);
-        evil.healthBar = dungeon.bossHealthBar;
-        evil.node.active = true;
-        return evil;
+    public addBossSlime(type: number, index: cc.Vec3, dungeon: Dungeon) {
+        if (!this.bosses) {
+            return;
+        }
+        this.bosses.push(this.getSlime(dungeon, index.clone(), type));
     }
-    getWarMachine(dungeon: Dungeon, posIndex: cc.Vec3): WarMachine {
-        let machinePrefab: cc.Node = null;
-        machinePrefab = cc.instantiate(this.warmachine);
-        machinePrefab.active = false;
-        machinePrefab.parent = dungeon.node;
-        let machine = machinePrefab.getComponent(WarMachine);
-        machine.dungeon = dungeon;
+   
+    private addBoss(prefabAsset:cc.Prefab,resName:string,maxHealth:number,attackPoint:number,delayTime:number,indexPos: cc.Vec3,dungeon: Dungeon){
+        let prefab = cc.instantiate(prefabAsset);
+        prefab.active = false;
+        prefab.parent = dungeon.node;
+        let boss = prefab.getComponent(Boss);
+        boss.dungeon = dungeon;
         let data = new MonsterData();
-        data.resName = "iconboss001";
-        data.updateHA(this.maxHealth01, this.maxHealth01, 2);
-        machine.data = data;
-        machine.transportBoss(posIndex.x, posIndex.y);
-        machine.healthBar = dungeon.bossHealthBar;
-        machine.node.active = true;
-        return machine;
+        data.resName = resName;
+        data.updateHA(maxHealth, maxHealth, attackPoint);
+        boss.data = data;
+        boss.transportBoss(indexPos.x, indexPos.y);
+        boss.healthBar = dungeon.bossHealthBar;
+        boss.node.active = true;
+        this.bosses.push(boss);
+        this.scheduleOnce(() => {
+            boss.showBoss();
+        }, delayTime);
     }
-    getDryad(dungeon: Dungeon, posIndex: cc.Vec3): Dryad {
-        let dryadPrefab: cc.Node = null;
-        dryadPrefab = cc.instantiate(this.dryad);
-        dryadPrefab.active = false;
-        dryadPrefab.parent = dungeon.node;
-        let dryad = dryadPrefab.getComponent(Dryad);
-        dryad.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss005";
-        data.updateHA(this.maxHealth05, this.maxHealth05, 2);
-        dryad.data = data;
-        dryad.transportBoss(posIndex.x, posIndex.y);
-        dryad.healthBar = dungeon.bossHealthBar;
-        dryad.node.active = true;
-        return dryad;
-    }
-    getSphinx(dungeon: Dungeon, posIndex: cc.Vec3): Sphinx {
-        let sphinxPrefab: cc.Node = null;
-        sphinxPrefab = cc.instantiate(this.sphinx);
-        sphinxPrefab.active = false;
-        sphinxPrefab.parent = dungeon.node;
-        let sphinx = sphinxPrefab.getComponent(Sphinx);
-        sphinx.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss007";
-        data.updateHA(this.maxHealth07, this.maxHealth07, 2);
-        sphinx.data = data;
-        sphinx.transportBoss(posIndex.x, posIndex.y);
-        sphinx.healthBar = dungeon.bossHealthBar;
-        sphinx.node.active = true;
-        return sphinx;
-    }
-    getDragon(dungeon: Dungeon, posIndex: cc.Vec3): Dragon {
-        let dragonPrefab: cc.Node = null;
-        dragonPrefab = cc.instantiate(this.dragon);
-        dragonPrefab.active = false;
-        dragonPrefab.parent = dungeon.node;
-        let dragon = dragonPrefab.getComponent(Dragon);
-        dragon.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss009";
-        data.updateHA(this.maxHealth09, this.maxHealth09, 5);
-        dragon.data = data;
-        dragon.transportBoss(posIndex.x, posIndex.y);
-        dragon.healthBar = dungeon.bossHealthBar;
-        dragon.node.active = true;
-        return dragon;
-    }
-    getRah(dungeon: Dungeon, posIndex: cc.Vec3): Rah {
-        let rahPrefab: cc.Node = null;
-        rahPrefab = cc.instantiate(this.rah);
-        rahPrefab.active = false;
-        rahPrefab.parent = dungeon.node;
-        let rah = rahPrefab.getComponent(Rah);
-        rah.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss006";
-        data.updateHA(this.maxHealth06, this.maxHealth06, 0);
-        rah.data = data;
-        rah.transportBoss(posIndex.x, posIndex.y);
-        rah.healthBar = dungeon.bossHealthBar;
-        rah.node.active = true;
-        return rah;
-    }
-    getKraken(dungeon: Dungeon, posIndex: cc.Vec3): Kraken {
-        let krakenPrefab: cc.Node = null;
-        krakenPrefab = cc.instantiate(this.kraken);
-        krakenPrefab.active = false;
-        krakenPrefab.parent = dungeon.node;
-        let kraken = krakenPrefab.getComponent(Kraken);
-        kraken.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss003";
-        data.updateHA(this.maxHealth03, this.maxHealth03, 2);
-        kraken.data = data;
-        kraken.transportBoss(Math.floor(Dungeon.WIDTH_SIZE / 2), Dungeon.HEIGHT_SIZE + 4);
-        kraken.healthBar = dungeon.bossHealthBar;
-        kraken.node.active = true;
-        return kraken;
-    }
-    getCaptain(dungeon: Dungeon, posIndex: cc.Vec3): Captain {
-        let captainPrefab: cc.Node = null;
-        captainPrefab = cc.instantiate(this.captain);
-        captainPrefab.active = false;
-        captainPrefab.parent = dungeon.node;
-        let captain = captainPrefab.getComponent(Captain);
-        captain.dungeon = dungeon;
-        let data = new MonsterData();
-        data.resName = "iconboss002";
-        data.updateHA(this.maxHealth02, this.maxHealth02, 2);
-        captain.data = data;
-        captain.transportBoss(posIndex.x, posIndex.y);
-        captain.healthBar = dungeon.bossHealthBar;
-        captain.node.active = true;
-        return captain;
-    }
-    getSlime(dungeon: Dungeon, posIndex: cc.Vec3, type: number): Slime {
-        let slimePrefab: cc.Node = null;
-        slimePrefab = cc.instantiate(this.slime);
-        slimePrefab.active = false;
-        slimePrefab.parent = dungeon.node;
-        let slime = slimePrefab.getComponent(Slime);
+   
+    private getSlime(dungeon: Dungeon, posIndex: cc.Vec3, type: number): Slime {
+        let prefab: cc.Node = null;
+        prefab = cc.instantiate(this.slime);
+        prefab.active = false;
+        prefab.parent = dungeon.node;
+        let slime = prefab.getComponent(Slime);
         slime.dungeon = dungeon;
         let data = new MonsterData();
         data.resName = "iconboss004";
@@ -365,6 +388,7 @@ export default class MonsterManager extends cc.Component {
         slime.transportBoss(posIndex.x, posIndex.y);
         slime.healthBar = dungeon.bossHealthBar;
         slime.node.active = true;
+        this.bosses.push(slime);
         return slime;
     }
     addRandomMonsters(dungeon: Dungeon) {

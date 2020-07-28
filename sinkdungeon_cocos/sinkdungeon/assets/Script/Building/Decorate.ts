@@ -1,5 +1,4 @@
 import Dungeon from "../Dungeon";
-import BoxData from "../Data/BoxData";
 import Logic from "../Logic";
 import Building from "./Building";
 import { EventHelper } from "../EventHelper";
@@ -7,6 +6,8 @@ import Random from "../Utils/Random";
 import AudioPlayer from "../Utils/AudioPlayer";
 import Item from "../Item/Item";
 import IndexZ from "../Utils/IndexZ";
+import BuildingData from "../Data/BuildingData";
+import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,7 +29,6 @@ export default class Decorate extends Building {
     static readonly BOXBREAKABLE = 2;
     // LIFE-CYCLE CALLBACKS:
     private timeDelay = 0;
-    private isBreaking = false;
     decorateType = 0;
     resName = "decorate000";
     sprite: cc.Sprite;
@@ -37,8 +37,6 @@ export default class Decorate extends Building {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
 
     }
-    data: BoxData = new BoxData();
-
     start() {
         switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: this.resName = `decorate000${this.decorateType}`; break;
@@ -62,9 +60,9 @@ export default class Decorate extends Building {
         this.sprite.spriteFrame = spriteFrame;
     }
 
-    setPos(pos: cc.Vec3) {
-        this.data.pos = pos;
-        this.node.position = Dungeon.getPosInMap(this.data.pos);
+    setDefaultPos(defaultPos: cc.Vec3) {
+        this.data.defaultPos = defaultPos;
+        this.node.position = Dungeon.getPosInMap(defaultPos);
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     //Animation
@@ -77,11 +75,11 @@ export default class Decorate extends Building {
         }
         this.mat.setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
     }
-    breakBox() {
-        if (this.isBreaking) {
+    takeDamage(damage: DamageData):boolean{
+        if (this.data.currentHealth< 1) {
             return;
         }
-        this.isBreaking = true;
+        this.data.currentHealth = 0;
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         this.sprite.node.runAction(cc.sequence(
              cc.callFunc(() => {
@@ -108,30 +106,25 @@ export default class Decorate extends Building {
                 } else if (rand >= 0.8 && rand < 0.825) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
                 }
-                this.data.status = 1;
             }), cc.delayTime(10), cc.callFunc(() => {
                 this.reset();
-            })))
+            })));
+        return true;
     }
+    
     reset() {
         this.node.position = Dungeon.getPosInMap(cc.v3(-10, -10));
-        this.isBreaking = false;
+        this.data.currentHealth = this.data.maxHealth;
     }
 
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.2) {
-            this.data.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.position = this.node.position;
-            let currboxes = Logic.mapManager.getCurrentMapBoxes();
-            if (currboxes) {
-                for (let tempbox of currboxes) {
-                    if (tempbox.defaultPos.equals(this.data.defaultPos)) {
-                        tempbox.pos = this.data.pos;
-                        tempbox.status = this.data.status;
-                        tempbox.position = this.data.position;
-                    }
-                }
+            let saveDecorate = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
+            if (saveDecorate) {
+                saveDecorate.currentHealth = this.data.currentHealth;
+                saveDecorate.position = this.data.position;
             }
             this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
         }

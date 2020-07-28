@@ -20,6 +20,7 @@ import PlayerAvatar from "./PlayerAvatar";
 import EquipmentData from "./Data/EquipmentData";
 import InventoryManager from "./Manager/InventoryManager";
 import Equipment from "./Equipment/Equipment";
+import HitBuilding from "./Building/HitBuilding";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -395,7 +396,7 @@ export default class MeleeWeapon extends cc.Component {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         if (this.dungeon) {
-            for (let monster of this.dungeon.monsters) {
+            for (let monster of this.dungeon.monsterManager.monsterList) {
                 let dis = Logic.getDistance(this.player.node.position, monster.node.position);
                 if (dis < 200 && dis < olddis && !monster.isDied) {
                     olddis = dis;
@@ -406,7 +407,7 @@ export default class MeleeWeapon extends cc.Component {
             }
 
             if (pos.equals(cc.Vec3.ZERO)) {
-                for (let boss of this.dungeon.bosses) {
+                for (let boss of this.dungeon.monsterManager.bossList) {
                     let dis = Logic.getDistance(this.player.node.position, boss.node.position);
                     if (dis < 200 && dis < olddis && !boss.isDied) {
                         olddis = dis;
@@ -519,9 +520,14 @@ export default class MeleeWeapon extends cc.Component {
             box.breakBox();
         }
         let decorate = attackTarget.node.getComponent(Decorate);
-        if (decorate && decorate.data.status == 0) {
+        if (decorate) {
             attackSuccess = true;
-            decorate.breakBox();
+            decorate.takeDamage(damage)
+        }
+        let hitBuilding = attackTarget.node.getComponent(HitBuilding);
+        if (hitBuilding) {
+            attackSuccess = true;
+            hitBuilding.takeDamage(damage);
         }
         //生命汲取,内置1s cd
         if (damageSuccess) {
