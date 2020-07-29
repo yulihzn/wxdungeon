@@ -20,7 +20,7 @@ export default class BrightnessBar extends cc.Component {
     colorType:number;
     static readonly SKIN = 0;
     static readonly SKIN_COLORS = ['#ffe8d2','#ffe1c5','#ebcaac','#e0c1a4','#ccad8f','#ad9075'
-    ,'#997be5','#664e38','#473524','#291404','#1f1711']
+    ,'#997E5B','#664e38','#473524','#291404','#1f1711']
     onLoad() {
     }
     init(){

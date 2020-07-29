@@ -14,6 +14,7 @@ import ProfileManager from "./Manager/ProfileManager";
 import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
 import WorldLoader from "./Map/WorldLoader";
+import ProfessionData from "./Data/ProfessionData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,6 +50,8 @@ export default class Logic extends cc.Component {
     static bullets: { [key: string]: BulletData } = null;
     //物品json
     static items: { [key: string]: ItemData } = null;
+    //职业json
+    static professionList:ProfessionData[] = [];
 
     static level = 0;
     static chapterIndex = 0;

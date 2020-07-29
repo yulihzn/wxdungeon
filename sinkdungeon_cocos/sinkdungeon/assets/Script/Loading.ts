@@ -3,6 +3,7 @@ import TalentTree from "./UI/TalentTree";
 import CutScene from "./UI/CutScene";
 import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
+import ProfessionData from "./Data/ProfessionData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,6 +47,7 @@ export default class Loading extends cc.Component {
     private isWorldLoaded = false;
     private isDebuffsLoaded = false;
     private isBulletsLoaded = false;
+    private isProfessionLoaded = false;
     private isItemsLoaded = false;
     // LIFE-CYCLE CALLBACKS:
 
@@ -166,6 +168,7 @@ export default class Loading extends cc.Component {
         this.loadDebuffs();
         this.loadBullets();
         this.loadItems();
+        this.loadProfession();
         this.showLoadingLabel();
         //显示过场
         if (Logic.isFirst == 1) {
@@ -226,6 +229,29 @@ export default class Loading extends cc.Component {
             }
         })
     }
+    loadProfession() {
+        if (Logic.professionList&&Logic.professionList.length>0) {
+            this.isProfessionLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/profession', (err: Error, resource:cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.professionList = new Array();
+                let arr:ProfessionData[] = resource.json;
+                for(let i =0;i<arr.length;i++){
+                    let data = new ProfessionData();
+                    data.valueCopy(arr[i])
+                    data.id = i;
+                    Logic.professionList.push(data);
+                }
+                
+                this.isProfessionLoaded = true;
+                cc.log('professionList loaded');
+            }
+        })
+    }
     loadDebuffs() {
         if (Logic.debuffs) {
             this.isDebuffsLoaded = true;
@@ -256,6 +282,7 @@ export default class Loading extends cc.Component {
             }
         })
     }
+
     loadMonsters() {
         if (Logic.monsters) {
             this.isMonsterLoaded = true;
@@ -339,6 +366,7 @@ export default class Loading extends cc.Component {
             && this.isAllSpriteFramesLoaded()
             && this.isMonsterLoaded
             && this.isDebuffsLoaded
+            && this.isProfessionLoaded
             && this.isBulletsLoaded
             && this.isItemsLoaded
             && this.isWorldLoaded
@@ -350,6 +378,7 @@ export default class Loading extends cc.Component {
             this.isEquipmentLoaded = false;
             this.setAllSpriteFramesUnload();
             this.isDebuffsLoaded = false;
+            this.isProfessionLoaded = false;
             this.isBulletsLoaded = false;
             this.isItemsLoaded = false;
             Logic.mapManager.loadMap();

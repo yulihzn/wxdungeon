@@ -142,7 +142,7 @@ export default class PlayerData {
             if(blockLevel == Shield.BLOCK_NORMAL){
                 finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - blockPhysical / 100);
                 finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - blockMagic / 100);
-            }else if(blockLevel == Shield.BLOCK_REFLECT){
+            }else if(blockLevel == Shield.BLOCK_PARRY){
                 finalDamageData.physicalDamage = 0;
                 finalDamageData.magicDamage = 0;
                 finalDamageData.realDamage = 0;

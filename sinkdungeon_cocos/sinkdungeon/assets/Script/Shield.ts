@@ -5,13 +5,11 @@ import Equipment from "./Equipment/Equipment";
 import { EventHelper } from "./EventHelper";
 import IndexZ from "./Utils/IndexZ";
 import Actor from "./Base/Actor";
-import Player from "./Player";
-import Dungeon from "./Dungeon";
 import BlockLight from "./Effect/BlockLight";
 import DamageData from "./Data/DamageData";
-import Monster from "./Monster";
 import StatusManager from "./Manager/StatusManager";
 import FromData from "./Data/FromData";
+import Player from "./Player";
 
 const { ccclass, property } = cc._decorator;
 
@@ -25,9 +23,9 @@ export default class Shield extends cc.Component {
     private status = -1;
     static readonly BLOCK_FAILED = 0;
     static readonly BLOCK_NORMAL = 1;
-    static readonly BLOCK_REFLECT = 2;
+    static readonly BLOCK_PARRY = 2;
     static readonly STATUS_IDLE = 0;
-    static readonly STATUS_REFLECT = 1;
+    static readonly STATUS_PARRY = 1;
     static readonly STATUS_DEFEND = 2;
     static readonly STATUS_PUTDOWN = 3;
     private static readonly ZOFFSET = 2;
@@ -41,7 +39,10 @@ export default class Shield extends cc.Component {
     private dir = 3;
     private isButtonPressing = false;
     get isAniming(){
-        return this.status == Shield.STATUS_PUTDOWN || this.status == Shield.STATUS_REFLECT;
+        return this.status == Shield.STATUS_PUTDOWN || this.status == Shield.STATUS_PARRY;
+    }
+    get isDefendOrParrying(){
+        return this.status == Shield.STATUS_DEFEND||this.status == Shield.STATUS_PARRY;
     }
 
     get Status() {
@@ -65,22 +66,44 @@ export default class Shield extends cc.Component {
         prefab.parent = parentNode;
         prefab.position = pos;
         prefab.zIndex = IndexZ.OVERHEAD;
-        prefab.scale = this.status == Shield.STATUS_REFLECT?2:1;
+        prefab.scale = this.status == Shield.STATUS_PARRY?2:1;
         prefab.opacity = 255;
         prefab.active = true;
         prefab.getComponent(BlockLight).show();
     }
-    public blockDamage(parentNode:cc.Node, actor:Actor):number{
+    public blockDamage(player:Player,damage:DamageData, actor:Actor):number{
         if(this.status<0||this.status == Shield.STATUS_IDLE||this.status == Shield.STATUS_PUTDOWN){
             return 0;
         }
-        let pos = parentNode.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec2.ZERO));
-        this.getBlockLight(parentNode,cc.v3(pos.x,pos.y));
-        if(actor&&this.status == Shield.STATUS_REFLECT){
-            actor.addStatus(StatusManager.SHIELD_REFLECT,new FromData());
-            actor.takeDamage(new DamageData(this.data.Common.blockDamage));
+        if(damage.getTotalDamage()<=0){
+            return 0;
         }
-        return this.status == Shield.STATUS_REFLECT?Shield.BLOCK_REFLECT:Shield.BLOCK_NORMAL;
+        let pos = player.node.parent.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec2.ZERO));
+        this.getBlockLight(player.node.parent,cc.v3(pos.x,pos.y));
+        if(actor){
+            if(this.status == Shield.STATUS_PARRY){
+                actor.addStatus(StatusManager.SHIELD_PARRY,new FromData());
+                actor.takeDamage(new DamageData(this.data.Common.blockDamage));
+
+                if(this.data.statusNameParryOther.length>0&&this.data.statusRateParry>Logic.getRandomNum(0,100)){
+                    actor.addStatus(this.data.statusNameParryOther,new FromData());
+                }
+                if(this.data.statusNameParrySelf.length>0&&this.data.statusRateParry>Logic.getRandomNum(0,100)){
+                    player.addStatus(this.data.statusNameParrySelf,new FromData());
+                }
+                
+            }
+            if(this.status == Shield.STATUS_DEFEND){
+                if(this.data.statusNameBlockOther.length>0&&this.data.statusRateBlock>Logic.getRandomNum(0,100)){
+                    actor.addStatus(this.data.statusNameBlockOther,new FromData());
+                }
+                if(this.data.statusNameBlockSelf.length>0&&this.data.statusRateBlock>Logic.getRandomNum(0,100)){
+                    player.addStatus(this.data.statusNameBlockSelf,new FromData());
+                }
+            }
+        }
+        
+        return this.status == Shield.STATUS_PARRY?Shield.BLOCK_PARRY:Shield.BLOCK_NORMAL;
     }
     private destroySmoke(targetNode: cc.Node) {
         if (!targetNode) {
@@ -94,7 +117,7 @@ export default class Shield extends cc.Component {
     
     private playIdle() {
         if (this.status == Shield.STATUS_DEFEND 
-            || this.status == Shield.STATUS_REFLECT 
+            || this.status == Shield.STATUS_PARRY 
             || this.status == Shield.STATUS_IDLE) {
             return;
         }
@@ -105,13 +128,13 @@ export default class Shield extends cc.Component {
         let idle = cc.tween().to(duration, { y: 2 }).to(duration, { y: -2 });
         cc.tween(this.sprite.node).repeatForever(idle).start();
     }
-    private playReflect() {
+    private playParry() {
         if (this.status == Shield.STATUS_PUTDOWN
             || this.status == Shield.STATUS_DEFEND
-            || this.status == Shield.STATUS_REFLECT) {
+            || this.status == Shield.STATUS_PARRY) {
             return;
         }
-        this.status = Shield.STATUS_REFLECT;
+        this.status = Shield.STATUS_PARRY;
         let duration = this.data.isHeavy==1?0.15:0.1;
         let durationdelay = this.data.isHeavy==1?0.1:0.15;
         cc.log(`举起 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`);
@@ -188,11 +211,10 @@ export default class Shield extends cc.Component {
         if (this.status == Shield.STATUS_PUTDOWN) {
             return;
         }
-        if (this.status == Shield.STATUS_DEFEND
-            || this.status == Shield.STATUS_REFLECT) {
+        if (this.isDefendOrParrying) {
             return;
         }
-        this.playReflect();
+        this.playParry();
     }
     public cancel(){
         this.isButtonPressing = false;

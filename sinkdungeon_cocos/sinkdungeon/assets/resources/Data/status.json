@@ -292,7 +292,7 @@
     },
     "status027": {
         "nameCn": "盾反",
-        "nameEn": "shield reflect",
+        "nameEn": "shield parry",
         "spriteFrameName": "status027",
         "statusType": 27,
         "desc": "",

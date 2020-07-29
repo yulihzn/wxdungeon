@@ -16,6 +16,7 @@ import { ColliderTag } from "../Actor/ColliderTag";
 import IndexZ from "../Utils/IndexZ";
 import Decorate from "../Building/Decorate";
 import HitBuilding from "../Building/HitBuilding";
+import Shield from "../Shield";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -357,7 +358,7 @@ export default class Bullet extends cc.Component {
         if (player && !player.isDied) {
             //子弹偏转
             let isReverse = false;
-            if(player.talentShield.IsExcuting&&player.talentShield.hashTalent(TalentShield.SHIELD_03)){
+            if(player.shield.Status == Shield.STATUS_PARRY&&player.shield.data.isReflect==1){
                 isReverse = this.revserseBullet();
             }
             if(!isReverse){

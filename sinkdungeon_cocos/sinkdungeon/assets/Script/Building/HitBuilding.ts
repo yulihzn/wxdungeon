@@ -10,6 +10,7 @@ import DamageData from "../Data/DamageData";
 import Logic from "../Logic";
 import Dungeon from "../Dungeon";
 import IndexZ from "../Utils/IndexZ";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 const { ccclass, property } = cc._decorator;
 
@@ -48,6 +49,7 @@ export default class HitBuilding extends Building {
         if (this.data.currentHealth <= 0) {
             return false;
         }
+        AudioPlayer.play(AudioPlayer.MONSTER_HIT);
         this.data.currentHealth -= 1;
         this.changeRes(this.resName, `${this.data.currentHealth}`)
         this.hitLight(true);
@@ -68,6 +70,7 @@ export default class HitBuilding extends Building {
         }
         return true;
     }
+    /**贴图后缀数字表示血量，例如car car0 car1 */
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);

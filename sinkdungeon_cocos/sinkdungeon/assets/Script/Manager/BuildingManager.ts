@@ -208,16 +208,7 @@ export default class BuildingManager extends cc.Component {
             }
         } else if (this.isThe(mapDataStr, 'H')) {
             //生成可打击建筑
-            let hitBuilding = this.addBuilding(this.hitBuilding, indexPos);
-            let h = hitBuilding.getComponent(HitBuilding);
-            h.setDefaultPos(indexPos);
-            h.init(dungeon, 'car', '', 'shield001', 5, 5);
-            let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
-            if (saveHit) {
-                h.init(dungeon, 'car', '', 'shield001', 5, saveHit.currentHealth);
-            } else {
-                Logic.mapManager.setCurrentBuildingData(h.data);
-            }
+            this.addHitBuilding(dungeon,parseInt(mapDataStr[1]),indexPos)
         } else if (mapDataStr == 'S0') {
             //生成商店
             let table = this.addBuilding(this.shoptable, indexPos);
@@ -244,6 +235,28 @@ export default class BuildingManager extends cc.Component {
             //生成店主
             this.addBuilding(this.shop, indexPos);
         }
+    }
+    /**生成可打击建筑 */
+    private addHitBuilding(dungeon:Dungeon,mapDataStrIndex:number,indexPos:cc.Vec3){
+        let hitBuilding = this.addBuilding(this.hitBuilding, indexPos);
+        let h = hitBuilding.getComponent(HitBuilding);
+        h.setDefaultPos(indexPos);
+        let resName = 'car';
+        let equipmentName = 'shield001';
+        let itemName = '';
+        let maxhealth = 5;
+        switch(mapDataStrIndex){
+            case 0:resName = 'car';equipmentName = 'shield001';itemName = '';maxhealth = 5;break;
+            case 1:resName = 'car';equipmentName = 'shield007';itemName = '';maxhealth = 3;break;
+            default:break;
+        }
+        h.init(dungeon, resName, itemName, equipmentName, maxhealth, maxhealth);
+            let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
+            if (saveHit) {
+                h.init(dungeon, resName, itemName, equipmentName, maxhealth, saveHit.currentHealth);
+            } else {
+                Logic.mapManager.setCurrentBuildingData(h.data);
+            }
     }
     /**掉落石头 */
     addFallStone(pos: cc.Vec3, isAuto: boolean, withFire?: boolean) {

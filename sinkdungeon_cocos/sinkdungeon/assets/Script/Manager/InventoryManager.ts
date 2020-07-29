@@ -116,7 +116,27 @@ export default class InventoryManager {
         }
         return defence;
     }
-   
+    getBlockPhysical(): number {
+        let block = 0;
+        for (let data of this.list) {
+            block += data.Common.blockPhysical;
+        }
+        return block;
+    }
+    getBlockMagic(): number {
+        let block = 0;
+        for (let data of this.list) {
+            block += data.Common.blockMagic;
+        }
+        return block;
+    }
+    getBlockDamage(): number {
+        let block = 0;
+        for (let data of this.list) {
+            block += data.Common.blockDamage;
+        }
+        return block;
+    }
     getRealDamage():number{
         let damage = 0;
         for(let data of this.list){
@@ -224,6 +244,9 @@ export default class InventoryManager {
         e.Common.lighteningRate = this.getLighteningRate();
         e.Common.toxicRate = this.getToxicRate();
         e.Common.curseRate = this.getCurseRate();
+        e.Common.blockDamage = this.getBlockDamage();
+        e.Common.blockMagic = this.getBlockMagic();
+        e.Common.blockPhysical = this.getBlockPhysical();
         return e;
     }
 }

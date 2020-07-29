@@ -2673,7 +2673,7 @@
             "criticalStrikeRate": 0,
             "defence": 0,
             "blockPhysical":40,
-            "blockMagic":90,
+            "blockMagic":80,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -2684,7 +2684,7 @@
         "desc": "十分简单但是意外的好用"
     },
     "shield004": {
-        "nameCn": "蓝色木板盾",
+        "nameCn": "冰霜木板盾",
         "nameEn": "Wood Shield",
         "equipmetType": "shield",
         "prefix": "",
@@ -2692,6 +2692,10 @@
         "titlecolor": "#ffffff",
         "img": "shield004",
         "isHeavy":0,
+        "statusNameBlockOther":"status001",
+        "statusNameParryOther":"status001",
+        "statusRateBlock":100,
+        "statusRateParry":100,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2699,7 +2703,7 @@
             "criticalStrikeRate": 0,
             "defence": 0,
             "blockPhysical":40,
-            "blockMagic":99,
+            "blockMagic":40,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -2736,7 +2740,7 @@
         "desc": "十分简单但是意外的好用"
     },
     "shield006": {
-        "nameCn": "紫色木板盾",
+        "nameCn": "乌木板盾",
         "nameEn": "Wood Shield",
         "equipmetType": "shield",
         "prefix": "",
@@ -2750,7 +2754,7 @@
             "blockDamage":5,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":99,
+            "blockPhysical":90,
             "blockMagic":10,
             "lifeDrain": 0,
             "damageBack": 0,
@@ -2759,10 +2763,10 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "十分简单但是意外的好用"
+        "desc": "很结实致密的木板"
     },
     "shield007": {
-        "nameCn": "绿色木板盾",
+        "nameCn": "绿色回复木板盾",
         "nameEn": "Wood Shield",
         "equipmetType": "shield",
         "prefix": "",
@@ -2770,14 +2774,16 @@
         "titlecolor": "#ffffff",
         "img": "shield007",
         "isHeavy":0,
+        "statusNameParrySelf":"status011",
+        "statusRateParry":100,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
             "blockDamage":5,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":50,
-            "blockMagic":80,
+            "blockPhysical":30,
+            "blockMagic":30,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -2785,7 +2791,8 @@
             "dodge": 0,
             "maxHealth": 2
         },
-        "desc": "十分简单但是意外的好用"
+        "extraInfo":"完美弹反回复生命",
+        "desc": "招架利器"
     },
     "shield008": {
         "nameCn": "尖刺圆盾",
@@ -2820,6 +2827,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield009",
+        "isReflect":1,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2827,7 +2835,7 @@
             "criticalStrikeRate": 0,
             "defence": 0,
             "blockPhysical":50,
-            "blockMagic":99,
+            "blockMagic":90,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,

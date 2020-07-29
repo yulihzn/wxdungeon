@@ -41,7 +41,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly BOSS_ICEDEMON_HIT = 'BOSS_ICEDEMON_HIT';
     public static readonly BOSS_ICEDEMON_THRON = 'BOSS_ICEDEMON_THRON';
     public static readonly BOOS_ICEDEMON_ATTACK = 'BOOS_ICEDEMON_ATTACK';
-    public static readonly MELEE_REFLECT = 'MELEE_REFLECT';
+    public static readonly MELEE_PARRY = 'MELEE_PARRY';
     public static readonly RAINDROP = 'RAINDROP';
     public static readonly SKILL_FIREBALL = 'SKILL_FIREBALL';
     public static readonly SKILL_ICETHRON = 'SKILL_ICETHRON';
@@ -212,7 +212,7 @@ export default class AudioPlayer extends cc.Component {
             case AudioPlayer.BOOS_ICEDEMON_ATTACK:
                 cc.audioEngine.playEffect(this.bossicedemonattack, false);
                 break;
-            case AudioPlayer.MELEE_REFLECT:
+            case AudioPlayer.MELEE_PARRY:
                 cc.audioEngine.playEffect(this.meleereflect, false);
                 break;
             case AudioPlayer.RAINDROP:

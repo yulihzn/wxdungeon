@@ -206,7 +206,7 @@ export default class MeleeWeapon extends cc.Component {
             //大剑
             if (!this.isStab && this.isFar) {
                 speed = 300 + speed;
-                audiodelay = 0.2;
+                audiodelay = 0.3;
             }
         }
         if (speed < 0) {

@@ -292,13 +292,13 @@ export default class Player extends Actor {
 
                 this.shield.data = new EquipmentData();
                 this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
-                    , Logic.spriteFrames[Equipment.EMPTY],this.shield.data.isHeavy==1?80:64);
+                    , Logic.spriteFrames[Equipment.EMPTY], this.shield.data.isHeavy == 1 ? 80 : 64);
                 break;
             case Equipment.SHIELD:
                 this.shield.data = equipData.clone();
                 this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
                 this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
-                    , spriteFrame,this.shield.data.isHeavy==1?80:64);
+                    , spriteFrame, this.shield.data.isHeavy == 1 ? 80 : 64);
 
                 this.weaponLeft.shooter.data = new EquipmentData();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
@@ -334,9 +334,9 @@ export default class Player extends Actor {
         let health = this.data.getHealth();
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
-    private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame,size?:number): void {
+    private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
         sprite.spriteFrame = spriteFrame;
-        if(size&&size>0){
+        if (size && size > 0) {
             sprite.node.width = size;
             sprite.node.height = size;
         }
@@ -384,8 +384,7 @@ export default class Player extends Actor {
         if (!this.weaponRight || this.isDizz || this.isDied || this.isFall
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking
-            || this.shield.Status == Shield.STATUS_REFLECT
-            || this.shield.Status == Shield.STATUS_DEFEND) {
+            || this.shield.isDefendOrParrying) {
             return;
         }
         let pos = this.weaponRight.meleeWeapon.Hv.clone();
@@ -423,7 +422,7 @@ export default class Player extends Actor {
             || this.weaponLeft.meleeWeapon.IsAttacking) {
             return;
         }
-        if (this.shield.Status == Shield.STATUS_REFLECT || this.shield.Status == Shield.STATUS_PUTDOWN) {
+        if (this.shield.Status == Shield.STATUS_PARRY || this.shield.Status == Shield.STATUS_PUTDOWN) {
             return;
         }
     }
@@ -475,10 +474,24 @@ export default class Player extends Actor {
         }
     }
     //特效受击
-    remoteExHurt(): void {
+    remoteExHurt(blockLevel: number): void {
         for (let data of this.inventoryManager.list) {
+            let needFire = false;
             if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
+                needFire = true;
                 this.shooterEx.data.bulletType = data.exBulletTypeHurt;
+            }
+            if (blockLevel == Shield.BLOCK_PARRY && data.exBulletTypeParry.length > 0
+                && Random.getRandomNum(0, 100) < data.exBulletRate) {
+                needFire = true;
+                this.shooterEx.data.bulletType = data.exBulletTypeParry;
+            }
+            if (blockLevel == Shield.BLOCK_NORMAL && data.exBulletTypeBlock.length > 0
+                && Random.getRandomNum(0, 100) < data.exBulletRate) {
+                needFire = true;
+                this.shooterEx.data.bulletType = data.exBulletTypeBlock;
+            }
+            if (needFire) {
                 this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
                 this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
                 this.shooterEx.data.bulletSize = data.bulletSize;
@@ -638,9 +651,7 @@ export default class Player extends Actor {
         }
         //盾牌
         this.talentShield.takeDamage(damageData, actor);
-        let blockLevel = this.shield.blockDamage(this.node.parent, actor);
-        
-        //冰盾
+        let blockLevel = this.shield.blockDamage(this, damageData, actor);
         let dd = this.data.getDamage(damageData, blockLevel);
         let dodge = this.data.getDodge();
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
@@ -667,23 +678,21 @@ export default class Player extends Actor {
         if (Logic.playerData.currentHealth <= 0) {
             this.killed(from);
         }
-        let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_REFLECT;
-        if (valid) {
-            this.showDamageEffect(blockLevel);
-        }else if(blockLevel == Shield.BLOCK_REFLECT){
+        let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_PARRY;
+        if (valid || blockLevel == Shield.BLOCK_PARRY) {
             this.showDamageEffect(blockLevel);
         }
         return valid;
     }
-    private showDamageEffect(blockLevel:number){
-        this.remoteExHurt();
+    private showDamageEffect(blockLevel: number) {
+        this.remoteExHurt(blockLevel);
         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
-        if(blockLevel == Shield.BLOCK_NORMAL){
+        if (blockLevel == Shield.BLOCK_NORMAL) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
             cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW);
-        }else if(blockLevel == Shield.BLOCK_REFLECT){
-            AudioPlayer.play(AudioPlayer.MELEE_REFLECT);
-        }else{
+        } else if (blockLevel == Shield.BLOCK_PARRY) {
+            AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        } else {
             AudioPlayer.play(AudioPlayer.PLAYER_HIT);
             cc.director.emit(EventHelper.HUD_DAMAGE_CORNER_SHOW);
         }
