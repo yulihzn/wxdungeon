@@ -46,6 +46,14 @@ export default class EquipmentDialog extends cc.Component {
         this.node.opacity = 0;
     }
     refreshDialog(equipment: EquipmentData) {
+        this.infoBase.node.active = true;
+        this.info1.node.active = true;
+        this.info2.node.active = true;
+        this.info3.node.active = true;
+        this.extraInfo.node.active = true;
+        this.infoSuit1.node.active = true;
+        this.infoSuit2.node.active = true;
+        this.infoSuit3.node.active = true;
         this.labelTile.string = equipment.prefix  + equipment.nameCn;
         this.labelTile.node.color=this.labelTile.node.color.fromHEX(equipment.titlecolor);
         this.infoBase.string = equipment.infobase;

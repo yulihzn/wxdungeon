@@ -80,7 +80,7 @@ export default class PlayerWeapon extends cc.Component {
         
     }
     remoteIntervalTime = 0;
-    remoteAttack(data: PlayerData):boolean {
+    remoteAttack(data: PlayerData,cooldownNode:cc.Node):boolean {
         let canFire = false;
         let cooldown = data.FinalCommon.remoteCooldown;
         if(cooldown<100){
@@ -99,6 +99,11 @@ export default class PlayerWeapon extends cc.Component {
         if (this.shooter) {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage();
             this.shooter.fireBullet(0);
+        }
+        if(cooldownNode&&cooldown>500){
+            cooldownNode.width = 80;
+            cooldownNode.stopAllActions();
+            cc.tween(cooldownNode).to(cooldown/1000,{width:0}).start();
         }
         return true;
     }

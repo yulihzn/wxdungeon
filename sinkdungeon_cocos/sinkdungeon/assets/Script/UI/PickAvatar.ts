@@ -16,6 +16,7 @@ import BrightnessBar from "./BrightnessBar";
 import PaletteSelector from "./PaletteSelector";
 import AvatarData from "../Data/AvatarData";
 import ProfessionData from "../Data/ProfessionData";
+import EquipmentManager from "../Manager/EquipmentManager";
 
 
 const { ccclass, property } = cc._decorator;
@@ -325,6 +326,9 @@ export default class PickAvatar extends cc.Component {
         sprite.spriteFrame = spriteFrame;
     }
     startGame() {
+        if(this.loadingBackground.active){
+            return;
+        }
         //清除存档
         Logic.profileManager.clearData();
         //重置数据
@@ -340,15 +344,15 @@ export default class PickAvatar extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     addPorfessionEquipment(){
-        Logic.inventoryManager.weapon.valueCopy(Logic.equipments[this.data.professionData.weapon]);
-        Logic.inventoryManager.remote.valueCopy(Logic.equipments[this.data.professionData.remote]);
-        Logic.inventoryManager.shield.valueCopy(Logic.equipments[this.data.professionData.shield]);
-        Logic.inventoryManager.shoes.valueCopy(Logic.equipments[this.data.professionData.shoes]);
-        Logic.inventoryManager.cloak.valueCopy(Logic.equipments[this.data.professionData.cloak]);
-        Logic.inventoryManager.clothes.valueCopy(Logic.equipments[this.data.professionData.clothes]);
-        Logic.inventoryManager.gloves.valueCopy(Logic.equipments[this.data.professionData.gloves]);
-        Logic.inventoryManager.helmet.valueCopy(Logic.equipments[this.data.professionData.helmet]);
-        Logic.inventoryManager.trousers.valueCopy(Logic.equipments[this.data.professionData.trousers]);
+        Logic.inventoryManager.weapon.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.weapon));
+        Logic.inventoryManager.remote.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.remote));
+        Logic.inventoryManager.shield.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.shield));
+        Logic.inventoryManager.shoes.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.shoes));
+        Logic.inventoryManager.cloak.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.cloak));
+        Logic.inventoryManager.clothes.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.clothes));
+        Logic.inventoryManager.gloves.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.gloves));
+        Logic.inventoryManager.helmet.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.helmet));
+        Logic.inventoryManager.trousers.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.trousers));
     }
     addBrightnessBar(): BrightnessBar {
         let prefab = cc.instantiate(this.brightnessBarPrefab);
@@ -380,11 +384,17 @@ export default class PickAvatar extends cc.Component {
     }
 
     ButtonSwitch() {
+        if(this.loadingBackground.active){
+            return;
+        }
         this.randomLayout.active = this.randomLayout.active ? false : true;
         this.attributeLayout.active = this.attributeLayout.active ? false : true;
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     ButtonRandom() {
+        if(this.loadingBackground.active){
+            return;
+        }
         this.organizationSelector.selectRandom();
         this.genderSelector.selectRandom();
         this.professionSelector.selectRandom();

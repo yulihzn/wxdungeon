@@ -87,6 +87,9 @@ export default class EquipmentData extends BaseData{
         return this.common;
     }
     public valueCopy(data:EquipmentData):void{
+        if(!data){
+            return;
+        }
         this.uuid = data.uuid?data.uuid:'';
         this.pos = data.pos?cc.v3(data.pos.x,data.pos.y):cc.v3(0,0);
         this.common.valueCopy(data.common);

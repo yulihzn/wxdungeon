@@ -1,7 +1,6 @@
 import Logic from "../Logic";
 import Dungeon from "../Dungeon";
 import TalentData from "../Data/TalentData";
-import TalentShield from "../Talent/TalentShield";
 import Talent from "../Talent/Talent";
 import TalentDash from "../Talent/TalentDash";
 import Shooter from "../Shooter";
@@ -69,7 +68,7 @@ export default class DashShadow extends cc.Component {
         this.node.setPosition(this.getPlayerPosition());
         let speed = 1200;
         this.rigidBody.linearDamping = 1;
-        if (this.talentDash.player.talentShield.hashTalent(TalentShield.DASH_14)) {
+        if (this.talentDash.hashTalent(Talent.DASH_14)) {
             speed = 2000;
             this.rigidBody.linearDamping = 1;
         }

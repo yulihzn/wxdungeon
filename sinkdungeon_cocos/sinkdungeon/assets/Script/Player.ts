@@ -9,7 +9,6 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
-import { EventHelper } from './EventHelper';
 import Shooter from './Shooter';
 import Logic from './Logic';
 import Dungeon from './Dungeon';
@@ -23,7 +22,6 @@ import PlayerData from './Data/PlayerData';
 import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Tips from './UI/Tips';
 import Random from './Utils/Random';
-import TalentShield from './Talent/TalentShield';
 import Shield from './Shield';
 import TalentDash from './Talent/TalentDash';
 import Actor from './Base/Actor';
@@ -39,6 +37,7 @@ import Monster from './Monster';
 import IndexZ from './Utils/IndexZ';
 import PlayerAvatar from './PlayerAvatar';
 import PlayerWeapon from './PlayerWeapon';
+import { EventHelper } from './EventHelper';
 
 @ccclass
 export default class Player extends Actor {
@@ -61,6 +60,8 @@ export default class Player extends Actor {
     avatar: PlayerAvatar = null;
     @property(Shield)
     shield: Shield = null;
+    @property(cc.Node)
+    remoteCooldown: cc.Node = null;
 
     isMoving = false;//是否移动中
     isDied = false;//是否死亡
@@ -90,7 +91,6 @@ export default class Player extends Actor {
     defaultPos = cc.v3(0, 0);
 
     talentDash: TalentDash;
-    talentShield: TalentShield;
     talentMagic: TalentMagic;
     isWeaponDashing = false;
 
@@ -108,6 +108,8 @@ export default class Player extends Actor {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.weaponLeft.init(this, true);
         this.weaponRight.init(this, false);
+        this.remoteCooldown.width = 0;
+        this.remoteCooldown.opacity = 200;
         // this.addFog();
         cc.director.on(EventHelper.PLAYER_TRIGGER
             , (event) => { this.triggerThings() });
@@ -149,10 +151,10 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.POOL_DESTORY_WALKSMOKE, (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
-        // this.addComponent(TalentShield);
-        this.talentShield = this.getComponent(TalentShield);
-        this.talentShield.init();
-        this.talentShield.loadList(Logic.talentList);
+        // this.talentShield = this.getComponent(TalentShield);
+        // this.talentShield.init();
+        // this.talentShield.loadList(Logic.talentList);
+
         // this.talentShield.addTalent(Talent.SHIELD_01);
         // this.talentShield.addTalent(Talent.SHIELD_06);
         // this.talentShield.addTalent(Talent.SHIELD_03);
@@ -371,13 +373,7 @@ export default class Player extends Actor {
         if (!this.node) {
             return;
         }
-        if (this.talentShield.IsExcuting) {
-            if (this.talentShield.canAddStatus(statusType)) {
-                this.statusManager.addStatus(statusType, from);
-            }
-        } else {
-            this.statusManager.addStatus(statusType, from);
-        }
+        this.statusManager.addStatus(statusType, from);
     }
     meleeAttack() {
         if (!this.weaponRight || this.isDizz || this.isDied || this.isFall
@@ -427,14 +423,12 @@ export default class Player extends Actor {
     }
     remoteRate = 0;
     remoteAttack() {
-        if (!this.data || this.isDizz || this.isDied || this.isFall) {
+        if (!this.data || this.isDizz || this.isDied || this.isFall || !this.weaponLeft.shooter) {
             return;
         }
-        if (this.weaponLeft.shooter) {
-            let fireSuccess = this.weaponLeft.remoteAttack(this.data);
-            if(fireSuccess){
-                this.stopHiding();
-            }
+        let fireSuccess = this.weaponLeft.remoteAttack(this.data,this.remoteCooldown);
+        if (fireSuccess) {
+            this.stopHiding();
         }
     }
     //特效攻击
@@ -507,9 +501,7 @@ export default class Player extends Actor {
         if (this.talentMagic && this.talentMagic.magiccircle.isShow && !this.talentMagic.hashTalent(Talent.MAGIC_05)) {
             pos = pos.mul(0.3);
         }
-        if (this.talentShield && this.talentShield.IsExcuting && !this.talentMagic.hashTalent(Talent.SHIELD_12)) {
-            pos = pos.mul(0.3);
-        }
+
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
             //存档系统保存玩家位置
@@ -636,10 +628,9 @@ export default class Player extends Actor {
             return false;
         }
         //盾牌
-        this.talentShield.takeDamage(damageData, actor);
         let blockLevel = this.shield.blockDamage(this, damageData, actor);
         let dd = this.data.getDamage(damageData, blockLevel);
-        let dodge = this.data.FinalCommon.dodge/100;
+        let dodge = this.data.FinalCommon.dodge / 100;
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
         if (this.talentDash.hashTalent(Talent.DASH_12) && this.talentDash.IsExcuting && dd.getTotalDamage() > 0) {
@@ -763,11 +754,7 @@ export default class Player extends Actor {
         this.node.opacity = this.invisible ? 80 : 255;
     }
     private useSkill(): void {
-        if (Logic.hashTalent(Talent.SHIELD_01)) {
-            if (this.talentShield) {
-                this.talentShield.useShield();
-            }
-        } else if (Logic.hashTalent(Talent.DASH_01)) {
+        if (Logic.hashTalent(Talent.DASH_01)) {
             if (this.talentDash) {
                 this.talentDash.useDash();
             }

@@ -5,6 +5,7 @@ import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import { ColliderTag } from "../Actor/ColliderTag";
 import IndexZ from "../Utils/IndexZ";
+import EquipmentManager from "../Manager/EquipmentManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -84,7 +85,7 @@ export default class Chest extends Building {
                         // dungeon.addEquipment(EquipmentManager.REMOTE_SHURIKEN, this.data.pos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.SHIELD_POLICE, this.data.pos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, this.data.pos, null, this.data.quality);
-                            // dungeon.addEquipment(EquipmentManager.REMOTE_WAND, this.data.pos, null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.REMOTE_WINCHESTER, this.data.defaultPos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_SHADOW, this.data.pos, null, this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);

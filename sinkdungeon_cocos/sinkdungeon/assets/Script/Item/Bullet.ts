@@ -9,7 +9,6 @@ import BulletData from "../Data/BulletData";
 import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import Boom from "./Boom";
-import TalentShield from "../Talent/TalentShield";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import { ColliderTag } from "../Actor/ColliderTag";

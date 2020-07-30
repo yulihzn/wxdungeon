@@ -1,7 +1,6 @@
 import { EventHelper } from "../EventHelper";
 import Talent from "./Talent";
 import DashShadow from "../Item/DashShadow";
-import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import Monster from "../Monster";
 import Boss from "../Boss/Boss";
@@ -17,6 +16,7 @@ export default class TalentDash extends Talent {
 
     @property(DashShadow)
     dashShadow: DashShadow = null;
+    
     hv: cc.Vec3;
 
     onLoad() {
