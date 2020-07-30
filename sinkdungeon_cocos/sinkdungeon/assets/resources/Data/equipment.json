@@ -764,6 +764,108 @@
         "desc": "几乎都生锈了,但是很轻巧",
         "far": 0
     },
+    "weapon027": {
+        "nameCn": "狼牙棒",
+        "nameEn": "Mace",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#5b2800",
+        "img": "weapon027",
+        "exBulletCombo2":0,
+        "exBulletOffsetX":0,
+        "exBulletRate":0,
+        "common": {
+            "damageMin": 3,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "realDamage":1,
+            "realRate":20,
+            "attackSpeed": -100,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":0,
+        "desc": "看起来很厉害",
+        "far": 1
+    },
+    "weapon028": {
+        "nameCn": "手术刀",
+        "nameEn": "Scalpel",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon028",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 2,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 3,
+            "moveSpeed": 0,
+            "attackSpeed": 40,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":1,
+        "desc": "十分轻巧的手术刀"
+    },
+    "weapon029": {
+        "nameCn": "平底锅",
+        "nameEn": "Pan",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon029",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 2,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": -100,
+            "magicDamage": 1,
+            "lighteningRate":30,
+            "maxHealth": 0
+        },
+        "desc": "平底锅"
+    },
+    "weapon030": {
+        "nameCn": "勺子",
+        "nameEn": "Spoon",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon030",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 2,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 30,
+            "maxHealth": 0
+        },
+        "desc": "平底锅"
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",
@@ -784,7 +886,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":-300,
+            "remoteCooldown":500,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -812,7 +914,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":-200,
+            "remoteCooldown":1000,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -840,6 +942,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
+            "remoteCooldown":500,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -869,6 +972,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
+            "remoteCooldown":1000,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -897,7 +1001,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":-500,
+            "remoteCooldown":1500,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -926,7 +1030,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":-500,
+            "remoteCooldown":2000,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -956,7 +1060,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":-1000,
+            "remoteCooldown":3000,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -984,7 +1088,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":-400,
+            "remoteCooldown":1500,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1514,6 +1618,81 @@
         },
         "desc": "很普通的头盔"
     },
+    "helmet024": {
+        "nameCn": "战术目镜",
+        "nameEn": "Tactical Eyepiece",
+        "equipmetType": "helmet",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "helmet024",
+        "hideHair":1,
+        "common": {
+            "remoteDamage":0,
+            "remoteCritRate":20,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 10,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "desc": "变得更精准了"
+    },
+    "helmet025": {
+        "nameCn": "口罩",
+        "nameEn": "Face Mask",
+        "equipmetType": "helmet",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "helmet025",
+        "hideHair":1,
+        "common": {
+            "remoteDamage":0,
+            "remoteCritRate":0,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 1
+        },
+        "desc": "医用口罩"
+    },
+    "helmet026": {
+        "nameCn": "医生帽",
+        "nameEn": "Doctor Helmet",
+        "equipmetType": "helmet",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "helmet026",
+        "hideHair":1,
+        "common": {
+            "remoteDamage":0,
+            "remoteCritRate":0,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 20,
+            "dodge": 0,
+            "maxHealth": 1
+        },
+        "desc": "医用帽子"
+    },
     "clothes001": {
         "nameCn": "背心",
         "nameEn": "Vest",
@@ -1916,6 +2095,74 @@
         },
         "desc": "看起来很神秘很中二"
     },
+    "clothes019": {
+        "nameCn": "雇佣兵甲",
+        "nameEn": "Mercenary Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes019",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 2,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 1
+        },
+        "desc": "看起来很拉风"
+    },
+    
+    "clothes020": {
+        "nameCn": "白大褂",
+        "nameEn": "Doctor Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes020",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 3
+        },
+        "desc": "很普通白大褂"
+    },
+    
+    "clothes021": {
+        "nameCn": "黑色围裙",
+        "nameEn": "Apron Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes018",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 2,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 20,
+            "dodge": 0,
+            "maxHealth": 1
+        },
+        "desc": "像个屠夫一样"
+    },
     "cloak001": {
         "nameCn": "战袍",
         "nameEn": "Warrior Cloak",
@@ -1953,7 +2200,7 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 10,
+            "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -1976,7 +2223,7 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 5,
+            "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
@@ -2370,11 +2617,34 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteSpeed":100,
+            "remoteCooldown":100,
             "dodge": 0,
             "maxHealth": 0
         },
         "desc": "看着眼熟"
+    },
+    "gloves010": {
+        "nameCn": "橡胶手套",
+        "nameEn": "Rubber Gloves",
+        "equipmetType": "gloves",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "gloves010",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "magicDefence": 20,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 20,
+            "remoteCooldown":0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "desc": "医用手套"
     },
     "shoes001": {
         "nameCn": "战士靴子",
@@ -2576,6 +2846,28 @@
             "moveSpeed": 80,
             "attackSpeed": 0,
             "dodge": 10,
+            "maxHealth": 0
+        },
+        "desc": "看着眼熟"
+    },
+    "shoes010": {
+        "nameCn": "普通皮鞋",
+        "nameEn": "Energy Shoes",
+        "equipmetType": "shoes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "shoes010",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 30,
+            "attackSpeed": 0,
+            "dodge": 0,
             "maxHealth": 0
         },
         "desc": "看着眼熟"

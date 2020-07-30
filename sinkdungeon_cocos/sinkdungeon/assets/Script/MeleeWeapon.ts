@@ -21,6 +21,7 @@ import EquipmentData from "./Data/EquipmentData";
 import InventoryManager from "./Manager/InventoryManager";
 import Equipment from "./Equipment/Equipment";
 import HitBuilding from "./Building/HitBuilding";
+import CommonData from "./Data/CommonData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -185,32 +186,22 @@ export default class MeleeWeapon extends cc.Component {
         if (this.isAttacking) {
             return false;
         }
-        let speed = PlayerData.DefAULT_SPEED - data.getAttackSpeed();
         let audiodelay = 0;
-        if (speed < 1) {
-            //匕首
-            if (this.isStab && !this.isFar) {
-                speed = 0 + speed;
-                audiodelay = 0;
-            }
-            //长剑
-            if (!this.isStab && !this.isFar) {
-                speed = 100 + speed;
-                audiodelay = 0.1;
-            }
-            //长枪
-            if (this.isStab && this.isFar) {
-                speed = 150 + speed;
-                audiodelay = 0.1;
-            }
-            //大剑
-            if (!this.isStab && this.isFar) {
-                speed = 300 + speed;
-                audiodelay = 0.3;
-            }
+        //匕首
+        if (this.isStab && !this.isFar) {
+            audiodelay = 0;
         }
-        if (speed < 0) {
-            speed = 0;
+        //长剑
+        if (!this.isStab && !this.isFar) {
+            audiodelay = 0.1;
+        }
+        //长枪
+        if (this.isStab && this.isFar) {
+            audiodelay = 0.1;
+        }
+        //大剑
+        if (!this.isStab && this.isFar) {
+            audiodelay = 0.3;
         }
         this.scheduleOnce(() => {
             AudioPlayer.play(AudioPlayer.MELEE);
@@ -220,7 +211,8 @@ export default class MeleeWeapon extends cc.Component {
 
         this.isMiss = isMiss;
         this.isAttacking = true;
-        let animSpeed = 1 + data.getAttackSpeed() / 1000;
+        let finalCommon = data.FinalCommon;
+        let animSpeed = 1 + finalCommon.attackSpeed / 500;
         //最慢
         if (animSpeed < 0.2) {
             animSpeed = 0.2;
@@ -237,11 +229,11 @@ export default class MeleeWeapon extends cc.Component {
         }
         let p = this.weaponFirePoint.position.clone();
         let ran = Logic.getRandomNum(0, 100);
-        let waves = [data.getMagicDamage() > 0 && ran < data.getIceRate() ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
-            , data.getMagicDamage() > 0 && ran < data.getFireRate() ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
-            , data.getMagicDamage() > 0 && ran < data.getLighteningRate() ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
-            , data.getMagicDamage() > 0 && ran < data.getToxicRate() ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
-            , data.getMagicDamage() > 0 && ran < data.getCurseRate() ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
+        let waves = [finalCommon.magicDamage > 0 && ran < finalCommon.iceRate ? MeleeWeapon.ELEMENT_TYPE_ICE : 0
+            , finalCommon.magicDamage > 0 && ran < finalCommon.fireRate ? MeleeWeapon.ELEMENT_TYPE_FIRE : 0
+            , finalCommon.magicDamage > 0 && ran < finalCommon.lighteningRate ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
+            , finalCommon.magicDamage > 0 && ran < finalCommon.toxicRate ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
+            , finalCommon.magicDamage > 0 && ran < finalCommon.curseRate ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
         let delay = (!this.isStab&&this.isFar)?0.5:0;
         this.scheduleOnce(()=>{
             for (let w of waves) {
@@ -488,21 +480,23 @@ export default class MeleeWeapon extends cc.Component {
         // this.waveWeapon.isAttacking = true;
         // this.stabWeapon.isAttacking = true;
         let damage = new DamageData();
+        let common = new CommonData();
         if (this.player) {
             damage = this.player.data.getFinalAttackPoint();
+            common = this.player.data.FinalCommon;
         }
         let damageSuccess = false;
         let attackSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
         if (monster && !monster.isDied && !this.isMiss) {
-            damage.isBackAttack = monster.isPlayerBehindAttack() && this.player.data.getDamageBack() > 0;
+            damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
             if (damage.isBackAttack) {
-                damage.realDamage += this.player.data.getDamageBack();
+                damage.realDamage += common.damageBack;
             }
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(monster.node);
-                this.addMonsterAllStatus(monster);
+                this.addMonsterAllStatus(common,monster);
             }
         }
 
@@ -510,7 +504,7 @@ export default class MeleeWeapon extends cc.Component {
         if (boss && !boss.isDied && !this.isMiss) {
             damageSuccess = boss.takeDamage(damage);
             if (damageSuccess) {
-                this.addBossAllStatus(boss);
+                this.addBossAllStatus(common,boss);
             }
         }
 
@@ -547,21 +541,21 @@ export default class MeleeWeapon extends cc.Component {
             this.scheduleOnce(() => { this.anim.resume() }, 0.1);
         }
     }
-    private addMonsterAllStatus(monster: Monster) {
-        this.addMonsterStatus(this.player.data.getIceRate(), monster, StatusManager.FROZEN);
-        this.addMonsterStatus(this.player.data.getFireRate(), monster, StatusManager.BURNING);
-        this.addMonsterStatus(this.player.data.getLighteningRate(), monster, StatusManager.DIZZ);
-        this.addMonsterStatus(this.player.data.getToxicRate(), monster, StatusManager.TOXICOSIS);
-        this.addMonsterStatus(this.player.data.getCurseRate(), monster, StatusManager.CURSING);
-        this.addMonsterStatus(this.player.data.getRealRate(), monster, StatusManager.BLEEDING);
+    private addMonsterAllStatus(data:CommonData,monster: Monster) {
+        this.addMonsterStatus(data.iceRate, monster, StatusManager.FROZEN);
+        this.addMonsterStatus(data.fireRate, monster, StatusManager.BURNING);
+        this.addMonsterStatus(data.lighteningRate, monster, StatusManager.DIZZ);
+        this.addMonsterStatus(data.toxicRate, monster, StatusManager.TOXICOSIS);
+        this.addMonsterStatus(data.curseRate, monster, StatusManager.CURSING);
+        this.addMonsterStatus(data.realRate, monster, StatusManager.BLEEDING);
     }
-    private addBossAllStatus(boss: Boss) {
-        this.addBossStatus(this.player.data.getIceRate(), boss, StatusManager.FROZEN);
-        this.addBossStatus(this.player.data.getFireRate(), boss, StatusManager.BURNING);
-        this.addBossStatus(this.player.data.getLighteningRate(), boss, StatusManager.DIZZ);
-        this.addBossStatus(this.player.data.getToxicRate(), boss, StatusManager.TOXICOSIS);
-        this.addBossStatus(this.player.data.getCurseRate(), boss, StatusManager.CURSING);
-        this.addBossStatus(this.player.data.getRealRate(), boss, StatusManager.BLEEDING);
+    private addBossAllStatus(data:CommonData,boss: Boss) {
+        this.addBossStatus(data.iceRate, boss, StatusManager.FROZEN);
+        this.addBossStatus(data.fireRate, boss, StatusManager.BURNING);
+        this.addBossStatus(data.lighteningRate, boss, StatusManager.DIZZ);
+        this.addBossStatus(data.toxicRate, boss, StatusManager.TOXICOSIS);
+        this.addBossStatus(data.curseRate, boss, StatusManager.CURSING);
+        this.addBossStatus(data.realRate, boss, StatusManager.BLEEDING);
     }
     private addMonsterStatus(rate: number, monster: Monster, statusType) {
         if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType, new FromData()); }

@@ -31,7 +31,7 @@ export default class EquipmentDescData{
     blockDamage = 0;//弹反伤害
     remoteDamage = 0;//远程伤害
     remoteCritRate = 0;//远程暴击
-    remoteSpeed = 0;//远程攻速
+    remoteCooldown = 0;//远程攻速
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
     magicDamage = 0;//魔法伤害

@@ -501,7 +501,7 @@ export default class Monster extends Actor {
             return false;
         }
         let dd = this.data.getDamage(damageData);
-        let dodge = this.data.getDodge();
+        let dodge = this.data.FinalCommon.dodge/100;
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         dd = isDodge ? new DamageData() : dd;
         if (isDodge) {
@@ -592,12 +592,12 @@ export default class Monster extends Actor {
         this.scheduleOnce(() => { this.particleBlood.stopSystem(); }, 0.5);
     }
     addPlayerStatus(player: Player, from: FromData) {
-        if (Logic.getRandomNum(0, 100) < this.data.getIceRate()) { player.addStatus(StatusManager.FROZEN, from); }
-        if (Logic.getRandomNum(0, 100) < this.data.getFireRate()) { player.addStatus(StatusManager.BURNING, from); }
-        if (Logic.getRandomNum(0, 100) < this.data.getLighteningRate()) { player.addStatus(StatusManager.DIZZ, from); }
-        if (Logic.getRandomNum(0, 100) < this.data.getToxicRate()) { player.addStatus(StatusManager.TOXICOSIS, from); }
-        if (Logic.getRandomNum(0, 100) < this.data.getCurseRate()) { player.addStatus(StatusManager.CURSING, from); }
-        if (Logic.getRandomNum(0, 100) < this.data.getRealRate()) { player.addStatus(StatusManager.BLEEDING, from); }
+        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.iceRate) { player.addStatus(StatusManager.FROZEN, from); }
+        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.fireRate) { player.addStatus(StatusManager.BURNING, from); }
+        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.lighteningRate) { player.addStatus(StatusManager.DIZZ, from); }
+        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.toxicRate) { player.addStatus(StatusManager.TOXICOSIS, from); }
+        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.curseRate) { player.addStatus(StatusManager.CURSING, from); }
+        if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.realRate) { player.addStatus(StatusManager.BLEEDING, from); }
     }
     killed() {
         if (this.isDied) {
@@ -758,7 +758,7 @@ export default class Monster extends Actor {
         }
 
         //冲刺
-        let speed = this.data.getMoveSpeed();
+        let speed = this.data.FinalCommon.moveSpeed;
         if (playerDis < 600 && playerDis > 100 && !this.dungeon.player.isDied && !this.dungeon.player.invisible && this.data.dash > 0
             && !this.dashSkill.IsExcuting && !this.isDisguising) {
             this.dashSkill.next(() => {

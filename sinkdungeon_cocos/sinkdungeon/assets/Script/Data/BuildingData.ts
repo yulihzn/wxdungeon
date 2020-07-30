@@ -1,6 +1,5 @@
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
-import CommonData from "./CommonData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

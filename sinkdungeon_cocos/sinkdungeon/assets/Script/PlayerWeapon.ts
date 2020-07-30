@@ -79,19 +79,20 @@ export default class PlayerWeapon extends cc.Component {
         this.meleeWeapon.attack(data, isMiss);
         
     }
-    remoteRate = 0;
-    remoteAttack(data: PlayerData) {
+    remoteIntervalTime = 0;
+    remoteAttack(data: PlayerData):boolean {
         let canFire = false;
-        let speed = PlayerData.DefAULT_SPEED - data.getRemoteSpeed();
-        if (speed < 10) { speed = 10 }
-        if (speed > Shooter.DefAULT_SPEED * 10) { speed = Shooter.DefAULT_SPEED * 10; }
+        let cooldown = data.FinalCommon.remoteCooldown;
+        if(cooldown<100){
+            cooldown = 100;
+        }
         let currentTime = Date.now();
-        if (currentTime - this.remoteRate > speed) {
-            this.remoteRate = currentTime;
+        if (currentTime - this.remoteIntervalTime > cooldown) {
+            this.remoteIntervalTime = currentTime;
             canFire = true;
         }
         if (!canFire) {
-            return;
+            return false;
         }
         this.isHeavyRemotoAttacking = this.shooter.data.isHeavy == 1;
         this.scheduleOnce(() => { this.isHeavyRemotoAttacking = false }, 0.2);
@@ -99,5 +100,6 @@ export default class PlayerWeapon extends cc.Component {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage();
             this.shooter.fireBullet(0);
         }
+        return true;
     }
 }

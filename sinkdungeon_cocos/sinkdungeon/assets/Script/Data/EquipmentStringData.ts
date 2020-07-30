@@ -1,5 +1,3 @@
-import CommonData from "./CommonData";
-import BaseData from "./BaseData";
 import EquipmentData from "./EquipmentData";
 
 // Learn TypeScript:
@@ -30,7 +28,7 @@ export default class EquipmentStringData {
     moveSpeed: number = 0;//移速
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避
-    remoteSpeed:number = 0;//远程攻速
+    remoteCooldown:number = 0;//远程攻速
 
     realDamage = 0;//真实伤害
     realRate = 0//真实伤害几率
@@ -69,7 +67,7 @@ export default class EquipmentStringData {
         this.damageBack = data.Common.damageBack ? data.Common.damageBack : 0;
         this.moveSpeed = data.Common.moveSpeed ? data.Common.moveSpeed : 0;
         this.attackSpeed = data.Common.attackSpeed ? data.Common.attackSpeed : 0;
-        this.remoteSpeed = data.Common.remoteSpeed?data.Common.remoteSpeed:0;
+        this.remoteCooldown = data.Common.remoteCooldown?data.Common.remoteCooldown:0;
         this.dodge = data.Common.dodge ? data.Common.dodge : 0;
         this.realDamage = data.Common.realDamage ? data.Common.realDamage : 0;
         this.realRate = data.Common.realRate ? data.Common.realRate : 0;
@@ -131,7 +129,7 @@ export default class EquipmentStringData {
         e.damageBack = this.damageBack;
         e.moveSpeed = this.moveSpeed;
         e.attackSpeed = this.attackSpeed;
-        e.remoteSpeed = this.remoteSpeed;
+        e.remoteCooldown = this.remoteCooldown;
         e.dodge = this.dodge;
         e.realDamage = this.realDamage;
         e.realRate = this.realRate;

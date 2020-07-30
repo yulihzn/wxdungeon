@@ -63,7 +63,6 @@ export default class Player extends Actor {
     shield: Shield = null;
 
     isMoving = false;//是否移动中
-    isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
     isDied = false;//是否死亡
     isFall = false;//是否跌落
     isStone = false;//是否石化
@@ -142,7 +141,7 @@ export default class Player extends Actor {
         }
         this.pos = Logic.playerData.pos.clone();
         this.defaultPos = Logic.playerData.pos.clone();
-        this.baseAttackPoint = Logic.playerData.getDamageMin();
+        this.baseAttackPoint = Logic.playerData.FinalCommon.damageMin;
         this.updatePlayerPos();
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
@@ -428,28 +427,15 @@ export default class Player extends Actor {
     }
     remoteRate = 0;
     remoteAttack() {
-        let canFire = false;
         if (!this.data || this.isDizz || this.isDied || this.isFall) {
             return;
         }
-        let speed = PlayerData.DefAULT_SPEED - this.data.getRemoteSpeed();
-        if (speed < 10) { speed = 10 }
-        if (speed > Shooter.DefAULT_SPEED * 10) { speed = Shooter.DefAULT_SPEED * 10; }
-        let currentTime = Date.now();
-        if (currentTime - this.remoteRate > speed) {
-            this.remoteRate = currentTime;
-            canFire = true;
-        }
-        if (!canFire) {
-            return;
-        }
-        this.isHeavyRemotoAttacking = this.weaponLeft.shooter.data.isHeavy == 1;
-        this.scheduleOnce(() => { this.isHeavyRemotoAttacking = false }, 0.2);
         if (this.weaponLeft.shooter) {
-            this.weaponLeft.shooter.remoteDamagePlayer = this.data.getFinalRemoteDamage();
-            this.weaponLeft.shooter.fireBullet(0);
+            let fireSuccess = this.weaponLeft.remoteAttack(this.data);
+            if(fireSuccess){
+                this.stopHiding();
+            }
         }
-        this.stopHiding();
     }
     //特效攻击
     remoteExAttack(comboType: number): void {
@@ -512,7 +498,7 @@ export default class Player extends Actor {
         if (this.weaponLeft.meleeWeapon.IsAttacking && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(this.weaponLeft.meleeWeapon.getMeleeSlowRatio());
         }
-        if (this.isHeavyRemotoAttacking && !pos.equals(cc.Vec3.ZERO)) {
+        if (this.weaponLeft.isHeavyRemotoAttacking && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.01);
         }
         if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
@@ -653,7 +639,7 @@ export default class Player extends Actor {
         this.talentShield.takeDamage(damageData, actor);
         let blockLevel = this.shield.blockDamage(this, damageData, actor);
         let dd = this.data.getDamage(damageData, blockLevel);
-        let dodge = this.data.getDodge();
+        let dodge = this.data.FinalCommon.dodge/100;
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
         if (this.talentDash.hashTalent(Talent.DASH_12) && this.talentDash.IsExcuting && dd.getTotalDamage() > 0) {

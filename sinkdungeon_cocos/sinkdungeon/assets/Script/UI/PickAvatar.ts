@@ -35,6 +35,7 @@ export default class PickAvatar extends cc.Component {
     readonly SELECTOR_PROFESSION = 10;
     private isSpirteLoaded = false;
     private isProfessionLoaded = false;
+    private isEquipmentLoaded = false;
     //图片资源
     private spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     @property(cc.Node)
@@ -120,6 +121,7 @@ export default class PickAvatar extends cc.Component {
         this.loadingBackground.active = true;
         this.loadSpriteFrames();
         this.loadProfession();
+        this.loadEquipment();
         this.attributeLayout.active = false;
     }
     private getSpriteChildSprite(node: cc.Node, childNames: string[]): cc.Sprite {
@@ -127,6 +129,25 @@ export default class PickAvatar extends cc.Component {
             node = node.getChildByName(name);
         }
         return node.getComponent(cc.Sprite);
+    }
+    loadEquipment() {
+        if (Logic.equipments) {
+            this.isEquipmentLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/equipment', (err: Error, resource:cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.equipments = resource.json;
+                this.isEquipmentLoaded = true;
+                cc.log('equipment loaded');
+                Logic.equipmentNameList = new Array();
+                for (let key in resource.json) {
+                    Logic.equipmentNameList.push(key);
+                }
+            }
+        })
     }
     loadProfession() {
         if (Logic.professionList && Logic.professionList.length > 0) {
@@ -188,7 +209,7 @@ export default class PickAvatar extends cc.Component {
         }
         this.professionSelector = this.addAttributeSelector('职业：', professionList)
         this.professionSelector.selectorCallback = (data: AttributeData) => {
-            this.data.professionIndex = data.id;
+            this.data.professionData.valueCopy(Logic.professionList[data.id]);
             this.randomLabelContent.string = `${data.name}\n\n${data.desc}`;
             this.changeEquipment(Logic.professionList[data.id]);
         };
@@ -311,13 +332,24 @@ export default class PickAvatar extends cc.Component {
         //加载资源
         AudioPlayer.play(AudioPlayer.SELECT);
         Logic.playerData.AvatarData = this.data.clone();
+        this.addPorfessionEquipment();
         cc.director.loadScene('loading');
     }
     backToHome() {
         cc.director.loadScene('start');
         AudioPlayer.play(AudioPlayer.SELECT);
     }
-
+    addPorfessionEquipment(){
+        Logic.inventoryManager.weapon.valueCopy(Logic.equipments[this.data.professionData.weapon]);
+        Logic.inventoryManager.remote.valueCopy(Logic.equipments[this.data.professionData.remote]);
+        Logic.inventoryManager.shield.valueCopy(Logic.equipments[this.data.professionData.shield]);
+        Logic.inventoryManager.shoes.valueCopy(Logic.equipments[this.data.professionData.shoes]);
+        Logic.inventoryManager.cloak.valueCopy(Logic.equipments[this.data.professionData.cloak]);
+        Logic.inventoryManager.clothes.valueCopy(Logic.equipments[this.data.professionData.clothes]);
+        Logic.inventoryManager.gloves.valueCopy(Logic.equipments[this.data.professionData.gloves]);
+        Logic.inventoryManager.helmet.valueCopy(Logic.equipments[this.data.professionData.helmet]);
+        Logic.inventoryManager.trousers.valueCopy(Logic.equipments[this.data.professionData.trousers]);
+    }
     addBrightnessBar(): BrightnessBar {
         let prefab = cc.instantiate(this.brightnessBarPrefab);
         let script = prefab.getComponent(BrightnessBar);
@@ -339,9 +371,10 @@ export default class PickAvatar extends cc.Component {
         return script;
     }
     update(dt) {
-        if (this.isSpirteLoaded && this.isProfessionLoaded) {
+        if (this.isSpirteLoaded && this.isProfessionLoaded&& this.isEquipmentLoaded) {
             this.isSpirteLoaded = false;
             this.isProfessionLoaded = false;
+            this.isEquipmentLoaded = false;
             this.show();
         }
     }

@@ -149,38 +149,14 @@ export default class StatusManager extends cc.Component {
     }
     private updateStatus(): StatusData {
         let e = new StatusData();
-        e.Common.lifeDrain = 1;
-        e.Common.criticalStrikeRate = 1;
-        e.Common.dodge = 1;
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
                 continue;
             }
             e.missRate += s.data.missRate?s.data.missRate:0;
-            e.Common.damageMin += s.data.Common.damageMin?s.data.Common.damageMin:0;
-            e.Common.damageMax += s.data.Common.damageMax?s.data.Common.damageMax:0;
-            e.Common.defence += s.data.Common.defence?s.data.Common.defence:0;
-            e.Common.criticalStrikeRate *= s.data.Common.criticalStrikeRate?(1-s.data.Common.criticalStrikeRate/100):1;
-            e.Common.lifeDrain *= s.data.Common.lifeDrain?(1-s.data.Common.lifeDrain/100):1;
-            e.Common.dodge *= s.data.Common.dodge?(1-s.data.Common.dodge/100):1;
-            e.Common.damageBack += s.data.Common.damageBack?s.data.Common.damageBack:0;
-            e.Common.moveSpeed += s.data.Common.moveSpeed?s.data.Common.moveSpeed:0;
-            e.Common.attackSpeed += s.data.Common.attackSpeed?s.data.Common.attackSpeed:0;
-            e.Common.maxHealth += s.data.Common.maxHealth?s.data.Common.maxHealth:0;
-            e.Common.realDamage += s.data.Common.realDamage?s.data.Common.realDamage:0;
-            e.Common.realRate += s.data.Common.realRate?s.data.Common.realRate:0;
-            e.Common.magicDamage += s.data.Common.magicDamage?s.data.Common.magicDamage:0;
-            e.Common.magicDefence += s.data.Common.magicDefence?s.data.Common.magicDefence:0;
-            e.Common.iceRate += s.data.Common.iceRate?s.data.Common.iceRate:0;
-            e.Common.fireRate += s.data.Common.fireRate?s.data.Common.fireRate:0;
-            e.Common.lighteningRate += s.data.Common.lighteningRate?s.data.Common.lighteningRate:0;
-            e.Common.toxicRate += s.data.Common.toxicRate?s.data.Common.toxicRate:0;
-            e.Common.curseRate += s.data.Common.curseRate?s.data.Common.curseRate:0;
+            e.Common.add(s.data.Common);
         }
-        e.Common.criticalStrikeRate=(1-e.Common.criticalStrikeRate)*100;
-        e.Common.lifeDrain=(1-e.Common.lifeDrain)*100;
-        e.Common.dodge=(1-e.Common.dodge)*100;
         return e;
     }
 }

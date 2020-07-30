@@ -1,7 +1,6 @@
 import DamageData from "./DamageData";
 import StatusData from "./StatusData";
 import CommonData from "./CommonData";
-import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,16 +56,18 @@ export default class MonsterData{
         this.statusTotalData = new StatusData();
         this.common = new CommonData();
     }
-    private getCommonList():CommonData[]{
-        return [this.common, this.statusTotalData.Common];
-    }
+    
     get StatusTotalData() {
         return this.statusTotalData;
     }
     get Common() {
         return this.common;
     }
-    updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
+    get FinalCommon(){
+        let data = new CommonData().add(this.common).add(this.statusTotalData.Common);
+        return data;
+    }
+    public updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
         this.currentHealth = currentHealth;
         this.common.maxHealth = maxHealth;
         this.common.damageMin = attackPoint;
@@ -147,19 +148,21 @@ export default class MonsterData{
         e.bodyColor = this.bodyColor;
         return e;
     }
-    getAttackPoint():DamageData{
+    
+    public getAttackPoint():DamageData{
+        let data = this.FinalCommon;
         let dd = new DamageData();
-        dd.realDamage = this.common.realDamage;
-        dd.physicalDamage = this.common.damageMin;
-        dd.magicDamage = this.common.magicDamage;
-        
+        dd.realDamage = data.realDamage;
+        dd.physicalDamage = data.damageMin;
+        dd.magicDamage = data.magicDamage;
         return dd;
     }
     //伤害减免
-    getDamage(damageData:DamageData):DamageData{
+    public getDamage(damageData:DamageData):DamageData{
+        let data = this.FinalCommon;
         let finalDamageData = damageData.clone();
-        let defence = this.getDefence();
-        let defecneMagic = this.getMagicDefence();
+        let defence = data.defence;
+        let defecneMagic = data.magicDefence;
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
         //伤害 = 攻击 + 攻击*(2-0.94^(-护甲))
         if(defence>=0){
@@ -171,198 +174,16 @@ export default class MonsterData{
         return finalDamageData;
     }
 
-    //吸血默认是1暴击时吸血翻倍
-    getLifeDrain(): number {
-        let chance = this.getCriticalStrikeRate();
-        let drainRate = this.getLifeDrainRate();
-        let drain = 0;
-        if (Random.rand() < drainRate) {
-            drain = 1;
-            if (Random.rand() < chance) {
-                drain = 2;
-            }
-        }
-        return drain;
-    }
-
-    //初始速度300,最大速度600 最小速度为10
-    getMoveSpeed(): number {
-        let speed = 0;
-        for (let data of this.getCommonList()) {
-            speed += data.moveSpeed;
-        }
-        return speed;
-    }
-    //初始延迟是300,最低延迟为0 最大3000
-    getAttackSpeed(): number {
-        let speed = 0;
-        for (let data of this.getCommonList()) {
-            speed += data.attackSpeed;
-        }
-        return speed;
-    }
-    //获取最小攻击力
-    getDamageMin(): number {
-        let d = 0;
-        for (let data of this.getCommonList()) {
-            d += data.damageMin;
-        }
-        return d;
-    }
-    //获取最大攻击力
-    getDamageMax(): number {
-        let d = 0;
-        for (let data of this.getCommonList()) {
-            d += data.damageMax;
-        }
-        return d;
-    }
-
-    //获取暴击率
-    getCriticalStrikeRate(): number {
-        let rate = 1;
-        for (let data of this.getCommonList()) {
-            rate *= (1 - data.criticalStrikeRate / 100);
-        }
-        return 1 - rate;
-    }
-
-    //闪避
-    getDodge(): number {
-        let rate = 1;
-        for (let data of this.getCommonList()) {
-            rate *= (1 - data.dodge / 100);
-        }
-        return 1 - rate;
-    }
-    //防御,可以为负数
-    getDefence(): number {
-        let defence = 0;
-        for (let data of this.getCommonList()) {
-            defence += data.defence;
-        }
-        return defence;
-    }
-
     //生命值
-    getHealth(): cc.Vec3 {
+    public getHealth(): cc.Vec3 {
         let rate = 1;
-        let maxHealth = 0;
-        for (let data of this.getCommonList()) {
-            maxHealth += data.maxHealth;
-        }
+        let data = this.FinalCommon;
+        let maxHealth = data.maxHealth;
         if (maxHealth > 0) {
             rate = this.currentHealth / maxHealth;
         } else {
             return cc.v3(1, 1);
         }
         return cc.v3(maxHealth * rate, maxHealth);
-    }
-    getMagicDefence(): number {
-        let defence = 0;
-        for (let data of this.getCommonList()) {
-            defence += data.magicDefence;
-        }
-        if (defence > 100) {
-            defence = 100;
-        }
-        return defence;
-    }
-
-    getRealDamage(): number {
-        let damage = 0;
-        for (let data of this.getCommonList()) {
-            damage += data.realDamage;
-        }
-        if (damage < 0) {
-            damage = 0;
-        }
-        return damage;
-    }
-    getMagicDamage(): number {
-        let damage = 0;
-        for (let data of this.getCommonList()) {
-            damage += data.magicDamage;
-        }
-        if (damage < 0) {
-            damage = 0;
-        }
-        return damage;
-    }
-
-    getRealRate(): number {
-        let rate = 0;
-        for (let data of this.getCommonList()) {
-            rate += data.realRate;
-        }
-        rate = rate < 0 ? 0 : rate;
-        rate = rate > 100 ? 100 : rate;
-        return rate;
-    }
-
-    getIceRate(): number {
-        let rate = 0;
-        for (let data of this.getCommonList()) {
-            rate += data.iceRate;
-        }
-        rate = rate < 0 ? 0 : rate;
-        rate = rate > 100 ? 100 : rate;
-        return rate;
-    }
-
-    getFireRate(): number {
-        let rate = 0;
-        for (let data of this.getCommonList()) {
-            rate += data.fireRate;
-        }
-        rate = rate < 0 ? 0 : rate;
-        rate = rate > 100 ? 100 : rate;
-        return rate;
-    }
-
-    getLighteningRate(): number {
-        let rate = 0;
-        for (let data of this.getCommonList()) {
-            rate += data.lighteningRate;
-        }
-        rate = rate < 0 ? 0 : rate;
-        rate = rate > 100 ? 100 : rate;
-        return rate;
-    }
-
-    getToxicRate(): number {
-        let rate = 0;
-        for (let data of this.getCommonList()) {
-            rate += data.toxicRate;
-        }
-        rate = rate < 0 ? 0 : rate;
-        rate = rate > 100 ? 100 : rate;
-        return rate;
-    }
-
-    getCurseRate(): number {
-        let rate = 0;
-        for (let data of this.getCommonList()) {
-            rate += data.curseRate;
-        }
-        rate = rate < 0 ? 0 : rate;
-        rate = rate > 100 ? 100 : rate;
-        return rate;
-    }
-
-    getLifeDrainRate(): number {
-        let rate = 1;
-        for (let data of this.getCommonList()) {
-            rate *= (1 - data.lifeDrain / 100);
-        }
-        return 1 - rate;
-    }
-    //背刺伤害
-    getDamageBack(): number {
-        let damageBack = 0;
-        for (let data of this.getCommonList()) {
-            damageBack += data.damageBack;
-        }
-        return damageBack > 0 ? damageBack : 0;
     }
 }

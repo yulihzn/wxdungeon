@@ -467,7 +467,7 @@ export default class EquipmentManager extends cc.Component {
         let info = ``;
         info += data.Common.remoteDamage + desc.remoteDamage == 0 ? `` : `远程伤害${data.Common.remoteDamage + desc.remoteDamage}\n`;
         info += data.Common.remoteCritRate + desc.remoteCritRate == 0 ? `` : `远程暴击率${data.Common.remoteCritRate + desc.remoteCritRate}\n`;
-        info += data.Common.remoteSpeed + desc.remoteSpeed == 0 ? `` : `远程攻速${data.Common.remoteSpeed + desc.remoteSpeed}\n`;
+        info += data.Common.remoteCooldown + desc.remoteCooldown == 0 ? `` : `远程冷却${(data.Common.remoteCooldown + desc.remoteCooldown)/1000}s\n`;
         info += data.Common.damageMin + desc.damageMin == 0 ? `` : `攻击${data.Common.damageMin + desc.damageMin} 最大攻击力${data.Common.damageMax + desc.damageMax}\n`;
         info += data.Common.damageMin + desc.damageMin == 0 && data.Common.damageMax != 0 ? `最大攻击力${data.Common.damageMax + desc.damageMax}\n` : ``
         info += data.Common.defence + desc.defence == 0 ? `` : `防御${data.Common.defence + desc.defence}\n`;

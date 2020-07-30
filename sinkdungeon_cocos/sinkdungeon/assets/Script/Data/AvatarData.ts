@@ -1,7 +1,9 @@
+import ProfessionData from "./ProfessionData";
+
 export default class AvatarData {
     organizationIndex:number = 0;//['弥世逐流','宝藏猎人','幽光守护','翠金科技']
     gender:number = 0;//0:male 1:female
-    professionIndex:number = 0;
+    professionData:ProfessionData = new ProfessionData();
     skinColor:string = '#ffe1c5';
     hairResName: string = 'avatarhair000anim00';
     hairColor: string = '#000000';
@@ -16,7 +18,7 @@ export default class AvatarData {
         }
         this.organizationIndex = data.organizationIndex ? data.organizationIndex : this.organizationIndex;
         this.gender = data.gender ? data.gender : this.gender;
-        this.professionIndex = data.professionIndex ? data.professionIndex : this.professionIndex;
+        this.professionData.valueCopy(data.professionData);
         this.skinColor = data.skinColor ? data.skinColor : this.skinColor;
         this.hairResName = data.hairResName ? data.hairResName : this.hairResName;
         this.hairColor = data.hairColor ? data.hairColor : this.hairColor;
@@ -30,7 +32,7 @@ export default class AvatarData {
         let e = new AvatarData();
         e.organizationIndex = this.organizationIndex;
         e.gender = this.gender;
-        e.professionIndex = this.professionIndex;
+        e.professionData = this.professionData;
         e.skinColor = this.skinColor;
         e.hairResName = this.hairResName;
         e.hairColor = this.hairColor;

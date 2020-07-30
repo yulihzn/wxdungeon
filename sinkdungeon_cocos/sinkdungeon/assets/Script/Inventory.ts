@@ -101,7 +101,6 @@ export default class Inventory extends cc.Component {
     }
 
     start() {
-        // Logic.setAlias(this.node);
         this.tabselect.x = 0;
         this.weapon.spriteFrame = null;
         this.remote.spriteFrame = null;
@@ -187,26 +186,31 @@ export default class Inventory extends cc.Component {
                 this.setEquipment(this.inventoryManager.weapon, isChange);
                 this.inventoryManager.weapon.valueCopy(equipmentDataNew);
                 break;
-            case Equipment.REMOTE: this.remote.spriteFrame = spriteFrame;
+            case Equipment.REMOTE:
+                this.remote.node.parent.active = true;
+                this.shield.node.parent.active = true;
+                this.remote.spriteFrame = spriteFrame;
                 this.remote.node.color = color;
                 this.setEquipment(this.inventoryManager.remote, isChange);
                 this.setEquipment(this.inventoryManager.shield, isChange);
                 this.inventoryManager.remote.valueCopy(equipmentDataNew);
                 this.inventoryManager.shield.valueCopy(new EquipmentData());
                 this.shield.spriteFrame = Logic.spriteFrames[this.inventoryManager.shield.img];
-                this.remote.node.parent.active = true;
                 this.shield.node.parent.active = false;
                 break;
-            case Equipment.SHIELD: this.shield.spriteFrame = spriteFrame;
+            case Equipment.SHIELD:
+                this.remote.node.parent.active = true;
+                this.shield.node.parent.active = true;
+                this.shield.spriteFrame = spriteFrame;
                 this.shield.node.color = color;
                 this.setEquipment(this.inventoryManager.shield, isChange);
                 this.setEquipment(this.inventoryManager.remote, isChange);
                 this.inventoryManager.shield.valueCopy(equipmentDataNew);
                 if (this.inventoryManager.shield.equipmetType != Equipment.EMPTY) {
-                    this.remote.node.parent.active = false;
-                    this.shield.node.parent.active = true;
                     this.inventoryManager.remote.valueCopy(new EquipmentData());
                     this.remote.spriteFrame = Logic.spriteFrames[this.inventoryManager.remote.img];
+                    this.remote.node.parent.active = false;
+                    this.shield.node.parent.active = true;
                 } else {
                     this.remote.node.parent.active = true;
                     this.shield.node.parent.active = false;

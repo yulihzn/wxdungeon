@@ -8,7 +8,7 @@
         "helmet": "",
         "clothes": "clothes002",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -32,7 +32,7 @@
         "remote": "",
         "shield": "",
         "helmet": "",
-        "clothes": "",
+        "clothes": "clothes019",
         "cloak": "",
         "trousers": "trousers001",
         "shoes": "",
@@ -40,8 +40,8 @@
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "criticalStrikeRate": 0,
-            "defence": 0,
+            "remoteDamage": 1,
+            "remoteCritRate": 10,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -73,7 +73,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 0
+            "maxHealth": 2
         },
         "desc": "救死扶伤，疲劳过度"
     },
@@ -112,7 +112,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -138,7 +138,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -164,7 +164,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -190,19 +190,19 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
-            "damageMin": 0,
+            "damageMin": 1,
             "damageMax": 0,
-            "criticalStrikeRate": 0,
+            "criticalStrikeRate": 20,
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dodge": 0,
+            "dodge": 10,
             "maxHealth": 0
         },
         "desc": "精通剑类武器，在道场的休息室打盹了"
@@ -220,12 +220,12 @@
         "shoes": "",
         "gloves": "",
         "common": {
-            "damageMin": 0,
+            "damageMin": 1,
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
             "lifeDrain": 0,
-            "damageBack": 0,
+            "damageBack": 2,
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
@@ -248,7 +248,7 @@
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "criticalStrikeRate": 0,
+            "criticalStrikeRate": 10,
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
@@ -268,7 +268,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -290,7 +290,7 @@
         "nameEn": "",
         "weapon": "",
         "remote": "",
-        "shield": "",
+        "shield": "shield002",
         "helmet": "",
         "clothes": "",
         "cloak": "",
@@ -300,8 +300,8 @@
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "criticalStrikeRate": 0,
-            "defence": 0,
+            "remoteDamage": 1,
+            "remoteSpeed": 50,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -320,7 +320,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -333,7 +333,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 0
+            "maxHealth": 1
         },
         "desc": "明天准点睡觉，早上还要早起"
     },
@@ -346,7 +346,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -359,7 +359,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 0
+            "maxHealth": 2
         },
         "desc": "这次的森林大火好几天才灭了，可累坏了"
     },
@@ -372,15 +372,14 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "criticalStrikeRate": 0,
-            "defence": 0,
-            "lifeDrain": 0,
+            "magicDamage":2,
+            "magicDefence": 10,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
@@ -398,7 +397,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -408,10 +407,10 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0,
+            "moveSpeed": 50,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 0
+            "maxHealth": 1
         },
         "desc": "今天跑完马拉松需要好好休息"
     },
@@ -424,7 +423,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -435,7 +434,7 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
-            "attackSpeed": 0,
+            "attackSpeed": 30,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -450,7 +449,7 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
@@ -461,7 +460,7 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
-            "attackSpeed": 0,
+            "attackSpeed": 50,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -486,8 +485,8 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 0,
-            "attackSpeed": 0,
+            "moveSpeed": 30,
+            "attackSpeed": 30,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -502,20 +501,20 @@
         "helmet": "",
         "clothes": "",
         "cloak": "",
-        "trousers": "trousers001",
+        "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
         "common": {
-            "damageMin": 0,
-            "damageMax": 0,
+            "damageMin": 1,
+            "damageMax": 2,
             "criticalStrikeRate": 0,
-            "defence": 0,
+            "defence": 5,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 0
+            "maxHealth": 2
         },
         "desc": "卧如弓"
     }
