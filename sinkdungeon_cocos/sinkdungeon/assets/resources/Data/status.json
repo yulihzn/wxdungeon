@@ -301,7 +301,9 @@
         "common": {
             "moveSpeed": -300,
             "defence":-100,
-            "attackSpeed":-300
+            "attackSpeed":-300,
+            "magicDefence":-100,
+            "dodge":-100
         }
     }
 }
