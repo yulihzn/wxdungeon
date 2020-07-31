@@ -2148,7 +2148,7 @@
         "prefix": "",
         "color": "#ffffff",
         "titlecolor": "#ffffff",
-        "img": "clothes018",
+        "img": "clothes021",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2417,6 +2417,29 @@
         },
         "desc": "咱们工人有力量",
         "trouserslong": 1
+    },
+    "trousers011": {
+        "nameCn": "沙滩裤",
+        "nameEn": "Short Trousers",
+        "equipmetType": "trousers",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "trousers011",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "desc": "夏威夷",
+        "trouserslong": 0
     },
     "gloves001": {
         "nameCn": "战士手套",

@@ -1502,6 +1502,7 @@
             <key type="filename">equipment/trousers008.png</key>
             <key type="filename">equipment/trousers009.png</key>
             <key type="filename">equipment/trousers010.png</key>
+            <key type="filename">equipment/trousers011.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

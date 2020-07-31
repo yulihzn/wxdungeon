@@ -412,32 +412,6 @@ export default class EquipmentManager extends cc.Component {
             equipment.refresh(equipData);
         } else {
             //添加新装备
-            // let data = new EquipmentData();
-            // data.valueCopy(Logic.equipments[equipType]);
-            // data.uuid = data.genNonDuplicateID();
-            // let desc = EquipmentManager.getRandomDesc(data, chestQuality);
-            // let common = data.Common.clone().add(desc.common);
-            // data.infobase = EquipmentManager.getEquipmentInfoBase(common);
-            // data.info1 = EquipmentManager.getEquipmentInfo1(common);
-            // data.info2 = EquipmentManager.getEquipmentInfo2(common, data);
-            // data.info3 = EquipmentManager.getEquipmentInfo3(common);
-            // data.infobasecolor = '#fffff0';//象牙
-            // data.infocolor1 = '#9370DB';//适中的紫色
-            // data.infocolor2 = '#87CEFA';//淡蓝色
-            // data.infocolor3 = '#BC8F8F';//玫瑰棕色
-            // data.Common.add(desc.common);
-          
-            // data.prefix = desc.prefix;
-            // data.titlecolor = desc.titlecolor;
-            // if (desc.color != "#ffffff") {
-            //     data.color = desc.color;
-            //     if (data.lightcolor != "#ffffff") {
-            //         data.lightcolor = EquipmentManager.getMixColor(desc.color, data.lightcolor);
-            //     } else {
-            //         data.lightcolor = desc.color;
-            //     }
-            // }
-            // data.level = desc.level;
             let data = EquipmentManager.getNewEquipData(equipType,chestQuality);
             if (shopTable) {
                 equipment.shopTable = shopTable;
@@ -481,7 +455,7 @@ export default class EquipmentManager extends cc.Component {
     static getEquipmentInfoBase(common: CommonData): string {
         let info = ``;
         info += common.remoteDamage== 0 ? `` : `远程伤害${common.remoteDamage}\n`;
-        info += common.remoteCritRate == 0 ? `` : `远程暴击率${common.remoteCritRate}\n`;
+        info += common.remoteCritRate == 0 ? `` : `远程暴击率${common.remoteCritRate.toFixed(1).replace('.0','')}\n`;
         info += common.remoteCooldown == 0 ? `` : `远程冷却${(common.remoteCooldown)/1000}s\n`;
         info += common.damageMin == 0 ? `` : `攻击${common.damageMin} 最大攻击力${common.damageMax}\n`;
         info += common.damageMin == 0 && common.damageMax != 0 ? `最大攻击力${common.damageMax}\n` : ``
@@ -495,12 +469,12 @@ export default class EquipmentManager extends cc.Component {
     }
     static getEquipmentInfo1(common: CommonData): string {
         let info = ``;
-        info += common.criticalStrikeRate == 0 ? `` : `暴击${common.criticalStrikeRate}%\n`;
-        info += common.lifeDrain == 0 ? `` : `吸血${common.lifeDrain}%\n`;
+        info += common.criticalStrikeRate == 0 ? `` : `暴击${common.criticalStrikeRate.toFixed(1).replace('.0','')}%\n`;
+        info += common.lifeDrain == 0 ? `` : `吸血${common.lifeDrain.toFixed(1).replace('.0','')}%\n`;
         info += common.damageBack == 0 ? `` : `背刺${common.damageBack}\n`;
         info += common.moveSpeed == 0 ? `` : `移速${common.moveSpeed}\n`;
         info += common.attackSpeed == 0 ? `` : `攻速${common.attackSpeed}\n`;
-        info += common.dodge == 0 ? `` : `闪避${common.dodge}%\n`;
+        info += common.dodge == 0 ? `` : `闪避${common.dodge.toFixed(1).replace('.0','')}%\n`;
         info += common.blockDamage == 0 ? `` : `弹反伤害${common.blockDamage}\n`;
         info += common.blockPhysical == 0 ? `` : `格挡物免${common.blockPhysical}%\n`;
         info += common.blockMagic == 0 ? `` : `格挡魔免${common.blockMagic}%\n`;

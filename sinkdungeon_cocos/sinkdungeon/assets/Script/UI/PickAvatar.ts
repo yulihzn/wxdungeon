@@ -69,7 +69,6 @@ export default class PickAvatar extends cc.Component {
     private handSprite2: cc.Sprite;
     private legSprite1: cc.Sprite;
     private legSprite2: cc.Sprite;
-    private underWearSprite: cc.Sprite;
     private cloakSprite: cc.Sprite = null;
     private shoesSprite1: cc.Sprite = null;
     private shoesSprite2: cc.Sprite = null;
@@ -83,7 +82,6 @@ export default class PickAvatar extends cc.Component {
     private shieldSprite: cc.Sprite = null;
 
     private organizationSelector: AttributeSelector;
-    private genderSelector: AttributeSelector;
     private professionSelector: AttributeSelector;
     private skinSelector: BrightnessBar;
     private hairSelector: AttributeSelector;
@@ -99,7 +97,6 @@ export default class PickAvatar extends cc.Component {
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable, ['bed']);
         this.coverSprite = this.getSpriteChildSprite(this.avatarTable, ['cover']);
         this.bodySprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body']);
-        this.underWearSprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'underwear']);
         this.handSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand1']);
         this.handSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand2']);
         this.legSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg1']);
@@ -213,13 +210,6 @@ export default class PickAvatar extends cc.Component {
             this.data.professionData.valueCopy(Logic.professionList[data.id]);
             this.randomLabelContent.string = `${data.name}\n\n${data.desc}`;
             this.changeEquipment(Logic.professionList[data.id]);
-        };
-
-        //性别
-        this.genderSelector = this.addAttributeSelector('性别：', [new AttributeData(0, '男性', '', ''), new AttributeData(1, '女性', '', '')])
-        this.genderSelector.selectorCallback = (data: AttributeData) => {
-            this.underWearSprite.node.opacity = data.id == 0 ? 0 : 255;
-            this.data.gender = data.id;
         };
 
         //皮肤颜色
@@ -396,7 +386,6 @@ export default class PickAvatar extends cc.Component {
             return;
         }
         this.organizationSelector.selectRandom();
-        this.genderSelector.selectRandom();
         this.professionSelector.selectRandom();
         this.skinSelector.selectRandom();
         this.hairSelector.selectRandom();
