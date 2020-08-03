@@ -2640,7 +2640,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":100,
+            "remoteCooldown":-100,
             "dodge": 0,
             "maxHealth": 0
         },

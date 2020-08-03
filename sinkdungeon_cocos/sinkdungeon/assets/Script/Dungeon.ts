@@ -256,6 +256,9 @@ export default class Dungeon extends cc.Component {
     }
     /**落雷 */
     private addLighteningFall(pos: cc.Vec3, isTrigger: boolean, needPrepare: boolean, showArea: boolean, damagePoint?: number) {
+        if(!this.buildingManager){
+            return;
+        }
         this.buildingManager.addLighteningFall(pos,isTrigger,needPrepare,showArea,damagePoint);
     }
 
