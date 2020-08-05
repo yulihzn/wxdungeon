@@ -50,9 +50,9 @@ export default class Dungeon extends cc.Component {
     floorIndexmap: cc.Vec3[] = new Array();//地板下标列表
     static WIDTH_SIZE: number = 15;
     static HEIGHT_SIZE: number = 9;
-    static readonly MAPX: number = 32;
-    static readonly MAPY: number = 32;
-    static readonly TILE_SIZE: number = 64;
+    static readonly MAPX: number = 64;
+    static readonly MAPY: number = 64;
+    static readonly TILE_SIZE: number = 128;
     private timeDelay = 0;
     private checkTimeDelay = 0;
 
@@ -145,17 +145,17 @@ export default class Dungeon extends cc.Component {
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
-                if (mapData[i][j] == '--') {
-                    let t = cc.instantiate(this.tile);
-                    t.parent = this.node;
-                    t.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    //越往下层级越高，j是行，i是列
-                    t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - j) * 10;
-                    this.map[i][j] = t.getComponent(Tile);
-                    //开启踩踏掉落
-                    this.map[i][j].isAutoShow = true;
-                    this.floorIndexmap.push(cc.v3(i, j));
-                }
+                // if (mapData[i][j] == '--') {
+                //     let t = cc.instantiate(this.tile);
+                //     t.parent = this.node;
+                //     t.position = Dungeon.getPosInMap(cc.v3(i, j));
+                //     //越往下层级越高，j是行，i是列
+                //     t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - j) * 10;
+                //     this.map[i][j] = t.getComponent(Tile);
+                //     //开启踩踏掉落
+                //     this.map[i][j].isAutoShow = true;
+                //     this.floorIndexmap.push(cc.v3(i, j));
+                // }
                 if (this.isThe(mapData[i][j], "*") && mapData[i][j] != '**') {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;

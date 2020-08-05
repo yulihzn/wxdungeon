@@ -20,44 +20,29 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Door extends Building {
 
-    anim: cc.Animation;
     isOpen: boolean = false;
     isDoor: boolean = true;
     isHidden: boolean = false;
     //0top1bottom2left3right
     dir = 0;
-    wall: cc.Node = null;
-    sideWall:cc.Node = null;
-    private bg:cc.Node = null;
-    private sprite:cc.Node = null;
+    sprite:cc.Sprite = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.bg = this.node.getChildByName('bg');
-        this.bg.zIndex = IndexZ.BASE;
-        this.sprite = this.node.getChildByName('sprite');
-        this.sprite.zIndex = IndexZ.FLOOR;
-        this.anim = this.getComponent(cc.Animation);
+        this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        this.node.zIndex = IndexZ.FLOOR;
     }
 
     start() {
-        this.anim = this.getComponent(cc.Animation);
+        if(this.sprite){
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
+        }
     }
     setOpen(isOpen: boolean) {
         if (!this.isDoor) {
-            this.wall.zIndex = this.dir==1?IndexZ.DOORWALL:IndexZ.ACTOR;
-            this.wall.getComponent(cc.PhysicsBoxCollider).sensor = false;
-            this.wall.getComponent(cc.PhysicsBoxCollider).apply();
-            if(this.sideWall){
-                this.sideWall.opacity = 0;
-            }
             return;
         }
-        this.wall.zIndex = IndexZ.DOORWALLBEHIND;
-        this.wall.getComponent(cc.PhysicsBoxCollider).sensor = true;
-        this.wall.getComponent(cc.PhysicsBoxCollider).apply();
-        // this.wall.active=false;
         if (isOpen) {
             this.openGate();
         } else {
@@ -70,22 +55,32 @@ export default class Door extends Building {
             return;
         }
         this.isOpen = true;
-        if (!this.anim) {
-            this.anim = this.getComponent(cc.Animation);
-        }
-        this.getComponent('cc.PhysicsBoxCollider').enabled = false;
-        this.anim.play('DoorOpen');
+        cc.tween(this.sprite)
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim000`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim001`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim002`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim003`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim004`]})
+        .call(()=>{
+            this.getComponent(cc.PhysicsBoxCollider).enabled = false;
+        })
+        .start();
     }
     closeGate() {
         if (!this.isOpen) {
             return;
         }
         this.isOpen = false;
-        if (!this.anim) {
-            this.anim = this.getComponent(cc.Animation);
-        }
-        this.getComponent('cc.PhysicsBoxCollider').enabled = true;
-        this.anim.play('DoorClose');
+        cc.tween(this.sprite)
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim000`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim001`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim002`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim003`]})
+        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim004`]})
+        .call(()=>{
+            this.getComponent(cc.PhysicsBoxCollider).enabled = true;
+        })
+        .start();
     }
 
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {

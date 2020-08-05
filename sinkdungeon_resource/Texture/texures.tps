@@ -1049,6 +1049,79 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">building/door00anim000.png</key>
+            <key type="filename">building/door00anim001.png</key>
+            <key type="filename">building/door00anim002.png</key>
+            <key type="filename">building/door00anim003.png</key>
+            <key type="filename">building/door00anim004.png</key>
+            <key type="filename">building/door01anim000.png</key>
+            <key type="filename">building/door01anim001.png</key>
+            <key type="filename">building/door01anim002.png</key>
+            <key type="filename">building/door01anim003.png</key>
+            <key type="filename">building/door01anim004.png</key>
+            <key type="filename">building/door02anim000.png</key>
+            <key type="filename">building/door02anim001.png</key>
+            <key type="filename">building/door02anim002.png</key>
+            <key type="filename">building/door02anim003.png</key>
+            <key type="filename">building/door02anim004.png</key>
+            <key type="filename">building/door03anim000.png</key>
+            <key type="filename">building/door03anim001.png</key>
+            <key type="filename">building/door03anim002.png</key>
+            <key type="filename">building/door03anim003.png</key>
+            <key type="filename">building/door03anim004.png</key>
+            <key type="filename">building/door04anim000.png</key>
+            <key type="filename">building/door04anim001.png</key>
+            <key type="filename">building/door04anim002.png</key>
+            <key type="filename">building/door04anim003.png</key>
+            <key type="filename">building/door04anim004.png</key>
+            <key type="filename">building/wall00anim000.png</key>
+            <key type="filename">building/wall00anim001.png</key>
+            <key type="filename">building/wall01anim000.png</key>
+            <key type="filename">building/wall01anim001.png</key>
+            <key type="filename">building/wall02anim000.png</key>
+            <key type="filename">building/wall02anim001.png</key>
+            <key type="filename">building/wall03anim000.png</key>
+            <key type="filename">building/wall03anim001.png</key>
+            <key type="filename">building/wall03anim002.png</key>
+            <key type="filename">building/wall04anim000.png</key>
+            <key type="filename">building/wall05anim000.png</key>
+            <key type="filename">building/wallbottom00.png</key>
+            <key type="filename">building/wallbottom01.png</key>
+            <key type="filename">building/wallbottom02.png</key>
+            <key type="filename">building/wallbottom03.png</key>
+            <key type="filename">building/wallbottom04.png</key>
+            <key type="filename">building/wallbottom05.png</key>
+            <key type="filename">building/walltop00anim000.png</key>
+            <key type="filename">building/walltop01anim000.png</key>
+            <key type="filename">building/walltop02anim000.png</key>
+            <key type="filename">building/walltop03anim000.png</key>
+            <key type="filename">building/walltop04anim000.png</key>
+            <key type="filename">building/walltop05anim000.png</key>
+            <key type="filename">dungeon/dungeondoor.png</key>
+            <key type="filename">dungeon/dungeondoorframe.png</key>
+            <key type="filename">dungeon/jungledoor.png</key>
+            <key type="filename">dungeon/jungledoorframe.png</key>
+            <key type="filename">dungeon/pyramiddoor.png</key>
+            <key type="filename">dungeon/pyramiddoorframe.png</key>
+            <key type="filename">dungeon/restdoor.png</key>
+            <key type="filename">dungeon/restdoorframe.png</key>
+            <key type="filename">dungeon/restwall2.png</key>
+            <key type="filename">dungeon/shipdoor.png</key>
+            <key type="filename">dungeon/shipdoorframe.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,8,8,16</rect>
+                <key>scale9Paddings</key>
+                <rect>4,8,8,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">building/emplacement.png</key>
             <key type="filename">building/emplacement1.png</key>
             <key type="filename">building/emplacement2.png</key>
@@ -1082,69 +1155,6 @@
                 <rect>8,4,16,8</rect>
                 <key>scale9Paddings</key>
                 <rect>8,4,16,8</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">building/wall000.png</key>
-            <key type="filename">building/wall001.png</key>
-            <key type="filename">building/wall006.png</key>
-            <key type="filename">building/wall007.png</key>
-            <key type="filename">building/wall008.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>4,6,8,12</rect>
-                <key>scale9Paddings</key>
-                <rect>4,6,8,12</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">building/wall002.png</key>
-            <key type="filename">building/wall003.png</key>
-            <key type="filename">building/wall004.png</key>
-            <key type="filename">building/wall009.png</key>
-            <key type="filename">dungeon/dungeondoor.png</key>
-            <key type="filename">dungeon/dungeondoorframe.png</key>
-            <key type="filename">dungeon/jungledoor.png</key>
-            <key type="filename">dungeon/jungledoorframe.png</key>
-            <key type="filename">dungeon/pyramiddoor.png</key>
-            <key type="filename">dungeon/pyramiddoorframe.png</key>
-            <key type="filename">dungeon/restdoor.png</key>
-            <key type="filename">dungeon/restdoorframe.png</key>
-            <key type="filename">dungeon/restwall2.png</key>
-            <key type="filename">dungeon/shipdoor.png</key>
-            <key type="filename">dungeon/shipdoorframe.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>4,8,8,16</rect>
-                <key>scale9Paddings</key>
-                <rect>4,8,8,16</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">building/wall005.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>4,6,9,11</rect>
-                <key>scale9Paddings</key>
-                <rect>4,6,9,11</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

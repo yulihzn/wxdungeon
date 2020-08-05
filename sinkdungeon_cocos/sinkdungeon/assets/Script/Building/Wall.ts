@@ -49,52 +49,62 @@ export default class Wall extends Building {
             case Logic.CHAPTER02:this.changeRes(this.getRes02());break;
             case Logic.CHAPTER03:this.changeRes(this.getRes03());break;
             case Logic.CHAPTER04:this.changeRes(this.getRes04());break;
-            case Logic.CHAPTER05:this.changeRes(this.getRes04());break;
+            case Logic.CHAPTER05:this.changeRes(this.getRes05());break;
         }
     }
     
     getRes00():string{
-        let s = 'wall000';
+        let s = 'walltop00anim000';
         switch(this.mapStr){
-            case '##':s = 'wall000';break;
-            case '#0':s = 'wall000';break;
-            case '#1':s = 'wall001';break;
+            case '##':s = 'walltop00anim000';break;
+            case '#0':s = 'wall00anim000';break;
+            case '#1':s = 'wall00anim001';break;
         }
         return s;
     }
     getRes01():string{
-        let s = 'wall005';
+        let s = 'walltop01anim000';
         switch(this.mapStr){
-            case '##':s = 'wall005';break;
-            case '#0':s = 'wall005';break;
-            case '#1':s = 'wall003';break;
+            case '##':s = 'walltop01anim000';break;
+            case '#0':s = 'wall01anim000';break;
+            case '#1':s = 'wall01anim001';break;
         }
         return s;
     }
     getRes02():string{
-        let s = 'wall002';
+        let s = 'walltop02anim000';
         switch(this.mapStr){
-            case '##':s = 'wall002';break;
-            case '#0':s = 'wall009';break;
-            case '#1':s = 'wall002';break;
+            case '##':s = 'walltop02anim000';break;
+            case '#0':s = 'wall02anim000';break;
+            case '#1':s = 'wall02anim001';break;
         }
         return s;
     }
     getRes03():string{
-        let s = 'wall008';
+        let s = 'walltop03anim000';
         switch(this.mapStr){
-            case '##':s = 'wall008';break;
-            case '#0':s = 'wall007';break;
-            case '#1':s = 'wall006';break;
+            case '##':s = 'walltop03anim000';break;
+            case '#0':s = 'wall03anim000';break;
+            case '#1':s = 'wall03anim001';break;
+            case '#2':s = 'wall03anim002';break;
         }
         return s;
     }
     getRes04():string{
-        let s = 'wall004';
+        let s = 'walltop04anim000';
         switch(this.mapStr){
-            case '##':s = 'wall004';break;
-            case '#0':s = 'wall004';break;
-            case '#1':s = 'wall004';break;
+            case '##':s = 'walltop04anim000';break;
+            case '#0':s = 'wall04anim000';break;
+            case '#1':s = 'wall04anim000';break;
+        }
+        return s;
+    }
+    getRes05():string{
+        let s = 'walltop05anim000';
+        switch(this.mapStr){
+            case '##':s = 'walltop05anim000';break;
+            case '#0':s = 'wall05anim000';break;
+            case '#1':s = 'wall05anim000';break;
         }
         return s;
     }

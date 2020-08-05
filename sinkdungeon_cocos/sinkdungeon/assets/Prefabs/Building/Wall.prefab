@@ -49,8 +49,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 128
+      "width": 128,
+      "height": 256
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -173,15 +173,15 @@
     "_opacity": 128,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 16,
-      "height": 10
+      "width": 128,
+      "height": 128
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -193,14 +193,14 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        3,
+        -64,
         0,
         0,
         0,
         0,
         1,
-        4,
-        4,
+        1,
+        1,
         1
       ]
     },
@@ -233,7 +233,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "14de073f-cd28-4900-9336-0dcb3ee96a57"
+      "__uuid__": "07844e8d-3436-4ccf-ad9f-e28d7231e34c"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -289,13 +289,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 17,
-      "height": 23
+      "width": 128,
+      "height": 256
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.1
+      "y": 0.25
     },
     "_trs": {
       "__type__": "TypedArray",
@@ -308,8 +308,8 @@
         0,
         0,
         1,
-        4,
-        4,
+        1,
+        1,
         1
       ]
     },
@@ -342,10 +342,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "341c04dd-2ea0-41a4-9cfc-31e623763e92"
+      "__uuid__": "5a5a124f-2dcd-4998-84e5-2a68842deaf2"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -434,12 +434,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 16
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 48
+      "width": 128,
+      "height": 128
     },
     "_id": ""
   },
@@ -455,12 +455,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 64
+      "y": 128
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 128,
+      "height": 128
     },
     "_id": ""
   },
