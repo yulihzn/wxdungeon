@@ -167,7 +167,7 @@ export default class Dungeon extends cc.Component {
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
-                this.buildingManager.addBuildingsFromMap(this, mapData[i][j], cc.v3(i, j));
+                this.buildingManager.addBuildingsFromMap(this, mapData,i,j);
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     //生成心
@@ -356,7 +356,6 @@ export default class Dungeon extends cc.Component {
     }
 
     public shakeForKraken() {
-        this.dungeonStyleManager.changeTopWalls(false);
         this.isZoomCamera = true;
         this.anim.playAdditive('DungeonShakeOnce');
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
@@ -403,9 +402,6 @@ export default class Dungeon extends cc.Component {
         this.scheduleOnce(() => {
             cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
         }, 0.1)
-        for (let door of Logic.mapManager.getCurrentRoom().doors) {
-            this.dungeonStyleManager.setDoor(door.dir, door.isDoor, false, door.isHidden);
-        }
     }
     breakTile(pos: cc.Vec3) {
         let tile = this.map[pos.x][pos.y];
@@ -454,24 +450,12 @@ export default class Dungeon extends cc.Component {
             isClear = true;
         }
         if (isClear) {
-            //第一层的开始房间出口不开放
-            let isStartRoom = Logic.mapManager.getCurrentRoom().roomType.isEqual(RoomType.START_ROOM);
-            if (this.dungeonStyleManager && this.dungeonStyleManager.exitdoor
-                && this.dungeonStyleManager.exitdoor
-                && !isStartRoom) {
-                this.dungeonStyleManager.changeTopWalls(true);
-                this.dungeonStyleManager.exitdoor.openGate();
+            if (this.buildingManager && this.buildingManager.exitdoor) {
+                this.buildingManager.exitdoor.openGate();
             }
-            this.openDoors();
+            this.buildingManager.openDoors();
         }
 
-    }
-    /**开门 */
-    openDoors() {
-        for (let door of Logic.mapManager.getCurrentRoom().doors) {
-            Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
-            this.dungeonStyleManager.setDoor(door.dir, door.isDoor, true, door.isHidden);
-        }
     }
     checkPlayerPos(dt: number) {
         if (!this.map || !this.player || !this.node) {

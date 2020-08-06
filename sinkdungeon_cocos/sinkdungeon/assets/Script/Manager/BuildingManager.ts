@@ -13,6 +13,9 @@ import ShopTable from "../Building/ShopTable";
 import FallStone from "../Building/FallStone";
 import MagicLightening from "../Building/MagicLightening";
 import HitBuilding from "../Building/HitBuilding";
+import RoomType from "../Rect/RoomType";
+import ExitDoor from "../Building/ExitDoor";
+import Door from "../Building/Door";
 
 
 // Learn TypeScript:
@@ -71,7 +74,16 @@ export default class BuildingManager extends cc.Component {
     saw: cc.Prefab = null;
     @property(cc.Prefab)
     floorDecoration: cc.Prefab = null;
+    @property(cc.Prefab)
+    exitdoorPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    door: cc.Prefab = null;
+    @property(cc.Prefab)
+    darkness: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
+    exitdoor: ExitDoor = null;
+    doors:Door[] = new Array();
+    private walltops: cc.Node[] = new Array();
 
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
@@ -84,10 +96,14 @@ export default class BuildingManager extends cc.Component {
         building.zIndex = IndexZ.getActorZIndex(building.position);
         return building;
     }
-    public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+    public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], i: number, j: number) {
+        let mapDataStr = mapData[i][j];
+        let indexPos = cc.v3(i, j);
         if (this.isThe(mapDataStr, '#')) {
             //生成墙
             this.addBuilding(this.wall, indexPos).opacity = 255;
+        } else if (mapDataStr == "--") {
+            this.addBuilding(this.darkness, indexPos);
         } else if (mapDataStr == 'T0') {
             //生成陷阱
             this.addBuilding(this.trap, indexPos);
@@ -95,7 +111,7 @@ export default class BuildingManager extends cc.Component {
             //生成电锯,占据5个格子
             let saw = this.addBuilding(this.saw, indexPos);
             saw.getComponent(Saw).setPos(indexPos);
-        } else if (this.isThe(mapDataStr, 'E')) {
+        } else if (this.isThe(mapDataStr, 'G')) {
             //生成炮台
             let em = this.addBuilding(this.emplacement, indexPos).getComponent(Emplacement);
             em.setDirType(mapDataStr);
@@ -208,7 +224,7 @@ export default class BuildingManager extends cc.Component {
             }
         } else if (this.isThe(mapDataStr, 'H')) {
             //生成可打击建筑
-            this.addHitBuilding(dungeon,parseInt(mapDataStr[1]),indexPos)
+            this.addHitBuilding(dungeon, parseInt(mapDataStr[1]), indexPos)
         } else if (mapDataStr == 'S0') {
             //生成商店
             let table = this.addBuilding(this.shoptable, indexPos);
@@ -234,10 +250,35 @@ export default class BuildingManager extends cc.Component {
         } else if (mapDataStr == 'S1') {
             //生成店主
             this.addBuilding(this.shop, indexPos);
+        } else if (this.isThe(mapDataStr, 'P')) {
+            this.addDoor(parseInt(mapDataStr[1]),indexPos);
+        } else if (this.isThe(mapDataStr, 'E')) {
+            let p = this.addBuilding(this.exitdoorPrefab, indexPos);
+            this.exitdoor = p.getComponent(ExitDoor);
         }
     }
+    private addDoor(mapDataStrIndex: number, indexPos:cc.Vec3) {
+        let door = this.addBuilding(this.door, indexPos).getComponent(Door);
+        door.isDoor = true;
+        switch(mapDataStrIndex){
+            case 0:door.node.setScale(1, 1);break;
+            case 1:door.node.setScale(1, -0.5);break;
+            case 2:door.node.setScale(1, -0.5); door.node.angle = -90;break;
+            case 3:door.node.setScale(1, 0.5); door.node.angle = -90;break;
+        }
+        door.dir = mapDataStrIndex;
+        this.doors.push(door);
+    }
+    public openDoors() {
+        for (let door of this.doors) {
+            Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
+            door.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
+            door.setOpen(true);
+        }
+    }
+    
     /**生成可打击建筑 */
-    private addHitBuilding(dungeon:Dungeon,mapDataStrIndex:number,indexPos:cc.Vec3){
+    private addHitBuilding(dungeon: Dungeon, mapDataStrIndex: number, indexPos: cc.Vec3) {
         let hitBuilding = this.addBuilding(this.hitBuilding, indexPos);
         let h = hitBuilding.getComponent(HitBuilding);
         h.setDefaultPos(indexPos);
@@ -245,19 +286,20 @@ export default class BuildingManager extends cc.Component {
         let equipmentName = 'shield001';
         let itemName = '';
         let maxhealth = 5;
-        switch(mapDataStrIndex){
-            case 0:resName = 'car';equipmentName = 'shield001';itemName = '';maxhealth = 5;break;
-            case 1:resName = 'car';equipmentName = 'shield007';itemName = '';maxhealth = 3;break;
-            default:break;
+        switch (mapDataStrIndex) {
+            case 0: resName = 'car'; equipmentName = 'shield001'; itemName = ''; maxhealth = 5; break;
+            case 1: resName = 'car'; equipmentName = 'shield007'; itemName = ''; maxhealth = 3; break;
+            default: break;
         }
         h.init(dungeon, resName, itemName, equipmentName, maxhealth, maxhealth);
-            let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
-            if (saveHit) {
-                h.init(dungeon, resName, itemName, equipmentName, maxhealth, saveHit.currentHealth);
-            } else {
-                Logic.mapManager.setCurrentBuildingData(h.data);
-            }
+        let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
+        if (saveHit) {
+            h.init(dungeon, resName, itemName, equipmentName, maxhealth, saveHit.currentHealth);
+        } else {
+            Logic.mapManager.setCurrentBuildingData(h.data);
+        }
     }
+
     /**掉落石头 */
     addFallStone(pos: cc.Vec3, isAuto: boolean, withFire?: boolean) {
         if (!this.fallStone) {

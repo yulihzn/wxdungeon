@@ -20,8 +20,6 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class ExitDoor extends Building {
     isOpen: boolean = false;
-    wall1: cc.Node = null;
-    wall2: cc.Node = null;
     isDoor: boolean = true;
     bgSprite:cc.Sprite = null;
     closeSprite:cc.Sprite = null;
@@ -48,19 +46,7 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER05:this.changeRes('exit004');break;
         }
     }
-    hideWall() {
-        if(this.wall1){
-            this.wall1.zIndex = IndexZ.BASE;
-            this.wall1.getComponent(cc.PhysicsBoxCollider).sensor = true;
-            this.wall1.getComponent(cc.PhysicsBoxCollider).apply();
-        }
-        if(this.wall2){
-            this.wall2.zIndex = IndexZ.BASE;
-            this.wall2.getComponent(cc.PhysicsBoxCollider).sensor = true;
-            this.wall2.getComponent(cc.PhysicsBoxCollider).apply();
-        }
-     
-    }
+    
     openGate() {
         if (this.isOpen) {
             return;

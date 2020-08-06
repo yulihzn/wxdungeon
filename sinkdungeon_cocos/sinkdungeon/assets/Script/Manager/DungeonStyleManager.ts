@@ -53,23 +53,6 @@ export default class DungeonStyleManager extends cc.Component {
     readonly darksides = 'darksides';
 
 
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad() {
-        //休息区 轮船 丛林 金字塔 地牢
-        //黑幕背景top left right室内浅青色墙d1 紧闭的门
-        // switch (Logic.chapterName) {
-        //     case 'chapter00': this.setStyle(null, 'restwall', 'restsides', 'restdoor', 'restdecoration01', null); break;
-        //     case 'chapter01': this.setStyle('sea', 'shipwall', 'handrail', 'shipdoor', 'swimring', 'swimring'); break;
-        //     case 'chapter02': this.setStyle('sea', 'junglewall', 'junglesides', 'jungledoor', null, null); break;
-        //     case 'chapter03': this.setStyle('sandsea', 'pyramidwall', 'pyramidsides', 'dungeondoor', null, null); break;
-        //     case 'chapter04': this.setStyle('magmasea', 'dungeonwall', 'dungeonsides', 'dungeondoor', null, null); break;
-        // }
-    }
-
-    start() {
-
-    }
     changeTopWalls(isShow: boolean) {
         for (let w of this.walltops) {
             w.opacity = isShow ? 255 : 0;
@@ -107,72 +90,72 @@ export default class DungeonStyleManager extends cc.Component {
             return;
         }
         this.addFloor();
-        this.doors = new Array(4);
-        for (let i = -1; i < Dungeon.WIDTH_SIZE+1; i++) {
-            let walltop = this.getWallTop(i);
-            this.walltops.push(walltop);
-            let wallbottom = this.getWallBottom(i,-1);
-            let wb = this.getWallBottom(i,-2);
-            if (i == Math.floor(Dungeon.WIDTH_SIZE / 2)) {
-                wb.y-=Dungeon.TILE_SIZE/2;
-                this.doors[0] = cc.instantiate(this.doorDecoration);
-                this.doors[0].parent = this.node;
-                let postop = Dungeon.getPosInMap(cc.v3(i, Dungeon.HEIGHT_SIZE));
-                this.doors[0].setPosition(cc.v3(postop.x, postop.y + Dungeon.TILE_SIZE/2));
-                this.doors[0].setScale(1, 1);
-                this.doors[0].zIndex = IndexZ.FLOOR;
-                this.doors[0].getComponent(Door).dir = 0;
-                this.doors[1] = cc.instantiate(this.doorDecoration);
-                this.doors[1].parent = this.node;
-                let posbottom = Dungeon.getPosInMap(cc.v3(i, -1));
-                this.doors[1].setPosition(cc.v3(posbottom.x, posbottom.y));
-                this.doors[1].setScale(1, -0.5);
-                this.doors[1].zIndex = IndexZ.FLOOR;
-                this.doors[1].getComponent(Door).dir = 1;
-            }
-            this.addExitDoor(i, walltop);
-        }
+        // this.doors = new Array(4);
+        // for (let i = -1; i < Dungeon.WIDTH_SIZE+1; i++) {
+        //     let walltop = this.getWallTop(i);
+        //     this.walltops.push(walltop);
+        //     let wallbottom = this.getWallBottom(i,-1);
+        //     let wb = this.getWallBottom(i,-2);
+        //     if (i == Math.floor(Dungeon.WIDTH_SIZE / 2)) {
+        //         wb.y-=Dungeon.TILE_SIZE/2;
+        //         this.doors[0] = cc.instantiate(this.doorDecoration);
+        //         this.doors[0].parent = this.node;
+        //         let postop = Dungeon.getPosInMap(cc.v3(i, Dungeon.HEIGHT_SIZE));
+        //         this.doors[0].setPosition(cc.v3(postop.x, postop.y + Dungeon.TILE_SIZE/2));
+        //         this.doors[0].setScale(1, 1);
+        //         this.doors[0].zIndex = IndexZ.FLOOR;
+        //         this.doors[0].getComponent(Door).dir = 0;
+        //         this.doors[1] = cc.instantiate(this.doorDecoration);
+        //         this.doors[1].parent = this.node;
+        //         let posbottom = Dungeon.getPosInMap(cc.v3(i, -1));
+        //         this.doors[1].setPosition(cc.v3(posbottom.x, posbottom.y));
+        //         this.doors[1].setScale(1, -0.5);
+        //         this.doors[1].zIndex = IndexZ.FLOOR;
+        //         this.doors[1].getComponent(Door).dir = 1;
+        //     }
+        //     this.addExitDoor(i, walltop);
+        // }
 
-        for (let j = -1; j < Dungeon.HEIGHT_SIZE + 3; j++) {
-            let wallleft = this.getWallLeft(j);
-            let wallright = this.getWallRight(j);
-            if (j > Dungeon.HEIGHT_SIZE - 1) {
-                this.walltops.push(wallleft);
-                this.walltops.push(wallright);
-            }
-            if (j == Math.floor(Dungeon.HEIGHT_SIZE / 2)) {
-                this.doors[2] = cc.instantiate(this.doorDecoration);
-                this.doors[2].parent = this.node;
-                let posleft = Dungeon.getPosInMap(cc.v3(-1, j));
-                this.doors[2].setPosition(cc.v3(posleft.x, posleft.y));
-                this.doors[2].zIndex = IndexZ.FLOOR;
-                this.doors[2].angle = -90;
-                this.doors[2].setScale(1, -0.5);
-                this.doors[2].getComponent(Door).dir = 2;
-                this.doors[3] = cc.instantiate(this.doorDecoration);
-                this.doors[3].parent = this.node;
-                let posright = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, j));
-                this.doors[3].setPosition(cc.v3(posright.x, posright.y));
-                this.doors[3].zIndex = IndexZ.FLOOR;
-                this.doors[3].setScale(1, 0.5);
-                this.doors[3].angle = -90;
-                this.doors[3].getComponent(Door).dir = 3;
-            }
-            if(j>Dungeon.HEIGHT_SIZE / 2&&j<Dungeon.HEIGHT_SIZE / 2+2){
-                wallleft.zIndex = IndexZ.WALL;
-                wallright.zIndex = IndexZ.WALL;
-            }
-        }
-        let walltopleft = this.getWallTop(0);
-        let walltopright = this.getWallTop(0);
-        let leftpos = Dungeon.getPosInMap(cc.v3(-1, Math.floor(Dungeon.HEIGHT_SIZE / 2) + 1));
-        leftpos.y += Dungeon.TILE_SIZE/2;
-        let rightpos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, Math.floor(Dungeon.HEIGHT_SIZE / 2) + 1));
-        rightpos.y += Dungeon.TILE_SIZE/2;
-        walltopleft.setPosition(leftpos);
-        walltopright.setPosition(rightpos);
-        this.walltops.push(walltopleft);
-        this.walltops.push(walltopright);
+        // for (let j = -1; j < Dungeon.HEIGHT_SIZE + 3; j++) {
+        //     let wallleft = this.getWallLeft(j);
+        //     let wallright = this.getWallRight(j);
+        //     if (j > Dungeon.HEIGHT_SIZE - 1) {
+        //         this.walltops.push(wallleft);
+        //         this.walltops.push(wallright);
+        //     }
+        //     if (j == Math.floor(Dungeon.HEIGHT_SIZE / 2)) {
+        //         this.doors[2] = cc.instantiate(this.doorDecoration);
+        //         this.doors[2].parent = this.node;
+        //         let posleft = Dungeon.getPosInMap(cc.v3(-1, j));
+        //         this.doors[2].setPosition(cc.v3(posleft.x, posleft.y));
+        //         this.doors[2].zIndex = IndexZ.FLOOR;
+        //         this.doors[2].angle = -90;
+        //         this.doors[2].setScale(1, -0.5);
+        //         this.doors[2].getComponent(Door).dir = 2;
+        //         this.doors[3] = cc.instantiate(this.doorDecoration);
+        //         this.doors[3].parent = this.node;
+        //         let posright = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, j));
+        //         this.doors[3].setPosition(cc.v3(posright.x, posright.y));
+        //         this.doors[3].zIndex = IndexZ.FLOOR;
+        //         this.doors[3].setScale(1, 0.5);
+        //         this.doors[3].angle = -90;
+        //         this.doors[3].getComponent(Door).dir = 3;
+        //     }
+        //     if(j>Dungeon.HEIGHT_SIZE / 2&&j<Dungeon.HEIGHT_SIZE / 2+2){
+        //         wallleft.zIndex = IndexZ.WALL;
+        //         wallright.zIndex = IndexZ.WALL;
+        //     }
+        // }
+        // let walltopleft = this.getWallTop(0);
+        // let walltopright = this.getWallTop(0);
+        // let leftpos = Dungeon.getPosInMap(cc.v3(-1, Math.floor(Dungeon.HEIGHT_SIZE / 2) + 1));
+        // leftpos.y += Dungeon.TILE_SIZE/2;
+        // let rightpos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, Math.floor(Dungeon.HEIGHT_SIZE / 2) + 1));
+        // rightpos.y += Dungeon.TILE_SIZE/2;
+        // walltopleft.setPosition(leftpos);
+        // walltopright.setPosition(rightpos);
+        // this.walltops.push(walltopleft);
+        // this.walltops.push(walltopright);
         this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
         this.runBackgroundAnim(this.styleData.background);
         this.addDecorateBg();
@@ -202,15 +185,9 @@ export default class DungeonStyleManager extends cc.Component {
                 exit.setPosition(cc.v3(postop.x + Dungeon.TILE_SIZE/2, postop.y + Dungeon.TILE_SIZE/2));
                 exit.zIndex = IndexZ.FLOOR;
                 this.exitdoor = exit.getComponent(ExitDoor);
-                this.exitdoor.wall1 = walltop;
-                this.exitdoor.hideWall();
                 this.exitdoor.isBackToUpLevel = isStartRoom;
                 this.walltops.push(exit);
             }
-        }
-        if (posX == otherIndex && this.exitdoor) {
-            this.exitdoor.wall2 = walltop;
-            this.exitdoor.hideWall();
         }
     }
 
@@ -279,11 +256,11 @@ export default class DungeonStyleManager extends cc.Component {
         this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE/2, pos.y - Dungeon.TILE_SIZE/2);
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.styleData.floor];
-        this.floorShadow.width = Dungeon.TILE_SIZE/4 * (Dungeon.WIDTH_SIZE + 0);
-        this.floorShadow.height = Dungeon.TILE_SIZE/4 * (Dungeon.HEIGHT_SIZE + 0);
-        this.floorShadow.position = cc.v3(pos.x - Dungeon.TILE_SIZE/2, pos.y - Dungeon.TILE_SIZE/2);
-        this.floorShadow.opacity = 128;
-        this.floorShadow.zIndex = IndexZ.FLOOR;
+        // this.floorShadow.width = Dungeon.TILE_SIZE/4 * (Dungeon.WIDTH_SIZE + 0);
+        // this.floorShadow.height = Dungeon.TILE_SIZE/4 * (Dungeon.HEIGHT_SIZE + 0);
+        // this.floorShadow.position = cc.v3(pos.x - Dungeon.TILE_SIZE/2, pos.y - Dungeon.TILE_SIZE/2);
+        // this.floorShadow.opacity = 128;
+        // this.floorShadow.zIndex = IndexZ.FLOOR;
     }
 
     setDoor(dir: number, isDoor: boolean, isOpen: boolean,isHidden:boolean) {

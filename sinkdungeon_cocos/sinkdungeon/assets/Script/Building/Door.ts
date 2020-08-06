@@ -54,13 +54,26 @@ export default class Door extends Building {
         if (this.isOpen) {
             return;
         }
+        if(!this.sprite){
+            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        }
         this.isOpen = true;
-        cc.tween(this.sprite)
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim000`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim001`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim002`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim003`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim004`]})
+        cc.tween(this.node)
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim001`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim002`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim003`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim004`];
+        })
         .call(()=>{
             this.getComponent(cc.PhysicsBoxCollider).enabled = false;
         })
@@ -72,11 +85,21 @@ export default class Door extends Building {
         }
         this.isOpen = false;
         cc.tween(this.sprite)
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim000`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim001`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim002`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim003`]})
-        .to(0.2,{spriteFrame:Logic[`door0${Logic.chapterIndex}anim004`]})
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim004`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim003`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim002`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim001`];
+        })
+        .delay(0.5).call(()=>{
+            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
+        })
         .call(()=>{
             this.getComponent(cc.PhysicsBoxCollider).enabled = true;
         })
