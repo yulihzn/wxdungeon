@@ -186,13 +186,16 @@ export default class Logic extends cc.Component {
     }
     private loadingNextRoom(dir: number) {
         let room = Logic.mapManager.loadingNextRoom(dir);
+        
         if (room) {
             Logic.changeDungeonSize();
+            let halfWidth = Math.floor(Dungeon.WIDTH_SIZE / 2);
+            let halfHeight = Math.floor(Dungeon.HEIGHT_SIZE / 2);
             switch (dir) {
-                case 0: Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), 0); break;
-                case 1: Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Dungeon.HEIGHT_SIZE - 1); break;
-                case 2: Logic.playerData.pos = cc.v3(Dungeon.WIDTH_SIZE - 1, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
-                case 3: Logic.playerData.pos = cc.v3(0, Math.round(Dungeon.HEIGHT_SIZE / 2 - 1)); break;
+                case 0: Logic.playerData.pos = cc.v3(halfWidth, 1); break;
+                case 1: Logic.playerData.pos = cc.v3(halfWidth, Dungeon.HEIGHT_SIZE - 2); break;
+                case 2: Logic.playerData.pos = cc.v3(Dungeon.WIDTH_SIZE - 2, halfHeight); break;
+                case 3: Logic.playerData.pos = cc.v3(1, halfHeight); break;
             }
             cc.director.loadScene('loading');
 

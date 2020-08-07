@@ -26,12 +26,14 @@ export default class Door extends Building {
     //0top1bottom2left3right
     dir = 0;
     sprite:cc.Sprite = null;
+    bg:cc.Sprite = null;
     boxCollider:cc.PhysicsBoxCollider;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        this.bg = this.node.getChildByName('bg').getComponent(cc.Sprite);
         this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
     }
@@ -39,6 +41,9 @@ export default class Door extends Building {
     start() {
         if(this.sprite){
             this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim000`];
+        }
+        if(this.bg){
+            this.bg.spriteFrame = Logic.spriteFrames[`walltop0${Logic.chapterIndex}anim00${this.dir==1?1:0}`];
         }
     }
     setOpen(isOpen: boolean) {
@@ -67,7 +72,7 @@ export default class Door extends Building {
                 this.boxCollider.sensor = true;
                 this.boxCollider.apply();
             }
-        },0.3,4);
+        },0.15,4);
     }
     closeGate() {
         if (!this.isOpen) {
@@ -81,18 +86,18 @@ export default class Door extends Building {
                 this.boxCollider.sensor = false;
                 this.boxCollider.apply();
             }
-        },0.3,4);
+        },0.15,4);
         
     }
 
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
-            if (this.isOpen) {
-                Logic.saveData();
-                AudioPlayer.play(AudioPlayer.EXIT);
-                cc.director.emit(EventHelper.LOADINGROOM, { detail: { dir: this.dir } });
-            }
-        }
-    }
+    // onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    //     let player = other.node.getComponent(Player);
+    //     if (player) {
+    //         if (this.isOpen) {
+    //             Logic.saveData();
+    //             AudioPlayer.play(AudioPlayer.EXIT);
+    //             cc.director.emit(EventHelper.LOADINGROOM, { detail: { dir: this.dir } });
+    //         }
+    //     }
+    // }
 }

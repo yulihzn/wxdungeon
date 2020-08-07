@@ -142,6 +142,7 @@ export default class Dungeon extends cc.Component {
         //放置之前留在地上的物品和装备
         this.addItemListOnGround();
         this.addEquipmentListOnGround();
+        this.buildingManager.addAirExit(mapData);
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {

@@ -18,6 +18,7 @@ import ExitDoor from "../Building/ExitDoor";
 import Door from "../Building/Door";
 import MapData from "../Data/MapData";
 import Wall from "../Building/Wall";
+import AirExit from "../Building/AirExit";
 
 
 // Learn TypeScript:
@@ -84,9 +85,12 @@ export default class BuildingManager extends cc.Component {
     door: cc.Prefab = null;
     @property(cc.Prefab)
     darkness: cc.Prefab = null;
+    @property(cc.Prefab)
+    airExit:cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoor: ExitDoor = null;
     doors: Door[] = new Array();
+    airExits:AirExit[] = new Array();
 
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
@@ -260,6 +264,20 @@ export default class BuildingManager extends cc.Component {
             this.exitdoor = p.getComponent(ExitDoor);
         }
     }
+    /**添加空气墙 */
+    public addAirExit(mapData:string[][]){
+        let top = this.addBuilding(this.airExit, cc.v3(Math.floor(mapData.length/2),mapData[0].length)).getComponent(AirExit);
+        let bottom = this.addBuilding(this.airExit, cc.v3(Math.floor(mapData.length/2),-1)).getComponent(AirExit);
+        let left = this.addBuilding(this.airExit, cc.v3(-1,Math.floor(mapData[0].length/2))).getComponent(AirExit);
+        let right = this.addBuilding(this.airExit, cc.v3(mapData.length,Math.floor(mapData[0].length/2))).getComponent(AirExit);
+        this.airExits.push(top);
+        this.airExits.push(bottom);
+        this.airExits.push(left);
+        this.airExits.push(right);
+        for(let i=0;i<this.airExits.length;i++){
+            this.airExits[i].init(i,i<2?mapData.length:mapData[0].length);
+        }
+    }
     private addDoor(mapDataStrIndex: number, indexPos: cc.Vec3) {
         let door = this.addBuilding(this.door, indexPos).getComponent(Door);
         door.node.zIndex = IndexZ.FLOOR;
@@ -278,19 +296,24 @@ export default class BuildingManager extends cc.Component {
             Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
             door.setOpen(true);
         }
+        for (let air of this.airExits) {
+            Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
+            air.changeStatus(AirExit.STATUS_OPEN);
+        }
     }
     private addWalls(mapData: string[][], i: number, j: number) {
         let node: cc.Node = null;
         if ((i == 0 || i == mapData.length - 1) && (j == 0 || j == mapData[0].length - 1)) {
             node = this.addBuilding(this.corner, cc.v3(i, j));
             node.getComponent(Wall).isCorner = true;
-            if (i == 0 || j == mapData[0].length - 1) {
+            node.getComponent(Wall).isBottom = j == 0;
+            if (i == 0 && j == mapData[0].length - 1) {
                 node.angle = -90;
             }
-            if (i == mapData.length - 1 || j == 0) {
-                node.angle = 90;
+            if (i == mapData.length - 1 && j == 0) {
+                node.scaleX = -1;
             }
-            if (i == mapData.length - 1 || j == mapData[0].length - 1) {
+            if (i == mapData.length - 1 && j == mapData[0].length - 1) {
                 node.angle = 180;
             }
         } else {
@@ -305,6 +328,7 @@ export default class BuildingManager extends cc.Component {
             }
             if (j == 0) {
                 node.angle = 180;
+                node.getComponent(Wall).isBottom = true;
             }
         }
     }
