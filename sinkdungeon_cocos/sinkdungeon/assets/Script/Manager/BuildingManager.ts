@@ -16,6 +16,8 @@ import HitBuilding from "../Building/HitBuilding";
 import RoomType from "../Rect/RoomType";
 import ExitDoor from "../Building/ExitDoor";
 import Door from "../Building/Door";
+import MapData from "../Data/MapData";
+import Wall from "../Building/Wall";
 
 
 // Learn TypeScript:
@@ -40,6 +42,8 @@ export default class BuildingManager extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     @property(cc.Prefab)
     wall: cc.Prefab = null;
+    @property(cc.Prefab)
+    corner: cc.Prefab = null;
     @property(cc.Prefab)
     trap: cc.Prefab = null;
     @property(cc.Prefab)
@@ -82,8 +86,7 @@ export default class BuildingManager extends cc.Component {
     darkness: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoor: ExitDoor = null;
-    doors:Door[] = new Array();
-    private walltops: cc.Node[] = new Array();
+    doors: Door[] = new Array();
 
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
@@ -101,7 +104,7 @@ export default class BuildingManager extends cc.Component {
         let indexPos = cc.v3(i, j);
         if (this.isThe(mapDataStr, '#')) {
             //生成墙
-            this.addBuilding(this.wall, indexPos).opacity = 255;
+            this.addWalls(mapData, i, j);
         } else if (mapDataStr == "--") {
             this.addBuilding(this.darkness, indexPos);
         } else if (mapDataStr == 'T0') {
@@ -251,20 +254,21 @@ export default class BuildingManager extends cc.Component {
             //生成店主
             this.addBuilding(this.shop, indexPos);
         } else if (this.isThe(mapDataStr, 'P')) {
-            this.addDoor(parseInt(mapDataStr[1]),indexPos);
+            this.addDoor(parseInt(mapDataStr[1]), indexPos);
         } else if (this.isThe(mapDataStr, 'E')) {
             let p = this.addBuilding(this.exitdoorPrefab, indexPos);
             this.exitdoor = p.getComponent(ExitDoor);
         }
     }
-    private addDoor(mapDataStrIndex: number, indexPos:cc.Vec3) {
+    private addDoor(mapDataStrIndex: number, indexPos: cc.Vec3) {
         let door = this.addBuilding(this.door, indexPos).getComponent(Door);
+        door.node.zIndex = IndexZ.FLOOR;
         door.isDoor = true;
-        switch(mapDataStrIndex){
-            case 0:door.node.setScale(1, 1);break;
-            case 1:door.node.setScale(1, -0.5);break;
-            case 2:door.node.setScale(1, -0.5); door.node.angle = -90;break;
-            case 3:door.node.setScale(1, 0.5); door.node.angle = -90;break;
+        switch (mapDataStrIndex) {
+            case 0: door.node.angle = 0; break;
+            case 1: door.node.angle = 180; break;
+            case 2: door.node.angle = 90; break;
+            case 3: door.node.angle = -90; break;
         }
         door.dir = mapDataStrIndex;
         this.doors.push(door);
@@ -272,11 +276,38 @@ export default class BuildingManager extends cc.Component {
     public openDoors() {
         for (let door of this.doors) {
             Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
-            door.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
             door.setOpen(true);
         }
     }
-    
+    private addWalls(mapData: string[][], i: number, j: number) {
+        let node: cc.Node = null;
+        if ((i == 0 || i == mapData.length - 1) && (j == 0 || j == mapData[0].length - 1)) {
+            node = this.addBuilding(this.corner, cc.v3(i, j));
+            node.getComponent(Wall).isCorner = true;
+            if (i == 0 || j == mapData[0].length - 1) {
+                node.angle = -90;
+            }
+            if (i == mapData.length - 1 || j == 0) {
+                node.angle = 90;
+            }
+            if (i == mapData.length - 1 || j == mapData[0].length - 1) {
+                node.angle = 180;
+            }
+        } else {
+            node = this.addBuilding(this.wall, cc.v3(i, j));
+            if (j > 0 && j < mapData[0].length - 1) {
+                if (i == 0) {
+                    node.angle = 90;
+                }
+                if (i == mapData.length - 1) {
+                    node.angle = -90;
+                }
+            }
+            if (j == 0) {
+                node.angle = 180;
+            }
+        }
+    }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStrIndex: number, indexPos: cc.Vec3) {
         let hitBuilding = this.addBuilding(this.hitBuilding, indexPos);

@@ -48,8 +48,8 @@ export default class Dungeon extends cc.Component {
 
     map: Tile[][] = new Array();//地图列表
     floorIndexmap: cc.Vec3[] = new Array();//地板下标列表
-    static WIDTH_SIZE: number = 15;
-    static HEIGHT_SIZE: number = 9;
+    static WIDTH_SIZE: number = 7;
+    static HEIGHT_SIZE: number = 7;
     static readonly MAPX: number = 64;
     static readonly MAPY: number = 64;
     static readonly TILE_SIZE: number = 128;

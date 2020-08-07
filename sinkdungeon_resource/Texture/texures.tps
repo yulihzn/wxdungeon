@@ -771,6 +771,12 @@
             <key type="filename">building/shoppet.png</key>
             <key type="filename">building/shoptable.png</key>
             <key type="filename">building/shoptable1.png</key>
+            <key type="filename">building/wallcorner00anim000.png</key>
+            <key type="filename">building/wallcorner01anim000.png</key>
+            <key type="filename">building/wallcorner02anim000.png</key>
+            <key type="filename">building/wallcorner03anim000.png</key>
+            <key type="filename">building/wallcorner04anim000.png</key>
+            <key type="filename">building/wallcorner05anim000.png</key>
             <key type="filename">bullet/boom000anim001.png</key>
             <key type="filename">bullet/boom000anim002.png</key>
             <key type="filename">bullet/boom000anim003.png</key>
@@ -1074,6 +1080,11 @@
             <key type="filename">building/door04anim002.png</key>
             <key type="filename">building/door04anim003.png</key>
             <key type="filename">building/door04anim004.png</key>
+            <key type="filename">building/door05anim000.png</key>
+            <key type="filename">building/door05anim001.png</key>
+            <key type="filename">building/door05anim002.png</key>
+            <key type="filename">building/door05anim003.png</key>
+            <key type="filename">building/door05anim004.png</key>
             <key type="filename">building/wall00anim000.png</key>
             <key type="filename">building/wall00anim001.png</key>
             <key type="filename">building/wall01anim000.png</key>

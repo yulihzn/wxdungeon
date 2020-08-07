@@ -26,17 +26,19 @@ export default class Door extends Building {
     //0top1bottom2left3right
     dir = 0;
     sprite:cc.Sprite = null;
+    boxCollider:cc.PhysicsBoxCollider;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
     }
 
     start() {
         if(this.sprite){
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
+            this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim000`];
         }
     }
     setOpen(isOpen: boolean) {
@@ -58,52 +60,29 @@ export default class Door extends Building {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
         this.isOpen = true;
-        cc.tween(this.node)
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim001`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim002`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim003`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim004`];
-        })
-        .call(()=>{
-            this.getComponent(cc.PhysicsBoxCollider).enabled = false;
-        })
-        .start();
+        let index = 0;
+        this.schedule(()=>{
+            this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim00${index++}`];
+            if(index > 4){
+                this.boxCollider.sensor = true;
+                this.boxCollider.apply();
+            }
+        },0.3,4);
     }
     closeGate() {
         if (!this.isOpen) {
             return;
         }
         this.isOpen = false;
-        cc.tween(this.sprite)
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim004`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim003`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim002`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim001`];
-        })
-        .delay(0.5).call(()=>{
-            this.sprite.spriteFrame = Logic[`door0${Logic.chapterIndex}anim000`];
-        })
-        .call(()=>{
-            this.getComponent(cc.PhysicsBoxCollider).enabled = true;
-        })
-        .start();
+        let index = 4;
+        this.schedule(()=>{
+            this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim00${index--}`];
+            if(index < 0){
+                this.boxCollider.sensor = false;
+                this.boxCollider.apply();
+            }
+        },0.3,4);
+        
     }
 
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {

@@ -22,6 +22,7 @@ export default class Wall extends Building {
     half = false;
     wallsprite:cc.Sprite;
     mapStr:string = '##';
+    isCorner = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -60,6 +61,9 @@ export default class Wall extends Building {
             case '#0':s = 'wall00anim000';break;
             case '#1':s = 'wall00anim001';break;
         }
+        if(this.isCorner){
+            s = 'wallcorner00anim000';
+        }
         return s;
     }
     getRes01():string{
@@ -69,6 +73,9 @@ export default class Wall extends Building {
             case '#0':s = 'wall01anim000';break;
             case '#1':s = 'wall01anim001';break;
         }
+        if(this.isCorner){
+            s = 'wallcorner01anim000';
+        }
         return s;
     }
     getRes02():string{
@@ -77,6 +84,9 @@ export default class Wall extends Building {
             case '##':s = 'walltop02anim000';break;
             case '#0':s = 'wall02anim000';break;
             case '#1':s = 'wall02anim001';break;
+        }
+        if(this.isCorner){
+            s = 'wallcorner02anim000';
         }
         return s;
     }
@@ -88,6 +98,9 @@ export default class Wall extends Building {
             case '#1':s = 'wall03anim001';break;
             case '#2':s = 'wall03anim002';break;
         }
+        if(this.isCorner){
+            s = 'wallcorner03anim000';
+        }
         return s;
     }
     getRes04():string{
@@ -97,6 +110,9 @@ export default class Wall extends Building {
             case '#0':s = 'wall04anim000';break;
             case '#1':s = 'wall04anim000';break;
         }
+        if(this.isCorner){
+            s = 'wallcorner04anim000';
+        }
         return s;
     }
     getRes05():string{
@@ -105,6 +121,9 @@ export default class Wall extends Building {
             case '##':s = 'walltop05anim000';break;
             case '#0':s = 'wall05anim000';break;
             case '#1':s = 'wall05anim000';break;
+        }
+        if(this.isCorner){
+            s = 'wallcorner05anim000';
         }
         return s;
     }
