@@ -52,7 +52,7 @@ export default class MapManager {
         if(Logic.isMapReset){
             Logic.isMapReset = false;
             //加载地图
-            Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex,Logic.level));
+            Logic.mapManager.reset(Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level));
             //加载存档地图数据
             Logic.mapManager.loadDataFromSave();
         }
@@ -60,19 +60,7 @@ export default class MapManager {
     }
     private resetRooms() {
         if(!this.rectDungeon){
-            this.rectDungeon.buildMap(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex,Logic.level));
-        }
-        let allfileRooms = Logic.worldLoader.getAllFileRooms();
-        if (allfileRooms && allfileRooms[RoomType.getNameById(0)] 
-        && this.rectDungeon.map&&this.rectDungeon.map.length>0) {
-            for (let i = 0; i < this.rectDungeon.map.length; i++) {
-                for (let j = 0; j < this.rectDungeon.map[0].length; j++) {
-                    let room = this.rectDungeon.map[i][j];
-                    let r = allfileRooms[RoomType.getNameById(room.roomType.ID)]
-                    //随机取出一个该类型的房间数据
-                    room.saveIndex = Logic.getRandomNum(0, r.length - 1);
-                }
-            }
+            this.rectDungeon.buildMap(Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level));
         }
     }
     loadDataFromSave() {
@@ -120,27 +108,14 @@ export default class MapManager {
     /** 获取当前房间地图数据copy 每次加载dungeon的时候读取一次*/
     public getCurrentMapStringArray(): string[][] {
         let room = this.getCurrentRoom();
-        let r = Logic.worldLoader.getAllFileRooms()[RoomType.getNameById(room.roomType.ID)];
-        let md = r[room.saveIndex];
-        let m = new Array();
-        for (let i = 0; i < md.map.length; i++) {
-            m[i] = new Array();
-            for (let j = 0; j < md.map[0].length; j++) {
-                m[i][j] = md.map[i][j];
-            }
-        }
         let mdd = new MapData('');
-        mdd.map = m;
+        mdd.map = this.rectDungeon.levelData.getRoom(room.x,room.y);
         //添加随机元素
         let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed);
         return mapdata.map;
     }
     public getCurrentMapSize(): cc.Vec3 {
-        let room = this.getCurrentRoom();
-        let index = room.roomType.ID;
-        let r = Logic.worldLoader.getAllFileRooms()[RoomType.getNameById(room.roomType.ID)];
-        let map = r[room.saveIndex].clone();
-        return cc.v3(map.map.length, map.map[0].length)
+        return cc.v3(this.rectDungeon.levelData.roomWidth, this.rectDungeon.levelData.roomHeight);
     }
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {

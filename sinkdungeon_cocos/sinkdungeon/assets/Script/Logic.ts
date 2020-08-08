@@ -224,7 +224,7 @@ export default class Logic extends cc.Component {
             Logic.level = 1;
         }
         
-        Logic.mapManager.reset(Logic.worldLoader.getRandomLevelData(Logic.chapterIndex, Logic.level));
+        Logic.mapManager.reset(Logic.worldLoader.getLevelData(Logic.chapterIndex, Logic.level));
         Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
         Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
 

@@ -24,40 +24,24 @@ export default class WorldLoader {
     isloaded02: boolean = false;
     isloaded03: boolean = false;
     isloaded04: boolean = false;
+    isloaded05: boolean = false;
     constructor(){
         this.isloaded = false;
     }
     loadWorld() {
         //判断是否加载过地图资源
-        if(this.worldMap.length>0&&this.allfileRooms00[RoomType.getNameById(0)]){
+        if(this.worldMap.length>0){
             this.isloaded = true;
             return;
         }
-        cc.resources.load(`Data/worlds`, (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                this.worldMap = new Array();
-                let arr = resource.json;
-                for (let chapter=0;chapter<arr.length;chapter++) {
-                    let chapterData = new ChapterData(chapter);
-                    chapterData.list = new Array();
-                    let maptemp: string[][][][] = arr[chapter].list;
-                    for (let level = 0; level < maptemp.length; level++) {
-                        let levelList:LevelData[] = new Array();
-                        let maparr: string[][][] = maptemp[level];
-                        for (let index = 0; index < maparr.length; index++) {
-                            let levelData = new LevelData(chapterData.chapter, level, index, this.formatMapArr(maparr[index]));
-                            levelList.push(levelData);
-                        }
-                        chapterData.list.push(levelList);
-                    }
-                    this.worldMap.push(chapterData);
-                }
-                this.loadMap();
-            }
-        })
+        this.worldMap = new Array();
+        for(let i = 0;i<6;i++){
+            let chapter = new ChapterData(i);
+            this.loadChapterLevel(chapter);
+            this.worldMap.push(chapter);
+        }
     }
+    
     private formatMapArr(maptemp:string[][]):string[][]{
         let map:string[][] = new Array();
         for (let i = 0; i < maptemp[0].length; i++) {
@@ -89,6 +73,35 @@ export default class WorldLoader {
             case Logic.CHAPTER05: allfileRooms = this.allfileRooms05; break;
         }
         return allfileRooms;
+    }
+    private loadChapterLevel(data:ChapterData){
+        cc.resources.load(`Data/world/world0${data.chapter}`, (err: Error, resource:cc.TextAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                let strs: string = resource.text;
+                //以====为标签分割字符串
+                let arr = strs.split('====');
+                for(let str of arr){
+                    let level = new LevelData(data.chapter,str);
+                    data.list.push(level);
+                }
+                
+                switch (data.chapter) {
+                    case 0: this.isloaded00 = true; break;
+                    case 1: this.isloaded01 = true; break;
+                    case 2: this.isloaded02 = true; break;
+                    case 3: this.isloaded03 = true; break;
+                    case 4: this.isloaded04 = true; break;
+                    case 5: this.isloaded05 = true; break;
+                }
+                //资源全部加载完成时，重置房间数据，加载存档
+                if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04) {
+                    this.isloaded = true;
+                    cc.log('world loaded');
+                }
+            }
+        })
     }
     private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
         cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource:cc.TextAsset) => {
@@ -140,15 +153,12 @@ export default class WorldLoader {
     getChapterData(chapterIndex:number):ChapterData{
         return this.worldMap[chapterIndex];
     }
-    getLevelList(chapterIndex:number,levelIndex:number):LevelData[]{
-        return this.getChapterData(chapterIndex).list[levelIndex];
+    getLevelList(chapterIndex:number):LevelData[]{
+        return this.getChapterData(chapterIndex).list;
     }
-    getLevelData(chapterIndex:number,levelIndex:number,roomIndex:number):LevelData{
-        let levelList = this.getLevelList(chapterIndex,levelIndex);
-        return levelList[roomIndex];
+    getLevelData(chapterIndex:number,levelIndex:number):LevelData{
+        let levelList = this.getLevelList(chapterIndex);
+        return levelList[levelIndex];
     }
-    getRandomLevelData(chapterIndex:number,levelIndex:number):LevelData{
-        let levelList = this.getLevelList(chapterIndex,levelIndex);
-        return levelList[Random.getRandomNum(0,levelList.length-1)];
-    }
+    
 }
