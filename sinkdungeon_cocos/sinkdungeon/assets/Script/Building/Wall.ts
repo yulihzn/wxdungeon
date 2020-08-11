@@ -24,6 +24,7 @@ export default class Wall extends Building {
     mapStr:string = '##';
     isCorner = false;
     isBottom = false;
+    dir = 0;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -132,7 +133,7 @@ export default class Wall extends Building {
         this.node.opacity = 255;
     }
     onCollisionStay(other:cc.Collider,self:cc.Collider) {
-        if(other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.MONSTER){
+        if(this.dir ==0 && other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.MONSTER){
             this.node.opacity = 128;
         }
     }

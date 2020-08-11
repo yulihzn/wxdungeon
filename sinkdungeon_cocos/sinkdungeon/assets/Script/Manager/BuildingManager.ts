@@ -108,7 +108,8 @@ export default class BuildingManager extends cc.Component {
         let indexPos = cc.v3(i, j);
         if (this.isThe(mapDataStr, '#')) {
             //生成墙
-            this.addWalls(mapData, i, j);
+            // this.addWalls(mapData, i, j);
+            this.addDirWalls(parseInt(mapDataStr[1]),indexPos);
         } else if (mapDataStr == "--") {
             this.addBuilding(this.darkness, indexPos);
         } else if (mapDataStr == 'T0') {
@@ -299,6 +300,27 @@ export default class BuildingManager extends cc.Component {
         for (let air of this.airExits) {
             Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
             air.changeStatus(AirExit.STATUS_OPEN);
+        }
+    }
+    private addDirWalls(mapDataStrIndex: number, indexPos: cc.Vec3) {
+        let node: cc.Node = null;
+        if(mapDataStrIndex>3){
+            node = this.addBuilding(this.corner, indexPos);
+            node.getComponent(Wall).isCorner = true;
+            node.zIndex = IndexZ.OVERHEAD;
+        }else{
+            node = this.addBuilding(this.wall, indexPos);
+        }
+        node.getComponent(Wall).dir = mapDataStrIndex;
+        switch (mapDataStrIndex) {
+            case 0: break;
+            case 1: node.angle = 180;node.getComponent(Wall).isBottom = false; break;
+            case 2: node.angle = 90; break;
+            case 3: node.angle = -90; break;
+            case 4: node.angle = -90; break;
+            case 5: node.angle = 180; break;
+            case 6: node.getComponent(Wall).isBottom = false;break;
+            case 7: node.getComponent(Wall).isBottom = false;node.scaleX = -1; break;
         }
     }
     private addWalls(mapData: string[][], i: number, j: number) {

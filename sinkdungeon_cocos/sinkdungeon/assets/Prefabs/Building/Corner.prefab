@@ -170,7 +170,7 @@
     "_prefab": {
       "__id__": 5
     },
-    "_opacity": 128,
+    "_opacity": 80,
     "_color": {
       "__type__": "cc.Color",
       "r": 0,
@@ -180,13 +180,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 160
+      "width": 300,
+      "height": 350
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
+      "x": 0.75,
+      "y": 0.75
     },
     "_trs": {
       "__type__": "TypedArray",
