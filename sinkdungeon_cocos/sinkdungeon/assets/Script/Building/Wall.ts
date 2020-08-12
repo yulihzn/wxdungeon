@@ -47,15 +47,24 @@ export default class Wall extends Building {
     start () {
         this.node.opacity = 255;
         switch(Logic.chapterIndex){
-            case Logic.CHAPTER00:this.changeRes(this.getRes00());break;
-            case Logic.CHAPTER01:this.changeRes(this.getRes01());break;
-            case Logic.CHAPTER02:this.changeRes(this.getRes02());break;
-            case Logic.CHAPTER03:this.changeRes(this.getRes03());break;
-            case Logic.CHAPTER04:this.changeRes(this.getRes04());break;
-            case Logic.CHAPTER05:this.changeRes(this.getRes05());break;
+            case Logic.CHAPTER00:this.changeRes(this.getRes());break;
+            case Logic.CHAPTER01:this.changeRes(this.getRes());break;
+            case Logic.CHAPTER02:this.changeRes(this.getRes());break;
+            case Logic.CHAPTER03:this.changeRes(this.getRes());break;
+            case Logic.CHAPTER04:this.changeRes(this.getRes());break;
+            case Logic.CHAPTER05:this.changeRes(this.getRes());break;
         }
     }
-    
+    getRes():string{
+        let s = `walltop0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`;
+        if(this.dir == 8){
+            s = `walltop0${Logic.chapterIndex}anim002`;
+        }
+        if(this.isCorner){
+            s = `wallcorner0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`
+        }
+        return s;
+    }
     getRes00():string{
         let s = 'walltop00anim000';
         switch(this.mapStr){

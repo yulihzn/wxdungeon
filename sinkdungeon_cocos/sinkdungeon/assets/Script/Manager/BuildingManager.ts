@@ -314,13 +314,13 @@ export default class BuildingManager extends cc.Component {
         node.getComponent(Wall).dir = mapDataStrIndex;
         switch (mapDataStrIndex) {
             case 0: break;
-            case 1: node.angle = 180;node.getComponent(Wall).isBottom = false; break;
+            case 1: node.angle = 180;node.getComponent(Wall).isBottom = true; break;
             case 2: node.angle = 90; break;
             case 3: node.angle = -90; break;
             case 4: node.angle = -90; break;
             case 5: node.angle = 180; break;
-            case 6: node.getComponent(Wall).isBottom = false;break;
-            case 7: node.getComponent(Wall).isBottom = false;node.scaleX = -1; break;
+            case 6: node.getComponent(Wall).isBottom = true;break;
+            case 7: node.getComponent(Wall).isBottom = true;node.scaleX = -1; break;
         }
     }
     private addWalls(mapData: string[][], i: number, j: number) {
