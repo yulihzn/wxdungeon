@@ -23,7 +23,7 @@ export default class PlayerData {
     static DefAULT_ATTACK = 1;
     static DefAULT_BACK_ATTACK = 0;
     name: string = '';
-    pos: cc.Vec3 = cc.v3(16, 16);
+    pos: cc.Vec3 = cc.v3(6, 6);
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH;
 

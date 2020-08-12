@@ -86,7 +86,7 @@ export default class BuildingManager extends cc.Component {
     @property(cc.Prefab)
     darkness: cc.Prefab = null;
     @property(cc.Prefab)
-    airExit:cc.Prefab = null;
+    airexit:cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoor: ExitDoor = null;
     doors: Door[] = new Array();
@@ -111,7 +111,8 @@ export default class BuildingManager extends cc.Component {
             // this.addWalls(mapData, i, j);
             this.addDirWalls(parseInt(mapDataStr[1]),indexPos);
         } else if (mapDataStr == "--") {
-            this.addBuilding(this.darkness, indexPos);
+            let dn = this.addBuilding(this.darkness, indexPos);
+            dn.zIndex = IndexZ.WALL;
         } else if (mapDataStr == 'T0') {
             //生成陷阱
             this.addBuilding(this.trap, indexPos);
@@ -267,10 +268,10 @@ export default class BuildingManager extends cc.Component {
     }
     /**添加空气墙 */
     public addAirExit(mapData:string[][]){
-        let top = this.addBuilding(this.airExit, cc.v3(Math.floor(mapData.length/2),mapData[0].length)).getComponent(AirExit);
-        let bottom = this.addBuilding(this.airExit, cc.v3(Math.floor(mapData.length/2),-1)).getComponent(AirExit);
-        let left = this.addBuilding(this.airExit, cc.v3(-1,Math.floor(mapData[0].length/2))).getComponent(AirExit);
-        let right = this.addBuilding(this.airExit, cc.v3(mapData.length,Math.floor(mapData[0].length/2))).getComponent(AirExit);
+        let top = this.addBuilding(this.airexit, cc.v3(Math.floor(mapData.length/2),mapData[0].length)).getComponent(AirExit);
+        let bottom = this.addBuilding(this.airexit, cc.v3(Math.floor(mapData.length/2),-1)).getComponent(AirExit);
+        let left = this.addBuilding(this.airexit, cc.v3(-1,Math.floor(mapData[0].length/2))).getComponent(AirExit);
+        let right = this.addBuilding(this.airexit, cc.v3(mapData.length,Math.floor(mapData[0].length/2))).getComponent(AirExit);
         this.airExits.push(top);
         this.airExits.push(bottom);
         this.airExits.push(left);
@@ -304,10 +305,9 @@ export default class BuildingManager extends cc.Component {
     }
     private addDirWalls(mapDataStrIndex: number, indexPos: cc.Vec3) {
         let node: cc.Node = null;
-        if(mapDataStrIndex>3){
+        if(mapDataStrIndex>3&&mapDataStrIndex<8){
             node = this.addBuilding(this.corner, indexPos);
             node.getComponent(Wall).isCorner = true;
-            node.zIndex = IndexZ.OVERHEAD;
         }else{
             node = this.addBuilding(this.wall, indexPos);
         }

@@ -503,7 +503,7 @@ export default class Player extends Actor {
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
             //存档系统保存玩家位置
-            Logic.profileManager.data.playerData.pos = this.pos.clone();
+            Logic.playerData.pos = this.pos.clone();
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.shooterEx.setHv(cc.v3(pos.x, pos.y));
