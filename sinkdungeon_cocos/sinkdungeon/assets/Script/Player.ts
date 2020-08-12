@@ -100,7 +100,7 @@ export default class Player extends Actor {
 
     onLoad() {
         this.inventoryManager = Logic.inventoryManager;
-        this.data = Logic.playerData;
+        this.data = Logic.playerData.clone();
         this.statusUpdate();
         this.pos = cc.v3(0, 0);
         this.isDied = false;
