@@ -151,16 +151,7 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.POOL_DESTORY_WALKSMOKE, (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
-        // this.talentShield = this.getComponent(TalentShield);
-        // this.talentShield.init();
         // this.talentShield.loadList(Logic.talentList);
-
-        // this.talentShield.addTalent(Talent.SHIELD_01);
-        // this.talentShield.addTalent(Talent.SHIELD_06);
-        // this.talentShield.addTalent(Talent.SHIELD_03);
-        // this.talentShield.addTalent(Talent.SHIELD_13);
-        // this.talentShield.addTalent(Talent.SHIELD_07);
-        // this.talentShield.addTalent(Talent.SHIELD_11);
         this.talentDash = this.getComponent(TalentDash);
         this.talentDash.init();
         this.talentDash.loadList(Logic.talentList);
@@ -168,18 +159,6 @@ export default class Player extends Actor {
         this.talentMagic = this.getComponent(TalentMagic);
         this.talentMagic.init();
         this.talentMagic.loadList(Logic.talentList);
-        // this.talentMagic.addTalent(Talent.MAGIC_01);
-        // this.talentMagic.addTalent(Talent.MAGIC_02);
-        // this.talentMagic.addTalent(Talent.MAGIC_03);
-        // this.talentMagic.addTalent(Talent.MAGIC_04);
-        // this.talentMagic.addTalent(Talent.MAGIC_05);
-        // this.talentMagic.addTalent(Talent.MAGIC_06);
-        // this.talentMagic.addTalent(Talent.MAGIC_11);
-        // this.talentMagic.addTalent(Talent.MAGIC_10);
-        // this.talentMagic.addTalent(Talent.MAGIC_14);
-        // this.talentMagic.addTalent(Talent.MAGIC_15);
-        // this.talentMagic.addTalent(Talent.MAGIC_16);
-        // this.talentMagic.addTalent(Talent.MAGIC_08);
         // this.talentMagic.addTalent(Talent.MAGIC_09);
         this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir);
         if (Logic.isCheatMode) {
@@ -502,8 +481,7 @@ export default class Player extends Actor {
 
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
-            //存档系统保存玩家位置
-            Logic.playerData.pos = this.pos.clone();
+            this.data.pos = this.pos.clone();
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.shooterEx.setHv(cc.v3(pos.x, pos.y));

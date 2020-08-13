@@ -130,7 +130,7 @@ export default class Monster extends Actor {
         this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
         this.actionSpriteFrameIdle();
-        this.scheduleOnce(() => { this.isShow = true; }, 0.5);
+        this.scheduleOnce(() => { this.isShow = true; }, 1);
         this.resetBodyColor();
         if (this.data.isHeavy > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;

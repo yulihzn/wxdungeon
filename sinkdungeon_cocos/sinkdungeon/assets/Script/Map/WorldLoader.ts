@@ -1,6 +1,5 @@
 import ChapterData from "../Data/ChapterData";
 import LevelData from "../Data/LevelData";
-import Random from "../Utils/Random";
 import Logic from "../Logic";
 import MapData from "../Data/MapData";
 import RoomType from "../Rect/RoomType";
@@ -158,6 +157,7 @@ export default class WorldLoader {
     }
     getLevelData(chapterIndex:number,levelIndex:number):LevelData{
         let levelList = this.getLevelList(chapterIndex);
+        levelList[levelIndex].chapter = chapterIndex;
         return levelList[levelIndex];
     }
     

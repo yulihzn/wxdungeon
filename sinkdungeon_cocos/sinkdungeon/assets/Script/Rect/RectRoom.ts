@@ -22,9 +22,7 @@ export default class RectRoom {
     public static readonly STATE_FOUND = 1;
     //已清理
     public static readonly STATE_CLEAR = 2;
-
-    public static ROOM_WIDTH = Dungeon.WIDTH_SIZE;
-    public static ROOM_HEIGHT = Dungeon.HEIGHT_SIZE;
+    
     /// The type.房间类型
     roomType: RoomType;
     x: number;

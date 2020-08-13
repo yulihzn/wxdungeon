@@ -16,81 +16,87 @@ import IndexZ from "../Utils/IndexZ";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class FootBoard extends Building {
 
     @property(cc.SpriteFrame)
-    openSpriteFrame:cc.SpriteFrame = null;
+    openSpriteFrame: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
-    closeSpriteFrame:cc.SpriteFrame = null;
-    isOpen:boolean = false;
-    pos:cc.Vec3 = cc.v3(0,0);
+    closeSpriteFrame: cc.SpriteFrame = null;
+    isOpen: boolean = false;
+    hasActive: boolean = false;//是否激活过
+    pos: cc.Vec3 = cc.v3(0, 0);
     private spriteNode: cc.Node;
     private timeDelay = 0;
-    sprite:cc.Sprite;
+    sprite: cc.Sprite;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.spriteNode = this.node.getChildByName('sprite');
         this.sprite = this.spriteNode.getComponent(cc.Sprite);
     }
 
-    start () {
-        
+    start() {
+
     }
-    
-    setPos(pos:cc.Vec3){
+
+    setPos(pos: cc.Vec3) {
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = IndexZ.FLOOR;
     }
-    
-    openTrap(){
-        if(this.isOpen){
+
+    openTrap() {
+        if (this.isOpen) {
             return;
         }
         this.isOpen = true;
         // this.openSpriteFrame.getTexture().setAliasTexParameters();
-        this.sprite.spriteFrame = this.isOpen?this.openSpriteFrame:this.closeSpriteFrame;
+        this.sprite.spriteFrame = this.isOpen ? this.openSpriteFrame : this.closeSpriteFrame;
     }
-    
-    onCollisionStay(other:cc.Collider,self:cc.Collider){
+
+    onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let box = other.node.getComponent(Box);
-        if(box){
+        if (box) {
             this.isOpen = true;
+            this.hasActive = true;
         }
         let player = other.node.getComponent(Player);
-        if(player){
+        if (player) {
             this.isOpen = true;
+            this.hasActive = true;
         }
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let box = other.node.getComponent(Box);
-        if(box){
+        if (box) {
             this.isOpen = true;
+            this.hasActive = true;
+
         }
         let player = other.node.getComponent(Player);
-        if(player){
+        if (player) {
             this.isOpen = true;
+            this.hasActive = true;
         }
     }
-    onCollisionExit(other:cc.Collider,self:cc.Collider){
+    onCollisionExit(other: cc.Collider, self: cc.Collider) {
         let box = other.node.getComponent(Box);
-        if(box){
+        if (box) {
             this.isOpen = false;
         }
         let player = other.node.getComponent(Player);
-        if(player){
+        if (player) {
             this.isOpen = false;
         }
     }
 
-    update (dt) {
+    update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.16) {
-            this.sprite.spriteFrame = this.isOpen?this.openSpriteFrame:this.closeSpriteFrame;
+            this.sprite.spriteFrame = this.isOpen ? this.openSpriteFrame : this.closeSpriteFrame;
         }
     }
 }

@@ -6,7 +6,6 @@ import EquipmentData from "../Data/EquipmentData";
 import ItemData from "../Data/ItemData";
 import Random4Save from "../Utils/Random4Save";
 import RoomType from "../Rect/RoomType";
-import LevelData from "../Data/LevelData";
 import BuildingData from "../Data/BuildingData";
 
 // Learn TypeScript:
@@ -52,7 +51,7 @@ export default class MapManager {
         if(Logic.isMapReset){
             Logic.isMapReset = false;
             //加载地图
-            Logic.mapManager.reset(Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level));
+            Logic.mapManager.reset();
             //加载存档地图数据
             Logic.mapManager.loadDataFromSave();
         }
@@ -76,15 +75,17 @@ export default class MapManager {
         cc.log('load');
         cc.log(this.rectDungeon.getDisPlay());
     }
-    reset(levelData: LevelData) {
+    reset(isBack?:boolean) {
+        let data = Logic.worldLoader.getLevelData(Logic.chapterIndex, Logic.level);
         //地图重新生成
         this.rectDungeon = new RectDungeon();
-        this.rectDungeon.buildMap(levelData);
+        this.rectDungeon.buildMap(data);
         cc.log(this.rectDungeon.getDisPlay());
         //有房间数据的情况下重置房间
         this.resetRooms();
         //设置当前位置为开始房间位置
-        this.currentPos = cc.v3(this.rectDungeon.startIndex.x, this.rectDungeon.startIndex.y);
+        let index = isBack?this.rectDungeon.endIndex:this.rectDungeon.startIndex;
+        this.currentPos = cc.v3(index.x, index.y);
         //修改当前房间和四周房间状态为发现
         this.rectDungeon.changeRoomsIsFound(this.currentPos.x, this.currentPos.y);
         //清空缓存的箱子商店宝箱装备物品数据
@@ -109,13 +110,14 @@ export default class MapManager {
     public getCurrentMapStringArray(): string[][] {
         let room = this.getCurrentRoom();
         let mdd = new MapData('');
-        mdd.map = this.rectDungeon.levelData.getRoom(room.x,room.y);
+        mdd.map = Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level).getRoom(room.x,room.y);
         //添加随机元素
         let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed);
         return mapdata.map;
     }
     public getCurrentMapSize(): cc.Vec3 {
-        return cc.v3(this.rectDungeon.levelData.roomWidth, this.rectDungeon.levelData.roomHeight);
+        let data = Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level);
+        return cc.v3(data.roomWidth, data.roomHeight);
     }
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {

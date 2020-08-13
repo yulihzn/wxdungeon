@@ -189,27 +189,32 @@ export default class Logic extends cc.Component {
         
         if (room) {
             Logic.changeDungeonSize();
-            let halfWidth = Math.floor(Dungeon.WIDTH_SIZE / 2);
-            let halfHeight = Math.floor(Dungeon.HEIGHT_SIZE / 2);
             switch (dir) {
                 case 0: Logic.playerData.pos = cc.v3(Logic.playerData.pos.x, 1); break;
                 case 1: Logic.playerData.pos = cc.v3(Logic.playerData.pos.x, Dungeon.HEIGHT_SIZE - 2); break;
                 case 2: Logic.playerData.pos = cc.v3(Dungeon.WIDTH_SIZE - 2, Logic.playerData.pos.y); break;
                 case 3: Logic.playerData.pos = cc.v3(1, Logic.playerData.pos.y); break;
             }
+            
             cc.director.loadScene('loading');
 
         }
     }
     private loadingNextLevel(isBack: boolean) {
-        // Logic.level += isBack ? -1 : 1;//暂时不支持回退
-        Logic.level++;
+        Logic.level += isBack ? -1 : 1;
         let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
         let chapterLength = Logic.worldLoader.getChapterLength();
         //如果关卡为负数level为0直接返回
-        if(Logic.level<0){
+        if(Logic.level<0&&Logic.chapterIndex<1){
             Logic.level = 0;
             return;
+        }
+        if(Logic.level<0&&Logic.chapterIndex>0){
+            Logic.profileManager.data.chapterIndex--;
+            Logic.chapterIndex--;
+            let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
+            Logic.level = length-1;
+
         }
         //如果关卡到底了判断是否是最后一章游戏完成
         if (Logic.level > levelLength - 1 && Logic.chapterIndex >= chapterLength - 1) {
@@ -221,17 +226,17 @@ export default class Logic extends cc.Component {
         if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1) {
             Logic.profileManager.data.chapterIndex++;
             Logic.chapterIndex++;
-            Logic.level = 1;
+            Logic.level = 0;
         }
         
-        Logic.mapManager.reset(Logic.worldLoader.getLevelData(Logic.chapterIndex, Logic.level));
+        Logic.mapManager.reset(isBack);
         Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
         Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
 
         Logic.changeDungeonSize();
         Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
-        //返回上层不选择技能
-        Logic.isPickedTalent = isBack;
+        //暂时不选择技能
+        Logic.isPickedTalent = true;
         Logic.lastBgmIndex = -1;
         cc.director.loadScene('loading');
     }

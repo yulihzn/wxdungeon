@@ -4,6 +4,8 @@ import Logic from "../Logic";
 import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
+import Dungeon from "../Dungeon";
+import RoomType from "../Rect/RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,6 +30,18 @@ export default class ExitDoor extends Building {
 
     // LIFE-CYCLE CALLBACKS:
 
+    init(isBackToUpLevel:boolean,indexPos:cc.Vec3){
+        this.isBackToUpLevel = isBackToUpLevel;
+        let pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
+            if (Logic.playerData.pos.equals(pos)
+                && Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM) && isBackToUpLevel) {
+                Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y - 1);
+            }
+            if (Logic.playerData.pos.equals(pos)
+                && Logic.mapManager.getCurrentRoomType().isEqual(RoomType.END_ROOM) && !isBackToUpLevel) {
+                Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y - 1);
+            }
+    }
     onLoad () {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);
         this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite);
@@ -47,21 +61,21 @@ export default class ExitDoor extends Building {
         }
     }
     
-    openGate() {
+    openGate(immediately?:boolean) {
         if (this.isOpen) {
             return;
         }
         this.isOpen = true;
         this.getComponent(cc.PhysicsBoxCollider).enabled = false;
-        this.closeSprite.node.runAction(cc.fadeOut(1));
+        this.closeSprite.node.runAction(cc.fadeOut(immediately?0:1));
     }
-    closeGate() {
+    closeGate(immediately?:boolean) {
         if (!this.isOpen) {
             return;
         }
         this.isOpen = false;
         this.getComponent(cc.PhysicsBoxCollider).enabled = true;
-        this.closeSprite.node.runAction(cc.fadeIn(1));
+        this.closeSprite.node.runAction(cc.fadeIn(immediately?0:1));
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);

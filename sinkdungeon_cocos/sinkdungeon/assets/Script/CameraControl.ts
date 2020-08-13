@@ -45,6 +45,9 @@ export default class CameraControl extends cc.Component {
 
     }
     lateUpdate(){
+        if(!this.dungeon.player){
+            return;
+        }
         let targetPos = this.dungeon.player.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
         this.node.position = this.lerp(this.node.position,this.node.parent.convertToNodeSpaceAR(targetPos),0.1);
         if(this.isShaking){

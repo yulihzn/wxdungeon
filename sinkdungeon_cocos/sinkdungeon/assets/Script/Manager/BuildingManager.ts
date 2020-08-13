@@ -13,12 +13,11 @@ import ShopTable from "../Building/ShopTable";
 import FallStone from "../Building/FallStone";
 import MagicLightening from "../Building/MagicLightening";
 import HitBuilding from "../Building/HitBuilding";
-import RoomType from "../Rect/RoomType";
 import ExitDoor from "../Building/ExitDoor";
 import Door from "../Building/Door";
-import MapData from "../Data/MapData";
 import Wall from "../Building/Wall";
 import AirExit from "../Building/AirExit";
+import RoomType from "../Rect/RoomType";
 
 
 // Learn TypeScript:
@@ -86,11 +85,11 @@ export default class BuildingManager extends cc.Component {
     @property(cc.Prefab)
     darkness: cc.Prefab = null;
     @property(cc.Prefab)
-    airexit:cc.Prefab = null;
+    airexit: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
-    exitdoor: ExitDoor = null;
+    exitdoors: ExitDoor[] = new Array();
     doors: Door[] = new Array();
-    airExits:AirExit[] = new Array();
+    airExits: AirExit[] = new Array();
 
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
@@ -109,7 +108,7 @@ export default class BuildingManager extends cc.Component {
         if (this.isThe(mapDataStr, '#')) {
             //生成墙
             // this.addWalls(mapData, i, j);
-            this.addDirWalls(parseInt(mapDataStr[1]),indexPos);
+            this.addDirWalls(parseInt(mapDataStr[1]), indexPos);
         } else if (mapDataStr == "--") {
             let dn = this.addBuilding(this.darkness, indexPos);
             dn.zIndex = IndexZ.WALL;
@@ -263,21 +262,23 @@ export default class BuildingManager extends cc.Component {
             this.addDoor(parseInt(mapDataStr[1]), indexPos);
         } else if (this.isThe(mapDataStr, 'E')) {
             let p = this.addBuilding(this.exitdoorPrefab, indexPos);
-            this.exitdoor = p.getComponent(ExitDoor);
+            let exitdoor = p.getComponent(ExitDoor);
+            exitdoor.init(parseInt(mapDataStr[1]) == 1,indexPos);
+            this.exitdoors.push(exitdoor);
         }
     }
     /**添加空气墙 */
-    public addAirExit(mapData:string[][]){
-        let top = this.addBuilding(this.airexit, cc.v3(Math.floor(mapData.length/2),mapData[0].length)).getComponent(AirExit);
-        let bottom = this.addBuilding(this.airexit, cc.v3(Math.floor(mapData.length/2),-1)).getComponent(AirExit);
-        let left = this.addBuilding(this.airexit, cc.v3(-1,Math.floor(mapData[0].length/2))).getComponent(AirExit);
-        let right = this.addBuilding(this.airexit, cc.v3(mapData.length,Math.floor(mapData[0].length/2))).getComponent(AirExit);
+    public addAirExit(mapData: string[][]) {
+        let top = this.addBuilding(this.airexit, cc.v3(Math.floor(mapData.length / 2), mapData[0].length)).getComponent(AirExit);
+        let bottom = this.addBuilding(this.airexit, cc.v3(Math.floor(mapData.length / 2), -1)).getComponent(AirExit);
+        let left = this.addBuilding(this.airexit, cc.v3(-1, Math.floor(mapData[0].length / 2))).getComponent(AirExit);
+        let right = this.addBuilding(this.airexit, cc.v3(mapData.length, Math.floor(mapData[0].length / 2))).getComponent(AirExit);
         this.airExits.push(top);
         this.airExits.push(bottom);
         this.airExits.push(left);
         this.airExits.push(right);
-        for(let i=0;i<this.airExits.length;i++){
-            this.airExits[i].init(i,i<2?mapData.length:mapData[0].length);
+        for (let i = 0; i < this.airExits.length; i++) {
+            this.airExits[i].init(i, i < 2 ? mapData.length : mapData[0].length);
         }
     }
     private addDoor(mapDataStrIndex: number, indexPos: cc.Vec3) {
@@ -293,34 +294,48 @@ export default class BuildingManager extends cc.Component {
         door.dir = mapDataStrIndex;
         this.doors.push(door);
     }
-    public openDoors() {
+    public setDoors(isOpen:boolean,immediately?:boolean) {
         for (let door of this.doors) {
-            Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
-            door.setOpen(true);
+            door.setOpen(isOpen,immediately);
         }
         for (let air of this.airExits) {
+            air.changeStatus(isOpen?AirExit.STATUS_OPEN:AirExit.STATUS_CLOSE);
+        }
+        if (this.exitdoors.length>0) {
+            for(let ed of this.exitdoors){
+                isOpen?ed.openGate():ed.closeGate();
+            }
+        }
+        if(isOpen&&!immediately){
             Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
-            air.changeStatus(AirExit.STATUS_OPEN);
         }
     }
     private addDirWalls(mapDataStrIndex: number, indexPos: cc.Vec3) {
         let node: cc.Node = null;
-        if(mapDataStrIndex>3&&mapDataStrIndex<8){
+        if (mapDataStrIndex > 3 && mapDataStrIndex < 8 || mapDataStrIndex > parseInt('A')) {
             node = this.addBuilding(this.corner, indexPos);
             node.getComponent(Wall).isCorner = true;
-        }else{
+        } else {
             node = this.addBuilding(this.wall, indexPos);
         }
         node.getComponent(Wall).dir = mapDataStrIndex;
-        switch (mapDataStrIndex) {
-            case 0: break;
-            case 1: node.angle = 180;node.getComponent(Wall).isBottom = true; break;
-            case 2: node.angle = 90; break;
-            case 3: node.angle = -90; break;
-            case 4: node.angle = -90; break;
-            case 5: node.angle = 180; break;
-            case 6: node.getComponent(Wall).isBottom = true;break;
-            case 7: node.getComponent(Wall).isBottom = true;node.scaleX = -1; break;
+
+        if (mapDataStrIndex > parseInt('A')) {
+            node.getComponent(Wall).isBottom = true;
+        } else {
+            switch (mapDataStrIndex) {
+                case 0: break;
+                case 1: node.angle = 180; node.getComponent(Wall).isBottom = true; break;
+                case 2: node.angle = 90; break;
+                case 3: node.angle = -90; break;
+                case 4: node.angle = -90; break;
+                case 5: node.angle = 180; break;
+                case 6: node.getComponent(Wall).isBottom = true; break;
+                case 7: node.getComponent(Wall).isBottom = true; node.scaleX = -1;
+                    node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
+                    node.getComponent(cc.PhysicsBoxCollider).apply();
+                    break;
+            }
         }
     }
     private addWalls(mapData: string[][], i: number, j: number) {

@@ -46,18 +46,18 @@ export default class Door extends Building {
             this.bg.spriteFrame = Logic.spriteFrames[`walltop0${Logic.chapterIndex}anim00${this.dir==1?1:0}`];
         }
     }
-    setOpen(isOpen: boolean) {
+    setOpen(isOpen: boolean,immediately?:boolean) {
         if (!this.isDoor) {
             return;
         }
         if (isOpen) {
-            this.openGate();
+            this.openGate(immediately);
         } else {
-            this.closeGate();
+            this.closeGate(immediately);
         }
     }
 
-    openGate() {
+    openGate(immediately?:boolean) {
         if (this.isOpen) {
             return;
         }
@@ -72,9 +72,9 @@ export default class Door extends Building {
                 this.boxCollider.sensor = true;
                 this.boxCollider.apply();
             }
-        },0.15,4);
+        },immediately?0:0.15,4);
     }
-    closeGate() {
+    closeGate(immediately?:boolean) {
         if (!this.isOpen) {
             return;
         }
@@ -86,7 +86,7 @@ export default class Door extends Building {
                 this.boxCollider.sensor = false;
                 this.boxCollider.apply();
             }
-        },0.15,4);
+        },immediately?0:0.15,4);
         
     }
 

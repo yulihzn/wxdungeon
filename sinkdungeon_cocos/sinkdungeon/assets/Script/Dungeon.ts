@@ -133,10 +133,6 @@ export default class Dungeon extends cc.Component {
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         Logic.changeDungeonSize();
         this.dungeonStyleManager.addDecorations();
-        //初始化玩家
-        this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
-        this.player.node.parent = this.node;
-
         this.map = new Array();
         this.floorIndexmap = new Array();
         //放置之前留在地上的物品和装备
@@ -217,6 +213,10 @@ export default class Dungeon extends cc.Component {
 
             }
         }
+        this.setDoors(true,true);
+        //初始化玩家
+        this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
+        this.player.node.parent = this.node;
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
@@ -426,7 +426,7 @@ export default class Dungeon extends cc.Component {
         return this.monsterManager.monsterList.length - count;
     }
     /**检查房间是否清理 */
-    checkRoomClear() {
+    private checkRoomClear() {
         let isClear = false;
         //检查怪物是否清理
         let count = this.getMonsterAliveNum();
@@ -440,9 +440,9 @@ export default class Dungeon extends cc.Component {
             }
             isClear = count >= this.monsterManager.bossList.length;
         }
-        //检查踏板是否触发
+        //检查踏板是否触发过
         for (let footboard of this.buildingManager.footboards) {
-            if (!footboard.isOpen) {
+            if (!footboard.isOpen&&!footboard.hasActive) {
                 isClear = false;
             }
         }
@@ -450,13 +450,13 @@ export default class Dungeon extends cc.Component {
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
             isClear = true;
         }
-        if (isClear) {
-            if (this.buildingManager && this.buildingManager.exitdoor) {
-                this.buildingManager.exitdoor.openGate();
-            }
-            this.buildingManager.openDoors();
+        this.setDoors(isClear);
+    }
+    private setDoors(isClear:boolean,immediately?:boolean){
+        if(!this.buildingManager){
+            return;
         }
-
+        this.buildingManager.setDoors(isClear,immediately);
     }
     checkPlayerPos(dt: number) {
         if (!this.map || !this.player || !this.node) {
