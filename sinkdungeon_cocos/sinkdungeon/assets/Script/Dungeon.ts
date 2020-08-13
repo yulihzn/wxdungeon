@@ -213,15 +213,15 @@ export default class Dungeon extends cc.Component {
 
             }
         }
-        this.setDoors(true,true);
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
-            && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
+        && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
             this.monsterManager.addRandomMonsters(this);
         }
+        this.setDoors(true,true);
         cc.log('load finished');
     }
     isThe(mapStr: string, typeStr: string): boolean {
@@ -402,6 +402,7 @@ export default class Dungeon extends cc.Component {
     start() {
         this.scheduleOnce(() => {
             cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
+            this.checkRoomClear();
         }, 0.1)
     }
     breakTile(pos: cc.Vec3) {

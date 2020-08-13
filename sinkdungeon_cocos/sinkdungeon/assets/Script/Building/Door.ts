@@ -86,7 +86,7 @@ export default class Door extends Building {
                 this.boxCollider.sensor = false;
                 this.boxCollider.apply();
             }
-        },immediately?0:0.15,4);
+        },immediately?0:0.1,4);
         
     }
 

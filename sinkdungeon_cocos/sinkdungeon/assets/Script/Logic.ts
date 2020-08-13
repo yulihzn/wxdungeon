@@ -209,13 +209,7 @@ export default class Logic extends cc.Component {
             Logic.level = 0;
             return;
         }
-        if(Logic.level<0&&Logic.chapterIndex>0){
-            Logic.profileManager.data.chapterIndex--;
-            Logic.chapterIndex--;
-            let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
-            Logic.level = length-1;
-
-        }
+        
         //如果关卡到底了判断是否是最后一章游戏完成
         if (Logic.level > levelLength - 1 && Logic.chapterIndex >= chapterLength - 1) {
             Logic.profileManager.clearData();
@@ -228,7 +222,12 @@ export default class Logic extends cc.Component {
             Logic.chapterIndex++;
             Logic.level = 0;
         }
-        
+        if(Logic.level<0&&Logic.chapterIndex>0){
+            Logic.profileManager.data.chapterIndex--;
+            Logic.chapterIndex--;
+            let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
+            Logic.level = length-1;
+        }
         Logic.mapManager.reset(isBack);
         Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
         Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;

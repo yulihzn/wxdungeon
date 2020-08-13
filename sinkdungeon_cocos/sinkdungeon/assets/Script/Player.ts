@@ -63,6 +63,7 @@ export default class Player extends Actor {
     @property(cc.Node)
     remoteCooldown: cc.Node = null;
 
+    isShow = false;
     isMoving = false;//是否移动中
     isDied = false;//是否死亡
     isFall = false;//是否跌落
@@ -105,6 +106,8 @@ export default class Player extends Actor {
         this.pos = cc.v3(0, 0);
         this.isDied = false;
         this.isStone = false;
+        this.isShow = false;
+        this.scheduleOnce(()=>{this.isShow = true;},0.5)
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.weaponLeft.init(this, true);
         this.weaponRight.init(this, false);
@@ -459,7 +462,7 @@ export default class Player extends Actor {
 
 
     move(dir: number, pos: cc.Vec3, dt: number) {
-        if (this.isDied || this.isFall || this.isDizz) {
+        if (this.isDied || this.isFall || this.isDizz || !this.isShow) {
             return;
         }
 
