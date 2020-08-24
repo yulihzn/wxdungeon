@@ -2188,7 +2188,7 @@
     "_id": "7dUITHsfdJ+rIDZ7PpMOrM"
   },
   {
-    "__type__": "cc.WXSubContextView",
+    "__type__": "cc.SubContextView",
     "_name": "",
     "_objFlags": 0,
     "node": {
