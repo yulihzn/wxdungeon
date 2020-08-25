@@ -3,6 +3,7 @@ import Dungeon from "../Dungeon";
 import DungeonStyleData from "../Data/DungeonStyleData";
 import ParallexBackground from "../UI/ParallaxBackground";
 import IndexZ from "../Utils/IndexZ";
+import LevelData from "../Data/LevelData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -78,12 +79,13 @@ export default class DungeonStyleManager extends cc.Component {
         pbg.init();
     }
     private addFloor() {
+        let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
         this.floor.width = Dungeon.TILE_SIZE/4 * (Dungeon.WIDTH_SIZE + 0);
         this.floor.height = Dungeon.TILE_SIZE/4 * (Dungeon.HEIGHT_SIZE + 0);
         let pos = Dungeon.getPosInMap(cc.v3(0, 0));
         this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE/2, pos.y - Dungeon.TILE_SIZE/2);
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR;
-        this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.styleData.floor];
+        this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`${leveldata.floorRes}001`];
     }
 
 }

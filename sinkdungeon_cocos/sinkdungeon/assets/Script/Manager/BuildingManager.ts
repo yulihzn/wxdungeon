@@ -18,6 +18,7 @@ import Door from "../Building/Door";
 import Wall from "../Building/Wall";
 import AirExit from "../Building/AirExit";
 import RoomType from "../Rect/RoomType";
+import LevelData from "../Data/LevelData";
 
 
 // Learn TypeScript:
@@ -86,6 +87,8 @@ export default class BuildingManager extends cc.Component {
     darkness: cc.Prefab = null;
     @property(cc.Prefab)
     airexit: cc.Prefab = null;
+    @property(cc.Prefab)
+    water: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoors: ExitDoor[] = new Array();
     doors: Door[] = new Array();
@@ -102,15 +105,16 @@ export default class BuildingManager extends cc.Component {
         building.zIndex = IndexZ.getActorZIndex(building.position);
         return building;
     }
-    public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], i: number, j: number) {
-        let mapDataStr = mapData[i][j];
-        let indexPos = cc.v3(i, j);
+    public addBuildingsFromMap(dungeon: Dungeon, mapDataStr:string, indexPos:cc.Vec3,levelData:LevelData) {
         if (this.isThe(mapDataStr, '#')) {
             //生成墙
             // this.addWalls(mapData, i, j);
-            this.addDirWalls(parseInt(mapDataStr[1]), indexPos);
+            this.addDirWalls(mapDataStr, indexPos,levelData);
         } else if (mapDataStr == "--") {
             let dn = this.addBuilding(this.darkness, indexPos);
+            dn.zIndex = IndexZ.WALL;
+        } else if (mapDataStr == "~~") {
+            let dn = this.addBuilding(this.water, indexPos);
             dn.zIndex = IndexZ.WALL;
         } else if (mapDataStr == 'T0') {
             //生成陷阱
@@ -310,7 +314,8 @@ export default class BuildingManager extends cc.Component {
             Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
         }
     }
-    private addDirWalls(mapDataStrIndex: number, indexPos: cc.Vec3) {
+    private addDirWalls(mapDataStr: string, indexPos: cc.Vec3,levelData:LevelData) {
+        let mapDataStrIndex = parseInt(mapDataStr[1]);
         let node: cc.Node = null;
         if (mapDataStrIndex > 3 && mapDataStrIndex < 8 || mapDataStrIndex > parseInt('A')) {
             node = this.addBuilding(this.corner, indexPos);
@@ -318,20 +323,22 @@ export default class BuildingManager extends cc.Component {
         } else {
             node = this.addBuilding(this.wall, indexPos);
         }
-        node.getComponent(Wall).dir = mapDataStrIndex;
-
+        let wall = node.getComponent(Wall);
+        wall.dir = mapDataStrIndex;
+        wall.mapStr = mapDataStr;
+        wall.resName = levelData.wallRes;
         if (mapDataStrIndex > parseInt('A')) {
-            node.getComponent(Wall).isBottom = true;
+            wall.isBottom = true;
         } else {
             switch (mapDataStrIndex) {
                 case 0: break;
-                case 1: node.angle = 180; node.getComponent(Wall).isBottom = true; break;
+                case 1: node.angle = 180; wall.isBottom = true; break;
                 case 2: node.angle = 90; break;
                 case 3: node.angle = -90; break;
                 case 4: node.angle = -90; break;
                 case 5: node.angle = 180; break;
-                case 6: node.getComponent(Wall).isBottom = true; break;
-                case 7: node.getComponent(Wall).isBottom = true; node.scaleX = -1;
+                case 6: wall.isBottom = true; break;
+                case 7: wall.isBottom = true; node.scaleX = -1;
                     node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
                     node.getComponent(cc.PhysicsBoxCollider).apply();
                     break;

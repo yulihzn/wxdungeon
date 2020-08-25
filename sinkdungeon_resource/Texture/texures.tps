@@ -855,6 +855,14 @@
             <key type="filename">dungeon/sandsea1.png</key>
             <key type="filename">dungeon/sea.png</key>
             <key type="filename">dungeon/sea1.png</key>
+            <key type="filename">dungeon/water000.png</key>
+            <key type="filename">dungeon/water001.png</key>
+            <key type="filename">dungeon/water002.png</key>
+            <key type="filename">dungeon/water003.png</key>
+            <key type="filename">dungeon/water004.png</key>
+            <key type="filename">dungeon/water005.png</key>
+            <key type="filename">dungeon/water006.png</key>
+            <key type="filename">dungeon/water007.png</key>
             <key type="filename">equipment/animremote001.png</key>
             <key type="filename">equipment/animremote002.png</key>
             <key type="filename">equipment/animremote003.png</key>

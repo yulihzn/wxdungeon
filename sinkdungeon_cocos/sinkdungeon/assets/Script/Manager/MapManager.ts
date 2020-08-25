@@ -59,7 +59,7 @@ export default class MapManager {
     }
     private resetRooms() {
         if(!this.rectDungeon){
-            this.rectDungeon.buildMap(Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level));
+            this.rectDungeon.buildMap(Logic.worldLoader.getCurrentLevelData());
         }
     }
     loadDataFromSave() {
@@ -76,7 +76,7 @@ export default class MapManager {
         cc.log(this.rectDungeon.getDisPlay());
     }
     reset(isBack?:boolean) {
-        let data = Logic.worldLoader.getLevelData(Logic.chapterIndex, Logic.level);
+        let data = Logic.worldLoader.getCurrentLevelData();
         //地图重新生成
         this.rectDungeon = new RectDungeon();
         this.rectDungeon.buildMap(data);
@@ -110,13 +110,13 @@ export default class MapManager {
     public getCurrentMapStringArray(): string[][] {
         let room = this.getCurrentRoom();
         let mdd = new MapData('');
-        mdd.map = Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level).getRoom(room.x,room.y);
+        mdd.map = Logic.worldLoader.getCurrentLevelData().getRoom(room.x,room.y);
         //添加随机元素
         let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed);
         return mapdata.map;
     }
     public getCurrentMapSize(): cc.Vec3 {
-        let data = Logic.worldLoader.getLevelData(Logic.chapterIndex,Logic.level);
+        let data = Logic.worldLoader.getCurrentLevelData();
         return cc.v3(data.roomWidth, data.roomHeight);
     }
     /** 获取当前房间*/

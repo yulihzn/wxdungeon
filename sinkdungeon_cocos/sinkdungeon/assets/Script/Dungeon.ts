@@ -16,6 +16,7 @@ import AudioPlayer from "./Utils/AudioPlayer";
 import RoomType from "./Rect/RoomType";
 import IndexZ from "./Utils/IndexZ";
 import BuildingManager from "./Manager/BuildingManager";
+import LevelData from "./Data/LevelData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -131,6 +132,7 @@ export default class Dungeon extends cc.Component {
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 1.2;
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
+        let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
         Logic.changeDungeonSize();
         this.dungeonStyleManager.addDecorations();
         this.map = new Array();
@@ -161,10 +163,11 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j] = t.getComponent(Tile);
                     this.map[i][j].isAutoShow = false;
                     this.map[i][j].tileType = mapData[i][j];
+                    this.map[i][j].resPrefix = leveldata.floorCoverRes;
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
-                this.buildingManager.addBuildingsFromMap(this, mapData,i,j);
+                this.buildingManager.addBuildingsFromMap(this, mapData[i][j],cc.v3(i,j),leveldata);
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     //生成心

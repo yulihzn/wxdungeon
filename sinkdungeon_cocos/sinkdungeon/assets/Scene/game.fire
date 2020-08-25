@@ -201,7 +201,7 @@
       "array": [
         0,
         0,
-        256.34351952019387,
+        257.2095449239783,
         0,
         0,
         0,
@@ -1294,6 +1294,7 @@
     "airexit": {
       "__uuid__": "1b5b6037-e2bf-499c-aa6a-ce8c69126d8c"
     },
+    "water": null,
     "_id": "6fNRlW4xRPZbKRWb6ycQ/o"
   },
   {
@@ -1385,22 +1386,6 @@
     },
     "floor": {
       "__id__": 10
-    },
-    "floorShadow": null,
-    "wallTopDecoration": {
-      "__uuid__": "21fb92ef-3676-40d7-9d4e-d618069f9c97"
-    },
-    "wallBottomDecoration": {
-      "__uuid__": "4d62b73d-7d53-40f3-858e-93243fff3871"
-    },
-    "wallLeftDecoration": {
-      "__uuid__": "568474a1-9300-43ab-8a24-7ee8935e8ab5"
-    },
-    "doorDecoration": {
-      "__uuid__": "0bb34b8e-9407-4a35-b984-6f3684ef26db"
-    },
-    "exitdoorPrefab": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
     },
     "parallaxBackground": {
       "__uuid__": "647ce7e7-fb47-42dc-9fff-92be781dc4f3"
@@ -19077,7 +19062,7 @@
       "array": [
         0,
         0,
-        256.34351952019387,
+        257.2095449239783,
         0,
         0,
         0,

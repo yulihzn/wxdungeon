@@ -1,0 +1,73 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "WaterIdle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.35,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "2b5316c9-a8ff-47d7-9870-d2ea678a2d11"
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__uuid__": "2f301d63-b2cc-4702-be4c-e16c5bf6e37a"
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__uuid__": "5afb27e1-cd10-41a2-baf4-499e084fe428"
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__uuid__": "38ba6ac3-02e5-4ad5-aa1e-ba20bebc955f"
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__uuid__": "c84f2b14-a97b-4426-9ac5-3e90aca4a456"
+            }
+          },
+          {
+            "frame": 0.8333333333333334,
+            "value": {
+              "__uuid__": "ae6c5d1a-fdb8-4c2a-9a7f-846a947b17b3"
+            }
+          },
+          {
+            "frame": 1,
+            "value": {
+              "__uuid__": "bb24d26f-d9ad-46e0-b2db-5cb882237326"
+            }
+          },
+          {
+            "frame": 1.1666666666666667,
+            "value": {
+              "__uuid__": "4f506294-ba98-42e0-bb1a-022c2f04636d"
+            }
+          },
+          {
+            "frame": 1.3333333333333333,
+            "value": {
+              "__uuid__": "2b5316c9-a8ff-47d7-9870-d2ea678a2d11"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": []
+}

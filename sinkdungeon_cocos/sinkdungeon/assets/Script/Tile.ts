@@ -26,6 +26,7 @@ export default class Tile extends cc.Component {
     isBreakingNow = false;
     floor:cc.Sprite;
     tileType = '**';
+    resPrefix = ''
     onLoad () {
         this.isAutoShow = true;
         this.anim = this.getComponent(cc.Animation);
@@ -34,17 +35,28 @@ export default class Tile extends cc.Component {
 
     start () {
         //休息区 轮船 丛林 金字塔 地牢
-        switch(Logic.chapterIndex){
-            case Logic.CHAPTER00:this.changeRes(this.getLabRes());break;
-            case Logic.CHAPTER01:this.changeRes(this.getDeckRes());break;
-            case Logic.CHAPTER02:this.changeRes(this.getDirtRes());break;
-            case Logic.CHAPTER03:this.changeRes('tile003');break;
-            case Logic.CHAPTER04:this.changeRes('tile004');break;
-            case Logic.CHAPTER05:this.changeRes('tile004');break;
-        }
+        // switch(Logic.chapterIndex){
+        //     case Logic.CHAPTER00:this.changeRes(this.getLabRes());break;
+        //     case Logic.CHAPTER01:this.changeRes(this.getDeckRes());break;
+        //     case Logic.CHAPTER02:this.changeRes(this.getDirtRes());break;
+        //     case Logic.CHAPTER03:this.changeRes('tile003');break;
+        //     case Logic.CHAPTER04:this.changeRes('tile004');break;
+        //     case Logic.CHAPTER05:this.changeRes('tile004');break;
+        // }
         // Logic.setAlias(this.node);
+        this.changeRes(this.getRes());
 
     }
+    getRes():string{
+        let s = this.resPrefix+'001';
+        switch(this.tileType){
+            case '**':s = this.resPrefix+'001';break;
+            case '*0':s = this.resPrefix+'002';break;
+            case '*1':s = this.resPrefix+'003';break;
+            case '*2':s = this.resPrefix+'004';break;
+        }
+        return s;
+     }
     getLabRes():string{
         let s = 'tile_lab001';
         switch(this.tileType){
@@ -124,5 +136,8 @@ export default class Tile extends cc.Component {
     }
     changeRes(resName:string){
         this.floor.spriteFrame = Logic.spriteFrames[resName];
+        if(this.floor.spriteFrame == null){
+            this.floor.spriteFrame = Logic.spriteFrames[this.resPrefix+'001'];
+        }
     }
 }

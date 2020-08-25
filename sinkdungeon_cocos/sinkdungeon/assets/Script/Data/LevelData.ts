@@ -1,4 +1,4 @@
-export default class LevelData{
+export default class LevelData {
     index: number = 0;//关卡包含的列表下标
     chapter: number = 0;//章节下标
     width: number = 0;//地图单位宽
@@ -6,18 +6,23 @@ export default class LevelData{
     seed: number = 0;//随机种子
     roomWidth: number = 0;//房间宽
     roomHeight: number = 0;//房间高
+    floorRes = '';//地板资源名
+    floorCoverRes = '';//地板覆盖物
+    wallRes = '';//墙壁资源名（只针对非边界装饰墙）
+    doorRes = '';//门资源名
+    exitRes = '';//出入口资源名
     map: string[][] = [];
-    
-    constructor(chapter: number,strs: string) {
+
+    constructor(chapter: number, strs: string) {
         this.chapter = chapter;
         this.init(strs);
     }
     private init(strs: string) {
-        if(!strs||strs.length<1){
+        if (!strs || strs.length < 1) {
             return;
         }
         let split = strs.split('$');
-        let temp:LevelData = JSON.parse(split[0]);
+        let temp: LevelData = JSON.parse(split[0]);
         this.valueCopy(temp);
         //去掉第一个回车和最后1个回车
         let str = split[1];
@@ -29,11 +34,11 @@ export default class LevelData{
         }
         for (let i = 0; i < arr.length; i++) {
             //y的方向在txt里是相反的
-            let row = arr[arr.length-1-i].split('');
+            let row = arr[arr.length - 1 - i].split('');
             let k = 0;
-            for (let j = 0; j < row.length -1; k++) {
-                this.map[i][k] = row[j]+row[j+1];
-                j+=2;
+            for (let j = 0; j < row.length - 1; k++) {
+                this.map[i][k] = row[j] + row[j + 1];
+                j += 2;
             }
         }
         //对应行列在txt里是反过来的
@@ -46,7 +51,7 @@ export default class LevelData{
         }
         this.map = turnArr;
     }
-    valueCopy(data:LevelData){
+    valueCopy(data: LevelData) {
         this.index = data.index;
         this.chapter = data.chapter;
         this.width = data.width;
@@ -55,13 +60,18 @@ export default class LevelData{
         this.roomWidth = data.roomWidth;
         this.roomHeight = data.roomHeight;
         this.map = data.map;
+        this.floorRes = data.floorRes;
+        this.floorCoverRes = data.floorCoverRes;
+        this.wallRes = data.wallRes;
+        this.doorRes = data.doorRes;
+        this.exitRes = data.exitRes;
     }
-    getRoom(x:number,y:number):string[][]{
+    getRoom(x: number, y: number): string[][] {
         let temp: string[][] = new Array();
-        for(let i = 0;i<this.roomWidth;i++){
+        for (let i = 0; i < this.roomWidth; i++) {
             temp[i] = new Array();
-            for(let j = 0;j<this.roomHeight;j++){
-                temp[i][j]=this.map[i+x*this.roomWidth][j+y*this.roomHeight];
+            for (let j = 0; j < this.roomHeight; j++) {
+                temp[i][j] = this.map[i + x * this.roomWidth][j + y * this.roomHeight];
             }
         }
         return temp;

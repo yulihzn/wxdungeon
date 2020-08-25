@@ -160,5 +160,8 @@ export default class WorldLoader {
         levelList[levelIndex].chapter = chapterIndex;
         return levelList[levelIndex];
     }
+    getCurrentLevelData(){
+        return this.getLevelData(Logic.chapterIndex,Logic.level);
+    }
     
 }
