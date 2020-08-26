@@ -19,6 +19,7 @@ import Wall from "../Building/Wall";
 import AirExit from "../Building/AirExit";
 import RoomType from "../Rect/RoomType";
 import LevelData from "../Data/LevelData";
+import AirTranspot from "../Building/AirTranspot";
 
 
 // Learn TypeScript:
@@ -89,6 +90,12 @@ export default class BuildingManager extends cc.Component {
     airexit: cc.Prefab = null;
     @property(cc.Prefab)
     water: cc.Prefab = null;
+    @property(cc.Prefab)
+    coast: cc.Prefab = null;
+    @property(cc.Prefab)
+    airTranspotModel: cc.Prefab = null;
+    @property(cc.Prefab)
+    airTranspot: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoors: ExitDoor[] = new Array();
     doors: Door[] = new Array();
@@ -113,8 +120,24 @@ export default class BuildingManager extends cc.Component {
         } else if (mapDataStr == "--") {
             let dn = this.addBuilding(this.darkness, indexPos);
             dn.zIndex = IndexZ.WALL;
-        } else if (mapDataStr == "~~") {
-            let dn = this.addBuilding(this.water, indexPos);
+        } else if (this.isThe(mapDataStr, '~')) {
+            if (parseInt(mapDataStr[1])>=0&&parseInt(mapDataStr[1])<=9|| mapDataStr == '~a'||mapDataStr == '~b') {
+                let dn = this.addBuilding(this.coast, indexPos);
+                if(mapDataStr == '~a'){
+                    dn.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`coast010`];
+                }else if(mapDataStr == '~b'){
+                    dn.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`coast011`];
+                }else{
+                    dn.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`coast00${parseInt(mapDataStr[1])}`];
+                }
+                dn.zIndex = IndexZ.WALL;
+            }else{
+                let dn = this.addBuilding(this.water, indexPos);
+                dn.zIndex = IndexZ.WALL;
+            }
+            
+        } else if (mapDataStr == "~0") {
+            let dn = this.addBuilding(this.coast, indexPos);
             dn.zIndex = IndexZ.WALL;
         } else if (mapDataStr == 'T0') {
             //生成陷阱
@@ -163,6 +186,9 @@ export default class BuildingManager extends cc.Component {
                     arrow.zIndex = IndexZ.FLOOR;
                     arrow.getComponent(DecorationFloor).changeRes('exitarrow');
                 }
+            } else if (this.isThe(mapDataStr, '+3')) {
+                let arrow = this.addBuilding(this.airTranspotModel, indexPos);
+                    arrow.zIndex = IndexZ.OVERHEAD;
             } else {
                 let fd = this.addBuilding(this.floorDecoration, indexPos);
                 fd.zIndex = IndexZ.FLOOR;
@@ -267,8 +293,12 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isThe(mapDataStr, 'E')) {
             let p = this.addBuilding(this.exitdoorPrefab, indexPos);
             let exitdoor = p.getComponent(ExitDoor);
-            exitdoor.init(parseInt(mapDataStr[1]) == 1,indexPos);
+            exitdoor.init(parseInt(mapDataStr[1]) == 1,indexPos,parseInt(mapDataStr[1]) > 1);
             this.exitdoors.push(exitdoor);
+        } else if (mapDataStr == 'W0') {
+            //气垫船
+            let at = this.addBuilding(this.airTranspot, indexPos);
+            at.getComponent(AirTranspot).dungeon = dungeon;
         }
     }
     /**添加空气墙 */
@@ -342,37 +372,6 @@ export default class BuildingManager extends cc.Component {
                     node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
                     node.getComponent(cc.PhysicsBoxCollider).apply();
                     break;
-            }
-        }
-    }
-    private addWalls(mapData: string[][], i: number, j: number) {
-        let node: cc.Node = null;
-        if ((i == 0 || i == mapData.length - 1) && (j == 0 || j == mapData[0].length - 1)) {
-            node = this.addBuilding(this.corner, cc.v3(i, j));
-            node.getComponent(Wall).isCorner = true;
-            node.getComponent(Wall).isBottom = j == 0;
-            if (i == 0 && j == mapData[0].length - 1) {
-                node.angle = -90;
-            }
-            if (i == mapData.length - 1 && j == 0) {
-                node.scaleX = -1;
-            }
-            if (i == mapData.length - 1 && j == mapData[0].length - 1) {
-                node.angle = 180;
-            }
-        } else {
-            node = this.addBuilding(this.wall, cc.v3(i, j));
-            if (j > 0 && j < mapData[0].length - 1) {
-                if (i == 0) {
-                    node.angle = 90;
-                }
-                if (i == mapData.length - 1) {
-                    node.angle = -90;
-                }
-            }
-            if (j == 0) {
-                node.angle = 180;
-                node.getComponent(Wall).isBottom = true;
             }
         }
     }

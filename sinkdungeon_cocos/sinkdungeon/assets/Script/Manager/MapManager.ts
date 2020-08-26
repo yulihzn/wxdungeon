@@ -110,9 +110,10 @@ export default class MapManager {
     public getCurrentMapStringArray(): string[][] {
         let room = this.getCurrentRoom();
         let mdd = new MapData('');
-        mdd.map = Logic.worldLoader.getCurrentLevelData().getRoom(room.x,room.y);
+        let data = Logic.worldLoader.getCurrentLevelData();
+        mdd.map = data.getRoom(room.x,room.y);
         //添加随机元素
-        let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed);
+        let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed,data.needRadomDecorate);
         return mapdata.map;
     }
     public getCurrentMapSize(): cc.Vec3 {
@@ -179,11 +180,11 @@ export default class MapManager {
     
    
     /**添加随机元素 */
-    private addGenerateThings(mapData: MapData, roomType: RoomType, seed: number): MapData {
+    private addGenerateThings(mapData: MapData, roomType: RoomType, seed: number,needDecorate:boolean): MapData {
         let rand4save = new Random4Save(seed);
         cc.log(`seed:${seed}`);
         this.addRandomTile(mapData, rand4save);
-        if (RoomType.isDecorateRoomType(roomType)) {
+        if (RoomType.isDecorateRoomType(roomType)&&needDecorate) {
             rand4save = new Random4Save(seed);
             this.addDecorate(mapData, rand4save);
         }
@@ -191,7 +192,7 @@ export default class MapManager {
     }
     private addRandomTile(mapData: MapData, rand4save: Random4Save) {
         let pos = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 20; i++) {
             let dx = rand4save.getRandomNum(0, mapData.map.length - 1);
             let dy = rand4save.getRandomNum(0, mapData.map[0].length - 1);
             pos.push(cc.v3(dx, 0));

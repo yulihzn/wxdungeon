@@ -26,7 +26,8 @@ export default class Tile extends cc.Component {
     isBreakingNow = false;
     floor:cc.Sprite;
     tileType = '**';
-    resPrefix = ''
+    coverPrefix = '';
+    floorPrefix = '';
     onLoad () {
         this.isAutoShow = true;
         this.anim = this.getComponent(cc.Animation);
@@ -48,12 +49,14 @@ export default class Tile extends cc.Component {
 
     }
     getRes():string{
-        let s = this.resPrefix+'001';
+        let s = this.coverPrefix+'001';
         switch(this.tileType){
-            case '**':s = this.resPrefix+'001';break;
-            case '*0':s = this.resPrefix+'002';break;
-            case '*1':s = this.resPrefix+'003';break;
-            case '*2':s = this.resPrefix+'004';break;
+            case '**':s = this.floorPrefix+'001';break;
+            case '*0':s = this.floorPrefix+'002';break;
+            case '*1':s = this.floorPrefix+'003';break;
+            case '*2':s = this.floorPrefix+'001';break;
+            case '*3':s = this.floorPrefix+'002';break;
+            case '*4':s = this.coverPrefix+'001';break;
         }
         return s;
      }
@@ -137,7 +140,7 @@ export default class Tile extends cc.Component {
     changeRes(resName:string){
         this.floor.spriteFrame = Logic.spriteFrames[resName];
         if(this.floor.spriteFrame == null){
-            this.floor.spriteFrame = Logic.spriteFrames[this.resPrefix+'001'];
+            this.floor.spriteFrame = Logic.spriteFrames[this.floorPrefix+'001'];
         }
     }
 }

@@ -27,10 +27,12 @@ export default class ExitDoor extends Building {
     closeSprite:cc.Sprite = null;
     openSprite:cc.Sprite = null;
     isBackToUpLevel = false;
+    needHide = false;
 
     // LIFE-CYCLE CALLBACKS:
 
-    init(isBackToUpLevel:boolean,indexPos:cc.Vec3){
+    init(isBackToUpLevel:boolean,indexPos:cc.Vec3,needHide:boolean){
+        this.needHide = needHide;
         this.isBackToUpLevel = isBackToUpLevel;
         let pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
             if (Logic.playerData.pos.equals(pos)
@@ -41,6 +43,9 @@ export default class ExitDoor extends Building {
                 && Logic.mapManager.getCurrentRoomType().isEqual(RoomType.END_ROOM) && !isBackToUpLevel) {
                 Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y - 1);
             }
+        if(this.needHide){
+            this.node.opacity = 0;
+        }
     }
     onLoad () {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);

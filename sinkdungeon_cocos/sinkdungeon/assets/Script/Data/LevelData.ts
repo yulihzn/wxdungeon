@@ -11,6 +11,7 @@ export default class LevelData {
     wallRes = '';//墙壁资源名（只针对非边界装饰墙）
     doorRes = '';//门资源名
     exitRes = '';//出入口资源名
+    needRadomDecorate = false;
     map: string[][] = [];
 
     constructor(chapter: number, strs: string) {
@@ -65,6 +66,7 @@ export default class LevelData {
         this.wallRes = data.wallRes;
         this.doorRes = data.doorRes;
         this.exitRes = data.exitRes;
+        this.needRadomDecorate = data.needRadomDecorate;
     }
     getRoom(x: number, y: number): string[][] {
         let temp: string[][] = new Array();

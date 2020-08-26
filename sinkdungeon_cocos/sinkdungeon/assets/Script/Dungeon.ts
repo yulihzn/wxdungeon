@@ -163,7 +163,8 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j] = t.getComponent(Tile);
                     this.map[i][j].isAutoShow = false;
                     this.map[i][j].tileType = mapData[i][j];
-                    this.map[i][j].resPrefix = leveldata.floorCoverRes;
+                    this.map[i][j].coverPrefix = leveldata.floorCoverRes;
+                    this.map[i][j].floorPrefix = leveldata.floorRes;
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
