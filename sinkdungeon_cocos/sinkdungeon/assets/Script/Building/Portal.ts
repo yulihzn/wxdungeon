@@ -3,6 +3,7 @@ import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
+import Logic from "../Logic";
 
 
 // Learn TypeScript:
@@ -68,7 +69,7 @@ export default class Portal extends Building {
         if(player){
             if(this.isOpen){
                 this.closeGate();
-                cc.director.emit(EventHelper.LOADINGNEXTLEVEL);
+                Logic.loadingNextLevel(false);
             }
         }
     }

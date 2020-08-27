@@ -17,9 +17,7 @@ import ExitDoor from "../Building/ExitDoor";
 import Door from "../Building/Door";
 import Wall from "../Building/Wall";
 import AirExit from "../Building/AirExit";
-import RoomType from "../Rect/RoomType";
 import LevelData from "../Data/LevelData";
-import AirTranspot from "../Building/AirTranspot";
 
 
 // Learn TypeScript:
@@ -94,8 +92,6 @@ export default class BuildingManager extends cc.Component {
     coast: cc.Prefab = null;
     @property(cc.Prefab)
     airTranspotModel: cc.Prefab = null;
-    @property(cc.Prefab)
-    airTranspot: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoors: ExitDoor[] = new Array();
     doors: Door[] = new Array();
@@ -189,7 +185,7 @@ export default class BuildingManager extends cc.Component {
             } else if (this.isThe(mapDataStr, '+3')) {
                 let arrow = this.addBuilding(this.airTranspotModel, indexPos);
                     arrow.zIndex = IndexZ.OVERHEAD;
-            } else {
+            }else {
                 let fd = this.addBuilding(this.floorDecoration, indexPos);
                 fd.zIndex = IndexZ.FLOOR;
                 let df = fd.getComponent(DecorationFloor);
@@ -295,10 +291,6 @@ export default class BuildingManager extends cc.Component {
             let exitdoor = p.getComponent(ExitDoor);
             exitdoor.init(parseInt(mapDataStr[1]) == 1,indexPos,parseInt(mapDataStr[1]) > 1);
             this.exitdoors.push(exitdoor);
-        } else if (mapDataStr == 'W0') {
-            //气垫船
-            let at = this.addBuilding(this.airTranspot, indexPos);
-            at.getComponent(AirTranspot).dungeon = dungeon;
         }
     }
     /**添加空气墙 */

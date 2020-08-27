@@ -94,7 +94,6 @@ export default class Player extends Actor {
     talentDash: TalentDash;
     talentMagic: TalentMagic;
     isWeaponDashing = false;
-    isRidding = false;//是否骑乘
     fistCombo = 0;
 
     // LIFE-CYCLE CALLBACKS:
@@ -176,7 +175,6 @@ export default class Player extends Actor {
                 this.data.Common.remoteCritRate = 50;
             }, 0.2);
         }
-        this.isRidding = Logic.mapManager.getCurrentRoomType().isEqual(RoomType.WATER_ROOM);
     }
     actorName(): string {
         return 'Player';
@@ -482,9 +480,7 @@ export default class Player extends Actor {
         if (this.talentMagic && this.talentMagic.magiccircle.isShow && !this.talentMagic.hashTalent(Talent.MAGIC_05)) {
             pos = pos.mul(0.3);
         }
-        if(this.isRidding && !pos.equals(cc.Vec3.ZERO)){
-            pos = cc.Vec3.ZERO;
-        }
+        
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.pos = this.pos.clone();
@@ -494,7 +490,6 @@ export default class Player extends Actor {
             this.weaponLeft.shooter.setHv(cc.v3(pos.x, pos.y));
             this.weaponRight.shooter.setHv(cc.v3(pos.x, pos.y));
         }
-
         let h = pos.x;
         let v = pos.y;
         let absh = Math.abs(h);
@@ -734,9 +729,6 @@ export default class Player extends Actor {
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
         this.node.opacity = this.invisible ? 80 : 255;
-        if(this.isRidding){
-            this.node.opacity = 0;
-        }
     }
     private useSkill(): void {
         if (Logic.hashTalent(Talent.DASH_01)) {

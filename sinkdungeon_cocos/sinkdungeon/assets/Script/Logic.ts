@@ -93,13 +93,6 @@ export default class Logic extends cc.Component {
         // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
         // cc.PhysicsManager.DrawBits.e_jointBit |
         // cc.PhysicsManager.DrawBits.e_shapeBit;
-        EventHelper.on(EventHelper.LOADINGNEXTLEVEL, (detail) => {
-            this.loadingNextLevel(detail.isBack);
-        })
-
-        cc.director.on(EventHelper.LOADINGROOM, (event) => {
-            this.loadingNextRoom(event.detail.dir);
-        });
     }
 
     start() {
@@ -110,6 +103,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
+        Logic.profileManager.data.level = Logic.level;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin", Logic.coins);
         cc.sys.localStorage.setItem("oilgold", Logic.oilGolds);
@@ -184,9 +178,11 @@ export default class Logic extends cc.Component {
             Dungeon.HEIGHT_SIZE = size.y;
         }
     }
-    private loadingNextRoom(dir: number) {
+    static loadingNextRoom(dir: number) {
+        //保存数据
+        Logic.saveData();
+        AudioPlayer.play(AudioPlayer.EXIT);
         let room = Logic.mapManager.loadingNextRoom(dir);
-        
         if (room) {
             Logic.changeDungeonSize();
             switch (dir) {
@@ -200,7 +196,9 @@ export default class Logic extends cc.Component {
 
         }
     }
-    private loadingNextLevel(isBack: boolean) {
+    static loadingNextLevel(isBack: boolean) {
+        //保存数据
+        Logic.saveData();
         Logic.level += isBack ? -1 : 1;
         let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
         let chapterLength = Logic.worldLoader.getChapterLength();

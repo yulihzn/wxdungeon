@@ -71,9 +71,7 @@ export default class AirExit extends Building {
         if (player) {
             if (this.status == AirExit.STATUS_OPEN) {
                 Logic.playerData = player.data.clone();
-                Logic.saveData();
-                AudioPlayer.play(AudioPlayer.EXIT);
-                cc.director.emit(EventHelper.LOADINGROOM, { detail: { dir: this.dir } });
+                Logic.loadingNextRoom(this.dir);
             }
         }
     }

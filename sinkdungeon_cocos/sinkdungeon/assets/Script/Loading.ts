@@ -120,7 +120,8 @@ export default class Loading extends cc.Component {
 
     }
     isTalentLevel(): boolean {
-        return Logic.level > 0;
+        // return Logic.level > 0;
+        return false;
     }
     isPickedTalent(): boolean {
         if (Logic.isPickedTalent) {
