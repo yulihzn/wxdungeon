@@ -17,15 +17,7 @@ import BuildingData from "./BuildingData";
  */
 export default class ProfileData {
     //地图数据管理类
-    rectDungeon: RectDungeon = new RectDungeon();
-    //当前房间下标 默认1-1
-    currentPos: cc.Vec3 = cc.v3(1,1);
-    //根据下标保存建筑信息
-    buildings: { [key: string]: { [key: string]: BuildingData} } = {};
-    //根据下标+uuid保存地上的装备
-    equipments:{[key:string]:EquipmentData[]} = {};
-    //根据下标+uuid报错地上的物品
-    items:{[key:string]:ItemData[]}={};
+    rectDungeons: { [key: string]: RectDungeon }  = {};
     chapterIndex:number = 0;
     playerData:PlayerData = new PlayerData();
     //玩家装备列表
@@ -41,11 +33,7 @@ export default class ProfileData {
         this.talentList = new Array();
         this.playerEquipList = new Array();
         this.playerItemList = new Array();
-        this.rectDungeon = new RectDungeon();
-        this.currentPos = cc.v3(1,1);
-        this.buildings = {};
-        this.equipments = {};
-        this.items = {};
+        this.rectDungeons = {};
         this.level = 0;
     }
 }

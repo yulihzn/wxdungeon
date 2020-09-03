@@ -82,7 +82,7 @@ export default class WorldLoader {
                 //以====为标签分割字符串
                 let arr = strs.split('====');
                 for(let str of arr){
-                    let level = new LevelData(data.chapter,str);
+                    let level = new LevelData(str);
                     data.list.push(level);
                 }
                 

@@ -1,6 +1,9 @@
 import RectRoom from "./RectRoom";
 import LevelData from "../Data/LevelData";
 import RoomType from "./RoomType";
+import BuildingData from "../Data/BuildingData";
+import EquipmentData from "../Data/EquipmentData";
+import ItemData from "../Data/ItemData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -14,16 +17,57 @@ import RoomType from "./RoomType";
 
 
 export default class RectDungeon {
+    public id: string = '00';//地图id
     public width: number = 0;//地图宽
     public height: number = 0;//地图高
     public map: RectRoom[][];
+    //当前房间下标 默认1-1
+    currentPos: cc.Vec3 = cc.v3(1, 1);
+    public buildings: { [key: string]: { [key: string]: BuildingData } } = {};//根据下标保存建筑信息
+    //根据下标+uuid保存地上的装备
+    equipments: { [key: string]: EquipmentData[] } = {};
+    //根据下标+uuid报错地上的物品
+    items: { [key: string]: ItemData[] } = {};
     public startIndex: cc.Vec2 = cc.Vec2.ZERO;
     public endIndex: cc.Vec2 = cc.v2(-1, -1);
 
     buildMapFromSave(dungeon: RectDungeon): RectDungeon {
+        this.id = this.id;
         this.width = dungeon.width;
         this.height = dungeon.height;
         this.map = new Array();
+        //加载当前位置
+        this.currentPos = dungeon.currentPos ? cc.v3(dungeon.currentPos.x, dungeon.currentPos.y) : cc.v3(0, 0);
+        //加载建筑
+        for (let key1 in dungeon.buildings) {
+            let map = dungeon.buildings[key1];
+            this.buildings[key1] = {};
+            for (let key2 in map) {
+                let data = new BuildingData();
+                data.valueCopy(map[key2]);
+                this.buildings[key1][key2] = data;
+            }
+        }
+        //加载地上装备
+        for (let key in dungeon.equipments) {
+            let list = dungeon.equipments[key];
+            this.equipments[key] = new Array();
+            for (let i = 0; i < list.length; i++) {
+                let equip = new EquipmentData();
+                equip.valueCopy(list[i]);
+                this.equipments[key][i] = equip;
+            }
+        }
+        //加载地上物品
+        for (let key in dungeon.items) {
+            let list = dungeon.items[key];
+            this.items[key] = new Array();
+            for (let i = 0; i < list.length; i++) {
+                let item = new ItemData();
+                item.valueCopy(list[i]);
+                this.items[key][i] = item;
+            }
+        }
         for (let i = 0; i < this.width; i++) {
             this.map[i] = new Array();
             for (let j = 0; j < this.height; j++) {
@@ -50,8 +94,13 @@ export default class RectDungeon {
     }
     buildMap(levelData: LevelData): void {
         this.map = new Array();
+        this.id = `${levelData.chapter}${levelData.index}`;
         this.width = levelData.width;
         this.height = levelData.height;
+        //清空缓存的箱子商店宝箱装备物品数据
+        this.buildings = {};
+        this.equipments = {};
+        this.items = {};
         for (let i = 0; i < levelData.width; i++) {
             this.map[i] = new Array();
             for (let j = 0; j < levelData.height; j++) {

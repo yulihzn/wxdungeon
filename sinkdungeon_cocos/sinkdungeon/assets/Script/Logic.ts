@@ -51,7 +51,7 @@ export default class Logic extends cc.Component {
     //物品json
     static items: { [key: string]: ItemData } = null;
     //职业json
-    static professionList:ProfessionData[] = [];
+    static professionList: ProfessionData[] = [];
 
     static level = 0;
     static chapterIndex = 0;
@@ -102,7 +102,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
-        Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
+        Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin", Logic.coins);
@@ -191,7 +191,7 @@ export default class Logic extends cc.Component {
                 case 2: Logic.playerData.pos = cc.v3(Dungeon.WIDTH_SIZE - 2, Logic.playerData.pos.y); break;
                 case 3: Logic.playerData.pos = cc.v3(1, Logic.playerData.pos.y); break;
             }
-            
+
             cc.director.loadScene('loading');
 
         }
@@ -203,11 +203,11 @@ export default class Logic extends cc.Component {
         let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
         let chapterLength = Logic.worldLoader.getChapterLength();
         //如果关卡为负数level为0直接返回
-        if(Logic.level<0&&Logic.chapterIndex<1){
+        if (Logic.level < 0 && Logic.chapterIndex < 1) {
             Logic.level = 0;
             return;
         }
-        
+
         //如果关卡到底了判断是否是最后一章游戏完成
         if (Logic.level > levelLength - 1 && Logic.chapterIndex >= chapterLength - 1) {
             Logic.profileManager.clearData();
@@ -220,16 +220,14 @@ export default class Logic extends cc.Component {
             Logic.chapterIndex++;
             Logic.level = 0;
         }
-        if(Logic.level<0&&Logic.chapterIndex>0){
+        if (Logic.level < 0 && Logic.chapterIndex > 0) {
             Logic.profileManager.data.chapterIndex--;
             Logic.chapterIndex--;
             let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
-            Logic.level = length-1;
+            Logic.level = length - 1;
         }
         Logic.mapManager.reset(isBack);
-        Logic.profileManager.data.currentPos = Logic.mapManager.currentPos.clone();
-        Logic.profileManager.data.rectDungeon = Logic.mapManager.rectDungeon;
-
+        Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.changeDungeonSize();
         Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
         //暂时不选择技能

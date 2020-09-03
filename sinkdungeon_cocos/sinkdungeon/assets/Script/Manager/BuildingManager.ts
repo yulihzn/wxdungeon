@@ -333,7 +333,7 @@ export default class BuildingManager extends cc.Component {
             }
         }
         if(isOpen&&!immediately){
-            Logic.mapManager.setRoomClear(Logic.mapManager.currentPos.x, Logic.mapManager.currentPos.y);
+            Logic.mapManager.setRoomClear(Logic.mapManager.rectDungeon.currentPos.x, Logic.mapManager.rectDungeon.currentPos.y);
         }
     }
     private addDirWalls(mapDataStr: string, indexPos: cc.Vec3,levelData:LevelData) {

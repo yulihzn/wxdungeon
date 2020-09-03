@@ -1,8 +1,6 @@
-import EquipmentData from "../Data/EquipmentData";
-import ItemData from "../Data/ItemData";
 import ProfileData from "../Data/ProfileData";
 import TalentData from "../Data/TalentData";
-import BuildingData from "../Data/BuildingData";
+import RectDungeon from "../Rect/RectDungeon";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,8 +54,8 @@ export default class ProfileManager{
             this.hasSaveData = false;
             return;
         }
-        if(!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeon||!data.currentPos
-        ||!data.buildings||!data.equipments||!data.items||!data.talentList){
+        if(!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeons
+        ||!data.talentList){
             this.hasSaveData = false;
             return;
         }
@@ -84,40 +82,11 @@ export default class ProfileManager{
             this.data.talentList.push(td);
         }
         //加载地图数据
-        this.data.rectDungeon = this.data.rectDungeon.buildMapFromSave(data.rectDungeon);
-        //加载当前位置
-        this.data.currentPos = data.currentPos?cc.v3(data.currentPos.x,data.currentPos.y):cc.v3(0,0);
-        //加载建筑
-        for(let key1 in data.buildings){
-           let map = data.buildings[key1];
-           this.data.buildings[key1] = {};
-           for(let key2 in map){
-            let data = new BuildingData();
-            data.valueCopy(map[key2]);
-            this.data.buildings[key1][key2] = data;
-           }
-        }
-         //加载地上装备
-         for(let key in data.equipments){
-            let list = data.equipments[key];
-            this.data.equipments[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let equip = new EquipmentData();
-                equip.valueCopy(list[i]);
-                this.data.equipments[key][i] = equip;
-            }
-         }
-         //加载地上物品
-         for(let key in data.items){
-            let list = data.items[key];
-            this.data.items[key] = new Array();
-            for(let i = 0;i < list.length;i++){
-                let item = new ItemData();
-                item.valueCopy(list[i]);
-                this.data.items[key][i] = item;
-            }
+        for(let key in data.rectDungeons){
+            let rect = new RectDungeon();
+            rect.buildMapFromSave(data.rectDungeons[key]);
+            this.data.rectDungeons[key] = rect;
          }
         console.log('data',this);
-        
     }
 }

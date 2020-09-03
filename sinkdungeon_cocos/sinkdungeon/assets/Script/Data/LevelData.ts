@@ -14,8 +14,7 @@ export default class LevelData {
     needRadomDecorate = false;
     map: string[][] = [];
 
-    constructor(chapter: number, strs: string) {
-        this.chapter = chapter;
+    constructor(strs: string) {
         this.init(strs);
     }
     private init(strs: string) {

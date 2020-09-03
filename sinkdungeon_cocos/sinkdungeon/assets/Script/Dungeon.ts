@@ -405,7 +405,7 @@ export default class Dungeon extends cc.Component {
 
     start() {
         this.scheduleOnce(() => {
-            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.currentPos.x, y: Logic.mapManager.currentPos.y } });
+            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.rectDungeon.currentPos.x, y: Logic.mapManager.rectDungeon.currentPos.y } });
             this.checkRoomClear();
         }, 0.1)
     }
