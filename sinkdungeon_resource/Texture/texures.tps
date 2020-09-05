@@ -304,6 +304,7 @@
             <key type="filename">dungeon/labbg.png</key>
             <key type="filename">dungeon/magmasea.png</key>
             <key type="filename">dungeon/magmasea1.png</key>
+            <key type="filename">dungeon/mist.png</key>
             <key type="filename">dungeon/outertips1.png</key>
             <key type="filename">dungeon/outertips2.png</key>
             <key type="filename">dungeon/outertips3.png</key>
