@@ -54,10 +54,10 @@ export default class CameraControl extends cc.Component {
         let ymin = Dungeon.getPosInMap(cc.v3(0, 1)).y;
         let offset = cc.v3(0, 0);
         if (this.dungeon.player.node.x < xmin) {
-            offset.x = xmin - this.dungeon.player.node.x;
+            offset.x = this.dungeon.player.node.x-xmin;
         }
         if (this.dungeon.player.node.x > xmax) {
-            offset.x = xmax - this.dungeon.player.node.x;
+            offset.x = this.dungeon.player.node.x-xmax;
         }
         if (this.dungeon.player.node.y < ymin) {
             offset.y = ymin - this.dungeon.player.node.y;
