@@ -1124,6 +1124,7 @@
             <key type="filename">building/wall00anim001.png</key>
             <key type="filename">building/wall01anim000.png</key>
             <key type="filename">building/wall01anim001.png</key>
+            <key type="filename">building/wall01anim002.png</key>
             <key type="filename">building/wall02anim000.png</key>
             <key type="filename">building/wall02anim001.png</key>
             <key type="filename">building/wall02anim002.png</key>

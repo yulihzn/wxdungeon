@@ -289,7 +289,8 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isThe(mapDataStr, 'E')) {
             let p = this.addBuilding(this.exitdoorPrefab, indexPos);
             let exitdoor = p.getComponent(ExitDoor);
-            exitdoor.init(parseInt(mapDataStr[1]) == 1,indexPos,parseInt(mapDataStr[1]) > 1);
+            let i = parseInt(mapDataStr[1]);
+            exitdoor.init(indexPos,i == 1||i == 3||i == 5,i > 1,i == 4||i == 5);
             this.exitdoors.push(exitdoor);
         }
     }
@@ -304,7 +305,7 @@ export default class BuildingManager extends cc.Component {
         this.airExits.push(left);
         this.airExits.push(right);
         for (let i = 0; i < this.airExits.length; i++) {
-            this.airExits[i].init(i, i < 2 ? mapData.length : mapData[0].length);
+            this.airExits[i].init(i, i < 2 ? mapData.length+2 : mapData[0].length+2);
         }
     }
     private addDoor(mapDataStrIndex: number, indexPos: cc.Vec3) {

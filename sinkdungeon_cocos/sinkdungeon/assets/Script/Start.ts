@@ -9,8 +9,6 @@ export default class Start extends cc.Component {
 
     @property(cc.Node)
     continueButton: cc.Node = null;
-    @property(WxHelper)
-    wxhelper:WxHelper = null;
     @property(cc.Node)
     cheatButton:cc.Node = null;
     @property(cc.Node)
@@ -24,9 +22,6 @@ export default class Start extends cc.Component {
         }
     }
     startGame(){
-        if(this.wxhelper){
-            this.wxhelper.CloseDialog();
-        }
         // //清除存档
         // Logic.profileManager.clearData();
         // //重置数据
@@ -46,9 +41,7 @@ export default class Start extends cc.Component {
         cc.director.loadScene('achievement');
     }
     continueGame(){
-        if(this.wxhelper){
-            this.wxhelper.CloseDialog();
-        }
+      
         Logic.resetData();
         AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('loading');

@@ -28,21 +28,21 @@ export default class ExitDoor extends Building {
     openSprite:cc.Sprite = null;
     isBackToUpLevel = false;
     needHide = false;
+    isOnlyPos = false;
 
     // LIFE-CYCLE CALLBACKS:
 
-    init(isBackToUpLevel:boolean,indexPos:cc.Vec3,needHide:boolean){
+    init(indexPos:cc.Vec3,isBackToUpLevel:boolean,needHide:boolean,isOnlyPos:boolean){
+        this.isOnlyPos = isOnlyPos;
         this.needHide = needHide;
         this.isBackToUpLevel = isBackToUpLevel;
-        let pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
-            if (Logic.playerData.pos.equals(pos)
-                && Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM) && isBackToUpLevel) {
-                Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y - 1);
+        if(Logic.isFromChapter&&this.isOnlyPos){
+            if(Logic.isBackToUpLevel&&!this.isBackToUpLevel){
+                Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y);
+            }else if(!Logic.isBackToUpLevel&&this.isBackToUpLevel){
+                Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y);
             }
-            if (Logic.playerData.pos.equals(pos)
-                && Logic.mapManager.getCurrentRoomType().isEqual(RoomType.END_ROOM) && !isBackToUpLevel) {
-                Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y - 1);
-            }
+        }
         if(this.needHide){
             this.node.opacity = 0;
         }
@@ -84,7 +84,7 @@ export default class ExitDoor extends Building {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if (player) {
+        if (player&&!this.isOnlyPos) {
             if (this.isOpen) {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });

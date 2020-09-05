@@ -76,6 +76,8 @@ export default class Logic extends cc.Component {
     static dieFrom: FromData = new FromData();
     static isMapReset = false;
     static lastBgmIndex = 0;
+    static isBackToUpLevel = false;
+    static isFromChapter = false;
 
     static profileManager: ProfileManager = new ProfileManager();
 
@@ -104,6 +106,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
+        Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin", Logic.coins);
         cc.sys.localStorage.setItem("oilgold", Logic.oilGolds);
@@ -179,6 +182,8 @@ export default class Logic extends cc.Component {
         }
     }
     static loadingNextRoom(dir: number) {
+        Logic.isBackToUpLevel = false;
+        Logic.isFromChapter = false;
         //保存数据
         Logic.saveData();
         AudioPlayer.play(AudioPlayer.EXIT);
@@ -197,6 +202,8 @@ export default class Logic extends cc.Component {
         }
     }
     static loadingNextLevel(isBack: boolean) {
+        Logic.isBackToUpLevel = isBack;
+        Logic.isFromChapter = true;
         //保存数据
         Logic.saveData();
         Logic.level += isBack ? -1 : 1;
@@ -216,20 +223,17 @@ export default class Logic extends cc.Component {
             return;
         }
         if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1) {
-            Logic.profileManager.data.chapterIndex++;
             Logic.chapterIndex++;
             Logic.level = 0;
         }
         if (Logic.level < 0 && Logic.chapterIndex > 0) {
-            Logic.profileManager.data.chapterIndex--;
             Logic.chapterIndex--;
             let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
             Logic.level = length - 1;
         }
         Logic.mapManager.reset(isBack);
-        Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.changeDungeonSize();
-        Logic.playerData.pos = cc.v3(Math.round(Dungeon.WIDTH_SIZE / 2 - 1), Math.round(Dungeon.HEIGHT_SIZE / 2 - 1));
+        Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
         //暂时不选择技能
         Logic.isPickedTalent = true;
         Logic.lastBgmIndex = -1;

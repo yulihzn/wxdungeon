@@ -162,7 +162,7 @@ export default class Player extends Actor {
         this.talentMagic.init();
         this.talentMagic.loadList(Logic.talentList);
         // this.talentMagic.addTalent(Talent.MAGIC_09);
-        this.playerAnim(PlayerAvatar.STATE_WALK, this.currentDir);
+        this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());

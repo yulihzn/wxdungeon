@@ -23,6 +23,7 @@ export default class RectDungeon {
     public map: RectRoom[][];
     //当前房间下标 默认1-1
     currentPos: cc.Vec3 = cc.v3(1, 1);
+    
     public buildings: { [key: string]: { [key: string]: BuildingData } } = {};//根据下标保存建筑信息
     //根据下标+uuid保存地上的装备
     equipments: { [key: string]: EquipmentData[] } = {};
@@ -32,7 +33,7 @@ export default class RectDungeon {
     public endIndex: cc.Vec2 = cc.v2(-1, -1);
 
     buildMapFromSave(dungeon: RectDungeon): RectDungeon {
-        this.id = this.id;
+        this.id = dungeon.id;
         this.width = dungeon.width;
         this.height = dungeon.height;
         this.map = new Array();

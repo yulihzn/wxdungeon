@@ -61,8 +61,9 @@ export default class DungeonStyleManager extends cc.Component {
             return;
         }
         this.addFloor();
-        this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
-        this.runBackgroundAnim(this.styleData.background);
+        // this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
+        // this.runBackgroundAnim(this.styleData.background);
+        this.background01.getComponent(cc.Sprite).spriteFrame = null;
         this.addDecorateBg();
     }
 

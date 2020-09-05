@@ -44,30 +44,23 @@ export default class MapManager {
             Logic.isMapReset = false;
             //加载地图
             Logic.mapManager.reset();
-            //加载存档地图数据
-            Logic.mapManager.loadDataFromSave();
         }
         cc.log('maps loaded');
     }
     
-    loadDataFromSave() {
-        if (!Logic.profileManager.hasSaveData) {
-            return;
-        }
-        this.rectDungeon.buildMapFromSave(Logic.profileManager.data.rectDungeons[`${Logic.chapterIndex}${Logic.level}`]);
-        this.rectDungeon.changeRoomsIsFound(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y);
-        cc.log('load');
-        cc.log(this.rectDungeon.getDisPlay());
-    }
     reset(isBack?:boolean) {
         let data = Logic.worldLoader.getCurrentLevelData();
         //地图重新生成
         this.rectDungeon = new RectDungeon();
-        this.rectDungeon.buildMap(data);
+        if(Logic.profileManager.data&&Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]){
+            this.rectDungeon.buildMapFromSave(Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]);
+        }else{
+            this.rectDungeon.buildMap(data);
+            //设置当前位置为开始房间位置
+            let index = isBack?this.rectDungeon.endIndex:this.rectDungeon.startIndex;
+            this.rectDungeon.currentPos = cc.v3(index.x, index.y);
+        }
         cc.log(this.rectDungeon.getDisPlay());
-        //设置当前位置为开始房间位置
-        let index = isBack?this.rectDungeon.endIndex:this.rectDungeon.startIndex;
-        this.rectDungeon.currentPos = cc.v3(index.x, index.y);
         //修改当前房间和四周房间状态为发现
         this.rectDungeon.changeRoomsIsFound(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y);
     }
