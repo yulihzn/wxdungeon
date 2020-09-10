@@ -50,22 +50,22 @@ export default class CameraControl extends cc.Component {
         }
         let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 5, 0)).x;
         let xmin = Dungeon.getPosInMap(cc.v3(4, 0)).x;
-        let ymax = Dungeon.getPosInMap(cc.v3(0, Dungeon.HEIGHT_SIZE - 2)).y;
-        let ymin = Dungeon.getPosInMap(cc.v3(0, 1)).y;
+        let ymax = Dungeon.getPosInMap(cc.v3(0, Dungeon.HEIGHT_SIZE - 3)).y;
+        let ymin = Dungeon.getPosInMap(cc.v3(0, 2)).y;
         let offset = cc.v3(0, 0);
         if (this.dungeon.player.node.x < xmin) {
-            offset.x = this.dungeon.player.node.x-xmin;
+            offset.x = xmin - this.dungeon.player.node.x;
         }
         if (this.dungeon.player.node.x > xmax) {
-            offset.x = this.dungeon.player.node.x-xmax;
+            offset.x = xmax - this.dungeon.player.node.x;
         }
         if (this.dungeon.player.node.y < ymin) {
             offset.y = ymin - this.dungeon.player.node.y;
         }
         if (this.dungeon.player.node.y > ymax) {
-            offset.x = ymax - this.dungeon.player.node.y;
+            offset.y = ymax - this.dungeon.player.node.y;
         }
-        let targetPos = this.dungeon.player.node.convertToWorldSpaceAR(offset);
+        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.player.node.position.clone().addSelf(offset));
 
         this.node.position = this.lerp(this.node.position, this.node.parent.convertToNodeSpaceAR(targetPos), 0.1);
         if (this.isShaking) {
