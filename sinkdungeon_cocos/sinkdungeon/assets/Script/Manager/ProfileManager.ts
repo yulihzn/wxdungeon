@@ -30,7 +30,7 @@ export default class ProfileManager{
         this.loadProfile();
     }
    
-    getSaveData():ProfileData{
+    private getSaveData():ProfileData{
         let s = cc.sys.localStorage.getItem('data');
         if(s){
             return JSON.parse(s);
@@ -44,7 +44,7 @@ export default class ProfileManager{
     clearData(){
         cc.sys.localStorage.setItem('data','');
         this.hasSaveData = false;
-        this.data.clearData();
+        this.data = new ProfileData();
         console.log('clear data');
     }
     

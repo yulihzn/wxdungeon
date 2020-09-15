@@ -7,6 +7,7 @@ import Random from "../Utils/Random";
 import MonsterRandomAttr from "./MonsterRandomAttr";
 import RoomType from "../Rect/RoomType";
 import Boss from "../Boss/Boss";
+import Random4Save from "../Utils/Random4Save";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -393,7 +394,8 @@ export default class MonsterManager extends cc.Component {
     }
     addRandomMonsters(dungeon: Dungeon) {
         let arr = new Array();
-        let num = Random.getRandomNum(1, 3);
+        let rand4save = new Random4Save(Logic.mapManager.getCurrentRoom().seed);
+        let num = rand4save.getRandomNum(1, 3);
         let up = 0;
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {
             up = 2;
@@ -404,28 +406,28 @@ export default class MonsterManager extends cc.Component {
         switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
                 , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
-                num = Random.getRandomNum(1, 3);
+                num = rand4save.getRandomNum(1, 3);
                 break;
             case Logic.CHAPTER01: arr = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
                 , MonsterManager.MONSTER_STRONGSAILOR
                 , MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
-                num = Random.getRandomNum(2, 3); break;
+                num = rand4save.getRandomNum(2, 3); break;
             case Logic.CHAPTER02: arr = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
                 , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO];
-                num = Random.getRandomNum(2, 4); break;
+                num = rand4save.getRandomNum(2, 4); break;
             case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
                 , MonsterManager.MONSTER_SANDSTATUE];
-                num = Random.getRandomNum(2, 5); break;
+                num = rand4save.getRandomNum(2, 5); break;
             case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
                 , MonsterManager.MONSTER_SPIDER];
-                num = Random.getRandomNum(3, 6); break;
+                num = rand4save.getRandomNum(3, 6); break;
             case Logic.CHAPTER05: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
                 , MonsterManager.MONSTER_SPIDER];
-                num = Random.getRandomNum(3, 6); break;
+                num = rand4save.getRandomNum(3, 6); break;
         }
         for (let i = 0; i <= num + up; i++) {
-            let pos = dungeon.floorIndexmap[Random.getRandomNum(0, dungeon.floorIndexmap.length - 1)];
-            dungeon.addMonsterFromData(arr[Random.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
+            let pos = dungeon.floorIndexmap[rand4save.getRandomNum(0, dungeon.floorIndexmap.length - 1)];
+            dungeon.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
         }
     }
 

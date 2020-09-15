@@ -3,6 +3,7 @@ import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
 import Random from "./Utils/Random";
 import Achievements from "./Achievement";
+import ProfileManager from "./Manager/ProfileManager";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -68,6 +69,7 @@ export default class GameOver extends cc.Component {
         }
     }
     retry() {
+        Logic.profileManager=new ProfileManager();
         Logic.resetData();
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
         cc.director.loadScene('loading');
@@ -77,5 +79,10 @@ export default class GameOver extends cc.Component {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
         cc.director.loadScene('start');
     }
-    
+    resetWorld(){
+        Logic.time = '00:00:00';
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        cc.director.loadScene('start');
+        Logic.profileManager.clearData();
+    }
 }

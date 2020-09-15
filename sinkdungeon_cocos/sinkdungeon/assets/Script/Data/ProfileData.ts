@@ -26,14 +26,4 @@ export default class ProfileData {
     playerItemList:ItemData[] = new Array();
     talentList:TalentData[] = new Array();
     level = 0;
-    clearData(){
-        cc.sys.localStorage.setItem('profileData','');
-        this.chapterIndex = 0;
-        this.playerData = new PlayerData();
-        this.talentList = new Array();
-        this.playerEquipList = new Array();
-        this.playerItemList = new Array();
-        this.rectDungeons = {};
-        this.level = 0;
-    }
 }

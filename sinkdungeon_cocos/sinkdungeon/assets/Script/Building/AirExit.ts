@@ -70,8 +70,10 @@ export default class AirExit extends Building {
         let player = other.node.getComponent(Player);
         if (player) {
             if (this.status == AirExit.STATUS_OPEN) {
-                Logic.playerData = player.data.clone();
-                Logic.loadingNextRoom(this.dir);
+                this.scheduleOnce(()=>{
+                    Logic.playerData = player.data.clone();
+                    Logic.loadingNextRoom(this.dir);
+                },0.1)
             }
         }
     }

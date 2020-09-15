@@ -627,9 +627,9 @@ export default class Player extends Actor {
             health.x = health.y;
         }
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
-        Logic.playerData.currentHealth = health.x;
+        this.data.currentHealth = health.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false);
-        if (Logic.playerData.currentHealth <= 0) {
+        if (this.data.currentHealth <= 0) {
             this.killed(from);
         }
         let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_PARRY;
@@ -679,7 +679,6 @@ export default class Player extends Actor {
         this.weaponLeft.node.opacity = 0;
         this.weaponRight.node.opacity = 0;
         this.scheduleOnce(() => {
-            Logic.profileManager.clearData();
             Logic.dieFrom.valueCopy(from);
             cc.audioEngine.stopMusic();
             cc.director.loadScene('gameover');
