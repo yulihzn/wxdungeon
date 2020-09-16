@@ -107,7 +107,7 @@ export default class MonsterData{
         this.boxType = data.boxType?data.boxType:0;
         this.attackType = data.attackType?data.attackType:0;
         this.isRecovery = data.isRecovery?data.isRecovery:0;
-        this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff'
+        this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff';
     }
     public clone():MonsterData{
         let e = new MonsterData();

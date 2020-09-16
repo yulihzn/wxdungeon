@@ -7,6 +7,7 @@ import ItemData from "../Data/ItemData";
 import Random4Save from "../Utils/Random4Save";
 import RoomType from "../Rect/RoomType";
 import BuildingData from "../Data/BuildingData";
+import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -48,8 +49,11 @@ export default class MapManager {
         cc.log('maps loaded');
     }
     
-    reset(isBack?:boolean) {
+    reset(isBack?:boolean,isGoReal?:boolean) {
         let data = Logic.worldLoader.getCurrentLevelData();
+        if(isGoReal){
+            data = Logic.worldLoader.getLevelData(99,Logic.level);
+        }
         //地图重新生成
         this.rectDungeon = new RectDungeon();
         if(Logic.profileManager.data&&Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]){
@@ -90,7 +94,10 @@ export default class MapManager {
     }
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {
-        return this.rectDungeon.map[this.rectDungeon.currentPos.x][this.rectDungeon.currentPos.y];
+        if(this.rectDungeon&&this.rectDungeon.map){
+            return this.rectDungeon.map[this.rectDungeon.currentPos.x][this.rectDungeon.currentPos.y];
+        }
+        return null;
     }
     /** 获取当前房间指定建筑*/
     public getCurrentMapBuilding(defaultPos:cc.Vec3): BuildingData {
@@ -142,7 +149,13 @@ export default class MapManager {
     public getCurrentRoomType(): RoomType {
         return this.getCurrentRoom().roomType;
     }
-    
+    public getCurrentRoomRandom4Save():Random4Save{
+        let room = this.getCurrentRoom();
+        if(room){
+            return new Random4Save(this.getCurrentRoom().seed);
+        }
+        return new Random4Save(0);
+    }
    
     /**添加随机元素 */
     private addGenerateThings(mapData: MapData, roomType: RoomType, seed: number,needDecorate:boolean): MapData {

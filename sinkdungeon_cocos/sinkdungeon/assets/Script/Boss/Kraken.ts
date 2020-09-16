@@ -1,5 +1,3 @@
-import HealthBar from "../HealthBar";
-import MonsterData from "../Data/MonsterData";
 import Shooter from "../Shooter";
 import { EventHelper } from "../EventHelper";
 import KrakenSwingHand from "./KrakenSwingHand";
@@ -7,12 +5,10 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
 import Boss from "./Boss";
-import StatusManager from "../Manager/StatusManager";
 import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
-import Random from "../Utils/Random";
 import IndexZ from "../Utils/IndexZ";
 import Item from "../Item/Item";
 
@@ -117,12 +113,13 @@ export default class Kraken extends Boss {
     }
     getLoot(){
         if(this.dungeon){
+            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
             let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
             let pos = Dungeon.getPosInMap(p);
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } });
-            cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: pos, count: Logic.getRandomNum(1, 29) } });
+            cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: pos, count: rand4save.getRandomNum(1, 29) } });
             cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: pos, res:Item.HEART } });
-            this.dungeon.addEquipment(Logic.getRandomEquipType(), p,null,3);
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), p,null,3);
         }
     }
     showBoss() {

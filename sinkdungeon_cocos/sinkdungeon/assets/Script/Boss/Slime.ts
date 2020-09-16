@@ -221,9 +221,10 @@ export default class Slime extends Boss {
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         if (this.dungeon) {
             if (this.slimeType == 0) {
+                let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
                 Achievements.addMonsterKillAchievement(this.data.resName);
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
-                this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 3);
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 3);
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 5 } });

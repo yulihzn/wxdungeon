@@ -1,5 +1,5 @@
-import Random from "../Utils/Random";
 import MonsterData from "../Data/MonsterData";
+import Random4Save from "../Utils/Random4Save";
 
 export default class MonsterRandomAttr {
     public static readonly ATTR_01 = 'attr_01';//命悬一线：怪物血量为1防御+50
@@ -42,10 +42,10 @@ export default class MonsterRandomAttr {
         let s = num>9?`${num}`:`0${num}`;
         this.attrmap[`attr_${s}`] = 0;
     }
-    addRandomAttrs(count:number){
+    addRandomAttrs(count:number,rand4save:Random4Save){
         this.attrmap = {}
         for(let i = 0;i <count;i++){
-            this.addAttr(Random.getRandomNum(1,23));
+            this.addAttr(rand4save.getRandomNum(1,23));
         }
     }
 

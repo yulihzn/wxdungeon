@@ -1,6 +1,5 @@
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
-import Random from "../Utils/Random";
 import FootBoard from "../Building/FootBoard";
 import IndexZ from "../Utils/IndexZ";
 import Saw from "../Building/Saw";
@@ -18,6 +17,7 @@ import Door from "../Building/Door";
 import Wall from "../Building/Wall";
 import AirExit from "../Building/AirExit";
 import LevelData from "../Data/LevelData";
+import Portal from "../Building/Portal";
 
 
 // Learn TypeScript:
@@ -94,8 +94,11 @@ export default class BuildingManager extends cc.Component {
     airTranspotModel: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoors: ExitDoor[] = new Array();
+    portals:Portal[] = new Array();
     doors: Door[] = new Array();
     airExits: AirExit[] = new Array();
+    coastColliderList = ['128,128,0,0','128,64,0,32','128,128,0,0','64,128,-32,0','64,128,32,0','128,128,0,0'
+        ,'128,64,0,-32','128,128,0,0','64,64,-32,32','64,64,32,-32','64,64,-32,-32','64,64,32,32'];
 
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
@@ -113,28 +116,31 @@ export default class BuildingManager extends cc.Component {
             //生成墙
             // this.addWalls(mapData, i, j);
             this.addDirWalls(mapDataStr, indexPos,levelData);
-        } else if (mapDataStr == "--") {
+        } else if (this.isThe(mapDataStr, '-')) {
             let dn = this.addBuilding(this.darkness, indexPos);
             dn.zIndex = IndexZ.WALL;
         } else if (this.isThe(mapDataStr, '~')) {
-            if (parseInt(mapDataStr[1])>=0&&parseInt(mapDataStr[1])<=9|| mapDataStr == '~a'||mapDataStr == '~b') {
-                let dn = this.addBuilding(this.coast, indexPos);
+            let pint = parseInt(mapDataStr[1]);
+            if (pint>=0&&pint<=9|| mapDataStr == '~a'||mapDataStr == '~b') {
+                let co = this.addBuilding(this.coast, indexPos);
+                let pbc = co.getComponent(cc.PhysicsBoxCollider);
+                let fint = pint;
                 if(mapDataStr == '~a'){
-                    dn.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`coast010`];
+                    fint = 10;
                 }else if(mapDataStr == '~b'){
-                    dn.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`coast011`];
-                }else{
-                    dn.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`coast00${parseInt(mapDataStr[1])}`];
+                    fint = 11;
                 }
-                dn.zIndex = IndexZ.WALL;
+                co.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`coast00${fint}`];
+                let arr = this.coastColliderList[fint].split(',');
+                pbc.size = cc.size(parseInt(arr[0]),parseInt(arr[1]));
+                pbc.offset = cc.v2(parseInt(arr[2]),parseInt(arr[3]));
+                pbc.apply();
+                co.zIndex = IndexZ.WALL;
             }else{
                 let dn = this.addBuilding(this.water, indexPos);
                 dn.zIndex = IndexZ.WALL;
             }
             
-        } else if (mapDataStr == "~0") {
-            let dn = this.addBuilding(this.coast, indexPos);
-            dn.zIndex = IndexZ.WALL;
         } else if (mapDataStr == 'T0') {
             //生成陷阱
             this.addBuilding(this.trap, indexPos);
@@ -208,7 +214,8 @@ export default class BuildingManager extends cc.Component {
             let chest = this.addBuilding(this.chest, indexPos);
             let c = chest.getComponent(Chest)
             c.seDefaultPos(indexPos);
-            let rand = Random.rand();
+            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+            let rand = rand4save.rand();
             let quality = 1;
             if (rand > 0.5 && rand < 0.7) {
                 quality = 2;
@@ -264,7 +271,8 @@ export default class BuildingManager extends cc.Component {
             let table = this.addBuilding(this.shoptable, indexPos);
             let ta = table.getComponent(ShopTable);
             ta.setDefaultPos(indexPos);
-            ta.data.shopType = Random.rand() > 0.1 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+            ta.data.shopType = rand4save.rand() > 0.1 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
             let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos);
             if (saveTable) {
                 if (saveTable.equipdata) {
@@ -292,6 +300,13 @@ export default class BuildingManager extends cc.Component {
             let i = parseInt(mapDataStr[1]);
             exitdoor.init(indexPos,i == 1||i == 3||i == 5,i > 1,i == 4||i == 5);
             this.exitdoors.push(exitdoor);
+        } else if (this.isThe(mapDataStr, 'W')) {
+            //生成传送门
+            let p = this.addBuilding(this.portal, indexPos);
+            let i = parseInt(mapDataStr[1]);
+            let portal = p.getComponent(Portal);
+            portal.isBackDream = i>0;
+            this.portals.push(portal);
         }
     }
     /**添加空气墙 */
@@ -330,6 +345,11 @@ export default class BuildingManager extends cc.Component {
         }
         if (this.exitdoors.length>0) {
             for(let ed of this.exitdoors){
+                isOpen?ed.openGate():ed.closeGate();
+            }
+        }
+        if (this.portals.length>0) {
+            for(let ed of this.portals){
                 isOpen?ed.openGate():ed.closeGate();
             }
         }

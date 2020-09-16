@@ -80,6 +80,7 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
+                        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
                         // dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, this.data.pos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.data.pos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.REMOTE_SHURIKEN, this.data.pos, null, this.data.quality);
@@ -90,7 +91,7 @@ export default class Chest extends Building {
                             // dungeon.addEquipment(EquipmentManager.WEAPON_JUNGLEFORK, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_HUGEBLADE, this.data.pos,null,this.data.quality);
                             // dungeon.addEquipment(EquipmentManager.WEAPON_OLDROOTDAGGER, this.data.pos,null,this.data.quality);
-                        dungeon.addEquipment(Logic.getRandomEquipType(), this.data.defaultPos, null, this.data.quality);
+                        dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.data.defaultPos, null, this.data.quality);
                     }
                 }
             }));

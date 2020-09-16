@@ -3,7 +3,6 @@ import RectDungeon from "../Rect/RectDungeon";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
 import TalentData from "./TalentData";
-import BuildingData from "./BuildingData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -18,12 +17,15 @@ import BuildingData from "./BuildingData";
 export default class ProfileData {
     //地图数据管理类
     rectDungeons: { [key: string]: RectDungeon }  = {};
-    chapterIndex:number = 0;
+    chapterIndex:number = 0;//当前章节
     playerData:PlayerData = new PlayerData();
     //玩家装备列表
     playerEquipList:EquipmentData[] = new Array();
     //玩家物品列表
     playerItemList:ItemData[] = new Array();
     talentList:TalentData[] = new Array();
-    level = 0;
+    level = 0;//当前层级
+    realLevel = 0;//真实世界层级
+    lastLevel = 0;//上次层级
+    lastChapterIndex = 0;//上次章节
 }

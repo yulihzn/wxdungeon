@@ -5,7 +5,6 @@ import Monster from "./Monster";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
-import Random from "./Utils/Random";
 import Boss from "./Boss/Boss";
 import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";

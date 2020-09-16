@@ -9,6 +9,7 @@ import RoomType from "../Rect/RoomType";
  */
 export default class WorldLoader {
     private worldMap: ChapterData[] = [];
+    private realWorldMap:ChapterData = new ChapterData(99);
     //读取文件的数据
     private allfileRooms00: { [key: string]: MapData[] } = {};
     private allfileRooms01: { [key: string]: MapData[] } = {};
@@ -24,43 +25,45 @@ export default class WorldLoader {
     isloaded03: boolean = false;
     isloaded04: boolean = false;
     isloaded05: boolean = false;
-    constructor(){
+    isloaded99: boolean = false;
+    constructor() {
         this.isloaded = false;
     }
     loadWorld() {
         //判断是否加载过地图资源
-        if(this.worldMap.length>0){
+        if (this.worldMap.length > 0) {
             this.isloaded = true;
             return;
         }
         this.worldMap = new Array();
-        for(let i = 0;i<6;i++){
+        for (let i = 0; i < 6; i++) {
             let chapter = new ChapterData(i);
             this.loadChapterLevel(chapter);
             this.worldMap.push(chapter);
         }
+        this.loadChapterLevel(this.realWorldMap);
     }
-    
-    private formatMapArr(maptemp:string[][]):string[][]{
-        let map:string[][] = new Array();
-        for (let i = 0; i < maptemp[0].length; i++) {
-            map[i] = new Array();
-            for (let j = 0; j < maptemp.length; j++) {
-                map[i][j] = maptemp[maptemp.length-1-j][i];
-            }
-        }
-        return map;
-    }
-  
-    private loadMap() {
-        //加载五个章节的地图资源
-        this.loadChapterMap(0, this.allfileRooms00);
-        this.loadChapterMap(1, this.allfileRooms01);
-        this.loadChapterMap(2, this.allfileRooms02);
-        this.loadChapterMap(3, this.allfileRooms03);
-        this.loadChapterMap(4, this.allfileRooms04);
-        this.loadChapterMap(5, this.allfileRooms05);
-    }
+
+    // private formatMapArr(maptemp:string[][]):string[][]{
+    //     let map:string[][] = new Array();
+    //     for (let i = 0; i < maptemp[0].length; i++) {
+    //         map[i] = new Array();
+    //         for (let j = 0; j < maptemp.length; j++) {
+    //             map[i][j] = maptemp[maptemp.length-1-j][i];
+    //         }
+    //     }
+    //     return map;
+    // }
+
+    // private loadMap() {
+    //     //加载五个章节的地图资源
+    //     this.loadChapterMap(0, this.allfileRooms00);
+    //     this.loadChapterMap(1, this.allfileRooms01);
+    //     this.loadChapterMap(2, this.allfileRooms02);
+    //     this.loadChapterMap(3, this.allfileRooms03);
+    //     this.loadChapterMap(4, this.allfileRooms04);
+    //     this.loadChapterMap(5, this.allfileRooms05);
+    // }
     getAllFileRooms(): { [key: string]: MapData[] } {
         let allfileRooms = this.allfileRooms00;
         switch (Logic.chapterIndex) {
@@ -73,19 +76,19 @@ export default class WorldLoader {
         }
         return allfileRooms;
     }
-    private loadChapterLevel(data:ChapterData){
-        cc.resources.load(`Data/world/world0${data.chapter}`, (err: Error, resource:cc.TextAsset) => {
+    private loadChapterLevel(data: ChapterData) {
+        cc.resources.load(`Data/world/world0${data.chapter}`, (err: Error, resource: cc.TextAsset) => {
             if (err) {
                 cc.error(err);
             } else {
                 let strs: string = resource.text;
                 //以====为标签分割字符串
                 let arr = strs.split('====');
-                for(let str of arr){
+                for (let str of arr) {
                     let level = new LevelData(str);
                     data.list.push(level);
                 }
-                
+
                 switch (data.chapter) {
                     case 0: this.isloaded00 = true; break;
                     case 1: this.isloaded01 = true; break;
@@ -93,75 +96,80 @@ export default class WorldLoader {
                     case 3: this.isloaded03 = true; break;
                     case 4: this.isloaded04 = true; break;
                     case 5: this.isloaded05 = true; break;
+                    case 99: this.isloaded99 = true; break;
                 }
                 //资源全部加载完成时，重置房间数据，加载存档
-                if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04) {
+                if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04 && this.isloaded05 && this.isloaded99) {
                     this.isloaded = true;
                     cc.log('world loaded');
                 }
             }
         })
     }
-    private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
-        cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource:cc.TextAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                let strs: string = resource.text;
-                //以room为标签分割字符串
-                let arr = strs.split('room');
-                let index = 0;
-                //循环获取各个类型room的地图数组
-                for (let i = 0; i < arr.length; i++) {
-                    let str = arr[i];
-                    let temparr = null;
-                    if (str) {
-                        //获取=号以后的该room类型的地图数组（以$分隔）
-                        str = str.substring(str.indexOf('=') + 1, str.length - 3);
-                        temparr = str.split('$');
-                    }
-                    if (temparr) {
-                        let a: MapData[] = new Array();
-                        for (let j = 0; j < temparr.length; j++) {
-                            let tempstr = temparr[j];
-                            a.push(new MapData(tempstr));
-                        }
-                        //按顺序排列的room类型名来保存该类型的地图数组
-                        allfileRooms[RoomType.getNameById(index)] = a;
-                        index++;
-                    }
-                }
-                switch (chapterIndex) {
-                    case 0: this.isloaded00 = true; break;
-                    case 1: this.isloaded01 = true; break;
-                    case 2: this.isloaded02 = true; break;
-                    case 3: this.isloaded03 = true; break;
-                    case 4: this.isloaded04 = true; break;
-                }
-                //资源全部加载完成时，重置房间数据，加载存档
-                if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04) {
-                    this.isloaded = true;
-                    cc.log('world loaded');
-                }
-            }
-        })
-    }
-    getChapterLength():number{
+    // private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
+    //     cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource: cc.TextAsset) => {
+    //         if (err) {
+    //             cc.error(err);
+    //         } else {
+    //             let strs: string = resource.text;
+    //             //以room为标签分割字符串
+    //             let arr = strs.split('room');
+    //             let index = 0;
+    //             //循环获取各个类型room的地图数组
+    //             for (let i = 0; i < arr.length; i++) {
+    //                 let str = arr[i];
+    //                 let temparr = null;
+    //                 if (str) {
+    //                     //获取=号以后的该room类型的地图数组（以$分隔）
+    //                     str = str.substring(str.indexOf('=') + 1, str.length - 3);
+    //                     temparr = str.split('$');
+    //                 }
+    //                 if (temparr) {
+    //                     let a: MapData[] = new Array();
+    //                     for (let j = 0; j < temparr.length; j++) {
+    //                         let tempstr = temparr[j];
+    //                         a.push(new MapData(tempstr));
+    //                     }
+    //                     //按顺序排列的room类型名来保存该类型的地图数组
+    //                     allfileRooms[RoomType.getNameById(index)] = a;
+    //                     index++;
+    //                 }
+    //             }
+    //             switch (chapterIndex) {
+    //                 case 0: this.isloaded00 = true; break;
+    //                 case 1: this.isloaded01 = true; break;
+    //                 case 2: this.isloaded02 = true; break;
+    //                 case 3: this.isloaded03 = true; break;
+    //                 case 4: this.isloaded04 = true; break;
+    //             }
+    //             //资源全部加载完成时，重置房间数据，加载存档
+    //             if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04) {
+    //                 this.isloaded = true;
+    //                 cc.log('world loaded');
+    //             }
+    //         }
+    //     })
+    // }
+    getChapterLength(): number {
         return this.worldMap.length;
     }
-    getChapterData(chapterIndex:number):ChapterData{
+    getChapterData(chapterIndex: number): ChapterData {
+        if(chapterIndex >= 99){
+            return this.realWorldMap;
+        }
         return this.worldMap[chapterIndex];
     }
-    getLevelList(chapterIndex:number):LevelData[]{
+   
+    getLevelList(chapterIndex: number): LevelData[] {
         return this.getChapterData(chapterIndex).list;
     }
-    getLevelData(chapterIndex:number,levelIndex:number):LevelData{
+    getLevelData(chapterIndex: number, levelIndex: number): LevelData {
         let levelList = this.getLevelList(chapterIndex);
         levelList[levelIndex].chapter = chapterIndex;
         return levelList[levelIndex];
     }
-    getCurrentLevelData(){
-        return this.getLevelData(Logic.chapterIndex,Logic.level);
+    getCurrentLevelData() {
+        return this.getLevelData(Logic.chapterIndex, Logic.level);
     }
-    
+
 }

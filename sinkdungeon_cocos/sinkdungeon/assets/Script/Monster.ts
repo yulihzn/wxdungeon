@@ -28,7 +28,6 @@ import AudioPlayer from './Utils/AudioPlayer';
 import SpecialManager from './Manager/SpecialManager';
 import FromData from './Data/FromData';
 import MonsterDangerBox from './Actor/MonsterDangerBox';
-import Boom from './Item/Boom';
 import IndexZ from './Utils/IndexZ';
 
 @ccclass
@@ -615,11 +614,12 @@ export default class Monster extends Actor {
         this.sprite.stopAllActions();
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
-        let rand = Random.rand();
+        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+        let rand = rand4save.rand();
         if (this.dungeon) {
             if (rand < 0.8) {
-                cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
-                cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 29) } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
             } else if (rand >= 0.8 && rand < 0.825) {
                 this.dungeon.addItem(this.node.position.clone(), Item.HEART);
             } else if (rand >= 0.825 && rand < 0.85) {
@@ -633,7 +633,7 @@ export default class Monster extends Actor {
             } else if (rand >= 0.925 && rand < 0.95) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_INVISIBLE);
             } else if (rand >= 0.95 && rand < 1) {
-                this.dungeon.addEquipment(Logic.getRandomEquipType(), this.pos, null, 1);
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
             }
         }
         Achievements.addMonsterKillAchievement(this.data.resName);

@@ -15,6 +15,7 @@ import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
 import WorldLoader from "./Map/WorldLoader";
 import ProfessionData from "./Data/ProfessionData";
+import Random4Save from "./Utils/Random4Save";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,7 +56,9 @@ export default class Logic extends cc.Component {
 
     static level = 0;
     static chapterIndex = 0;
-
+    static realLevel = 0;//真实世界层级
+    static lastLevel = 0;//上次层级
+    static lastChapterIndex = 0;//上次章节
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
 
@@ -76,8 +79,8 @@ export default class Logic extends cc.Component {
     static dieFrom: FromData = new FromData();
     static isMapReset = false;
     static lastBgmIndex = 0;
-    static isBackToUpLevel = false;
-    static isFromChapter = false;
+    static isBackToUpLevel = false;//是否返回上一章
+    static isFromChapter = false;//是否是章节更换
 
     static profileManager: ProfileManager = new ProfileManager();
 
@@ -106,6 +109,9 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
+        Logic.profileManager.data.realLevel = Logic.realLevel;
+        Logic.profileManager.data.lastLevel = Logic.lastLevel;
+        Logic.profileManager.data.lastChapterIndex = Logic.lastChapterIndex;
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin", Logic.coins);
@@ -116,9 +122,12 @@ export default class Logic extends cc.Component {
         Logic.time = '00:00:00';
         //加载章节名
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex;
-        Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
         //加载关卡等级
+        Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
         Logic.level = Logic.profileManager.data.level;
+        Logic.realLevel = Logic.profileManager.data.realLevel;
+        Logic.lastLevel = Logic.profileManager.data.lastLevel;
+        Logic.lastChapterIndex = Logic.profileManager.data.lastChapterIndex;
         //加载玩家数据
         Logic.playerData = Logic.profileManager.data.playerData.clone();
         //加载装备
@@ -201,12 +210,24 @@ export default class Logic extends cc.Component {
 
         }
     }
-    static loadingNextLevel(isBack: boolean) {
+    static loadingNextLevel(isBack: boolean,isGoReal:boolean,isBackDream:boolean) {
         Logic.isBackToUpLevel = isBack;
         Logic.isFromChapter = true;
         //保存数据
         Logic.saveData();
-        Logic.level += isBack ? -1 : 1;
+        if(!isGoReal&&!isBackDream){
+            Logic.level += isBack ? -1 : 1;
+        }
+        if(isGoReal){
+            Logic.lastLevel = Logic.level;
+            Logic.lastChapterIndex = Logic.chapterIndex;
+            Logic.level = Logic.realLevel;
+        }
+        if(isBackDream){
+            Logic.realLevel = Logic.level;
+            Logic.level = Logic.lastLevel;
+            Logic.chapterIndex = Logic.lastChapterIndex;
+        }
         let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
         let chapterLength = Logic.worldLoader.getChapterLength();
         //如果关卡为负数level为0直接返回
@@ -222,16 +243,17 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('gamefinish');
             return;
         }
-        if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1) {
+        if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1&&!isGoReal&&!isBackDream) {
             Logic.chapterIndex++;
             Logic.level = 0;
         }
-        if (Logic.level < 0 && Logic.chapterIndex > 0) {
+        if (Logic.level < 0 && Logic.chapterIndex > 0&&!isGoReal&&!isBackDream) {
             Logic.chapterIndex--;
             let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
             Logic.level = length - 1;
         }
-        Logic.mapManager.reset(isBack);
+       
+        Logic.mapManager.reset(isBack,isGoReal);
         Logic.changeDungeonSize();
         Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
         //暂时不选择技能
@@ -261,11 +283,11 @@ export default class Logic extends cc.Component {
         return Number(Random.rand().toString().substr(3, 16) + Date.now()).toString(36);
     }
     /**随机装备名字 */
-    static getRandomEquipType(): string {
-        return Logic.equipmentNameList[Random.getRandomNum(1, Logic.equipmentNameList.length - 1)];
+    static getRandomEquipType(rand4save:Random4Save): string {
+        return Logic.equipmentNameList[rand4save.getRandomNum(1, Logic.equipmentNameList.length - 1)];
     }
     /**随机可拾取物品 */
-    static getRandomItemType(): string {
-        return Logic.itemNameList[Random.getRandomNum(1, Logic.itemNameList.length - 1)];
+    static getRandomItemType(rand4save:Random4Save): string {
+        return Logic.itemNameList[rand4save.getRandomNum(1, Logic.itemNameList.length - 1)];
     }
 }

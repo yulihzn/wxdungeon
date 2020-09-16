@@ -2,11 +2,9 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Building from "./Building";
 import { EventHelper } from "../EventHelper";
-import Random from "../Utils/Random";
 import AudioPlayer from "../Utils/AudioPlayer";
 import Item from "../Item/Item";
 import IndexZ from "../Utils/IndexZ";
-import BuildingData from "../Data/BuildingData";
 import DamageData from "../Data/DamageData";
 
 // Learn TypeScript:
@@ -97,11 +95,12 @@ export default class Decorate extends Building {
                     collider.sensor = true;
                     collider.apply();
                 }
-                let rand = Random.rand();
+                let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+                let rand = rand4save.rand();
                 if (rand > 0.7 && rand < 0.8) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 3) } });
-                    if(Logic.getHalfChance()){
-                        cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: Logic.getRandomNum(1, 10) } });
+                    cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 3) } });
+                    if(rand4save.getHalfChance()){
+                        cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                     }
                 } else if (rand >= 0.8 && rand < 0.825) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });

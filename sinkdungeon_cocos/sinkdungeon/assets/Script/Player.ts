@@ -143,6 +143,9 @@ export default class Player extends Actor {
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.BOSS_ROOM)) {
             Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
         }
+        if(Logic.playerData.pos.y==Dungeon.HEIGHT_SIZE-1){
+            Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE-2;
+        }
         this.pos = Logic.playerData.pos.clone();
         this.defaultPos = Logic.playerData.pos.clone();
         this.baseAttackPoint = Logic.playerData.FinalCommon.damageMin;

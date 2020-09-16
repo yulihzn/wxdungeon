@@ -3,6 +3,9 @@ export default class Random4Save{
     private seed:number = new Date().getTime();
     constructor(seed:number){
         this.seed = seed;
+        if(seed<=0){
+            seed = this.getRandomNum(0,100000000);
+        }
     }
     rand():number{
         this.seed = (this.seed*9301+49297)%233280;

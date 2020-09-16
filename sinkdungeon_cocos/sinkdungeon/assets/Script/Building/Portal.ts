@@ -25,10 +25,13 @@ export default class Portal extends Building {
     anim:cc.Animation;
     isOpen:boolean = false;
     pos:cc.Vec3 = cc.v3(4,4);
+    isBackDream = false;
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.anim = this.getComponent(cc.Animation);
+    }
 
     start () {
         this.anim = this.getComponent(cc.Animation);
@@ -69,7 +72,7 @@ export default class Portal extends Building {
         if(player){
             if(this.isOpen){
                 this.closeGate();
-                Logic.loadingNextLevel(false);
+                Logic.loadingNextLevel(false,true,this.isBackDream);
             }
         }
     }

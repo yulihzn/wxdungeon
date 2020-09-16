@@ -3,7 +3,6 @@ import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Slime from "../Boss/Slime";
-import Random from "../Utils/Random";
 import MonsterRandomAttr from "./MonsterRandomAttr";
 import RoomType from "../Rect/RoomType";
 import Boss from "../Boss/Boss";
@@ -251,11 +250,12 @@ export default class MonsterManager extends cc.Component {
         monsterPrefab.parent = dungeon.node;
         let monster = monsterPrefab.getComponent(Monster);
         let data = new MonsterData();
+        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
         monster.dungeon = dungeon;
         data.valueCopy(Logic.monsters[resName]);
         //10%几率随机属性
-        if (Random.rand() < 0.1) {
-            this.monsterRandomAttr.addRandomAttrs(2);
+        if (rand4save.rand() < 0.1) {
+            this.monsterRandomAttr.addRandomAttrs(2,rand4save);
             data = this.monsterRandomAttr.updateMonsterData(data);
             monster.attrmap = this.monsterRandomAttr.attrmap;
         }
@@ -269,7 +269,7 @@ export default class MonsterManager extends cc.Component {
             up = 30;
         }
         variationRate = variationRate + Logic.chapterIndex * 2 + Logic.level * 2 + up;
-        monster.isVariation = Logic.getRandomNum(0, 100) < variationRate;
+        monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
             data.Common.damageMin = data.Common.damageMin * 2;
@@ -286,11 +286,11 @@ export default class MonsterManager extends cc.Component {
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100) : 0;
         }
         //5%几率添加元素
-        let rand = Logic.getRandomNum(0, 100);
-        let df = Logic.getRandomNum(80, 100);
-        let er = Logic.getRandomNum(80, 100);
+        let rand = rand4save.getRandomNum(0, 100);
+        let df = rand4save.getRandomNum(80, 100);
+        let er = rand4save.getRandomNum(80, 100);
         let isAddElement = rand <= 5;
-        rand = Logic.getRandomNum(0, 4);
+        rand = rand4save.getRandomNum(0, 4);
         if (isAddElement) {
             data.Common.magicDamage += 1;
             data.Common.magicDefence = data.Common.magicDefence + df > 100 ? 100 : data.Common.magicDefence + df;
@@ -425,8 +425,17 @@ export default class MonsterManager extends cc.Component {
                 , MonsterManager.MONSTER_SPIDER];
                 num = rand4save.getRandomNum(3, 6); break;
         }
+        let indexmap = [];
+        for(let i = 0;i<dungeon.floorIndexmap.length;i++){
+            indexmap.push(dungeon.floorIndexmap[i]);
+        }
         for (let i = 0; i <= num + up; i++) {
-            let pos = dungeon.floorIndexmap[rand4save.getRandomNum(0, dungeon.floorIndexmap.length - 1)];
+            if(indexmap.length<1){
+                continue;
+            }
+            let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
+            let pos = indexmap[randindex];
+            indexmap.splice(randindex,1);
             dungeon.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
         }
     }

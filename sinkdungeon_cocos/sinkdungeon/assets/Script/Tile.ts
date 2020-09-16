@@ -49,14 +49,14 @@ export default class Tile extends cc.Component {
 
     }
     getRes():string{
-        let s = this.coverPrefix+'001';
+        let s = this.floorPrefix+'001';
         switch(this.tileType){
             case '**':s = this.floorPrefix+'001';break;
             case '*0':s = this.floorPrefix+'002';break;
             case '*1':s = this.floorPrefix+'003';break;
             case '*2':s = this.floorPrefix+'001';break;
             case '*3':s = this.floorPrefix+'002';break;
-            case '*4':s = this.coverPrefix+'001';break;
+            case '*4':s = this.coverPrefix+'004';break;
         }
         return s;
      }

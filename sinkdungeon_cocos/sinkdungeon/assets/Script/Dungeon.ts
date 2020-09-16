@@ -58,7 +58,6 @@ export default class Dungeon extends cc.Component {
     private checkTimeDelay = 0;
 
     player: Player = null;
-    // public monsterReswpanPoints: { [key: string]: string } = {};//怪物重生点
     monsterManager: MonsterManager = null;//怪物管理
     equipmentManager: EquipmentManager = null;//装备管理
     dungeonStyleManager: DungeonStyleManager = null;//装饰管理
@@ -144,17 +143,7 @@ export default class Dungeon extends cc.Component {
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             this.map[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
-                // if (mapData[i][j] == '--') {
-                //     let t = cc.instantiate(this.tile);
-                //     t.parent = this.node;
-                //     t.position = Dungeon.getPosInMap(cc.v3(i, j));
-                //     //越往下层级越高，j是行，i是列
-                //     t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - j) * 10;
-                //     this.map[i][j] = t.getComponent(Tile);
-                //     //开启踩踏掉落
-                //     this.map[i][j].isAutoShow = true;
-                //     this.floorIndexmap.push(cc.v3(i, j));
-                // }
+                //越往下层级越高，j是行，i是列
                 if (this.isThe(mapData[i][j], "*") && mapData[i][j] != '**') {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;
@@ -405,7 +394,8 @@ export default class Dungeon extends cc.Component {
 
     start() {
         this.scheduleOnce(() => {
-            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: Logic.mapManager.rectDungeon.currentPos.x, y: Logic.mapManager.rectDungeon.currentPos.y } });
+            let pos = Logic.mapManager.rectDungeon.currentPos;
+            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: pos.x, y: pos.y } });
             this.checkRoomClear();
         }, 0.1)
     }

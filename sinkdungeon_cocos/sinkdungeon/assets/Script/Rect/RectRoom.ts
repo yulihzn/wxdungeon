@@ -1,7 +1,4 @@
-import RectDoor from "./RectDoor";
-import Dungeon from "../Dungeon";
 import RoomType from "./RoomType";
-import Logic from "../Logic";
 import Random from "../Utils/Random";
 
 // Learn TypeScript:

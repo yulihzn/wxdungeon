@@ -412,6 +412,10 @@
             <key type="filename">tile/tile_lab002.png</key>
             <key type="filename">tile/tile_lab003.png</key>
             <key type="filename">tile/tile_lab004.png</key>
+            <key type="filename">tile/tile_labsecond001.png</key>
+            <key type="filename">tile/tile_labsecond002.png</key>
+            <key type="filename">tile/tile_labsecond003.png</key>
+            <key type="filename">tile/tile_labsecond004.png</key>
             <key type="filename">tile/tilewall.png</key>
             <key type="filename">ui/boxbroken001.png</key>
             <key type="filename">ui/boxbroken002.png</key>
