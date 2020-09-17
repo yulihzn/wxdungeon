@@ -43,6 +43,7 @@ export default class Decorate extends Building {
             case Logic.CHAPTER03: this.resName = `decorate030${this.decorateType}`; break;
             case Logic.CHAPTER04: this.resName = `decorate040${this.decorateType}`; break;
             case Logic.CHAPTER05: this.resName = `decorate040${this.decorateType}`; break;
+            case Logic.CHAPTER099: this.resName = `decorate000${this.decorateType}`; break;
         }
         this.changeRes(this.resName);
     }

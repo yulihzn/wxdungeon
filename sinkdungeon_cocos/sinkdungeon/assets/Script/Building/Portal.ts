@@ -1,5 +1,4 @@
 import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
@@ -37,6 +36,7 @@ export default class Portal extends Building {
         this.anim = this.getComponent(cc.Animation);
         this.anim.play('PortalCloseIdle');
     }
+    
     setPos(pos:cc.Vec3){
         this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
@@ -53,7 +53,13 @@ export default class Portal extends Building {
             return;
         }
         this.isOpen = true;
-        this.anim.play('PortalOpen');
+        this.scheduleOnce(()=>{
+            if(!this.anim){
+                this.anim = this.getComponent(cc.Animation);
+            }
+            this.anim.play('PortalOpen');
+        },0.1);
+        
     }
     closeGate(){
         if(!this.isOpen){
@@ -72,7 +78,7 @@ export default class Portal extends Building {
         if(player){
             if(this.isOpen){
                 this.closeGate();
-                Logic.loadingNextLevel(false,true,this.isBackDream);
+                Logic.loadingNextLevel(false,!this.isBackDream,this.isBackDream,true);
             }
         }
     }

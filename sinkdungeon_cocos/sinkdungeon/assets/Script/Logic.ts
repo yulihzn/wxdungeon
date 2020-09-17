@@ -38,6 +38,7 @@ export default class Logic extends cc.Component {
     static readonly CHAPTER03: number = 3;
     static readonly CHAPTER04: number = 4;
     static readonly CHAPTER05: number = 5;
+    static readonly CHAPTER099: number = 99;
     static equipments: { [key: string]: EquipmentData } = null;
     static equipmentNameList: string[] = [];
     static itemNameList: string[] = [];
@@ -81,6 +82,7 @@ export default class Logic extends cc.Component {
     static lastBgmIndex = 0;
     static isBackToUpLevel = false;//是否返回上一章
     static isFromChapter = false;//是否是章节更换
+    static isFromReal = false;//是否是现实切入
 
     static profileManager: ProfileManager = new ProfileManager();
 
@@ -193,6 +195,8 @@ export default class Logic extends cc.Component {
     static loadingNextRoom(dir: number) {
         Logic.isBackToUpLevel = false;
         Logic.isFromChapter = false;
+        Logic.isFromReal = false;
+        Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         //保存数据
         Logic.saveData();
         AudioPlayer.play(AudioPlayer.EXIT);
@@ -210,18 +214,24 @@ export default class Logic extends cc.Component {
 
         }
     }
-    static loadingNextLevel(isBack: boolean,isGoReal:boolean,isBackDream:boolean) {
+    static loadingNextLevel(isBack: boolean,isGoReal:boolean,isBackDream:boolean,needSave:boolean) {
         Logic.isBackToUpLevel = isBack;
         Logic.isFromChapter = true;
+        Logic.isFromReal = isBackDream;
+        Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         //保存数据
-        Logic.saveData();
+        if(needSave){
+            Logic.saveData();
+        }
         if(!isGoReal&&!isBackDream){
             Logic.level += isBack ? -1 : 1;
         }
         if(isGoReal){
+            //保存当前关卡等级
             Logic.lastLevel = Logic.level;
             Logic.lastChapterIndex = Logic.chapterIndex;
             Logic.level = Logic.realLevel;
+            Logic.chapterIndex = 99;
         }
         if(isBackDream){
             Logic.realLevel = Logic.level;
@@ -253,9 +263,14 @@ export default class Logic extends cc.Component {
             Logic.level = length - 1;
         }
        
-        Logic.mapManager.reset(isBack,isGoReal);
+        Logic.mapManager.reset(isBack);
         Logic.changeDungeonSize();
-        Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
+        let pos = Logic.mapManager.getCurrentRoom().exitPos;
+        if(pos.x==-1&&pos.y==-1){
+            Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
+        }else{
+            Logic.playerData.pos = pos;
+        }
         //暂时不选择技能
         Logic.isPickedTalent = true;
         Logic.lastBgmIndex = -1;

@@ -80,6 +80,8 @@ export default class HitBuilding extends Building {
             spriteFrame = Logic.spriteFrames[resName + suffix];
         }
         this.sprite.node.opacity = 255;
+        this.sprite.node.width = spriteFrame.getRect().width;
+        this.sprite.node.height = spriteFrame.getRect().height;
         this.sprite.spriteFrame = spriteFrame;
     }
     // update (dt) {}

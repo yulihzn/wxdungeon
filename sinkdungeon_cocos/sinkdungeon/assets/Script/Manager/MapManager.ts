@@ -49,11 +49,8 @@ export default class MapManager {
         cc.log('maps loaded');
     }
     
-    reset(isBack?:boolean,isGoReal?:boolean) {
+    reset(isBack?:boolean) {
         let data = Logic.worldLoader.getCurrentLevelData();
-        if(isGoReal){
-            data = Logic.worldLoader.getLevelData(99,Logic.level);
-        }
         //地图重新生成
         this.rectDungeon = new RectDungeon();
         if(Logic.profileManager.data&&Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]){
@@ -155,6 +152,10 @@ export default class MapManager {
             return new Random4Save(this.getCurrentRoom().seed);
         }
         return new Random4Save(0);
+    }
+    public setCurrentRoomExitPos(pos:cc.Vec3){
+        let room = this.getCurrentRoom();
+        room.exitPos = pos.clone();
     }
    
     /**添加随机元素 */

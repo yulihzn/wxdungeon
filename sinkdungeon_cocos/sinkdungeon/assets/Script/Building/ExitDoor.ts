@@ -41,6 +41,8 @@ export default class ExitDoor extends Building {
                 Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y);
             }else if(!Logic.isBackToUpLevel&&this.isBackToUpLevel){
                 Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y);
+            }else if(!Logic.isFromReal){
+                Logic.playerData.pos = cc.v3(indexPos.x, indexPos.y);
             }
         }
         if(this.needHide){
@@ -63,6 +65,7 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER03:this.changeRes('exit003');break;
             case Logic.CHAPTER04:this.changeRes('exit004');break;
             case Logic.CHAPTER05:this.changeRes('exit004');break;
+            case Logic.CHAPTER099:this.changeRes('exit000');break;
         }
     }
     
@@ -88,7 +91,7 @@ export default class ExitDoor extends Building {
             if (this.isOpen) {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
-                Logic.loadingNextLevel(this.isBackToUpLevel,false,false);
+                Logic.loadingNextLevel(this.isBackToUpLevel,false,false,true);
             }
         }
     }

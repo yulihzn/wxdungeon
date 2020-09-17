@@ -72,7 +72,11 @@ export default class GameOver extends cc.Component {
         Logic.profileManager=new ProfileManager();
         Logic.resetData();
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
-        cc.director.loadScene('loading');
+        if(Logic.chapterIndex == Logic.CHAPTER099){
+            cc.director.loadScene('loading');
+        }else{
+            Logic.loadingNextLevel(false,true,false,false);
+        }
     }
     home() {
         Logic.time = '00:00:00';

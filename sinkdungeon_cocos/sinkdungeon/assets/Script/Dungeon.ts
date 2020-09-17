@@ -64,7 +64,7 @@ export default class Dungeon extends cc.Component {
     coinManager: CoinManger = null;//金币管理
     buildingManager: BuildingManager = null;//建筑管理
     anim: cc.Animation;
-    isZoomCamera = false;
+    CameraZoom = 1;
 
     onLoad() {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
@@ -350,7 +350,7 @@ export default class Dungeon extends cc.Component {
     }
 
     public shakeForKraken() {
-        this.isZoomCamera = true;
+        this.CameraZoom = 0.7;
         this.anim.playAdditive('DungeonShakeOnce');
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2);

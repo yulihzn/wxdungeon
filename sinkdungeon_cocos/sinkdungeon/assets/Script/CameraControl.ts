@@ -75,7 +75,7 @@ export default class CameraControl extends cc.Component {
             this.node.position = this.node.position.addSelf(this.isHeavyShaking ? this.offsetArr1[this.offsetIndex] : this.offsetArr[this.offsetIndex]);
             this.offsetIndex++;
         }
-        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.isZoomCamera ? 0.7 : 1, 0.05);
+        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.CameraZoom, 0.05);
         // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
         // let ratio = targetPos.y / cc.winSize.height;
         // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;

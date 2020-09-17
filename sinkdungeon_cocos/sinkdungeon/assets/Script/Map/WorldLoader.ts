@@ -1,8 +1,6 @@
 import ChapterData from "../Data/ChapterData";
 import LevelData from "../Data/LevelData";
 import Logic from "../Logic";
-import MapData from "../Data/MapData";
-import RoomType from "../Rect/RoomType";
 /**
  * 地图文件加载器
  * 保存大地图数据和房间数据
@@ -11,12 +9,12 @@ export default class WorldLoader {
     private worldMap: ChapterData[] = [];
     private realWorldMap:ChapterData = new ChapterData(99);
     //读取文件的数据
-    private allfileRooms00: { [key: string]: MapData[] } = {};
-    private allfileRooms01: { [key: string]: MapData[] } = {};
-    private allfileRooms02: { [key: string]: MapData[] } = {};
-    private allfileRooms03: { [key: string]: MapData[] } = {};
-    private allfileRooms04: { [key: string]: MapData[] } = {};
-    private allfileRooms05: { [key: string]: MapData[] } = {};
+    // private allfileRooms00: { [key: string]: MapData[] } = {};
+    // private allfileRooms01: { [key: string]: MapData[] } = {};
+    // private allfileRooms02: { [key: string]: MapData[] } = {};
+    // private allfileRooms03: { [key: string]: MapData[] } = {};
+    // private allfileRooms04: { [key: string]: MapData[] } = {};
+    // private allfileRooms05: { [key: string]: MapData[] } = {};
     //文件是否加载成功
     isloaded: boolean = false;
     isloaded00: boolean = false;
@@ -64,18 +62,18 @@ export default class WorldLoader {
     //     this.loadChapterMap(4, this.allfileRooms04);
     //     this.loadChapterMap(5, this.allfileRooms05);
     // }
-    getAllFileRooms(): { [key: string]: MapData[] } {
-        let allfileRooms = this.allfileRooms00;
-        switch (Logic.chapterIndex) {
-            case Logic.CHAPTER00: allfileRooms = this.allfileRooms00; break;
-            case Logic.CHAPTER01: allfileRooms = this.allfileRooms01; break;
-            case Logic.CHAPTER02: allfileRooms = this.allfileRooms02; break;
-            case Logic.CHAPTER03: allfileRooms = this.allfileRooms03; break;
-            case Logic.CHAPTER04: allfileRooms = this.allfileRooms04; break;
-            case Logic.CHAPTER05: allfileRooms = this.allfileRooms05; break;
-        }
-        return allfileRooms;
-    }
+    // getAllFileRooms(): { [key: string]: MapData[] } {
+    //     let allfileRooms = this.allfileRooms00;
+    //     switch (Logic.chapterIndex) {
+    //         case Logic.CHAPTER00: allfileRooms = this.allfileRooms00; break;
+    //         case Logic.CHAPTER01: allfileRooms = this.allfileRooms01; break;
+    //         case Logic.CHAPTER02: allfileRooms = this.allfileRooms02; break;
+    //         case Logic.CHAPTER03: allfileRooms = this.allfileRooms03; break;
+    //         case Logic.CHAPTER04: allfileRooms = this.allfileRooms04; break;
+    //         case Logic.CHAPTER05: allfileRooms = this.allfileRooms05; break;
+    //     }
+    //     return allfileRooms;
+    // }
     private loadChapterLevel(data: ChapterData) {
         cc.resources.load(`Data/world/world0${data.chapter}`, (err: Error, resource: cc.TextAsset) => {
             if (err) {

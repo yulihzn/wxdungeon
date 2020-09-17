@@ -49,6 +49,7 @@ export default class Box extends Building {
             case Logic.CHAPTER03:this.changeRes(`${resName}003`);break;
             case Logic.CHAPTER04:this.changeRes(`${resName}004`);break;
             case Logic.CHAPTER05:this.changeRes(`${resName}004`);break;
+            case Logic.CHAPTER099:this.changeRes(`${resName}000`);break;
         }
     }
     changeRes(resName: string) {

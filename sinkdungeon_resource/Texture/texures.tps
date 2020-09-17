@@ -230,6 +230,11 @@
             <key type="filename">building/chestopen002.png</key>
             <key type="filename">building/chestopen003.png</key>
             <key type="filename">building/chestopen004.png</key>
+            <key type="filename">building/door099anim000.png</key>
+            <key type="filename">building/door099anim001.png</key>
+            <key type="filename">building/door099anim002.png</key>
+            <key type="filename">building/door099anim003.png</key>
+            <key type="filename">building/door099anim004.png</key>
             <key type="filename">building/exitarrow.png</key>
             <key type="filename">building/floor000center.png</key>
             <key type="filename">building/floor000corner.png</key>
@@ -416,6 +421,10 @@
             <key type="filename">tile/tile_labsecond002.png</key>
             <key type="filename">tile/tile_labsecond003.png</key>
             <key type="filename">tile/tile_labsecond004.png</key>
+            <key type="filename">tile/tile_room001.png</key>
+            <key type="filename">tile/tile_room002.png</key>
+            <key type="filename">tile/tile_room003.png</key>
+            <key type="filename">tile/tile_room004.png</key>
             <key type="filename">tile/tilewall.png</key>
             <key type="filename">ui/boxbroken001.png</key>
             <key type="filename">ui/boxbroken002.png</key>
@@ -778,6 +787,9 @@
             <key type="filename">building/decorate0402anim002.png</key>
             <key type="filename">building/decorate0402anim003.png</key>
             <key type="filename">building/decorate0402anim004.png</key>
+            <key type="filename">building/roomcupboard.png</key>
+            <key type="filename">building/roomcupboard0.png</key>
+            <key type="filename">building/roomcupboard1.png</key>
             <key type="filename">building/saw001.png</key>
             <key type="filename">building/saw002.png</key>
             <key type="filename">building/shop.png</key>
@@ -797,6 +809,8 @@
             <key type="filename">building/wallcorner04anim001.png</key>
             <key type="filename">building/wallcorner05anim000.png</key>
             <key type="filename">building/wallcorner05anim001.png</key>
+            <key type="filename">building/wallcorner099anim000.png</key>
+            <key type="filename">building/wallcorner099anim001.png</key>
             <key type="filename">bullet/boom000anim001.png</key>
             <key type="filename">bullet/boom000anim002.png</key>
             <key type="filename">bullet/boom000anim003.png</key>
@@ -1162,6 +1176,9 @@
             <key type="filename">building/walltop05anim000.png</key>
             <key type="filename">building/walltop05anim001.png</key>
             <key type="filename">building/walltop05anim002.png</key>
+            <key type="filename">building/walltop099anim000.png</key>
+            <key type="filename">building/walltop099anim001.png</key>
+            <key type="filename">building/walltop099anim002.png</key>
             <key type="filename">dungeon/dungeondoor.png</key>
             <key type="filename">dungeon/dungeondoorframe.png</key>
             <key type="filename">dungeon/jungledoor.png</key>

@@ -205,36 +205,36 @@ export default class MonsterManager extends cc.Component {
             this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon);
         }
         else if (mapDataStr == 'z0') {
-            this.addBoss(this.iceDemon,'iconboss000',this.maxHealth00,0,2,indexPos,dungeon);
+            this.addBoss(this.iceDemon, 'iconboss000', this.maxHealth00, 0, 2, indexPos, dungeon);
         }
         else if (mapDataStr == 'z1') {
-            this.addBoss(this.warmachine,'iconboss001',this.maxHealth01,2,3.5,indexPos,dungeon);
+            this.addBoss(this.warmachine, 'iconboss001', this.maxHealth01, 2, 3.5, indexPos, dungeon);
         }
         else if (mapDataStr == 'z2') {
-            this.addBoss(this.captain,'iconboss002',this.maxHealth02,2,0,indexPos,dungeon);
+            this.addBoss(this.captain, 'iconboss002', this.maxHealth02, 2, 0, indexPos, dungeon);
         }
         else if (mapDataStr == 'z3') {
             dungeon.shakeForKraken();
-            this.addBoss(this.kraken,'iconboss003',this.maxHealth03,2,3.5
-            ,cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Dungeon.HEIGHT_SIZE + 4),dungeon);
+            this.addBoss(this.kraken, 'iconboss003', this.maxHealth03, 2, 3.5
+                , cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Dungeon.HEIGHT_SIZE + 4), dungeon);
         }
         else if (mapDataStr == 'z4') {
             this.addBossSlime(0, indexPos, dungeon);
         }
         else if (mapDataStr == 'z5') {
-            this.addBoss(this.dryad,'iconboss005',this.maxHealth05,2,2,indexPos,dungeon);
+            this.addBoss(this.dryad, 'iconboss005', this.maxHealth05, 2, 2, indexPos, dungeon);
         }
         else if (mapDataStr == 'z6') {
-            this.addBoss(this.rah,'iconboss006',this.maxHealth06,2,2,indexPos,dungeon);
+            this.addBoss(this.rah, 'iconboss006', this.maxHealth06, 2, 2, indexPos, dungeon);
         }
         else if (mapDataStr == 'z7') {
-            this.addBoss(this.sphinx,'iconboss007',this.maxHealth07,2,2,indexPos,dungeon);
+            this.addBoss(this.sphinx, 'iconboss007', this.maxHealth07, 2, 2, indexPos, dungeon);
         }
         else if (mapDataStr == 'z8') {
-            this.addBoss(this.evilEye,'iconboss008',this.maxHealth08,2,2,indexPos,dungeon);
+            this.addBoss(this.evilEye, 'iconboss008', this.maxHealth08, 2, 2, indexPos, dungeon);
         }
         else if (mapDataStr == 'z9') {
-            this.addBoss(this.dragon,'iconboss009',this.maxHealth09,5,2,indexPos,dungeon);
+            this.addBoss(this.dragon, 'iconboss009', this.maxHealth09, 5, 2, indexPos, dungeon);
         }
     }
     /**
@@ -255,7 +255,7 @@ export default class MonsterManager extends cc.Component {
         data.valueCopy(Logic.monsters[resName]);
         //10%几率随机属性
         if (rand4save.rand() < 0.1) {
-            this.monsterRandomAttr.addRandomAttrs(2,rand4save);
+            this.monsterRandomAttr.addRandomAttrs(2, rand4save);
             data = this.monsterRandomAttr.updateMonsterData(data);
             monster.attrmap = this.monsterRandomAttr.attrmap;
         }
@@ -343,8 +343,8 @@ export default class MonsterManager extends cc.Component {
         }
         this.bosses.push(this.getSlime(dungeon, index.clone(), type));
     }
-   
-    private addBoss(prefabAsset:cc.Prefab,resName:string,maxHealth:number,attackPoint:number,delayTime:number,indexPos: cc.Vec3,dungeon: Dungeon){
+
+    private addBoss(prefabAsset: cc.Prefab, resName: string, maxHealth: number, attackPoint: number, delayTime: number, indexPos: cc.Vec3, dungeon: Dungeon) {
         let prefab = cc.instantiate(prefabAsset);
         prefab.active = false;
         prefab.parent = dungeon.node;
@@ -362,7 +362,7 @@ export default class MonsterManager extends cc.Component {
             boss.showBoss();
         }, delayTime);
     }
-   
+
     private getSlime(dungeon: Dungeon, posIndex: cc.Vec3, type: number): Slime {
         let prefab: cc.Node = null;
         prefab = cc.instantiate(this.slime);
@@ -424,18 +424,22 @@ export default class MonsterManager extends cc.Component {
             case Logic.CHAPTER05: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
                 , MonsterManager.MONSTER_SPIDER];
                 num = rand4save.getRandomNum(3, 6); break;
+            case Logic.CHAPTER099: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
+                , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
+                num = rand4save.getRandomNum(1, 3);
+                break;
         }
         let indexmap = [];
-        for(let i = 0;i<dungeon.floorIndexmap.length;i++){
+        for (let i = 0; i < dungeon.floorIndexmap.length; i++) {
             indexmap.push(dungeon.floorIndexmap[i]);
         }
         for (let i = 0; i <= num + up; i++) {
-            if(indexmap.length<1){
+            if (indexmap.length < 1) {
                 continue;
             }
             let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
             let pos = indexmap[randindex];
-            indexmap.splice(randindex,1);
+            indexmap.splice(randindex, 1);
             dungeon.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
         }
     }

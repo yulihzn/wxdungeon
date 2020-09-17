@@ -41,14 +41,7 @@ export default class Wall extends Building {
     }
     start () {
         this.node.opacity = 255;
-        switch(Logic.chapterIndex){
-            case Logic.CHAPTER00:this.changeRes(this.getRes());break;
-            case Logic.CHAPTER01:this.changeRes(this.getRes());break;
-            case Logic.CHAPTER02:this.changeRes(this.getRes());break;
-            case Logic.CHAPTER03:this.changeRes(this.getRes());break;
-            case Logic.CHAPTER04:this.changeRes(this.getRes());break;
-            case Logic.CHAPTER05:this.changeRes(this.getRes());break;
-        }
+        this.changeRes(this.getRes());
     }
     getRes():string{
         let s = `walltop0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`;
