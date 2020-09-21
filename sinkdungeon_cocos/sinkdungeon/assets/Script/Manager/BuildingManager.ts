@@ -19,6 +19,8 @@ import AirExit from "../Building/AirExit";
 import LevelData from "../Data/LevelData";
 import Portal from "../Building/Portal";
 import RoomBed from "../Building/RoomBed";
+import Random4Save from "../Utils/Random4Save";
+import Building from "../Building/Building";
 
 
 // Learn TypeScript:
@@ -112,6 +114,10 @@ export default class BuildingManager extends cc.Component {
         building.parent = this.node;
         building.position = Dungeon.getPosInMap(indexPos);
         building.zIndex = IndexZ.getActorZIndex(building.position);
+        let b = building.getComponent(Building);
+        if(b){
+            b.data.defaultPos = indexPos.clone();
+        }
         return building;
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
@@ -298,7 +304,7 @@ export default class BuildingManager extends cc.Component {
             let p = this.addBuilding(this.exitdoorPrefab, indexPos);
             let exitdoor = p.getComponent(ExitDoor);
             let i = parseInt(mapDataStr[1]);
-            exitdoor.init(indexPos, i == 1 || i == 3 || i == 5, i > 1, i == 4 || i == 5);
+            exitdoor.init(i);
             this.exitdoors.push(exitdoor);
         } else if (this.isThe(mapDataStr, 'W')) {
             //生成传送门
@@ -372,8 +378,14 @@ export default class BuildingManager extends cc.Component {
     }
     private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
         let mapDataStrIndex = parseInt(mapDataStr[1]);
+        if(isNaN(mapDataStrIndex)){
+            mapDataStrIndex = 6;//默认左下角
+        }
+        if(mapDataStr[1]=='#'){
+            mapDataStrIndex = -1;
+        }
         let node: cc.Node = null;
-        if (mapDataStrIndex > 3 && mapDataStrIndex < 8 || mapDataStrIndex > parseInt('A')) {
+        if (mapDataStrIndex > 3 && mapDataStrIndex < 8) {
             node = this.addBuilding(this.corner, indexPos);
             node.getComponent(Wall).isCorner = true;
         } else {
@@ -383,22 +395,18 @@ export default class BuildingManager extends cc.Component {
         wall.dir = mapDataStrIndex;
         wall.mapStr = mapDataStr;
         wall.resName = levelData.wallRes;
-        if (mapDataStrIndex > parseInt('A')) {
-            wall.isBottom = true;
-        } else {
-            switch (mapDataStrIndex) {
-                case 0: break;
-                case 1: node.angle = 180; wall.isBottom = true; break;
-                case 2: node.angle = 90; break;
-                case 3: node.angle = -90; break;
-                case 4: node.angle = -90; break;
-                case 5: node.angle = 180; break;
-                case 6: wall.isBottom = true; break;
-                case 7: wall.isBottom = true; node.scaleX = -1;
-                    node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
-                    node.getComponent(cc.PhysicsBoxCollider).apply();
-                    break;
-            }
+        switch (mapDataStrIndex) {
+            case 0: break;
+            case 1: node.angle = 180; wall.isBottom = true; break;
+            case 2: node.angle = 90; break;
+            case 3: node.angle = -90; break;
+            case 4: node.angle = -90; break;
+            case 5: node.angle = 180; break;
+            case 6: wall.isBottom = true; break;
+            case 7: wall.isBottom = true; node.scaleX = -1;
+                node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
+                node.getComponent(cc.PhysicsBoxCollider).apply();
+                break;
         }
     }
     /**生成可打击建筑 */

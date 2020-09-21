@@ -394,7 +394,7 @@ export default class MonsterManager extends cc.Component {
     }
     addRandomMonsters(dungeon: Dungeon) {
         let arr = new Array();
-        let rand4save = new Random4Save(Logic.mapManager.getCurrentRoom().seed);
+        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
         let num = rand4save.getRandomNum(1, 3);
         let up = 0;
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {

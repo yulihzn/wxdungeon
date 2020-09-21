@@ -21,7 +21,7 @@ export default class MiniMap extends cc.Component {
 	@property(cc.Prefab)
 	miniTile: cc.Prefab = null;
 	static ColorLevel = {
-		HIDE: 0, NORMAL: 1, PLAYER: 2, CLEAR: 3, NORMAL_BOSS: 4, CLEAR_PUZZLE: 5, CLEAR_END: 6, CLEAR_BOSS: 7, NORMAL_LOOT: 8, CLEAR_LOOT: 9,
+		EMPTY:-1,HIDE: 0, NORMAL: 1, PLAYER: 2, CLEAR: 3, NORMAL_BOSS: 4, CLEAR_PUZZLE: 5, CLEAR_END: 6, CLEAR_BOSS: 7, NORMAL_LOOT: 8, CLEAR_LOOT: 9,
 		NORMAL_START: 10, NORMAL_END: 11, NORMAL_REST: 12, NORMAL_PREPARE: 13, NORMAL_TEST: 14, NORMAL_PUZZLE: 15, NORMAL_MERCHANT: 16, CLEAR_MERCHANT: 17
 	}
 	width:number = 0;
@@ -72,7 +72,8 @@ export default class MiniMap extends cc.Component {
 					let isClear = state == RectRoom.STATE_CLEAR;
 
 					this.map[i][j].color = this.getColor(isClear ? MiniMap.ColorLevel.CLEAR : MiniMap.ColorLevel.NORMAL);
-
+					this.getMapColor(i, j, roomType, RoomType.EMPTY_ROOM, isClear
+						, MiniMap.ColorLevel.EMPTY, MiniMap.ColorLevel.EMPTY);
 					this.getMapColor(i, j, roomType, RoomType.BOSS_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_BOSS, MiniMap.ColorLevel.CLEAR_BOSS);
 					this.getMapColor(i, j, roomType, RoomType.LOOT_ROOM, isClear
@@ -110,6 +111,9 @@ export default class MiniMap extends cc.Component {
 	getColor(t: number): cc.Color {
 		let color = new cc.Color(0, 0, 0);
 		switch (t) {
+			case MiniMap.ColorLevel.EMPTY:
+				color = new cc.Color(0, 0, 0);//透明
+				break;
 			case MiniMap.ColorLevel.HIDE:
 				color = new cc.Color(0, 0, 0);//黑色
 				break;

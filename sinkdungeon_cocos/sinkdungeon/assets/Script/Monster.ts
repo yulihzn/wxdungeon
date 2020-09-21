@@ -616,23 +616,28 @@ export default class Monster extends Actor {
         collider.sensor = true;
         let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
         let rand = rand4save.rand();
+        let percent = 0.8;
+        let offset = 0.025;
+        if(this.isVariation){
+            percent = 0.7;
+        }
         if (this.dungeon) {
-            if (rand < 0.8) {
+            if (rand < percent) {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
-            } else if (rand >= 0.8 && rand < 0.825) {
+            } else if (rand >= percent && rand < percent+offset) {
                 this.dungeon.addItem(this.node.position.clone(), Item.HEART);
-            } else if (rand >= 0.825 && rand < 0.85) {
+            } else if (rand >= percent+offset && rand < percent+offset*2) {
                 this.dungeon.addItem(this.node.position.clone(), Item.HEART);
-            } else if (rand >= 0.85 && rand < 0.875) {
+            } else if (rand >= percent+offset*2 && rand < percent+offset*3) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_ATTACKSPEED);
-            } else if (rand >= 0.875 && rand < 0.9) {
+            } else if (rand >= percent+offset*3 && rand < percent+offset*4) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_MOVESPEED);
-            } else if (rand >= 0.9 && rand < 0.925) {
+            } else if (rand >= percent+offset*4 && rand < percent+offset*5) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_HEALING);
-            } else if (rand >= 0.925 && rand < 0.95) {
+            } else if (rand >= percent+offset*5 && rand < percent+offset*6) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_INVISIBLE);
-            } else if (rand >= 0.95 && rand < 1) {
+            } else if (rand >= percent+offset*6 && rand < 1) {
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
             }
         }

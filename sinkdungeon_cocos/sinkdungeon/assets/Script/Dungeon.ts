@@ -65,6 +65,7 @@ export default class Dungeon extends cc.Component {
     buildingManager: BuildingManager = null;//建筑管理
     anim: cc.Animation;
     CameraZoom = 1;
+    isInitFinish = false;
 
     onLoad() {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
@@ -216,6 +217,9 @@ export default class Dungeon extends cc.Component {
         }
         this.setDoors(true,true);
         cc.log('load finished');
+        this.scheduleOnce(()=>{
+            this.isInitFinish = true;
+        },1)
     }
     isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
@@ -507,7 +511,7 @@ export default class Dungeon extends cc.Component {
         if (this.isTimeDelay(dt)) {
             this.checkPlayerPos(dt);
         }
-        if (this.isCheckTimeDelay(dt)) {
+        if (this.isCheckTimeDelay(dt)&&this.isInitFinish) {
             this.checkRoomClear();
         }
 

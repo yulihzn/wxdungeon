@@ -30,9 +30,9 @@ export default class GameOver extends cc.Component {
     @property(cc.Label)
     tips: cc.Label = null;
     tipsStr = '';
-    static TIPS = [`当你凝视深渊的时候,深渊也在凝视着你`, `YOU SHALL NOT PASS`, `犹豫就会...`, `我们躬耕于月下，却服侍于太阳`,
-        `翠湖的水很冰冷`, `DON'T WORRY,BE HAPPY`, `这里需要的不是英雄，而是专家`, `电眼会麻痹你的思维`, `上帝欲使其灭亡 必先使其疯狂`, `激光有一个短暂的瞄准期，抓住机会再补一刀`
-        , `冰魔的刺会阻挡你的行动`, '武士刀可以反击子弹', `你的头盖骨被哥布林做成了碗`, `与其感慨路难行，不如马上出发`];
+    static TIPS = [`当你凝视深渊的时候,深渊也在凝视着你`, `YOU SHALL NOT PASS`, `犹豫就会...`, `盾牌可以格挡子弹，甚至弹反对面`,
+        `翠湖的水很冰冷`, `DON'T WORRY,BE HAPPY`, `你沉沉地睡着了`, `电眼会麻痹你的思维`, `上帝欲使其灭亡 必先使其疯狂`, `激光有一个短暂的瞄准期，抓住机会再补一刀`
+        , `冰魔的刺会阻挡你的行动`, '武士刀可以反击子弹', `你的头盖骨被做成了碗`, `幽光在呼唤着你`];
     // LIFE-CYCLE CALLBACKS:
     // onLoad () {}
 
@@ -58,34 +58,34 @@ export default class GameOver extends cc.Component {
             let count = 0;
             this.tips.string = '';
             let str = GameOver.TIPS[Random.getRandomNum(0, GameOver.TIPS.length - 1)];
-            this.schedule(()=>{
+            this.schedule(() => {
                 count++;
-                if(count>str.length){
+                if (count > str.length) {
                     count = str.length;
                 }
-                this.tips.string = str.substr(0,count);
-            },0.05,str.length,0.2);
-            
+                this.tips.string = str.substr(0, count);
+            }, 0.05, str.length, 0.2);
+
         }
     }
     retry() {
-        Logic.profileManager=new ProfileManager();
+        Logic.profileManager = new ProfileManager();
         Logic.resetData();
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
-        if(Logic.chapterIndex == Logic.CHAPTER099){
+        AudioPlayer.play(AudioPlayer.SELECT);
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
             cc.director.loadScene('loading');
-        }else{
-            Logic.loadingNextLevel(false,true,false,false);
+        } else {
+            Logic.loadingNextLevel(false, true, false, false);
         }
     }
     home() {
         Logic.time = '00:00:00';
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('start');
     }
-    resetWorld(){
+    resetWorld() {
         Logic.time = '00:00:00';
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SELECT } });
+        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('start');
         Logic.profileManager.clearData();
     }

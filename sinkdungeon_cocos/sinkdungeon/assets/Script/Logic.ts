@@ -218,7 +218,9 @@ export default class Logic extends cc.Component {
         Logic.isBackToUpLevel = isBack;
         Logic.isFromChapter = true;
         Logic.isFromReal = isBackDream;
-        Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
+        if(Logic.playerData){
+            Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
+        }
         //保存数据
         if(needSave){
             Logic.saveData();

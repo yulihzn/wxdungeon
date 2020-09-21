@@ -23,9 +23,7 @@ export default class Portal extends Building {
 
     anim:cc.Animation;
     isOpen:boolean = false;
-    pos:cc.Vec3 = cc.v3(4,4);
     isBackDream = false;
-
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -38,7 +36,6 @@ export default class Portal extends Building {
     }
     
     setPos(pos:cc.Vec3){
-        this.pos = pos;
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
     }
@@ -69,15 +66,15 @@ export default class Portal extends Building {
         this.anim.play('PortalClose');
     }
 
-    transportPlayer(playerPos:cc.Vec3){
-        if(playerPos.x==this.pos.x&&playerPos.y==this.pos.y && this.isOpen){
-        }
-    }
     onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
         let player = otherCollider.body.node.getComponent(Player);
         if(player){
             if(this.isOpen){
                 this.closeGate();
+                Logic.playerData = player.data.clone();
+                if(Logic.playerData.pos.equals(this.data.defaultPos)){
+                    Logic.playerData.pos.y=this.data.defaultPos.y-1;
+                }
                 Logic.loadingNextLevel(false,!this.isBackDream,this.isBackDream,true);
             }
         }

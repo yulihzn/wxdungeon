@@ -39,6 +39,10 @@ export default class RoomBed extends Building {
             }
             player.addStatus(StatusManager.DIZZ,new FromData());
             this.scheduleOnce(()=>{
+                Logic.playerData = player.data.clone();
+                if(Logic.playerData.pos.equals(this.data.defaultPos)){
+                    Logic.playerData.pos.y=this.data.defaultPos.y-1;
+                }
                 Logic.loadingNextLevel(false,false,true,true);
             },1)
         }

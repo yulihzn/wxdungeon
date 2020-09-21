@@ -29,11 +29,13 @@ export default class AirExit extends Building {
     dir = 0;
     status = AirExit.STATUS_CLOSE;
     sprite: cc.Sprite = null;
+    collider:cc.PhysicsBoxCollider;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.sprite = this.getComponent(cc.Sprite);
+        this.collider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
     }
 
@@ -47,7 +49,12 @@ export default class AirExit extends Building {
         }
         this.node.opacity = 10;
         this.node.width = Dungeon.TILE_SIZE / 8 * length;
+        if(!this.collider){
+            this.collider = this.getComponent(cc.PhysicsBoxCollider);
+        }
         this.getComponent(cc.BoxCollider).size = cc.size(this.node.width,this.node.height);
+        this.collider.size = cc.size(this.node.width,this.node.height);
+        this.collider.apply();
         this.node.zIndex = IndexZ.OVERHEAD;
         this.changeStatus(AirExit.STATUS_CLOSE);
 
@@ -59,6 +66,15 @@ export default class AirExit extends Building {
             case AirExit.STATUS_CLOSE: resName = 'outertips3'; break;
             case AirExit.STATUS_WAIT: resName = 'outertips2'; break;
             case AirExit.STATUS_OPEN: resName = 'outertips1'; break;
+        }
+        if(this.status == AirExit.STATUS_OPEN){
+            if(!this.collider.sensor){
+                this.collider.sensor = true;
+                this.collider.apply();
+            }
+        }else if(this.collider.sensor){
+            this.collider.sensor = false;
+            this.collider.apply();
         }
         this.sprite.spriteFrame = Logic.spriteFrames[resName];
     }

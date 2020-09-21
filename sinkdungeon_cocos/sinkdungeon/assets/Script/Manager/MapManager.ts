@@ -7,7 +7,6 @@ import ItemData from "../Data/ItemData";
 import Random4Save from "../Utils/Random4Save";
 import RoomType from "../Rect/RoomType";
 import BuildingData from "../Data/BuildingData";
-import Random from "../Utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,6 +24,7 @@ export default class MapManager {
     isloaded: boolean = false;
     //地图数据管理类
     rectDungeon: RectDungeon = null;
+    rand4save:Random4Save;
     constructor() {
         this.init();
     }
@@ -148,14 +148,20 @@ export default class MapManager {
     }
     public getCurrentRoomRandom4Save():Random4Save{
         let room = this.getCurrentRoom();
-        if(room){
-            return new Random4Save(this.getCurrentRoom().seed);
+        if(!this.rand4save){
+            if(room){
+                this.rand4save = new Random4Save(this.getCurrentRoom().seed);
+            }else{
+                this.rand4save = new Random4Save(0);
+            }
         }
-        return new Random4Save(0);
+        return this.rand4save;
     }
     public setCurrentRoomExitPos(pos:cc.Vec3){
         let room = this.getCurrentRoom();
-        room.exitPos = pos.clone();
+        if(room&&pos){
+            room.exitPos = cc.v3(pos.x,pos.y);
+        }
     }
    
     /**添加随机元素 */

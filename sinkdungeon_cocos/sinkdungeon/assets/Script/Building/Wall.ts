@@ -46,13 +46,13 @@ export default class Wall extends Building {
     getRes():string{
         let s = `walltop0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`;
         if(this.mapStr == "##"){
-            s = `walltop0${Logic.chapterIndex}anim002`;
+            return `walltop0${Logic.chapterIndex}anim002`;
         }
         if(this.dir == 8){
             return this.resName;
         }
         if(this.isCorner){
-            s = `wallcorner0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`
+            return `wallcorner0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`
         }
         return s;
     }
