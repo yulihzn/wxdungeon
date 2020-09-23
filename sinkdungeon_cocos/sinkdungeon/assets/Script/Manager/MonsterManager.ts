@@ -6,7 +6,6 @@ import Slime from "../Boss/Slime";
 import MonsterRandomAttr from "./MonsterRandomAttr";
 import RoomType from "../Rect/RoomType";
 import Boss from "../Boss/Boss";
-import Random4Save from "../Utils/Random4Save";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

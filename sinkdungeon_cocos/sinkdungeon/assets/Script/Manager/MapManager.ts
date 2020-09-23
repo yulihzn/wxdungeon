@@ -24,7 +24,7 @@ export default class MapManager {
     isloaded: boolean = false;
     //地图数据管理类
     rectDungeon: RectDungeon = null;
-    rand4save:Random4Save;
+    rand4save: Random4Save;
     constructor() {
         this.init();
     }
@@ -34,31 +34,31 @@ export default class MapManager {
     init() {
         this.isloaded = false;
     }
-    
+
     /**
      * 初始化地图数据
      * 读取指定章节和层数的地图列表，随机选取一个
      * 
      */
     public loadMap() {
-        if(Logic.isMapReset){
+        if (Logic.isMapReset) {
             Logic.isMapReset = false;
             //加载地图
             Logic.mapManager.reset();
         }
         cc.log('maps loaded');
     }
-    
-    reset(isBack?:boolean) {
+
+    reset(isBack?: boolean) {
         let data = Logic.worldLoader.getCurrentLevelData();
         //地图重新生成
         this.rectDungeon = new RectDungeon();
-        if(Logic.profileManager.data&&Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]){
+        if (Logic.profileManager.data && Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]) {
             this.rectDungeon.buildMapFromSave(Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]);
-        }else{
+        } else {
             this.rectDungeon.buildMap(data);
             //设置当前位置为开始房间位置
-            let index = isBack?this.rectDungeon.endIndex:this.rectDungeon.startIndex;
+            let index = isBack ? this.rectDungeon.endIndex : this.rectDungeon.startIndex;
             this.rectDungeon.currentPos = cc.v3(index.x, index.y);
         }
         cc.log(this.rectDungeon.getDisPlay());
@@ -80,9 +80,9 @@ export default class MapManager {
         let room = this.getCurrentRoom();
         let mdd = new MapData('');
         let data = Logic.worldLoader.getCurrentLevelData();
-        mdd.map = data.getRoom(room.x,room.y);
+        mdd.map = data.getRoom(room.x, room.y);
         //添加随机元素
-        let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed,data.needRadomDecorate);
+        let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed, data.needRadomDecorate);
         return mapdata.map;
     }
     public getCurrentMapSize(): cc.Vec3 {
@@ -91,15 +91,15 @@ export default class MapManager {
     }
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {
-        if(this.rectDungeon&&this.rectDungeon.map){
+        if (this.rectDungeon && this.rectDungeon.map) {
             return this.rectDungeon.map[this.rectDungeon.currentPos.x][this.rectDungeon.currentPos.y];
         }
         return null;
     }
     /** 获取当前房间指定建筑*/
-    public getCurrentMapBuilding(defaultPos:cc.Vec3): BuildingData {
+    public getCurrentMapBuilding(defaultPos: cc.Vec3): BuildingData {
         let buildings = this.rectDungeon.buildings[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`];
-        if(buildings){
+        if (buildings) {
             return buildings[`x=${defaultPos.x}y=${defaultPos.y}`];
         }
         return null;
@@ -107,13 +107,13 @@ export default class MapManager {
     /** 设置当前房间建筑*/
     public setCurrentBuildingData(data: BuildingData) {
         let buildings = this.rectDungeon.buildings[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`];
-        if(!buildings){
+        if (!buildings) {
             buildings = {}
             this.rectDungeon.buildings[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`] = buildings;
         }
         buildings[`x=${data.defaultPos.x}y=${data.defaultPos.y}`] = data;
     }
-    
+
     /** 获取当前房间装备*/
     public getCurrentMapEquipments(): EquipmentData[] {
         return this.rectDungeon.equipments[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`];
@@ -146,30 +146,32 @@ export default class MapManager {
     public getCurrentRoomType(): RoomType {
         return this.getCurrentRoom().roomType;
     }
-    public getCurrentRoomRandom4Save():Random4Save{
+    public getCurrentRoomRandom4Save(): Random4Save {
         let room = this.getCurrentRoom();
-        if(!this.rand4save){
-            if(room){
+        if (room) {
+            if (!this.rand4save || this.rand4save.Seed != room.seed) {
                 this.rand4save = new Random4Save(this.getCurrentRoom().seed);
-            }else{
+            }
+        } else {
+            if (!this.rand4save) {
                 this.rand4save = new Random4Save(0);
             }
         }
         return this.rand4save;
     }
-    public setCurrentRoomExitPos(pos:cc.Vec3){
+    public setCurrentRoomExitPos(pos: cc.Vec3) {
         let room = this.getCurrentRoom();
-        if(room&&pos){
-            room.exitPos = cc.v3(pos.x,pos.y);
+        if (room && pos) {
+            room.exitPos = cc.v3(pos.x, pos.y);
         }
     }
-   
+
     /**添加随机元素 */
-    private addGenerateThings(mapData: MapData, roomType: RoomType, seed: number,needDecorate:boolean): MapData {
+    private addGenerateThings(mapData: MapData, roomType: RoomType, seed: number, needDecorate: boolean): MapData {
         let rand4save = new Random4Save(seed);
         cc.log(`seed:${seed}`);
         this.addRandomTile(mapData, rand4save);
-        if (RoomType.isDecorateRoomType(roomType)&&needDecorate) {
+        if (RoomType.isDecorateRoomType(roomType) && needDecorate) {
             rand4save = new Random4Save(seed);
             this.addDecorate(mapData, rand4save);
         }

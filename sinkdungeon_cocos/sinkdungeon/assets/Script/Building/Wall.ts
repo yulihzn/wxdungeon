@@ -24,8 +24,7 @@ export default class Wall extends Building {
     mapStr:string = '##';
     resName:string = '';
     isCorner = false;
-    isBottom = false;
-    dir = 0;
+    isInteral = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -44,15 +43,12 @@ export default class Wall extends Building {
         this.changeRes(this.getRes());
     }
     getRes():string{
-        let s = `walltop0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`;
-        if(this.mapStr == "##"){
-            return `walltop0${Logic.chapterIndex}anim002`;
-        }
-        if(this.dir == 8){
+        let s = `walltop0${Logic.chapterIndex}anim000`;
+        if(this.mapStr[1] == '8'){
             return this.resName;
         }
         if(this.isCorner){
-            return `wallcorner0${Logic.chapterIndex}${this.isBottom?'anim001':'anim000'}`
+            return `wallcorner0${Logic.chapterIndex}${this.isInteral?'anim001':'anim000'}`
         }
         return s;
     }
@@ -61,7 +57,7 @@ export default class Wall extends Building {
         this.node.opacity = 255;
     }
     onCollisionStay(other:cc.Collider,self:cc.Collider) {
-        if(this.dir ==0 && (other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.MONSTER)){
+        if(this.mapStr[1] =='0' && (other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.MONSTER)){
             this.node.opacity = 128;
         }
     }

@@ -19,7 +19,6 @@ import AirExit from "../Building/AirExit";
 import LevelData from "../Data/LevelData";
 import Portal from "../Building/Portal";
 import RoomBed from "../Building/RoomBed";
-import Random4Save from "../Utils/Random4Save";
 import Building from "../Building/Building";
 
 
@@ -123,7 +122,6 @@ export default class BuildingManager extends cc.Component {
     public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
         if (this.isThe(mapDataStr, '#')) {
             //生成墙
-            // this.addWalls(mapData, i, j);
             this.addDirWalls(mapDataStr, indexPos, levelData);
         } else if (this.isThe(mapDataStr, '-')) {
             let dn = this.addBuilding(this.darkness, indexPos);
@@ -377,33 +375,38 @@ export default class BuildingManager extends cc.Component {
         }
     }
     private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
-        let mapDataStrIndex = parseInt(mapDataStr[1]);
-        if(isNaN(mapDataStrIndex)){
-            mapDataStrIndex = 6;//默认左下角
-        }
-        if(mapDataStr[1]=='#'){
-            mapDataStrIndex = -1;
+        let mapDataStrIndex = mapDataStr[1];
+        if(mapDataStrIndex == '#'){
+            return;
         }
         let node: cc.Node = null;
-        if (mapDataStrIndex > 3 && mapDataStrIndex < 8) {
+        if(mapDataStrIndex == '0'||mapDataStrIndex == '1'||mapDataStrIndex == '2'
+        ||mapDataStrIndex == '3' ||mapDataStrIndex == '8'||mapDataStrIndex == '#'){
+            node = this.addBuilding(this.wall, indexPos);
+        }else{
             node = this.addBuilding(this.corner, indexPos);
             node.getComponent(Wall).isCorner = true;
-        } else {
-            node = this.addBuilding(this.wall, indexPos);
         }
         let wall = node.getComponent(Wall);
-        wall.dir = mapDataStrIndex;
         wall.mapStr = mapDataStr;
         wall.resName = levelData.wallRes;
         switch (mapDataStrIndex) {
-            case 0: break;
-            case 1: node.angle = 180; wall.isBottom = true; break;
-            case 2: node.angle = 90; break;
-            case 3: node.angle = -90; break;
-            case 4: node.angle = -90; break;
-            case 5: node.angle = 180; break;
-            case 6: wall.isBottom = true; break;
-            case 7: wall.isBottom = true; node.scaleX = -1;
+            case '0': break;
+            case '1': node.angle = 180;break;
+            case '2': node.angle = 90; break;
+            case '3': node.angle = -90; break;
+
+            case 'a': wall.isInteral = true;
+            case '4': node.angle = -90; break;
+
+            case 'b': wall.isInteral = true;
+            case '5': node.angle = 180; break;
+
+            case 'c': wall.isInteral = true;
+            case '6': break;
+
+            case 'd':wall.isInteral = true;
+            case '7': node.scaleX = -1;
                 node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
                 node.getComponent(cc.PhysicsBoxCollider).apply();
                 break;

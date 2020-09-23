@@ -7,6 +7,9 @@ export default class Random4Save{
             seed = this.getRandomNum(0,100000000);
         }
     }
+    get Seed(){
+        return this.seed;
+    }
     rand():number{
         this.seed = (this.seed*9301+49297)%233280;
         return this.seed/233280.0;
