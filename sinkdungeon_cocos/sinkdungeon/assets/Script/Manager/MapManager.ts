@@ -203,8 +203,8 @@ export default class MapManager {
             pos.push(cc.v3(dx, dy));
         }
         for (let p of pos) {
-            if (mapData.map[p.x][p.y].indexOf('*') != -1 || mapData.map[p.x][p.y].indexOf('D') != -1) {
-                mapData.map[p.x][p.y] = `D${rand4save.getRandomNum(0, 2)}`;
+            if (mapData.map[p.x][p.y].indexOf('*') != -1 || mapData.map[p.x][p.y].indexOf('W') != -1) {
+                mapData.map[p.x][p.y] = `W${rand4save.getRandomNum(0, 2)}`;
             }
         }
 

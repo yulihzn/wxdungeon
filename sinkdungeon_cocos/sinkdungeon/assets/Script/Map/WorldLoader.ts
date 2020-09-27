@@ -7,7 +7,7 @@ import Logic from "../Logic";
  */
 export default class WorldLoader {
     private worldMap: ChapterData[] = [];
-    private realWorldMap:ChapterData = new ChapterData(99);
+    private realWorldMap: ChapterData = new ChapterData(99);
     //读取文件的数据
     // private allfileRooms00: { [key: string]: MapData[] } = {};
     // private allfileRooms01: { [key: string]: MapData[] } = {};
@@ -24,6 +24,7 @@ export default class WorldLoader {
     isloaded04: boolean = false;
     isloaded05: boolean = false;
     isloaded99: boolean = false;
+
     constructor() {
         this.isloaded = false;
     }
@@ -36,10 +37,11 @@ export default class WorldLoader {
         this.worldMap = new Array();
         for (let i = 0; i < 6; i++) {
             let chapter = new ChapterData(i);
-            this.loadChapterLevel(chapter);
+            // this.loadChapterLevel(chapter);
             this.worldMap.push(chapter);
         }
-        this.loadChapterLevel(this.realWorldMap);
+        // this.loadChapterLevel(this.realWorldMap);
+        this.loadTileSets();
     }
 
     // private formatMapArr(maptemp:string[][]):string[][]{
@@ -74,36 +76,86 @@ export default class WorldLoader {
     //     }
     //     return allfileRooms;
     // }
-    private loadChapterLevel(data: ChapterData) {
-        cc.resources.load(`Data/world/world0${data.chapter}`, (err: Error, resource: cc.TextAsset) => {
+    private loadTileSets() {
+        cc.resources.load('Data/world/tilesets', (err: Error, resource: cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
-                let strs: string = resource.text;
-                //以====为标签分割字符串
-                let arr = strs.split('====');
-                for (let str of arr) {
-                    let level = new LevelData(str);
-                    data.list.push(level);
+                cc.log('tilesets loaded');
+                let tilesets: { [key: string]: string[] } = {};
+                for (let key in resource.json.tiles) {
+                    tilesets[key] = resource.json.tiles[key].objectgroup.name;
                 }
-
-                switch (data.chapter) {
-                    case 0: this.isloaded00 = true; break;
-                    case 1: this.isloaded01 = true; break;
-                    case 2: this.isloaded02 = true; break;
-                    case 3: this.isloaded03 = true; break;
-                    case 4: this.isloaded04 = true; break;
-                    case 5: this.isloaded05 = true; break;
-                    case 99: this.isloaded99 = true; break;
-                }
-                //资源全部加载完成时，重置房间数据，加载存档
-                if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04 && this.isloaded05 && this.isloaded99) {
-                    this.isloaded = true;
-                    cc.log('world loaded');
-                }
+                this.loadTiledMaps(tilesets);
             }
         })
+
     }
+    private loadTiledMaps(tilesets: { [key: string]: string[] }) {
+        cc.resources.loadDir('Data/world/tiledmap', cc.JsonAsset, (err: Error, assert: cc.JsonAsset[]) => {
+            for (let tiledmap of assert) {
+                let arr = tiledmap.name.split('_');
+                let chapter = parseInt(arr[1]);
+                let data = chapter == 99 ? this.realWorldMap : this.worldMap[chapter];
+                let temp: LevelData = tiledmap.json.layers[0].properties;
+                let map = new Array();
+                let w = temp.width * temp.roomWidth;
+                let h = temp.height * temp.roomHeight;
+                for (let i = 0; i < w; i++) {
+                    map[i] = new Array();
+                    for (let j = 0; j < h; j++) {
+                        let value = tiledmap.json.layers[0].data[i * w + j];
+                        map[i][j] = tilesets[value - 1];
+                    }
+                }
+                //对应行列在里是反过来的
+                let turnArr = new Array();
+                for (let i = 0; i < map[0].length; i++) {
+                    turnArr[i] = new Array();
+                    for (let j = 0; j < map.length; j++) {
+                        turnArr[i][map.length-1-j] = map[j][i];
+                    }
+                }
+                temp.map = turnArr;
+                let level = new LevelData();
+                level.valueCopy(temp);
+                data.list.push(level);
+            }
+            this.isloaded = true;
+            cc.log('world loaded');
+        })
+    }
+    // private loadChapterLevel(data: ChapterData) {
+
+    //     cc.resources.load(`Data/world/world0${data.chapter}`, (err: Error, resource: cc.TextAsset) => {
+    //         if (err) {
+    //             cc.error(err);
+    //         } else {
+    //             let strs: string = resource.text;
+    //             //以====为标签分割字符串
+    //             let arr = strs.split('====');
+    //             for (let str of arr) {
+    //                 let level = new LevelData(str);
+    //                 data.list.push(level);
+    //             }
+
+    //             switch (data.chapter) {
+    //                 case 0: this.isloaded00 = true; break;
+    //                 case 1: this.isloaded01 = true; break;
+    //                 case 2: this.isloaded02 = true; break;
+    //                 case 3: this.isloaded03 = true; break;
+    //                 case 4: this.isloaded04 = true; break;
+    //                 case 5: this.isloaded05 = true; break;
+    //                 case 99: this.isloaded99 = true; break;
+    //             }
+    //             //资源全部加载完成时，重置房间数据，加载存档
+    //             if (this.isloaded00 && this.isloaded01 && this.isloaded02 && this.isloaded03 && this.isloaded04 && this.isloaded05 && this.isloaded99) {
+    //                 this.isloaded = true;
+    //                 cc.log('world loaded');
+    //             }
+    //         }
+    //     })
+    // }
     // private loadChapterMap(chapterIndex: number, allfileRooms: { [key: string]: MapData[] }) {
     //     cc.resources.load(`Data/room/rooms0${chapterIndex}`, (err: Error, resource: cc.TextAsset) => {
     //         if (err) {
@@ -152,12 +204,12 @@ export default class WorldLoader {
         return this.worldMap.length;
     }
     getChapterData(chapterIndex: number): ChapterData {
-        if(chapterIndex >= 99){
+        if (chapterIndex >= 99) {
             return this.realWorldMap;
         }
         return this.worldMap[chapterIndex];
     }
-   
+
     getLevelList(chapterIndex: number): LevelData[] {
         return this.getChapterData(chapterIndex).list;
     }

@@ -125,7 +125,7 @@ export default class BuildingManager extends cc.Component {
             this.addDirWalls(mapDataStr, indexPos, levelData);
         } else if (this.isThe(mapDataStr, '-')) {
             let dn = this.addBuilding(this.darkness, indexPos);
-            dn.zIndex = IndexZ.WALL;
+            dn.zIndex = IndexZ.DARKNESS;
         } else if (this.isThe(mapDataStr, '~')) {
             let pint = parseInt(mapDataStr[1]);
             if (pint >= 0 && pint <= 9 || mapDataStr == '~a' || mapDataStr == '~b') {
@@ -254,7 +254,7 @@ export default class BuildingManager extends cc.Component {
             } else {
                 Logic.mapManager.setCurrentBuildingData(b.data);
             }
-        } else if (this.isThe(mapDataStr, 'D')) {
+        } else if (this.isThe(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             let decorate = this.addBuilding(this.decorate, indexPos);
             let d = decorate.getComponent(Decorate);
@@ -296,7 +296,7 @@ export default class BuildingManager extends cc.Component {
         } else if (mapDataStr == 'S1') {
             //生成店主
             this.addBuilding(this.shop, indexPos);
-        } else if (this.isThe(mapDataStr, 'P')) {
+        } else if (this.isThe(mapDataStr, 'D')) {
             this.addDoor(parseInt(mapDataStr[1]), indexPos);
         } else if (this.isThe(mapDataStr, 'E')) {
             let p = this.addBuilding(this.exitdoorPrefab, indexPos);
@@ -304,7 +304,7 @@ export default class BuildingManager extends cc.Component {
             let i = parseInt(mapDataStr[1]);
             exitdoor.init(i);
             this.exitdoors.push(exitdoor);
-        } else if (this.isThe(mapDataStr, 'W')) {
+        } else if (this.isThe(mapDataStr, 'P')) {
             //生成传送门
             let p = this.addBuilding(this.portal, indexPos);
             let i = parseInt(mapDataStr[1]);
@@ -383,9 +383,13 @@ export default class BuildingManager extends cc.Component {
         if(mapDataStrIndex == '0'||mapDataStrIndex == '1'||mapDataStrIndex == '2'
         ||mapDataStrIndex == '3' ||mapDataStrIndex == '8'||mapDataStrIndex == '#'){
             node = this.addBuilding(this.wall, indexPos);
+            if(mapDataStrIndex != '8'){
+                node.zIndex = IndexZ.WALL;
+            }
         }else{
             node = this.addBuilding(this.corner, indexPos);
             node.getComponent(Wall).isCorner = true;
+            node.zIndex = IndexZ.WALLCORNER;
         }
         let wall = node.getComponent(Wall);
         wall.mapStr = mapDataStr;
@@ -410,6 +414,9 @@ export default class BuildingManager extends cc.Component {
                 node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
                 node.getComponent(cc.PhysicsBoxCollider).apply();
                 break;
+        }
+        if(wall.isInteral){
+            node.zIndex = IndexZ.WALLINTERNAL;
         }
     }
     /**生成可打击建筑 */

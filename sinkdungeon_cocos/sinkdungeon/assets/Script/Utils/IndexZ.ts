@@ -11,16 +11,16 @@ export default class IndexZ{
     static readonly BASE = 500;
     /**地板 */
     static readonly FLOOR = 600;
+    /**黑暗 */
+    static readonly DARKNESS = 650;
     /**边墙 */
     static readonly WALL = 700;
+    /**墙角 */
+    static readonly WALLCORNER = 800;
+    /** 墙角（内）*/
+    static readonly WALLINTERNAL = 900;
     /** 角色*/
     static readonly ACTOR = 2000;
-    
-    /**边墙 */
-    static readonly WALLSIDEFRONT = 5000;
-
-    /** 门上的墙*/
-    static readonly DOORWALL = 5100;
     /**头上 */
     static readonly OVERHEAD = 6000;
     /**屋顶 */

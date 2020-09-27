@@ -865,6 +865,7 @@
             <key type="filename">bullet/bullet039anim002.png</key>
             <key type="filename">dungeon/coast000.png</key>
             <key type="filename">dungeon/coast001.png</key>
+            <key type="filename">dungeon/coast0011.png</key>
             <key type="filename">dungeon/coast002.png</key>
             <key type="filename">dungeon/coast003.png</key>
             <key type="filename">dungeon/coast004.png</key>
@@ -874,7 +875,6 @@
             <key type="filename">dungeon/coast008.png</key>
             <key type="filename">dungeon/coast009.png</key>
             <key type="filename">dungeon/coast010.png</key>
-            <key type="filename">dungeon/coast011.png</key>
             <key type="filename">dungeon/exit000bg.png</key>
             <key type="filename">dungeon/exit000close.png</key>
             <key type="filename">dungeon/exit000open.png</key>
