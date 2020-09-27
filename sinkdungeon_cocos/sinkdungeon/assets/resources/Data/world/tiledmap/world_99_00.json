@@ -9,16 +9,16 @@
          "properties":
             {
              "chapter":0,
-             "floorCoverRes":"tile_lab",
-             "floorRes":"tile_lab",
-             "height":5,
+             "floorCoverRes":"tile_room",
+             "floorRes":"tile_room",
+             "height":3,
              "index":1,
-             "needRadomDecorate":true,
+             "needRadomDecorate":false,
              "roomHeight":11,
              "roomWidth":11,
              "seed":0,
-             "wallRes":"walltop00anim002",
-             "width":5
+             "wallRes":"wall01anim002",
+             "width":3
             },
          "propertytypes":
             {
