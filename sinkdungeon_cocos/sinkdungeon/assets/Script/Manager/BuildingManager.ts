@@ -376,9 +376,7 @@ export default class BuildingManager extends cc.Component {
     }
     private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
         let mapDataStrIndex = mapDataStr[1];
-        if(mapDataStrIndex == '#'){
-            return;
-        }
+        
         let node: cc.Node = null;
         if(mapDataStrIndex == '0'||mapDataStrIndex == '1'||mapDataStrIndex == '2'
         ||mapDataStrIndex == '3' ||mapDataStrIndex == '8'||mapDataStrIndex == '#'){
@@ -395,8 +393,9 @@ export default class BuildingManager extends cc.Component {
         wall.mapStr = mapDataStr;
         wall.resName = levelData.wallRes;
         switch (mapDataStrIndex) {
+            case '#': wall.isEmpty = true;break;
             case '0': break;
-            case '1': node.angle = 180;break;
+            case '1': node.angle = 180;wall.isBottom=true;break;
             case '2': node.angle = 90; break;
             case '3': node.angle = -90; break;
 
@@ -407,10 +406,10 @@ export default class BuildingManager extends cc.Component {
             case '5': node.angle = 180; break;
 
             case 'c': wall.isInteral = true;
-            case '6': break;
+            case '6': wall.isBottom=true;break;
 
             case 'd':wall.isInteral = true;
-            case '7': node.scaleX = -1;
+            case '7': wall.isBottom=true;node.scaleX = -1;
                 node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
                 node.getComponent(cc.PhysicsBoxCollider).apply();
                 break;

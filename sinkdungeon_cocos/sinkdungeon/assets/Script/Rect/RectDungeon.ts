@@ -32,7 +32,7 @@ export default class RectDungeon {
     public startIndex: cc.Vec2 = cc.Vec2.ZERO;
     public endIndex: cc.Vec2 = cc.v2(-1, -1);
 
-    buildMapFromSave(dungeon: RectDungeon): RectDungeon {
+    buildMapFromSave(dungeon: RectDungeon,levelData?: LevelData): RectDungeon {
         this.id = dungeon.id;
         this.width = dungeon.width;
         this.height = dungeon.height;
@@ -73,6 +73,9 @@ export default class RectDungeon {
             this.map[i] = new Array();
             for (let j = 0; j < this.height; j++) {
                 this.map[i][j] = new RectRoom(i, j, RoomType.EMPTY_ROOM).initFromSave(dungeon.map[i][j]);
+                if(levelData){
+                    this.map[i][j].roomType = RoomType.getTypeByName(levelData.roomTypes[i][j]);
+                }
                 if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
                     //开始房间默认被发现
                     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
@@ -105,7 +108,7 @@ export default class RectDungeon {
         for (let i = 0; i < levelData.width; i++) {
             this.map[i] = new Array();
             for (let j = 0; j < levelData.height; j++) {
-                this.map[i][j] = new RectRoom(i, j, RoomType.getTypeByName(levelData.map[i * levelData.roomWidth][j * levelData.roomHeight][1]));
+                this.map[i][j] = new RectRoom(i, j, RoomType.getTypeByName(levelData.roomTypes[i][j]));
                 if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
                     //开始房间默认被发现
                     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
@@ -176,7 +179,7 @@ export default class RectDungeon {
         if (x >= this.width || x < 0 || y >= this.height || y < 0) {
             return;
         }
-        if (this.map[x][y].roomType.isNotEqual(RoomType.EMPTY_ROOM) && this.map[x][y].state != RectRoom.STATE_CLEAR) {
+        if (this.map[x][y].state != RectRoom.STATE_CLEAR) {
             this.map[x][y].state = RectRoom.STATE_FOUND;
         }
     }

@@ -27,6 +27,8 @@ export default class Door extends Building {
     dir = 0;
     sprite: cc.Sprite = null;
     bg: cc.Sprite = null;
+    bg1: cc.Sprite = null;
+    bg2: cc.Sprite = null;
     boxCollider: cc.PhysicsBoxCollider;
 
     // LIFE-CYCLE CALLBACKS:
@@ -34,6 +36,8 @@ export default class Door extends Building {
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.bg = this.node.getChildByName('bg').getComponent(cc.Sprite);
+        this.bg1 = this.node.getChildByName('bg').getChildByName('bg1').getComponent(cc.Sprite);
+        this.bg2 = this.node.getChildByName('bg').getChildByName('bg2').getComponent(cc.Sprite);
         this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
 
@@ -44,13 +48,17 @@ export default class Door extends Building {
             this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim000`];
         }
         if (this.bg) {
-            this.bg.spriteFrame = Logic.spriteFrames[`walltop0${Logic.chapterIndex}anim001`];
+            let spriteframe = Logic.spriteFrames[`walltop0${Logic.chapterIndex}anim001`];
+            this.bg.spriteFrame = spriteframe;
+            this.bg1.spriteFrame = spriteframe;
+            this.bg2.spriteFrame = spriteframe;
             this.bg.node.parent = this.node.parent;
             this.bg.node.position = this.node.position;
             this.bg.node.angle = this.node.angle;
             this.bg.node.zIndex = IndexZ.OVERHEAD;
         }
     }
+   
     setOpen(isOpen: boolean, immediately?: boolean) {
         if (!this.isDoor) {
             return;

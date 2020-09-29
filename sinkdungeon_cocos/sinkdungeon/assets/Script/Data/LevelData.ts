@@ -13,6 +13,7 @@ export default class LevelData {
     exitRes = '';//出入口资源名
     needRadomDecorate = false;
     map: string[][] = [];
+    roomTypes: string[][] = [];
 
     constructor() {
     }
@@ -63,6 +64,7 @@ export default class LevelData {
         this.roomWidth = data.roomWidth;
         this.roomHeight = data.roomHeight;
         this.map = data.map;
+        this.roomTypes = data.roomTypes;
         this.floorRes = data.floorRes;
         this.floorCoverRes = data.floorCoverRes;
         this.wallRes = data.wallRes;
@@ -70,7 +72,7 @@ export default class LevelData {
         this.exitRes = data.exitRes;
         this.needRadomDecorate = data.needRadomDecorate;
     }
-    getRoom(x: number, y: number): string[][] {
+    getRoomMap(x: number, y: number): string[][] {
         let temp: string[][] = new Array();
         for (let i = 0; i < this.roomWidth; i++) {
             temp[i] = new Array();

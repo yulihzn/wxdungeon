@@ -21,18 +21,25 @@ export default class Wall extends Building {
     pos:cc.Vec3;
     half = false;
     wallsprite:cc.Sprite;
+    shadowsprite:cc.Sprite;
     mapStr:string = '##';
     resName:string = '';
     isCorner = false;
     isInteral = false;
+    isBottom = false;
+    isEmpty = false;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.wallsprite = this.node.getChildByName('sprite').getChildByName('wallsprite').getComponent(cc.Sprite);
+        this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite);
     }
     changeRes(resName:string){
         this.wallsprite.spriteFrame = Logic.spriteFrames[resName];
+        if(this.isEmpty){
+            return this.node.opacity = 0;
+        }
     }
     setPos(pos:cc.Vec3){
         this.pos = pos;
@@ -47,22 +54,32 @@ export default class Wall extends Building {
         if(this.mapStr[1] == '8'){
             return this.resName;
         }
+        if(this.isBottom){
+            this.shadowsprite.node.opacity = 0;
+        }
         if(this.isCorner){
+            if(!this.isInteral){
+                this.shadowsprite.node.opacity = 0;
+            }
             return `wallcorner0${Logic.chapterIndex}${this.isInteral?'anim001':'anim000'}`
         }
         return s;
     }
     
     onCollisionEnter(other:cc.Collider,self:cc.Collider) {
-        this.node.opacity = 255;
+        if(!this.isEmpty){
+            this.node.opacity = 255;
+        }
     }
     onCollisionStay(other:cc.Collider,self:cc.Collider) {
-        if(this.mapStr[1] =='0' && (other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.MONSTER)){
+        if(this.mapStr[1] =='0' && !this.isEmpty && (other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.MONSTER)){
             this.node.opacity = 128;
         }
     }
     onCollisionExit(other:cc.Collider,self:cc.Collider) {
-        this.node.opacity = 255;
+        if(!this.isEmpty){
+            this.node.opacity = 255;
+        }
     }
     // update (dt) {}
 }

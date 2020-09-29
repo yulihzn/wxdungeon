@@ -54,7 +54,7 @@ export default class MapManager {
         //地图重新生成
         this.rectDungeon = new RectDungeon();
         if (Logic.profileManager.data && Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]) {
-            this.rectDungeon.buildMapFromSave(Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]);
+            this.rectDungeon.buildMapFromSave(Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`],data);
         } else {
             this.rectDungeon.buildMap(data);
             //设置当前位置为开始房间位置
@@ -80,7 +80,7 @@ export default class MapManager {
         let room = this.getCurrentRoom();
         let mdd = new MapData('');
         let data = Logic.worldLoader.getCurrentLevelData();
-        mdd.map = data.getRoom(room.x, room.y);
+        mdd.map = data.getRoomMap(room.x, room.y);
         //添加随机元素
         let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed, data.needRadomDecorate);
         return mapdata.map;

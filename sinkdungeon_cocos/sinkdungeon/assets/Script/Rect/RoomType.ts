@@ -27,7 +27,7 @@ export default class RoomType{
     static readonly WATER_ROOM = new RoomType(22,'W');//气垫船 水上房间
     static readonly X_ROOM = new RoomType(23,'X');//X
     static readonly HIDDEN_ROOM = new RoomType(24,'Y');//隐藏房间 Y
-    static readonly Z_ROOM = new RoomType(25,'Z');//Z
+    static readonly Z_ROOM = new RoomType(25,'Z');//Z//普通缺省房间
 
     private id = 0;
     private name = '';
@@ -61,7 +61,6 @@ export default class RoomType{
         return RoomType.START_ROOM.isNotEqual(roomType)&&RoomType.TEST_ROOM.isNotEqual(roomType)&&RoomType.PREPARE_ROOM.isNotEqual(roomType);
     }
     static isMonsterGenerateRoom(roomType:RoomType){
-        return false;
         return RoomType.DANGER_ROOM.isEqual(roomType)||RoomType.INSANE_ROOM.isEqual(roomType)||RoomType.BOSS_ROOM.isEqual(roomType)
         ||RoomType.KEY_ROOM.isEqual(roomType)||RoomType.LOOT_ROOM.isEqual(roomType)||RoomType.NORMAL_ROOM.isEqual(roomType);
     }

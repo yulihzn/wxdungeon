@@ -8,7 +8,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":72,
+ "tilecount":85,
  "tileheight":16,
  "tiles":
     {
@@ -88,7 +88,7 @@
          "objectgroup":
             {
              "draworder":"index",
-             "name":"D3",
+             "name":"D2",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -105,7 +105,7 @@
          "objectgroup":
             {
              "draworder":"index",
-             "name":"D2",
+             "name":"D3",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -716,8 +716,8 @@
          "imagewidth":16,
          "objectgroup":
             {
-             "draworder":"topdown",
-             "name":"#A",
+             "draworder":"index",
+             "name":"A",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -733,8 +733,8 @@
          "imagewidth":16,
          "objectgroup":
             {
-             "draworder":"topdown",
-             "name":"#B",
+             "draworder":"index",
+             "name":"B",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -750,8 +750,8 @@
          "imagewidth":16,
          "objectgroup":
             {
-             "draworder":"topdown",
-             "name":"#C",
+             "draworder":"index",
+             "name":"C",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -768,7 +768,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#D",
+             "name":"D",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -785,7 +785,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#E",
+             "name":"E",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -802,7 +802,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#F",
+             "name":"F",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -819,7 +819,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#G",
+             "name":"G",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -836,7 +836,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#H",
+             "name":"H",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -853,7 +853,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#I",
+             "name":"I",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -870,7 +870,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#J",
+             "name":"J",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -887,7 +887,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#K",
+             "name":"K",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -904,7 +904,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#L",
+             "name":"L",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -921,7 +921,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#M",
+             "name":"M",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -938,7 +938,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#N",
+             "name":"N",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -955,7 +955,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#O",
+             "name":"O",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -972,7 +972,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#P",
+             "name":"P",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -989,7 +989,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#Q",
+             "name":"Q",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1006,7 +1006,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#R",
+             "name":"R",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1023,7 +1023,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#S",
+             "name":"S",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1040,7 +1040,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#T",
+             "name":"T",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1057,7 +1057,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#U",
+             "name":"U",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1074,7 +1074,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#V",
+             "name":"V",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1091,7 +1091,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#W",
+             "name":"W",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1108,7 +1108,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#X",
+             "name":"X",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1125,7 +1125,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#Y",
+             "name":"Y",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1142,7 +1142,7 @@
          "objectgroup":
             {
              "draworder":"topdown",
-             "name":"#Z",
+             "name":"Z",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1158,8 +1158,8 @@
          "imagewidth":16,
          "objectgroup":
             {
-             "draworder":"topdown",
-             "name":"X0",
+             "draworder":"index",
+             "name":"Z0",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",
@@ -1228,6 +1228,227 @@
             {
              "draworder":"index",
              "name":"C0",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "350":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z0",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "351":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z1",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "352":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z2",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "353":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss4.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z3",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "354":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss5.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z4",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "355":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss6.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z5",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "356":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss7.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z6",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "357":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss8.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z7",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "358":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss9.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z8",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "359":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss10.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"z9",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "360":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/boss11.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"zz",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "361":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/trap_thron.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"T0",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "362":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallempty.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"##",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",

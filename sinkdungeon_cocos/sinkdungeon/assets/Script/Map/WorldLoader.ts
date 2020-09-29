@@ -99,24 +99,39 @@ export default class WorldLoader {
                 let data = chapter == 99 ? this.realWorldMap : this.worldMap[chapter];
                 let temp: LevelData = tiledmap.json.layers[0].properties;
                 let map = new Array();
+                let rooms = new Array();
                 let w = temp.width * temp.roomWidth;
                 let h = temp.height * temp.roomHeight;
                 for (let i = 0; i < w; i++) {
                     map[i] = new Array();
+                    rooms[i] = new Array();
                     for (let j = 0; j < h; j++) {
-                        let value = tiledmap.json.layers[0].data[i * w + j];
-                        map[i][j] = tilesets[value - 1];
+                        let value1 = tiledmap.json.layers[0].data[i * w + j];
+                        map[i][j] = tilesets[value1 - 1];
+                        let value2 = tiledmap.json.layers[1].data[i * w + j];
+                        rooms[i][j] = tilesets[value2 - 1];
                     }
                 }
                 //对应行列在里是反过来的
-                let turnArr = new Array();
+                let turnMap = new Array();
+                let turnRooms = new Array();
                 for (let i = 0; i < map[0].length; i++) {
-                    turnArr[i] = new Array();
+                    turnMap[i] = new Array();
+                    turnRooms[i] = new Array();
                     for (let j = 0; j < map.length; j++) {
-                        turnArr[i][map.length-1-j] = map[j][i];
+                        turnMap[i][map.length-1-j] = map[j][i];
+                        turnRooms[i][rooms.length-1-j] = rooms[j][i];
                     }
                 }
-                temp.map = turnArr;
+                temp.map = turnMap;
+                let flagMap = new Array();
+                for (let i = 0; i < temp.width; i++) {
+                    flagMap[i] = new Array();
+                    for (let j = 0; j < temp.height; j++) {
+                        flagMap[i][j] = turnRooms[i*temp.roomWidth][j*temp.roomHeight];
+                    }
+                }
+                temp.roomTypes = flagMap;
                 let level = new LevelData();
                 level.valueCopy(temp);
                 data.list.push(level);
