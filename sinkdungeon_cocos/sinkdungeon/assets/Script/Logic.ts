@@ -197,6 +197,7 @@ export default class Logic extends cc.Component {
         Logic.isFromChapter = false;
         Logic.isFromReal = false;
         Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
+        Logic.mapManager.rand4save = null;
         //保存数据
         Logic.saveData();
         AudioPlayer.play(AudioPlayer.EXIT);

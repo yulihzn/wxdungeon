@@ -51,6 +51,7 @@ export default class MapManager {
 
     reset(isBack?: boolean) {
         let data = Logic.worldLoader.getCurrentLevelData();
+        this.rand4save = null;
         //地图重新生成
         this.rectDungeon = new RectDungeon();
         if (Logic.profileManager.data && Logic.profileManager.data.rectDungeons[`${data.chapter}${data.index}`]) {
@@ -149,8 +150,9 @@ export default class MapManager {
     public getCurrentRoomRandom4Save(): Random4Save {
         let room = this.getCurrentRoom();
         if (room) {
-            if (!this.rand4save || this.rand4save.Seed != room.seed) {
-                this.rand4save = new Random4Save(this.getCurrentRoom().seed);
+            if (!this.rand4save) {
+                this.rand4save = new Random4Save(room.seed);
+                this.rand4save.Seed = room.seed;
             }
         } else {
             if (!this.rand4save) {

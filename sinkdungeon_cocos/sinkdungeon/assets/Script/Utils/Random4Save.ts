@@ -1,14 +1,17 @@
 export default class Random4Save{
     //伪随机数
-    private seed:number = new Date().getTime();
+    private seed:number=0;
     constructor(seed:number){
         this.seed = seed;
         if(seed<=0){
-            seed = this.getRandomNum(0,100000000);
+            seed = new Date().getTime();
         }
     }
     get Seed(){
         return this.seed;
+    }
+    set Seed(seed:number){
+        this.seed = seed;
     }
     rand():number{
         this.seed = (this.seed*9301+49297)%233280;
