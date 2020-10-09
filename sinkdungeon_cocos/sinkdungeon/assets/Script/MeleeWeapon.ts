@@ -87,6 +87,10 @@ export default class MeleeWeapon extends cc.Component {
     private comboType = 0;
     private isComboing = false;
     private hasTargetMap: { [key: string]: number } = {};
+    private isSecond = false;//是否是副手
+    set IsSecond(isSecond:boolean){
+        this.isSecond = isSecond;
+    }
     get IsFist(){
         return this.isFist;
     }
@@ -165,9 +169,6 @@ export default class MeleeWeapon extends cc.Component {
     private updateCombo() {
         if (this.comboType == MeleeWeapon.COMBO1) {
             this.comboType = MeleeWeapon.COMBO2;
-            if (this.isFist) {
-                this.comboType = MeleeWeapon.COMBO1;
-            }
         } else if (this.comboType == MeleeWeapon.COMBO2) {
             this.comboType = MeleeWeapon.COMBO3;
         } else if (this.comboType == MeleeWeapon.COMBO3) {
@@ -272,6 +273,12 @@ export default class MeleeWeapon extends cc.Component {
         return name + this.getComboSuffix();
     }
     private getComboSuffix(): string {
+        if (this.isFist) {
+            if(this.isSecond){
+                return '2';
+            }
+            return '1';
+        }
         if (this.comboType == MeleeWeapon.COMBO1) {
             return '1';
         } else if (this.comboType == MeleeWeapon.COMBO2) {

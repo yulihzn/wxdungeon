@@ -38,6 +38,7 @@ export default class PlayerWeapon extends cc.Component {
     }
     private initMelee() {
         this.meleeWeapon = this.getComponentInChildren(MeleeWeapon);
+        this.meleeWeapon.IsSecond = this.isLeftHand;
     }
     private initShooter() {
         this.shooter = this.getComponentInChildren(Shooter);

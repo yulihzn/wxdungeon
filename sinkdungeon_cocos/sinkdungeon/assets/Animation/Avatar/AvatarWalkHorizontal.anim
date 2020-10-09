@@ -5,7 +5,7 @@
   "_native": "",
   "_duration": 1.3333333333333333,
   "sample": 60,
-  "speed": 2,
+  "speed": 2.5,
   "wrapMode": 2,
   "curveData": {
     "paths": {
@@ -113,7 +113,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": -45,
+              "value": -30,
               "curve": "constant"
             },
             {
@@ -133,8 +133,7 @@
             },
             {
               "frame": 1.3333333333333333,
-              "value": -45,
-              "curve": "constant"
+              "value": -30
             }
           ],
           "position": [
@@ -320,7 +319,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": -30,
+              "value": -45,
               "curve": "constant"
             },
             {
@@ -335,8 +334,7 @@
             },
             {
               "frame": 1.3333333333333333,
-              "value": -30,
-              "curve": "constant"
+              "value": -45
             }
           ]
         },
