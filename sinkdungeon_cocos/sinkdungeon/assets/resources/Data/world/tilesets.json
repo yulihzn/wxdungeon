@@ -8,7 +8,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":85,
+ "tilecount":86,
  "tileheight":16,
  "tiles":
     {
@@ -1449,6 +1449,23 @@
             {
              "draworder":"index",
              "name":"##",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "363":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/tilecover.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"*4",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",

@@ -96,6 +96,8 @@ export default class BuildingManager extends cc.Component {
     airTranspotModel: cc.Prefab = null;
     @property(cc.Prefab)
     roomBed: cc.Prefab = null;
+    @property(cc.Prefab)
+    mist: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
@@ -120,7 +122,21 @@ export default class BuildingManager extends cc.Component {
         return building;
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
-        if (this.isThe(mapDataStr, '#')) {
+        if (this.isThe(mapDataStr, '*')) {
+            let offset = cc.v3(0,0);
+            if(indexPos.x==Dungeon.WIDTH_SIZE-1){
+                offset = cc.v3(1,0);
+            }else if(indexPos.x==0){
+                offset = cc.v3(-1,0);
+            }else if(indexPos.y==Dungeon.HEIGHT_SIZE-1){
+                offset = cc.v3(0,1);
+            }else if(indexPos.y==0){
+                offset = cc.v3(0,-1);
+            }
+            if(offset.x!=0||offset.y!=0){
+                this.addBuilding(this.mist, cc.v3(indexPos.x+offset.x,indexPos.y+offset.y)).zIndex = IndexZ.OVERHEAD;
+            }
+        } else if (this.isThe(mapDataStr, '#')) {
             //生成墙
             this.addDirWalls(mapDataStr, indexPos, levelData);
         } else if (this.isThe(mapDataStr, '-')) {
