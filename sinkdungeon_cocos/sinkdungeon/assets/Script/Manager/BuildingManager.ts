@@ -117,25 +117,25 @@ export default class BuildingManager extends cc.Component {
         building.position = Dungeon.getPosInMap(indexPos);
         building.zIndex = IndexZ.getActorZIndex(building.position);
         let b = building.getComponent(Building);
-        if(b){
+        if (b) {
             b.data.defaultPos = indexPos.clone();
         }
         return building;
     }
-    public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData,exits:ExitData[]) {
+    public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
         if (this.isThe(mapDataStr, '*')) {
-            let offset = cc.v3(0,0);
-            if(indexPos.x==Dungeon.WIDTH_SIZE-1){
-                offset = cc.v3(1,0);
-            }else if(indexPos.x==0){
-                offset = cc.v3(-1,0);
-            }else if(indexPos.y==Dungeon.HEIGHT_SIZE-1){
-                offset = cc.v3(0,1);
-            }else if(indexPos.y==0){
-                offset = cc.v3(0,-1);
+            let offset = cc.v3(0, 0);
+            if (indexPos.x == Dungeon.WIDTH_SIZE - 1) {
+                offset = cc.v3(1, 0);
+            } else if (indexPos.x == 0) {
+                offset = cc.v3(-1, 0);
+            } else if (indexPos.y == Dungeon.HEIGHT_SIZE - 1) {
+                offset = cc.v3(0, 1);
+            } else if (indexPos.y == 0) {
+                offset = cc.v3(0, -1);
             }
-            if(offset.x!=0||offset.y!=0){
-                this.addBuilding(this.mist, cc.v3(indexPos.x+offset.x,indexPos.y+offset.y)).zIndex = IndexZ.OVERHEAD;
+            if (offset.x != 0 || offset.y != 0) {
+                this.addBuilding(this.mist, cc.v3(indexPos.x + offset.x, indexPos.y + offset.y)).zIndex = IndexZ.OVERHEAD;
             }
         } else if (this.isThe(mapDataStr, '#')) {
             //生成墙
@@ -320,14 +320,13 @@ export default class BuildingManager extends cc.Component {
             let exitdoor = p.getComponent(ExitDoor);
             let i = parseInt(mapDataStr[1]);
             let d = new ExitData();
-            for(let e of exits){
-                if(e.fromIndexPos.equals(indexPos)
-                &&e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x,Logic.mapManager.getCurrentRoom().y))){
+            for (let e of exits) {
+                if (e.fromIndexPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
                     d.valueCopy(e);
                     break;
                 }
             }
-            exitdoor.init(i,d);
+            exitdoor.init(i, d);
             this.exitdoors.push(exitdoor);
         } else if (this.isThe(mapDataStr, 'P')) {
             //生成传送门
@@ -401,15 +400,15 @@ export default class BuildingManager extends cc.Component {
     }
     private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
         let mapDataStrIndex = mapDataStr[1];
-        
+
         let node: cc.Node = null;
-        if(mapDataStrIndex == '0'||mapDataStrIndex == '1'||mapDataStrIndex == '2'
-        ||mapDataStrIndex == '3' ||mapDataStrIndex == '8'||mapDataStrIndex == '#'){
+        if (mapDataStrIndex == '0' || mapDataStrIndex == '1' || mapDataStrIndex == '2'
+            || mapDataStrIndex == '3' || mapDataStrIndex == '8' || mapDataStrIndex == '#') {
             node = this.addBuilding(this.wall, indexPos);
-            if(mapDataStrIndex != '8'){
+            if (mapDataStrIndex != '8') {
                 node.zIndex = IndexZ.WALL;
             }
-        }else{
+        } else {
             node = this.addBuilding(this.corner, indexPos);
             node.getComponent(Wall).isCorner = true;
             node.zIndex = IndexZ.WALLCORNER;
@@ -418,9 +417,9 @@ export default class BuildingManager extends cc.Component {
         wall.mapStr = mapDataStr;
         wall.resName = levelData.wallRes;
         switch (mapDataStrIndex) {
-            case '#': wall.isEmpty = true;break;
+            case '#': wall.isEmpty = true; break;
             case '0': break;
-            case '1': node.angle = 180;wall.isBottom=true;break;
+            case '1': node.angle = 180; wall.isBottom = true; break;
             case '2': node.angle = 90; break;
             case '3': node.angle = -90; break;
 
@@ -431,15 +430,15 @@ export default class BuildingManager extends cc.Component {
             case '5': node.angle = 180; break;
 
             case 'c': wall.isInteral = true;
-            case '6': wall.isBottom=true;break;
+            case '6': wall.isBottom = true; break;
 
-            case 'd':wall.isInteral = true;
-            case '7': wall.isBottom=true;node.scaleX = -1;
+            case 'd': wall.isInteral = true;
+            case '7': wall.isBottom = true; node.scaleX = -1;
                 node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
                 node.getComponent(cc.PhysicsBoxCollider).apply();
                 break;
         }
-        if(wall.isInteral){
+        if (wall.isInteral) {
             node.zIndex = IndexZ.WALLINTERNAL;
         }
     }

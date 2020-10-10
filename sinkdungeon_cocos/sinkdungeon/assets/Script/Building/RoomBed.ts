@@ -1,4 +1,3 @@
-import ExitData from "../Data/ExitData";
 import FromData from "../Data/FromData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
@@ -21,7 +20,6 @@ export default class RoomBed extends Building {
     isWakeUp = false;
     dungeon:Dungeon;
     isFirst = true;
-    exitData:ExitData = new ExitData();
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -45,7 +43,7 @@ export default class RoomBed extends Building {
                 if(Logic.playerData.pos.equals(this.data.defaultPos)){
                     Logic.playerData.pos.y=this.data.defaultPos.y-1;
                 }
-                Logic.loadingNextLevel(false,false,true,true,this.exitData);
+                Logic.loadingNextLevel(false,true,true);
             },1)
         }
     }

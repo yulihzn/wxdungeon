@@ -1,5 +1,3 @@
-import Logic from "../Logic";
-
 export default class ExitData{
     fromRoomPos = cc.v3(0,0);
     fromIndexPos = cc.v3(0,0);
@@ -20,14 +18,6 @@ export default class ExitData{
         data.fromIndexPos = this.fromIndexPos.clone();
         data.toChapter = this.toChapter;
         data.toLevel = this.toLevel;
-        return data;
-    }
-    static getRealExitData():ExitData{
-        let data = new ExitData();
-        data.fromIndexPos = cc.v3(0,0);
-        data.fromRoomPos = cc.v3(0,0);
-        data.toChapter = Logic.CHAPTER099;
-        data.toLevel = Logic.realLevel;
         return data;
     }
 }

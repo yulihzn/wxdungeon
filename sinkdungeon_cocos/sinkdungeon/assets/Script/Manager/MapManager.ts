@@ -49,7 +49,7 @@ export default class MapManager {
         cc.log('maps loaded');
     }
 
-    reset(isBack?: boolean) {
+    reset(pos?: cc.Vec3) {
         let data = Logic.worldLoader.getCurrentLevelData();
         this.rand4save = null;
         //地图重新生成
@@ -59,8 +59,11 @@ export default class MapManager {
         } else {
             this.rectDungeon.buildMap(data);
             //设置当前位置为开始房间位置
-            let index = isBack ? this.rectDungeon.endIndex : this.rectDungeon.startIndex;
+            let index = this.rectDungeon.startIndex;
             this.rectDungeon.currentPos = cc.v3(index.x, index.y);
+        }
+        if(pos){
+            this.rectDungeon.currentPos = pos.clone();
         }
         cc.log(this.rectDungeon.getDisPlay());
         //修改当前房间和四周房间状态为发现

@@ -1,10 +1,8 @@
 import Logic from "./Logic";
-import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
 import Random from "./Utils/Random";
 import Achievements from "./Achievement";
 import ProfileManager from "./Manager/ProfileManager";
-import ExitData from "./Data/ExitData";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -76,7 +74,7 @@ export default class GameOver extends cc.Component {
         if (Logic.chapterIndex == Logic.CHAPTER099) {
             cc.director.loadScene('loading');
         } else {
-            Logic.loadingNextLevel(false, true, false, false,ExitData.getRealExitData());
+            Logic.loadingNextLevel(true, false, false);
         }
     }
     home() {

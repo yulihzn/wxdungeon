@@ -81,9 +81,6 @@ export default class Logic extends cc.Component {
     static dieFrom: FromData = new FromData();
     static isMapReset = false;
     static lastBgmIndex = 0;
-    static isBackToUpLevel = false;//是否返回上一章
-    static isFromChapter = false;//是否是章节更换
-    static isFromReal = false;//是否是现实切入
 
     static profileManager: ProfileManager = new ProfileManager();
 
@@ -194,9 +191,6 @@ export default class Logic extends cc.Component {
         }
     }
     static loadingNextRoom(dir: number) {
-        Logic.isBackToUpLevel = false;
-        Logic.isFromChapter = false;
-        Logic.isFromReal = false;
         Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         Logic.mapManager.rand4save = null;
         //保存数据
@@ -216,10 +210,15 @@ export default class Logic extends cc.Component {
 
         }
     }
-    static loadingNextLevel(isBack: boolean,isGoReal:boolean,isBackDream:boolean,needSave:boolean,exitData:ExitData) {
-        Logic.isBackToUpLevel = isBack;
-        Logic.isFromChapter = true;
-        Logic.isFromReal = isBackDream;
+    static loadingNextLevel(isGoReal:boolean,isBackDream:boolean,needSave:boolean,exitData?:ExitData) {
+        
+        //如果地图不存在停止加载
+        if(exitData&&!isGoReal&&!isBackDream){
+            let data = Logic.worldLoader.getLevelData(exitData.toChapter,exitData.toLevel);
+            if(!data){
+                return;
+            }
+        }
         if(Logic.playerData){
             Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         }
@@ -227,9 +226,7 @@ export default class Logic extends cc.Component {
         if(needSave){
             Logic.saveData();
         }
-        if(!isGoReal&&!isBackDream){
-            Logic.level += isBack ? -1 : 1;
-        }
+        
         if(isGoReal){
             //保存当前关卡等级
             Logic.lastLevel = Logic.level;
@@ -242,38 +239,44 @@ export default class Logic extends cc.Component {
             Logic.level = Logic.lastLevel;
             Logic.chapterIndex = Logic.lastChapterIndex;
         }
-        let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
-        let chapterLength = Logic.worldLoader.getChapterLength();
-        //如果关卡为负数level为0直接返回
-        if (Logic.level < 0 && Logic.chapterIndex < 1) {
-            Logic.level = 0;
-            return;
-        }
-
+        
+        // let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
+        // let chapterLength = Logic.worldLoader.getChapterLength();
         //如果关卡到底了判断是否是最后一章游戏完成
-        if (Logic.level > levelLength - 1 && Logic.chapterIndex >= chapterLength - 1) {
-            Logic.profileManager.clearData();
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
-            cc.director.loadScene('gamefinish');
-            return;
-        }
-        if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1&&!isGoReal&&!isBackDream) {
-            Logic.chapterIndex++;
-            Logic.level = 0;
-        }
-        if (Logic.level < 0 && Logic.chapterIndex > 0&&!isGoReal&&!isBackDream) {
-            Logic.chapterIndex--;
-            let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
-            Logic.level = length - 1;
-        }
-       
-        Logic.mapManager.reset(isBack);
-        Logic.changeDungeonSize();
-        let pos = Logic.mapManager.getCurrentRoom().exitPos;
-        if(pos.x==-1&&pos.y==-1){
-            Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
+        // if (Logic.level > levelLength - 1 && Logic.chapterIndex >= chapterLength - 1) {
+        //     Logic.profileManager.clearData();
+        //     cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
+        //     cc.director.loadScene('gamefinish');
+        //     return;
+        // }
+        // if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1&&!isGoReal&&!isBackDream) {
+        //     Logic.chapterIndex++;
+        //     Logic.level = 0;
+        // }
+        // if (Logic.level < 0 && Logic.chapterIndex > 0&&!isGoReal&&!isBackDream) {
+        //     Logic.chapterIndex--;
+        //     let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
+        //     Logic.level = length - 1;
+        // }
+        let indexPos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
+        if(exitData&&!isGoReal&&!isBackDream){
+            Logic.chapterIndex = exitData.toChapter;
+            Logic.level = exitData.toLevel;
+            let data = Logic.worldLoader.getLevelData(exitData.toChapter,exitData.toLevel);
+            let ty = data.height*data.roomHeight-1-exitData.toPos.y;
+            let roomX = Math.floor(exitData.toPos.x/data.roomWidth);
+            let roomY = Math.floor(ty/data.roomHeight);
+            indexPos = cc.v3(exitData.toPos.x%data.roomWidth,ty%data.roomHeight);
+            Logic.mapManager.reset(cc.v3(roomX,roomY));
         }else{
-            Logic.playerData.pos = pos;
+            Logic.mapManager.reset();
+        }
+        Logic.changeDungeonSize();
+        let exitPos = Logic.mapManager.getCurrentRoom().exitPos;
+        if(exitPos.x==-1&&exitPos.y==-1){
+            Logic.playerData.pos = indexPos;
+        }else{
+            Logic.playerData.pos = exitPos;
         }
         //暂时不选择技能
         Logic.isPickedTalent = true;

@@ -4,8 +4,6 @@ import Logic from "../Logic";
 import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
-import Dungeon from "../Dungeon";
-import RoomType from "../Rect/RoomType";
 import ExitData from "../Data/ExitData";
 
 // Learn TypeScript:
@@ -27,6 +25,7 @@ export default class ExitDoor extends Building {
     bgSprite: cc.Sprite = null;
     closeSprite: cc.Sprite = null;
     openSprite: cc.Sprite = null;
+    bg: cc.Sprite = null;
     isBackToUpLevel = false;
     dir = 0;
     playerPos = cc.Vec3.ZERO;
@@ -40,6 +39,7 @@ export default class ExitDoor extends Building {
         this.isBackToUpLevel = dir == 4 || dir == 5 || dir == 6 || dir == 7 || dir == 9;
         if (this.dir > 7) {
             this.node.opacity = 0;
+            this.bg.node.opacity = 0;
         }
         this.playerPos = this.data.defaultPos.clone();
         switch (this.dir % 4) {
@@ -53,6 +53,7 @@ export default class ExitDoor extends Building {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);
         this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite);
         this.openSprite = this.node.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite);
+        this.bg = this.node.getChildByName('bg').getComponent(cc.Sprite);
         this.openSprite.node.zIndex = IndexZ.FLOOR;
         this.closeSprite.node.zIndex = IndexZ.ACTOR;
     }
@@ -66,6 +67,14 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER04: this.changeRes('exit004'); break;
             case Logic.CHAPTER05: this.changeRes('exit004'); break;
             case Logic.CHAPTER099: this.changeRes('exit000'); break;
+        }
+        if (this.bg) {
+            let spriteframe = Logic.spriteFrames[`walltop0${Logic.chapterIndex}anim001`];
+            this.bg.spriteFrame = spriteframe;
+            this.bg.node.parent = this.node.parent;
+            this.bg.node.position = this.node.position;
+            this.bg.node.angle = this.node.angle;
+            this.bg.node.zIndex = IndexZ.OVERHEAD;
         }
     }
 
@@ -94,7 +103,7 @@ export default class ExitDoor extends Building {
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.playerData = player.data.clone();
                 Logic.playerData.pos = this.playerPos.clone();
-                Logic.loadingNextLevel(this.isBackToUpLevel, false, false, true,this.exitData);
+                Logic.loadingNextLevel( false, false, true,this.exitData);
             }
         }
     }

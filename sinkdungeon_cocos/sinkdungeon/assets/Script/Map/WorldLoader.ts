@@ -230,6 +230,9 @@ export default class WorldLoader {
     }
     getLevelData(chapterIndex: number, levelIndex: number): LevelData {
         let levelList = this.getLevelList(chapterIndex);
+        if(levelList.length<1){
+            return null;
+        }
         levelList[levelIndex].chapter = chapterIndex;
         return levelList[levelIndex];
     }

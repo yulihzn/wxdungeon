@@ -90,14 +90,14 @@ export default class LevelData {
     getExitList():ExitData[]{
         let list = new Array();
         if(this.exits&&this.exits.length>0){
-            let arr = this.exits.split(';');
+            let arr = this.exits.split('#');
             for(let str of arr){
                 let data = new ExitData();
                 let temps = str.split(',');
                 let fx = parseInt(temps[0]);
-                let fy = this.roomHeight*this.height-parseInt(temps[1]);//这里y是反过来的
+                let fy = this.roomHeight*this.height-parseInt(temps[1])-1;//这里y是反过来的
                 let tx = parseInt(temps[4]);
-                let ty = this.roomHeight*this.height-parseInt(temps[5]);//这里y是反过来的
+                let ty = parseInt(temps[5]);
                 let roomX = Math.floor(fx/this.roomWidth);
                 let roomY = Math.floor(fy/this.roomHeight);
                 data.fromRoomPos = cc.v3(roomX,roomY);
@@ -105,6 +105,7 @@ export default class LevelData {
                 data.toChapter = parseInt(temps[2]);
                 data.toLevel = parseInt(temps[3]);
                 data.toPos = cc.v3(tx,ty);
+                list.push(data);
             }
         }
         return list;

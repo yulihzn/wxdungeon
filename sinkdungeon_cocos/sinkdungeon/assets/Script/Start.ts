@@ -44,6 +44,7 @@ export default class Start extends cc.Component {
     continueGame(){
       
         Logic.resetData();
+        Logic.isFirst = 1;
         AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('loading');
     }
