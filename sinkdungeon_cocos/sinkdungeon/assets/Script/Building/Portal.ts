@@ -3,6 +3,7 @@ import Player from "../Player";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
 import Logic from "../Logic";
+import ExitData from "../Data/ExitData";
 
 
 // Learn TypeScript:
@@ -24,6 +25,7 @@ export default class Portal extends Building {
     anim:cc.Animation;
     isOpen:boolean = false;
     isBackDream = false;
+    exitData:ExitData = new ExitData();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -75,7 +77,7 @@ export default class Portal extends Building {
                 if(Logic.playerData.pos.equals(this.data.defaultPos)){
                     Logic.playerData.pos.y=this.data.defaultPos.y-1;
                 }
-                Logic.loadingNextLevel(false,!this.isBackDream,this.isBackDream,true);
+                Logic.loadingNextLevel(false,!this.isBackDream,this.isBackDream,true,this.exitData);
             }
         }
     }

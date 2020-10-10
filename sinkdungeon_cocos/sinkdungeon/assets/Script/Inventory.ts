@@ -170,7 +170,7 @@ export default class Inventory extends cc.Component {
     private setEquipment(equipmentData: EquipmentData, isChange: boolean) {
         if (isChange && equipmentData.equipmetType != Equipment.EMPTY) {
             let p = this.dungeon.player.getComponent(Player).pos.clone();
-            if (p.y < 1) { p.y += 1; } else { p.y -= 1; }
+            if (p.y < 2) { p.y == 2; } else { p.y -= 1; }
             this.dungeon.addEquipment(equipmentData.img, p, equipmentData);
         }
     }

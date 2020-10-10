@@ -9,6 +9,7 @@
          "properties":
             {
              "chapter":0,
+             "exits":"16,4,0,1,27,2;",
              "floorCoverRes":"tile_lab",
              "floorRes":"tile_lab",
              "height":3,
@@ -23,6 +24,7 @@
          "propertytypes":
             {
              "chapter":"int",
+             "exits":"string",
              "floorCoverRes":"string",
              "floorRes":"string",
              "height":"int",

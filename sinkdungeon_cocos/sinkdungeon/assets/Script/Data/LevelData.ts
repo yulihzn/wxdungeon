@@ -1,3 +1,5 @@
+import ExitData from "./ExitData";
+
 export default class LevelData {
     index: number = 0;//关卡包含的列表下标
     chapter: number = 0;//章节下标
@@ -14,6 +16,7 @@ export default class LevelData {
     needRadomDecorate = false;
     map: string[][] = [];
     roomTypes: string[][] = [];
+    exits:string='';//16,4,0,1,27,1;27,1,0,0,16,4;分号隔开，出口坐标，章节，入口坐标（y轴向下）
 
     constructor() {
     }
@@ -70,6 +73,7 @@ export default class LevelData {
         this.wallRes = data.wallRes;
         this.doorRes = data.doorRes;
         this.exitRes = data.exitRes;
+        this.exits = data.exits;
         this.needRadomDecorate = data.needRadomDecorate;
     }
     getRoomMap(x: number, y: number): string[][] {
@@ -82,5 +86,27 @@ export default class LevelData {
         }
         return temp;
 
+    }
+    getExitList():ExitData[]{
+        let list = new Array();
+        if(this.exits&&this.exits.length>0){
+            let arr = this.exits.split(';');
+            for(let str of arr){
+                let data = new ExitData();
+                let temps = str.split(',');
+                let fx = parseInt(temps[0]);
+                let fy = this.roomHeight*this.height-parseInt(temps[1]);//这里y是反过来的
+                let tx = parseInt(temps[4]);
+                let ty = this.roomHeight*this.height-parseInt(temps[5]);//这里y是反过来的
+                let roomX = Math.floor(fx/this.roomWidth);
+                let roomY = Math.floor(fy/this.roomHeight);
+                data.fromRoomPos = cc.v3(roomX,roomY);
+                data.fromIndexPos = cc.v3(fx%this.roomWidth,fy%this.roomHeight);
+                data.toChapter = parseInt(temps[2]);
+                data.toLevel = parseInt(temps[3]);
+                data.toPos = cc.v3(tx,ty);
+            }
+        }
+        return list;
     }
 }

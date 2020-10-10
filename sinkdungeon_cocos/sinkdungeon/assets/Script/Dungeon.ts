@@ -133,6 +133,7 @@ export default class Dungeon extends cc.Component {
         this.fog.scale = 1.2;
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
+        let exits = leveldata.getExitList();
         Logic.changeDungeonSize();
         this.dungeonStyleManager.addDecorations();
         this.map = new Array();
@@ -158,7 +159,7 @@ export default class Dungeon extends cc.Component {
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
-                this.buildingManager.addBuildingsFromMap(this, mapData[i][j],cc.v3(i,j),leveldata);
+                this.buildingManager.addBuildingsFromMap(this, mapData[i][j],cc.v3(i,j),leveldata,exits);
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     //生成心

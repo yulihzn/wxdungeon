@@ -165,8 +165,8 @@
     "autoRemoveOnFinish": false,
     "totalParticles": 50,
     "duration": -1,
-    "emissionRate": 50,
-    "life": 1,
+    "emissionRate": 5,
+    "life": 10,
     "lifeVar": 0.25,
     "_startColor": {
       "__type__": "cc.Color",
@@ -222,10 +222,10 @@
     "gravity": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -150
+      "y": 0
     },
-    "speed": 40,
-    "speedVar": 20,
+    "speed": 5,
+    "speedVar": 2,
     "tangentialAccel": 0,
     "tangentialAccelVar": 0,
     "radialAccel": 0,

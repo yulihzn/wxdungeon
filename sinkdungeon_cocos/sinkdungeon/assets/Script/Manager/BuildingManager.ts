@@ -20,6 +20,7 @@ import LevelData from "../Data/LevelData";
 import Portal from "../Building/Portal";
 import RoomBed from "../Building/RoomBed";
 import Building from "../Building/Building";
+import ExitData from "../Data/ExitData";
 
 
 // Learn TypeScript:
@@ -121,7 +122,7 @@ export default class BuildingManager extends cc.Component {
         }
         return building;
     }
-    public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
+    public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData,exits:ExitData[]) {
         if (this.isThe(mapDataStr, '*')) {
             let offset = cc.v3(0,0);
             if(indexPos.x==Dungeon.WIDTH_SIZE-1){
@@ -318,7 +319,15 @@ export default class BuildingManager extends cc.Component {
             let p = this.addBuilding(this.exitdoorPrefab, indexPos);
             let exitdoor = p.getComponent(ExitDoor);
             let i = parseInt(mapDataStr[1]);
-            exitdoor.init(i);
+            let d = new ExitData();
+            for(let e of exits){
+                if(e.fromIndexPos.equals(indexPos)
+                &&e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x,Logic.mapManager.getCurrentRoom().y))){
+                    d.valueCopy(e);
+                    break;
+                }
+            }
+            exitdoor.init(i,d);
             this.exitdoors.push(exitdoor);
         } else if (this.isThe(mapDataStr, 'P')) {
             //生成传送门

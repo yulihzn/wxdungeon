@@ -6,6 +6,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
 import Dungeon from "../Dungeon";
 import RoomType from "../Rect/RoomType";
+import ExitData from "../Data/ExitData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,11 +30,13 @@ export default class ExitDoor extends Building {
     isBackToUpLevel = false;
     dir = 0;
     playerPos = cc.Vec3.ZERO;
+    exitData:ExitData = new ExitData();
 
     // LIFE-CYCLE CALLBACKS:
 
-    init(dir: number) {
+    init(dir: number,exitData:ExitData) {
         this.dir = dir;
+        this.exitData.valueCopy(exitData);
         this.isBackToUpLevel = dir == 4 || dir == 5 || dir == 6 || dir == 7 || dir == 9;
         if (this.dir > 7) {
             this.node.opacity = 0;
@@ -91,7 +94,7 @@ export default class ExitDoor extends Building {
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.playerData = player.data.clone();
                 Logic.playerData.pos = this.playerPos.clone();
-                Logic.loadingNextLevel(this.isBackToUpLevel, false, false, true);
+                Logic.loadingNextLevel(this.isBackToUpLevel, false, false, true,this.exitData);
             }
         }
     }

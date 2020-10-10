@@ -198,8 +198,8 @@ export default class MapManager {
     private addDecorate(mapData: MapData, rand4save: Random4Save) {
         let pos = [];
         for (let i = 0; i < 2; i++) {
-            let dx = rand4save.getRandomNum(1, mapData.map.length - 2);
-            let dy = rand4save.getRandomNum(1, mapData.map[0].length - 2);
+            let dx = rand4save.getRandomNum(2, mapData.map.length - 3);
+            let dy = rand4save.getRandomNum(2, mapData.map[0].length - 3);
             pos.push(cc.v3(dx, 1));
             pos.push(cc.v3(1, dy));
             pos.push(cc.v3(dx, dy));

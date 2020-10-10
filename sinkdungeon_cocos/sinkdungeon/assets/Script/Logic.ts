@@ -16,6 +16,7 @@ import FromData from "./Data/FromData";
 import WorldLoader from "./Map/WorldLoader";
 import ProfessionData from "./Data/ProfessionData";
 import Random4Save from "./Utils/Random4Save";
+import ExitData from "./Data/ExitData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -215,7 +216,7 @@ export default class Logic extends cc.Component {
 
         }
     }
-    static loadingNextLevel(isBack: boolean,isGoReal:boolean,isBackDream:boolean,needSave:boolean) {
+    static loadingNextLevel(isBack: boolean,isGoReal:boolean,isBackDream:boolean,needSave:boolean,exitData:ExitData) {
         Logic.isBackToUpLevel = isBack;
         Logic.isFromChapter = true;
         Logic.isFromReal = isBackDream;
