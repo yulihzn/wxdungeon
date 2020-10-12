@@ -3,6 +3,7 @@ import Player from "../Player";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
 import Logic from "../Logic";
+import ExitData from "../Data/ExitData";
 
 
 // Learn TypeScript:
@@ -15,71 +16,71 @@ import Logic from "../Logic";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Portal extends Building {
 
 
-    anim:cc.Animation;
-    isOpen:boolean = false;
+    anim: cc.Animation;
+    isOpen: boolean = false;
     isBackDream = false;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.anim = this.getComponent(cc.Animation);
     }
 
-    start () {
+    start() {
         this.anim = this.getComponent(cc.Animation);
         this.anim.play('PortalCloseIdle');
     }
-    
-    setPos(pos:cc.Vec3){
+
+    setPos(pos: cc.Vec3) {
         this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - pos.y) * 10+1;
+        this.node.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - pos.y) * 10 + 1;
     }
-    AnimGateClose(){
+    AnimGateClose() {
         this.anim.play('PortalCloseIdle');
     }
-    AnimGateOpen(){
+    AnimGateOpen() {
         this.anim.play('PortalOpenIdle');
     }
-    openGate(){
-        if(this.isOpen){
+    openGate() {
+        if (this.isOpen) {
             return;
         }
         this.isOpen = true;
-        this.scheduleOnce(()=>{
-            if(!this.anim){
+        this.scheduleOnce(() => {
+            if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
             this.anim.play('PortalOpen');
-        },0.1);
-        
+        }, 0.1);
+
     }
-    closeGate(){
-        if(!this.isOpen){
+    closeGate() {
+        if (!this.isOpen) {
             return;
         }
         this.isOpen = false;
         this.anim.play('PortalClose');
     }
 
-    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
+    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         let player = otherCollider.body.node.getComponent(Player);
-        if(player){
-            if(this.isOpen){
+        if (player) {
+            if (this.isOpen) {
                 this.closeGate();
                 Logic.playerData = player.data.clone();
-                if(Logic.playerData.pos.equals(this.data.defaultPos)){
-                    Logic.playerData.pos.y=this.data.defaultPos.y-1;
+                if (Logic.playerData.pos.equals(this.data.defaultPos)) {
+                    Logic.playerData.pos.y = this.data.defaultPos.y - 1;
                 }
-                Logic.loadingNextLevel(!this.isBackDream,this.isBackDream,true);
+                Logic.loadingNextLevel(!this.isBackDream, this.isBackDream, true,this.isBackDream?null:ExitData.getRealWorldExitData());
             }
         }
     }
-    
+
 
     // update (dt) {}
 }

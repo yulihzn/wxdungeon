@@ -98,12 +98,12 @@ export default class Decorate extends Building {
                 }
                 let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
                 let rand = rand4save.rand();
-                if (rand > 0.7 && rand < 0.8) {
+                if (rand > 0.6 && rand < 0.8) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 3) } });
                     if(rand4save.getHalfChance()){
                         cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                     }
-                } else if (rand >= 0.8 && rand < 0.825) {
+                } else if (rand >= 0.8 && rand < 0.85) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
                 }
             }), cc.delayTime(10), cc.callFunc(() => {

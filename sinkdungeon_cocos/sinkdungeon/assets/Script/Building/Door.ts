@@ -23,6 +23,7 @@ export default class Door extends Building {
     isOpen: boolean = false;
     isDoor: boolean = true;
     isHidden: boolean = false;
+    isEmpty:boolean =false;
     //0top1bottom2left3right
     dir = 0;
     sprite: cc.Sprite = null;
@@ -88,7 +89,7 @@ export default class Door extends Building {
         }, immediately ? 0 : 0.15, 4);
     }
     closeGate(immediately?: boolean) {
-        if (!this.isOpen) {
+        if (!this.isOpen||this.isEmpty) {
             return;
         }
         this.isOpen = false;

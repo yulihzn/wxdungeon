@@ -184,7 +184,7 @@ export default class MapManager {
     }
     private addRandomTile(mapData: MapData, rand4save: Random4Save) {
         let pos = [];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 10; i++) {
             let dx = rand4save.getRandomNum(0, mapData.map.length - 1);
             let dy = rand4save.getRandomNum(0, mapData.map[0].length - 1);
             pos.push(cc.v3(dx, 0));
@@ -200,11 +200,9 @@ export default class MapManager {
     }
     private addDecorate(mapData: MapData, rand4save: Random4Save) {
         let pos = [];
-        for (let i = 0; i < 2; i++) {
-            let dx = rand4save.getRandomNum(2, mapData.map.length - 3);
-            let dy = rand4save.getRandomNum(2, mapData.map[0].length - 3);
-            pos.push(cc.v3(dx, 1));
-            pos.push(cc.v3(1, dy));
+        for (let i = 0; i < 4; i++) {
+            let dx = rand4save.getRandomNum(1, mapData.map.length - 2);
+            let dy = rand4save.getRandomNum(1, mapData.map[0].length - 2);
             pos.push(cc.v3(dx, dy));
         }
         for (let p of pos) {

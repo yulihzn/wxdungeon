@@ -5,6 +5,7 @@ import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
 import ExitData from "../Data/ExitData";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,14 +37,22 @@ export default class ExitDoor extends Building {
     init(dir: number,exitData:ExitData) {
         this.dir = dir;
         this.exitData.valueCopy(exitData);
-        this.isBackToUpLevel = dir == 4 || dir == 5 || dir == 6 || dir == 7 || dir == 9;
+        this.isBackToUpLevel = dir == 4 || dir == 5 || dir == 6 || dir == 7;
         if (this.dir > 7) {
             this.node.opacity = 0;
             this.bg.node.opacity = 0;
+            let indexPos = this.data.defaultPos.clone();
+            if(this.dir==8){
+                indexPos.y+=1;
+            }
+            if(this.dir==9){
+                indexPos.y-=1;
+            }
+            this.node.position = Dungeon.getPosInMap(indexPos);
         }
         this.playerPos = this.data.defaultPos.clone();
         switch (this.dir % 4) {
-            case 0: this.playerPos.y = this.playerPos.y - 1; break;
+            case 0: this.playerPos.y = this.playerPos.y - 2; break;
             case 1: this.node.angle = 180; this.playerPos.y = this.playerPos.y + 1; break;
             case 2: this.node.angle = 90; this.playerPos.x = this.playerPos.x + 1; break;
             case 3: this.node.angle = -90; this.playerPos.x = this.playerPos.x - 1; break;
@@ -102,7 +111,10 @@ export default class ExitDoor extends Building {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.playerData = player.data.clone();
-                Logic.playerData.pos = this.playerPos.clone();
+                if(Logic.playerData.pos.equals(this.data.defaultPos)){
+                    Logic.playerData.pos=this.playerPos.clone();
+                }
+                
                 Logic.loadingNextLevel( false, false, true,this.exitData);
             }
         }

@@ -207,11 +207,9 @@ export default class BuildingManager extends cc.Component {
                     bed.zIndex = IndexZ.OVERHEAD;
                 }
             } else if (this.isThe(mapDataStr, '+2')) {
-                if (Logic.level == 0) {
-                    let arrow = this.addBuilding(this.floorDecoration, indexPos);
-                    arrow.zIndex = IndexZ.FLOOR;
-                    arrow.getComponent(DecorationFloor).changeRes('exitarrow');
-                }
+                let arrow = this.addBuilding(this.floorDecoration, indexPos);
+                arrow.zIndex = IndexZ.FLOOR;
+                arrow.getComponent(DecorationFloor).changeRes('exitarrow');
             } else if (this.isThe(mapDataStr, '+3')) {
                 let arrow = this.addBuilding(this.airTranspotModel, indexPos);
                 arrow.zIndex = IndexZ.OVERHEAD;
@@ -316,18 +314,7 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isThe(mapDataStr, 'D')) {
             this.addDoor(parseInt(mapDataStr[1]), indexPos);
         } else if (this.isThe(mapDataStr, 'E')) {
-            let p = this.addBuilding(this.exitdoorPrefab, indexPos);
-            let exitdoor = p.getComponent(ExitDoor);
-            let i = parseInt(mapDataStr[1]);
-            let d = new ExitData();
-            for (let e of exits) {
-                if (e.fromIndexPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
-                    d.valueCopy(e);
-                    break;
-                }
-            }
-            exitdoor.init(i, d);
-            this.exitdoors.push(exitdoor);
+            this.addExitDoor(parseInt(mapDataStr[1]), indexPos, exits);
         } else if (this.isThe(mapDataStr, 'P')) {
             //生成传送门
             let p = this.addBuilding(this.portal, indexPos);
@@ -350,6 +337,19 @@ export default class BuildingManager extends cc.Component {
             this.addHitBuilding(dungeon, mapDataStr, indexPos)
         }
     }
+    private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {
+        let d = new ExitData();
+        for (let e of exits) {
+            if (e.fromIndexPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
+                d.valueCopy(e);
+                break;
+            }
+        }
+        let p = this.addBuilding(this.exitdoorPrefab, indexPos);
+        let exitdoor = p.getComponent(ExitDoor);
+        exitdoor.init(dir, d);
+        this.exitdoors.push(exitdoor);
+    }
     /**添加空气墙 */
     public addAirExit(mapData: string[][]) {
         let top = this.addBuilding(this.airexit, cc.v3(Math.floor(mapData.length / 2), mapData[0].length)).getComponent(AirExit);
@@ -368,13 +368,14 @@ export default class BuildingManager extends cc.Component {
         let door = this.addBuilding(this.door, indexPos).getComponent(Door);
         door.node.zIndex = IndexZ.FLOOR;
         door.isDoor = true;
-        switch (mapDataStrIndex) {
+        switch (mapDataStrIndex%4) {
             case 0: door.node.angle = 0; break;
             case 1: door.node.angle = 180; break;
             case 2: door.node.angle = 90; break;
             case 3: door.node.angle = -90; break;
         }
-        door.dir = mapDataStrIndex;
+        door.dir = mapDataStrIndex%4;
+        door.isEmpty = mapDataStrIndex>3;
         this.doors.push(door);
     }
     public setDoors(isOpen: boolean, immediately?: boolean) {

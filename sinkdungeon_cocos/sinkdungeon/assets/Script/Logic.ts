@@ -1,5 +1,4 @@
 import PlayerData from "./Data/PlayerData";
-import { EventHelper } from "./EventHelper";
 import EquipmentData from "./Data/EquipmentData";
 import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
@@ -205,9 +204,7 @@ export default class Logic extends cc.Component {
                 case 2: Logic.playerData.pos = cc.v3(Dungeon.WIDTH_SIZE - 2, Logic.playerData.pos.y); break;
                 case 3: Logic.playerData.pos = cc.v3(1, Logic.playerData.pos.y); break;
             }
-
             cc.director.loadScene('loading');
-
         }
     }
     static loadingNextLevel(isGoReal:boolean,isBackDream:boolean,needSave:boolean,exitData?:ExitData) {
@@ -259,7 +256,7 @@ export default class Logic extends cc.Component {
         //     Logic.level = length - 1;
         // }
         let indexPos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
-        if(exitData&&!isGoReal&&!isBackDream){
+        if(exitData&&!isBackDream){
             Logic.chapterIndex = exitData.toChapter;
             Logic.level = exitData.toLevel;
             let data = Logic.worldLoader.getLevelData(exitData.toChapter,exitData.toLevel);
@@ -273,9 +270,9 @@ export default class Logic extends cc.Component {
         }
         Logic.changeDungeonSize();
         let exitPos = Logic.mapManager.getCurrentRoom().exitPos;
-        if(exitPos.x==-1&&exitPos.y==-1){
+        if(exitData&&!isBackDream){
             Logic.playerData.pos = indexPos;
-        }else{
+        }else if(exitPos.x!=-1&&exitPos.y!=-1){
             Logic.playerData.pos = exitPos;
         }
         //暂时不选择技能

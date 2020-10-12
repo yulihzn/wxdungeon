@@ -102,10 +102,10 @@ export default class WorldLoader {
                 let rooms = new Array();
                 let w = temp.width * temp.roomWidth;
                 let h = temp.height * temp.roomHeight;
-                for (let i = 0; i < w; i++) {
+                for (let i = 0; i < h; i++) {
                     map[i] = new Array();
                     rooms[i] = new Array();
-                    for (let j = 0; j < h; j++) {
+                    for (let j = 0; j < w; j++) {
                         let value1 = tiledmap.json.layers[0].data[i * w + j];
                         map[i][j] = tilesets[value1 - 1];
                         let value2 = tiledmap.json.layers[1].data[i * w + j];
