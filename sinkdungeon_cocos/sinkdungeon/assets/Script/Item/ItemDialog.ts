@@ -31,7 +31,7 @@ export default class ItemDialog extends cc.Component {
         this.node.opacity = 0;
     }
     refreshDialog(item: ItemData) {
-        this.labelTitle.string = item.nameCn;
+        this.labelTitle.string = `${item.nameCn}    ${item.count>0?'><'+item.count:''}`;
         this.infoBase.string = item.info;
         this.infoDesc.string = item.desc;
     }

@@ -42,7 +42,7 @@ export default class ShopTable extends Building {
                 if(this.data.shopType == ShopTable.EQUIPMENT){
                     dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.data.defaultPos, this.data.equipdata, 3, this);
                 }else if(this.data.shopType == ShopTable.ITEM){
-                    dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos),Logic.getRandomItemType(rand4save),this);
+                    dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos),Logic.getRandomItemType(rand4save),0,this);
                 }
             }
         }

@@ -93,6 +93,12 @@ export default class StatusManager extends cc.Component {
         }
         return undefined;
     }
+    stopAllStatus():void{
+        for (let i = this.statusList.length - 1; i >= 0; i--) {
+            let s = this.statusList[i];
+            s.stopStatus();
+        }
+    }
     private showStatus(data: StatusData) {
         //去除已经失效的状态
         for (let i = this.statusList.length - 1; i >= 0; i--) {

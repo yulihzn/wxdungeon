@@ -388,6 +388,7 @@
             <key type="filename">item/gem03.png</key>
             <key type="filename">item/gem04.png</key>
             <key type="filename">item/goldapple.png</key>
+            <key type="filename">item/goldfinger.png</key>
             <key type="filename">item/oilgold.png</key>
             <key type="filename">item/oilgold1.png</key>
             <key type="filename">item/stone.png</key>
@@ -790,6 +791,12 @@
             <key type="filename">building/roomcupboard.png</key>
             <key type="filename">building/roomcupboard0.png</key>
             <key type="filename">building/roomcupboard1.png</key>
+            <key type="filename">building/roomcupboard2.png</key>
+            <key type="filename">building/roomcupboard3.png</key>
+            <key type="filename">building/roomdesk.png</key>
+            <key type="filename">building/roomdesk0.png</key>
+            <key type="filename">building/roomdesk1.png</key>
+            <key type="filename">building/roomdesk2.png</key>
             <key type="filename">building/saw001.png</key>
             <key type="filename">building/saw002.png</key>
             <key type="filename">building/shop.png</key>
@@ -1870,13 +1877,13 @@
             <filename>equipment</filename>
             <filename>tile</filename>
             <filename>meleelight</filename>
-            <filename>parallax</filename>
             <filename>building</filename>
             <filename>hud</filename>
             <filename>talents</filename>
             <filename>dungeon</filename>
             <filename>ui</filename>
             <filename>avatar</filename>
+            <filename>parallax</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

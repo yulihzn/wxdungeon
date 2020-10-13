@@ -24,6 +24,7 @@ export default class ItemData extends BaseData {
     resName:string = 'emptyitem';
     price:number = 0;
     isTaken = false;
+    count = 1;//使用次数，-1为不限使用次数,1为一次性
     canSave = 0;
 
     public valueCopy(data: ItemData): void {
@@ -37,6 +38,7 @@ export default class ItemData extends BaseData {
         this.desc = data.desc?data.desc:'';
         this.isTaken = data.isTaken?data.isTaken:false;
         this.canSave = data.canSave?data.canSave:0;
+        this.count = data.count?data.count:1;
         this.price = data.price?data.price:0;
       
     }
@@ -52,6 +54,7 @@ export default class ItemData extends BaseData {
         e.resName = this.resName;
         e.isTaken = this.isTaken;
         e.canSave = this.canSave;
+        e.count = this.count;
         e.price = this.price;
         return e;
     }

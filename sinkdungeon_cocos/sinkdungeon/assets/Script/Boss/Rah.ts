@@ -157,7 +157,7 @@ export default class Rah extends Boss {
     }
     dark() {
         this.darkSkill.next(() => {
-            let action = cc.sequence(cc.scaleTo(2, 1.5, 1.5), cc.rotateTo(6, 0), cc.scaleTo(2, 0.5, 0.5));
+            let action = cc.sequence(cc.scaleTo(2, 1.5, 1.5), cc.rotateTo(6, 0), cc.scaleTo(2, 0.6, 0.6));
             this.dungeon.fog.runAction(action);
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);

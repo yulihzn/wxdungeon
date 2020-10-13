@@ -20,19 +20,23 @@ export default class HitBuilding extends Building {
     private mat: cc.MaterialVariant;
     private sprite: cc.Sprite;
     private resName = '';
-    private itemName = '';
-    private equipmentName = '';
+    private itemNames:string[] = [];
+    private equipmentNames:string[] = [];
     private dungeon: Dungeon;
     // LIFE-CYCLE CALLBACKS:
 
-    init(dungeon: Dungeon, resName: string, itemName: string, equipmentName: string, maxHealth: number, currentHealth: number) {
+    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number) {
         this.dungeon = dungeon;
         this.resName = resName;
-        this.itemName = itemName;
-        this.equipmentName = equipmentName;
+        this.itemNames = itemNames;
+        this.equipmentNames = equipmentNames;
         this.data.maxHealth = maxHealth;
         this.data.currentHealth = currentHealth;
         this.changeRes(resName, `${this.data.currentHealth}`);
+        if(this.data.currentHealth<=0){
+            this.getComponent(cc.PhysicsBoxCollider).sensor = true;
+            this.getComponent(cc.PhysicsBoxCollider).apply();
+        }
     }
     hitLight(isHit: boolean) {
         if (!this.mat) {
@@ -57,12 +61,19 @@ export default class HitBuilding extends Building {
             this.hitLight(false);
         }, 0.15);
         if (this.data.currentHealth <= 0) {
-            if (this.itemName && this.itemName.length > 0) {
-                this.dungeon.addItem(this.node.position.clone(), this.itemName);
+            for(let name of this.itemNames){
+                if (name && name.length > 0) {
+                    this.dungeon.addItem(this.node.position.clone(), name);
+                }
             }
-            if (this.equipmentName && this.equipmentName.length > 0) {
-                this.dungeon.addEquipment(this.equipmentName, this.data.defaultPos, null, 1);
+            for(let name of this.equipmentNames){
+                if (name && name.length > 0) {
+                    this.dungeon.addEquipment(name, this.data.defaultPos, null, 1);
+                }
             }
+            
+            this.getComponent(cc.PhysicsBoxCollider).sensor = true;
+            this.getComponent(cc.PhysicsBoxCollider).apply();
         }
         let saveHit = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
         if (saveHit) {

@@ -72,7 +72,7 @@
         "spriteFrameName": "iconattack",
         "statusType": 7,
         "desc": "",
-        "duration": 15,
+        "duration": 180,
         "common": {
             "damageMin": 5
         }
@@ -83,7 +83,7 @@
         "spriteFrameName": "iconmovespeed",
         "statusType": 8,
         "desc": "",
-        "duration": 15,
+        "duration": 180,
         "common": {
             "moveSpeed": 200
         }
@@ -94,7 +94,7 @@
         "spriteFrameName": "iconattackspeed",
         "statusType": 9,
         "desc": "",
-        "duration": 15,
+        "duration": 180,
         "common": {
             "attackSpeed": 200
         }

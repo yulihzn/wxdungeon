@@ -445,18 +445,19 @@ export default class BuildingManager extends cc.Component {
         let h = hitBuilding.getComponent(HitBuilding);
         h.setDefaultPos(indexPos);
         let resName = 'car';
-        let equipmentName = 'shield001';
-        let itemName = '';
+        let equipmentNames = [];
+        let itemNames = [];
         let maxhealth = 5;
         switch (mapDataStr) {
-            case 'H0': resName = 'car'; equipmentName = 'shield001'; itemName = ''; maxhealth = 5; break;
-            case 'Z1': resName = 'roomcupboard'; equipmentName = 'weapon007'; itemName = ''; maxhealth = 200; break;
+            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; break;
+            case 'Z1': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; break;
+            case 'Z2': resName = 'roomdesk'; equipmentNames = []; itemNames = ['goldfinger']; maxhealth = 100; break;
             default: break;
         }
-        h.init(dungeon, resName, itemName, equipmentName, maxhealth, maxhealth);
+        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth);
         let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
         if (saveHit) {
-            h.init(dungeon, resName, itemName, equipmentName, maxhealth, saveHit.currentHealth);
+            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth);
         } else {
             Logic.mapManager.setCurrentBuildingData(h.data);
         }

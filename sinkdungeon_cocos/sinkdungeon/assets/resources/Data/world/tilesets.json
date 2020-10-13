@@ -8,7 +8,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":93,
+ "tilecount":96,
  "tileheight":16,
  "tiles":
     {
@@ -1585,6 +1585,57 @@
             {
              "draworder":"index",
              "name":"D7",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "374":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/car.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"H0",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "376":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/campfire.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"+0",
+             "objects":[],
+             "opacity":1,
+             "type":"objectgroup",
+             "visible":true,
+             "x":0,
+             "y":0
+            }
+        },
+     "377":
+        {
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomdesk.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "objectgroup":
+            {
+             "draworder":"index",
+             "name":"Z2",
              "objects":[],
              "opacity":1,
              "type":"objectgroup",

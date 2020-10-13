@@ -5,6 +5,7 @@
         "resName": "emptyitem",
         "info":"",
         "desc":"",
+        "count":-1,
         "price": 0
     },
     "heart": {
@@ -71,6 +72,16 @@
         "canSave":1,
         "info":"隐身30秒，破隐一击",
         "desc":"真正的刺客大师",
+        "price": 30
+    },
+    "goldfinger": {
+        "nameCn": "金手指",
+        "nameEn": "goldfinger",
+        "resName": "goldfinger",
+        "canSave":1,
+        "count":-1,
+        "info":"清除所有状态",
+        "desc":"轻轻擦拭了一下好像什么都没有发生",
         "price": 30
     }
 }

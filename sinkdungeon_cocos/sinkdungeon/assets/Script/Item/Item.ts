@@ -33,6 +33,7 @@ export default class Item extends cc.Component {
     public static readonly BLUECAPSULE = 'bluecapsule';
     public static readonly SHIELD = 'shield';
     public static readonly GOLDAPPLE = 'goldapple';
+    public static readonly GOLDFINGER = 'goldfinger';
     anim: cc.Animation;
     data: ItemData = new ItemData();
     shopTable: ShopTable;
@@ -50,10 +51,11 @@ export default class Item extends cc.Component {
     start() {
         this.anim = this.getComponent(cc.Animation);
     }
-    init(resName: string, pos: cc.Vec3, shopTable?: ShopTable) {
+    init(resName: string, pos: cc.Vec3, count?:number,shopTable?: ShopTable) {
         this.data.valueCopy(Logic.items[resName]);
         this.data.uuid = this.data.genNonDuplicateID();
         this.data.pos = pos;
+        this.data.count = count?count:this.data.count;
         if (shopTable) {
             this.shopTable = shopTable;
             shopTable.data.itemdata = new ItemData();
@@ -125,6 +127,7 @@ export default class Item extends cc.Component {
             case Item.BLUECAPSULE: player.addStatus(StatusManager.FASTMOVE, from); break;
             case Item.SHIELD: player.addStatus(StatusManager.PERFECTDEFENCE, from); break;
             case Item.GOLDAPPLE: player.addStatus(StatusManager.GOLDAPPLE, from); break;
+            case Item.GOLDFINGER: player.stopAllStatus(); break;
         }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {

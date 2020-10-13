@@ -357,6 +357,12 @@ export default class Player extends Actor {
         }
         this.statusManager.addStatus(statusType, from);
     }
+    stopAllStatus(){
+        if (!this.node) {
+            return;
+        }
+        this.statusManager.stopAllStatus();
+    }
     meleeAttack() {
         if (!this.weaponRight || this.isDizz || this.isDied || this.isFall
             || this.weaponRight.meleeWeapon.IsAttacking

@@ -85,7 +85,7 @@ export default class Dungeon extends cc.Component {
             // this.addOilGold(event.detail.pos, event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_ITEM, (event) => {
-            this.addItem(event.detail.pos, event.detail.res);
+            this.addItem(event.detail.pos, event.detail.res,event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
@@ -131,7 +131,7 @@ export default class Dungeon extends cc.Component {
     init(): void {
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
-        this.fog.scale = 0.5;
+        this.fog.scale = 0.6;
         cc.tween(this.fog).to(1,{scale:1.2}).start();
         this.fog.getChildByName('sprite').getChildByName('blackcenter').runAction(cc.fadeOut(1));
         this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x,Logic.mapManager.getCurrentRoom().y);
@@ -233,7 +233,7 @@ export default class Dungeon extends cc.Component {
         return isequal;
     }
 
-    addItem(pos: cc.Vec3, resName: string, shopTable?: ShopTable) {
+    addItem(pos: cc.Vec3, resName: string,count?:number, shopTable?: ShopTable) {
         if (!this.item) {
             return;
         }
@@ -242,7 +242,7 @@ export default class Dungeon extends cc.Component {
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         item.zIndex = IndexZ.OVERHEAD;
-        item.getComponent(Item).init(resName, indexpos.clone(), shopTable);
+        item.getComponent(Item).init(resName, indexpos.clone(), count,shopTable);
         let data = item.getComponent(Item).data;
         let curritems = Logic.mapManager.getCurrentMapItems();
         if (curritems) {
@@ -331,7 +331,7 @@ export default class Dungeon extends cc.Component {
         if (curritems) {
             for (let tempeitem of curritems) {
                 if (!tempeitem.isTaken) {
-                    this.addItem(Dungeon.getPosInMap(tempeitem.pos), tempeitem.resName);
+                    this.addItem(Dungeon.getPosInMap(tempeitem.pos), tempeitem.resName,tempeitem.count);
                 }
             }
         }

@@ -170,7 +170,6 @@ export default class Inventory extends cc.Component {
     private setEquipment(equipmentData: EquipmentData, isChange: boolean) {
         if (isChange && equipmentData.equipmetType != Equipment.EMPTY) {
             let p = this.dungeon.player.getComponent(Player).pos.clone();
-            if (p.y < 2) { p.y == 2; } else { p.y -= 1; }
             this.dungeon.addEquipment(equipmentData.img, p, equipmentData);
         }
     }
@@ -333,7 +332,14 @@ export default class Inventory extends cc.Component {
             return;
         }
         let item = this.inventoryManager.itemList[itemIndex].clone();
-        this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
+        if (item.count != -1) {
+            item.count--;
+        }
+        if (item.count <= 0&&item.count != -1) {
+            this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
+        } else {
+            this.inventoryManager.itemList[itemIndex].valueCopy(item);
+        }
         this.refreshItemRes();
         if (item.resName != Item.EMPTY) {
             cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
@@ -344,16 +350,30 @@ export default class Inventory extends cc.Component {
             return;
         }
         let isRefreshed = false;
-
-        //填补空缺位置
+        //填补相同可叠加
         for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
             let item = this.inventoryManager.itemList[i];
-            if (item.resName == Item.EMPTY) {
+            if (item.resName != Item.EMPTY&&item.resName == itemDataNew.resName
+                &&item.count>0&&itemDataNew.count>0) {
+                let count = item.count+itemDataNew.count;
                 item.valueCopy(itemDataNew);
+                item.count = count;
                 isRefreshed = true;
                 break;
             }
         }
+        //填补空缺位置
+        if(!isRefreshed){
+            for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
+                let item = this.inventoryManager.itemList[i];
+                if (item.resName == Item.EMPTY) {
+                    item.valueCopy(itemDataNew);
+                    isRefreshed = true;
+                    break;
+                }
+            }
+        }
+        
         //先进先出
         if (!isRefreshed) {
             let item0 = this.inventoryManager.itemList[0].clone();
@@ -371,17 +391,17 @@ export default class Inventory extends cc.Component {
         for (let i = 0; i < itemSpriteList.length; i++) {
             let item = this.inventoryManager.itemList[i];
             itemSpriteList[i].spriteFrame = Logic.spriteFrames[item.resName];
+            itemSpriteList[i].node.parent.parent.getComponentInChildren(cc.Label).string = `${item.count>0?('x'+item.count):''}`;
         }
     }
     setItem(itemData: ItemData) {
         let p = this.dungeon.player.pos.clone();
-        if (p.x < 1) {
-        } else {
-            p.x -= 1;
-        }
+        let pos = Dungeon.getPosInMap(p);
+        pos.y+= Logic.getHalfChance()?2:-2;
+        pos.x+= Logic.getHalfChance()?2:-2;
         if (itemData.resName != Item.EMPTY) {
             cc.director.emit(EventHelper.DUNGEON_ADD_ITEM
-                , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName } })
+                , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName, count: itemData.count } })
         }
     }
 }
