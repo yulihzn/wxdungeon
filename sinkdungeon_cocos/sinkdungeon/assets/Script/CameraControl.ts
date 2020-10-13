@@ -33,6 +33,9 @@ export default class CameraControl extends cc.Component {
         cc.director.on(EventHelper.CAMERA_SHAKE, (event) => {
             this.shakeCamera(event.detail.isHeavyShaking);
         })
+        cc.director.on(EventHelper.CAMERA_LOOK, (event) => {
+            this.followPlayer();
+        })
     }
     onEnable() {
         // cc.director.getPhysicsManager().attachDebugDrawToCamera(this.camera);
@@ -46,6 +49,16 @@ export default class CameraControl extends cc.Component {
     }
     lateUpdate() {
         if (!this.dungeon.player) {
+            return;
+        }
+        this.followPlayer();
+        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.CameraZoom, 0.05);
+        // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
+        // let ratio = targetPos.y / cc.winSize.height;
+        // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
+    }
+    followPlayer(){
+        if (!this.dungeon||!this.dungeon.player) {
             return;
         }
         let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 5, 0)).x;
@@ -75,10 +88,6 @@ export default class CameraControl extends cc.Component {
             this.node.position = this.node.position.addSelf(this.isHeavyShaking ? this.offsetArr1[this.offsetIndex] : this.offsetArr[this.offsetIndex]);
             this.offsetIndex++;
         }
-        this.camera.zoomRatio = this.lerpNumber(this.camera.zoomRatio, this.dungeon.CameraZoom, 0.05);
-        // this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);
-        // let ratio = targetPos.y / cc.winSize.height;
-        // this.camera.zoomRatio = 1 + (0.5 - ratio) * 0.5;
     }
     shakeCamera(isHeavyShaking: boolean) {
         if (!this.node) {

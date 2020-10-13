@@ -42,7 +42,6 @@ export default class MapManager {
      */
     public loadMap() {
         if (Logic.isMapReset) {
-            Logic.isMapReset = false;
             //加载地图
             Logic.mapManager.reset();
         }
@@ -50,6 +49,7 @@ export default class MapManager {
     }
 
     reset(pos?: cc.Vec3) {
+        Logic.isMapReset = false;
         let data = Logic.worldLoader.getCurrentLevelData();
         this.rand4save = null;
         //地图重新生成

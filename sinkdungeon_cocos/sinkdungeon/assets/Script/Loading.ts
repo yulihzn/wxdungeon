@@ -362,7 +362,7 @@ export default class Loading extends cc.Component {
         this.timeDelay += dt;
         this.isWorldLoaded = Logic.worldLoader.isloaded;
         this.showCut();
-        if (this.timeDelay > 0.16
+        if (this.timeDelay > 0.02
             && this.isEquipmentLoaded
             && this.isAllSpriteFramesLoaded()
             && this.isMonsterLoaded

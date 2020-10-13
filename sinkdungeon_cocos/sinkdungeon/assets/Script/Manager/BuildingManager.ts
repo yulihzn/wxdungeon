@@ -212,7 +212,6 @@ export default class BuildingManager extends cc.Component {
                 arrow.getComponent(DecorationFloor).changeRes('exitarrow');
             } else if (this.isThe(mapDataStr, '+3')) {
                 let arrow = this.addBuilding(this.airTranspotModel, indexPos);
-                arrow.zIndex = IndexZ.OVERHEAD;
             } else {
                 let fd = this.addBuilding(this.floorDecoration, indexPos);
                 fd.zIndex = IndexZ.FLOOR;
@@ -394,9 +393,6 @@ export default class BuildingManager extends cc.Component {
             for (let ed of this.portals) {
                 isOpen ? ed.openGate() : ed.closeGate();
             }
-        }
-        if (isOpen && !immediately) {
-            Logic.mapManager.setRoomClear(Logic.mapManager.rectDungeon.currentPos.x, Logic.mapManager.rectDungeon.currentPos.y);
         }
     }
     private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {

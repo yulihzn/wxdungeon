@@ -207,36 +207,38 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('loading');
         }
     }
-    static loadingNextLevel(isGoReal:boolean,isBackDream:boolean,needSave:boolean,exitData?:ExitData) {
-        
+    static loadingNextLevel(isGoReal: boolean, isBackDream: boolean, needSave: boolean, exitData?: ExitData) {
+
         //如果地图不存在停止加载
-        if(exitData&&!isGoReal&&!isBackDream){
-            let data = Logic.worldLoader.getLevelData(exitData.toChapter,exitData.toLevel);
-            if(!data){
+        if (exitData && !isGoReal && !isBackDream) {
+            let data = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel);
+            if (!data) {
                 return;
             }
         }
-        if(Logic.playerData){
+        if (Logic.playerData) {
             Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         }
         //保存数据
-        if(needSave){
+        if (needSave) {
             Logic.saveData();
         }
-        
-        if(isGoReal){
+
+        if (isGoReal) {
             //保存当前关卡等级
             Logic.lastLevel = Logic.level;
-            Logic.lastChapterIndex = Logic.chapterIndex;
+            if (Logic.chapterIndex != Logic.CHAPTER099) {
+                Logic.lastChapterIndex = Logic.chapterIndex;
+            }
             Logic.level = Logic.realLevel;
-            Logic.chapterIndex = 99;
+            Logic.chapterIndex = Logic.CHAPTER099;
         }
-        if(isBackDream){
+        if (isBackDream) {
             Logic.realLevel = Logic.level;
             Logic.level = Logic.lastLevel;
             Logic.chapterIndex = Logic.lastChapterIndex;
         }
-        
+
         // let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
         // let chapterLength = Logic.worldLoader.getChapterLength();
         //如果关卡到底了判断是否是最后一章游戏完成
@@ -256,23 +258,23 @@ export default class Logic extends cc.Component {
         //     Logic.level = length - 1;
         // }
         let indexPos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
-        if(exitData&&!isBackDream){
+        if (exitData && !isBackDream) {
             Logic.chapterIndex = exitData.toChapter;
             Logic.level = exitData.toLevel;
-            let data = Logic.worldLoader.getLevelData(exitData.toChapter,exitData.toLevel);
-            let ty = data.height*data.roomHeight-1-exitData.toPos.y;
-            let roomX = Math.floor(exitData.toPos.x/data.roomWidth);
-            let roomY = Math.floor(ty/data.roomHeight);
-            indexPos = cc.v3(exitData.toPos.x%data.roomWidth,ty%data.roomHeight);
-            Logic.mapManager.reset(cc.v3(roomX,roomY));
-        }else{
+            let data = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel);
+            let ty = data.height * data.roomHeight - 1 - exitData.toPos.y;
+            let roomX = Math.floor(exitData.toPos.x / data.roomWidth);
+            let roomY = Math.floor(ty / data.roomHeight);
+            indexPos = cc.v3(exitData.toPos.x % data.roomWidth, ty % data.roomHeight);
+            Logic.mapManager.reset(cc.v3(roomX, roomY));
+        } else {
             Logic.mapManager.reset();
         }
         Logic.changeDungeonSize();
         let exitPos = Logic.mapManager.getCurrentRoom().exitPos;
-        if(exitData&&!isBackDream){
+        if (exitData && !isBackDream) {
             Logic.playerData.pos = indexPos;
-        }else if(exitPos.x!=-1&&exitPos.y!=-1){
+        } else if (exitPos.x != -1 && exitPos.y != -1) {
             Logic.playerData.pos = exitPos;
         }
         //暂时不选择技能
@@ -302,11 +304,11 @@ export default class Logic extends cc.Component {
         return Number(Random.rand().toString().substr(3, 16) + Date.now()).toString(36);
     }
     /**随机装备名字 */
-    static getRandomEquipType(rand4save:Random4Save): string {
+    static getRandomEquipType(rand4save: Random4Save): string {
         return Logic.equipmentNameList[rand4save.getRandomNum(1, Logic.equipmentNameList.length - 1)];
     }
     /**随机可拾取物品 */
-    static getRandomItemType(rand4save:Random4Save): string {
+    static getRandomItemType(rand4save: Random4Save): string {
         return Logic.itemNameList[rand4save.getRandomNum(1, Logic.itemNameList.length - 1)];
     }
 }

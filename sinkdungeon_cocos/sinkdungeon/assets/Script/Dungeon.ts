@@ -66,6 +66,7 @@ export default class Dungeon extends cc.Component {
     anim: cc.Animation;
     CameraZoom = 1;
     isInitFinish = false;
+    currentPos = cc.v3(0,0);
 
     onLoad() {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
@@ -130,7 +131,10 @@ export default class Dungeon extends cc.Component {
     init(): void {
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
-        this.fog.scale = 1.2;
+        this.fog.scale = 0.5;
+        cc.tween(this.fog).to(1,{scale:1.2}).start();
+        this.fog.getChildByName('sprite').getChildByName('blackcenter').runAction(cc.fadeOut(1));
+        this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x,Logic.mapManager.getCurrentRoom().y);
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
         let exits = leveldata.getExitList();
@@ -401,10 +405,10 @@ export default class Dungeon extends cc.Component {
 
     start() {
         this.scheduleOnce(() => {
-            let pos = Logic.mapManager.rectDungeon.currentPos;
-            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: pos.x, y: pos.y } });
+            cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: this.currentPos.x, y: this.currentPos.y } });
             this.checkRoomClear();
         }, 0.1)
+        cc.director.emit(EventHelper.CAMERA_LOOK);
     }
     breakTile(pos: cc.Vec3) {
         let tile = this.map[pos.x][pos.y];
@@ -453,6 +457,9 @@ export default class Dungeon extends cc.Component {
             isClear = true;
         }
         this.setDoors(isClear);
+        if(isClear){
+            Logic.mapManager.setRoomClear(this.currentPos.x,this.currentPos.y);
+        }
     }
     private setDoors(isClear:boolean,immediately?:boolean){
         if(!this.buildingManager){

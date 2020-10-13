@@ -320,7 +320,7 @@ export default class Monster extends Actor {
             if (isMelee) { this.dangerBox.show(this.data.attackType); };
         }),
             cc.delayTime(stabDelay),
-            cc.moveBy(0.5, -pos.x / 2, -pos.y / 2),
+            cc.moveBy(0.5, -pos.x / 8, -pos.y / 8),
             cc.callFunc(() => {
                 this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02);
                 if (isMelee) {

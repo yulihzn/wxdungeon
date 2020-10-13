@@ -172,6 +172,22 @@
             "physicalDamage": 1
         }
     },
+    "bullet111": {
+        "name":"战争机器霰弹",
+        "speed": 300,
+        "isLaser":0,
+        "isRect": 1,
+        "isRotate": 0,
+        "canBreakBuilding":1,
+        "lifeTime":1,
+        "size": 2,
+        "resName":"bullet011",
+        "lightName": "bulletlight001",
+        "lightColor": "#FFFF00",
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "bullet012": {
         "name":"小型震荡导弹",
         "speed": 700,
@@ -225,12 +241,12 @@
     },
     "bullet015": {
         "name":"战争机器追踪导弹",
-        "speed": 300,
+        "speed": 200,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 2,
+        "size": 3,
         "isTracking":1,
         "resName":"bullet015",
         "lightName": "bulletlight001",
@@ -241,7 +257,7 @@
     },
     "bullet016": {
         "name":"战争机器爆炸导弹",
-        "speed": 600,
+        "speed": 400,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
@@ -294,7 +310,7 @@
     },
     "bullet019": {
         "name":"闪电",
-        "speed": 300,
+        "speed": 200,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,

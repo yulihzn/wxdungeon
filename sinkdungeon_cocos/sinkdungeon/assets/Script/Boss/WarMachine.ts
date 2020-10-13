@@ -158,7 +158,7 @@ export default class WarMachine extends Boss {
             this.shooter01.setHv(hv);
             this.fireShooter(this.shooter01, "bullet016", 0, 0);
         }
-        this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 6);
+        this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 10);
     }
     
     fireGatling(isHalf: boolean) {
@@ -170,16 +170,16 @@ export default class WarMachine extends Boss {
         this.shooter03.setHv(cc.v3(0, -1));
         this.shooter02.data.bulletLineInterval = 0.5;
         this.shooter03.data.bulletLineInterval = 0.5;
-        let cooldown = 3;
+        let cooldown = 6;
         let angle = Logic.getRandomNum(0,15);
         angle = Logic.getHalfChance()?angle:-angle;
         if (isHalf) {
-            this.fireShooter(this.shooter02, "bullet011", 0, 4);
-            this.fireShooter(this.shooter03, "bullet011", 0, 4);
-            cooldown = 1.5;
+            this.fireShooter(this.shooter02, "bullet111", 0, 4);
+            this.fireShooter(this.shooter03, "bullet111", 0, 4);
+            cooldown = 3;
         } else {
-            this.fireShooter(this.shooter02, "bullet011", 2, 2);
-            this.fireShooter(this.shooter03, "bullet011", 2, 2);
+            this.fireShooter(this.shooter02, "bullet111", 2, 2);
+            this.fireShooter(this.shooter03, "bullet111", 2, 2);
         }
         this.scheduleOnce(() => { this.isGatlingCoolDown = false; }, cooldown);
     }
@@ -192,7 +192,7 @@ export default class WarMachine extends Boss {
         this.shooter05.setHv(cc.v3(0, -1));
         this.fireShooter(this.shooter04, "bullet015", 0, 0);
         this.fireShooter(this.shooter05, "bullet015", 0, 0);
-        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, 8);
+        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, 16);
     }
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
         shooter.dungeon = this.dungeon;

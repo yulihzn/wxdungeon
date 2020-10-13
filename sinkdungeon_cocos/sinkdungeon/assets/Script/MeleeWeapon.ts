@@ -466,9 +466,9 @@ export default class MeleeWeapon extends cc.Component {
         if (!this.isFar && this.isStab) {
             power = 50;
         } else if (this.isFar && this.isStab) {
-            power = 300;
+            power = 250;
         } else if (!this.isFar && !this.isStab) {
-            power = 200;
+            power = 150;
         } else {
             power = 50;
         }
@@ -476,7 +476,9 @@ export default class MeleeWeapon extends cc.Component {
             power += 50;
         }
         pos = pos.normalizeSelf().mul(power);
-        rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
+        this.scheduleOnce(()=>{
+            rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
+        },0.1);
     }
     attacking(attackTarget: cc.Collider) {
         if (!attackTarget || !this.isAttacking) {
