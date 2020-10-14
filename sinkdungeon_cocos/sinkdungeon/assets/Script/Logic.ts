@@ -16,6 +16,7 @@ import WorldLoader from "./Map/WorldLoader";
 import ProfessionData from "./Data/ProfessionData";
 import Random4Save from "./Utils/Random4Save";
 import ExitData from "./Data/ExitData";
+import SkillData from "./Data/SkillData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,6 +53,8 @@ export default class Logic extends cc.Component {
     static bullets: { [key: string]: BulletData } = null;
     //物品json
     static items: { [key: string]: ItemData } = null;
+    //技能json
+    static talents: { [key: string]: SkillData } = null;
     //职业json
     static professionList: ProfessionData[] = [];
 

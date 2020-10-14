@@ -38,6 +38,7 @@ import IndexZ from './Utils/IndexZ';
 import PlayerAvatar from './PlayerAvatar';
 import PlayerWeapon from './PlayerWeapon';
 import { EventHelper } from './EventHelper';
+import TalentSkills from './Talent/TalentSkills';
 
 @ccclass
 export default class Player extends Actor {
@@ -93,6 +94,7 @@ export default class Player extends Actor {
 
     talentDash: TalentDash;
     talentMagic: TalentMagic;
+    talentSkills:TalentSkills;
     isWeaponDashing = false;
     fistCombo = 0;
 
@@ -156,7 +158,9 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.POOL_DESTORY_WALKSMOKE, (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
-        // this.talentShield.loadList(Logic.talentList);
+        this.talentSkills = this.getComponent(TalentSkills);
+        this.talentSkills.init();
+        this.talentSkills.loadList(Logic.talentList);
         this.talentDash = this.getComponent(TalentDash);
         this.talentDash.init();
         this.talentDash.loadList(Logic.talentList);

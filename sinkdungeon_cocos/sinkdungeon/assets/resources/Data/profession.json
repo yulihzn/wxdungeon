@@ -11,6 +11,8 @@
         "trousers": "trousers002",
         "shoes": "shoes010",
         "gloves": "",
+        "items":[],
+        "talent":"talent000",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -37,6 +39,8 @@
         "trousers": "trousers001",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent001",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -63,6 +67,8 @@
         "trousers": "trousers001",
         "shoes": "",
         "gloves": "gloves010",
+        "items":[],
+        "talent":"talent002",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -89,6 +95,8 @@
         "trousers": "trousers001",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent003",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -115,6 +123,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent004",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -141,6 +151,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent005",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -167,6 +179,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent006",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -193,6 +207,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent007",
         "common": {
             "damageMin": 1,
             "damageMax": 0,
@@ -219,6 +235,8 @@
         "trousers": "trousers001",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent008",
         "common": {
             "damageMin": 1,
             "damageMax": 0,
@@ -245,6 +263,8 @@
         "trousers": "trousers001",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent009",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -271,6 +291,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent010",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -297,6 +319,8 @@
         "trousers": "trousers001",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent011",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -323,6 +347,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent012",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -349,6 +375,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent013",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -375,6 +403,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent014",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -400,6 +430,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent015",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -426,6 +458,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent016",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -452,6 +486,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent017",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -478,6 +514,8 @@
         "trousers": "trousers001",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent018",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -504,6 +542,8 @@
         "trousers": "trousers002",
         "shoes": "",
         "gloves": "",
+        "items":[],
+        "talent":"talent019",
         "common": {
             "damageMin": 1,
             "damageMax": 2,

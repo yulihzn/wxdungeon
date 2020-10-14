@@ -15,6 +15,8 @@ export default class ProfessionData{
     trousers: string = '';
     shoes: string = '';
     gloves: string = '';
+    talent: string = '';
+    items: string[] = [];
     constructor(){
         this.common = new CommonData();
     }
@@ -37,6 +39,8 @@ export default class ProfessionData{
         this.gloves = data.gloves?data.gloves:'';
         this.trousers = data.trousers?data.trousers:'';
         this.id = data.id?data.id:0;
+        this.talent = data.talent?data.talent:'';
+        this.items = data.items?data.items:[];
     }
     public clone(): ProfessionData {
         let e = new ProfessionData();
@@ -54,6 +58,8 @@ export default class ProfessionData{
         e.trousers = this.trousers;
         e.shoes = this.shoes;
         e.gloves = this.gloves;
+        e.talent = this.talent;
+        e.items = this.items;
         return e;
     }
 }

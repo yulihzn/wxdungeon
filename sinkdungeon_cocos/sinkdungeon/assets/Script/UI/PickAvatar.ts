@@ -37,6 +37,8 @@ export default class PickAvatar extends cc.Component {
     private isSpirteLoaded = false;
     private isProfessionLoaded = false;
     private isEquipmentLoaded = false;
+    private isItemsLoaded = false;
+    private isTalentsLoaded = false;
     //图片资源
     private spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     @property(cc.Node)
@@ -50,7 +52,13 @@ export default class PickAvatar extends cc.Component {
     @property(cc.Label)
     randomLabelTitle: cc.Label = null;
     @property(cc.Label)
-    randomLabelContent: cc.Label = null;
+    randomLabelName: cc.Label = null;
+    @property(cc.Label)
+    randomLabelDesc: cc.Label = null;
+    @property(cc.Label)
+    randomLabelSkillName: cc.Label = null;
+    @property(cc.Label)
+    randomLabelSkillDesc: cc.Label = null;
     @property(cc.Prefab)
     selectorPrefab: cc.Prefab = null;
     @property(cc.Prefab)
@@ -120,6 +128,8 @@ export default class PickAvatar extends cc.Component {
         this.loadSpriteFrames();
         this.loadProfession();
         this.loadEquipment();
+        this.loadTalents();
+        this.loadItems();
         this.attributeLayout.active = false;
     }
     private getSpriteChildSprite(node: cc.Node, childNames: string[]): cc.Sprite {
@@ -133,7 +143,7 @@ export default class PickAvatar extends cc.Component {
             this.isEquipmentLoaded = true;
             return;
         }
-        cc.resources.load('Data/equipment', (err: Error, resource:cc.JsonAsset) => {
+        cc.resources.load('Data/equipment', (err: Error, resource: cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
@@ -170,6 +180,42 @@ export default class PickAvatar extends cc.Component {
             }
         })
     }
+    loadTalents() {
+        if (Logic.talents) {
+            this.isTalentsLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/talent', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.talents = resource.json;
+                this.isTalentsLoaded = true;
+                cc.log('talents loaded');
+            }
+        })
+    }
+    loadItems() {
+        if (Logic.items) {
+            this.isItemsLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/item', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.items = resource.json;
+                Logic.itemNameList = new Array();
+                for (let key in resource.json) {
+                    if (Logic.items[key].canSave) {
+                        Logic.itemNameList.push(key);
+                    }
+                }
+                this.isItemsLoaded = true;
+                cc.log('items loaded');
+            }
+        })
+    }
     loadSpriteFrames() {
         if (this.spriteFrames) {
             this.isSpirteLoaded = true;
@@ -190,7 +236,7 @@ export default class PickAvatar extends cc.Component {
         let organList = new Array();
         let organization = ['弥世逐流', '宝藏猎人', '幽光守护', '翠金科技'];
         for (let i = 0; i < organization.length; i++) {
-            organList.push(new AttributeData(i, organization[i], '', ''));
+            organList.push(new AttributeData(i, organization[i], '', '', '', ''));
         }
         this.organizationSelector = this.addAttributeSelector('组织：', organList)
         this.organizationSelector.selectorCallback = (data: AttributeData) => {
@@ -203,12 +249,16 @@ export default class PickAvatar extends cc.Component {
         let professionList = new Array();
         for (let i = 0; i < Logic.professionList.length; i++) {
             let data = Logic.professionList[i];
-            professionList.push(new AttributeData(data.id, data.nameCn, '', data.desc));
+            let talent = Logic.talents[data.talent];
+            professionList.push(new AttributeData(data.id, data.nameCn, '', data.desc, `技能：${talent.nameCn}`, `${talent.desc}`));
         }
         this.professionSelector = this.addAttributeSelector('职业：', professionList)
         this.professionSelector.selectorCallback = (data: AttributeData) => {
             this.data.professionData.valueCopy(Logic.professionList[data.id]);
-            this.randomLabelContent.string = `${data.name}\n\n${data.desc}`;
+            this.randomLabelName.string = `${data.name}`;
+            this.randomLabelDesc.string = `${data.desc}`;
+            this.randomLabelSkillName.string = `${data.name1}`;
+            this.randomLabelSkillDesc.string = `${data.desc1}`;
             this.changeEquipment(Logic.professionList[data.id]);
         };
 
@@ -226,7 +276,7 @@ export default class PickAvatar extends cc.Component {
         //发型
         let hairList = [];
         for (let i = 0; i < 4; i++) {
-            hairList.push(new AttributeData(i, `样式${i}`, `avatarhair0${i > 9 ? '' : '0'}${i}anim00`, ''));
+            hairList.push(new AttributeData(i, `样式${i}`, `avatarhair0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
         }
         this.hairSelector = this.addAttributeSelector('发型：', hairList)
         this.hairSelector.selectorCallback = (data: AttributeData) => {
@@ -242,7 +292,7 @@ export default class PickAvatar extends cc.Component {
         //眼睛
         let eyesList = [];
         for (let i = 0; i < 4; i++) {
-            eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes0${i > 9 ? '' : '0'}${i}anim00`, ''));
+            eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
         }
         this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList)
         this.eyesSelector.selectorCallback = (data: AttributeData) => {
@@ -258,7 +308,7 @@ export default class PickAvatar extends cc.Component {
         //面颊
         let faceList = [];
         for (let i = 0; i < 4; i++) {
-            faceList.push(new AttributeData(i, `样式${i}`, `avatarface0${i > 9 ? '' : '0'}${i}anim00`, ''));
+            faceList.push(new AttributeData(i, `样式${i}`, `avatarface0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
         }
         this.faceSelector = this.addAttributeSelector('面颊：', faceList)
         this.faceSelector.selectorCallback = (data: AttributeData) => {
@@ -299,7 +349,7 @@ export default class PickAvatar extends cc.Component {
         this.resetSpriteSize(this.remoteSprite);
         this.resetSpriteSize(this.shieldSprite);
     }
-    private resetSpriteSize(sprite:cc.Sprite){
+    private resetSpriteSize(sprite: cc.Sprite) {
         if (sprite.spriteFrame) {
             sprite.node.width = sprite.spriteFrame.getRect().width;
             sprite.node.height = sprite.spriteFrame.getRect().height;
@@ -316,7 +366,7 @@ export default class PickAvatar extends cc.Component {
         sprite.spriteFrame = spriteFrame;
     }
     startGame() {
-        if(this.loadingBackground.active){
+        if (this.loadingBackground.active) {
             return;
         }
         //清除存档
@@ -333,7 +383,7 @@ export default class PickAvatar extends cc.Component {
         cc.director.loadScene('start');
         AudioPlayer.play(AudioPlayer.SELECT);
     }
-    addPorfessionEquipment(){
+    addPorfessionEquipment() {
         Logic.inventoryManager.weapon.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.weapon));
         Logic.inventoryManager.remote.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.remote));
         Logic.inventoryManager.shield.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.shield));
@@ -365,16 +415,18 @@ export default class PickAvatar extends cc.Component {
         return script;
     }
     update(dt) {
-        if (this.isSpirteLoaded && this.isProfessionLoaded&& this.isEquipmentLoaded) {
+        if (this.isSpirteLoaded && this.isProfessionLoaded && this.isEquipmentLoaded && this.isTalentsLoaded && this.isItemsLoaded) {
             this.isSpirteLoaded = false;
             this.isProfessionLoaded = false;
             this.isEquipmentLoaded = false;
+            this.isItemsLoaded = false;
+            this.isTalentsLoaded = false;
             this.show();
         }
     }
 
     ButtonSwitch() {
-        if(this.loadingBackground.active){
+        if (this.loadingBackground.active) {
             return;
         }
         this.randomLayout.active = this.randomLayout.active ? false : true;
@@ -382,7 +434,7 @@ export default class PickAvatar extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     ButtonRandom() {
-        if(this.loadingBackground.active){
+        if (this.loadingBackground.active) {
             return;
         }
         this.organizationSelector.selectRandom();

@@ -49,6 +49,7 @@ export default class Loading extends cc.Component {
     private isBulletsLoaded = false;
     private isProfessionLoaded = false;
     private isItemsLoaded = false;
+    private isSkillsLoaded = false;
     // LIFE-CYCLE CALLBACKS:
 
 
@@ -169,6 +170,7 @@ export default class Loading extends cc.Component {
         this.loadDebuffs();
         this.loadBullets();
         this.loadItems();
+        this.loadTalents();
         this.loadProfession();
         this.showLoadingLabel();
         //显示过场
@@ -250,6 +252,21 @@ export default class Loading extends cc.Component {
                 
                 this.isProfessionLoaded = true;
                 cc.log('professionList loaded');
+            }
+        })
+    }
+    loadTalents() {
+        if (Logic.talents) {
+            this.isSkillsLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/talent', (err: Error, resource:cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.talents = resource.json;
+                this.isSkillsLoaded = true;
+                cc.log('talent loaded');
             }
         })
     }
@@ -370,6 +387,7 @@ export default class Loading extends cc.Component {
             && this.isProfessionLoaded
             && this.isBulletsLoaded
             && this.isItemsLoaded
+            && this.isSkillsLoaded
             && this.isWorldLoaded
             && this.isPickedTalent()
             && this.cutScene.isSkip) {
@@ -382,6 +400,7 @@ export default class Loading extends cc.Component {
             this.isProfessionLoaded = false;
             this.isBulletsLoaded = false;
             this.isItemsLoaded = false;
+            this.isSkillsLoaded = false;
             Logic.mapManager.loadMap();
             cc.director.loadScene('game');
         }
