@@ -31,9 +31,11 @@ export default class InventoryManager {
    
     constructor(){
         this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.shield,this.buffer,this.remote];
-        this.itemList.push(new ItemData());
-        this.itemList.push(new ItemData());
-        this.itemList.push(new ItemData());
+        for(let i = 0;i <3;i++){
+            let data = new ItemData();
+            data.count = -1;
+            this.itemList.push(data);
+        }
     }
     getTotalEquipmentData():EquipmentData{
         let e = new EquipmentData();

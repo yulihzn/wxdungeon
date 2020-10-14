@@ -1752,30 +1752,6 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">parallax/chapter00layer1.png</key>
-            <key type="filename">parallax/chapter00layer2.png</key>
-            <key type="filename">parallax/chapter01layer1.png</key>
-            <key type="filename">parallax/chapter01layer2.png</key>
-            <key type="filename">parallax/chapter02layer1.png</key>
-            <key type="filename">parallax/chapter02layer2.png</key>
-            <key type="filename">parallax/chapter03layer1.png</key>
-            <key type="filename">parallax/chapter03layer2.png</key>
-            <key type="filename">parallax/chapter04layer1.png</key>
-            <key type="filename">parallax/chapter04layer2.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>16,16,32,32</rect>
-                <key>scale9Paddings</key>
-                <rect>16,16,32,32</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
             <key type="filename">talents/magicfireball1.png</key>
             <key type="filename">talents/magicfireball2.png</key>
             <key type="filename">talents/magicfireball3.png</key>
@@ -1883,7 +1859,6 @@
             <filename>dungeon</filename>
             <filename>ui</filename>
             <filename>avatar</filename>
-            <filename>parallax</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

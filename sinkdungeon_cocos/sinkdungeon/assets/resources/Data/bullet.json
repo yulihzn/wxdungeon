@@ -179,7 +179,7 @@
         "isRect": 1,
         "isRotate": 0,
         "canBreakBuilding":1,
-        "lifeTime":1,
+        "lifeTime":2,
         "size": 2,
         "resName":"bullet011",
         "lightName": "bulletlight001",
