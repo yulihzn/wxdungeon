@@ -6,6 +6,8 @@ export default class TalentData{
     nameCn: string = '';
     nameEn: string = '';
     resName:string = '';//资源名
+    cooldown:number = 0;
+    passive:number = 0;//是否被动，0是主动
 
     constructor(){
         this.common = new CommonData();
@@ -21,6 +23,8 @@ export default class TalentData{
         this.nameEn = data.nameEn?data.nameEn:this.nameEn;
         this.desc = data.desc?data.desc:this.desc;
         this.resName = data.resName?data.resName:'';
+        this.cooldown = data.cooldown?data.cooldown:0;
+        this.passive = data.passive?data.passive:0;
     }
     public clone(): TalentData {
         let e = new TalentData();
@@ -29,6 +33,8 @@ export default class TalentData{
         e.nameEn = this.nameEn;
         e.desc = this.desc;
         e.resName = this.resName;
+        e.cooldown =this.cooldown;
+        e.passive = this.passive;
         return e;
     }
 }

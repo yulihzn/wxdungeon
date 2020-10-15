@@ -158,8 +158,7 @@ export default class Player extends Actor {
         })
         this.talentSkills = this.getComponent(TalentSkills);
         this.talentSkills.init();
-        this.talentSkills.loadList(Logic.talentList);
-        this.talentSkills.addTalent(this.data.AvatarData.professionData.talent);
+        this.talentSkills.loadPassiveList(Logic.talentList);
         this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {

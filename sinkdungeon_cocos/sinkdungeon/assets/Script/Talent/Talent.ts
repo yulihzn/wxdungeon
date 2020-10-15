@@ -83,7 +83,8 @@ export default abstract class Talent extends cc.Component {
 
     talentSkill = new Skill();
     player: Player;
-    talentList: TalentData[];
+    passiveTalentList: TalentData[];
+    activeTalentData:TalentData;
     hasTalentMap: { [key: string]: boolean } = {};
     get IsExcuting() {
         return this.talentSkill.IsExcuting;
@@ -96,29 +97,36 @@ export default abstract class Talent extends cc.Component {
     }
     init() {
         this.player = this.getComponent(Player);
+        this.activeTalentData = new TalentData();
+        this.activeTalentData.valueCopy(Logic.talents[this.player.data.AvatarData.professionData.talent]);
     }
-    loadList(talentList: TalentData[]) {
-        this.talentList = new Array();
+    /**加载被动技能列表 */
+    loadPassiveList(passiveTalentList: TalentData[]) {
+        this.passiveTalentList = new Array();
         this.hasTalentMap = {};
-        for (let t of talentList) {
+        for (let t of passiveTalentList) {
             let temp = new TalentData();
             temp.valueCopy(t);
-            this.talentList.push(temp);
+            this.passiveTalentList.push(temp);
             this.hasTalentMap[temp.resName] = true;
         }
         this.changePerformance();
     }
-    addTalent(resName: string) {
+    /**
+     * 添加被动技能
+     * @param resName 技能资源名
+     */
+    addPassiveTalent(resName: string) {
         let data = new TalentData();
         data.resName = resName;
         let hasit = false;
-        for (let t of this.talentList) {
+        for (let t of this.passiveTalentList) {
             if (resName == t.resName) {
                 hasit = true;
             }
         }
         if (!hasit) {
-            this.talentList.push(data);
+            this.passiveTalentList.push(data);
             this.hasTalentMap[data.resName] = true;
             this.changePerformance();
             Logic.addTalent(data.resName);

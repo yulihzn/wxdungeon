@@ -229,10 +229,10 @@ export default class Bullet extends cc.Component {
         }
 
     }
-    private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
+    private getSpriteFrameByName(resName: string, suffix?: string,needDefaultSuffix?:boolean): cc.SpriteFrame {
         let spriteFrame = Logic.spriteFrames[resName + suffix];
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrames[resName];
+            spriteFrame = Logic.spriteFrames[needDefaultSuffix?resName+'anim000':resName];
         }
         return spriteFrame;
     }
@@ -262,9 +262,9 @@ export default class Bullet extends cc.Component {
         this.node.stopAllActions();
         let ss = this.sprite.getComponent(cc.Sprite);
         let idleAction = cc.sequence(
-            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName); }),
-            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001'); }),
-            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002'); }));
+            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim000',true); }),
+            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001',true); }),
+            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002',true); }));
         let spawn = cc.spawn(idleAction,cc.rotateBy(0.3,this.data.rotateAngle>0?this.data.rotateAngle:15));
         if(this.data.isRotate == 1){
             this.sprite.runAction(cc.repeatForever(spawn));

@@ -2629,7 +2629,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet000.png</key>
+            <key>bullet000anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2644,7 +2644,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet001.png</key>
+            <key>bullet001anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2674,7 +2674,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet002.png</key>
+            <key>bullet002anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2689,7 +2689,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet003.png</key>
+            <key>bullet003anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2704,7 +2704,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet004.png</key>
+            <key>bullet004anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2719,7 +2719,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet005.png</key>
+            <key>bullet005anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2734,7 +2734,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet006.png</key>
+            <key>bullet006anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2749,7 +2749,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet007.png</key>
+            <key>bullet007anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2764,7 +2764,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet008.png</key>
+            <key>bullet008anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2779,7 +2779,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet009.png</key>
+            <key>bullet009anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2794,7 +2794,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet010.png</key>
+            <key>bullet010anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2809,7 +2809,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet011.png</key>
+            <key>bullet011anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2824,7 +2824,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet012.png</key>
+            <key>bullet012anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2869,7 +2869,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet013.png</key>
+            <key>bullet013anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2884,7 +2884,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet014.png</key>
+            <key>bullet014anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2914,7 +2914,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet015.png</key>
+            <key>bullet015anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2959,7 +2959,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet016.png</key>
+            <key>bullet016anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -2974,7 +2974,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet017.png</key>
+            <key>bullet017anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3004,7 +3004,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet018.png</key>
+            <key>bullet018anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3019,7 +3019,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet019.png</key>
+            <key>bullet019anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3049,7 +3049,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet020.png</key>
+            <key>bullet020anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3064,7 +3064,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet021.png</key>
+            <key>bullet021anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3079,7 +3079,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet022.png</key>
+            <key>bullet022anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3124,7 +3124,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet023.png</key>
+            <key>bullet023anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3169,7 +3169,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet024.png</key>
+            <key>bullet024anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3199,7 +3199,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet025.png</key>
+            <key>bullet025anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3244,7 +3244,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet026.png</key>
+            <key>bullet026anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3274,7 +3274,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet027.png</key>
+            <key>bullet027anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3289,7 +3289,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet028.png</key>
+            <key>bullet028anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3334,7 +3334,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet029.png</key>
+            <key>bullet029anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3349,7 +3349,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet030.png</key>
+            <key>bullet030anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3364,7 +3364,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet031.png</key>
+            <key>bullet031anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3394,7 +3394,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet032.png</key>
+            <key>bullet032anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3409,7 +3409,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet033.png</key>
+            <key>bullet033anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3454,7 +3454,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet034.png</key>
+            <key>bullet034anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3469,7 +3469,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet035.png</key>
+            <key>bullet035anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3514,7 +3514,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet036.png</key>
+            <key>bullet036anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3559,7 +3559,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet037.png</key>
+            <key>bullet037anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3604,7 +3604,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet038.png</key>
+            <key>bullet038anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -3649,7 +3649,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bullet039.png</key>
+            <key>bullet039anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -17688,7 +17688,7 @@
             <key>size</key>
             <string>{1008,729}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:714bb716ca8413fb6c53c7e6a111a1de:59a365e4e9771876eb32de86a4c6ea4c:25404525e168cdb4892835268b3e3561$</string>
+            <string>$TexturePacker:SmartUpdate:293fc9b8c471827fa04ce59ec44a4241:59a365e4e9771876eb32de86a4c6ea4c:25404525e168cdb4892835268b3e3561$</string>
             <key>textureFileName</key>
             <string>texures.png</string>
         </dict>
