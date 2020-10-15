@@ -764,13 +764,13 @@ export default class Monster extends Actor {
                 this.remoteSkill.IsExcuting = true;
                 this.changeFaceRight();
                 this.showAttackAnim((isSpecial: boolean) => {
-                    if(Logic.bullets[this.shooter.data.bulletType].isLaser>0&&isSpecial){
+                    if(Logic.bullets[this.data.bulletType]&&Logic.bullets[this.data.bulletType].isLaser>0&&isSpecial){
                         return;
                     }
                     this.remoteAttack(isSpecial);
                         this.specialSkill.IsExcuting = false;
                 },(isSpecial:boolean)=>{
-                    if(Logic.bullets[this.shooter.data.bulletType].isLaser>0&&isSpecial){
+                    if(Logic.bullets[this.data.bulletType]&&Logic.bullets[this.data.bulletType].isLaser>0&&isSpecial){
                         this.remoteAttack(isSpecial);
                         this.specialSkill.IsExcuting = false;
                     }
