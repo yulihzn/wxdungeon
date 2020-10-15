@@ -40,37 +40,6 @@ export default class TalentShield extends Talent {
         }
         this.shieldFrontSprite.node.color = cc.color(255, 255, 255);
         let isThrow = false;
-        //[2,3,4,5,9,12,13,14];
-        for (let t of this.talentList) {
-            if (t.id == TalentShield.SHIELD_01) {
-            } else if (t.id == TalentShield.SHIELD_02) {
-                this.sprites[0].node.opacity = 255;
-            } else if (t.id == TalentShield.SHIELD_03) {
-                this.sprites[1].node.opacity = 255;
-            } else if (t.id == TalentShield.SHIELD_04) {
-                this.sprites[2].node.opacity = 255;
-            } else if (t.id == TalentShield.SHIELD_05) {
-                this.sprites[3].node.opacity = 255;
-            } else if (t.id == TalentShield.SHIELD_06) {
-                isThrow = true;
-            } else if (t.id == TalentShield.SHIELD_07) {
-                this.shieldFrontSprite.node.color = cc.color(0, 0, 0);
-            } else if (t.id == TalentShield.SHIELD_08) {
-                this.shieldFrontSprite.node.color = cc.color(0, 0, 0);
-            } else if (t.id == TalentShield.SHIELD_09) {
-                this.sprites[4].node.opacity = 255;
-            } else if (t.id == TalentShield.SHIELD_10) {
-                this.shieldFrontSprite.node.color = cc.color(0, 0, 0);
-            } else if (t.id == TalentShield.SHIELD_11) {
-                this.shieldFrontSprite.node.color = cc.color(0, 0, 0);
-            } else if (t.id == TalentShield.SHIELD_12) {
-                this.sprites[5].node.opacity = 255;
-            } else if (t.id == TalentShield.SHIELD_13) {
-                this.sprites[6].node.opacity = 255;
-            } else if (t.id == TalentShield.SHIELD_14) {
-                this.sprites[7].node.opacity = 255;
-            }
-        }
         this.changeRes(isThrow ? 'shield06' : 'shield01');
     }
    
@@ -135,7 +104,7 @@ export default class TalentShield extends Talent {
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown,talentType:2 } });
         }, cooldown, true);
     }
-    hashTalent(id: number): boolean {
+    hashTalent(id: string): boolean {
         return this.hasTalentMap[id] && this.hasTalentMap[id] == true;
     }
     canAddStatus(statusType: string): boolean {

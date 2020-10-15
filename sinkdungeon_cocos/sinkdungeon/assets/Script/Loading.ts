@@ -1,8 +1,5 @@
 import Logic from "./Logic";
-import TalentTree from "./UI/TalentTree";
 import CutScene from "./UI/CutScene";
-import { EventHelper } from "./EventHelper";
-import AudioPlayer from "./Utils/AudioPlayer";
 import ProfessionData from "./Data/ProfessionData";
 
 // Learn TypeScript:
@@ -20,22 +17,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Loading extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
     @property(cc.Node)
     loadingIcon:cc.Node = null;
-    @property(TalentTree)
-    simpleTree: TalentTree = null;
-    @property(TalentTree)
-    shieldTree: TalentTree = null;
-    @property(TalentTree)
-    dashTree: TalentTree = null;
-    @property(TalentTree)
-    magicTree: TalentTree = null;
-    @property(cc.Node)
-    talentInfo: cc.Node = null;
-    @property(cc.Button)
-    confirmButton: cc.Button = null;
     @property(CutScene)
     cutScene: CutScene = null;
     private static readonly KEY_AUTO = 'auto';
@@ -58,105 +41,12 @@ export default class Loading extends cc.Component {
         if(!Logic.spriteFrames){
             Logic.spriteFrames = {};
         }
-        //关闭技能树
-        this.simpleTree.node.active = false;
-        this.shieldTree.node.active = false;
-        this.dashTree.node.active = false;
-        this.magicTree.node.active = false;
-        this.talentInfo.active = false;
-        this.label.node.setPosition(cc.v3(0, 0));
+        
         this.loadingIcon.active = true;
-        this.confirmButton.interactable = false;
-        cc.director.on(EventHelper.TALENT_TREE_SELECT
-            , (event) => { if (this.node) { this.confirmButton.interactable = true; } });
-    }
-    confirmTalent() {
-        if (this.simpleTree.node.active) {
-            this.simpleTree.talentClick();
-        } else if (this.dashTree.node.active) {
-            this.dashTree.talentClick();
-        } else if (this.shieldTree.node.active) {
-            this.shieldTree.talentClick();
-        } else if (this.magicTree.node.active) {
-            this.magicTree.talentClick();
-        }
-        AudioPlayer.play(AudioPlayer.SELECT);
+    
     }
 
-    showTalentPick() {
-        if(!this.isAllSpriteFramesLoaded()){
-            return;
-        }
-        if (Logic.isPickedTalent || !this.isTalentLevel()) {
-            this.simpleTree.node.active = false;
-            this.shieldTree.node.active = false;
-            this.dashTree.node.active = false;
-            this.magicTree.node.active = false;
-            this.talentInfo.active = false;
-            return true;
-        }
-        this.talentInfo.active = true;
-        if (Logic.talentList.length < 1) {
-            this.simpleTree.node.active = true;
-        }
-        if (Logic.talentList.length >= 1) {
-            this.simpleTree.node.active = false;
-            if (Logic.talentList[0].id < 2000001) {
-                this.dashTree.node.active = true;
-            } else if (Logic.talentList[0].id < 3000001) {
-                this.shieldTree.node.active = true;
-            } else if (Logic.talentList[0].id < 4000001) {
-                this.magicTree.node.active = true;
-            }
-        }
-        this.label.node.setPosition(cc.v3(0, 320));
-        this.loadingIcon.active = false;
-        if (Logic.talentList.length > 9) {
-            this.simpleTree.node.active = false;
-            this.shieldTree.node.active = false;
-            this.dashTree.node.active = false;
-            this.magicTree.node.active = false;
-            Logic.isPickedTalent = true;
-        }
-
-    }
-    isTalentLevel(): boolean {
-        // return Logic.level > 0;
-        return false;
-    }
-    isPickedTalent(): boolean {
-        if (Logic.isPickedTalent) {
-            return true;
-        }
-        if (this.isTalentLevel()) {
-            let isPicked = false;
-            if (this.simpleTree.node.active && this.simpleTree.hasPicked) {
-                isPicked = true;
-            }
-            if (this.dashTree.node.active && this.dashTree.hasPicked) {
-                isPicked = true;
-            }
-            if (this.shieldTree.node.active && this.shieldTree.hasPicked) {
-                isPicked = true;
-            }
-            if (this.magicTree.node.active && this.magicTree.hasPicked) {
-                isPicked = true;
-            }
-            if (!this.simpleTree.node.active && !this.dashTree.node.active && !this.shieldTree.node.active && !this.magicTree.node.active) {
-                isPicked = true;
-            }
-            return isPicked;
-        } else {
-            return true;
-        }
-    }
     start() {
-        //显示加载文字
-        this.label.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`
-        if (Logic.level == 0) {
-            this.label.string = ``
-            
-        }
         //加载地图，装备，贴图，敌人，状态，子弹，物品资源
         this.isWorldLoaded = false;
         this.isEquipmentLoaded = false;
@@ -196,7 +86,6 @@ export default class Loading extends cc.Component {
         if (this.isAllSpriteFramesLoaded()) {
             return;
         }
-        this.label.string = ``;
         this.loadingIcon.active = true;
     }
 
@@ -340,7 +229,6 @@ export default class Loading extends cc.Component {
     private loadAutoSpriteFrames() {
         if (Logic.spriteFrames&&Logic.spriteFrames['singleColor']) {
             this.spriteFrameNames[Loading.KEY_AUTO] = true;
-            this.showTalentPick();
             return;
         }
         cc.resources.loadDir('Texture/Auto', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
@@ -348,16 +236,12 @@ export default class Loading extends cc.Component {
                 Logic.spriteFrames[frame.name] = frame;
             }
             this.spriteFrameNames[Loading.KEY_AUTO] = true;
-            if(this.isAllSpriteFramesLoaded()){
-                this.showTalentPick();
-            }
             cc.log('auto texture loaded');
         })
     }
     private loadSpriteAtlas(typeKey:string,hasKey:string){
         if (Logic.spriteFrames&&Logic.spriteFrames[hasKey]) {
             this.spriteFrameNames[typeKey] = true;
-            this.showTalentPick();
             return;
         }
         cc.resources.load(`Texture/${typeKey}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
@@ -365,7 +249,6 @@ export default class Loading extends cc.Component {
                 Logic.spriteFrames[frame.name] = frame;
             }
             this.spriteFrameNames[typeKey] = true;
-            this.showTalentPick();
             cc.log(`${typeKey} loaded`);
         })
     }
@@ -389,7 +272,6 @@ export default class Loading extends cc.Component {
             && this.isItemsLoaded
             && this.isSkillsLoaded
             && this.isWorldLoaded
-            && this.isPickedTalent()
             && this.cutScene.isSkip) {
             this.timeDelay = 0;
             this.cutScene.unregisterClick();

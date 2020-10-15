@@ -16,7 +16,6 @@ import WorldLoader from "./Map/WorldLoader";
 import ProfessionData from "./Data/ProfessionData";
 import Random4Save from "./Utils/Random4Save";
 import ExitData from "./Data/ExitData";
-import SkillData from "./Data/SkillData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,7 +53,7 @@ export default class Logic extends cc.Component {
     //物品json
     static items: { [key: string]: ItemData } = null;
     //技能json
-    static talents: { [key: string]: SkillData } = null;
+    static talents: { [key: string]: TalentData } = null;
     //职业json
     static professionList: ProfessionData[] = [];
 
@@ -67,8 +66,7 @@ export default class Logic extends cc.Component {
     static inventoryManager: InventoryManager = new InventoryManager();
 
     static talentList: TalentData[] = new Array();
-    static hasTalentMap: { [key: number]: boolean } = {};
-    static isPickedTalent = false;
+    static hasTalentMap: { [key: string]: boolean } = {};
 
     static mapManager: MapManager = new MapManager();
     static worldLoader: WorldLoader = new WorldLoader();
@@ -153,36 +151,33 @@ export default class Logic extends cc.Component {
         Logic.coins = c ? parseInt(c) : 0;
         let o = cc.sys.localStorage.getItem('oilgold');
         Logic.oilGolds = o ? parseInt(o) : 0;
-        //重置技能选择状态
-        Logic.isPickedTalent = false;
         //重置bgm
         Logic.lastBgmIndex = -1;
     }
     private static initTalentMap() {
         Logic.hasTalentMap = {};
         for (let t of Logic.talentList) {
-            Logic.hasTalentMap[t.id] = true;
+            Logic.hasTalentMap[t.resName] = true;
         }
     }
-    static addTalent(id: number): boolean {
+    static addTalent(resName: string): boolean {
         let data = new TalentData();
-        data.id = id;
+        data.resName = resName;
         let hasit = false;
         for (let t of Logic.talentList) {
-            if (id == t.id) {
+            if (resName == t.resName) {
                 hasit = true;
             }
         }
         if (!hasit) {
             Logic.talentList.push(data);
-            Logic.hasTalentMap[data.id] = true;
-            Logic.isPickedTalent = true;
+            Logic.hasTalentMap[data.resName] = true;
             return true;
         }
         return false;
     }
-    static hashTalent(id: number): boolean {
-        return Logic.hasTalentMap[id] && Logic.hasTalentMap[id] == true;
+    static hashTalent(resName: string): boolean {
+        return Logic.hasTalentMap[resName] && Logic.hasTalentMap[resName] == true;
     }
 
     static changeDungeonSize() {
@@ -280,8 +275,6 @@ export default class Logic extends cc.Component {
         } else if (exitPos.x != -1 && exitPos.y != -1) {
             Logic.playerData.pos = exitPos;
         }
-        //暂时不选择技能
-        Logic.isPickedTalent = true;
         Logic.lastBgmIndex = -1;
         cc.director.loadScene('loading');
     }

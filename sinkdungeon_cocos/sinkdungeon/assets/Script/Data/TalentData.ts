@@ -2,11 +2,10 @@ import CommonData from "./CommonData";
 
 export default class TalentData{
     private common:CommonData;//角色属性调整
-    id:number = 0;
     desc:string = '';
     nameCn: string = '';
     nameEn: string = '';
-    resName:string = '';
+    resName:string = '';//资源名
 
     constructor(){
         this.common = new CommonData();
@@ -21,7 +20,6 @@ export default class TalentData{
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn?data.nameEn:this.nameEn;
         this.desc = data.desc?data.desc:this.desc;
-        this.id = data.id?data.id:0;
         this.resName = data.resName?data.resName:'';
     }
     public clone(): TalentData {
@@ -30,7 +28,6 @@ export default class TalentData{
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
         e.desc = this.desc;
-        e.id = this.id;
         e.resName = this.resName;
         return e;
     }

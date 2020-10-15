@@ -14689,7 +14689,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash01.png</key>
+            <key>talent000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14704,7 +14704,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash02.png</key>
+            <key>talent001.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14719,7 +14719,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash03.png</key>
+            <key>talent002.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14734,7 +14734,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash04.png</key>
+            <key>talent003.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14749,7 +14749,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash05.png</key>
+            <key>talent004.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14764,7 +14764,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash06.png</key>
+            <key>talent005.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14779,7 +14779,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash07.png</key>
+            <key>talent006.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14794,7 +14794,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash08.png</key>
+            <key>talent007.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14809,7 +14809,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash09.png</key>
+            <key>talent008.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14824,7 +14824,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash10.png</key>
+            <key>talent009.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14839,7 +14839,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash11.png</key>
+            <key>talent010.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14854,7 +14854,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash12.png</key>
+            <key>talent011.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14869,7 +14869,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash13.png</key>
+            <key>talent012.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14884,7 +14884,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentdash14.png</key>
+            <key>talent014.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14899,7 +14899,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentempty.png</key>
+            <key>talent015.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14914,7 +14914,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentmagic01.png</key>
+            <key>talent016.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14929,7 +14929,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentmagic02.png</key>
+            <key>talent017.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14944,7 +14944,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentmagic03.png</key>
+            <key>talent018.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14959,7 +14959,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentmagic04.png</key>
+            <key>talent019.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14974,7 +14974,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentmagic05.png</key>
+            <key>talent03.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -14989,7 +14989,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentmagic06.png</key>
+            <key>talentempty.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -15274,7 +15274,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentshield09.png</key>
+            <key>talentshield10.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -15289,7 +15289,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentshield10.png</key>
+            <key>talentshield11.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -15304,7 +15304,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentshield11.png</key>
+            <key>talentshield12.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -15319,7 +15319,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentshield12.png</key>
+            <key>talentshield13.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -15334,7 +15334,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentshield13.png</key>
+            <key>talentshield14.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -15349,7 +15349,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>talentshield14.png</key>
+            <key>talentx002.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -17688,7 +17688,7 @@
             <key>size</key>
             <string>{1008,729}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e8089793400cce59e0b2553542348884:a79705adaf22a62aa3d5f212e34dec73:25404525e168cdb4892835268b3e3561$</string>
+            <string>$TexturePacker:SmartUpdate:714bb716ca8413fb6c53c7e6a111a1de:59a365e4e9771876eb32de86a4c6ea4c:25404525e168cdb4892835268b3e3561$</string>
             <key>textureFileName</key>
             <string>texures.png</string>
         </dict>

@@ -82,23 +82,7 @@ export default class TalentDash extends Talent {
         }
     }
     changePerformance() {
-        for (let t of this.talentList) {
-            if (t.id == Talent.DASH_01) {
-            } else if (t.id == Talent.DASH_02) {
-            } else if (t.id == Talent.DASH_03) {
-            } else if (t.id == Talent.DASH_04) {
-            } else if (t.id == Talent.DASH_05) {
-            } else if (t.id == Talent.DASH_06) {
-            } else if (t.id == Talent.DASH_07) {
-            } else if (t.id == Talent.DASH_08) {
-            } else if (t.id == Talent.DASH_09) {
-            } else if (t.id == Talent.DASH_10) {
-            } else if (t.id == Talent.DASH_11) {
-            } else if (t.id == Talent.DASH_12) {
-            } else if (t.id == Talent.DASH_13) {
-            } else if (t.id == Talent.DASH_14) {
-            }
-        }
+        
     }
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         if (this.hashTalent(Talent.DASH_02) && !this.hashTalent(Talent.DASH_08)) {
@@ -154,10 +138,10 @@ export default class TalentDash extends Talent {
         this.addBossStatus(Talent.DASH_06, boss, StatusManager.DIZZ);
         this.addBossStatus(Talent.DASH_03, boss, StatusManager.BLEEDING);
     }
-    addMonsterStatus(talentType: number, monster: Monster, statusType) {
+    addMonsterStatus(talentType: string, monster: Monster, statusType) {
         if (this.hashTalent(talentType)) { monster.addStatus(statusType,new FromData()); }
     }
-    addBossStatus(talentType: number, boss: Boss, statusType) {
+    addBossStatus(talentType: string, boss: Boss, statusType) {
         if (this.hashTalent(talentType)) { boss.addStatus(statusType,new FromData()); }
     }
     takeDamage() {

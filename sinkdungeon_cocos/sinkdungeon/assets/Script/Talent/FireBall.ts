@@ -43,9 +43,6 @@ export default class FireBall extends cc.Component {
         this.node.parent = player.node.parent;
         this.node.setPosition(this.getPlayerPosition(player));
         this.node.scale = 4;
-        if(player.talentMagic.hashTalent(Talent.MAGIC_09)){
-            this.node.scale = 6;
-        }
         let direction = this.getPlayerHv(player,exangle);
         let angle = direction.signAngle(cc.v3(1,0));
         let degree = cc.misc.radiansToDegrees(angle);
@@ -85,9 +82,6 @@ export default class FireBall extends cc.Component {
         let damage = new DamageData();
         let status = StatusManager.BURNING;
         let d = 2;
-        if(this.player&&this.player.talentMagic.hashTalent(Talent.MAGIC_06)){
-            d = 3;
-        }
         damage.magicDamage = d;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {

@@ -39,6 +39,21 @@ export default class TalentTree extends cc.Component {
     static TEXT_PICKSKILL = '选择合适的技能（按住查看技能）';
     private selectIcon:TalentIcon;
     private graphics:cc.Graphics;
+    //技能互斥表
+    public static readonly SHIELD_CAN_OPEN_MAP = [
+        `1;;`, `2;1;`, `3;2;4`, `4;2;3`, `5;3,4;`,
+        `6;1;`, `7;6;8,9,10`, `8;6;7,9,10`, `9;6;7,8,10`,
+        `10;6;7,8,9`, `11;7,8,9,10;`
+        , `12;1;`, `13;12;`, `14;13;`];
+    public static readonly DASH_CAN_OPEN_MAP = [
+        `1;;`, `2;1;`, `3;2;4,5,6`, `4;2;3,5,6`, `5;2;3,4,6;`,
+        `6;2;3,4,5`, `7;3,4,5,6;`, `8;1;`, `9;8;10`,
+        `10;8;9`, `11;9,10;`, `12;1;`, `13;12;`, `14;13;`];
+    public static readonly MAGIC_CAN_OPEN_MAP = [
+        `1;;`, `2;13,10,16;`, `3;1;`, `4;3;`, `5;1;`,
+        `6;7;`, `7;5;`, `8;1;11,14`, `9;8;`,
+        `10;9;`, `11;1;8,14;`
+        , `12;11;`, `13;12;`, `14;1;8,11`, `15;14;`, `16;15;`];
     
 
     // LIFE-CYCLE CALLBACKS:

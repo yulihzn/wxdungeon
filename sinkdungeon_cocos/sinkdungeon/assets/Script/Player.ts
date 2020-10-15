@@ -92,8 +92,6 @@ export default class Player extends Actor {
 
     defaultPos = cc.v3(0, 0);
 
-    talentDash: TalentDash;
-    talentMagic: TalentMagic;
     talentSkills:TalentSkills;
     isWeaponDashing = false;
     fistCombo = 0;
@@ -161,14 +159,7 @@ export default class Player extends Actor {
         this.talentSkills = this.getComponent(TalentSkills);
         this.talentSkills.init();
         this.talentSkills.loadList(Logic.talentList);
-        this.talentDash = this.getComponent(TalentDash);
-        this.talentDash.init();
-        this.talentDash.loadList(Logic.talentList);
-        // this.talentDash.addTalent(Talent.DASH_11);
-        this.talentMagic = this.getComponent(TalentMagic);
-        this.talentMagic.init();
-        this.talentMagic.loadList(Logic.talentList);
-        // this.talentMagic.addTalent(Talent.MAGIC_09);
+        this.talentSkills.addTalent(this.data.AvatarData.professionData.talent);
         this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
@@ -490,9 +481,6 @@ export default class Player extends Actor {
         if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
             pos = pos.mul(0.5);
         }
-        if (this.talentMagic && this.talentMagic.magiccircle.isShow && !this.talentMagic.hashTalent(Talent.MAGIC_05)) {
-            pos = pos.mul(0.3);
-        }
         
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
@@ -623,16 +611,16 @@ export default class Player extends Actor {
         let dodge = this.data.FinalCommon.dodge / 100;
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
-        if (this.talentDash.hashTalent(Talent.DASH_12) && this.talentDash.IsExcuting && dd.getTotalDamage() > 0) {
+        if (this.talentSkills.hashTalent(Talent.TALENT_015) && this.talentSkills.IsExcuting && dd.getTotalDamage() > 0) {
             isDodge = true;
         }
-        let isIceTaken = false;
-        if (dd.getTotalDamage() > 0) {
-            isIceTaken = this.talentMagic.takeIce();
-        }
-        if (isIceTaken) {
-            isDodge = true;
-        }
+        // let isIceTaken = false;
+        // if (dd.getTotalDamage() > 0) {
+        //     isIceTaken = this.talentMagic.takeIce();
+        // }
+        // if (isIceTaken) {
+        //     isDodge = true;
+        // }
         dd = isDodge ? new DamageData() : dd;
         let health = this.data.getHealth();
         health.x -= dd.getTotalDamage();
@@ -714,7 +702,9 @@ export default class Player extends Actor {
         if (this.shooterEx && !this.shooterEx.dungeon) {
             this.shooterEx.dungeon = dungeon;
         }
-        if (this.talentDash && !this.talentDash.IsExcuting && !this.isWeaponDashing) {
+        let isDashing = this.talentSkills.hashTalent(Talent.TALENT_015) && this.talentSkills.IsExcuting;
+       
+        if (this.talentSkills&&!isDashing && !this.isWeaponDashing) {
             this.move(dir, pos, dt);
         }
     }
@@ -743,14 +733,8 @@ export default class Player extends Actor {
         this.node.opacity = this.invisible ? 80 : 255;
     }
     private useSkill(): void {
-        if (Logic.hashTalent(Talent.DASH_01)) {
-            if (this.talentDash) {
-                this.talentDash.useDash();
-            }
-        } else if (Logic.hashTalent(Talent.MAGIC_01)) {
-            if (this.talentMagic) {
-                this.talentMagic.useMagic();
-            }
+        if(this.talentSkills){
+            this.talentSkills.useSKill();
         }
 
     }
@@ -792,7 +776,8 @@ export default class Player extends Actor {
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.node.getComponent(Monster) && this.talentDash && (this.talentDash.IsExcuting || this.isWeaponDashing)) {
+        if (otherCollider.node.getComponent(Monster)  
+        && ((this.talentSkills && this.talentSkills.hashTalent(Talent.TALENT_015)&&this.talentSkills.IsExcuting) || this.isWeaponDashing)) {
             contact.disabledOnce = true;
         }
     }

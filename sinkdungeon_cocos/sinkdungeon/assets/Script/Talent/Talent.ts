@@ -9,10 +9,10 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default abstract class Talent extends cc.Component {
-    public static readonly DASH = 1000000;
-    public static readonly SHIELD = 2000000;
-    public static readonly MAGIC = 3000000;
-    public static readonly ARCHER = 4000000;
+    public static readonly DASH = '1000000';
+    public static readonly SHIELD = '2000000';
+    public static readonly MAGIC = '3000000';
+    public static readonly ARCHER = '4000000';
     public static readonly DASH_01 = Talent.DASH + 1;//普通
     public static readonly DASH_02 = Talent.DASH + 2;//突刺冲撞 1伤害 1
     public static readonly DASH_03 = Talent.DASH + 3;//鱼肠刺僚 流血 1
@@ -60,43 +60,31 @@ export default abstract class Talent extends cc.Component {
     public static readonly MAGIC_15 = Talent.MAGIC + 15;//高压雷暴 1
     public static readonly MAGIC_16 = Talent.MAGIC + 16;//雷暴线圈 1
 
-    public static readonly DASH_DESC = ['冲刺;向前冲刺一段距离', '突刺冲撞;冲刺并造成1点伤害', '鱼肠刺僚;冲刺造成流血效果'
-        , '螳臂当车;冲刺造成击退效果', '醉舞矛戈;冲刺造成减速效果', '野蛮冲撞;冲刺造成眩晕效果'
-        , '突刺鹰击;冲刺并造成5点伤害', '移形换影;本体不冲刺而是幻影替代随后瞬移到幻影的位置', '火焰舞者;划过路径留下一道3秒的火焰'
-        , '冰霜之城;划过路径留下一道3秒的冰墙', '元素湍流;扩大路径面积', '灵姿鬼步;冲刺期间无敌'
-        , '坚韧意志;缩短冲刺冷却', '飞燕如梭;冲刺速度提高距离变远']
-    public static readonly SHIELD_DESC = ['举盾;举起盾牌防御', '迅捷反击;盾牌反击1点伤害', '镜面偏转;反弹子弹'
-        , '元素晶盾;受到的元素效果无效', '强力盾反;盾牌反击5点伤害', '乾坤一掷;盾牌可以飞掷'
-        , '九转回旋;盾牌飞掷造成减速效果', '平地惊雷;盾牌飞掷造成眩晕效果', '四两千斤;盾牌飞掷造成击退效果'
-        , '见血封喉;盾牌飞掷造成流血效果', '阴阳遁形;盾牌飞掷距离变远', '敏捷身法;移除减速损耗'
-        , '坚韧不屈;缩短举盾冷却', '龟甲铜墙;举盾时间变长']
-    public static readonly MAGIC_DESC = ['元素飞弹;发射多枚普通的元素飞弹', '多重施法;三个火球，多重冰柱，双重雷暴', '快速吟唱;施法吟唱时间变短'
-        , '冷静冥想;缩短施法间隔', '灵活移动;移动速度提高，施法可以移动', '法力增强;提高法术伤害', '武器附魔;让武器更加锋利'
-        , '火球术;施放一个火球', '炎爆术;施放一个大火球', '火焰精灵;产生火焰精灵漂浮在身边对敌人发起进攻'
-        , '冰晶锥;周围竖起冰柱', '大冰晶柱;周围竖起多个冰柱', '冰晶护盾;生成一个冰甲抵消一次伤害并减速周围'
-        , '雷落;最近目标受到雷击', '高压雷暴;最近目标受到雷爆', '雷暴线圈;定时爆发出雷环眩晕周围敌人']
-
-
-    //技能互斥表
-    public static readonly SHIELD_CAN_OPEN_MAP = [
-        `1;;`, `2;1;`, `3;2;4`, `4;2;3`, `5;3,4;`,
-        `6;1;`, `7;6;8,9,10`, `8;6;7,9,10`, `9;6;7,8,10`,
-        `10;6;7,8,9`, `11;7,8,9,10;`
-        , `12;1;`, `13;12;`, `14;13;`];
-    public static readonly DASH_CAN_OPEN_MAP = [
-        `1;;`, `2;1;`, `3;2;4,5,6`, `4;2;3,5,6`, `5;2;3,4,6;`,
-        `6;2;3,4,5`, `7;3,4,5,6;`, `8;1;`, `9;8;10`,
-        `10;8;9`, `11;9,10;`, `12;1;`, `13;12;`, `14;13;`];
-    public static readonly MAGIC_CAN_OPEN_MAP = [
-        `1;;`, `2;13,10,16;`, `3;1;`, `4;3;`, `5;1;`,
-        `6;7;`, `7;5;`, `8;1;11,14`, `9;8;`,
-        `10;9;`, `11;1;8,14;`
-        , `12;11;`, `13;12;`, `14;1;8,11`, `15;14;`, `16;15;`];
+    public static readonly TALENT_000 = 'talent000';
+    public static readonly TALENT_001 = 'talent001';
+    public static readonly TALENT_002 = 'talent002';
+    public static readonly TALENT_003 = 'talent003';
+    public static readonly TALENT_004 = 'talent004';
+    public static readonly TALENT_005 = 'talent005';
+    public static readonly TALENT_006 = 'talent006';
+    public static readonly TALENT_007 = 'talent007';
+    public static readonly TALENT_008 = 'talent008';
+    public static readonly TALENT_009 = 'talent009';
+    public static readonly TALENT_010 = 'talent010';
+    public static readonly TALENT_011 = 'talent011';
+    public static readonly TALENT_012 = 'talent012';
+    public static readonly TALENT_013 = 'talent013';
+    public static readonly TALENT_014 = 'talent014';
+    public static readonly TALENT_015 = 'talent015';
+    public static readonly TALENT_016 = 'talent016';
+    public static readonly TALENT_017 = 'talent017';
+    public static readonly TALENT_018 = 'talent018';
+    public static readonly TALENT_019 = 'talent019';
 
     talentSkill = new Skill();
     player: Player;
     talentList: TalentData[];
-    hasTalentMap: { [key: number]: boolean } = {};
+    hasTalentMap: { [key: string]: boolean } = {};
     get IsExcuting() {
         return this.talentSkill.IsExcuting;
     }
@@ -116,24 +104,24 @@ export default abstract class Talent extends cc.Component {
             let temp = new TalentData();
             temp.valueCopy(t);
             this.talentList.push(temp);
-            this.hasTalentMap[temp.id] = true;
+            this.hasTalentMap[temp.resName] = true;
         }
         this.changePerformance();
     }
-    addTalent(id: number) {
+    addTalent(resName: string) {
         let data = new TalentData();
-        data.id = id;
+        data.resName = resName;
         let hasit = false;
         for (let t of this.talentList) {
-            if (id == t.id) {
+            if (resName == t.resName) {
                 hasit = true;
             }
         }
         if (!hasit) {
             this.talentList.push(data);
-            this.hasTalentMap[data.id] = true;
+            this.hasTalentMap[data.resName] = true;
             this.changePerformance();
-            Logic.addTalent(data.id);
+            Logic.addTalent(data.resName);
         }
     }
     abstract changePerformance(): void
@@ -147,8 +135,8 @@ export default abstract class Talent extends cc.Component {
         }
         return node.getComponent(cc.Sprite);
     }
-    hashTalent(id: number): boolean {
-        return this.hasTalentMap[id] && this.hasTalentMap[id] == true;
+    hashTalent(resName: string): boolean {
+        return this.hasTalentMap[resName] && this.hasTalentMap[resName] == true;
     }
 
     abstract takeDamage(damageData: DamageData, actor?: Actor): void

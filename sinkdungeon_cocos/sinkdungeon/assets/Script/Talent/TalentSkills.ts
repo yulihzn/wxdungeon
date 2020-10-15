@@ -45,6 +45,7 @@ export default class TalentSkills extends Talent {
     fireGhost: cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
+    isDashing = false;
     onLoad() {
         this.ghostPool = new cc.NodePool(FireGhost);
         cc.director.on('destoryfireghost', (event) => {
@@ -79,9 +80,10 @@ export default class TalentSkills extends Talent {
         let cooldown = 3;
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown,talentType: 3 } });
             //TODO show skill
         }, cooldown, true);
+        cc.log('use skill');
     }
     
     //anim

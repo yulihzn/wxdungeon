@@ -72,9 +72,6 @@ export default class FireGhost extends cc.Component {
         let damage = new DamageData();
         let status = StatusManager.BURNING;
         let d = 1;
-        if (this.player && this.player.talentMagic.hashTalent(Talent.MAGIC_06)) {
-            d = 2;
-        }
         damage.magicDamage = d;
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {

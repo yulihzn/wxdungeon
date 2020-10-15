@@ -2,11 +2,13 @@ import Logic from "../Logic";
 import TalentData from "../Data/TalentData";
 import { EventHelper } from "../EventHelper";
 import Talent from "../Talent/Talent";
+import TalentTree from "./TalentTree";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class TalentIcon extends cc.Component {
+    
     parents: cc.Node[] = null;
     children: cc.Node[] = null;
     currentChild: cc.Node = null;
@@ -78,17 +80,17 @@ export default class TalentIcon extends cc.Component {
     }
 
     checkCanOpen(): boolean {
-        for (let info of Talent.DASH_CAN_OPEN_MAP) {
+        for (let info of TalentTree.DASH_CAN_OPEN_MAP) {
             if(this.parseOpenMapAndCanOpen(Talent.DASH,info)){
                 return true;
             }
         }
-        for (let info of Talent.SHIELD_CAN_OPEN_MAP) {
+        for (let info of TalentTree.SHIELD_CAN_OPEN_MAP) {
             if(this.parseOpenMapAndCanOpen(Talent.SHIELD,info)){
                 return true;
             }
         }
-        for (let info of Talent.MAGIC_CAN_OPEN_MAP) {
+        for (let info of TalentTree.MAGIC_CAN_OPEN_MAP) {
             if(this.parseOpenMapAndCanOpen(Talent.MAGIC,info)){
                 return true;
             }

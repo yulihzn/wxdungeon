@@ -28,6 +28,7 @@ export default class Controller extends cc.Component {
     skillAction: cc.Node = null;
     @property(cc.Node)
     coolDown: cc.Node = null;
+    skillIcon:cc.Sprite = null;
     skillActionTouched = false;
     graphics: cc.Graphics = null;
     @property(cc.Button)
@@ -37,6 +38,8 @@ export default class Controller extends cc.Component {
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
+        this.skillIcon = this.coolDown.getChildByName('sprite').getComponent(cc.Sprite);
+        this.skillIcon.spriteFrame = Logic.spriteFrames[Logic.playerData.AvatarData.professionData.talent];
         this.attackAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.attackActionTouched = true;
         }, this)
@@ -88,7 +91,7 @@ export default class Controller extends cc.Component {
         cc.director.on(EventHelper.HUD_DARK_CONTROLLER
             , (event) => { this.changeRes(event.detail.index, true) });
         cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
-            , (event) => { this.drawSkillCoolDown(event.detail.cooldown, event.detail.talentType); });
+            , (event) => { this.drawSkillCoolDown(event.detail.cooldown); });
         EventHelper.on(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,(isShow:boolean)=>{
             if(this.interactButton){
                 this.interactButton.interactable = isShow;
@@ -117,16 +120,13 @@ export default class Controller extends cc.Component {
         this.attackAction.getComponent(cc.Button).normalSprite = Logic.spriteFrames[resName];
     }
 
-    private drawSkillCoolDown(coolDown: number, talentType: number) {
+    private drawSkillCoolDown(coolDown: number) {
         if (coolDown <= 0) {
             return;
         }
         if (!this.coolDown) {
             return;
         }
-        let td = this.coolDown.getChildByName('talentdash01');
-        let ts = this.coolDown.getChildByName('talentshield01');
-        let tm = this.coolDown.getChildByName('talentmagic01');
         let p = this.coolDown.convertToWorldSpaceAR(cc.Vec3.ZERO);
         p = this.node.convertToNodeSpaceAR(p);
         let height = 64;
@@ -139,23 +139,9 @@ export default class Controller extends cc.Component {
                 this.graphics.clear();
             }
             this.drawRect(height, p);
-            if (talentType == 1) {
-                td.opacity = 255;
-                ts.opacity = 0;
-                tm.opacity = 0;
-            } else if(talentType == 2) {
-                td.opacity = 0;
-                ts.opacity = 255;
-                tm.opacity = 0;
-            }else if(talentType == 3){
-                td.opacity = 0;
-                ts.opacity = 0;
-                tm.opacity = 255;
-            }
+            this.skillIcon.node.opacity = 255;
             if (height < 0) {
-                td.opacity = 0;
-                ts.opacity = 0;
-                tm.opacity = 0;
+                this.skillIcon.node.opacity = 0;
                 if (this.graphics) {
                     this.graphics.clear();
                 }

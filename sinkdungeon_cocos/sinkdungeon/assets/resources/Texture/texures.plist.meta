@@ -21546,9 +21546,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash01.png": {
+    "talent000.png": {
       "ver": "1.0.4",
-      "uuid": "360d864f-5fdd-40a8-a6cd-4358c83c2f59",
+      "uuid": "3c247804-572b-4f10-ac5a-7d8867a65fc9",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21568,9 +21568,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash02.png": {
+    "talent001.png": {
       "ver": "1.0.4",
-      "uuid": "fbc3610e-21ed-459c-847b-d18b5a2c9973",
+      "uuid": "128bee79-4c04-464a-bfaa-fb5fb23741ee",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21590,9 +21590,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash03.png": {
+    "talent002.png": {
       "ver": "1.0.4",
-      "uuid": "3be3db06-587b-400d-84ca-9f6b6aaaf116",
+      "uuid": "33709062-9995-48e4-9185-8b8f50e7e143",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21612,9 +21612,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash04.png": {
+    "talent003.png": {
       "ver": "1.0.4",
-      "uuid": "bdc158a6-1bfe-4b4e-b28e-a890bd28b6bc",
+      "uuid": "bd8b2451-969a-4ccd-947e-107c9d66bad9",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21634,9 +21634,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash05.png": {
+    "talent004.png": {
       "ver": "1.0.4",
-      "uuid": "ad3d4143-64b9-4b80-84d1-bf7f46f34505",
+      "uuid": "32d42e47-c0fd-4d59-b4a1-01bc8f5ea731",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21656,9 +21656,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash06.png": {
+    "talent005.png": {
       "ver": "1.0.4",
-      "uuid": "341facf9-ed25-414e-97af-e85b8001c8f1",
+      "uuid": "23294f9c-8d7a-4d8d-861f-0d48e8106313",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21678,9 +21678,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash07.png": {
+    "talent006.png": {
       "ver": "1.0.4",
-      "uuid": "1af20a0c-8d8e-45aa-bda5-aa3749f4c77b",
+      "uuid": "517632a4-6218-4995-a94b-2c63e515e473",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21700,9 +21700,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash08.png": {
+    "talent007.png": {
       "ver": "1.0.4",
-      "uuid": "d26f7912-782f-43a9-bdca-794e977ec944",
+      "uuid": "d170e834-e75d-4186-a90e-f4b825c8d5ae",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21722,9 +21722,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash09.png": {
+    "talent008.png": {
       "ver": "1.0.4",
-      "uuid": "ea2e9538-36db-446b-955b-6275a205a1bc",
+      "uuid": "496e440f-963d-4ef2-b73c-d078b4d80818",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21744,9 +21744,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash10.png": {
+    "talent009.png": {
       "ver": "1.0.4",
-      "uuid": "3769aa43-445c-4529-a1bc-043908e7d9e8",
+      "uuid": "6b4225e4-18a6-4b9b-9dd0-87ad24bcd6b7",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21766,9 +21766,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash11.png": {
+    "talent010.png": {
       "ver": "1.0.4",
-      "uuid": "2b4ed1f7-c7cd-4f07-9d1b-c722b64e8ff8",
+      "uuid": "7476b570-e314-4139-9bd8-29a1eefa9eb4",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21788,9 +21788,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash12.png": {
+    "talent011.png": {
       "ver": "1.0.4",
-      "uuid": "242080fa-ec69-4707-a34b-3e9c64b3bfb7",
+      "uuid": "e3e593a3-91a4-4c5e-9f12-1d68a41848cd",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21810,9 +21810,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash13.png": {
+    "talent012.png": {
       "ver": "1.0.4",
-      "uuid": "d2108de7-6013-4343-8602-6bdec6269802",
+      "uuid": "8b6aa184-34b4-4407-8f4f-6e6702bef429",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21832,9 +21832,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentdash14.png": {
+    "talent014.png": {
       "ver": "1.0.4",
-      "uuid": "ef3edf8e-26b8-4367-b7f6-23106780201b",
+      "uuid": "b5efafbe-0ba7-4a35-a708-d5068eb5b787",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21854,9 +21854,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentempty.png": {
+    "talent015.png": {
       "ver": "1.0.4",
-      "uuid": "3041622c-0b20-4b46-9cb9-6629aadb2c70",
+      "uuid": "7992e582-60e6-41dc-87bd-d83e1783344a",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21876,9 +21876,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentmagic01.png": {
+    "talent016.png": {
       "ver": "1.0.4",
-      "uuid": "1da79abc-7eab-4f3a-870e-68e6dcf744b6",
+      "uuid": "5639b353-c012-400e-99fe-f66b5c39127d",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21898,9 +21898,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentmagic02.png": {
+    "talent017.png": {
       "ver": "1.0.4",
-      "uuid": "ee373f14-a576-42ee-9523-570bac79126c",
+      "uuid": "6aee5983-16eb-4280-941f-d51813fc7784",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21920,9 +21920,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentmagic03.png": {
+    "talent018.png": {
       "ver": "1.0.4",
-      "uuid": "b8d15773-1d8d-44a8-bb2b-158bbc70755a",
+      "uuid": "eddbff01-3d96-403f-9a9b-efde882d285a",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21942,9 +21942,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentmagic04.png": {
+    "talent019.png": {
       "ver": "1.0.4",
-      "uuid": "1a1da0d7-a835-4c99-a2e9-86933b57db02",
+      "uuid": "44b0923d-acb3-4ff0-ac86-ecc8d86c0697",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21964,9 +21964,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentmagic05.png": {
+    "talent03.png": {
       "ver": "1.0.4",
-      "uuid": "e9ddf4cf-ac19-4c2d-97ce-952b96242960",
+      "uuid": "2f6f8815-a7a3-4b31-96d8-9f258a8b7bf9",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -21986,9 +21986,9 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentmagic06.png": {
+    "talentempty.png": {
       "ver": "1.0.4",
-      "uuid": "97a5755c-7195-4941-b225-b4f3e75361e3",
+      "uuid": "3041622c-0b20-4b46-9cb9-6629aadb2c70",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -22404,28 +22404,6 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "talentshield09.png": {
-      "ver": "1.0.4",
-      "uuid": "c1e5871e-b2c6-4cf0-976d-7c85a21ad8f9",
-      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 0,
-      "trimX": 832,
-      "trimY": 521,
-      "width": 32,
-      "height": 32,
-      "rawWidth": 32,
-      "rawHeight": 32,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "spriteType": "normal",
-      "subMetas": {}
-    },
     "talentshield10.png": {
       "ver": "1.0.4",
       "uuid": "9c015131-f159-41a2-9dfa-ec789b00a8f8",
@@ -22435,7 +22413,7 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,
-      "trimX": 864,
+      "trimX": 832,
       "trimY": 521,
       "width": 32,
       "height": 32,
@@ -22457,7 +22435,7 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,
-      "trimX": 896,
+      "trimX": 864,
       "trimY": 521,
       "width": 32,
       "height": 32,
@@ -22479,7 +22457,7 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,
-      "trimX": 928,
+      "trimX": 896,
       "trimY": 521,
       "width": 32,
       "height": 32,
@@ -22501,7 +22479,7 @@
       "rotated": false,
       "offsetX": 0,
       "offsetY": 0,
-      "trimX": 960,
+      "trimX": 928,
       "trimY": 521,
       "width": 32,
       "height": 32,
@@ -22517,6 +22495,28 @@
     "talentshield14.png": {
       "ver": "1.0.4",
       "uuid": "aeddd2da-bbac-44c8-8c82-c56f6b89f0a7",
+      "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 960,
+      "trimY": 521,
+      "width": 32,
+      "height": 32,
+      "rawWidth": 32,
+      "rawHeight": 32,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
+    },
+    "talentx002.png": {
+      "ver": "1.0.4",
+      "uuid": "3c1866b0-2dc7-4b6e-9182-47c8f08fbcad",
       "rawTextureUuid": "238966c2-1597-46fe-8d88-8d07cd8d1f9c",
       "trimType": "auto",
       "trimThreshold": 1,

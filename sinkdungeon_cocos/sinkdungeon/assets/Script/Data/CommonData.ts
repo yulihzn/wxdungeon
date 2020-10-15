@@ -38,6 +38,9 @@ export default class CommonData {
     curseRate = 0;//诅咒元素几率%
 
     public valueCopy(data: CommonData): void {
+        if(!data){
+            return;
+        }
         this.maxHealth = data.maxHealth ? data.maxHealth : 0;
         this.damageMin = data.damageMin ? data.damageMin : 0;
         this.damageMax = data.damageMax ? data.damageMax : 0;
