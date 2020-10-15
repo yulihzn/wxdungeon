@@ -25,7 +25,7 @@ export default class RoomType{
     static readonly U_ROOM = new RoomType(20,'U');//U
     static readonly VERTICAL_ROOM = new RoomType(21,'V');//纵向通道 V
     static readonly WATER_ROOM = new RoomType(22,'W');//气垫船 水上房间
-    static readonly X_ROOM = new RoomType(23,'X');//X
+    static readonly X_ROOM = new RoomType(23,'X');//X 无尽房间
     static readonly HIDDEN_ROOM = new RoomType(24,'Y');//隐藏房间 Y
     static readonly Z_ROOM = new RoomType(25,'Z');//Z//普通缺省房间
 

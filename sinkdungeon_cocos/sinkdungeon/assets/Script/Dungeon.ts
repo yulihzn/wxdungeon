@@ -208,7 +208,8 @@ export default class Dungeon extends cc.Component {
 
                 //房间未清理时加载怪物
                 if (!Logic.mapManager.isCurrentRoomStateClear()
-                    || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
+                    || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
+                    ) {
                     this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
                 }
 
@@ -219,7 +220,8 @@ export default class Dungeon extends cc.Component {
         this.player.node.parent = this.node;
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
-        && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
+        && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())
+        || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.X_ROOM)) {
             this.monsterManager.addRandomMonsters(this);
         }
         this.setDoors(true,true);

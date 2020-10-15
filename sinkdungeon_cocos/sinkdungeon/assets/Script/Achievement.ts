@@ -102,7 +102,7 @@ export default class Achievements extends cc.Component {
         let colors = ['#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500'];
         let data: AchievementData = Achievements.getAchievementData();
         for (let i = 0; i < this.iconList.length; i++) {
-            let name = `monster${i < 10 ? '00' + i : '0' + i}`;
+            let name = `monster${i < 10 ? '00' + i : '0' + i}anim000`;
             let fr = this.spriteFrames[name];
             if (i > this.MONSTER_SIZE - 1) {
                 name = `iconboss00${i - this.MONSTER_SIZE}`;

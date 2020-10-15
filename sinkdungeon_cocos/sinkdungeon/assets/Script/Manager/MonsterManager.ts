@@ -323,7 +323,7 @@ export default class MonsterManager extends cc.Component {
         if (monster.isDisguising) {
             monster.changeBodyRes(data.resName, Monster.RES_DISGUISE);
         } else {
-            monster.changeBodyRes(resName);
+            monster.changeBodyRes(resName, Monster.RES_IDLE000);
         }
         monster.addAttrIcon();
 
