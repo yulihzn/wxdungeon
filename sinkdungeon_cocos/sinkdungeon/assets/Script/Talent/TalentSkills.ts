@@ -125,8 +125,8 @@ export default class TalentSkills extends Talent {
     }
     private healing() {
         let light = cc.instantiate(this.healingLight);
-        light.parent = this.player.node.parent;
-        light.position = this.player.node.position.clone().addSelf(cc.v3(0, 64));
+        light.parent = this.player.node;
+        light.position = cc.v3(0, 64);
         light.zIndex = IndexZ.OVERHEAD;
         this.player.addStatus(StatusManager.HEALING, new FromData());
     }
@@ -134,14 +134,14 @@ export default class TalentSkills extends Talent {
     private rageShoot() {
         let light = cc.instantiate(this.rageLight);
         light.parent = this.player.node;
-        light.position = cc.v3(0, 0);
+        light.position = cc.v3(0, 64);
         light.zIndex = IndexZ.OVERHEAD;
         this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false;
             if (light && cc.isValid(light)) {
                 light.destroy();
             }
-        }, 5);
+        }, 3);
     }
     private flash() {
         let light = cc.instantiate(this.flashLight);

@@ -102,8 +102,8 @@ export default class Achievements extends cc.Component {
         let colors = ['#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500'];
         let data: AchievementData = Achievements.getAchievementData();
         for (let i = 0; i < this.iconList.length; i++) {
-            let name = `monster${i < 10 ? '00' + i : '0' + i}anim000`;
-            let fr = this.spriteFrames[name];
+            let name = `monster${i < 10 ? '00' + i : '0' + i}`;
+            let fr = this.spriteFrames[name+'anim000'];
             if (i > this.MONSTER_SIZE - 1) {
                 name = `iconboss00${i - this.MONSTER_SIZE}`;
                 fr = this.bossSpriteFrames[name];
@@ -111,7 +111,7 @@ export default class Achievements extends cc.Component {
             if (fr) {
                 this.iconList[i].node.width = 96;
                 this.iconList[i].node.height = 96;
-                this.iconList[i].spriteFrame = this.spriteFrames[name];
+                this.iconList[i].spriteFrame = this.spriteFrames[name+'anim000'];
                 if (i > this.MONSTER_SIZE - 1) {
                     this.iconList[i].spriteFrame = this.bossSpriteFrames[name];
                 }

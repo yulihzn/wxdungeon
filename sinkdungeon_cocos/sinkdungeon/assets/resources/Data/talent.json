@@ -21,7 +21,7 @@
         "nameEn": "",
         "resName": "talent002",
         "passive": 0,
-        "cooldown":30,
+        "cooldown":20,
         "desc": "快速回复1点生命"
     },
     "talent003": {
@@ -45,7 +45,7 @@
         "nameEn": "",
         "resName": "talent005",
         "passive": 0,
-        "cooldown":30,
+        "cooldown":20,
         "desc": "短时间内子弹数目变多"
     },
     "talent006": {

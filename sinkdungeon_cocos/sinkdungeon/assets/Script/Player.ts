@@ -412,7 +412,7 @@ export default class Player extends Actor {
         let lineEx = 0;
         if(this.talentSkills.hashTalent(Talent.TALENT_005),this.talentSkills.IsExcuting){
             arcEx = 2;
-            lineEx = 1;
+            lineEx = 0;
         }
         let fireSuccess = this.weaponLeft.remoteAttack(this.data,this.remoteCooldown,arcEx,lineEx);
         if (fireSuccess) {

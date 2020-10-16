@@ -150,7 +150,7 @@ export default class Shooter extends cc.Component {
         }
     }
     private fireArcBullet(bulletType: string, defaultPos: cc.Vec3,bulletArcExNum:number): void {
-        let exNum = this.data.bulletArcExNum+bulletArcExNum;
+        let exNum = bulletArcExNum?this.data.bulletArcExNum+bulletArcExNum:this.data.bulletArcExNum;
         if (exNum <= 0) {
             return;
         }
@@ -175,13 +175,14 @@ export default class Shooter extends cc.Component {
 
     }
     private fireLinecBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3,bulletArcExNum:number,bulletLineExNum:number): void {
-        if (this.data.bulletLineExNum+bulletLineExNum == 0) {
+        let exNum = bulletLineExNum?this.data.bulletLineExNum+bulletLineExNum:this.data.bulletLineExNum;
+        if (exNum == 0) {
             return;
         }
         this.schedule(() => {
             this.fire(bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos);
             this.fireArcBullet(bulletType, defaultPos,bulletArcExNum);
-        }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, this.data.bulletLineExNum+bulletLineExNum, 0);
+        }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, exNum, 0);
 
     }
     //暂时不用，待完善
