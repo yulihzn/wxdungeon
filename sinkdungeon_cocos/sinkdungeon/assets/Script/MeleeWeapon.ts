@@ -73,6 +73,7 @@ export default class MeleeWeapon extends cc.Component {
     private isStab = true;//刺
     private isFar = false;//近程
     private isFist = true;//空手 
+    private isBlunt = false;//钝器
     dungeon: Dungeon;
     private weaponFirePoint: cc.Node;//剑尖
     private isMiss = false;
@@ -151,6 +152,7 @@ export default class MeleeWeapon extends cc.Component {
         this.isFar = equipData.far == 1;
         this.isReflect = equipData.isReflect == 1;
         this.isFist = false;
+        this.isBlunt = equipData.blunt==1;
         if (equipData.stab == 1) {
             this.weaponSprite.spriteFrame = null;
             this.weaponStabSprite.spriteFrame = spriteFrame;
@@ -268,7 +270,7 @@ export default class MeleeWeapon extends cc.Component {
         } else if (this.isFar && !this.isStab) {
             name = "MeleeAttackFar";
         } else {
-            name = "MeleeAttack";
+            name = this.isBlunt?"MeleeAttackBlunt":"MeleeAttack";
         }
         return name + this.getComboSuffix();
     }

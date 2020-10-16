@@ -1,0 +1,330 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "MeleeAttackFar3",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.5,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite/weapon": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 60
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 90
+            },
+            {
+              "frame": 0.2,
+              "value": 100
+            },
+            {
+              "frame": 0.23333333333333334,
+              "value": 90
+            },
+            {
+              "frame": 0.26666666666666666,
+              "value": 100
+            },
+            {
+              "frame": 0.3,
+              "value": 90
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 100
+            },
+            {
+              "frame": 0.36666666666666664,
+              "value": 90
+            },
+            {
+              "frame": 0.4,
+              "value": 100
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 90
+            },
+            {
+              "frame": 0.45,
+              "value": 100
+            },
+            {
+              "frame": 0.48333333333333334,
+              "value": 90
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": 100
+            },
+            {
+              "frame": 1,
+              "value": 60
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 4,
+                "y": 4
+              }
+            },
+            {
+              "frame": 0.4,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 4,
+                "y": 4
+              }
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 4,
+                "y": -4
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 4,
+                "y": -4
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 4,
+                "y": 4
+              }
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 0.4,
+              "value": [
+                -16,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": [
+                16,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 1.5,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "sprite/meleelight": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "faed7daf-f241-49d2-958f-afaa57982289"
+                }
+              },
+              {
+                "frame": 0.5,
+                "value": {
+                  "__uuid__": "91c11f10-9ed4-4a1e-84d6-3031ad373610"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "f51004e6-d472-4233-9276-636d368bf389"
+                }
+              }
+            ]
+          }
+        },
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 200
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ],
+          "scaleY": [
+            {
+              "frame": 0,
+              "value": 4
+            }
+          ],
+          "x": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 96
+            },
+            {
+              "frame": 0.9166666666666666,
+              "value": 0
+            }
+          ],
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 6
+            }
+          ]
+        }
+      },
+      "sprite/hand": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 0.4,
+              "value": [
+                -16,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": [
+                16,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 1.5,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "comps": {
+      "cc.CircleCollider": {
+        "radius": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 0.4,
+            "value": 0
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": 80
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": 120
+          },
+          {
+            "frame": 0.6833333333333333,
+            "value": 0
+          },
+          {
+            "frame": 0.75,
+            "value": 0
+          }
+        ],
+        "offset": [
+          {
+            "frame": 0,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 120,
+              "y": 0
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 0.4166666666666667,
+      "func": "ExAttackTime",
+      "params": []
+    },
+    {
+      "frame": 0.5,
+      "func": "RefreshTime",
+      "params": []
+    },
+    {
+      "frame": 0.5833333333333334,
+      "func": "RefreshTime",
+      "params": []
+    },
+    {
+      "frame": 1.5,
+      "func": "MeleeAttackFinish",
+      "params": [
+        false
+      ]
+    }
+  ]
+}

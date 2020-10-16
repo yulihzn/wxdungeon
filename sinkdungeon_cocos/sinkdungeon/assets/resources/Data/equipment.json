@@ -841,6 +841,7 @@
             "lighteningRate":30,
             "maxHealth": 0
         },
+        "blunt":1,
         "desc": "平底锅"
     },
     "weapon030": {
@@ -864,7 +865,8 @@
             "attackSpeed": 30,
             "maxHealth": 0
         },
-        "desc": "平底锅"
+        "blunt":1,
+        "desc": "厨师的汤勺"
     },
     "remote001": {
         "nameCn": "十字弩",

@@ -28,6 +28,7 @@ export default class EquipmentData extends BaseData{
     level:number = 0;
     stab = 0;//是否突刺
     far = 0; //是否远距离
+    blunt = 0;//是否钝器
     isLocked = 0;//是否锁定
     isReflect = 0;//子弹偏转 仅限近战武器
     trouserslong = 0;//是否长裤
@@ -105,6 +106,7 @@ export default class EquipmentData extends BaseData{
         this.img = data.img?data.img:'emptyequipment';
         this.stab = data.stab?data.stab:0;
         this.far = data.far?data.far:0;
+        this.blunt = data.blunt?data.blunt:0;
         this.isLocked = data.isLocked?data.isLocked:0;
         this.bulletArcExNum = data.bulletArcExNum?data.bulletArcExNum:0;
         this.bulletLineExNum = data.bulletLineExNum?data.bulletLineExNum:0;
@@ -173,6 +175,7 @@ export default class EquipmentData extends BaseData{
         e.img = this.img;
         e.stab = this.stab;
         e.far = this.far;
+        e.blunt = this.blunt;
         e.isLocked = this.isLocked;
         e.level = this.level;
         e.trouserslong = this.trouserslong;
