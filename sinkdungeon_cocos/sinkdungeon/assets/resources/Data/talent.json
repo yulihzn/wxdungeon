@@ -53,7 +53,7 @@
         "nameEn": "",
         "resName": "talent006",
         "passive": 0,
-        "cooldown":30,
+        "cooldown":20,
         "desc": "用照相机亮瞎对面，造成一定时间眩晕短时间内提高移动速度"
     },
     "talent007": {
