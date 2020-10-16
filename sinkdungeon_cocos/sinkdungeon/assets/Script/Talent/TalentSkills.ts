@@ -42,7 +42,7 @@ const { ccclass, property } = cc._decorator;
 export default class TalentSkills extends Talent {
 
     @property(cc.Sprite)
-    sprite:cc.Sprite = null;
+    sprite: cc.Sprite = null;
     @property(cc.Prefab)
     fireball: cc.Prefab = null;
     @property(cc.Prefab)
@@ -50,11 +50,11 @@ export default class TalentSkills extends Talent {
     @property(cc.Prefab)
     fireGhost: cc.Prefab = null;
     @property(cc.Prefab)
-    healingLight:cc.Prefab = null;
+    healingLight: cc.Prefab = null;
     @property(cc.Prefab)
-    rageLight:cc.Prefab = null;
+    rageLight: cc.Prefab = null;
     @property(cc.Prefab)
-    flashLight:cc.Prefab = null;
+    flashLight: cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
     onLoad() {
@@ -91,73 +91,75 @@ export default class TalentSkills extends Talent {
         let cooldown = this.activeTalentData.cooldown;
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown} });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
             this.doSkill();
         }, cooldown, true);
         cc.log('use skill');
     }
-    
-    private doSkill(){
-        switch(this.activeTalentData.resName){
+
+    private doSkill() {
+        switch (this.activeTalentData.resName) {
             case Talent.TALENT_000:
 
                 break;
-            case Talent.TALENT_001:break;
-            case Talent.TALENT_002:this.healing();break;
-            case Talent.TALENT_003:break;
-            case Talent.TALENT_004:break;
-            case Talent.TALENT_005:this.rageShoot();break;
-            case Talent.TALENT_006:this.flash();break;
-            case Talent.TALENT_007:break;
-            case Talent.TALENT_008:break;
-            case Talent.TALENT_009:break;
-            case Talent.TALENT_010:break;
-            case Talent.TALENT_011:break;
-            case Talent.TALENT_012:break;
-            case Talent.TALENT_013:break;
-            case Talent.TALENT_014:break;
-            case Talent.TALENT_015:break;
-            case Talent.TALENT_016:break;
-            case Talent.TALENT_017:break;
-            case Talent.TALENT_018:break;
-            case Talent.TALENT_019:break;
+            case Talent.TALENT_001: break;
+            case Talent.TALENT_002: this.healing(); break;
+            case Talent.TALENT_003: break;
+            case Talent.TALENT_004: break;
+            case Talent.TALENT_005: this.rageShoot(); break;
+            case Talent.TALENT_006: this.flash(); break;
+            case Talent.TALENT_007: break;
+            case Talent.TALENT_008: break;
+            case Talent.TALENT_009: break;
+            case Talent.TALENT_010: break;
+            case Talent.TALENT_011: break;
+            case Talent.TALENT_012: break;
+            case Talent.TALENT_013: break;
+            case Talent.TALENT_014: break;
+            case Talent.TALENT_015: break;
+            case Talent.TALENT_016: break;
+            case Talent.TALENT_017: break;
+            case Talent.TALENT_018: break;
+            case Talent.TALENT_019: break;
         }
     }
-    private healing(){
+    private healing() {
         let light = cc.instantiate(this.healingLight);
         light.parent = this.player.node.parent;
-        light.position = this.player.node.position.clone().addSelf(cc.v3(0,64));
+        light.position = this.player.node.position.clone().addSelf(cc.v3(0, 64));
         light.zIndex = IndexZ.OVERHEAD;
-        this.player.addStatus(StatusManager.HEALING,new FromData());
+        this.player.addStatus(StatusManager.HEALING, new FromData());
     }
 
-    private rageShoot(){
+    private rageShoot() {
         let light = cc.instantiate(this.rageLight);
         light.parent = this.player.node;
-        light.position = cc.v3(0,0);
+        light.position = cc.v3(0, 0);
         light.zIndex = IndexZ.OVERHEAD;
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false;
-            if(light&&cc.isValid(light)){
+            if (light && cc.isValid(light)) {
                 light.destroy();
             }
-        },5);
+        }, 5);
     }
-    private flash(){
+    private flash() {
         let light = cc.instantiate(this.flashLight);
         light.parent = this.player.node.parent;
-        light.position = this.player.node.position.clone().addSelf(cc.v3(0,64));
+        light.position = this.player.node.position.clone().addSelf(cc.v3(0, 64));
         light.zIndex = IndexZ.OVERHEAD;
-        this.addStatus2NearEnemy(StatusManager.DIZZ, 400);
-        this.player.addStatus(StatusManager.FASTMOVE,new FromData());
-        this.sprite.node.width = 2000;
-        this.sprite.node.height = 2000;
-        this.sprite.spriteFrame = Logic.spriteFrames['singleColor'];
-        this.sprite.node.opacity = 255;
-        cc.tween(this.sprite.node).to(0.1,{opacity:0}).call(()=>{
+
+        cc.tween(this.sprite.node).delay(0.5).call(() => {
+            this.player.addStatus(StatusManager.FASTMOVE, new FromData());
+            this.sprite.spriteFrame = Logic.spriteFrames['singleColor'];
+            this.sprite.node.width = 2000;
+            this.sprite.node.height = 2000;
+            this.sprite.node.opacity = 255;
+        }).to(0.1, { opacity: 0 }).call(() => {
             this.sprite.spriteFrame = null;
+            this.addStatus2NearEnemy(StatusManager.DIZZ, 400);
         }).start();
-        
+
     }
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
@@ -167,21 +169,21 @@ export default class TalentSkills extends Talent {
             cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, -30);
         }
     }
-    
+
     showIceThron() {
-        this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.SKILL_ICETHRON);},1);
-        const angles1 = [0,45,90,135,180,225,270,315];
-        const angles2 = [15,60,105,150,195,240,285,330];
+        this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
+        const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
+        const angles2 = [15, 60, 105, 150, 195, 240, 285, 330];
         let distance1 = [100];
-        let distance2 = [100,150];
-        let distance3 = [100,150,200];
+        let distance2 = [100, 150];
+        let distance3 = [100, 150, 200];
         let scale1 = [3];
-        let scale2 = [3,4];
-        let scale3 = [3,4,5];
-        let scale4 = [3,5];
+        let scale2 = [3, 4];
+        let scale3 = [3, 4, 5];
+        let scale4 = [3, 5];
         let a1 = [angles1];
-        let a2 = [angles1,angles2];
-        let a3 = [angles1,angles2,angles1];
+        let a2 = [angles1, angles2];
+        let a3 = [angles1, angles2, angles1];
         let a = a1;
         let scale = scale1;
         let distance = distance1;
@@ -201,18 +203,18 @@ export default class TalentSkills extends Talent {
             }
         }
         let index = 0;
-        this.schedule(()=>{
-            for(let i = 0;i<a[index].length;i++){
-                cc.instantiate(this.icethron).getComponent(IceThron).show(this.player, a[index][i],distance[index],scale[index]);
+        this.schedule(() => {
+            for (let i = 0; i < a[index].length; i++) {
+                cc.instantiate(this.icethron).getComponent(IceThron).show(this.player, a[index][i], distance[index], scale[index]);
             }
             index++;
-        },0.5,a.length-1);
+        }, 0.5, a.length - 1);
     }
-    private shoot(shooter: Shooter,bulletArcExNum:number, bulletType: string) {
+    private shoot(shooter: Shooter, bulletArcExNum: number, bulletType: string) {
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         if (this.hashTalent(Talent.MAGIC_02)) {
-            shooter.data.bulletArcExNum = bulletArcExNum==80?99:2;
+            shooter.data.bulletArcExNum = bulletArcExNum == 80 ? 99 : 2;
         }
         shooter.data.bulletLineExNum = 0;
         shooter.fireBullet(0);
@@ -221,20 +223,20 @@ export default class TalentSkills extends Talent {
     changePerformance() {
 
     }
-    
+
     takeDamage(damageData: DamageData, actor?: Actor) {
 
     }
-    addLighteningFall(isArea:boolean,damagePoint:number){
-        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,{pos:this.getNearestEnemyPosition(),showArea:isArea,damage:damagePoint})
+    addLighteningFall(isArea: boolean, damagePoint: number) {
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.getNearestEnemyPosition(), showArea: isArea, damage: damagePoint })
     }
-    getNearestEnemyPosition():cc.Vec3{
+    getNearestEnemyPosition(): cc.Vec3 {
         let shortdis = 99999;
-        let targetNode:cc.Node;
+        let targetNode: cc.Node;
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
             if (!monster.isDied) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
-                if(dis<shortdis){
+                if (dis < shortdis) {
                     shortdis = dis;
                     targetNode = monster.node;
                 }
@@ -243,22 +245,22 @@ export default class TalentSkills extends Talent {
         for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
             if (!boss.isDied) {
                 let dis = Logic.getDistance(this.node.position, boss.node.position);
-                if(dis<shortdis){
+                if (dis < shortdis) {
                     shortdis = dis;
                     targetNode = boss.node;
                 }
             }
         }
-        if(targetNode){
+        if (targetNode) {
             return targetNode.position;
         }
-        return this.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300,Logic.getRandomNum(0, 600) - 300));
+        return this.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
     }
-   
+
     initFireGhosts() {
         let length = 5;
         let count = this.fireGhostNum;
-        for (let i = 0; i < length-count; i++) {
+        for (let i = 0; i < length - count; i++) {
             let ghostNode: cc.Node = null;
             if (this.ghostPool.size() > 0) {
                 ghostNode = this.ghostPool.get();

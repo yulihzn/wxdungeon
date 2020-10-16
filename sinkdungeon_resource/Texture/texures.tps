@@ -918,6 +918,7 @@
             <key type="filename">equipment/animremote006.png</key>
             <key type="filename">equipment/animremote007.png</key>
             <key type="filename">equipment/animremote008.png</key>
+            <key type="filename">equipment/animremote009.png</key>
             <key type="filename">equipment/behindotherhelmet024.png</key>
             <key type="filename">equipment/frontotherhelmet024.png</key>
             <key type="filename">equipment/otherhelmet024.png</key>
@@ -929,6 +930,7 @@
             <key type="filename">equipment/remote006.png</key>
             <key type="filename">equipment/remote007.png</key>
             <key type="filename">equipment/remote008.png</key>
+            <key type="filename">equipment/remote009.png</key>
             <key type="filename">hud/uimelee.png</key>
             <key type="filename">hud/uimeleelight.png</key>
             <key type="filename">hud/uimeleepress.png</key>
@@ -937,6 +939,9 @@
             <key type="filename">hud/uiremote.png</key>
             <key type="filename">hud/uiremotelight.png</key>
             <key type="filename">hud/uiremotepress.png</key>
+            <key type="filename">hud/uishield.png</key>
+            <key type="filename">hud/uishieldlight.png</key>
+            <key type="filename">hud/uishieldpress.png</key>
             <key type="filename">hud/uiskill.png</key>
             <key type="filename">hud/uiskilllight.png</key>
             <key type="filename">hud/uiskillpress.png</key>
