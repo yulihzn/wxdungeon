@@ -22,6 +22,8 @@ export default class ItemDialog extends cc.Component {
     infoBase: cc.Label = null;//基础属性
     @property(cc.Label)
     infoDesc: cc.Label = null;//描述
+    @property(cc.Label)
+    count: cc.Label = null;//数量
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -31,9 +33,10 @@ export default class ItemDialog extends cc.Component {
         this.node.opacity = 0;
     }
     refreshDialog(item: ItemData) {
-        this.labelTitle.string = `${item.nameCn}    ${item.count>0?'><'+item.count:''}`;
+        this.labelTitle.string = `${item.nameCn}`;
         this.infoBase.string = item.info;
         this.infoDesc.string = item.desc;
+        this.count.string = `${item.count>0?'×'+item.count:'∞'}`
     }
     showDialog() {
         this.node.opacity = 255;

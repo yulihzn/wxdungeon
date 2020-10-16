@@ -23,13 +23,11 @@ import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Tips from './UI/Tips';
 import Random from './Utils/Random';
 import Shield from './Shield';
-import TalentDash from './Talent/TalentDash';
 import Actor from './Base/Actor';
 import Talent from './Talent/Talent';
 import AudioPlayer from './Utils/AudioPlayer';
 import FromData from './Data/FromData';
 import Achievements from './Achievement';
-import TalentMagic from './Talent/TalentMagic';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
 import RoomType from './Rect/RoomType';
@@ -272,7 +270,8 @@ export default class Player extends Actor {
                 this.shield.data = new EquipmentData();
                 this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
                     , Logic.spriteFrames[Equipment.EMPTY], this.shield.data.isHeavy == 1 ? 80 : 64);
-                break;
+                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD,{isShield:false});
+                    break;
             case Equipment.SHIELD:
                 this.shield.data = equipData.clone();
                 this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
@@ -281,6 +280,7 @@ export default class Player extends Actor {
 
                 this.weaponLeft.shooter.data = new EquipmentData();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
+                EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD,{isShield:true});
                 break;
             case Equipment.HELMET:
                 this.avatar.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
@@ -408,7 +408,13 @@ export default class Player extends Actor {
         if (!this.data || this.isDizz || this.isDied || this.isFall || !this.weaponLeft.shooter) {
             return;
         }
-        let fireSuccess = this.weaponLeft.remoteAttack(this.data,this.remoteCooldown);
+        let arcEx = 0;
+        let lineEx = 0;
+        if(this.talentSkills.hashTalent(Talent.TALENT_005),this.talentSkills.IsExcuting){
+            arcEx = 2;
+            lineEx = 1;
+        }
+        let fireSuccess = this.weaponLeft.remoteAttack(this.data,this.remoteCooldown,arcEx,lineEx);
         if (fireSuccess) {
             this.stopHiding();
         }

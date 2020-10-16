@@ -23,12 +23,13 @@ export class EventHelper extends cc.Component{
     public static readonly HUD_ADD_OILGOLD = 'HUD_ADD_OILGOLD';
     public static readonly HUD_STOP_COUNTTIME = 'HUD_STOP_COUNTTIME';
     public static readonly HUD_LIGHT_CONTROLLER = 'HUD_LIGHT_CONTROLLER';
-    public static readonly HUD_DARK_CONTROLLER = 'HUD_DARK_CONTROLLER';
+    public static readonly HUD_CHANGE_CONTROLLER_SHIELD = 'HUD_CHANGE_CONTROLLER_SHIELD';
     public static readonly HUD_CONTROLLER_COOLDOWN = 'HUD_CONTROLLER_COOLDOWN';
-    public static readonly HUD_CONTROLLER_INTERACT_SHOW = 'HUD_CONTROLLER_INTERACT_SHOW';
     public static readonly HUD_DAMAGE_CORNER_SHOW = 'HUD_DAMAGE_CORNER_SHOW';
     public static readonly HUD_GROUND_EQUIPMENT_INFO_SHOW = 'HUD_GROUND_EQUIPMENT_INFO_SHOW';
     public static readonly HUD_GROUND_EQUIPMENT_INFO_HIDE = 'HUD_GROUND_EQUIPMENT_INFO_HIDE';
+    public static readonly HUD_GROUND_ITEM_INFO_SHOW = 'HUD_GROUND_ITEM_INFO_SHOW';
+    public static readonly HUD_GROUND_ITEM_INFO_HIDE = 'HUD_GROUND_ITEM_INFO_HIDE';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static readonly DUNGEON_ADD_ITEM = 'DUNGEON_ADD_ITEM';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';

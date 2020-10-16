@@ -4,7 +4,7 @@
         "nameEn": "",
         "resName": "talent000",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "target": 0,
         "desc": "？？？"
     },
@@ -13,23 +13,23 @@
         "nameEn": "",
         "resName": "talent001",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "扔出一颗手雷，造成5点爆炸伤害"
     },
     "talent002": {
-        "nameCn": "治疗针",
+        "nameCn": "快速治疗",
         "nameEn": "",
         "resName": "talent002",
         "passive": 0,
-        "cooldown": 0,
-        "desc": "快速回复2点生命"
+        "cooldown":30,
+        "desc": "快速回复1点生命"
     },
     "talent003": {
         "nameCn": "厨神附体",
         "nameEn": "",
         "resName": "talent003",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "掏出勺子造成1点真实伤害，被干掉的怪物会变成食物"
     },
     "talent004": {
@@ -37,7 +37,7 @@
         "nameEn": "",
         "resName": "talent004",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "？？？"
     },
     "talent005": {
@@ -45,7 +45,7 @@
         "nameEn": "",
         "resName": "talent005",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "短时间内子弹数目变多"
     },
     "talent006": {
@@ -53,7 +53,7 @@
         "nameEn": "",
         "resName": "talent006",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "用照相机亮瞎对面，造成一定时间眩晕短时间内提高移动速度"
     },
     "talent007": {
@@ -61,7 +61,7 @@
         "nameEn": "",
         "resName": "talent007",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "使用剑花造成连续多次伤害，如果拿剑的时候效果增强"
     },
     "talent008": {
@@ -69,7 +69,7 @@
         "nameEn": "",
         "resName": "talent008",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "短时间内进入隐身状态，攻击显形并附带暴击和眩晕效果"
     },
     "talent009": {
@@ -77,7 +77,7 @@
         "nameEn": "",
         "resName": "talent009",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "伸出手偷取对方一件物品或者金币并造成伤害"
     },
     "talent010": {
@@ -85,7 +85,7 @@
         "nameEn": "",
         "resName": "talent010",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "？？？"
     },
     "talent011": {
@@ -93,7 +93,7 @@
         "nameEn": "",
         "resName": "talent011",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "短时间内远程暴击且提高伤害"
     },
     "talent012": {
@@ -101,7 +101,7 @@
         "nameEn": "",
         "resName": "talent012",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "挥舞一圈扫帚造成伤害并清空范围内所有远程攻击"
     },
     "talent013": {
@@ -109,7 +109,7 @@
         "nameEn": "",
         "resName": "talent013",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "？？？"
     },
     "talent014": {
@@ -117,7 +117,7 @@
         "nameEn": "",
         "resName": "talent014",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "发射多个追踪的飞弹进行攻击"
     },
     "talent015": {
@@ -125,7 +125,7 @@
         "nameEn": "",
         "resName": "talent015",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "快速冲刺一段距离躲避伤害"
     },
     "talent016": {
@@ -133,7 +133,7 @@
         "nameEn": "",
         "resName": "talent016",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "？？？"
     },
     "talent017": {
@@ -141,7 +141,7 @@
         "nameEn": "",
         "resName": "talent017",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "扔出多个酒瓶制造一片酒云，范围内所有敌人攻击变慢且近战大概率打空，远程射偏"
     },
     "talent018": {
@@ -149,7 +149,7 @@
         "nameEn": "",
         "resName": "talent018",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "分出两个分身杀敌，分身有本体一半的攻击力，被攻击就消失"
     },
     "talent019": {
@@ -157,7 +157,7 @@
         "nameEn": "",
         "resName": "talent018",
         "passive": 0,
-        "cooldown": 0,
+        "cooldown":30,
         "desc": "跳起从天而降的掌法"
     }
 }

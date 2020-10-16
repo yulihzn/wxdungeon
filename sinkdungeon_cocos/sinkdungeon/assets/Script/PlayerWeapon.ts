@@ -81,7 +81,7 @@ export default class PlayerWeapon extends cc.Component {
         
     }
     remoteIntervalTime = 0;
-    remoteAttack(data: PlayerData,cooldownNode:cc.Node):boolean {
+    remoteAttack(data: PlayerData,cooldownNode:cc.Node,bulletArcExNum:number,bulletLineExNum:number):boolean {
         let canFire = false;
         let cooldown = data.FinalCommon.remoteCooldown;
         if(cooldown<100){
@@ -99,7 +99,7 @@ export default class PlayerWeapon extends cc.Component {
         this.scheduleOnce(() => { this.isHeavyRemotoAttacking = false }, 0.2);
         if (this.shooter) {
             this.shooter.remoteDamagePlayer = data.getFinalRemoteDamage();
-            this.shooter.fireBullet(0);
+            this.shooter.fireBullet(0,null,bulletArcExNum,bulletLineExNum);
         }
         if(cooldownNode&&cooldown>500){
             cooldownNode.width = 80;

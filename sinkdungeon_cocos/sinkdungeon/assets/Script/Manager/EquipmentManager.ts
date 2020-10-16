@@ -53,6 +53,7 @@ export default class EquipmentManager extends cc.Component {
     public static readonly REMOTE_RPG = "remote006";
     public static readonly REMOTE_SHURIKEN = "remote007";
     public static readonly REMOTE_CHICKEN = "remote008";
+    public static readonly REMOTE_OLDGUN = "remote009";
     public static readonly SHIELD_CIRCLE = "shield000";
     public static readonly SHIELD_CARDOOR = "shield001";
     public static readonly SHIELD_POLICE = "shield002";

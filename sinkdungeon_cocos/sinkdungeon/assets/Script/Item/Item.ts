@@ -6,7 +6,6 @@ import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import ShopTable from "../Building/ShopTable";
-import ItemDialog from "./ItemDialog";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,8 +36,6 @@ export default class Item extends cc.Component {
     anim: cc.Animation;
     data: ItemData = new ItemData();
     shopTable: ShopTable;
-    @property(ItemDialog)
-    itemDialog: ItemDialog = null;
 
     sprite:cc.Sprite;
     mat:cc.MaterialVariant;
@@ -74,7 +71,6 @@ export default class Item extends cc.Component {
             this.mat.setProperty('outlineColor',cc.Color.WHITE);
             this.highLight(false);
         }
-        this.itemDialog.refreshDialog(this.data);
     }
 
     highLight(isHigh:boolean){
@@ -110,7 +106,7 @@ export default class Item extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentItemsArr(newlist);
-        this.itemDialog.node.active = false;
+        cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE);
     }
     static userIt(data: ItemData, player: Player) {
         let from = FromData.getClone(data.nameCn, data.resName);
@@ -134,7 +130,7 @@ export default class Item extends cc.Component {
         let player = other.node.getComponent(Player);
         if (player) {
             if (this.data.canSave) {
-                this.itemDialog.showDialog();
+                cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{itemData:this.data}});
                 this.highLight(true);
                 this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2),cc.delayTime(1),cc.fadeOut(0.2)));
             } else {
@@ -147,7 +143,7 @@ export default class Item extends cc.Component {
         let player = other.node.getComponent(Player);
         if (player) {
             this.highLight(false);
-            this.itemDialog.hideDialog();
+            cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE);
         }
     }
 

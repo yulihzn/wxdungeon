@@ -1003,7 +1003,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":1000,
+            "remoteCooldown":1200,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1097,6 +1097,36 @@
         "stab":1,
         "far":1,
         "desc": "这好像是一只母鸡"
+    },
+    "remote009": {
+        "nameCn": "复古手枪",
+        "nameEn": "Old Gun",
+        "equipmetType": "remote",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "remote009",
+        "bulletType":"bullet211",
+        "bulletArcExNum":0,
+        "isHeavy":0,
+        "common": {
+            "remoteDamage":2,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "remoteCooldown":600,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":1,
+        "far":1,
+        "desc": "老式的无膛手枪，但是威力不错"
     },
     "helmet002": {
         "nameCn": "渔夫帽",

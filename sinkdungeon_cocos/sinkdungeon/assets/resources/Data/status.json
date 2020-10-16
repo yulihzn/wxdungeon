@@ -72,7 +72,7 @@
         "spriteFrameName": "iconattack",
         "statusType": 7,
         "desc": "",
-        "duration": 180,
+        "duration": 120,
         "common": {
             "damageMin": 5
         }
@@ -83,7 +83,7 @@
         "spriteFrameName": "iconmovespeed",
         "statusType": 8,
         "desc": "",
-        "duration": 180,
+        "duration": 30,
         "common": {
             "moveSpeed": 200
         }
@@ -94,7 +94,7 @@
         "spriteFrameName": "iconattackspeed",
         "statusType": 9,
         "desc": "",
-        "duration": 180,
+        "duration": 60,
         "common": {
             "attackSpeed": 200
         }
@@ -304,6 +304,29 @@
             "attackSpeed":-300,
             "magicDefence":-100,
             "dodge":-100
+        }
+    },
+    "status028": {
+        "nameCn": "闪光眩晕",
+        "nameEn": "dizz",
+        "spriteFrameName": "status003",
+        "statusType": 28,
+        "desc": "",
+        "duration": 5,
+        "dizzDurationDirect":2,
+        "common": {
+            "attackSpeed": -200
+        }
+    },
+    "status029": {
+        "nameCn": "闪光移动加速",
+        "nameEn": "moving faster",
+        "spriteFrameName": "iconmovespeed",
+        "statusType": 29,
+        "desc": "",
+        "duration": 10,
+        "common": {
+            "moveSpeed": 200
         }
     }
 }

@@ -31,8 +31,6 @@ export default class Controller extends cc.Component {
     skillIcon:cc.Sprite = null;
     skillActionTouched = false;
     graphics: cc.Graphics = null;
-    @property(cc.Button)
-    interactButton:cc.Button = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -86,22 +84,10 @@ export default class Controller extends cc.Component {
         this.skillAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.skillActionTouched = false;
         }, this)
-        cc.director.on(EventHelper.HUD_DARK_CONTROLLER
-            , (event) => { this.changeRes(event.detail.index, false) });
-        cc.director.on(EventHelper.HUD_DARK_CONTROLLER
-            , (event) => { this.changeRes(event.detail.index, true) });
+        cc.director.on(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD
+            , (event) => { this.changeRes(event.detail.isShield) });
         cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
             , (event) => { this.drawSkillCoolDown(event.detail.cooldown); });
-        EventHelper.on(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,(isShow:boolean)=>{
-            if(this.interactButton){
-                this.interactButton.interactable = isShow;
-            }
-        })
-        this.interactButton.interactable = false;
-        this.interactButton.node.on('click',()=>{
-            cc.director.emit(EventHelper.PLAYER_TRIGGER);
-            this.interactButton.interactable = false;
-        },this);
         if(!cc.sys.isMobile){
             this.interactAction.active = false;
             this.attackAction.active = false;
@@ -110,14 +96,18 @@ export default class Controller extends cc.Component {
         }
     }
 
-    changeRes(actionType: number, isLight: boolean) {
-        let resName = '';
-        switch (actionType) {
-            case 0: resName = isLight ? 'uimeleelight' : 'uimelee'; break;
-            case 1: resName = isLight ? 'uiremotelight' : 'uiremote'; break;
-            case 2: resName = isLight ? 'uiswitchlight' : 'uiswitch'; break;
+    changeRes(isShield: boolean) {
+        if(!this.shootAction){
+            return;
         }
-        this.attackAction.getComponent(cc.Button).normalSprite = Logic.spriteFrames[resName];
+        let button = this.shootAction.getComponent(cc.Button);
+        if(!button){
+            return;
+        }
+        button.normalSprite = Logic.spriteFrames[isShield?'uishield':'uiremote'];
+        button.pressedSprite = Logic.spriteFrames[isShield?'uishieldpress':'uiremotepress'];
+        button.hoverSprite = Logic.spriteFrames[isShield?'uishieldlight':'uiremotelight'];
+        button.disabledSprite = Logic.spriteFrames[isShield?'uishieldpress':'uiremotepress'];
     }
 
     private drawSkillCoolDown(coolDown: number) {

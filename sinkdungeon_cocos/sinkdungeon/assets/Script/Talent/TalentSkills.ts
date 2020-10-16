@@ -9,6 +9,10 @@ import FireGhost from "./FireGhost";
 import IceThron from "./IceThron";
 import Talent from "./Talent";
 import AudioPlayer from "../Utils/AudioPlayer";
+import IndexZ from "../Utils/IndexZ";
+import Status from "../Status";
+import StatusManager from "../Manager/StatusManager";
+import Dungeon from "../Dungeon";
 
 /**
  * 技能管理器
@@ -37,12 +41,20 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class TalentSkills extends Talent {
 
+    @property(cc.Sprite)
+    sprite:cc.Sprite = null;
     @property(cc.Prefab)
     fireball: cc.Prefab = null;
     @property(cc.Prefab)
     icethron: cc.Prefab = null;
     @property(cc.Prefab)
     fireGhost: cc.Prefab = null;
+    @property(cc.Prefab)
+    healingLight:cc.Prefab = null;
+    @property(cc.Prefab)
+    rageLight:cc.Prefab = null;
+    @property(cc.Prefab)
+    flashLight:cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
     onLoad() {
@@ -80,13 +92,73 @@ export default class TalentSkills extends Talent {
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown} });
-            //TODO show skill
+            this.doSkill();
         }, cooldown, true);
         cc.log('use skill');
     }
     
-    //anim
-    
+    private doSkill(){
+        switch(this.activeTalentData.resName){
+            case Talent.TALENT_000:
+
+                break;
+            case Talent.TALENT_001:break;
+            case Talent.TALENT_002:this.healing();break;
+            case Talent.TALENT_003:break;
+            case Talent.TALENT_004:break;
+            case Talent.TALENT_005:this.rageShoot();break;
+            case Talent.TALENT_006:this.flash();break;
+            case Talent.TALENT_007:break;
+            case Talent.TALENT_008:break;
+            case Talent.TALENT_009:break;
+            case Talent.TALENT_010:break;
+            case Talent.TALENT_011:break;
+            case Talent.TALENT_012:break;
+            case Talent.TALENT_013:break;
+            case Talent.TALENT_014:break;
+            case Talent.TALENT_015:break;
+            case Talent.TALENT_016:break;
+            case Talent.TALENT_017:break;
+            case Talent.TALENT_018:break;
+            case Talent.TALENT_019:break;
+        }
+    }
+    private healing(){
+        let light = cc.instantiate(this.healingLight);
+        light.parent = this.player.node.parent;
+        light.position = this.player.node.position.clone().addSelf(cc.v3(0,64));
+        light.zIndex = IndexZ.OVERHEAD;
+        this.player.addStatus(StatusManager.HEALING,new FromData());
+    }
+
+    private rageShoot(){
+        let light = cc.instantiate(this.rageLight);
+        light.parent = this.player.node;
+        light.position = cc.v3(0,0);
+        light.zIndex = IndexZ.OVERHEAD;
+        this.scheduleOnce(()=>{
+            this.talentSkill.IsExcuting = false;
+            if(light&&cc.isValid(light)){
+                light.destroy();
+            }
+        },5);
+    }
+    private flash(){
+        let light = cc.instantiate(this.flashLight);
+        light.parent = this.player.node.parent;
+        light.position = this.player.node.position.clone().addSelf(cc.v3(0,64));
+        light.zIndex = IndexZ.OVERHEAD;
+        this.addStatus2NearEnemy(StatusManager.DIZZ, 400);
+        this.player.addStatus(StatusManager.FASTMOVE,new FromData());
+        this.sprite.node.width = 2000;
+        this.sprite.node.height = 2000;
+        this.sprite.spriteFrame = Logic.spriteFrames['singleColor'];
+        this.sprite.node.opacity = 255;
+        cc.tween(this.sprite.node).to(0.1,{opacity:0}).call(()=>{
+            this.sprite.spriteFrame = null;
+        }).start();
+        
+    }
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 0);
@@ -202,7 +274,7 @@ export default class TalentSkills extends Talent {
         }
     }
 
-    addStatus2NearEnemy(statusName: string, range: number) {
+    private addStatus2NearEnemy(statusName: string, range: number) {
         if (!this.player) {
             return cc.Vec3.ZERO;
         }

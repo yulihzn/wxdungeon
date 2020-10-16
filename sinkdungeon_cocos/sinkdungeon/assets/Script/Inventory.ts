@@ -20,6 +20,7 @@ import FromData from './Data/FromData';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
 import Equipment from './Equipment/Equipment';
+import ItemDialog from './Item/ItemDialog';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -58,6 +59,8 @@ export default class Inventory extends cc.Component {
     equipmentDialog: EquipmentDialog = null;
     @property(EquipmentDialog)
     equipmentGroundDialog: EquipmentDialog = null;
+    @property(ItemDialog)
+    itemGroundDialog: ItemDialog = null;
 
     inventoryManager: InventoryManager;
 
@@ -78,6 +81,7 @@ export default class Inventory extends cc.Component {
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
             , (event) => { this.refreshEquipment(event.detail.equipData, true) });
         if (this.equipmentGroundDialog) { this.equipmentGroundDialog.hideDialog(); }
+        if (this.itemGroundDialog) { this.itemGroundDialog.hideDialog(); }
         cc.director.on(EventHelper.PLAYER_CHANGEITEM
             , (event) => { this.refreshItem(event.detail.itemData) });
         cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
@@ -91,6 +95,19 @@ export default class Inventory extends cc.Component {
             , (event) => {
                 if (this.equipmentGroundDialog) {
                     this.equipmentGroundDialog.hideDialog();
+                }
+            });
+        cc.director.on(EventHelper.HUD_GROUND_ITEM_INFO_SHOW
+            , (event) => {
+                if (this.itemGroundDialog) {
+                    this.itemGroundDialog.refreshDialog(event.detail.itemData);
+                    this.itemGroundDialog.showDialog();
+                }
+            });
+        cc.director.on(EventHelper.HUD_GROUND_ITEM_INFO_HIDE
+            , (event) => {
+                if (this.itemGroundDialog) {
+                    this.itemGroundDialog.hideDialog();
                 }
             });
         cc.director.on(EventHelper.USEITEM_KEYBOARD, (event) => {
@@ -335,7 +352,7 @@ export default class Inventory extends cc.Component {
         if (item.count != -1) {
             item.count--;
         }
-        if (item.count <= 0&&item.count != -1) {
+        if (item.count <= 0 && item.count != -1) {
             this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
         } else {
             this.inventoryManager.itemList[itemIndex].valueCopy(item);
@@ -353,9 +370,9 @@ export default class Inventory extends cc.Component {
         //填补相同可叠加
         for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
             let item = this.inventoryManager.itemList[i];
-            if (item.resName != Item.EMPTY&&item.resName == itemDataNew.resName
-                &&item.count>0&&itemDataNew.count>0) {
-                let count = item.count+itemDataNew.count;
+            if (item.resName != Item.EMPTY && item.resName == itemDataNew.resName
+                && item.count > 0 && itemDataNew.count > 0) {
+                let count = item.count + itemDataNew.count;
                 item.valueCopy(itemDataNew);
                 item.count = count;
                 isRefreshed = true;
@@ -363,7 +380,7 @@ export default class Inventory extends cc.Component {
             }
         }
         //填补空缺位置
-        if(!isRefreshed){
+        if (!isRefreshed) {
             for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
                 let item = this.inventoryManager.itemList[i];
                 if (item.resName == Item.EMPTY) {
@@ -373,7 +390,7 @@ export default class Inventory extends cc.Component {
                 }
             }
         }
-        
+
         //先进先出
         if (!isRefreshed) {
             let item0 = this.inventoryManager.itemList[0].clone();
@@ -391,14 +408,14 @@ export default class Inventory extends cc.Component {
         for (let i = 0; i < itemSpriteList.length; i++) {
             let item = this.inventoryManager.itemList[i];
             itemSpriteList[i].spriteFrame = Logic.spriteFrames[item.resName];
-            itemSpriteList[i].node.parent.parent.getComponentInChildren(cc.Label).string = `${item.count>0?('x'+item.count):''}`;
+            itemSpriteList[i].node.parent.parent.getComponentInChildren(cc.Label).string = `${item.count > 0 ? ('x' + item.count) : ''}`;
         }
     }
     setItem(itemData: ItemData) {
         let p = this.dungeon.player.pos.clone();
         let pos = Dungeon.getPosInMap(p);
-        pos.y+= Logic.getHalfChance()?2:-2;
-        pos.x+= Logic.getHalfChance()?2:-2;
+        pos.y += Logic.getHalfChance() ? 2 : -2;
+        pos.x += Logic.getHalfChance() ? 2 : -2;
         if (itemData.resName != Item.EMPTY) {
             cc.director.emit(EventHelper.DUNGEON_ADD_ITEM
                 , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName, count: itemData.count } })

@@ -111,16 +111,16 @@ export default class Shooter extends cc.Component {
             this.hv = hv.normalizeSelf();
         }
     }
-    fireBullet(angleOffset?: number, defaultPos?: cc.Vec3) {
+    public fireBullet(angleOffset?: number, defaultPos?: cc.Vec3,bulletArcExNum?:number,bulletLineExNum?:number) {
         if (this.data.isArcAim == 1 && this.graphics) {
-            this.aimTargetArc(angleOffset, defaultPos);
+            this.aimTargetArc(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
         } else if (this.data.isLineAim == 1 && this.graphics) {
-            this.aimTargetLine(angleOffset, defaultPos);
+            this.aimTargetLine(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
         } else {
-            this.fireBulletDo(angleOffset, defaultPos);
+            this.fireBulletDo(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
         }
     }
-    private fireBulletDo(angleOffset?: number, defaultPos?: cc.Vec3) {
+    private fireBulletDo(angleOffset: number, defaultPos: cc.Vec3,bulletArcExNum:number,bulletLineExNum:number) {
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec3.ZERO;
@@ -142,18 +142,16 @@ export default class Shooter extends cc.Component {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
         if (this.data.bulletNets > 0) {
             let bulletType = this.data.bulletType;
-            // this.fireNetsBullet(0,bulletType);
-            // this.fireNetsBullet(1,bulletType);
-            // this.fireNetsBullet(2,bulletType);
             this.fireNetsBullet(3, bulletType);
         } else {
             this.fire(this.data.bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos);
-            this.fireArcBullet(this.data.bulletType, defaultPos);
-            this.fireLinecBullet(this.data.bulletType, angleOffset, defaultPos);
+            this.fireArcBullet(this.data.bulletType, defaultPos,bulletArcExNum);
+            this.fireLinecBullet(this.data.bulletType, angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
         }
     }
-    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3): void {
-        if (this.data.bulletArcExNum <= 0) {
+    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3,bulletArcExNum:number): void {
+        let exNum = this.data.bulletArcExNum+bulletArcExNum;
+        if (exNum <= 0) {
             return;
         }
         let angles = [10, -10, 20, -20, 30, -30, 40, -40, 50, -50, 60, -60, -70, -70, 80, -80, 90, -90, 100, -100, 110, -110, 120, -120, 130, -130, 140, -140, 150, -150, 160, -160, 170, -170, 180, -180]
@@ -168,7 +166,7 @@ export default class Shooter extends cc.Component {
                 this.fire(bulletType, this.bullet, this.bulletPool, circleAngles[i], this.hv.clone(), defaultPos);
             }
         } else {
-            for (let i = 0; i < this.data.bulletArcExNum; i++) {
+            for (let i = 0; i < exNum; i++) {
                 if (i < angles.length) {
                     this.fire(bulletType, this.bullet, this.bulletPool, angles[i], this.hv.clone(), defaultPos);
                 }
@@ -176,14 +174,14 @@ export default class Shooter extends cc.Component {
         }
 
     }
-    private fireLinecBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3): void {
-        if (this.data.bulletLineExNum == 0) {
+    private fireLinecBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3,bulletArcExNum:number,bulletLineExNum:number): void {
+        if (this.data.bulletLineExNum+bulletLineExNum == 0) {
             return;
         }
         this.schedule(() => {
             this.fire(bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos);
-            this.fireArcBullet(bulletType, defaultPos);
-        }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, this.data.bulletLineExNum, 0);
+            this.fireArcBullet(bulletType, defaultPos,bulletArcExNum);
+        }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, this.data.bulletLineExNum+bulletLineExNum, 0);
 
     }
     //暂时不用，待完善
@@ -315,7 +313,7 @@ export default class Shooter extends cc.Component {
         return !isInvalid;
     }
     //线性瞄准
-    private aimTargetLine(angleOffset?: number, defaultPos?: cc.Vec3) {
+    private aimTargetLine(angleOffset?: number, defaultPos?: cc.Vec3,bulletArcExNum?:number,bulletLineExNum?:number) {
         if (this.isAiming) {
             return;
         }
@@ -328,7 +326,7 @@ export default class Shooter extends cc.Component {
         let isOver = false;
         let fun = () => {
             if (width < 1 && isOver) {
-                this.fireBulletDo(angleOffset, defaultPos);
+                this.fireBulletDo(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
                 this.unschedule(fun);
                 this.graphics.clear();
                 this.isAiming = false;
@@ -368,7 +366,7 @@ export default class Shooter extends cc.Component {
         this.graphics.fill();
     }
     //圆弧瞄准
-    private aimTargetArc(angleOffset?: number, defaultPos?: cc.Vec3) {
+    private aimTargetArc(angleOffset?: number, defaultPos?: cc.Vec3,bulletArcExNum?:number,bulletLineExNum?:number) {
         if (this.isAiming) {
             return;
         }
@@ -377,7 +375,7 @@ export default class Shooter extends cc.Component {
         let fun = () => {
             this.drawArc(--num);
             if (num < 0) {
-                this.fireBulletDo(angleOffset, defaultPos);
+                this.fireBulletDo(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
                 this.unschedule(fun);
                 this.isAiming = false;
             }

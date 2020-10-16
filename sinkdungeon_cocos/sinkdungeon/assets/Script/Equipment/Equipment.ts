@@ -34,8 +34,6 @@ export default class Equipment extends cc.Component {
     data: EquipmentData = new EquipmentData();
     anim: cc.Animation;
     private sprite: cc.Node;
-    @property(EquipmentDialog)
-    equipmentDialog: EquipmentDialog = null;
     pos: cc.Vec3 = cc.v3(0, 0);
     isTaken = false;
     shopTable: ShopTable;
@@ -48,7 +46,6 @@ export default class Equipment extends cc.Component {
     }
     refresh(data: EquipmentData) {
         this.data.valueCopy(data);
-        this.equipmentDialog.refreshDialog(this.data);
         let spriteFrame = Logic.spriteFrames[this.data.img];
         if (data.equipmetType == 'trousers') {
             spriteFrame = data.trouserslong==1?Logic.spriteFrames['trousers000']:spriteFrame;
@@ -90,7 +87,7 @@ export default class Equipment extends cc.Component {
         this.anim.play('EquipmentTaken');
         cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
         this.node.getChildByName('shadow').active = false;
-        this.equipmentDialog.node.active = false;
+        cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE);
         this.scheduleOnce(() => {
             if (this.node) {
                 this.destroy();
@@ -109,33 +106,20 @@ export default class Equipment extends cc.Component {
         cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.PICK_UP}})
 
     }
-    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-    //     let player = otherCollider.body.node.getComponent(Player);
-    //     if (player) {
-    //         this.equipmentDialog.showDialog();
-    //     }
-    // }
-    // onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-    //     let player = otherCollider.body.node.getComponent(Player);
-    //     if (player) {
-    //         this.equipmentDialog.hideDialog();
-    //     }
-    // }
+
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
-            this.equipmentDialog.hideDialog();
-            // cc.director.emit(EventConstant.HUD_GROUND_EQUIPMENT_INFO_HIDE);
+            cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE);
             this.highLight(false);
         }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
         if (player) {
-            this.equipmentDialog.showDialog();
             this.highLight(true);
             this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2),cc.delayTime(1),cc.fadeOut(0.2)));
-            // cc.director.emit(EventConstant.HUD_GROUND_EQUIPMENT_INFO_SHOW,{detail:{equipData:this.data}});
+            cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW,{detail:{equipData:this.data}});
         }
     }
     // update (dt) {}
