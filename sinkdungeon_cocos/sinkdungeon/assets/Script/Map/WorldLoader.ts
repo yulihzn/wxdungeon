@@ -83,8 +83,8 @@ export default class WorldLoader {
             } else {
                 cc.log('tilesets loaded');
                 let tilesets: { [key: string]: string[] } = {};
-                for (let key in resource.json.tiles) {
-                    tilesets[key] = resource.json.tiles[key].objectgroup.name;
+                for (let value of resource.json.tiles) {
+                    tilesets[value.id] = value.type;
                 }
                 this.loadTiledMaps(tilesets);
             }
@@ -98,6 +98,16 @@ export default class WorldLoader {
                 let chapter = parseInt(arr[1]);
                 let data = chapter == 99 ? this.realWorldMap : this.worldMap[chapter];
                 let temp: LevelData = tiledmap.json.layers[0].properties;
+                //新版是数组
+                if(!temp.width){
+                    temp = new LevelData();
+                    let tarr = tiledmap.json.layers[0].properties;
+                    for(let ld of tarr){
+                        if(ld.name){
+                            temp[ld.name]=ld.value;
+                        }
+                    }
+                }
                 let map = new Array();
                 let rooms = new Array();
                 let w = temp.width * temp.roomWidth;
