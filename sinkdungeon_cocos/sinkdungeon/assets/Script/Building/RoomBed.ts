@@ -1,5 +1,6 @@
 import FromData from "../Data/FromData";
 import Dungeon from "../Dungeon";
+import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import StatusManager from "../Manager/StatusManager";
 // Learn TypeScript:
@@ -10,6 +11,7 @@ import StatusManager from "../Manager/StatusManager";
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import Player from "../Player";
+import AudioPlayer from "../Utils/AudioPlayer";
 import Building from "./Building";
 
 const {ccclass, property} = cc._decorator;
@@ -43,6 +45,7 @@ export default class RoomBed extends Building {
                 if(Logic.playerData.pos.equals(this.data.defaultPos)){
                     Logic.playerData.pos.y=this.data.defaultPos.y-1;
                 }
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.loadingNextLevel(false,true,true);
             },1)
         }

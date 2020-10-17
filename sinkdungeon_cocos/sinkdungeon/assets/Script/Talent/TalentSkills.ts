@@ -91,6 +91,7 @@ export default class TalentSkills extends Talent {
         let cooldown = this.activeTalentData.cooldown;
         this.talentSkill.next(() => {
             this.talentSkill.IsExcuting = true;
+            AudioPlayer.play(AudioPlayer.PICK_ITEM);
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
             this.doSkill();
         }, cooldown, true);

@@ -4,6 +4,8 @@ import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
 import Logic from "../Logic";
 import ExitData from "../Data/ExitData";
+import AudioPlayer from "../Utils/AudioPlayer";
+import { EventHelper } from "../EventHelper";
 
 
 // Learn TypeScript:
@@ -76,6 +78,7 @@ export default class Portal extends Building {
                 if (Logic.playerData.pos.equals(this.data.defaultPos)) {
                     Logic.playerData.pos.y = this.data.defaultPos.y - 1;
                 }
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.loadingNextLevel(!this.isBackDream, this.isBackDream, true,this.isBackDream?null:ExitData.getRealWorldExitData());
             }
         }
