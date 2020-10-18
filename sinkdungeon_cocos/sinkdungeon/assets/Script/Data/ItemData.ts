@@ -25,6 +25,7 @@ export default class ItemData extends BaseData {
     price:number = 0;
     isTaken = false;
     count = 1;//使用次数，-1为不限使用次数,1为一次性
+    cooldown = 1;//冷却时间
     canSave = 0;
 
     public valueCopy(data: ItemData): void {
@@ -39,6 +40,7 @@ export default class ItemData extends BaseData {
         this.isTaken = data.isTaken?data.isTaken:false;
         this.canSave = data.canSave?data.canSave:0;
         this.count = data.count?data.count:1;
+        this.cooldown = data.cooldown?data.cooldown:1;
         this.price = data.price?data.price:0;
       
     }
@@ -55,6 +57,7 @@ export default class ItemData extends BaseData {
         e.isTaken = this.isTaken;
         e.canSave = this.canSave;
         e.count = this.count;
+        e.cooldown = this.cooldown;
         e.price = this.price;
         return e;
     }

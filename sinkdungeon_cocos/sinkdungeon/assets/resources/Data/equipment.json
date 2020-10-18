@@ -1050,7 +1050,7 @@
         "titlecolor": "#ffffff",
         "img": "remote007",
         "bulletType":"bullet027",
-        "bulletLineExNum":2,
+        "bulletLineExNum":1,
         "isHeavy":0,
         "common": {
             "remoteDamage":1,

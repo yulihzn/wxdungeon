@@ -870,6 +870,9 @@
             <key type="filename">bullet/bullet039anim000.png</key>
             <key type="filename">bullet/bullet039anim001.png</key>
             <key type="filename">bullet/bullet039anim002.png</key>
+            <key type="filename">bullet/bullet040anim000.png</key>
+            <key type="filename">bullet/bullet040anim001.png</key>
+            <key type="filename">bullet/bullet040anim002.png</key>
             <key type="filename">dungeon/coast000.png</key>
             <key type="filename">dungeon/coast001.png</key>
             <key type="filename">dungeon/coast0010.png</key>
@@ -1081,6 +1084,7 @@
             <key type="filename">talents/talent010.png</key>
             <key type="filename">talents/talent011.png</key>
             <key type="filename">talents/talent012.png</key>
+            <key type="filename">talents/talent013.png</key>
             <key type="filename">talents/talent014.png</key>
             <key type="filename">talents/talent015.png</key>
             <key type="filename">talents/talent016.png</key>

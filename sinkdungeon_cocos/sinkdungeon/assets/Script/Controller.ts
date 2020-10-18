@@ -141,7 +141,7 @@ export default class Controller extends cc.Component {
         this.schedule(func, delta, cc.macro.REPEAT_FOREVER);
     }
     private drawRect(height, center: cc.Vec3) {
-        this.graphics.fillColor = cc.color(0, 255, 0, 200);
+        this.graphics.fillColor = cc.color(255, 255, 255, 150);
         this.graphics.rect(center.x - 32, center.y - 32, 64, height);
         this.graphics.fill();
     }

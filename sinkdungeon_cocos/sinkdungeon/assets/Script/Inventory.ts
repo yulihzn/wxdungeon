@@ -57,12 +57,15 @@ export default class Inventory extends cc.Component {
 
     @property(EquipmentDialog)
     equipmentDialog: EquipmentDialog = null;
+    @property(ItemDialog)
+    itemDialog: ItemDialog = null;
     @property(EquipmentDialog)
     equipmentGroundDialog: EquipmentDialog = null;
     @property(ItemDialog)
     itemGroundDialog: ItemDialog = null;
 
     inventoryManager: InventoryManager;
+    graphics: cc.Graphics = null;
 
     weaponTimeDelay = 0;
     remoteTimeDelay = 0;
@@ -77,6 +80,7 @@ export default class Inventory extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
             , (event) => { this.refreshEquipment(event.detail.equipData, true) });
@@ -128,15 +132,15 @@ export default class Inventory extends cc.Component {
         this.gloves.spriteFrame = null;
         this.shoes.spriteFrame = null;
         this.cloak.spriteFrame = null;
-        this.addSpriteTouchEvent(this.weapon, Equipment.WEAPON);
-        this.addSpriteTouchEvent(this.remote, Equipment.REMOTE);
-        this.addSpriteTouchEvent(this.shield, Equipment.SHIELD);
-        this.addSpriteTouchEvent(this.helmet, Equipment.HELMET);
-        this.addSpriteTouchEvent(this.clothes, Equipment.CLOTHES);
-        this.addSpriteTouchEvent(this.trousers, Equipment.TROUSERS);
-        this.addSpriteTouchEvent(this.gloves, Equipment.GLOVES);
-        this.addSpriteTouchEvent(this.shoes, Equipment.SHOES);
-        this.addSpriteTouchEvent(this.cloak, Equipment.CLOAK);
+        this.addEquipSpriteTouchEvent(this.weapon, Equipment.WEAPON);
+        this.addEquipSpriteTouchEvent(this.remote, Equipment.REMOTE);
+        this.addEquipSpriteTouchEvent(this.shield, Equipment.SHIELD);
+        this.addEquipSpriteTouchEvent(this.helmet, Equipment.HELMET);
+        this.addEquipSpriteTouchEvent(this.clothes, Equipment.CLOTHES);
+        this.addEquipSpriteTouchEvent(this.trousers, Equipment.TROUSERS);
+        this.addEquipSpriteTouchEvent(this.gloves, Equipment.GLOVES);
+        this.addEquipSpriteTouchEvent(this.shoes, Equipment.SHOES);
+        this.addEquipSpriteTouchEvent(this.cloak, Equipment.CLOAK);
         this.refreshEquipment(this.inventoryManager.weapon, false);
         this.refreshEquipment(this.inventoryManager.remote, false);
         this.refreshEquipment(this.inventoryManager.shield, false);
@@ -147,9 +151,13 @@ export default class Inventory extends cc.Component {
         this.refreshEquipment(this.inventoryManager.shoes, false);
         this.refreshEquipment(this.inventoryManager.cloak, false);
         this.refreshItemRes();
+        let itemSpriteList = [this.item1, this.item2, this.item3];
+        for(let i =0;i<itemSpriteList.length;i++){
+            this.addItemSpriteTouchEvent(itemSpriteList[i],i);
+        }
     }
 
-    addSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
+    private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
         sprite.node.parent.on(cc.Node.EventType.TOUCH_START, () => {
             if (sprite.spriteFrame == null) {
                 return;
@@ -174,6 +182,42 @@ export default class Inventory extends cc.Component {
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_CANCEL, () => {
             this.equipmentDialog.hideDialog();
+        })
+    }
+    private addItemSpriteTouchEvent(sprite:cc.Sprite,itemIndex:number){
+        let isLongPress = false;
+        let touchStart = false;
+        sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_START, () => {
+            if (sprite.spriteFrame == null) {
+                return;
+            }
+            touchStart = true;
+            this.scheduleOnce(()=>{
+                if (!touchStart||!this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
+                    return;
+                }
+                isLongPress = true;
+                let item = this.inventoryManager.itemList[itemIndex].clone();
+                if(item.resName == Item.EMPTY){
+                    return;
+                }
+                this.itemDialog.refreshDialog(item);
+                this.itemDialog.showDialog();
+            },0.3)
+            
+        })
+        sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_END, () => {
+            this.itemDialog.hideDialog();
+            if(!isLongPress){
+                this.userItem(sprite.node,itemIndex);
+            }
+            touchStart = false;
+            isLongPress = false;
+        })
+        sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_CANCEL, () => {
+            this.itemDialog.hideDialog();
+            touchStart = false;
+            isLongPress = false;
         })
     }
     select(event, customEventData) {
@@ -343,24 +387,30 @@ export default class Inventory extends cc.Component {
         }
     }
 
-    //item button
-    userItem(event, itemIndex) {
+    userItem(node:cc.Node, itemIndex:number) {
         if (!this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
             return;
         }
         let item = this.inventoryManager.itemList[itemIndex].clone();
-        if (item.count != -1) {
-            item.count--;
+        if(item.resName == Item.EMPTY){
+            return;
         }
-        if (item.count <= 0 && item.count != -1) {
-            this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
-        } else {
-            this.inventoryManager.itemList[itemIndex].valueCopy(item);
-        }
-        this.refreshItemRes();
-        if (item.resName != Item.EMPTY) {
-            cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
-        }
+        this.inventoryManager.itemCoolDownList[itemIndex].next(()=>{
+            this.drawItemCoolDown(item.cooldown,node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+            if (item.count != -1) {
+                item.count--;
+            }
+            if (item.count <= 0 && item.count != -1) {
+                this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
+            } else {
+                this.inventoryManager.itemList[itemIndex].valueCopy(item);
+            }
+            this.refreshItemRes();
+            if (item.resName != Item.EMPTY) {
+                cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
+            }
+        },item.cooldown,true)
+        
     }
     refreshItem(itemDataNew: ItemData) {
         if (!this.node) {
@@ -420,5 +470,34 @@ export default class Inventory extends cc.Component {
             cc.director.emit(EventHelper.DUNGEON_ADD_ITEM
                 , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName, count: itemData.count } })
         }
+    }
+
+    private drawItemCoolDown(coolDown: number,position:cc.Vec3) {
+        if (coolDown <= 0) {
+            return;
+        }
+        let height = 80;
+        let delta = 0.1;
+        let p = this.node.convertToNodeSpaceAR(position);
+        let offset = height / coolDown * delta;
+        let func = () => {
+            height -= offset;
+            if (this.graphics) {
+                this.graphics.clear();
+            }
+            this.drawRect(height, p);
+            if (height < 0) {
+                if (this.graphics) {
+                    this.graphics.clear();
+                }
+                this.unschedule(func);
+            }
+        }
+        this.schedule(func, delta, cc.macro.REPEAT_FOREVER);
+    }
+    private drawRect(height, center: cc.Vec3) {
+        this.graphics.fillColor = cc.color(255, 255, 255, 150);
+        this.graphics.rect(center.x - 32, center.y - 32, 64, height);
+        this.graphics.fill();
     }
 }

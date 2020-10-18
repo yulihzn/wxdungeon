@@ -16,6 +16,7 @@ import IndexZ from "../Utils/IndexZ";
 import Decorate from "../Building/Decorate";
 import HitBuilding from "../Building/HitBuilding";
 import Shield from "../Shield";
+import Wall from "../Building/Wall";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -297,9 +298,10 @@ export default class Bullet extends cc.Component {
         let monster = otherCollider.node.getComponent(Monster);
         let boss = otherCollider.node.getComponent(Boss);
         let bullet = otherCollider.node.getComponent(Bullet);
+        let wall = otherCollider.node.getComponent(Wall);
 
         //子弹玩家怪物boss武器不销毁
-        if (player || monster || boss || bullet) {
+        if (player || monster || boss || bullet||wall) {
             isDestory = false;
         }
         //触发器不销毁
@@ -334,6 +336,7 @@ export default class Bullet extends cc.Component {
         if (bullet) {
             isAttack = false;
         }
+        
         if (isAttack) {
             this.attacking(other.node);
         }
@@ -347,6 +350,10 @@ export default class Bullet extends cc.Component {
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
         let isDestory = false;
+        let wall = attackTarget.getComponent(Wall);
+        if(wall){
+            isDestory = true;
+        }
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             damageSuccess = monster.takeDamage(damage);
