@@ -24,7 +24,7 @@ export default class CommonData {
     attackSpeed: number = 0;//攻速
     dodge: number = 0;//闪避%
     remoteCooldown: number = 0;//远程冷却
-    remoteDamage: number = 0;//远程攻速
+    remoteDamage: number = 0;//远程攻击
     remoteCritRate: number = 0;//远程暴击
 
     realDamage = 0;//真实伤害

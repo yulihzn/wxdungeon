@@ -200,9 +200,9 @@ export default class Dungeon extends cc.Component {
                     if (mapData[i][j] == 'Ac') {
                         this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_ATTACKSPEED);
                     }
-                    //隐身瓶
+                    //远程瓶
                     if (mapData[i][j] == 'Ad') {
-                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_INVISIBLE);
+                        this.addItem(Dungeon.getPosInMap(cc.v3(i, j)), Item.BOTTLE_REMOTE);
                     }
                 }
 

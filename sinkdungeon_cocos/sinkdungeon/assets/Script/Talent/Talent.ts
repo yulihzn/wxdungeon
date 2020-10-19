@@ -144,7 +144,7 @@ export default abstract class Talent extends cc.Component {
         return node.getComponent(cc.Sprite);
     }
     hashTalent(resName: string): boolean {
-        return this.hasTalentMap[resName] && this.hasTalentMap[resName] == true;
+        return this.hasTalentMap[resName] && this.hasTalentMap[resName] == true||this.activeTalentData.resName==resName;
     }
 
     abstract takeDamage(damageData: DamageData, actor?: Actor): void

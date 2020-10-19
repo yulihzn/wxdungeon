@@ -66,12 +66,12 @@
         "price": 30
     },
     "bottle004": {
-        "nameCn": "隐身瓶",
+        "nameCn": "远程瓶",
         "nameEn": "hide bottle",
         "resName": "bottle004",
         "canSave":1,
-        "info":"隐身30秒，破隐一击",
-        "desc":"真正的刺客大师",
+        "info":"15秒内远程攻击+2",
+        "desc":"疯狂射击",
         "price": 30
     },
     "goldfinger": {

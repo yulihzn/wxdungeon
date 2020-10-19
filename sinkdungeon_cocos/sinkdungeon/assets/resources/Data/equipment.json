@@ -1127,6 +1127,35 @@
         "stab":1,
         "desc": "老式的无膛手枪，但是威力不错"
     },
+    "remote010": {
+        "nameCn": "92手枪",
+        "nameEn": "92 Gun",
+        "equipmetType": "remote",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "remote010",
+        "bulletType":"bullet211",
+        "bulletArcExNum":0,
+        "isHeavy":0,
+        "common": {
+            "remoteDamage":1,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "remoteCooldown":500,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":1,
+        "desc": "经典92"
+    },
     "helmet002": {
         "nameCn": "渔夫帽",
         "nameEn": "Bucket Hat",

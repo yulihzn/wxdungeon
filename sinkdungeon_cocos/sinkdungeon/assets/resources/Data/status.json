@@ -188,15 +188,15 @@
         "common": {}
     },
     "status018": {
-        "nameCn": "加长盾牌防御(废弃)",
-        "nameEn": "defence perfect",
-        "spriteFrameName": "icondefence",
+        "nameCn": "技能瞄准",
+        "nameEn": "aim target",
+        "spriteFrameName": "talentshoot",
         "statusType": 18,
         "desc": "",
-        "duration": 2,
+        "duration": 10,
         "common": {
-            "defence": 9999,
-            "magicDefence": 100
+            "remoteDamage":1,
+            "remoteCritRate":90
         }
     },
     "status019": {
@@ -277,13 +277,13 @@
         }
     },
     "status026": {
-        "nameCn": "隐身",
+        "nameCn": "破隐一击",
         "nameEn": "hide",
-        "spriteFrameName": "bottle004",
+        "spriteFrameName": "status026",
         "statusType": 26,
         "desc": "",
-        "duration": 30,
-        "invisibleDuratonDirect":30,
+        "duration": 10,
+        "invisibleDuratonDirect":10,
         "common": {
             "moveSpeed": 50,
             "criticalStrikeRate":100,
@@ -312,8 +312,8 @@
         "spriteFrameName": "status003",
         "statusType": 28,
         "desc": "",
-        "duration": 5,
-        "dizzDurationDirect":2,
+        "duration": 3,
+        "dizzDurationDirect":3,
         "common": {
             "attackSpeed": -200
         }
@@ -327,6 +327,17 @@
         "duration": 10,
         "common": {
             "moveSpeed": 200
+        }
+    },
+    "status030": {
+        "nameCn": "远程攻击增强",
+        "nameEn": "remote attack",
+        "spriteFrameName": "bottle004",
+        "statusType": 30,
+        "desc": "",
+        "duration": 10,
+        "common": {
+            "remoteDamage": 2
         }
     }
 }

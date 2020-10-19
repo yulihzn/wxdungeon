@@ -37,16 +37,16 @@ import PlayerAvatar from './PlayerAvatar';
 import PlayerWeapon from './PlayerWeapon';
 import { EventHelper } from './EventHelper';
 import TalentSkills from './Talent/TalentSkills';
-
 @ccclass
 export default class Player extends Actor {
-    @property(cc.Vec3)
-    pos: cc.Vec3 = cc.v3(0, 0);
+    
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
+    @property(cc.Vec3)
+    pos: cc.Vec3 = null;
     @property(cc.Prefab)
     walksmoke: cc.Prefab = null;
-    private smokePool: cc.NodePool;
+    private smokePool: cc.NodePool = null;
     @property(PlayerWeapon)
     weaponLeft: PlayerWeapon = null;
     @property(PlayerWeapon)
@@ -220,7 +220,7 @@ export default class Player extends Actor {
     }
     stopHiding() {
         this.invisible = false;
-        this.statusManager.stopStatus(StatusManager.BOTTLE_INVISIBLE);
+        this.statusManager.stopStatus(StatusManager.TALENT_INVISIBLE);
     }
 
     private statusUpdate() {
@@ -412,7 +412,7 @@ export default class Player extends Actor {
         let lineEx = 0;
         if(this.talentSkills.hashTalent(Talent.TALENT_005)&&this.talentSkills.IsExcuting){
             arcEx = 2;
-            lineEx = 0;
+            lineEx = 1;
         }
         let fireSuccess = this.weaponLeft.remoteAttack(this.data,this.remoteCooldown,arcEx,lineEx);
         if (fireSuccess) {
@@ -485,6 +485,9 @@ export default class Player extends Actor {
         }
         if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
             pos = pos.mul(0.5);
+        }
+        if (this.talentSkills.IsExcuting && this.talentSkills.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
+            pos = pos.mul(0.01);
         }
         
         if (!pos.equals(cc.Vec3.ZERO)) {

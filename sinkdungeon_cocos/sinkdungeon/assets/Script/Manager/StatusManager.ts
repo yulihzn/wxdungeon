@@ -37,14 +37,19 @@ export default class StatusManager extends cc.Component {
     public static readonly SHIELD_NORMAL = "status015";
     public static readonly SHIELD_LONG = "status016";
     public static readonly BOTTLE_HEALING = "status017";
-    // public static readonly SHIELD_LONG_SPEED = "status018";
+    public static readonly TALENT_AIMED = "status018";
+    public static readonly SHOES_SPEED = "status019";
+    public static readonly CLOTHES_RECOVERY = "status020";
     public static readonly WEREWOLFDEFENCE = "status021";
     public static readonly GOLDAPPLE = "status022";
     public static readonly MAGIC_WEAPON = "status023";
     public static readonly MAGIC_WEAPON_STRONG = "status024";
     public static readonly FROZEN_STRONG = "status025";
-    public static readonly BOTTLE_INVISIBLE = "status026";
+    public static readonly TALENT_INVISIBLE = "status026";
     public static readonly SHIELD_PARRY = "status027";
+    public static readonly TALENT_FLASH_DIZZ = "status028";
+    public static readonly TALENT_FLASH_SPEED = "status029";
+    public static readonly BOTTLE_REMOTE = "status030";
     
 
     @property(cc.Prefab)

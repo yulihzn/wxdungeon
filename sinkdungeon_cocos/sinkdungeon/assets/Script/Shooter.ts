@@ -29,6 +29,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Shooter extends cc.Component {
     static DefAULT_SPEED = 300;
+    static readonly ARC_EX_NUM_8 = 80;
+    static readonly ARC_EX_NUM_16 = 99;
     @property(cc.Prefab)
     bullet: cc.Prefab = null;
     @property
@@ -159,7 +161,7 @@ export default class Shooter extends cc.Component {
             //大于默认度数数组为16方向
             let circleAngles = [0, 20, 45, 65, 90, 110, 135, 155, 180, 200, 225, 245, 270, 290, 315, 335];
             //为80的时候是个八方向
-            if (this.data.bulletArcExNum == 80) {
+            if (this.data.bulletArcExNum == Shooter.ARC_EX_NUM_8) {
                 circleAngles = [0, 45, 90, 135, 180, 225, 270, 315, 335];
             }
             for (let i = 0; i < circleAngles.length; i++) {

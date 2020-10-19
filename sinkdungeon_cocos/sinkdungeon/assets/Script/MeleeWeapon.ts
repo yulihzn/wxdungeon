@@ -89,6 +89,9 @@ export default class MeleeWeapon extends cc.Component {
     private isComboing = false;
     private hasTargetMap: { [key: string]: number } = {};
     private isSecond = false;//是否是副手
+    get IsSword(){
+        return !this.isStab&&!this.isFar&&!this.isFist&&!this.isBlunt;
+    }
     set IsSecond(isSecond:boolean){
         this.isSecond = isSecond;
     }

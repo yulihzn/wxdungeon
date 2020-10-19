@@ -72,7 +72,7 @@ J (temp)
 
 K (temp)
 L (temp)
-M 
+M0 怪物生成器 
 O
 P0 传送门
 P1 电梯或者楼梯口

@@ -401,6 +401,7 @@
             <key type="filename">status/status014.png</key>
             <key type="filename">status/status023.png</key>
             <key type="filename">status/status024.png</key>
+            <key type="filename">status/status026.png</key>
             <key type="filename">status/status027.png</key>
             <key type="filename">tile/tile.png</key>
             <key type="filename">tile/tile_deck001.png</key>
@@ -922,6 +923,7 @@
             <key type="filename">equipment/animremote007.png</key>
             <key type="filename">equipment/animremote008.png</key>
             <key type="filename">equipment/animremote009.png</key>
+            <key type="filename">equipment/animremote010.png</key>
             <key type="filename">equipment/behindotherhelmet024.png</key>
             <key type="filename">equipment/frontotherhelmet024.png</key>
             <key type="filename">equipment/otherhelmet024.png</key>
@@ -934,6 +936,7 @@
             <key type="filename">equipment/remote007.png</key>
             <key type="filename">equipment/remote008.png</key>
             <key type="filename">equipment/remote009.png</key>
+            <key type="filename">equipment/remote010.png</key>
             <key type="filename">hud/uimelee.png</key>
             <key type="filename">hud/uimeleelight.png</key>
             <key type="filename">hud/uimeleepress.png</key>
@@ -1092,6 +1095,8 @@
             <key type="filename">talents/talent018.png</key>
             <key type="filename">talents/talent019.png</key>
             <key type="filename">talents/talent03.png</key>
+            <key type="filename">talents/talentbroom1.png</key>
+            <key type="filename">talents/talentbroom2.png</key>
             <key type="filename">talents/talentempty.png</key>
             <key type="filename">talents/talentmagic07.png</key>
             <key type="filename">talents/talentmagic08.png</key>
@@ -1116,6 +1121,11 @@
             <key type="filename">talents/talentshield12.png</key>
             <key type="filename">talents/talentshield13.png</key>
             <key type="filename">talents/talentshield14.png</key>
+            <key type="filename">talents/talentshoot.png</key>
+            <key type="filename">talents/talentsword01.png</key>
+            <key type="filename">talents/talentsword02.png</key>
+            <key type="filename">talents/talentsword03.png</key>
+            <key type="filename">talents/talentsword04.png</key>
             <key type="filename">talents/talentx002.png</key>
             <key type="filename">ui/block000anim000.png</key>
             <key type="filename">ui/block000anim001.png</key>
@@ -1123,6 +1133,7 @@
             <key type="filename">ui/block000anim003.png</key>
             <key type="filename">ui/dashlight.png</key>
             <key type="filename">ui/dashlight1.png</key>
+            <key type="filename">ui/flash.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":96,
+ "tilecount":99,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -1747,6 +1747,27 @@
              "y":0
             },
          "type":"Z2"
+        }, 
+        {
+         "id":379,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/stonefalling.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"F0"
+        }, 
+        {
+         "id":380,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lighteningdown.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"F1"
+        }, 
+        {
+         "id":381,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/monstergenerator.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"c0"
         }],
  "tilewidth":16,
  "type":"tileset",

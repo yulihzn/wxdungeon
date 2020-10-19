@@ -836,6 +836,23 @@
             "physicalDamage": 2
         }
     },
+    "bullet040": {
+        "name":"手雷",
+        "resName": "bullet040",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 400,
+        "isRect": 0,
+        "isRotate": 1,
+        "lifeTime":3,
+        "isPhysical":1,
+        "isDecelerate":1,
+        "size": 1,
+        "isBoom":1,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
