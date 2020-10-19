@@ -293,7 +293,7 @@ export default class TalentSkills extends Talent {
             b.getChildByName('sprite').color = cc.Color.RED;
         }
         if(b){
-            b.getComponent(FrontHitArea).show(this.player,0,d,0.1);
+            b.getComponent(FrontHitArea).show(this.player,0,d,0.2);
         }
         this.scheduleOnce(()=>{
             this.talentSkill.IsExcuting = false;

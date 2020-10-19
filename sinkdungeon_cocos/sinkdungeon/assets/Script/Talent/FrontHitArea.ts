@@ -48,7 +48,7 @@ export default class FrontHitArea extends cc.Component {
         this.node.setPosition(this.getPlayerPosition(player));
         this.node.scale = 4;
         let direction = this.getPlayerHv(player,exangle);
-        let angle = direction.signAngle(cc.v2(1,0));
+        let angle = cc.v2(direction.x,direction.y).signAngle(cc.v2(1,0));
         let degree = cc.misc.radiansToDegrees(angle);
         this.node.angle = 360-degree;
 

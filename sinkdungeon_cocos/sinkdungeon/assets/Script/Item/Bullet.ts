@@ -18,6 +18,7 @@ import HitBuilding from "../Building/HitBuilding";
 import Shield from "../Shield";
 import Wall from "../Building/Wall";
 import Broom from "../Talent/Broom";
+import FrontHitArea from "../Talent/FrontHitArea";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -357,6 +358,10 @@ export default class Bullet extends cc.Component {
         }
         let broom = attackTarget.getComponent(Broom);
         if(broom){
+            isDestory = true;
+        }
+        let fronthitarea = attackTarget.getComponent(FrontHitArea);
+        if(fronthitarea){
             isDestory = true;
         }
         let monster = attackTarget.getComponent(Monster);

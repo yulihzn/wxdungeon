@@ -15,7 +15,9 @@
             "spriteFrame": [
               {
                 "frame": 0,
-                "value": null
+                "value": {
+                  "__uuid__": "78cf1154-cfd6-408b-8fab-10bd447b8f01"
+                }
               },
               {
                 "frame": 0.16666666666666666,
@@ -79,12 +81,7 @@
           }
         },
         "props": {
-          "opacity": [
-            {
-              "frame": 0,
-              "value": 255
-            }
-          ]
+          "opacity": []
         }
       }
     },
