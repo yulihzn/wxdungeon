@@ -22,8 +22,7 @@ export default class MiniMap extends cc.Component {
 	miniTile: cc.Prefab = null;
 	static ColorLevel = {
 		EMPTY: -1, HIDE: 0, NORMAL: 1, PLAYER: 2, CLEAR: 3, NORMAL_BOSS: 4, CLEAR_PUZZLE: 5, CLEAR_END: 6, CLEAR_BOSS: 7, NORMAL_LOOT: 8, CLEAR_LOOT: 9,
-		NORMAL_START: 10, NORMAL_END: 11, NORMAL_REST: 12, NORMAL_PREPARE: 13, NORMAL_TEST: 14, NORMAL_PUZZLE: 15, NORMAL_MERCHANT: 16, CLEAR_MERCHANT: 17,
-		X_ROOM: 18
+		NORMAL_START: 10, NORMAL_END: 11, NORMAL_REST: 12, NORMAL_PREPARE: 13, NORMAL_TEST: 14, NORMAL_PUZZLE: 15, NORMAL_MERCHANT: 16, CLEAR_MERCHANT: 17
 	}
 	width: number = 0;
 	height: number = 0;
@@ -93,8 +92,6 @@ export default class MiniMap extends cc.Component {
 						, MiniMap.ColorLevel.NORMAL_PREPARE, MiniMap.ColorLevel.NORMAL_PREPARE);
 					this.getMapColor(i, j, roomType, RoomType.TEST_ROOM, isClear
 						, MiniMap.ColorLevel.NORMAL_TEST, MiniMap.ColorLevel.NORMAL_TEST);
-					this.getMapColor(i, j, roomType, RoomType.X_ROOM, isClear
-						, MiniMap.ColorLevel.X_ROOM, MiniMap.ColorLevel.X_ROOM);
 					if (roomType == RoomType.START_ROOM) {
 						this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL_START);
 					}
@@ -169,9 +166,6 @@ export default class MiniMap extends cc.Component {
 				break;
 			case MiniMap.ColorLevel.CLEAR_PUZZLE:
 				color = new cc.Color(75, 0, 130);//靛青
-				break;
-			case MiniMap.ColorLevel.X_ROOM:
-				color = new cc.Color(64, 224, 208);//绿宝石
 				break;
 		}
 

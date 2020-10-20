@@ -17,8 +17,8 @@ import Decorate from "../Building/Decorate";
 import HitBuilding from "../Building/HitBuilding";
 import Shield from "../Shield";
 import Wall from "../Building/Wall";
-import Broom from "../Talent/Broom";
 import FrontHitArea from "../Talent/FrontHitArea";
+import CircleHitArea from "../Talent/CircleHitArea";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -356,7 +356,7 @@ export default class Bullet extends cc.Component {
         if(wall){
             isDestory = true;
         }
-        let broom = attackTarget.getComponent(Broom);
+        let broom = attackTarget.getComponent(CircleHitArea);
         if(broom){
             isDestory = true;
         }

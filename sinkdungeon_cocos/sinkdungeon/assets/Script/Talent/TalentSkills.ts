@@ -12,8 +12,10 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
 import StatusManager from "../Manager/StatusManager";
 import PlayerAvatar from "../PlayerAvatar";
-import Broom from "./Broom";
 import FrontHitArea from "./FrontHitArea";
+import Monster from "../Monster";
+import Boss from "../Boss/Boss";
+import CircleHitArea from "./CircleHitArea";
 
 /**
  * 技能管理器
@@ -57,6 +59,8 @@ export default class TalentSkills extends Talent {
     @property(cc.Prefab)
     broomPrefab: cc.Prefab = null;
     @property(cc.Prefab)
+    cookingPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
     swordLightPrefab: cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
@@ -98,26 +102,25 @@ export default class TalentSkills extends Talent {
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
             this.doSkill();
         }, cooldown, true);
-        cc.log('use skill');
     }
 
     private doSkill() {
         switch (this.activeTalentData.resName) {
-            case Talent.TALENT_000:break;
+            case Talent.TALENT_000: break;
             case Talent.TALENT_001:
                 AudioPlayer.play(AudioPlayer.MELEE_PARRY);
                 this.shoot(this.player.shooterEx, 0, 0, 'bullet040'); break;
             case Talent.TALENT_002: this.healing(); break;
-            case Talent.TALENT_003: break;
+            case Talent.TALENT_003: this.cooking();break;
             case Talent.TALENT_004: break;
             case Talent.TALENT_005: this.rageShoot(); break;
             case Talent.TALENT_006: this.flash(); break;
-            case Talent.TALENT_007: this.addSwordLight();break;
-            case Talent.TALENT_008: this.player.addStatus(StatusManager.TALENT_INVISIBLE,new FromData());break;
-            case Talent.TALENT_009: break;
+            case Talent.TALENT_007: this.addSwordLight(); break;
+            case Talent.TALENT_008: this.player.addStatus(StatusManager.TALENT_INVISIBLE, new FromData()); break;
+            case Talent.TALENT_009: this.steal();break;
             case Talent.TALENT_010: break;
             case Talent.TALENT_011: this.aimedShoot(); break;
-            case Talent.TALENT_012: this.addBroom();break;
+            case Talent.TALENT_012: this.addBroom(); break;
             case Talent.TALENT_013: break;
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
@@ -207,10 +210,38 @@ export default class TalentSkills extends Talent {
         this.player.rigidbody.linearVelocity = pos;
         this.scheduleOnce(() => {
             this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            this.player.playerAnim(PlayerAvatar.STATE_IDLE,this.player.currentDir);
+            this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir);
             this.IsExcuting = false;
         }, 0.5)
     }
+    private steal() {
+        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        this.sprite.node.width = 128;
+        this.sprite.node.height = 128;
+        this.sprite.node.opacity = 255;
+        this.sprite.node.scale = 1;
+        this.sprite.node.position = cc.v3(0, 128);
+        let node = this.getNearestEnmeyNode();
+        if(!node){
+            return;
+        }
+        let monster = node.getComponent(Monster);
+        let boss = node.getComponent(Boss);
+        if(monster){
+            monster.getLoot();
+        }
+        if(boss){
+            boss.getLoot();
+        }
+        cc.tween(this.sprite.node).call(() => {this.sprite.spriteFrame = Logic.spriteFrames['talenthand01'];})
+            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand02']; })
+            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand03']; })
+            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand04']; })
+            .delay(0.2).call(() => {
+                this.sprite.spriteFrame = null;
+            }).start();
+    }
+ 
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 0);
@@ -277,29 +308,36 @@ export default class TalentSkills extends Talent {
     addLighteningFall(isArea: boolean, damagePoint: number) {
         EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.getNearestEnemyPosition(), showArea: isArea, damage: damagePoint })
     }
-    private addBroom(){
+    private addBroom() {
         AudioPlayer.play(AudioPlayer.PICK_UP);
         let b = cc.instantiate(this.broomPrefab);
-        if(b){
-            b.getComponent(Broom).show(this.player);
+        if (b) {
+            b.getComponent(CircleHitArea).show(this.player,1,0.2,this.activeTalentData.resName,cc.v3(0,32));
         }
     }
-    private addSwordLight(){
+    private cooking() {
+        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        let b = cc.instantiate(this.cookingPrefab);
+        if (b) {
+            b.getComponent(CircleHitArea).show(this.player,1,0.2,this.activeTalentData.resName,cc.v3(0,128));
+        }
+    }
+    private addSwordLight() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let b = cc.instantiate(this.swordLightPrefab);
         let d = 1;
-        if(this.player.weaponRight.meleeWeapon.IsSword){
+        if (this.player.weaponRight.meleeWeapon.IsSword) {
             d = 2;
             b.getChildByName('sprite').color = cc.Color.RED;
         }
-        if(b){
-            b.getComponent(FrontHitArea).show(this.player,0,d,0.2);
+        if (b) {
+            b.getComponent(FrontHitArea).show(this.player, 0, d, 0.2);
         }
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false;
-        },1)
+        }, 1)
     }
-    getNearestEnemyPosition(): cc.Vec3 {
+    getNearestEnmeyNode():cc.Node{
         let shortdis = 99999;
         let targetNode: cc.Node;
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
@@ -320,6 +358,13 @@ export default class TalentSkills extends Talent {
                 }
             }
         }
+        if (targetNode) {
+            return targetNode;
+        }
+        return null;
+    }
+    getNearestEnemyPosition(): cc.Vec3 {
+        let targetNode: cc.Node = this.getNearestEnmeyNode();
         if (targetNode) {
             return targetNode.position;
         }

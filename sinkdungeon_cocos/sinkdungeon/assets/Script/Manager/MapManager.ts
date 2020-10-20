@@ -75,9 +75,6 @@ export default class MapManager {
         if (room && room.roomType) {
             this.rectDungeon.currentPos = cc.v3(room.x, room.y);
             this.rectDungeon.changeRoomsIsFound(room.x, room.y);
-            if(room.isFound&&room.roomType.isEqual(RoomType.X_ROOM)){
-                room.seed = RectRoom.getRandomNum(0,100000000);
-            }
         }
         return room;
     }

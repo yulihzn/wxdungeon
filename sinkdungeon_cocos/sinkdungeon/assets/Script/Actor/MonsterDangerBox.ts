@@ -20,7 +20,7 @@ const { ccclass, property } = cc._decorator;
 export default class MonsterDangerBox extends cc.Component {
 
     static readonly ATTACK_NORMAL = 0;
-    static readonly ATTACK_STAB = 1;
+    static readonly ATTACK_STAB = 1;//位移突刺
     static readonly ATTACK_AREA = 2;
     attackType = 0;
     collider: cc.BoxCollider

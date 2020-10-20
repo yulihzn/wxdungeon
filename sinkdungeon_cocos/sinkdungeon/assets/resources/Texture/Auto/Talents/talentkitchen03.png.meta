@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "6a02e49a-3581-4858-8312-546e9a92fa8a",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 32,
+  "height": 32,
+  "platformSettings": {},
+  "subMetas": {
+    "talentkitchen03": {
+      "ver": "1.0.4",
+      "uuid": "8e0c044b-76c7-4b2c-9cbf-eb29a36d5099",
+      "rawTextureUuid": "6a02e49a-3581-4858-8312-546e9a92fa8a",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 32,
+      "height": 32,
+      "rawWidth": 32,
+      "rawHeight": 32,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

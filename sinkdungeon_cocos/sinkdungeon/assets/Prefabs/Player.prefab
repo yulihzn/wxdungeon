@@ -6587,6 +6587,9 @@
     "broomPrefab": {
       "__uuid__": "e5343709-f9eb-44be-8d9b-47c00dc0e587"
     },
+    "cookingPrefab": {
+      "__uuid__": "9f92fa60-ee85-4987-a666-1902539fac4d"
+    },
     "swordLightPrefab": {
       "__uuid__": "93c5c270-81df-4383-ab6f-91416d09e018"
     },

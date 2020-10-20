@@ -324,7 +324,7 @@
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "remoteDamage": 1,
+            "remoteDamage": 0,
             "remoteSpeed": 50,
             "lifeDrain": 0,
             "damageBack": 0,

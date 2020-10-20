@@ -1767,7 +1767,7 @@
          "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/monstergenerator.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"c0"
+         "type":"c1"
         }],
  "tilewidth":16,
  "type":"tileset",

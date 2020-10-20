@@ -220,8 +220,7 @@ export default class Dungeon extends cc.Component {
         this.player.node.parent = this.node;
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
-        && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())
-        || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.X_ROOM)) {
+        && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
             this.monsterManager.addRandomMonsters(this);
         }
         this.setDoors(true,true);
@@ -236,7 +235,7 @@ export default class Dungeon extends cc.Component {
     }
 
     addItem(pos: cc.Vec3, resName: string,count?:number, shopTable?: ShopTable) {
-        if (!this.item) {
+        if (!this.item||!Logic.items[resName]) {
             return;
         }
         let item = cc.instantiate(this.item);
