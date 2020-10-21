@@ -8,17 +8,15 @@ import Boss from "../Boss/Boss";
 import BulletData from "../Data/BulletData";
 import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
-import Boom from "./Boom";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import { ColliderTag } from "../Actor/ColliderTag";
-import IndexZ from "../Utils/IndexZ";
 import Decorate from "../Building/Decorate";
 import HitBuilding from "../Building/HitBuilding";
 import Shield from "../Shield";
 import Wall from "../Building/Wall";
-import FrontHitArea from "../Talent/FrontHitArea";
-import CircleHitArea from "../Talent/CircleHitArea";
+import AreaOfEffect from "../Actor/AreaOfEffect";
+import AreaOfEffectData from "../Data/AreaOfEffectData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -66,6 +64,8 @@ export default class Bullet extends cc.Component {
     isHit = false;
     isReserved = false;//是否已经反弹，防止多次碰撞弹射
     skipTopwall = false;
+    aoePrefab:cc.Prefab;
+    aoeData = new AreaOfEffectData();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -318,6 +318,9 @@ export default class Bullet extends cc.Component {
         if(this.skipTopwall&&otherCollider.tag == ColliderTag.WALL_TOP_UP){
             isDestory = false;
         }
+        if(this.data.isInvincible>0){
+            isDestory = false;
+        }
         if (isDestory) {
             this.bulletHit();
 
@@ -356,12 +359,9 @@ export default class Bullet extends cc.Component {
         if(wall){
             isDestory = true;
         }
-        let broom = attackTarget.getComponent(CircleHitArea);
-        if(broom){
-            isDestory = true;
-        }
-        let fronthitarea = attackTarget.getComponent(FrontHitArea);
-        if(fronthitarea){
+        
+        let aoe = attackTarget.getComponent(AreaOfEffect);
+        if(aoe&&aoe.data.canBreakBullet){
             isDestory = true;
         }
         let monster = attackTarget.getComponent(Monster);
@@ -411,6 +411,9 @@ export default class Bullet extends cc.Component {
             damageSuccess = true;
             hitBuilding.takeDamage(damage);
         }
+        if(this.data.isInvincible>0){
+            isDestory = false;
+        }
         if (isDestory) {
             this.bulletHit();
         }
@@ -437,13 +440,19 @@ export default class Bullet extends cc.Component {
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }
         if (this.data.isBoom > 0) {
-            let boom = cc.instantiate(this.boom);
-            boom.getComponent(Boom).isFromPlayer = this.isFromPlayer;
-            boom.parent = this.node.parent;
-            boom.setPosition(this.node.position);
-            boom.zIndex = IndexZ.OVERHEAD;
-            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
-
+            let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
+            if(boom){
+                boom.show(this.node.parent,this.node.position,this.hv,0,new AreaOfEffectData().init(1,0.2,0,0,true,this.isFromPlayer
+                    ,true,true,false,new DamageData(1),FromData.getClone('爆炸','boom000anim004'),[]));
+                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
+            }
+            
+        }
+        if(this.aoePrefab){
+            let aoe = cc.instantiate(this.aoePrefab).getComponent(AreaOfEffect);
+            if(aoe){
+                aoe.show(this.node.parent,this.node.position,this.hv,0,this.aoeData);
+            }
         }
     }
     hasNearEnemy() {

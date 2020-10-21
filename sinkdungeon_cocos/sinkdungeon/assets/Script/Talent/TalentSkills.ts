@@ -4,31 +4,28 @@ import FromData from "../Data/FromData";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Shooter from "../Shooter";
-import FireBall from "./FireBall";
 import FireGhost from "./FireGhost";
-import IceThron from "./IceThron";
 import Talent from "./Talent";
 import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
 import StatusManager from "../Manager/StatusManager";
 import PlayerAvatar from "../PlayerAvatar";
-import FrontHitArea from "./FrontHitArea";
 import Monster from "../Monster";
 import Boss from "../Boss/Boss";
-import CircleHitArea from "./CircleHitArea";
+import AreaOfEffectData from "../Data/AreaOfEffectData";
 
 /**
  * 技能管理器
  * 上班族
  * 投掷手雷：雇佣兵扔出一颗手雷d
  * 治疗针:回复2点生命d
- * 厨神附体：厨师掏出勺子造成一点真实伤害被干掉的怪物会变成食物，不同怪物变成的食物不一样，食物可以拾取
+ * 厨神附体：厨师掏出勺子造成一点真实伤害被干掉的怪物会变成食物，不同怪物变成的食物不一样，食物可以拾取d
  * 研究员
  * 疯狂射击：海盗10s内子弹数目变多 可以提高子弹数目d
  * 闪瞎狗眼：记者用随时携带的照相机亮瞎对面，造成一定时间眩晕同时提高100的移动速度5s 可以提高眩晕时间和速度持续时间d
  * 疯狗剑法：剑术大师能快速出招使用剑花造成连续3次伤害，拿剑的时候效果不一样 可以提高次数伤害和附带冰火雷伤害d
  * 潜伏闷棍：杀手进入隐身状态10s，破隐一击 可以提高隐身持续时间和破隐一击伤害d
- * 妙手摘星：伸出手偷取对方一件物品或者金币，造成1点伤害一个怪物只能掉落一次，进入房间只有第一只会掉落装备或者道具，可以提高伤害，金币数量和装备品质
+ * 妙手摘星：伸出手偷取对方一件物品或者金币，可以提高伤害，金币数量和装备品质d
  * 商人
  * 精准点射：警长用枪10s内远程暴击100%伤害+2 可以提高持续时间和暴击伤害附带冰火雷伤害d
  * 扫帚轮舞：清洁工挥舞一圈扫帚造成伤害并清空范围内所有远程攻击 可以反弹子弹和附带冰火雷伤害d
@@ -106,22 +103,22 @@ export default class TalentSkills extends Talent {
 
     private doSkill() {
         switch (this.activeTalentData.resName) {
-            case Talent.TALENT_000: break;
+            case Talent.TALENT_000:this.showIceThron();break;
             case Talent.TALENT_001:
                 AudioPlayer.play(AudioPlayer.MELEE_PARRY);
                 this.shoot(this.player.shooterEx, 0, 0, 'bullet040'); break;
             case Talent.TALENT_002: this.healing(); break;
-            case Talent.TALENT_003: this.cooking();break;
+            case Talent.TALENT_003: this.cooking(); break;
             case Talent.TALENT_004: break;
             case Talent.TALENT_005: this.rageShoot(); break;
             case Talent.TALENT_006: this.flash(); break;
             case Talent.TALENT_007: this.addSwordLight(); break;
             case Talent.TALENT_008: this.player.addStatus(StatusManager.TALENT_INVISIBLE, new FromData()); break;
-            case Talent.TALENT_009: this.steal();break;
+            case Talent.TALENT_009: this.steal(); break;
             case Talent.TALENT_010: break;
             case Talent.TALENT_011: this.aimedShoot(); break;
             case Talent.TALENT_012: this.addBroom(); break;
-            case Talent.TALENT_013: break;
+            case Talent.TALENT_013: this.showFireBall(); break;
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
                 this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035');
@@ -222,18 +219,18 @@ export default class TalentSkills extends Talent {
         this.sprite.node.scale = 1;
         this.sprite.node.position = cc.v3(0, 128);
         let node = this.getNearestEnmeyNode();
-        if(!node){
+        if (!node) {
             return;
         }
         let monster = node.getComponent(Monster);
         let boss = node.getComponent(Boss);
-        if(monster){
+        if (monster) {
             monster.getLoot();
         }
-        if(boss){
+        if (boss) {
             boss.getLoot();
         }
-        cc.tween(this.sprite.node).call(() => {this.sprite.spriteFrame = Logic.spriteFrames['talenthand01'];})
+        cc.tween(this.sprite.node).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand01']; })
             .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand02']; })
             .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand03']; })
             .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand04']; })
@@ -241,55 +238,28 @@ export default class TalentSkills extends Talent {
                 this.sprite.spriteFrame = null;
             }).start();
     }
- 
+
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
-        cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 0);
-        if (this.hashTalent(Talent.MAGIC_02)) {
-            cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 30);
-            cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, -30);
-        }
+        let d = new DamageData();
+        d.magicDamage = 1;
+        this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
+            .init(0, 0.1, 0, 4, true, true, true, true, true, d, new FromData(), [StatusManager.BURNING]));
     }
 
     showIceThron() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
         const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
-        const angles2 = [15, 60, 105, 150, 195, 240, 285, 330];
-        let distance1 = [100];
-        let distance2 = [100, 150];
-        let distance3 = [100, 150, 200];
-        let scale1 = [3];
-        let scale2 = [3, 4];
-        let scale3 = [3, 4, 5];
-        let scale4 = [3, 5];
+        const pos = [cc.v3(100,0),cc.v3(60,60),cc.v3(0,100),cc.v3(-60,60),cc.v3(-100,0),cc.v3(-60,-60),cc.v3(0,-100),cc.v3(60,-60)];
         let a1 = [angles1];
-        let a2 = [angles1, angles2];
-        let a3 = [angles1, angles2, angles1];
         let a = a1;
-        let scale = scale1;
-        let distance = distance1;
-        if (this.hashTalent(Talent.MAGIC_02)) {
-            a = a2;
-            scale = scale2;
-            distance = distance2;
-        }
-        if (this.hashTalent(Talent.MAGIC_12)) {
-            a = a2;
-            scale = scale4;
-            distance = distance2;
-            if (this.hashTalent(Talent.MAGIC_02)) {
-                a = a3;
-                scale = scale3;
-                distance = distance3;
-            }
-        }
+        let d = new DamageData();
+        d.magicDamage = 1;
         let index = 0;
-        this.schedule(() => {
-            for (let i = 0; i < a[index].length; i++) {
-                cc.instantiate(this.icethron).getComponent(IceThron).show(this.player, a[index][i], distance[index], scale[index]);
-            }
-            index++;
-        }, 0.5, a.length - 1);
+        for (let i = 0; i < a[index].length; i++) {
+            this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
+        .init(0, 2, 0, 3, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(pos[i],0),angles1[i]);
+        }
     }
     private shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string) {
         shooter.data.bulletType = bulletType;
@@ -309,35 +279,43 @@ export default class TalentSkills extends Talent {
         EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.getNearestEnemyPosition(), showArea: isArea, damage: damagePoint })
     }
     private addBroom() {
-        AudioPlayer.play(AudioPlayer.PICK_UP);
-        let b = cc.instantiate(this.broomPrefab);
-        if (b) {
-            b.getComponent(CircleHitArea).show(this.player,1,0.2,this.activeTalentData.resName,cc.v3(0,32));
-        }
+        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        let d = new DamageData(1);
+        this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
+            .init(0, 0.5, 0.2, 1.5, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
     }
     private cooking() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
-        let b = cc.instantiate(this.cookingPrefab);
-        if (b) {
-            b.getComponent(CircleHitArea).show(this.player,1,0.2,this.activeTalentData.resName,cc.v3(0,128));
-        }
+        let d = new DamageData(1);
+        this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
+            .init(0, 2, 0, 1, true, true, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
+                let monster = actor.node.getComponent(Monster);
+                if (monster) {
+                    monster.dungeon.addItem(monster.node.position.clone(), `food${monster.data.resName.replace('monster', '')}`);
+                }
+                let boss = actor.node.getComponent(Boss);
+                if (boss) {
+                    boss.dungeon.addItem(boss.node.position.clone(), `foodboss${boss.data.resName.replace('iconboss', '')}`);
+                }
+            });
     }
     private addSwordLight() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
-        let b = cc.instantiate(this.swordLightPrefab);
-        let d = 1;
+        let d = new DamageData();
+        d.physicalDamage = 1;
         if (this.player.weaponRight.meleeWeapon.IsSword) {
-            d = 2;
-            b.getChildByName('sprite').color = cc.Color.RED;
+            d.physicalDamage = 2;
         }
-        if (b) {
-            b.getComponent(FrontHitArea).show(this.player, 0, d, 0.2);
+        let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()
+            .init(0, 0.2, 0, 4, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]));
+        if (this.player.weaponRight.meleeWeapon.IsSword) {
+            swordlight.node.getChildByName('sprite').color = cc.Color.RED;
         }
         this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false;
         }, 1)
     }
-    getNearestEnmeyNode():cc.Node{
+    getNearestEnmeyNode(): cc.Node {
         let shortdis = 99999;
         let targetNode: cc.Node;
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {

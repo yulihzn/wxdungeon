@@ -9,6 +9,7 @@ import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
+import AreaOfEffectData from "../Data/AreaOfEffectData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +36,8 @@ export default class IceDemon extends Boss {
     thronSkill = new Skill();
     defenceSkill = new Skill();
     meleeSkill = new Skill();
+    @property(cc.Prefab)
+    icethron:cc.Prefab = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -101,7 +104,7 @@ export default class IceDemon extends Boss {
             this.dash();
         }
         if (!this.meleeSkill.IsExcuting && !this.defenceSkill.IsExcuting && !this.dashSkill.IsExcuting) {
-            this.thron(isHalf);
+            this.thronGround(isHalf);
         }
         if (!pos.equals(cc.Vec3.ZERO)
             && !this.meleeSkill.IsExcuting
@@ -127,7 +130,7 @@ export default class IceDemon extends Boss {
         this.isFaceRight = h > 0;
         return pos;
     }
-    thron(isHalf:boolean) {
+    thronGround(isHalf:boolean) {
         this.thronSkill.next(() => {
             this.thronSkill.IsExcuting = true;
             if (!this.anim) {
@@ -169,8 +172,50 @@ export default class IceDemon extends Boss {
         }, 15, true);
 
     }
+    thronSelf(isNotDefend:boolean,isHalf:boolean) {
+        this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DASH); }, 1);
+        const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
+        const angles2 = [15, 60, 105, 150, 195, 240, 285, 330];
+        let distance1 = [100];
+        let distance2 = [100, 150];
+        let distance3 = [100, 150, 200];
+        let scale1 = [3];
+        let scale2 = [3, 4];
+        let scale3 = [3, 4, 5];
+        let scale4 = [3, 5];
+        let a1 = [angles1];
+        let a2 = [angles1, angles2];
+        let a3 = [angles1, angles2, angles1];
+        let a = a1;
+        let scale = scale1;
+        let distance = distance1;
+        if (isHalf) {
+            a = a2;
+            scale = scale2;
+            distance = distance2;
+        }
+        if (isNotDefend) {
+            a = a2;
+            scale = scale4;
+            distance = distance2;
+            if (isHalf) {
+                a = a3;
+                scale = scale3;
+                distance = distance3;
+            }
+        }
+        let d = new DamageData();
+        d.magicDamage = 1;
+        let index = 0;
+        this.schedule(() => {
+            for (let i = 0; i < a[index].length; i++) {
+                this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
+            .init(0, 0.1, 0, scale[index], true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(distance[index],0),a[index][i]);
+            }
+            index++;
+        }, 0.5, a.length - 1);
+    }
     attack() {
-
         this.meleeSkill.next(() => {
             this.meleeSkill.IsExcuting = true;
             cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});

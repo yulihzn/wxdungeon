@@ -3,7 +3,7 @@
   "_name": "Cooking",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 3.0166666666666666,
+  "_duration": 2.683333333333333,
   "sample": 60,
   "speed": 2,
   "wrapMode": 1,
@@ -46,42 +46,56 @@
               {
                 "frame": 1.6666666666666667,
                 "value": {
-                  "__uuid__": "3477cdde-ae53-4456-a7b0-1b57148b05a2"
+                  "__uuid__": "8c745fa0-e9ec-4efb-8c87-e632c10a12d8"
                 }
               },
               {
                 "frame": 2,
                 "value": {
-                  "__uuid__": "8c745fa0-e9ec-4efb-8c87-e632c10a12d8"
+                  "__uuid__": "8e0c044b-76c7-4b2c-9cbf-eb29a36d5099"
                 }
               },
               {
                 "frame": 2.3333333333333335,
                 "value": {
-                  "__uuid__": "8e0c044b-76c7-4b2c-9cbf-eb29a36d5099"
-                }
-              },
-              {
-                "frame": 2.6666666666666665,
-                "value": {
                   "__uuid__": "77926e06-12fd-452b-987c-b3557b5e9b34"
                 }
               },
               {
-                "frame": 3,
+                "frame": 2.6666666666666665,
                 "value": {
                   "__uuid__": "3477cdde-ae53-4456-a7b0-1b57148b05a2"
                 }
               }
             ]
           }
+        },
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 255
+            },
+            {
+              "frame": 2.316666666666667,
+              "value": 255
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": 0
+            }
+          ]
         }
       }
     }
   },
   "events": [
     {
-      "frame": 3,
+      "frame": 2.6666666666666665,
       "func": "AnimFinish",
       "params": []
     }

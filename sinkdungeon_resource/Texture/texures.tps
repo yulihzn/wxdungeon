@@ -1106,16 +1106,6 @@
             <key type="filename">talents/magicice.png</key>
             <key type="filename">talents/magicice1.png</key>
             <key type="filename">talents/magicice2.png</key>
-            <key type="filename">talents/magicicethron1.png</key>
-            <key type="filename">talents/magicicethron10.png</key>
-            <key type="filename">talents/magicicethron2.png</key>
-            <key type="filename">talents/magicicethron3.png</key>
-            <key type="filename">talents/magicicethron4.png</key>
-            <key type="filename">talents/magicicethron5.png</key>
-            <key type="filename">talents/magicicethron6.png</key>
-            <key type="filename">talents/magicicethron7.png</key>
-            <key type="filename">talents/magicicethron8.png</key>
-            <key type="filename">talents/magicicethron9.png</key>
             <key type="filename">talents/magiclightening.png</key>
             <key type="filename">talents/magiclighteningarea1.png</key>
             <key type="filename">talents/magiclighteningarea2.png</key>
@@ -1158,8 +1148,6 @@
             <key type="filename">talents/talent018.png</key>
             <key type="filename">talents/talent019.png</key>
             <key type="filename">talents/talent03.png</key>
-            <key type="filename">talents/talentbroom1.png</key>
-            <key type="filename">talents/talentbroom2.png</key>
             <key type="filename">talents/talentempty.png</key>
             <key type="filename">talents/talentmagic07.png</key>
             <key type="filename">talents/talentmagic08.png</key>
@@ -2054,29 +2042,6 @@
                 <rect>12,12,24,24</rect>
                 <key>scale9Paddings</key>
                 <rect>12,12,24,24</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">talents/magicfireball1.png</key>
-            <key type="filename">talents/magicfireball2.png</key>
-            <key type="filename">talents/magicfireball3.png</key>
-            <key type="filename">talents/magicfireball4.png</key>
-            <key type="filename">talents/magicfireball5.png</key>
-            <key type="filename">talents/magicfireball6.png</key>
-            <key type="filename">talents/magicfireball7.png</key>
-            <key type="filename">talents/magicfireball8.png</key>
-            <key type="filename">talents/magicfireball9.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>12,8,24,16</rect>
-                <key>scale9Paddings</key>
-                <rect>12,8,24,16</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

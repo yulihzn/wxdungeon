@@ -12,6 +12,8 @@ import FromData from "./Data/FromData";
 import DamageData from "./Data/DamageData";
 import IndexZ from "./Utils/IndexZ";
 import Equipment from "./Equipment/Equipment";
+import AreaOfEffectData from "./Data/AreaOfEffectData";
+import AreaOfEffect from "./Actor/AreaOfEffect";
 
 
 // Learn TypeScript:
@@ -53,7 +55,7 @@ export default class Shooter extends cc.Component {
     remoteDamagePlayer = new DamageData();
     from: FromData = new FromData();
     skipTopwall = false;
-    anim:cc.Animation;
+    anim: cc.Animation;
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -65,13 +67,13 @@ export default class Shooter extends cc.Component {
         this.anim = this.getComponent(cc.Animation);
 
     }
-    playWalk(isPlay:boolean){
-        if(!this.anim){
+    playWalk(isPlay: boolean) {
+        if (!this.anim) {
             return;
         }
-        if(isPlay){
+        if (isPlay) {
             this.anim.play('ShooterWalk')
-        }else{
+        } else {
             this.anim.pause();
             this.sprite.y = 0;
         }
@@ -98,7 +100,7 @@ export default class Shooter extends cc.Component {
         this.sprite.color = color;
     }
     private getSpriteFrameByName(resName: string, prefix?: string): cc.SpriteFrame {
-        let spriteFrame = Logic.spriteFrames[prefix+resName];
+        let spriteFrame = Logic.spriteFrames[prefix + resName];
         if (!spriteFrame) {
             spriteFrame = Logic.spriteFrames[resName];
         }
@@ -113,16 +115,29 @@ export default class Shooter extends cc.Component {
             this.hv = hv.normalizeSelf();
         }
     }
-    public fireBullet(angleOffset?: number, defaultPos?: cc.Vec3,bulletArcExNum?:number,bulletLineExNum?:number) {
-        if (this.data.isArcAim == 1 && this.graphics) {
-            this.aimTargetArc(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
-        } else if (this.data.isLineAim == 1 && this.graphics) {
-            this.aimTargetLine(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
+    public fireAoe(prefab: cc.Prefab, aoeData: AreaOfEffectData, defaultPos?: cc.Vec3, angleOffset?: number,killCallBack?:Function):AreaOfEffect {
+        if (!this.dungeon) {
+            return null;
+        }
+        if (!angleOffset) {
+            angleOffset = 0;
+        }
+        let aoe = cc.instantiate(prefab).getComponent(AreaOfEffect);
+        if (aoe) {
+            let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v3(30, 0));
+            pos = this.dungeon.node.convertToNodeSpaceAR(pos);
+            aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData,killCallBack);
+        }
+        return aoe;
+    }
+    public fireBullet(angleOffset?: number, defaultPos?: cc.Vec3, bulletArcExNum?: number, bulletLineExNum?: number, prefab?: cc.Prefab, aoeData?: AreaOfEffectData) {
+        if (this.data.isLineAim == 1 && this.graphics) {
+            this.aimTargetLine(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData);
         } else {
-            this.fireBulletDo(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
+            this.fireBulletDo(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData);
         }
     }
-    private fireBulletDo(angleOffset: number, defaultPos: cc.Vec3,bulletArcExNum:number,bulletLineExNum:number) {
+    private fireBulletDo(angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData) {
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec3.ZERO;
@@ -138,21 +153,16 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (!this.isAI &&!this.isEx && this.player.inventoryManager.remote.equipmetType != Equipment.REMOTE) {
+        if (!this.isAI && !this.isEx && this.player.inventoryManager.remote.equipmetType != Equipment.REMOTE) {
             return;
         }
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
-        if (this.data.bulletNets > 0) {
-            let bulletType = this.data.bulletType;
-            this.fireNetsBullet(3, bulletType);
-        } else {
-            this.fire(this.data.bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos);
-            this.fireArcBullet(this.data.bulletType, defaultPos,bulletArcExNum);
-            this.fireLinecBullet(this.data.bulletType, angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
-        }
+        this.fire(this.data.bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos, prefab, aoeData);
+        this.fireArcBullet(this.data.bulletType, defaultPos, bulletArcExNum, prefab, aoeData);
+        this.fireLinecBullet(this.data.bulletType, angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData);
     }
-    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3,bulletArcExNum:number): void {
-        let exNum = bulletArcExNum?this.data.bulletArcExNum+bulletArcExNum:this.data.bulletArcExNum;
+    private fireArcBullet(bulletType: string, defaultPos: cc.Vec3, bulletArcExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData): void {
+        let exNum = bulletArcExNum ? this.data.bulletArcExNum + bulletArcExNum : this.data.bulletArcExNum;
         if (exNum <= 0) {
             return;
         }
@@ -165,41 +175,41 @@ export default class Shooter extends cc.Component {
                 circleAngles = [0, 45, 90, 135, 180, 225, 270, 315, 335];
             }
             for (let i = 0; i < circleAngles.length; i++) {
-                this.fire(bulletType, this.bullet, this.bulletPool, circleAngles[i], this.hv.clone(), defaultPos);
+                this.fire(bulletType, this.bullet, this.bulletPool, circleAngles[i], this.hv.clone(), defaultPos, prefab, aoeData);
             }
         } else {
             for (let i = 0; i < exNum; i++) {
                 if (i < angles.length) {
-                    this.fire(bulletType, this.bullet, this.bulletPool, angles[i], this.hv.clone(), defaultPos);
+                    this.fire(bulletType, this.bullet, this.bulletPool, angles[i], this.hv.clone(), defaultPos, prefab, aoeData);
                 }
             }
         }
 
     }
-    private fireLinecBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3,bulletArcExNum:number,bulletLineExNum:number): void {
-        let exNum = bulletLineExNum?this.data.bulletLineExNum+bulletLineExNum:this.data.bulletLineExNum;
+    private fireLinecBullet(bulletType: string, angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData): void {
+        let exNum = bulletLineExNum ? this.data.bulletLineExNum + bulletLineExNum : this.data.bulletLineExNum;
         if (exNum == 0) {
             return;
         }
         this.schedule(() => {
-            this.fire(bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos);
-            this.fireArcBullet(bulletType, defaultPos,bulletArcExNum);
+            this.fire(bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos, prefab, aoeData);
+            this.fireArcBullet(bulletType, defaultPos, bulletArcExNum, prefab, aoeData);
         }, this.data.bulletLineInterval > 0 ? this.data.bulletLineInterval : 0.2, exNum, 0);
 
     }
     //暂时不用，待完善
-    private fireNetsBullet(dir: number, bulletType: string) {
-        switch (dir) {
-            case 0: this.setHv(cc.v3(0, 1)); break;
-            case 1: this.setHv(cc.v3(0, -1)); break;
-            case 2: this.setHv(cc.v3(-1, 0)); break;
-            case 3: this.setHv(cc.v3(1, 0)); break;
-        }
-        let poses = [0, 128, -128, 256, -256];
-        for (let i = 0; i < poses.length; i++) {
-            this.fire(bulletType, this.bullet, this.bulletPool, 0, this.hv.clone(), cc.v3(64, poses[i]));
-        }
-    }
+    // private fireNetsBullet(dir: number, bulletType: string) {
+    //     switch (dir) {
+    //         case 0: this.setHv(cc.v3(0, 1)); break;
+    //         case 1: this.setHv(cc.v3(0, -1)); break;
+    //         case 2: this.setHv(cc.v3(-1, 0)); break;
+    //         case 3: this.setHv(cc.v3(1, 0)); break;
+    //     }
+    //     let poses = [0, 128, -128, 256, -256];
+    //     for (let i = 0; i < poses.length; i++) {
+    //         this.fire(bulletType, this.bullet, this.bulletPool, 0, this.hv.clone(), cc.v3(64, poses[i]));
+    //     }
+    // }
 
     /**
      * 发射子弹
@@ -209,7 +219,7 @@ export default class Shooter extends cc.Component {
      * @param hv 方向向量
      * @param defaultPos 初始位置默认cc.v3(30, 0)
      */
-    private fire(bulletType: string, prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number, hv: cc.Vec3, defaultPos?: cc.Vec3) {
+    private fire(bulletType: string, prefab: cc.Prefab, pool: cc.NodePool, angleOffset: number, hv: cc.Vec3, defaultPos: cc.Vec3, aoePrefab: cc.Prefab, aoeData: AreaOfEffectData) {
         let bulletPrefab: cc.Node = null;
         if (pool.size() > 0) { // 通过 size 接口判断对象池中是否有空闲的对象
             bulletPrefab = pool.get();
@@ -248,6 +258,8 @@ export default class Shooter extends cc.Component {
         bullet.changeBullet(bd);
         this.bulletName = bullet.name + bd.resName;
         bullet.enabled = true;
+        bullet.aoeData.valueCopy(aoeData);
+        bullet.aoePrefab = aoePrefab;
         bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
     }
     private destroyBullet(bulletNode: cc.Node) {
@@ -316,7 +328,7 @@ export default class Shooter extends cc.Component {
         return !isInvalid;
     }
     //线性瞄准
-    private aimTargetLine(angleOffset?: number, defaultPos?: cc.Vec3,bulletArcExNum?:number,bulletLineExNum?:number) {
+    private aimTargetLine(angleOffset: number, defaultPos: cc.Vec3, bulletArcExNum: number, bulletLineExNum: number, prefab: cc.Prefab, aoeData: AreaOfEffectData) {
         if (this.isAiming) {
             return;
         }
@@ -329,7 +341,7 @@ export default class Shooter extends cc.Component {
         let isOver = false;
         let fun = () => {
             if (width < 1 && isOver) {
-                this.fireBulletDo(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
+                this.fireBulletDo(angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData);
                 this.unschedule(fun);
                 this.graphics.clear();
                 this.isAiming = false;
@@ -367,23 +379,6 @@ export default class Shooter extends cc.Component {
         this.graphics.lineTo(endPos.x, endPos.y);
         this.graphics.close();
         this.graphics.fill();
-    }
-    //圆弧瞄准
-    private aimTargetArc(angleOffset?: number, defaultPos?: cc.Vec3,bulletArcExNum?:number,bulletLineExNum?:number) {
-        if (this.isAiming) {
-            return;
-        }
-        this.isAiming = true;
-        let num = 45;
-        let fun = () => {
-            this.drawArc(--num);
-            if (num < 0) {
-                this.fireBulletDo(angleOffset, defaultPos,bulletArcExNum,bulletLineExNum);
-                this.unschedule(fun);
-                this.isAiming = false;
-            }
-        }
-        this.schedule(fun, 0.025, 45);
     }
 
     update(dt) {

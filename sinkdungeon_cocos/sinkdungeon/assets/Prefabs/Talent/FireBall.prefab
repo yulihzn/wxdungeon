@@ -212,16 +212,6 @@
     "_id": ""
   },
   {
-    "__type__": "d28d1W0XEREC78fFIm7QZgR",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_id": ""
-  },
-  {
     "__type__": "cc.BoxCollider",
     "_name": "",
     "_objFlags": 0,
@@ -240,6 +230,16 @@
       "width": 0,
       "height": 0
     },
+    "_id": ""
+  },
+  {
+    "__type__": "6a73blWLNVEw7zhXpbo521b",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {

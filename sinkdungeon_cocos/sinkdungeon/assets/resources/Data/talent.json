@@ -105,12 +105,12 @@
         "desc": "挥舞一圈扫帚造成伤害并清空范围内所有远程攻击"
     },
     "talent013": {
-        "nameCn": "？？？",
+        "nameCn": "炎爆术",
         "nameEn": "",
         "resName": "talent013",
         "passive": 0,
         "cooldown":15,
-        "desc": "？？？"
+        "desc": "热到崩溃，喷出一个大火球"
     },
     "talent014": {
         "nameCn": "奥术飞弹",

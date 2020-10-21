@@ -36,6 +36,9 @@ export default abstract class Boss extends Actor {
     abstract bossAction(): void;
     /**添加状态 */
     addStatus(statusType: string,from:FromData) {
+        if (!this.node||this.isDied) {
+            return;
+        }
         if (this.statusManager) {
             this.statusManager.addStatus(statusType,from);
         }

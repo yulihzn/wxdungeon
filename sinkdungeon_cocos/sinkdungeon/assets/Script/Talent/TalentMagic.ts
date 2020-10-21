@@ -9,7 +9,6 @@ import MagicIce from "./MagicIce";
 import Actor from "../Base/Actor";
 import FireGhost from "./FireGhost";
 import Logic from "../Logic";
-import FireBall from "./FireBall";
 import IceThron from "./IceThron";
 import AudioPlayer from "../Utils/AudioPlayer";
 
@@ -22,8 +21,6 @@ export default class TalentMagic extends Talent {
     magiccircle: MagicCircle = null;
     @property(MagicIce)
     magicice: MagicIce = null;
-    @property(cc.Prefab)
-    fireball: cc.Prefab = null;
     @property(cc.Prefab)
     icethron: cc.Prefab = null;
     @property(cc.Prefab)
@@ -94,9 +91,7 @@ export default class TalentMagic extends Talent {
     //anim
     MagicFinish() {
         if (this.hashTalent(Talent.MAGIC_09)) {
-            this.showFireBall();
         } else if (this.hashTalent(Talent.MAGIC_08)) {
-            this.showFireBall();
         } else if (this.hashTalent(Talent.MAGIC_12)) {
             this.showIceThron();
         } else if (this.hashTalent(Talent.MAGIC_11)) {
@@ -114,14 +109,7 @@ export default class TalentMagic extends Talent {
             this.shoot(this.player.shooterEx,80, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
         }
     }
-    showFireBall() {
-        AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
-        cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 0);
-        if (this.hashTalent(Talent.MAGIC_02)) {
-            cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, 30);
-            cc.instantiate(this.fireball).getComponent(FireBall).show(this.player, -30);
-        }
-    }
+   
     
     showIceThron() {
         this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.SKILL_ICETHRON);},1);

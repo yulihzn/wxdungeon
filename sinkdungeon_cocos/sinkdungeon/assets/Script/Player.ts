@@ -346,7 +346,7 @@ export default class Player extends Actor {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     addStatus(statusType: string, from: FromData) {
-        if (!this.node) {
+        if (!this.node||this.isDied) {
             return;
         }
         this.statusManager.addStatus(statusType, from);
