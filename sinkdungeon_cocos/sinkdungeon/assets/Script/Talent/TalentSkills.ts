@@ -103,13 +103,13 @@ export default class TalentSkills extends Talent {
 
     private doSkill() {
         switch (this.activeTalentData.resName) {
-            case Talent.TALENT_000:this.showIceThron();break;
+            case Talent.TALENT_000:break;
             case Talent.TALENT_001:
                 AudioPlayer.play(AudioPlayer.MELEE_PARRY);
                 this.shoot(this.player.shooterEx, 0, 0, 'bullet040'); break;
             case Talent.TALENT_002: this.healing(); break;
             case Talent.TALENT_003: this.cooking(); break;
-            case Talent.TALENT_004: break;
+            case Talent.TALENT_004: this.showIceThron();break;
             case Talent.TALENT_005: this.rageShoot(); break;
             case Talent.TALENT_006: this.flash(); break;
             case Talent.TALENT_007: this.addSwordLight(); break;
@@ -197,7 +197,8 @@ export default class TalentSkills extends Talent {
         let pos = this.player.rigidbody.linearVelocity.clone();
         this.player.isMoving = false;
         if (pos.equals(cc.Vec2.ZERO)) {
-            pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
+            // pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
+            pos = cc.v2(this.player.weaponRight.meleeWeapon.Hv.clone());
         } else {
             pos = pos.normalizeSelf();
         }
@@ -250,7 +251,8 @@ export default class TalentSkills extends Talent {
     showIceThron() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
         const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
-        const pos = [cc.v3(100,0),cc.v3(60,60),cc.v3(0,100),cc.v3(-60,60),cc.v3(-100,0),cc.v3(-60,-60),cc.v3(0,-100),cc.v3(60,-60)];
+        const posRight = [cc.v3(0,100),cc.v3(-60,60),cc.v3(-100,0),cc.v3(-60,-60),cc.v3(0,-100),cc.v3(60,-60),cc.v3(100,0),cc.v3(60,60)];
+        const posLeft = [cc.v3(0,-100),cc.v3(-60,-60),cc.v3(-100,0),cc.v3(-60,60),cc.v3(0,100),cc.v3(60,60),cc.v3(100,0),cc.v3(60,-60)];
         let a1 = [angles1];
         let a = a1;
         let d = new DamageData();
@@ -258,7 +260,7 @@ export default class TalentSkills extends Talent {
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
-        .init(0, 2, 0, 3, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(pos[i],0),angles1[i]);
+        .init(0, 2, 0, 3, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i]);
         }
     }
     private shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string) {
