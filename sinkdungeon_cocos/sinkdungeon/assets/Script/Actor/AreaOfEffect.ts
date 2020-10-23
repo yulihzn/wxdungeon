@@ -2,14 +2,11 @@ import Player from "../Player";
 import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
-import FromData from "../Data/FromData";
-import StatusManager from "../Manager/StatusManager";
 import IndexZ from "../Utils/IndexZ";
 import Dungeon from "../Dungeon";
 import HitBuilding from "../Building/HitBuilding";
 import Decorate from "../Building/Decorate";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
-import Bullet from "../Item/Bullet";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,52 +26,52 @@ const { ccclass, property } = cc._decorator;
 export default class AreaOfEffect extends cc.Component {
     hasTargetMap: { [key: string]: number } = {};
     private isAttacking = false;
-    data:AreaOfEffectData = new AreaOfEffectData();
+    data: AreaOfEffectData = new AreaOfEffectData();
     // LIFE-CYCLE CALLBACKS:
-    dugeon:Dungeon;
-    killCallBack:Function;
+    dugeon: Dungeon;
+    killCallBack: Function;
 
-    onLoad () {
+    onLoad() {
     }
 
     start() {
     }
     //Anim
-    AnimFinish(){
+    AnimFinish() {
         this.close();
     }
-    close(){
-        this.scheduleOnce(() => { if (this.node&&this.node.isValid) this.node.destroy(); }, 1);
+    close() {
+        this.scheduleOnce(() => { if (this.node && this.node.isValid) this.node.destroy(); }, 1);
         this.isAttacking = false;
     }
 
-    show(parentNode:cc.Node,postion:cc.Vec3,hv:cc.Vec3,angleOffset:number,data:AreaOfEffectData,killCallBack?:Function){
+    show(parentNode: cc.Node, postion: cc.Vec3, hv: cc.Vec3, angleOffset: number, data: AreaOfEffectData, killCallBack?: Function) {
         this.data.valueCopy(data);
         this.node.active = true;
         this.node.parent = parentNode;
         this.isAttacking = true;
         this.killCallBack = killCallBack;
         this.node.setPosition(postion);
-        if(this.data.scale>0){
+        if (this.data.scale > 0) {
             this.node.scale = this.data.scale;
         }
-        if(this.data.isRotate){
-            let direction = this.getHv(hv,angleOffset);
-            let angle = cc.v2(direction.x,direction.y).signAngle(cc.v2(1,0));
+        if (this.data.isRotate) {
+            let direction = this.getHv(hv, angleOffset);
+            let angle = cc.v2(direction.x, direction.y).signAngle(cc.v2(1, 0));
             let degree = cc.misc.radiansToDegrees(angle);
-            this.node.angle = 360-degree;
+            this.node.angle = 360 - degree;
         }
-        this.node.zIndex = this.data.isOverHead?IndexZ.OVERHEAD:IndexZ.ACTOR;
-        this.scheduleOnce(()=>{this.isAttacking = true;},this.data.delay);
-        if(this.data.duration>0){
-            this.scheduleOnce(()=>{this.close()},this.data.duration);
+        this.node.zIndex = this.data.zIndex ? this.data.zIndex : IndexZ.ACTOR;
+        this.scheduleOnce(() => { this.isAttacking = true; }, this.data.delay);
+        if (this.data.duration > 0) {
+            this.scheduleOnce(() => { this.close() }, this.data.duration);
         }
     }
-    private getHv(hv:cc.Vec3,angleOffset:number):cc.Vec3{
+    private getHv(hv: cc.Vec3, angleOffset: number): cc.Vec3 {
         let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180));
         return pos.normalizeSelf();
     }
-  
+
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         if (self.isValid && this.isAttacking) {
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
@@ -109,12 +106,12 @@ export default class AreaOfEffect extends cc.Component {
         if (monster && !monster.isDied) {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
-                if(monster.data.currentHealth<=0&&this.killCallBack){
+                if (monster.data.currentHealth <= 0 && this.killCallBack) {
                     this.killCallBack(monster);
                 }
-                for(let status of this.data.statusList){
-                    monster.addStatus(status,this.data.from);
-                }
+            }
+            for (let status of this.data.statusList) {
+                monster.addStatus(status, this.data.from);
             }
             return;
         }
@@ -122,41 +119,41 @@ export default class AreaOfEffect extends cc.Component {
         if (boss && !boss.isDied) {
             damageSuccess = boss.takeDamage(damage);
             if (damageSuccess) {
-                if(boss.data.currentHealth<=0&&this.killCallBack){
+                if (boss.data.currentHealth <= 0 && this.killCallBack) {
                     this.killCallBack(boss);
                 }
-                for(let status of this.data.statusList){
-                    boss.addStatus(status,this.data.from);
-                }
+            }
+            for (let status of this.data.statusList) {
+                boss.addStatus(status, this.data.from);
             }
             return;
         }
         let player = attackTarget.getComponent(Player);
         if (player && !player.isDied) {
-            damageSuccess = player.takeDamage(damage,this.data.from);
+            damageSuccess = player.takeDamage(damage, this.data.from);
             if (damageSuccess) {
-                if(player.data.currentHealth<=0&&this.killCallBack){
+                if (player.data.currentHealth <= 0 && this.killCallBack) {
                     this.killCallBack(player);
                 }
-                for(let status of this.data.statusList){
-                    player.addStatus(status,this.data.from);
-                }
             }
-                return;
+            for (let status of this.data.statusList) {
+                player.addStatus(status, this.data.from);
+            }
+            return;
         }
         let decorate = attackTarget.getComponent(Decorate);
-        if (this.data.canBreakBuilding&&decorate) {
+        if (this.data.canBreakBuilding && decorate) {
             damageSuccess = true;
             decorate.takeDamage(damage);
             return;
         }
         let hitBuilding = attackTarget.getComponent(HitBuilding);
-        if (this.data.canBreakBuilding&&hitBuilding) {
+        if (this.data.canBreakBuilding && hitBuilding) {
             damageSuccess = true;
             hitBuilding.takeDamage(damage);
             return;
         }
-        
+
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
@@ -167,8 +164,8 @@ export default class AreaOfEffect extends cc.Component {
         }
         return false;
     }
-    update (dt) {
-        if(this.isCheckTimeDelay(dt)){
+    update(dt) {
+        if (this.isCheckTimeDelay(dt)) {
             this.hasTargetMap = {};
         }
     }

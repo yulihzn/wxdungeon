@@ -637,7 +637,7 @@ export default class Monster extends Actor {
                 if (this.data.isBoom > 0) {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
-                        boom.show(this.node.parent, this.node.position, cc.v3(1,0), 0, new AreaOfEffectData().init(1, 0.2,0,0, true, false
+                        boom.show(this.node.parent, this.node.position, cc.v3(1,0), 0, new AreaOfEffectData().init(1, 0.2,0,0, IndexZ.OVERHEAD, false
                             , true, true, false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
                     }

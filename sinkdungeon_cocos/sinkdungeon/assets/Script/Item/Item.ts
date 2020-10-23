@@ -125,6 +125,13 @@ export default class Item extends cc.Component {
             case Item.GOLDAPPLE: player.addStatus(StatusManager.GOLDAPPLE, from); break;
             case Item.GOLDFINGER: player.stopAllStatus(); break;
         }
+        if(data.resName.indexOf('food') != -1){
+            if(data.resName.indexOf('boss') != -1){
+                player.addStatus(StatusManager.BOTTLE_HEALING, from);
+            }else{
+                player.addStatus(StatusManager.HEALING, from);
+            }
+        }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);

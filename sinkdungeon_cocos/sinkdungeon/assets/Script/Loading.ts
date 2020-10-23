@@ -218,7 +218,9 @@ export default class Loading extends cc.Component {
                 Logic.itemNameList = new Array();
                 for (let key in resource.json) {
                     if (Logic.items[key].canSave) {
-                        Logic.itemNameList.push(key);
+                        if(key.indexOf('food')==-1){
+                            Logic.itemNameList.push(key);
+                        }
                     }
                 }
                 this.isItemsLoaded = true;

@@ -1,3 +1,4 @@
+import IndexZ from "../Utils/IndexZ";
 import DamageData from "./DamageData";
 import FromData from "./FromData";
 
@@ -17,7 +18,7 @@ export default class AreaOfEffectData {
     interval = 0.1;//频率
     delay = 0;
     scale = 0;
-    isOverHead = false;//是否在头顶
+    zIndex = IndexZ.ACTOR;
     isRotate = false;//是否旋转
     isFromPlayer = false;//是否来自玩家
     canBreakBuilding = false;//是否破坏建筑
@@ -25,12 +26,12 @@ export default class AreaOfEffectData {
     damage:DamageData = new DamageData();//伤害
     from:FromData = new FromData();//来源
     statusList:string[] = [];
-    init(duration:number,interval:number,delay:number,scale:number,isOverHead:boolean,isFromPlayer:boolean,canBreakBuilding:boolean,canBreakBullet:boolean,isRotate:boolean,damage:DamageData,from:FromData,statusList:string[]):AreaOfEffectData{
+    init(duration:number,interval:number,delay:number,scale:number,zIndex:number,isFromPlayer:boolean,canBreakBuilding:boolean,canBreakBullet:boolean,isRotate:boolean,damage:DamageData,from:FromData,statusList:string[]):AreaOfEffectData{
         this.duration = duration;
         this.delay = delay;
         this.interval = interval;
         this.scale = scale;
-        this.isOverHead = isOverHead;
+        this.zIndex = zIndex;
         this.isFromPlayer = isFromPlayer;
         this.canBreakBuilding = canBreakBuilding;
         this.canBreakBullet = canBreakBullet;
@@ -48,7 +49,7 @@ export default class AreaOfEffectData {
         this.interval = data.interval?data.interval:0.1;
         this.delay = data.delay?data.delay:0;
         this.scale = data.scale?data.scale:0;
-        this.isOverHead = data.isOverHead?data.isOverHead:false;
+        this.zIndex = data.zIndex?data.zIndex:IndexZ.ACTOR;
         this.isFromPlayer = data.isFromPlayer?data.isFromPlayer:false;
         this.canBreakBuilding = data.canBreakBuilding?data.canBreakBuilding:false;
         this.canBreakBullet = data.canBreakBullet?data.canBreakBullet:false;
@@ -69,7 +70,7 @@ export default class AreaOfEffectData {
         e.damage = this.damage.clone();
         e.from = this.from.clone();
         e.statusList = this.statusList;
-        e.isOverHead = this.isOverHead;
+        e.zIndex = this.zIndex;
         e.isRotate = this.isRotate;
         return e;
     }

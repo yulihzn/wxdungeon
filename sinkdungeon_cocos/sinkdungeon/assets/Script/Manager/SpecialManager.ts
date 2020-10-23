@@ -1,14 +1,12 @@
 import Dungeon from "../Dungeon";
 import SlimeVenom from "../Boss/SlimeVenom";
-import Player from "../Player";
-import Logic from "../Logic";
 import DamageData from "../Data/DamageData";
-import { EventHelper } from "../EventHelper";
 import StatusManager from "./StatusManager";
 import Monster from "../Monster";
-import AreaAttack from "../Item/AreaAttack";
 import FromData from "../Data/FromData";
 import IndexZ from "../Utils/IndexZ";
+import AreaOfEffect from "../Actor/AreaOfEffect";
+import AreaOfEffectData from "../Data/AreaOfEffectData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -79,51 +77,34 @@ export default class SpecialManager extends cc.Component {
         venom.getComponent(SlimeVenom).from.valueCopy(from);
         venom.parent = this.dungeon.node;
         venom.position = pos;
-        venom.zIndex = IndexZ.getActorZIndex(venom.position);
+        venom.zIndex = IndexZ.ACTOR;
         venom.scale = 0;
         venom.runAction(cc.scaleTo(0.5, 2, 2))
     }
     private addHowl(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
-        let howl = cc.instantiate(this.howl);
-        howl.parent = this.dungeon.node;
-        howl.position = pos;
-        howl.zIndex = IndexZ.getActorZIndex(howl.position);
-        howl.scale = 2;
         let monster = this.node.parent.getComponent(Monster);
         if (monster) {
             monster.addStatus(StatusManager.WEREWOLFDEFENCE,from);
         }
-        let howlScript = howl.getComponent(AreaAttack);
-        this.scheduleOnce(() => {
-            howlScript.damagePlayer(StatusManager.DIZZ, this.dungeon.player, new DamageData(1),from);
-        }, 1);
+        let howl = cc.instantiate(this.howl);
+        let howlScript = howl.getComponent(AreaOfEffect);
+        howlScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
+        .init(0,2,1,2,IndexZ.getActorZIndex(howl.position),false,false,true,false,new DamageData(1),from,[StatusManager.DIZZ]));
     }
     private addClaw(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let claw = cc.instantiate(this.claw);
-        claw.parent = this.dungeon.node;
         pos.y += 32;
-        claw.position = pos;
-        claw.zIndex = IndexZ.getActorZIndex(claw.position);
-        claw.scale = 1;
-        let areaScript = claw.getComponent(AreaAttack);
-        this.scheduleOnce(() => {
-            areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(2),from);
-            this.scheduleOnce(() => {
-                areaScript.damagePlayer(StatusManager.BLEEDING, this.dungeon.player, new DamageData(3),from);
-            }, 0.2);
-        }, 0.5);
+        let areaScript = claw.getComponent(AreaOfEffect);
+        areaScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
+        .init(0,0.15,0.1,1,IndexZ.getActorZIndex(claw.position),false,false,true,false,new DamageData(2),from,[StatusManager.BLEEDING]));
     }
     
     private addBlade(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let prefab = cc.instantiate(this.blade);
-        prefab.parent = this.dungeon.node;
-        prefab.position = pos;
         pos.y += 64;
-        prefab.zIndex = IndexZ.getActorZIndex(prefab.position);
         prefab.scaleX = isFaceRight?1:-1;
-        let areaScript = prefab.getComponent(AreaAttack);
-        this.scheduleOnce(() => {
-            areaScript.damagePlayer('', this.dungeon.player, new DamageData(3),from);
-        }, 0.5);
+        let areaScript = prefab.getComponent(AreaOfEffect);
+        areaScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
+        .init(0,0.2,0.1,1,IndexZ.getActorZIndex(prefab.position),false,false,true,false,new DamageData(2),from,[]));
     }
 }

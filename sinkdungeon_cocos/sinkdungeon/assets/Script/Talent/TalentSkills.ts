@@ -59,6 +59,8 @@ export default class TalentSkills extends Talent {
     cookingPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     swordLightPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    smokePrefab: cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
     hv: cc.Vec3;
@@ -106,7 +108,7 @@ export default class TalentSkills extends Talent {
             case Talent.TALENT_000:break;
             case Talent.TALENT_001:
                 AudioPlayer.play(AudioPlayer.MELEE_PARRY);
-                this.shoot(this.player.shooterEx, 0, 0, 'bullet040'); break;
+                this.shoot(this.player.shooterEx, 0, 0, 'bullet040',null,null); break;
             case Talent.TALENT_002: this.healing(); break;
             case Talent.TALENT_003: this.cooking(); break;
             case Talent.TALENT_004: this.showIceThron();break;
@@ -121,11 +123,11 @@ export default class TalentSkills extends Talent {
             case Talent.TALENT_013: this.showFireBall(); break;
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
-                this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035');
+                this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035',null,null);
                 break;
             case Talent.TALENT_015: this.dash(); break;
             case Talent.TALENT_016: break;
-            case Talent.TALENT_017: break;
+            case Talent.TALENT_017: this.showSmoke();break;
             case Talent.TALENT_018: break;
             case Talent.TALENT_019: break;
         }
@@ -240,14 +242,21 @@ export default class TalentSkills extends Talent {
             }).start();
     }
 
+    showSmoke() {
+        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        let d = new DamageData();
+        d.magicDamage = 1;
+        this.shoot(this.player.shooterEx, 0, 0, 'bullet041',this.smokePrefab,new AreaOfEffectData().init(
+            7,0.1,0,1,IndexZ.OVERHEAD,true,false,false,false,new DamageData(),new FromData(),[StatusManager.CURSING]
+        ));
+    }
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
         d.magicDamage = 1;
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
-            .init(0, 0.1, 0, 4, true, true, true, true, true, d, new FromData(), [StatusManager.BURNING]));
+            .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.BURNING]));
     }
-
     showIceThron() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
         const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
@@ -260,14 +269,14 @@ export default class TalentSkills extends Talent {
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
-        .init(0, 2, 0, 3, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i]);
+        .init(0, 2, 0, 3, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i]);
         }
     }
-    private shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string) {
+    private shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string,prefab:cc.Prefab,data:AreaOfEffectData) {
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(0);
+        shooter.fireBullet(0,null,0,0,prefab,data);
     }
 
     changePerformance() {
@@ -284,13 +293,13 @@ export default class TalentSkills extends Talent {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData(1);
         this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
-            .init(0, 0.5, 0.2, 1.5, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
+            .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
     }
     private cooking() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData(1);
         this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
-            .init(0, 2, 0, 1, true, true, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
+            .init(0, 2, 0, 1, IndexZ.OVERHEAD, true, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
                 let monster = actor.node.getComponent(Monster);
                 if (monster) {
                     monster.dungeon.addItem(monster.node.position.clone(), `food${monster.data.resName.replace('monster', '')}`);
@@ -309,7 +318,7 @@ export default class TalentSkills extends Talent {
             d.physicalDamage = 2;
         }
         let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()
-            .init(0, 0.2, 0, 4, true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]));
+            .init(0, 0.2, 0, 4, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]));
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             swordlight.node.getChildByName('sprite').color = cc.Color.RED;
         }

@@ -10,6 +10,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,7 +38,7 @@ export default class IceDemon extends Boss {
     defenceSkill = new Skill();
     meleeSkill = new Skill();
     @property(cc.Prefab)
-    icethron:cc.Prefab = null;
+    icethron: cc.Prefab = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -46,7 +47,7 @@ export default class IceDemon extends Boss {
         this.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
-        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'bossicepart01'));
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'bossicepart01'));
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
     }
@@ -58,16 +59,17 @@ export default class IceDemon extends Boss {
         if (this.isDied || !this.isShow) {
             return false;
         }
-       
+
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        this.defence();
-        if(this.defenceSkill.IsExcuting){
+        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
+        this.defence(isHalf);
+        if (this.defenceSkill.IsExcuting) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
-        }else{
+        } else {
             AudioPlayer.play(AudioPlayer.MONSTER_HIT);
         }
         return true;
@@ -97,7 +99,7 @@ export default class IceDemon extends Boss {
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        if (playerDis < 200 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting&& !this.dashSkill.IsExcuting) {
+        if (playerDis < 200 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting && !this.dashSkill.IsExcuting) {
             this.attack();
         }
         if (!this.meleeSkill.IsExcuting && !this.defenceSkill.IsExcuting && !this.thronSkill.IsExcuting) {
@@ -124,13 +126,13 @@ export default class IceDemon extends Boss {
             newPos = newPos.addSelf(cc.v3(-1, -1));
         }
         let pos = Dungeon.getPosInMap(newPos);
-        pos.y+=32;
-        pos =pos.sub(this.node.position);
+        pos.y += 32;
+        pos = pos.sub(this.node.position);
         let h = pos.x;
         this.isFaceRight = h > 0;
         return pos;
     }
-    thronGround(isHalf:boolean) {
+    thronGround(isHalf: boolean) {
         this.thronSkill.next(() => {
             this.thronSkill.IsExcuting = true;
             if (!this.anim) {
@@ -138,87 +140,70 @@ export default class IceDemon extends Boss {
             }
             this.anim.play('IceDemonThron');
             let count = 1;
-            this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_THRON);},1);
-            this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_THRON);},2);
+            this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_THRON); }, 1);
+            this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_THRON); }, 2);
             this.schedule(() => {
                 let p = this.pos.clone()
                 let ps = [cc.v3(p.x, p.y + count), cc.v3(p.x, p.y - count), cc.v3(p.x + count, p.y + count), cc.v3(p.x + count, p.y - count),
                 cc.v3(p.x + count, p.y), cc.v3(p.x - count, p.y), cc.v3(p.x - count, p.y + count), cc.v3(p.x - count, p.y - count)]
                 for (let i = 0; i < ps.length; i++) {
-                    this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
+                    // this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
+                    let d = new DamageData();
+                    d.physicalDamage = 3;
+                    this.shooter.dungeon = this.dungeon;
+                    this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
+                        .init(0, 2, 0.4, 3, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0);
+
                 }
                 count++;
-            }, 0.2, isHalf?7:5, 1);
-            if(isHalf){
-                this.scheduleOnce(()=>{
+            }, 0.2, isHalf ? 7 : 5, 1);
+            if (isHalf) {
+                this.scheduleOnce(() => {
                     let p = this.pos.clone();
-                    let ps = [cc.v3(p.x+2,p.y+1),cc.v3(p.x+2,p.y-1),cc.v3(p.x-2,p.y+1),cc.v3(p.x-2,p.y-1)
-                        ,cc.v3(p.x+4,p.y+2),cc.v3(p.x+4,p.y-2),cc.v3(p.x-4,p.y+2),cc.v3(p.x-4,p.y-2)
-                        ,cc.v3(p.x+5,p.y+3),cc.v3(p.x+5,p.y-3),cc.v3(p.x-5,p.y+3),cc.v3(p.x-5,p.y-3)
-                        ,cc.v3(p.x+6,p.y+2),cc.v3(p.x+6,p.y-2),cc.v3(p.x-6,p.y+2),cc.v3(p.x-6,p.y-2)
-                        ,cc.v3(p.x+6,p.y+4),cc.v3(p.x+6,p.y-4),cc.v3(p.x-6,p.y+4),cc.v3(p.x-6,p.y-4)
-                        ,cc.v3(p.x+1,p.y+2),cc.v3(p.x+1,p.y-2),cc.v3(p.x-1,p.y+2),cc.v3(p.x-1,p.y-2)
-                        ,cc.v3(p.x+2,p.y+4),cc.v3(p.x+2,p.y-4),cc.v3(p.x-2,p.y+4),cc.v3(p.x-2,p.y-4)
-                        ,cc.v3(p.x+3,p.y+5),cc.v3(p.x+3,p.y-5),cc.v3(p.x-3,p.y+5),cc.v3(p.x-3,p.y-5)
-                        ,cc.v3(p.x+2,p.y+6),cc.v3(p.x+2,p.y-6),cc.v3(p.x-2,p.y+6),cc.v3(p.x-2,p.y-6)
-                        ,cc.v3(p.x+4,p.y+6),cc.v3(p.x+4,p.y-6),cc.v3(p.x-4,p.y+6),cc.v3(p.x-4,p.y-6)];
-                        for (let i = 0; i < ps.length; i++) {
-                            this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
-                        }
-                },1.5)
+                    let ps = [cc.v3(p.x + 2, p.y + 1), cc.v3(p.x + 2, p.y - 1), cc.v3(p.x - 2, p.y + 1), cc.v3(p.x - 2, p.y - 1)
+                        , cc.v3(p.x + 4, p.y + 2), cc.v3(p.x + 4, p.y - 2), cc.v3(p.x - 4, p.y + 2), cc.v3(p.x - 4, p.y - 2)
+                        , cc.v3(p.x + 5, p.y + 3), cc.v3(p.x + 5, p.y - 3), cc.v3(p.x - 5, p.y + 3), cc.v3(p.x - 5, p.y - 3)
+                        , cc.v3(p.x + 6, p.y + 2), cc.v3(p.x + 6, p.y - 2), cc.v3(p.x - 6, p.y + 2), cc.v3(p.x - 6, p.y - 2)
+                        , cc.v3(p.x + 6, p.y + 4), cc.v3(p.x + 6, p.y - 4), cc.v3(p.x - 6, p.y + 4), cc.v3(p.x - 6, p.y - 4)
+                        , cc.v3(p.x + 1, p.y + 2), cc.v3(p.x + 1, p.y - 2), cc.v3(p.x - 1, p.y + 2), cc.v3(p.x - 1, p.y - 2)
+                        , cc.v3(p.x + 2, p.y + 4), cc.v3(p.x + 2, p.y - 4), cc.v3(p.x - 2, p.y + 4), cc.v3(p.x - 2, p.y - 4)
+                        , cc.v3(p.x + 3, p.y + 5), cc.v3(p.x + 3, p.y - 5), cc.v3(p.x - 3, p.y + 5), cc.v3(p.x - 3, p.y - 5)
+                        , cc.v3(p.x + 2, p.y + 6), cc.v3(p.x + 2, p.y - 6), cc.v3(p.x - 2, p.y + 6), cc.v3(p.x - 2, p.y - 6)
+                        , cc.v3(p.x + 4, p.y + 6), cc.v3(p.x + 4, p.y - 6), cc.v3(p.x - 4, p.y + 6), cc.v3(p.x - 4, p.y - 6)];
+                    for (let i = 0; i < ps.length; i++) {
+                        // this.dungeon.addIceThron(Dungeon.getPosInMap(ps[i]), true);
+                        let d = new DamageData();
+                        d.physicalDamage = 3;
+                        this.shooter.dungeon = this.dungeon;
+                        this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
+                            .init(0, 2, 0.4, 3, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0);
+
+
+                    }
+                }, 1.5)
             }
-           
+
             this.scheduleOnce(() => { this.thronSkill.IsExcuting = false; }, 4);
         }, 15, true);
 
     }
-    thronSelf(isNotDefend:boolean,isHalf:boolean) {
-        this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DASH); }, 1);
-        const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
-        const angles2 = [15, 60, 105, 150, 195, 240, 285, 330];
-        let distance1 = [100];
-        let distance2 = [100, 150];
-        let distance3 = [100, 150, 200];
-        let scale1 = [3];
-        let scale2 = [3, 4];
-        let scale3 = [3, 4, 5];
-        let scale4 = [3, 5];
-        let a1 = [angles1];
-        let a2 = [angles1, angles2];
-        let a3 = [angles1, angles2, angles1];
-        let a = a1;
-        let scale = scale1;
-        let distance = distance1;
-        if (isHalf) {
-            a = a2;
-            scale = scale2;
-            distance = distance2;
-        }
-        if (isNotDefend) {
-            a = a2;
-            scale = scale4;
-            distance = distance2;
-            if (isHalf) {
-                a = a3;
-                scale = scale3;
-                distance = distance3;
-            }
-        }
+    thronSelf() {
+        this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
+        const angles = [0, 45, 90, 135, 180, 225, 270, 315];
+        const posRight = [cc.v3(0,20),cc.v3(-10,10),cc.v3(-20,0),cc.v3(-10,-10),cc.v3(0,-20),cc.v3(10,-10),cc.v3(20,0),cc.v3(10,60)];
+        const posLeft = [cc.v3(0,-20),cc.v3(-10,-10),cc.v3(-20,0),cc.v3(-10,10),cc.v3(0,20),cc.v3(10,10),cc.v3(20,0),cc.v3(10,-10)];
         let d = new DamageData();
         d.magicDamage = 1;
-        let index = 0;
-        this.schedule(() => {
-            for (let i = 0; i < a[index].length; i++) {
-                this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
-            .init(0, 0.1, 0, scale[index], true, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(distance[index],0),a[index][i]);
-            }
-            index++;
-        }, 0.5, a.length - 1);
+        for (let i = 0; i < angles.length; i++) {
+            this.shooter.dungeon = this.dungeon;
+            this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
+        .init(0, 2, 0.4, 1, IndexZ.OVERHEAD, false, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.isFaceRight?posRight[i]:posLeft[i]),angles[i]);
+        }
     }
     attack() {
         this.meleeSkill.next(() => {
             this.meleeSkill.IsExcuting = true;
-            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
@@ -245,7 +230,7 @@ export default class IceDemon extends Boss {
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
-            this.scheduleOnce(()=>{AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DASH);},2.5);
+            this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DASH); }, 2.5);
             this.anim.play('IceDemonDash');
             this.scheduleOnce(() => {
                 let pos = this.getMovePos();
@@ -262,7 +247,7 @@ export default class IceDemon extends Boss {
         }, 8, true);
 
     }
-    defence() {
+    defence(isHalf:boolean) {
         this.defenceSkill.next(() => {
             this.defenceSkill.IsExcuting = true;
             if (!this.anim) {
@@ -277,6 +262,9 @@ export default class IceDemon extends Boss {
                 this.data.Common.defence = 0;
                 this.data.Common.magicDefence = 0;
             }, 3);
+            if(isHalf){
+                this.thronSelf();
+            }
         }, 6, true);
     }
 
@@ -352,16 +340,16 @@ export default class IceDemon extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);
-        if (player && (this.meleeSkill.IsExcuting||this.dashSkill.IsExcuting)&&!this.isDied) {
+        if (player && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
-            let from = FromData.getClone(this.actorName(),'bossicepart01');
-            if(player.takeDamage(d,from,this)){
-                player.addStatus(StatusManager.FROZEN,from);
+            let from = FromData.getClone(this.actorName(), 'bossicepart01');
+            if (player.takeDamage(d, from, this)) {
+                player.addStatus(StatusManager.FROZEN, from);
             }
         }
     }
-    actorName(){
+    actorName() {
         return '冰魔';
     }
 }

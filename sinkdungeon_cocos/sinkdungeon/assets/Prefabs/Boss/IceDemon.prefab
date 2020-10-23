@@ -2742,7 +2742,12 @@
       "__id__": 1
     },
     "_enabled": true,
-    "statusManager": null,
+    "statusManager": {
+      "__id__": 69
+    },
+    "icethron": {
+      "__uuid__": "d517097f-0278-4411-b8a3-c05f0044c737"
+    },
     "_id": ""
   },
   {

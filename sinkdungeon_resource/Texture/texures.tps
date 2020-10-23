@@ -874,6 +874,9 @@
             <key type="filename">bullet/bullet040anim000.png</key>
             <key type="filename">bullet/bullet040anim001.png</key>
             <key type="filename">bullet/bullet040anim002.png</key>
+            <key type="filename">bullet/bullet041anim000.png</key>
+            <key type="filename">bullet/bullet041anim001.png</key>
+            <key type="filename">bullet/bullet041anim002.png</key>
             <key type="filename">dungeon/coast000.png</key>
             <key type="filename">dungeon/coast001.png</key>
             <key type="filename">dungeon/coast0010.png</key>

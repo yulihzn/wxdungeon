@@ -144,5 +144,11 @@
       }
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 1,
+      "func": "AnimFinish",
+      "params": []
+    }
+  ]
 }

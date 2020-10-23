@@ -853,6 +853,23 @@
             "physicalDamage": 1
         }
     },
+    "bullet041": {
+        "name":"酒瓶",
+        "resName": "bullet041",
+        "lightName": "bulletlight003",
+        "lightColor": "#ffffff",
+        "speed": 400,
+        "isRect": 0,
+        "isRotate": 1,
+        "lifeTime":1,
+        "isPhysical":1,
+        "isDecelerate":1,
+        "size": 2,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,

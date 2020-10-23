@@ -17,6 +17,7 @@ import Shield from "../Shield";
 import Wall from "../Building/Wall";
 import AreaOfEffect from "../Actor/AreaOfEffect";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -442,7 +443,7 @@ export default class Bullet extends cc.Component {
         if (this.data.isBoom > 0) {
             let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
             if(boom){
-                boom.show(this.node.parent,this.node.position,this.hv,0,new AreaOfEffectData().init(1,0.2,0,0,true,this.isFromPlayer
+                boom.show(this.node.parent,this.node.position,this.hv,0,new AreaOfEffectData().init(1,0.2,0,0,IndexZ.OVERHEAD,this.isFromPlayer
                     ,true,true,false,new DamageData(1),FromData.getClone('爆炸','boom000anim004'),[]));
                 cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
             }

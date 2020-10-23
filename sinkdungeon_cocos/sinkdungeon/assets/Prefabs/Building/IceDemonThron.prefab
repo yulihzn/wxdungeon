@@ -343,16 +343,6 @@
     "_id": ""
   },
   {
-    "__type__": "24e5dr3bslGlZZLL6MjYCjj",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_id": ""
-  },
-  {
     "__type__": "cc.RigidBody",
     "_name": "",
     "_objFlags": 0,
@@ -397,6 +387,16 @@
       "y": 0
     },
     "_radius": 5,
+    "_id": ""
+  },
+  {
+    "__type__": "6a73blWLNVEw7zhXpbo521b",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {
