@@ -23,6 +23,7 @@ export default class PlayerAvatar extends cc.Component {
     static readonly STATE_ATTACK = 2;
     static readonly STATE_FALL = 3;
     static readonly STATE_DIE = 4;
+    static readonly STATE_JUMP = 5;
     dir = PlayerAvatar.DIR_RIGHT;
     status = PlayerAvatar.STATE_IDLE;
     anim: cc.Animation;
@@ -135,6 +136,11 @@ export default class PlayerAvatar extends cc.Component {
                     this.anim.play('AvatarFall');
                 }
                 break;
+            case PlayerAvatar.STATE_JUMP:
+                if (PlayerAvatar.STATE_DIE != this.status) {
+                    this.anim.play('AvatarJump');
+                }
+                break;
         }
         this.status = status;
         this.dir = dir;
@@ -193,7 +199,7 @@ export default class PlayerAvatar extends cc.Component {
 
     }
     idlehair = [0, 1];
-    changeAvatarByDir(dir: number,isFaceUp?:number) {
+    changeAvatarByDir(dir: number, isFaceUp?: number) {
         let eyesprefix = this.data.eyesResName;
         let faceprefix = this.data.faceResName;
         switch (dir) {

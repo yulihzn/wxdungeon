@@ -31,6 +31,7 @@ export default class Controller extends cc.Component {
     skillIcon:cc.Sprite = null;
     skillActionTouched = false;
     graphics: cc.Graphics = null;
+    coolDownFuc:Function = null;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -111,11 +112,20 @@ export default class Controller extends cc.Component {
     }
 
     private drawSkillCoolDown(coolDown: number) {
-        if (coolDown <= 0) {
+        if (coolDown < 0) {
             return;
         }
         if (!this.coolDown) {
             return;
+        }
+        
+        if(this.coolDownFuc){
+            this.unschedule(this.coolDownFuc);
+        }
+        if (coolDown == 0) {
+            if (this.graphics) {
+                this.graphics.clear();
+            }
         }
         let p = this.coolDown.convertToWorldSpaceAR(cc.Vec3.ZERO);
         p = this.node.convertToNodeSpaceAR(p);
@@ -123,7 +133,7 @@ export default class Controller extends cc.Component {
         let delta = 0.1;
         //0.5为误差补偿
         let offset = 64 / coolDown * delta;
-        let func = () => {
+        this.coolDownFuc = () => {
             height -= offset;
             if (this.graphics) {
                 this.graphics.clear();
@@ -135,10 +145,10 @@ export default class Controller extends cc.Component {
                 if (this.graphics) {
                     this.graphics.clear();
                 }
-                this.unschedule(func);
+                this.unschedule(this.coolDownFuc);
             }
         }
-        this.schedule(func, delta, cc.macro.REPEAT_FOREVER);
+        this.schedule(this.coolDownFuc, delta, cc.macro.REPEAT_FOREVER);
     }
     private drawRect(height, center: cc.Vec3) {
         this.graphics.fillColor = cc.color(255, 255, 255, 150);

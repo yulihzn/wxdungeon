@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "AvatarIdle",
+  "_name": "AvatarJumpStart",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 4,
   "sample": 60,
-  "speed": 1,
-  "wrapMode": 2,
+  "speed": 3,
+  "wrapMode": 1,
   "curveData": {
     "paths": {
       "sprite/cloak": {
@@ -27,6 +27,18 @@
             {
               "frame": 2,
               "value": 0
+            },
+            {
+              "frame": 2.5,
+              "value": 15
+            },
+            {
+              "frame": 3.5,
+              "value": -15
+            },
+            {
+              "frame": 4,
+              "value": 0
             }
           ]
         }
@@ -41,11 +53,75 @@
                 5,
                 0
               ]
+            },
+            {
+              "frame": 2,
+              "value": [
+                2,
+                5,
+                0
+              ]
+            },
+            {
+              "frame": 3,
+              "value": [
+                2,
+                5,
+                0
+              ]
+            },
+            {
+              "frame": 3.5,
+              "value": [
+                2,
+                5,
+                0
+              ]
+            },
+            {
+              "frame": 4,
+              "value": [
+                2,
+                5,
+                0
+              ]
             }
           ],
           "angle": [
             {
               "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 45
+            },
+            {
+              "frame": 0.5,
+              "value": 45
+            },
+            {
+              "frame": 1,
+              "value": 60
+            },
+            {
+              "frame": 2,
+              "value": 30
+            },
+            {
+              "frame": 2.5,
+              "value": 10
+            },
+            {
+              "frame": 3,
+              "value": 45
+            },
+            {
+              "frame": 3.5,
+              "value": 0
+            },
+            {
+              "frame": 4,
               "value": 0
             }
           ]
@@ -57,11 +133,67 @@
             {
               "frame": 0,
               "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -10
+            },
+            {
+              "frame": 0.5,
+              "value": -10
+            },
+            {
+              "frame": 1,
+              "value": -30
+            },
+            {
+              "frame": 2,
+              "value": 45
+            },
+            {
+              "frame": 2.5,
+              "value": 0
+            },
+            {
+              "frame": 3,
+              "value": 15
+            },
+            {
+              "frame": 3.5,
+              "value": 0
+            },
+            {
+              "frame": 4,
+              "value": 0
             }
           ],
           "position": [
             {
               "frame": 0,
+              "value": [
+                -2,
+                5,
+                0
+              ]
+            },
+            {
+              "frame": 2,
+              "value": [
+                -2,
+                5,
+                0
+              ]
+            },
+            {
+              "frame": 3,
+              "value": [
+                -2,
+                5,
+                0
+              ]
+            },
+            {
+              "frame": 4,
               "value": [
                 -2,
                 5,
@@ -133,6 +265,68 @@
                 0,
                 0
               ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                0,
+                -1,
+                0
+              ]
+            },
+            {
+              "frame": 1.5,
+              "value": [
+                0,
+                32,
+                0
+              ]
+            },
+            {
+              "frame": 2,
+              "value": [
+                0,
+                32,
+                0
+              ]
+            },
+            {
+              "frame": 3,
+              "value": [
+                0,
+                -2,
+                0
+              ]
+            },
+            {
+              "frame": 3.5,
+              "value": [
+                0,
+                1,
+                0
+              ]
+            },
+            {
+              "frame": 4,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": -5
+            },
+            {
+              "frame": 2,
+              "value": 0
             }
           ]
         }
@@ -148,11 +342,91 @@
                 -2,
                 0
               ]
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": [
+                0.087,
+                -2.427,
+                0
+              ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                0.087,
+                -2.427,
+                0
+              ]
+            },
+            {
+              "frame": 2,
+              "value": [
+                0.521,
+                -2.344,
+                0
+              ]
+            },
+            {
+              "frame": 3,
+              "value": [
+                0.521,
+                -2.344,
+                0
+              ]
+            },
+            {
+              "frame": 3.5,
+              "value": [
+                0,
+                -2,
+                0
+              ]
+            },
+            {
+              "frame": 4,
+              "value": [
+                0,
+                -2,
+                0
+              ]
             }
           ],
           "angle": [
             {
               "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -45
+            },
+            {
+              "frame": 0.5,
+              "value": -45
+            },
+            {
+              "frame": 1,
+              "value": -75
+            },
+            {
+              "frame": 2,
+              "value": -90
+            },
+            {
+              "frame": 2.5,
+              "value": -60
+            },
+            {
+              "frame": 3,
+              "value": -45
+            },
+            {
+              "frame": 3.5,
+              "value": 0
+            },
+            {
+              "frame": 4,
               "value": 0
             }
           ]
@@ -169,11 +443,99 @@
                 -2,
                 0
               ]
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": [
+                0.167,
+                -2.43,
+                0
+              ]
+            },
+            {
+              "frame": 0.5,
+              "value": [
+                0.167,
+                -2.43,
+                0
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                0,
+                -2.564,
+                0
+              ]
+            },
+            {
+              "frame": 2,
+              "value": [
+                0.123,
+                -2.616,
+                0
+              ]
+            },
+            {
+              "frame": 3,
+              "value": [
+                0.123,
+                -2.616,
+                0
+              ]
+            },
+            {
+              "frame": 3.5,
+              "value": [
+                0,
+                -2,
+                0
+              ]
+            },
+            {
+              "frame": 4,
+              "value": [
+                0,
+                -2,
+                0
+              ]
             }
           ],
           "angle": [
             {
               "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -30
+            },
+            {
+              "frame": 0.5,
+              "value": -30
+            },
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 2,
+              "value": -80
+            },
+            {
+              "frame": 2.5,
+              "value": -30
+            },
+            {
+              "frame": 3,
+              "value": -60
+            },
+            {
+              "frame": 3.5,
+              "value": 0
+            },
+            {
+              "frame": 4,
               "value": 0
             }
           ]

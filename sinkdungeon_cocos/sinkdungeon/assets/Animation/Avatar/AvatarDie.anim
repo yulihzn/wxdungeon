@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "PlayerDie",
+  "_name": "AvatarDie",
   "_objFlags": 0,
   "_native": "",
   "_duration": 1,
@@ -49,6 +49,26 @@
             {
               "frame": 0.08333333333333333,
               "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/avatar": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0,
+                0
+              ]
             }
           ]
         }

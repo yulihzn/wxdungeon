@@ -39,7 +39,7 @@ import { EventHelper } from './EventHelper';
 import TalentSkills from './Talent/TalentSkills';
 @ccclass
 export default class Player extends Actor {
-    
+
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
     @property(cc.Vec3)
@@ -66,6 +66,7 @@ export default class Player extends Actor {
     isMoving = false;//是否移动中
     isDied = false;//是否死亡
     isFall = false;//是否跌落
+    isJumping = false;//是否跳跃
     isStone = false;//是否石化
     isDizz = false;//是否眩晕
     invisible = false;//是否隐身
@@ -90,7 +91,7 @@ export default class Player extends Actor {
 
     defaultPos = cc.v3(0, 0);
 
-    talentSkills:TalentSkills;
+    talentSkills: TalentSkills;
     isWeaponDashing = false;
     fistCombo = 0;
 
@@ -104,7 +105,7 @@ export default class Player extends Actor {
         this.isDied = false;
         this.isStone = false;
         this.isShow = false;
-        this.scheduleOnce(()=>{this.isShow = true;},0.5)
+        this.scheduleOnce(() => { this.isShow = true; }, 0.5)
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.weaponLeft.init(this, true);
         this.weaponRight.init(this, false);
@@ -141,8 +142,8 @@ export default class Player extends Actor {
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.BOSS_ROOM)) {
             Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
         }
-        if(Logic.playerData.pos.y==Dungeon.HEIGHT_SIZE-1){
-            Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE-2;
+        if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
+            Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
         }
         this.pos = Logic.playerData.pos.clone();
         this.defaultPos = Logic.playerData.pos.clone();
@@ -270,8 +271,8 @@ export default class Player extends Actor {
                 this.shield.data = new EquipmentData();
                 this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
                     , Logic.spriteFrames[Equipment.EMPTY], this.shield.data.isHeavy == 1 ? 80 : 64);
-                    EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD,{isShield:false});
-                    break;
+                EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
+                break;
             case Equipment.SHIELD:
                 this.shield.data = equipData.clone();
                 this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
@@ -280,7 +281,7 @@ export default class Player extends Actor {
 
                 this.weaponLeft.shooter.data = new EquipmentData();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
-                EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD,{isShield:true});
+                EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true });
                 break;
             case Equipment.HELMET:
                 this.avatar.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
@@ -346,19 +347,19 @@ export default class Player extends Actor {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     addStatus(statusType: string, from: FromData) {
-        if (!this.node||this.isDied) {
+        if (!this.node || this.isDied) {
             return;
         }
         this.statusManager.addStatus(statusType, from);
     }
-    stopAllStatus(){
+    stopAllStatus() {
         if (!this.node) {
             return;
         }
         this.statusManager.stopAllStatus();
     }
     meleeAttack() {
-        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall
+        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall || this.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking
             || this.shield.isDefendOrParrying) {
@@ -394,7 +395,7 @@ export default class Player extends Actor {
 
     }
     useShield() {
-        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall
+        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall || this.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking) {
             return;
@@ -405,16 +406,16 @@ export default class Player extends Actor {
     }
     remoteRate = 0;
     remoteAttack() {
-        if (!this.data || this.isDizz || this.isDied || this.isFall || !this.weaponLeft.shooter) {
+        if (!this.data || this.isDizz || this.isDied || this.isFall || !this.weaponLeft.shooter || this.isJumping) {
             return;
         }
         let arcEx = 0;
         let lineEx = 0;
-        if(this.talentSkills.hashTalent(Talent.TALENT_005)&&this.talentSkills.IsExcuting){
+        if (this.talentSkills.hashTalent(Talent.TALENT_005) && this.talentSkills.IsExcuting) {
             arcEx = 2;
             lineEx = 1;
         }
-        let fireSuccess = this.weaponLeft.remoteAttack(this.data,this.remoteCooldown,arcEx,lineEx);
+        let fireSuccess = this.weaponLeft.remoteAttack(this.data, this.remoteCooldown, arcEx, lineEx);
         if (fireSuccess) {
             this.stopHiding();
         }
@@ -489,7 +490,7 @@ export default class Player extends Actor {
         if (this.talentSkills.IsExcuting && this.talentSkills.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.01);
         }
-        
+
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
             this.data.pos = this.pos.clone();
@@ -528,10 +529,12 @@ export default class Player extends Actor {
         if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
             this.weaponLeft.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
         }
-        if (this.isMoving && !this.isStone) {
-            this.playerAnim(PlayerAvatar.STATE_WALK, dir);
-        } else {
-            this.playerAnim(PlayerAvatar.STATE_IDLE, dir);
+        if (!this.isJumping) {
+            if (this.isMoving && !this.isStone) {
+                this.playerAnim(PlayerAvatar.STATE_WALK, dir);
+            } else {
+                this.playerAnim(PlayerAvatar.STATE_IDLE, dir);
+            }
         }
         if (dir != 4) {
             this.changeZIndex(this.pos);
@@ -589,7 +592,7 @@ export default class Player extends Actor {
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
     fall() {
-        if (this.isFall) {
+        if (this.isFall||this.isJumping) {
             return;
         }
         this.isFall = true;
@@ -603,6 +606,24 @@ export default class Player extends Actor {
             this.isFall = false;
         }, 2);
     }
+    jump() {
+        if (this.isDied || this.isFall || this.isDizz || !this.isShow || this.isJumping
+            || this.weaponRight.meleeWeapon.IsAttacking
+            || this.weaponLeft.meleeWeapon.IsAttacking) {
+            return false;
+        }
+        this.isJumping = true;
+        this.scheduleOnce(()=>{
+            this.weaponLeft.node.opacity = 0;this.weaponRight.node.opacity = 0;
+        },0.1);
+        this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir);
+        this.scheduleOnce(() => {
+            this.avatar.playAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
+            this.isJumping = false;
+            this.weaponLeft.node.opacity = 255;this.weaponRight.node.opacity = 255;
+        }, 1.3);
+        return true;
+    }
     /**
      * 挨打
      * @param damageData 伤害
@@ -610,7 +631,7 @@ export default class Player extends Actor {
      * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
-        if (!this.data) {
+        if (!this.data||this.isJumping) {
             return false;
         }
         //盾牌
@@ -711,8 +732,8 @@ export default class Player extends Actor {
             this.shooterEx.dungeon = dungeon;
         }
         let isDashing = this.talentSkills.hashTalent(Talent.TALENT_015) && this.talentSkills.IsExcuting;
-       
-        if (this.talentSkills&&!isDashing && !this.isWeaponDashing) {
+
+        if (this.talentSkills && !isDashing && !this.isWeaponDashing) {
             this.move(dir, pos, dt);
         }
     }
@@ -729,7 +750,7 @@ export default class Player extends Actor {
 
     update(dt) {
 
-        if (this.isSmokeTimeDelay(dt) && this.isMoving) {
+        if (this.isSmokeTimeDelay(dt) && this.isMoving&&!this.isJumping) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
         let stone = this.isStone;
@@ -741,13 +762,16 @@ export default class Player extends Actor {
         this.node.opacity = this.invisible ? 80 : 255;
     }
     private useSkill(): void {
-        if(this.talentSkills){
+        if (this.talentSkills&&!this.isJumping) {
             this.talentSkills.useSKill();
         }
 
     }
 
     triggerThings() {
+        if(this.isJumping){
+            return;
+        }
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
             if (this.touchedEquipment.shopTable) {
@@ -784,8 +808,8 @@ export default class Player extends Actor {
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.node.getComponent(Monster)  
-        && ((this.talentSkills && this.talentSkills.hashTalent(Talent.TALENT_015)&&this.talentSkills.IsExcuting) || this.isWeaponDashing)) {
+        if (otherCollider.node.getComponent(Monster)
+            && ((this.talentSkills && this.talentSkills.hashTalent(Talent.TALENT_015) && this.talentSkills.IsExcuting) || this.isWeaponDashing||this.isJumping)) {
             contact.disabledOnce = true;
         }
     }

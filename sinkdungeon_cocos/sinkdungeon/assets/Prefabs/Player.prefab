@@ -4180,13 +4180,16 @@
         "__uuid__": "eccaa491-a5d2-435a-a7b0-cfd181d8649f"
       },
       {
-        "__uuid__": "3a749f08-15ca-41df-a79b-23a6d76ad667"
-      },
-      {
         "__uuid__": "70f6c3e3-82b1-4901-874e-9bdf91b12e80"
       },
       {
         "__uuid__": "ef176407-9205-422c-8610-0e55f023aebb"
+      },
+      {
+        "__uuid__": "3a749f08-15ca-41df-a79b-23a6d76ad667"
+      },
+      {
+        "__uuid__": "e998db9a-f61c-4ed9-927a-63ae623190dc"
       }
     ],
     "playOnLoad": true,
@@ -6595,6 +6598,9 @@
     },
     "smokePrefab": {
       "__uuid__": "bb1ff6de-485a-4d78-a702-1fba682bff46"
+    },
+    "skyhandPrefab": {
+      "__uuid__": "f9272aa1-5fd9-4ae1-8a03-1aa192b0dcea"
     },
     "_id": ""
   },

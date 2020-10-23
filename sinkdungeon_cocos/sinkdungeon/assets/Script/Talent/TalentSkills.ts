@@ -61,6 +61,8 @@ export default class TalentSkills extends Talent {
     swordLightPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     smokePrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    skyhandPrefab: cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
     hv: cc.Vec3;
@@ -128,7 +130,7 @@ export default class TalentSkills extends Talent {
             case Talent.TALENT_015: this.dash(); break;
             case Talent.TALENT_016: break;
             case Talent.TALENT_017: this.showSmoke();break;
-            case Talent.TALENT_018: break;
+            case Talent.TALENT_018: this.jump();break;
             case Talent.TALENT_019: break;
         }
     }
@@ -213,6 +215,22 @@ export default class TalentSkills extends Talent {
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir);
             this.IsExcuting = false;
         }, 0.5)
+    }
+    private jump(){
+        AudioPlayer.play(AudioPlayer.DASH);
+        if(!this.player.jump()){
+            this.talentSkill.IsExcuting = false;
+            this.talentSkill.refreshCoolDown();
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: 0 } });
+        }
+        this.scheduleOnce(()=>{
+            AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        let d = new DamageData();
+        d.physicalDamage = 1;
+        this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
+            .init(0, 0.1, 0, 2, IndexZ.OVERHEAD, true, true, true, false, d, new FromData(), [StatusManager.BURNING]));
+            this.talentSkill.IsExcuting = false;
+        },0.8)
     }
     private steal() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
