@@ -615,12 +615,15 @@ export default class Player extends Actor {
         this.isJumping = true;
         this.scheduleOnce(()=>{
             this.weaponLeft.node.opacity = 0;this.weaponRight.node.opacity = 0;
+            this.shield.node.opacity = 0;
         },0.1);
         this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir);
         this.scheduleOnce(() => {
             this.avatar.playAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
             this.isJumping = false;
             this.weaponLeft.node.opacity = 255;this.weaponRight.node.opacity = 255;
+            this.shield.node.opacity = 255;
+
         }, 1.3);
         return true;
     }

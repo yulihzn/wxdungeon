@@ -113,7 +113,7 @@ export default class TalentSkills extends Talent {
                 this.shoot(this.player.shooterEx, 0, 0, 'bullet040',null,null); break;
             case Talent.TALENT_002: this.healing(); break;
             case Talent.TALENT_003: this.cooking(); break;
-            case Talent.TALENT_004: this.showIceThron();break;
+            case Talent.TALENT_004: break;
             case Talent.TALENT_005: this.rageShoot(); break;
             case Talent.TALENT_006: this.flash(); break;
             case Talent.TALENT_007: this.addSwordLight(); break;
@@ -130,8 +130,8 @@ export default class TalentSkills extends Talent {
             case Talent.TALENT_015: this.dash(); break;
             case Talent.TALENT_016: break;
             case Talent.TALENT_017: this.showSmoke();break;
-            case Talent.TALENT_018: this.jump();break;
-            case Talent.TALENT_019: break;
+            case Talent.TALENT_018: break;
+            case Talent.TALENT_019: this.jump();break;
         }
     }
     private healing() {

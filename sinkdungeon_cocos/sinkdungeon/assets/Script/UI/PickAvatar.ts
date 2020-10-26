@@ -207,7 +207,7 @@ export default class PickAvatar extends cc.Component {
                 Logic.items = resource.json;
                 Logic.itemNameList = new Array();
                 for (let key in resource.json) {
-                    if (Logic.items[key].canSave) {
+                    if (Logic.items[key].canSave&&key.indexOf('food')==-1) {
                         Logic.itemNameList.push(key);
                     }
                 }
@@ -446,6 +446,13 @@ export default class PickAvatar extends cc.Component {
         this.eyesColorSelector.selectRandom();
         this.faceSelector.selectRandom();
         this.faceColorSelector.selectRandom();
+        AudioPlayer.play(AudioPlayer.SELECT);
+    }
+    ButtonSelect(event:cc.Event, isLeft:boolean){
+        if (this.loadingBackground.active) {
+            return;
+        }
+        this.professionSelector.slectNext(isLeft);
         AudioPlayer.play(AudioPlayer.SELECT);
     }
 }

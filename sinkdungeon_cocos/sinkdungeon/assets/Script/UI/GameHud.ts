@@ -65,6 +65,7 @@ export default class GameHud extends cc.Component {
         this.pasueButton.on(cc.Node.EventType.TOUCH_START, (event:cc.Event.EventTouch)=>{
             this.pauseGame();
         });
+        this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
     }
   
     private statusUpdate(data: PlayerData) {
@@ -140,7 +141,7 @@ export default class GameHud extends cc.Component {
             this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames['hud_pause'];
         }else{
             this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames['hud_pause_pressed'];
-            cc.director.pause();
+            this.scheduleOnce(()=>{cc.director.pause();},0.1)
         }
     }
 }

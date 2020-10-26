@@ -41,6 +41,14 @@ export default class AttributeSelector extends cc.Component {
         this.currentIndex = Logic.getRandomNum(0,this.nameList.length-1);
         this.updateAttribute();
     }
+    slectNext(isLeft:boolean){
+        if(isLeft){
+            this.currentIndex--;
+        }else{
+            this.currentIndex++;
+        }
+        this.updateAttribute();
+    }
     init(title:string,nameList:AttributeData[],defaultIndex?:number){
         this.title.string = title;
         this.nameList = nameList;

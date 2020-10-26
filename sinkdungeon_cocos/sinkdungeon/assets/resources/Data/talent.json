@@ -150,12 +150,12 @@
         "resName": "talent018",
         "passive": 0,
         "cooldown":15,
-        "desc": "分出两个分身杀敌，分身有本体一半的攻击力，被攻击就消失"
+        "desc": "？？？"
     },
     "talent019": {
         "nameCn": "如来神掌",
         "nameEn": "",
-        "resName": "talent018",
+        "resName": "talent019",
         "passive": 0,
         "cooldown":15,
         "desc": "跳起从天而降的掌法"

@@ -24,12 +24,8 @@ import ItemDialog from './Item/ItemDialog';
 @ccclass
 export default class Inventory extends cc.Component {
 
-    @property(cc.Node)
-    tabselect: cc.Node = null;
     @property(Dungeon)
     dungeon: Dungeon = null;
-    private selectIndex = 0;
-
     @property(cc.Sprite)
     weapon: cc.Sprite = null;
     @property(cc.Sprite)
@@ -122,7 +118,6 @@ export default class Inventory extends cc.Component {
     }
 
     start() {
-        this.tabselect.x = 0;
         this.weapon.spriteFrame = null;
         this.remote.spriteFrame = null;
         this.shield.spriteFrame = null;
@@ -220,14 +215,7 @@ export default class Inventory extends cc.Component {
             isLongPress = false;
         })
     }
-    select(event, customEventData) {
-        let index = parseInt(customEventData);
-        this.tabselect.y = index * 64;
-        let tab: cc.Node = event.currentTarget;
-        // cc.director.emit(EventConstant.INVENTORY_CHANGEITEM
-        //     , { detail: { spriteFrame: tab.getComponentInChildren(cc.Sprite).spriteFrame } })
-
-    }
+   
     private setEquipment(equipmentData: EquipmentData, isChange: boolean) {
         if (isChange && equipmentData.equipmetType != Equipment.EMPTY) {
             let p = this.dungeon.player.getComponent(Player).pos.clone();
