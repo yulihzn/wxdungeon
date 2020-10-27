@@ -201,7 +201,7 @@
       "array": [
         0,
         0,
-        213.90827473475636,
+        228.64141830760937,
         0,
         0,
         0,
@@ -18492,7 +18492,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "8b1f2161-7625-419a-894a-91821a939814"
+      "__uuid__": "a1497406-f864-4471-8892-3e1e531c51ed"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -18505,9 +18505,7 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
-    },
+    "_atlas": null,
     "_id": "3aL534a+VFZ4kznLY2NYuP"
   },
   {
@@ -18528,9 +18526,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 194,
-      "g": 0,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
@@ -18588,7 +18586,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "1aa84be8-f0aa-40df-90f1-d32cc4de9e64"
+      "__uuid__": "0c8da991-4fac-45f7-9e33-d866688d843b"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -18601,9 +18599,7 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
-    },
+    "_atlas": null,
     "_id": "52lntAq6RNKZ/E8t5GAIAI"
   },
   {
@@ -18720,7 +18716,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "fa17103c-b3a0-4071-ab18-b9340f059005"
+      "__uuid__": "b2b4e830-41e5-486b-87b8-e9b82f2f4618"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -18733,9 +18729,7 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
-    },
+    "_atlas": null,
     "_id": "03dMZuU8JBjLzyU3zmHkyS"
   },
   {
@@ -21929,7 +21923,7 @@
       "array": [
         0,
         0,
-        213.90827473475636,
+        228.64141830760937,
         0,
         0,
         0,

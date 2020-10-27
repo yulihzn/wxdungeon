@@ -56,6 +56,7 @@ export default class Shooter extends cc.Component {
     from: FromData = new FromData();
     skipTopwall = false;
     anim: cc.Animation;
+    private aoePools: { [key: string]: cc.NodePool } = {};
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -115,18 +116,47 @@ export default class Shooter extends cc.Component {
             this.hv = hv.normalizeSelf();
         }
     }
-    public fireAoe(prefab: cc.Prefab, aoeData: AreaOfEffectData, defaultPos?: cc.Vec3, angleOffset?: number,killCallBack?:Function):AreaOfEffect {
+    getAoeNode(prefab:cc.Prefab,usePool:boolean) {
+        let temp: cc.Node = null;
+        if(!this.aoePools[prefab.name]){
+            this.aoePools[prefab.name] = new cc.NodePool(AreaOfEffect);
+        }
+        if (this.aoePools[prefab.name]&&this.aoePools[prefab.name].size() > 0&&usePool) { // 通过 size 接口判断对象池中是否有空闲的对象
+            temp = this.aoePools[prefab.name].get();
+        }
+        // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
+        if (!temp || temp.active) {
+            temp = cc.instantiate(prefab);
+        }
+        temp.active = true;
+        return temp;
+    }
+
+    destroyAoePrefab(prefab:cc.Prefab,node: cc.Node) {
+        if(!this.aoePools[prefab.name]){
+            this.aoePools[prefab.name] = new cc.NodePool(AreaOfEffect);
+        }
+        node.active = false;
+        if (this.aoePools[prefab.name]) {
+            this.aoePools[prefab.name].put(node);
+        }
+    }
+    public fireAoe(prefab: cc.Prefab, aoeData: AreaOfEffectData, defaultPos?: cc.Vec3, angleOffset?: number,killCallBack?:Function,usePool?:boolean):AreaOfEffect {
         if (!this.dungeon) {
             return null;
         }
         if (!angleOffset) {
             angleOffset = 0;
         }
-        let aoe = cc.instantiate(prefab).getComponent(AreaOfEffect);
+        let aoe = this.getAoeNode(prefab,usePool).getComponent(AreaOfEffect);
         if (aoe) {
             let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v3(30, 0));
             pos = this.dungeon.node.convertToNodeSpaceAR(pos);
-            aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData,killCallBack);
+            aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData,killCallBack,usePool,(node:cc.Node)=>{
+                if(usePool){
+                    this.destroyAoePrefab(prefab,node);
+                }
+            });
         }
         return aoe;
     }

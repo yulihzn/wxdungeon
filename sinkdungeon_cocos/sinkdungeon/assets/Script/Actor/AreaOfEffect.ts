@@ -30,6 +30,8 @@ export default class AreaOfEffect extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     dugeon: Dungeon;
     killCallBack: Function;
+    destoryCallBack: Function;
+    usePool = false;
 
     onLoad() {
     }
@@ -41,16 +43,25 @@ export default class AreaOfEffect extends cc.Component {
         this.close();
     }
     close() {
-        this.scheduleOnce(() => { if (this.node && this.node.isValid) this.node.destroy(); }, 1);
+        this.scheduleOnce(() => {
+            if (this.node && this.node.isValid && !this.usePool) {
+                this.node.destroy();
+            }
+            if(this.destoryCallBack&&this.usePool){
+                this.destoryCallBack(this.node);
+            }
+        }, 1);
         this.isAttacking = false;
     }
 
-    show(parentNode: cc.Node, postion: cc.Vec3, hv: cc.Vec3, angleOffset: number, data: AreaOfEffectData, killCallBack?: Function) {
+    show(parentNode: cc.Node, postion: cc.Vec3, hv: cc.Vec3, angleOffset: number, data: AreaOfEffectData, killCallBack?: Function, usePool?: boolean,destoryCallBack?:Function) {
         this.data.valueCopy(data);
         this.node.active = true;
         this.node.parent = parentNode;
+        this.usePool = usePool;
         this.isAttacking = true;
         this.killCallBack = killCallBack;
+        this.destoryCallBack = destoryCallBack;
         this.node.setPosition(postion);
         if (this.data.scale > 0) {
             this.node.scale = this.data.scale;

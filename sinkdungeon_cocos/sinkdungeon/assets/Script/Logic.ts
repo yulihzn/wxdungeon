@@ -221,7 +221,7 @@ export default class Logic extends cc.Component {
         if (needSave) {
             Logic.saveData();
         }
-
+        cc.log(`loading next level begin ${Logic.chapterIndex}-${Logic.level}`);
         if (isGoReal) {
             //保存当前关卡等级
             Logic.lastLevel = Logic.level;
@@ -277,6 +277,7 @@ export default class Logic extends cc.Component {
         }
         Logic.lastBgmIndex = -1;
         cc.director.loadScene('loading');
+        cc.log(`loading next level end ${Logic.chapterIndex}-${Logic.level}`);
     }
 
     static getRandomNum(min, max): number {//生成一个随机数从[min,max]
