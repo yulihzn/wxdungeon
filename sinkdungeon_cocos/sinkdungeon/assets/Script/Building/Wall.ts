@@ -48,6 +48,10 @@ export default class Wall extends Building {
     start () {
         this.node.opacity = 255;
         this.changeRes(this.getRes());
+        if(this.mapStr[1] == '8'){
+            let collider = this.node.getComponent(cc.BoxCollider);
+            collider.offset = cc.Vec2.ZERO;
+        }
     }
     getRes():string{
         let s = `walltop0${Logic.chapterIndex}anim000`;
