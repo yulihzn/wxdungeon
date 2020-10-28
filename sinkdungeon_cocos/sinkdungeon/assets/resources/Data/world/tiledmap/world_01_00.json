@@ -47,6 +47,11 @@
                  "value":0
                 }, 
                 {
+                 "name":"name",
+                 "type":"string",
+                 "value":"\u5e7d\u7075\u8239-\u7532\u677f"
+                }, 
+                {
                  "name":"needRadomDecorate",
                  "type":"bool",
                  "value":true

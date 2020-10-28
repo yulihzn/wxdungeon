@@ -36,6 +36,10 @@ export default class AreaOfEffect extends cc.Component {
     onLoad() {
     }
 
+    onEnable(){
+        this.hasTargetMap = {};
+        this.isAttacking = false;
+    }
     start() {
     }
     //Anim
@@ -76,6 +80,10 @@ export default class AreaOfEffect extends cc.Component {
         this.scheduleOnce(() => { this.isAttacking = true; }, this.data.delay);
         if (this.data.duration > 0) {
             this.scheduleOnce(() => { this.close() }, this.data.duration);
+        }
+        let anim = this.getComponent(cc.Animation);
+        if(anim&&!anim.playOnLoad){
+            anim.play();
         }
     }
     private getHv(hv: cc.Vec3, angleOffset: number): cc.Vec3 {

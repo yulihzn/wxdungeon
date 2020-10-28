@@ -111,7 +111,6 @@ export default class Player extends Actor {
         this.weaponRight.init(this, false);
         this.remoteCooldown.width = 0;
         this.remoteCooldown.opacity = 200;
-        // this.addFog();
         cc.director.on(EventHelper.PLAYER_TRIGGER
             , (event) => { this.triggerThings() });
         cc.director.on(EventHelper.PLAYER_USEITEM

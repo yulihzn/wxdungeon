@@ -37,7 +37,7 @@
         "nameEn": "",
         "resName": "talent004",
         "passive": 0,
-        "cooldown":15,
+        "cooldown":5,
         "desc": "？？？"
     },
     "talent005": {

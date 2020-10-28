@@ -57,7 +57,7 @@ export default class GameHud extends cc.Component {
             this.clock.string = `${Logic.time}`;
         }
         if (this.level) {
-            this.level.string = `Level ${Logic.chapterIndex + 1}-${Logic.level}`;
+            this.level.string = `${Logic.worldLoader.getCurrentLevelData().name}`;
         }
         if(this.damageCorner){
             this.damageCorner.opacity = 0;

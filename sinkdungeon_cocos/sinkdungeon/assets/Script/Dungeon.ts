@@ -17,6 +17,7 @@ import RoomType from "./Rect/RoomType";
 import IndexZ from "./Utils/IndexZ";
 import BuildingManager from "./Manager/BuildingManager";
 import LevelData from "./Data/LevelData";
+import Light from "./Effect/Light";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -63,6 +64,7 @@ export default class Dungeon extends cc.Component {
     dungeonStyleManager: DungeonStyleManager = null;//装饰管理
     coinManager: CoinManger = null;//金币管理
     buildingManager: BuildingManager = null;//建筑管理
+    light:Light = null;
     anim: cc.Animation;
     CameraZoom = 1;
     isInitFinish = false;
@@ -106,6 +108,7 @@ export default class Dungeon extends cc.Component {
         this.coinManager = this.getComponent(CoinManger);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.buildingManager = this.getComponent(BuildingManager);
+        this.light = this.getComponent(Light);
         this.init();
     }
     /**
@@ -133,7 +136,13 @@ export default class Dungeon extends cc.Component {
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
         cc.tween(this.fog).to(1,{scale:1.2}).start();
-        this.fog.getChildByName('sprite').getChildByName('blackcenter').runAction(cc.fadeOut(1));
+        let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
+        let opvalue = 0;
+        if(Logic.chapterIndex == Logic.CHAPTER099){
+            opvalue = 150;
+            blackcenter.color = cc.color(3,0,25);
+        }
+        cc.tween(blackcenter).delay(0.2).to(1,{opacity:opvalue}).start();
         this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x,Logic.mapManager.getCurrentRoom().y);
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
@@ -218,6 +227,7 @@ export default class Dungeon extends cc.Component {
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
+        // this.light.init(this.player.node);
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
         && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {

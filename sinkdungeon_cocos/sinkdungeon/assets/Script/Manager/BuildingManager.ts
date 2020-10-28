@@ -346,6 +346,7 @@ export default class BuildingManager extends cc.Component {
             }
         }
         let p = this.addBuilding(this.exitdoorPrefab, indexPos);
+        p.zIndex = IndexZ.ACTOR;
         let exitdoor = p.getComponent(ExitDoor);
         exitdoor.init(dir, d);
         this.exitdoors.push(exitdoor);

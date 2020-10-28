@@ -128,6 +128,7 @@ export default class Shooter extends cc.Component {
         if (!temp || temp.active) {
             temp = cc.instantiate(prefab);
         }
+        temp.opacity = 255;
         temp.active = true;
         return temp;
     }

@@ -38,7 +38,9 @@ export default class IceDemon extends Boss {
     defenceSkill = new Skill();
     meleeSkill = new Skill();
     @property(cc.Prefab)
-    icethron: cc.Prefab = null;
+    groundThron: cc.Prefab = null;
+    @property(cc.Prefab)
+    selfThron: cc.Prefab = null;
     thronPool:cc.NodePool;
 
     // LIFE-CYCLE CALLBACKS:
@@ -122,11 +124,11 @@ export default class IceDemon extends Boss {
     }
     getMovePos(): cc.Vec3 {
         let newPos = this.dungeon.player.pos.clone();
-        if (this.dungeon.player.pos.x > this.pos.x) {
-            newPos = newPos.addSelf(cc.v3(1, -1));
-        } else {
-            newPos = newPos.addSelf(cc.v3(-1, -1));
-        }
+        // if (this.dungeon.player.pos.x > this.pos.x) {
+        //     newPos = newPos.addSelf(cc.v3(1, -1));
+        // } else {
+        //     newPos = newPos.addSelf(cc.v3(-1, -1));
+        // }
         let pos = Dungeon.getPosInMap(newPos);
         pos.y += 32;
         pos = pos.sub(this.node.position);
@@ -153,8 +155,8 @@ export default class IceDemon extends Boss {
                     let d = new DamageData();
                     d.physicalDamage = 3;
                     this.shooter.dungeon = this.dungeon;
-                    this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
-                        .init(0, 2, 0.4, 3, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,false);
+                    this.shooter.fireAoe(this.groundThron, new AreaOfEffectData()
+                        .init(0, 2, 0.4, 3, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
 
                 }
                 count++;
@@ -177,8 +179,8 @@ export default class IceDemon extends Boss {
                         let d = new DamageData();
                         d.physicalDamage = 3;
                         this.shooter.dungeon = this.dungeon;
-                        this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
-                            .init(0, 2, 0.4, 3, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,false);
+                        this.shooter.fireAoe(this.groundThron, new AreaOfEffectData()
+                            .init(0, 2, 0.4, 3, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
 
 
                     }
@@ -198,7 +200,7 @@ export default class IceDemon extends Boss {
         d.magicDamage = 1;
         for (let i = 0; i < angles.length; i++) {
             this.shooter.dungeon = this.dungeon;
-            this.shooter.fireAoe(this.icethron, new AreaOfEffectData()
+            this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
         .init(0, 2, 0.4, 1, IndexZ.OVERHEAD, false, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.isFaceRight?posRight[i]:posLeft[i]),angles[i],null,false);
         }
     }

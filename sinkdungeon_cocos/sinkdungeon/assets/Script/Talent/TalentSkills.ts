@@ -113,7 +113,7 @@ export default class TalentSkills extends Talent {
                 this.shoot(this.player.shooterEx, 0, 0, 'bullet040',null,null); break;
             case Talent.TALENT_002: this.healing(); break;
             case Talent.TALENT_003: this.cooking(); break;
-            case Talent.TALENT_004: break;
+            case Talent.TALENT_004: this.showIceThron();break;
             case Talent.TALENT_005: this.rageShoot(); break;
             case Talent.TALENT_006: this.flash(); break;
             case Talent.TALENT_007: this.addSwordLight(); break;
@@ -287,7 +287,7 @@ export default class TalentSkills extends Talent {
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
-        .init(0, 2, 0, 3, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i]);
+        .init(0, 2, 0, 3, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i],null,true);
         }
     }
     private shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string,prefab:cc.Prefab,data:AreaOfEffectData) {

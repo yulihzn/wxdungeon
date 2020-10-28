@@ -1,6 +1,7 @@
 import ExitData from "./ExitData";
 
 export default class LevelData {
+    name: string = '';//名称
     index: number = 0;//关卡包含的列表下标
     chapter: number = 0;//章节下标
     width: number = 0;//地图单位宽
@@ -59,6 +60,7 @@ export default class LevelData {
         this.map = turnArr;
     }
     valueCopy(data: LevelData) {
+        this.name = data.name;
         this.index = data.index;
         this.chapter = data.chapter;
         this.width = data.width;
