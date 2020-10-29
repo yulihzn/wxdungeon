@@ -138,9 +138,6 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
             , (event) => { this.takeDamage(event.detail.damage, event.detail.from) });
 
-        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.BOSS_ROOM)) {
-            Logic.playerData.pos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), 2);
-        }
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
             Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
         }

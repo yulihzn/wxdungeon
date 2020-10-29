@@ -20,5 +20,7 @@ export default class Game extends cc.Component {
     // start () {
         
     // }
+    loading(){
+    }
     
 }

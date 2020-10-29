@@ -61,8 +61,8 @@ export default class CameraControl extends cc.Component {
         if (!this.dungeon||!this.dungeon.player) {
             return;
         }
-        let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 5, 0)).x;
-        let xmin = Dungeon.getPosInMap(cc.v3(4, 0)).x;
+        let xmax = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE - 4, 0)).x;
+        let xmin = Dungeon.getPosInMap(cc.v3(3, 0)).x;
         let ymax = Dungeon.getPosInMap(cc.v3(0, Dungeon.HEIGHT_SIZE - 3)).y;
         let ymin = Dungeon.getPosInMap(cc.v3(0, 2)).y;
         let offset = cc.v3(0, 0);

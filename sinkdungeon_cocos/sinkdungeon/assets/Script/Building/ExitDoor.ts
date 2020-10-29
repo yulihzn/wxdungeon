@@ -57,6 +57,7 @@ export default class ExitDoor extends Building {
             case 2: this.node.angle = 90; this.playerPos.x = this.playerPos.x + 1; break;
             case 3: this.node.angle = -90; this.playerPos.x = this.playerPos.x - 1; break;
         }
+        this.bg.getComponentInChildren(cc.Label).string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
     }
     onLoad() {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);

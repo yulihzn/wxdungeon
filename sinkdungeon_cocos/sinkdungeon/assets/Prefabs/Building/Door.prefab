@@ -605,12 +605,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 7
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 128,
-      "height": 128
+      "height": 114
     },
     "_id": ""
   },
