@@ -82,6 +82,8 @@ export default class BuildingManager extends cc.Component {
     @property(cc.Prefab)
     floorDecoration: cc.Prefab = null;
     @property(cc.Prefab)
+    overHeadDecorate: cc.Prefab = null;
+    @property(cc.Prefab)
     exitdoorPrefab: cc.Prefab = null;
     @property(cc.Prefab)
     door: cc.Prefab = null;
@@ -106,8 +108,8 @@ export default class BuildingManager extends cc.Component {
     airExits: AirExit[] = new Array();
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
-        // coastColliderList = ['128,128,0,0', '128,64,0,32', '128,128,0,0', '64,128,-32,0', '64,128,32,0', '128,128,0,0'
-        // , '128,64,0,-32', '128,128,0,0', '64,64,-32,32', '64,64,32,-32', '64,64,-32,-32', '64,64,32,32'];
+    // coastColliderList = ['128,128,0,0', '128,64,0,32', '128,128,0,0', '64,128,-32,0', '64,128,32,0', '128,128,0,0'
+    // , '128,64,0,-32', '128,128,0,0', '64,64,-32,32', '64,64,32,-32', '64,64,-32,-32', '64,64,32,32'];
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
@@ -144,6 +146,9 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isThe(mapDataStr, '-')) {
             let dn = this.addBuilding(this.darkness, indexPos);
             dn.zIndex = IndexZ.DARKNESS;
+            if (this.isThe(mapDataStr, '-0')) {
+                dn.zIndex = IndexZ.ROOF;
+            }
         } else if (this.isThe(mapDataStr, '~')) {
             let pint = parseInt(mapDataStr[1]);
             if (pint >= 0 && pint <= 9 || mapDataStr == '~a' || mapDataStr == '~b') {
@@ -223,6 +228,13 @@ export default class BuildingManager extends cc.Component {
                     df.changeRes('dev');
                 }
             }
+        } else if (this.isThe(mapDataStr, 'O')) {
+            //生成顶部栏
+            let head = this.addBuilding(this.overHeadDecorate, indexPos);
+            if (this.isThe(mapDataStr, 'O1')) {
+                head.angle = 90;
+            }
+            head.zIndex = IndexZ.ROOF;
         } else if (mapDataStr == '@@') {
             //生成踏板
             let foot = this.addBuilding(this.footboard, indexPos);
@@ -315,7 +327,7 @@ export default class BuildingManager extends cc.Component {
             this.addDoor(parseInt(mapDataStr[1]), indexPos);
         } else if (this.isThe(mapDataStr, 'E')) {
             this.addExitDoor(parseInt(mapDataStr[1]), indexPos, exits);
-        } else if (this.isThe(mapDataStr, 'P')) {
+        } else if (this.isThe(mapDataStr, 'P') && Logic.isCheatMode) {
             //生成传送门
             let p = this.addBuilding(this.portal, indexPos);
             let i = parseInt(mapDataStr[1]);
@@ -323,10 +335,10 @@ export default class BuildingManager extends cc.Component {
             portal.isBackDream = i > 0;
             this.portals.push(portal);
         } else if (this.isThe(mapDataStr, 'Z')) {
-            if (parseInt(mapDataStr[1]) == 0) {
+            if (parseInt(mapDataStr[1]) == 0 || parseInt(mapDataStr[1]) == 1) {
                 let p = this.addBuilding(this.roomBed, indexPos);
                 let rb = p.getComponent(RoomBed);
-                rb.init(dungeon);
+                rb.init(dungeon, parseInt(mapDataStr[1]) == 1);
             } else {
                 //生成可打击建筑
                 this.addHitBuilding(dungeon, mapDataStr, indexPos);
@@ -369,14 +381,14 @@ export default class BuildingManager extends cc.Component {
         let door = this.addBuilding(this.door, indexPos).getComponent(Door);
         door.node.zIndex = IndexZ.FLOOR;
         door.isDoor = true;
-        switch (mapDataStrIndex%4) {
+        switch (mapDataStrIndex % 4) {
             case 0: door.node.angle = 0; break;
             case 1: door.node.angle = 180; break;
             case 2: door.node.angle = 90; break;
             case 3: door.node.angle = -90; break;
         }
-        door.dir = mapDataStrIndex%4;
-        door.isEmpty = mapDataStrIndex>3;
+        door.dir = mapDataStrIndex % 4;
+        door.isEmpty = mapDataStrIndex > 3;
         this.doors.push(door);
     }
     public setDoors(isOpen: boolean, immediately?: boolean) {
@@ -450,16 +462,32 @@ export default class BuildingManager extends cc.Component {
         let equipmentNames = [];
         let itemNames = [];
         let maxhealth = 5;
+        let scale = 8;
         switch (mapDataStr) {
             case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; break;
-            case 'Z1': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; break;
             case 'Z2': resName = 'roomdesk'; equipmentNames = []; itemNames = ['goldfinger']; maxhealth = 100; break;
+            case 'Z3': resName = 'roomtv'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Z4': resName = 'roomsofa'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Z5': resName = 'roomtable'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Z6': resName = 'roomfridge'; equipmentNames = []; itemNames = []; maxhealth = 9999; scale = 6;break;
+            case 'Z7': resName = 'roomwash'; equipmentNames = []; itemNames = []; maxhealth = 9999; scale = 6;break;
+            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; break;
+            case 'Z9': resName = 'roomstool'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Za': resName = 'roomkitchentable'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Zb': resName = 'roomkitchentable1'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Zc': resName = 'roomkitchentable2'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Zd': resName = 'roomkitchentable3'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Ze': resName = 'roombath'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Zf': resName = 'roomlittletable'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Zg': resName = 'roomlittletable1'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Zh': resName = 'roomlittletable2'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+
             default: break;
         }
-        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth);
+        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth,scale);
         let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
         if (saveHit) {
-            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth);
+            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth,scale);
         } else {
             Logic.mapManager.setCurrentBuildingData(h.data);
         }

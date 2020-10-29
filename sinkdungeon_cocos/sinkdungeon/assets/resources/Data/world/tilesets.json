@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":99,
+ "tilecount":117,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -1246,7 +1246,7 @@
         }, 
         {
          "id":345,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomcupboard.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomdecoratebed.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -1767,7 +1767,133 @@
          "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/monstergenerator.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"e1"
+         "type":"g0"
+        }, 
+        {
+         "id":382,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomtv.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z3"
+        }, 
+        {
+         "id":383,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomsofa.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z4"
+        }, 
+        {
+         "id":384,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/overheaddecorate.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"O0"
+        }, 
+        {
+         "id":386,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/overheaddecorate1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"O1"
+        }, 
+        {
+         "id":389,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallemptydark.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"-0"
+        }, 
+        {
+         "id":390,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomtable.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z5"
+        }, 
+        {
+         "id":391,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomfridge.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z6"
+        }, 
+        {
+         "id":392,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomwash.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z7"
+        }, 
+        {
+         "id":393,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomcupboard.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z8"
+        }, 
+        {
+         "id":394,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomkitchentable.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Za"
+        }, 
+        {
+         "id":395,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomkitchentable1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zb"
+        }, 
+        {
+         "id":396,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomkitchentable2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zc"
+        }, 
+        {
+         "id":397,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomkitchentable3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zd"
+        }, 
+        {
+         "id":398,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomstool.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z9"
+        }, 
+        {
+         "id":399,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roombath.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Ze"
+        }, 
+        {
+         "id":400,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomlittletable.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zf"
+        }, 
+        {
+         "id":401,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomlittletable1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zg"
+        }, 
+        {
+         "id":402,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roomlittletable2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zh"
         }],
  "tilewidth":16,
  "type":"tileset",

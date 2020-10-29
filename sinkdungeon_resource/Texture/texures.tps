@@ -241,6 +241,7 @@
             <key type="filename">building/floor000side.png</key>
             <key type="filename">building/footboard.png</key>
             <key type="filename">building/footboardpress.png</key>
+            <key type="filename">building/overheaddecorate.png</key>
             <key type="filename">building/plant000.png</key>
             <key type="filename">building/plant001.png</key>
             <key type="filename">building/plant002.png</key>
@@ -458,6 +459,7 @@
             <key type="filename">avatar/avatarcover001.png</key>
             <key type="filename">avatar/avatarcover002.png</key>
             <key type="filename">avatar/avatarcover003.png</key>
+            <key type="filename">building/roomkitchentable.png</key>
             <key type="filename">building/ship01anim000.png</key>
             <key type="filename">building/ship01anim001.png</key>
             <key type="filename">building/ship01anim002.png</key>
@@ -798,6 +800,12 @@
             <key type="filename">building/roomdesk0.png</key>
             <key type="filename">building/roomdesk1.png</key>
             <key type="filename">building/roomdesk2.png</key>
+            <key type="filename">building/roomfridge.png</key>
+            <key type="filename">building/roomkitchentable1.png</key>
+            <key type="filename">building/roomkitchentable2.png</key>
+            <key type="filename">building/roomkitchentable3.png</key>
+            <key type="filename">building/roomtv.png</key>
+            <key type="filename">building/roomwash.png</key>
             <key type="filename">building/saw001.png</key>
             <key type="filename">building/saw002.png</key>
             <key type="filename">building/shop.png</key>
@@ -1344,7 +1352,9 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">building/shiptable.png</key>
+            <key type="filename">building/roombath.png</key>
+            <key type="filename">equipment/weapon029.png</key>
+            <key type="filename">equipment/weapon030.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -1353,12 +1363,16 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>6,4,12,8</rect>
+                <rect>6,8,12,16</rect>
                 <key>scale9Paddings</key>
-                <rect>6,4,12,8</rect>
+                <rect>6,8,12,16</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">building/roomlittletable.png</key>
+            <key type="filename">building/roomlittletable1.png</key>
+            <key type="filename">building/roomlittletable2.png</key>
+            <key type="filename">building/roomstool.png</key>
             <key type="filename">bullet/bulletlight001.png</key>
             <key type="filename">item/stonebroken.png</key>
             <struct type="IndividualSpriteSettings">
@@ -1372,6 +1386,37 @@
                 <rect>6,6,12,12</rect>
                 <key>scale9Paddings</key>
                 <rect>6,6,12,12</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/roomsofa.png</key>
+            <key type="filename">building/roomtable.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>12,8,24,16</rect>
+                <key>scale9Paddings</key>
+                <rect>12,8,24,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/shiptable.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>6,4,12,8</rect>
+                <key>scale9Paddings</key>
+                <rect>6,4,12,8</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -1916,22 +1961,6 @@
                 <rect>2,2,5,3</rect>
                 <key>scale9Paddings</key>
                 <rect>2,2,5,3</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">equipment/weapon029.png</key>
-            <key type="filename">equipment/weapon030.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>6,8,12,16</rect>
-                <key>scale9Paddings</key>
-                <rect>6,8,12,16</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

@@ -22,18 +22,23 @@ export default class RoomBed extends Building {
     isWakeUp = false;
     dungeon:Dungeon;
     isFirst = true;
+    isDecorate = false;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    init(dungeon:Dungeon){
+    init(dungeon:Dungeon,isDecorate:boolean){
         this.dungeon = dungeon;
+        this.isDecorate = isDecorate;
     }
     start () {
         this.node.getChildByName('sprite').getChildByName('bed').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`avatarbed00${Logic.playerData.AvatarData.organizationIndex}`];
         this.node.getChildByName('sprite').getChildByName('cover').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`avatarcover00${Logic.playerData.AvatarData.organizationIndex}`];
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        if(this.isDecorate){
+            return;
+        }
         let player = other.node.getComponent(Player);
         if (player&&!this.isWakeUp&&this.isFirst) {
             this.isFirst = false;
@@ -52,6 +57,9 @@ export default class RoomBed extends Building {
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
+        if(this.isDecorate){
+            return;
+        }
         let player = other.node.getComponent(Player);
         if (player&&!this.isWakeUp) {
             this.isWakeUp = true;

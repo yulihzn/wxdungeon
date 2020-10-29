@@ -26,7 +26,7 @@ export default class ExitData {
         let data = new ExitData();
         data.toChapter = Logic.CHAPTER099;
         data.toLevel = Logic.realLevel;
-        data.toPos = cc.v3(15, 16);
+        data.toPos = cc.v3(5, 2);
         return data;
     }
 

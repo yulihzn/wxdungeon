@@ -1433,6 +1433,9 @@
     "floorDecoration": {
       "__uuid__": "df963243-b74c-4c68-b411-9acadaeb33dc"
     },
+    "overHeadDecorate": {
+      "__uuid__": "f93bf273-6bab-44fe-af92-ec4c8d1f916c"
+    },
     "exitdoorPrefab": {
       "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
     },

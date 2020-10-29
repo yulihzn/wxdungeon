@@ -25,7 +25,7 @@ export default class HitBuilding extends Building {
     private dungeon: Dungeon;
     // LIFE-CYCLE CALLBACKS:
 
-    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number) {
+    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number,scale:number) {
         this.dungeon = dungeon;
         this.resName = resName;
         this.itemNames = itemNames;
@@ -33,6 +33,7 @@ export default class HitBuilding extends Building {
         this.data.maxHealth = maxHealth;
         this.data.currentHealth = currentHealth;
         this.changeRes(resName, `${this.data.currentHealth}`);
+        this.sprite.node.scale = scale;
         if(this.data.currentHealth<=0){
             this.getComponent(cc.PhysicsBoxCollider).sensor = true;
             this.getComponent(cc.PhysicsBoxCollider).apply();
@@ -50,7 +51,7 @@ export default class HitBuilding extends Building {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.data.currentHealth <= 0) {
+        if (this.data.currentHealth <= 0 || this.data.currentHealth >= 9999) {
             return false;
         }
         AudioPlayer.play(AudioPlayer.MONSTER_HIT);
@@ -93,6 +94,10 @@ export default class HitBuilding extends Building {
         this.sprite.node.opacity = 255;
         this.sprite.node.width = spriteFrame.getRect().width;
         this.sprite.node.height = spriteFrame.getRect().height;
+        let size = cc.size((this.sprite.node.width-4)*this.sprite.node.scale,(this.sprite.node.height-4)*this.sprite.node.scale);
+        this.getComponent(cc.BoxCollider).size = size.clone();
+        this.getComponent(cc.PhysicsBoxCollider).size = size.clone();
+        this.getComponent(cc.PhysicsBoxCollider).apply();
         this.sprite.spriteFrame = spriteFrame;
     }
     // update (dt) {}
