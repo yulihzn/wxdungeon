@@ -103,7 +103,9 @@ export default class LevelData {
                 let roomX = Math.floor(fx/this.roomWidth);
                 let roomY = Math.floor(fy/this.roomHeight);
                 data.fromRoomPos = cc.v3(roomX,roomY);
-                data.fromIndexPos = cc.v3(fx%this.roomWidth,fy%this.roomHeight);
+                data.fromPos = cc.v3(fx%this.roomWidth,fy%this.roomHeight);
+                data.fromChapter = this.chapter;
+                data.fromLevel = this.index;
                 data.toChapter = parseInt(temps[2]);
                 data.toLevel = parseInt(temps[3]);
                 data.toPos = cc.v3(tx,ty);

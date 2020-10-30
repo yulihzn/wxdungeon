@@ -159,7 +159,7 @@ export default class Dungeon extends cc.Component {
             this.map[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 //越往下层级越高，j是行，i是列
-                if (this.isThe(mapData[i][j], "*") && mapData[i][j] != '**') {
+                if (this.isFirstEqual(mapData[i][j], "*") && mapData[i][j] != '**') {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;
                     t.position = Dungeon.getPosInMap(cc.v3(i, j));
@@ -170,7 +170,7 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].coverPrefix = leveldata.floorCoverRes;
                     this.map[i][j].floorPrefix = leveldata.floorRes;
                 }
-                if(this.isThe(mapData[i][j], "*") && mapData[i][j] != '*4'){
+                if(this.isFirstEqual(mapData[i][j], "*") && mapData[i][j] != '*4'){
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
@@ -239,11 +239,14 @@ export default class Dungeon extends cc.Component {
             this.isInitFinish = true;
         },1)
     }
-    isThe(mapStr: string, typeStr: string): boolean {
+    private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
-
+    private isFirstEqual(mapStr:string,typeStr:string){
+        let isequal = mapStr[0] == typeStr;
+        return isequal;
+    }
     addItem(pos: cc.Vec3, resName: string,count?:number, shopTable?: ShopTable) {
         if (!this.item||!Logic.items[resName]) {
             return;

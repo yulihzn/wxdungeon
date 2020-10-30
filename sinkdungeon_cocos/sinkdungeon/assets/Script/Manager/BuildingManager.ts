@@ -114,6 +114,10 @@ export default class BuildingManager extends cc.Component {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
+    private isFirstEqual(mapStr:string,typeStr:string){
+        let isequal = mapStr[0] == typeStr;
+        return isequal;
+    }
     private addBuilding(prefab: cc.Prefab, indexPos: cc.Vec3): cc.Node {
         let building = cc.instantiate(prefab);
         building.parent = this.node;
@@ -126,7 +130,7 @@ export default class BuildingManager extends cc.Component {
         return building;
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
-        if (this.isThe(mapDataStr, '*')) {
+        if (this.isFirstEqual(mapDataStr, '*')) {
             let offset = cc.v3(0, 0);
             if (indexPos.x == Dungeon.WIDTH_SIZE - 1) {
                 offset = cc.v3(1, 0);
@@ -140,16 +144,16 @@ export default class BuildingManager extends cc.Component {
             if (offset.x != 0 || offset.y != 0) {
                 this.addBuilding(this.mist, cc.v3(indexPos.x + offset.x, indexPos.y + offset.y)).zIndex = IndexZ.OVERHEAD;
             }
-        } else if (this.isThe(mapDataStr, '#')) {
+        } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
             this.addDirWalls(mapDataStr, indexPos, levelData);
-        } else if (this.isThe(mapDataStr, '-')) {
+        } else if (this.isFirstEqual(mapDataStr, '-')) {
             let dn = this.addBuilding(this.darkness, indexPos);
             dn.zIndex = IndexZ.DARKNESS;
-            if (this.isThe(mapDataStr, '-0')) {
+            if (this.isFirstEqual(mapDataStr, '-0')) {
                 dn.zIndex = IndexZ.ROOF;
             }
-        } else if (this.isThe(mapDataStr, '~')) {
+        } else if (this.isFirstEqual(mapDataStr, '~')) {
             let pint = parseInt(mapDataStr[1]);
             if (pint >= 0 && pint <= 9 || mapDataStr == '~a' || mapDataStr == '~b') {
                 let co = this.addBuilding(this.coast, indexPos);
@@ -178,7 +182,7 @@ export default class BuildingManager extends cc.Component {
             //生成电锯,占据5个格子
             let saw = this.addBuilding(this.saw, indexPos);
             saw.getComponent(Saw).setPos(indexPos);
-        } else if (this.isThe(mapDataStr, 'G')) {
+        } else if (this.isFirstEqual(mapDataStr, 'G')) {
             //生成炮台
             let em = this.addBuilding(this.emplacement, indexPos).getComponent(Emplacement);
             em.setDirType(mapDataStr);
@@ -189,9 +193,9 @@ export default class BuildingManager extends cc.Component {
         } else if (mapDataStr == 'F1') {
             //生成落雷
             this.addLighteningFall(Dungeon.getPosInMap(indexPos), true, true, true);
-        } else if (this.isThe(mapDataStr, '+')) {
+        } else if (this.isFirstEqual(mapDataStr, '+')) {
             //生成装饰
-            if (this.isThe(mapDataStr, '+0')) {
+            if (mapDataStr=='+0') {
                 //生成营火
                 let camp = this.addBuilding(this.campFire, indexPos);
                 camp.parent = this.node;
@@ -206,32 +210,32 @@ export default class BuildingManager extends cc.Component {
                 fallentree.parent = this.node;
                 fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
                 fallentree.setScale(6, 4);
-            } else if (this.isThe(mapDataStr, '+1')) {
+            } else if (mapDataStr== '+1') {
                 if (Logic.level == 0) {
                     let bed = this.addBuilding(this.bed, indexPos);
                     bed.scale = 6;
                     bed.zIndex = IndexZ.OVERHEAD;
                 }
-            } else if (this.isThe(mapDataStr, '+2')) {
+            } else if (mapDataStr== '+2') {
                 let arrow = this.addBuilding(this.floorDecoration, indexPos);
                 arrow.zIndex = IndexZ.FLOOR;
                 arrow.getComponent(DecorationFloor).changeRes('exitarrow');
-            } else if (this.isThe(mapDataStr, '+3')) {
-                let arrow = this.addBuilding(this.airTranspotModel, indexPos);
+            } else if (mapDataStr== '+3') {
+                this.addBuilding(this.airTranspotModel, indexPos);
             } else {
                 let fd = this.addBuilding(this.floorDecoration, indexPos);
                 fd.zIndex = IndexZ.FLOOR;
                 let df = fd.getComponent(DecorationFloor);
-                if (this.isThe(mapDataStr, '++')) {
+                if (mapDataStr=='++') {
                     df.changeRes('exitarrow');
                 } else {
                     df.changeRes('dev');
                 }
             }
-        } else if (this.isThe(mapDataStr, 'O')) {
+        } else if (this.isFirstEqual(mapDataStr, 'O')) {
             //生成顶部栏
             let head = this.addBuilding(this.overHeadDecorate, indexPos);
-            if (this.isThe(mapDataStr, 'O1')) {
+            if (mapDataStr== 'O1') {
                 head.angle = 90;
             }
             head.zIndex = IndexZ.ROOF;
@@ -265,13 +269,13 @@ export default class BuildingManager extends cc.Component {
             } else {
                 Logic.mapManager.setCurrentBuildingData(c.data);
             }
-        } else if (this.isThe(mapDataStr, 'B')) {
+        } else if (this.isFirstEqual(mapDataStr, 'B')) {
             //生成木盒子 并且根据之前记录的位置放置
             let box = this.addBuilding(this.box, indexPos);
             let b = box.getComponent(Box)
             b.setDefaultPos(indexPos);
             //生成植物
-            if (this.isThe(mapDataStr, 'B1')) {
+            if (mapDataStr== 'B1') {
                 b.boxType = Box.PLANT;
             }
             //设置对应存档盒子的位置
@@ -281,7 +285,7 @@ export default class BuildingManager extends cc.Component {
             } else {
                 Logic.mapManager.setCurrentBuildingData(b.data);
             }
-        } else if (this.isThe(mapDataStr, 'W')) {
+        } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             let decorate = this.addBuilding(this.decorate, indexPos);
             let d = decorate.getComponent(Decorate);
@@ -323,18 +327,18 @@ export default class BuildingManager extends cc.Component {
         } else if (mapDataStr == 'S1') {
             //生成店主
             this.addBuilding(this.shop, indexPos);
-        } else if (this.isThe(mapDataStr, 'D')) {
+        } else if (this.isFirstEqual(mapDataStr, 'D')) {
             this.addDoor(parseInt(mapDataStr[1]), indexPos);
-        } else if (this.isThe(mapDataStr, 'E')) {
+        } else if (this.isFirstEqual(mapDataStr, 'E')) {
             this.addExitDoor(parseInt(mapDataStr[1]), indexPos, exits);
-        } else if (this.isThe(mapDataStr, 'P') && Logic.isCheatMode) {
+        } else if (this.isFirstEqual(mapDataStr, 'P') && Logic.isCheatMode) {
             //生成传送门
             let p = this.addBuilding(this.portal, indexPos);
             let i = parseInt(mapDataStr[1]);
             let portal = p.getComponent(Portal);
             portal.isBackDream = i > 0;
             this.portals.push(portal);
-        } else if (this.isThe(mapDataStr, 'Z')) {
+        } else if (this.isFirstEqual(mapDataStr, 'Z')) {
             if (parseInt(mapDataStr[1]) == 0 || parseInt(mapDataStr[1]) == 1) {
                 let p = this.addBuilding(this.roomBed, indexPos);
                 let rb = p.getComponent(RoomBed);
@@ -344,7 +348,7 @@ export default class BuildingManager extends cc.Component {
                 this.addHitBuilding(dungeon, mapDataStr, indexPos);
             }
 
-        } else if (this.isThe(mapDataStr, 'H')) {
+        } else if (this.isFirstEqual(mapDataStr, 'H')) {
             //生成可打击建筑
             this.addHitBuilding(dungeon, mapDataStr, indexPos)
         }
@@ -352,7 +356,7 @@ export default class BuildingManager extends cc.Component {
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {
         let d = new ExitData();
         for (let e of exits) {
-            if (e.fromIndexPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
+            if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
                 d.valueCopy(e);
                 break;
             }
@@ -461,26 +465,26 @@ export default class BuildingManager extends cc.Component {
         let resName = 'car';
         let equipmentNames = [];
         let itemNames = [];
-        let maxhealth = 5;
-        let scale = 8;
+        let maxhealth = 9999;
+        let scale = 4;
         switch (mapDataStr) {
-            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; break;
+            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8;break;
             case 'Z2': resName = 'roomdesk'; equipmentNames = []; itemNames = ['goldfinger']; maxhealth = 100; break;
-            case 'Z3': resName = 'roomtv'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Z4': resName = 'roomsofa'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Z5': resName = 'roomtable'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Z6': resName = 'roomfridge'; equipmentNames = []; itemNames = []; maxhealth = 9999; scale = 6;break;
-            case 'Z7': resName = 'roomwash'; equipmentNames = []; itemNames = []; maxhealth = 9999; scale = 6;break;
-            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; break;
-            case 'Z9': resName = 'roomstool'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Za': resName = 'roomkitchentable'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Zb': resName = 'roomkitchentable1'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Zc': resName = 'roomkitchentable2'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Zd': resName = 'roomkitchentable3'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Ze': resName = 'roombath'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Zf': resName = 'roomlittletable'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Zg': resName = 'roomlittletable1'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
-            case 'Zh': resName = 'roomlittletable2'; equipmentNames = []; itemNames = []; maxhealth = 9999; break;
+            case 'Z3': resName = 'roomtv';scale = 8; break;
+            case 'Z4': resName = 'roomsofa'; scale = 10;break;
+            case 'Z5': resName = 'roomtable';scale = 10; break;
+            case 'Z6': resName = 'roomfridge'; scale = 6;break;
+            case 'Z7': resName = 'roomwash';break;
+            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100;scale = 6; break;
+            case 'Z9': resName = 'roomstool'; break;
+            case 'Za': resName = 'roomkitchentable'; break;
+            case 'Zb': resName = 'roomkitchentable1'; break;
+            case 'Zc': resName = 'roomkitchentable2'; break;
+            case 'Zd': resName = 'roomkitchentable3'; break;
+            case 'Ze': resName = 'roombath'; break;
+            case 'Zf': resName = 'roomlittletable'; break;
+            case 'Zg': resName = 'roomlittletable1'; break;
+            case 'Zh': resName = 'roomlittletable2'; break;
 
             default: break;
         }
