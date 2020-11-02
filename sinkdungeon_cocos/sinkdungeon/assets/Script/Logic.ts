@@ -59,9 +59,8 @@ export default class Logic extends cc.Component {
 
     static level = 0;
     static chapterIndex = 0;
-    static realLevel = 0;//真实世界层级
-    static lastLevel = 0;//上次层级
-    static lastChapterIndex = 0;//上次章节
+    static lastLevel = 0;//梦境上次层级
+    static lastChapterIndex = 0;//梦境上次章节
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
 
@@ -109,7 +108,6 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
-        Logic.profileManager.data.realLevel = Logic.realLevel;
         Logic.profileManager.data.lastLevel = Logic.lastLevel;
         Logic.profileManager.data.lastChapterIndex = Logic.lastChapterIndex;
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
@@ -125,7 +123,6 @@ export default class Logic extends cc.Component {
         //加载关卡等级
         Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
         Logic.level = Logic.profileManager.data.level;
-        Logic.realLevel = Logic.profileManager.data.realLevel;
         Logic.lastLevel = Logic.profileManager.data.lastLevel;
         Logic.lastChapterIndex = Logic.profileManager.data.lastChapterIndex;
         //加载玩家数据
@@ -190,6 +187,11 @@ export default class Logic extends cc.Component {
     static loadingNextRoom(dir: number) {
         Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         Logic.mapManager.rand4save = null;
+        //非99chapter则保存当前关卡等级
+        if (Logic.chapterIndex != Logic.CHAPTER099) {
+            Logic.lastLevel = Logic.level;
+            Logic.lastChapterIndex = Logic.chapterIndex;
+        }
         //保存数据
         Logic.saveData();
         AudioPlayer.play(AudioPlayer.EXIT);
@@ -205,79 +207,42 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('loading');
         }
     }
-    static loadingNextLevel(isGoReal: boolean, isBackDream: boolean, needSave: boolean, exitData?: ExitData) {
-
+    static loadingNextLevel(exitData: ExitData) {
+        if (!exitData) {
+            return;
+        }
         //如果地图不存在停止加载
-        if (exitData && !isGoReal && !isBackDream) {
-            let data = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel);
-            if (!data) {
-                return;
-            }
+        let levelData = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel);
+        if (!levelData) {
+            return;
         }
-        if (Logic.playerData) {
-            Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
-        }
-        //保存数据
-        if (needSave) {
-            Logic.saveData();
-        }
-        cc.log(`loading next level begin ${Logic.chapterIndex}-${Logic.level}`);
-        if (isGoReal) {
-            //保存当前关卡等级
-            Logic.lastLevel = Logic.level;
-            if (Logic.chapterIndex != Logic.CHAPTER099) {
-                Logic.lastChapterIndex = Logic.chapterIndex;
-            }
-            Logic.level = Logic.realLevel;
-            Logic.chapterIndex = Logic.CHAPTER099;
-        }
+        Logic.saveData();
+        let isBackDream = exitData.fromChapter == Logic.CHAPTER099 && exitData.toChapter != Logic.CHAPTER099;
+        
+        Logic.chapterIndex = exitData.toChapter;
+        Logic.level = exitData.toLevel;
         if (isBackDream) {
-            Logic.realLevel = Logic.level;
             Logic.level = Logic.lastLevel;
             Logic.chapterIndex = Logic.lastChapterIndex;
         }
 
-        // let levelLength = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
-        // let chapterLength = Logic.worldLoader.getChapterLength();
-        //如果关卡到底了判断是否是最后一章游戏完成
-        // if (Logic.level > levelLength - 1 && Logic.chapterIndex >= chapterLength - 1) {
-        //     Logic.profileManager.clearData();
-        //     cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
-        //     cc.director.loadScene('gamefinish');
-        //     return;
-        // }
-        // if (Logic.level > levelLength - 1 && Logic.chapterIndex < chapterLength - 1&&!isGoReal&&!isBackDream) {
-        //     Logic.chapterIndex++;
-        //     Logic.level = 0;
-        // }
-        // if (Logic.level < 0 && Logic.chapterIndex > 0&&!isGoReal&&!isBackDream) {
-        //     Logic.chapterIndex--;
-        //     let length = Logic.worldLoader.getChapterData(Logic.chapterIndex).list.length;
-        //     Logic.level = length - 1;
-        // }
-        let indexPos = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
-        if (exitData && !isBackDream) {
-            Logic.chapterIndex = exitData.toChapter;
-            Logic.level = exitData.toLevel;
-            let data = Logic.worldLoader.getLevelData(exitData.toChapter, exitData.toLevel);
-            let ty = data.height * data.roomHeight - 1 - exitData.toPos.y;
-            let roomX = Math.floor(exitData.toPos.x / data.roomWidth);
-            let roomY = Math.floor(ty / data.roomHeight);
-            indexPos = cc.v3(exitData.toPos.x % data.roomWidth, ty % data.roomHeight);
-            Logic.mapManager.reset(cc.v3(roomX, roomY));
-        } else {
+        if (exitData.toPos.equals(cc.v3(-1, -1))) {
+            Logic.playerData.pos = cc.v3(-1, -1);
             Logic.mapManager.reset();
+        } else {
+            let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y;
+            let roomX = Math.floor(exitData.toPos.x / levelData.roomWidth);
+            let roomY = Math.floor(ty / levelData.roomHeight);
+            Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight);
+            Logic.mapManager.reset(cc.v3(roomX, roomY));
         }
-        Logic.changeDungeonSize();
         let exitPos = Logic.mapManager.getCurrentRoom().exitPos;
-        if (exitData && !isBackDream) {
-            Logic.playerData.pos = indexPos;
-        } else if (exitPos.x != -1 && exitPos.y != -1) {
+        if (Logic.playerData.pos.equals(cc.v3(-1, -1)) && !exitPos.equals(cc.v3(-1, -1))) {
             Logic.playerData.pos = exitPos;
         }
+        Logic.changeDungeonSize();
         Logic.lastBgmIndex = -1;
         cc.director.loadScene('loading');
-        cc.log(`loading next level end ${Logic.chapterIndex}-${Logic.level}`);
     }
 
     static getRandomNum(min, max): number {//生成一个随机数从[min,max]

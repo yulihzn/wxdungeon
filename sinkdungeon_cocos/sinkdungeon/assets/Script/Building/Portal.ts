@@ -75,11 +75,8 @@ export default class Portal extends Building {
             if (this.isOpen) {
                 this.closeGate();
                 Logic.playerData = player.data.clone();
-                if (Logic.playerData.pos.equals(this.data.defaultPos)) {
-                    Logic.playerData.pos.y = this.data.defaultPos.y - 1;
-                }
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
-                Logic.loadingNextLevel(!this.isBackDream, this.isBackDream, true,this.isBackDream?null:ExitData.getRealWorldExitData());
+                Logic.loadingNextLevel(this.isBackDream?ExitData.getDreamExitDataFromReal():ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level));
             }
         }
     }

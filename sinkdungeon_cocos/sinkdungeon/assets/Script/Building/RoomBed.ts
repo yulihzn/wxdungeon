@@ -1,3 +1,4 @@
+import ExitData from "../Data/ExitData";
 import FromData from "../Data/FromData";
 import Dungeon from "../Dungeon";
 import { EventHelper } from "../EventHelper";
@@ -52,7 +53,7 @@ export default class RoomBed extends Building {
                     Logic.playerData.pos.y=this.data.defaultPos.y-1;
                 }
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
-                Logic.loadingNextLevel(false,true,true);
+                Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal());
             },1)
         }
     }

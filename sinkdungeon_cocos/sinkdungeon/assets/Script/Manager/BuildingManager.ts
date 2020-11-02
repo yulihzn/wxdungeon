@@ -150,7 +150,7 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isFirstEqual(mapDataStr, '-')) {
             let dn = this.addBuilding(this.darkness, indexPos);
             dn.zIndex = IndexZ.DARKNESS;
-            if (this.isFirstEqual(mapDataStr, '-0')) {
+            if (mapDataStr== '-0') {
                 dn.zIndex = IndexZ.ROOF;
             }
         } else if (this.isFirstEqual(mapDataStr, '~')) {

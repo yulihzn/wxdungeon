@@ -25,7 +25,6 @@ export default class ProfileData {
     playerItemList:ItemData[] = new Array();
     talentList:TalentData[] = new Array();
     level = 0;//当前层级
-    realLevel = 0;//真实世界层级
     lastLevel = 0;//上次层级
     lastChapterIndex = 0;//上次章节
 }

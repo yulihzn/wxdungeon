@@ -72,7 +72,7 @@ export default class GameOver extends cc.Component {
         Logic.profileManager = new ProfileManager();
         Logic.resetData();
         AudioPlayer.play(AudioPlayer.SELECT);
-        Logic.loadingNextLevel(true, false, false,ExitData.getRealWorldExitData());
+        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level));
     }
     home() {
         Logic.time = '00:00:00';

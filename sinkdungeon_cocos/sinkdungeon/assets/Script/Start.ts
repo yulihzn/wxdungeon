@@ -1,7 +1,5 @@
 import Logic from "./Logic";
-import WxHelper from "./WxHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
-import ProfileManager from "./Manager/ProfileManager";
 
 const {ccclass, property} = cc._decorator;
 

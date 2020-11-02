@@ -29,7 +29,6 @@ export default class ExitDoor extends Building {
     bg: cc.Sprite = null;
     isBackToUpLevel = false;
     dir = 0;
-    playerPos = cc.Vec3.ZERO;
     exitData:ExitData = new ExitData();
 
     // LIFE-CYCLE CALLBACKS:
@@ -50,12 +49,11 @@ export default class ExitDoor extends Building {
             }
             this.node.position = Dungeon.getPosInMap(indexPos);
         }
-        this.playerPos = this.data.defaultPos.clone();
         switch (this.dir % 4) {
-            case 0: this.playerPos.y = this.playerPos.y - 2; break;
-            case 1: this.node.angle = 180; this.playerPos.y = this.playerPos.y + 1; break;
-            case 2: this.node.angle = 90; this.playerPos.x = this.playerPos.x + 1; break;
-            case 3: this.node.angle = -90; this.playerPos.x = this.playerPos.x - 1; break;
+            case 0: break;
+            case 1: this.node.angle = 180;break;
+            case 2: this.node.angle = 90;break;
+            case 3: this.node.angle = -90;break;
         }
         this.bg.getComponentInChildren(cc.Label).string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
     }
@@ -112,11 +110,7 @@ export default class ExitDoor extends Building {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.playerData = player.data.clone();
-                if(Logic.playerData.pos.equals(this.data.defaultPos)){
-                    Logic.playerData.pos=this.playerPos.clone();
-                }
-                
-                Logic.loadingNextLevel( false, false, true,this.exitData);
+                Logic.loadingNextLevel(this.exitData);
             }
         }
     }

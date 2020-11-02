@@ -28,11 +28,22 @@ export default class ExitData {
         data.toLevel = this.toLevel;
         return data;
     }
-    static getRealWorldExitData() {
+    static getRealWorldExitDataFromDream(fromChapter:number,fromLevel:number) {
         let data = new ExitData();
+        data.fromChapter = fromChapter;
+        data.fromLevel = fromLevel;
         data.toChapter = Logic.CHAPTER099;
         data.toLevel = 0;
-        data.toPos = cc.v3(4, 5);
+        data.toPos = cc.v3(6, 7);
+        return data;
+    }
+    static getDreamExitDataFromReal() {
+        let data = new ExitData();
+        data.fromChapter = Logic.CHAPTER099;
+        data.fromLevel = 0;
+        data.toChapter = Logic.lastChapterIndex;
+        data.toLevel = Logic.lastLevel;
+        data.toPos = cc.v3(-1, -1);
         return data;
     }
 

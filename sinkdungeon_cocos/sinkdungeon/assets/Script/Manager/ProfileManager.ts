@@ -65,6 +65,8 @@ export default class ProfileManager{
         //章节名称
         this.data.chapterIndex = data.chapterIndex;
         this.data.level = data.level;
+        this.data.lastLevel = data.lastLevel;
+        this.data.lastChapterIndex = data.lastChapterIndex;
         //玩家装备列表
         for(let i =0;i<data.playerEquipList.length;i++){
             this.data.playerEquipList[i]=data.playerEquipList[i];
