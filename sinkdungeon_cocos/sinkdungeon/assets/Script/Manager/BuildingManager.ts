@@ -418,9 +418,11 @@ export default class BuildingManager extends cc.Component {
 
         let node: cc.Node = null;
         if (mapDataStrIndex == '0' || mapDataStrIndex == '1' || mapDataStrIndex == '2'
-            || mapDataStrIndex == '3' || mapDataStrIndex == '8' || mapDataStrIndex == '#') {
+        || mapDataStrIndex == '3' || mapDataStrIndex == '8'|| mapDataStrIndex == '9' 
+        || mapDataStrIndex == 'e' || mapDataStrIndex == 'f'|| mapDataStrIndex == 'g' 
+        || mapDataStrIndex == 'h' || mapDataStrIndex == '#') {
             node = this.addBuilding(this.wall, indexPos);
-            if (mapDataStrIndex != '8') {
+            if (mapDataStrIndex != '8'&&mapDataStrIndex != '9') {
                 node.zIndex = IndexZ.WALL;
             }
         } else {
@@ -429,49 +431,8 @@ export default class BuildingManager extends cc.Component {
             node.zIndex = IndexZ.WALLCORNER;
         }
         let wall = node.getComponent(Wall);
-        wall.mapStr = mapDataStr;
-        wall.resName = levelData.wallRes;
-        switch (mapDataStrIndex) {
-            case '#': wall.isEmpty = true; break;
-
-            case 'e': wall.isSecond = true;
-            case '0': break;
-
-            case 'f': wall.isSecond = true;
-            case '1': node.angle = 180; wall.isBottom = true; break;
-
-            case 'g': wall.isSecond = true;
-            case '2': node.angle = 90; break;
-
-            case 'h': wall.isSecond = true;
-            case '3': node.angle = -90; break;
-
-            case 'm':
-            case 'i': wall.isSecond = true;
-            case 'a': wall.isInteral = true;
-            case '4': node.angle = -90; break;
-
-            case 'n':
-            case 'j': wall.isSecond = true;
-            case 'b': wall.isInteral = true;
-            case '5': node.angle = 180; break;
-
-            case 'o':
-            case 'k': wall.isSecond = true;
-            case 'c': wall.isInteral = true;
-            case '6': wall.isBottom = true; break;
-
-            case 'p':
-            case 'l': wall.isSecond = true;
-            case 'd': wall.isInteral = true;
-            case '7': wall.isBottom = true; node.scaleX = -1;
-                node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
-                node.getComponent(cc.PhysicsBoxCollider).apply();
-                break;
-        }
-        if (wall.isInteral) {
-            node.zIndex = IndexZ.WALLINTERNAL;
-        }
+        wall.init(mapDataStr,levelData);
+        
     }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
@@ -493,7 +454,7 @@ export default class BuildingManager extends cc.Component {
             case 'Z7': resName = 'roomwash'; break;
             case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; scale = 6; break;
             case 'Z9': resName = 'roomstool'; break;
-            case 'Za': resName = 'roomkitchentable'; break;
+            case 'Za': resName = 'roomkitchentable'; scale = 6;break;
             case 'Zb': resName = 'roomkitchentable1'; break;
             case 'Zc': resName = 'roomkitchentable2'; break;
             case 'Zd': resName = 'roomkitchentable3'; break;

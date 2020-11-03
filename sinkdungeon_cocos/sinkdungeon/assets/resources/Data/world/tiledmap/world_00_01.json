@@ -72,9 +72,24 @@
                  "value":0
                 }, 
                 {
-                 "name":"wallRes",
+                 "name":"wallRes1",
                  "type":"string",
-                 "value":"walltop00anim002"
+                 "value":"walllab00"
+                }, 
+                {
+                 "name":"wallRes2",
+                 "type":"string",
+                 "value":"walllab00"
+                }, 
+                {
+                 "name":"wallRes3",
+                 "type":"string",
+                 "value":"walllab00anim002"
+                }, 
+                {
+                 "name":"wallRes4",
+                 "type":"string",
+                 "value":"walllab00anim002"
                 }, 
                 {
                  "name":"width",

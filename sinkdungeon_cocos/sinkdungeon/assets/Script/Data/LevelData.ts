@@ -11,7 +11,10 @@ export default class LevelData {
     roomHeight: number = 0;//房间高
     floorRes = '';//地板资源名
     floorCoverRes = '';//地板覆盖物
-    wallRes = '';//墙壁资源名（只针对非边界装饰墙）
+    wallRes1 = '';//墙壁资源名1（#0,1,2,3, 外角4,5,6,7, 内角8,9,10,11）
+    wallRes2 = '';//墙壁资源名2 (#墙12,13,14,15, 外角16,17,18,19, 内角20,21,22,23)
+    wallRes3 = '';//墙壁资源名3（独立矮墙体a)
+    wallRes4 = '';//墙壁资源名4(独立矮墙体b)
     doorRes = '';//门资源名
     exitRes = '';//出入口资源名
     needRadomDecorate = false;
@@ -25,40 +28,40 @@ export default class LevelData {
     //     this.init(strs);
     // }
     
-    private init(strs: string) {
-        if (!strs || strs.length < 1) {
-            return;
-        }
-        let split = strs.split('$');
-        let temp: LevelData = JSON.parse(split[0]);
-        this.valueCopy(temp);
-        //去掉第一个回车和最后1个回车
-        let str = split[1];
-        str = str.substring(2, str.length - 2);
-        let arr = str.split('\r\n')
-        this.map = new Array();
-        for (let i = 0; i < arr.length; i++) {
-            this.map[i] = new Array();
-        }
-        for (let i = 0; i < arr.length; i++) {
-            //y的方向在txt里是相反的
-            let row = arr[arr.length - 1 - i].split('');
-            let k = 0;
-            for (let j = 0; j < row.length - 1; k++) {
-                this.map[i][k] = row[j] + row[j + 1];
-                j += 2;
-            }
-        }
-        //对应行列在txt里是反过来的
-        let turnArr = new Array();
-        for (let i = 0; i < this.map[0].length; i++) {
-            turnArr[i] = new Array();
-            for (let j = 0; j < this.map.length; j++) {
-                turnArr[i][j] = this.map[j][i];
-            }
-        }
-        this.map = turnArr;
-    }
+    // private init(strs: string) {
+    //     if (!strs || strs.length < 1) {
+    //         return;
+    //     }
+    //     let split = strs.split('$');
+    //     let temp: LevelData = JSON.parse(split[0]);
+    //     this.valueCopy(temp);
+    //     //去掉第一个回车和最后1个回车
+    //     let str = split[1];
+    //     str = str.substring(2, str.length - 2);
+    //     let arr = str.split('\r\n')
+    //     this.map = new Array();
+    //     for (let i = 0; i < arr.length; i++) {
+    //         this.map[i] = new Array();
+    //     }
+    //     for (let i = 0; i < arr.length; i++) {
+    //         //y的方向在txt里是相反的
+    //         let row = arr[arr.length - 1 - i].split('');
+    //         let k = 0;
+    //         for (let j = 0; j < row.length - 1; k++) {
+    //             this.map[i][k] = row[j] + row[j + 1];
+    //             j += 2;
+    //         }
+    //     }
+    //     //对应行列在txt里是反过来的
+    //     let turnArr = new Array();
+    //     for (let i = 0; i < this.map[0].length; i++) {
+    //         turnArr[i] = new Array();
+    //         for (let j = 0; j < this.map.length; j++) {
+    //             turnArr[i][j] = this.map[j][i];
+    //         }
+    //     }
+    //     this.map = turnArr;
+    // }
     valueCopy(data: LevelData) {
         this.name = data.name;
         this.index = data.index;
@@ -72,7 +75,10 @@ export default class LevelData {
         this.roomTypes = data.roomTypes;
         this.floorRes = data.floorRes;
         this.floorCoverRes = data.floorCoverRes;
-        this.wallRes = data.wallRes;
+        this.wallRes1 = data.wallRes1;
+        this.wallRes2 = data.wallRes2;
+        this.wallRes3 = data.wallRes3;
+        this.wallRes4 = data.wallRes4;
         this.doorRes = data.doorRes;
         this.exitRes = data.exitRes;
         this.exits = data.exits;

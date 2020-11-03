@@ -3,7 +3,6 @@ import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
-import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,7 +48,7 @@ export default class Door extends Building {
             this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim000`];
         }
         if (this.bg) {
-            let spriteframe = Logic.spriteFrames[`walltop0${Logic.chapterIndex}anim001`];
+            let spriteframe = Logic.spriteFrames[`${Logic.worldLoader.getCurrentLevelData().wallRes1}anim001`];
             this.bg.spriteFrame = spriteframe;
             this.bg1.spriteFrame = spriteframe;
             this.bg2.spriteFrame = spriteframe;

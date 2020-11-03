@@ -77,7 +77,7 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER099: this.changeRes('exit000'); break;
         }
         if (this.bg) {
-            let spriteframe = Logic.spriteFrames[`walltop0${Logic.chapterIndex}anim001`];
+            let spriteframe = Logic.spriteFrames[`${Logic.worldLoader.getCurrentLevelData().wallRes1}anim001`];
             this.bg.spriteFrame = spriteframe;
             this.bg.node.parent = this.node.parent;
             this.bg.node.position = this.node.position;
