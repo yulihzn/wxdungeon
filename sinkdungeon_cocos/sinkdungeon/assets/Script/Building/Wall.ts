@@ -24,10 +24,12 @@ export default class Wall extends Building {
     shadowsprite:cc.Sprite;
     mapStr:string = '##';
     resName:string = '';
-    isCorner = false;
-    isInteral = false;
+    resNameSecond:string = '';
+    isCorner = false;//是否角落
+    isInteral = false;//是否内角
     isBottom = false;
     isEmpty = false;
+    isSecond = false;//是否次级墙体
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -48,14 +50,17 @@ export default class Wall extends Building {
     start () {
         this.node.opacity = 255;
         this.changeRes(this.getRes());
-        if(this.mapStr[1] == '8'){
+        if(this.mapStr[1] == '8'||this.mapStr[1] == '9'){
             let collider = this.node.getComponent(cc.BoxCollider);
             collider.offset = cc.Vec2.ZERO;
         }
     }
+    init(resName){
+
+    }
     getRes():string{
         let s = `walltop0${Logic.chapterIndex}anim000`;
-        if(this.mapStr[1] == '8'){
+        if(this.mapStr[1] == '8'||this.mapStr[1] == '9'){
             return this.resName;
         }
         if(this.isBottom){

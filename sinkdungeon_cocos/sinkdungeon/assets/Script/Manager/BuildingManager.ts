@@ -114,7 +114,7 @@ export default class BuildingManager extends cc.Component {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
-    private isFirstEqual(mapStr:string,typeStr:string){
+    private isFirstEqual(mapStr: string, typeStr: string) {
         let isequal = mapStr[0] == typeStr;
         return isequal;
     }
@@ -150,7 +150,7 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isFirstEqual(mapDataStr, '-')) {
             let dn = this.addBuilding(this.darkness, indexPos);
             dn.zIndex = IndexZ.DARKNESS;
-            if (mapDataStr== '-0') {
+            if (mapDataStr == '-0') {
                 dn.zIndex = IndexZ.ROOF;
             }
         } else if (this.isFirstEqual(mapDataStr, '~')) {
@@ -195,7 +195,7 @@ export default class BuildingManager extends cc.Component {
             this.addLighteningFall(Dungeon.getPosInMap(indexPos), true, true, true);
         } else if (this.isFirstEqual(mapDataStr, '+')) {
             //生成装饰
-            if (mapDataStr=='+0') {
+            if (mapDataStr == '+0') {
                 //生成营火
                 let camp = this.addBuilding(this.campFire, indexPos);
                 camp.parent = this.node;
@@ -210,23 +210,23 @@ export default class BuildingManager extends cc.Component {
                 fallentree.parent = this.node;
                 fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
                 fallentree.setScale(6, 4);
-            } else if (mapDataStr== '+1') {
+            } else if (mapDataStr == '+1') {
                 if (Logic.level == 0) {
                     let bed = this.addBuilding(this.bed, indexPos);
                     bed.scale = 6;
                     bed.zIndex = IndexZ.OVERHEAD;
                 }
-            } else if (mapDataStr== '+2') {
+            } else if (mapDataStr == '+2') {
                 let arrow = this.addBuilding(this.floorDecoration, indexPos);
                 arrow.zIndex = IndexZ.FLOOR;
                 arrow.getComponent(DecorationFloor).changeRes('exitarrow');
-            } else if (mapDataStr== '+3') {
+            } else if (mapDataStr == '+3') {
                 this.addBuilding(this.airTranspotModel, indexPos);
             } else {
                 let fd = this.addBuilding(this.floorDecoration, indexPos);
                 fd.zIndex = IndexZ.FLOOR;
                 let df = fd.getComponent(DecorationFloor);
-                if (mapDataStr=='++') {
+                if (mapDataStr == '++') {
                     df.changeRes('exitarrow');
                 } else {
                     df.changeRes('dev');
@@ -235,7 +235,7 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isFirstEqual(mapDataStr, 'O')) {
             //生成顶部栏
             let head = this.addBuilding(this.overHeadDecorate, indexPos);
-            if (mapDataStr== 'O1') {
+            if (mapDataStr == 'O1') {
                 head.angle = 90;
             }
             head.zIndex = IndexZ.ROOF;
@@ -275,7 +275,7 @@ export default class BuildingManager extends cc.Component {
             let b = box.getComponent(Box)
             b.setDefaultPos(indexPos);
             //生成植物
-            if (mapDataStr== 'B1') {
+            if (mapDataStr == 'B1') {
                 b.boxType = Box.PLANT;
             }
             //设置对应存档盒子的位置
@@ -433,20 +433,36 @@ export default class BuildingManager extends cc.Component {
         wall.resName = levelData.wallRes;
         switch (mapDataStrIndex) {
             case '#': wall.isEmpty = true; break;
+
+            case 'e': wall.isSecond = true;
             case '0': break;
+
+            case 'f': wall.isSecond = true;
             case '1': node.angle = 180; wall.isBottom = true; break;
+
+            case 'g': wall.isSecond = true;
             case '2': node.angle = 90; break;
+
+            case 'h': wall.isSecond = true;
             case '3': node.angle = -90; break;
 
+            case 'm':
+            case 'i': wall.isSecond = true;
             case 'a': wall.isInteral = true;
             case '4': node.angle = -90; break;
 
+            case 'n':
+            case 'j': wall.isSecond = true;
             case 'b': wall.isInteral = true;
             case '5': node.angle = 180; break;
 
+            case 'o':
+            case 'k': wall.isSecond = true;
             case 'c': wall.isInteral = true;
             case '6': wall.isBottom = true; break;
 
+            case 'p':
+            case 'l': wall.isSecond = true;
             case 'd': wall.isInteral = true;
             case '7': wall.isBottom = true; node.scaleX = -1;
                 node.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
@@ -468,14 +484,14 @@ export default class BuildingManager extends cc.Component {
         let maxhealth = 9999;
         let scale = 4;
         switch (mapDataStr) {
-            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8;break;
+            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; break;
             case 'Z2': resName = 'roomdesk'; equipmentNames = []; itemNames = ['goldfinger']; maxhealth = 100; break;
-            case 'Z3': resName = 'roomtv';scale = 8; break;
-            case 'Z4': resName = 'roomsofa'; scale = 10;break;
-            case 'Z5': resName = 'roomtable';scale = 10; break;
-            case 'Z6': resName = 'roomfridge'; scale = 6;break;
-            case 'Z7': resName = 'roomwash';break;
-            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100;scale = 6; break;
+            case 'Z3': resName = 'roomtv'; scale = 8; break;
+            case 'Z4': resName = 'roomsofa'; scale = 10; break;
+            case 'Z5': resName = 'roomtable'; scale = 10; break;
+            case 'Z6': resName = 'roomfridge'; scale = 6; break;
+            case 'Z7': resName = 'roomwash'; break;
+            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; scale = 6; break;
             case 'Z9': resName = 'roomstool'; break;
             case 'Za': resName = 'roomkitchentable'; break;
             case 'Zb': resName = 'roomkitchentable1'; break;
@@ -488,10 +504,10 @@ export default class BuildingManager extends cc.Component {
 
             default: break;
         }
-        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth,scale);
+        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale);
         let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
         if (saveHit) {
-            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth,scale);
+            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale);
         } else {
             Logic.mapManager.setCurrentBuildingData(h.data);
         }

@@ -207,7 +207,7 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('loading');
         }
     }
-    static loadingNextLevel(exitData: ExitData) {
+    static loadingNextLevel(exitData: ExitData,needSave:boolean) {
         if (!exitData) {
             return;
         }
@@ -216,7 +216,9 @@ export default class Logic extends cc.Component {
         if (!levelData) {
             return;
         }
-        Logic.saveData();
+        if(needSave){
+            Logic.saveData();
+        }
         let isBackDream = exitData.fromChapter == Logic.CHAPTER099 && exitData.toChapter != Logic.CHAPTER099;
         
         Logic.chapterIndex = exitData.toChapter;

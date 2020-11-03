@@ -110,7 +110,7 @@ export default class ExitDoor extends Building {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.playerData = player.data.clone();
-                Logic.loadingNextLevel(this.exitData);
+                Logic.loadingNextLevel(this.exitData,true);
             }
         }
     }

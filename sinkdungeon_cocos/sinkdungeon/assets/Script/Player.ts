@@ -710,6 +710,7 @@ export default class Player extends Actor {
         this.scheduleOnce(() => {
             Logic.dieFrom.valueCopy(from);
             cc.audioEngine.stopMusic();
+            Logic.mapManager.setCurrentRoomExitPos(this.pos);
             cc.director.loadScene('gameover');
         }, 1.5);
     }
