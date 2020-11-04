@@ -868,6 +868,114 @@
         "blunt":1,
         "desc": "厨师的汤勺"
     },
+    "weapon031": {
+        "nameCn": "海盗弯刀",
+        "nameEn": "Pirate Blade",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon031",
+        "common": {
+            "damageMin": 2,
+            "damageMax": 1,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "maxHealth": 0
+        },
+        "stab":0,
+        "desc": "真正的海盗"
+    },
+    "weapon032": {
+        "nameCn": "破碎的酒瓶",
+        "nameEn": "Wine Bottle",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon032",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 1,
+            "realDamage":1,
+            "realRate":10,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":1,
+        "desc": "简直是酒吧凶器"
+    },
+    "weapon033": {
+        "nameCn": "千本",
+        "nameEn": "Senbon",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon033",
+        "exBulletCombo2":1,
+        "exBulletTypeAttack":"bullet030",
+        "exBulletRate":100,
+        "common": {
+            "damageMin": 1,
+            "damageMax": 1,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 1,
+            "moveSpeed": 0,
+            "attackSpeed": 40,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":1,
+        "extraInfo":"可以发射",
+        "desc": "nininininja",
+        "far": 0
+    },
+    "weapon034": {
+        "nameCn": "盘龙棍",
+        "nameEn": "Dragon Stick",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#a48700",
+        "img": "weapon034",
+        "exBulletCombo2":0,
+        "exBulletOffsetX":0,
+        "exBulletRate":0,
+        "common": {
+            "damageMin": 3,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 5,
+            "attackSpeed": 60,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":0,
+        "desc": "金黄色龙头看起来很生猛",
+        "far": 1
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",
@@ -1157,8 +1265,8 @@
         "desc": "经典92"
     },
     "helmet002": {
-        "nameCn": "渔夫帽",
-        "nameEn": "Bucket Hat",
+        "nameCn": "侦探帽",
+        "nameEn": "Detective Hat",
         "equipmetType": "helmet",
         "prefix": "",
         "color": "#ffffff",
@@ -1176,7 +1284,7 @@
             "dodge": 0,
             "maxHealth": 1
         },
-        "desc": "你就像一个渔夫"
+        "desc": "侦探社款的帽子"
     },
     "helmet003": {
         "nameCn": "海盗帽",
@@ -1753,6 +1861,31 @@
         },
         "desc": "医用帽子"
     },
+    "helmet027": {
+        "nameCn": "剑道面具",
+        "nameEn": "Sword Helmet",
+        "equipmetType": "helmet",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "helmet027",
+        "hideHair":1,
+        "common": {
+            "remoteDamage":0,
+            "remoteCritRate":0,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 2,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 1
+        },
+        "desc": "医用帽子"
+    },
     "clothes001": {
         "nameCn": "背心",
         "nameEn": "Vest",
@@ -2200,7 +2333,6 @@
         },
         "desc": "很普通白大褂"
     },
-    
     "clothes021": {
         "nameCn": "黑色围裙",
         "nameEn": "Apron Clothes",
@@ -2223,6 +2355,28 @@
         },
         "desc": "像个屠夫一样"
     },
+    "clothes022": {
+        "nameCn": "侦探服",
+        "nameEn": "Detective Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes022",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 30,
+            "dodge": 0,
+            "maxHealth": 1
+        },
+        "desc": "侦探社款式"
+    },
     "cloak001": {
         "nameCn": "战袍",
         "nameEn": "Warrior Cloak",
@@ -2238,12 +2392,34 @@
             "defence": 1,
             "lifeDrain": 0,
             "damageBack": 0,
-            "moveSpeed": 80,
+            "moveSpeed": 40,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
         },
         "desc": "勇士需要一件战袍"
+    },
+    "cloak002": {
+        "nameCn": "海盗披风",
+        "nameEn": "Pirate Cloak",
+        "equipmetType": "cloak",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "cloak002",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 40,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "desc": "帅气的海盗披风"
     },
     "trousers001": {
         "nameCn": "裤子",

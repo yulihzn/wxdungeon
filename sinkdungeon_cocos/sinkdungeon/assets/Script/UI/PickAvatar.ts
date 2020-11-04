@@ -275,7 +275,7 @@ export default class PickAvatar extends cc.Component {
         });
         //发型
         let hairList = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 10; i++) {
             hairList.push(new AttributeData(i, `样式${i}`, `avatarhair0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
         }
         this.hairSelector = this.addAttributeSelector('发型：', hairList)
@@ -291,7 +291,7 @@ export default class PickAvatar extends cc.Component {
         })
         //眼睛
         let eyesList = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 7; i++) {
             eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
         }
         this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList)
@@ -307,7 +307,7 @@ export default class PickAvatar extends cc.Component {
         })
         //面颊
         let faceList = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 9; i++) {
             faceList.push(new AttributeData(i, `样式${i}`, `avatarface0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
         }
         this.faceSelector = this.addAttributeSelector('面颊：', faceList)
