@@ -146,6 +146,15 @@ export default class WorldLoader {
                 level.valueCopy(temp);
                 data.list.push(level);
             }
+            //按下标由低到高排序level
+            this.realWorldMap.list.sort((a:LevelData,b:LevelData)=>{
+                return a.index-b.index;
+            });
+            for(let c of this.worldMap){
+                c.list.sort((a:LevelData,b:LevelData)=>{
+                    return a.index-b.index;
+                });
+            }
             this.isloaded = true;
             cc.log('world loaded');
         })
@@ -235,7 +244,7 @@ export default class WorldLoader {
         return this.worldMap[chapterIndex];
     }
 
-    getLevelList(chapterIndex: number): LevelData[] {
+    private getLevelList(chapterIndex: number): LevelData[] {
         return this.getChapterData(chapterIndex).list;
     }
     getLevelData(chapterIndex: number, levelIndex: number): LevelData {
