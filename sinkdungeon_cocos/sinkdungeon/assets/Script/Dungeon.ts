@@ -170,7 +170,7 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].coverPrefix = leveldata.floorCoverRes;
                     this.map[i][j].floorPrefix = leveldata.floorRes;
                 }
-                if(this.isFirstEqual(mapData[i][j], "*") && mapData[i][j] != '*4'){
+                if(this.isFirstEqual(mapData[i][j], "*")){
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
