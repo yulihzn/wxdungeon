@@ -219,7 +219,7 @@ export default class Dungeon extends cc.Component {
                 if (!Logic.mapManager.isCurrentRoomStateClear()
                     || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
                     ) {
-                    this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
+                    // this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
                 }
 
             }
@@ -227,11 +227,10 @@ export default class Dungeon extends cc.Component {
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
-        // this.light.init(this.player.node);
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
         && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
-            this.monsterManager.addRandomMonsters(this);
+            // this.monsterManager.addRandomMonsters(this);
         }
         this.setDoors(true,true);
         cc.log('load finished');

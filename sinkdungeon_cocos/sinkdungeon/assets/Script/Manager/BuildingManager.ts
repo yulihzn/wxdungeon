@@ -101,6 +101,8 @@ export default class BuildingManager extends cc.Component {
     roomBed: cc.Prefab = null;
     @property(cc.Prefab)
     mist: cc.Prefab = null;
+    @property(cc.Prefab)
+    shipStairs:cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
@@ -331,7 +333,7 @@ export default class BuildingManager extends cc.Component {
             this.addDoor(parseInt(mapDataStr[1]), indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'E')) {
             this.addExitDoor(parseInt(mapDataStr[1]), indexPos, exits);
-        } else if (this.isFirstEqual(mapDataStr, 'P') && Logic.isCheatMode) {
+        } else if (this.isFirstEqual(mapDataStr, 'P')) {
             //生成传送门
             let p = this.addBuilding(this.portal, indexPos);
             let i = parseInt(mapDataStr[1]);
@@ -351,6 +353,17 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isFirstEqual(mapDataStr, 'H')) {
             //生成可打击建筑
             this.addHitBuilding(dungeon, mapDataStr, indexPos)
+        } else if (mapDataStr == 'R0') {
+            let node = this.addBuilding(this.shipStairs, indexPos);
+            node.setScale(16);
+            node.zIndex = IndexZ.WALLINTERNAL;
+        }
+        else if (mapDataStr == 'R1') {
+            let node = this.addBuilding(this.shipStairs, indexPos);
+            node.setScale(-16,16);
+            node.getComponent(cc.PhysicsBoxCollider).offset = cc.v2(-8,0);
+            node.getComponent(cc.PhysicsBoxCollider).apply();
+            node.zIndex = IndexZ.WALLINTERNAL;
         }
     }
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {

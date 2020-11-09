@@ -431,6 +431,10 @@
             <key type="filename">tile/tile_room002.png</key>
             <key type="filename">tile/tile_room003.png</key>
             <key type="filename">tile/tile_room004.png</key>
+            <key type="filename">tile/tile_shiproom001.png</key>
+            <key type="filename">tile/tile_shiproom002.png</key>
+            <key type="filename">tile/tile_shiproom003.png</key>
+            <key type="filename">tile/tile_shiproom004.png</key>
             <key type="filename">tile/tilewall.png</key>
             <key type="filename">ui/boxbroken001.png</key>
             <key type="filename">ui/boxbroken002.png</key>
@@ -1475,6 +1479,21 @@
                 <rect>12,8,24,16</rect>
                 <key>scale9Paddings</key>
                 <rect>12,8,24,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/shipstairs.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,10,16,20</rect>
+                <key>scale9Paddings</key>
+                <rect>8,10,16,20</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

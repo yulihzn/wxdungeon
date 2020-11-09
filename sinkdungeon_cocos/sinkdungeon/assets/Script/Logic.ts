@@ -223,13 +223,12 @@ export default class Logic extends cc.Component {
         
         Logic.chapterIndex = exitData.toChapter;
         Logic.level = exitData.toLevel;
-        if (isBackDream) {
-            Logic.level = Logic.lastLevel;
-            Logic.chapterIndex = Logic.lastChapterIndex;
-        }
-
         if (exitData.toPos.equals(cc.v3(-1, -1))) {
             Logic.playerData.pos = cc.v3(-1, -1);
+            if (isBackDream) {
+                Logic.level = Logic.lastLevel;
+                Logic.chapterIndex = Logic.lastChapterIndex;
+            }
             Logic.mapManager.reset();
         } else {
             let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y;

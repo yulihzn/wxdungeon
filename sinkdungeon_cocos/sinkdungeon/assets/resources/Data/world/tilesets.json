@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":130,
+ "tilecount":132,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -1985,6 +1985,20 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"#9"
+        }, 
+        {
+         "id":416,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/shipstairs0.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"R0"
+        }, 
+        {
+         "id":417,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/shipstairs1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"R1"
         }],
  "tilewidth":16,
  "type":"tileset",
