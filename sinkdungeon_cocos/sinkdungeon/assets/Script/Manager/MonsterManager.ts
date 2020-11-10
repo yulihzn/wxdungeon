@@ -215,7 +215,7 @@ export default class MonsterManager extends cc.Component {
         else if (mapDataStr == 'z3') {
             dungeon.shakeForKraken();
             this.addBoss(this.kraken, 'iconboss003', this.maxHealth03, 2, 3.5
-                , cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Dungeon.HEIGHT_SIZE + 1), dungeon);
+                , indexPos, dungeon);
         }
         else if (mapDataStr == 'z4') {
             this.addBossSlime(0, indexPos, dungeon);
