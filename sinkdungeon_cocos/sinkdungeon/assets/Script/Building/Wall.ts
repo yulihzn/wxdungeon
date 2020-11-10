@@ -114,8 +114,6 @@ export default class Wall extends Building {
             case '#d': this.isInteral = true;
             case '#l':
             case '#7': this.isBottom = true; this.node.scaleX = -1;
-                this.getComponent(cc.PhysicsBoxCollider).offset.x = 64;
-                this.getComponent(cc.PhysicsBoxCollider).apply();
                 break;
         }
         if (this.isInteral) {

@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":132,
+ "tilecount":144,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -1588,7 +1588,7 @@
         }, 
         {
          "id":368,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/entrydoor4.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/exitdoor5.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -1999,6 +1999,90 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"R1"
+        }, 
+        {
+         "id":418,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/exitdoor6.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Ea"
+        }, 
+        {
+         "id":419,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/exitdoor7.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Eb"
+        }, 
+        {
+         "id":421,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate0.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W0"
+        }, 
+        {
+         "id":422,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W1"
+        }, 
+        {
+         "id":423,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W2"
+        }, 
+        {
+         "id":424,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W3"
+        }, 
+        {
+         "id":425,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate4.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W4"
+        }, 
+        {
+         "id":426,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate5.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W5"
+        }, 
+        {
+         "id":427,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate6.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W6"
+        }, 
+        {
+         "id":428,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate7.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W7"
+        }, 
+        {
+         "id":429,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate8.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W8"
+        }, 
+        {
+         "id":430,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/decorate9.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"W9"
         }],
  "tilewidth":16,
  "type":"tileset",

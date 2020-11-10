@@ -42,15 +42,19 @@ export default class ExitDoor extends Building {
             this.bg.node.opacity = 0;
             let indexPos = this.data.defaultPos.clone();
             let collider = this.node.getComponent(cc.BoxCollider);
+            collider.size = cc.size(128,128);
+                collider.offset = cc.v2(0,0);
             if(this.dir==8){
                 indexPos.y+=1;
-                collider.size = cc.size(128,128);
-                collider.offset = cc.v2(0,0);
             }
             if(this.dir==9){
                 indexPos.y-=1;
-                collider.size = cc.size(128,128);
-                collider.offset = cc.v2(0,0);
+            }
+            if(this.dir==10){
+                indexPos.x-=1;
+            }
+            if(this.dir==11){
+                indexPos.x+=1;
             }
             this.node.position = Dungeon.getPosInMap(indexPos);
         }

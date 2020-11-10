@@ -332,7 +332,15 @@ export default class BuildingManager extends cc.Component {
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             this.addDoor(parseInt(mapDataStr[1]), indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'E')) {
-            this.addExitDoor(parseInt(mapDataStr[1]), indexPos, exits);
+            let dir = parseInt(mapDataStr[1]);
+            if(isNaN(dir)){
+                if(mapDataStr=='Ea'){
+                    dir = 10;
+                }else if(mapDataStr=='Eb'){
+                    dir = 11;
+                }
+            }
+            this.addExitDoor(dir, indexPos, exits);
         } else if (this.isFirstEqual(mapDataStr, 'P')) {
             //生成传送门
             let p = this.addBuilding(this.portal, indexPos);
@@ -367,7 +375,7 @@ export default class BuildingManager extends cc.Component {
         }
     }
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {
-        let d = new ExitData();
+        let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level);
         for (let e of exits) {
             if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
                 d.valueCopy(e);

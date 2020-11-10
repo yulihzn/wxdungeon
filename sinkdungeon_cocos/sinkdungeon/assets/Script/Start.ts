@@ -12,8 +12,11 @@ export default class Start extends cc.Component {
     cheatButton:cc.Node = null;
     @property(cc.Node)
     debugButton:cc.Node = null;
+    @property(cc.Node)
+    tourButton:cc.Node = null;
     cheatClickCount = 0;
     debugClickCount = 0;
+    tourClickCount = 0;
     start () {
         // init logic
         if(this.continueButton){
@@ -81,9 +84,19 @@ export default class Start extends cc.Component {
             
         }
     }
-    loadTest(){
-        // cc.director.loadScene('chunktest');
-        cc.director.loadScene('test');
+    tourChange(){
+        if(!this.tourButton){
+            return;
+        }
+        this.cheatClickCount++;
+        if(this.cheatClickCount>2){
+            this.cheatClickCount = 0;
+            Logic.isTour = true;
+            this.tourButton.opacity = Logic.isTour?255:0;
+        }else{
+            Logic.isTour = false;
+            this.tourButton.opacity = 0;
+        }
     }
     
 }

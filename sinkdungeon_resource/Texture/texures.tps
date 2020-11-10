@@ -431,6 +431,10 @@
             <key type="filename">tile/tile_room002.png</key>
             <key type="filename">tile/tile_room003.png</key>
             <key type="filename">tile/tile_room004.png</key>
+            <key type="filename">tile/tile_shiphall001.png</key>
+            <key type="filename">tile/tile_shiphall002.png</key>
+            <key type="filename">tile/tile_shiphall003.png</key>
+            <key type="filename">tile/tile_shiphall004.png</key>
             <key type="filename">tile/tile_shiproom001.png</key>
             <key type="filename">tile/tile_shiproom002.png</key>
             <key type="filename">tile/tile_shiproom003.png</key>

@@ -64,11 +64,11 @@ export default class Dungeon extends cc.Component {
     dungeonStyleManager: DungeonStyleManager = null;//装饰管理
     coinManager: CoinManger = null;//金币管理
     buildingManager: BuildingManager = null;//建筑管理
-    light:Light = null;
+    light: Light = null;
     anim: cc.Animation;
     CameraZoom = 1;
     isInitFinish = false;
-    currentPos = cc.v3(0,0);
+    currentPos = cc.v3(0, 0);
 
     onLoad() {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
@@ -87,7 +87,7 @@ export default class Dungeon extends cc.Component {
             // this.addOilGold(event.detail.pos, event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_ITEM, (event) => {
-            this.addItem(event.detail.pos, event.detail.res,event.detail.count);
+            this.addItem(event.detail.pos, event.detail.res, event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
@@ -135,15 +135,15 @@ export default class Dungeon extends cc.Component {
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
-        cc.tween(this.fog).to(1,{scale:1.2}).start();
+        cc.tween(this.fog).to(1, { scale: 1.2 }).start();
         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
         let opvalue = 0;
-        if(Logic.chapterIndex == Logic.CHAPTER099){
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
             opvalue = 150;
-            blackcenter.color = cc.color(3,0,25);
+            blackcenter.color = cc.color(3, 0, 25);
         }
-        cc.tween(blackcenter).delay(0.2).to(1,{opacity:opvalue}).start();
-        this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x,Logic.mapManager.getCurrentRoom().y);
+        cc.tween(blackcenter).delay(0.2).to(1, { opacity: opvalue }).start();
+        this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y);
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
         let exits = leveldata.getExitList();
@@ -170,11 +170,11 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].coverPrefix = leveldata.floorCoverRes;
                     this.map[i][j].floorPrefix = leveldata.floorRes;
                 }
-                if(this.isFirstEqual(mapData[i][j], "*")){
+                if (this.isFirstEqual(mapData[i][j], "*")) {
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
-                this.buildingManager.addBuildingsFromMap(this, mapData[i][j],cc.v3(i,j),leveldata,exits);
+                this.buildingManager.addBuildingsFromMap(this, mapData[i][j], cc.v3(i, j), leveldata, exits);
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     //生成心
@@ -216,10 +216,10 @@ export default class Dungeon extends cc.Component {
                 }
 
                 //房间未清理时加载怪物
-                if (!Logic.mapManager.isCurrentRoomStateClear()
-                    || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
-                    ) {
-                    // this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
+                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
+                    if (!Logic.isTour) {
+                        this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
+                    }
                 }
 
             }
@@ -229,25 +229,25 @@ export default class Dungeon extends cc.Component {
         this.player.node.parent = this.node;
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
-        && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())) {
-            // this.monsterManager.addRandomMonsters(this);
+            && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())&&!Logic.isTour) {
+            this.monsterManager.addRandomMonsters(this);
         }
-        this.setDoors(true,true);
+        this.setDoors(true, true);
         cc.log('load finished');
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             this.isInitFinish = true;
-        },1)
+        }, 1)
     }
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
-    private isFirstEqual(mapStr:string,typeStr:string){
+    private isFirstEqual(mapStr: string, typeStr: string) {
         let isequal = mapStr[0] == typeStr;
         return isequal;
     }
-    addItem(pos: cc.Vec3, resName: string,count?:number, shopTable?: ShopTable) {
-        if (!this.item||!Logic.items[resName]) {
+    addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable) {
+        if (!this.item || !Logic.items[resName]) {
             return;
         }
         let item = cc.instantiate(this.item);
@@ -255,7 +255,7 @@ export default class Dungeon extends cc.Component {
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         item.zIndex = IndexZ.OVERHEAD;
-        item.getComponent(Item).init(resName, indexpos.clone(), count,shopTable);
+        item.getComponent(Item).init(resName, indexpos.clone(), count, shopTable);
         let data = item.getComponent(Item).data;
         let curritems = Logic.mapManager.getCurrentMapItems();
         if (curritems) {
@@ -270,14 +270,14 @@ export default class Dungeon extends cc.Component {
 
     /**掉落石头 */
     public addFallStone(pos: cc.Vec3, isAuto: boolean, withFire?: boolean) {
-        this.buildingManager.addFallStone(pos,isAuto,withFire);
+        this.buildingManager.addFallStone(pos, isAuto, withFire);
     }
     /**落雷 */
     private addLighteningFall(pos: cc.Vec3, isTrigger: boolean, needPrepare: boolean, showArea: boolean, damagePoint?: number) {
-        if(!this.buildingManager){
+        if (!this.buildingManager) {
             return;
         }
-        this.buildingManager.addLighteningFall(pos,isTrigger,needPrepare,showArea,damagePoint);
+        this.buildingManager.addLighteningFall(pos, isTrigger, needPrepare, showArea, damagePoint);
     }
 
     /**冰刺 */
@@ -344,7 +344,7 @@ export default class Dungeon extends cc.Component {
         if (curritems) {
             for (let tempeitem of curritems) {
                 if (!tempeitem.isTaken) {
-                    this.addItem(Dungeon.getPosInMap(tempeitem.pos), tempeitem.resName,tempeitem.count);
+                    this.addItem(Dungeon.getPosInMap(tempeitem.pos), tempeitem.resName, tempeitem.count);
                 }
             }
         }
@@ -461,7 +461,7 @@ export default class Dungeon extends cc.Component {
         }
         //检查踏板是否触发过
         for (let footboard of this.buildingManager.footboards) {
-            if (!footboard.isOpen&&!footboard.hasActive) {
+            if (!footboard.isOpen && !footboard.hasActive) {
                 isClear = false;
             }
         }
@@ -470,15 +470,15 @@ export default class Dungeon extends cc.Component {
             isClear = true;
         }
         this.setDoors(isClear);
-        if(isClear){
-            Logic.mapManager.setRoomClear(this.currentPos.x,this.currentPos.y);
+        if (isClear) {
+            Logic.mapManager.setRoomClear(this.currentPos.x, this.currentPos.y);
         }
     }
-    private setDoors(isClear:boolean,immediately?:boolean){
-        if(!this.buildingManager){
+    private setDoors(isClear: boolean, immediately?: boolean) {
+        if (!this.buildingManager) {
             return;
         }
-        this.buildingManager.setDoors(isClear,immediately);
+        this.buildingManager.setDoors(isClear, immediately);
     }
     checkPlayerPos(dt: number) {
         if (!this.map || !this.player || !this.node) {
@@ -534,7 +534,7 @@ export default class Dungeon extends cc.Component {
         if (this.isTimeDelay(dt)) {
             this.checkPlayerPos(dt);
         }
-        if (this.isCheckTimeDelay(dt)&&this.isInitFinish) {
+        if (this.isCheckTimeDelay(dt) && this.isInitFinish) {
             this.checkRoomClear();
         }
 

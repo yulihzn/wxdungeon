@@ -355,7 +355,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {
@@ -431,13 +433,13 @@
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": -64,
-      "y": -64
+      "x": 0,
+      "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 256,
-      "height": 256
+      "width": 128,
+      "height": 128
     },
     "_id": ""
   },
@@ -470,7 +472,7 @@
     "asset": {
       "__uuid__": "05130836-eb4d-4b32-ba4a-241ab984b639"
     },
-    "fileId": "feZqGbNntBSLzbgiAF0gSM",
+    "fileId": "",
     "sync": false
   }
 ]
