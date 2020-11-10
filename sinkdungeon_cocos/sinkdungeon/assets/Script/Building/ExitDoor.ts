@@ -110,6 +110,7 @@ export default class ExitDoor extends Building {
         }
         this.isOpen = false;
         this.getComponent(cc.PhysicsBoxCollider).enabled = true;
+        this.getComponent(cc.PhysicsBoxCollider).apply();
         this.closeSprite.node.runAction(cc.fadeIn(immediately ? 0 : 1));
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
