@@ -23,12 +23,14 @@ export default class Door extends Building {
     isDoor: boolean = true;
     isHidden: boolean = false;
     isEmpty:boolean =false;
+    isLock:boolean = false;
     //0top1bottom2left3right
     dir = 0;
     sprite: cc.Sprite = null;
     bg: cc.Sprite = null;
     bg1: cc.Sprite = null;
     bg2: cc.Sprite = null;
+    lockInfo:cc.Node = null;
     boxCollider: cc.PhysicsBoxCollider;
 
     // LIFE-CYCLE CALLBACKS:
@@ -38,6 +40,7 @@ export default class Door extends Building {
         this.bg = this.node.getChildByName('bg').getComponent(cc.Sprite);
         this.bg1 = this.node.getChildByName('bg').getChildByName('bg1').getComponent(cc.Sprite);
         this.bg2 = this.node.getChildByName('bg').getChildByName('bg2').getComponent(cc.Sprite);
+        this.lockInfo = this.node.getChildByName('info');
         this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
 
@@ -57,6 +60,10 @@ export default class Door extends Building {
             this.bg.node.angle = this.node.angle;
             this.bg.node.zIndex = IndexZ.OVERHEAD;
         }
+        if(this.lockInfo&&this.isLock&&!Logic.mapManager.isNeighborRoomStateClear(this.dir)){
+            this.lockInfo.opacity = 255;
+            return;
+        }
     }
    
     setOpen(isOpen: boolean, immediately?: boolean) {
@@ -69,14 +76,21 @@ export default class Door extends Building {
             this.closeGate(immediately);
         }
     }
-
     openGate(immediately?: boolean) {
+        if(!this.lockInfo){
+            this.lockInfo = this.node.getChildByName('info');
+        }
+        if(this.isLock&&!Logic.mapManager.isNeighborRoomStateClear(this.dir)){
+            this.lockInfo.opacity = 255;
+            return;
+        }
         if (this.isOpen) {
             return;
         }
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
+        this.lockInfo.opacity = 0;
         this.isOpen = true;
         let index = 0;
         this.schedule(() => {
@@ -102,15 +116,7 @@ export default class Door extends Building {
         }, immediately ? 0 : 0.1, 4);
 
     }
+    checkLock(){
 
-    // onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-    //     let player = other.node.getComponent(Player);
-    //     if (player) {
-    //         if (this.isOpen) {
-    //             Logic.saveData();
-    //             AudioPlayer.play(AudioPlayer.EXIT);
-    //             cc.director.emit(EventHelper.LOADINGROOM, { detail: { dir: this.dir } });
-    //         }
-    //     }
-    // }
+    }
 }

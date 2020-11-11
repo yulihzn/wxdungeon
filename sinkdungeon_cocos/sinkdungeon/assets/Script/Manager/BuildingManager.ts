@@ -330,7 +330,19 @@ export default class BuildingManager extends cc.Component {
             //生成店主
             this.addBuilding(this.shop, indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
-            this.addDoor(parseInt(mapDataStr[1]), indexPos);
+            let dir = parseInt(mapDataStr[1]);
+            if(isNaN(dir)){
+                if(mapDataStr=='Da'){
+                    dir = 8;
+                }else if(mapDataStr=='Db'){
+                    dir = 9;
+                }else if(mapDataStr=='Dc'){
+                    dir = 10;
+                }else if(mapDataStr=='Dd'){
+                    dir = 11;
+                }
+            }
+            this.addDoor(dir, indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'E')) {
             let dir = parseInt(mapDataStr[1]);
             if(isNaN(dir)){
@@ -414,6 +426,7 @@ export default class BuildingManager extends cc.Component {
         }
         door.dir = mapDataStrIndex % 4;
         door.isEmpty = mapDataStrIndex > 3;
+        door.isLock = mapDataStrIndex > 7;
         this.doors.push(door);
     }
     public setDoors(isOpen: boolean, immediately?: boolean) {

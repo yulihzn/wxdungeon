@@ -3,8 +3,7 @@
  */
 export enum ColliderTag{
     DEFAULT=0,
-    WALL_TOP_UP=1,
-    WALL_TOP_DOWN=2,
+    WALL=1,
     PLAYER=3,
     MONSTER=4,
     BOSS_ASS=5,

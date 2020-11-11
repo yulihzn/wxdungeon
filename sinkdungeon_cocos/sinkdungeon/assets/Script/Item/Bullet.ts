@@ -311,12 +311,8 @@ export default class Bullet extends cc.Component {
         if (otherCollider.sensor) {
             isDestory = false;
         }
-        //上面的墙下半部分不销毁
-        if (otherCollider.tag == ColliderTag.WALL_TOP_DOWN) {
-            isDestory = false;
-        }
         //上面的墙上半部分是否销毁
-        if(this.skipTopwall&&otherCollider.tag == ColliderTag.WALL_TOP_UP){
+        if(this.skipTopwall){
             isDestory = false;
         }
         if(this.data.isInvincible>0){
@@ -357,7 +353,7 @@ export default class Bullet extends cc.Component {
         damage.isRemote = true;
         let isDestory = false;
         let wall = attackTarget.getComponent(Wall);
-        if(wall){
+        if(wall&&!this.skipTopwall){
             isDestory = true;
         }
         

@@ -52,8 +52,8 @@ export default class Kraken extends Boss {
     ShowFinish() {
         this.anim.play('KrakenHeadIdle');
         this.isShow = true;
-        let pos1 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE+4, -10));
-        let pos2 = Dungeon.getPosInMap(cc.v3(-4, -10));
+        let pos1 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE+2, -8));
+        let pos2 = Dungeon.getPosInMap(cc.v3(-2, -8));
         this.hand01 = this.addHand(pos1,true);
         this.hand02 = this.addHand(pos2,false);
     }
@@ -71,7 +71,7 @@ export default class Kraken extends Boss {
         return h;
     }
     updatePlayerPos() {
-        let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+4));
+        let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+2));
         this.node.setPosition(pos);
     }
     

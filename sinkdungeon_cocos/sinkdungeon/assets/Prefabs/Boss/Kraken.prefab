@@ -1683,10 +1683,10 @@
     },
     "_clips": [
       {
-        "__uuid__": "c94a5c47-ba4d-4975-aeb2-fe4831082548"
+        "__uuid__": "95937760-6298-43b4-8ec5-5abeacc2a0b8"
       },
       {
-        "__uuid__": "95937760-6298-43b4-8ec5-5abeacc2a0b8"
+        "__uuid__": "c94a5c47-ba4d-4975-aeb2-fe4831082548"
       }
     ],
     "playOnLoad": false,
@@ -1721,12 +1721,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -30
+      "y": -80
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 300,
-      "height": 100
+      "width": 200,
+      "height": 50
     },
     "_id": ""
   },
@@ -1738,7 +1738,7 @@
     "asset": {
       "__uuid__": "7ad7c931-a291-49c6-9f0a-2530bdef788b"
     },
-    "fileId": "13Lgji5XFNdKUtL713k9uJ",
+    "fileId": "",
     "sync": false
   }
 ]

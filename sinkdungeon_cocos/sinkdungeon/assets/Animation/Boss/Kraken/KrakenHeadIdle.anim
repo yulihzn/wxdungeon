@@ -27,9 +27,7 @@
             "spriteFrame": [
               {
                 "frame": 0,
-                "value": {
-                  "__uuid__": "2e259b56-66e5-42a9-b139-7702dc9556ab"
-                }
+                "value": null
               }
             ]
           }
@@ -53,9 +51,7 @@
             "spriteFrame": [
               {
                 "frame": 0,
-                "value": {
-                  "__uuid__": "2e259b56-66e5-42a9-b139-7702dc9556ab"
-                }
+                "value": null
               }
             ]
           }
@@ -79,9 +75,7 @@
             "spriteFrame": [
               {
                 "frame": 0,
-                "value": {
-                  "__uuid__": "2e259b56-66e5-42a9-b139-7702dc9556ab"
-                }
+                "value": null
               }
             ]
           }

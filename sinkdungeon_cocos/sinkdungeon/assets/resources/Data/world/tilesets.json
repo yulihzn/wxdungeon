@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":144,
+ "tilecount":148,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -2083,6 +2083,34 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"W9"
+        }, 
+        {
+         "id":431,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lockdoor0.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Da"
+        }, 
+        {
+         "id":432,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lockdoor1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Db"
+        }, 
+        {
+         "id":433,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lockdoor2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Dc"
+        }, 
+        {
+         "id":434,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lockdoor3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Dd"
         }],
  "tilewidth":16,
  "type":"tileset",

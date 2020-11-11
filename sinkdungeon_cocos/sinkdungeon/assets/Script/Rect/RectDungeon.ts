@@ -140,7 +140,7 @@ export default class RectDungeon {
         return str;
     }
     /** dir为-1就是当前房间 */
-    public getNeighborRoomType(i: number, j: number, dir: number): RectRoom {
+    public getNeighborRoom(i: number, j: number, dir: number): RectRoom {
         let x = i;
         let y = j;
         if (dir == -1) {

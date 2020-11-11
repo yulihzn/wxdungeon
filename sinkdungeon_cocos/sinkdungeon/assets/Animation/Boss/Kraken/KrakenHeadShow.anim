@@ -3,7 +3,7 @@
   "_name": "KrakenHeadShow",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 2,
+  "_duration": 2.033333333333333,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -86,6 +86,10 @@
                 "value": {
                   "__uuid__": "4f7828ed-1f96-43ca-a586-a76ed1d72b79"
                 }
+              },
+              {
+                "frame": 2.0166666666666666,
+                "value": null
               }
             ]
           }
@@ -168,6 +172,10 @@
                 "value": {
                   "__uuid__": "4f7828ed-1f96-43ca-a586-a76ed1d72b79"
                 }
+              },
+              {
+                "frame": 2.0166666666666666,
+                "value": null
               }
             ]
           }
@@ -250,6 +258,10 @@
                 "value": {
                   "__uuid__": "4f7828ed-1f96-43ca-a586-a76ed1d72b79"
                 }
+              },
+              {
+                "frame": 2.0166666666666666,
+                "value": null
               }
             ]
           }

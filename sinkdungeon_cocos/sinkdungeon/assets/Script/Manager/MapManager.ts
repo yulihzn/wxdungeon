@@ -71,7 +71,7 @@ export default class MapManager {
     }
     /** dir为-1就是当前房间 */
     loadingNextRoom(dir: number): RectRoom {
-        let room = this.rectDungeon.getNeighborRoomType(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y, dir);
+        let room = this.rectDungeon.getNeighborRoom(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y, dir);
         if (room && room.roomType) {
             this.rectDungeon.currentPos = cc.v3(room.x, room.y);
             this.rectDungeon.changeRoomsIsFound(room.x, room.y);
@@ -149,6 +149,10 @@ export default class MapManager {
     /** 获取当前房间类型*/
     public getCurrentRoomType(): RoomType {
         return this.getCurrentRoom().roomType;
+    }
+    public isNeighborRoomStateClear(dir:number){
+        let room = this.rectDungeon.getNeighborRoom(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y, dir);
+        return room.state == RectRoom.STATE_CLEAR;
     }
     public getCurrentRoomRandom4Save(): Random4Save {
         let room = this.getCurrentRoom();
