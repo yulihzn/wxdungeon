@@ -427,6 +427,10 @@
             <key type="filename">tile/tile_labsecond002.png</key>
             <key type="filename">tile/tile_labsecond003.png</key>
             <key type="filename">tile/tile_labsecond004.png</key>
+            <key type="filename">tile/tile_pyramid001.png</key>
+            <key type="filename">tile/tile_pyramid002.png</key>
+            <key type="filename">tile/tile_pyramid003.png</key>
+            <key type="filename">tile/tile_pyramid004.png</key>
             <key type="filename">tile/tile_room001.png</key>
             <key type="filename">tile/tile_room002.png</key>
             <key type="filename">tile/tile_room003.png</key>
