@@ -370,7 +370,9 @@ export default class Dungeon extends cc.Component {
     }
 
     private addBossSlime(type: number, index: cc.Vec3) {
-        this.monsterManager.addBossSlime(type, index, this);
+        if(this.monsterManager){
+            this.monsterManager.addBossSlime(type, index, this);
+        }
     }
 
     public shakeForKraken() {

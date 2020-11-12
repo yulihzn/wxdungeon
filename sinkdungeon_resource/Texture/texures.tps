@@ -416,6 +416,10 @@
             <key type="filename">tile/tile_dirt002.png</key>
             <key type="filename">tile/tile_dirt003.png</key>
             <key type="filename">tile/tile_dirt004.png</key>
+            <key type="filename">tile/tile_dungeon001.png</key>
+            <key type="filename">tile/tile_dungeon002.png</key>
+            <key type="filename">tile/tile_dungeon003.png</key>
+            <key type="filename">tile/tile_dungeon004.png</key>
             <key type="filename">tile/tile_grass001.png</key>
             <key type="filename">tile/tile_grass002.png</key>
             <key type="filename">tile/tile_grass003.png</key>
@@ -892,6 +896,8 @@
             <key type="filename">building/wall02anim003.png</key>
             <key type="filename">building/walldungeon00corneranim000.png</key>
             <key type="filename">building/walldungeon00corneranim001.png</key>
+            <key type="filename">building/walldungeon01corneranim000.png</key>
+            <key type="filename">building/walldungeon01corneranim001.png</key>
             <key type="filename">building/walljungle00corneranim000.png</key>
             <key type="filename">building/walljungle00corneranim001.png</key>
             <key type="filename">building/walllab00corneranim000.png</key>
@@ -1354,6 +1360,8 @@
             <key type="filename">building/walldungeon00anim000.png</key>
             <key type="filename">building/walldungeon00anim001.png</key>
             <key type="filename">building/walldungeon00anim002.png</key>
+            <key type="filename">building/walldungeon01anim000.png</key>
+            <key type="filename">building/walldungeon01anim001.png</key>
             <key type="filename">building/walljungle00anim000.png</key>
             <key type="filename">building/walljungle00anim001.png</key>
             <key type="filename">building/walljungle00anim002.png</key>
