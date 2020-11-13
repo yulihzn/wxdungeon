@@ -212,10 +212,11 @@
         "canBreakBuilding":1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 3,
+        "size": 4,
         "resName":"bullet012",
-        "lightName": "bulletlight001",
+        "lightName": "bulletlight003",
         "lightColor": "#00cffe",
+        "isBoom":1,
         "damage": {
             "physicalDamage": 1,
             "lighteningRate":100

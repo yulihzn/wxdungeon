@@ -112,13 +112,14 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.lastLevel = Logic.lastLevel;
         Logic.profileManager.data.lastChapterIndex = Logic.lastChapterIndex;
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
+        Logic.profileManager.data.time = Logic.time;
         Logic.profileManager.saveData();
         cc.sys.localStorage.setItem("coin", Logic.coins);
         cc.sys.localStorage.setItem("oilgold", Logic.oilGolds);
     }
     static resetData(chapter?: number) {
         //重置时间
-        Logic.time = '00:00:00';
+        Logic.time = Logic.profileManager.data.time;
         //加载章节名
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex;
         //加载关卡等级

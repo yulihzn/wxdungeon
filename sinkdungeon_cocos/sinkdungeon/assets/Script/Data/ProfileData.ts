@@ -27,4 +27,5 @@ export default class ProfileData {
     level = 0;//当前层级
     lastLevel = 0;//上次层级
     lastChapterIndex = 0;//上次章节
+    time = '00:00:00';
 }

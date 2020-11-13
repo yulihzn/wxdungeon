@@ -75,12 +75,10 @@ export default class GameOver extends cc.Component {
         Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level),false);
     }
     home() {
-        Logic.time = '00:00:00';
         AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('start');
     }
     resetWorld() {
-        Logic.time = '00:00:00';
         AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.loadScene('start');
         Logic.profileManager.clearData();

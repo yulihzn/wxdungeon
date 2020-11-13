@@ -330,7 +330,7 @@ export default class MeleeWeapon extends cc.Component {
         firePrefab.opacity = 255;
         firePrefab.setScale(0.2);
         firePrefab.active = true;
-        let action = cc.sequence(cc.moveTo(0.025, cc.v2(ps[1])), cc.moveTo(0.05, cc.v2(ps[2])), cc.moveTo(0.075, cc.v2(ps[3])), cc.moveTo(0.1, cc.v2(ps[4])));
+        let action = cc.sequence(cc.moveTo(0.15, cc.v2(ps[1])), cc.moveTo(0.15, cc.v2(ps[2])), cc.moveTo(0.1, cc.v2(ps[3])), cc.moveTo(0.1, cc.v2(ps[4])));
         firePrefab.runAction(action);
 
     }

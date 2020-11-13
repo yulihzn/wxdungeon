@@ -89,6 +89,10 @@ export default class ProfileManager{
             rect.buildMapFromSave(data.rectDungeons[key]);
             this.data.rectDungeons[key] = rect;
          }
+         //加载时间
+         if(data.time){
+             this.data.time = data.time;
+         }
         console.log('data',this);
     }
 }

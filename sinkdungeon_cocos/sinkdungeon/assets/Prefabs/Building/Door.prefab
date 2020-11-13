@@ -569,7 +569,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 128,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -633,7 +633,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 128,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -687,7 +687,7 @@
     "_dstBlendFactor": 771,
     "_string": "另一边锁住了",
     "_N$string": "另一边锁住了",
-    "_fontSize": 24,
+    "_fontSize": 18,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
@@ -756,7 +756,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 200,
+      "width": 128,
       "height": 50.4
     },
     "_resize": 1,
