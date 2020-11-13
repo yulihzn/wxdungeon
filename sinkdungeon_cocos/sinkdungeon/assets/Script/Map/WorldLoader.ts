@@ -135,13 +135,21 @@ export default class WorldLoader {
                 }
                 temp.map = turnMap;
                 let flagMap = new Array();
+                let miniMap = new Array();
+                let miniLockMap = new Array();
                 for (let i = 0; i < temp.width; i++) {
                     flagMap[i] = new Array();
+                    miniMap[i] = new Array();
+                    miniLockMap[i] = new Array();
                     for (let j = 0; j < temp.height; j++) {
                         flagMap[i][j] = turnRooms[i*temp.roomWidth][j*temp.roomHeight];
+                        miniMap[i][j] = turnRooms[i*temp.roomWidth+1][j*temp.roomHeight];
+                        miniLockMap[i][j] = turnRooms[i*temp.roomWidth+2][j*temp.roomHeight];
                     }
                 }
                 temp.roomTypes = flagMap;
+                temp.minimap = miniMap;
+                temp.minimaplock = miniLockMap;
                 let level = new LevelData();
                 level.valueCopy(temp);
                 data.list.push(level);

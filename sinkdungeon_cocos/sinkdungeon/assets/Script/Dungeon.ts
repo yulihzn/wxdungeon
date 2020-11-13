@@ -423,7 +423,6 @@ export default class Dungeon extends cc.Component {
             cc.director.emit(EventHelper.CHANGE_MINIMAP, { detail: { x: this.currentPos.x, y: this.currentPos.y } });
             this.checkRoomClear();
         }, 0.1)
-        cc.director.emit(EventHelper.CAMERA_LOOK);
     }
     breakTile(pos: cc.Vec3) {
         let tile = this.map[pos.x][pos.y];

@@ -145,6 +145,7 @@ export default class Player extends Actor {
         this.defaultPos = Logic.playerData.pos.clone();
         this.baseAttackPoint = Logic.playerData.FinalCommon.damageMin;
         this.updatePlayerPos();
+        cc.director.emit(EventHelper.CAMERA_LOOK);
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
         this.smokePool = new cc.NodePool();

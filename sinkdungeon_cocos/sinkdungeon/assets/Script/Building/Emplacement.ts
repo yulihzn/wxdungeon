@@ -37,17 +37,17 @@ export default class Emplacement extends Building {
     private timeDelay = 0;
     dungeon: Dungeon;
     anim: cc.Animation;
-    static readonly ALL = 0;//E0
-    static readonly TOP = 1;//E1
-    static readonly BOTTOM = 2;//E2
-    static readonly LEFT = 3;//E3
-    static readonly RIGHT = 4;//E4
-    static readonly TOPBOTTOM = 5;//E5
-    static readonly TOPLEFT = 6;//E6
-    static readonly TOPRIGHT = 7;//E7
-    static readonly BOTTOMLEFT = 8;//E8
-    static readonly BOTTOMRIGHT = 9;//E9
-    static readonly LEFTRIGHT = 10;//EE
+    static readonly ALL = 0;//G0
+    static readonly TOP = 1;//G1
+    static readonly BOTTOM = 2;//G2
+    static readonly LEFT = 3;//G3
+    static readonly RIGHT = 4;//G4
+    static readonly TOPBOTTOM = 5;//G5
+    static readonly TOPLEFT = 6;//G6
+    static readonly TOPRIGHT = 7;//G7
+    static readonly BOTTOMLEFT = 8;//G8
+    static readonly BOTTOMRIGHT = 9;//G9
+    static readonly LEFTRIGHT = 10;//Ga
     dirType = 0;//方向类型
     // LIFE-CYCLE CALLBACKS:
 
@@ -64,17 +64,17 @@ export default class Emplacement extends Building {
     }
     setDirType(mapStr:string){
         switch(mapStr){
-            case 'E0':this.dirType =Emplacement.ALL;break;
-            case 'E1':this.dirType =Emplacement.TOP;break;
-            case 'E2':this.dirType =Emplacement.BOTTOM;break;
-            case 'E3':this.dirType =Emplacement.LEFT;break;
-            case 'E4':this.dirType =Emplacement.RIGHT;break;
-            case 'E5':this.dirType =Emplacement.TOPBOTTOM;break;
-            case 'E6':this.dirType =Emplacement.TOPLEFT;break;
-            case 'E7':this.dirType =Emplacement.TOPRIGHT;break;
-            case 'E8':this.dirType =Emplacement.BOTTOMLEFT;break;
-            case 'E9':this.dirType =Emplacement.BOTTOMRIGHT;break;
-            case 'EE':this.dirType =Emplacement.LEFTRIGHT;break;
+            case 'G0':this.dirType =Emplacement.ALL;break;
+            case 'G1':this.dirType =Emplacement.TOP;break;
+            case 'G2':this.dirType =Emplacement.BOTTOM;break;
+            case 'G3':this.dirType =Emplacement.LEFT;break;
+            case 'G4':this.dirType =Emplacement.RIGHT;break;
+            case 'G5':this.dirType =Emplacement.TOPBOTTOM;break;
+            case 'G6':this.dirType =Emplacement.TOPLEFT;break;
+            case 'G7':this.dirType =Emplacement.TOPRIGHT;break;
+            case 'G8':this.dirType =Emplacement.BOTTOMLEFT;break;
+            case 'G9':this.dirType =Emplacement.BOTTOMRIGHT;break;
+            case 'Ga':this.dirType =Emplacement.LEFTRIGHT;break;
         }
     }
     start() {

@@ -56,6 +56,7 @@ export default class MiniMap extends cc.Component {
 
 	}
 	changeMap(x: number, y: number): void {
+		let levelData = Logic.worldLoader.getCurrentLevelData();
 		if (!this.map) {
 			return;
 		}
@@ -65,6 +66,14 @@ export default class MiniMap extends cc.Component {
 				let isFound = true;
 				let state = Logic.mapManager.rectDungeon.map[i][j].state;
 				let roomType = Logic.mapManager.rectDungeon.map[i][j].roomType;
+				if(levelData.minimap[i][j]){
+					this.map[i][j].getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`minimap${levelData.minimap[i][j]}`]
+				}
+				if(levelData.minimaplock[i][j]){
+					this.map[i][j].getChildByName('lock').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`minimaplock${levelData.minimaplock[i][j]}`]
+				}else{
+					this.map[i][j].getChildByName('lock').getComponent(cc.Sprite).spriteFrame = null;
+				}
 				this.map[i][j].color = this.getColor(MiniMap.ColorLevel.HIDE);
 				if (isFound) {
 					this.map[i][j].color = this.getColor(MiniMap.ColorLevel.NORMAL);
