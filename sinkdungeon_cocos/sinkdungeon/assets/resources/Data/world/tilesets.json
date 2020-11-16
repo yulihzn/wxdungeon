@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":193,
+ "tilecount":196,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -2426,6 +2426,27 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"13"
+        }, 
+        {
+         "id":501,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/footboard.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"@@"
+        }, 
+        {
+         "id":502,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/box.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"B0"
+        }, 
+        {
+         "id":503,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/plant.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"B1"
         }],
  "tilewidth":16,
  "type":"tileset",

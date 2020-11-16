@@ -102,7 +102,7 @@ export default class BuildingManager extends cc.Component {
     @property(cc.Prefab)
     mist: cc.Prefab = null;
     @property(cc.Prefab)
-    shipStairs:cc.Prefab = null;
+    shipStairs: cc.Prefab = null;
     footboards: FootBoard[] = new Array();//踏板列表
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
@@ -289,18 +289,19 @@ export default class BuildingManager extends cc.Component {
             }
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
-            let decorate = this.addBuilding(this.decorate, indexPos);
-            let d = decorate.getComponent(Decorate);
-            d.setDefaultPos(indexPos);
-            d.decorateType = parseInt(mapDataStr[1]);
-            //设置对应存档盒子的位置
-            let saveBox = Logic.mapManager.getCurrentMapBuilding(d.data.defaultPos);
+            let saveBox = Logic.mapManager.getCurrentMapBuilding(indexPos);
             if (saveBox) {
-                d.node.position = saveBox.position.clone();
-                if (saveBox.currentHealth < 1) {
-                    d.reset();
+                //生命值小于1不生成
+                if (saveBox.currentHealth > 0) {
+                    let decorate = this.addBuilding(this.decorate, indexPos);
+                    let d = decorate.getComponent(Decorate);
+                    d.decorateType = parseInt(mapDataStr[1]);
+                    d.node.position = saveBox.position.clone();
                 }
             } else {
+                let decorate = this.addBuilding(this.decorate, indexPos);
+                let d = decorate.getComponent(Decorate);
+                d.decorateType = parseInt(mapDataStr[1]);
                 Logic.mapManager.setCurrentBuildingData(d.data);
             }
         } else if (mapDataStr == 'S0') {
@@ -331,24 +332,24 @@ export default class BuildingManager extends cc.Component {
             this.addBuilding(this.shop, indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             let dir = parseInt(mapDataStr[1]);
-            if(isNaN(dir)){
-                if(mapDataStr=='Da'){
+            if (isNaN(dir)) {
+                if (mapDataStr == 'Da') {
                     dir = 8;
-                }else if(mapDataStr=='Db'){
+                } else if (mapDataStr == 'Db') {
                     dir = 9;
-                }else if(mapDataStr=='Dc'){
+                } else if (mapDataStr == 'Dc') {
                     dir = 10;
-                }else if(mapDataStr=='Dd'){
+                } else if (mapDataStr == 'Dd') {
                     dir = 11;
                 }
             }
             this.addDoor(dir, indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'E')) {
             let dir = parseInt(mapDataStr[1]);
-            if(isNaN(dir)){
-                if(mapDataStr=='Ea'){
+            if (isNaN(dir)) {
+                if (mapDataStr == 'Ea') {
                     dir = 10;
-                }else if(mapDataStr=='Eb'){
+                } else if (mapDataStr == 'Eb') {
                     dir = 11;
                 }
             }
@@ -380,14 +381,14 @@ export default class BuildingManager extends cc.Component {
         }
         else if (mapDataStr == 'R1') {
             let node = this.addBuilding(this.shipStairs, indexPos);
-            node.setScale(-16,16);
-            node.getComponent(cc.PhysicsBoxCollider).offset = cc.v2(-8,0);
+            node.setScale(-16, 16);
+            node.getComponent(cc.PhysicsBoxCollider).offset = cc.v2(-8, 0);
             node.getComponent(cc.PhysicsBoxCollider).apply();
             node.zIndex = IndexZ.WALLINTERNAL;
         }
     }
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {
-        let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level);
+        let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
         for (let e of exits) {
             if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
                 d.valueCopy(e);
@@ -425,7 +426,7 @@ export default class BuildingManager extends cc.Component {
             case 3: door.node.angle = -90; break;
         }
         door.dir = mapDataStrIndex % 4;
-        door.isEmpty = mapDataStrIndex > 3;
+        door.isEmpty = mapDataStrIndex > 3 && mapDataStrIndex < 8;
         door.isLock = mapDataStrIndex > 7;
         this.doors.push(door);
     }
@@ -452,11 +453,11 @@ export default class BuildingManager extends cc.Component {
 
         let node: cc.Node = null;
         if (mapDataStrIndex == '0' || mapDataStrIndex == '1' || mapDataStrIndex == '2'
-        || mapDataStrIndex == '3' || mapDataStrIndex == '8'|| mapDataStrIndex == '9' 
-        || mapDataStrIndex == 'e' || mapDataStrIndex == 'f'|| mapDataStrIndex == 'g' 
-        || mapDataStrIndex == 'h' || mapDataStrIndex == '#') {
+            || mapDataStrIndex == '3' || mapDataStrIndex == '8' || mapDataStrIndex == '9'
+            || mapDataStrIndex == 'e' || mapDataStrIndex == 'f' || mapDataStrIndex == 'g'
+            || mapDataStrIndex == 'h' || mapDataStrIndex == '#') {
             node = this.addBuilding(this.wall, indexPos);
-            if (mapDataStrIndex != '8'&&mapDataStrIndex != '9') {
+            if (mapDataStrIndex != '8' && mapDataStrIndex != '9') {
                 node.zIndex = IndexZ.WALL;
             }
         } else {
@@ -465,8 +466,8 @@ export default class BuildingManager extends cc.Component {
             node.zIndex = IndexZ.WALLCORNER;
         }
         let wall = node.getComponent(Wall);
-        wall.init(mapDataStr,levelData);
-        
+        wall.init(mapDataStr, levelData);
+
     }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
@@ -488,7 +489,7 @@ export default class BuildingManager extends cc.Component {
             case 'Z7': resName = 'roomwash'; break;
             case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; scale = 6; break;
             case 'Z9': resName = 'roomstool'; break;
-            case 'Za': resName = 'roomkitchentable'; scale = 6;break;
+            case 'Za': resName = 'roomkitchentable'; scale = 6; break;
             case 'Zb': resName = 'roomkitchentable1'; break;
             case 'Zc': resName = 'roomkitchentable2'; break;
             case 'Zd': resName = 'roomkitchentable3'; break;

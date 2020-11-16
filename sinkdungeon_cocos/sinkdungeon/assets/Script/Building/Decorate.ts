@@ -59,11 +59,6 @@ export default class Decorate extends Building {
         this.sprite.spriteFrame = spriteFrame;
     }
 
-    setDefaultPos(defaultPos: cc.Vec3) {
-        this.data.defaultPos = defaultPos;
-        this.node.position = Dungeon.getPosInMap(defaultPos);
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
-    }
     //Animation
     BreakingFinish() {
         this.reset();
@@ -84,12 +79,12 @@ export default class Decorate extends Building {
              cc.callFunc(() => {
                 this.changeRes(this.resName, 'anim001');
                 this.hitLight(true);
-            }), cc.delayTime(0.15), cc.callFunc(() => {
+            }), cc.delayTime(0.1), cc.callFunc(() => {
                 this.hitLight(false);
                 this.changeRes(this.resName, 'anim002');
-            }), cc.delayTime(0.15), cc.callFunc(() => {
+            }), cc.delayTime(0.1), cc.callFunc(() => {
                 this.changeRes(this.resName, 'anim003');
-            }), cc.delayTime(0.15), cc.callFunc(() => {
+            }), cc.delayTime(0.1), cc.callFunc(() => {
                 this.changeRes(this.resName, 'anim004');
                 let collider = this.getComponent(cc.PhysicsBoxCollider);
                 if (collider) {
