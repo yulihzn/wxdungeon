@@ -150,7 +150,7 @@
         "resName": "talent018",
         "passive": 0,
         "cooldown":15,
-        "desc": "？？？"
+        "desc": "召唤3个影子，影子拥有1点伤害1点血"
     },
     "talent019": {
         "nameCn": "如来神掌",

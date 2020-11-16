@@ -714,6 +714,7 @@ export default class Player extends Actor {
             Logic.mapManager.setCurrentRoomExitPos(this.pos);
             cc.director.loadScene('gameover');
         }, 1.5);
+        this.weaponLeft.meleeWeapon.dungeon.darkAfterKill();
     }
     //玩家行动
     playerAction(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {

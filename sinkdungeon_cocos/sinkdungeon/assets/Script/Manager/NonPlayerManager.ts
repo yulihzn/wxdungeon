@@ -1,0 +1,70 @@
+import Monster from "../Monster";
+import MonsterData from "../Data/MonsterData";
+import Dungeon from "../Dungeon";
+import Logic from "../Logic";
+import Slime from "../Boss/Slime";
+import MonsterRandomAttr from "./MonsterRandomAttr";
+import RoomType from "../Rect/RoomType";
+import Boss from "../Boss/Boss";
+import NonPlayer from "../NonPlayer";
+import NonPlayerData from "../Data/NonPlayerData";
+
+// Learn TypeScript:
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class NonPlayerManager extends cc.Component {
+    public static readonly NON_SHADOW = 'nonplayer001';
+    // LIFE-CYCLE CALLBACKS:
+
+    // update (dt) {}
+
+    // LIFE-CYCLE CALLBACKS:
+    @property(cc.Prefab)
+    nonplayer: cc.Prefab = null;
+
+    private nonplayers: NonPlayer[] = new Array();//房间npc列表
+    get nonPlayerList() {
+        return this.nonplayers;
+    }
+    /**添加npc */
+    public addNonPlayerFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon) {
+        this.addNonPlayer(this.getNonPlayer(resName, dungeon), indexPos);
+    }
+
+    public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
+        if (mapDataStr == 'N0') {
+            this.addNonPlayerFromData(NonPlayerManager.NON_SHADOW, indexPos, dungeon);
+        }
+    }
+    private getNonPlayer(resName: string, dungeon: Dungeon): NonPlayer {
+        let nonPlayerPrefab: cc.Node = null;
+        nonPlayerPrefab = cc.instantiate(this.nonplayer);
+        nonPlayerPrefab.active = false;
+        nonPlayerPrefab.parent = dungeon.node;
+        let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer);
+        let data = new NonPlayerData();
+        nonPlayer.dungeon = dungeon;
+        data.valueCopy(Logic.nonplayers[resName]);
+        nonPlayer.data = data;
+        nonPlayer.changeBodyRes(resName, NonPlayer.RES_IDLE000);
+        return nonPlayer;
+    }
+    private addNonPlayer(nonPlayer: NonPlayer, pos: cc.Vec3) {
+        //激活
+        nonPlayer.node.active = true;
+        nonPlayer.pos = pos;
+        nonPlayer.node.position = Dungeon.getPosInMap(pos);
+        this.nonPlayerList.push(nonPlayer);
+    }
+
+}

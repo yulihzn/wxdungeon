@@ -18,6 +18,7 @@ import IndexZ from "./Utils/IndexZ";
 import BuildingManager from "./Manager/BuildingManager";
 import LevelData from "./Data/LevelData";
 import Light from "./Effect/Light";
+import NonPlayerManager from "./Manager/NonPlayerManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,6 +61,7 @@ export default class Dungeon extends cc.Component {
 
     player: Player = null;
     monsterManager: MonsterManager = null;//怪物管理
+    nonPlayerManager:NonPlayerManager =null;//npc管理
     equipmentManager: EquipmentManager = null;//装备管理
     dungeonStyleManager: DungeonStyleManager = null;//装饰管理
     coinManager: CoinManger = null;//金币管理
@@ -104,6 +106,7 @@ export default class Dungeon extends cc.Component {
             this.addBossSlime(event.detail.slimeType, event.detail.posIndex);
         })
         this.monsterManager = this.getComponent(MonsterManager);
+        this.nonPlayerManager = this.getComponent(NonPlayerManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
         this.coinManager = this.getComponent(CoinManger);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
@@ -159,7 +162,7 @@ export default class Dungeon extends cc.Component {
             this.map[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 //越往下层级越高，j是行，i是列
-                if (this.isFirstEqual(mapData[i][j], "*") && mapData[i][j] != '**') {
+                if (Dungeon.isFirstEqual(mapData[i][j], "*") && mapData[i][j] != '**') {
                     let t = cc.instantiate(this.tile);
                     t.parent = this.node;
                     t.position = Dungeon.getPosInMap(cc.v3(i, j));
@@ -170,7 +173,7 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].coverPrefix = leveldata.floorCoverRes;
                     this.map[i][j].floorPrefix = leveldata.floorRes;
                 }
-                if (this.isFirstEqual(mapData[i][j], "*")) {
+                if (Dungeon.isFirstEqual(mapData[i][j], "*")) {
                     this.floorIndexmap.push(cc.v3(i, j));
                 }
                 //加载建筑
@@ -221,6 +224,8 @@ export default class Dungeon extends cc.Component {
                         this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
                     }
                 }
+                //加载npc
+                this.nonPlayerManager.addNonPlayerFromMap(this,mapData[i][j], cc.v3(i, j));
 
             }
         }
@@ -232,17 +237,25 @@ export default class Dungeon extends cc.Component {
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType())&&!Logic.isTour) {
             this.monsterManager.addRandomMonsters(this);
         }
+        //加载跟随npc
+        
+        //设置门开关
         this.setDoors(true, true);
         cc.log('load finished');
         this.scheduleOnce(() => {
             this.isInitFinish = true;
         }, 1)
     }
+    public darkAfterKill(){
+        cc.tween(this.fog).to(1, { scale: 0.6 }).start();
+        let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
+        cc.tween(blackcenter).delay(0.2).to(1, { opacity: 255 }).start();
+    }
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
     }
-    private isFirstEqual(mapStr: string, typeStr: string) {
+    static isFirstEqual(mapStr: string, typeStr: string) {
         let isequal = mapStr[0] == typeStr;
         return isequal;
     }
@@ -363,10 +376,6 @@ export default class Dungeon extends cc.Component {
                 Logic.mapManager.setCurrentEquipmentsArr(currequipments);
             }
         }
-    }
-    /**添加怪物 */
-    addMonsterFromData(resName: string, i: number, j: number) {
-        this.monsterManager.addMonsterFromData(resName, cc.v3(i, j), this);
     }
 
     private addBossSlime(type: number, index: cc.Vec3) {

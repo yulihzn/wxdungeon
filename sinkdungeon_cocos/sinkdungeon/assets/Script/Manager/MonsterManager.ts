@@ -52,7 +52,17 @@ export default class MonsterManager extends cc.Component {
     public static readonly MONSTER_BOOMER = 'monster027'
     public static readonly MONSTER_SANDSTATUE = 'monster028'
     public static readonly MONSTER_HIPPO = 'monster029'
-
+    public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
+    MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE, MonsterManager.MONSTER_SNAKE];
+    public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
+        , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
+    public static readonly MONSTERS_FOREST = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
+        , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO];
+    public static readonly MONSTERS_PYRAMID = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
+        , MonsterManager.MONSTER_SANDSTATUE];
+    public static readonly MONSTERS_DUNGEON = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
+        , MonsterManager.MONSTER_SPIDER];
+    public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST];
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -105,105 +115,32 @@ export default class MonsterManager extends cc.Component {
     public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon) {
         this.addMonster(this.getMonster(resName, dungeon), indexPos);
     }
+
     public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        if (mapDataStr == 'a0') {
-            this.addMonsterFromData(MonsterManager.MONSTER_ZEBRA, indexPos, dungeon);
+        if (Dungeon.isFirstEqual(mapDataStr, 'M')) {
+            let index = parseInt(mapDataStr[1]);
+            if (isNaN(index)) {
+                if (mapDataStr[1] == 'a') {
+                    this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon);
+                } else if (mapDataStr[1] == 'b') {
+                    this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon);
+                }
+            } else {
+                let arr = new Array();
+                switch (Logic.chapterIndex) {
+                    case Logic.CHAPTER00: arr = MonsterManager.MONSTERS_LAB; break;
+                    case Logic.CHAPTER01: arr = MonsterManager.MONSTERS_SHIP; break;
+                    case Logic.CHAPTER02: arr = MonsterManager.MONSTERS_FOREST; break;
+                    case Logic.CHAPTER03: arr = MonsterManager.MONSTERS_PYRAMID; break;
+                    case Logic.CHAPTER04: arr = MonsterManager.MONSTERS_DUNGEON; break;
+                    case Logic.CHAPTER05: arr = MonsterManager.MONSTERS_DUNGEON; break;
+                    case Logic.CHAPTER099: arr = MonsterManager.MONSTERS_LAB; break;
+                }
+                this.addMonsterFromData(arr[index], indexPos, dungeon);
+            }
+            return;
         }
-        else if (mapDataStr == 'a1') {
-            this.addMonsterFromData(MonsterManager.MONSTER_TERRORDRONE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'a2') {
-            this.addMonsterFromData(MonsterManager.MONSTER_KILLER, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'a3') {
-            this.addMonsterFromData(MonsterManager.MONSTER_ZOOMBIE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'a4') {
-            this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'a5') {
-            this.addMonsterFromData(MonsterManager.MONSTER_GIRAFFE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'b0') {
-            this.addMonsterFromData(MonsterManager.MONSTER_PIRATE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'b1') {
-            this.addMonsterFromData(MonsterManager.MONSTER_SAILOR, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'b2') {
-            this.addMonsterFromData(MonsterManager.MONSTER_OCTOPUS, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'b3') {
-            this.addMonsterFromData(MonsterManager.MONSTER_FISH, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'b4') {
-            this.addMonsterFromData(MonsterManager.MONSTER_BOOMER, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'b5') {
-            this.addMonsterFromData(MonsterManager.MONSTER_STRONGSAILOR, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'c0') {
-            this.addMonsterFromData(MonsterManager.MONSTER_SLIME, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'c1') {
-            this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'c2') {
-            this.addMonsterFromData(MonsterManager.MONSTER_GOBLIN_ARCHER, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'c3') {
-            this.addMonsterFromData(MonsterManager.MONSTER_SNAKE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'c4') {
-            this.addMonsterFromData(MonsterManager.MONSTER_WEREWOLF, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'c5') {
-            this.addMonsterFromData(MonsterManager.MONSTER_CHICKEN, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'c6') {
-            this.addMonsterFromData(MonsterManager.MONSTER_HIPPO, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'd0') {
-            this.addMonsterFromData(MonsterManager.MONSTER_MUMMY, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'd1') {
-            this.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'd2') {
-            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
-            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
-            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
-            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
-            this.addMonsterFromData(MonsterManager.MONSTER_SCARAB, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'd3') {
-            this.addMonsterFromData(MonsterManager.MONSTER_CROCODILE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'd4') {
-            this.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'e0') {
-            this.addMonsterFromData(MonsterManager.MONSTER_ELECTRICEYE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'e1') {
-            this.addMonsterFromData(MonsterManager.MONSTER_DEMON, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'e2') {
-            this.addMonsterFromData(MonsterManager.MONSTER_WARLOCK, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'e3') {
-            this.addMonsterFromData(MonsterManager.MONSTER_SPIDER, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'e4') {
-            this.addMonsterFromData(MonsterManager.MONSTER_GARGOYLE, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'f0') {
-            this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'g0') {
-            this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon);
-        }
-        else if (mapDataStr == 'z0') {
+        if (mapDataStr == 'z0') {
             this.addBoss(this.iceDemon, 'iconboss000', this.maxHealth00, 0, 2, indexPos, dungeon);
         }
         else if (mapDataStr == 'z1') {
@@ -403,28 +340,20 @@ export default class MonsterManager extends cc.Component {
             up = 5;
         }
         switch (Logic.chapterIndex) {
-            case Logic.CHAPTER00: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
-                , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
+            case Logic.CHAPTER00: arr = MonsterManager.MONSTERS_LAB;
                 num = rand4save.getRandomNum(1, 3);
                 break;
-            case Logic.CHAPTER01: arr = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
-                , MonsterManager.MONSTER_STRONGSAILOR
-                , MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
+            case Logic.CHAPTER01: arr = MonsterManager.MONSTERS_SHIP;
                 num = rand4save.getRandomNum(2, 3); break;
-            case Logic.CHAPTER02: arr = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
-                , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO];
+            case Logic.CHAPTER02: arr = MonsterManager.MONSTERS_FOREST;
                 num = rand4save.getRandomNum(2, 4); break;
-            case Logic.CHAPTER03: arr = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
-                , MonsterManager.MONSTER_SANDSTATUE];
+            case Logic.CHAPTER03: arr = MonsterManager.MONSTERS_PYRAMID;
                 num = rand4save.getRandomNum(2, 5); break;
-            case Logic.CHAPTER04: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
-                , MonsterManager.MONSTER_SPIDER];
+            case Logic.CHAPTER04: arr = MonsterManager.MONSTERS_DUNGEON;
                 num = rand4save.getRandomNum(3, 6); break;
-            case Logic.CHAPTER05: arr = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_ELECTRICEYE
-                , MonsterManager.MONSTER_SPIDER];
+            case Logic.CHAPTER05: arr = MonsterManager.MONSTERS_DUNGEON;
                 num = rand4save.getRandomNum(3, 6); break;
-            case Logic.CHAPTER099: arr = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER
-                , MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
+            case Logic.CHAPTER099: arr = MonsterManager.MONSTERS_LAB;
                 num = rand4save.getRandomNum(1, 3);
                 break;
         }
@@ -439,7 +368,7 @@ export default class MonsterManager extends cc.Component {
             let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
             let pos = indexmap[randindex];
             indexmap.splice(randindex, 1);
-            dungeon.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], pos.x, pos.y);
+            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y),dungeon);
         }
     }
 

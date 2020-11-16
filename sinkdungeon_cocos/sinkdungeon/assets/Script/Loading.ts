@@ -27,6 +27,7 @@ export default class Loading extends cc.Component {
     private timeDelay = 0;
     private isEquipmentLoaded = false;
     private isMonsterLoaded = false;
+    private isNonplayerLoaded = false;
     private isWorldLoaded = false;
     private isDebuffsLoaded = false;
     private isBulletsLoaded = false;
@@ -52,6 +53,7 @@ export default class Loading extends cc.Component {
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
         this.isDebuffsLoaded = false;
+        this.isNonplayerLoaded = false;
         this.loadWorld();
         this.loadEquipment();
         this.loadAutoSpriteFrames();
@@ -62,6 +64,7 @@ export default class Loading extends cc.Component {
         this.loadItems();
         this.loadTalents();
         this.loadProfession();
+        this.loadNonplayer();
         this.showLoadingLabel();
         //显示过场
         if (Logic.isFirst == 1) {
@@ -205,6 +208,21 @@ export default class Loading extends cc.Component {
             }
         })
     }
+    loadNonplayer() {
+        if (Logic.nonplayers) {
+            this.isNonplayerLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/nonplayers', (err: Error, resource:cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.nonplayers = resource.json;
+                this.isNonplayerLoaded = true;
+                cc.log('nonplayers loaded');
+            }
+        })
+    }
     loadItems() {
         if (Logic.items) {
             this.isItemsLoaded = true;
@@ -266,6 +284,7 @@ export default class Loading extends cc.Component {
             && this.isEquipmentLoaded
             && this.isAllSpriteFramesLoaded()
             && this.isMonsterLoaded
+            && this.isNonplayerLoaded
             && this.isDebuffsLoaded
             && this.isProfessionLoaded
             && this.isBulletsLoaded
@@ -281,6 +300,8 @@ export default class Loading extends cc.Component {
             this.isDebuffsLoaded = false;
             this.isProfessionLoaded = false;
             this.isBulletsLoaded = false;
+            this.isMonsterLoaded = false;
+            this.isNonplayerLoaded = false;
             this.isItemsLoaded = false;
             this.isSkillsLoaded = false;
             Logic.mapManager.loadMap();

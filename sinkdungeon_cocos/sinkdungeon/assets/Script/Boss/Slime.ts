@@ -180,7 +180,7 @@ export default class Slime extends Boss {
             }
             if (count < 10 && this.dungeon.monsterManager.monsterList.length < 50) {
                 let pos = Dungeon.getIndexInMap(this.node.position.clone());
-                this.dungeon.addMonsterFromData(MonsterManager.MONSTER_SLIME, pos.x, pos.y);
+                this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SLIME, pos,this.dungeon);
             }
         }
     }

@@ -2021,6 +2021,19 @@
             <key type="filename">monster/monster028anim011.png</key>
             <key type="filename">monster/monster028anim012.png</key>
             <key type="filename">monster/monster028disguise.png</key>
+            <key type="filename">nonplayer/nonplayer001anim000.png</key>
+            <key type="filename">nonplayer/nonplayer001anim001.png</key>
+            <key type="filename">nonplayer/nonplayer001anim002.png</key>
+            <key type="filename">nonplayer/nonplayer001anim003.png</key>
+            <key type="filename">nonplayer/nonplayer001anim004.png</key>
+            <key type="filename">nonplayer/nonplayer001anim005.png</key>
+            <key type="filename">nonplayer/nonplayer001anim006.png</key>
+            <key type="filename">nonplayer/nonplayer001anim007.png</key>
+            <key type="filename">nonplayer/nonplayer001anim008.png</key>
+            <key type="filename">nonplayer/nonplayer001anim009.png</key>
+            <key type="filename">nonplayer/nonplayer001anim010.png</key>
+            <key type="filename">nonplayer/nonplayer001anim011.png</key>
+            <key type="filename">nonplayer/nonplayer001anim012.png</key>
             <key type="filename">talents/dashshadow.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -2275,6 +2288,7 @@
             <filename>dungeon</filename>
             <filename>ui</filename>
             <filename>avatar</filename>
+            <filename>nonplayer</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

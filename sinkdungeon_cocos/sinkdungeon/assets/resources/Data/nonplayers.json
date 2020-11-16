@@ -1,0 +1,20 @@
+{
+    "nonplayer001": {
+        "nameCn": "影子",
+        "nameEn": "shadow",
+        "resName": "nonplayer001",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 500,
+            "maxHealth": 1,
+            "damageMin": 1
+        },
+        "currentHealth": 1,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 1,
+        "boxType":1,
+        "dash": 0
+    }
+}
