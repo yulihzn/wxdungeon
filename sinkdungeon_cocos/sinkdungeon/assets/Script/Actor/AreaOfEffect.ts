@@ -33,6 +33,9 @@ export default class AreaOfEffect extends cc.Component {
     destoryCallBack: Function;
     usePool = false;
 
+    get IsAttacking(){
+        return this.isAttacking;
+    }
     onLoad() {
     }
 

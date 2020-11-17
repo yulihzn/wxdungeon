@@ -1,11 +1,5 @@
-import Monster from "../Monster";
-import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
-import Slime from "../Boss/Slime";
-import MonsterRandomAttr from "./MonsterRandomAttr";
-import RoomType from "../Rect/RoomType";
-import Boss from "../Boss/Boss";
 import NonPlayer from "../NonPlayer";
 import NonPlayerData from "../Data/NonPlayerData";
 

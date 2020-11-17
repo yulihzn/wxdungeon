@@ -358,7 +358,7 @@ export default class Bullet extends cc.Component {
         }
         
         let aoe = attackTarget.getComponent(AreaOfEffect);
-        if(aoe&&aoe.data.canBreakBullet){
+        if(aoe&&aoe.IsAttacking&&aoe.data.canBreakBullet){
             isDestory = true;
         }
         let monster = attackTarget.getComponent(Monster);
