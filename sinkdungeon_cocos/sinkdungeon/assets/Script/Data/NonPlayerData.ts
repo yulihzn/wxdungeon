@@ -40,6 +40,9 @@ export default class NonPlayerData{
     /**box规格 爬行的21x21 0:y32w80h64，站立的21x21 1:y48w48h96，占满的21x21 2:y48w80h80，站立的32x32 3:y64w80h128，爬行的32x32 4:y32w128h48，站立的48x48 5:y48w80h112*/
     boxType = 0;
     attackType = 0;//近战攻击模式 0：普通 1：突刺 2：范围
+    isEnemy = 0;//是否是敌人
+    isFollow = 0;//是否跟随
+    lifeTime = 0;//存活时间
     private statusTotalData: StatusData;
     private common:CommonData;
     constructor(){
@@ -87,6 +90,9 @@ export default class NonPlayerData{
         this.boxType = data.boxType?data.boxType:0;
         this.attackType = data.attackType?data.attackType:0;
         this.isHeavy = data.isHeavy?data.isHeavy:0;
+        this.isEnemy = data.isEnemy?data.isEnemy:0;
+        this.isFollow = data.isFollow?data.isFollow:0;
+        this.lifeTime = data.lifeTime?data.lifeTime:0;
         this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff';
     }
     public clone():NonPlayerData{
@@ -116,6 +122,9 @@ export default class NonPlayerData{
         e.attackType = this.attackType;
         e.bodyColor = this.bodyColor;
         e.isHeavy = this.isHeavy;
+        e.isEnemy = this.isEnemy;
+        e.isFollow = this.isFollow;
+        e.lifeTime = this.lifeTime;
         return e;
     }
     

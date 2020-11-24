@@ -4,6 +4,7 @@ import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import FromData from "../Data/FromData";
+import Actor from "../Base/Actor";
 
 
 // Learn TypeScript:
@@ -53,19 +54,19 @@ export default class IceDemonThron extends cc.Component {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if(player && !this.isAuto && !this.isUping){
+        let target = Actor.getCollisionTarget(other);
+        if(target && !this.isAuto && !this.isUping){
             this.fall();
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if (player) {
+        let target = Actor.getCollisionTarget(other);
+        if (target) {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
                 let from = FromData.getClone('冰刺','bossicethron02');
-                if(player.takeDamage(new DamageData(3),from)){
-                    player.addStatus(StatusManager.FROZEN,from);
+                if(target.takeDamage(new DamageData(3),from)){
+                    target.addStatus(StatusManager.FROZEN,from);
                 }
             }
             

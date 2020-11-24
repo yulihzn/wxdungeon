@@ -11,6 +11,7 @@ import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -343,13 +344,13 @@ export default class IceDemon extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.isDied) {
+        let target = Actor.getCollisionTarget(other);
+        if (target && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
             let from = FromData.getClone(this.actorName(), 'bossicepart01');
-            if (player.takeDamage(d, from, this)) {
-                player.addStatus(StatusManager.FROZEN, from);
+            if (target.takeDamage(d, from, this)) {
+                target.addStatus(StatusManager.FROZEN, from);
             }
         }
     }

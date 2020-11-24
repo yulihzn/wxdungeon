@@ -258,6 +258,7 @@
       "__id__": 2
     },
     "_enabled": true,
+    "isEnemy": true,
     "_id": ""
   },
   {
@@ -1372,7 +1373,6 @@
     "_materials": [],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
     "_string": "Label",
     "_N$string": "Label",
     "_fontSize": 40,
@@ -2554,7 +2554,6 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
     "_string": "5/5",
     "_N$string": "5/5",
     "_fontSize": 20,
@@ -2949,7 +2948,7 @@
     "asset": {
       "__uuid__": "89ae4080-6cef-4cdc-a7b1-bea5b647c43d"
     },
-    "fileId": "18XflV511MJ4mX4PMvc/5J",
+    "fileId": "",
     "sync": false
   }
 ]

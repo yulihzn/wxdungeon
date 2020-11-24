@@ -14,6 +14,7 @@ import Skill from "../Utils/Skill";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -284,13 +285,13 @@ export default class EvilEye extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player && (this.dashSkill.IsExcuting)) {
+        let target = Actor.getCollisionTarget(other);
+        if (target && (this.dashSkill.IsExcuting)) {
             let d = new DamageData();
             d.physicalDamage = 5;
             let from = FromData.getClone(this.actorName(),'evileyeeye');
-            if(player.takeDamage(d,from,this)){
-                player.addStatus(StatusManager.BLEEDING,from);
+            if(target.takeDamage(d,from,this)){
+                target.addStatus(StatusManager.BLEEDING,from);
             }
         }
     }

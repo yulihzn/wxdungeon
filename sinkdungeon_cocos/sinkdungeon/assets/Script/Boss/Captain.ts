@@ -15,6 +15,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import { ColliderTag } from "../Actor/ColliderTag";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -141,13 +142,13 @@ export default class Captain extends Boss {
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if (player && self.tag == ColliderTag.BOSS_ASS) {
+        let target = Actor.getCollisionTarget(other);
+        if (target && self.tag == ColliderTag.BOSS_ASS) {
             if (this.isFall&&!this.isDied) {
                 this.isFall = false;
                 let dd = new DamageData();
                 dd.physicalDamage = 2;
-                player.takeDamage(dd,FromData.getClone(this.actorName(),'captain_head'),this);
+                target.takeDamage(dd,FromData.getClone(this.actorName(),'captain_head'),this);
             }
         }
     }

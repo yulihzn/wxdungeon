@@ -7,6 +7,7 @@ import Talent from "./Talent";
 import StatusManager from "../Manager/StatusManager";
 import Dungeon from "../Dungeon";
 import IndexZ from "../Utils/IndexZ";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -63,9 +64,8 @@ export default class IceThron extends cc.Component {
                 this.hasTargetMap[other.node.uuid]++;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
-                let monster = other.node.getComponent(Monster);
-                let boss = other.node.getComponent(Boss);
-                if (monster || boss) {
+                let target = Actor.getCollisionTarget(other,true);
+                if (target) {
                     this.attacking(other.node);
                 }
             }
@@ -80,15 +80,10 @@ export default class IceThron extends cc.Component {
         let d = 4;
         
         damage.magicDamage = d;
-        let monster = attackTarget.getComponent(Monster);
-        if (monster && !monster.isDied) {
-            monster.takeDamage(damage);
-            monster.addStatus(status,new FromData());
-        }
-        let boss = attackTarget.getComponent(Boss);
-        if (boss && !boss.isDied) {
-            boss.takeDamage(damage);
-            boss.addStatus(status,new FromData());
+        let target = Actor.getEnemyActorByNode(attackTarget,true);
+        if (target && !target.isDied) {
+            target.takeDamage(damage);
+            target.addStatus(status,new FromData());
         }
     }
     checkTimeDelay = 0;

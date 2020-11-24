@@ -18,6 +18,8 @@ import Wall from "../Building/Wall";
 import AreaOfEffect from "../Actor/AreaOfEffect";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
+import NonPlayer from "../NonPlayer";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -329,10 +331,13 @@ export default class Bullet extends cc.Component {
         let player = other.node.getComponent(Player);
         let monster = other.node.getComponent(Monster);
         let boss = other.node.getComponent(Boss);
-        if (!this.isFromPlayer && (monster || boss)) {
+        let non = other.node.getComponent(NonPlayer);
+        let enemynon = non?non.isEnemy:false;
+        let playernon = non?!non.isEnemy:false;
+        if (!this.isFromPlayer && (monster || boss || enemynon)) {
             isAttack = false;
         }
-        if (this.isFromPlayer && player) {
+        if (this.isFromPlayer && (player || playernon)) {
             isAttack = false;
         }
         if (bullet) {
@@ -364,7 +369,7 @@ export default class Bullet extends cc.Component {
         let monster = attackTarget.getComponent(Monster);
         if (monster && !monster.isDied) {
             damageSuccess = monster.takeDamage(damage);
-            if (damageSuccess) { this.addMonsterAllStatus(monster) }
+            if (damageSuccess) { this.addTargetAllStatus(monster,new FromData()) }
             isDestory = true;
         }
         let player = attackTarget.getComponent(Player);
@@ -376,14 +381,20 @@ export default class Bullet extends cc.Component {
             }
             if(!isReverse){
                 damageSuccess = player.takeDamage(damage,this.data.from);
-                if (damageSuccess) { this.addPlayerAllStatus(player,this.data.from) }
+                if (damageSuccess) { this.addTargetAllStatus(player,this.data.from) }
                 isDestory = true;
             }
+        }
+        let non = attackTarget.getComponent(NonPlayer);
+        if (non && !non.isDied) {
+            damageSuccess = non.takeDamage(damage);
+            if (damageSuccess) { this.addTargetAllStatus(non,new FromData()) }
+            isDestory = true;
         }
         let boss = attackTarget.getComponent(Boss);
         if (boss && !boss.isDied) {
             damageSuccess = boss.takeDamage(damage);
-            if (damageSuccess) { this.addBossAllStatus(boss) }
+            if (damageSuccess) { this.addTargetAllStatus(boss,new FromData()) }
             isDestory = true;
         }
 
@@ -478,7 +489,17 @@ export default class Bullet extends cc.Component {
                         pos = boss.node.position.sub(p);
                     }
                 }
-
+            }
+            if (pos.equals(cc.Vec3.ZERO)) {
+                for (let non of this.dungeon.nonPlayerManager.nonPlayerList) {
+                    let dis = Logic.getDistance(this.node.position, non.node.position);
+                    if (dis < 500 && dis < olddis && !non.isDied&&non.isEnemy) {
+                        olddis = dis;
+                        let p = this.node.position.clone();
+                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                        pos = non.node.position.sub(p);
+                    }
+                }
             }
         } else {
             let dis = Logic.getDistance(this.node.position, this.dungeon.player.node.position);
@@ -487,6 +508,17 @@ export default class Bullet extends cc.Component {
                 let p = this.node.position.clone();
                 p.x = this.node.scaleX > 0 ? p.x : -p.x;
                 pos = this.dungeon.player.node.position.sub(p);
+            }
+            if (pos.equals(cc.Vec3.ZERO)) {
+                for (let non of this.dungeon.nonPlayerManager.nonPlayerList) {
+                    let dis = Logic.getDistance(this.node.position, non.node.position);
+                    if (dis < 500 && dis < olddis && !non.isDied&&!non.isEnemy) {
+                        olddis = dis;
+                        let p = this.node.position.clone();
+                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                        pos = non.node.position.sub(p);
+                    }
+                }
             }
 
         }
@@ -515,41 +547,16 @@ export default class Bullet extends cc.Component {
 
     }
 
-    addMonsterAllStatus(monster: Monster) {
-        this.addMonsterStatus(this.data.damage.iceRate, monster, StatusManager.FROZEN);
-        this.addMonsterStatus(this.data.damage.fireRate, monster, StatusManager.BURNING);
-        this.addMonsterStatus(this.data.damage.lighteningRate, monster, StatusManager.DIZZ);
-        this.addMonsterStatus(this.data.damage.toxicRate, monster, StatusManager.TOXICOSIS);
-        this.addMonsterStatus(this.data.damage.curseRate, monster, StatusManager.CURSING);
-        this.addMonsterStatus(this.data.damage.realRate, monster, StatusManager.BLEEDING);
-        this.addMonsterStatus(this.data.statusRate, monster, this.data.statusType);
+    addTargetAllStatus(target: Actor,from:FromData) {
+        this.addTargetStatus(this.data.damage.iceRate, target, StatusManager.FROZEN,from);
+        this.addTargetStatus(this.data.damage.fireRate, target, StatusManager.BURNING,from);
+        this.addTargetStatus(this.data.damage.lighteningRate, target, StatusManager.DIZZ,from);
+        this.addTargetStatus(this.data.damage.toxicRate, target, StatusManager.TOXICOSIS,from);
+        this.addTargetStatus(this.data.damage.curseRate, target, StatusManager.CURSING,from);
+        this.addTargetStatus(this.data.damage.realRate, target, StatusManager.BLEEDING,from);
+        this.addTargetStatus(this.data.statusRate, target, this.data.statusType,from);
     }
-    addBossAllStatus(boss: Boss) {
-        this.addBossStatus(this.data.damage.iceRate, boss, StatusManager.FROZEN);
-        this.addBossStatus(this.data.damage.fireRate, boss, StatusManager.BURNING);
-        this.addBossStatus(this.data.damage.lighteningRate, boss, StatusManager.DIZZ);
-        this.addBossStatus(this.data.damage.toxicRate, boss, StatusManager.TOXICOSIS);
-        this.addBossStatus(this.data.damage.curseRate, boss, StatusManager.CURSING);
-        this.addBossStatus(this.data.damage.realRate, boss, StatusManager.BLEEDING);
-        this.addBossStatus(this.data.statusRate,boss,this.data.statusType);
-    }
-    addPlayerAllStatus(player: Player,from:FromData) {
-        this.addPlayerStatus(this.data.damage.iceRate, player, StatusManager.FROZEN,from);
-        this.addPlayerStatus(this.data.damage.fireRate, player, StatusManager.BURNING,from);
-        this.addPlayerStatus(this.data.damage.lighteningRate, player, StatusManager.DIZZ,from);
-        this.addPlayerStatus(this.data.damage.toxicRate, player, StatusManager.TOXICOSIS,from);
-        this.addPlayerStatus(this.data.damage.curseRate, player, StatusManager.CURSING,from);
-        this.addPlayerStatus(this.data.damage.realRate, player, StatusManager.BLEEDING,from);
-        this.addPlayerStatus(this.data.damage.stoneRate, player, StatusManager.STONE,from);
-        this.addPlayerStatus(this.data.statusRate, player, this.data.statusType,from);
-    }
-    addMonsterStatus(rate: number, monster: Monster, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType,new FromData()); }
-    }
-    addBossStatus(rate: number, boss: Boss, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType,new FromData()); }
-    }
-    addPlayerStatus(rate: number, player: Player, statusType:string,from:FromData) {
-        if (Logic.getRandomNum(0, 100) < rate) { player.addStatus(statusType,from); }
+    addTargetStatus(rate: number, target: Actor, statusType:string ,from:FromData) {
+        if (Logic.getRandomNum(0, 100) < rate) { target.addStatus(statusType,from); }
     }
 }

@@ -10,6 +10,7 @@ import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -272,11 +273,11 @@ export default class Rah extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player && this.meleeSkill.IsExcuting&&!this.isDied) {
+        let target = Actor.getCollisionTarget(other);
+        if (target && this.meleeSkill.IsExcuting&&!this.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
-            player.takeDamage(d,FromData.getClone(this.actorName(),'bossrahhead'),this);
+            target.takeDamage(d,FromData.getClone(this.actorName(),'bossrahhead'),this);
         }
     }
     actorName(){

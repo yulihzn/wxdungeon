@@ -7,6 +7,8 @@ import Dungeon from "../Dungeon";
 import HitBuilding from "../Building/HitBuilding";
 import Decorate from "../Building/Decorate";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
+import NonPlayer from "../NonPlayer";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -103,11 +105,14 @@ export default class AreaOfEffect extends cc.Component {
                 let monster = other.node.getComponent(Monster);
                 let boss = other.node.getComponent(Boss);
                 let player = other.node.getComponent(Player);
+                let non = other.node.getComponent(NonPlayer);
+                let isenemynon = non?non.isEnemy:false;
+                let isplayernon = non?!non.isEnemy:false;
                 let isAttack = true;
-                if (!this.data.isFromPlayer && (monster || boss)) {
+                if (!this.data.isFromPlayer && (monster || boss || isenemynon)) {
                     isAttack = false;
                 }
-                if (this.data.isFromPlayer && player) {
+                if (this.data.isFromPlayer && (player||isplayernon)) {
                     isAttack = false;
                 }
                 if (isAttack) {
@@ -124,42 +129,16 @@ export default class AreaOfEffect extends cc.Component {
         let damageSuccess = false;
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
-        let monster = attackTarget.getComponent(Monster);
-        if (monster && !monster.isDied) {
-            damageSuccess = monster.takeDamage(damage);
+        let target = Actor.getEnemyActorByNode(attackTarget,this.data.isFromPlayer);
+        if (target && !target.isDied) {
+            damageSuccess = target.takeDamage(damage);
             if (damageSuccess) {
-                if (monster.data.currentHealth <= 0 && this.killCallBack) {
-                    this.killCallBack(monster);
+                if (target.data.currentHealth <= 0 && this.killCallBack) {
+                    this.killCallBack(target);
                 }
             }
             for (let status of this.data.statusList) {
-                monster.addStatus(status, this.data.from);
-            }
-            return;
-        }
-        let boss = attackTarget.getComponent(Boss);
-        if (boss && !boss.isDied) {
-            damageSuccess = boss.takeDamage(damage);
-            if (damageSuccess) {
-                if (boss.data.currentHealth <= 0 && this.killCallBack) {
-                    this.killCallBack(boss);
-                }
-            }
-            for (let status of this.data.statusList) {
-                boss.addStatus(status, this.data.from);
-            }
-            return;
-        }
-        let player = attackTarget.getComponent(Player);
-        if (player && !player.isDied) {
-            damageSuccess = player.takeDamage(damage, this.data.from);
-            if (damageSuccess) {
-                if (player.data.currentHealth <= 0 && this.killCallBack) {
-                    this.killCallBack(player);
-                }
-            }
-            for (let status of this.data.statusList) {
-                player.addStatus(status, this.data.from);
+                target.addStatus(status, this.data.from);
             }
             return;
         }

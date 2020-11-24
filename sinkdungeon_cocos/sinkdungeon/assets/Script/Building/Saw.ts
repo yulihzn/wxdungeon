@@ -6,6 +6,7 @@ import StatusManager from "../Manager/StatusManager";
 import Random from "../Utils/Random";
 import FromData from "../Data/FromData";
 import IndexZ from "../Utils/IndexZ";
+import Actor from "../Base/Actor";
 
 
 // Learn TypeScript:
@@ -48,13 +49,13 @@ export default class Saw extends Building {
     }
     
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
+        let target = Actor.getCollisionTarget(other);
+        if (target) {
             let from = FromData.getClone(this.actorName(),'saw002');
-            player.takeDamage(new DamageData(1),from);
+            target.takeDamage(new DamageData(1),from);
             //1/10几率流血
             if(Random.rand()<0.1){
-                player.addStatus(StatusManager.BLEEDING,from);
+                target.addStatus(StatusManager.BLEEDING,from);
             }
             this.sprite.spriteFrame = this.bloodSpriteFrame;
         }

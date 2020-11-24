@@ -5,6 +5,7 @@ import DamageData from "../Data/DamageData";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import StatusManager from "../Manager/StatusManager";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -63,8 +64,8 @@ export default class MagicLightening extends cc.Component {
             }, 2);
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if(player && this.isTrigger){
+        let target = Actor.getCollisionTarget(other);
+        if(target && this.isTrigger){
             this.isTrigger = false;
             this.fall(true,true);
         }
@@ -82,27 +83,13 @@ export default class MagicLightening extends cc.Component {
         let status = StatusManager.BURNING;
         damage.magicDamage = this.damagePoint;
         status = StatusManager.DIZZ;
-        
-        let monster = attackTarget.getComponent(Monster);
-        if (monster && !monster.isDied) {
-            monster.takeDamage(damage);
-            monster.addStatus(status,new FromData());
-            this.isAttacked = true;
-        }
-        let boss = attackTarget.getComponent(Boss);
-        if (boss && !boss.isDied) {
-            boss.takeDamage(damage);
-            boss.addStatus(status,new FromData());
-            this.isAttacked = true;
-        }
-        let player = attackTarget.getComponent(Player);
-        if(player && !player.isDied && this.needPrepare){
+        let target = Actor.getEnemyActorByNode(attackTarget,!this.needPrepare);
+        if (target && !target.isDied) {
+            target.takeDamage(damage);
             let fd = FromData.getClone('闪电','magiclighteningdown1');
-            player.takeDamage(damage,fd);
-            player.addStatus(status,fd);
+            target.addStatus(status,fd);
             this.isAttacked = true;
         }
-
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

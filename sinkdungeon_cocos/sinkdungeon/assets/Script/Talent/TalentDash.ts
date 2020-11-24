@@ -8,6 +8,7 @@ import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import PlayerAvatar from "../PlayerAvatar";
+import Actor from "../Base/Actor";
 
 const { ccclass, property } = cc._decorator;
 
@@ -99,23 +100,14 @@ export default class TalentDash extends Talent {
         }
 
         let damageSuccess = false;
-        let monster = attackTarget.node.getComponent(Monster);
-        if (monster && !monster.isDied) {
-            damageSuccess = monster.takeDamage(damage);
+        let target = Actor.getEnemyActorByNode(attackTarget.node,true);
+        if (target && !target.isDied) {
+            damageSuccess = target.takeDamage(damage);
             if (damageSuccess) {
-                this.beatBack(monster.node);
-                this.addMonsterAllStatus(monster);
+                this.beatBack(target.node);
+                this.addTargetAllStatus(target);
             }
         }
-
-        let boss = attackTarget.node.getComponent(Boss);
-        if (boss && !boss.isDied) {
-            damageSuccess = boss.takeDamage(damage);
-            if (damageSuccess) {
-                this.addBossAllStatus(boss);
-            }
-        }
-
     }
     beatBack(node: cc.Node) {
         if (!this.hashTalent(Talent.DASH_04)) {
@@ -128,22 +120,16 @@ export default class TalentDash extends Talent {
         rigidBody.applyLinearImpulse(cc.v2(pos.x,pos.y), rigidBody.getLocalCenter(), true);
     }
 
-    addMonsterAllStatus(monster: Monster) {
-        this.addMonsterStatus(Talent.DASH_05, monster, StatusManager.FROZEN);
-        this.addMonsterStatus(Talent.DASH_06, monster, StatusManager.DIZZ);
-        this.addMonsterStatus(Talent.DASH_03, monster, StatusManager.BLEEDING);
+    addTargetAllStatus(actor: Actor) {
+        this.addTargetStatus(Talent.DASH_05, actor, StatusManager.FROZEN);
+        this.addTargetStatus(Talent.DASH_06, actor, StatusManager.DIZZ);
+        this.addTargetStatus(Talent.DASH_03, actor, StatusManager.BLEEDING);
     }
-    addBossAllStatus(boss: Boss) {
-        this.addBossStatus(Talent.DASH_05, boss, StatusManager.FROZEN);
-        this.addBossStatus(Talent.DASH_06, boss, StatusManager.DIZZ);
-        this.addBossStatus(Talent.DASH_03, boss, StatusManager.BLEEDING);
+  
+    addTargetStatus(talentType: string, actor: Actor, statusType) {
+        if (this.hashTalent(talentType)) { actor.addStatus(statusType,new FromData()); }
     }
-    addMonsterStatus(talentType: string, monster: Monster, statusType) {
-        if (this.hashTalent(talentType)) { monster.addStatus(statusType,new FromData()); }
-    }
-    addBossStatus(talentType: string, boss: Boss, statusType) {
-        if (this.hashTalent(talentType)) { boss.addStatus(statusType,new FromData()); }
-    }
+   
     takeDamage() {
 
     }

@@ -1,8 +1,10 @@
-import Monster from "../Monster";
-import MonsterData from "../Data/MonsterData";
-import Dungeon from "../Dungeon";
 import FromData from "../Data/FromData";
-import { ColliderTag } from "./ColliderTag";
+import Actor from "../Base/Actor";
+import Dungeon from "../Dungeon";
+import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
+import Boss from "../Boss/Boss";
+import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,15 +19,17 @@ import { ColliderTag } from "./ColliderTag";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MonsterDangerBox extends cc.Component {
+export default class ActorAttackBox extends cc.Component {
 
     static readonly ATTACK_NORMAL = 0;
     static readonly ATTACK_STAB = 1;//位移突刺
     static readonly ATTACK_AREA = 2;
+    isEnemy = false;
     attackType = 0;
     collider: cc.BoxCollider
     isAttacking = false;
-    monster: Monster;
+    holderActor: Actor;
+    dungeon: Dungeon;
     hv: cc.Vec3 = cc.v3(1, 0);
     // LIFE-CYCLE CALLBACKS:
 
@@ -34,22 +38,25 @@ export default class MonsterDangerBox extends cc.Component {
         this.collider = this.getComponent(cc.BoxCollider);
     }
 
-    init(monster: Monster) {
-        this.monster = monster;
+    init(holderActor: Actor, dungeon: Dungeon,isEnemy:boolean) {
+        this.isEnemy = isEnemy;
+        this.holderActor = holderActor;
+        this.dungeon = dungeon;
     }
     start() {
 
     }
     //展示
     show(attackType: number) {
-        if (!this.monster) {
+        if (!this.holderActor) {
             return;
         }
         this.attackType = attackType;
         this.changeBoxSize(attackType);
         this.node.opacity = 80;
         let p = this.node.position.clone();
-        let hv = this.monster.dungeon.player.getCenterPosition().sub(this.monster.node.position.add(p));
+        let hv = this.holderActor.getNearestTargetPosition(
+            this.isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], this.dungeon).sub(this.holderActor.node.position.add(p));
         this.setHv(hv);
     }
     private changeBoxSize(attackType: number) {
@@ -58,23 +65,23 @@ export default class MonsterDangerBox extends cc.Component {
         this.node.anchorX = 0;
         this.node.width = length;
         this.node.height = length;
-        this.node.position = cc.v3(-16,32);
+        this.node.position = cc.v3(-16, 32);
         this.collider.offset = offset;
         this.collider.size.width = length;
         this.collider.size.height = length;
         switch (attackType) {
-            case MonsterDangerBox.ATTACK_NORMAL:
+            case ActorAttackBox.ATTACK_NORMAL:
                 break;
-            case MonsterDangerBox.ATTACK_STAB:
+            case ActorAttackBox.ATTACK_STAB:
                 this.node.width = 300;
                 this.collider.offset = cc.v2(0, 0);
                 break;
-            case MonsterDangerBox.ATTACK_AREA:
+            case ActorAttackBox.ATTACK_AREA:
                 this.node.anchorX = 0.5;
                 length = 160;
                 this.node.width = length;
                 this.node.height = length;
-                this.node.position = cc.v3(0,32);
+                this.node.position = cc.v3(0, 32);
                 this.collider.size.width = length;
                 this.collider.size.height = length;
                 this.collider.offset = cc.v2(0, 0);
@@ -92,17 +99,26 @@ export default class MonsterDangerBox extends cc.Component {
         this.isAttacking = false;
     }
     onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
-        if (this.isAttacking && this.monster && other.tag == ColliderTag.PLAYER) {
-            this.isAttacking = false;
-            let from = FromData.getClone(this.monster.data.nameCn, this.monster.data.resName);
-            let dd = this.monster.data.getAttackPoint();
-            dd.isBackAttack = this.monster.isFacePlayerBehind()&&this.monster.data.FinalCommon.damageBack>0;
-            if(dd.isBackAttack){
-                dd.realDamage += this.monster.data.FinalCommon.damageBack;
+        if (this.isAttacking && this.holderActor) {
+            let a = other.getComponent(Actor);
+            let m = this.holderActor.getComponent(Monster);
+            let n = this.holderActor.getComponent(NonPlayer);
+            let s = m?m:n;
+            let target = Actor.getCollisionTarget(other);
+            if(target){
+                this.isAttacking = false;
+                let from = FromData.getClone(s.data.nameCn, s.data.resName);
+                let dd = s.data.getAttackPoint();
+                dd.isBackAttack = s.isFaceTargetBehind(a) && s.data.FinalCommon.damageBack > 0;
+                if (dd.isBackAttack) {
+                    dd.realDamage += s.data.FinalCommon.damageBack;
+                }
+                if (a.takeDamage(dd, from, this.holderActor)) {
+                    s.addPlayerStatus(a, from);
+                }
             }
-            if(this.monster.dungeon.player.takeDamage(dd, from, this.monster)){
-                this.monster.addPlayerStatus(this.monster.dungeon.player, from);
-            }
+            
+            
         }
     }
     setHv(hv: cc.Vec3) {
@@ -126,7 +142,7 @@ export default class MonsterDangerBox extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        this.node.scaleX = this.monster.node.scaleX > 0 ? 1 : -1;
+        this.node.scaleX = this.holderActor.node.scaleX > 0 ? 1 : -1;
         // this.node.scaleY = this.monster.node.scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         this.node.angle = this.node.scaleX == -1 ? -angle : angle;

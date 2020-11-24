@@ -54,25 +54,28 @@ export default class DryadGrass extends Actor {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if(player && !this.isAuto && !this.isUping){
+        let target = Actor.getCollisionTarget(other);
+        if(target && !this.isAuto && !this.isUping){
             this.fall();
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if (player) {
+        let target = Actor.getCollisionTarget(other);
+        if (target) {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
                 let from = FromData.getClone(this.actorName(),'dryadtwine03');
-                if(player.takeDamage(new DamageData(2),from)){
-                    player.addStatus(StatusManager.TWINE,from);
+                if(target.takeDamage(new DamageData(2),from)){
+                    target.addStatus(StatusManager.TWINE,from);
                 }
             }
             
         }
     }
     addStatus(statusType: string, from: FromData) {
+    }
+    getCenterPosition(): cc.Vec3 {
+        return this.node.position.clone();
     }
     actorName(){
         return '树根缠绕';

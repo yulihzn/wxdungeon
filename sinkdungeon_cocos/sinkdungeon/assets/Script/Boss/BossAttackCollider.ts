@@ -41,12 +41,12 @@ export default class BossAttackCollider extends cc.Component {
         this.scheduleOnce(()=>{this.isShow = false;},coolingTime);
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let player = other.node.getComponent(Player);
-        if(player && this.isShow && this.node.active){
+        let target = Actor.getCollisionTarget(other);
+        if(target && this.isShow && this.node.active){
             this.isShow = false;
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            player.takeDamage(dd,this.from,this.parentNode.getComponent(Actor));
+            target.takeDamage(dd,this.from,this.parentNode.getComponent(Actor));
         }
     }
     // update (dt) {}

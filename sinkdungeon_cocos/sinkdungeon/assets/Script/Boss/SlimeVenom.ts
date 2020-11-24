@@ -84,6 +84,9 @@ export default class SlimeVenom extends Actor {
             this.player.takeDamage(dd,from);
         }
     }
+    getCenterPosition(): cc.Vec3 {
+        return this.node.position.clone();
+    }
     takeDamage(damge:DamageData){
         return false;
     }

@@ -20,6 +20,8 @@ import InventoryManager from "./Manager/InventoryManager";
 import Equipment from "./Equipment/Equipment";
 import HitBuilding from "./Building/HitBuilding";
 import CommonData from "./Data/CommonData";
+import NonPlayer from "./NonPlayer";
+import Actor from "./Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -508,7 +510,7 @@ export default class MeleeWeapon extends cc.Component {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(monster.node);
-                this.addMonsterAllStatus(common,monster);
+                this.addTargetAllStatus(common,monster);
             }
         }
 
@@ -516,10 +518,16 @@ export default class MeleeWeapon extends cc.Component {
         if (boss && !boss.isDied && !this.isMiss) {
             damageSuccess = boss.takeDamage(damage);
             if (damageSuccess) {
-                this.addBossAllStatus(common,boss);
+                this.addTargetAllStatus(common,boss);
             }
         }
-
+        let non = attackTarget.node.getComponent(NonPlayer);
+        if (non && !boss.isDied && !this.isMiss&&non.isEnemy) {
+            damageSuccess = non.takeDamage(damage);
+            if (damageSuccess) {
+                this.addTargetAllStatus(common,non);
+            }
+        }
         let box = attackTarget.node.getComponent(Box);
         if (box) {
             attackSuccess = true;
@@ -553,27 +561,18 @@ export default class MeleeWeapon extends cc.Component {
             this.scheduleOnce(() => { this.anim.resume() }, 0.1);
         }
     }
-    private addMonsterAllStatus(data:CommonData,monster: Monster) {
-        this.addMonsterStatus(data.iceRate, monster, StatusManager.FROZEN);
-        this.addMonsterStatus(data.fireRate, monster, StatusManager.BURNING);
-        this.addMonsterStatus(data.lighteningRate, monster, StatusManager.DIZZ);
-        this.addMonsterStatus(data.toxicRate, monster, StatusManager.TOXICOSIS);
-        this.addMonsterStatus(data.curseRate, monster, StatusManager.CURSING);
-        this.addMonsterStatus(data.realRate, monster, StatusManager.BLEEDING);
+    private addTargetAllStatus(data:CommonData,target: Actor) {
+        this.addTargetStatus(data.iceRate, target, StatusManager.FROZEN);
+        this.addTargetStatus(data.fireRate, target, StatusManager.BURNING);
+        this.addTargetStatus(data.lighteningRate, target, StatusManager.DIZZ);
+        this.addTargetStatus(data.toxicRate, target, StatusManager.TOXICOSIS);
+        this.addTargetStatus(data.curseRate, target, StatusManager.CURSING);
+        this.addTargetStatus(data.realRate, target, StatusManager.BLEEDING);
     }
-    private addBossAllStatus(data:CommonData,boss: Boss) {
-        this.addBossStatus(data.iceRate, boss, StatusManager.FROZEN);
-        this.addBossStatus(data.fireRate, boss, StatusManager.BURNING);
-        this.addBossStatus(data.lighteningRate, boss, StatusManager.DIZZ);
-        this.addBossStatus(data.toxicRate, boss, StatusManager.TOXICOSIS);
-        this.addBossStatus(data.curseRate, boss, StatusManager.CURSING);
-        this.addBossStatus(data.realRate, boss, StatusManager.BLEEDING);
+    
+    private addTargetStatus(rate: number, target: Actor, statusType) {
+        if (Logic.getRandomNum(0, 100) < rate) { target.addStatus(statusType, new FromData()); }
     }
-    private addMonsterStatus(rate: number, monster: Monster, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { monster.addStatus(statusType, new FromData()); }
-    }
-    private addBossStatus(rate: number, boss: Boss, statusType) {
-        if (Logic.getRandomNum(0, 100) < rate) { boss.addStatus(statusType, new FromData()); }
-    }
+    
 
 }

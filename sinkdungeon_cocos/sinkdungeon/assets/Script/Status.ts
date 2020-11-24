@@ -5,6 +5,7 @@ import Player from "./Player";
 import DamageData from "./Data/DamageData";
 import Monster from "./Monster";
 import Boss from "./Boss/Boss";
+import NonPlayer from "./NonPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -80,6 +81,12 @@ export default class Status extends cc.Component {
             if(this.data.invisibleDuratonDirect){
                 player.hideCharacter(this.data.invisibleDuratonDirect);
             }
+            return;
+        }
+        let non = this.target.getComponent(NonPlayer);
+        if(non){
+            if(takeD){non.takeDamage(dd);}
+            non.dizzCharacter(dizzDuration);
             return;
         }
         let monster = this.target.getComponent(Monster);

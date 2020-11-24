@@ -9,6 +9,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import { EventHelper } from "../EventHelper";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -261,11 +262,11 @@ export default class WarMachine extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let player = other.node.getComponent(Player);
-        if(player&&!this.isDied){
+        let target = Actor.getCollisionTarget(other);
+        if(target&&!this.isDied){
             let d = new DamageData();
             d.physicalDamage = 2;
-            player.takeDamage(d,FromData.getClone(this.actorName(),'bossmachinehead'),this);
+            target.takeDamage(d,FromData.getClone(this.actorName(),'bossmachinehead'),this);
         }
     }
     actorName(){

@@ -149,7 +149,7 @@
         "nameEn": "",
         "resName": "talent018",
         "passive": 0,
-        "cooldown":15,
+        "cooldown":20,
         "desc": "召唤3个影子，影子拥有1点伤害1点血"
     },
     "talent019": {

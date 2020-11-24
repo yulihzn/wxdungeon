@@ -4,6 +4,7 @@ import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Monster from "../Monster";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -56,17 +57,17 @@ export default class FallStone extends Building {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if(player && !this.isAuto && !this.isFalling){
+        let target = Actor.getCollisionTarget(other);
+        if(target && !this.isAuto && !this.isFalling){
             this.fall();
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let player = other.getComponent(Player);
-        if (player) {
+        let target = Actor.getCollisionTarget(other);
+        if (target) {
             if (this.isFall&&this.isValid) {
                 this.isFall = false;
-                player.takeDamage(new DamageData(2),FromData.getClone('落石','stone'));
+                target.takeDamage(new DamageData(2),FromData.getClone('落石','stone'));
             }
         }
         let monster = other.getComponent(Monster);

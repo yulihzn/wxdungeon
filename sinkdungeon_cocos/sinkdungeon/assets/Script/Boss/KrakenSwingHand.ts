@@ -3,6 +3,7 @@ import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import Kraken from "./Kraken";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,12 +36,12 @@ export default class KrakenSwingHand extends cc.Component {
         this.isShow = false;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let player = other.node.getComponent(Player);
-        if(player && this.isShow && this.node.active){
+        let target = Actor.getCollisionTarget(other);
+        if(target && this.isShow && this.node.active){
             this.node.stopAllActions();
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            player.takeDamage(dd,FromData.getClone(this.actorName(),'boss001'),this.node.parent.getComponent(Kraken));
+            target.takeDamage(dd,FromData.getClone(this.actorName(),'boss001'),this.node.parent.getComponent(Kraken));
         }
     }
     actorName(){

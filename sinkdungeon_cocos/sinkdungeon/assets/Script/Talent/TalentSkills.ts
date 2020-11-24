@@ -13,6 +13,7 @@ import PlayerAvatar from "../PlayerAvatar";
 import Monster from "../Monster";
 import Boss from "../Boss/Boss";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
+import NonPlayerManager from "../Manager/NonPlayerManager";
 
 /**
  * 技能管理器
@@ -130,8 +131,14 @@ export default class TalentSkills extends Talent {
             case Talent.TALENT_015: this.dash(); break;
             case Talent.TALENT_016: break;
             case Talent.TALENT_017: this.showSmoke();break;
-            case Talent.TALENT_018: break;
+            case Talent.TALENT_018: this.addShadowFighter();break;
             case Talent.TALENT_019: this.jump();break;
+        }
+    }
+    private addShadowFighter(){
+        for(let i=0;i<3;i++){
+            this.player.weaponRight.meleeWeapon.dungeon.nonPlayerManager
+            .addNonPlayerFromData(NonPlayerManager.NON_SHADOW,this.player.pos,this.player.weaponRight.meleeWeapon.dungeon);
         }
     }
     private healing() {
@@ -239,7 +246,7 @@ export default class TalentSkills extends Talent {
         this.sprite.node.opacity = 255;
         this.sprite.node.scale = 1;
         this.sprite.node.position = cc.v3(0, 128);
-        let node = this.getNearestEnmeyNode();
+        let node = this.player.getNearestEnemyActor(false,this.player.weaponRight.meleeWeapon.dungeon);
         if (!node) {
             return;
         }
@@ -305,7 +312,7 @@ export default class TalentSkills extends Talent {
 
     }
     addLighteningFall(isArea: boolean, damagePoint: number) {
-        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.getNearestEnemyPosition(), showArea: isArea, damage: damagePoint })
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.player.getNearestEnemyPosition(false,this.player.weaponRight.meleeWeapon.dungeon), showArea: isArea, damage: damagePoint })
     }
     private addBroom() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
@@ -343,39 +350,6 @@ export default class TalentSkills extends Talent {
         this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false;
         }, 1)
-    }
-    getNearestEnmeyNode(): cc.Node {
-        let shortdis = 99999;
-        let targetNode: cc.Node;
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
-            if (!monster.isDied) {
-                let dis = Logic.getDistance(this.node.position, monster.node.position);
-                if (dis < shortdis) {
-                    shortdis = dis;
-                    targetNode = monster.node;
-                }
-            }
-        }
-        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
-            if (!boss.isDied) {
-                let dis = Logic.getDistance(this.node.position, boss.node.position);
-                if (dis < shortdis) {
-                    shortdis = dis;
-                    targetNode = boss.node;
-                }
-            }
-        }
-        if (targetNode) {
-            return targetNode;
-        }
-        return null;
-    }
-    getNearestEnemyPosition(): cc.Vec3 {
-        let targetNode: cc.Node = this.getNearestEnmeyNode();
-        if (targetNode) {
-            return targetNode.position;
-        }
-        return this.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
     }
 
     initFireGhosts() {

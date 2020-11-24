@@ -10,6 +10,7 @@ import FromData from "../Data/FromData";
 import Item from "../Item/Item";
 import IndexZ from "../Utils/IndexZ";
 
+
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -30,8 +31,6 @@ export default abstract class Boss extends Actor {
     dungeon: Dungeon;
     pos: cc.Vec3 = cc.v3(0, 0);
     data: MonsterData = new MonsterData();
-    isDied = false;
-    isShow = false;
     abstract killed();
     abstract bossAction(): void;
     /**添加状态 */
@@ -105,4 +104,5 @@ export default abstract class Boss extends Actor {
         shooter.data.bulletLineExNum = bulletLineExNum;
         shooter.fireBullet(angle);
     }
+    
 }

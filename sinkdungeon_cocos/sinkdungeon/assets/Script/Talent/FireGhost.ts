@@ -7,6 +7,7 @@ import Talent from "./Talent";
 import FromData from "../Data/FromData";
 import Logic from "../Logic";
 import IndexZ from "../Utils/IndexZ";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,9 +58,8 @@ export default class FireGhost extends cc.Component {
 
     onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
         if (self.radius > 0 && this.isAttacking && this.isRotating) {
-            let monster = other.node.getComponent(Monster);
-            let boss = other.node.getComponent(Boss);
-            if (monster || boss) {
+            let target = Actor.getCollisionTarget(other,true);
+            if (target) {
                 this.isAttacking = false;
                 this.attacking(other.node);
             }
@@ -73,15 +73,10 @@ export default class FireGhost extends cc.Component {
         let status = StatusManager.BURNING;
         let d = 1;
         damage.magicDamage = d;
-        let monster = attackTarget.getComponent(Monster);
-        if (monster && !monster.isDied) {
-            monster.takeDamage(damage);
-            monster.addStatus(status, new FromData());
-        }
-        let boss = attackTarget.getComponent(Boss);
-        if (boss && !boss.isDied) {
-            boss.takeDamage(damage);
-            boss.addStatus(status, new FromData());
+        let target = Actor.getEnemyActorByNode(attackTarget,true);
+        if (target && !target.isDied) {
+            target.takeDamage(damage);
+            target.addStatus(status, new FromData());
         }
         this.isDied = true;
         cc.director.emit('destoryfireghost',{detail:{coinNode:this.node}});

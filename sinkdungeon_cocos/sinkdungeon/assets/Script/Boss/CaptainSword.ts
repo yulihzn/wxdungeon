@@ -3,6 +3,7 @@ import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import Captain from "./Captain";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,12 +32,12 @@ export default class CaptainSword extends cc.Component {
         this.isShow = false;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let player = other.node.getComponent(Player);
-        if(player && this.isShow && this.node.active){
+        let target = Actor.getCollisionTarget(other);
+        if(target && this.isShow && this.node.active){
             this.isShow = false;
             let dd = new DamageData();
             dd.physicalDamage = this.damage;
-            player.takeDamage(dd,FromData.getClone(this.actorName(),'captain_head'),this.parentNode.getComponent(Captain));
+            target.takeDamage(dd,FromData.getClone(this.actorName(),'captain_head'),this.parentNode.getComponent(Captain));
         }
     }
     actorName(){

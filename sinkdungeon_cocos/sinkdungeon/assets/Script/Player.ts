@@ -30,7 +30,6 @@ import FromData from './Data/FromData';
 import Achievements from './Achievement';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
-import RoomType from './Rect/RoomType';
 import Monster from './Monster';
 import IndexZ from './Utils/IndexZ';
 import PlayerAvatar from './PlayerAvatar';
@@ -62,14 +61,12 @@ export default class Player extends Actor {
     @property(cc.Node)
     remoteCooldown: cc.Node = null;
 
-    isShow = false;
     isMoving = false;//是否移动中
-    isDied = false;//是否死亡
     isFall = false;//是否跌落
     isJumping = false;//是否跳跃
     isStone = false;//是否石化
     isDizz = false;//是否眩晕
-    invisible = false;//是否隐身
+    
     baseAttackPoint: number = 1;
 
     //触碰到的装备
@@ -810,8 +807,7 @@ export default class Player extends Actor {
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.node.getComponent(Monster)
-            && ((this.talentSkills && this.talentSkills.hashTalent(Talent.TALENT_015) && this.talentSkills.IsExcuting) || this.isWeaponDashing||this.isJumping)) {
+        if (otherCollider.node.getComponent(Monster)) {
             contact.disabledOnce = true;
         }
     }
