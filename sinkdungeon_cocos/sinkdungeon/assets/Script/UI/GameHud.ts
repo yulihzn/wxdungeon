@@ -66,6 +66,8 @@ export default class GameHud extends cc.Component {
             this.pauseGame();
         });
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
+        this.node.opacity = 0;
+        cc.tween(this.node).to(1,{opacity:255}).start();
     }
   
     private statusUpdate(data: PlayerData) {

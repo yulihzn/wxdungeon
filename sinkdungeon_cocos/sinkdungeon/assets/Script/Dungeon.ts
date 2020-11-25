@@ -138,7 +138,8 @@ export default class Dungeon extends cc.Component {
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
-        cc.tween(this.fog).to(1, { scale: 1.2 }).start();
+        this.fog.opacity = 255;
+        cc.tween(this.fog).to(1, { scale: 1.5 }).start();
         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
         let opvalue = 0;
         if (Logic.chapterIndex == Logic.CHAPTER099) {

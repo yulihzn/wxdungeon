@@ -522,7 +522,7 @@ export default class MeleeWeapon extends cc.Component {
             }
         }
         let non = attackTarget.node.getComponent(NonPlayer);
-        if (non && !boss.isDied && !this.isMiss&&non.isEnemy) {
+        if (non && !non.isDied && !this.isMiss&&non.isEnemy) {
             damageSuccess = non.takeDamage(damage);
             if (damageSuccess) {
                 this.addTargetAllStatus(common,non);

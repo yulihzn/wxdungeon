@@ -78,7 +78,7 @@ export default class CameraControl extends cc.Component {
         if (this.dungeon.player.node.y > ymax) {
             offset.y = ymax - this.dungeon.player.node.y;
         }
-        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.player.node.position.clone().addSelf(offset));
+        let targetPos = this.dungeon.node.convertToWorldSpaceAR(this.dungeon.player.getCenterPosition().addSelf(offset));
 
         if(isDirect){
             this.node.position = this.node.parent.convertToNodeSpaceAR(targetPos);

@@ -201,7 +201,7 @@
       "array": [
         0,
         0,
-        136.028935611006,
+        130.77596274412505,
         0,
         0,
         0,
@@ -996,7 +996,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "edbb4eec-55d5-4611-83ae-84cbc49d1ece"
+      "__uuid__": "4493db45-6230-45ee-97c9-ebc7358893d7"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -1606,7 +1606,9 @@
       "__id__": 7
     },
     "_enabled": true,
-    "nonplayer": null,
+    "nonplayer": {
+      "__uuid__": "81293ed9-af71-4de4-83d1-967f9bcdbc97"
+    },
     "_id": "5asu5NpXZPIpjeZe21KoXc"
   },
   {
@@ -21950,7 +21952,7 @@
       "array": [
         0,
         0,
-        136.028935611006,
+        130.77596274412505,
         0,
         0,
         0,
