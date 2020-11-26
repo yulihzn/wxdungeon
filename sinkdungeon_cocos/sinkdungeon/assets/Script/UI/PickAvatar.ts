@@ -324,27 +324,17 @@ export default class PickAvatar extends cc.Component {
         this.ButtonRandom();
     }
     private changeEquipment(data: ProfessionData) {
-        this.helmetSprite.spriteFrame = this.spriteFrames[data.helmet];
-        this.pantsSprite.spriteFrame = this.spriteFrames[data.trousers];
-        this.cloakSprite.spriteFrame = this.spriteFrames[data.cloak];
-        this.weaponSprite.spriteFrame = this.spriteFrames[data.remote];
-        this.remoteSprite.spriteFrame = this.spriteFrames[data.helmet];
-        this.clothesSprite.spriteFrame = this.spriteFrames[data.helmet];
-        this.glovesSprite1.spriteFrame = this.spriteFrames[data.helmet];
-        this.glovesSprite2.spriteFrame = this.spriteFrames[data.helmet];
-        this.shoesSprite1.spriteFrame = this.spriteFrames[data.helmet];
-        this.shoesSprite2.spriteFrame = this.spriteFrames[data.helmet];
-        this.changeRes(this.helmetSprite, data.helmet, 'front');
-        this.changeRes(this.pantsSprite, data.trousers, 'front');
-        this.changeRes(this.cloakSprite, data.cloak, 'front');
-        this.changeRes(this.weaponSprite, data.weapon, 'front');
-        this.changeRes(this.remoteSprite, data.remote, 'front');
-        this.changeRes(this.shieldSprite, data.shield, 'front');
-        this.changeRes(this.clothesSprite, data.clothes, 'front');
-        this.changeRes(this.glovesSprite1, data.gloves, 'front');
-        this.changeRes(this.glovesSprite2, data.gloves, 'front');
-        this.changeRes(this.shoesSprite1, data.shoes, 'front');
-        this.changeRes(this.shoesSprite2, data.shoes, 'front');
+        this.changeRes(this.helmetSprite, data.helmet, 'anim0');
+        this.changeRes(this.pantsSprite, data.trousers);
+        this.changeRes(this.cloakSprite, data.cloak);
+        this.changeRes(this.weaponSprite, data.weapon);
+        this.changeRes(this.remoteSprite, data.remote, 'anim0');
+        this.changeRes(this.shieldSprite, data.shield);
+        this.changeRes(this.clothesSprite, data.clothes, 'anim0');
+        this.changeRes(this.glovesSprite1, data.gloves);
+        this.changeRes(this.glovesSprite2, data.gloves);
+        this.changeRes(this.shoesSprite1, data.shoes);
+        this.changeRes(this.shoesSprite2, data.shoes);
         this.resetSpriteSize(this.weaponSprite);
         this.resetSpriteSize(this.remoteSprite);
         this.resetSpriteSize(this.shieldSprite);
@@ -355,13 +345,13 @@ export default class PickAvatar extends cc.Component {
             sprite.node.height = sprite.spriteFrame.getRect().height;
         }
     }
-    private changeRes(sprite: cc.Sprite, resName: string, prefix?: string) {
+    private changeRes(sprite: cc.Sprite, resName: string, subfix?: string) {
         if (!sprite) {
             return false;
         }
         let spriteFrame = this.spriteFrames[resName];
-        if (prefix && this.spriteFrames[prefix + resName]) {
-            spriteFrame = this.spriteFrames[prefix + resName];
+        if (subfix && this.spriteFrames[resName+subfix]) {
+            spriteFrame = this.spriteFrames[resName+subfix];
         }
         sprite.spriteFrame = spriteFrame;
     }

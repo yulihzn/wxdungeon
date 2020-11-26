@@ -79,14 +79,14 @@ export default class Shooter extends cc.Component {
             this.sprite.y = 0;
         }
     }
-    changeRes(resName: string, prefix?: string) {
+    changeRes(resName: string, subfix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
         }
         if (!this.sprite) {
             return;
         }
-        let spriteFrame = this.getSpriteFrameByName(resName, prefix);
+        let spriteFrame = this.getSpriteFrameByName(resName, subfix);
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         this.sprite.width = spriteFrame.getRect().width * 1.5;
         this.sprite.height = spriteFrame.getRect().height * 1.5;
@@ -100,10 +100,10 @@ export default class Shooter extends cc.Component {
     changeResColor(color: cc.Color) {
         this.sprite.color = color;
     }
-    private getSpriteFrameByName(resName: string, prefix?: string): cc.SpriteFrame {
-        let spriteFrame = Logic.spriteFrames[prefix + resName];
+    private getSpriteFrameByName(resName: string, subfix?: string): cc.SpriteFrame {
+        let spriteFrame = Logic.spriteFrames[resName+subfix];
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrames[resName];
+            spriteFrame = Logic.spriteFrames[resName+'anim0'];
         }
         return spriteFrame;
     }
@@ -173,8 +173,8 @@ export default class Shooter extends cc.Component {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec3.ZERO;
             // this.changeRes(this.data.img);
-            let action = cc.sequence(cc.moveBy(0.1, 10, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim') }, this)
-                , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.changeRes(this.data.img) }, this));
+            let action = cc.sequence(cc.moveBy(0.1, 10, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim1') }, this)
+                , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim0') }, this));
             this.sprite.runAction(action);
         }
 

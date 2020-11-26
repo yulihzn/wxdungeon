@@ -263,14 +263,14 @@ export default class Player extends Actor {
                 this.weaponLeft.shooter.changeResColor(c);
 
                 this.shield.data = new EquipmentData();
-                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
+                this.updateEquipment(this.shield.sprite, this.inventoryManager.shield.color
                     , Logic.spriteFrames[Equipment.EMPTY], this.shield.data.isHeavy == 1 ? 80 : 64);
                 EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
                 break;
             case Equipment.SHIELD:
                 this.shield.data = equipData.clone();
                 this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
-                this.updateEquipMent(this.shield.sprite, this.inventoryManager.shield.color
+                this.updateEquipment(this.shield.sprite, this.inventoryManager.shield.color
                     , spriteFrame, this.shield.data.isHeavy == 1 ? 80 : 64);
 
                 this.weaponLeft.shooter.data = new EquipmentData();
@@ -279,26 +279,26 @@ export default class Player extends Actor {
                 break;
             case Equipment.HELMET:
                 this.avatar.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
-                this.updateEquipMent(this.avatar.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
+                this.updateEquipment(this.avatar.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
                 break;
             case Equipment.CLOTHES:
-                this.updateEquipMent(this.avatar.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
+                this.updateEquipment(this.avatar.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
                 break;
             case Equipment.TROUSERS:
                 let isLong = this.inventoryManager.trousers.trouserslong == 1;
                 this.avatar.changeLegColor(isLong, this.inventoryManager.trousers.color);
-                this.updateEquipMent(this.avatar.pantsSprite, this.inventoryManager.trousers.color, spriteFrame);
+                this.updateEquipment(this.avatar.pantsSprite, this.inventoryManager.trousers.color, spriteFrame);
                 break;
             case Equipment.GLOVES:
-                this.updateEquipMent(this.weaponRight.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
-                this.updateEquipMent(this.weaponLeft.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
+                this.updateEquipment(this.weaponRight.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
+                this.updateEquipment(this.weaponLeft.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
                 break;
             case Equipment.SHOES:
-                this.updateEquipMent(this.avatar.shoesLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
-                this.updateEquipMent(this.avatar.shoesRightSprite, this.inventoryManager.shoes.color, spriteFrame);
+                this.updateEquipment(this.avatar.shoesLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
+                this.updateEquipment(this.avatar.shoesRightSprite, this.inventoryManager.shoes.color, spriteFrame);
                 break;
             case Equipment.CLOAK:
-                this.updateEquipMent(this.avatar.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
+                this.updateEquipment(this.avatar.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
                 break;
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
@@ -308,7 +308,7 @@ export default class Player extends Actor {
         let health = this.data.getHealth();
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
-    private updateEquipMent(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
+    private updateEquipment(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
         sprite.spriteFrame = spriteFrame;
         if (size && size > 0) {
             sprite.node.width = size;
@@ -701,6 +701,7 @@ export default class Player extends Actor {
         this.isDied = true;
         this.avatar.playAnim(PlayerAvatar.STATE_DIE, this.currentDir);
         cc.director.emit(EventHelper.HUD_STOP_COUNTTIME);
+        cc.director.emit(EventHelper.HUD_FADE_OUT);
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
         Achievements.addPlayerDiedLifesAchievement();
         this.weaponLeft.node.opacity = 0;

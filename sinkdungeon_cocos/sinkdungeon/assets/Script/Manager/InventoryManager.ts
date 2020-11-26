@@ -30,7 +30,8 @@ export default class InventoryManager {
     itemList:ItemData[] = [];
     itemCoolDownList:Skill[]=[];
     
-   
+    clear(): void {
+    }
     constructor(){
         this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.shield,this.buffer,this.remote];
         for(let i = 0;i <3;i++){

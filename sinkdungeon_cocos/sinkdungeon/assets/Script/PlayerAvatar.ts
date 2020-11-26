@@ -176,19 +176,19 @@ export default class PlayerAvatar extends cc.Component {
     }
     changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
         this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
-        if (dir == 0 && Logic.spriteFrames['behind' + inventoryManager.helmet.img]) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames['behind' + inventoryManager.helmet.img];
-        } else if (dir == 1 && Logic.spriteFrames['front' + inventoryManager.helmet.img]) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames['front' + inventoryManager.helmet.img];
+        if (dir == 0 && Logic.spriteFrames[inventoryManager.helmet.img+'anim2']) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img+'anim2'];
+        } else if (dir == 1 && Logic.spriteFrames[inventoryManager.helmet.img+'anim1']) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img+'anim1'];
         } else {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img];
+            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img+'anim0'];
         }
-        if (dir == 0 && Logic.spriteFrames['behind' + inventoryManager.clothes.img]) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames['behind' + inventoryManager.clothes.img];
-        } else if (dir == 1 && Logic.spriteFrames['front' + inventoryManager.clothes.img]) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames['front' + inventoryManager.clothes.img];
+        if (dir == 0 && Logic.spriteFrames[inventoryManager.clothes.img+'anim2']) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img+'anim2'];
+        } else if (dir == 1 && Logic.spriteFrames[inventoryManager.clothes.img+'anim1']) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img+'anim1'];
         } else {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img];
+            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img+'anim0'];
         }
     }
     private playDie() {

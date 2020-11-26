@@ -21,6 +21,9 @@ import Portal from "../Building/Portal";
 import RoomBed from "../Building/RoomBed";
 import Building from "../Building/Building";
 import ExitData from "../Data/ExitData";
+import BaseManager from "./BaseManager";
+import DryadGrass from "../Boss/DryadGrass";
+import Utils from "../Utils/Utils";
 
 
 // Learn TypeScript:
@@ -36,7 +39,8 @@ import ExitData from "../Data/ExitData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class BuildingManager extends cc.Component {
+export default class BuildingManager extends BaseManager {
+
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -103,15 +107,29 @@ export default class BuildingManager extends cc.Component {
     mist: cc.Prefab = null;
     @property(cc.Prefab)
     shipStairs: cc.Prefab = null;
-    footboards: FootBoard[] = new Array();//踏板列表
+    @property(cc.Prefab)
+    dryadGrass: cc.Prefab = null;
+    footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
     doors: Door[] = new Array();
     airExits: AirExit[] = new Array();
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
-    // coastColliderList = ['128,128,0,0', '128,64,0,32', '128,128,0,0', '64,128,-32,0', '64,128,32,0', '128,128,0,0'
-    // , '128,64,0,-32', '128,128,0,0', '64,64,-32,32', '64,64,32,-32', '64,64,-32,-32', '64,64,32,32'];
+
+    clear(): void {
+        Utils.clearComponentArray(this.footboards);
+        Utils.clearComponentArray(this.exitdoors);
+        Utils.clearComponentArray(this.portals);
+        Utils.clearComponentArray(this.doors);
+        Utils.clearComponentArray(this.airExits);
+        this.footboards = new Array();
+        this.exitdoors = new Array();
+        this.portals = new Array();
+        this.doors = new Array();
+        this.airExits = new Array();
+    }
+
     private isThe(mapStr: string, typeStr: string): boolean {
         let isequal = mapStr.indexOf(typeStr) != -1;
         return isequal;
@@ -540,5 +558,19 @@ export default class BuildingManager extends cc.Component {
             fallScript.fall(needPrepare, showArea, damagePoint);
         }
     }
-
+    /**树根缠绕 */
+    public addTwineGrass(pos: cc.Vec3, isAuto: boolean) {
+        if (!this.dryadGrass) {
+            return;
+        }
+        let grass = cc.instantiate(this.dryadGrass);
+        let dryadGrassScript = grass.getComponent(DryadGrass);
+        dryadGrassScript.isAuto = isAuto;
+        grass.parent = this.node;
+        grass.position = pos;
+        grass.zIndex = IndexZ.getActorZIndex(pos);
+        if (dryadGrassScript.isAuto) {
+            dryadGrassScript.fall();
+        }
+    }
 }

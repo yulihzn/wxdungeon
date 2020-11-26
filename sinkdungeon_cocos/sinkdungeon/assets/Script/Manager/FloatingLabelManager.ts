@@ -20,7 +20,8 @@ export default class FloatinglabelManager extends cc.Component {
     label: cc.Prefab = null;
     private labelPool: cc.NodePool;
     // LIFE-CYCLE CALLBACKS:
-
+    clear(): void {
+    }
     onLoad () {
         this.labelPool = new cc.NodePool();
         cc.director.on('destorylabel', (event) => {

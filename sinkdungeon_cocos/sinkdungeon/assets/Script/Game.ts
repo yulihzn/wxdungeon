@@ -1,6 +1,6 @@
-import Logic from "./Logic";
-import { EventHelper } from "./EventHelper";
 import Dungeon from "./Dungeon";
+import Logic from "./Logic";
+import GameHud from "./UI/GameHud";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,11 +16,19 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Game extends cc.Component {
-
-    // start () {
-        
-    // }
-    loading(){
+    private dungeonBase:Dungeon
+    private hudBase:GameHud
+    get Dungeon(){
+        if(!this.dungeonBase){
+            this.dungeonBase = this.getComponentInChildren(Dungeon);
+        }
+        return this.dungeonBase;
+    }
+    get hud(){
+        if(!this.hudBase){
+            this.hudBase = this.getComponentInChildren(GameHud);
+        }
+        return this.hudBase;
     }
     
 }

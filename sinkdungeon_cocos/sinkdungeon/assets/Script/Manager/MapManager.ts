@@ -34,7 +34,8 @@ export default class MapManager {
     init() {
         this.isloaded = false;
     }
-
+    clear(): void {
+    }
     /**
      * 初始化地图数据
      * 读取指定章节和层数的地图列表，随机选取一个

@@ -228,6 +228,13 @@ export default class Inventory extends cc.Component {
         }
         let color = cc.color(255, 255, 255).fromHEX(equipmentDataNew.color);
         let spriteFrame = Logic.spriteFrames[equipmentDataNew.img];
+        if (equipmentDataNew.equipmetType == 'clothes') {
+            spriteFrame = Logic.spriteFrames[equipmentDataNew.img+'anim0'];
+        }else if (equipmentDataNew.equipmetType == 'helmet') {
+            spriteFrame = Logic.spriteFrames[equipmentDataNew.img+'anim0'];
+        }else if (equipmentDataNew.equipmetType == 'remote') {
+            spriteFrame = Logic.spriteFrames[equipmentDataNew.img+'anim0'];
+        }
         switch (equipmentDataNew.equipmetType) {
             case Equipment.WEAPON: this.weapon.spriteFrame = spriteFrame;
                 this.weapon.node.color = color;

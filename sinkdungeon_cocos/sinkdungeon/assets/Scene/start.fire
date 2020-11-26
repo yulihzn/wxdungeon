@@ -201,7 +201,7 @@
       "array": [
         0,
         0,
-        229.49673200287626,
+        134.23393758658798,
         0,
         0,
         0,
@@ -352,9 +352,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 169,
+      "g": 169,
+      "b": 169,
       "a": 255
     },
     "_contentSize": {
@@ -465,7 +465,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -653.166,
+        -642.018,
         335.514,
         0,
         0,
@@ -505,13 +505,13 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 1,
-    "_custom": false,
+    "_custom": true,
     "_file": {
       "__uuid__": "a051a63b-8674-43f8-b482-80b79d149e3f"
     },
     "_spriteFrame": null,
     "_texture": null,
-    "_stopped": false,
+    "_stopped": true,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 148,
@@ -521,9 +521,9 @@
     "lifeVar": 1,
     "_startColor": {
       "__type__": "cc.Color",
-      "r": 153,
-      "g": 102,
-      "b": 51,
+      "r": 44,
+      "g": 30,
+      "b": 16,
       "a": 51
     },
     "_startColorVar": {

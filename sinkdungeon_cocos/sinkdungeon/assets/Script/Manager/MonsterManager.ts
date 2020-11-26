@@ -6,6 +6,9 @@ import Slime from "../Boss/Slime";
 import MonsterRandomAttr from "./MonsterRandomAttr";
 import RoomType from "../Rect/RoomType";
 import Boss from "../Boss/Boss";
+import BaseManager from "./BaseManager";
+import Game from "../Game";
+import GameHud from "../UI/GameHud";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,7 +23,8 @@ import Boss from "../Boss/Boss";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MonsterManager extends cc.Component {
+export default class MonsterManager extends BaseManager {
+    
     public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN';
     public static readonly MONSTER_SLIME = 'monster000';
     public static readonly MONSTER_GOBLIN = 'monster001';
@@ -109,8 +113,17 @@ export default class MonsterManager extends cc.Component {
     get bossList() {
         return this.bosses;
     }
-    monsterRandomAttr: MonsterRandomAttr = new MonsterRandomAttr;
-
+    private monsterRandomAttr: MonsterRandomAttr = new MonsterRandomAttr();
+    clear(): void {
+        for(let m of this.monsters){
+            if(m&&m.isValid){m.destroy();}
+        }
+        for(let b of this.bosses){
+            if(b&&b.isValid){b.destroy();}
+        }
+        this.monsters = new Array();
+        this.bosses = new Array();
+    }
     /**添加怪物 */
     public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon) {
         this.addMonster(this.getMonster(resName, dungeon), indexPos);
@@ -291,7 +304,7 @@ export default class MonsterManager extends cc.Component {
         data.updateHA(maxHealth, maxHealth, attackPoint);
         boss.data = data;
         boss.transportBoss(indexPos.x, indexPos.y);
-        boss.healthBar = dungeon.bossHealthBar;
+        boss.healthBar = this.node.parent.getComponentInChildren(GameHud).bossHealthBar;
         boss.node.active = true;
         this.bosses.push(boss);
         this.scheduleOnce(() => {
@@ -323,7 +336,7 @@ export default class MonsterManager extends cc.Component {
         slime.node.scaleX = slime.scaleSize;
         slime.data = data;
         slime.transportBoss(posIndex.x, posIndex.y);
-        slime.healthBar = dungeon.bossHealthBar;
+        slime.healthBar = this.node.parent.getComponentInChildren(GameHud).bossHealthBar;
         slime.node.active = true;
         this.bosses.push(slime);
         return slime;

@@ -2,6 +2,8 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import NonPlayer from "../NonPlayer";
 import NonPlayerData from "../Data/NonPlayerData";
+import BaseManager from "./BaseManager";
+import Utils from "../Utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,7 +18,7 @@ import NonPlayerData from "../Data/NonPlayerData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NonPlayerManager extends cc.Component {
+export default class NonPlayerManager extends BaseManager {
     public static readonly NON_SHADOW = 'nonplayer001';
     // LIFE-CYCLE CALLBACKS:
 
@@ -29,6 +31,9 @@ export default class NonPlayerManager extends cc.Component {
     private nonplayers: NonPlayer[] = new Array();//房间npc列表
     get nonPlayerList() {
         return this.nonplayers;
+    }
+    clear(): void {
+        Utils.clearComponentArray(this.nonplayers);
     }
     /**添加npc */
     public addNonPlayerFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon) {

@@ -4,6 +4,7 @@ import DungeonStyleData from "../Data/DungeonStyleData";
 import ParallexBackground from "../UI/ParallaxBackground";
 import IndexZ from "../Utils/IndexZ";
 import LevelData from "../Data/LevelData";
+import BaseManager from "./BaseManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,7 +19,7 @@ import LevelData from "../Data/LevelData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class DungeonStyleManager extends cc.Component {
+export default class DungeonStyleManager extends BaseManager {
 
 
     @property(cc.Node)
@@ -29,7 +30,8 @@ export default class DungeonStyleManager extends cc.Component {
     parallaxBackground: cc.Prefab = null;
     styleData: DungeonStyleData;
     readonly darksides = 'darksides';
-
+    clear(): void {
+    }
     runBackgroundAnim(resName: string) {
         if (!this.background01) {
             return;

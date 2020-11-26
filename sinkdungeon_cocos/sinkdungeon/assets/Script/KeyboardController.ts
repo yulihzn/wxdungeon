@@ -53,7 +53,7 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.a: this.isLeft = true; break;
             case cc.macro.KEY.d: this.isRight = true; break;
 
-            // case cc.macro.KEY.j:this.isA = true;break;
+            case cc.macro.KEY.j:this.isA = true;break;
             case cc.macro.KEY.space: this.isB = true; break;
             case cc.macro.KEY.e: this.isC = true; break;
             case cc.macro.KEY.shift: this.isD = true; break;
@@ -72,7 +72,7 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.a: this.isLeft = false; break;
             case cc.macro.KEY.d: this.isRight = false; break;
 
-            // case cc.macro.KEY.j:this.isA = false;break;
+            case cc.macro.KEY.j:this.isA = false;break;
             case cc.macro.KEY.space: this.isB = false; cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
             case cc.macro.KEY.e: this.isC = false; break;
             case cc.macro.KEY.shift: this.isD = false; break;

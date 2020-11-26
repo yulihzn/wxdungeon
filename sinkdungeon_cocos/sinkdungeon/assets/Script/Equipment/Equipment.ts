@@ -50,6 +50,13 @@ export default class Equipment extends cc.Component {
         if (data.equipmetType == 'trousers') {
             spriteFrame = data.trouserslong==1?Logic.spriteFrames['trousers000']:spriteFrame;
         }
+        if (data.equipmetType == 'clothes') {
+            spriteFrame = Logic.spriteFrames[this.data.img+'anim0'];
+        }else if (data.equipmetType == 'helmet') {
+            spriteFrame = Logic.spriteFrames[this.data.img+'anim0'];
+        }else if (data.equipmetType == 'remote') {
+            spriteFrame = Logic.spriteFrames[this.data.img+'anim0'];
+        }
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         this.sprite.width = spriteFrame.getRect().width;
         this.sprite.height = spriteFrame.getRect().height;

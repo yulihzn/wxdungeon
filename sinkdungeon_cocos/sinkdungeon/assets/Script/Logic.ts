@@ -17,6 +17,7 @@ import ProfessionData from "./Data/ProfessionData";
 import Random4Save from "./Utils/Random4Save";
 import ExitData from "./Data/ExitData";
 import NonPlayerData from "./Data/NonPlayerData";
+import Game from "./Game";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

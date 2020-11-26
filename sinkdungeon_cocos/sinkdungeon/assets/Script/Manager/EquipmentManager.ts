@@ -7,6 +7,7 @@ import ShopTable from "../Building/ShopTable";
 import IndexZ from "../Utils/IndexZ";
 import CommonData from "../Data/CommonData";
 import Random4Save from "../Utils/Random4Save";
+import BaseManager from "./BaseManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,7 +22,8 @@ import Random4Save from "../Utils/Random4Save";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class EquipmentManager extends cc.Component {
+export default class EquipmentManager extends BaseManager {
+    
 
     public static readonly EMPTY = "emptyequipment";
     public static readonly WEAPON_DINNERFORK = "weapon000";
@@ -140,9 +142,7 @@ export default class EquipmentManager extends cc.Component {
 
 
 
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad() {
+    clear(): void {
     }
     /*灰色（粗糙）→白色（普通）→绿色（精良）→蓝色（优秀）→紫色（史诗）→橙色（传说）
     箱子的等级1,2,3越来越高*/

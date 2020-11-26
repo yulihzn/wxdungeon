@@ -131,7 +131,7 @@ export default class Dryad extends Boss {
     twineGrass(){
         this.twineGrassSkill.next(()=>{
             this.schedule(()=>{
-                this.dungeon.addTwineGrass(Dungeon.getPosInMap(this.dungeon.player.pos.clone()), true);
+                this.dungeon.buildingManager.addTwineGrass(Dungeon.getPosInMap(this.dungeon.player.pos.clone()), true);
             },1,2);
         },8,true);
     }

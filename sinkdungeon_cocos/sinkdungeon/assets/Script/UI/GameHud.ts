@@ -20,6 +20,8 @@ const { ccclass, property } = cc._decorator;
 export default class GameHud extends cc.Component {
     @property(HealthBar)
     healthBar: HealthBar = null;
+    @property(HealthBar)
+    bossHealthBar: HealthBar = null;
     @property(PlayerInfoDialog)
     playerInfoDialog: PlayerInfoDialog = null;
     @property(cc.Label)
@@ -37,9 +39,7 @@ export default class GameHud extends cc.Component {
     private minute = 0;
     private second = 0;
 
-    // LIFE-CYCLE CALLBACKS:
-
-    onLoad() {
+    onLoad(){
         cc.director.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, (event) => {
             let data = new PlayerData();
             data.valueCopy(event.detail.data);
@@ -53,6 +53,12 @@ export default class GameHud extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_STOP_COUNTTIME
             , (event) => { this.startCountTime = false; });
+            cc.director.on(EventHelper.HUD_FADE_IN, (event) => {
+                this.fadeIn();
+            })
+            cc.director.on(EventHelper.HUD_FADE_OUT, (event) => {
+                this.fadeOut();
+            })
         if (this.clock) {
             this.clock.string = `${Logic.time}`;
         }
@@ -66,10 +72,22 @@ export default class GameHud extends cc.Component {
             this.pauseGame();
         });
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
-        this.node.opacity = 0;
-        cc.tween(this.node).to(1,{opacity:255}).start();
+        this.fadeIn();
     }
-  
+    private fadeOut(){
+        if(!this.node){
+            return;
+        }
+        this.node.opacity = 255;
+        cc.tween(this.node).to(0.5,{opacity:0}).start();
+    }
+    private fadeIn(){
+        if(!this.node){
+            return;
+        }
+        this.node.opacity = 0;
+        cc.tween(this.node).to(3,{opacity:255}).start();
+    }
     private statusUpdate(data: PlayerData) {
         if (!this.playerInfoDialog) {
             return;
@@ -107,7 +125,7 @@ export default class GameHud extends cc.Component {
         return false;
     }
 
-    update(dt) {
+    update(dt:number) {
         if (this.isCheckTimeDelay(dt)) {
             if (this.clock && this.startCountTime) {
                 this.changeTime();

@@ -36,7 +36,8 @@ export default class SpecialManager extends cc.Component {
     @property(cc.Prefab)
     blade: cc.Prefab = null;
     dungeon: Dungeon;
-
+    clear(): void {
+    }
     addPlacement(placeType: string, distance: number,isFaceRight:boolean,from:FromData) {
         if (!this.dungeon) {
             return;
