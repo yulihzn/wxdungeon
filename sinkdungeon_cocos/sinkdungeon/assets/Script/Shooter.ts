@@ -105,6 +105,9 @@ export default class Shooter extends cc.Component {
         if (!spriteFrame) {
             spriteFrame = Logic.spriteFrames[resName+'anim0'];
         }
+        if (!spriteFrame) {
+            spriteFrame = Logic.spriteFrames[resName];
+        }
         return spriteFrame;
     }
     setHv(hv: cc.Vec3) {
