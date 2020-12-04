@@ -26,7 +26,7 @@ export default class ExitDoor extends Building {
     bgSprite: cc.Sprite = null;
     closeSprite: cc.Sprite = null;
     openSprite: cc.Sprite = null;
-    bg: cc.Sprite = null;
+    roof: cc.Sprite = null;
     isBackToUpLevel = false;
     dir = 0;
     exitData:ExitData = new ExitData();
@@ -39,7 +39,7 @@ export default class ExitDoor extends Building {
         this.isBackToUpLevel = dir == 4 || dir == 5 || dir == 6 || dir == 7;
         if (this.dir > 7) {
             this.node.opacity = 0;
-            this.bg.node.opacity = 0;
+            this.roof.node.opacity = 0;
             let indexPos = this.data.defaultPos.clone();
             let collider = this.node.getComponent(cc.BoxCollider);
             collider.size = cc.size(128,128);
@@ -64,13 +64,13 @@ export default class ExitDoor extends Building {
             case 2: this.node.angle = 90;break;
             case 3: this.node.angle = -90;break;
         }
-        this.bg.getComponentInChildren(cc.Label).string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
+        this.roof.getComponentInChildren(cc.Label).string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
     }
     onLoad() {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);
         this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite);
         this.openSprite = this.node.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite);
-        this.bg = this.node.getChildByName('bg').getComponent(cc.Sprite);
+        this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         this.openSprite.node.zIndex = IndexZ.FLOOR;
         this.closeSprite.node.zIndex = IndexZ.ACTOR;
     }
@@ -85,13 +85,12 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER05: this.changeRes('exit004'); break;
             case Logic.CHAPTER099: this.changeRes('exit000'); break;
         }
-        if (this.bg) {
-            let spriteframe = Logic.spriteFrames[`${Logic.worldLoader.getCurrentLevelData().wallRes1}anim001`];
-            this.bg.spriteFrame = spriteframe;
-            this.bg.node.parent = this.node.parent;
-            this.bg.node.position = this.node.position;
-            this.bg.node.angle = this.node.angle;
-            this.bg.node.zIndex = IndexZ.OVERHEAD;
+        if (this.roof) {
+            this.roof.node.parent = this.node.parent;
+            let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
+            this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p);
+            this.roof.node.angle = this.node.angle;
+            this.roof.node.zIndex = IndexZ.OVERHEAD;
         }
     }
 

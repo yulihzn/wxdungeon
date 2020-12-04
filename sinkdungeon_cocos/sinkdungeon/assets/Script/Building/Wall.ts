@@ -2,7 +2,6 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Building from "./Building";
 import { ColliderTag } from "../Actor/ColliderTag";
-import IndexZ from "../Utils/IndexZ";
 import LevelData from "../Data/LevelData";
 
 // Learn TypeScript:
@@ -20,29 +19,43 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Wall extends Building {
 
+    static readonly TYPE_EMPTY = -1;//空
+    static readonly TYPE_NORMAL = 0;//普通
+    static readonly TYPE_CORNER = 1;//外角
+    static readonly TYPE_INNER = 2;//内角
+    static readonly TYPE_CONVEX = 3;//凸角
+    static readonly TYPE_CONCAVE = 4;//凹角
+    static readonly TYPE_ALONE = 5;//单独
+    static readonly TYPE_ROOF = 6;//房顶
+    static readonly TYPE_OTHER1 = 7;//其它1
+    static readonly TYPE_OTHER2 = 8;//其它2
     pos: cc.Vec3;
     half = false;
     wallsprite: cc.Sprite;
+    roofsprite: cc.Sprite;
     shadowsprite: cc.Sprite;
     mapStr: string = '##';
-    resName: string = '';
+    wallName: string = '';//wall***anim000 roof***anim000
+    roofName: string = '';
     resNameSecond: string = '';
-    isCorner = false;//是否角落
-    isInteral = false;//是否内角
-    isBottom = false;
-    isEmpty = false;
-    isSecond = false;//是否次级墙体
+    type: number = Wall.TYPE_EMPTY;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.wallsprite = this.node.getChildByName('sprite').getChildByName('wallsprite').getComponent(cc.Sprite);
+        this.roofsprite = this.node.getChildByName('sprite').getChildByName('roofsprite').getComponent(cc.Sprite);
         this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite);
     }
-    changeRes(resName: string) {
-        this.wallsprite.spriteFrame = Logic.spriteFrames[resName];
-        if (this.isEmpty) {
+    changeRes(wallName: string, roofName: string) {
+        this.wallsprite.spriteFrame = Logic.spriteFrames[wallName];
+        this.roofsprite.spriteFrame = Logic.spriteFrames[roofName];
+        if (this.type == Wall.TYPE_EMPTY) {
             return this.node.opacity = 0;
+        }
+        if (this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2) {
+            this.roofsprite.node.opacity = 0;
+            this.wallsprite.node.height = 256;
         }
     }
     setPos(pos: cc.Vec3) {
@@ -51,113 +64,125 @@ export default class Wall extends Building {
     }
     start() {
         this.node.opacity = 255;
-        this.changeRes(this.getRes());
-        if (this.mapStr[1] == '8' || this.mapStr[1] == '9' || this.mapStr[1] == '#') {
-            let collider = this.node.getComponent(cc.BoxCollider);
-            collider.offset = cc.Vec2.ZERO;
-        } else if (this.isCorner) {
-            this.node.zIndex = IndexZ.WALLCORNER;
-        } else {
-            this.node.zIndex = IndexZ.WALL;
+        this.changeRes(this.wallName, this.roofName);
+    }
+    private ajustSpriteShow(isShowShadow: boolean, roofAngle: number, flipWall: boolean, flipRoof: cc.Vec3) {
+        if (!this.wallsprite) {
+            this.wallsprite = this.node.getChildByName('sprite').getChildByName('wallsprite').getComponent(cc.Sprite);
+            this.roofsprite = this.node.getChildByName('sprite').getChildByName('roofsprite').getComponent(cc.Sprite);
+            this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite);
         }
+        this.shadowsprite.node.opacity = isShowShadow ? 255 : 0;
+        this.roofsprite.node.angle = roofAngle;
+        this.wallsprite.node.scaleX = flipWall ? -1 : 1;
+        this.roofsprite.node.scaleX = flipRoof.x;
+        this.roofsprite.node.scaleY = flipRoof.y;
     }
     init(mapStr: string, leveldata: LevelData) {
         this.mapStr = mapStr;
-        if (mapStr == '##') {
-            this.isEmpty = true;
+        let dir = parseInt(mapStr[2]);
+        let letter = mapStr[1];
+        let isSencod = false;
+        switch (letter) {
+            case '#': this.type = Wall.TYPE_EMPTY; break;
+            case '0': this.type = Wall.TYPE_OTHER1; break;
+            case '1': this.type = Wall.TYPE_OTHER2; break;
+            case 'a': this.type = Wall.TYPE_NORMAL; break;
+            case 'b': this.type = Wall.TYPE_CORNER; break;
+            case 'c': this.type = Wall.TYPE_INNER; break;
+            case 'd': this.type = Wall.TYPE_CONVEX; break;
+            case 'e': this.type = Wall.TYPE_CONCAVE; break;
+            case 'f': this.type = Wall.TYPE_ALONE; break;
+            case 'g': this.type = Wall.TYPE_ROOF; break;
+            case 'h': this.type = Wall.TYPE_NORMAL; isSencod = true; break;
+            case 'i': this.type = Wall.TYPE_CORNER; isSencod = true; break;
+            case 'j': this.type = Wall.TYPE_INNER; isSencod = true; break;
+            case 'k': this.type = Wall.TYPE_CONVEX; isSencod = true; break;
+            case 'l': this.type = Wall.TYPE_CONCAVE; isSencod = true; break;
+            case 'm': this.type = Wall.TYPE_ALONE; isSencod = true; break;
+            case 'n': this.type = Wall.TYPE_ROOF; isSencod = true; break;
         }
-        let index = parseInt(mapStr[1]);
-        if (isNaN(index)&&mapStr != '##'&&mapStr != '#a'
-        &&mapStr != '#b'&&mapStr != '#c'&&mapStr != '#d') {
-            this.isSecond = true;
+        let res = isSencod ? leveldata.wallRes2 : leveldata.wallRes1;
+        switch (this.type) {
+            case Wall.TYPE_EMPTY:break;
+            case Wall.TYPE_OTHER1:this.wallName = leveldata.wallRes3;break;
+            case Wall.TYPE_OTHER2: this.wallName = leveldata.wallRes4;break;
+            case Wall.TYPE_NORMAL:this.roofName = `roof${res}anim000`;this.wallName = `wall${res}anim001`;break;
+            case Wall.TYPE_CORNER: this.roofName = `roof${res}anim001`;this.wallName = `roof${res}anim006`;break;
+            case Wall.TYPE_INNER: this.roofName = `roof${res}anim002`;this.wallName = `wall${res}anim002`;break;
+            case Wall.TYPE_CONVEX: this.roofName = `roof${res}anim003`;this.wallName = `wall${res}anim000`;break;
+            case Wall.TYPE_CONCAVE: this.roofName = `roof${res}anim004`;this.wallName = `roof${res}anim006`;break;
+            case Wall.TYPE_ALONE: this.roofName = `roof${res}anim005`;this.wallName = `wall${res}anim000`;break;
+            case Wall.TYPE_ROOF: this.roofName = `roof${res}anim006`;this.wallName = `roof${res}anim006`;break;
         }
-        switch (mapStr) {
-            case '##': this.isEmpty = true;
+        let isWallFlip = false;
+        let roofAngle = 0;
+        let roofFlip = cc.v3(1, 1);
+        switch (dir) {
+            case 0: this.ajustSpriteShow(true, roofAngle, isWallFlip, roofFlip);
                 break;
-
-            case '#e':
-            case '#0':
+            case 1:
+                if (this.type == Wall.TYPE_INNER||this.type == Wall.TYPE_CORNER) {
+                    isWallFlip = true;
+                    roofFlip = cc.v3(-1, 1);
+                }else{
+                    this.wallName = `roof${res}anim006`;
+                    roofFlip = cc.v3(1, -1);
+                }
+                this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip); break;
+            case 2:
+                if (this.type == Wall.TYPE_INNER||this.type == Wall.TYPE_CORNER) {
+                    roofFlip = cc.v3(1, -1);
+                    this.wallName = `roof${res}anim006`;
+                }else{
+                    if (this.type == Wall.TYPE_CONVEX) {
+                        this.wallName = `wall${res}anim002`;
+                    }
+                    roofAngle = 90;
+                }
+                this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip);
                 break;
-
-            case '#f':
-            case '#1': this.node.angle = 180; this.isBottom = true;
-                break;
-
-            case '#g':
-            case '#2': this.node.angle = 90;
-                break;
-
-            case '#h':
-            case '#3': this.node.angle = -90;
-                break;
-
-
-            case '#m':
-            case '#a': this.isInteral = true;
-            case '#i':
-            case '#4': this.node.angle = -90;
-                break;
-
-            case '#n':
-            case '#b': this.isInteral = true;
-            case '#j':
-            case '#5': this.node.angle = 180;
-                break;
-
-            case '#o':
-            case '#c': this.isInteral = true;
-            case '#k':
-            case '#6': this.isBottom = true;
-                break;
-
-            case '#p':
-            case '#d': this.isInteral = true;
-            case '#l':
-            case '#7': this.isBottom = true; this.node.scaleX = -1;
+            case 3:
+                if (this.type == Wall.TYPE_INNER||this.type == Wall.TYPE_CORNER) {
+                    roofFlip = cc.v3(-1, -1);
+                    this.wallName = `roof${res}anim006`;
+                }else{
+                    if (this.type == Wall.TYPE_CONVEX) {
+                        this.wallName = `wall${res}anim002`;
+                        isWallFlip = true;
+                    }
+                    roofAngle = -90;
+                }
+                this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip);
                 break;
         }
-        if (this.isInteral) {
-            this.node.zIndex = IndexZ.WALLINTERNAL;
-        }
-        this.resName = leveldata.wallRes1;
-        if(this.isSecond){
-            this.resName = leveldata.wallRes2;
-        }else if(this.mapStr == '#8'){
-            this.resName = leveldata.wallRes3;
-        }else if(this.mapStr == '#9'){
-            this.resName = leveldata.wallRes4;
-        }
-    }
-    getRes(): string {
-        let s = `${this.resName}anim000`;
-        if (this.mapStr[1] == '8' || this.mapStr[1] == '9' || this.mapStr[1] == '#') {
-            return this.resName;
-        }
-        if (this.isBottom) {
-            this.shadowsprite.node.opacity = 0;
-        }
-        if (this.isCorner) {
-            if (!this.isInteral) {
-                this.shadowsprite.node.opacity = 0;
-            }
-            return `${this.resName}corner${this.isInteral ? 'anim001' : 'anim000'}`
-        }
-        return s;
     }
 
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (!this.isEmpty) {
-            this.node.opacity = 255;
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.MONSTER)) {
+            if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
+                this.wallsprite.node.opacity = 180;
+            }else{
+                this.roofsprite.node.opacity = 180;
+            }
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (this.mapStr[1] == '0' && !this.isEmpty && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.MONSTER)) {
-            this.node.opacity = 128;
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.MONSTER)) {
+            if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
+                this.wallsprite.node.opacity = 180;
+            }else{
+                this.roofsprite.node.opacity = 180;
+            }
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (!this.isEmpty) {
-            this.node.opacity = 255;
+        if (this.type != Wall.TYPE_EMPTY&& (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.MONSTER)) {
+            if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
+                this.wallsprite.node.opacity = 255;
+            }else{
+                this.roofsprite.node.opacity = 255;
+            }
         }
     }
     // update (dt) {}

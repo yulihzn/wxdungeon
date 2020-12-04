@@ -27,9 +27,7 @@ export default class Door extends Building {
     //0top1bottom2left3right
     dir = 0;
     sprite: cc.Sprite = null;
-    bg: cc.Sprite = null;
-    bg1: cc.Sprite = null;
-    bg2: cc.Sprite = null;
+    roof: cc.Sprite = null;
     lockInfo:cc.Node = null;
     boxCollider: cc.PhysicsBoxCollider;
 
@@ -37,9 +35,7 @@ export default class Door extends Building {
 
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
-        this.bg = this.node.getChildByName('bg').getComponent(cc.Sprite);
-        this.bg1 = this.node.getChildByName('bg').getChildByName('bg1').getComponent(cc.Sprite);
-        this.bg2 = this.node.getChildByName('bg').getChildByName('bg2').getComponent(cc.Sprite);
+        this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         this.lockInfo = this.node.getChildByName('info');
         this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
@@ -50,15 +46,14 @@ export default class Door extends Building {
         if (this.sprite) {
             this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim000`];
         }
-        if (this.bg) {
-            let spriteframe = Logic.spriteFrames[`${Logic.worldLoader.getCurrentLevelData().wallRes1}anim001`];
-            this.bg.spriteFrame = spriteframe;
-            this.bg1.spriteFrame = spriteframe;
-            this.bg2.spriteFrame = spriteframe;
-            this.bg.node.parent = this.node.parent;
-            this.bg.node.position = this.node.position;
-            this.bg.node.angle = this.node.angle;
-            this.bg.node.zIndex = IndexZ.OVERHEAD;
+        if (this.roof) {
+            let spriteframe = Logic.spriteFrames[`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}anim006`];
+            this.roof.spriteFrame = spriteframe;
+            this.roof.node.parent = this.node.parent;
+            let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
+            this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p);
+            this.roof.node.angle = this.node.angle;
+            this.roof.node.zIndex = IndexZ.OVERHEAD;
         }
         if(this.lockInfo&&this.isLock&&!Logic.mapManager.isNeighborRoomStateClear(this.dir)){
             this.lockInfo.opacity = 255;

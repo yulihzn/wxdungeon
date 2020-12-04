@@ -248,6 +248,13 @@
             <key type="filename">building/plant003.png</key>
             <key type="filename">building/plant004.png</key>
             <key type="filename">building/portallight.png</key>
+            <key type="filename">building/rooflab00anim000.png</key>
+            <key type="filename">building/rooflab00anim001.png</key>
+            <key type="filename">building/rooflab00anim002.png</key>
+            <key type="filename">building/rooflab00anim003.png</key>
+            <key type="filename">building/rooflab00anim004.png</key>
+            <key type="filename">building/rooflab00anim005.png</key>
+            <key type="filename">building/rooflab00anim006.png</key>
             <key type="filename">building/sawtable.png</key>
             <key type="filename">building/stonefire001.png</key>
             <key type="filename">building/stonefire002.png</key>
@@ -859,8 +866,6 @@
             <key type="filename">building/walldungeon01corneranim001.png</key>
             <key type="filename">building/walljungle00corneranim000.png</key>
             <key type="filename">building/walljungle00corneranim001.png</key>
-            <key type="filename">building/walllab00corneranim000.png</key>
-            <key type="filename">building/walllab00corneranim001.png</key>
             <key type="filename">building/wallpyramid00corneranim000.png</key>
             <key type="filename">building/wallpyramid00corneranim001.png</key>
             <key type="filename">building/wallroom00corneranim000.png</key>

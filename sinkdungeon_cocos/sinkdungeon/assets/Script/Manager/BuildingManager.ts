@@ -50,8 +50,6 @@ export default class BuildingManager extends BaseManager {
     @property(cc.Prefab)
     wall: cc.Prefab = null;
     @property(cc.Prefab)
-    corner: cc.Prefab = null;
-    @property(cc.Prefab)
     trap: cc.Prefab = null;
     @property(cc.Prefab)
     fallStone: cc.Prefab = null;
@@ -467,24 +465,10 @@ export default class BuildingManager extends BaseManager {
         }
     }
     private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
-        let mapDataStrIndex = mapDataStr[1];
-
-        let node: cc.Node = null;
-        if (mapDataStrIndex == '0' || mapDataStrIndex == '1' || mapDataStrIndex == '2'
-            || mapDataStrIndex == '3' || mapDataStrIndex == '8' || mapDataStrIndex == '9'
-            || mapDataStrIndex == 'e' || mapDataStrIndex == 'f' || mapDataStrIndex == 'g'
-            || mapDataStrIndex == 'h' || mapDataStrIndex == '#') {
-            node = this.addBuilding(this.wall, indexPos);
-            if (mapDataStrIndex != '8' && mapDataStrIndex != '9') {
-                node.zIndex = IndexZ.WALL;
-            }
-        } else {
-            node = this.addBuilding(this.corner, indexPos);
-            node.getComponent(Wall).isCorner = true;
-            node.zIndex = IndexZ.WALLCORNER;
-        }
+        let node: cc.Node = this.addBuilding(this.wall, indexPos);
         let wall = node.getComponent(Wall);
         wall.init(mapDataStr, levelData);
+       
 
     }
     /**生成可打击建筑 */
