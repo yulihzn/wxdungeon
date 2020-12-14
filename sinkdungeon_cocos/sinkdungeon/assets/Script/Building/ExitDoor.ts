@@ -26,7 +26,7 @@ export default class ExitDoor extends Building {
     bgSprite: cc.Sprite = null;
     closeSprite: cc.Sprite = null;
     openSprite: cc.Sprite = null;
-    roof: cc.Sprite = null;
+    roof: cc.Node = null;
     isBackToUpLevel = false;
     dir = 0;
     exitData:ExitData = new ExitData();
@@ -39,7 +39,7 @@ export default class ExitDoor extends Building {
         this.isBackToUpLevel = dir == 4 || dir == 5 || dir == 6 || dir == 7;
         if (this.dir > 7) {
             this.node.opacity = 0;
-            this.roof.node.opacity = 0;
+            this.roof.opacity = 0;
             let indexPos = this.data.defaultPos.clone();
             let collider = this.node.getComponent(cc.BoxCollider);
             collider.size = cc.size(128,128);
@@ -64,13 +64,14 @@ export default class ExitDoor extends Building {
             case 2: this.node.angle = 90;break;
             case 3: this.node.angle = -90;break;
         }
+        
         this.roof.getComponentInChildren(cc.Label).string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
     }
     onLoad() {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);
         this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite);
         this.openSprite = this.node.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite);
-        this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
+        this.roof = this.node.getChildByName('roof');
         this.openSprite.node.zIndex = IndexZ.FLOOR;
         this.closeSprite.node.zIndex = IndexZ.ACTOR;
     }
@@ -86,11 +87,11 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER099: this.changeRes('exit000'); break;
         }
         if (this.roof) {
-            this.roof.node.parent = this.node.parent;
+            this.roof.parent = this.node.parent;
             let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
-            this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p);
-            this.roof.node.angle = this.node.angle;
-            this.roof.node.zIndex = IndexZ.OVERHEAD;
+            this.roof.position = this.roof.parent.convertToNodeSpaceAR(p);
+            this.roof.angle = this.node.angle;
+            this.roof.zIndex = IndexZ.OVERHEAD;
         }
     }
 

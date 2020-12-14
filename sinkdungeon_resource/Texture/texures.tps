@@ -255,6 +255,8 @@
             <key type="filename">building/rooflab00anim004.png</key>
             <key type="filename">building/rooflab00anim005.png</key>
             <key type="filename">building/rooflab00anim006.png</key>
+            <key type="filename">building/rooflab00anim007.png</key>
+            <key type="filename">building/rooflab00anim008.png</key>
             <key type="filename">building/sawtable.png</key>
             <key type="filename">building/stonefire001.png</key>
             <key type="filename">building/stonefire002.png</key>

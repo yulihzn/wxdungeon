@@ -47,7 +47,7 @@ export default class Door extends Building {
             this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim000`];
         }
         if (this.roof) {
-            let spriteframe = Logic.spriteFrames[`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}anim006`];
+            let spriteframe = Logic.spriteFrames[`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}anim008`];
             this.roof.spriteFrame = spriteframe;
             this.roof.node.parent = this.node.parent;
             let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));

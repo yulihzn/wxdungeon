@@ -25,10 +25,12 @@ export default class Wall extends Building {
     static readonly TYPE_INNER = 2;//内角
     static readonly TYPE_CONVEX = 3;//凸角
     static readonly TYPE_CONCAVE = 4;//凹角
-    static readonly TYPE_ALONE = 5;//单独
-    static readonly TYPE_ROOF = 6;//房顶
-    static readonly TYPE_OTHER1 = 7;//其它1
-    static readonly TYPE_OTHER2 = 8;//其它2
+    static readonly TYPE_INNER_CORNER = 5;//内外角
+    static readonly TYPE_TWO_SIDES = 6;//横竖
+    static readonly TYPE_ALONE = 7;//单独
+    static readonly TYPE_ROOF = 8;//房顶
+    static readonly TYPE_OTHER1 = 9;//其它1
+    static readonly TYPE_OTHER2 = 10;//其它2
     pos: cc.Vec3;
     half = false;
     wallsprite: cc.Sprite;
@@ -92,28 +94,35 @@ export default class Wall extends Building {
             case 'c': this.type = Wall.TYPE_INNER; break;
             case 'd': this.type = Wall.TYPE_CONVEX; break;
             case 'e': this.type = Wall.TYPE_CONCAVE; break;
-            case 'f': this.type = Wall.TYPE_ALONE; break;
-            case 'g': this.type = Wall.TYPE_ROOF; break;
-            case 'h': this.type = Wall.TYPE_NORMAL; isSencod = true; break;
-            case 'i': this.type = Wall.TYPE_CORNER; isSencod = true; break;
-            case 'j': this.type = Wall.TYPE_INNER; isSencod = true; break;
-            case 'k': this.type = Wall.TYPE_CONVEX; isSencod = true; break;
-            case 'l': this.type = Wall.TYPE_CONCAVE; isSencod = true; break;
-            case 'm': this.type = Wall.TYPE_ALONE; isSencod = true; break;
-            case 'n': this.type = Wall.TYPE_ROOF; isSencod = true; break;
+            case 'f': this.type = Wall.TYPE_INNER_CORNER; break;
+            case 'g': this.type = Wall.TYPE_TWO_SIDES; break;
+            case 'h': this.type = Wall.TYPE_ALONE; break;
+            case 'i': this.type = Wall.TYPE_ROOF; break;
+            case 'j': this.type = Wall.TYPE_NORMAL; isSencod = true; break;
+            case 'k': this.type = Wall.TYPE_CORNER; isSencod = true; break;
+            case 'l': this.type = Wall.TYPE_INNER; isSencod = true; break;
+            case 'm': this.type = Wall.TYPE_CONVEX; isSencod = true; break;
+            case 'n': this.type = Wall.TYPE_CONCAVE; isSencod = true; break;
+            case 'o': this.type = Wall.TYPE_INNER_CORNER; isSencod = true; break;
+            case 'p': this.type = Wall.TYPE_TWO_SIDES; isSencod = true; break;
+            case 'q': this.type = Wall.TYPE_ALONE; isSencod = true; break;
+            case 'r': this.type = Wall.TYPE_ROOF; isSencod = true; break;
         }
         let res = isSencod ? leveldata.wallRes2 : leveldata.wallRes1;
+        let roofdarkness = `roof${res}anim008`;
         switch (this.type) {
             case Wall.TYPE_EMPTY:break;
             case Wall.TYPE_OTHER1:this.wallName = leveldata.wallRes3;break;
             case Wall.TYPE_OTHER2: this.wallName = leveldata.wallRes4;break;
             case Wall.TYPE_NORMAL:this.roofName = `roof${res}anim000`;this.wallName = `wall${res}anim001`;break;
-            case Wall.TYPE_CORNER: this.roofName = `roof${res}anim001`;this.wallName = `roof${res}anim006`;break;
+            case Wall.TYPE_CORNER: this.roofName = `roof${res}anim001`;this.wallName = roofdarkness;break;
             case Wall.TYPE_INNER: this.roofName = `roof${res}anim002`;this.wallName = `wall${res}anim002`;break;
             case Wall.TYPE_CONVEX: this.roofName = `roof${res}anim003`;this.wallName = `wall${res}anim000`;break;
-            case Wall.TYPE_CONCAVE: this.roofName = `roof${res}anim004`;this.wallName = `roof${res}anim006`;break;
-            case Wall.TYPE_ALONE: this.roofName = `roof${res}anim005`;this.wallName = `wall${res}anim000`;break;
-            case Wall.TYPE_ROOF: this.roofName = `roof${res}anim006`;this.wallName = `roof${res}anim006`;break;
+            case Wall.TYPE_CONCAVE: this.roofName = `roof${res}anim004`;this.wallName = roofdarkness;break;
+            case Wall.TYPE_INNER_CORNER: this.roofName = `roof${res}anim005`;this.wallName = `wall${res}anim002`;break;
+            case Wall.TYPE_TWO_SIDES: this.roofName = `roof${res}anim006`;this.wallName = `wall${res}anim001`;break;
+            case Wall.TYPE_ALONE: this.roofName = `roof${res}anim007`;this.wallName = `wall${res}anim000`;break;
+            case Wall.TYPE_ROOF: this.roofName = roofdarkness;this.wallName = roofdarkness;break;
         }
         let isWallFlip = false;
         let roofAngle = 0;
@@ -122,18 +131,20 @@ export default class Wall extends Building {
             case 0: this.ajustSpriteShow(true, roofAngle, isWallFlip, roofFlip);
                 break;
             case 1:
-                if (this.type == Wall.TYPE_INNER||this.type == Wall.TYPE_CORNER) {
+                if (this.isInnerOrCorner(this.type)) {
                     isWallFlip = true;
                     roofFlip = cc.v3(-1, 1);
+                }else if(this.type == Wall.TYPE_TWO_SIDES){
+                    roofAngle = 90;
                 }else{
-                    this.wallName = `roof${res}anim006`;
+                    this.wallName = roofdarkness;
                     roofFlip = cc.v3(1, -1);
                 }
                 this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip); break;
             case 2:
-                if (this.type == Wall.TYPE_INNER||this.type == Wall.TYPE_CORNER) {
+                if (this.isInnerOrCorner(this.type)) {
                     roofFlip = cc.v3(1, -1);
-                    this.wallName = `roof${res}anim006`;
+                    this.wallName = roofdarkness;
                 }else{
                     if (this.type == Wall.TYPE_CONVEX) {
                         this.wallName = `wall${res}anim002`;
@@ -143,9 +154,9 @@ export default class Wall extends Building {
                 this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip);
                 break;
             case 3:
-                if (this.type == Wall.TYPE_INNER||this.type == Wall.TYPE_CORNER) {
+                if (this.isInnerOrCorner(this.type)) {
                     roofFlip = cc.v3(-1, -1);
-                    this.wallName = `roof${res}anim006`;
+                    this.wallName = roofdarkness;
                 }else{
                     if (this.type == Wall.TYPE_CONVEX) {
                         this.wallName = `wall${res}anim002`;
@@ -156,6 +167,9 @@ export default class Wall extends Building {
                 this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip);
                 break;
         }
+    }
+    private isInnerOrCorner(type:number):boolean{
+        return type == Wall.TYPE_INNER||type == Wall.TYPE_CORNER||type == Wall.TYPE_INNER_CORNER;
     }
 
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
