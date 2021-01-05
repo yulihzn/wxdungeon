@@ -353,7 +353,11 @@ export default class PickAvatar extends cc.Component {
         if (subfix && this.spriteFrames[resName+subfix]) {
             spriteFrame = this.spriteFrames[resName+subfix];
         }
-        sprite.spriteFrame = spriteFrame;
+        if(spriteFrame){
+            sprite.spriteFrame = spriteFrame;
+        }else{
+            sprite.spriteFrame = null;
+        }
     }
     startGame() {
         if (this.loadingBackground.active) {

@@ -25,8 +25,8 @@ export default class ParallexBackground extends cc.Component {
     layer2:cc.Node = null;
     player:Player;
     init(){
-        this.layer1.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`chapter0${Logic.chapterIndex}layer1`];
-        this.layer2.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`chapter0${Logic.chapterIndex}layer2`];
+        this.layer1.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`chapter0${Logic.chapterIndex}layer1`);
+        this.layer2.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`chapter0${Logic.chapterIndex}layer2`);
     }
     getPlayer():Player{
         if(!this.player){

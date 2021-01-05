@@ -158,9 +158,9 @@ export default class GameHud extends cc.Component {
     pauseGame():void{
         if(cc.director.isPaused()){
             cc.director.resume();
-            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames['hud_pause'];
+            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause');
         }else{
-            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames['hud_pause_pressed'];
+            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause_pressed');
             this.scheduleOnce(()=>{cc.director.pause();},0.1)
         }
     }

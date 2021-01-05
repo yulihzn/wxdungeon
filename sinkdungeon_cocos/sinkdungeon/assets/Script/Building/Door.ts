@@ -44,10 +44,10 @@ export default class Door extends Building {
 
     start() {
         if (this.sprite) {
-            this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim000`];
+            this.sprite.spriteFrame = Logic.spriteFrameRes(`door0${Logic.chapterIndex}anim000`);
         }
         if (this.roof) {
-            let spriteframe = Logic.spriteFrames[`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}anim008`];
+            let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}anim008`);
             this.roof.spriteFrame = spriteframe;
             this.roof.node.parent = this.node.parent;
             let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
@@ -89,7 +89,7 @@ export default class Door extends Building {
         this.isOpen = true;
         let index = 0;
         this.schedule(() => {
-            this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim00${index++}`];
+            this.sprite.spriteFrame = Logic.spriteFrameRes(`door0${Logic.chapterIndex}anim00${index++}`);
             if (index > 4) {
                 this.boxCollider.sensor = true;
                 this.boxCollider.apply();
@@ -103,7 +103,7 @@ export default class Door extends Building {
         this.isOpen = false;
         let index = 4;
         this.schedule(() => {
-            this.sprite.spriteFrame = Logic.spriteFrames[`door0${Logic.chapterIndex}anim00${index--}`];
+            this.sprite.spriteFrame = Logic.spriteFrameRes(`door0${Logic.chapterIndex}anim00${index--}`);
             if (index < 0) {
                 this.boxCollider.sensor = false;
                 this.boxCollider.apply();

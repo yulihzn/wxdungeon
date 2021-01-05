@@ -19,7 +19,7 @@ export default class DecorationFloor extends Building {
 
     changeRes(resName:string){
         let sprite = this.getComponent(cc.Sprite);
-        sprite.spriteFrame = Logic.spriteFrames[resName];
+        sprite.spriteFrame = Logic.spriteFrameRes(resName);
         this.node.width = sprite.spriteFrame.getRect().width;
         this.node.height = sprite.spriteFrame.getRect().height;
 

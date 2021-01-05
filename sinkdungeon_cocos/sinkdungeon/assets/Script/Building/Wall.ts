@@ -50,8 +50,8 @@ export default class Wall extends Building {
         this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite);
     }
     changeRes(wallName: string, roofName: string) {
-        this.wallsprite.spriteFrame = Logic.spriteFrames[wallName];
-        this.roofsprite.spriteFrame = Logic.spriteFrames[roofName];
+        this.wallsprite.spriteFrame = Logic.spriteFrameRes(wallName);
+        this.roofsprite.spriteFrame = Logic.spriteFrameRes(roofName);
         if (this.type == Wall.TYPE_EMPTY) {
             return this.node.opacity = 0;
         }

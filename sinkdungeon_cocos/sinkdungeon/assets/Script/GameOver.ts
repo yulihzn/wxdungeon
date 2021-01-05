@@ -49,7 +49,7 @@ export default class GameOver extends cc.Component {
             dieinfo = `第${ach.playerLifes}次死亡，在 ${Logic.worldLoader.getCurrentLevelData().name} 被 ${Logic.dieFrom.name} 击倒`
         }
         if (this.infoIcon && Logic.dieFrom.res.length > 0) {
-            this.infoIcon.spriteFrame = Logic.spriteFrames[Logic.dieFrom.res];
+            this.infoIcon.spriteFrame = Logic.spriteFrameRes(Logic.dieFrom.res);
         }
         if (this.info) {
             this.info.string = dieinfo;

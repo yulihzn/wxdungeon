@@ -76,7 +76,7 @@ export default class AirExit extends Building {
             this.collider.sensor = false;
             this.collider.apply();
         }
-        this.sprite.spriteFrame = Logic.spriteFrames[resName];
+        this.sprite.spriteFrame = Logic.spriteFrameRes(resName);
     }
     start() {
 

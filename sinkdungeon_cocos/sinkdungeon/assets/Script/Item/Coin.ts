@@ -54,7 +54,7 @@ export default class Coin extends cc.Component {
             index = 1;
             this.node.scale = 1;
         }
-        this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[this.valueRes[index]];
+        this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(this.valueRes[index]);
     }
 
     start () {

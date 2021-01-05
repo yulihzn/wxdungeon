@@ -51,8 +51,8 @@ export default class Chest extends Building {
             case 3: name1 = 'chest002'; name2 = 'chestopen002'; break;
             case 4: name1 = 'chest002'; name2 = 'chestopen002'; break;
         }
-        let openFrame = Logic.spriteFrames[name1];
-        let closeFrame = Logic.spriteFrames[name2];
+        let openFrame = Logic.spriteFrameRes(name1);
+        let closeFrame = Logic.spriteFrameRes(name2);
         this.openSpriteFrame = openFrame;
         this.closeSpriteFrame = closeFrame;
         this.sprite.getComponent(cc.Sprite).spriteFrame = this.openSpriteFrame;

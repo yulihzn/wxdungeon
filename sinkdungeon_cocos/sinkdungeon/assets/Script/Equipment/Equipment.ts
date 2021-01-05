@@ -46,16 +46,16 @@ export default class Equipment extends cc.Component {
     }
     refresh(data: EquipmentData) {
         this.data.valueCopy(data);
-        let spriteFrame = Logic.spriteFrames[this.data.img];
+        let spriteFrame = Logic.spriteFrameRes(this.data.img);
         if (data.equipmetType == 'trousers') {
-            spriteFrame = data.trouserslong==1?Logic.spriteFrames['trousers000']:spriteFrame;
+            spriteFrame = data.trouserslong==1?Logic.spriteFrameRes('trousers000'):spriteFrame;
         }
         if (data.equipmetType == 'clothes') {
-            spriteFrame = Logic.spriteFrames[this.data.img+'anim0'];
+            spriteFrame = Logic.spriteFrameRes(this.data.img+'anim0');
         }else if (data.equipmetType == 'helmet') {
-            spriteFrame = Logic.spriteFrames[this.data.img+'anim0'];
+            spriteFrame = Logic.spriteFrameRes(this.data.img+'anim0');
         }else if (data.equipmetType == 'remote') {
-            spriteFrame = Logic.spriteFrames[this.data.img+'anim0'];
+            spriteFrame = Logic.spriteFrameRes(this.data.img+'anim0');
         }
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         this.sprite.width = spriteFrame.getRect().width;

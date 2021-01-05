@@ -36,9 +36,9 @@ export default class DungeonStyleManager extends BaseManager {
         if (!this.background01) {
             return;
         }
-        let spf1 = Logic.spriteFrames[resName];
-        let spf2 = Logic.spriteFrames[resName + '1'];
-        if (!spf2) { spf2 = Logic.spriteFrames[resName]; }
+        let spf1 = Logic.spriteFrameRes(resName];
+        let spf2 = Logic.spriteFrameRes(resName + '1'];
+        if (!spf2) { spf2 = Logic.spriteFrameRes(resName]; }
         if (!spf1) {
             return;
         }
@@ -65,7 +65,7 @@ export default class DungeonStyleManager extends BaseManager {
             return;
         }
         this.addFloor();
-        // this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrames[this.styleData.background] : null;
+        // this.background01.getComponent(cc.Sprite).spriteFrame = this.styleData.background ? Logic.spriteFrameRes(this.styleData.background] : null;
         // this.runBackgroundAnim(this.styleData.background);
         this.background01.getComponent(cc.Sprite).spriteFrame = null;
         // this.addDecorateBg();
@@ -90,7 +90,7 @@ export default class DungeonStyleManager extends BaseManager {
         let pos = Dungeon.getPosInMap(cc.v3(0, 0));
         this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE/2, pos.y - Dungeon.TILE_SIZE/2);
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR;
-        this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[`${leveldata.floorRes}001`];
+        this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`${leveldata.floorRes}001`);
     }
 
 }

@@ -161,7 +161,7 @@ export default class MeleeWeapon extends cc.Component {
         if (equipData.stab == 1) {
             this.weaponSprite.spriteFrame = null;
             this.weaponStabSprite.spriteFrame = spriteFrame;
-            this.weaponStabLightSprite.spriteFrame = this.isFar ? Logic.spriteFrames['stablight'] : Logic.spriteFrames['stablight1'];
+            this.weaponStabLightSprite.spriteFrame = this.isFar ? Logic.spriteFrameRes('stablight') : Logic.spriteFrameRes('stablight1');
         } else {
             this.weaponSprite.spriteFrame = spriteFrame;
             this.weaponStabSprite.spriteFrame = null;

@@ -280,4 +280,7 @@ export default class Logic extends cc.Component {
     static getRandomItemType(rand4save: Random4Save): string {
         return Logic.itemNameList[rand4save.getRandomNum(1, Logic.itemNameList.length - 1)];
     }
+    static spriteFrameRes(spriteFrameName:string){
+        return Logic.spriteFrames[spriteFrameName]?Logic.spriteFrames[spriteFrameName]:null;
+    }
 }

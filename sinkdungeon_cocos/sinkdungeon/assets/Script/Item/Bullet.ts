@@ -236,9 +236,9 @@ export default class Bullet extends cc.Component {
 
     }
     private getSpriteFrameByName(resName: string, suffix?: string,needDefaultSuffix?:boolean): cc.SpriteFrame {
-        let spriteFrame = Logic.spriteFrames[resName + suffix];
+        let spriteFrame = Logic.spriteFrameRes(resName + suffix);
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrames[needDefaultSuffix?resName+'anim000':resName];
+            spriteFrame = Logic.spriteFrameRes(needDefaultSuffix?resName+'anim000':resName);
         }
         return spriteFrame;
     }

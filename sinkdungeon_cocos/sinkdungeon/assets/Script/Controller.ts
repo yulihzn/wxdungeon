@@ -38,7 +38,7 @@ export default class Controller extends cc.Component {
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
         this.skillIcon = this.coolDown.getChildByName('sprite').getComponent(cc.Sprite);
-        this.skillIcon.spriteFrame = Logic.spriteFrames[Logic.playerData.AvatarData.professionData.talent];
+        this.skillIcon.spriteFrame = Logic.spriteFrameRes(Logic.playerData.AvatarData.professionData.talent);
         this.attackAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.attackActionTouched = true;
         }, this)
@@ -105,10 +105,10 @@ export default class Controller extends cc.Component {
         if(!button){
             return;
         }
-        button.normalSprite = Logic.spriteFrames[isShield?'uishield':'uiremote'];
-        button.pressedSprite = Logic.spriteFrames[isShield?'uishieldpress':'uiremotepress'];
-        button.hoverSprite = Logic.spriteFrames[isShield?'uishieldlight':'uiremotelight'];
-        button.disabledSprite = Logic.spriteFrames[isShield?'uishieldpress':'uiremotepress'];
+        button.normalSprite = Logic.spriteFrameRes(isShield?'uishield':'uiremote');
+        button.pressedSprite = Logic.spriteFrameRes(isShield?'uishieldpress':'uiremotepress');
+        button.hoverSprite = Logic.spriteFrameRes(isShield?'uishieldlight':'uiremotelight');
+        button.disabledSprite = Logic.spriteFrameRes(isShield?'uishieldpress':'uiremotepress');
     }
 
     private drawSkillCoolDown(coolDown: number) {

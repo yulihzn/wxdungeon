@@ -47,8 +47,8 @@ export default class TalentShield extends Talent {
         if (!resName || resName.length < 1) {
             return;
         }
-        this.shieldBackSprite.spriteFrame = Logic.spriteFrames[resName];
-        this.shieldFrontSprite.spriteFrame = Logic.spriteFrames[resName];
+        this.shieldBackSprite.spriteFrame = Logic.spriteFrameRes(resName);
+        this.shieldFrontSprite.spriteFrame = Logic.spriteFrameRes(resName);
     }
     useSKill(){
         this.useShield();

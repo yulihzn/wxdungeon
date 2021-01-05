@@ -245,7 +245,7 @@ export default class Loading extends cc.Component {
         })
     }
     private loadAutoSpriteFrames() {
-        if (Logic.spriteFrames&&Logic.spriteFrames['singleColor']) {
+        if (Logic.spriteFrames&&Logic.spriteFrameRes('singleColor')) {
             this.spriteFrameNames[Loading.KEY_AUTO] = true;
             return;
         }
@@ -264,7 +264,7 @@ export default class Loading extends cc.Component {
         }
         cc.resources.load(`Texture/${typeKey}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
             for (let frame of atlas.getSpriteFrames()) {
-                Logic.spriteFrames[frame.name] = frame;
+                Logic.spriteFrames[frame.name]= frame;
             }
             this.spriteFrameNames[typeKey] = true;
             cc.log(`${typeKey} loaded`);

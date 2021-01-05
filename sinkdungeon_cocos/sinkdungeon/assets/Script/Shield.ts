@@ -227,7 +227,7 @@ export default class Shield extends cc.Component {
         if (!resName || resName.length < 1) {
             return;
         }
-        this.sprite.spriteFrame = Logic.spriteFrames[resName];
+        this.sprite.spriteFrame = Logic.spriteFrameRes(resName);
         this.sprite.node.width = this.data.isHeavy==1?80:64;
         this.sprite.node.height = this.data.isHeavy==1?80:64;
         if(this.data.equipmetType == Equipment.SHIELD){

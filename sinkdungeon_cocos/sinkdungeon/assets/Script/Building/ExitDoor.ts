@@ -126,8 +126,8 @@ export default class ExitDoor extends Building {
     }
     // update (dt) {}
     changeRes(resName: string) {
-        this.bgSprite.spriteFrame = Logic.spriteFrames[resName + 'bg'];
-        this.openSprite.spriteFrame = Logic.spriteFrames[resName + 'open'];
-        this.closeSprite.spriteFrame = Logic.spriteFrames[resName + 'close'];
+        this.bgSprite.spriteFrame = Logic.spriteFrameRes(resName + 'bg');
+        this.openSprite.spriteFrame = Logic.spriteFrameRes(resName + 'open');
+        this.closeSprite.spriteFrame = Logic.spriteFrameRes(resName + 'close');
     }
 }

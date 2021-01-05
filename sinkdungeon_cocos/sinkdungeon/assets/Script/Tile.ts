@@ -138,9 +138,9 @@ export default class Tile extends cc.Component {
         }
     }
     changeRes(resName:string){
-        this.floor.spriteFrame = Logic.spriteFrames[resName];
+        this.floor.spriteFrame = Logic.spriteFrameRes(resName);
         if(this.floor.spriteFrame == null){
-            this.floor.spriteFrame = Logic.spriteFrames[this.floorPrefix+'001'];
+            this.floor.spriteFrame = Logic.spriteFrameRes(this.floorPrefix+'001');
         }
     }
 }

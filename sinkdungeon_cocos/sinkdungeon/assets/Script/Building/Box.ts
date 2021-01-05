@@ -54,7 +54,7 @@ export default class Box extends Building {
     }
     changeRes(resName: string) {
         let sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
-        let spriteFrame = Logic.spriteFrames[resName];
+        let spriteFrame = Logic.spriteFrameRes(resName);
         sprite.spriteFrame = spriteFrame;
     }
     setDefaultPos(defaultPos: cc.Vec3) {

@@ -42,7 +42,7 @@ export default class Status extends cc.Component {
         if(!this.anim){return;}
         this.target = target;
         this.data = data;
-        this.sprite.spriteFrame = Logic.spriteFrames[data.spriteFrameName];
+        this.sprite.spriteFrame = Logic.spriteFrameRes(data.spriteFrameName);
         this.anim.playAdditive('StatusShow');
         this.doStatusDamage(true);
         this.stateRunning = true;

@@ -264,7 +264,7 @@ export default class Player extends Actor {
 
                 this.shield.data = new EquipmentData();
                 this.updateEquipment(this.shield.sprite, this.inventoryManager.shield.color
-                    , Logic.spriteFrames[Equipment.EMPTY], this.shield.data.isHeavy == 1 ? 80 : 64);
+                    , Logic.spriteFrameRes(Equipment.EMPTY), this.shield.data.isHeavy == 1 ? 80 : 64);
                 EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
                 break;
             case Equipment.SHIELD:

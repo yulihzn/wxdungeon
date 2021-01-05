@@ -83,7 +83,7 @@ export default class PlayerAvatar extends cc.Component {
         this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
         let index = 0;
         this.schedule(() => {
-            this.hairSprite.spriteFrame = Logic.spriteFrames[this.data.hairResName + this.idlehair[index++]];
+            this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[index++]);
             if (index > 1) {
                 index = 0;
             }
@@ -176,19 +176,19 @@ export default class PlayerAvatar extends cc.Component {
     }
     changeEquipDirSpriteFrame(inventoryManager: InventoryManager, dir: number) {
         this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
-        if (dir == 0 && Logic.spriteFrames[inventoryManager.helmet.img+'anim2']) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img+'anim2'];
-        } else if (dir == 1 && Logic.spriteFrames[inventoryManager.helmet.img+'anim1']) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img+'anim1'];
+        if (dir == 0 && Logic.spriteFrameRes(inventoryManager.helmet.img+'anim2')) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(inventoryManager.helmet.img+'anim2');
+        } else if (dir == 1 && Logic.spriteFrameRes(inventoryManager.helmet.img+'anim1')) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(inventoryManager.helmet.img+'anim1');
         } else {
-            this.helmetSprite.spriteFrame = Logic.spriteFrames[inventoryManager.helmet.img+'anim0'];
+            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(inventoryManager.helmet.img+'anim0');
         }
-        if (dir == 0 && Logic.spriteFrames[inventoryManager.clothes.img+'anim2']) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img+'anim2'];
-        } else if (dir == 1 && Logic.spriteFrames[inventoryManager.clothes.img+'anim1']) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img+'anim1'];
+        if (dir == 0 && Logic.spriteFrameRes(inventoryManager.clothes.img+'anim2')) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(inventoryManager.clothes.img+'anim2');
+        } else if (dir == 1 && Logic.spriteFrameRes(inventoryManager.clothes.img+'anim1')) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(inventoryManager.clothes.img+'anim1');
         } else {
-            this.clothesSprite.spriteFrame = Logic.spriteFrames[inventoryManager.clothes.img+'anim0'];
+            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(inventoryManager.clothes.img+'anim0');
         }
     }
     private playDie() {
@@ -210,21 +210,21 @@ export default class PlayerAvatar extends cc.Component {
                 break;
             case PlayerAvatar.DIR_DOWN:
                 this.idlehair = [0, 1];
-                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 0];
-                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 0];
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix + 0);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix + 0);
                 break;
             case PlayerAvatar.DIR_LEFT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 1];
-                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 1];
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix + 1);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix + 1);
                 break;
             case PlayerAvatar.DIR_RIGHT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrames[eyesprefix + 1];
-                this.faceSprite.spriteFrame = Logic.spriteFrames[faceprefix + 1];
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix + 1);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix + 1);
                 break;
         }
-        this.hairSprite.spriteFrame = Logic.spriteFrames[this.data.hairResName + this.idlehair[0]];
+        this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[0]);
         if (dir != 4) {
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
         }

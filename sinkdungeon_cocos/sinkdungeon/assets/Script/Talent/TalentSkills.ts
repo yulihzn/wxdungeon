@@ -167,13 +167,13 @@ export default class TalentSkills extends Talent {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         cc.tween(this.sprite.node).call(() => {
             this.player.addStatus(StatusManager.TALENT_FLASH_SPEED, new FromData());
-            this.sprite.spriteFrame = Logic.spriteFrames['flash'];
+            this.sprite.spriteFrame = Logic.spriteFrameRes('flash');
             this.sprite.node.width = 128;
             this.sprite.node.height = 128;
             this.sprite.node.opacity = 255;
             this.sprite.node.position = cc.v3(0, 32);
         }).to(0.1, { opacity: 0 }).call(() => {
-            this.sprite.spriteFrame = Logic.spriteFrames['singleColor'];
+            this.sprite.spriteFrame = Logic.spriteFrameRes('singleColor');
             this.sprite.node.width = 2000;
             this.sprite.node.height = 2000;
             this.sprite.node.opacity = 255;
@@ -187,7 +187,7 @@ export default class TalentSkills extends Talent {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         cc.tween(this.sprite.node).call(() => {
             this.player.addStatus(StatusManager.TALENT_AIMED, new FromData());
-            this.sprite.spriteFrame = Logic.spriteFrames['talentshoot'];
+            this.sprite.spriteFrame = Logic.spriteFrameRes('talentshoot');
             this.sprite.node.width = 64;
             this.sprite.node.height = 64;
             this.sprite.node.opacity = 255;
@@ -258,10 +258,10 @@ export default class TalentSkills extends Talent {
         if (boss) {
             boss.getLoot();
         }
-        cc.tween(this.sprite.node).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand01']; })
-            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand02']; })
-            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand03']; })
-            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrames['talenthand04']; })
+        cc.tween(this.sprite.node).call(() => { this.sprite.spriteFrame = Logic.spriteFrameRes('talenthand01'); })
+            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrameRes('talenthand02'); })
+            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrameRes('talenthand03'); })
+            .delay(0.2).call(() => { this.sprite.spriteFrame = Logic.spriteFrameRes('talenthand04'); })
             .delay(0.2).call(() => {
                 this.sprite.spriteFrame = null;
             }).start();

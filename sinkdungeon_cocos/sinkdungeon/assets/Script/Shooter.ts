@@ -101,12 +101,12 @@ export default class Shooter extends cc.Component {
         this.sprite.color = color;
     }
     private getSpriteFrameByName(resName: string, subfix?: string): cc.SpriteFrame {
-        let spriteFrame = Logic.spriteFrames[resName+subfix];
+        let spriteFrame = Logic.spriteFrameRes(resName+subfix);
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrames[resName+'anim0'];
+            spriteFrame = Logic.spriteFrameRes(resName+'anim0');
         }
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrames[resName];
+            spriteFrame = Logic.spriteFrameRes(resName);
         }
         return spriteFrame;
     }

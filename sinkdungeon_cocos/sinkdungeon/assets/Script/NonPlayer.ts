@@ -160,9 +160,9 @@ export default class NonPlayer extends Actor {
         }
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
-        let spriteFrame = Logic.spriteFrames[resName + suffix];
+        let spriteFrame = Logic.spriteFrameRes(resName + suffix);
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrames[resName];
+            spriteFrame = Logic.spriteFrameRes(resName);
         }
         return spriteFrame;
     }

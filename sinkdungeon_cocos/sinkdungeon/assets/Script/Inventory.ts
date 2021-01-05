@@ -227,13 +227,13 @@ export default class Inventory extends cc.Component {
             return;
         }
         let color = cc.color(255, 255, 255).fromHEX(equipmentDataNew.color);
-        let spriteFrame = Logic.spriteFrames[equipmentDataNew.img];
+        let spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img);
         if (equipmentDataNew.equipmetType == 'clothes') {
-            spriteFrame = Logic.spriteFrames[equipmentDataNew.img+'anim0'];
+            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img+'anim0');
         }else if (equipmentDataNew.equipmetType == 'helmet') {
-            spriteFrame = Logic.spriteFrames[equipmentDataNew.img+'anim0'];
+            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img+'anim0');
         }else if (equipmentDataNew.equipmetType == 'remote') {
-            spriteFrame = Logic.spriteFrames[equipmentDataNew.img+'anim0'];
+            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img+'anim0');
         }
         switch (equipmentDataNew.equipmetType) {
             case Equipment.WEAPON: this.weapon.spriteFrame = spriteFrame;
@@ -250,7 +250,7 @@ export default class Inventory extends cc.Component {
                 this.setEquipment(this.inventoryManager.shield, isChange);
                 this.inventoryManager.remote.valueCopy(equipmentDataNew);
                 this.inventoryManager.shield.valueCopy(new EquipmentData());
-                this.shield.spriteFrame = Logic.spriteFrames[this.inventoryManager.shield.img];
+                this.shield.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.shield.img);
                 this.shield.node.parent.active = false;
                 break;
             case Equipment.SHIELD:
@@ -263,7 +263,7 @@ export default class Inventory extends cc.Component {
                 this.inventoryManager.shield.valueCopy(equipmentDataNew);
                 if (this.inventoryManager.shield.equipmetType != Equipment.EMPTY) {
                     this.inventoryManager.remote.valueCopy(new EquipmentData());
-                    this.remote.spriteFrame = Logic.spriteFrames[this.inventoryManager.remote.img];
+                    this.remote.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.remote.img);
                     this.remote.node.parent.active = false;
                     this.shield.node.parent.active = true;
                 } else {
@@ -282,7 +282,7 @@ export default class Inventory extends cc.Component {
                 this.inventoryManager.clothes.valueCopy(equipmentDataNew);
                 break;
             case Equipment.TROUSERS:
-                this.trousers.spriteFrame = equipmentDataNew.trouserslong == 1 ? Logic.spriteFrames['trousers000'] : spriteFrame;
+                this.trousers.spriteFrame = equipmentDataNew.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
                 this.trousers.node.color = color;
                 this.setEquipment(this.inventoryManager.trousers, isChange);
                 this.inventoryManager.trousers.valueCopy(equipmentDataNew);
@@ -452,7 +452,7 @@ export default class Inventory extends cc.Component {
         let itemSpriteList = [this.item1, this.item2, this.item3];
         for (let i = 0; i < itemSpriteList.length; i++) {
             let item = this.inventoryManager.itemList[i];
-            itemSpriteList[i].spriteFrame = Logic.spriteFrames[item.resName];
+            itemSpriteList[i].spriteFrame = Logic.spriteFrameRes(item.resName);
             itemSpriteList[i].node.parent.parent.getComponentInChildren(cc.Label).string = `${item.count > 0 ? ('x' + item.count) : ''}`;
         }
     }

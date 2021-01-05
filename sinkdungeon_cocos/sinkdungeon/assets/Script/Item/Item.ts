@@ -59,7 +59,7 @@ export default class Item extends cc.Component {
             shopTable.data.itemdata.valueCopy(Logic.items[resName]);
             shopTable.data.price = this.data.price;
         }
-        let spriteFrame = Logic.spriteFrames[this.data.resName];
+        let spriteFrame = Logic.spriteFrameRes(this.data.resName);
         if (spriteFrame) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
             this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = spriteFrame;

@@ -170,7 +170,7 @@ export default class Monster extends Actor {
         this.attrNode.removeAllChildren();
         for (let key in this.attrmap) {
             let attr = cc.instantiate(this.attrPrefab);
-            attr.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrames[key];
+            attr.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(key);
             this.attrNode.addChild(attr);
         }
     }
@@ -215,7 +215,11 @@ export default class Monster extends Actor {
             this.shadow = this.sprite.getChildByName('shadow');
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
-        this.bodySprite.spriteFrame = spriteFrame;
+        if(spriteFrame){
+            this.bodySprite.spriteFrame = spriteFrame;
+        }else{
+            this.bodySprite.spriteFrame = null;
+        }
         this.bodySprite.node.width = spriteFrame.getRect().width;
         this.bodySprite.node.height = spriteFrame.getRect().height;
         let y = 48, w = 80, h = 80;
@@ -238,9 +242,9 @@ export default class Monster extends Actor {
         }
     }
     private getSpriteFrameByName(resName: string, suffix?: string): cc.SpriteFrame {
-        let spriteFrame = Logic.spriteFrames[resName + suffix];
+        let spriteFrame = Logic.spriteFrameRes(resName + suffix);
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrames[resName];
+            spriteFrame = Logic.spriteFrameRes(resName);
         }
         return spriteFrame;
     }
