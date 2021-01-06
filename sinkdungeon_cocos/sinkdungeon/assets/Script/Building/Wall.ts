@@ -74,7 +74,7 @@ export default class Wall extends Building {
             this.roofsprite = this.node.getChildByName('sprite').getChildByName('roofsprite').getComponent(cc.Sprite);
             this.shadowsprite = this.node.getChildByName('sprite').getChildByName('shadow').getComponent(cc.Sprite);
         }
-        this.shadowsprite.node.opacity = isShowShadow ? 255 : 0;
+        this.shadowsprite.node.opacity = isShowShadow ? 80 : 0;
         this.roofsprite.node.angle = roofAngle;
         this.wallsprite.node.scaleX = flipWall ? -1 : 1;
         this.roofsprite.node.scaleX = flipRoof.x;
@@ -127,6 +127,7 @@ export default class Wall extends Building {
         let isWallFlip = false;
         let roofAngle = 0;
         let roofFlip = cc.v3(1, 1);
+        let showShadow = false;
         switch (dir) {
             case 0: this.ajustSpriteShow(true, roofAngle, isWallFlip, roofFlip);
                 break;
@@ -134,13 +135,14 @@ export default class Wall extends Building {
                 if (this.isInnerOrCorner(this.type)) {
                     isWallFlip = true;
                     roofFlip = cc.v3(-1, 1);
+                    showShadow = true;
                 }else if(this.type == Wall.TYPE_TWO_SIDES){
                     roofAngle = 90;
                 }else{
                     this.wallName = roofdarkness;
                     roofFlip = cc.v3(1, -1);
                 }
-                this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip); break;
+                this.ajustSpriteShow(showShadow, roofAngle, isWallFlip, roofFlip); break;
             case 2:
                 if (this.isInnerOrCorner(this.type)) {
                     roofFlip = cc.v3(1, -1);
