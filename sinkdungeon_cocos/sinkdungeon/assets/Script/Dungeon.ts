@@ -16,6 +16,7 @@ import Light from "./Effect/Light";
 import NonPlayerManager from "./Manager/NonPlayerManager";
 import ItemManager from "./Manager/ItemManager";
 import Utils from "./Utils/Utils";
+import ShadowOfSight from "./Effect/ShadowOfSight";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -37,6 +38,8 @@ export default class Dungeon extends cc.Component {
     playerPrefab: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
+    @property(ShadowOfSight)
+    shadowOfSight:ShadowOfSight=null;
 
     map: Tile[][] = new Array();//地图列表
     floorIndexmap: cc.Vec3[] = new Array();//地板下标列表
@@ -195,6 +198,7 @@ export default class Dungeon extends cc.Component {
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
+        this.shadowOfSight.player = this.player.node;
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {

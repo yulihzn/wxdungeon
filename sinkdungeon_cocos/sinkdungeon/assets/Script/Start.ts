@@ -98,5 +98,9 @@ export default class Start extends cc.Component {
             this.tourButton.opacity = 0;
         }
     }
+
+    goTest(){
+        cc.director.loadScene('test');
+    }
     
 }
