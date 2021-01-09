@@ -137,6 +137,7 @@ export default class Dungeon extends cc.Component {
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
         this.fog.opacity = 255;
+        this.shadowOfSight.node.zIndex = IndexZ.SHADOW;
         cc.tween(this.fog).to(1, { scale: 1.75 }).start();
         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
         let opvalue = 0;

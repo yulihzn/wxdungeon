@@ -7,6 +7,7 @@ export enum ColliderTag{
     PLAYER=3,
     MONSTER=4,
     BOSS_ASS=5,
-    BOSS,
-    BULLET
+    BOSS=6,
+    BULLET=7,
+    BUILDING=8
 }

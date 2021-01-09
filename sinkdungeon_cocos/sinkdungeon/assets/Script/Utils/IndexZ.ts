@@ -19,6 +19,8 @@ export default class IndexZ{
     static readonly WALLCORNER = 800;
     /** 墙角（内）*/
     static readonly WALLINTERNAL = 900;
+    /** 阴影*/
+    static readonly SHADOW = 1900;
     /** 角色*/
     static readonly ACTOR = 2000;
     /**头上 */

@@ -82,6 +82,6 @@ CCProgram fs %{
     float blur = radius;//羽化
     float dis = (v_uv0.x * wh_ratio - rx) * (v_uv0.x * wh_ratio - rx) + (v_uv0.y  - ry) * (v_uv0.y - ry);
     o.a = smoothstep(circle, circle - blur, dis);
-    gl_FragColor = o;
+    gl_FragColor = 1.0 - o;
   }
 }%
