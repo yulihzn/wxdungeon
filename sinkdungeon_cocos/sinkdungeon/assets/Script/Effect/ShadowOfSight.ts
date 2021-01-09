@@ -59,8 +59,7 @@ export default class ShadowOfSight extends cc.Component {
             let physicsManager = cc.director.getPhysicsManager();
             let result = physicsManager.rayCast(p1, p3, cc.RayCastType.Closest);
             if (result.length > 0&&(result[0].collider.tag == ColliderTag.WALL
-                ||result[0].collider.tag == ColliderTag.BUILDING
-                ||result[0].collider.tag == ColliderTag.MONSTER)) {
+                ||result[0].collider.tag == ColliderTag.BUILDING)) {
                 p3 = result[0].point;
             }
             this.lightVertsArray.push(p3);
