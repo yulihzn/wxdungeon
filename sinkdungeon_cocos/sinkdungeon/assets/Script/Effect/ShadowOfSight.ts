@@ -24,9 +24,11 @@ export default class ShadowOfSight extends cc.Component {
     /** 辐射线数量 */
     private rayNum = 360;
     /** 辐射线半径 */
-    private rayRadius = 1000;
+    private rayRadius = 500;
     /** 视野顶点数组 */
     private lightVertsArray = new Array();
+
+    private mat: cc.MaterialVariant;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -37,6 +39,7 @@ export default class ShadowOfSight extends cc.Component {
         //     this.node.convertToNodeSpaceAR(pos, pos);
         //     this.player.setPosition(pos);
         // }, this)
+        this.mat = this.ray.getMaterial(0);
     }
     /** 绘制视野区域 */
     renderSightArea(): void {
@@ -46,6 +49,7 @@ export default class ShadowOfSight extends cc.Component {
         let p1 = this.player.convertToWorldSpaceAR(cc.v2(0,0));
         this.drawRayByNum(p1);
         this.renderMask();
+        this.rendLight(this.ray,p1);
     }
     /** 通过射线数量绘制辐射线 */
     drawRayByNum(p1): void {
@@ -71,6 +75,33 @@ export default class ShadowOfSight extends cc.Component {
             // this.ray.lineTo(c3.x, c3.y);
             // this.ray.stroke();
         }
+    }
+    rendLight(graphics:cc.Graphics,p1:cc.Vec2){
+        let c1 = this.mask.node.convertToNodeSpaceAR(p1);
+        let potArr = this.lightVertsArray;
+            graphics.clear(false);
+            graphics.lineWidth = 10;
+            graphics.fillColor = cc.color(0,255,0,128);
+            let p0 = this.node.convertToNodeSpaceAR(potArr[0]);
+            graphics.moveTo(p0.x, p0.y);
+            for (let i = 1; i < potArr.length; i++) {
+                const p = this.node.convertToNodeSpaceAR(potArr[i]);
+                graphics.lineTo(p.x, p.y);
+            }
+            graphics.close();
+            graphics.stroke();
+            graphics.fill();
+            let canvasSize = cc.view.getCanvasSize();
+        let visibleSize = cc.view.getVisibleSize();
+        let canvasRatio = canvasSize.width/canvasSize.height;
+        let visibleRatio = visibleSize.width/visibleSize.height;
+        let height = visibleSize.width/canvasRatio;
+        let pos = cc.v2(visibleSize.width/2,height/2).add(p1);
+        let r = this.rayRadius / canvasSize.height;
+        this.mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
+        this.mat.setProperty("maxRadius", r);
+        this.mat.setProperty("whRatio", visibleRatio);
+        this.mat.setProperty("lightPos", cc.v2(pos.x/visibleSize.width, pos.y/height));
     }
     /** 绘制遮罩 */
     renderMask(): void {

@@ -1,0 +1,15 @@
+{
+  "__type__": "cc.Material",
+  "_name": "SightMat",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "3004cfe4-e32d-44d2-b370-243b8d6c7f3e"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {}
+    }
+  }
+}
