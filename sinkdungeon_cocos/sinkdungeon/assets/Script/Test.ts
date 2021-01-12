@@ -65,18 +65,20 @@ export default class Test extends cc.Component {
         let visibleSize = cc.view.getVisibleSize();
         let canvasRatio = canvasSize.width / canvasSize.height;
         let visibleRatio = visibleSize.width / visibleSize.height;
+        //获取canvas缩放比例
         let scale = canvasSize.width/visibleSize.width;
+        //canvas预期高度
         let ch = canvasSize.width/visibleRatio;
+        //canvas实际拉伸系数
         let sy = canvasSize.height/ch;
-        let height = visibleSize.width / canvasRatio;
         let pos1 = cc.v2(this.playerPos.x, this.playerPos.y);
+        //缩放然后拉伸y
+        pos1.x = pos1.x*scale;
         pos1.y = pos1.y*scale*sy;
-        // pos1.y = pos1.y / visibleSize.height * height;
-        let pos = cc.v3(visibleSize.width / 2, height / 2).add(this.graphics.node.position.clone());
         let r = this.radius / canvasSize.height;
         this.mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
         this.mat.setProperty("maxRadius", r);
         this.mat.setProperty("whRatio", visibleRatio);
-        this.mat.setProperty("lightPos", cc.v2(pos1.x / visibleSize.width, pos1.y / height));
+        this.mat.setProperty("lightPos", cc.v2(pos1.x / canvasSize.width, pos1.y / canvasSize.height));
     }
 }
