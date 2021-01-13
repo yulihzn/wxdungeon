@@ -8,19 +8,19 @@
 import { ColliderTag } from "../Actor/ColliderTag";
 
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class ShadowOfSight extends cc.Component {
 
     @property(cc.Node)
-    player:cc.Node = null;
+    player: cc.Node = null;
     @property(cc.Mask)
-    mask:cc.Mask = null;
+    mask: cc.Mask = null;
     @property(cc.Graphics)
-    ray:cc.Graphics = null;
+    ray: cc.Graphics = null;
     @property(cc.Node)
-    shadow:cc.Node = null;
+    shadow: cc.Node = null;
     /** 辐射线数量 */
     private rayNum = 360;
     /** 辐射线半径 */
@@ -32,7 +32,7 @@ export default class ShadowOfSight extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         // cc.director.getPhysicsManager().enabled = true;
         // this.node.on(cc.Node.EventType.TOUCH_MOVE, (event: cc.Event.EventTouch) => {
         //     let pos = event.getLocation();
@@ -43,13 +43,13 @@ export default class ShadowOfSight extends cc.Component {
     }
     /** 绘制视野区域 */
     renderSightArea(): void {
-        if(!this.player){
+        if (!this.player) {
             return;
         }
-        let p1 = this.player.convertToWorldSpaceAR(cc.v2(0,0));
+        let p1 = this.player.convertToWorldSpaceAR(cc.v2(0, 0));
         this.drawRayByNum(p1);
         this.renderMask();
-        this.rendLight(this.ray,p1);
+        this.rendLight(this.ray, p1);
     }
     /** 通过射线数量绘制辐射线 */
     drawRayByNum(p1): void {
@@ -62,13 +62,13 @@ export default class ShadowOfSight extends cc.Component {
             let p3 = cc.v2(Math.cos(i * unitRd) * this.rayRadius + p1.x, Math.sin(i * unitRd) * this.rayRadius + p1.y);
             let physicsManager = cc.director.getPhysicsManager();
             let result = physicsManager.rayCast(p1, p3, cc.RayCastType.Closest);
-            if (result.length > 0&&(result[0].collider.tag == ColliderTag.WALL
-                ||result[0].collider.tag == ColliderTag.BUILDING)) {
+            if (result.length > 0 && (result[0].collider.tag == ColliderTag.WALL
+                || result[0].collider.tag == ColliderTag.BUILDING)) {
                 p3 = result[0].point;
             }
             this.lightVertsArray.push(p3);
             this.ray.lineWidth = 3;
-            this.ray.strokeColor = cc.color(0,0,0,80);
+            this.ray.strokeColor = cc.color(0, 0, 0, 80);
             // let c3 = this.node.convertToNodeSpaceAR(p3);
             // let c1 = this.node.convertToNodeSpaceAR(p1);
             // this.ray.moveTo(c1.x, c1.y);
@@ -76,32 +76,41 @@ export default class ShadowOfSight extends cc.Component {
             // this.ray.stroke();
         }
     }
-    rendLight(graphics:cc.Graphics,p1:cc.Vec2){
+    rendLight(graphics: cc.Graphics, p1: cc.Vec2) {
         let c1 = this.mask.node.convertToNodeSpaceAR(p1);
         let potArr = this.lightVertsArray;
-            graphics.clear(false);
-            graphics.lineWidth = 10;
-            graphics.fillColor = cc.color(0,255,0,128);
-            let p0 = this.node.convertToNodeSpaceAR(potArr[0]);
-            graphics.moveTo(p0.x, p0.y);
-            for (let i = 1; i < potArr.length; i++) {
-                const p = this.node.convertToNodeSpaceAR(potArr[i]);
-                graphics.lineTo(p.x, p.y);
-            }
-            graphics.close();
-            graphics.stroke();
-            graphics.fill();
-            let canvasSize = cc.view.getCanvasSize();
+        graphics.clear(false);
+        graphics.lineWidth = 10;
+        graphics.fillColor = cc.color(0, 255, 0, 128);
+        let p0 = this.node.convertToNodeSpaceAR(potArr[0]);
+        graphics.moveTo(p0.x, p0.y);
+        for (let i = 1; i < potArr.length; i++) {
+            const p = this.node.convertToNodeSpaceAR(potArr[i]);
+            graphics.lineTo(p.x, p.y);
+        }
+        graphics.close();
+        graphics.stroke();
+        graphics.fill();
+        let canvasSize = cc.view.getCanvasSize();
         let visibleSize = cc.view.getVisibleSize();
-        let canvasRatio = canvasSize.width/canvasSize.height;
-        let visibleRatio = visibleSize.width/visibleSize.height;
-        let height = visibleSize.width/canvasRatio;
-        let pos = cc.v2(visibleSize.width/2,height/2).add(p1);
+        let canvasRatio = canvasSize.width / canvasSize.height;
+        let visibleRatio = visibleSize.width / visibleSize.height;
+        //获取canvas缩放比例
+        let scale = canvasSize.width / visibleSize.width;
+        //canvas预期高度
+        let ch = canvasSize.width / visibleRatio;
+        //canvas实际拉伸系数
+        let sy = canvasSize.height / ch;
+        let pos1 = cc.v2(p1.x, p1.y).mul(scale);
+        //缩放然后拉伸y
+        pos1.y = pos1.y * sy;
         let r = this.rayRadius / canvasSize.height;
         this.mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
         this.mat.setProperty("maxRadius", r);
         this.mat.setProperty("whRatio", visibleRatio);
-        this.mat.setProperty("lightPos", cc.v2(pos.x/visibleSize.width, pos.y/height));
+        this.mat.setProperty("scale", scale);
+        let lightPos = cc.v2(pos1.x / canvasSize.width, pos1.y / canvasSize.height);
+        this.mat.setProperty("lightPos", lightPos);
     }
     /** 绘制遮罩 */
     renderMask(): void {
@@ -124,8 +133,8 @@ export default class ShadowOfSight extends cc.Component {
         }
         this.mask._updateGraphics();
     }
-  
-    update (dt) {
+
+    update(dt) {
         this.renderSightArea();
     }
 }
