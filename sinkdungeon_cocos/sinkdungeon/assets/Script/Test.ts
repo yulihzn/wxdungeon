@@ -12,6 +12,8 @@ export default class Test extends cc.Component {
 
     @property(cc.Graphics)
     graphics: cc.Graphics = null;
+    @property(cc.Camera)
+    camera:cc.Camera = null;
     private mat: cc.MaterialVariant;
     radius = 100;
     playerPos: cc.Vec2 = cc.v2(640, 360);
@@ -50,18 +52,12 @@ export default class Test extends cc.Component {
         let visibleSize = cc.view.getVisibleSize();
         let visibleRatio = visibleSize.width / visibleSize.height;
         let r = this.radius/visibleSize.height;
-        let ch = canvasSize.width/visibleRatio;
-        let offset = (visibleSize.height-canvasSize.height)/2;
-        let scaleH = canvasSize.height/ch;
         let scale = canvasSize.width/visibleSize.width;
         this.mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
         this.mat.setProperty("maxRadius", r);
         this.mat.setProperty("whRatio", visibleRatio);
-        let lightPos = cc.v2(this.playerPos.x / visibleSize.width, this.playerPos.y / visibleSize.height);
-        if(lightPos.y==0.5){
-            offset = 0;
-        }
-        let y = lightPos.y*visibleSize.height*scale/canvasSize.height;
-        this.mat.setProperty("lightPos", cc.v2(lightPos.x,y));
+        let lightPos = cc.v2((this.playerPos.x-this.camera.node.x) / visibleSize.width, (this.playerPos.y-this.camera.node.y) / visibleSize.height);
+        let y = Math.abs(lightPos.y-0.5)*visibleSize.height*scale/canvasSize.height;
+        this.mat.setProperty("lightPos", cc.v2(lightPos.x,lightPos.y>0.5?0.5+y:0.5-y));
     }
 }

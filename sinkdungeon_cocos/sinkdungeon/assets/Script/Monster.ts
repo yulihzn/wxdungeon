@@ -32,6 +32,7 @@ import AreaOfEffect from './Actor/AreaOfEffect';
 import AreaOfEffectData from './Data/AreaOfEffectData';
 import ActorAttackBox from './Actor/ActorAttackBox';
 import NonPlayer from './NonPlayer';
+import ShadowOfSight from './Effect/ShadowOfSight';
 
 @ccclass
 export default class Monster extends Actor {

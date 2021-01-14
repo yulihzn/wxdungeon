@@ -1,0 +1,20 @@
+{
+  "__type__": "cc.Material",
+  "_name": "OvaLightEffect",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "c7983a53-0d5e-41f2-b14f-9728335e7db2"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "angle": 60
+      }
+    }
+  }
+}

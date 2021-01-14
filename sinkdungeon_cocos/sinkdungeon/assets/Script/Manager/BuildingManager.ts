@@ -107,6 +107,8 @@ export default class BuildingManager extends BaseManager {
     shipStairs: cc.Prefab = null;
     @property(cc.Prefab)
     dryadGrass: cc.Prefab = null;
+    @property(cc.Prefab)
+    roomTv:cc.Prefab = null;
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
@@ -474,6 +476,9 @@ export default class BuildingManager extends BaseManager {
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let hitBuilding = this.addBuilding(this.hitBuilding, indexPos);
+        if(mapDataStr == 'Z3'){
+            hitBuilding = this.addBuilding(this.roomTv, indexPos);
+        }
         let h = hitBuilding.getComponent(HitBuilding);
         h.setDefaultPos(indexPos);
         let resName = 'car';
