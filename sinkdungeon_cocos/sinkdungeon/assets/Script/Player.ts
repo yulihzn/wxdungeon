@@ -36,6 +36,8 @@ import PlayerAvatar from './PlayerAvatar';
 import PlayerWeapon from './PlayerWeapon';
 import { EventHelper } from './EventHelper';
 import TalentSkills from './Talent/TalentSkills';
+import ShadowOfSight from './Effect/ShadowOfSight';
+import LightManager from './Manager/LightManager';
 @ccclass
 export default class Player extends Actor {
 
@@ -164,6 +166,12 @@ export default class Player extends Actor {
                 this.data.Common.criticalStrikeRate = 50;
                 this.data.Common.remoteCritRate = 50;
             }, 0.2);
+        }
+        this.light = this.getComponentInChildren(ShadowOfSight);
+        LightManager.registerLight(this.light);
+        this.light.rayRadius = 200;
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
+            this.light.rayRadius = 300;
         }
     }
     actorName(): string {

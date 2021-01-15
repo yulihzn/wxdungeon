@@ -24,6 +24,8 @@ import ExitData from "../Data/ExitData";
 import BaseManager from "./BaseManager";
 import DryadGrass from "../Boss/DryadGrass";
 import Utils from "../Utils/Utils";
+import ShadowOfSight from "../Effect/ShadowOfSight";
+import LightManager from "./LightManager";
 
 
 // Learn TypeScript:
@@ -146,6 +148,10 @@ export default class BuildingManager extends BaseManager {
         let b = building.getComponent(Building);
         if (b) {
             b.data.defaultPos = indexPos.clone();
+            b.light = b.getComponentInChildren(ShadowOfSight);
+            if(b.light){
+                LightManager.registerLight(b.light);
+            }
         }
         return building;
     }

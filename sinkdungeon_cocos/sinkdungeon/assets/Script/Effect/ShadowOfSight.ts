@@ -13,24 +13,25 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class ShadowOfSight extends cc.Component {
 
-    player: cc.Node = null;
-    @property(cc.Mask)
-    mask: cc.Mask = null;
+    // @property(cc.Mask)
+    // mask: cc.Mask = null;
     @property(cc.Graphics)
     ray: cc.Graphics = null;
-    @property(cc.Node)
-    shadow: cc.Node = null;
-    @property(cc.Camera)
-    camera: cc.Camera = null;
+    // @property(cc.Node)
+    // shadow: cc.Node = null;
     /** 辐射线数量 */
     private rayNum = 360;
     /** 辐射线半径 */
+    @property
     rayRadius = 600;
+    @property(cc.Color)
     renderColor = cc.color(255, 255, 255, 40);
+    @property
     showLight = true;
     /** 视野顶点数组 */
-    private lightVertsArray = new Array();
-
+    lightVertsArray = new Array();
+    /** 本光线打亮区域 */
+    lightRects: { [key: string]: cc.Rect } = {};
     private mat: cc.MaterialVariant;
 
     // LIFE-CYCLE CALLBACKS:
@@ -39,25 +40,20 @@ export default class ShadowOfSight extends cc.Component {
         this.mat = this.ray.getMaterial(0);
     }
     /** 绘制视野区域 */
-    renderSightArea(): void {
-        if (!this.player) {
-            return;
-        }
-        let p1 = this.player.convertToWorldSpaceAR(cc.v2(0, 0));
-        this.drawRayByNum(p1,this.showLight);
-        this.renderMask();
+    renderSightArea(cameraOffset: cc.Vec2): void {
+        let p1 = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+
+        this.drawRayByNum(p1, cameraOffset, this.showLight);
+        // this.renderMask();
     }
     /** 通过射线数量绘制辐射线 */
-    drawRayByNum(pos: cc.Vec2, renderLight: boolean): void {
+    drawRayByNum(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean): void {
         this.ray.clear(false);
         this.ray.lineWidth = 10;
         this.ray.fillColor = this.renderColor;
-        let c1 = this.mask.node.convertToNodeSpaceAR(pos);
-        if(this.shadow){
-            this.shadow.position = cc.v3(c1);
-        }
         let unitRd = 2 * Math.PI / this.rayNum;
         this.lightVertsArray = new Array();
+        this.lightRects = {};
         for (let i = 0; i < this.rayNum; i++) {
             let p3 = cc.v2(Math.cos(i * unitRd) * this.rayRadius + pos.x, Math.sin(i * unitRd) * this.rayRadius + pos.y);
             let physicsManager = cc.director.getPhysicsManager();
@@ -65,11 +61,16 @@ export default class ShadowOfSight extends cc.Component {
             if (result.length > 0 && (result[0].collider.tag == ColliderTag.WALL
                 || result[0].collider.tag == ColliderTag.BUILDING)) {
                 p3 = result[0].point;
+                let node = result[0].collider.node;
+                let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
+                let offset = 5;
+                let r = cc.rect(np.x - node.width * node.anchorX*5-offset, np.y - node.height * node.anchorY-offset, node.width+offset, node.height+offset);
+                this.lightRects[node.uuid] = r;
             }
             this.lightVertsArray.push(p3);
             this.ray.lineWidth = 3;
             this.ray.strokeColor = cc.color(0, 0, 0, 80);
-            if (renderLight&&this.camera) {
+            if (renderLight) {
                 if (i == 0) {
                     let p0 = this.node.convertToNodeSpaceAR(p3);
                     this.ray.moveTo(p0.x, p0.y);
@@ -79,11 +80,12 @@ export default class ShadowOfSight extends cc.Component {
                 }
             }
         }
-        if (renderLight&&this.camera) {
+        if (renderLight) {
             this.ray.close();
             this.ray.stroke();
             this.ray.fill();
-            this.updateMat(this.mat, cc.v2(pos.x - this.camera.node.x, pos.y - this.camera.node.y));
+            let offset = cc.v2(0, 0);
+            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
         }
     }
     // rendLight(graphics: cc.Graphics, p1: cc.Vec2) {
@@ -118,31 +120,27 @@ export default class ShadowOfSight extends cc.Component {
         this.mat.setProperty("lightPos", cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y));
     }
     /** 绘制遮罩 */
-    renderMask(): void {
-        if(!this.mask){
-            return;
-        }
-        let potArr = this.lightVertsArray;
-        this.mask.alphaThreshold = 0.3;
-        this.mask._updateGraphics = () => {
-            var graphics: cc.Graphics = this.mask._graphics;
-            graphics.clear(false);
-            graphics.lineWidth = 10;
-            graphics.fillColor.fromHEX('#ff0000');
-            let p0 = this.mask.node.convertToNodeSpaceAR(potArr[0]);
-            graphics.moveTo(p0.x, p0.y);
-            for (let i = 1; i < potArr.length; i++) {
-                const p = this.mask.node.convertToNodeSpaceAR(potArr[i]);
-                graphics.lineTo(p.x, p.y);
-            }
-            graphics.close();
-            graphics.stroke();
-            graphics.fill();
-        }
-        this.mask._updateGraphics();
-    }
-
-    update(dt) {
-        this.renderSightArea();
-    }
+    // renderMask(): void {
+    //     if(!this.mask){
+    //         return;
+    //     }
+    //     let potArr = this.lightVertsArray;
+    //     this.mask.alphaThreshold = 0.3;
+    //     this.mask._updateGraphics = () => {
+    //         var graphics: cc.Graphics = this.mask._graphics;
+    //         graphics.clear(false);
+    //         graphics.lineWidth = 10;
+    //         graphics.fillColor.fromHEX('#ff0000');
+    //         let p0 = this.mask.node.convertToNodeSpaceAR(potArr[0]);
+    //         graphics.moveTo(p0.x, p0.y);
+    //         for (let i = 1; i < potArr.length; i++) {
+    //             const p = this.mask.node.convertToNodeSpaceAR(potArr[i]);
+    //             graphics.lineTo(p.x, p.y);
+    //         }
+    //         graphics.close();
+    //         graphics.stroke();
+    //         graphics.fill();
+    //     }
+    //     this.mask._updateGraphics();
+    // }
 }

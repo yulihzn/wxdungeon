@@ -1,6 +1,7 @@
 import ExitData from "../Data/ExitData";
 import FromData from "../Data/FromData";
 import Dungeon from "../Dungeon";
+import ShadowOfSight from "../Effect/ShadowOfSight";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import StatusManager from "../Manager/StatusManager";
@@ -26,7 +27,9 @@ export default class RoomBed extends Building {
     isDecorate = false;
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.light = this.getComponentInChildren(ShadowOfSight);
+    }
 
     init(dungeon:Dungeon,isDecorate:boolean){
         this.dungeon = dungeon;

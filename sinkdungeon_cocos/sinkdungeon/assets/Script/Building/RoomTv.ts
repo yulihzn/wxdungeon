@@ -15,8 +15,6 @@ const { ccclass, property } = cc._decorator;
 export default class RoomTv extends Building {
     @property(cc.Sprite)
     screen:cc.Sprite=null;
-    @property(cc.Node)
-    light:cc.Node =null;
     anim:cc.Animation;
     isOpen = false;
     

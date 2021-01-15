@@ -15,7 +15,7 @@ export default class Test extends cc.Component {
     @property(cc.Camera)
     camera:cc.Camera = null;
     private mat: cc.MaterialVariant;
-    radius = 100;
+    radius = 200;
     playerPos: cc.Vec2 = cc.v2(640, 360);
 
     // LIFE-CYCLE CALLBACKS:

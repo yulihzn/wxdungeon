@@ -2,6 +2,7 @@ import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import Dungeon from "../Dungeon";
+import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
 import Monster from "../Monster";
 import NonPlayer from "../NonPlayer";
@@ -33,6 +34,7 @@ export default abstract class Actor extends cc.Component {
     isShow = false;
     isDied = false;
     invisible = false;//是否隐身
+    light:ShadowOfSight;//光源
 
     /**
      * 获取最近的玩家

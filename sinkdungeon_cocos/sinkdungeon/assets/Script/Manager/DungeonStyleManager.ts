@@ -36,9 +36,9 @@ export default class DungeonStyleManager extends BaseManager {
         if (!this.background01) {
             return;
         }
-        let spf1 = Logic.spriteFrameRes(resName];
-        let spf2 = Logic.spriteFrameRes(resName + '1'];
-        if (!spf2) { spf2 = Logic.spriteFrameRes(resName]; }
+        let spf1 = Logic.spriteFrameRes(resName);
+        let spf2 = Logic.spriteFrameRes(resName + '1');
+        if (!spf2) { spf2 = Logic.spriteFrameRes(resName); }
         if (!spf1) {
             return;
         }

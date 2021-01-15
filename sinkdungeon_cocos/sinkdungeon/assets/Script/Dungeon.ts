@@ -12,11 +12,10 @@ import RoomType from "./Rect/RoomType";
 import IndexZ from "./Utils/IndexZ";
 import BuildingManager from "./Manager/BuildingManager";
 import LevelData from "./Data/LevelData";
-import Light from "./Effect/Light";
 import NonPlayerManager from "./Manager/NonPlayerManager";
 import ItemManager from "./Manager/ItemManager";
 import Utils from "./Utils/Utils";
-import ShadowOfSight from "./Effect/ShadowOfSight";
+import LightManager from "./Manager/LightManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,8 +37,6 @@ export default class Dungeon extends cc.Component {
     playerPrefab: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
-    @property(ShadowOfSight)
-    shadowOfSight:ShadowOfSight=null;
 
     map: Tile[][] = new Array();//地图列表
     floorIndexmap: cc.Vec3[] = new Array();//地板下标列表
@@ -58,7 +55,7 @@ export default class Dungeon extends cc.Component {
     dungeonStyleManager: DungeonStyleManager = null;//装饰管理
     itemManager: ItemManager = null;//金币和物品管理
     buildingManager: BuildingManager = null;//建筑管理
-    light: Light = null;
+    lightManager:LightManager=null;//光线管理
     anim: cc.Animation;
     CameraZoom = 1;
     isInitFinish = false;
@@ -123,7 +120,7 @@ export default class Dungeon extends cc.Component {
         this.itemManager = this.getComponent(ItemManager);
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.buildingManager = this.getComponent(BuildingManager);
-        this.light = this.getComponent(Light);
+        this.lightManager = this.getComponent(LightManager);
         this.reset();
     }
     reset() {
@@ -133,17 +130,18 @@ export default class Dungeon extends cc.Component {
         this.itemManager.clear();
         this.dungeonStyleManager.clear();
         this.buildingManager.clear();
+        this.lightManager.clear();
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
-        this.fog.opacity = 255;
-        this.shadowOfSight.node.zIndex = IndexZ.SHADOW;
-        cc.tween(this.fog).to(1, { scale: 1.75 }).start();
+        this.fog.opacity = 0;
+        this.lightManager.mask.node.zIndex = IndexZ.SHADOW;
+        cc.tween(this.fog).to(1, { scale: 3 }).start();
         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
         let opvalue = 0;
         if (Logic.chapterIndex == Logic.CHAPTER099) {
-            opvalue = 150;
-            blackcenter.color = cc.color(3, 0, 25);
+            // opvalue = 150;
+            // blackcenter.color = cc.color(3, 0, 25);
         }
         cc.tween(blackcenter).delay(0.2).to(1, { opacity: opvalue }).start();
         this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y);
@@ -199,7 +197,6 @@ export default class Dungeon extends cc.Component {
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
-        this.shadowOfSight.player = this.player.node;
         //加载随机怪物
         if (!Logic.mapManager.isCurrentRoomStateClear()
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
