@@ -492,12 +492,13 @@ export default class BuildingManager extends BaseManager {
         let itemNames = [];
         let maxhealth = 9999;
         let scale = 4;
+        let hideShadow = false;
         switch (mapDataStr) {
             case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; break;
             case 'Z2': resName = 'roomdesk'; equipmentNames = []; itemNames = ['goldfinger']; maxhealth = 100; break;
-            case 'Z3': resName = 'roomtv'; scale = 8; break;
-            case 'Z4': resName = 'roomsofa'; scale = 10; break;
-            case 'Z5': resName = 'roomtable'; scale = 10; break;
+            case 'Z3': resName = 'roomtv'; scale = 8;break;
+            case 'Z4': resName = 'roomsofa'; scale = 10; hideShadow = true;break;
+            case 'Z5': resName = 'roomtable'; scale = 10; hideShadow = true;break;
             case 'Z6': resName = 'roomfridge'; scale = 6; break;
             case 'Z7': resName = 'roomwash'; break;
             case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; scale = 6; break;
@@ -513,10 +514,10 @@ export default class BuildingManager extends BaseManager {
 
             default: break;
         }
-        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale);
+        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale,hideShadow);
         let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
         if (saveHit) {
-            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale);
+            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale,hideShadow);
         } else {
             Logic.mapManager.setCurrentBuildingData(h.data);
         }

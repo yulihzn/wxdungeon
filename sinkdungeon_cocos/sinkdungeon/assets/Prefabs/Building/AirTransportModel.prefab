@@ -40,7 +40,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 32,
-      "height": 52
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -131,7 +131,7 @@
     "asset": {
       "__uuid__": "29fc9163-fd9c-4889-b161-b67a04cebe3a"
     },
-    "fileId": "36VAlBrXxOL7vLtf/YGNgm",
+    "fileId": "",
     "sync": false
   }
 ]

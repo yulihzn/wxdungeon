@@ -55,8 +55,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 224,
+      "height": 160
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -590,9 +590,6 @@
     "_enabled": true,
     "screen": {
       "__id__": 4
-    },
-    "light": {
-      "__id__": 6
     },
     "_id": ""
   },

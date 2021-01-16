@@ -11,6 +11,7 @@ import Logic from "../Logic";
 import Dungeon from "../Dungeon";
 import IndexZ from "../Utils/IndexZ";
 import AudioPlayer from "../Utils/AudioPlayer";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 const { ccclass, property } = cc._decorator;
 
@@ -25,7 +26,7 @@ export default class HitBuilding extends Building {
     private dungeon: Dungeon;
     // LIFE-CYCLE CALLBACKS:
 
-    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number,scale:number) {
+    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number,scale:number,hideShadow:boolean) {
         this.dungeon = dungeon;
         this.resName = resName;
         this.itemNames = itemNames;
@@ -35,6 +36,7 @@ export default class HitBuilding extends Building {
         this.changeRes(resName, `${this.data.currentHealth}`);
         this.sprite.node.scale = scale;
         if(this.data.currentHealth<=0){
+            this.getComponent(cc.PhysicsBoxCollider).tag = hideShadow?ColliderTag.DEFAULT:ColliderTag.BUILDING;
             this.getComponent(cc.PhysicsBoxCollider).sensor = true;
             this.getComponent(cc.PhysicsBoxCollider).apply();
         }
@@ -91,10 +93,15 @@ export default class HitBuilding extends Building {
         if (suffix && Logic.spriteFrameRes(resName + suffix)) {
             spriteFrame = Logic.spriteFrameRes(resName + suffix);
         }
+        if(!spriteFrame){
+            return;
+        }
         this.sprite.node.opacity = 255;
         this.sprite.node.width = spriteFrame.getRect().width;
         this.sprite.node.height = spriteFrame.getRect().height;
         let size = cc.size((this.sprite.node.width-4)*this.sprite.node.scale,(this.sprite.node.height-4)*this.sprite.node.scale);
+        this.node.width = size.width;
+        this.node.height = size.height;
         this.getComponent(cc.BoxCollider).size = size.clone();
         this.getComponent(cc.PhysicsBoxCollider).size = size.clone();
         this.getComponent(cc.PhysicsBoxCollider).apply();

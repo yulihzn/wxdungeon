@@ -14,6 +14,8 @@ export default class Test extends cc.Component {
     graphics: cc.Graphics = null;
     @property(cc.Camera)
     camera:cc.Camera = null;
+    @property(cc.Graphics)
+    ray:cc.Graphics = null;
     private mat: cc.MaterialVariant;
     radius = 200;
     playerPos: cc.Vec2 = cc.v2(640, 360);
@@ -30,6 +32,12 @@ export default class Test extends cc.Component {
             this.playerPos = pos.clone();
             cc.log(`playerPos:${pos.x},${pos.y}`);
         }, this)
+        this.ray.fillColor = cc.color(255,0,0,255);
+        this.ray.circle(0,0,200);
+        this.ray.fill();
+        // this.ray.fillColor = cc.color(0,255,0,255);
+        // this.ray.rect(-300,-300,600,600);
+        // this.ray.fill();
     }
 
     start() {
