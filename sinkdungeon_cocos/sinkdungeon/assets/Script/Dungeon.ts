@@ -134,7 +134,7 @@ export default class Dungeon extends cc.Component {
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
-        this.fog.opacity = 0;
+        this.fog.opacity = 255;
         this.lightManager.mask.node.zIndex = IndexZ.SHADOW;
         this.lightManager.ray.node.zIndex = IndexZ.SHADOW+10;
         cc.tween(this.fog).to(1, { scale: 3 }).start();

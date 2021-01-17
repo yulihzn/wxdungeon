@@ -481,9 +481,11 @@ export default class BuildingManager extends BaseManager {
     }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        let hitBuilding = this.addBuilding(this.hitBuilding, indexPos);
+        let hitBuilding;
         if(mapDataStr == 'Z3'){
             hitBuilding = this.addBuilding(this.roomTv, indexPos);
+        }else{
+            hitBuilding = this.addBuilding(this.hitBuilding, indexPos);
         }
         let h = hitBuilding.getComponent(HitBuilding);
         h.setDefaultPos(indexPos);
@@ -496,7 +498,7 @@ export default class BuildingManager extends BaseManager {
         switch (mapDataStr) {
             case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; break;
             case 'Z2': resName = 'roomdesk'; equipmentNames = []; itemNames = ['goldfinger']; maxhealth = 100; break;
-            case 'Z3': resName = 'roomtv'; scale = 8;break;
+            case 'Z3': resName = 'roomtv'; scale = 6;break;
             case 'Z4': resName = 'roomsofa'; scale = 10; hideShadow = true;break;
             case 'Z5': resName = 'roomtable'; scale = 10; hideShadow = true;break;
             case 'Z6': resName = 'roomfridge'; scale = 6; break;
