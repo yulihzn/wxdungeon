@@ -40,7 +40,6 @@ CCProgram vs %{
 
     v_color = a_color;
     v_dist = a_dist;
-
     gl_Position = pos;
   }
 }%
@@ -73,11 +72,11 @@ CCProgram fs %{
     float alpha = 1. - smoothstep(-aa, 0., abs(v_dist) - 1.0);
     o.rgb *= o.a;
     o *= alpha;
-    if(o.a > 0.0){
-      o.a = 0.1;
-    }else{
-      o = vec4(1.0,0.0,0.0,1.0);
-    }
+    // if(o.r>0.5){
+    //   o = vec4(0.0,0.0,0.0,0.0);
+    // }else{
+    //   o = vec4(0.0,0.0,1.0,1.0);
+    // }
     gl_FragColor = o;
   }
 }%

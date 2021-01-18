@@ -92,7 +92,7 @@ export default class LightManager extends BaseManager {
             graphics.clear(false);
         }
         graphics.lineWidth = 10;
-        graphics.fillColor.fromHEX('#ff0000');
+        graphics.strokeColor.fromHEX('#00000030');
         let p0 = this.ray.node.convertToNodeSpaceAR(potArr[0]);
         graphics.moveTo(p0.x, p0.y);
         for (let i = 1; i < potArr.length; i++) {
@@ -100,7 +100,6 @@ export default class LightManager extends BaseManager {
             graphics.lineTo(p.x, p.y);
         }
         graphics.close();
-        graphics.stroke();
         graphics.fill();
         for (let key in lightRects) {
             let lightRect = lightRects[key];
