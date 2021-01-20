@@ -1,6 +1,7 @@
 import Dungeon from "./Dungeon";
 import Logic from "./Logic";
 import GameHud from "./UI/GameHud";
+import LocalStorage from "./Utils/LocalStorage";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,6 +19,9 @@ const {ccclass, property} = cc._decorator;
 export default class Game extends cc.Component {
     private dungeonBase:Dungeon
     private hudBase:GameHud
+    onLoad(){
+        Logic.settings.showShadow = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW);
+    }
     get Dungeon(){
         if(!this.dungeonBase){
             this.dungeonBase = this.getComponentInChildren(Dungeon);

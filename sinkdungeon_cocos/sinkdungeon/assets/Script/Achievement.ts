@@ -1,5 +1,6 @@
 import AchievementData from "./Data/AchievementData";
 import AudioPlayer from "./Utils/AudioPlayer";
+import LocalStorage from "./Utils/LocalStorage";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,16 +55,16 @@ export default class Achievements extends cc.Component {
         }
         this.loadSpriteFrames();
         this.loadBossSpriteFrames();
-        let data: AchievementData = Achievements.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData();
         if (this.lifesLabel && data.playerLifes) {
             this.lifesLabel.string = `DIE ${data.playerLifes}`;
         }
         if(this.goldLabel){
-            let o = cc.sys.localStorage.getItem('oilgold');
+            let o = LocalStorage.getValueFromData(LocalStorage.KEY_OIL_GOLD);
             this.goldLabel.string = `${o ? parseInt(o) : 0}`;
         }
         if(this.coinLabel){
-            let c = cc.sys.localStorage.getItem('coin');
+            let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN);
             this.coinLabel.string = `${c ? parseInt(c) : 0}`;
         }
     }
@@ -100,7 +101,7 @@ export default class Achievements extends cc.Component {
             return;
         }
         let colors = ['#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500'];
-        let data: AchievementData = Achievements.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData();
         for (let i = 0; i < this.iconList.length; i++) {
             let name = `monster${i < 10 ? '00' + i : '0' + i}`;
             let fr = this.spriteFrames[name+'anim000'];
@@ -111,8 +112,10 @@ export default class Achievements extends cc.Component {
             if (fr) {
                 this.iconList[i].node.width = 96;
                 this.iconList[i].node.height = 96;
-                this.iconList[i].spriteFrame = this.spriteFrames[name+'anim000'];
-                if (i > this.MONSTER_SIZE - 1) {
+                if(this.spriteFrames[name+'anim000']){
+                    this.iconList[i].spriteFrame = this.spriteFrames[name+'anim000'];
+                }
+                if (i > this.MONSTER_SIZE - 1 && this.bossSpriteFrames[name]) {
                     this.iconList[i].spriteFrame = this.bossSpriteFrames[name];
                 }
                 let label = this.iconList[i].node.parent.getComponentInChildren(cc.Label);
@@ -157,37 +160,24 @@ export default class Achievements extends cc.Component {
         cc.director.loadScene('start');
         AudioPlayer.play(AudioPlayer.SELECT);
     }
-    static getAchievementData(): AchievementData {
-        let s: string = cc.sys.localStorage.getItem("achievement");
-        if (!s) {
-            s = '{}'
-        }
-        let data: AchievementData = JSON.parse(s);
-        if (!data || !data.monsters) {
-            data = new AchievementData();
-        }
-        return data;
-    }
-    static saveAchievementData(data: AchievementData): void {
-        cc.sys.localStorage.setItem("achievement", JSON.stringify(data));
-    }
+  
     static addMonsterKillAchievement(name: string) {
-        let data: AchievementData = Achievements.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData();
         if (data.monsters[name]) {
             data.monsters[name] = data.monsters[name] + 1;
         } else {
             data.monsters[name] = 1;
         }
-        Achievements.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data);
     }
     static addPlayerDiedLifesAchievement() {
-        let data: AchievementData = Achievements.getAchievementData();
+        let data: AchievementData = LocalStorage.getAchievementData();
         if (data.playerLifes) {
             data.playerLifes = data.playerLifes + 1;
         } else {
             data.playerLifes = 1;
         }
-        Achievements.saveAchievementData(data);
+        LocalStorage.saveAchievementData(data);
     }
     update(dt) {
         if (this.isBossLoaded && this.isMonsterLoaded) {

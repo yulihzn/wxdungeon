@@ -1,0 +1,76 @@
+
+// Learn TypeScript:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
+// Learn Attribute:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
+// Learn life-cycle callbacks:
+//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
+
+import AchievementData from "../Data/AchievementData";
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class LocalStorage {
+
+    public static SAVE_NAME = 'SINKDUNGEON_SAVE';
+    public static SAVE_DUNGEON = 'SAVE_DUNGEON';
+    public static KEY_ACHIEVEMENT = 'KEY_ACHIEVEMENT';
+    public static KEY_COIN = 'KEY_COIN';
+    public static KEY_OIL_GOLD = 'KEY_OIL_GOLD';
+    public static KEY_SWITCH_SHOW_SHADOW = 'KEY_SWITCH_SHOW_SHADOW';
+    public static VAULE_OPEN = '1';
+    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 0 };
+
+    static getValue(key: string): string {
+        return cc.sys.localStorage.getItem(key);
+    }
+
+    static putValue(key: string, value: any) {
+        cc.sys.localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    static getData(): any {
+        let str = LocalStorage.getValue(LocalStorage.SAVE_NAME);
+        if (!str) {
+            str = '{}'
+        }
+        return JSON.parse(str);
+    }
+    static getValueFromData(key: string): any {
+        let str = LocalStorage.getValue(LocalStorage.SAVE_NAME);
+        if (!str) {
+            str = '{}'
+        }
+        return LocalStorage.getData()[key];
+    }
+    static saveData(key: string, value: any) {
+        let data = LocalStorage.getData();
+        data[key] = value;
+        LocalStorage.putValue(LocalStorage.SAVE_NAME, data)
+    }
+
+    static getAchievementData(): AchievementData {
+        let data: AchievementData = LocalStorage.getData()[LocalStorage.KEY_ACHIEVEMENT];
+        if (!data || !data.monsters) {
+            data = new AchievementData();
+        }
+        return data;
+    }
+    static saveAchievementData(data: AchievementData): void {
+        LocalStorage.saveData(LocalStorage.KEY_ACHIEVEMENT, data);
+    }
+    static isSwitchOpen(key: string) {
+        let v = LocalStorage.getValueFromData(key);
+        let num = v ? parseInt(v) : LocalStorage.DEFAULT_MAP[key];
+        return num == 1;
+
+    }
+    static saveSwitch(key: string, isOpen: boolean) {
+        LocalStorage.saveData(key, isOpen ? 1 : 0);
+    }
+
+}

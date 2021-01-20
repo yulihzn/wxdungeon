@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { ColliderTag } from "../Actor/ColliderTag";
+import Logic from "../Logic";
 
 
 const { ccclass, property } = cc._decorator;
@@ -32,6 +33,7 @@ export default class ShadowOfSight extends cc.Component {
     lightVertsArray = new Array();
     /** 本光线打亮区域 */
     lightRects: { [key: string]: cc.Rect } = {};
+    circle = cc.v3(0,0,0);
     private mat: cc.MaterialVariant;
 
     // LIFE-CYCLE CALLBACKS:
@@ -41,10 +43,12 @@ export default class ShadowOfSight extends cc.Component {
     }
     /** 绘制视野区域 */
     renderSightArea(cameraOffset: cc.Vec2): void {
-        let p1 = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
-
-        this.drawRayByNum(p1, cameraOffset, this.showLight);
-        // this.renderMask();
+        let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
+        if(Logic.settings.showShadow){
+            this.drawRayByNum(pos, cameraOffset, this.showLight);
+        }else{
+            this.drawCircle(pos, cameraOffset, this.showLight);
+        }
     }
     /** 通过射线数量绘制辐射线 */
     drawRayByNum(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean): void {
@@ -63,7 +67,7 @@ export default class ShadowOfSight extends cc.Component {
                 p3 = result[0].point;
                 let node = result[0].collider.node;
                 let bottomPos = node.convertToNodeSpaceAR(p3);
-                if(bottomPos.y<=0){
+                if (bottomPos.y <= 0) {
                     let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
                     let offset = 5;
                     // let r = cc.rect(np.x - node.width * node.anchorX*3.5-offset, np.y - node.height * node.anchorY-offset*10, node.width+offset, node.height+offset);
@@ -86,9 +90,22 @@ export default class ShadowOfSight extends cc.Component {
         }
         if (renderLight) {
             this.ray.close();
-            this.ray.stroke();
             this.ray.fill();
-            let offset = cc.v2(0, 0);
+            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
+        }
+    }
+    drawCircle(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean) {
+
+        this.circle = cc.v3(pos.x,pos.y,this.rayRadius);
+        this.lightVertsArray = new Array();
+        this.lightRects = {};
+        if (renderLight) {
+            this.ray.clear(false);
+            this.ray.lineWidth = 10;
+            this.ray.fillColor = this.renderColor;
+            let center = this.node.convertToNodeSpaceAR(pos);
+            this.ray.circle(center.x, center.y, this.rayRadius);
+            this.ray.fill();
             this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
         }
     }

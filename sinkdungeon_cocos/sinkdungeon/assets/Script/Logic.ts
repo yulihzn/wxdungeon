@@ -18,6 +18,8 @@ import Random4Save from "./Utils/Random4Save";
 import ExitData from "./Data/ExitData";
 import NonPlayerData from "./Data/NonPlayerData";
 import Game from "./Game";
+import Settings from "./Model/Settings";
+import LocalStorage from "./Utils/LocalStorage";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -88,6 +90,8 @@ export default class Logic extends cc.Component {
 
     static profileManager: ProfileManager = new ProfileManager();
 
+    static settings:Settings = new Settings();
+
     onLoad() {
         //关闭调试
         // cc.director.setDisplayStats(false);
@@ -118,8 +122,8 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.data.time = Logic.time;
         Logic.profileManager.saveData();
-        cc.sys.localStorage.setItem("coin", Logic.coins);
-        cc.sys.localStorage.setItem("oilgold", Logic.oilGolds);
+        LocalStorage.saveData(LocalStorage.KEY_COIN,Logic.coins);
+        LocalStorage.saveData(LocalStorage.KEY_OIL_GOLD,Logic.oilGolds);
     }
     static resetData(chapter?: number) {
         //重置时间
@@ -150,9 +154,9 @@ export default class Logic extends cc.Component {
         Dungeon.WIDTH_SIZE = 15;
         Dungeon.HEIGHT_SIZE = 9;
         //加载金币
-        let c = cc.sys.localStorage.getItem('coin');
+        let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN);
         Logic.coins = c ? parseInt(c) : 0;
-        let o = cc.sys.localStorage.getItem('oilgold');
+        let o = LocalStorage.getValueFromData(LocalStorage.KEY_OIL_GOLD);
         Logic.oilGolds = o ? parseInt(o) : 0;
         //重置bgm
         Logic.lastBgmIndex = -1;

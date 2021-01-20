@@ -1,5 +1,6 @@
 import BaseManager from "./BaseManager";
 import ShadowOfSight from "../Effect/ShadowOfSight";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +42,7 @@ export default class LightManager extends BaseManager {
             let light = LightManager.lightList[i];
             if (light) {
                 light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
-                this.renderMask(light.lightVertsArray, light.lightRects, i == 0);
+                this.renderMask(light.lightVertsArray, light.lightRects,light.circle, i == 0);
                 // this.renderRay(light.lightVertsArray, light.lightRects, i == 0);
             }
         }
@@ -56,7 +57,7 @@ export default class LightManager extends BaseManager {
         }
     }
     /** 绘制遮罩 */
-    renderMask(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, isFirst: boolean): void {
+    renderMask(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect },circle:cc.Vec3, isFirst: boolean): void {
         if (!this.mask) {
             return;
         }
@@ -68,19 +69,25 @@ export default class LightManager extends BaseManager {
             }
             graphics.lineWidth = 10;
             graphics.fillColor.fromHEX('#ff0000');
-            let p0 = this.mask.node.convertToNodeSpaceAR(potArr[0]);
-            graphics.moveTo(p0.x, p0.y);
-            for (let i = 1; i < potArr.length; i++) {
-                const p = this.mask.node.convertToNodeSpaceAR(potArr[i]);
-                graphics.lineTo(p.x, p.y);
+            if(potArr&&potArr.length>0){
+                let p0 = this.mask.node.convertToNodeSpaceAR(potArr[0]);
+                graphics.moveTo(p0.x, p0.y);
+                for (let i = 1; i < potArr.length; i++) {
+                    const p = this.mask.node.convertToNodeSpaceAR(potArr[i]);
+                    graphics.lineTo(p.x, p.y);
+                }
+                graphics.close();
+                graphics.fill();
             }
-            graphics.close();
-            graphics.stroke();
-            graphics.fill();
             for (let key in lightRects) {
                 let lightRect = lightRects[key];
                 let c = this.mask.node.convertToNodeSpaceAR(cc.v2(lightRect.x, lightRect.y));
                 graphics.rect(c.x, c.y, lightRect.width, lightRect.height);
+                graphics.fill();
+            }
+            if(!Logic.settings.showShadow){
+                const center = this.mask.node.convertToNodeSpaceAR(cc.v3(circle.x,circle.y));
+                graphics.circle(center.x,center.y,circle.z);
                 graphics.fill();
             }
         }

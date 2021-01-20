@@ -4,6 +4,7 @@ import Random from "./Utils/Random";
 import Achievements from "./Achievement";
 import ProfileManager from "./Manager/ProfileManager";
 import ExitData from "./Data/ExitData";
+import LocalStorage from "./Utils/LocalStorage";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
@@ -37,7 +38,7 @@ export default class GameOver extends cc.Component {
     // onLoad () {}
 
     start() {
-        let ach = Achievements.getAchievementData();
+        let ach = LocalStorage.getAchievementData();
         if (this.clock) {
             this.clock.string = `用时：${Logic.time}`;
         }

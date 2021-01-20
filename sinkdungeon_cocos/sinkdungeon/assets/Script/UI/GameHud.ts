@@ -3,6 +3,7 @@ import HealthBar from "../HealthBar";
 import { EventHelper } from "../EventHelper";
 import PlayerData from "../Data/PlayerData";
 import Logic from "../Logic";
+import SettingsDialog from "./dialog/SettingsDialog";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -32,6 +33,8 @@ export default class GameHud extends cc.Component {
     damageCorner:cc.Node = null;
     @property(cc.Node)
     pasueButton:cc.Node = null;
+    @property(SettingsDialog)
+    settingsDialog:SettingsDialog=null;
     private checkTimeDelay = 0;
     private startCountTime = true;
 
@@ -156,12 +159,16 @@ export default class GameHud extends cc.Component {
 
     }
     pauseGame():void{
-        if(cc.director.isPaused()){
-            cc.director.resume();
-            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause');
-        }else{
-            this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause_pressed');
-            this.scheduleOnce(()=>{cc.director.pause();},0.1)
-        }
+        // if(cc.director.isPaused()){
+        //     cc.director.resume();
+        //     this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause');
+        // }else{
+        //     this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause_pressed');
+        //     this.scheduleOnce(()=>{cc.director.pause();},0.1)
+        // }
+        this.showSettingsDialog();
+    }
+    showSettingsDialog(){
+        this.settingsDialog.show();
     }
 }

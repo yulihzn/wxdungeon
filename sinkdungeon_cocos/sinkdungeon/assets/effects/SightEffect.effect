@@ -8,10 +8,10 @@ CCEffect %{
       blendState:
         targets:
         - blend: true
-          blendSrc: one
-          blendDst: one_minus_src_alpha
-          blendSrcAlpha: one
-          blendDstAlpha: one_minus_src_alpha
+          blendSrc: one_minus_dst_color
+          blendDst: one
+          blendSrcAlpha: one_minus_dst_color
+          blendDstAlpha: one
       rasterizerState:
         cullMode: none
       properties:

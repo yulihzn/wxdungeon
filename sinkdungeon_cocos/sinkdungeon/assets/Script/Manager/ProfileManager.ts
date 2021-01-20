@@ -1,6 +1,7 @@
 import ProfileData from "../Data/ProfileData";
 import TalentData from "../Data/TalentData";
 import RectDungeon from "../Rect/RectDungeon";
+import LocalStorage from "../Utils/LocalStorage";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,14 +32,15 @@ export default class ProfileManager{
     }
    
     private getSaveData():ProfileData{
-        let s = cc.sys.localStorage.getItem('data');
+        let s = LocalStorage.getValue(LocalStorage.SAVE_DUNGEON);
         if(s){
             return JSON.parse(s);
         }
         return null;
     }
     saveData(){
-        cc.sys.localStorage.setItem('data',JSON.stringify(this.data));
+        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON,this.data);
+        this.hasSaveData = true;
         console.log('save data');
     }
     clearData(){
