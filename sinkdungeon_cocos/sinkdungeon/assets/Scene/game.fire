@@ -1452,7 +1452,7 @@
       }
     ],
     "_prefab": null,
-    "_opacity": 128,
+    "_opacity": 200,
     "_color": {
       "__type__": "cc.Color",
       "r": 0,

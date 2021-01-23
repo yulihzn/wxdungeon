@@ -68,7 +68,7 @@ export default class Player extends Actor {
     isJumping = false;//是否跳跃
     isStone = false;//是否石化
     isDizz = false;//是否眩晕
-    
+
     baseAttackPoint: number = 1;
 
     //触碰到的装备
@@ -112,6 +112,11 @@ export default class Player extends Actor {
         this.remoteCooldown.opacity = 200;
         cc.director.on(EventHelper.PLAYER_TRIGGER
             , (event) => { this.triggerThings() });
+        cc.director.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
+            , (event) => {
+                Logic.mapManager.setCurrentRoomExitPos(this.pos);
+                cc.director.loadScene('start');
+            });
         cc.director.on(EventHelper.PLAYER_USEITEM
             , (event) => { this.useItem(event.detail.itemData) });
         cc.director.on(EventHelper.PLAYER_SKILL
@@ -169,7 +174,7 @@ export default class Player extends Actor {
         }
         this.light = this.getComponentInChildren(ShadowOfSight);
         LightManager.registerLight(this.light);
-        this.light.rayRadius = 1000;
+        this.light.rayRadius = Logic.settings.showShadow ? 1000 : 600;
         if (Logic.chapterIndex == Logic.CHAPTER099) {
             this.light.rayRadius = 500;
         }
@@ -594,7 +599,7 @@ export default class Player extends Actor {
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
     }
     fall() {
-        if (this.isFall||this.isJumping) {
+        if (this.isFall || this.isJumping) {
             return;
         }
         this.isFall = true;
@@ -615,15 +620,15 @@ export default class Player extends Actor {
             return false;
         }
         this.isJumping = true;
-        this.scheduleOnce(()=>{
-            this.weaponLeft.node.opacity = 0;this.weaponRight.node.opacity = 0;
+        this.scheduleOnce(() => {
+            this.weaponLeft.node.opacity = 0; this.weaponRight.node.opacity = 0;
             this.shield.node.opacity = 0;
-        },0.1);
+        }, 0.1);
         this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir);
         this.scheduleOnce(() => {
             this.avatar.playAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
             this.isJumping = false;
-            this.weaponLeft.node.opacity = 255;this.weaponRight.node.opacity = 255;
+            this.weaponLeft.node.opacity = 255; this.weaponRight.node.opacity = 255;
             this.shield.node.opacity = 255;
 
         }, 1.3);
@@ -636,7 +641,7 @@ export default class Player extends Actor {
      * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
-        if (!this.data||this.isJumping) {
+        if (!this.data || this.isJumping) {
             return false;
         }
         //盾牌
@@ -758,7 +763,7 @@ export default class Player extends Actor {
 
     update(dt) {
 
-        if (this.isSmokeTimeDelay(dt) && this.isMoving&&!this.isJumping) {
+        if (this.isSmokeTimeDelay(dt) && this.isMoving && !this.isJumping) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
         let stone = this.isStone;
@@ -770,14 +775,14 @@ export default class Player extends Actor {
         this.node.opacity = this.invisible ? 80 : 255;
     }
     private useSkill(): void {
-        if (this.talentSkills&&!this.isJumping) {
+        if (this.talentSkills && !this.isJumping) {
             this.talentSkills.useSKill();
         }
 
     }
 
     triggerThings() {
-        if(this.isJumping){
+        if (this.isJumping) {
             return;
         }
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {

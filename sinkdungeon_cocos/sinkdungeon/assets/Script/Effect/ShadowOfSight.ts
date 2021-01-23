@@ -29,6 +29,8 @@ export default class ShadowOfSight extends cc.Component {
     renderColor = cc.color(255, 255, 255, 40);
     @property
     showLight = true;
+    @property
+    showShadow = false;
     /** 视野顶点数组 */
     lightVertsArray = new Array();
     /** 本光线打亮区域 */
@@ -44,7 +46,7 @@ export default class ShadowOfSight extends cc.Component {
     /** 绘制视野区域 */
     renderSightArea(cameraOffset: cc.Vec2): void {
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
-        if(Logic.settings.showShadow){
+        if(Logic.settings.showShadow&&this.showShadow){
             this.drawRayByNum(pos, cameraOffset, this.showLight);
         }else{
             this.drawCircle(pos, cameraOffset, this.showLight);
@@ -67,10 +69,9 @@ export default class ShadowOfSight extends cc.Component {
                 p3 = result[0].point;
                 let node = result[0].collider.node;
                 let bottomPos = node.convertToNodeSpaceAR(p3);
-                if (bottomPos.y <= 0) {
+                if (bottomPos.y <= 0&&p3.y>pos.y) {
                     let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
                     let offset = 5;
-                    // let r = cc.rect(np.x - node.width * node.anchorX*3.5-offset, np.y - node.height * node.anchorY-offset*10, node.width+offset, node.height+offset);
                     let r = cc.rect(np.x - node.width * node.anchorX, np.y - node.height * node.anchorY, node.width, node.height);
                     this.lightRects[node.uuid] = r;
                 }

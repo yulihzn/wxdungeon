@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventHelper } from "../../EventHelper";
 import Logic from "../../Logic";
 import LocalStorage from "../../Utils/LocalStorage";
 import BaseDialog from "./BaseDialog";
@@ -42,6 +43,6 @@ export default class SettingsDialog extends BaseDialog {
         this.dismiss();
     }
     home(){
-        cc.director.loadScene('start');
+        cc.director.emit(EventHelper.PLAYER_EXIT_FROM_SETTINGS);
     }
 }

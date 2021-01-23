@@ -42,7 +42,7 @@ export default class LightManager extends BaseManager {
             let light = LightManager.lightList[i];
             if (light) {
                 light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
-                this.renderMask(light.lightVertsArray, light.lightRects,light.circle, i == 0);
+                this.renderMask(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
                 // this.renderRay(light.lightVertsArray, light.lightRects, i == 0);
             }
         }
@@ -57,7 +57,7 @@ export default class LightManager extends BaseManager {
         }
     }
     /** 绘制遮罩 */
-    renderMask(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect },circle:cc.Vec3, isFirst: boolean): void {
+    renderMask(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean): void {
         if (!this.mask) {
             return;
         }
@@ -69,7 +69,7 @@ export default class LightManager extends BaseManager {
             }
             graphics.lineWidth = 10;
             graphics.fillColor.fromHEX('#ff0000');
-            if(potArr&&potArr.length>0){
+            if (potArr && potArr.length > 0) {
                 let p0 = this.mask.node.convertToNodeSpaceAR(potArr[0]);
                 graphics.moveTo(p0.x, p0.y);
                 for (let i = 1; i < potArr.length; i++) {
@@ -85,15 +85,15 @@ export default class LightManager extends BaseManager {
                 graphics.rect(c.x, c.y, lightRect.width, lightRect.height);
                 graphics.fill();
             }
-            if(!Logic.settings.showShadow){
-                const center = this.mask.node.convertToNodeSpaceAR(cc.v3(circle.x,circle.y));
-                graphics.circle(center.x,center.y,circle.z);
+            if (!showShadow) {
+                const center = this.mask.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
+                graphics.circle(center.x, center.y, circle.z);
                 graphics.fill();
             }
         }
         this.mask._updateGraphics();
     }
-    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, isFirst: boolean){
+    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, isFirst: boolean) {
         let graphics: cc.Graphics = this.ray;
         if (isFirst) {
             graphics.clear(false);
@@ -115,8 +115,18 @@ export default class LightManager extends BaseManager {
             graphics.fill();
         }
     }
-
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.03) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     update(dt: number) {
-        this.render();
+        if (this.isCheckTimeDelay(dt)) {
+            this.render();
+        }
     }
 }
