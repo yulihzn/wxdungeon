@@ -43,7 +43,7 @@ export default class LightManager extends BaseManager {
             if (light) {
                 light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
                 this.renderMask(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
-                // this.renderRay(light.lightVertsArray, light.lightRects, i == 0);
+                // this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
             }
         }
     }
@@ -62,7 +62,10 @@ export default class LightManager extends BaseManager {
             return;
         }
         this.mask.alphaThreshold = 0.3;
+        this.mask.setMaterial(0,this.shadow.getComponent(cc.Sprite).getMaterial(0));
+        //@ts-ignore
         this.mask._updateGraphics = () => {
+            //@ts-ignore
             var graphics: cc.Graphics = this.mask._graphics;
             if (isFirst) {
                 graphics.clear(false);
@@ -91,27 +94,35 @@ export default class LightManager extends BaseManager {
                 graphics.fill();
             }
         }
+        //@ts-ignore
         this.mask._updateGraphics();
     }
-    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, isFirst: boolean) {
+    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean) {
         let graphics: cc.Graphics = this.ray;
         if (isFirst) {
             graphics.clear(false);
         }
         graphics.lineWidth = 10;
-        graphics.strokeColor.fromHEX('#00000030');
-        let p0 = this.ray.node.convertToNodeSpaceAR(potArr[0]);
-        graphics.moveTo(p0.x, p0.y);
-        for (let i = 1; i < potArr.length; i++) {
-            const p = this.ray.node.convertToNodeSpaceAR(potArr[i]);
-            graphics.lineTo(p.x, p.y);
+        graphics.fillColor.fromHEX('#ff0000');
+        if (potArr && potArr.length > 0) {
+            let p0 = this.mask.node.convertToNodeSpaceAR(potArr[0]);
+            graphics.moveTo(p0.x, p0.y);
+            for (let i = 1; i < potArr.length; i++) {
+                const p = this.mask.node.convertToNodeSpaceAR(potArr[i]);
+                graphics.lineTo(p.x, p.y);
+            }
+            graphics.close();
+            graphics.fill();
         }
-        graphics.close();
-        graphics.fill();
         for (let key in lightRects) {
             let lightRect = lightRects[key];
-            let c = this.ray.node.convertToNodeSpaceAR(cc.v2(lightRect.x, lightRect.y));
+            let c = this.mask.node.convertToNodeSpaceAR(cc.v2(lightRect.x, lightRect.y));
             graphics.rect(c.x, c.y, lightRect.width, lightRect.height);
+            graphics.fill();
+        }
+        if (!showShadow) {
+            const center = this.mask.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
+            graphics.circle(center.x, center.y, circle.z);
             graphics.fill();
         }
     }

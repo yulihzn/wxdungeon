@@ -54,6 +54,9 @@ export default class ShadowOfSight extends cc.Component {
     }
     /** 通过射线数量绘制辐射线 */
     drawRayByNum(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean): void {
+        if(this.rayRadius<=0){
+            return;
+        }
         this.ray.clear(false);
         this.ray.lineWidth = 10;
         this.ray.fillColor = this.renderColor;
@@ -100,7 +103,7 @@ export default class ShadowOfSight extends cc.Component {
         this.circle = cc.v3(pos.x,pos.y,this.rayRadius);
         this.lightVertsArray = new Array();
         this.lightRects = {};
-        if (renderLight) {
+        if (renderLight&&this.rayRadius>0) {
             this.ray.clear(false);
             this.ray.lineWidth = 10;
             this.ray.fillColor = this.renderColor;

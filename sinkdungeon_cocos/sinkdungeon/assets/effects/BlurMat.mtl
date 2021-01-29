@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.Material",
+  "_name": "BlurMat",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "2b7a6d8a-40a0-4090-a9cb-81e825a93b03"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true,
+        "USE_ALPHA_TEST": true
+      },
+      "props": {
+        "size": {
+          "__type__": "cc.Vec2",
+          "x": 2000,
+          "y": 2000
+        },
+        "texture": {
+          "__uuid__": "fa9e9855-2496-40df-a994-4b42e688c4cb"
+        }
+      }
+    }
+  }
+}

@@ -33,12 +33,12 @@ export default class Test extends cc.Component {
             cc.log(`playerPos:${pos.x},${pos.y}`);
         }, this)
         
-        this.ray.fillColor = cc.color(255,0,0,80);
+        this.ray.fillColor = cc.color(255,0,0,255);
         this.ray.circle(0,0,200);
         this.ray.fill();
-        this.ray.fillColor = cc.color(0,0,255,80);
-        this.ray.rect(-300,-300,600,600);
-        this.ray.fill();
+        // this.ray.fillColor = cc.color(0,0,255,80);
+        // this.ray.rect(-300,-300,600,600);
+        // this.ray.fill();
     }
 
     start() {
