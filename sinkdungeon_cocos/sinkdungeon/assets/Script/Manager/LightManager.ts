@@ -62,7 +62,7 @@ export default class LightManager extends BaseManager {
             return;
         }
         this.mask.alphaThreshold = 0.3;
-        this.mask.setMaterial(0,this.shadow.getComponent(cc.Sprite).getMaterial(0));
+        // this.mask.setMaterial(0,this.shadow.getComponent(cc.Sprite).getMaterial(0));
         //@ts-ignore
         this.mask._updateGraphics = () => {
             //@ts-ignore

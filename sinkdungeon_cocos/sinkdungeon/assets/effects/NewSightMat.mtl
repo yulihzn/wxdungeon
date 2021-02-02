@@ -1,6 +1,6 @@
 {
   "__type__": "cc.Material",
-  "_name": "New Material",
+  "_name": "NewSightMat",
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
@@ -9,7 +9,12 @@
   "_techniqueIndex": 0,
   "_techniqueData": {
     "0": {
-      "defines": {}
+      "defines": {
+        "USE_ALPHA_TEST": true
+      },
+      "props": {
+        "alphaThreshold": 0.1
+      }
     }
   }
 }
