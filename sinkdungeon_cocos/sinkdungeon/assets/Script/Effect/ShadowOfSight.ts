@@ -21,7 +21,7 @@ export default class ShadowOfSight extends cc.Component {
     // @property(cc.Node)
     // shadow: cc.Node = null;
     /** 辐射线数量 */
-    private rayNum = 360;
+    private rayNum = 180;
     /** 辐射线半径 */
     @property
     rayRadius = 600;
