@@ -74,8 +74,8 @@ export default class ShadowOfSight extends cc.Component {
                 let bottomPos = node.convertToNodeSpaceAR(p3);
                 if (bottomPos.y <= 0&&p3.y>pos.y) {
                     let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
-                    let offset = 5;
-                    let r = cc.rect(np.x - node.width * node.anchorX, np.y - node.height * node.anchorY, node.width, node.height);
+                    let offset = 24;
+                    let r = cc.rect(np.x - node.width * node.anchorX, np.y - node.height * node.anchorY-offset, node.width, node.height+offset);
                     this.lightRects[node.uuid] = r;
                 }
             }

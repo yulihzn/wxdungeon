@@ -21,7 +21,7 @@
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
-  "md5Cache": false,
+  "md5Cache": true,
   "mergeStartScene": false,
   "optimizeHotUpdate": false,
   "orientation": {
@@ -53,6 +53,7 @@
   },
   "ios": {
     "REMOTE_SERVER_ROOT": "",
+    "ios_enable_jit": true,
     "packageName": "org.cocos2d.sinkdungeon"
   },
   "mac": {
@@ -68,5 +69,6 @@
   },
   "mainCompressionType": "default",
   "mainIsRemote": false,
-  "nativeMd5Cache": true
+  "nativeMd5Cache": true,
+  "agreements": {}
 }

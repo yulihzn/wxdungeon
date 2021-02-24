@@ -16,7 +16,7 @@ CCEffect %{
         cullMode: none
       properties:
         alphaThreshold: { value: 0.5 }
-        screen: {value: [400.0,400.0]}
+        screen: {value: [1280.0,720.0]}
         lightPos: {value: [0.5,0.5]}
         maxRadius: {value: 0.75}
         whRatio: {value: 1.0}
@@ -66,19 +66,11 @@ CCProgram fs %{
     float maxRadius;
     float whRatio;
   };
+  
   void main () {
     vec4 o = v_color;
-    vec2 st = gl_FragCoord.xy / screen.xy;
-    float scaleWH = screen.x/screen.y;//考虑到即使横屏情况下，screen高度也可能比宽度大，需要换算一下
-    ALPHA_TEST(o);
-    vec2 uv = st - lightPos;
-    float rx = abs(uv.x);
-    float ry = abs(uv.y);
-    float fade = o.a;
-    float radius = length(vec2(rx * whRatio, ry / scaleWH * whRatio));      // 算半径
-    o.a = 1.0 - smoothstep(0.1, maxRadius, radius);      // 渐变
-    o.a *= fade;
-    
+
+
     #if CC_SUPPORT_standard_derivatives
       float aa = fwidth(v_dist);
     #else
@@ -88,6 +80,10 @@ CCProgram fs %{
     float alpha = 1. - smoothstep(-aa, 0., abs(v_dist) - 1.0);
     o.rgb *= o.a;
     o *= alpha;
+    // if(o.r > 0.5){
+    //   o.a = 0.0;
+    // }
+    ALPHA_TEST(o);
     gl_FragColor = o;
   }
 }%

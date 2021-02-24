@@ -469,9 +469,10 @@
       "r": 255,
       "g": 231,
       "b": 12,
-      "a": 40
+      "a": 109
     },
     "showLight": true,
+    "showShadow": false,
     "_id": ""
   },
   {
