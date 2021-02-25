@@ -26,6 +26,7 @@ import DryadGrass from "../Boss/DryadGrass";
 import Utils from "../Utils/Utils";
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import LightManager from "./LightManager";
+import SavePoint from "../Building/SavePoint";
 
 
 // Learn TypeScript:
@@ -111,11 +112,14 @@ export default class BuildingManager extends BaseManager {
     dryadGrass: cc.Prefab = null;
     @property(cc.Prefab)
     roomTv:cc.Prefab = null;
+    @property(cc.Prefab)
+    savePoint:cc.Prefab = null;
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
     doors: Door[] = new Array();
     airExits: AirExit[] = new Array();
+    savePointS:SavePoint;
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
 
@@ -409,6 +413,10 @@ export default class BuildingManager extends BaseManager {
             node.getComponent(cc.PhysicsBoxCollider).offset = cc.v2(-8, 0);
             node.getComponent(cc.PhysicsBoxCollider).apply();
             node.zIndex = IndexZ.WALLINTERNAL;
+        } else if (mapDataStr == '@S') {
+            //生成存档点
+            let save = this.addBuilding(this.savePoint, indexPos);
+            this.savePointS = save.getComponent(SavePoint);
         }
     }
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {

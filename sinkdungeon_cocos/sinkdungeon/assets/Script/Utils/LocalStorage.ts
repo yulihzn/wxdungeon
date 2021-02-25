@@ -18,6 +18,7 @@ export default class LocalStorage {
 
     public static SAVE_NAME = 'SINKDUNGEON_SAVE';
     public static SAVE_DUNGEON = 'SAVE_DUNGEON';
+    public static SAVE_DUNGEON_BY_POINT = 'SAVE_DUNGEON_BY_POINT';
     public static KEY_ACHIEVEMENT = 'KEY_ACHIEVEMENT';
     public static KEY_COIN = 'KEY_COIN';
     public static KEY_OIL_GOLD = 'KEY_OIL_GOLD';

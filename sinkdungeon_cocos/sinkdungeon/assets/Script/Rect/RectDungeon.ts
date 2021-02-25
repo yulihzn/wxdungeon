@@ -187,5 +187,12 @@ export default class RectDungeon {
     static isRoomEqual(room1: RectRoom, room2: RectRoom): boolean {
         return room1.x == room2.x && room1.y == room2.y;
     }
+    public changeAllRoomsReborn(){
+        for (let i = 0; i < this.width; i++) {
+            for (let j = 0; j < this.height; j++) {
+                this.map[i][j].reborn = 1;
+            }
+        }
+    }
 
 }

@@ -35,6 +35,9 @@ export default class GameHud extends cc.Component {
     pasueButton:cc.Node = null;
     @property(SettingsDialog)
     settingsDialog:SettingsDialog=null;
+    @property(cc.Label)
+    completeLabel:cc.Label=null;
+    private isCompleteShowed = false;
     private checkTimeDelay = 0;
     private startCountTime = true;
 
@@ -53,6 +56,9 @@ export default class GameHud extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
             this.showDamageCorner();
+        })
+        cc.director.on(EventHelper.HUD_COMPLETE_SHOW, (event) => {
+            this.showComplete();
         })
         cc.director.on(EventHelper.HUD_STOP_COUNTTIME
             , (event) => { this.startCountTime = false; });
@@ -76,6 +82,21 @@ export default class GameHud extends cc.Component {
         });
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
         this.fadeIn();
+    }
+    private showComplete(){
+        if(!this.completeLabel||this.isCompleteShowed){
+            return;
+        }
+        let arr = ['清','清理','清理完','清理完成','清理完成','清理完成','清理完成','清理完成','清理完成','清理完成','清理完','清理','清',''];
+        let i = 0;
+        this.completeLabel.string = '';
+        this.completeLabel.unscheduleAllCallbacks();
+        this.isCompleteShowed = true;
+        this.completeLabel.schedule(()=>{
+            if(i<arr.length){
+                this.completeLabel.string = arr[i++];
+            }
+        },0.1,arr.length,0.5);
     }
     private fadeOut(){
         if(!this.node){

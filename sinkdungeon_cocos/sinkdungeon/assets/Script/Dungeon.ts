@@ -199,7 +199,7 @@ export default class Dungeon extends cc.Component {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
         //加载随机怪物
-        if (!Logic.mapManager.isCurrentRoomStateClear()
+        if ((!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoom().isReborn())
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
             this.monsterManager.addRandomMonsters(this);
         }
@@ -397,7 +397,15 @@ export default class Dungeon extends cc.Component {
         }
         this.setDoors(isClear);
         if (isClear) {
+            let needShowComplete = !Logic.mapManager.getCurrentRoom().isClear();
+            if(needShowComplete){
+                cc.director.emit(EventHelper.HUD_COMPLETE_SHOW);
+            }
+            if(this.buildingManager.savePointS){
+                this.buildingManager.savePointS.open();
+            }
             Logic.mapManager.setRoomClear(this.currentPos.x, this.currentPos.y);
+            Logic.mapManager.setRoomReborn(this.currentPos.x, this.currentPos.y,false);
         }
     }
     private setDoors(isClear: boolean, immediately?: boolean) {

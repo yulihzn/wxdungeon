@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":287,
+ "tilecount":288,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -3084,6 +3084,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"#r0"
+        }, 
+        {
+         "id":659,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/dreamsave.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"@S"
         }],
  "tilewidth":16,
  "type":"tileset",

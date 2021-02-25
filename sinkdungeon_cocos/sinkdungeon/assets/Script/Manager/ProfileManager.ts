@@ -22,24 +22,24 @@ export default class ProfileManager{
     data:ProfileData = new ProfileData();
     hasSaveData:boolean = false;
     constructor(){
-        this.loadData();
+        this.loadData(false);
     }
-    private loadData(){
+    private loadData(isSavePoint:boolean){
         //清空当前数据
         this.data = new ProfileData();
         //读取存档
-        this.loadProfile();
+        this.loadProfile(isSavePoint);
     }
    
-    private getSaveData():ProfileData{
-        let s = LocalStorage.getValue(LocalStorage.SAVE_DUNGEON);
+    private getSaveData(isSavePoint:boolean):ProfileData{
+        let s = LocalStorage.getValue(isSavePoint?LocalStorage.SAVE_DUNGEON_BY_POINT:LocalStorage.SAVE_DUNGEON);
         if(s){
             return JSON.parse(s);
         }
         return null;
     }
-    saveData(){
-        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON,this.data);
+    saveData(isSavePoint:boolean){
+        LocalStorage.putValue(isSavePoint?LocalStorage.SAVE_DUNGEON_BY_POINT:LocalStorage.SAVE_DUNGEON,this.data);
         this.hasSaveData = true;
         console.log('save data');
     }
@@ -50,16 +50,20 @@ export default class ProfileManager{
         console.log('clear data');
     }
     
-    loadProfile(){
-        let data = this.getSaveData();
+    loadProfile(isSavePoint:boolean):boolean{
+        let data = this.getSaveData(isSavePoint);
         if(!data){
-            this.hasSaveData = false;
-            return;
+            if(!isSavePoint){
+                this.hasSaveData = false;
+            }
+            return false;
         }
         if(!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeons
         ||!data.talentList){
-            this.hasSaveData = false;
-            return;
+            if(!isSavePoint){
+                this.hasSaveData = false;
+            }
+            return false;
         }
         this.hasSaveData = true;
         //玩家数据
@@ -96,5 +100,6 @@ export default class ProfileManager{
              this.data.time = data.time;
          }
         console.log('data',this);
+        return true;
     }
 }

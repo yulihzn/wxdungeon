@@ -15,7 +15,6 @@ import Logic from './Logic';
 import MonsterData from './Data/MonsterData';
 import Dungeon from './Dungeon';
 import Shooter from './Shooter';
-import Player from './Player';
 import StatusManager from './Manager/StatusManager';
 import DamageData from './Data/DamageData';
 import FloatinglabelManager from './Manager/FloatingLabelManager';
@@ -31,8 +30,6 @@ import IndexZ from './Utils/IndexZ';
 import AreaOfEffect from './Actor/AreaOfEffect';
 import AreaOfEffectData from './Data/AreaOfEffectData';
 import ActorAttackBox from './Actor/ActorAttackBox';
-import NonPlayer from './NonPlayer';
-import ShadowOfSight from './Effect/ShadowOfSight';
 
 @ccclass
 export default class Monster extends Actor {
@@ -654,10 +651,10 @@ export default class Monster extends Actor {
     getLoot() {
         let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
         let rand = rand4save.rand();
-        let percent = 0.8;
+        let percent = 0.75;
         let offset = 0.025;
         if (this.isVariation) {
-            percent = 0.7;
+            percent = 0.6;
         }
         if (this.dungeon) {
             if (rand < percent) {

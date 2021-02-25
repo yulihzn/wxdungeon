@@ -17,7 +17,6 @@ import ProfessionData from "./Data/ProfessionData";
 import Random4Save from "./Utils/Random4Save";
 import ExitData from "./Data/ExitData";
 import NonPlayerData from "./Data/NonPlayerData";
-import Game from "./Game";
 import Settings from "./Model/Settings";
 import LocalStorage from "./Utils/LocalStorage";
 
@@ -111,7 +110,7 @@ export default class Logic extends cc.Component {
     start() {
 
     }
-    static saveData() {
+    static saveData(isSavePoint:boolean) {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
@@ -121,7 +120,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.lastChapterIndex = Logic.lastChapterIndex;
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.data.time = Logic.time;
-        Logic.profileManager.saveData();
+        Logic.profileManager.saveData(isSavePoint);
         LocalStorage.saveData(LocalStorage.KEY_COIN,Logic.coins);
         LocalStorage.saveData(LocalStorage.KEY_OIL_GOLD,Logic.oilGolds);
     }
@@ -194,6 +193,16 @@ export default class Logic extends cc.Component {
             Dungeon.HEIGHT_SIZE = size.y;
         }
     }
+    static savePonit(){
+        Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
+        //非99chapter则保存当前关卡等级
+        if (Logic.chapterIndex != Logic.CHAPTER099) {
+            Logic.lastLevel = Logic.level;
+            Logic.lastChapterIndex = Logic.chapterIndex;
+        }
+        //保存数据
+        Logic.saveData(true);
+    }
     static loadingNextRoom(dir: number) {
         Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         Logic.mapManager.rand4save = null;
@@ -203,7 +212,7 @@ export default class Logic extends cc.Component {
             Logic.lastChapterIndex = Logic.chapterIndex;
         }
         //保存数据
-        Logic.saveData();
+        Logic.saveData(false);
         AudioPlayer.play(AudioPlayer.EXIT);
         let room = Logic.mapManager.loadingNextRoom(dir);
         if (room) {
@@ -226,11 +235,14 @@ export default class Logic extends cc.Component {
         if (!levelData) {
             return;
         }
+        if(exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter != Logic.CHAPTER099
+            &&exitData.fromChapter!=exitData.toChapter){
+            Logic.mapManager.rectDungeon.changeAllRoomsReborn();
+        }
         if(needSave){
-            Logic.saveData();
+            Logic.saveData(false);
         }
         let isBackDream = exitData.fromChapter == Logic.CHAPTER099 && exitData.toChapter != Logic.CHAPTER099;
-        
         Logic.chapterIndex = exitData.toChapter;
         Logic.level = exitData.toLevel;
         if (exitData.toPos.equals(cc.v3(-1, -1))) {

@@ -1,0 +1,137 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "SavePointIdle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "sprite/base": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.75,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 0.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5625,
+                "y": 0.75
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.625,
+                "y": 0.5
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.75,
+                "y": 0.5
+              }
+            }
+          ],
+          "color": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Color",
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 255
+              }
+            }
+          ]
+        }
+      },
+      "sprite/point": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.75,
+                "y": 1
+              }
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 0.75
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 1,
+                "y": 1
+              }
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": 16
+            },
+            {
+              "frame": 0.5,
+              "value": 12
+            },
+            {
+              "frame": 1,
+              "value": 16
+            }
+          ],
+          "color": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Color",
+                "r": 250,
+                "g": 0,
+                "b": 255,
+                "a": 255
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

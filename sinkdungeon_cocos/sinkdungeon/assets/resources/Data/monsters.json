@@ -388,7 +388,7 @@
         "resName": "monster019",
         "chapter": 0,
         "stageLevel": 0,
-        "specialAttack":10,
+        "specialAttack":30,
         "specialType":"special019",
         "specialDistance":64,
         "common": {

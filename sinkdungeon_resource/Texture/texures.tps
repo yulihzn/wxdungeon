@@ -235,6 +235,8 @@
             <key type="filename">building/door099anim002.png</key>
             <key type="filename">building/door099anim003.png</key>
             <key type="filename">building/door099anim004.png</key>
+            <key type="filename">building/dreamsave1.png</key>
+            <key type="filename">building/dreamsave2.png</key>
             <key type="filename">building/exitarrow.png</key>
             <key type="filename">building/floor000center.png</key>
             <key type="filename">building/floor000corner.png</key>
