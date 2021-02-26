@@ -152,9 +152,9 @@ export default class BuildingManager extends BaseManager {
         let b = building.getComponent(Building);
         if (b) {
             b.data.defaultPos = indexPos.clone();
-            b.light = b.getComponentInChildren(ShadowOfSight);
-            if(b.light){
-                LightManager.registerLight(b.light);
+            b.lights = b.getComponentsInChildren(ShadowOfSight);
+            if(b.lights){
+                LightManager.registerLight(b.lights);
             }
         }
         return building;

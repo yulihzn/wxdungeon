@@ -28,7 +28,7 @@ export default class RoomBed extends Building {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
-        this.light = this.getComponentInChildren(ShadowOfSight);
+        this.lights = this.getComponentsInChildren(ShadowOfSight);
     }
 
     init(dungeon:Dungeon,isDecorate:boolean){

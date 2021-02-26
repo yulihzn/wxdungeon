@@ -34,7 +34,7 @@ export default abstract class Actor extends cc.Component {
     isShow = false;
     isDied = false;
     invisible = false;//是否隐身
-    light:ShadowOfSight;//光源
+    lights:ShadowOfSight[] = [];//光源
 
     /**
      * 获取最近的玩家

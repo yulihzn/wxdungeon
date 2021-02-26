@@ -65,6 +65,10 @@ export default class Test extends cc.Component {
         this.graphics.clear();
         this.graphics.fillColor = cc.color(0, 255, 0);
         this.graphics.circle(p.x, p.y, this.radius);
+        // this.graphics.moveTo(p.x,p.y);
+        // this.graphics.lineTo(p.x-this.radius,p.y-this.radius);
+        // this.graphics.lineTo(p.x+this.radius,p.y-this.radius);
+        // this.graphics.close();
         this.graphics.fill();
         this.graphics.node.width = this.radius * 2;
         this.graphics.node.height = this.radius * 2;
@@ -72,7 +76,7 @@ export default class Test extends cc.Component {
     private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2,rayRadius:number) {
         let canvasSize = cc.view.getCanvasSize();
         let visibleSize = cc.view.getVisibleSize();
-        let visibleRatio = visibleSize.width / visibleSize.height;
+        let visibleRatio = visibleSize.width /visibleSize.height;
         let r = rayRadius / visibleSize.height;
         let scale = canvasSize.width / visibleSize.width;
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));

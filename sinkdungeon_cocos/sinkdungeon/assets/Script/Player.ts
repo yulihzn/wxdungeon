@@ -172,11 +172,11 @@ export default class Player extends Actor {
                 this.data.Common.remoteCritRate = 50;
             }, 0.2);
         }
-        this.light = this.getComponentInChildren(ShadowOfSight);
-        LightManager.registerLight(this.light);
-        this.light.rayRadius = 300;
+        this.lights = this.getComponentsInChildren(ShadowOfSight);
+        LightManager.registerLight(this.lights);
+        this.lights[0].rayRadius = 300;
         if (Logic.chapterIndex == Logic.CHAPTER099) {
-            this.light.rayRadius = 150;
+            this.lights[0].rayRadius = 150;
         }
     }
     actorName(): string {

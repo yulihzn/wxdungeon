@@ -20,12 +20,20 @@ export default class RoomTv extends Building {
     
     onLoad(){
         this.anim = this.getComponent(cc.Animation);
-
+        for(let light of this.lights){
+            light.showLight = false;
+        }
     }
     // update (dt) {}
 
     open(){
         this.isOpen = true;
+        if(this.lights){
+            for(let light of this.lights){
+                light.showLight = true;
+            }
+        }
+        
         this.anim.play('RoomTvOpen');
         this.scheduleOnce(()=>{
             this.anim.play(Logic.getHalfChance()?'RoomTvOpenIdle':'RoomTvNoSignalIdle');
@@ -33,6 +41,11 @@ export default class RoomTv extends Building {
     }
     close(){
         this.isOpen = false;
+        if(this.lights){
+            for(let light of this.lights){
+                light.showLight = false;
+            }
+        }
         this.anim.play('RoomTvClose');
         this.scheduleOnce(()=>{
             this.anim.play('RoomTvClosedIdle');

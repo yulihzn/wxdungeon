@@ -57,8 +57,10 @@ export default class LightManager extends BaseManager {
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
         }
     }
-    public static registerLight(light: ShadowOfSight) {
-        LightManager.lightList.push(light);
+    public static registerLight(lights: ShadowOfSight[]) {
+        for(let light of lights){
+            LightManager.lightList.push(light);
+        }
     }
     public static unRegisterLight(light: ShadowOfSight) {
         let index = LightManager.lightList.indexOf(light);
