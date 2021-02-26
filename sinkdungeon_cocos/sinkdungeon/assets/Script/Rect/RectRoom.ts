@@ -68,7 +68,7 @@ export default class RectRoom {
         return this.state == RectRoom.STATE_CLEAR;
     }
     public isReborn():boolean{
-        return this.reborn == 0;
+        return this.reborn == 1;
     }
 
     static getRandomNum(min, max): number {//生成一个随机数从[min,max]

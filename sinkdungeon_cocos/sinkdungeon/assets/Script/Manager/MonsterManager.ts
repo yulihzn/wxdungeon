@@ -107,6 +107,7 @@ export default class MonsterManager extends BaseManager {
 
     private monsters: Monster[] = new Array();//房间怪物列表
     private bosses: Boss[] = new Array();
+    isRoomInitWithEnemy = false;//初始化是否生成怪物
     get monsterList() {
         return this.monsters;
     }
@@ -284,12 +285,14 @@ export default class MonsterManager extends BaseManager {
         monster.node.active = true;
         monster.pos = pos;
         monster.node.position = Dungeon.getPosInMap(pos);
+        this.isRoomInitWithEnemy = true;
         this.monsterList.push(monster);
     }
     public addBossSlime(type: number, index: cc.Vec3, dungeon: Dungeon) {
         if (!this.bosses) {
             return;
         }
+        this.isRoomInitWithEnemy = true;
         this.bosses.push(this.getSlime(dungeon, index.clone(), type));
     }
 
@@ -307,6 +310,7 @@ export default class MonsterManager extends BaseManager {
         boss.healthBar = this.node.parent.getComponentInChildren(GameHud).bossHealthBar;
         boss.node.active = true;
         this.bosses.push(boss);
+        this.isRoomInitWithEnemy = true;
         this.scheduleOnce(() => {
             boss.showBoss();
         }, delayTime);

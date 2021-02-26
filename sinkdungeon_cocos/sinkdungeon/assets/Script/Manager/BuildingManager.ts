@@ -268,6 +268,7 @@ export default class BuildingManager extends BaseManager {
             if (mapDataStr == 'O1') {
                 head.angle = 90;
             }
+            head.opacity = 128;
             head.zIndex = IndexZ.ROOF;
         } else if (mapDataStr == '@@') {
             //生成踏板

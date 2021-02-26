@@ -25,8 +25,6 @@ export default class ProfileManager{
         this.loadData(false);
     }
     private loadData(isSavePoint:boolean){
-        //清空当前数据
-        this.data = new ProfileData();
         //读取存档
         this.loadProfile(isSavePoint);
     }
@@ -65,6 +63,8 @@ export default class ProfileManager{
             }
             return false;
         }
+        //清空当前数据
+        this.data = new ProfileData();
         this.hasSaveData = true;
         //玩家数据
         this.data.playerData.valueCopy(data.playerData);

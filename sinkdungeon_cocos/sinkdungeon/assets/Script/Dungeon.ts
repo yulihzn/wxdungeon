@@ -397,8 +397,7 @@ export default class Dungeon extends cc.Component {
         }
         this.setDoors(isClear);
         if (isClear) {
-            let needShowComplete = !Logic.mapManager.getCurrentRoom().isClear();
-            if(needShowComplete){
+            if(this.monsterManager.isRoomInitWithEnemy){
                 cc.director.emit(EventHelper.HUD_COMPLETE_SHOW);
             }
             if(this.buildingManager.savePointS){
