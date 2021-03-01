@@ -29,12 +29,12 @@
                 {
                  "name":"floorCoverRes",
                  "type":"string",
-                 "value":"tile_lab"
+                 "value":"tile_room"
                 }, 
                 {
                  "name":"floorRes",
                  "type":"string",
-                 "value":"tile_lab"
+                 "value":"tile_room"
                 }, 
                 {
                  "name":"height",

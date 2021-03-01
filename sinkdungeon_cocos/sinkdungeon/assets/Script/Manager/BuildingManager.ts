@@ -114,6 +114,8 @@ export default class BuildingManager extends BaseManager {
     roomTv:cc.Prefab = null;
     @property(cc.Prefab)
     savePoint:cc.Prefab = null;
+    @property(cc.Prefab)
+    shopMart:cc.Prefab = null;
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
@@ -359,6 +361,10 @@ export default class BuildingManager extends BaseManager {
         } else if (mapDataStr == 'S1') {
             //生成店主
             this.addBuilding(this.shop, indexPos);
+        } else if (mapDataStr == 'S2') {
+            //生成有家
+            let mart = this.addBuilding(this.shopMart, indexPos);
+            mart.zIndex+=10;
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             let dir = parseInt(mapDataStr[1]);
             if (isNaN(dir)) {
