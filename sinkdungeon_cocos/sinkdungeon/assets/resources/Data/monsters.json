@@ -46,12 +46,12 @@
         "bulletArcExNum":1,
         "common": {
             "moveSpeed": 100,
-            "maxHealth": 50,
+            "maxHealth": 80,
             "curseRate":100,
             "magicDamage":1,
             "damageMin": 2
         },
-        "currentHealth": 50,
+        "currentHealth": 80,
         "invisible": 0,
         "remote": 2,
         "melee": 1,

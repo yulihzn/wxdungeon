@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MeleeAttack2",
+  "_name": "MeleeAttackBlunt2",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.5,
@@ -209,18 +209,10 @@
     },
     {
       "frame": 0.16666666666666666,
-      "func": "",
-      "params": []
-    },
-    {
-      "frame": 0.16666666666666666,
-      "func": "",
-      "params": []
-    },
-    {
-      "frame": 0.16666666666666666,
-      "func": "",
-      "params": []
+      "func": "ComboTime",
+      "params": [
+        200
+      ]
     },
     {
       "frame": 0.5,

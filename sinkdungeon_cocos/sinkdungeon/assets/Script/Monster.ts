@@ -747,7 +747,7 @@ export default class Monster extends Actor {
             && !target.isDied 
             && !target.invisible
             && target.isShow;
-        if (canMelee && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising) {
+        if (canMelee && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising && !this.remoteSkill.IsExcuting) {
             this.meleeSkill.next(() => {
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.meleeSkill.IsExcuting = true;
@@ -876,8 +876,8 @@ export default class Monster extends Actor {
             this.monsterAction();
         }
         //隐匿
-        if (this.data.invisible > 0 && this.sprite.opacity > 10) {
-            this.sprite.opacity = this.lerp(this.sprite.opacity, 9, dt * 3);
+        if (this.data.invisible > 0 && this.sprite.opacity > 20) {
+            this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3);
         }
         this.dashlight.opacity = 0;
         if (this.dungeon && this.dashSkill.IsExcuting) {

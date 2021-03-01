@@ -214,6 +214,13 @@
       "params": []
     },
     {
+      "frame": 0.16666666666666666,
+      "func": "ComboTime",
+      "params": [
+        100
+      ]
+    },
+    {
       "frame": 0.5,
       "func": "MeleeAttackFinish",
       "params": [

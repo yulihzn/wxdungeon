@@ -137,7 +137,7 @@
               ]
             },
             {
-              "frame": 1.5,
+              "frame": 1.1666666666666667,
               "value": [
                 0,
                 0,
@@ -320,7 +320,7 @@
       "params": []
     },
     {
-      "frame": 1.5,
+      "frame": 1.1666666666666667,
       "func": "MeleeAttackFinish",
       "params": [
         false
