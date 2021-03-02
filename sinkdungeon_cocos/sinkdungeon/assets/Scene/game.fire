@@ -1764,6 +1764,18 @@
     "shopMart": {
       "__uuid__": "1adbaf3c-85c4-4e21-a6ac-1de82ddca1a2"
     },
+    "martShelves": {
+      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
+    },
+    "martCashier": {
+      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
+    },
+    "martTable": {
+      "__uuid__": "0b4bda88-d943-4618-b355-452886e54d20"
+    },
+    "martFridge": {
+      "__uuid__": "039c80fc-60d1-4384-b485-0bb0d0a1951b"
+    },
     "_id": "6fNRlW4xRPZbKRWb6ycQ/o"
   },
   {

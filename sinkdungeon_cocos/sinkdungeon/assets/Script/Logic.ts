@@ -45,6 +45,7 @@ export default class Logic extends cc.Component {
     static equipments: { [key: string]: EquipmentData } = null;
     static equipmentNameList: string[] = [];
     static itemNameList: string[] = [];
+    static goodsNameList: string[] = [];
     //怪物json
     static monsters: { [key: string]: MonsterData } = null;
     //npc json

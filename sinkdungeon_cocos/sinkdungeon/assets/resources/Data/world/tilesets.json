@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":289,
+ "tilecount":294,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -3098,6 +3098,41 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"S2"
+        }, 
+        {
+         "id":661,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/martshelves.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Sa"
+        }, 
+        {
+         "id":662,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/martshelves1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Sb"
+        }, 
+        {
+         "id":663,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/martfridge.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Sc"
+        }, 
+        {
+         "id":664,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/martcashier.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Sd"
+        }, 
+        {
+         "id":665,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/marttable.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Se"
         }],
  "tilewidth":16,
  "type":"tileset",

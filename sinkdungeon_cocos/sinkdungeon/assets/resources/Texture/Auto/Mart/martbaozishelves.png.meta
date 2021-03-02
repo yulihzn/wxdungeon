@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "122a87ae-cac4-4887-8441-9bcfa999dca3",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 32,
+  "height": 40,
+  "platformSettings": {},
+  "subMetas": {
+    "martbaozishelves": {
+      "ver": "1.0.4",
+      "uuid": "35ce0718-6412-4a71-affc-a085498e2d5e",
+      "rawTextureUuid": "122a87ae-cac4-4887-8441-9bcfa999dca3",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 32,
+      "height": 40,
+      "rawWidth": 32,
+      "rawHeight": 40,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

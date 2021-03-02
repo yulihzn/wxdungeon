@@ -521,6 +521,10 @@
             <key type="filename">tile/tile_labsecond002.png</key>
             <key type="filename">tile/tile_labsecond003.png</key>
             <key type="filename">tile/tile_labsecond004.png</key>
+            <key type="filename">tile/tile_mart001.png</key>
+            <key type="filename">tile/tile_mart002.png</key>
+            <key type="filename">tile/tile_mart003.png</key>
+            <key type="filename">tile/tile_mart004.png</key>
             <key type="filename">tile/tile_pyramid001.png</key>
             <key type="filename">tile/tile_pyramid002.png</key>
             <key type="filename">tile/tile_pyramid003.png</key>
@@ -1381,6 +1385,8 @@
             <key type="filename">building/wall03anim002.png</key>
             <key type="filename">building/wall04anim000.png</key>
             <key type="filename">building/wall05anim000.png</key>
+            <key type="filename">building/wall99anim000.png</key>
+            <key type="filename">building/wall99anim001.png</key>
             <key type="filename">building/walldungeon00anim000.png</key>
             <key type="filename">building/walldungeon00anim001.png</key>
             <key type="filename">building/walldungeon00anim002.png</key>

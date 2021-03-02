@@ -27,6 +27,7 @@ import Utils from "../Utils/Utils";
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import LightManager from "./LightManager";
 import SavePoint from "../Building/SavePoint";
+import MartShelves from "../Building/MartShelves";
 
 
 // Learn TypeScript:
@@ -116,6 +117,14 @@ export default class BuildingManager extends BaseManager {
     savePoint:cc.Prefab = null;
     @property(cc.Prefab)
     shopMart:cc.Prefab = null;
+    @property(cc.Prefab)
+    martShelves:cc.Prefab = null;
+    @property(cc.Prefab)
+    martCashier:cc.Prefab = null;
+    @property(cc.Prefab)
+    martTable:cc.Prefab = null;
+    @property(cc.Prefab)
+    martFridge:cc.Prefab = null;
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
@@ -124,6 +133,7 @@ export default class BuildingManager extends BaseManager {
     savePointS:SavePoint;
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
+    goodsIndex = 0;//商品加载下标，用于多个货架展示商品
 
     clear(): void {
         Utils.clearComponentArray(this.footboards);
@@ -365,7 +375,15 @@ export default class BuildingManager extends BaseManager {
             //生成有家
             let mart = this.addBuilding(this.shopMart, indexPos);
             mart.zIndex+=10;
-        } else if (this.isFirstEqual(mapDataStr, 'D')) {
+        } else if (mapDataStr == 'Sa'||mapDataStr == 'Sb'||mapDataStr == 'Sc') {
+            this.addMartShelves(mapDataStr,indexPos);
+        } else if (mapDataStr == 'Sd') {
+            //生成收银台
+            this.addBuilding(this.martCashier, indexPos);
+        } else if (mapDataStr == 'Se') {
+            //生成餐桌
+            this.addBuilding(this.martTable, indexPos);
+        }  else if (this.isFirstEqual(mapDataStr, 'D')) {
             let dir = parseInt(mapDataStr[1]);
             if (isNaN(dir)) {
                 if (mapDataStr == 'Da') {
@@ -425,6 +443,12 @@ export default class BuildingManager extends BaseManager {
             let save = this.addBuilding(this.savePoint, indexPos);
             this.savePointS = save.getComponent(SavePoint);
         }
+    }
+    private addMartShelves(mapDataStr:string,indexPos:cc.Vec3){
+        //生成货架
+        let ms = this.addBuilding(mapDataStr=='Sc'?this.martFridge:this.martShelves, indexPos).getComponent(MartShelves);
+        ms.init(mapDataStr,Logic.goodsNameList);
+        this.goodsIndex+=MartShelves.SIZE_NORMAL-1;
     }
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {
         let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
