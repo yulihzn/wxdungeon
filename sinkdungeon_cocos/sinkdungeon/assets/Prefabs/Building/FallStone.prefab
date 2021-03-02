@@ -106,7 +106,7 @@
     "_opacity": 128,
     "_color": {
       "__type__": "cc.Color",
-      "r": 0,
+      "r": 254,
       "g": 0,
       "b": 0,
       "a": 255
@@ -467,7 +467,7 @@
     "asset": {
       "__uuid__": "b10eb0d7-eb25-4a65-83e1-808eeeffa1f1"
     },
-    "fileId": "75fNdGIt5DpJXRX1iPbgzR",
+    "fileId": "",
     "sync": false
   }
 ]
