@@ -133,7 +133,6 @@ export default class BuildingManager extends BaseManager {
     savePointS:SavePoint;
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
-    goodsIndex = 0;//商品加载下标，用于多个货架展示商品
 
     clear(): void {
         Utils.clearComponentArray(this.footboards);
@@ -446,9 +445,8 @@ export default class BuildingManager extends BaseManager {
     }
     private addMartShelves(mapDataStr:string,indexPos:cc.Vec3){
         //生成货架
-        let ms = this.addBuilding(mapDataStr=='Sc'?this.martFridge:this.martShelves, indexPos).getComponent(MartShelves);
-        ms.init(mapDataStr,Logic.goodsNameList);
-        this.goodsIndex+=MartShelves.SIZE_NORMAL-1;
+        let ms = this.addBuilding(mapDataStr==MartShelves.TYPE_FRIDGE?this.martFridge:this.martShelves, indexPos).getComponent(MartShelves);
+        ms.init(mapDataStr);
     }
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {
         let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);

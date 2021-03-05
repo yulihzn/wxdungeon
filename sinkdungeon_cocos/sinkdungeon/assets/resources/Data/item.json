@@ -655,7 +655,7 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
     },
     "goods002": {
         "nameCn":"可乐",
@@ -666,7 +666,7 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
     },
     "goods003": {
         "nameCn":"可乐",
@@ -677,7 +677,7 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
     },
     "goods004": {
         "nameCn":"可乐",
@@ -688,7 +688,7 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
     },
     "goods005": {
         "nameCn":"可乐",
@@ -699,7 +699,7 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
     },
     "goods006": {
         "nameCn":"可乐",
@@ -710,7 +710,7 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
     },
     "goods007": {
         "nameCn":"可乐",
@@ -721,7 +721,7 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
     },
     "goods008": {
         "nameCn":"可乐",
@@ -732,6 +732,226 @@
         "info":"",
         "desc":"恢复生命",
         "cooldown":10,
-        "price": 4
+        "price": 20
+    },
+    "goods009": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods009",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods010": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods010",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods011": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods011",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods012": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods012",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods013": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods013",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods014": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods014",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods015": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods015",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods100": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods100",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods101": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods101",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods102": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods102",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods103": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods103",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods104": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods104",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods105": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods105",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods106": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods106",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods107": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods107",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods108": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods108",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods109": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods109",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods110": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods110",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods111": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods111",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
+    },
+    "goods112": {
+        "nameCn":"可乐",
+        "nameEn": "",
+        "resName": "goods112",
+        "canSave":1,
+        "count":1,
+        "info":"",
+        "desc":"恢复生命",
+        "cooldown":10,
+        "price": 20
     }
 }
