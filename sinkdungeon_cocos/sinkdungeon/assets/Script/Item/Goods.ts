@@ -23,7 +23,6 @@ export default class Goods extends cc.Component {
     sprite2: cc.Sprite;
     sprite3: cc.Sprite;
     data: GoodsData = new GoodsData();
-
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -51,10 +50,10 @@ export default class Goods extends cc.Component {
         this.sprite3.spriteFrame = Logic.spriteFrameRes(this.data.item.resName);
         this.label.string = `$${this.data.item.price}`;
         if (this.data.count == 2) {
-            this.sprite3.node.opacity = 0;
+            this.sprite1.node.opacity = 0;
         } else if (this.data.count == 1) {
             this.sprite2.node.opacity = 0;
-            this.sprite3.node.opacity = 0;
+            this.sprite1.node.opacity = 0;
         } else if (this.data.count <= 0) {
             this.sprite1.node.opacity = 0;
             this.sprite2.node.opacity = 0;

@@ -135,6 +135,10 @@ export default class BuildingManager extends BaseManager {
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
 
+    private shelvesFoodIndex = 0;
+    private drinkList:string[] = [];
+    private foodList:string[] = [];
+
     clear(): void {
         Utils.clearComponentArray(this.footboards);
         Utils.clearComponentArray(this.exitdoors);
@@ -146,6 +150,9 @@ export default class BuildingManager extends BaseManager {
         this.portals = new Array();
         this.doors = new Array();
         this.airExits = new Array();
+        this.drinkList = new Array();
+        this.foodList = new Array();
+        this.shelvesFoodIndex = 0;
     }
 
     private isThe(mapStr: string, typeStr: string): boolean {
@@ -376,6 +383,7 @@ export default class BuildingManager extends BaseManager {
             let mart = this.addBuilding(this.shopMart, indexPos);
             mart.zIndex+=10;
         } else if (mapDataStr == 'Sa'||mapDataStr == 'Sb'||mapDataStr == 'Sc') {
+            //生成货架
             this.addMartShelves(mapDataStr,indexPos);
         } else if (mapDataStr == 'Sd') {
             //生成收银台
@@ -446,10 +454,32 @@ export default class BuildingManager extends BaseManager {
             this.savePointS = save.getComponent(SavePoint);
         }
     }
+    private getGoodsList(type:string):string[]{
+        let prefix = 'goods';
+        for(let goods of Logic.goodsNameList){
+            let index = goods.substring(prefix.length,prefix.length+1);
+            if(index=='0'){
+                this.drinkList.push(goods);
+            }else if(index == '1'){
+                this.foodList.push(goods);
+            }
+        }
+        if(type == MartShelves.TYPE_FRIDGE){
+            return this.drinkList;
+        }else{
+            let tempfoods:string[] = [];
+            for(let i = this.shelvesFoodIndex;i< MartShelves.SIZE_NORMAL;i++){
+                if(this.shelvesFoodIndex<this.foodList.length){
+                    tempfoods.push(this.foodList[this.shelvesFoodIndex++]);
+                }
+            }
+            return tempfoods;
+        }
+    }
     private addMartShelves(mapDataStr:string,indexPos:cc.Vec3){
         //生成货架
         let ms = this.addBuilding(mapDataStr==MartShelves.TYPE_FRIDGE?this.martFridge:this.martShelves, indexPos).getComponent(MartShelves);
-        ms.init(mapDataStr);
+        ms.init(mapDataStr,this.getGoodsList(mapDataStr));
     }
     private addExitDoor(dir: number, indexPos: cc.Vec3, exits: ExitData[]) {
         let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);

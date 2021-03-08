@@ -4,6 +4,7 @@ import { EventHelper } from "../EventHelper";
 import PlayerData from "../Data/PlayerData";
 import Logic from "../Logic";
 import SettingsDialog from "./dialog/SettingsDialog";
+import MartShelvesDialog from "./dialog/MartShelvesDialog";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +36,8 @@ export default class GameHud extends cc.Component {
     pasueButton:cc.Node = null;
     @property(SettingsDialog)
     settingsDialog:SettingsDialog=null;
+    @property(MartShelvesDialog)
+    martShelvesDialog:MartShelvesDialog = null;
     @property(cc.Label)
     completeLabel:cc.Label=null;
     private isCompleteShowed = false;
@@ -56,6 +59,9 @@ export default class GameHud extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
             this.showDamageCorner();
+        })
+        cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG, (event) => {
+            this.showMartShelvesDialog(event.detail.type,event.detail.goodsNameList);
         })
         cc.director.on(EventHelper.HUD_COMPLETE_SHOW, (event) => {
             this.showComplete();
@@ -191,5 +197,12 @@ export default class GameHud extends cc.Component {
     }
     showSettingsDialog(){
         this.settingsDialog.show();
+    }
+    showMartShelvesDialog(type:string,goodsList:string[]){
+        if(!this.martShelvesDialog){
+            return;
+        }
+        this.martShelvesDialog.updateUI(type,goodsList);
+        this.martShelvesDialog.show();
     }
 }

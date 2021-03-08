@@ -1,4 +1,5 @@
 import { EventHelper } from "../EventHelper";
+import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -16,12 +17,15 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Tips extends cc.Component {
     static readonly TAROT_TABLE = "Tips.TAROT_TABLE";
+    static readonly MART_SHELVES = "Tips.MART_SHELVES";
     isUse = false;
     tipsType = '';
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        this.node.opacity = 0;
+    }
 
     start () {
 
@@ -36,6 +40,16 @@ export default class Tips extends cc.Component {
     }
     onDestroy(){
         this.isUse = false;
+    }
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        if(other.getComponent(Player)){
+            this.node.opacity = 255;
+        }
+    }
+    onCollisionExit(other: cc.Collider, self: cc.Collider) {
+        if(other.getComponent(Player)){
+            this.node.opacity = 0;
+        }
     }
     // update (dt) {}
 }

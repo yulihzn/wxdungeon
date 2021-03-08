@@ -174,9 +174,9 @@ export default class Player extends Actor {
         }
         this.lights = this.getComponentsInChildren(ShadowOfSight);
         LightManager.registerLight(this.lights);
-        this.lights[0].rayRadius = 0;
+        this.lights[0].rayRadius = 300;
         if (Logic.chapterIndex == Logic.CHAPTER099) {
-            this.lights[0].rayRadius = 0;
+            this.lights[0].rayRadius = 150;
         }
     }
     actorName(): string {

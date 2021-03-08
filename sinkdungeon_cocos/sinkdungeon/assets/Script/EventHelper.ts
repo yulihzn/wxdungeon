@@ -34,6 +34,7 @@ export class EventHelper extends cc.Component{
     public static readonly HUD_FADE_IN = 'HUD_FADE_IN';
     public static readonly HUD_FADE_OUT = 'HUD_FADE_OUT';
     public static readonly HUD_COMPLETE_SHOW = 'HUD_COMPLETE_SHOW';
+    public static readonly HUD_MART_SHELVES_DIALOG = 'HUD_MART_SHELVES_DIALOG';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static readonly DUNGEON_ADD_ITEM = 'DUNGEON_ADD_ITEM';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';

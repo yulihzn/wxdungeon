@@ -6,9 +6,11 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import GoodsData from "../Data/GoodsData";
+import { EventHelper } from "../EventHelper";
 import Goods from "../Item/Goods";
 import Logic from "../Logic";
 import Player from "../Player";
+import Tips from "../UI/Tips";
 import Building from "./Building";
 
 const { ccclass, property } = cc._decorator;
@@ -26,34 +28,50 @@ export default class MartShelves extends Building {
     layer: cc.Node = null;
     type: string = MartShelves.TYPE_NORMAL;
     goodsList: Goods[] = [];
+    goodsNameList:string [] = [];
+    tips:Tips;
+    martshelvesbg:cc.Node;
+    martshelvesside0:cc.Node;
+    martshelvesside1:cc.Node;
+    martshelvesside2:cc.Node;
+    martshelvesside3:cc.Node;
     onLoad() {
+        this.tips = this.getComponentInChildren(Tips);
+        cc.director.on(EventHelper.PLAYER_TAPTIPS
+            , (event) => {
+                if (this.node&&event.detail.tipsType == Tips.MART_SHELVES+`x=${this.data.defaultPos.x}y=${this.data.defaultPos.y}`) {
+                    EventHelper.emit(EventHelper.HUD_MART_SHELVES_DIALOG,{type:this.type,goodsNameList:this.goodsNameList})
+                }
+            });
     }
     // update (dt) {}
 
-    init(type: string) {
+    init(type: string,goodsNameList:string[]) {
+        this.goodsNameList = goodsNameList;
         this.type = type;
-        if (type == MartShelves.TYPE_WOOD) {
-            this.node.getChildByName('sprite').getChildByName('martshelves').color = cc.color().fromHEX('#DF8143');
-            this.node.getChildByName('sprite').getChildByName('martshelvesside0').color = cc.color().fromHEX('#DF8143');
-            this.node.getChildByName('sprite').getChildByName('martshelvesside1').color = cc.color().fromHEX('#DF8143');
-            this.node.getChildByName('sprite').getChildByName('martshelvesside2').color = cc.color().fromHEX('#DF8143');
-            this.node.getChildByName('sprite').getChildByName('martshelvesside3').color = cc.color().fromHEX('#DF8143');
+        if(this.tips){
+            this.tips.tipsType = Tips.MART_SHELVES+`x=${this.data.defaultPos.x}y=${this.data.defaultPos.y}`;
         }
-        let drinkList:string[] = [];
-        let foodList:string[] = [];
-        let prefix = 'goods';
-        for(let goods of Logic.goodsNameList){
-            let index = goods.substring(prefix.length,prefix.length+1);
-            if(index=='0'){
-                drinkList.push(goods);
-            }else if(index == '1'){
-                foodList.push(goods);
-            }
-        }
-        let goodsNameList: string[] = this.type==MartShelves.TYPE_FRIDGE?drinkList:foodList;
+        this.changeBg(type);
         this.addGoods(goodsNameList);
     }
+    changeBg(type:string){
+        if(!this.martshelvesbg){
+            this.martshelvesbg = this.node.getChildByName('sprite').getChildByName('martshelves');
+            this.martshelvesside0 = this.node.getChildByName('sprite').getChildByName('martshelvesside0');
+            this.martshelvesside1 = this.node.getChildByName('sprite').getChildByName('martshelvesside1');
+            this.martshelvesside2 = this.node.getChildByName('sprite').getChildByName('martshelvesside2');
+            this.martshelvesside3 = this.node.getChildByName('sprite').getChildByName('martshelvesside3');
+        }
+        let color = type == MartShelves.TYPE_WOOD?'#DF8143':'#FFFFFF';
+        this.martshelvesbg.color = cc.color().fromHEX(color);
+        this.martshelvesside0.color = cc.color().fromHEX(color);
+        this.martshelvesside1.color = cc.color().fromHEX(color);
+        this.martshelvesside2.color = cc.color().fromHEX(color);
+        this.martshelvesside3.color = cc.color().fromHEX(color);
+    }
     addGoods(goodsNameList: string[]) {
+        this.layer.removeAllChildren();
         let len = this.type == MartShelves.TYPE_FRIDGE?MartShelves.SIZE_FRIDGE:MartShelves.SIZE_NORMAL;
         for (let i = 0; i < len; i++) {
             if(i>goodsNameList.length-1){
