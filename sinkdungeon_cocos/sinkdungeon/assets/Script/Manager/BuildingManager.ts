@@ -28,6 +28,7 @@ import ShadowOfSight from "../Effect/ShadowOfSight";
 import LightManager from "./LightManager";
 import SavePoint from "../Building/SavePoint";
 import MartShelves from "../Building/MartShelves";
+import NonPlayerManager from "./NonPlayerManager";
 
 
 // Learn TypeScript:
@@ -379,6 +380,8 @@ export default class BuildingManager extends BaseManager {
         } else if (mapDataStr == 'Sd') {
             //生成收银台
             this.addBuilding(this.martCashier, indexPos);
+            let pos = Dungeon.getPosInMap(indexPos);
+            dungeon.nonPlayerManager.addNonPlayerFromData(NonPlayerManager.SHOP_KEEPER,cc.v3(pos.x-60,pos.y+180),dungeon);
         } else if (mapDataStr == 'Se') {
             //生成餐桌
             this.addBuilding(this.martTable, indexPos);

@@ -138,7 +138,7 @@ export default class TalentSkills extends Talent {
     private addShadowFighter(){
         for(let i=0;i<3;i++){
             this.player.weaponRight.meleeWeapon.dungeon.nonPlayerManager
-            .addNonPlayerFromData(NonPlayerManager.NON_SHADOW,this.player.pos,this.player.weaponRight.meleeWeapon.dungeon);
+            .addNonPlayerFromData(NonPlayerManager.NON_SHADOW,this.player.node.position,this.player.weaponRight.meleeWeapon.dungeon);
         }
     }
     private healing() {

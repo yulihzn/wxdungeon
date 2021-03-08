@@ -51,6 +51,7 @@ export default class Monster extends Actor {
 
 
     static readonly SCALE_NUM = 1.5;
+    static readonly ANIM_NONE = -1;
     static readonly ANIM_IDLE = 0;
     static readonly ANIM_WALK = 1;
     static readonly ANIM_ATTACK = 2;
@@ -112,7 +113,7 @@ export default class Monster extends Actor {
     moveTarget: cc.Vec3 = cc.v3(0, 0);
     attrmap: { [key: string]: number } = {};
     mat: cc.MaterialVariant;
-    animStatus = Monster.ANIM_IDLE;
+    animStatus = Monster.ANIM_NONE;
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);

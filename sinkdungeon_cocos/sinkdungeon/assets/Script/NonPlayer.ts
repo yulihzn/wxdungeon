@@ -41,6 +41,7 @@ export default class NonPlayer extends Actor {
     public static readonly RES_ATTACK03 = 'anim011';//图片资源 准备特殊攻击
     public static readonly RES_ATTACK04 = 'anim012';//图片资源 特殊攻击
     static readonly SCALE_NUM = 1.5;
+    static readonly ANIM_NONE = -1;
     static readonly ANIM_IDLE = 0;
     static readonly ANIM_WALK = 1;
     static readonly ANIM_ATTACK = 2;
@@ -78,7 +79,7 @@ export default class NonPlayer extends Actor {
     meleeSkill = new Skill();
     isAttackAnimExcuting = false;
     mat: cc.MaterialVariant;
-    animStatus = NonPlayer.ANIM_IDLE;
+    animStatus = NonPlayer.ANIM_NONE;
     isEnemy = false;
     isFollow = false;
 
@@ -349,7 +350,7 @@ export default class NonPlayer extends Actor {
         if (this.isMoving && !this.isAttackAnimExcuting && this.data.isHeavy < 1) {
             this.isFaceRight = h >= 0;
         }
-        this.playAnim(this.isMoving ? NonPlayer.ANIM_WALK : NonPlayer.ANIM_IDLE)
+        this.playAnim(this.isMoving&&speed>0 ? NonPlayer.ANIM_WALK : NonPlayer.ANIM_IDLE)
         this.changeZIndex();
     }
 
@@ -586,7 +587,7 @@ export default class NonPlayer extends Actor {
             pos = this.getPlayerPosition(this.dungeon);
         }
         pos = pos.sub(this.node.position);
-        if (!this.isAttackAnimExcuting && !this.isAttackAnimExcuting) {
+        if (!this.isAttackAnimExcuting && !this.isAttackAnimExcuting && this.data.isHeavy<1) {
             this.changeFaceRight();
         }
         return pos;
@@ -624,7 +625,7 @@ export default class NonPlayer extends Actor {
         if (this.isDied) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.isDied&&this.data.currentHealth<999;
         if (this.data.currentHealth < 1) {
             this.killed();
         }

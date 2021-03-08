@@ -59,6 +59,8 @@ export default class PickAvatar extends cc.Component {
     randomLabelSkillName: cc.Label = null;
     @property(cc.Label)
     randomLabelSkillDesc: cc.Label = null;
+    @property(cc.Node)
+    randomButton:cc.Node = null;
     @property(cc.Prefab)
     selectorPrefab: cc.Prefab = null;
     @property(cc.Prefab)
@@ -100,6 +102,9 @@ export default class PickAvatar extends cc.Component {
     private faceColorSelector: PaletteSelector;
     private data: AvatarData;
 
+    private randomTouched = false;
+    private isShow = false;
+
     onLoad() {
         this.data = new AvatarData();
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable, ['bed']);
@@ -131,6 +136,17 @@ export default class PickAvatar extends cc.Component {
         this.loadTalents();
         this.loadItems();
         this.attributeLayout.active = false;
+        this.randomButton.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            this.randomTouched = true;
+        }, this)
+
+        this.randomButton.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            this.randomTouched = false;
+        }, this)
+
+        this.randomButton.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            this.randomTouched = false;
+        }, this)
     }
     private getSpriteChildSprite(node: cc.Node, childNames: string[]): cc.Sprite {
         for (let name of childNames) {
@@ -234,6 +250,7 @@ export default class PickAvatar extends cc.Component {
         })
     }
     show() {
+        this.isShow = true;
         this.loadingBackground.active = false;
         //组织
         let organList = new Array();
@@ -420,8 +437,21 @@ export default class PickAvatar extends cc.Component {
             this.isTalentsLoaded = false;
             this.show();
         }
+        if(this.isShow){
+            if(this.isTimeDelay(dt)&&this.randomTouched){
+                this.ButtonRandom();
+            }
+        }
     }
-
+    private delayTime = 0;
+    private isTimeDelay(dt: number): boolean {
+        this.delayTime += dt;
+        if (this.delayTime > 0.1) {
+            this.delayTime = 0;
+            return true;
+        }
+        return false;
+    }
     ButtonSwitch() {
         if (this.loadingBackground.active) {
             return;

@@ -20,6 +20,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NonPlayerManager extends BaseManager {
     public static readonly NON_SHADOW = 'nonplayer001';
+    public static readonly SHOP_KEEPER = 'nonplayer002';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -36,13 +37,13 @@ export default class NonPlayerManager extends BaseManager {
         Utils.clearComponentArray(this.nonplayers);
     }
     /**添加npc */
-    public addNonPlayerFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon) {
-        this.addNonPlayer(this.getNonPlayer(resName, dungeon), indexPos);
+    public addNonPlayerFromData(resName: string, pos: cc.Vec3, dungeon: Dungeon) {
+        this.addNonPlayer(this.getNonPlayer(resName, dungeon), pos);
     }
 
     public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         if (mapDataStr == 'N0') {
-            this.addNonPlayerFromData(NonPlayerManager.NON_SHADOW, indexPos, dungeon);
+            this.addNonPlayerFromData(NonPlayerManager.NON_SHADOW, Dungeon.getPosInMap(indexPos), dungeon);
         }
     }
     private getNonPlayer(resName: string, dungeon: Dungeon): NonPlayer {
@@ -61,8 +62,8 @@ export default class NonPlayerManager extends BaseManager {
     private addNonPlayer(nonPlayer: NonPlayer, pos: cc.Vec3) {
         //激活
         nonPlayer.node.active = true;
-        nonPlayer.pos = pos;
-        nonPlayer.node.position = Dungeon.getPosInMap(pos);
+        nonPlayer.pos = Dungeon.getIndexInMap(pos);
+        nonPlayer.node.position = pos;
         this.nonPlayerList.push(nonPlayer);
     }
 

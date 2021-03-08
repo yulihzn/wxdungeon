@@ -2101,6 +2101,19 @@
             <key type="filename">nonplayer/nonplayer001anim010.png</key>
             <key type="filename">nonplayer/nonplayer001anim011.png</key>
             <key type="filename">nonplayer/nonplayer001anim012.png</key>
+            <key type="filename">nonplayer/nonplayer002anim000.png</key>
+            <key type="filename">nonplayer/nonplayer002anim001.png</key>
+            <key type="filename">nonplayer/nonplayer002anim002.png</key>
+            <key type="filename">nonplayer/nonplayer002anim003.png</key>
+            <key type="filename">nonplayer/nonplayer002anim004.png</key>
+            <key type="filename">nonplayer/nonplayer002anim005.png</key>
+            <key type="filename">nonplayer/nonplayer002anim006.png</key>
+            <key type="filename">nonplayer/nonplayer002anim007.png</key>
+            <key type="filename">nonplayer/nonplayer002anim008.png</key>
+            <key type="filename">nonplayer/nonplayer002anim009.png</key>
+            <key type="filename">nonplayer/nonplayer002anim010.png</key>
+            <key type="filename">nonplayer/nonplayer002anim011.png</key>
+            <key type="filename">nonplayer/nonplayer002anim012.png</key>
             <key type="filename">talents/dashshadow.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
