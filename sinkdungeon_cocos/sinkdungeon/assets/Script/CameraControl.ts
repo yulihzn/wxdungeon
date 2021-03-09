@@ -36,6 +36,16 @@ export default class CameraControl extends cc.Component {
         cc.director.on(EventHelper.CAMERA_LOOK, (event) => {
             this.followPlayer(true);
         })
+        cc.director.on(EventHelper.HUD_CAMERA_ZOOM_IN, (event) => {
+            if(this.dungeon){
+                this.dungeon.CameraZoom = 5;
+            }
+        })
+        cc.director.on(EventHelper.HUD_CAMERA_ZOOM_OUT, (event) => {
+            if(this.dungeon){
+                this.dungeon.CameraZoom = 1;
+            }
+        })
     }
     onEnable() {
         // cc.director.getPhysicsManager().attachDebugDrawToCamera(this.camera);

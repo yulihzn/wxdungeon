@@ -114,24 +114,15 @@ export default class Item extends cc.Component {
             AudioPlayer.play(AudioPlayer.PICK_ITEM);
         }
         switch (data.resName) {
-            case Item.HEART: player.addStatus(StatusManager.HEALING, from); break;
-            case Item.BOTTLE_HEALING: player.addStatus(StatusManager.BOTTLE_HEALING, from); break;
-            case Item.BOTTLE_MOVESPEED: player.addStatus(StatusManager.FASTMOVE, from); break;
-            case Item.BOTTLE_ATTACKSPEED: player.addStatus(StatusManager.FASTATTACK, from); break;
-            case Item.BOTTLE_REMOTE: player.addStatus(StatusManager.BOTTLE_REMOTE, from); break;
-            case Item.REDCAPSULE: player.addStatus(StatusManager.FASTATTACK, from); break;
-            case Item.BLUECAPSULE: player.addStatus(StatusManager.FASTMOVE, from); break;
-            case Item.SHIELD: player.addStatus(StatusManager.PERFECTDEFENCE, from); break;
-            case Item.GOLDAPPLE: player.addStatus(StatusManager.GOLDAPPLE, from); break;
             case Item.GOLDFINGER: player.stopAllStatus(); break;
         }
-        if(data.resName.indexOf('food') != -1){
-            if(data.resName.indexOf('boss') != -1){
-                player.addStatus(StatusManager.BOTTLE_HEALING, from);
-            }else{
-                player.addStatus(StatusManager.HEALING, from);
+        if(data.statusList.length>0){
+            let arr = data.statusList.split(',');
+            for(let status of arr){
+                player.addStatus(status, from);
             }
         }
+        
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);

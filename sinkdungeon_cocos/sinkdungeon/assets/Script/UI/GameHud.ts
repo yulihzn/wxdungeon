@@ -34,6 +34,8 @@ export default class GameHud extends cc.Component {
     damageCorner:cc.Node = null;
     @property(cc.Node)
     pasueButton:cc.Node = null;
+    @property(cc.Node)
+    zoomButton:cc.Node = null;
     @property(SettingsDialog)
     settingsDialog:SettingsDialog=null;
     @property(MartShelvesDialog)
@@ -85,6 +87,15 @@ export default class GameHud extends cc.Component {
         }
         this.pasueButton.on(cc.Node.EventType.TOUCH_START, (event:cc.Event.EventTouch)=>{
             this.pauseGame();
+        });
+        this.zoomButton.on(cc.Node.EventType.TOUCH_START, (event:cc.Event.EventTouch)=>{
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN,{});
+        });
+        this.zoomButton.on(cc.Node.EventType.TOUCH_END, (event:cc.Event.EventTouch)=>{
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT,{});
+        });
+        this.zoomButton.on(cc.Node.EventType.TOUCH_CANCEL, (event:cc.Event.EventTouch)=>{
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT,{});
         });
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
         this.fadeIn();

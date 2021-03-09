@@ -5,8 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import MartShelves from "../../Building/MartShelves";
 import GoodsData from "../../Data/GoodsData";
+import { EventHelper } from "../../EventHelper";
 import Goods from "../../Item/Goods";
 import Logic from "../../Logic";
 import BaseDialog from "./BaseDialog";
@@ -35,6 +35,14 @@ export default class MartShelvesDialog extends BaseDialog {
     doorLeft:cc.Node = null;
     @property(cc.Node)
     doorRight:cc.Node = null;
+    @property(cc.Node)
+    payNode:cc.Node = null;
+    @property(cc.Label)
+    payTitle:cc.Label = null;
+    @property(cc.Label)
+    payDesc:cc.Label = null;
+    @property(cc.Sprite)
+    payIcon:cc.Sprite = null;
     type: string = MartShelvesDialog.TYPE_NORMAL;
     goodsList: Goods[] = [];
     martshelvesbg:cc.Node;
@@ -46,6 +54,26 @@ export default class MartShelvesDialog extends BaseDialog {
     onLoad() {
         this.fridgeNode.active =false;
         this.spriteNode.active = false;
+        this.payNode.active = false;
+        cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG_PAY, (event) => {
+            this.showPay(event.detail.data);
+        })
+    }
+    showPay(data:GoodsData){
+        this.payTitle.string = `${data.item.nameCn}`;
+        this.payDesc.string = `价格：${data.item.price}\n说明：${data.item.desc}`
+        if(Logic.spriteFrameRes(data.item.resName)){
+            this.payIcon.spriteFrame = Logic.spriteFrameRes(data.item.resName);
+        }
+        this.payNode.active = true;
+    }
+    //button
+    Pay(){
+        this.payNode.active = false;
+    }
+    //button
+    Cancel(){
+        this.payNode.active = false;
     }
     // update (dt) {}
 
@@ -108,6 +136,10 @@ export default class MartShelvesDialog extends BaseDialog {
         }
     }
     close(){
+        this.fridgeNode.active =false;
+        this.spriteNode.active = false;
+        this.payNode.active = false;
         this.dismiss();
     }
 }
+

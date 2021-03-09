@@ -4,7 +4,7 @@
         "nameEn": "empty",
         "resName": "emptyitem",
         "info":"",
-        "desc":"？恢复生命？",
+        "desc":"空空如也",
         "count":-1,
         "price": 0
     },
@@ -12,22 +12,15 @@
         "nameCn": "红心",
         "nameEn": "heart",
         "resName": "heart",
+        "statusList":"status011",
         "price": 20
-    },
-    "ammo": {
-        "nameCn": "子弹",
-        "nameEn": "ammo",
-        "resName": "ammo",
-        "info":"",
-        "desc":"？恢复生命？",
-        "price": 30
     },
     "redcapsule": {
         "nameCn": "红色攻击药丸",
         "nameEn": "red capsule",
         "resName": "redcapsule",
         "info":"",
-        "desc":"？恢复生命？",
+        "statusList":"status009",
         "price": 10
     },
     "bluecapsule": {
@@ -35,14 +28,15 @@
         "nameEn": "blue capsule",
         "resName": "bluecapsule",
         "info":"",
-        "desc":"？恢复生命？",
+        "statusList":"status008",
         "price": 10
     },
     "bottle001": {
         "nameCn": "回复瓶",
-        "nameEn": "attack speed bottle",
+        "nameEn": "healing bottle",
         "resName": "bottle001",
         "canSave":1,
+        "statusList":"status017",
         "info":"回复3点生命",
         "desc":"像油湖水一样的诡异绿色，感受到一丝生命力",
         "price": 30
@@ -52,6 +46,7 @@
         "nameEn": "move speed bottle",
         "resName": "bottle002",
         "canSave":1,
+        "statusList":"status008",
         "info":"移动速度加200",
         "desc":"脚步轻盈",
         "price": 20
@@ -62,6 +57,7 @@
         "resName": "bottle003",
         "canSave":1,
         "info":"攻击力+5",
+        "statusList":"status007",
         "desc":"神欲使之灭亡,必先使之疯狂",
         "price": 30
     },
@@ -70,6 +66,7 @@
         "nameEn": "hide bottle",
         "resName": "bottle004",
         "canSave":1,
+        "statusList":"status030",
         "info":"15秒内远程攻击+2",
         "desc":"疯狂射击",
         "price": 30
@@ -104,6 +101,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -115,6 +113,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -126,6 +125,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -137,6 +137,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -148,6 +149,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -159,6 +161,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -170,6 +173,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -181,6 +185,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -192,6 +197,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -203,6 +209,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -214,6 +221,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -225,6 +233,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -236,6 +245,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -247,6 +257,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -258,6 +269,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -269,6 +281,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -280,6 +293,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -291,6 +305,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -302,6 +317,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -313,6 +329,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -324,6 +341,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -335,6 +353,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -346,6 +365,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -357,6 +377,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -368,6 +389,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -379,6 +401,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -390,6 +413,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -401,6 +425,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -412,6 +437,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -423,6 +449,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -434,6 +461,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -445,6 +473,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -456,6 +485,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -467,6 +497,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -478,6 +509,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -489,6 +521,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -500,6 +533,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -511,6 +545,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -522,6 +557,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status011",
         "cooldown":10,
         "price": 30
     },
@@ -533,6 +569,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -544,6 +581,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -555,6 +593,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -566,6 +605,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -577,6 +617,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -588,6 +629,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -599,6 +641,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -610,6 +653,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -621,6 +665,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -632,6 +677,7 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
@@ -643,315 +689,344 @@
         "count":1,
         "info":"",
         "desc":"？恢复生命？",
+        "statusList":"status017",
         "cooldown":10,
         "price": 30
     },
     "goods001": {
-        "nameCn":"可乐",
+        "nameCn":"加糖可乐",
         "nameEn": "",
         "resName": "goods001",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"最美妙的饮料，恢复少许生命，感觉更有劲了",
+        "statusList":"status011,status007",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods002": {
-        "nameCn":"可乐",
+        "nameCn":"冰红茶",
         "nameEn": "",
         "resName": "goods002",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods003": {
-        "nameCn":"可乐",
+        "nameCn":"超冰雪碧",
         "nameEn": "",
         "resName": "goods003",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命，透心凉",
+        "statusList":"status011,status001",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods004": {
-        "nameCn":"可乐",
+        "nameCn":"超苦乌龙茶",
         "nameEn": "",
         "resName": "goods004",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods005": {
-        "nameCn":"可乐",
+        "nameCn":"苏打水",
         "nameEn": "",
         "resName": "goods005",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods006": {
-        "nameCn":"可乐",
+        "nameCn":"气泡水",
         "nameEn": "",
         "resName": "goods006",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods007": {
-        "nameCn":"可乐",
+        "nameCn":"橙子味汽水",
         "nameEn": "",
         "resName": "goods007",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods008": {
-        "nameCn":"可乐",
+        "nameCn":"无糖可乐",
         "nameEn": "",
         "resName": "goods008",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命，失去灵魂的版本",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods009": {
-        "nameCn":"可乐",
+        "nameCn":"红蓝可乐",
         "nameEn": "",
         "resName": "goods009",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命，有一股中药味",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods010": {
-        "nameCn":"可乐",
+        "nameCn":"加糖凉茶",
         "nameEn": "",
         "resName": "goods010",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods011": {
-        "nameCn":"可乐",
+        "nameCn":"清新绿茶",
         "nameEn": "",
         "resName": "goods011",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods012": {
-        "nameCn":"可乐",
+        "nameCn":"纯净水",
         "nameEn": "",
         "resName": "goods012",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
         "price": 20
     },
     "goods013": {
-        "nameCn":"可乐",
+        "nameCn":"矿泉水",
         "nameEn": "",
         "resName": "goods013",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
         "price": 20
     },
     "goods014": {
-        "nameCn":"可乐",
+        "nameCn":"椰汁",
         "nameEn": "",
         "resName": "goods014",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods015": {
-        "nameCn":"可乐",
+        "nameCn":"啤酒",
         "nameEn": "",
         "resName": "goods015",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命，但是喝完会感觉晕",
+        "statusList":"status005",
         "cooldown":10,
-        "price": 20
+        "price": 30
     },
     "goods100": {
-        "nameCn":"可乐",
+        "nameCn":"牛肉泡面",
         "nameEn": "",
         "resName": "goods100",
         "canSave":1,
         "count":1,
         "info":"",
         "desc":"恢复生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods101": {
-        "nameCn":"可乐",
+        "nameCn":"麻辣泡面",
         "nameEn": "",
         "resName": "goods101",
         "canSave":1,
         "count":1,
         "info":"",
         "desc":"恢复生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods102": {
-        "nameCn":"可乐",
+        "nameCn":"香菇泡面",
         "nameEn": "",
         "resName": "goods102",
         "canSave":1,
         "count":1,
         "info":"",
         "desc":"恢复生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods103": {
-        "nameCn":"可乐",
+        "nameCn":"酸菜泡面",
         "nameEn": "",
         "resName": "goods103",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods104": {
-        "nameCn":"可乐",
+        "nameCn":"黄瓜味薯片",
         "nameEn": "",
         "resName": "goods104",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011,status011",
         "cooldown":10,
-        "price": 20
+        "price": 40
     },
     "goods105": {
-        "nameCn":"可乐",
+        "nameCn":"原味薯片",
         "nameEn": "",
         "resName": "goods105",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011,status011",
         "cooldown":10,
-        "price": 20
+        "price": 40
     },
     "goods106": {
-        "nameCn":"可乐",
+        "nameCn":"牛肉味薯片",
         "nameEn": "",
         "resName": "goods106",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011,status011",
         "cooldown":10,
-        "price": 20
+        "price": 40
     },
     "goods107": {
-        "nameCn":"可乐",
+        "nameCn":"饭团",
         "nameEn": "",
         "resName": "goods107",
         "canSave":1,
         "count":1,
         "info":"",
         "desc":"恢复生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods108": {
-        "nameCn":"可乐",
+        "nameCn":"三明治",
         "nameEn": "",
         "resName": "goods108",
         "canSave":1,
         "count":1,
         "info":"",
         "desc":"恢复生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods109": {
-        "nameCn":"可乐",
+        "nameCn":"寿司",
         "nameEn": "",
         "resName": "goods109",
         "canSave":1,
         "count":1,
         "info":"",
         "desc":"恢复生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods110": {
-        "nameCn":"可乐",
+        "nameCn":"牛肉拌面",
         "nameEn": "",
         "resName": "goods110",
         "canSave":1,
         "count":1,
         "info":"",
         "desc":"恢复生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     },
     "goods111": {
-        "nameCn":"可乐",
+        "nameCn":"夹心饼干",
         "nameEn": "",
         "resName": "goods111",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status011,status011",
         "cooldown":10,
-        "price": 20
+        "price": 40
     },
     "goods112": {
-        "nameCn":"可乐",
+        "nameCn":"巧克力棒",
         "nameEn": "",
         "resName": "goods112",
         "canSave":1,
         "count":1,
         "info":"",
-        "desc":"恢复生命",
+        "desc":"恢复少许生命",
+        "statusList":"status017",
         "cooldown":10,
-        "price": 20
+        "price": 60
     }
 }

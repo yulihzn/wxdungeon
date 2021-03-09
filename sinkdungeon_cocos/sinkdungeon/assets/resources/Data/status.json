@@ -72,7 +72,7 @@
         "spriteFrameName": "iconattack",
         "statusType": 7,
         "desc": "",
-        "duration": 120,
+        "duration": 60,
         "common": {
             "damageMin": 5
         }

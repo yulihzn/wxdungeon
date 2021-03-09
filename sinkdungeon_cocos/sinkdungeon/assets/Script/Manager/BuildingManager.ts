@@ -455,18 +455,21 @@ export default class BuildingManager extends BaseManager {
         }
     }
     private getGoodsList(type:string):string[]{
-        let prefix = 'goods';
-        for(let goods of Logic.goodsNameList){
-            let index = goods.substring(prefix.length,prefix.length+1);
-            if(index=='0'){
-                this.drinkList.push(goods);
-            }else if(index == '1'){
-                this.foodList.push(goods);
+        if(this.foodList.length<1&&this.drinkList.length<1){
+            let prefix = 'goods';
+            for(let goods of Logic.goodsNameList){
+                let index = goods.substring(prefix.length,prefix.length+1);
+                if(index=='0'){
+                    this.drinkList.push(goods);
+                }else if(index == '1'){
+                    this.foodList.push(goods);
+                }
             }
         }
         if(type == MartShelves.TYPE_FRIDGE){
             return this.drinkList;
         }else{
+            this.shelvesFoodIndex = 0;
             let tempfoods:string[] = [];
             for(let i = this.shelvesFoodIndex;i< MartShelves.SIZE_NORMAL;i++){
                 if(this.shelvesFoodIndex<this.foodList.length){
