@@ -9,6 +9,7 @@ import GoodsData from "../../Data/GoodsData";
 import { EventHelper } from "../../EventHelper";
 import Goods from "../../Item/Goods";
 import Logic from "../../Logic";
+import AudioPlayer from "../../Utils/AudioPlayer";
 import BaseDialog from "./BaseDialog";
 
 
@@ -51,6 +52,7 @@ export default class MartShelvesDialog extends BaseDialog {
     martshelvesside2:cc.Node;
     martshelvesside3:cc.Node;
     anim:cc.Animation;
+    goodsData:GoodsData;
     onLoad() {
         this.fridgeNode.active =false;
         this.spriteNode.active = false;
@@ -60,8 +62,9 @@ export default class MartShelvesDialog extends BaseDialog {
         })
     }
     showPay(data:GoodsData){
+        this.goodsData = data;
         this.payTitle.string = `${data.item.nameCn}`;
-        this.payDesc.string = `价格：${data.item.price}\n说明：${data.item.desc}`
+        this.payDesc.string = `价格：${data.item.price}\n\n说明：${data.item.desc}`
         if(Logic.spriteFrameRes(data.item.resName)){
             this.payIcon.spriteFrame = Logic.spriteFrameRes(data.item.resName);
         }
@@ -69,7 +72,12 @@ export default class MartShelvesDialog extends BaseDialog {
     }
     //button
     Pay(){
-        this.payNode.active = false;
+        if (Logic.coins >= this.goodsData.item.price) {
+            cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.goodsData.item.price } });
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
+            this.payNode.active = false;
+            cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.goodsData.item } })
+        }
     }
     //button
     Cancel(){
