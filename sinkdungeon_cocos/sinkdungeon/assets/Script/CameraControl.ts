@@ -38,7 +38,7 @@ export default class CameraControl extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_CAMERA_ZOOM_IN, (event) => {
             if(this.dungeon){
-                this.dungeon.CameraZoom = 5;
+                this.dungeon.CameraZoom = 4;
             }
         })
         cc.director.on(EventHelper.HUD_CAMERA_ZOOM_OUT, (event) => {

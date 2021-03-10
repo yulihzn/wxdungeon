@@ -65,7 +65,9 @@ export default class MartShelves extends Building {
         }
         let color = type == MartShelves.TYPE_WOOD?'#DF8143':'#FFFFFF';
         this.martshelvesbg.color = cc.color().fromHEX(color);
-        this.martshelvesside0.color = cc.color().fromHEX(color);
+        if(type != MartShelves.TYPE_FRIDGE){
+            this.martshelvesside0.color = cc.color().fromHEX(color);
+        }
         this.martshelvesside1.color = cc.color().fromHEX(color);
         this.martshelvesside2.color = cc.color().fromHEX(color);
         this.martshelvesside3.color = cc.color().fromHEX(color);

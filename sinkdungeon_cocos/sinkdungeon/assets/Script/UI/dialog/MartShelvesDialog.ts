@@ -64,9 +64,11 @@ export default class MartShelvesDialog extends BaseDialog {
     showPay(data:GoodsData){
         this.goodsData = data;
         this.payTitle.string = `${data.item.nameCn}`;
-        this.payDesc.string = `价格：${data.item.price}\n\n说明：${data.item.desc}`
+        this.payDesc.string = `价格：${data.item.price}\n\n说明：${data.item.info}\n${data.item.desc}`
         if(Logic.spriteFrameRes(data.item.resName)){
             this.payIcon.spriteFrame = Logic.spriteFrameRes(data.item.resName);
+            this.payIcon.node.width = this.payIcon.spriteFrame.getRect().width;
+            this.payIcon.node.height = this.payIcon.spriteFrame.getRect().height;
         }
         this.payNode.active = true;
     }
@@ -75,8 +77,8 @@ export default class MartShelvesDialog extends BaseDialog {
         if (Logic.coins >= this.goodsData.item.price) {
             cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.goodsData.item.price } });
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
-            this.payNode.active = false;
             cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.goodsData.item } })
+            this.close();
         }
     }
     //button
@@ -86,6 +88,9 @@ export default class MartShelvesDialog extends BaseDialog {
     // update (dt) {}
 
     updateUI(type: string,goodsNameList:string[]) {
+        this.payNode.active = false;
+        this.spriteNode.active = false;
+        this.fridgeNode.active = false;
         this.type = type;
         this.changeBg(type);
         this.addGoods(type,goodsNameList);
@@ -100,13 +105,11 @@ export default class MartShelvesDialog extends BaseDialog {
         }
         let isFridge = type == MartShelvesDialog.TYPE_FRIDGE;
         if(isFridge){
-            this.spriteNode.active = false;
             this.fridgeNode.active = true;
             this.doorLeft.scaleX = 1;
             this.doorRight.scaleX = 1;
         }else{
             this.spriteNode.active = true;
-            this.fridgeNode.active = false;
         }
         let color = type == MartShelvesDialog.TYPE_WOOD?'#DF8143':'#FFFFFF';
         this.martshelvesbg.color = cc.color().fromHEX(color);
