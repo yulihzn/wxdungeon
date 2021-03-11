@@ -453,6 +453,7 @@
             <key type="filename">hud/icondefencestatus006.png</key>
             <key type="filename">hud/icondodge.png</key>
             <key type="filename">hud/icondrain.png</key>
+            <key type="filename">hud/icondream.png</key>
             <key type="filename">hud/iconhealth.png</key>
             <key type="filename">hud/iconhealthrecovery.png</key>
             <key type="filename">hud/iconmovespeed.png</key>

@@ -19,13 +19,15 @@ import Shield from "../Shield";
 
 export default class PlayerData {
     static DEFAULT_HEALTH = 10;
-    static DefAULT_SPEED = 300;
-    static DefAULT_ATTACK = 1;
-    static DefAULT_BACK_ATTACK = 0;
+    static DEFAULT_SPEED = 300;
+    static DEFAULT_ATTACK = 1;
+    static DEFAULT_BACK_ATTACK = 0;
+    static DEFAULT_DREAM = 5;
     name: string = '';
     pos: cc.Vec3 = cc.v3(5, 5);
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH;
+    currentDream:number = PlayerData.DEFAULT_DREAM;
 
     private common: CommonData;
     private equipmentTotalData: EquipmentData;
@@ -38,9 +40,10 @@ export default class PlayerData {
         this.avatarData = new AvatarData();
         this.common = new CommonData();
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
-        this.common.moveSpeed = PlayerData.DefAULT_SPEED;
-        this.common.damageMin = PlayerData.DefAULT_ATTACK;
-        this.common.damageBack = PlayerData.DefAULT_BACK_ATTACK;
+        this.common.moveSpeed = PlayerData.DEFAULT_SPEED;
+        this.common.damageMin = PlayerData.DEFAULT_ATTACK;
+        this.common.damageBack = PlayerData.DEFAULT_BACK_ATTACK;
+        this.common.maxDream = PlayerData.DEFAULT_DREAM;
     }
     get EquipmentTotalData() {
         return this.equipmentTotalData;
@@ -71,8 +74,9 @@ export default class PlayerData {
         this.statusTotalData.valueCopy(data.statusTotalData);
         this.avatarData.valueCopy(data.avatarData);
         this.currentHealth = data.currentHealth ? data.currentHealth : PlayerData.DEFAULT_HEALTH;
+        this.currentDream = data.currentDream ? data.currentDream : PlayerData.DEFAULT_DREAM;
         this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : PlayerData.DEFAULT_HEALTH;
-        this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 300;
+        this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : PlayerData.DEFAULT_SPEED;
     }
 
     public clone(): PlayerData {
@@ -81,6 +85,7 @@ export default class PlayerData {
         e.pos = this.pos;
         e.name = this.name;
         e.currentHealth = this.currentHealth;
+        e.currentDream = this.currentDream;
         e.equipmentTotalData = this.equipmentTotalData;
         e.statusTotalData = this.statusTotalData;
         e.avatarData = this.avatarData;
@@ -170,8 +175,8 @@ export default class PlayerData {
     public getMoveSpeed(): number {
         let data = this.FinalCommon;
         let speed = data.moveSpeed;
-        if (speed > PlayerData.DefAULT_SPEED * 2) { speed = PlayerData.DefAULT_SPEED * 2 }
-        if (speed < -PlayerData.DefAULT_SPEED * 2) { speed = -PlayerData.DefAULT_SPEED * 2; }
+        if (speed > PlayerData.DEFAULT_SPEED * 2) { speed = PlayerData.DEFAULT_SPEED * 2 }
+        if (speed < -PlayerData.DEFAULT_SPEED * 2) { speed = -PlayerData.DEFAULT_SPEED * 2; }
         return speed;
     }
 
@@ -186,6 +191,19 @@ export default class PlayerData {
             return cc.v3(1, 1);
         }
         return cc.v3(maxHealth * rate, maxHealth);
+    }
+    
+    //梦境值
+    public getDream(): cc.Vec3 {
+        let data = this.FinalCommon;
+        let rate = 1;
+        let maxDream = data.maxDream;
+        if (maxDream > 0) {
+            rate = this.currentDream / maxDream;
+        } else {
+            return cc.v3(1, 1);
+        }
+        return cc.v3(maxDream * rate, maxDream);
     }
 
 }

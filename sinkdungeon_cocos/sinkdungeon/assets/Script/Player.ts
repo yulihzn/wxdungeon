@@ -319,7 +319,9 @@ export default class Player extends Actor {
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
         let health = this.data.getHealth();
-        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
+        let dream = this.data.getDream();
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
     }
     private updateEquipment(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
         sprite.spriteFrame = spriteFrame;
@@ -596,7 +598,9 @@ export default class Player extends Actor {
         }
         this.changeZIndex(this.pos);
         let health = this.data.getHealth();
-        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
+        let dream = this.data.getDream();
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
     }
     fall() {
         if (this.isFall || this.isJumping) {
@@ -662,11 +666,13 @@ export default class Player extends Actor {
         // }
         dd = isDodge ? new DamageData() : dd;
         let health = this.data.getHealth();
+        let dream = this.data.getDream();
         health.x -= dd.getTotalDamage();
         if (health.x > health.y) {
             health.x = health.y;
         }
-        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { detail: { x: health.x, y: health.y } });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
         this.data.currentHealth = health.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false);
         if (this.data.currentHealth <= 0) {

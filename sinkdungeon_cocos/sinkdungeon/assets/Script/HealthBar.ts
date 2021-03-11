@@ -12,11 +12,13 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class HealthBar extends cc.Component {
-
+    static readonly ICON_SIZE = 17;
     @property(cc.Node)
     backbar: cc.Node = null;
     @property(cc.Label)
     label:cc.Label = null;
+    @property
+    isPlayer = false;
 
     progressBar:cc.ProgressBar;
     private timeDelay = 0;
@@ -32,6 +34,10 @@ export default class HealthBar extends cc.Component {
     }
     refreshHealth(currentHealth:number,maxHealth:number): void {
         if(this.progressBar){
+            if(this.isPlayer){
+                this.progressBar.totalLength = maxHealth*HealthBar.ICON_SIZE;
+                this.node.width = this.progressBar.totalLength;
+            }
             this.progressBar.progress = currentHealth/maxHealth;
             if(this.label){
                 this.label.string=`${parseFloat(currentHealth.toFixed(1))}/${maxHealth}`;

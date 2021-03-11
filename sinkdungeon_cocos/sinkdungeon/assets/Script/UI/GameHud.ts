@@ -23,6 +23,8 @@ export default class GameHud extends cc.Component {
     @property(HealthBar)
     healthBar: HealthBar = null;
     @property(HealthBar)
+    dreamBar:HealthBar = null;
+    @property(HealthBar)
     bossHealthBar: HealthBar = null;
     @property(PlayerInfoDialog)
     playerInfoDialog: PlayerInfoDialog = null;
@@ -58,6 +60,9 @@ export default class GameHud extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, (event) => {
             this.healthBarUpdate(event.detail.x, event.detail.y);
+        })
+        cc.director.on(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, (event) => {
+            this.dreamBarUpdate(event.detail.x, event.detail.y);
         })
         cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
             this.showDamageCorner();
@@ -98,6 +103,7 @@ export default class GameHud extends cc.Component {
             EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT,{});
         });
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
+        this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream().y);
         this.fadeIn();
     }
     private showComplete(){
@@ -148,6 +154,11 @@ export default class GameHud extends cc.Component {
     private healthBarUpdate(currentHealth, maxHealth): void {
         if (this.healthBar) {
             this.healthBar.refreshHealth(currentHealth, maxHealth);
+        }
+    }
+    private dreamBarUpdate(currentHealth, maxHealth): void {
+        if (this.dreamBar) {
+            this.dreamBar.refreshHealth(currentHealth, maxHealth);
         }
     }
     start() {

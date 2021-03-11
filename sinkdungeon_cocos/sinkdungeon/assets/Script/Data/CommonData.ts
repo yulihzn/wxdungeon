@@ -11,6 +11,7 @@
 /**通用数据类 player monster boss item status 通用部分 */
 export default class CommonData {
     maxHealth: number = 0;//最大生命
+    maxDream: number = 0;//最大梦境值
     damageMin: number = 0;//最小攻击
     damageMax: number = 0;//最大攻击
     damageBack: number = 0;//背面额外攻击伤害
@@ -42,6 +43,7 @@ export default class CommonData {
             return;
         }
         this.maxHealth = data.maxHealth ? data.maxHealth : 0;
+        this.maxDream = data.maxDream ? data.maxDream : 0;
         this.damageMin = data.damageMin ? data.damageMin : 0;
         this.damageMax = data.damageMax ? data.damageMax : 0;
         this.remoteDamage = data.remoteDamage ? data.remoteDamage : 0;
@@ -70,6 +72,7 @@ export default class CommonData {
     public clone(): CommonData {
         let e = new CommonData();
         e.maxHealth = this.maxHealth;
+        e.maxDream = this.maxDream;
         e.damageMin = this.damageMin;
         e.damageMax = this.damageMax;
         e.criticalStrikeRate = this.criticalStrikeRate;
@@ -98,6 +101,7 @@ export default class CommonData {
     /**相加 */
     public add(data: CommonData): CommonData {
         this.maxHealth += data.maxHealth ? data.maxHealth : 0;
+        this.maxDream += data.maxDream ? data.maxDream : 0;
         this.damageMin += data.damageMin ? data.damageMin : 0;
         this.damageMax += data.damageMax ? data.damageMax : 0;
         this.remoteDamage += data.remoteDamage ? data.remoteDamage : 0;

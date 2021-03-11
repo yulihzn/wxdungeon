@@ -25,6 +25,7 @@ export default class PlayerInfoDialog extends cc.Component {
     attackSpeed: cc.Label = null;
     dodge: cc.Label = null;
     health: cc.Label = null;
+    dream: cc.Label = null;
     realDamage: cc.Label = null;
     realRate: cc.Label = null
     magicDamage:cc.Label = null;
@@ -53,6 +54,7 @@ export default class PlayerInfoDialog extends cc.Component {
         this.attackSpeed = this.node.getChildByName('layout').getChildByName('attackSpeed').getChildByName('label').getComponent(cc.Label);
         this.dodge = this.node.getChildByName('layout').getChildByName('dodge').getChildByName('label').getComponent(cc.Label);
         this.health = this.node.getChildByName('layout').getChildByName('health').getChildByName('label').getComponent(cc.Label);
+        this.dream = this.node.getChildByName('layout').getChildByName('dream').getChildByName('label').getComponent(cc.Label);
         this.realDamage = this.node.getChildByName('layout').getChildByName('realDamage').getChildByName('label').getComponent(cc.Label);
         this.realRate = this.node.getChildByName('layout').getChildByName('realRate').getChildByName('label').getComponent(cc.Label);
         this.magicDamage = this.node.getChildByName('layout').getChildByName('magicDamage').getChildByName('label').getComponent(cc.Label);
@@ -84,6 +86,7 @@ export default class PlayerInfoDialog extends cc.Component {
         this.attackSpeed.string = this.getInfo(baseCommonData.attackSpeed,equipmentData.Common.attackSpeed,statusData.Common.attackSpeed,true);
         this.dodge.string = this.getInfo(baseCommonData.dodge,equipmentData.Common.dodge,statusData.Common.dodge,true);
         this.health.string = playerData.currentHealth.toFixed(1).replace('.0','')+'/'+this.getInfo(baseCommonData.maxHealth,equipmentData.Common.maxHealth,statusData.Common.maxHealth);
+        this.dream.string = playerData.currentDream.toFixed(1).replace('.0','')+'/'+this.getInfo(baseCommonData.maxDream,equipmentData.Common.maxDream,statusData.Common.maxDream);
         this.realDamage.string = this.getInfo(baseCommonData.realDamage,equipmentData.Common.realDamage,statusData.Common.realDamage);
         this.realRate.string = this.getInfo(baseCommonData.realRate,equipmentData.Common.realRate,statusData.Common.realRate,true);
         this.magicDamage.string = this.getInfo(baseCommonData.magicDamage,equipmentData.Common.magicDamage,statusData.Common.magicDamage);

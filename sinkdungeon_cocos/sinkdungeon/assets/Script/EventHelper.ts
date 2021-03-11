@@ -49,6 +49,7 @@ export class EventHelper extends cc.Component{
     public static readonly BOSS_ADDSLIME = 'BOSS_ADDSLIME';
     public static readonly HUD_UPDATE_PLAYER_INFODIALOG = 'HUD_UPDATE_PLAYER_INFO_DIALOG';
     public static readonly HUD_UPDATE_PLAYER_HEALTHBAR = 'HUD_UPDATE_PLAYER_HEALTHBAR';
+    public static readonly HUD_UPDATE_PLAYER_DREAMBAR = 'HUD_UPDATE_PLAYER_DREAMBAR';
     public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE';
     public static readonly TALENT_TREE_SELECT = 'TALENT_TREE_SELECT';
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO';
