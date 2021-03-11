@@ -9,7 +9,7 @@ import DamageData from "./Data/DamageData";
 import StatusManager from "./Manager/StatusManager";
 import PlayerData from "./Data/PlayerData";
 import Boss from "./Boss/Boss";
-import Skill from "./Utils/Skill";
+import NextStep from "./Utils/NextStep";
 import FromData from "./Data/FromData";
 import Decorate from "./Building/Decorate";
 import AudioPlayer from "./Utils/AudioPlayer";
@@ -79,7 +79,7 @@ export default class MeleeWeapon extends cc.Component {
     dungeon: Dungeon;
     private weaponFirePoint: cc.Node;//剑尖
     private isMiss = false;
-    private drainSkill = new Skill();
+    private drainSkill = new NextStep();
     private isReflect = false;//子弹偏转
     private weaponSprite: cc.Sprite = null;
     private weaponStabSprite: cc.Sprite = null;

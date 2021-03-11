@@ -137,6 +137,8 @@ export default class EquipmentManager extends BaseManager {
     public static readonly COLOR_LIFEDRAIN = "#FFC0CB";//粉红
     //阴冷的(背刺)
     public static readonly COLOR_BACK = "#9370DB";//适中的兰花紫
+    //梦幻的(背刺)
+    public static readonly COLOR_DREAM = "#800080";//紫色
     @property(cc.Prefab)
     equipment: cc.Prefab = null;
 
@@ -276,6 +278,15 @@ export default class EquipmentManager extends BaseManager {
             desc.prefix += health.y > 2 ? '健康' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
                 , health.y > 2 ? EquipmentManager.COLOR_HEALTHY : '#000000');
+        }
+        //生命值0-5
+        let dream = cc.v3(0, 0);
+        if (data.Common.maxDream > 0) {
+            dream = EquipmentManager.getRandomQuality(0, 5, chestQuality,rand4save);
+            level = dream.y > level ? dream.y : level;
+            desc.prefix += dream.y > 2 ? '梦幻' : '';
+            desc.color = EquipmentManager.getMixColor(desc.color
+                , dream.y > 2 ? EquipmentManager.COLOR_DREAM : '#000000');
         }
         let damageRate = 0.1;
         let damage = 5;
@@ -463,6 +474,7 @@ export default class EquipmentManager extends BaseManager {
         info += common.damageMin == 0 && common.damageMax != 0 ? `最大攻击力${common.damageMax}\n` : ``
         info += common.defence == 0 ? `` : `防御${common.defence}\n`;
         info += common.maxHealth == 0 ? `` : `生命${common.maxHealth}\n`;
+        info += common.maxDream == 0 ? `` : `梦境${common.maxDream}\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {
             info = info.substring(0, info.lastIndexOf('\n'));
         }

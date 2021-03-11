@@ -1,4 +1,4 @@
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import Player from "../Player";
 import TalentData from "../Data/TalentData";
 import DamageData from "../Data/DamageData";
@@ -81,7 +81,7 @@ export default abstract class Talent extends cc.Component {
     public static readonly TALENT_018 = 'talent018';
     public static readonly TALENT_019 = 'talent019';
 
-    talentSkill = new Skill();
+    talentSkill = new NextStep();
     player: Player;
     passiveTalentList: TalentData[];
     activeTalentData:TalentData;

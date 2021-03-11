@@ -19,7 +19,7 @@ import StatusManager from './Manager/StatusManager';
 import DamageData from './Data/DamageData';
 import FloatinglabelManager from './Manager/FloatingLabelManager';
 import Random from './Utils/Random';
-import Skill from './Utils/Skill';
+import NextStep from './Utils/NextStep';
 import Item from './Item/Item';
 import Actor from './Base/Actor';
 import Achievements from './Achievement';
@@ -102,12 +102,12 @@ export default class Monster extends Actor {
     particleBlood: cc.ParticleSystem;
     effectNode: cc.Node;
 
-    moveSkill = new Skill();
-    remoteSkill = new Skill();
-    meleeSkill = new Skill();
-    specialSkill = new Skill();
-    dashSkill = new Skill();
-    blinkSkill = new Skill();
+    moveSkill = new NextStep();
+    remoteSkill = new NextStep();
+    meleeSkill = new NextStep();
+    specialSkill = new NextStep();
+    dashSkill = new NextStep();
+    blinkSkill = new NextStep();
     isAttackAnimExcuting = false;
     //躲避目标位置
     moveTarget: cc.Vec3 = cc.v3(0, 0);

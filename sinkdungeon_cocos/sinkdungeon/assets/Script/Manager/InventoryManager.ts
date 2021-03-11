@@ -1,7 +1,6 @@
 import EquipmentData from "../Data/EquipmentData";
-import DamageData from "../Data/DamageData";
 import ItemData from "../Data/ItemData";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,7 +27,7 @@ export default class InventoryManager {
     buffer:EquipmentData = new EquipmentData();
     list:EquipmentData[] = [];
     itemList:ItemData[] = [];
-    itemCoolDownList:Skill[]=[];
+    itemCoolDownList:NextStep[]=[];
     
     clear(): void {
     }
@@ -38,7 +37,7 @@ export default class InventoryManager {
             let data = new ItemData();
             data.count = -1;
             this.itemList.push(data);
-            this.itemCoolDownList.push(new Skill());
+            this.itemCoolDownList.push(new NextStep());
         }
     }
     getTotalEquipmentData():EquipmentData{

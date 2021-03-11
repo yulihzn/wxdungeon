@@ -19,6 +19,7 @@ export default class EquipmentStringData {
     img:string = 'emptyequipment';
 
     maxHealth: number = 0;//最大生命
+    maxDream: number = 0;//最大梦境值
     damageMin: number = 0;//最小攻击
     damageMax: number = 0;//最大攻击
     criticalStrikeRate: number = 0;//暴击
@@ -59,6 +60,7 @@ export default class EquipmentStringData {
 
     public valueCopy(data:EquipmentData):void{
         this.maxHealth = data.Common.maxHealth ? data.Common.maxHealth : 0;
+        this.maxDream = data.Common.maxDream ? data.Common.maxDream : 0;
         this.damageMin = data.Common.damageMin ? data.Common.damageMin : 0;
         this.damageMax = data.Common.damageMax ? data.Common.damageMax : 0;
         this.criticalStrikeRate = data.Common.criticalStrikeRate ? data.Common.criticalStrikeRate : 0;

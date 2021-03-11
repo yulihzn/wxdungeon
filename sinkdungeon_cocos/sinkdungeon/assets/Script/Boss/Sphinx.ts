@@ -5,7 +5,7 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import MonsterManager from "../Manager/MonsterManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import { EventHelper } from "../EventHelper";
@@ -32,8 +32,8 @@ export default class Sphinx extends Boss {
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
     isMoving = false;
-    stormSkill = new Skill();
-    summonSkill = new Skill();
+    stormSkill = new NextStep();
+    summonSkill = new NextStep();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {

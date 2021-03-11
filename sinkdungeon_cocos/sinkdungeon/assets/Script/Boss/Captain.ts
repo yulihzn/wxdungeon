@@ -10,7 +10,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
@@ -44,9 +44,9 @@ export default class Captain extends Boss {
     isFall = false;
     shooter: Shooter = null;
     exshooter:Shooter = null;
-    attackSkill = new Skill();
-    fireSkill = new Skill();
-    jumpSkill = new Skill();
+    attackSkill = new NextStep();
+    fireSkill = new NextStep();
+    jumpSkill = new NextStep();
     onLoad () {
         this.attackSkill.IsExcuting = false;
         this.isDied = false;

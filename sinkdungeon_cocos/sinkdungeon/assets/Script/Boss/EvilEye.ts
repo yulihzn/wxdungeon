@@ -10,7 +10,7 @@ import EquipmentManager from "../Manager/EquipmentManager";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
@@ -40,9 +40,9 @@ export default class EvilEye extends Boss {
     viceEyes: cc.Node[];//1-6个副眼
     viceShooters: Shooter[];//1-6个副炮
 
-    viceEyesFireSkill = new Skill();
-    mainEyesFireSkill = new Skill();
-    dashSkill = new Skill();
+    viceEyesFireSkill = new NextStep();
+    mainEyesFireSkill = new NextStep();
+    dashSkill = new NextStep();
     isHalfBlood = false;
 
     // LIFE-CYCLE CALLBACKS:

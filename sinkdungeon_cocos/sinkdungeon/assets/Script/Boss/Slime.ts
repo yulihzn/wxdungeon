@@ -7,7 +7,7 @@ import Logic from "../Logic";
 import Dungeon from "../Dungeon";
 import SlimeVenom from "./SlimeVenom";
 import MonsterManager from "../Manager/MonsterManager";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
@@ -50,7 +50,7 @@ export default class Slime extends Boss {
     private decorate: cc.Node;
     scaleSize = 1;
     slimeType = 0;
-    meleeSkill = new Skill();
+    meleeSkill = new NextStep();
     onLoad() {
         this.meleeSkill.IsExcuting = false;
         this.isDied = false;

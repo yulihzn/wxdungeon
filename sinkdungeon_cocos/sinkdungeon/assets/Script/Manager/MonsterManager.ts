@@ -222,6 +222,7 @@ export default class MonsterManager extends BaseManager {
         monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
+            data.Common.maxDream = data.Common.maxDream * 2;
             data.Common.damageMin = data.Common.damageMin * 2;
             data.currentHealth = data.currentHealth * 2;
             if (data.melee > 0) {

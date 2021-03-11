@@ -5,7 +5,7 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import BossAttackCollider from "./BossAttackCollider";
 import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -43,10 +43,10 @@ export default class Dryad extends Boss {
     @property(cc.Node)
     flower02:cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
-    twoFlowerSkill = new Skill();
-    twineGrassSkill = new Skill();
-    meleeSkill = new Skill();
-    stoneSkill = new Skill();
+    twoFlowerSkill = new NextStep();
+    twineGrassSkill = new NextStep();
+    meleeSkill = new NextStep();
+    stoneSkill = new NextStep();
 
     onLoad() {
         this.isDied = false;

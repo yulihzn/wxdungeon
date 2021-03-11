@@ -5,7 +5,7 @@ import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
@@ -33,11 +33,11 @@ export default class Rah extends Boss {
     rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
-    darkSkill = new Skill();
-    blinkSkill = new Skill();
-    snakeSkill = new Skill();
-    bugsSkill = new Skill();
-    meleeSkill = new Skill();
+    darkSkill = new NextStep();
+    blinkSkill = new NextStep();
+    snakeSkill = new NextStep();
+    bugsSkill = new NextStep();
+    meleeSkill = new NextStep();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {

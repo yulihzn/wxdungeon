@@ -4,7 +4,7 @@ import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
 import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import Random from "../Utils/Random";
 import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -33,8 +33,8 @@ export default class Dragon extends Boss {
     private timeDelay = 0;
     rigidbody: cc.RigidBody;
     isMoving = false;
-    fireSkill = new Skill();
-    rainSkill = new Skill();
+    fireSkill = new NextStep();
+    rainSkill = new NextStep();
     isRainReady = false;
     physicBox:cc.PhysicsBoxCollider;
     // LIFE-CYCLE CALLBACKS:

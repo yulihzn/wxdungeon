@@ -1,5 +1,5 @@
 const {ccclass, property} = cc._decorator;
-export default class Skill extends cc.Component{
+export default class NextStep extends cc.Component{
     private isExcuting = false;
     private isInCooling = false;
     next(callback:Function,delay:number,finishAfterCoolDown?:boolean){

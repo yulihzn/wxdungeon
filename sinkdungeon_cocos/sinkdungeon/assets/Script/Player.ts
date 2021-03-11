@@ -671,9 +671,13 @@ export default class Player extends Actor {
         if (health.x > health.y) {
             health.x = health.y;
         }
+        if (dream.x > dream.y) {
+            dream.x = dream.y;
+        }
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
         this.data.currentHealth = health.x;
+        this.data.currentDream = dream.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false);
         if (this.data.currentHealth <= 0) {
             this.killed(from);

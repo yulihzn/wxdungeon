@@ -5,7 +5,7 @@ import Shooter from "../Shooter";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import Boss from "./Boss";
-import Skill from "../Utils/Skill";
+import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
@@ -34,10 +34,10 @@ export default class IceDemon extends Boss {
     rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
-    dashSkill = new Skill();
-    thronSkill = new Skill();
-    defenceSkill = new Skill();
-    meleeSkill = new Skill();
+    dashSkill = new NextStep();
+    thronSkill = new NextStep();
+    defenceSkill = new NextStep();
+    meleeSkill = new NextStep();
     @property(cc.Prefab)
     groundThron: cc.Prefab = null;
     @property(cc.Prefab)
