@@ -85,13 +85,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 48,
+      "height": 64
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 0.25
     },
     "_trs": {
       "__type__": "TypedArray",
@@ -6537,6 +6537,7 @@
     },
     "showLight": false,
     "showShadow": true,
+    "showRayCast": true,
     "_id": ""
   },
   {
@@ -6659,7 +6660,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 3,
     "_density": 100,
     "_sensor": false,
     "_friction": 0.2,

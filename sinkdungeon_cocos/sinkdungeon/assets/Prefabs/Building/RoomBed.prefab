@@ -472,7 +472,8 @@
       "a": 109
     },
     "showLight": true,
-    "showShadow": false,
+    "showShadow": true,
+    "showRayCast": false,
     "_id": ""
   },
   {

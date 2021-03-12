@@ -28,10 +28,13 @@
     "_components": [
       {
         "__id__": 22
+      },
+      {
+        "__id__": 23
       }
     ],
     "_prefab": {
-      "__id__": 23
+      "__id__": 24
     },
     "_opacity": 255,
     "_color": {
@@ -799,15 +802,17 @@
     "ray": {
       "__id__": 20
     },
-    "rayRadius": 300,
+    "rayRadius": 500,
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 209,
-      "g": 67,
-      "b": 0,
-      "a": 40
+      "r": 255,
+      "g": 227,
+      "b": 136,
+      "a": 187
     },
     "showLight": true,
+    "showShadow": true,
+    "showRayCast": true,
     "_id": ""
   },
   {
@@ -871,6 +876,16 @@
       }
     ],
     "playOnLoad": true,
+    "_id": ""
+  },
+  {
+    "__type__": "b2591n42odFIbhfimSigtUE",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {

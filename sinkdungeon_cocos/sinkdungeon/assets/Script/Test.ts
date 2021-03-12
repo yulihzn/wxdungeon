@@ -64,7 +64,8 @@ export default class Test extends cc.Component {
         let p = this.graphics.node.convertToNodeSpaceAR(pos);
         this.graphics.clear();
         this.graphics.fillColor = cc.color(0, 255, 0);
-        this.graphics.circle(p.x, p.y, this.radius);
+        // this.graphics.circle(p.x, p.y, this.radius);
+        this.graphics.rect(p.x-this.radius,p.y-this.radius,this.radius*2,this.radius*2);
         // this.graphics.moveTo(p.x,p.y);
         // this.graphics.lineTo(p.x-this.radius,p.y-this.radius);
         // this.graphics.lineTo(p.x+this.radius,p.y-this.radius);

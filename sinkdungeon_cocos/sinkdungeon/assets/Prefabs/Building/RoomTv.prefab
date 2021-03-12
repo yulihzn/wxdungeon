@@ -587,8 +587,9 @@
       "b": 249,
       "a": 125
     },
-    "showLight": false,
-    "showShadow": false,
+    "showLight": true,
+    "showShadow": true,
+    "showRayCast": true,
     "_id": ""
   },
   {

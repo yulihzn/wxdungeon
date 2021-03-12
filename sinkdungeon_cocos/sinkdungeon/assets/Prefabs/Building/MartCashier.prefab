@@ -905,7 +905,8 @@
       "a": 40
     },
     "showLight": false,
-    "showShadow": false,
+    "showShadow": true,
+    "showRayCast": false,
     "_id": ""
   },
   {

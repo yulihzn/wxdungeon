@@ -393,7 +393,8 @@
       "a": 125
     },
     "showLight": false,
-    "showShadow": false,
+    "showShadow": true,
+    "showRayCast": false,
     "_id": ""
   },
   {

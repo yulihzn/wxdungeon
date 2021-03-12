@@ -45,7 +45,6 @@ export default class LightManager extends BaseManager {
             let light = LightManager.lightList[i];
             if (light) {
                 light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
-                // this.renderMask(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
                 this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
             }
         }
@@ -114,6 +113,9 @@ export default class LightManager extends BaseManager {
         if (isFirst) {
             graphics.clear(false);
         }
+        if(!showShadow){
+            return;
+        }
         graphics.lineWidth = 10;
         graphics.fillColor.fromHEX('#ffffff');
         if (potArr && potArr.length > 0) {
@@ -132,11 +134,12 @@ export default class LightManager extends BaseManager {
             graphics.rect(c.x, c.y, lightRect.width, lightRect.height);
             graphics.fill();
         }
-        if (!showShadow) {
+        if(circle&&circle.z>0){
             const center = this.ray.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
             graphics.circle(center.x, center.y, circle.z);
             graphics.fill();
         }
+        
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
