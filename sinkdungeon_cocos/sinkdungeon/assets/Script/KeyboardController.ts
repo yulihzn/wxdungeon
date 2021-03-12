@@ -1,4 +1,5 @@
 import { EventHelper } from "./EventHelper";
+import Logic from "./Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -57,13 +58,16 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.space: this.isB = true; break;
             case cc.macro.KEY.e: this.isC = true; break;
             case cc.macro.KEY.shift: this.isD = true; break;
-            case cc.macro.KEY.num1: cc.director.emit(EventHelper.USEITEM_KEYBOARD, { detail: { index: 0 } }); break;
-            case cc.macro.KEY.num2: cc.director.emit(EventHelper.USEITEM_KEYBOARD, { detail: { index: 1 } }); break;
-            case cc.macro.KEY.num3: cc.director.emit(EventHelper.USEITEM_KEYBOARD, { detail: { index: 2 } }); break;
-            case 49: cc.director.emit(EventHelper.USEITEM_KEYBOARD, { detail: { index: 0 } }); break;
-            case 50: cc.director.emit(EventHelper.USEITEM_KEYBOARD, { detail: { index: 1 } }); break;
-            case 51: cc.director.emit(EventHelper.USEITEM_KEYBOARD, { detail: { index: 2 } }); break;
+            case cc.macro.KEY.num1: this.useItem(0); break;
+            case cc.macro.KEY.num2: this.useItem(1); break;
+            case cc.macro.KEY.num3: this.useItem(2); break;
+            case 49: this.useItem(0); break;
+            case 50: this.useItem(1); break;
+            case 51: this.useItem(2); break;
         }
+    }
+    useItem(index:number){
+        EventHelper.emit(EventHelper.USEITEM_KEYBOARD, { index: index });
     }
     onKeyUp(event: cc.Event.EventKeyboard) {
         switch (event.keyCode) {
@@ -85,7 +89,9 @@ export default class KeyboardController extends cc.Component {
 
     }
     sendMoveMessageToPlayer(dt: number) {
-
+        if(Logic.isDialogShow){
+            return;
+        }
         let pos = cc.v3(0, 0);
         if (this.isUp) { pos.addSelf(cc.v3(0, 0.9)); }
         if (this.isDown) { pos.addSelf(cc.v3(0, -0.9)); }

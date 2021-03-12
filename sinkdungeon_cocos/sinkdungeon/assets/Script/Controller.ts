@@ -201,7 +201,7 @@ export default class Controller extends cc.Component {
     update(dt) {
         this.isInteractTimeDelay(dt);
         this.isSkillTimeDelay(dt);
-        if (this.isTimeDelay(dt)) {
+        if (this.isTimeDelay(dt)&&!Logic.isDialogShow) {
             if (this.attackActionTouched) {
                 cc.director.emit(EventHelper.PLAYER_ATTACK);
             }

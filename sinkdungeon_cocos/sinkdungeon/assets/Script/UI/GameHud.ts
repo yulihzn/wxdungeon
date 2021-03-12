@@ -184,6 +184,11 @@ export default class GameHud extends cc.Component {
                 this.clock.string = `${Logic.time}`;
             }
         }
+        if(this.settingsDialog.node.active||this.martShelvesDialog.node.active){
+            Logic.isDialogShow = true;
+        }else{
+            Logic.isDialogShow = false;
+        }
     }
     useItem(){
 

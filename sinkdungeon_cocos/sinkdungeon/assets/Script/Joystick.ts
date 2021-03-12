@@ -1,4 +1,5 @@
 import { EventHelper } from "./EventHelper";
+import Logic from "./Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -248,6 +249,9 @@ export default class NewClass extends cc.Component {
     }
 
     sendMoveMessageToPlayer(dt:number){
+        if(Logic.isDialogShow){
+            return;
+        }
         let v = this.getInputQuadrantDir();
         
         let dir = 4;

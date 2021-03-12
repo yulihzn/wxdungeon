@@ -65,9 +65,14 @@ export class EventHelper extends cc.Component{
      * @param key 
      * @param customDetail 
      */
-    public static emit(key:string,customDetail:any){
-        cc.director.emit(key, { detail: customDetail });
+    public static emit(key:string,customDetail?:any){
+        if(customDetail){
+            cc.director.emit(key, { detail: customDetail });
+        }else{
+            cc.director.emit(key);
+        }
     }
+  
     /**
      * 自定义事件接收
      * @param key 
