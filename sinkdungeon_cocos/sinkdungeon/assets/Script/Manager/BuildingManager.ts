@@ -126,6 +126,8 @@ export default class BuildingManager extends BaseManager {
     martTable:cc.Prefab = null;
     @property(cc.Prefab)
     martFridge:cc.Prefab = null;
+    @property(cc.Prefab)
+    lamp:cc.Prefab = null;
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
@@ -452,7 +454,13 @@ export default class BuildingManager extends BaseManager {
             //生成存档点
             let save = this.addBuilding(this.savePoint, indexPos);
             this.savePointS = save.getComponent(SavePoint);
+        } else if (this.isFirstEqual(mapDataStr, 'L')) {
+            //生成灯
+            this.addLamp(mapDataStr, indexPos)
         }
+    }
+    private addLamp(mapDataStr:string, indexPos:cc.Vec3){
+        let node = this.addBuilding(this.lamp, indexPos);
     }
     private getGoodsList(type:string):string[]{
         if(this.foodList.length<1&&this.drinkList.length<1){

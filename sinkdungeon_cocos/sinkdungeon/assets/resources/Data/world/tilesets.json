@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":294,
+ "tilecount":300,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -3133,6 +3133,48 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"Se"
+        }, 
+        {
+         "id":666,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lamp000.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"L0"
+        }, 
+        {
+         "id":667,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lamp001.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"L1"
+        }, 
+        {
+         "id":668,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lamp002.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"L2"
+        }, 
+        {
+         "id":669,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lamp003.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"L3"
+        }, 
+        {
+         "id":670,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lamp004.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"L4"
+        }, 
+        {
+         "id":671,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lamp005.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"L5"
         }],
  "tilewidth":16,
  "type":"tileset",
