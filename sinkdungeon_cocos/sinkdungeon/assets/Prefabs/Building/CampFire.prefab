@@ -802,7 +802,7 @@
     "ray": {
       "__id__": 20
     },
-    "rayRadius": 500,
+    "rayRadius": 300,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,

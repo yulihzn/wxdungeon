@@ -70,7 +70,6 @@ export default class ShadowOfSight extends cc.Component {
         let unitRd = 2 * Math.PI / this.rayNum;
         this.lightVertsArray = new Array();
         this.lightRects = {};
-        let upNodeUuids: { [key: string]: string } = {};
         for (let i = 0; i < this.rayNum; i++) {
             let p3 = cc.v2(Math.cos(i * unitRd) * this.rayRadius + pos.x, Math.sin(i * unitRd) * this.rayRadius + pos.y);
             let physicsManager = cc.director.getPhysicsManager();
@@ -80,20 +79,13 @@ export default class ShadowOfSight extends cc.Component {
                 ||result[0].collider.tag == ColliderTag.MONSTER)) {
                 p3 = result[0].point;
                 let node = result[0].collider.node;
-                // let bottomPos = node.convertToNodeSpaceAR(p3);
-                let nodePos = node.convertToWorldSpaceAR(cc.Vec3.ZERO);
-                if (nodePos.y>pos.y) {
-                    // upNodeUuids[node.uuid] = node.uuid;
-                    p3.y+= node.height*node.scaleY;
-                    // p3.y+= node.height*node.scaleY;
-                    // let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
-                    // let offset = 32;
-                    // let r = cc.rect(np.x - node.width * node.anchorX, np.y - node.height * node.anchorY-offset, node.width, node.height+offset);
-                    // this.lightRects[node.uuid] = r;
+                let bottomPos = node.convertToNodeSpaceAR(p3);
+                if (bottomPos.y<=0&&p3.y>pos.y) {
+                    let np = node.convertToWorldSpaceAR(cc.v3(0, 0));
+                    let offset = 0;
+                    let r = cc.rect(np.x - node.width * node.anchorX, np.y - node.height * node.anchorY-offset, node.width, node.height+offset);
+                    this.lightRects[node.uuid] = r;
                 }
-                // if(upNodeUuids[node.uuid]){
-                //     p3.y+= node.height*node.scaleY;
-                // }
             }
             this.lightVertsArray.push(p3);
             this.ray.lineWidth = 3;
@@ -111,6 +103,14 @@ export default class ShadowOfSight extends cc.Component {
         if (renderLight) {
             this.ray.close();
             this.ray.fill();
+            this.ray.fillColor.a = this.ray.fillColor.a/2;
+            for(let key in this.lightRects){
+                let r = this.lightRects[key];
+                let p = this.node.convertToNodeSpaceAR(cc.v3(r.x,r.y));
+                this.ray.rect(p.x,p.y,r.width,r.height);
+                this.ray.fill();
+
+            }
             this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
         }
     }

@@ -14,7 +14,7 @@
   {
     "__type__": "cc.Node",
     "_name": "Player",
-    "_objFlags": 0,
+    "_objFlags": 512,
     "_parent": null,
     "_children": [
       {
@@ -85,13 +85,13 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 48,
-      "height": 64
+      "width": 32,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.25
+      "y": 0
     },
     "_trs": {
       "__type__": "TypedArray",
