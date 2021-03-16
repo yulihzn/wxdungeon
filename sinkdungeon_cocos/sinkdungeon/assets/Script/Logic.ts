@@ -62,6 +62,8 @@ export default class Logic extends cc.Component {
     static talents: { [key: string]: TalentData } = null;
     //职业json
     static professionList: ProfessionData[] = [];
+    //建筑资源
+    static buildings: { [key: string]: cc.Prefab } = null;
 
     static level = 0;
     static chapterIndex = 0;
@@ -300,5 +302,8 @@ export default class Logic extends cc.Component {
     }
     static spriteFrameRes(spriteFrameName:string){
         return Logic.spriteFrames[spriteFrameName]?Logic.spriteFrames[spriteFrameName]:null;
+    }
+    static getBuildings(name:string):cc.Prefab{
+        return Logic.buildings[name];
     }
 }

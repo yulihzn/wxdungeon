@@ -102,7 +102,7 @@ export default class ExitDoor extends Building {
         this.isOpen = true;
         this.getComponent(cc.PhysicsBoxCollider).sensor = true;
         this.getComponent(cc.PhysicsBoxCollider).apply();
-        this.closeSprite.node.runAction(cc.fadeOut(immediately ? 0 : 1));
+        cc.tween(this.closeSprite.node).to(immediately ? 0 : 1,{opacity:0}).start();
     }
     closeGate(immediately?: boolean) {
         if (!this.isOpen) {
@@ -111,7 +111,7 @@ export default class ExitDoor extends Building {
         this.isOpen = false;
         this.getComponent(cc.PhysicsBoxCollider).sensor = false;
         this.getComponent(cc.PhysicsBoxCollider).apply();
-        this.closeSprite.node.runAction(cc.fadeIn(immediately ? 0 : 1));
+        cc.tween(this.closeSprite.node).to(immediately ? 0 : 1,{opacity:255}).start();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let player = other.node.getComponent(Player);

@@ -34,6 +34,7 @@ export default class Loading extends cc.Component {
     private isProfessionLoaded = false;
     private isItemsLoaded = false;
     private isSkillsLoaded = false;
+    private isBuildingLoaded = false;
     // LIFE-CYCLE CALLBACKS:
 
 
@@ -42,18 +43,22 @@ export default class Loading extends cc.Component {
         if(!Logic.spriteFrames){
             Logic.spriteFrames = {};
         }
+        if(!Logic.buildings){
+            Logic.buildings = {};
+        }
         
         this.loadingIcon.active = true;
     
     }
 
     start() {
-        //加载地图，装备，贴图，敌人，状态，子弹，物品资源
+        //加载地图，装备，贴图，敌人，状态，子弹，物品资源,建筑预制
         this.isWorldLoaded = false;
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
         this.isDebuffsLoaded = false;
         this.isNonplayerLoaded = false;
+        this.isBuildingLoaded = false;
         this.loadWorld();
         this.loadEquipment();
         this.loadAutoSpriteFrames();
@@ -65,6 +70,7 @@ export default class Loading extends cc.Component {
         this.loadTalents();
         this.loadProfession();
         this.loadNonplayer();
+        this.loadBuildings();
         this.showLoadingLabel();
         //显示过场
         if (Logic.isFirst == 1) {
@@ -223,6 +229,19 @@ export default class Loading extends cc.Component {
             }
         })
     }
+    loadBuildings() {
+        if (Logic.buildings&&Logic.buildings['Door']) {
+            this.isBuildingLoaded = true;
+            return;
+        }
+        cc.resources.loadDir('Prefab/buildings', cc.Prefab, (err: Error, assert: cc.Prefab[]) => {
+            for (let prefab of assert) {
+                Logic.buildings[prefab.name] = prefab;
+            }
+            this.isBuildingLoaded = true;
+            cc.log('buildings loaded');
+        })
+    }
     loadItems() {
         if (Logic.items) {
             this.isItemsLoaded = true;
@@ -294,6 +313,7 @@ export default class Loading extends cc.Component {
             && this.isItemsLoaded
             && this.isSkillsLoaded
             && this.isWorldLoaded
+            && this.isBuildingLoaded
             && this.cutScene.isSkip) {
             this.timeDelay = 0;
             this.cutScene.unregisterClick();
@@ -307,6 +327,7 @@ export default class Loading extends cc.Component {
             this.isNonplayerLoaded = false;
             this.isItemsLoaded = false;
             this.isSkillsLoaded = false;
+            this.isBuildingLoaded = false;
             Logic.mapManager.loadMap();
             cc.director.loadScene('game');
         }

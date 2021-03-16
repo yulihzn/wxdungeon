@@ -62,10 +62,13 @@ export default class MiniMap extends cc.Component {
 		}
 		for (let j = 0; j < this.height; j++) {
 			for (let i = 0; i < this.width; i++) {
-				// let isFound = Logic.mapManager.rectDungeon.map[i][j].isFound();
 				let isFound = true;
-				let state = Logic.mapManager.rectDungeon.map[i][j].state;
-				let roomType = Logic.mapManager.rectDungeon.map[i][j].roomType;
+				let rectroom = Logic.mapManager.rectDungeon.map[i][j];
+				if(!rectroom){
+					continue;
+				}
+				let state = rectroom.state;
+				let roomType = rectroom.roomType;
 				if(levelData.minimap[i][j]){
 					this.map[i][j].getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`minimap${levelData.minimap[i][j]}`)
 				}
