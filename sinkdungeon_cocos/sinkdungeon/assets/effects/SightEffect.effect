@@ -20,6 +20,7 @@ CCEffect %{
         lightPos: {value: [0.5,0.5]}
         maxRadius: {value: 0.75}
         whRatio: {value: 1.0}
+        isCircle: {value: true}
 }%
 
 
@@ -65,6 +66,7 @@ CCProgram fs %{
     vec2 lightPos;
     float maxRadius;
     float whRatio;
+    bool isCircle;
   };
   void main () {
     vec4 o = v_color;
@@ -76,7 +78,18 @@ CCProgram fs %{
     float ry = abs(uv.y);
     float fade = o.a;
     float radius = length(vec2(rx * whRatio, ry / scaleWH * whRatio));      // 算半径
-    o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
+    
+    if(isCircle){
+      o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
+    }else{
+      float radiusX = length(vec2(rx * whRatio, 0.0));
+      float radiusY = length(vec2(0.0, ry / scaleWH * whRatio));
+      float radiusXy = radiusX;
+      if(radiusX<radiusY){
+        radiusXy = radiusY;
+      }
+      o.a = 1.0 - smoothstep(0.05, maxRadius, radiusXy);      // 渐变
+    }
     o.a *= fade;
     
     #if CC_SUPPORT_standard_derivatives

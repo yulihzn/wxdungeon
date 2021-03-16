@@ -65,11 +65,12 @@ export default class Test extends cc.Component {
         this.graphics.clear();
         this.graphics.fillColor = cc.color(0, 255, 0);
         // this.graphics.circle(p.x, p.y, this.radius);
-        this.graphics.rect(p.x-this.radius,p.y-this.radius,this.radius*2,this.radius*2);
-        // this.graphics.moveTo(p.x,p.y);
-        // this.graphics.lineTo(p.x-this.radius,p.y-this.radius);
-        // this.graphics.lineTo(p.x+this.radius,p.y-this.radius);
-        // this.graphics.close();
+        // this.graphics.rect(p.x-this.radius,p.y-this.radius,this.radius*2,this.radius*2);
+        this.graphics.moveTo(p.x-this.radius/4,p.y);
+        this.graphics.lineTo(p.x-this.radius,p.y-this.radius);
+        this.graphics.lineTo(p.x+this.radius,p.y-this.radius);
+        this.graphics.lineTo(p.x+this.radius/4,p.y);
+        this.graphics.close();
         this.graphics.fill();
         this.graphics.node.width = this.radius * 2;
         this.graphics.node.height = this.radius * 2;
@@ -83,6 +84,7 @@ export default class Test extends cc.Component {
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
         mat.setProperty("maxRadius", r);
         mat.setProperty("whRatio", visibleRatio);
+        mat.setProperty("isCircle",false);
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);
         let y = Math.abs(lightPos.y - 0.5) * visibleSize.height * scale / canvasSize.height;
         mat.setProperty("lightPos", cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y));

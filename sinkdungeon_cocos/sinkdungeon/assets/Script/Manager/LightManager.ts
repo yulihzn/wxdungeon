@@ -45,7 +45,7 @@ export default class LightManager extends BaseManager {
             let light = LightManager.lightList[i];
             if (light) {
                 light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
-                this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
+                this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow,light.isCircle,light.isSector);
             }
         }
         if (!this.shadowTexture&&Logic.settings.showShadow) {
@@ -108,7 +108,7 @@ export default class LightManager extends BaseManager {
     //     //@ts-ignore
     //     this.mask._updateGraphics();
     // }
-    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean) {
+    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean,isCirlce:boolean,isSector:boolean) {
         let graphics: cc.Graphics = this.ray;
         if (isFirst) {
             graphics.clear(false);
@@ -136,7 +136,17 @@ export default class LightManager extends BaseManager {
         }
         if(circle&&circle.z>0){
             const center = this.ray.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
-            graphics.circle(center.x, center.y, circle.z);
+            if (isSector) {
+                this.ray.moveTo(center.x - circle.z / 4, center.y);
+                this.ray.lineTo(center.x - circle.z, center.y - circle.z);
+                this.ray.lineTo(center.x + circle.z, center.y - circle.z);
+                this.ray.lineTo(center.x + circle.z / 4, center.y);
+                this.ray.close();
+            }else if(isCirlce){
+                graphics.circle(center.x, center.y, circle.z);
+            }else{
+                this.ray.rect(center.x - circle.z, center.y - circle.z, circle.z * 2, circle.z * 2);
+            }
             graphics.fill();
         }
         

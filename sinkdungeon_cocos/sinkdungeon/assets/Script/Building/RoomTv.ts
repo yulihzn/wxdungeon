@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
 import Player from "../Player";
 import Building from "./Building";
@@ -20,8 +21,11 @@ export default class RoomTv extends Building {
     
     onLoad(){
         this.anim = this.getComponent(cc.Animation);
+        this.lights = this.getComponentsInChildren(ShadowOfSight);
+    }
+    start(){
         for(let light of this.lights){
-            light.showLight = false;
+            light.showShadow = false;
         }
     }
     // update (dt) {}
@@ -30,7 +34,7 @@ export default class RoomTv extends Building {
         this.isOpen = true;
         if(this.lights){
             for(let light of this.lights){
-                light.showLight = true;
+                light.showShadow = true;
             }
         }
         
@@ -43,7 +47,7 @@ export default class RoomTv extends Building {
         this.isOpen = false;
         if(this.lights){
             for(let light of this.lights){
-                light.showLight = false;
+                light.showShadow = false;
             }
         }
         this.anim.play('RoomTvClose');
