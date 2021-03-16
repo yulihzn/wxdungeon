@@ -1,7 +1,3 @@
-import { EventHelper } from "../EventHelper";
-import Random from "./Random";
-import Logic from "../Logic";
-import RoomType from "../Rect/RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

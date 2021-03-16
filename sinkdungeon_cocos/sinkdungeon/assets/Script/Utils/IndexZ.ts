@@ -26,11 +26,11 @@ export default class IndexZ{
     /**屋顶 */
     static readonly ROOF = 6100;
     /** 阴影*/
-    static readonly SHADOW = 6150;
+    static readonly SHADOW = 6200;
     /** 雾*/
-    static readonly FOG = 6200;
+    static readonly FOG = 6500;
     /**UI */
-    static readonly UI = 6300;
+    static readonly UI = 7000;
 
     static getActorZIndex(pos:cc.Vec3):number{
         let index = IndexZ.ACTOR+3000-pos.y;

@@ -84,6 +84,16 @@ export default class BuildingManager extends BaseManager {
     static readonly TRAP = 'Trap';
     static readonly WALL = 'Wall';
     static readonly WATER = 'Water';
+    static readonly LAMPLIGHT = 'LampLight';
+    static readonly LAMPSUN = 'LampSun';
+    static readonly LAMPSHIP = 'LampShip';
+    static readonly LAMPSEARCH = 'LampSearch';
+    static readonly LAMPFIREPAN = 'LampFirePan';
+    static readonly LAMPTORCH = 'LampTorch';
+    static readonly MUSHROOM01 = 'MushRoom01';
+    static readonly MUSHROOM02 = 'MushRoom02';
+    static readonly MUSHROOM03 = 'MushRoom03';
+    static readonly MUSHROOM04 = 'MushRoom04';
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
@@ -417,7 +427,24 @@ export default class BuildingManager extends BaseManager {
         }
     }
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {
-        
+        let prefabName = BuildingManager.LAMPLIGHT;
+        let isOverHead = false;
+        switch(mapDataStr){
+            case 'L0':prefabName = BuildingManager.LAMPLIGHT;break;
+            case 'L1':prefabName = BuildingManager.LAMPSUN;isOverHead=true;break;
+            case 'L2':prefabName = BuildingManager.LAMPSHIP;isOverHead=true;break;
+            case 'L3':prefabName = BuildingManager.MUSHROOM01;break;
+            case 'L4':prefabName = BuildingManager.MUSHROOM02;break;
+            case 'L5':prefabName = BuildingManager.MUSHROOM03;break;
+            case 'L6':prefabName = BuildingManager.MUSHROOM04;break;
+            case 'L7':prefabName = BuildingManager.LAMPSEARCH;break;
+            case 'L8':prefabName = BuildingManager.LAMPTORCH;break;
+            case 'L9':prefabName = BuildingManager.LAMPFIREPAN;break;
+        }
+        let node = this.addBuilding(Logic.getBuildings(prefabName), indexPos);
+        if(isOverHead){
+            node.zIndex = IndexZ.OVERHEAD;
+        }
     }
     private getGoodsList(type: string): string[] {
         if (this.foodList.length < 1 && this.drinkList.length < 1) {
