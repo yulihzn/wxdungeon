@@ -137,10 +137,15 @@ export default class LightManager extends BaseManager {
         if(circle&&circle.z>0){
             const center = this.ray.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
             if (isSector) {
-                this.ray.moveTo(center.x - circle.z / 4, center.y);
-                this.ray.lineTo(center.x - circle.z, center.y - circle.z);
-                this.ray.lineTo(center.x + circle.z, center.y - circle.z);
-                this.ray.lineTo(center.x + circle.z / 4, center.y);
+                this.ray.moveTo(center.x - circle.z / 8, center.y);
+                this.ray.lineTo(center.x - circle.z/2, center.y - circle.z/3);
+                this.ray.lineTo(center.x - circle.z/1.5, center.y - circle.z/2);
+                this.ray.lineTo(center.x - circle.z/2, center.y - circle.z);
+                this.ray.lineTo(center.x, center.y - circle.z*1.2);
+                this.ray.lineTo(center.x + circle.z/2, center.y - circle.z);
+                this.ray.lineTo(center.x + circle.z/1.5, center.y - circle.z/2);
+                this.ray.lineTo(center.x + circle.z/2, center.y - circle.z/3);
+                this.ray.lineTo(center.x + circle.z / 8, center.y);
                 this.ray.close();
             }else if(isCirlce){
                 graphics.circle(center.x, center.y, circle.z);

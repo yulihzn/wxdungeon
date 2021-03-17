@@ -98,7 +98,7 @@ export default class Logic extends cc.Component {
     onLoad() {
         //关闭调试
         // cc.director.setDisplayStats(false);
-        cc.game.setFrameRate(60);
+        cc.game.setFrameRate(58);
         cc.game.addPersistRootNode(this.node);
         // cc.view.enableAntiAlias(false);
         // cc.macro.DOWNLOAD_MAX_CONCURRENT = 10;

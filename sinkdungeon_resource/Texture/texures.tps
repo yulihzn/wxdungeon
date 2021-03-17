@@ -1473,6 +1473,7 @@
             <key type="filename">building/lamp006.png</key>
             <key type="filename">building/lamp007.png</key>
             <key type="filename">building/lamp008.png</key>
+            <key type="filename">building/lamp009.png</key>
             <key type="filename">building/roomlittletable.png</key>
             <key type="filename">building/roomlittletable1.png</key>
             <key type="filename">building/roomlittletable2.png</key>

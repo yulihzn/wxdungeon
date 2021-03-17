@@ -33,6 +33,7 @@ export default class ExitData {
         data.fromChapter = fromChapter;
         data.fromLevel = fromLevel;
         data.toChapter = Logic.CHAPTER099;
+        //此处固定跳转到现实的床边，该地图调整的时候相应位置也要调整
         data.toLevel = 0;
         data.toPos = cc.v3(6, 7);
         return data;

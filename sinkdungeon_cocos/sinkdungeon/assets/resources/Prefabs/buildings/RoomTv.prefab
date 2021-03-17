@@ -544,7 +544,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        8,
+        85.531,
         0,
         0,
         0,
@@ -579,7 +579,7 @@
     "ray": {
       "__id__": 15
     },
-    "rayRadius": 200,
+    "rayRadius": 300,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 86,
@@ -592,6 +592,7 @@
     "showRayCast": false,
     "isCircle": true,
     "isSector": true,
+    "isScale": true,
     "_id": ""
   },
   {

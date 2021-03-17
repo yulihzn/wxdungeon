@@ -234,7 +234,7 @@ export default class Loading extends cc.Component {
             this.isBuildingLoaded = true;
             return;
         }
-        cc.resources.loadDir('Prefab/buildings', cc.Prefab, (err: Error, assert: cc.Prefab[]) => {
+        cc.resources.loadDir('Prefabs/buildings', cc.Prefab, (err: Error, assert: cc.Prefab[]) => {
             for (let prefab of assert) {
                 Logic.buildings[prefab.name] = prefab;
             }

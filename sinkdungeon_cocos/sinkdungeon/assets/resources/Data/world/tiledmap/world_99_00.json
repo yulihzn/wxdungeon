@@ -24,7 +24,7 @@
                 {
                  "name":"exits",
                  "type":"string",
-                 "value":"9,20,99,1,9,7"
+                 "value":"9,20,99,1,9,6"
                 }, 
                 {
                  "name":"floorCoverRes",

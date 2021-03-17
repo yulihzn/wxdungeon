@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":304,
+ "tilecount":305,
  "tiledversion":"1.4.2",
  "tileheight":16,
  "tiles":[
@@ -3203,6 +3203,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"L9"
+        }, 
+        {
+         "id":682,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/lamp010.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"La"
         }],
  "tilewidth":16,
  "type":"tileset",

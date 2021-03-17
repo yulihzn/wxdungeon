@@ -54,12 +54,14 @@ export default class ShadowOfSight extends cc.Component {
     /** 绘制视野区域 */
     renderSightArea(cameraOffset: cc.Vec2): void {
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
-        if (this.offset > 20) {
+        let size = 10;
+        let delta = 0.1;
+        if (this.offset > size) {
             this.offsetPlus = false;
-        } else if (this.offset < -10) {
+        } else if (this.offset < -size) {
             this.offsetPlus = true;
         }
-        this.offset = this.offsetPlus ? this.offset + 1 : this.offset - 1;
+        this.offset = this.offsetPlus ? this.offset + delta : this.offset - delta;
         this.ray.clear();
         if (Logic.settings.showShadow && this.showShadow) {
             this.lightRects = {};
@@ -139,10 +141,15 @@ export default class ShadowOfSight extends cc.Component {
             let center = this.node.convertToNodeSpaceAR(pos);
             // this.ray.circle(center.x, center.y, this.getRadius());
             if (this.isSector) {
-                this.ray.moveTo(center.x - this.getRadius() / 4, center.y);
-                this.ray.lineTo(center.x - this.getRadius(), center.y - this.getRadius());
-                this.ray.lineTo(center.x + this.getRadius(), center.y - this.getRadius());
-                this.ray.lineTo(center.x + this.getRadius() / 4, center.y);
+                this.ray.moveTo(center.x - this.getRadius() / 8, center.y);
+                this.ray.lineTo(center.x - this.getRadius()/2, center.y - this.getRadius()/3);
+                this.ray.lineTo(center.x - this.getRadius()/1.5, center.y - this.getRadius()/2);
+                this.ray.lineTo(center.x - this.getRadius()/2, center.y - this.getRadius());
+                this.ray.lineTo(center.x, center.y - this.getRadius()*1.2);
+                this.ray.lineTo(center.x + this.getRadius()/2, center.y - this.getRadius());
+                this.ray.lineTo(center.x + this.getRadius()/1.5, center.y - this.getRadius()/2);
+                this.ray.lineTo(center.x + this.getRadius()/2, center.y - this.getRadius()/3);
+                this.ray.lineTo(center.x + this.getRadius() / 8, center.y);
                 this.ray.close();
             } else {
                 this.ray.rect(center.x - this.getRadius(), center.y - this.getRadius(), this.getRadius() * 2, this.getRadius() * 2);
