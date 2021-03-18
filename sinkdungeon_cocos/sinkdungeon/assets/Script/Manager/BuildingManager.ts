@@ -445,7 +445,7 @@ export default class BuildingManager extends BaseManager {
         }
         let node = this.addBuilding(Logic.getBuildings(prefabName), indexPos);
         if(isOverHead){
-            node.zIndex = IndexZ.OVERHEAD;
+            node.zIndex = IndexZ.OVERHEAD+100;
         }
     }
     private getGoodsList(type: string): string[] {

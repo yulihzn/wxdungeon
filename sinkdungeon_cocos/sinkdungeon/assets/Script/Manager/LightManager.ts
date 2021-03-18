@@ -35,7 +35,6 @@ export default class LightManager extends BaseManager {
 
     }
     private render() {
-
         if (this.shadow && this.camera) {
             let p1 = this.camera.node.convertToWorldSpaceAR(cc.v2(0, 0));
             let c1 = this.ray.node.convertToNodeSpaceAR(p1);

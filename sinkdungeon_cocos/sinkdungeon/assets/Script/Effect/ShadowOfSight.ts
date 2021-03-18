@@ -45,6 +45,7 @@ export default class ShadowOfSight extends cc.Component {
     private mat: cc.MaterialVariant;
     offset = 0;
     offsetPlus = false;
+    private isRendered = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -53,6 +54,9 @@ export default class ShadowOfSight extends cc.Component {
     }
     /** 绘制视野区域 */
     renderSightArea(cameraOffset: cc.Vec2): void {
+        if(this.isRendered&&!this.showRayCast){
+            return;
+        }
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         let size = 10;
         let delta = 0.1;
@@ -73,6 +77,11 @@ export default class ShadowOfSight extends cc.Component {
                 this.drawCircle(pos, cameraOffset, this.showLight);
             }
         }
+        this.isRendered = true;
+    }
+    updateRender(showShadow:boolean){
+        this.isRendered = false;
+        this.showShadow = showShadow;
     }
     /** 通过射线数量绘制辐射线 */
     drawRayByNum(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean): void {

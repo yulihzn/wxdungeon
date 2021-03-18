@@ -399,12 +399,12 @@
     "_prefab": {
       "__id__": 13
     },
-    "_opacity": 255,
+    "_opacity": 97,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
+      "r": 107,
       "g": 255,
-      "b": 255,
+      "b": 0,
       "a": 255
     },
     "_contentSize": {

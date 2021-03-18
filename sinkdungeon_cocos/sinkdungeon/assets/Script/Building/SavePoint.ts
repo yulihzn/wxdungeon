@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
 import Player from "../Player";
 import Building from "./Building";
@@ -18,7 +19,13 @@ export default class SavePoint extends Building {
     
     onLoad(){
         this.anim = this.getComponent(cc.Animation);
+        this.lights = this.getComponentsInChildren(ShadowOfSight);
 
+    }
+    start(){
+        for(let light of this.lights){
+            light.updateRender(false);
+        }
     }
     // update (dt) {}
 
@@ -31,6 +38,9 @@ export default class SavePoint extends Building {
         this.scheduleOnce(()=>{
             this.anim.play('SavePointActive');
             this.scheduleOnce(()=>{
+                for(let light of this.lights){
+                    light.updateRender(true);
+                }
                 this.anim.play('SavePointIdleActive');
             },1)
         },1)
