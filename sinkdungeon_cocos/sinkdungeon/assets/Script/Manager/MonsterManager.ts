@@ -7,7 +7,6 @@ import MonsterRandomAttr from "./MonsterRandomAttr";
 import RoomType from "../Rect/RoomType";
 import Boss from "../Boss/Boss";
 import BaseManager from "./BaseManager";
-import Game from "../Game";
 import GameHud from "../UI/GameHud";
 
 // Learn TypeScript:
@@ -388,6 +387,17 @@ export default class MonsterManager extends BaseManager {
             indexmap.splice(randindex, 1);
             this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y),dungeon);
         }
+    }
+    timeDelay = 0;
+    update(dt:number){
+        this.timeDelay += dt;
+        if (this.timeDelay > 0.1) {
+            this.timeDelay = 0;
+            for(let monster of this.monsters){
+                monster.updateLogic();
+            }
+        }
+        
     }
 
 }

@@ -30,9 +30,14 @@ import IndexZ from './Utils/IndexZ';
 import AreaOfEffect from './Actor/AreaOfEffect';
 import AreaOfEffectData from './Data/AreaOfEffectData';
 import ActorAttackBox from './Actor/ActorAttackBox';
+import NonPlayerActor from './Actor/NonPlayerActor';
+import StateMachine from './Base/fsm/StateMachine';
+import NonPlayerActorState from './Actor/NonPlayerActorState';
+import State from './Base/fsm/State';
+import DefaultStateMachine from './Base/fsm/DefaultStateMachine';
 
 @ccclass
-export default class Monster extends Actor {
+export default class Monster extends NonPlayerActor {
     public static readonly RES_DISGUISE = 'disguise';//图片资源 伪装
     public static readonly RES_IDLE000 = 'anim000';//图片资源 等待0
     public static readonly RES_IDLE001 = 'anim001';//图片资源 等待1
@@ -89,7 +94,6 @@ export default class Monster extends Actor {
     isMoving = false;
     isFall = false;
     isDizz = false;
-    private timeDelay = 0;
     data: MonsterData = new MonsterData();
     dungeon: Dungeon;
     shooter: Shooter = null;
@@ -114,6 +118,8 @@ export default class Monster extends Actor {
     attrmap: { [key: string]: number } = {};
     mat: cc.MaterialVariant;
     animStatus = Monster.ANIM_NONE;
+
+    stateMachine:StateMachine<NonPlayerActor,State<NonPlayerActor>>;
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -148,6 +154,7 @@ export default class Monster extends Actor {
         this.dangerBox.init(this, this.dungeon,true);
         this.dangerTips.opacity = 0;
         this.specialSkill.delay(5);
+        this.stateMachine  = new DefaultStateMachine(this,NonPlayerActorState.IDLE,NonPlayerActorState.DEFAULT);
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
@@ -707,7 +714,8 @@ export default class Monster extends Actor {
             }, this.data.blink, true)
         }
     }
-    monsterAction() {
+    updateLogic() {
+        this.stateMachine.update();
         if (this.isDied || !this.dungeon || this.isHurt || this.isFall || !this.isShow || this.isDizz) {
             return;
         }
@@ -871,11 +879,6 @@ export default class Monster extends Actor {
     }
 
     update(dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > 0.2) {
-            this.timeDelay = 0;
-            this.monsterAction();
-        }
         //隐匿
         if (this.data.invisible > 0 && this.sprite.opacity > 20) {
             this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3);

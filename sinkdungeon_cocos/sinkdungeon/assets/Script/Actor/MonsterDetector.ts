@@ -33,7 +33,7 @@ export default class MonsterDetector extends cc.Component {
             let pos = this.getRoate90Point(bullet.node.position,monster.node.position,Random.getHalfChance());
             pos = pos.sub(monster.node.position);
             monster.moveTarget = pos.clone();
-            monster.monsterAction();
+            monster.updateLogic();
             this.scheduleOnce(()=>{monster.moveTarget = cc.Vec3.ZERO;},0.1);
         }
     }

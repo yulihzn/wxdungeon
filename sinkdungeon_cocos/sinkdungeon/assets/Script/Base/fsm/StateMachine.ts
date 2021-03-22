@@ -9,19 +9,18 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+import FsmEvent from "./FsmEvent";
+import State from "./State";
 
-@ccclass
-export default class Utils {
-    static showLog = true;
-    static log(msg:String):void{
-        if(this.showLog){
-            cc.log(msg);
-        }
-    }
-    static clearComponentArray(arr:cc.Component[]):void{
-        for(let n of arr){
-            if(n&&n.isValid){n.destroy();}
-        }
-    }
+export default interface StateMachine<E, S extends State<E>> {
+    update(): void;
+    changeState(newState: S): void;
+    revertToPreviousState(): boolean;
+    setInitialState(state: S): void;
+    setGlobalState(state: S): void;
+    getCurrentState(): S;
+    getGlobalState(): S;
+    getPreviousState(): S;
+    isInState(state: S): boolean;
+    handleEvent(event: FsmEvent): boolean;
 }

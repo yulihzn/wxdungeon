@@ -1,3 +1,4 @@
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -9,19 +10,9 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const { ccclass, property } = cc._decorator;
+const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Utils {
-    static showLog = true;
-    static log(msg:String):void{
-        if(this.showLog){
-            cc.log(msg);
-        }
-    }
-    static clearComponentArray(arr:cc.Component[]):void{
-        for(let n of arr){
-            if(n&&n.isValid){n.destroy();}
-        }
-    }
+export default abstract class NonPlayerActor extends Actor {
+   
 }
