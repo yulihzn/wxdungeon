@@ -179,8 +179,9 @@
         "chapter": 0,
         "stageLevel": 0,
         "sizeType":0.7,
+        "specialAttack":15,
         "common": {
-            "moveSpeed": 400,
+            "moveSpeed": 300,
             "maxHealth": 30,
             "damageMin": 1
         },
@@ -394,7 +395,7 @@
         "common": {
             "moveSpeed": 200,
             "maxHealth": 15,
-            "toxicRate":50,
+            "toxicRate":5,
             "damageMin": 2
         },
         "currentHealth": 15,

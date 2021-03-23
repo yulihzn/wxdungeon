@@ -55,7 +55,7 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_BOOMER = 'monster027'
     public static readonly MONSTER_SANDSTATUE = 'monster028'
     public static readonly MONSTER_HIPPO = 'monster029'
-    public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
+    public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_GARGOYLE,MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
         , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
@@ -394,7 +394,7 @@ export default class MonsterManager extends BaseManager {
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
             for(let monster of this.monsters){
-                monster.updateLogic();
+                monster.updateLogic(dt);
             }
         }
         

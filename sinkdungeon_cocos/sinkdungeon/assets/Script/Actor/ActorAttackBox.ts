@@ -31,6 +31,7 @@ export default class ActorAttackBox extends cc.Component {
     holderActor: Actor;
     dungeon: Dungeon;
     hv: cc.Vec3 = cc.v3(1, 0);
+    isSpecial = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -47,10 +48,11 @@ export default class ActorAttackBox extends cc.Component {
 
     }
     //展示
-    show(attackType: number) {
+    show(attackType: number,isSpecial?:boolean) {
         if (!this.holderActor) {
             return;
         }
+        this.isSpecial = isSpecial;
         this.attackType = attackType;
         this.changeBoxSize(attackType);
         this.node.opacity = 80;
@@ -97,6 +99,7 @@ export default class ActorAttackBox extends cc.Component {
     finish() {
         this.node.opacity = 0;
         this.isAttacking = false;
+        this.isSpecial = false;
     }
     onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
         if (this.isAttacking && this.holderActor) {
@@ -113,9 +116,13 @@ export default class ActorAttackBox extends cc.Component {
                 if (dd.isBackAttack) {
                     dd.realDamage += s.data.FinalCommon.damageBack;
                 }
+                if(this.isSpecial){
+                    dd.physicalDamage = dd.physicalDamage*2;
+                }
                 if (a.takeDamage(dd, from, this.holderActor)) {
                     s.addPlayerStatus(a, from);
                 }
+                this.isSpecial = false;
             }
             
             

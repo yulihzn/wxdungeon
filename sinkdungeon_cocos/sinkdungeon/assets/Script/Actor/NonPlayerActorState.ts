@@ -14,7 +14,7 @@ export class IDLE extends BaseNonPlayerActorState {
         super.update(entity);
         if (entity.sc.isMoving) {
             entity.stateMachine.changeState(NonPlayerActorState.WALK);
-        } else if (entity.isAttacking) {
+        } else if (entity.sc.isAttacking) {
             entity.stateMachine.changeState(NonPlayerActorState.ATTACK);
         }
     }
@@ -23,14 +23,17 @@ export class IDLE extends BaseNonPlayerActorState {
 };
 /**移动：待机，攻击，特殊攻击，冲刺，对话，格挡，闪避 */
 export class WALK extends BaseNonPlayerActorState {
-    enter(entity: Monster): void { super.enter(entity); Utils.log(`${entity.actorName()}(WALK):enter`); }
+    enter(entity: Monster): void {
+        super.enter(entity);
+        entity.enterWalk(); Utils.log(`${entity.actorName()}(WALK):enter`);
+    }
     update(entity: Monster): void {
         super.update(entity);
-        if (!entity.isMoving) {
+        if (!entity.sc.isMoving) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
-        } else if (entity.isAttacking) {
+        } else if (entity.sc.isAttacking) {
             entity.stateMachine.changeState(NonPlayerActorState.ATTACK);
-        } else if (entity.isDodging) {
+        } else if (entity.sc.isDodging) {
             entity.stateMachine.changeState(NonPlayerActorState.DODGE);
         }
     }
@@ -42,40 +45,26 @@ export class ATTACK extends BaseNonPlayerActorState {
     enter(entity: Monster): void { super.enter(entity); Utils.log(`${entity.actorName()}(ATTACK):enter`); }
     update(entity: Monster): void {
         super.update(entity);
-        if (!entity.isAttacking) {
+        if (!entity.sc.isAttacking) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
     exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(ATTACK):exit`); }
     event(entity: Monster, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(ATTACK):event`); return true; }
 };
-/**特殊攻击：待机 */
-export class SPECIALATTACK extends BaseNonPlayerActorState {
-    enter(entity: Monster): void { super.enter(entity); Utils.log(`${entity.actorName()}(SPECIALATTACK):enter`); }
-    update(entity: Monster): void {
-        super.update(entity);
-        if (!entity.isAttacking) {
-            entity.stateMachine.changeState(NonPlayerActorState.IDLE);
-        }
-    }
-    exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(SPECIALATTACK):exit`); }
-    event(entity: Monster, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(SPECIALATTACK):event`); return true; }
-};
+
 /**准备： 待机，伪装, 展现*/
 export class PRPARE extends BaseNonPlayerActorState {
     enter(entity: Monster): void {
         super.enter(entity);
         Utils.log(`${entity.actorName()}(PRPARE):enter`);
-        entity.enterShow();
     }
     update(entity: Monster): void {
         super.update(entity);
-        if (entity.isShow) {
-            if (entity.sc.isDisguising) {
-                entity.stateMachine.changeState(NonPlayerActorState.DISGUISE);
-            } else {
-                entity.stateMachine.changeState(NonPlayerActorState.IDLE);
-            }
+        if (entity.sc.isDisguising) {
+            entity.stateMachine.changeState(NonPlayerActorState.DISGUISE);
+        } else {
+            entity.stateMachine.changeState(NonPlayerActorState.SHOW);
         }
     }
     exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(PRPARE):exit`); }
@@ -83,10 +72,18 @@ export class PRPARE extends BaseNonPlayerActorState {
 };
 /**展现： 待机*/
 export class SHOW extends BaseNonPlayerActorState {
-    enter(entity: Monster): void { super.enter(entity); Utils.log(`${entity.actorName()}(PRPARE):enter`); }
-    update(entity: Monster): void { super.update(entity); }
-    exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(PRPARE):exit`); }
-    event(entity: Monster, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(PRPARE):event`); return true; }
+    enter(entity: Monster): void {
+        super.enter(entity); Utils.log(`${entity.actorName()}(SHOW):enter`);
+        entity.enterShow();
+    }
+    update(entity: Monster): void {
+        super.update(entity);
+        if (entity.sc.isShow) {
+            entity.stateMachine.changeState(NonPlayerActorState.IDLE);
+        }
+    }
+    exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(SHOW):exit`); }
+    event(entity: Monster, event: FsmEvent): boolean { super.event(entity, event); Utils.log(`${entity.actorName()}(SHOW):event`); return true; }
 };
 /** 死亡： */
 export class DIED extends BaseNonPlayerActorState {
@@ -103,13 +100,12 @@ export class DIED extends BaseNonPlayerActorState {
 export class HURT extends BaseNonPlayerActorState {
     enter(entity: Monster): void {
         super.enter(entity); Utils.log(`${entity.actorName()}(HURT):enter`);
-        entity.enterHurt();
     }
     update(entity: Monster): void {
         super.update(entity);
         if (!entity.sc.isHurting) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
-        }else if(entity.sc.isFalling){
+        } else if (entity.sc.isFalling) {
             entity.stateMachine.changeState(NonPlayerActorState.FALL);
         }
     }
@@ -151,7 +147,7 @@ export class DASH extends BaseNonPlayerActorState {
     enter(entity: Monster): void { super.enter(entity); Utils.log(`${entity.actorName()}(DASH):enter`); }
     update(entity: Monster): void {
         super.update(entity);
-        if (!entity.isDashing) {
+        if (!entity.sc.isDashing) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }
@@ -163,7 +159,7 @@ export class DODGE extends BaseNonPlayerActorState {
     enter(entity: Monster): void { super.enter(entity); Utils.log(`${entity.actorName()}(DODGE):enter`); }
     update(entity: Monster): void {
         super.update(entity);
-        if (!entity.isDodging) {
+        if (!entity.sc.isDodging) {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         }
     }

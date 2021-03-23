@@ -92,7 +92,7 @@ export default class Status extends cc.Component {
         let monster = this.target.getComponent(Monster);
         if(monster){
             if(takeD){monster.takeDamage(dd);}
-            monster.dizzCharacter(dizzDuration);
+            monster.takeDizz(dizzDuration);
             return;
         }
         //boss免疫眩晕

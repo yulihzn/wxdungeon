@@ -1,23 +1,26 @@
 const {ccclass, property} = cc._decorator;
 export default class NextStep extends cc.Component{
     private isExcuting = false;
-    private isInCooling = false;
+    private _isInCooling = false;
     next(callback:Function,delay:number,finishAfterCoolDown?:boolean){
-        if(this.isInCooling){
+        if(this._isInCooling){
             return;
         }
         if(callback){
             callback();
         }
-        this.isInCooling = true;
-        this.scheduleOnce(()=>{this.isInCooling = false;if(finishAfterCoolDown){this.isExcuting = false;}},delay)
+        this._isInCooling = true;
+        this.scheduleOnce(()=>{this._isInCooling = false;if(finishAfterCoolDown){this.isExcuting = false;}},delay)
     }
     delay(delayTime:number){
-        this.isInCooling = true;
-        this.scheduleOnce(()=>{this.isInCooling = false;})
+        this._isInCooling = true;
+        this.scheduleOnce(()=>{this._isInCooling = false;},delayTime);
     }
     refreshCoolDown(){
-        this.isInCooling = false;
+        this._isInCooling = false;
+    }
+    get isInCooling(){
+        return this._isInCooling;
     }
     get IsExcuting(){
         return this.isExcuting;
@@ -25,4 +28,5 @@ export default class NextStep extends cc.Component{
     set IsExcuting(flag:boolean){
         this.isExcuting = flag;
     }
+
 }
