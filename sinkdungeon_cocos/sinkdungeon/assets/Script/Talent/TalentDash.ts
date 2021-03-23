@@ -2,8 +2,6 @@ import { EventHelper } from "../EventHelper";
 import Talent from "./Talent";
 import DashShadow from "../Item/DashShadow";
 import DamageData from "../Data/DamageData";
-import Monster from "../Monster";
-import Boss from "../Boss/Boss";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";

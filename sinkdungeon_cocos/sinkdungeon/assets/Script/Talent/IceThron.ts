@@ -1,11 +1,7 @@
 import Player from "../Player";
-import Monster from "../Monster";
-import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
-import Talent from "./Talent";
 import StatusManager from "../Manager/StatusManager";
-import Dungeon from "../Dungeon";
 import IndexZ from "../Utils/IndexZ";
 import Actor from "../Base/Actor";
 

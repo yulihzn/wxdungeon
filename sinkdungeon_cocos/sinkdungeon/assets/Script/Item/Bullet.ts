@@ -472,7 +472,7 @@ export default class Bullet extends cc.Component {
         if (this.isFromPlayer) {
             for (let monster of this.dungeon.monsterManager.monsterList) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
-                if (dis < 500 && dis < olddis && !monster.isDied && !monster.isDisguising) {
+                if (dis < 500 && dis < olddis && !monster.isDied && !monster.sc.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;

@@ -30,14 +30,13 @@ import IndexZ from './Utils/IndexZ';
 import AreaOfEffect from './Actor/AreaOfEffect';
 import AreaOfEffectData from './Data/AreaOfEffectData';
 import ActorAttackBox from './Actor/ActorAttackBox';
-import NonPlayerActor from './Actor/NonPlayerActor';
 import StateMachine from './Base/fsm/StateMachine';
-import NonPlayerActorState from './Actor/NonPlayerActorState';
 import State from './Base/fsm/State';
 import DefaultStateMachine from './Base/fsm/DefaultStateMachine';
+import NonPlayerActorState from './Actor/NonPlayerActorState';
 
 @ccclass
-export default class Monster extends NonPlayerActor {
+export default class Monster extends Actor {
     public static readonly RES_DISGUISE = 'disguise';//图片资源 伪装
     public static readonly RES_IDLE000 = 'anim000';//图片资源 等待0
     public static readonly RES_IDLE001 = 'anim001';//图片资源 等待1
@@ -91,15 +90,8 @@ export default class Monster extends NonPlayerActor {
     rigidbody: cc.RigidBody;
     graphics: cc.Graphics;
     isFaceRight = true;
-    isMoving = false;
-    isFall = false;
-    isDizz = false;
-    data: MonsterData = new MonsterData();
     dungeon: Dungeon;
     shooter: Shooter = null;
-    isHurt = false;//是否受到伤害
-    // isDashing = false;//是否正在冲刺
-    isDisguising = false;//是否正在伪装
     currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
     isVariation: boolean = false;//是否变异
 
@@ -112,14 +104,19 @@ export default class Monster extends NonPlayerActor {
     specialSkill = new NextStep();
     dashSkill = new NextStep();
     blinkSkill = new NextStep();
-    isAttackAnimExcuting = false;
     //躲避目标位置
     moveTarget: cc.Vec3 = cc.v3(0, 0);
     attrmap: { [key: string]: number } = {};
     mat: cc.MaterialVariant;
     animStatus = Monster.ANIM_NONE;
+    isAttacking = false;
+    isMoving = false;
+    isDodging = false;//是否在闪避
+    isDashing = false;//是否正在冲刺
 
-    stateMachine:StateMachine<NonPlayerActor,State<NonPlayerActor>>;
+    data: MonsterData = new MonsterData();
+
+    public stateMachine: StateMachine<Monster, State<Monster>>;
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -146,15 +143,14 @@ export default class Monster extends NonPlayerActor {
         this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
         this.playAnim(Monster.ANIM_IDLE);
-        this.scheduleOnce(() => { this.isShow = true; }, 1);
         this.resetBodyColor();
         if (this.data.isHeavy > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
-        this.dangerBox.init(this, this.dungeon,true);
+        this.dangerBox.init(this, this.dungeon, true);
         this.dangerTips.opacity = 0;
         this.specialSkill.delay(5);
-        this.stateMachine  = new DefaultStateMachine(this,NonPlayerActorState.IDLE,NonPlayerActorState.DEFAULT);
+        this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL);
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
         // this.graphics.stroke();
@@ -195,7 +191,7 @@ export default class Monster extends NonPlayerActor {
             if (r > 80 * this.node.scaleY) {
                 r = 80 * this.node.scaleY;
             }
-            if (this.isHurt) {
+            if (this.sc.isHurting) {
                 this.unschedule(call);
                 this.graphics.clear();
             }
@@ -221,9 +217,9 @@ export default class Monster extends NonPlayerActor {
             this.shadow = this.sprite.getChildByName('shadow');
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
-        if(spriteFrame){
+        if (spriteFrame) {
             this.bodySprite.spriteFrame = spriteFrame;
-        }else{
+        } else {
             this.bodySprite.spriteFrame = null;
         }
         this.bodySprite.node.width = spriteFrame.getRect().width;
@@ -255,8 +251,6 @@ export default class Monster extends NonPlayerActor {
         return spriteFrame;
     }
     updatePlayerPos() {
-        // this.node.x = this.pos.x * 64 + 32;
-        // this.node.y = this.pos.y * 64 + 32;
         this.node.position = Dungeon.getPosInMap(this.pos);
     }
     transportPlayer(x: number, y: number) {
@@ -289,7 +283,7 @@ export default class Monster extends NonPlayerActor {
         }
     }
 
-    remoteAttack(target:Actor,isSpecial: boolean) {
+    remoteAttack(target: Actor, isSpecial: boolean) {
         this.remoteSkill.IsExcuting = false;
         let p = this.shooter.node.position.clone();
         p.x = this.shooter.node.scaleX > 0 ? p.x + 30 : -p.x - 30;
@@ -315,12 +309,12 @@ export default class Monster extends NonPlayerActor {
             this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5, cc.v3(this.data.shooterOffsetX, this.data.shooterOffsetY));
         }
     }
-    showAttackAnim(finish: Function, before: Function,target:Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
-        if (this.isAttackAnimExcuting) {
+    showAttackAnim(finish: Function, before: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
+        if (this.isAttacking) {
             return;
         }
         this.playAnim(Monster.ANIM_ATTACK);
-        this.isAttackAnimExcuting = true;
+        this.isAttacking = true;
         let pos = target.node.position.clone().sub(this.node.position);
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
@@ -341,7 +335,7 @@ export default class Monster extends NonPlayerActor {
             this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01);
             if (isMelee) {
                 if (!this.dangerBox.dungeon) {
-                    this.dangerBox.init(this, this.dungeon,true);
+                    this.dangerBox.init(this, this.dungeon, true);
                 }
                 this.dangerBox.show(this.data.attackType);
             }
@@ -383,7 +377,7 @@ export default class Monster extends NonPlayerActor {
         }), cc.moveTo(0.2, 0, 0), cc.callFunc(() => {
             //这里防止不转向
             this.changeFaceRight(target);
-            this.isAttackAnimExcuting = false;
+            this.isAttacking = false;
             this.playAnim(Monster.ANIM_IDLE);
         }));
         let allAction = cc.sequence(beforeAction, action1, afterAction);
@@ -411,7 +405,7 @@ export default class Monster extends NonPlayerActor {
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_IDLE000) })
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_IDLE001) });
         this.sprite.stopAllActions();
-        this.isAttackAnimExcuting = false;
+        this.isAttacking = false;
         cc.tween(this.sprite).repeatForever(action).start();
     }
     private playWalk() {
@@ -421,7 +415,7 @@ export default class Monster extends NonPlayerActor {
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) })
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK03) });
         this.sprite.stopAllActions();
-        this.isAttackAnimExcuting = false;
+        this.isAttacking = false;
         cc.tween(this.sprite).repeatForever(action).start();
     }
     private playHit() {
@@ -434,24 +428,25 @@ export default class Monster extends NonPlayerActor {
         this.changeBodyRes(this.data.resName, Monster.RES_HIT003);
     }
 
+
     //移动，返回速度
     move(pos: cc.Vec3, speed: number) {
-        if (this.isDied || this.isFall || this.isHurt || this.dashSkill.IsExcuting || this.isDisguising) {
+        if (this.sc.isDied || this.sc.isFalling || this.sc.isHurting || this.dashSkill.IsExcuting || this.sc.isDisguising) {
             return;
         }
         if (pos.equals(cc.Vec3.ZERO)) {
             return;
         }
-        let isDodge = false;
+        this.isDodging = false;
         if (!this.moveTarget.equals(cc.Vec3.ZERO)) {
             pos = this.moveTarget.clone();
-            isDodge = true;
+            this.isDodging = true;
         }
         pos = pos.normalizeSelf();
         if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.1);
         }
-        if (isDodge) {
+        if (this.isDodging) {
             pos = pos.mul(2.5);
         }
 
@@ -473,7 +468,7 @@ export default class Monster extends NonPlayerActor {
         this.rigidbody.linearVelocity = movement.clone();
         this.currentlinearVelocitySpeed = movement.clone();
         this.isMoving = h != 0 || v != 0;
-        if (this.isMoving && !this.isAttackAnimExcuting && !this.isDisguising && this.data.isHeavy < 1) {
+        if (this.isMoving && !this.isAttacking && !this.sc.isDisguising && this.data.isHeavy < 1) {
             this.isFaceRight = h >= 0;
         }
         this.playAnim(this.isMoving ? Monster.ANIM_WALK : Monster.ANIM_IDLE)
@@ -495,7 +490,7 @@ export default class Monster extends NonPlayerActor {
     /**
      * 攻击目标是否背面朝着怪物
      */
-    isFaceTargetBehind(target:Actor): boolean {
+    isFaceTargetBehind(target: Actor): boolean {
         let isTargetRight = target.node.position.x > this.node.position.x;
         let isTargetFaceRight = target.node.scaleX > 0;
         return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
@@ -504,27 +499,28 @@ export default class Monster extends NonPlayerActor {
         if (this.isDied) {
             return;
         }
-        this.isFall = true;
+        this.sc.isFalling = true;
         this.bodySprite.node.angle = this.isPlayerBehindAttack() ? -75 : 105;
         this.anim.play('MonsterFall');
     }
     //Anim
     FallFinish() {
-        this.isFall = false;
+        this.sc.isFalling = false;
         this.bodySprite.node.angle = 0;
         this.sprite.y = 0;
         this.sprite.x = 0;
-        this.anim.play('MonsterIdle');
     }
     takeDamage(damageData: DamageData): boolean {
-        if (!this.isShow) {
+        if (!this.sc.isShow) {
             return false;
         }
+        //隐身中
         if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }
-        if (this.blinkSkill.IsExcuting) {
+        //闪烁中
+        if (this.sc.isBlinking) {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }
@@ -536,12 +532,12 @@ export default class Monster extends NonPlayerActor {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }
-        this.isHurt = dd.getTotalDamage() > 0;
-        this.isDisguising = false;
-        if (!this.specialSkill.IsExcuting) {
+        this.sc.isHurting = dd.getTotalDamage() > 0;
+        this.sc.isDisguising = false;
+        if (!this.sc.isSpecialAttacking) {
             this.meleeSkill.IsExcuting = false;
             this.remoteSkill.IsExcuting = false;
-            this.isAttackAnimExcuting = false;
+            this.isAttacking = false;
             if (dd.getTotalDamage() > 0) {
                 this.playAnim(Monster.ANIM_HIT);
             }
@@ -566,7 +562,7 @@ export default class Monster extends NonPlayerActor {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.scheduleOnce(() => {
                 if (this.node) {
-                    this.isHurt = false;
+                    this.sc.isHurting = false;
                     this.hitLight(false);
                     this.resetBodyColor();
                     this.anim.resume();
@@ -580,11 +576,11 @@ export default class Monster extends NonPlayerActor {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
         this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike, damageData.isBackAttack);
-        if (this.data.isRecovery > 0 && this.isHurt) {
+        if (this.data.isRecovery > 0 && this.sc.isHurting) {
             this.addStatus(StatusManager.RECOVERY, new FromData());
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;//停下来
         }
-        return this.isHurt;
+        return this.sc.isHurting;
     }
     resetBodyColor(): void {
         if (!this.data) {
@@ -635,7 +631,7 @@ export default class Monster extends NonPlayerActor {
             return;
         }
         this.isDied = true;
-        this.isDisguising = false;
+        this.sc.isDisguising = false;
         this.dashSkill.IsExcuting = false;
         this.playAnim(Monster.ANIM_DIED);
         let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
@@ -690,33 +686,13 @@ export default class Monster extends NonPlayerActor {
     getCenterPosition(): cc.Vec3 {
         return this.node.position.clone();
     }
-    blink() {
-        if (this.data.blink > 0) {
-            this.blinkSkill.next(() => {
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
-                this.blinkSkill.IsExcuting = true;
-                let body = this.sprite.getChildByName('body');
-                let action = cc.sequence(cc.fadeOut(0.2)
-                    , cc.callFunc(() => {
-                        let newPos = this.getNearestEnemyPosition(true,this.dungeon);
-                        newPos = Dungeon.getIndexInMap(newPos);
-                        if (newPos.x > this.pos.x) {
-                            newPos = newPos.addSelf(cc.v3(1, 0));
-                        } else {
-                            newPos = newPos.addSelf(cc.v3(-1, 0));
-                        }
-                        let pos = Dungeon.getPosInMap(newPos);
-                        this.node.setPosition(pos);
-                    })
-                    , cc.fadeIn(0.2));
-                body.runAction(action);
-                this.scheduleOnce(() => { this.blinkSkill.IsExcuting = false; }, 1)
-            }, this.data.blink, true)
-        }
-    }
+
     updateLogic() {
+        if (!this.dungeon) {
+            return;
+        }
         this.stateMachine.update();
-        if (this.isDied || !this.dungeon || this.isHurt || this.isFall || !this.isShow || this.isDizz) {
+        if (this.isDied || this.sc.isHurting || this.sc.isFalling || !this.sc.isShow || !this.sc.isDizzing) {
             return;
         }
         this.node.position = Dungeon.fixOuterMap(this.node.position);
@@ -727,7 +703,7 @@ export default class Monster extends NonPlayerActor {
             newPos.x += Logic.getRandomNum(0, 200) - 100;
             newPos.y += Logic.getRandomNum(0, 200) - 100;
         }, 2, true);
-        let target = this.getNearestEnemyActor(true,this.dungeon);
+        let target = this.getNearestEnemyActor(true, this.dungeon);
         let targetDis = this.getNearestTargetDistance(target);
         let pos = newPos.clone();
 
@@ -746,17 +722,17 @@ export default class Monster extends NonPlayerActor {
         }
         let canMelee = false;
         let canRemote = false;
-        canMelee = targetDis < pd * this.node.scaleY 
-            && !target.isDied 
+        canMelee = targetDis < pd * this.node.scaleY
+            && !target.isDied
             && !target.invisible
             && target.isShow
             && this.data.melee > 0;
-        canRemote = targetDis < 600 && this.data.remote > 0 
+        canRemote = targetDis < 600 && this.data.remote > 0
             && this.shooter
-            && !target.isDied 
+            && !target.isDied
             && !target.invisible
             && target.isShow;
-        if (canMelee && !this.dashSkill.IsExcuting && !this.blinkSkill.IsExcuting && !this.isDisguising && !this.remoteSkill.IsExcuting) {
+        if (canMelee && !this.dashSkill.IsExcuting && !this.sc.isBlinking && !this.sc.isDisguising && !this.remoteSkill.IsExcuting) {
             this.meleeSkill.next(() => {
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.meleeSkill.IsExcuting = true;
@@ -772,18 +748,24 @@ export default class Monster extends NonPlayerActor {
                     }
                     this.specialSkill.IsExcuting = false;
 
-                }, () => { },target, this.specialSkill.IsExcuting, true, isMiss)
+                }, () => { }, target, this.specialSkill.IsExcuting, true, isMiss)
 
                 this.sprite.opacity = 255;
             }, this.data.melee);
 
         }
-        this.blink();
+        //闪烁
+        if (this.data.blink > 0 && !this.sc.isBlinking) {
+            this.blinkSkill.next(() => {
+                this.sc.isBlinking = true;
+                this.scheduleOnce(() => { this.sc.isBlinking = false; }, 1)
+            }, this.data.blink, true)
+        }
         if (targetDis < 500 && this.data.melee > 0 && !target.invisible) {
             pos = this.getMovePosFromTarget(target);
         }
         //远程
-        if (canRemote && !this.isDisguising && !this.meleeSkill.IsExcuting) {
+        if (canRemote && !this.sc.isDisguising && !this.meleeSkill.IsExcuting) {
             this.remoteSkill.next(() => {
                 this.remoteSkill.IsExcuting = true;
                 this.changeFaceRight(target);
@@ -791,14 +773,14 @@ export default class Monster extends NonPlayerActor {
                     if (Logic.bullets[this.data.bulletType] && Logic.bullets[this.data.bulletType].isLaser > 0 && isSpecial) {
                         return;
                     }
-                    this.remoteAttack(target,isSpecial);
+                    this.remoteAttack(target, isSpecial);
                     this.specialSkill.IsExcuting = false;
                 }, (isSpecial: boolean) => {
                     if (Logic.bullets[this.data.bulletType] && Logic.bullets[this.data.bulletType].isLaser > 0 && isSpecial) {
-                        this.remoteAttack(target,isSpecial);
+                        this.remoteAttack(target, isSpecial);
                         this.specialSkill.IsExcuting = false;
                     }
-                },target, this.specialSkill.IsExcuting, false, false);
+                }, target, this.specialSkill.IsExcuting, false, false);
                 this.sprite.opacity = 255;
             }, this.data.remote, true);
         }
@@ -806,28 +788,29 @@ export default class Monster extends NonPlayerActor {
         //冲刺
         let speed = this.data.FinalCommon.moveSpeed;
         if (targetDis < 600 && targetDis > 100 && !target.isDied && !target.invisible && this.data.dash > 0
-            && !this.dashSkill.IsExcuting && !this.isDisguising) {
+            && !this.dashSkill.IsExcuting && !this.sc.isDisguising) {
             this.dashSkill.next(() => {
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 pos = this.getMovePosFromTarget(target);
                 this.showAttackEffect(true);
                 this.move(pos, speed * 1.2);
                 this.dashSkill.IsExcuting = true;
-                this.scheduleOnce(() => { if (this.node) { this.dashSkill.IsExcuting = false; } }, 2);
+                this.isDashing = true;
+                this.scheduleOnce(() => { if (this.node) { this.dashSkill.IsExcuting = false; this.isDashing = false; } }, 2);
             }, this.data.dash);
 
         }
-        if (this.data.disguise > 0 && targetDis < this.data.disguise && !target.isDied && !target.invisible && this.isDisguising) {
-            this.playAnim(Monster.ANIM_IDLE);
-            this.isDisguising = false;
+        //靠近取消伪装
+        if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
+            this.sc.isDisguising = false;
         }
 
-        if (Logic.getHalfChance() && !this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isAttackAnimExcuting) {
+        if (Logic.getHalfChance() && !this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isAttacking) {
             this.move(pos, speed);
         }
 
     }
-    getMovePosFromTarget(target:Actor): cc.Vec3 {
+    getMovePosFromTarget(target: Actor): cc.Vec3 {
         let newPos = target.node.position.clone();
         newPos = Dungeon.getIndexInMap(newPos);
         if (newPos.x > this.pos.x) {
@@ -837,12 +820,12 @@ export default class Monster extends NonPlayerActor {
         }
         let pos = Dungeon.getPosInMap(newPos);
         pos = pos.sub(this.node.position);
-        if (!this.isAttackAnimExcuting && !this.isAttackAnimExcuting && !this.isDisguising && this.data.isHeavy < 1) {
+        if (!this.isAttacking && !this.isAttacking && !this.sc.isDisguising && this.data.isHeavy < 1) {
             this.changeFaceRight(target);
         }
         return pos;
     }
-    changeFaceRight(target:Actor) {
+    changeFaceRight(target: Actor) {
         let pos = target.node.position.clone();
         pos = pos.sub(this.node.position);
         let h = pos.x;
@@ -853,7 +836,7 @@ export default class Monster extends NonPlayerActor {
     };
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let target = Actor.getCollisionTarget(other);
-        if (target && this.dashSkill.IsExcuting && this.dungeon && !this.isHurt && !this.isDied) {
+        if (target && this.dashSkill.IsExcuting && this.dungeon && !this.sc.isHurting && !this.isDied) {
             this.dashSkill.IsExcuting = false;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000');
@@ -865,9 +848,9 @@ export default class Monster extends NonPlayerActor {
 
     dizzCharacter(dizzDuration: number) {
         if (dizzDuration > 0) {
-            this.isDizz = true;
+            this.sc.isDizzing = true;
             this.scheduleOnce(() => {
-                this.isDizz = false;
+                this.sc.isDizzing = false;
             }, dizzDuration)
         }
     }
@@ -891,18 +874,15 @@ export default class Monster extends NonPlayerActor {
         if (this.isDied) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        this.healthBar.node.opacity = this.isDisguising ? 0 : 255;
+        this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
         if (this.shadow) {
-            this.shadow.opacity = this.isDisguising ? 0 : 128;
+            this.shadow.opacity = this.sc.isDisguising ? 0 : 128;
         }
-        if (this.isDisguising && this.anim) { this.anim.pause(); }
+        if (this.sc.isDisguising && this.anim) { this.anim.pause(); }
         if (this.data.invisible > 0) {
             this.healthBar.node.opacity = this.sprite.opacity > 20 ? 255 : 9;
         }
         this.healthBar.node.active = !this.isDied;
-        if (this.data.currentHealth < 1) {
-            this.killed();
-        }
         let sn = this.getScaleSize();
         this.node.scaleX = this.isFaceRight ? sn : -sn;
         this.node.scaleY = sn;
@@ -920,5 +900,71 @@ export default class Monster extends NonPlayerActor {
     }
     actorName() {
         return this.data.nameCn;
+    }
+
+
+    /**出场动作 */
+    public enterShow() {
+        this.sprite.stopAllActions();
+        cc.tween(this.sprite).to(1, { opacity: 255 }).call(() => { this.sc.isShow = true; }).start();
+    }
+    /**伪装 */
+    public enterDisguise() {
+        this.sprite.stopAllActions();
+        if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
+            this.anim.pause();
+        }
+        this.changeBodyRes(this.data.resName, Monster.RES_DISGUISE);
+    }
+    /**受伤 */
+    public enterHurt() {
+        this.sprite.stopAllActions();
+    }
+    /**等待 */
+    public enterIdle() {
+        let action = cc.tween()
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_IDLE000) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_IDLE001) });
+        this.sprite.stopAllActions();
+        this.isAttacking = false;
+        cc.tween(this.sprite).repeatForever(action).start();
+        this.anim.play('MonsterIdle');
+    }
+    /** 移动*/
+    public enterWalk() {
+        let action = cc.tween()
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK00) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK01) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK02) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, Monster.RES_WALK03) });
+        this.sprite.stopAllActions();
+        this.isAttacking = false;
+        cc.tween(this.sprite).repeatForever(action).start();
+        this.anim.play('MonsterIdle');
+    }
+    /**眩晕 */
+    public enterDizz() {
+        this.sprite.stopAllActions();
+    }
+    /**闪烁 */
+    public enterBlink() {
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
+        let body = this.bodySprite.node;
+        cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
+            let newPos = this.getNearestEnemyPosition(true, this.dungeon);
+            newPos = Dungeon.getIndexInMap(newPos);
+            if (newPos.x > this.pos.x) {
+                newPos = newPos.addSelf(cc.v3(1, 0));
+            } else {
+                newPos = newPos.addSelf(cc.v3(-1, 0));
+            }
+            let pos = Dungeon.getPosInMap(newPos);
+            this.node.setPosition(pos);
+        }).to(0.2, { opacity: 255 }).start();
+    }
+    /**摔倒 */
+    public enterFall() {
+        this.bodySprite.node.angle = this.isPlayerBehindAttack() ? -75 : 105;
+        this.anim.play('MonsterFall');
     }
 }

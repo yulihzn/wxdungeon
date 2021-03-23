@@ -270,8 +270,8 @@ export default class MonsterManager extends BaseManager {
 
         monster.data = data;
 
-        monster.isDisguising = data.disguise > 0;
-        if (monster.isDisguising) {
+        monster.sc.isDisguising = data.disguise > 0;
+        if (monster.sc.isDisguising) {
             monster.changeBodyRes(data.resName, Monster.RES_DISGUISE);
         } else {
             monster.changeBodyRes(resName, Monster.RES_IDLE000);
@@ -391,7 +391,7 @@ export default class MonsterManager extends BaseManager {
     timeDelay = 0;
     update(dt:number){
         this.timeDelay += dt;
-        if (this.timeDelay > 0.1) {
+        if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
             for(let monster of this.monsters){
                 monster.updateLogic();

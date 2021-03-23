@@ -7,6 +7,7 @@ import Logic from "../Logic";
 import Monster from "../Monster";
 import NonPlayer from "../NonPlayer";
 import Player from "../Player";
+import StateContext from "./StateContext";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,6 +36,7 @@ export default abstract class Actor extends cc.Component {
     isDied = false;
     invisible = false;//是否隐身
     lights:ShadowOfSight[] = [];//光源
+    sc:StateContext = new StateContext();
 
     /**
      * 获取最近的玩家
