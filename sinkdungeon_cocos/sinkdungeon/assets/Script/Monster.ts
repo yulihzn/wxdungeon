@@ -781,9 +781,7 @@ export default class Monster extends Actor {
         if (this.dungeon && this.sc.isDashing) {
             this.dashlight.opacity = 128;
         }
-        if(this.sc.isDashing){
-            this.setLinearVelocity(this.currentlinearVelocitySpeed);
-        }
+        this.setLinearVelocity(this.currentlinearVelocitySpeed);
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
         if (this.shadow) {
