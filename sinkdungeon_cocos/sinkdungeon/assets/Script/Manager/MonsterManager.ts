@@ -23,7 +23,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MonsterManager extends BaseManager {
-    
+
     public static readonly BOSS_KRAKEN = 'BOSS_KRAKEN';
     public static readonly MONSTER_SLIME = 'monster000';
     public static readonly MONSTER_GOBLIN = 'monster001';
@@ -55,7 +55,7 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_BOOMER = 'monster027'
     public static readonly MONSTER_SANDSTATUE = 'monster028'
     public static readonly MONSTER_HIPPO = 'monster029'
-    public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_GARGOYLE,MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
+    public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
         , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
@@ -115,11 +115,11 @@ export default class MonsterManager extends BaseManager {
     }
     private monsterRandomAttr: MonsterRandomAttr = new MonsterRandomAttr();
     clear(): void {
-        for(let m of this.monsters){
-            if(m&&m.isValid){m.destroy();}
+        for (let m of this.monsters) {
+            if (m && m.isValid) { m.destroy(); }
         }
-        for(let b of this.bosses){
-            if(b&&b.isValid){b.destroy();}
+        for (let b of this.bosses) {
+            if (b && b.isValid) { b.destroy(); }
         }
         this.monsters = new Array();
         this.bosses = new Array();
@@ -358,18 +358,18 @@ export default class MonsterManager extends BaseManager {
         }
         switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: arr = MonsterManager.MONSTERS_LAB;
-                num = rand4save.getRandomNum(1, 3);
+                num = rand4save.getRandomNum(3, 6);
                 break;
             case Logic.CHAPTER01: arr = MonsterManager.MONSTERS_SHIP;
-                num = rand4save.getRandomNum(2, 3); break;
+                num = rand4save.getRandomNum(3, 7); break;
             case Logic.CHAPTER02: arr = MonsterManager.MONSTERS_FOREST;
-                num = rand4save.getRandomNum(2, 4); break;
+                num = rand4save.getRandomNum(4, 8); break;
             case Logic.CHAPTER03: arr = MonsterManager.MONSTERS_PYRAMID;
-                num = rand4save.getRandomNum(2, 5); break;
+                num = rand4save.getRandomNum(4, 9); break;
             case Logic.CHAPTER04: arr = MonsterManager.MONSTERS_DUNGEON;
-                num = rand4save.getRandomNum(3, 6); break;
+                num = rand4save.getRandomNum(5, 10); break;
             case Logic.CHAPTER05: arr = MonsterManager.MONSTERS_DUNGEON;
-                num = rand4save.getRandomNum(3, 6); break;
+                num = rand4save.getRandomNum(5, 11); break;
             case Logic.CHAPTER099: arr = MonsterManager.MONSTERS_LAB;
                 num = rand4save.getRandomNum(1, 3);
                 break;
@@ -385,19 +385,21 @@ export default class MonsterManager extends BaseManager {
             let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
             let pos = indexmap[randindex];
             indexmap.splice(randindex, 1);
-            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y),dungeon);
+            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon);
         }
     }
     timeDelay = 0;
-    update(dt:number){
+    update(dt: number) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
-            for(let monster of this.monsters){
-                monster.updateLogic(dt);
+            for (let monster of this.monsters) {
+                if (monster && monster.node.active) {
+                    monster.updateLogic(dt);
+                }
             }
         }
-        
+
     }
 
 }

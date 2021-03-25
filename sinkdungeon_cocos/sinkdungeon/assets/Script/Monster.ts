@@ -115,7 +115,6 @@ export default class Monster extends Actor {
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
         this.sc.isAttacking = false;
-        this.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
@@ -301,7 +300,7 @@ export default class Monster extends Actor {
             this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5, cc.v3(this.data.shooterOffsetX, this.data.shooterOffsetY));
         }
     }
-    private showAttackAnim(finish: Function, before: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
+    private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
         let pos = target.node.position.clone().sub(this.node.position);
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
@@ -316,67 +315,78 @@ export default class Monster extends Actor {
         if (this.data.attackType == ActorAttackBox.ATTACK_STAB && isMelee) {
             stabDelay = 0.8;
         }
-        let beforeAction = cc.tween().delay(0.5).call(() => { if (before) { before(isSpecial); } })
-        //普通近战
-        let act1 = cc.tween().call(() => {
-            this.changeBodyRes(this.data.resName, Monster.RES_ATTACK01);
-            if (isMelee) {
-                if (!this.dangerBox.dungeon) {
-                    this.dangerBox.init(this, this.dungeon, true);
-                }
-                this.dangerBox.show(this.data.attackType);
-            }
-        }).delay(stabDelay).by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) })
-            .call(() => {
-                this.changeBodyRes(this.data.resName, Monster.RES_ATTACK02);
-                if (isMelee) {
-                    this.dangerBox.hide(isMiss);
-                    if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-                        this.move(this.dangerBox.hv.mul(this.dangerBox.node.width), 5000);
-                    }
-                }
-            }).delay(stabDelay).by(0.2, { position: cc.v3(pos.x, pos.y) })
-            .call(() => {
-                this.dangerBox.finish();
-                this.setLinearVelocity(cc.Vec2.ZERO);
-            })
+        let beforetween = cc.tween().delay(0.5).call(() => { if (before) { before(isSpecial); } })
 
-        //特殊攻击
-        let act2 = cc.tween().call(() => {
-            this.changeBodyRes(this.data.resName, Monster.RES_ATTACK03);
-            this.specialManager.dungeon = this.dungeon;
-            this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName));
-            if (isMelee && this.data.specialType.length > 0) {
+        //摇晃
+        let shaketween = cc.tween().by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
+            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
+            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
+            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) });
+        //退后
+        let backofftween = cc.tween().by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
+        //前进
+        let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
+        let attackpreparetween = cc.tween().call(() => {
+            this.changeBodyRes(this.data.resName, isSpecial ? Monster.RES_ATTACK03 : Monster.RES_ATTACK01);
+            if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
                 if (!this.dangerBox.dungeon) {
                     this.dangerBox.init(this, this.dungeon, true);
                 }
-                this.dangerBox.show(this.data.attackType, true);
+                this.dangerBox.show(this.data.attackType, isSpecial);
             }
-        })
-            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) }).by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
-            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) }).by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
-            .call(() => {
-                this.changeBodyRes(this.data.resName, Monster.RES_ATTACK04);
+            if (isSpecial) {
+                this.specialManager.dungeon = this.dungeon;
+                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName));
+            }
+        });
+
+        let attackingtween = cc.tween().call(() => {
+            this.changeBodyRes(this.data.resName, isSpecial ? Monster.RES_ATTACK04 : Monster.RES_ATTACK02);
+            if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
+                this.dangerBox.hide(isMiss);
+                if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
+                    this.move(this.dangerBox.hv, isSpecial ? 2000 : 1000);
+                }
+            }
+            if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
                 this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName));
-                if (isMelee && this.data.specialType.length > 0) {
-                    this.dangerBox.hide(isMiss);
-                    if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-                        this.move(this.dangerBox.hv.mul(this.dangerBox.node.width), 5000);
-                    }
-                }
-            }).delay(0.5);
-        let afterAction = cc.tween().to(0.2, { position: cc.v3(0, 0) }).call(() => {
-            this.anim.resume();
-            if (finish) { finish(isSpecial); }
-        }).to(0.2, { position: cc.v3(0, 0) }).call(() => {
-            //这里防止不转向
-            this.changeFaceRight(target);
+            }
+            if (attacking) {
+                attacking(isSpecial);
+            }
+
         });
-        let allAction = cc.tween().then(beforeAction).then(act1).then(afterAction);
+        let attackfinish = cc.tween().call(() => {
+            this.dangerBox.finish();
+            this.setLinearVelocity(cc.Vec2.ZERO);
+        });
+        let aftertween = cc.tween().to(0.2, { position: cc.v3(0, 0) }).delay(0.2).call(() => {
+            if (finish) { finish(isSpecial); }
+        })
+        //普通近战 准备 退后 出击 前进 结束
+        let normalMelee = cc.tween().then(attackpreparetween).then(backofftween)
+            .then(attackingtween).then(forwardtween).then(attackfinish);
+        //普通远程 准备 出击 结束
+        let normalRemote = cc.tween().then(attackpreparetween).delay(0.5)
+            .then(attackingtween).delay(0.2).then(attackfinish);
+        //特殊近战 准备 退后 摇晃 出击 前进 结束
+        let specialMelee = cc.tween().then(attackpreparetween).then(backofftween)
+            .then(shaketween).then(attackingtween).then(forwardtween).then(attackfinish);
+        //特殊远程 准备 摇晃 出击 结束
+        let specialRemote = cc.tween().then(attackpreparetween).then(shaketween)
+            .then(attackingtween).delay(0.5).then(attackfinish);
+
+        let allAction = cc.tween().then(beforetween).then(normalRemote).then(aftertween);
+        if (isMelee) {
+            allAction = cc.tween().then(beforetween).then(normalMelee).then(aftertween);
+        }
         if (isSpecial) {
-            allAction = cc.tween().then(beforeAction).then(act2).then(afterAction);
             this.showDangerTips();
+            allAction = cc.tween().then(beforetween).then(specialRemote).then(aftertween);
+            if (isMelee) {
+                allAction = cc.tween().then(beforetween).then(specialMelee).then(aftertween);
+            }
         }
         cc.tween(this.sprite).then(allAction).start();
     }
@@ -420,9 +430,6 @@ export default class Monster extends Actor {
     setLinearVelocity(movement: cc.Vec2) {
         this.currentlinearVelocitySpeed = movement;
         this.rigidbody.linearVelocity = this.currentlinearVelocitySpeed.clone();
-        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)) {
-            this.sc.isMoving = false;
-        }
     }
 
     start() {
@@ -546,7 +553,7 @@ export default class Monster extends Actor {
         return '#' + c3.toHEX('#rrggbb');
     }
     addStatus(statusType: string, from: FromData) {
-        if (!this.node || this.isDied) {
+        if (!this.node || this.sc.isDied) {
             return;
         }
         this.statusManager.addStatus(statusType, from);
@@ -571,10 +578,10 @@ export default class Monster extends Actor {
         if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.realRate) { actor.addStatus(StatusManager.BLEEDING, from); }
     }
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
-        this.isDied = true;
+        this.sc.isDied = true;
         this.sc.isDisguising = false;
         this.dashStep.IsExcuting = false;
         this.sprite.stopAllActions();
@@ -657,8 +664,11 @@ export default class Monster extends Actor {
         }
         if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
             range = 300;
+            if (this.specialStep.IsExcuting) {
+                range = 600;
+            }
         }
-        let canMelee = this.data.melee > 0 && !this.sc.isDashing;
+        let canMelee = this.data.melee > 0;
         let canRemote = this.data.remote > 0;
         if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.isInCooling) {
             this.meleeStep.next(() => {
@@ -670,10 +680,10 @@ export default class Monster extends Actor {
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true, false, false);
                 }
-                this.showAttackAnim(() => {
-                    this.scheduleOnce(()=>{this.sc.isAttacking = false;},0.2);
+                this.showAttackAnim(() => { }, () => { }, () => {
+                    this.sc.isAttacking = false;
                     this.specialStep.IsExcuting = false;
-                }, () => { }, target, this.specialStep.IsExcuting, true, isMiss)
+                }, target, this.specialStep.IsExcuting, true, isMiss)
 
             }, this.data.melee);
         } else if (canRemote && targetDis < 600 * this.node.scaleY) {
@@ -681,19 +691,19 @@ export default class Monster extends Actor {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
                 this.changeFaceRight(target);
+                let isLaser = Logic.bullets[this.data.bulletType] && Logic.bullets[this.data.bulletType].isLaser > 0;
                 this.showAttackAnim((isSpecial: boolean) => {
-                    if (Logic.bullets[this.data.bulletType] && Logic.bullets[this.data.bulletType].isLaser > 0 && isSpecial) {
+                    if (isLaser && isSpecial) {
+                        this.remoteAttack(target, isSpecial);
+                    }
+                }, (isSpecial: boolean) => {
+                    if (isLaser && isSpecial) {
                         return;
                     }
                     this.remoteAttack(target, isSpecial);
+                }, () => {
                     this.specialStep.IsExcuting = false;
-                    this.scheduleOnce(()=>{this.sc.isAttacking = false;},0.2);
-                }, (isSpecial: boolean) => {
-                    if (Logic.bullets[this.data.bulletType] && Logic.bullets[this.data.bulletType].isLaser > 0 && isSpecial) {
-                        this.remoteAttack(target, isSpecial);
-                        this.specialStep.IsExcuting = false;
-                        this.scheduleOnce(()=>{this.sc.isAttacking = false;},0.2);
-                    }
+                    this.sc.isAttacking = false;
                 }, target, this.specialStep.IsExcuting, false, false);
             }, this.data.remote, true);
         }
@@ -730,19 +740,18 @@ export default class Monster extends Actor {
         if (this.data.blink > 0 && !this.sc.isBlinking) {
             this.blinkStep.next(() => {
                 this.sc.isBlinking = true;
-                this.scheduleOnce(() => { this.sc.isBlinking = false; }, 1)
             }, this.data.blink, true)
         }
 
         //冲刺
         let speed = this.data.FinalCommon.moveSpeed;
         if (targetDis < 600 && targetDis > 100 && !target.isDied && !target.invisible && this.data.dash > 0
-            && !this.sc.isDashing && !this.isPassive) {
+            && !this.isPassive) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.showAttackEffect(true);
-                this.move(this.getMovePosFromTarget(target), speed * 1.2);
+                this.move(this.getMovePosFromTarget(target), speed);
                 this.scheduleOnce(() => { if (this.node) { this.sc.isDashing = false; } }, 2);
             }, this.data.dash);
         }
@@ -750,8 +759,10 @@ export default class Monster extends Actor {
         if (targetDis < 500 && targetDis > 300 && this.data.remote > 0 && !target.invisible) {
             isTracking = true;
         }
-        if (!this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isPassive && !this.sc.isMoving) {
-            if (this.isMoveTimeDelay(dt, isTracking ? 0 : 2)) {
+        let needStop = (this.data.melee > 0 && targetDis < 64) || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300);
+        if (!this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isPassive && !this.sc.isMoving && !needStop) {
+            this.moveStep.next(() => {
+                this.sc.isMoving = true;
                 let pos = cc.v3(0, 0);
                 pos.x += Logic.getRandomNum(0, 400) - 200;
                 pos.y += Logic.getRandomNum(0, 400) - 200;
@@ -761,16 +772,8 @@ export default class Monster extends Actor {
                 } else {
                     cc.log('isMoving');
                 }
-                this.sc.isMoving = true;
-                this.scheduleOnce(() => {
-                    this.sc.isMoving = false;
-                }, 1)
                 this.move(pos, speed);
-            }
-        }
-
-        if ((this.data.melee > 0 && targetDis < 64) || (this.data.remote > 0 && targetDis < 300) || !this.sc.isMoving) {
-            this.setLinearVelocity(cc.Vec2.ZERO);
+            }, isTracking ? 0 : 2, true);
         }
 
         //隐匿
@@ -781,7 +784,12 @@ export default class Monster extends Actor {
         if (this.dungeon && this.sc.isDashing) {
             this.dashlight.opacity = 128;
         }
-        this.setLinearVelocity(this.currentlinearVelocitySpeed);
+        if (this.sc.isDashing) {
+            this.setLinearVelocity(this.currentlinearVelocitySpeed);
+        }
+        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)) {
+            this.sc.isMoving = false;
+        }
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
         if (this.shadow) {
@@ -791,7 +799,7 @@ export default class Monster extends Actor {
         if (this.data.invisible > 0) {
             this.healthBar.node.opacity = this.sprite.opacity > 20 ? 255 : 9;
         }
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
         let sn = this.getScaleSize();
         this.node.scaleX = this.isFaceRight ? sn : -sn;
         this.node.scaleY = sn;
@@ -834,7 +842,7 @@ export default class Monster extends Actor {
     };
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let target = Actor.getCollisionTarget(other);
-        if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isDied) {
+        if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
             this.sc.isDashing = false;
             this.setLinearVelocity(cc.Vec2.ZERO);
             let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000');
@@ -922,7 +930,7 @@ export default class Monster extends Actor {
             }
             let pos = Dungeon.getPosInMap(newPos);
             this.node.setPosition(pos);
-        }).to(0.2, { opacity: 255 }).start();
+        }).to(0.2, { opacity: 255 }).call(() => { this.sc.isBlinking = false; }).start();
     }
     moveTimeDelay = 0;
     isMoveTimeDelay(dt: number, delta: number): boolean {

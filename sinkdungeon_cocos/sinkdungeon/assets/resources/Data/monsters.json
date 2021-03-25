@@ -5,6 +5,7 @@
         "resName": "monster000",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 400,
             "maxHealth": 30,
@@ -23,6 +24,7 @@
         "resName": "monster001",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 500,
             "maxHealth": 20,
@@ -32,7 +34,7 @@
         "isBoom":0,
         "invisible": 0,
         "remote": 0,
-        "melee": 1,
+        "melee": 3,
         "boxType":1,
         "dash": 0
     },
@@ -44,6 +46,7 @@
         "stageLevel": 0,
         "bulletType":"bullet017",
         "bulletArcExNum":1,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 100,
             "maxHealth": 80,
@@ -53,8 +56,8 @@
         },
         "currentHealth": 80,
         "invisible": 0,
-        "remote": 2,
-        "melee": 1,
+        "remote": 4,
+        "melee": 3,
         "boxType":1,
         "dash": 5
     },
@@ -63,6 +66,7 @@
         "nameEn": "anubis",
         "resName": "monster003",
         "chapter": 0,
+        "specialAttack":15,
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
@@ -72,7 +76,7 @@
         "currentHealth": 45,
         "invisible": 1,
         "remote": 0,
-        "melee": 1,
+        "melee": 3,
         "boxType":1,
         "dash": 0
     },
@@ -81,6 +85,7 @@
         "nameEn": "pirate",
         "resName": "monster004",
         "chapter": 0,
+        "specialAttack":15,
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
@@ -100,6 +105,7 @@
         "resName": "monster005",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 400,
             "maxHealth": 25,
@@ -108,7 +114,7 @@
         "currentHealth": 25,
         "invisible": 0,
         "remote": 0,
-        "melee": 1,
+        "melee": 3,
         "boxType":1,
         "dash": 5
     },
@@ -119,6 +125,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "bulletType":"bullet031",
+        "specialAttack":15,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 30,
@@ -126,7 +133,7 @@
         },
         "currentHealth": 30,
         "invisible": 0,
-        "remote": 1,
+        "remote": 3,
         "melee": 0,
         "boxType":2,
         "dash": 0
@@ -137,8 +144,8 @@
         "resName": "monster007",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "specialBulletLineExNum":1,
-        "specialAttack":10,
         "common": {
             "moveSpeed": 300,
             "maxHealth": 15,
@@ -146,8 +153,8 @@
         },
         "currentHealth": 15,
         "invisible": 0,
-        "remote": 2,
-        "melee": 1,
+        "remote": 4,
+        "melee": 3,
         "boxType":1,
         "dash": 0
     },
@@ -157,7 +164,7 @@
         "resName": "monster008",
         "chapter": 0,
         "stageLevel": 0,
-        "specialAttack":5,
+        "specialAttack":15,
         "specialType":"special008",
         "specialDistance":64,
         "common": {
@@ -168,7 +175,7 @@
         "currentHealth": 30,
         "invisible": 0,
         "remote": 0,
-        "melee": 1,
+        "melee": 3,
         "boxType":1,
         "dash": 4
     },
@@ -200,6 +207,7 @@
         "resName": "monster010",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 450,
             "maxHealth": 60,
@@ -220,6 +228,7 @@
         "resName": "monster011",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "sizeType":0.5,
         "bulletType":"bullet020",
         "common": {
@@ -241,6 +250,7 @@
         "resName": "monster012",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "sizeType":0.3,
         "common": {
             "moveSpeed": 400,
@@ -251,7 +261,7 @@
         "currentHealth": 10,
         "invisible": 0,
         "remote": 0,
-        "melee": 1,
+        "melee": 3,
         "dash": 0,
         "boxType":0,
         "disguise": 0
@@ -262,6 +272,7 @@
         "resName": "monster013",
         "bulletType":"bullet018",
         "chapter": 0,
+        "specialAttack":15,
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
@@ -282,7 +293,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "bulletType":"laser101",
-        "specialAttack":10,
+        "specialAttack":15,
         "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 500,
@@ -303,7 +314,7 @@
         "resName": "monster015",
         "chapter": 0,
         "stageLevel": 0,
-        "specialAttack":10,
+        "specialAttack":15,
         "specialType":"special015",
         "common": {
             "moveSpeed": 300,
@@ -315,7 +326,7 @@
         "currentHealth": 40,
         "invisible": 0,
         "remote": 0,
-        "melee": 1,
+        "melee": 3,
         "sizeType":1,
         "boxType":3,
         "isRecovery":1,
@@ -349,7 +360,7 @@
         "stageLevel": 0,
         "bulletType":"bullet038",
         "specialBulletArcExNum":2,
-        "specialAttack":10,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 300,
             "maxHealth": 15,
@@ -357,7 +368,7 @@
         },
         "currentHealth": 15,
         "invisible": 0,
-        "remote": 2,
+        "remote": 4,
         "melee": 0,
         "boxType":1,
         "dash": 0
@@ -374,7 +385,7 @@
             "damageMin": 1
         },
         "bulletType":"bullet039",
-        "specialAttack":10,
+        "specialAttack":15,
         "specialBulletArcExNum":2,
         "currentHealth": 20,
         "invisible": 0,
@@ -401,7 +412,7 @@
         "currentHealth": 15,
         "invisible": 0,
         "remote": 0,
-        "melee": 2,
+        "melee": 4,
         "boxType":1,
         "dash": 0
     },
@@ -420,12 +431,12 @@
         },
         "bulletArcExNum":2,
         "bulletLineExNum":0,
-        "specialAttack":10,
+        "specialAttack":15,
         "specialBulletArcExNum":4,
         "currentHealth": 20,
         "bulletType":"bullet019",
         "invisible": 0,
-        "remote": 2,
+        "remote": 4,
         "melee": 0,
         "sizeType":1,
         "boxType":2,
@@ -436,6 +447,7 @@
         "nameEn": "fish",
         "resName": "monster021",
         "chapter": 0,
+        "specialAttack":15,
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
@@ -445,7 +457,7 @@
         "currentHealth": 25,
         "invisible": 0,
         "remote": 0,
-        "melee": 2,
+        "melee": 4,
         "boxType":1,
         "dash": 5
     },
@@ -457,7 +469,7 @@
         "stageLevel": 0,
         "isLineAim":1,
         "bulletType":"laser002",
-        "specialAttack":10,
+        "specialAttack":15,
         "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 200,
@@ -467,7 +479,7 @@
         "currentHealth": 50,
         "invisible": 0,
         "remote": 4,
-        "melee": 2,
+        "melee": 4,
         "sizeType":1,
         "boxType":4,
         "dash": 0
@@ -479,6 +491,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "isLineAim":0,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 200,
             "maxHealth": 35,
@@ -489,7 +502,7 @@
         "currentHealth": 35,
         "invisible": 0,
         "remote": 0,
-        "melee": 2,
+        "melee": 4,
         "sizeType":1,
         "boxType":5,
         "dash": 0
@@ -500,7 +513,7 @@
         "resName": "monster024",
         "chapter": 0,
         "stageLevel": 0,
-        "specialAttack":10,
+        "specialAttack":15,
         "specialDistance":64,
         "specialType":"special024",
         "common": {
@@ -511,7 +524,7 @@
         "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
-        "melee": 2,
+        "melee": 4,
         "blink":3,
         "sizeType":1,
         "boxType":3,
@@ -524,6 +537,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "isLineAim":0,
+        "specialAttack":15,
         "bulletType":"bullet100",
         "common": {
             "moveSpeed": 200,
@@ -544,6 +558,7 @@
         "resName": "monster026",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "bulletType":"bullet024",
         "common": {
             "moveSpeed": 300,
@@ -555,7 +570,7 @@
         "currentHealth": 55,
         "invisible": 0,
         "remote": 3,
-        "melee": 2,
+        "melee": 4,
         "sizeType":1,
         "boxType":0,
         "dash": 0
@@ -568,7 +583,7 @@
         "stageLevel": 0,
         "sizeType":0.75,
         "bulletType":"bullet028",
-        "specialAttack":10,
+        "specialAttack":15,
         "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 500,
@@ -590,6 +605,7 @@
         "resName": "monster028",
         "chapter": 0,
         "stageLevel": 0,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 300,
             "maxHealth": 50,
@@ -600,7 +616,7 @@
         "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
-        "melee": 1,
+        "melee": 3,
         "dash": 0,
         "boxType":1,
         "disguise": 200
@@ -611,7 +627,7 @@
         "resName": "monster029",
         "chapter": 0,
         "stageLevel": 0,
-        "specialAttack":10,
+        "specialAttack":15,
         "common": {
             "moveSpeed": 300,
             "maxHealth": 40,

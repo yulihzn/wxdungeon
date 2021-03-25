@@ -75,7 +75,7 @@ export default class ActorAttackBox extends cc.Component {
             case ActorAttackBox.ATTACK_NORMAL:
                 break;
             case ActorAttackBox.ATTACK_STAB:
-                this.node.width = 300;
+                this.node.width = this.isSpecial?400:200;
                 this.collider.offset = cc.v2(0, 0);
                 break;
             case ActorAttackBox.ATTACK_AREA:

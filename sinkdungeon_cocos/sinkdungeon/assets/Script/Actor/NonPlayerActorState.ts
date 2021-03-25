@@ -16,6 +16,8 @@ export class IDLE extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.WALK);
         } else if (entity.sc.isAttacking) {
             entity.stateMachine.changeState(NonPlayerActorState.ATTACK);
+        }else if (entity.sc.isBlinking) {
+            entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
     exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(IDLE):exit`); }
@@ -35,6 +37,8 @@ export class WALK extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.ATTACK);
         } else if (entity.sc.isDodging) {
             entity.stateMachine.changeState(NonPlayerActorState.DODGE);
+        }else if (entity.sc.isBlinking) {
+            entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
     exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(WALK):exit`); }
@@ -107,6 +111,8 @@ export class HURT extends BaseNonPlayerActorState {
             entity.stateMachine.changeState(NonPlayerActorState.IDLE);
         } else if (entity.sc.isFalling) {
             entity.stateMachine.changeState(NonPlayerActorState.FALL);
+        }else if (entity.sc.isBlinking) {
+            entity.stateMachine.changeState(NonPlayerActorState.BLINK);
         }
     }
     exit(entity: Monster): void { super.exit(entity); Utils.log(`${entity.actorName()}(TAKEDAMAGE):exit`); }
@@ -219,6 +225,9 @@ export class GLOBAL extends BaseNonPlayerActorState {
     enter(entity: Monster): void { super.enter(entity); Utils.log(`${entity.actorName()}(GLOBAL):enter`); }
     update(entity: Monster): void {
         super.update(entity);
+        if(entity.sc.isDied){
+            return;
+        }
         if (entity.data.currentHealth <= 0) {
             entity.stateMachine.changeState(NonPlayerActorState.DIED);
         } else if (entity.sc.isHurting) {

@@ -306,7 +306,7 @@ export default class Bullet extends cc.Component {
         let wall = otherCollider.node.getComponent(Wall);
 
         //子弹玩家怪物boss武器不销毁
-        if (player || monster || boss || bullet||wall) {
+        if (player || monster || boss || bullet) {
             isDestory = false;
         }
         //触发器不销毁
@@ -314,7 +314,7 @@ export default class Bullet extends cc.Component {
             isDestory = false;
         }
         //上面的墙上半部分是否销毁
-        if(this.skipTopwall){
+        if(wall&&this.skipTopwall){
             isDestory = false;
         }
         if(this.data.isInvincible>0){
@@ -357,17 +357,12 @@ export default class Bullet extends cc.Component {
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
         let isDestory = false;
-        let wall = attackTarget.getComponent(Wall);
-        if(wall&&!this.skipTopwall){
-            isDestory = true;
-        }
-        
         let aoe = attackTarget.getComponent(AreaOfEffect);
         if(aoe&&aoe.IsAttacking&&aoe.data.canBreakBullet){
             isDestory = true;
         }
         let monster = attackTarget.getComponent(Monster);
-        if (monster && !monster.isDied) {
+        if (monster && !monster.sc.isDied) {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) { this.addTargetAllStatus(monster,new FromData()) }
             isDestory = true;
@@ -377,7 +372,7 @@ export default class Bullet extends cc.Component {
             //子弹偏转
             let isReverse = false;
             if(player.shield.Status == Shield.STATUS_PARRY&&player.shield.data.isReflect==1){
-                isReverse = this.revserseBullet();
+                isReverse = this.revserseBullet(player.node.convertToWorldSpaceAR(cc.Vec2.ZERO));
             }
             if(!isReverse){
                 damageSuccess = player.takeDamage(damage,this.data.from);
@@ -403,7 +398,7 @@ export default class Bullet extends cc.Component {
             //子弹偏转
             let isReverse = false;
             if(meleeWeapon.IsReflect){
-                isReverse = this.revserseBullet();
+                isReverse = this.revserseBullet(meleeWeapon.node.convertToWorldSpaceAR(cc.Vec2.ZERO));
             }
             if(!isReverse){
                 isDestory = true;
@@ -427,14 +422,23 @@ export default class Bullet extends cc.Component {
         }
     }
     //子弹偏转 不能偏转激光，追踪弹效果去除
-    private revserseBullet():boolean{
+    private revserseBullet(targetWorldPos:cc.Vec2):boolean{
         if(this.isReserved){
             this.isReserved = true;
             return false;
         }
         if(this.data.isLaser != 1){
-            this.node.angle+=-180;
-            this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.mul(-1);
+            // //法线
+            // let normal = this.node.convertToNodeSpaceAR(targetWorldPos).normalizeSelf().negSelf();
+            // //入射
+            // let pos = this.rigidBody.linearVelocity.clone().normalizeSelf();
+            // //反射
+            // let reflect = pos.clone().sub(normal.clone().mulSelf(pos.clone().dot(normal)).mulSelf(2));
+            // this.node.angle-=cc.Vec2.angle(pos,reflect)*180/Math.PI;
+            // this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(cc.Vec2.angle(pos,reflect));
+            let angle = -180+Logic.getRandomNum(0,10)-20;
+            this.node.angle+=angle;
+            this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(angle*Math.PI/180);
             this.isFromPlayer = true;
             this.data.isTracking = 0;
             return true;
@@ -442,6 +446,9 @@ export default class Bullet extends cc.Component {
         return false;
     }
     private bulletHit(): void {
+        if(this.isHit){
+            return;
+        }
         this.isHit = true;
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.rigidBody.linearVelocity = cc.v2(0, 0);
@@ -472,7 +479,7 @@ export default class Bullet extends cc.Component {
         if (this.isFromPlayer) {
             for (let monster of this.dungeon.monsterManager.monsterList) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
-                if (dis < 500 && dis < olddis && !monster.isDied && !monster.sc.isDisguising) {
+                if (dis < 500 && dis < olddis && !monster.sc.isDied && !monster.sc.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;

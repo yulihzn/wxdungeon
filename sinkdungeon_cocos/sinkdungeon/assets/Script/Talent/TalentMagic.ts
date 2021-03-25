@@ -182,7 +182,7 @@ export default class TalentMagic extends Talent {
         let shortdis = 99999;
         let targetNode:cc.Node;
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
-            if (!monster.isDied) {
+            if (!monster.sc.isDied) {
                 let dis = Logic.getDistance(this.node.position, monster.node.position);
                 if(dis<shortdis){
                     shortdis = dis;
@@ -238,7 +238,7 @@ export default class TalentMagic extends Talent {
         }
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
             let dis = Logic.getDistance(this.node.position, monster.node.position);
-            if (dis < range && !monster.isDied && !monster.sc.isDisguising) {
+            if (dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
                 monster.addStatus(statusName, new FromData());
             }
         }

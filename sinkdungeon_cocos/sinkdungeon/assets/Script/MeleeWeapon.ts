@@ -402,7 +402,7 @@ export default class MeleeWeapon extends cc.Component {
         if (this.dungeon) {
             for (let monster of this.dungeon.monsterManager.monsterList) {
                 let dis = Logic.getDistance(this.player.node.position, monster.node.position);
-                if (dis < 200 && dis < olddis && !monster.isDied) {
+                if (dis < 200 && dis < olddis && !monster.sc.isDied) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
@@ -502,7 +502,7 @@ export default class MeleeWeapon extends cc.Component {
         let damageSuccess = false;
         let attackSuccess = false;
         let monster = attackTarget.node.getComponent(Monster);
-        if (monster && !monster.isDied && !this.isMiss) {
+        if (monster && !monster.sc.isDied && !this.isMiss) {
             damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
             if (damage.isBackAttack) {
                 damage.realDamage += common.damageBack;

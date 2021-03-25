@@ -175,7 +175,6 @@ export default class Shooter extends cc.Component {
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec3.ZERO;
-            // this.changeRes(this.data.img);
             let action = cc.sequence(cc.moveBy(0.1, 10, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim1') }, this)
                 , cc.moveBy(0.05, -5, 0), cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.changeRes(this.data.img, 'anim0') }, this));
             this.sprite.runAction(action);
@@ -442,7 +441,7 @@ export default class Shooter extends cc.Component {
         } else if (this.dungeon) {
             for (let monster of this.dungeon.monsterManager.monsterList) {
                 let dis = Logic.getDistance(this.getParentNode().position, monster.node.position);
-                if (dis < 600 && dis < olddis && !monster.isDied && !monster.sc.isDisguising) {
+                if (dis < 600 && dis < olddis && !monster.sc.isDied && !monster.sc.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;

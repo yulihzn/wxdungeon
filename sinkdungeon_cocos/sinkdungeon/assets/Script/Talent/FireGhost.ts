@@ -117,7 +117,7 @@ export default class FireGhost extends cc.Component {
         let pos = cc.v3(0, 0);
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
             let dis = Logic.getDistance(this.node.position, monster.node.position);
-            if (dis < 400 && dis < olddis && !monster.isDied && !monster.sc.isDisguising) {
+            if (dis < 400 && dis < olddis && !monster.sc.isDied && !monster.sc.isDisguising) {
                 olddis = dis;
                 let p = this.node.position.clone();
                 p.x = this.node.scaleX > 0 ? p.x : -p.x;
