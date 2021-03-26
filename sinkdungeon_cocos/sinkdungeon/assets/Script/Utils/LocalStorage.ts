@@ -23,8 +23,9 @@ export default class LocalStorage {
     public static KEY_COIN = 'KEY_COIN';
     public static KEY_OIL_GOLD = 'KEY_OIL_GOLD';
     public static KEY_SWITCH_SHOW_SHADOW = 'KEY_SWITCH_SHOW_SHADOW';
+    public static KEY_SWITCH_SHOW_GAMEPAD = 'KEY_SWITCH_SHOW_GAMEPAD';
     public static VAULE_OPEN = '1';
-    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 0 };
+    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 1 ,KEY_SWITCH_SHOW_GAMEPAD:0};
 
     static getValue(key: string): string {
         return cc.sys.localStorage.getItem(key);

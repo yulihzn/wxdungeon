@@ -21,6 +21,7 @@ export default class Game extends cc.Component {
     private hudBase:GameHud
     onLoad(){
         Logic.settings.showShadow = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW);
+        Logic.settings.showGamepad = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD);
     }
     get Dungeon(){
         if(!this.dungeonBase){

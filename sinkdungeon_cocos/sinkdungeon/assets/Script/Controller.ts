@@ -89,7 +89,7 @@ export default class Controller extends cc.Component {
             , (event) => { this.changeRes(event.detail.isShield) });
         cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
             , (event) => { this.drawSkillCoolDown(event.detail.cooldown); });
-        if(!cc.sys.isMobile){
+        if(!cc.sys.isMobile&&!Logic.settings.showGamepad){
             this.interactAction.active = false;
             this.attackAction.active = false;
             this.shootAction.active = false;

@@ -17,7 +17,8 @@ export default class SettingsDialog extends BaseDialog {
 
     @property(cc.Toggle)
     tgShadow:cc.Toggle = null;
-
+    @property(cc.Toggle)
+    tgGamepad:cc.Toggle = null;
     onLoad () {
     }
 
@@ -26,10 +27,15 @@ export default class SettingsDialog extends BaseDialog {
     }
     show(){
         super.show();
-        if(LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW)){
-            this.tgShadow.check()
+        this.initToggle(this.tgShadow,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW));
+        this.initToggle(this.tgGamepad,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD));
+        
+    }
+    private initToggle(toggle:cc.Toggle,isOpen:boolean){
+        if(isOpen){
+            toggle.check();
         }else{
-            this.tgShadow.uncheck();
+            toggle.uncheck();
         }
     }
 
@@ -38,6 +44,10 @@ export default class SettingsDialog extends BaseDialog {
     toggleShadow(toggle:cc.Toggle, customEventData:string){
         Logic.settings.showShadow = toggle.isChecked;
         LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_SHADOW,Logic.settings.showShadow);
+    }
+    toggleGamepad(toggle:cc.Toggle, customEventData:string){
+        Logic.settings.showGamepad = toggle.isChecked;
+        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD,Logic.settings.showGamepad);
     }
     close(){
         this.dismiss();
