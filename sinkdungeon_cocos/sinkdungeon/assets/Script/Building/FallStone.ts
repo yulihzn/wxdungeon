@@ -3,7 +3,7 @@ import DamageData from "../Data/DamageData";
 import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import Actor from "../Base/Actor";
 
 // Learn TypeScript:
@@ -70,7 +70,7 @@ export default class FallStone extends Building {
                 target.takeDamage(new DamageData(2),FromData.getClone('落石','stone'));
             }
         }
-        let monster = other.getComponent(Monster);
+        let monster = other.getComponent(NonPlayer);
         if(monster){
             if (this.isFall&&this.isValid) {
                 this.isFall = false;

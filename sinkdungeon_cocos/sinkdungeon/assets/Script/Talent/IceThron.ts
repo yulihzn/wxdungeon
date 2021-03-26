@@ -77,7 +77,7 @@ export default class IceThron extends cc.Component {
         
         damage.magicDamage = d;
         let target = Actor.getEnemyActorByNode(attackTarget,true);
-        if (target && !target.isDied) {
+        if (target && !target.sc.isDied) {
             target.takeDamage(damage);
             target.addStatus(status,new FromData());
         }

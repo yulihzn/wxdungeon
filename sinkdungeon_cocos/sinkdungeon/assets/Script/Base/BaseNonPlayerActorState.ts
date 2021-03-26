@@ -9,7 +9,7 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import FsmEvent from "./fsm/FsmEvent";
 import State from "./fsm/State";
 
@@ -17,20 +17,20 @@ const { ccclass, property } = cc._decorator;
 
 
 @ccclass
-export default class BaseNonPlayerActorState implements State<Monster>{
+export default class BaseNonPlayerActorState implements State<NonPlayer>{
     private _isRunnig = false;
     public get isRunnig(){
         return this._isRunnig;
     }
-    enter(entity: Monster): void {
+    enter(entity: NonPlayer): void {
         this._isRunnig = true;
     }
-    update(entity: Monster): void {
+    update(entity: NonPlayer): void {
     }
-    exit(entity: Monster): void {
+    exit(entity: NonPlayer): void {
         this._isRunnig = false;
     }
-    event(entity: Monster, event: FsmEvent): boolean {
+    event(entity: NonPlayer, event: FsmEvent): boolean {
         this._isRunnig = true;
         return true;
     }

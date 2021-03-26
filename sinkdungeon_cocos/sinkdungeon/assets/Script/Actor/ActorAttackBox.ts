@@ -1,10 +1,7 @@
 import FromData from "../Data/FromData";
 import Actor from "../Base/Actor";
 import Dungeon from "../Dungeon";
-import Monster from "../Monster";
 import NonPlayer from "../NonPlayer";
-import Boss from "../Boss/Boss";
-import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -104,23 +101,21 @@ export default class ActorAttackBox extends cc.Component {
     onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
         if (this.isAttacking && this.holderActor) {
             let a = other.getComponent(Actor);
-            let m = this.holderActor.getComponent(Monster);
-            let n = this.holderActor.getComponent(NonPlayer);
-            let s = m?m:n;
-            let target = Actor.getCollisionTarget(other);
+            let m = this.holderActor.getComponent(NonPlayer);
+            let target = Actor.getCollisionTarget(other,!this.isEnemy);
             if(target){
                 this.isAttacking = false;
-                let from = FromData.getClone(s.data.nameCn, s.data.resName);
-                let dd = s.data.getAttackPoint();
-                dd.isBackAttack = s.isFaceTargetBehind(a) && s.data.FinalCommon.damageBack > 0;
+                let from = FromData.getClone(m.data.nameCn, m.data.resName);
+                let dd = m.data.getAttackPoint();
+                dd.isBackAttack = m.isFaceTargetBehind(a) && m.data.FinalCommon.damageBack > 0;
                 if (dd.isBackAttack) {
-                    dd.realDamage += s.data.FinalCommon.damageBack;
+                    dd.realDamage += m.data.FinalCommon.damageBack;
                 }
                 if(this.isSpecial){
                     dd.physicalDamage = dd.physicalDamage*2;
                 }
                 if (a.takeDamage(dd, from, this.holderActor)) {
-                    s.addPlayerStatus(a, from);
+                    m.addPlayerStatus(a, from);
                 }
                 this.isSpecial = false;
             }

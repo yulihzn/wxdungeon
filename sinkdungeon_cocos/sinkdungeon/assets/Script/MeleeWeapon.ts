@@ -1,6 +1,6 @@
 import Dungeon from "./Dungeon";
 import Player from "./Player";
-import Monster from "./Monster";
+import NonPlayer from "./NonPlayer";
 import { EventHelper } from "./EventHelper";
 import Box from "./Building/Box";
 import Logic from "./Logic";
@@ -20,7 +20,6 @@ import InventoryManager from "./Manager/InventoryManager";
 import Equipment from "./Equipment/Equipment";
 import HitBuilding from "./Building/HitBuilding";
 import CommonData from "./Data/CommonData";
-import NonPlayer from "./NonPlayer";
 import Actor from "./Base/Actor";
 
 // Learn TypeScript:
@@ -345,7 +344,7 @@ export default class MeleeWeapon extends cc.Component {
             if (!this.isAttacking) {
                 this.isComboing = false;
             }
-        }, 0.6);
+        }, 0.3);
     }
     //Anim
     ExAttackTime() {
@@ -365,7 +364,7 @@ export default class MeleeWeapon extends cc.Component {
             this.player.getWalkSmoke(this.player.node, this.node.position);
         }, 0.05, 4, 0);
         let pos = cc.v2(this.hv.x, this.hv.y);
-        this.player.isMoving = false;
+        this.player.sc.isMoving = false;
         this.player.isWeaponDashing = true;
         if (pos.equals(cc.Vec2.ZERO)) {
             pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
@@ -413,7 +412,7 @@ export default class MeleeWeapon extends cc.Component {
             if (pos.equals(cc.Vec3.ZERO)) {
                 for (let boss of this.dungeon.monsterManager.bossList) {
                     let dis = Logic.getDistance(this.player.node.position, boss.node.position);
-                    if (dis < 200 && dis < olddis && !boss.isDied) {
+                    if (dis < 200 && dis < olddis && !boss.sc.isDied) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
@@ -501,8 +500,8 @@ export default class MeleeWeapon extends cc.Component {
         }
         let damageSuccess = false;
         let attackSuccess = false;
-        let monster = attackTarget.node.getComponent(Monster);
-        if (monster && !monster.sc.isDied && !this.isMiss) {
+        let monster = attackTarget.node.getComponent(NonPlayer);
+        if (monster && !monster.sc.isDied && !this.isMiss && monster.data.isEnemy>0) {
             damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
             if (damage.isBackAttack) {
                 damage.realDamage += common.damageBack;
@@ -515,19 +514,13 @@ export default class MeleeWeapon extends cc.Component {
         }
 
         let boss = attackTarget.node.getComponent(Boss);
-        if (boss && !boss.isDied && !this.isMiss) {
+        if (boss && !boss.sc.isDied && !this.isMiss) {
             damageSuccess = boss.takeDamage(damage);
             if (damageSuccess) {
                 this.addTargetAllStatus(common,boss);
             }
         }
-        let non = attackTarget.node.getComponent(NonPlayer);
-        if (non && !non.isDied && !this.isMiss&&non.isEnemy) {
-            damageSuccess = non.takeDamage(damage);
-            if (damageSuccess) {
-                this.addTargetAllStatus(common,non);
-            }
-        }
+    
         let box = attackTarget.node.getComponent(Box);
         if (box) {
             attackSuccess = true;

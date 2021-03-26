@@ -53,7 +53,7 @@ export default class Slime extends Boss {
     meleeSkill = new NextStep();
     onLoad() {
         this.meleeSkill.IsExcuting = false;
-        this.isDied = false;
+        this.sc.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.updatePlayerPos();
@@ -66,7 +66,7 @@ export default class Slime extends Boss {
         EventHelper.on('destoryvenom',(detail)=>{
             this.destroyVenom(detail.coinNode);
         });
-        this.scheduleOnce(() => { this.isShow = true; }, 1)
+        this.scheduleOnce(() => { this.sc.isShow = true; }, 1)
     }
 
     start() {
@@ -79,7 +79,7 @@ export default class Slime extends Boss {
         }
     }
     private getVenom(parentNode: cc.Node, pos: cc.Vec3) {
-        if (this.scaleSize < 1 || this.isDied) {
+        if (this.scaleSize < 1 || this.sc.isDied) {
             return;
         }
         let venomPrefab: cc.Node = null;
@@ -119,7 +119,7 @@ export default class Slime extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let target = Actor.getCollisionTarget(other);
-        if (target && this.isDashing && this.dungeon && !this.isHurt && !this.isDied) {
+        if (target && this.isDashing && this.dungeon && !this.isHurt && !this.sc.isDied) {
             this.isDashing = false;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             target.takeDamage(this.data.getAttackPoint(),FromData.getClone(this.actorName(),'bossslimehelmet'),this);
@@ -144,7 +144,7 @@ export default class Slime extends Boss {
         return false;
     }
     update(dt) {
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
@@ -161,10 +161,10 @@ export default class Slime extends Boss {
                 this.rigidbody.linearVelocity = cc.v2(0, 0);
             }
         }
-        if (this.isDied) {
+        if (this.sc.isDied) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
         if (this.data.currentHealth < 1) {
             this.killed();
         }
@@ -173,10 +173,10 @@ export default class Slime extends Boss {
         if (this.isVenomTimeDelay(dt) && this.isMoving && !this.meleeSkill.IsExcuting) {
             this.getVenom(this.node.parent, this.node.position);
         }
-        if (this.isChildSlimeTimeDelay(dt) && !this.isDied && this.slimeType == 0 && this.dungeon) {
+        if (this.isChildSlimeTimeDelay(dt) && !this.sc.isDied && this.slimeType == 0 && this.dungeon) {
             let count = 0;
             for (let m of this.dungeon.monsterManager.monsterList) {
-                if (!m.isDied) {
+                if (!m.sc.isDied) {
                     count++;
                 }
             }
@@ -187,7 +187,7 @@ export default class Slime extends Boss {
         }
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow) {
+        if (this.sc.isDied || !this.sc.isShow) {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
@@ -202,8 +202,8 @@ export default class Slime extends Boss {
         this.meleeSkill.IsExcuting = false;
         if (this.data.currentHealth < this.data.Common.maxHealth / 2 && !this.isCrownFall && this.slimeType == 0) {
             this.isCrownFall = true;
-            this.isShow = false;
-            this.scheduleOnce(() => { this.isShow = true; this.crown.opacity = 0; }, 1)
+            this.sc.isShow = false;
+            this.scheduleOnce(() => { this.sc.isShow = true; this.crown.opacity = 0; }, 1)
             this.anim.play('SlimeCrownFall');
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
@@ -212,10 +212,10 @@ export default class Slime extends Boss {
     }
 
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
-        this.isDied = true;
+        this.sc.isDied = true;
         this.isDashing = false;
         this.anim.play('SlimeDie');
         let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsBoxCollider);
@@ -239,7 +239,7 @@ export default class Slime extends Boss {
 
     }
     bossAction() {
-        if (this.isDied || !this.dungeon || this.isHurt) {
+        if (this.sc.isDied || !this.dungeon || this.isHurt) {
             return;
         }
         let newPos = cc.v3(0, 0);
@@ -253,7 +253,7 @@ export default class Slime extends Boss {
 
         //近战
         let attackRange = 64 + 50 * this.scaleSize;
-        if (playerDis < attackRange && !this.dungeon.player.isDied && !this.isDashing && this.isShow && this.scaleSize >= 1) {
+        if (playerDis < attackRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && this.scaleSize >= 1) {
             // cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
             if (!pos.equals(cc.Vec3.ZERO)) {
@@ -268,7 +268,7 @@ export default class Slime extends Boss {
         let speed = 300 - 50 * this.scaleSize;
         //冲刺
         let dashRange = 128 + 35 * this.scaleSize;
-        if (playerDis > dashRange && !this.dungeon.player.isDied && !this.isDashing && this.isShow && Logic.getHalfChance()) {
+        if (playerDis > dashRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && Logic.getHalfChance()) {
             cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             if (Logic.getHalfChance()) {
                 pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
@@ -283,7 +283,7 @@ export default class Slime extends Boss {
     }
 
     move(pos: cc.Vec3, speed: number) {
-        if (this.isDied || this.isHurt || this.isDashing || !this.isShow || this.meleeSkill.IsExcuting) {
+        if (this.sc.isDied || this.isHurt || this.isDashing || !this.sc.isShow || this.meleeSkill.IsExcuting) {
             return;
         }
         if (pos.equals(cc.Vec3.ZERO)) {

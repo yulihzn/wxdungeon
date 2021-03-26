@@ -4588,8 +4588,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 32,
-      "height": 48
+      "width": 16,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -6538,6 +6538,8 @@
     "showLight": false,
     "showShadow": true,
     "showRayCast": true,
+    "isCircle": true,
+    "isSector": false,
     "_id": ""
   },
   {

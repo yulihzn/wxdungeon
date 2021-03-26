@@ -16,7 +16,6 @@ import WorldLoader from "./Map/WorldLoader";
 import ProfessionData from "./Data/ProfessionData";
 import Random4Save from "./Utils/Random4Save";
 import ExitData from "./Data/ExitData";
-import NonPlayerData from "./Data/NonPlayerData";
 import Settings from "./Model/Settings";
 import LocalStorage from "./Utils/LocalStorage";
 
@@ -49,7 +48,7 @@ export default class Logic extends cc.Component {
     //怪物json
     static monsters: { [key: string]: MonsterData } = null;
     //npc json
-    static nonplayers: { [key: string]: NonPlayerData } = null;
+    static nonplayers: { [key: string]: MonsterData } = null;
     //图片资源
     static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     //状态json

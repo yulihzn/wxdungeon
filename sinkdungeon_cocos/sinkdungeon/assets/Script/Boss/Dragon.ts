@@ -40,8 +40,8 @@ export default class Dragon extends Boss {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.isDied = false;
-        this.isShow = false;
+        this.sc.isDied = false;
+        this.sc.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
         this.shooter01.from.valueCopy(FromData.getClone(this.actorName(),'dragonhead'));
@@ -53,7 +53,7 @@ export default class Dragon extends Boss {
     start() {
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow || this.rainSkill.IsExcuting) {
+        if (this.sc.isDied || !this.sc.isShow || this.rainSkill.IsExcuting) {
             return false;
         }
         
@@ -67,11 +67,11 @@ export default class Dragon extends Boss {
     }
 
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.isDied = true;
+        this.sc.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
@@ -119,7 +119,7 @@ export default class Dragon extends Boss {
     }
     actionCount = 0;
     bossAction(): void {
-        if (this.isDied || !this.isShow || !this.dungeon) {
+        if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
             this.actionCount = 0;
             return;
         }
@@ -147,7 +147,7 @@ export default class Dragon extends Boss {
         this.node.zIndex = IndexZ.OVERHEAD;
     }
     move(pos: cc.Vec3, speed: number) {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -171,10 +171,10 @@ export default class Dragon extends Boss {
         shooter.fireBullet(angle, cc.Vec3.ZERO);
     }
     showBoss() {
-        this.isShow = true;
+        this.sc.isShow = true;
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-            this.healthBar.node.active = !this.isDied;
+            this.healthBar.node.active = !this.sc.isDied;
         }
         this.scheduleOnce(() => { this.isRainReady = true }, 10);
     }
@@ -198,11 +198,11 @@ export default class Dragon extends Boss {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let target = Actor.getCollisionTarget(other);
-        if(target&&!this.isDied && !this.physicBox.sensor){
+        if(target&&!this.sc.isDied && !this.physicBox.sensor){
             let d = new DamageData();
             d.physicalDamage = 3;
             target.takeDamage(d,FromData.getClone(this.actorName(),'dragonhead'),this);

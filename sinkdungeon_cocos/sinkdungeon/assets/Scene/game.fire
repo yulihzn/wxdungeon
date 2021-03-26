@@ -1665,117 +1665,6 @@
       "__id__": 9
     },
     "_enabled": true,
-    "wall": {
-      "__uuid__": "92ece683-f67c-422b-8a55-f34ee0fe6a54"
-    },
-    "trap": {
-      "__uuid__": "51ca6a17-d4b5-4276-93c2-56e8cdc00e43"
-    },
-    "fallStone": {
-      "__uuid__": "b10eb0d7-eb25-4a65-83e1-808eeeffa1f1"
-    },
-    "lighteningFall": {
-      "__uuid__": "601a9328-5d9e-425f-baf1-bbdb708fe181"
-    },
-    "emplacement": {
-      "__uuid__": "e92e084f-7a3c-409d-87ee-8244c89bfec1"
-    },
-    "footboard": {
-      "__uuid__": "8ec37d33-b479-4a33-994f-04aea4665301"
-    },
-    "chest": {
-      "__uuid__": "b885c951-6a0a-4f47-9811-d9e95a385a73"
-    },
-    "box": {
-      "__uuid__": "79fce857-c111-4014-a0bc-f17997f9453e"
-    },
-    "decorate": {
-      "__uuid__": "6b082f53-9abd-46f2-86cc-9b3ff37a24ce"
-    },
-    "shop": {
-      "__uuid__": "1bbf627f-6a84-432e-acc8-d02d64bb9487"
-    },
-    "shoptable": {
-      "__uuid__": "f8d6b395-8a3d-4f71-bf62-156b8ec6569f"
-    },
-    "portal": {
-      "__uuid__": "bf97e736-6c8e-4bc6-bbb6-1cf94cca7a96"
-    },
-    "hitBuilding": {
-      "__uuid__": "4004326e-5bb9-4660-ba4b-6eb650d53882"
-    },
-    "bed": {
-      "__uuid__": "d25016fb-010e-41fe-9665-0c1f7089201c"
-    },
-    "campFire": {
-      "__uuid__": "c09aab52-cb44-4f91-952f-d752f65a7705"
-    },
-    "tarotTable": {
-      "__uuid__": "8b1268ac-77b2-408a-be0f-bb13fb20737e"
-    },
-    "saw": {
-      "__uuid__": "b35abae7-3782-42ab-a40d-649dd6e6a78e"
-    },
-    "floorDecoration": {
-      "__uuid__": "df963243-b74c-4c68-b411-9acadaeb33dc"
-    },
-    "overHeadDecorate": {
-      "__uuid__": "f93bf273-6bab-44fe-af92-ec4c8d1f916c"
-    },
-    "exitdoorPrefab": {
-      "__uuid__": "3492fec7-e5bf-4a78-a92e-5d4e72dfb825"
-    },
-    "door": {
-      "__uuid__": "0bb34b8e-9407-4a35-b984-6f3684ef26db"
-    },
-    "darkness": {
-      "__uuid__": "d718b736-3a2e-434b-921f-2425b2aeefc6"
-    },
-    "airexit": {
-      "__uuid__": "1b5b6037-e2bf-499c-aa6a-ce8c69126d8c"
-    },
-    "water": {
-      "__uuid__": "da699162-32c8-4b03-8a28-13be50e14e08"
-    },
-    "coast": {
-      "__uuid__": "d0a2731c-82f4-429e-b72d-bc8632620c12"
-    },
-    "airTranspotModel": {
-      "__uuid__": "29fc9163-fd9c-4889-b161-b67a04cebe3a"
-    },
-    "roomBed": {
-      "__uuid__": "3bf35cf3-cfb5-45e2-b56e-ae000811cd4a"
-    },
-    "mist": {
-      "__uuid__": "4c1377b6-f864-4796-9281-4a30240fdd97"
-    },
-    "shipStairs": {
-      "__uuid__": "8a88826f-8cf6-433d-a380-e224abf45004"
-    },
-    "dryadGrass": {
-      "__uuid__": "6fcb1aed-30a0-434f-8249-37ae66473a5d"
-    },
-    "roomTv": {
-      "__uuid__": "d7ff6640-125e-4685-8aa9-de526a224b11"
-    },
-    "savePoint": {
-      "__uuid__": "dfcb9273-49ba-4541-8a37-132f85ccb2ee"
-    },
-    "shopMart": {
-      "__uuid__": "1adbaf3c-85c4-4e21-a6ac-1de82ddca1a2"
-    },
-    "martShelves": {
-      "__uuid__": "4e142e85-f29d-409b-adfd-cc92ca25bcc4"
-    },
-    "martCashier": {
-      "__uuid__": "64770851-0f1f-4c4d-8c62-bff3704d8567"
-    },
-    "martTable": {
-      "__uuid__": "0b4bda88-d943-4618-b355-452886e54d20"
-    },
-    "martFridge": {
-      "__uuid__": "039c80fc-60d1-4384-b485-0bb0d0a1951b"
-    },
     "_id": "6fNRlW4xRPZbKRWb6ycQ/o"
   },
   {
@@ -1901,7 +1790,7 @@
     },
     "_enabled": true,
     "nonplayer": {
-      "__uuid__": "81293ed9-af71-4de4-83d1-967f9bcdbc97"
+      "__uuid__": "89ae4080-6cef-4cdc-a7b1-bea5b647c43d"
     },
     "_id": "5asu5NpXZPIpjeZe21KoXc"
   },

@@ -1,14 +1,18 @@
 // Learn TypeScript:
-//  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
 // Learn Attribute:
-//  - https://docs.cocos.com/creator/manual/en/scripting/reference/attributes.html
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
 // Learn life-cycle callbacks:
-//  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
+//  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
+//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
 import { EventHelper } from './EventHelper';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
+import MonsterData from './Data/MonsterData';
 import Dungeon from './Dungeon';
 import Shooter from './Shooter';
 import StatusManager from './Manager/StatusManager';
@@ -20,13 +24,21 @@ import Item from './Item/Item';
 import Actor from './Base/Actor';
 import Achievements from './Achievement';
 import AudioPlayer from './Utils/AudioPlayer';
+import SpecialManager from './Manager/SpecialManager';
 import FromData from './Data/FromData';
 import IndexZ from './Utils/IndexZ';
-import NonPlayerData from './Data/NonPlayerData';
+import AreaOfEffect from './Actor/AreaOfEffect';
+import AreaOfEffectData from './Data/AreaOfEffectData';
 import ActorAttackBox from './Actor/ActorAttackBox';
+import StateMachine from './Base/fsm/StateMachine';
+import State from './Base/fsm/State';
+import DefaultStateMachine from './Base/fsm/DefaultStateMachine';
+import NonPlayerActorState from './Actor/NonPlayerActorState';
+import StateContext from './Base/StateContext';
 
 @ccclass
 export default class NonPlayer extends Actor {
+    public static readonly RES_DISGUISE = 'disguise';//图片资源 伪装
     public static readonly RES_IDLE000 = 'anim000';//图片资源 等待0
     public static readonly RES_IDLE001 = 'anim001';//图片资源 等待1
     public static readonly RES_WALK00 = 'anim002';//图片资源 行走0
@@ -40,6 +52,9 @@ export default class NonPlayer extends Actor {
     public static readonly RES_ATTACK02 = 'anim010';//图片资源 攻击
     public static readonly RES_ATTACK03 = 'anim011';//图片资源 准备特殊攻击
     public static readonly RES_ATTACK04 = 'anim012';//图片资源 特殊攻击
+
+
+
     static readonly SCALE_NUM = 1.5;
     static readonly ANIM_NONE = -1;
     static readonly ANIM_IDLE = 0;
@@ -49,84 +64,142 @@ export default class NonPlayer extends Actor {
     static readonly ANIM_DIED = 4;
     @property(cc.Vec3)
     pos: cc.Vec3 = cc.v3(0, 0);
+
     @property(HealthBar)
     healthBar: HealthBar = null;
     @property(StatusManager)
     statusManager: StatusManager = null;
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
+    @property(SpecialManager)
+    specialManager: SpecialManager = null;
+    @property(cc.Prefab)
+    boom: cc.Prefab = null;
     @property(ActorAttackBox)
     dangerBox: ActorAttackBox = null;
+    @property(cc.Node)
+    dangerTips: cc.Node = null;
+    @property(cc.Prefab)
+    attrPrefab: cc.Prefab = null;
+    private attrNode: cc.Node;
     private sprite: cc.Node;
     private bodySprite: cc.Sprite;
     private shadow: cc.Node;
+    private dashlight: cc.Node;
     private anim: cc.Animation;
     private boxCollider: cc.BoxCollider;
     rigidbody: cc.RigidBody;
+    graphics: cc.Graphics;
     isFaceRight = true;
-    isMoving = false;
-    isFall = false;
-    isDizz = false;
-    isHurt = false;
-    private timeDelay = 0;
-    data: NonPlayerData = new NonPlayerData();
     dungeon: Dungeon;
     shooter: Shooter = null;
+    currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
+    isVariation: boolean = false;//是否变异
+
     particleBlood: cc.ParticleSystem;
     effectNode: cc.Node;
-    moveSkill = new NextStep();
-    remoteSkill = new NextStep();
-    meleeSkill = new NextStep();
-    isAttackAnimExcuting = false;
+
+    moveStep = new NextStep();
+    remoteStep = new NextStep();
+    meleeStep = new NextStep();
+    specialStep = new NextStep();
+    dashStep = new NextStep();
+    blinkStep = new NextStep();
+    attrmap: { [key: string]: number } = {};
     mat: cc.MaterialVariant;
     animStatus = NonPlayer.ANIM_NONE;
-    isEnemy = false;
-    isFollow = false;
+    data: MonsterData = new MonsterData();
+
+    public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>;
 
     onLoad() {
-        this.meleeSkill.IsExcuting = false;
-        this.isShow = false;
-        this.isDied = false;
+        this.graphics = this.getComponent(cc.Graphics);
+        this.sc.isAttacking = false;
         this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite');
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         this.mat = this.bodySprite.getComponent(cc.Sprite).getMaterial(0);
         this.boxCollider = this.getComponent(cc.BoxCollider);
+        if (this.isVariation) {
+            let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
+            this.node.scale = NonPlayer.SCALE_NUM * scaleNum;
+        }
+        this.dashlight = this.sprite.getChildByName('dashlight');
+        this.dashlight.opacity = 0;
         this.shadow = this.sprite.getChildByName('shadow');
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.effectNode = this.node.getChildByName('Effect');
         this.particleBlood = this.node.getChildByName('Effect').getChildByName('blood').getComponent(cc.ParticleSystem);
         this.particleBlood.stopSystem();
+        this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
-        this.playAnim(NonPlayer.ANIM_IDLE);
-        this.scheduleOnce(() => { this.isShow = true; }, 1);
         this.resetBodyColor();
-        this.dangerBox.init(this, this.dungeon,this.isEnemy);
         if (this.data.isHeavy > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
-        this.isFollow = this.data.isFollow > 0;
-        this.isEnemy = this.data.isEnemy > 0;
+        this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
+        this.dangerTips.opacity = 0;
+        this.specialStep.delay(5);
+        this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL);
+        // this.graphics.strokeColor = cc.Color.ORANGE;
+        // this.graphics.circle(0,0,100);
+        // this.graphics.stroke();
+        // this.graphics.strokeColor = cc.Color.RED;
+        // this.graphics.circle(0,0,80);
+        // this.graphics.stroke();
         if (this.data.lifeTime > 0) {
-            this.scheduleOnce(() => { this.killed(); }, this.data.lifeTime)
+            this.scheduleOnce(() => { this.data.currentHealth = 0; }, this.data.lifeTime)
         }
     }
-    hitLight(isHit: boolean) {
+    private hitLight(isHit: boolean) {
         if (!this.mat) {
             this.mat = this.node.getChildByName('sprite').getChildByName('body')
                 .getComponent(cc.Sprite).getMaterial(0);
         }
         this.mat.setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
     }
-    getCurrentBodyRes(): string {
+    public addAttrIcon() {
+        if (!this.attrNode) {
+            this.attrNode = this.node.getChildByName('attr');
+        }
+        this.attrNode.removeAllChildren();
+        for (let key in this.attrmap) {
+            let attr = cc.instantiate(this.attrPrefab);
+            attr.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(key);
+            this.attrNode.addChild(attr);
+        }
+    }
+    private showDangerTips() {
+        this.dangerTips.opacity = 255;
+        this.scheduleOnce(() => { this.dangerTips.opacity = 0; }, 1)
+    }
+    private showCircle() {
+        let r = 0;
+        let call = () => {
+            this.graphics.clear();
+            this.graphics.fillColor = cc.color(255, 0, 0, 80);
+            this.graphics.arc(0, 0, r, Math.PI / 2, Math.PI + Math.PI / 2);
+            r += 2;
+            this.graphics.fill();
+            if (r > 80 * this.node.scaleY) {
+                r = 80 * this.node.scaleY;
+            }
+            if (this.sc.isHurting) {
+                this.unschedule(call);
+                this.graphics.clear();
+            }
+        }
+        this.schedule(call, 0.016, 40);
+    }
+    private getCurrentBodyRes(): string {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
             this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         }
         return this.bodySprite.spriteFrame.name;
     }
-    changeBodyRes(resName: string, suffix?: string) {
+    public changeBodyRes(resName: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
             this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
@@ -138,7 +211,11 @@ export default class NonPlayer extends Actor {
             this.shadow = this.sprite.getChildByName('shadow');
         }
         let spriteFrame = this.getSpriteFrameByName(resName, suffix);
-        this.bodySprite.spriteFrame = spriteFrame;
+        if (spriteFrame) {
+            this.bodySprite.spriteFrame = spriteFrame;
+        } else {
+            this.bodySprite.spriteFrame = null;
+        }
         this.bodySprite.node.width = spriteFrame.getRect().width;
         this.bodySprite.node.height = spriteFrame.getRect().height;
         let y = 48, w = 80, h = 80;
@@ -167,12 +244,10 @@ export default class NonPlayer extends Actor {
         }
         return spriteFrame;
     }
-    updatePlayerPos() {
-        // this.node.x = this.pos.x * 64 + 32;
-        // this.node.y = this.pos.y * 64 + 32;
+    private updatePlayerPos() {
         this.node.position = Dungeon.getPosInMap(this.pos);
     }
-    transportPlayer(x: number, y: number) {
+    private transportPlayer(x: number, y: number) {
         this.sprite.angle = 0;
         this.sprite.scale = 1;
         this.sprite.opacity = 255;
@@ -183,10 +258,10 @@ export default class NonPlayer extends Actor {
         this.changeZIndex();
         this.updatePlayerPos();
     }
-    changeZIndex() {
+    private changeZIndex() {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBackStab: boolean) {
+    private showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBackStab: boolean) {
         if (!this.floatinglabelManager) {
             return;
         }
@@ -202,34 +277,34 @@ export default class NonPlayer extends Actor {
         }
     }
 
-    remoteAttack(actor: Actor) {
-        if (!actor) {
-            return;
-        }
-        this.remoteSkill.IsExcuting = false;
+    private remoteAttack(target: Actor, isSpecial: boolean) {
+        this.remoteStep.IsExcuting = false;
         let p = this.shooter.node.position.clone();
         p.x = this.shooter.node.scaleX > 0 ? p.x + 30 : -p.x - 30;
-        let hv = actor.getCenterPosition().sub(this.node.position.add(p));
+        let hv = target.getCenterPosition().sub(this.node.position.add(p));
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName));
+            if (this.isVariation) {
+                this.shooter.data.bulletSize = 0.5;
+            }
             this.shooter.dungeon = this.dungeon;
             this.shooter.data.bulletArcExNum = this.data.bulletArcExNum;
             this.shooter.data.bulletLineExNum = this.data.bulletLineExNum;
             this.shooter.data.bulletLineInterval = this.data.bulletLineInterval;
+            if (isSpecial) {
+                this.shooter.data.bulletLineExNum = this.data.specialBulletLineExNum;
+                this.shooter.data.bulletArcExNum = this.data.specialBulletArcExNum;
+            }
+            this.shooter.data.isLineAim = this.data.isLineAim;
             this.shooter.data.bulletType = this.data.bulletType ? this.data.bulletType : "bullet001";
             this.shooter.data.bulletExSpeed = this.data.bulletExSpeed;
             this.shooter.fireBullet(Logic.getRandomNum(0, 5) - 5, cc.v3(this.data.shooterOffsetX, this.data.shooterOffsetY));
         }
     }
-    showAttackAnim(finish: Function, before: Function, actor: Actor, isMiss: boolean) {
-        if (this.isAttackAnimExcuting || !actor) {
-            return;
-        }
-        this.playAnim(NonPlayer.ANIM_ATTACK);
-        this.isAttackAnimExcuting = true;
-        let pos = actor.node.position.clone().sub(this.node.position);
+    private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
+        let pos = target.node.position.clone().sub(this.node.position);
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
         }
@@ -239,73 +314,86 @@ export default class NonPlayer extends Actor {
         }
         pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 48 : -48);
         this.sprite.stopAllActions();
+        let stabDelay = 0;
+        if (this.data.attackType == ActorAttackBox.ATTACK_STAB && isMelee) {
+            stabDelay = 0.8;
+        }
+        let beforetween = cc.tween().delay(0.5).call(() => { if (before) { before(isSpecial); } })
 
-        let beforeAction = cc.sequence(cc.delayTime(0.5), cc.callFunc(() => { if (before) { before(); } }));
-        //普通近战
-        let action1 = cc.sequence(cc.callFunc(() => {
-            this.changeBodyRes(this.data.resName, NonPlayer.RES_ATTACK01);
-            if (!this.dangerBox.dungeon) {
-                this.dangerBox.init(this, this.dungeon,this.isEnemy);
+        //摇晃
+        let shaketween = cc.tween().by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
+            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
+            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
+            .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) });
+        //退后
+        let backofftween = cc.tween().by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
+        //前进
+        let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
+        let attackpreparetween = cc.tween().call(() => {
+            this.changeBodyRes(this.data.resName, isSpecial ? NonPlayer.RES_ATTACK03 : NonPlayer.RES_ATTACK01);
+            if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
+                if (!this.dangerBox.dungeon) {
+                    this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
+                }
+                this.dangerBox.show(this.data.attackType, isSpecial);
             }
-            this.dangerBox.show(this.data.attackType);
-        }),
-            cc.moveBy(0.5, -pos.x / 8, -pos.y / 8),
-            cc.callFunc(() => {
-                this.changeBodyRes(this.data.resName, NonPlayer.RES_ATTACK02);
+            if (isSpecial) {
+                this.specialManager.dungeon = this.dungeon;
+                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName));
+            }
+        });
+
+        let attackingtween = cc.tween().call(() => {
+            this.changeBodyRes(this.data.resName, isSpecial ? NonPlayer.RES_ATTACK04 : NonPlayer.RES_ATTACK02);
+            if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
                 this.dangerBox.hide(isMiss);
                 if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-                    this.move(this.dangerBox.hv.mul(this.dangerBox.node.width), 5000);
+                    this.move(this.dangerBox.hv, isSpecial ? 2000 : 1000);
                 }
-            }),
-            cc.moveBy(0.2, pos.x, pos.y), cc.callFunc(() => {
-                this.dangerBox.finish();
-            }));
-        let afterAction = cc.sequence(cc.callFunc(() => {
-            this.anim.resume();
-            if (finish) { finish(); }
-        }), cc.moveTo(0.2, 0, 0), cc.callFunc(() => {
-            //这里防止不转向
-            this.changeFaceRight();
-            this.isAttackAnimExcuting = false;
-            this.playAnim(NonPlayer.ANIM_IDLE);
-        }));
-        let allAction = cc.sequence(beforeAction, action1, afterAction);
-        this.sprite.runAction(allAction);
-    }
-    private playAnim(status: number) {
-        if (this.animStatus == status) {
-            return;
+            }
+            if (isSpecial) {
+                this.specialManager.dungeon = this.dungeon;
+                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName));
+            }
+            if (attacking) {
+                attacking(isSpecial);
+            }
+
+        });
+        let attackfinish = cc.tween().call(() => {
+            this.dangerBox.finish();
+            this.setLinearVelocity(cc.Vec2.ZERO);
+        });
+        let aftertween = cc.tween().to(0.2, { position: cc.v3(0, 0) }).delay(0.2).call(() => {
+            if (finish) { finish(isSpecial); }
+        })
+        //普通近战 准备 退后 出击 前进 结束
+        let normalMelee = cc.tween().then(attackpreparetween).then(backofftween)
+            .then(attackingtween).then(forwardtween).then(attackfinish);
+        //普通远程 准备 出击 结束
+        let normalRemote = cc.tween().then(attackpreparetween).delay(0.5)
+            .then(attackingtween).delay(0.2).then(attackfinish);
+        //特殊近战 准备 退后 摇晃 出击 前进 结束
+        let specialMelee = cc.tween().then(attackpreparetween).then(backofftween)
+            .then(shaketween).then(attackingtween).then(forwardtween).then(attackfinish);
+        //特殊远程 准备 摇晃 出击 结束
+        let specialRemote = cc.tween().then(attackpreparetween).then(shaketween)
+            .then(attackingtween).delay(0.5).then(attackfinish);
+
+        let allAction = cc.tween().then(beforetween).then(normalRemote).then(aftertween);
+        if (isMelee) {
+            allAction = cc.tween().then(beforetween).then(normalMelee).then(aftertween);
         }
-        this.animStatus = status;
-        switch (status) {
-            case NonPlayer.ANIM_IDLE: this.playIdle(); break;
-            case NonPlayer.ANIM_WALK: this.playWalk(); break;
-            case NonPlayer.ANIM_ATTACK: break;
-            case NonPlayer.ANIM_HIT: this.playHit(); break;
-            case NonPlayer.ANIM_DIED: this.playDied(); break;
+        if (isSpecial) {
+            this.showDangerTips();
+            allAction = cc.tween().then(beforetween).then(specialRemote).then(aftertween);
+            if (isMelee) {
+                allAction = cc.tween().then(beforetween).then(specialMelee).then(aftertween);
+            }
         }
+        cc.tween(this.sprite).then(allAction).start();
     }
-    private playIdle() {
-        let action = cc.tween()
-            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000) })
-            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE001) });
-        this.sprite.stopAllActions();
-        this.isAttackAnimExcuting = false;
-        cc.tween(this.sprite).repeatForever(action).start();
-    }
-    private playWalk() {
-        let action = cc.tween()
-            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK00) })
-            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK01) })
-            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK02) })
-            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK03) });
-        this.sprite.stopAllActions();
-        this.isAttackAnimExcuting = false;
-        cc.tween(this.sprite).repeatForever(action).start();
-    }
-    private playHit() {
-        this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002);
-    }
+
     private playDied() {
         this.sprite.stopAllActions();
         this.bodySprite.node.angle = 0;
@@ -313,23 +401,13 @@ export default class NonPlayer extends Actor {
         this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003);
     }
 
+
     //移动，返回速度
-    move(pos: cc.Vec3, speed: number) {
-        if (this.isDied || this.isFall || this.isHurt) {
-            return;
-        }
+    private move(pos: cc.Vec3, speed: number) {
         if (pos.equals(cc.Vec3.ZERO)) {
             return;
         }
-        let isDodge = false;
         pos = pos.normalizeSelf();
-        if (this.meleeSkill.IsExcuting && !pos.equals(cc.Vec3.ZERO)) {
-            pos = pos.mul(0.1);
-        }
-        if (isDodge) {
-            pos = pos.mul(2.5);
-        }
-
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
         }
@@ -345,42 +423,61 @@ export default class NonPlayer extends Actor {
             speed = 0;
         }
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement.clone();
-        this.isMoving = h != 0 || v != 0;
-        if (this.isMoving && !this.isAttackAnimExcuting && this.data.isHeavy < 1) {
+        this.setLinearVelocity(movement);
+        let isMoving = h != 0 || v != 0;
+        if (isMoving && this.data.isHeavy < 1) {
             this.isFaceRight = h >= 0;
         }
-        this.playAnim(this.isMoving&&speed>0 ? NonPlayer.ANIM_WALK : NonPlayer.ANIM_IDLE)
         this.changeZIndex();
+    }
+    setLinearVelocity(movement: cc.Vec2) {
+        this.currentlinearVelocitySpeed = movement;
+        this.rigidbody.linearVelocity = this.currentlinearVelocitySpeed.clone();
     }
 
     start() {
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
     }
-
+    /**
+     * 是否玩家背后攻击
+     */
+    isPlayerBehindAttack(): boolean {
+        let isPlayerRight = this.getPlayer(this.dungeon).node.position.x > this.node.position.x;
+        let isSelfFaceRight = this.node.scaleX > 0;
+        return (isPlayerRight && !isSelfFaceRight) || (!isPlayerRight && isSelfFaceRight);
+    }
     /**
      * 攻击目标是否背面朝着怪物
      */
     isFaceTargetBehind(target: Actor): boolean {
-        let isPlayerRight = target.node.position.x > this.node.position.x;
-        let isPlayerFaceRight = target.node.scaleX > 0;
-        return (isPlayerRight && isPlayerFaceRight) || (!isPlayerRight && !isPlayerFaceRight);
+        let isTargetRight = target.node.position.x > this.node.position.x;
+        let isTargetFaceRight = target.isFaceRight;
+        return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
     }
-
+    fall() {
+        this.sc.isFalling = true;
+        this.bodySprite.node.angle = this.isPlayerBehindAttack() ? -75 : 105;
+        this.anim.play('MonsterFall');
+    }
     //Anim
     FallFinish() {
-        this.isFall = false;
+        this.sc.isFalling = false;
         this.bodySprite.node.angle = 0;
         this.sprite.y = 0;
         this.sprite.x = 0;
-        this.anim.play('MonsterIdle');
     }
     takeDamage(damageData: DamageData): boolean {
-        if (!this.isShow) {
+        if (!this.sc.isShow || this.sc.isDied) {
             return false;
         }
-        if (this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
+        //隐身中
+        if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
+            this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
+            return false;
+        }
+        //闪烁中
+        if (this.sc.isBlinking) {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }
@@ -392,28 +489,34 @@ export default class NonPlayer extends Actor {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }
-        this.isHurt = dd.getTotalDamage() > 0;
-        this.meleeSkill.IsExcuting = false;
-        this.remoteSkill.IsExcuting = false;
-        this.isAttackAnimExcuting = false;
-        if (dd.getTotalDamage() > 0) {
-            this.playAnim(NonPlayer.ANIM_HIT);
-        }
-        this.sprite.stopAllActions();
-        if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
-            this.anim.pause();
+        this.sc.isHurting = dd.getTotalDamage() > 0;
+        this.sc.isDisguising = false;
+        if (!this.specialStep.IsExcuting) {
+            this.sc.isAttacking = false;
+            if (damageData.isCriticalStrike) {
+                this.fall();
+            }
+
         }
         //100ms后修改受伤
-        if (dd.getTotalDamage() > 0) {
-            this.dangerBox.finish();
+        if (this.sc.isHurting) {
+            this.sprite.stopAllActions();
+            this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002);
+            if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
+                this.anim.pause();
+            }
+            if (!damageData.isRemote) {
+                this.dangerBox.finish();
+            }
             this.hitLight(true);
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }
+            this.setLinearVelocity(cc.Vec2.ZERO);
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.scheduleOnce(() => {
                 if (this.node) {
-                    this.isHurt = false;
+                    this.sc.isHurting = false;
                     this.hitLight(false);
                     this.resetBodyColor();
                     this.anim.resume();
@@ -427,15 +530,19 @@ export default class NonPlayer extends Actor {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
         this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike, damageData.isBackAttack);
-        return this.isHurt;
+        if (this.data.isRecovery > 0 && this.sc.isHurting) {
+            this.addStatus(StatusManager.RECOVERY, new FromData());
+            this.setLinearVelocity(cc.Vec2.ZERO);//停下来
+        }
+        return this.sc.isHurting;
     }
-    resetBodyColor(): void {
+    private resetBodyColor(): void {
         if (!this.data) {
             return;
         }
         this.bodySprite.node.color = cc.color(255, 255, 255).fromHEX(this.data.bodyColor);
     }
-    getMixColor(color1: string, color2: string): string {
+    private getMixColor(color1: string, color2: string): string {
         let c1 = cc.color().fromHEX(color1);
         let c2 = cc.color().fromHEX(color2);
         let c3 = cc.color();
@@ -449,13 +556,19 @@ export default class NonPlayer extends Actor {
         return '#' + c3.toHEX('#rrggbb');
     }
     addStatus(statusType: string, from: FromData) {
-        if (!this.node || this.isDied) {
+        if (!this.node || this.sc.isDied) {
             return;
         }
         this.statusManager.addStatus(statusType, from);
     }
+    private showAttackEffect(isDashing: boolean) {
+        this.effectNode.setPosition(cc.v3(0, 32));
+        if (!isDashing) {
+            cc.tween(this.effectNode).to(0.2, { position: cc.v3(32, 32) }).to(0.2, { position: cc.v3(0, 16) }).start();
+        }
+    }
 
-    showBloodEffect() {
+    private showBloodEffect() {
         this.particleBlood.resetSystem();
         this.scheduleOnce(() => { this.particleBlood.stopSystem(); }, 0.5);
     }
@@ -468,25 +581,45 @@ export default class NonPlayer extends Actor {
         if (Logic.getRandomNum(0, 100) < this.data.FinalCommon.realRate) { actor.addStatus(StatusManager.BLEEDING, from); }
     }
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
-        this.isDied = true;
-        this.playAnim(NonPlayer.ANIM_DIED);
+        this.sc.isDied = true;
+        this.sc.isDisguising = false;
+        this.dashStep.IsExcuting = false;
+        this.sprite.stopAllActions();
+        this.bodySprite.node.angle = 0;
+        this.anim.play('MonsterDie');
+        this.setLinearVelocity(cc.Vec2.ZERO);
+        this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003);
         let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
         collider.sensor = true;
-        if (this.isEnemy) {
+        if (this.data.isEnemy > 0) {
             this.getLoot();
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.scheduleOnce(() => { this.node.active = false; }, 5);
+        this.scheduleOnce(() => {
+            if (this.node) {
+                if (this.data.isBoom > 0) {
+                    let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
+                    if (boom) {
+                        boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
+                            , true, true, false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
+                        AudioPlayer.play(AudioPlayer.BOOM);
+                    }
+                }
+                this.scheduleOnce(() => { this.node.active = false; }, 5);
+            }
+        }, 2);
     }
     getLoot() {
         let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
         let rand = rand4save.rand();
-        let percent = 0.8;
+        let percent = 0.75;
         let offset = 0.025;
-
+        if (this.isVariation) {
+            percent = 0.6;
+        }
         if (this.dungeon) {
             if (rand < percent) {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
@@ -511,124 +644,177 @@ export default class NonPlayer extends Actor {
 
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
-        return this.node.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
+        return this.node.position.clone();
     }
-    monsterAction() {
-        if (this.isDied || !this.dungeon || this.isHurt || this.isFall || !this.isShow || this.isDizz) {
+    get isPassive() {
+        return !this.dungeon || this.sc.isDied || this.sc.isHurting || this.sc.isFalling || this.sc.isAttacking
+            || !this.sc.isShow || this.sc.isDizzing || this.sc.isDisguising || this.sc.isDodging || this.sc.isDashing;
+    }
+
+    updateAttack() {
+        if (this.isPassive) {
             return;
         }
-        this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.pos = Dungeon.getIndexInMap(this.node.position);
-        this.changeZIndex();
-        let newPos = cc.v3(0, 0);
-        this.moveSkill.next(() => {
-            newPos.x += Logic.getRandomNum(0, 200) - 100;
-            newPos.y += Logic.getRandomNum(0, 200) - 100;
-        }, 2, true);
-        let target = this.getNearestEnemyActor(this.isEnemy, this.dungeon);
+        let target = this.getNearestEnemyActor(this.data.isEnemy > 0, this.dungeon);
         let targetDis = this.getNearestTargetDistance(target);
-        let pd = 100;
-        let canMelee = false;
-        let canRemote = false;
-        canMelee = targetDis < pd * this.node.scaleY
-            && !target.isDied
-            && !target.invisible
-            && target.isShow
-            && this.data.melee > 0;
-        canRemote = targetDis < 600 && this.data.remote > 0
-            && this.shooter && !this.meleeSkill.IsExcuting && !target.invisible;
-        let pos = newPos.clone();
-
-        //近战
-        if (canMelee) {
-            this.meleeSkill.next(() => {
+        //特殊攻击
+        if (this.data.specialAttack > 0) {
+            this.specialStep.next(() => {
+                this.specialStep.IsExcuting = true;
+            }, this.data.specialAttack, true);
+        }
+        let range = 100;
+        if (this.specialStep.IsExcuting) {
+            range = 200;
+        }
+        if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
+            range = 300;
+            if (this.specialStep.IsExcuting) {
+                range = 600;
+            }
+        }
+        let canMelee = this.data.melee > 0;
+        let canRemote = this.data.remote > 0;
+        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.isInCooling) {
+            this.meleeStep.next(() => {
+                this.sc.isAttacking = true;
+                this.sprite.opacity = 255;
+                this.showAttackEffect(false);
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
-                this.meleeSkill.IsExcuting = true;
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
                 if (isMiss) {
                     this.showFloatFont(this.dungeon.node, 0, false, true, false, false);
                 }
-                this.showAttackAnim(() => {
-                    this.meleeSkill.IsExcuting = false;
-                }, () => { }, target, isMiss)
+                this.showAttackAnim(() => { }, () => { }, () => {
+                    this.sc.isAttacking = false;
+                    this.specialStep.IsExcuting = false;
+                }, target, this.specialStep.IsExcuting, true, isMiss)
 
-                this.sprite.opacity = 255;
             }, this.data.melee);
-
-        }
-        if (!canRemote && !canMelee) {
-            if (this.isEnemy && !target.invisible) {
-                pos = this.getMovePosFromTarget();
-            } else if (!this.isEnemy && this.getNearestTargetDistance(this.dungeon.player) > 200) {
-                pos = this.getMovePosFromTarget();
-            }
-        }
-        //远程
-        if (canRemote) {
-            this.remoteSkill.next(() => {
-                this.remoteSkill.IsExcuting = true;
-                this.changeFaceRight();
-                this.showAttackAnim(() => {
-                    this.remoteAttack(target);
-                }, () => {
-                }, target, false);
+        } else if (canRemote && targetDis < 600 * this.node.scaleY) {
+            this.remoteStep.next(() => {
+                this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
+                this.changeFaceRight(target);
+                let isLaser = Logic.bullets[this.data.bulletType] && Logic.bullets[this.data.bulletType].isLaser > 0;
+                this.showAttackAnim((isSpecial: boolean) => {
+                    if (isLaser && isSpecial) {
+                        this.remoteAttack(target, isSpecial);
+                    }
+                }, (isSpecial: boolean) => {
+                    if (isLaser && isSpecial) {
+                        return;
+                    }
+                    this.remoteAttack(target, isSpecial);
+                }, () => {
+                    this.specialStep.IsExcuting = false;
+                    this.sc.isAttacking = false;
+                }, target, this.specialStep.IsExcuting, false, false);
             }, this.data.remote, true);
         }
+
+    }
+    dodge(pos: cc.Vec3) {
+        if (this.isPassive) {
+            return;
+        }
+        this.sc.isDodging = true;
         let speed = this.data.FinalCommon.moveSpeed;
-        if (!this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isAttackAnimExcuting) {
-            this.move(pos, speed);
-        }
+        this.move(pos, speed * 2.5);
+        this.scheduleOnce(() => { this.sc.isDodging = false; }, 0.1);
 
     }
-    getMovePosFromTarget(): cc.Vec3 {
-        let pos = this.getNearestEnemyPosition(this.isEnemy, this.dungeon);
-        if (this.isFollow && this.dungeon.getMonsterAliveNum() < 1) {
-            pos = this.getPlayerPosition(this.dungeon);
+    updateLogic(dt: number) {
+        if (!this.dungeon) {
+            return;
         }
-        pos = pos.sub(this.node.position);
-        if (!this.isAttackAnimExcuting && !this.isAttackAnimExcuting && this.data.isHeavy<1) {
-            this.changeFaceRight();
-        }
-        return pos;
-    }
-    changeFaceRight() {
-        let pos = this.getNearestEnemyPosition(this.isEnemy, this.dungeon, 500);
-        pos = pos.sub(this.node.position);
-        let h = pos.x;
-        this.isFaceRight = h >= 0;
-    }
-    lerp(a, b, r) {
-        return a + (b - a) * r;
-    };
+        this.stateMachine.update();
+        //修正位置
+        this.node.position = Dungeon.fixOuterMap(this.node.position);
+        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.changeZIndex();
 
-    dizzCharacter(dizzDuration: number) {
-        if (dizzDuration > 0) {
-            this.isDizz = true;
-            this.scheduleOnce(() => {
-                this.isDizz = false;
-            }, dizzDuration)
+        this.updateAttack();
+        let target = this.getNearestEnemyActor(this.data.isEnemy > 0, this.dungeon);
+        let targetDis = this.getNearestTargetDistance(target);
+        //靠近取消伪装
+        if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
+            this.sc.isDisguising = false;
         }
-    }
+        //闪烁
+        if (this.data.blink > 0 && !this.sc.isBlinking) {
+            this.blinkStep.next(() => {
+                this.sc.isBlinking = true;
+            }, this.data.blink, true)
+        }
 
-    getScaleSize(): number {
-        let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-        return scaleNum;
-    }
+        //冲刺
+        let speed = this.data.FinalCommon.moveSpeed;
+        if (target && targetDis < 600 && targetDis > 100 && !target.sc.isDied && !target.invisible && this.data.dash > 0
+            && !this.isPassive) {
+            this.dashStep.next(() => {
+                this.sc.isDashing = true;
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
+                this.showAttackEffect(true);
+                this.move(this.getMovePosFromTarget(target), speed);
+                this.scheduleOnce(() => { if (this.node) { this.sc.isDashing = false; } }, 2);
+            }, this.data.dash);
+        }
+        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.getMonsterAliveNum() < 1) {
+            targetDis = this.getNearestTargetDistance(this.getPlayer(this.dungeon));
+        }
+        let isTracking = targetDis < 500 && targetDis > 64 && this.data.melee > 0;
+        if (targetDis < 500 && targetDis > 300 && this.data.remote > 0) {
+            isTracking = true;
+        }
+        if (target && target.invisible) {
+            isTracking = false;
+        }
 
-    update(dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > 0.2) {
-            this.timeDelay = 0;
-            this.monsterAction();
+        let needStop = (this.data.melee > 0 && targetDis < 64) || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300);
+        if (!this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isPassive && !needStop) {
+            if (this.sc.isMoving && isTracking || !this.sc.isMoving) {
+                this.moveStep.next(() => {
+                    this.sc.isMoving = true;
+                    let pos = cc.v3(0, 0);
+                    pos.x += Logic.getRandomNum(0, 400) - 200;
+                    pos.y += Logic.getRandomNum(0, 400) - 200;
+                    if (isTracking) {
+                        pos = this.getMovePosFromTarget(target);
+                        cc.log('isTracking');
+                    } else {
+                        cc.log('isMoving');
+                    }
+                    this.move(pos, isTracking ? speed*0.5 : speed);
+                }, isTracking ? 0 : 2, true);
+            }
+
         }
-        if (this.isDied) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+
+        //隐匿
+        if (this.data.invisible > 0 && this.sprite.opacity > 20) {
+            this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3);
         }
-        this.healthBar.node.active = !this.isDied&&this.data.currentHealth<999;
-        if (this.data.currentHealth < 1) {
-            this.killed();
+        this.dashlight.opacity = 0;
+        if (this.dungeon && this.sc.isDashing) {
+            this.dashlight.opacity = 128;
         }
+        if (this.sc.isDashing) {
+            this.setLinearVelocity(this.currentlinearVelocitySpeed);
+        }
+        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)) {
+            this.sc.isMoving = false;
+        }
+
+        this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
+        if (this.shadow) {
+            this.shadow.opacity = this.sc.isDisguising ? 0 : 128;
+        }
+        if (this.sc.isDisguising && this.anim) { this.anim.pause(); }
+        if (this.data.invisible > 0) {
+            this.healthBar.node.opacity = this.sprite.opacity > 20 ? 255 : 9;
+        }
+        this.healthBar.node.active = !this.sc.isDied;
         let sn = this.getScaleSize();
         this.node.scaleX = this.isFaceRight ? sn : -sn;
         this.node.scaleY = sn;
@@ -637,8 +823,150 @@ export default class NonPlayer extends Actor {
         //防止错位
         this.healthBar.node.x = -30 * this.node.scaleX;
         this.healthBar.node.y = this.data.boxType == 3 || this.data.boxType == 5 ? 150 : 120;
+        //变异为紫色
+        this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
+        this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);
+        if (this.attrNode) {
+            this.attrNode.opacity = this.healthBar.node.opacity;
+        }
+
     }
+    getMovePosFromTarget(target: Actor): cc.Vec3 {
+        let newPos = cc.v3(1, 0);
+        if (target) {
+            newPos = target.node.position.clone();
+        }
+        newPos = Dungeon.getIndexInMap(newPos);
+        if (newPos.x > this.pos.x) {
+            newPos = newPos.addSelf(cc.v3(1, 0));
+        } else {
+            newPos = newPos.addSelf(cc.v3(-1, 0));
+        }
+        let pos = Dungeon.getPosInMap(newPos);
+        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.getMonsterAliveNum() < 1) {
+            pos = this.getPlayerPosition(this.dungeon);
+            target = this.getPlayer(this.dungeon);
+        }
+        pos = pos.sub(this.node.position);
+        if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isHeavy < 1) {
+            this.changeFaceRight(target);
+        }
+        return pos;
+    }
+    changeFaceRight(target: Actor) {
+        let pos = target.node.position.clone();
+        pos = pos.sub(this.node.position);
+        let h = pos.x;
+        this.isFaceRight = h >= 0;
+    }
+    lerp(a, b, r) {
+        return a + (b - a) * r;
+    };
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        let target = Actor.getCollisionTarget(other, this.data.isEnemy < 1);
+        if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
+            this.sc.isDashing = false;
+            this.setLinearVelocity(cc.Vec2.ZERO);
+            let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000');
+            if (target.takeDamage(this.data.getAttackPoint(), from, this)) {
+                this.addPlayerStatus(target, from);
+            }
+        }
+    }
+
+    takeDizz(dizzDuration: number) {
+        if (dizzDuration > 0) {
+            this.sc.isDizzing = true;
+            this.scheduleOnce(() => {
+                this.sc.isDizzing = false;
+            }, dizzDuration)
+        }
+    }
+
+    getScaleSize(): number {
+        let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
+        let sn = this.isVariation ? NonPlayer.SCALE_NUM * scaleNum : scaleNum;
+        return sn;
+    }
+
     actorName() {
         return this.data.nameCn;
+    }
+
+
+    /**出场动作 */
+    public enterShow() {
+        this.sprite.stopAllActions();
+        cc.tween(this.sprite).to(1, { opacity: 255 }).call(() => { this.sc.isShow = true; }).start();
+    }
+    /**伪装 */
+    public enterDisguise() {
+        this.sc.isShow = true;
+        this.sprite.stopAllActions();
+        if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
+            this.anim.pause();
+        }
+        this.changeBodyRes(this.data.resName, NonPlayer.RES_DISGUISE);
+    }
+
+    /**等待 */
+    public enterIdle() {
+        //重置所有状态
+        this.sc = new StateContext();
+        this.sc.isShow = true;
+        let action = cc.tween()
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE001) });
+        this.sprite.stopAllActions();
+        this.setLinearVelocity(cc.Vec2.ZERO);
+        cc.tween(this.sprite).repeatForever(action).start();
+        this.anim.play('MonsterIdle');
+    }
+    /** 移动*/
+    public enterWalk() {
+        let action = cc.tween()
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK00) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK01) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK02) })
+            .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_WALK03) });
+        this.sprite.stopAllActions();
+        cc.tween(this.sprite).repeatForever(action).start();
+        this.anim.play('MonsterIdle');
+    }
+    /**眩晕 */
+    public enterDizz() {
+        this.sprite.stopAllActions();
+    }
+    /**闪烁 */
+    public enterBlink() {
+        this.setLinearVelocity(cc.Vec2.ZERO);
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
+        let body = this.bodySprite.node;
+        cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
+            let newPos = this.getNearestEnemyPosition(true, this.dungeon);
+            newPos = Dungeon.getIndexInMap(newPos);
+            if (newPos.x > this.pos.x) {
+                newPos = newPos.addSelf(cc.v3(1, 0));
+            } else {
+                newPos = newPos.addSelf(cc.v3(-1, 0));
+            }
+            let pos = Dungeon.getPosInMap(newPos);
+            this.node.setPosition(pos);
+        }).to(0.2, { opacity: 255 }).call(() => { this.sc.isBlinking = false; }).start();
+    }
+    moveTimeDelay = 0;
+    isMoveTimeDelay(dt: number, delta: number): boolean {
+        this.moveTimeDelay += dt;
+        if (this.moveTimeDelay > delta) {
+            this.moveTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+
+    /**摔倒 */
+    public enterFall() {
+        this.bodySprite.node.angle = this.isPlayerBehindAttack() ? -75 : 105;
+        this.anim.play('MonsterFall');
     }
 }

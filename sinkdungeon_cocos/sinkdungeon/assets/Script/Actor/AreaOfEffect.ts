@@ -1,5 +1,5 @@
 import Player from "../Player";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import IndexZ from "../Utils/IndexZ";
@@ -7,7 +7,6 @@ import Dungeon from "../Dungeon";
 import HitBuilding from "../Building/HitBuilding";
 import Decorate from "../Building/Decorate";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
-import NonPlayer from "../NonPlayer";
 import Actor from "../Base/Actor";
 
 // Learn TypeScript:
@@ -102,17 +101,14 @@ export default class AreaOfEffect extends cc.Component {
                 this.hasTargetMap[other.node.uuid]++;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
-                let monster = other.node.getComponent(Monster);
+                let monster = other.node.getComponent(NonPlayer);
                 let boss = other.node.getComponent(Boss);
                 let player = other.node.getComponent(Player);
-                let non = other.node.getComponent(NonPlayer);
-                let isenemynon = non?non.isEnemy:false;
-                let isplayernon = non?!non.isEnemy:false;
                 let isAttack = true;
-                if (!this.data.isFromPlayer && (monster || boss || isenemynon)) {
+                if (!this.data.isFromEnemy && (monster.data.isEnemy<1 || player)) {
                     isAttack = false;
                 }
-                if (this.data.isFromPlayer && (player||isplayernon)) {
+                if (this.data.isFromEnemy && (monster.data.isEnemy>0|| boss)) {
                     isAttack = false;
                 }
                 if (isAttack) {
@@ -129,8 +125,8 @@ export default class AreaOfEffect extends cc.Component {
         let damageSuccess = false;
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
-        let target = Actor.getEnemyActorByNode(attackTarget,this.data.isFromPlayer);
-        if (target && !target.isDied) {
+        let target = Actor.getEnemyActorByNode(attackTarget,!this.data.isFromEnemy);
+        if (target && !target.sc.isDied) {
             damageSuccess = target.takeDamage(damage);
             if (damageSuccess) {
                 if (target.data.currentHealth <= 0 && this.killCallBack) {

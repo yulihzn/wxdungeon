@@ -1,9 +1,9 @@
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
-import NonPlayer from "../NonPlayer";
-import NonPlayerData from "../Data/NonPlayerData";
 import BaseManager from "./BaseManager";
 import Utils from "../Utils/Utils";
+import NonPlayer from "../NonPlayer";
+import MonsterData from "../Data/MonsterData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,11 +52,17 @@ export default class NonPlayerManager extends BaseManager {
         nonPlayerPrefab.active = false;
         nonPlayerPrefab.parent = dungeon.node;
         let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer);
-        let data = new NonPlayerData();
+        let data = new MonsterData();
         nonPlayer.dungeon = dungeon;
         data.valueCopy(Logic.nonplayers[resName]);
+        data.isEnemy = 0;
         nonPlayer.data = data;
-        nonPlayer.changeBodyRes(resName, NonPlayer.RES_IDLE000);
+        nonPlayer.sc.isDisguising = data.disguise > 0;
+        if (nonPlayer.sc.isDisguising) {
+            nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE);
+        } else {
+            nonPlayer.changeBodyRes(resName, NonPlayer.RES_IDLE000);
+        }
         return nonPlayer;
     }
     private addNonPlayer(nonPlayer: NonPlayer, pos: cc.Vec3) {
@@ -65,6 +71,15 @@ export default class NonPlayerManager extends BaseManager {
         nonPlayer.pos = Dungeon.getIndexInMap(pos);
         nonPlayer.node.position = pos;
         this.nonPlayerList.push(nonPlayer);
+    }
+
+    timeDelay = 0;
+    updateLogic(dt: number) {
+        for (let monster of this.nonPlayerList) {
+            if (monster && monster.node.active) {
+                monster.updateLogic(dt);
+            }
+        }
     }
 
 }

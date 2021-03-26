@@ -41,8 +41,8 @@ export default class Kraken extends Boss {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.isDied = false;
-        this.isShow = false;
+        this.sc.isDied = false;
+        this.sc.isShow = false;
         this.shooter = this.getComponentInChildren(Shooter);
         this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'boss001'));
         this.anim = this.getComponent(cc.Animation);
@@ -51,7 +51,7 @@ export default class Kraken extends Boss {
     //anim
     ShowFinish() {
         this.anim.play('KrakenHeadIdle');
-        this.isShow = true;
+        this.sc.isShow = true;
         let pos1 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE+2, -8));
         let pos2 = Dungeon.getPosInMap(cc.v3(-2, -8));
         this.hand01 = this.addHand(pos1,true);
@@ -84,7 +84,7 @@ export default class Kraken extends Boss {
     }
 
     takeDamage(damage: DamageData):boolean {
-        if(this.isDied||!this.isShow){
+        if(this.sc.isDied||!this.sc.isShow){
             return false;
         }
         
@@ -98,11 +98,11 @@ export default class Kraken extends Boss {
     }
     
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.isDied = true;
+        this.sc.isDied = true;
         this.changeZIndex();
         let hands = this.getComponentsInChildren(KrakenSwingHand);
         for (let hand of hands) {
@@ -125,7 +125,7 @@ export default class Kraken extends Boss {
     showBoss() {
         if(this.healthBar){
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-            this.healthBar.node.active = !this.isDied;
+            this.healthBar.node.active = !this.sc.isDied;
         }
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation);
@@ -152,10 +152,10 @@ export default class Kraken extends Boss {
         if (this.label) {
             this.label.string = "" + this.node.zIndex;
         }
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
     }
     bossAction() {
-        if (this.isDied||!this.isShow||!this.dungeon) {
+        if (this.sc.isDied||!this.sc.isShow||!this.dungeon) {
             return;
         }
         

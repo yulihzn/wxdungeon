@@ -10,4 +10,5 @@ export default class StateContext{
     isDizzing = false;//是否眩晕
     isFalling = false;//是否倒地
     isBlinking = false;//是否正在瞬移
+    isJumping = false;//是否正在跳跃
 }

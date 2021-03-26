@@ -379,7 +379,7 @@ export default class Dungeon extends cc.Component {
         if (this.monsterManager.bossList.length > 0) {
             count = 0;
             for (let boss of this.monsterManager.bossList) {
-                if (boss.isDied) {
+                if (boss.sc.isDied) {
                     count++;
                 }
             }
@@ -462,10 +462,12 @@ export default class Dungeon extends cc.Component {
         }
         return false;
     }
-
+    
     update(dt) {
         if (this.isTimeDelay(dt)) {
             this.checkPlayerPos(dt);
+            this.monsterManager.updateLogic(dt);
+            this.nonPlayerManager.updateLogic(dt);
         }
         if (this.isCheckTimeDelay(dt) && this.isInitFinish) {
             this.checkRoomClear();

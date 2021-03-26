@@ -4,7 +4,6 @@ import FromData from "../Data/FromData";
 import Dungeon from "../Dungeon";
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
-import Monster from "../Monster";
 import NonPlayer from "../NonPlayer";
 import Player from "../Player";
 import StateContext from "./StateContext";
@@ -32,9 +31,9 @@ export default abstract class Actor extends cc.Component {
     abstract actorName(): string;
     abstract addStatus(statusType: string, from: FromData);
     abstract getCenterPosition(): cc.Vec3;
-    isShow = false;
-    isDied = false;
     invisible = false;//是否隐身
+    isFaceRight = true;
+    isFaceUp = true;
     lights:ShadowOfSight[] = [];//光源
     sc:StateContext = new StateContext();
 
@@ -109,20 +108,20 @@ export default abstract class Actor extends cc.Component {
                 }
             } else if (targetType == Actor.TARGET_NONPLAYER) {
                 for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (!non.isEnemy) {
+                    if (non.data.isEnemy<1) {
                         targetList.push(non);
                     }
                 }
             } else if (targetType == Actor.TARGET_NONPLAYER_ENEMY) {
                 for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (non.isEnemy) {
+                    if (non.data.isEnemy>0) {
                         targetList.push(non);
                     }
                 }
             }
         }
         for (let target of targetList) {
-            if (target.isValid && !target.isDied && target.isShow) {
+            if (target.isValid && !target.sc.isDied && target.sc.isShow) {
                 let dis = Logic.getDistance(this.node.position, target.getCenterPosition());
                 if (dis < shortdis) {
                     shortdis = dis;
@@ -151,17 +150,13 @@ export default abstract class Actor extends cc.Component {
     }
     static getEnemyActorByNode(other: cc.Node, isPlayer?: boolean) {
         if (isPlayer) {
-            let monster = other.getComponent(Monster);
-            if (monster) {
-                return monster;
+            let non = other.getComponent(NonPlayer);
+            if (non&&non.data.isEnemy>0) {
+                return non;
             }
             let boss = other.getComponent(Boss);
             if (boss) {
                 return boss;
-            }
-            let non = other.getComponent(NonPlayer);
-            if (non && non.isEnemy) {
-                return non;
             }
         } else {
             let player = other.getComponent(Player);
@@ -169,7 +164,7 @@ export default abstract class Actor extends cc.Component {
                 return player;
             }
             let non = other.getComponent(NonPlayer);
-            if (non && !non.isEnemy) {
+            if (non && non.data.isEnemy<1) {
                 return non;
             }
         }

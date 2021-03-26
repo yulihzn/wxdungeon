@@ -49,7 +49,7 @@ export default class Captain extends Boss {
     jumpSkill = new NextStep();
     onLoad () {
         this.attackSkill.IsExcuting = false;
-        this.isDied = false;
+        this.sc.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
@@ -144,7 +144,7 @@ export default class Captain extends Boss {
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let target = Actor.getCollisionTarget(other);
         if (target && self.tag == ColliderTag.BOSS_ASS) {
-            if (this.isFall&&!this.isDied) {
+            if (this.isFall&&!this.sc.isDied) {
                 this.isFall = false;
                 let dd = new DamageData();
                 dd.physicalDamage = 2;
@@ -154,7 +154,7 @@ export default class Captain extends Boss {
     }
     
     update (dt) {
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
             this.timeDelay = 0;
@@ -167,10 +167,10 @@ export default class Captain extends Boss {
                 this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             }
         }
-        if (this.isDied) {
+        if (this.sc.isDied) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
         if (this.data.currentHealth < 1) {
             this.killed();
         }
@@ -178,7 +178,7 @@ export default class Captain extends Boss {
     }
     takeDamage(damage: DamageData):boolean {
         let isPlayJump = this.anim.getAnimationState("CaptainJump").isPlaying;
-        if(this.isDied||isPlayJump){
+        if(this.sc.isDied||isPlayJump){
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
@@ -193,11 +193,11 @@ export default class Captain extends Boss {
     }
     
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.isDied = true;
+        this.sc.isDied = true;
         this.anim.play('CaptainDie');
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
         collider.sensor = true;
@@ -206,7 +206,7 @@ export default class Captain extends Boss {
 
     }
     bossAction() {
-        if (this.isDied || !this.dungeon) {
+        if (this.sc.isDied || !this.dungeon) {
             return;
         }
         this.node.position = Dungeon.fixOuterMap(this.node.position);
@@ -232,7 +232,7 @@ export default class Captain extends Boss {
                 this.anim.play("CaptainFire");
             },5)
         }
-        if (playerDis < 140 && !this.dungeon.player.isDied) {
+        if (playerDis < 140 && !this.dungeon.player.sc.isDied) {
             this.attackSkill.next(()=>{
                 this.attackSkill.IsExcuting = true;
                 this.anim.play("CaptainAttack");
@@ -281,7 +281,7 @@ export default class Captain extends Boss {
         this.isMoving = h != 0 || v != 0;
     }
     move(pos: cc.Vec3, speed: number) {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         if (this.attackSkill.IsExcuting && !pos.equals(cc.Vec3.ZERO)) {

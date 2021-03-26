@@ -2,7 +2,7 @@ import Dungeon from "../Dungeon";
 import SlimeVenom from "../Boss/SlimeVenom";
 import DamageData from "../Data/DamageData";
 import StatusManager from "./StatusManager";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import FromData from "../Data/FromData";
 import IndexZ from "../Utils/IndexZ";
 import AreaOfEffect from "../Actor/AreaOfEffect";
@@ -83,7 +83,7 @@ export default class SpecialManager extends cc.Component {
         venom.runAction(cc.scaleTo(0.5, 2, 2))
     }
     private addHowl(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
-        let monster = this.node.parent.getComponent(Monster);
+        let monster = this.node.parent.getComponent(NonPlayer);
         if (monster) {
             monster.addStatus(StatusManager.WEREWOLFDEFENCE,from);
         }

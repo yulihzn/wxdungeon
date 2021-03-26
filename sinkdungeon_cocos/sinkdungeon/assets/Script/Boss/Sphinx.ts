@@ -37,8 +37,8 @@ export default class Sphinx extends Boss {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.isDied = false;
-        this.isShow = false;
+        this.sc.isDied = false;
+        this.sc.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
@@ -49,7 +49,7 @@ export default class Sphinx extends Boss {
     start() {
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow) {
+        if (this.sc.isDied || !this.sc.isShow) {
             return false;
         }
         
@@ -64,16 +64,16 @@ export default class Sphinx extends Boss {
     }
 
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.isDied = true;
+        this.sc.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
     bossAction(): void {
-        if (this.isDied || !this.isShow || !this.dungeon) {
+        if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
             return;
         }
         this.changeZIndex();
@@ -122,10 +122,10 @@ export default class Sphinx extends Boss {
         shooter.fireBullet(angle, cc.Vec3.ZERO);
     }
     showBoss() {
-        this.isShow = true;
+        this.sc.isShow = true;
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-            this.healthBar.node.active = !this.isDied;
+            this.healthBar.node.active = !this.sc.isDied;
         }
     }
     actionTimeDelay = 0;
@@ -148,7 +148,7 @@ export default class Sphinx extends Boss {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        this.healthBar.node.active = !this.isDied;
+        this.healthBar.node.active = !this.sc.isDied;
         this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
     actorName(){

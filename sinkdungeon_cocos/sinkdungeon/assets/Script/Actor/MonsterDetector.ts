@@ -1,5 +1,5 @@
 import Bullet from "../Item/Bullet";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import Random from "../Utils/Random";
 
 // Learn TypeScript:
@@ -28,7 +28,7 @@ export default class MonsterDetector extends cc.Component {
     // update (dt) {}
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let bullet = other.getComponent(Bullet);
-        let monster = this.node.parent.getComponent(Monster);
+        let monster = this.node.parent.getComponent(NonPlayer);
         if(bullet&&bullet.isFromPlayer && monster){
             let pos = this.getRoate90Point(bullet.node.position,monster.node.position,Random.getHalfChance());
             pos = pos.sub(monster.node.position);

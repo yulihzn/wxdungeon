@@ -1,9 +1,6 @@
 import Player from "../Player";
-import Monster from "../Monster";
-import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
-import Talent from "./Talent";
 import FromData from "../Data/FromData";
 import Logic from "../Logic";
 import IndexZ from "../Utils/IndexZ";
@@ -74,7 +71,7 @@ export default class FireGhost extends cc.Component {
         let d = 1;
         damage.magicDamage = d;
         let target = Actor.getEnemyActorByNode(attackTarget,true);
-        if (target && !target.isDied) {
+        if (target && !target.sc.isDied) {
             target.takeDamage(damage);
             target.addStatus(status, new FromData());
         }
@@ -127,7 +124,7 @@ export default class FireGhost extends cc.Component {
         if (pos.equals(cc.Vec3.ZERO)) {
             for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
                 let dis = Logic.getDistance(this.node.position, boss.node.position);
-                if (dis < 400 && dis < olddis && !boss.isDied) {
+                if (dis < 400 && dis < olddis && !boss.sc.isDied) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;

@@ -10,7 +10,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
 import StatusManager from "../Manager/StatusManager";
 import PlayerAvatar from "../PlayerAvatar";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import Boss from "../Boss/Boss";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import NonPlayerManager from "../Manager/NonPlayerManager";
@@ -206,7 +206,7 @@ export default class TalentSkills extends Talent {
             this.player.getWalkSmoke(this.node.parent, this.node.position);
         }, 0.05, 4, 0);
         let pos = this.player.rigidbody.linearVelocity.clone();
-        this.player.isMoving = false;
+        this.player.sc.isMoving = false;
         if (pos.equals(cc.Vec2.ZERO)) {
             // pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
             pos = cc.v2(this.player.weaponRight.meleeWeapon.Hv.clone());
@@ -250,7 +250,7 @@ export default class TalentSkills extends Talent {
         if (!node) {
             return;
         }
-        let monster = node.getComponent(Monster);
+        let monster = node.getComponent(NonPlayer);
         let boss = node.getComponent(Boss);
         if (monster) {
             monster.getLoot();
@@ -325,7 +325,7 @@ export default class TalentSkills extends Talent {
         let d = new DamageData(1);
         this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
             .init(0, 2, 0, 1, IndexZ.OVERHEAD, true, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
-                let monster = actor.node.getComponent(Monster);
+                let monster = actor.node.getComponent(NonPlayer);
                 if (monster) {
                     monster.dungeon.addItem(monster.node.position.clone(), `food${monster.data.resName.replace('monster', '')}`);
                 }
@@ -383,7 +383,7 @@ export default class TalentSkills extends Talent {
         }
         for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
             let dis = Logic.getDistance(this.node.position, boss.node.position);
-            if (dis < range && !boss.isDied) {
+            if (dis < range && !boss.sc.isDied) {
                 boss.addStatus(statusName, new FromData());
             }
         }

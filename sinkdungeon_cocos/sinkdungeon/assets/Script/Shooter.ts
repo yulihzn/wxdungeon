@@ -1,7 +1,7 @@
 import Dungeon from "./Dungeon";
 import Player from "./Player";
 import Bullet from "./Item/Bullet";
-import Monster from "./Monster";
+import NonPlayer from "./NonPlayer";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
@@ -351,7 +351,7 @@ export default class Shooter extends cc.Component {
             let player = collider.node.getComponent(Player);
             if (player) { isInvalid = true; }
         } else {
-            let monster = collider.node.getComponent(Monster);
+            let monster = collider.node.getComponent(NonPlayer);
             let boss = collider.node.getComponent(Boss);
             if (monster || boss) { isInvalid = true; }
         }
@@ -453,7 +453,7 @@ export default class Shooter extends cc.Component {
             if (pos.equals(cc.Vec3.ZERO)) {
                 for (let boss of this.dungeon.monsterManager.bossList) {
                     let dis = Logic.getDistance(this.getParentNode().position, boss.node.position);
-                    if (dis < 600 && dis < olddis && !boss.isDied) {
+                    if (dis < 600 && dis < olddis && !boss.sc.isDied) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;

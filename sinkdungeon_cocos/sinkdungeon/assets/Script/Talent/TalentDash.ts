@@ -51,7 +51,7 @@ export default class TalentDash extends Talent {
                 this.player.getWalkSmoke(this.node.parent, this.node.position);
             }, 0.05, 4, 0);
             let pos = this.player.rigidbody.linearVelocity.clone();
-            this.player.isMoving = false;
+            this.player.sc.isMoving = false;
             if (pos.equals(cc.Vec2.ZERO)) {
                 pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
             } else {
@@ -99,7 +99,7 @@ export default class TalentDash extends Talent {
 
         let damageSuccess = false;
         let target = Actor.getEnemyActorByNode(attackTarget.node,true);
-        if (target && !target.isDied) {
+        if (target && !target.sc.isDied) {
             damageSuccess = target.takeDamage(damage);
             if (damageSuccess) {
                 this.beatBack(target.node);

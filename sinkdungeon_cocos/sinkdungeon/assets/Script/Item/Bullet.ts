@@ -1,5 +1,5 @@
 import { EventHelper } from "../EventHelper";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import Player from "../Player";
 import MeleeWeapon from "../MeleeWeapon";
 import DamageData from "../Data/DamageData";
@@ -10,7 +10,6 @@ import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import { ColliderTag } from "../Actor/ColliderTag";
 import Decorate from "../Building/Decorate";
 import HitBuilding from "../Building/HitBuilding";
 import Shield from "../Shield";
@@ -18,7 +17,6 @@ import Wall from "../Building/Wall";
 import AreaOfEffect from "../Actor/AreaOfEffect";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
-import NonPlayer from "../NonPlayer";
 import Actor from "../Base/Actor";
 
 // Learn TypeScript:
@@ -300,7 +298,7 @@ export default class Bullet extends cc.Component {
     onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
         let isDestory = true;
         let player = otherCollider.node.getComponent(Player);
-        let monster = otherCollider.node.getComponent(Monster);
+        let monster = otherCollider.node.getComponent(NonPlayer);
         let boss = otherCollider.node.getComponent(Boss);
         let bullet = otherCollider.node.getComponent(Bullet);
         let wall = otherCollider.node.getComponent(Wall);
@@ -329,15 +327,12 @@ export default class Bullet extends cc.Component {
         let isAttack = true;
         let bullet = other.node.getComponent(Bullet);
         let player = other.node.getComponent(Player);
-        let monster = other.node.getComponent(Monster);
+        let npc = other.node.getComponent(NonPlayer);
         let boss = other.node.getComponent(Boss);
-        let non = other.node.getComponent(NonPlayer);
-        let enemynon = non?non.isEnemy:false;
-        let playernon = non?!non.isEnemy:false;
-        if (!this.isFromPlayer && (monster || boss || enemynon)) {
+        if (!this.isFromPlayer && (npc&&npc.data.isEnemy>0 || boss )) {
             isAttack = false;
         }
-        if (this.isFromPlayer && (player || playernon)) {
+        if (this.isFromPlayer && (player || npc&&npc.data.isEnemy<1)) {
             isAttack = false;
         }
         if (bullet) {
@@ -361,14 +356,14 @@ export default class Bullet extends cc.Component {
         if(aoe&&aoe.IsAttacking&&aoe.data.canBreakBullet){
             isDestory = true;
         }
-        let monster = attackTarget.getComponent(Monster);
+        let monster = attackTarget.getComponent(NonPlayer);
         if (monster && !monster.sc.isDied) {
             damageSuccess = monster.takeDamage(damage);
             if (damageSuccess) { this.addTargetAllStatus(monster,new FromData()) }
             isDestory = true;
         }
         let player = attackTarget.getComponent(Player);
-        if (player && !player.isDied) {
+        if (player && !player.sc.isDied) {
             //子弹偏转
             let isReverse = false;
             if(player.shield.Status == Shield.STATUS_PARRY&&player.shield.data.isReflect==1){
@@ -380,14 +375,9 @@ export default class Bullet extends cc.Component {
                 isDestory = true;
             }
         }
-        let non = attackTarget.getComponent(NonPlayer);
-        if (non && !non.isDied) {
-            damageSuccess = non.takeDamage(damage);
-            if (damageSuccess) { this.addTargetAllStatus(non,new FromData()) }
-            isDestory = true;
-        }
+       
         let boss = attackTarget.getComponent(Boss);
-        if (boss && !boss.isDied) {
+        if (boss && !boss.sc.isDied) {
             damageSuccess = boss.takeDamage(damage);
             if (damageSuccess) { this.addTargetAllStatus(boss,new FromData()) }
             isDestory = true;
@@ -489,7 +479,7 @@ export default class Bullet extends cc.Component {
             if (pos.equals(cc.Vec3.ZERO)) {
                 for (let boss of this.dungeon.monsterManager.bossList) {
                     let dis = Logic.getDistance(this.node.position, boss.node.position);
-                    if (dis < 500 && dis < olddis && !boss.isDied) {
+                    if (dis < 500 && dis < olddis && !boss.sc.isDied) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
@@ -500,7 +490,7 @@ export default class Bullet extends cc.Component {
             if (pos.equals(cc.Vec3.ZERO)) {
                 for (let non of this.dungeon.nonPlayerManager.nonPlayerList) {
                     let dis = Logic.getDistance(this.node.position, non.node.position);
-                    if (dis < 500 && dis < olddis && !non.isDied&&non.isEnemy) {
+                    if (dis < 500 && dis < olddis && non.sc.isDied&&non.data.isEnemy<1) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;
@@ -510,7 +500,7 @@ export default class Bullet extends cc.Component {
             }
         } else {
             let dis = Logic.getDistance(this.node.position, this.dungeon.player.node.position);
-            if (dis < 500 && dis < olddis && !this.dungeon.player.isDied && !this.dungeon.player.isFall) {
+            if (dis < 500 && dis < olddis && !this.dungeon.player.sc.isDied && !this.dungeon.player.sc.isFalling) {
                 olddis = dis;
                 let p = this.node.position.clone();
                 p.x = this.node.scaleX > 0 ? p.x : -p.x;
@@ -519,7 +509,7 @@ export default class Bullet extends cc.Component {
             if (pos.equals(cc.Vec3.ZERO)) {
                 for (let non of this.dungeon.nonPlayerManager.nonPlayerList) {
                     let dis = Logic.getDistance(this.node.position, non.node.position);
-                    if (dis < 500 && dis < olddis && !non.isDied&&!non.isEnemy) {
+                    if (dis < 500 && dis < olddis && !non.sc.isDied&&non.data.isEnemy<1) {
                         olddis = dis;
                         let p = this.node.position.clone();
                         p.x = this.node.scaleX > 0 ? p.x : -p.x;

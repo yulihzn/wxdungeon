@@ -30,7 +30,6 @@ import FromData from './Data/FromData';
 import Achievements from './Achievement';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
-import Monster from './Monster';
 import IndexZ from './Utils/IndexZ';
 import PlayerAvatar from './PlayerAvatar';
 import PlayerWeapon from './PlayerWeapon';
@@ -38,6 +37,7 @@ import { EventHelper } from './EventHelper';
 import TalentSkills from './Talent/TalentSkills';
 import ShadowOfSight from './Effect/ShadowOfSight';
 import LightManager from './Manager/LightManager';
+import NonPlayer from './NonPlayer';
 @ccclass
 export default class Player extends Actor {
 
@@ -63,11 +63,7 @@ export default class Player extends Actor {
     @property(cc.Node)
     remoteCooldown: cc.Node = null;
 
-    isMoving = false;//是否移动中
-    isFall = false;//是否跌落
-    isJumping = false;//是否跳跃
     isStone = false;//是否石化
-    isDizz = false;//是否眩晕
 
     baseAttackPoint: number = 1;
 
@@ -81,8 +77,7 @@ export default class Player extends Actor {
     inventoryManager: InventoryManager;
     data: PlayerData;
 
-    isFaceRight = true;
-    isFaceUp = true;
+    
     currentDir = 3;
 
     attackTarget: cc.Collider;
@@ -101,28 +96,28 @@ export default class Player extends Actor {
         this.data = Logic.playerData.clone();
         this.statusUpdate();
         this.pos = cc.v3(0, 0);
-        this.isDied = false;
+        this.sc.isDied = false;
         this.isStone = false;
-        this.isShow = false;
-        this.scheduleOnce(() => { this.isShow = true; }, 0.5)
+        this.sc.isShow = false;
+        this.scheduleOnce(() => { this.sc.isShow = true; }, 0.5)
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.weaponLeft.init(this, true);
         this.weaponRight.init(this, false);
         this.remoteCooldown.width = 0;
         this.remoteCooldown.opacity = 200;
         cc.director.on(EventHelper.PLAYER_TRIGGER
-            , (event) => { this.triggerThings() });
+            , (event) => { if(this.node)this.triggerThings() });
         cc.director.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
             , (event) => {
                 Logic.mapManager.setCurrentRoomExitPos(this.pos);
                 cc.director.loadScene('start');
             });
         cc.director.on(EventHelper.PLAYER_USEITEM
-            , (event) => { this.useItem(event.detail.itemData) });
+            , (event) => { if(this.node)this.useItem(event.detail.itemData) });
         cc.director.on(EventHelper.PLAYER_SKILL
-            , (event) => { this.useSkill() });
+            , (event) => { if(this.node)this.useSkill() });
         cc.director.on(EventHelper.PLAYER_ATTACK
-            , (event) => { this.meleeAttack() });
+            , (event) => { if(this.node)this.meleeAttack() });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
             , (event) => {
                 if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
@@ -134,13 +129,13 @@ export default class Player extends Actor {
                 if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
                     this.shield.use();
                 } else {
-                    this.remoteAttack();
+                    if(this.node)this.remoteAttack();
                 }
             });
         cc.director.on(EventHelper.PLAYER_STATUSUPDATE
-            , (event) => { this.statusUpdate() });
+            , (event) => { if(this.node)this.statusUpdate() });
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
-            , (event) => { this.takeDamage(event.detail.damage, event.detail.from) });
+            , (event) => { if(this.node)this.takeDamage(event.detail.damage, event.detail.from) });
 
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
             Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
@@ -210,11 +205,11 @@ export default class Player extends Actor {
     }
     dizzCharacter(dizzDuration: number) {
         if (dizzDuration > 0) {
-            this.isDizz = true;
+            this.sc.isDizzing = true;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
             this.scheduleOnce(() => {
-                this.isDizz = false;
+                this.sc.isDizzing = false;
             }, dizzDuration)
         }
     }
@@ -356,7 +351,7 @@ export default class Player extends Actor {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     addStatus(statusType: string, from: FromData) {
-        if (!this.node || this.isDied) {
+        if (!this.node || this.sc.isDied) {
             return;
         }
         this.statusManager.addStatus(statusType, from);
@@ -368,7 +363,7 @@ export default class Player extends Actor {
         this.statusManager.stopAllStatus();
     }
     meleeAttack() {
-        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall || this.isJumping
+        if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking
             || this.shield.isDefendOrParrying) {
@@ -404,7 +399,7 @@ export default class Player extends Actor {
 
     }
     useShield() {
-        if (!this.weaponRight || this.isDizz || this.isDied || this.isFall || this.isJumping
+        if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking) {
             return;
@@ -415,7 +410,7 @@ export default class Player extends Actor {
     }
     remoteRate = 0;
     remoteAttack() {
-        if (!this.data || this.isDizz || this.isDied || this.isFall || !this.weaponLeft.shooter || this.isJumping) {
+        if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || !this.weaponLeft.shooter || this.sc.isJumping) {
             return;
         }
         let arcEx = 0;
@@ -480,7 +475,7 @@ export default class Player extends Actor {
 
 
     move(dir: number, pos: cc.Vec3, dt: number) {
-        if (this.isDied || this.isFall || this.isDizz || !this.isShow) {
+        if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow) {
             return;
         }
 
@@ -523,9 +518,9 @@ export default class Player extends Actor {
         }
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
-        this.isMoving = h != 0 || v != 0;
+        this.sc.isMoving = h != 0 || v != 0;
 
-        if (this.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
+        if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
             if (!this.shield.isAniming) {
                 this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0;
             }
@@ -538,8 +533,8 @@ export default class Player extends Actor {
         if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
             this.weaponLeft.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
         }
-        if (!this.isJumping) {
-            if (this.isMoving && !this.isStone) {
+        if (!this.sc.isJumping) {
+            if (this.sc.isMoving && !this.isStone) {
                 this.playerAnim(PlayerAvatar.STATE_WALK, dir);
             } else {
                 this.playerAnim(PlayerAvatar.STATE_IDLE, dir);
@@ -603,10 +598,10 @@ export default class Player extends Actor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
     }
     fall() {
-        if (this.isFall || this.isJumping) {
+        if (this.sc.isFalling || this.sc.isJumping) {
             return;
         }
-        this.isFall = true;
+        this.sc.isFalling = true;
         this.avatar.playAnim(PlayerAvatar.STATE_FALL, this.currentDir);
         this.scheduleOnce(() => {
             this.transportPlayer(this.defaultPos);
@@ -614,16 +609,16 @@ export default class Player extends Actor {
             let dd = new DamageData();
             dd.realDamage = 1;
             this.takeDamage(dd, FromData.getClone('跌落', ''));
-            this.isFall = false;
+            this.sc.isFalling = false;
         }, 2);
     }
     jump() {
-        if (this.isDied || this.isFall || this.isDizz || !this.isShow || this.isJumping
+        if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow || this.sc.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking) {
             return false;
         }
-        this.isJumping = true;
+        this.sc.isJumping = true;
         this.scheduleOnce(() => {
             this.weaponLeft.node.opacity = 0; this.weaponRight.node.opacity = 0;
             this.shield.node.opacity = 0;
@@ -631,7 +626,7 @@ export default class Player extends Actor {
         this.avatar.playAnim(PlayerAvatar.STATE_JUMP, this.currentDir);
         this.scheduleOnce(() => {
             this.avatar.playAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
-            this.isJumping = false;
+            this.sc.isJumping = false;
             this.weaponLeft.node.opacity = 255; this.weaponRight.node.opacity = 255;
             this.shield.node.opacity = 255;
 
@@ -645,7 +640,7 @@ export default class Player extends Actor {
      * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
-        if (!this.data || this.isJumping) {
+        if (!this.data || this.sc.isJumping) {
             return false;
         }
         //盾牌
@@ -718,10 +713,10 @@ export default class Player extends Actor {
         }
     }
     killed(from?: FromData) {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
-        this.isDied = true;
+        this.sc.isDied = true;
         this.avatar.playAnim(PlayerAvatar.STATE_DIE, this.currentDir);
         cc.director.emit(EventHelper.HUD_STOP_COUNTTIME);
         cc.director.emit(EventHelper.HUD_FADE_OUT);
@@ -773,7 +768,7 @@ export default class Player extends Actor {
 
     update(dt) {
 
-        if (this.isSmokeTimeDelay(dt) && this.isMoving && !this.isJumping) {
+        if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
         let stone = this.isStone;
@@ -785,14 +780,14 @@ export default class Player extends Actor {
         this.node.opacity = this.invisible ? 80 : 255;
     }
     private useSkill(): void {
-        if (this.talentSkills && !this.isJumping) {
+        if (this.talentSkills && !this.sc.isJumping) {
             this.talentSkills.useSKill();
         }
 
     }
 
     triggerThings() {
-        if (this.isJumping) {
+        if (this.sc.isJumping) {
             return;
         }
         if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
@@ -831,7 +826,7 @@ export default class Player extends Actor {
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.node.getComponent(Monster)) {
+        if (otherCollider.node.getComponent(NonPlayer)) {
             contact.disabledOnce = true;
         }
     }

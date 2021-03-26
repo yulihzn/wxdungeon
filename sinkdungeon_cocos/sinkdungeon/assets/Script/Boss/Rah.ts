@@ -41,8 +41,8 @@ export default class Rah extends Boss {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.isDied = false;
-        this.isShow = false;
+        this.sc.isDied = false;
+        this.sc.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
@@ -54,7 +54,7 @@ export default class Rah extends Boss {
         super.start();
     }
     takeDamage(damage: DamageData): boolean {
-        if (this.isDied || !this.isShow || this.blinkSkill.IsExcuting) {
+        if (this.sc.isDied || !this.sc.isShow || this.blinkSkill.IsExcuting) {
             return false;
         }
     
@@ -68,18 +68,18 @@ export default class Rah extends Boss {
     }
 
     killed() {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
         this.node.runAction(cc.fadeOut(3));
-        this.isDied = true;
+        this.sc.isDied = true;
         this.dungeon.fog.runAction(cc.scaleTo(1, 3));
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
     bossAction(): void {
-        if (this.isDied || !this.isShow || !this.dungeon) {
+        if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
             return;
         }
         this.node.position = Dungeon.fixOuterMap(this.node.position);
@@ -212,10 +212,10 @@ export default class Rah extends Boss {
         shooter.fireBullet(angle);
     }
     showBoss() {
-        this.isShow = true;
+        this.sc.isShow = true;
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-            this.healthBar.node.active = !this.isDied;
+            this.healthBar.node.active = !this.sc.isDied;
         }
     }
     actionTimeDelay = 0;
@@ -238,15 +238,15 @@ export default class Rah extends Boss {
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-        this.healthBar.node.active = !this.isDied;
-        if (this.isDied) {
+        this.healthBar.node.active = !this.sc.isDied;
+        if (this.sc.isDied) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
 
     move(pos: cc.Vec3, speed: number) {
-        if (this.isDied) {
+        if (this.sc.isDied) {
             return;
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -274,7 +274,7 @@ export default class Rah extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let target = Actor.getCollisionTarget(other);
-        if (target && this.meleeSkill.IsExcuting&&!this.isDied) {
+        if (target && this.meleeSkill.IsExcuting&&!this.sc.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;
             target.takeDamage(d,FromData.getClone(this.actorName(),'bossrahhead'),this);

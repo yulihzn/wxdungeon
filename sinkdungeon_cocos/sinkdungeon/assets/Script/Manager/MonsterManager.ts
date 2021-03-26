@@ -1,13 +1,13 @@
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Slime from "../Boss/Slime";
-import MonsterRandomAttr from "./MonsterRandomAttr";
 import RoomType from "../Rect/RoomType";
 import Boss from "../Boss/Boss";
 import BaseManager from "./BaseManager";
 import GameHud from "../UI/GameHud";
+import MonsterRandomAttr from "./MonsterRandomAttr";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -104,7 +104,7 @@ export default class MonsterManager extends BaseManager {
     readonly maxHealth08 = 600;
     readonly maxHealth09 = 800;
 
-    private monsters: Monster[] = new Array();//房间怪物列表
+    private monsters: NonPlayer[] = new Array();//房间怪物列表
     private bosses: Boss[] = new Array();
     isRoomInitWithEnemy = false;//初始化是否生成怪物
     get monsterList() {
@@ -192,12 +192,12 @@ export default class MonsterManager extends BaseManager {
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    private getMonster(resName: string, dungeon: Dungeon): Monster {
+    private getMonster(resName: string, dungeon: Dungeon): NonPlayer {
         let monsterPrefab: cc.Node = null;
         monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;
         monsterPrefab.parent = dungeon.node;
-        let monster = monsterPrefab.getComponent(Monster);
+        let monster = monsterPrefab.getComponent(NonPlayer);
         let data = new MonsterData();
         let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
         monster.dungeon = dungeon;
@@ -267,20 +267,20 @@ export default class MonsterManager extends BaseManager {
                     break;
             }
         }
-
+        data.isEnemy = 1;
         monster.data = data;
 
         monster.sc.isDisguising = data.disguise > 0;
         if (monster.sc.isDisguising) {
-            monster.changeBodyRes(data.resName, Monster.RES_DISGUISE);
+            monster.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE);
         } else {
-            monster.changeBodyRes(resName, Monster.RES_IDLE000);
+            monster.changeBodyRes(resName, NonPlayer.RES_IDLE000);
         }
         monster.addAttrIcon();
 
         return monster;
     }
-    private addMonster(monster: Monster, pos: cc.Vec3) {
+    private addMonster(monster: NonPlayer, pos: cc.Vec3) {
         //激活
         monster.node.active = true;
         monster.pos = pos;
@@ -388,18 +388,12 @@ export default class MonsterManager extends BaseManager {
             this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon);
         }
     }
-    timeDelay = 0;
-    update(dt: number) {
-        this.timeDelay += dt;
-        if (this.timeDelay > 0.016) {
-            this.timeDelay = 0;
-            for (let monster of this.monsters) {
-                if (monster && monster.node.active) {
-                    monster.updateLogic(dt);
-                }
+    updateLogic(dt: number) {
+        for (let monster of this.monsters) {
+            if (monster && monster.node.active) {
+                monster.updateLogic(dt);
             }
         }
-
     }
 
 }

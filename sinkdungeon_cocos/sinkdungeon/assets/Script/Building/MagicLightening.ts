@@ -1,5 +1,5 @@
 import Player from "../Player";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -84,7 +84,7 @@ export default class MagicLightening extends cc.Component {
         damage.magicDamage = this.damagePoint;
         status = StatusManager.DIZZ;
         let target = Actor.getEnemyActorByNode(attackTarget,!this.needPrepare);
-        if (target && !target.isDied) {
+        if (target && !target.sc.isDied) {
             target.takeDamage(damage);
             let fd = FromData.getClone('闪电','magiclighteningdown1');
             target.addStatus(status,fd);

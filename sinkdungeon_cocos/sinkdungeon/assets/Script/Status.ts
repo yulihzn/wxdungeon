@@ -1,11 +1,9 @@
-import { EventHelper } from "./EventHelper";
 import StatusData from "./Data/StatusData";
 import Logic from "./Logic";
 import Player from "./Player";
 import DamageData from "./Data/DamageData";
-import Monster from "./Monster";
-import Boss from "./Boss/Boss";
 import NonPlayer from "./NonPlayer";
+import Boss from "./Boss/Boss";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,13 +81,7 @@ export default class Status extends cc.Component {
             }
             return;
         }
-        let non = this.target.getComponent(NonPlayer);
-        if(non){
-            if(takeD){non.takeDamage(dd);}
-            non.dizzCharacter(dizzDuration);
-            return;
-        }
-        let monster = this.target.getComponent(Monster);
+        let monster = this.target.getComponent(NonPlayer);
         if(monster){
             if(takeD){monster.takeDamage(dd);}
             monster.takeDizz(dizzDuration);

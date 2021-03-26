@@ -3,7 +3,7 @@ import StatusData from "../Data/StatusData";
 import Logic from "../Logic";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
-import Monster from "../Monster";
+import NonPlayer from "../NonPlayer";
 import FromData from "../Data/FromData";
 
 // Learn TypeScript:
@@ -140,7 +140,7 @@ export default class StatusManager extends cc.Component {
             this.node.scaleX = this.node.parent.scaleX>0?1:-1;
         }
         if (this.isTimeDelay(dt)) {
-            let monster = this.node.parent.getComponent(Monster);
+            let monster = this.node.parent.getComponent(NonPlayer);
             if(this.node.parent&&this.node.parent.getComponent(Player)){
                 Logic.playerData.StatusTotalData.valueCopy(this.updateStatus());
                 cc.director.emit(EventHelper.PLAYER_STATUSUPDATE);
