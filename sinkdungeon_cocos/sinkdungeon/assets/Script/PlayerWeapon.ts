@@ -108,4 +108,10 @@ export default class PlayerWeapon extends cc.Component {
         }
         return true;
     }
+
+    updateLogic(dt:number){
+        if(this.meleeWeapon){
+            this.meleeWeapon.updateLogic(dt);
+        }
+    }
 }

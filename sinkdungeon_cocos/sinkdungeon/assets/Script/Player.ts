@@ -77,7 +77,7 @@ export default class Player extends Actor {
     inventoryManager: InventoryManager;
     data: PlayerData;
 
-    
+
     currentDir = 3;
 
     attackTarget: cc.Collider;
@@ -106,18 +106,18 @@ export default class Player extends Actor {
         this.remoteCooldown.width = 0;
         this.remoteCooldown.opacity = 200;
         cc.director.on(EventHelper.PLAYER_TRIGGER
-            , (event) => { if(this.node)this.triggerThings() });
+            , (event) => { if (this.node) this.triggerThings() });
         cc.director.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
             , (event) => {
                 Logic.mapManager.setCurrentRoomExitPos(this.pos);
                 cc.director.loadScene('start');
             });
         cc.director.on(EventHelper.PLAYER_USEITEM
-            , (event) => { if(this.node)this.useItem(event.detail.itemData) });
+            , (event) => { if (this.node) this.useItem(event.detail.itemData) });
         cc.director.on(EventHelper.PLAYER_SKILL
-            , (event) => { if(this.node)this.useSkill() });
+            , (event) => { if (this.node) this.useSkill() });
         cc.director.on(EventHelper.PLAYER_ATTACK
-            , (event) => { if(this.node)this.meleeAttack() });
+            , (event) => { if (this.node) this.meleeAttack() });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
             , (event) => {
                 if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
@@ -129,13 +129,13 @@ export default class Player extends Actor {
                 if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
                     this.shield.use();
                 } else {
-                    if(this.node)this.remoteAttack();
+                    if (this.node) this.remoteAttack();
                 }
             });
         cc.director.on(EventHelper.PLAYER_STATUSUPDATE
-            , (event) => { if(this.node)this.statusUpdate() });
+            , (event) => { if (this.node) this.statusUpdate() });
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
-            , (event) => { if(this.node)this.takeDamage(event.detail.damage, event.detail.from) });
+            , (event) => { if (this.node) this.takeDamage(event.detail.damage, event.detail.from) });
 
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
             Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
@@ -519,13 +519,6 @@ export default class Player extends Actor {
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.sc.isMoving = h != 0 || v != 0;
-
-        if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
-            if (!this.shield.isAniming) {
-                this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0;
-            }
-            this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0;
-        }
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
             this.weaponRight.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
@@ -533,6 +526,13 @@ export default class Player extends Actor {
         if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
             this.weaponLeft.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
         }
+        if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
+            if (!this.shield.isAniming) {
+                this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0;
+            }
+            this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0;
+        }
+
         if (!this.sc.isJumping) {
             if (this.sc.isMoving && !this.isStone) {
                 this.playerAnim(PlayerAvatar.STATE_WALK, dir);
@@ -778,6 +778,12 @@ export default class Player extends Actor {
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
         this.node.opacity = this.invisible ? 80 : 255;
+        if (this.weaponLeft) {
+            this.weaponLeft.updateLogic(dt);
+        }
+        if (this.weaponRight) {
+            this.weaponRight.updateLogic(dt);
+        }
     }
     private useSkill(): void {
         if (this.talentSkills && !this.sc.isJumping) {

@@ -285,7 +285,7 @@ export default class Logic extends cc.Component {
         let y = v1.y - v2.y;
         return Math.sqrt(x * x + y * y);
     }
-    static lerp(a, b, r) {
+    static lerp(a:number, b:number, r:number):number {
         return a + (b - a) * r;
     };
     static genNonDuplicateID(): string {

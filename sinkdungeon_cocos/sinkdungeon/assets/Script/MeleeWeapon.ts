@@ -90,6 +90,7 @@ export default class MeleeWeapon extends cc.Component {
     private isComboing = false;
     private hasTargetMap: { [key: string]: number } = {};
     private isSecond = false;//是否是副手
+    private currentAngle = 0;
     get IsSword(){
         return !this.isStab&&!this.isFar&&!this.isFist&&!this.isBlunt;
     }
@@ -131,7 +132,6 @@ export default class MeleeWeapon extends cc.Component {
     set Hv(hv: cc.Vec3) {
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
         } else {
             this.hv = hv.normalizeSelf();
@@ -382,8 +382,8 @@ export default class MeleeWeapon extends cc.Component {
         }, 0.2)
     }
 
-    update(dt) {
-
+    updateLogic(dt:number) {
+        this.node.angle = Logic.lerp(this.node.angle,this.currentAngle,dt*10);
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
             if (!this.isAttacking) {
@@ -429,8 +429,6 @@ export default class MeleeWeapon extends cc.Component {
     }
 
     private rotateColliderManager(target: cc.Vec3) {
-        // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
-        // 物体坐标默认就是世界坐标
         // 两者取差得到方向向量
         let direction = target.sub(this.node.position);
         // 方向向量转换为角度值
@@ -448,7 +446,11 @@ export default class MeleeWeapon extends cc.Component {
             angle += 360;
         }
         // 将当前物体的角度设置为对应角度
-        this.node.angle = this.node.scaleX < 0 ? -angle : angle;
+        let lastAngle = this.currentAngle;
+        this.currentAngle = this.node.scaleX < 0 ? -angle : angle;
+        if(lastAngle>=0&&this.currentAngle<0||lastAngle<0&&this.currentAngle>=0){
+            this.node.angle = this.currentAngle;
+        }
 
     }
 
