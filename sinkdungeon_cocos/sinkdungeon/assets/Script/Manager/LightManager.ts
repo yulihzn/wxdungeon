@@ -158,7 +158,7 @@ export default class LightManager extends BaseManager {
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 0.03) {
+        if (this.checkTimeDelay > 0.05) {
             this.checkTimeDelay = 0;
             return true;
         }

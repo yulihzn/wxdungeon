@@ -54,9 +54,6 @@ export default class ShadowOfSight extends cc.Component {
     }
     /** 绘制视野区域 */
     renderSightArea(cameraOffset: cc.Vec2): void {
-        if(this.isRendered&&!this.showRayCast){
-            return;
-        }
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         let size = 10;
         let delta = 0.1;

@@ -252,7 +252,7 @@ export default class TalentSkills extends Talent {
         }
         let monster = node.getComponent(NonPlayer);
         let boss = node.getComponent(Boss);
-        if (monster) {
+        if (monster&&monster.data.isTest<1) {
             monster.getLoot();
         }
         if (boss) {

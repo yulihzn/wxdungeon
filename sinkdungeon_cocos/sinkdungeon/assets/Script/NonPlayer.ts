@@ -331,7 +331,7 @@ export default class NonPlayer extends Actor {
         let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
         let attackpreparetween = cc.tween().call(() => {
             this.changeBodyRes(this.data.resName, isSpecial ? NonPlayer.RES_ATTACK03 : NonPlayer.RES_ATTACK01);
-            if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
+            if (isMelee && !isSpecial || isSpecial&&isMelee && this.data.specialType.length <= 0) {
                 if (!this.dangerBox.dungeon) {
                     this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
                 }
@@ -760,7 +760,7 @@ export default class NonPlayer extends Actor {
                 this.scheduleOnce(() => { if (this.node) { this.sc.isDashing = false; } }, 2);
             }, this.data.dash);
         }
-        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.getMonsterAliveNum() < 1) {
+        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
             targetDis = this.getNearestTargetDistance(this.getPlayer(this.dungeon));
         }
         let isTracking = targetDis < 500 && targetDis > 64 && this.data.melee > 0;
@@ -843,7 +843,7 @@ export default class NonPlayer extends Actor {
             newPos = newPos.addSelf(cc.v3(-1, 0));
         }
         let pos = Dungeon.getPosInMap(newPos);
-        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.getMonsterAliveNum() < 1) {
+        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
             pos = this.getPlayerPosition(this.dungeon);
             target = this.getPlayer(this.dungeon);
         }

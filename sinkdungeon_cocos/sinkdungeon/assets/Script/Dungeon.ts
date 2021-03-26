@@ -59,6 +59,7 @@ export default class Dungeon extends cc.Component {
     anim: cc.Animation;
     CameraZoom = 1;
     isInitFinish = false;
+    isClear = false;
     currentPos = cc.v3(0, 0);
 
     /**
@@ -372,10 +373,9 @@ export default class Dungeon extends cc.Component {
     }
     /**检查房间是否清理 */
     private checkRoomClear() {
-        let isClear = false;
         //检查怪物是否清理
         let count = this.getMonsterAliveNum();
-        isClear = count <= 0;
+        this.isClear = count <= 0;
         if (this.monsterManager.bossList.length > 0) {
             count = 0;
             for (let boss of this.monsterManager.bossList) {
@@ -383,21 +383,21 @@ export default class Dungeon extends cc.Component {
                     count++;
                 }
             }
-            isClear = count >= this.monsterManager.bossList.length;
+            this.isClear = count >= this.monsterManager.bossList.length;
         }
         //检查踏板是否触发过
         for (let footboard of this.buildingManager.footboards) {
             if (!footboard.isOpen && !footboard.hasActive) {
-                isClear = false;
+                this.isClear = false;
             }
         }
         //检查是否是测试房间，测试房间默认不关门
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
-            isClear = true;
+            this.isClear = true;
         }
-        this.setDoors(isClear);
-        if (isClear) {
-            if(this.monsterManager.isRoomInitWithEnemy){
+        this.setDoors(this.isClear);
+        if (this.isClear) {
+            if(this.monsterManager.isRoomInitWithEnemy&&Logic.mapManager.getCurrentRoomType().isNotEqual(RoomType.TEST_ROOM)){
                 cc.director.emit(EventHelper.HUD_COMPLETE_SHOW);
             }
             if(this.buildingManager.savePointS){

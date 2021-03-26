@@ -27,7 +27,23 @@ export default class SavePoint extends Building {
             light.updateRender(false);
         }
     }
-    // update (dt) {}
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.05) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    update (dt) {
+        if(this.lights.length>0){
+            if(this.lights[0].showShadow&&this.isCheckTimeDelay(dt)){
+                this.lights[0].rayRadius = Logic.lerp(this.lights[0].rayRadius,300,dt*5);
+            }
+        }
+        
+    }
 
     open(){
         if(this.isOpen){
@@ -39,6 +55,7 @@ export default class SavePoint extends Building {
             this.anim.play('SavePointActive');
             this.scheduleOnce(()=>{
                 for(let light of this.lights){
+                    light.rayRadius = 0;
                     light.updateRender(true);
                 }
                 this.anim.play('SavePointIdleActive');

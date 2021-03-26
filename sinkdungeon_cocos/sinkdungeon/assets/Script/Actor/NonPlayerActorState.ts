@@ -209,7 +209,7 @@ export class FALL extends BaseNonPlayerActorState {
     enter(entity: NonPlayer): void {
         super.enter(entity);
         Utils.log(`${entity.actorName()}(FALL):enter`);
-        entity.enterBlink();
+        entity.enterFall();
     }
     update(entity: NonPlayer): void {
         super.update(entity);

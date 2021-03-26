@@ -53,6 +53,7 @@ export default class MonsterData{
     isEnemy = 0;//是否是敌人
     isFollow = 0;//是否跟随
     lifeTime = 0;//存活时间
+    isTest = 0;//是否是测试单位
     private statusTotalData: StatusData;
     private common:CommonData;
     constructor(){
@@ -113,6 +114,7 @@ export default class MonsterData{
         this.isEnemy = data.isEnemy?data.isEnemy:0;
         this.isFollow = data.isFollow?data.isFollow:0;
         this.lifeTime = data.lifeTime?data.lifeTime:0;
+        this.isTest = data.isTest?data.isTest:0;
         this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff';
     }
     public clone():MonsterData{
@@ -155,6 +157,7 @@ export default class MonsterData{
         e.isEnemy = this.isEnemy;
         e.isFollow = this.isFollow;
         e.lifeTime = this.lifeTime;
+        e.isTest = this.isTest;
         return e;
     }
     
