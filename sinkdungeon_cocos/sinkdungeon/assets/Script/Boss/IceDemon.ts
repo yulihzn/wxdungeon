@@ -157,7 +157,7 @@ export default class IceDemon extends Boss {
                     d.physicalDamage = 3;
                     this.shooter.dungeon = this.dungeon;
                     this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
-                        .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
+                        .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), true, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
 
                 }
                 count++;
@@ -181,7 +181,7 @@ export default class IceDemon extends Boss {
                         d.physicalDamage = 3;
                         this.shooter.dungeon = this.dungeon;
                         this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
-                            .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), false, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
+                            .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), true, true, true, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
 
 
                     }
@@ -202,7 +202,7 @@ export default class IceDemon extends Boss {
         for (let i = 0; i < angles.length; i++) {
             this.shooter.dungeon = this.dungeon;
             this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
-        .init(0, 2, 0.4, 3, IndexZ.OVERHEAD, false, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.isFaceRight?posRight[i]:posLeft[i]),angles[i],null,true);
+        .init(0, 2, 0.4, 3, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.isFaceRight?posRight[i]:posLeft[i]),angles[i],null,true);
         }
     }
     attack() {

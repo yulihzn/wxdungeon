@@ -235,7 +235,7 @@ export default class TalentSkills extends Talent {
         let d = new DamageData();
         d.physicalDamage = 1;
         this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
-            .init(0, 0.1, 0, 2, IndexZ.OVERHEAD, true, true, true, false, d, new FromData(), [StatusManager.BURNING]));
+            .init(0, 0.1, 0, 2, IndexZ.OVERHEAD, false, true, true, false, d, new FromData(), [StatusManager.BURNING]));
             this.talentSkill.IsExcuting = false;
         },0.8)
     }
@@ -272,7 +272,7 @@ export default class TalentSkills extends Talent {
         let d = new DamageData();
         d.magicDamage = 1;
         this.shoot(this.player.shooterEx, 0, 0, 'bullet041',this.smokePrefab,new AreaOfEffectData().init(
-            7,0.1,0,1,IndexZ.OVERHEAD,true,false,false,false,new DamageData(),new FromData(),[StatusManager.CURSING]
+            7,0.1,0,1,IndexZ.OVERHEAD,false,false,false,false,new DamageData(),new FromData(),[StatusManager.CURSING]
         ));
     }
     showFireBall() {
@@ -280,7 +280,7 @@ export default class TalentSkills extends Talent {
         let d = new DamageData();
         d.magicDamage = 1;
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
-            .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.BURNING]));
+            .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true, true, d, new FromData(), [StatusManager.BURNING]));
     }
     showIceThron() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
@@ -294,7 +294,7 @@ export default class TalentSkills extends Talent {
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
-        .init(0, 2, 0, 3, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i],null,true);
+        .init(0, 2, 0, 3, IndexZ.OVERHEAD, false, true, true, true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i],null,true);
         }
     }
     private shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string,prefab:cc.Prefab,data:AreaOfEffectData) {
@@ -318,13 +318,13 @@ export default class TalentSkills extends Talent {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData(1);
         this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
-            .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
+            .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, false, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
     }
     private cooking() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData(1);
         this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
-            .init(0, 2, 0, 1, IndexZ.OVERHEAD, true, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
+            .init(0, 2, 0, 1, IndexZ.OVERHEAD, false, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
                 let monster = actor.node.getComponent(NonPlayer);
                 if (monster) {
                     monster.dungeon.addItem(monster.node.position.clone(), `food${monster.data.resName.replace('monster', '')}`);
@@ -338,12 +338,14 @@ export default class TalentSkills extends Talent {
     private addSwordLight() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData();
+        let scale = 5;
         d.physicalDamage = 1;
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             d.physicalDamage = 2;
+            scale = 6;
         }
         let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()
-            .init(0, 0.2, 0, 4, IndexZ.OVERHEAD, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]));
+            .init(0, 0.2, 0, scale, IndexZ.OVERHEAD, false, true, true, true, d, new FromData(), [StatusManager.FROZEN]));
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             swordlight.node.getChildByName('sprite').color = cc.Color.RED;
         }

@@ -90,14 +90,14 @@ export default class SpecialManager extends cc.Component {
         let howl = cc.instantiate(this.howl);
         let howlScript = howl.getComponent(AreaOfEffect);
         howlScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
-        .init(0,2,1,2,IndexZ.getActorZIndex(howl.position),false,false,true,false,new DamageData(1),from,[StatusManager.DIZZ]));
+        .init(0,2,1,2,IndexZ.getActorZIndex(howl.position),true,false,true,false,new DamageData(1),from,[StatusManager.DIZZ]));
     }
     private addClaw(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
         let claw = cc.instantiate(this.claw);
         pos.y += 32;
         let areaScript = claw.getComponent(AreaOfEffect);
         areaScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
-        .init(0,0.15,0.1,1,IndexZ.getActorZIndex(claw.position),false,false,true,false,new DamageData(2),from,[StatusManager.BLEEDING]));
+        .init(0,0.15,0.1,1,IndexZ.getActorZIndex(claw.position),true,false,true,false,new DamageData(2),from,[StatusManager.BLEEDING]));
     }
     
     private addBlade(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
@@ -106,6 +106,6 @@ export default class SpecialManager extends cc.Component {
         prefab.scaleX = isFaceRight?1:-1;
         let areaScript = prefab.getComponent(AreaOfEffect);
         areaScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
-        .init(0,0.2,0.1,1,IndexZ.getActorZIndex(prefab.position),false,false,true,false,new DamageData(2),from,[]));
+        .init(0,0.2,0.1,1,IndexZ.getActorZIndex(prefab.position),true,false,true,false,new DamageData(2),from,[]));
     }
 }
