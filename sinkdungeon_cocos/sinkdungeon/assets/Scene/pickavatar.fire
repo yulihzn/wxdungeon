@@ -6148,9 +6148,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 33,
-      "g": 33,
-      "b": 33,
+      "r": 16,
+      "g": 16,
+      "b": 16,
       "a": 255
     },
     "_contentSize": {
@@ -6290,7 +6290,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 131.78,
+      "width": 140.01,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -6342,8 +6342,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "Loading...",
-    "_N$string": "Loading...",
+    "_string": "   加载中...",
+    "_N$string": "   加载中...",
     "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,

@@ -82,6 +82,7 @@ export default class Logic extends cc.Component {
     static time = '00:00:00';
     static seed = 5;
     static isFirst = 0;
+    static shipTransportScene = 0;
     static isCheatMode = false;//作弊
     static isDebug = false;//调试
     static isTour = false;//游览
@@ -268,6 +269,15 @@ export default class Logic extends cc.Component {
         }
         Logic.changeDungeonSize();
         Logic.lastBgmIndex = -1;
+        if(exitData.fromChapter==Logic.CHAPTER00&&Logic.chapterIndex==Logic.CHAPTER01){
+            Logic.shipTransportScene = 1;
+        }else if(exitData.fromChapter==Logic.CHAPTER02&&Logic.chapterIndex==Logic.CHAPTER01){
+            Logic.shipTransportScene = 2;
+        }else if(exitData.fromChapter==Logic.CHAPTER01&&Logic.chapterIndex==Logic.CHAPTER00){
+            Logic.shipTransportScene = 2;
+        }else if(exitData.fromChapter==Logic.CHAPTER01&&Logic.chapterIndex==Logic.CHAPTER02){
+            Logic.shipTransportScene = 1;
+        }
         cc.director.loadScene('loading');
     }
 

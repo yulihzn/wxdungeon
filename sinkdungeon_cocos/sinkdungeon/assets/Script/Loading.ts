@@ -21,6 +21,8 @@ export default class Loading extends cc.Component {
     loadingIcon:cc.Node = null;
     @property(CutScene)
     cutScene: CutScene = null;
+    @property(cc.Node)
+    shipTransportScene:cc.Node = null;
     private static readonly KEY_AUTO = 'auto';
     private static readonly KEY_TEXURES = 'texures';
     private spriteFrameNames: { [key: string]: boolean } = null;
@@ -35,6 +37,7 @@ export default class Loading extends cc.Component {
     private isItemsLoaded = false;
     private isSkillsLoaded = false;
     private isBuildingLoaded = false;
+    private isTransportAnimFinished = true;
     // LIFE-CYCLE CALLBACKS:
 
 
@@ -298,10 +301,22 @@ export default class Loading extends cc.Component {
             this.cutScene.playShow();
         }
     }
+    showTransport(){
+        if(this.isAllSpriteFramesLoaded()&&Logic.shipTransportScene>0){
+            this.isTransportAnimFinished = false;
+            this.shipTransportScene.active = true;
+            if(Logic.shipTransportScene==2){
+                this.shipTransportScene.scaleX = -1;
+            }
+            Logic.shipTransportScene = 0;
+            this.scheduleOnce(()=>{this.isTransportAnimFinished = true;},2)
+        }
+    }
     update(dt) {
         this.timeDelay += dt;
         this.isWorldLoaded = Logic.worldLoader.isloaded;
         this.showCut();
+        this.showTransport();
         if (this.timeDelay > 0.02
             && this.isEquipmentLoaded
             && this.isAllSpriteFramesLoaded()
@@ -314,7 +329,8 @@ export default class Loading extends cc.Component {
             && this.isSkillsLoaded
             && this.isWorldLoaded
             && this.isBuildingLoaded
-            && this.cutScene.isSkip) {
+            && this.cutScene.isSkip
+            && this.isTransportAnimFinished) {
             this.timeDelay = 0;
             this.cutScene.unregisterClick();
             this.isWorldLoaded = false;
@@ -328,6 +344,7 @@ export default class Loading extends cc.Component {
             this.isItemsLoaded = false;
             this.isSkillsLoaded = false;
             this.isBuildingLoaded = false;
+            this.isTransportAnimFinished = false;
             Logic.mapManager.loadMap();
             cc.director.loadScene('game');
         }
