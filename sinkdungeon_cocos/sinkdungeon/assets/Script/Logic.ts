@@ -82,6 +82,7 @@ export default class Logic extends cc.Component {
     static time = '00:00:00';
     static seed = 5;
     static isFirst = 0;
+    static jumpChapter = 0;
     static shipTransportScene = 0;
     static isCheatMode = false;//作弊
     static isDebug = false;//调试

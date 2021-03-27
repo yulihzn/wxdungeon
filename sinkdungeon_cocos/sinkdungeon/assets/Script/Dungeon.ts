@@ -58,6 +58,7 @@ export default class Dungeon extends cc.Component {
     lightManager:LightManager=null;//光线管理
     anim: cc.Animation;
     CameraZoom = 1;
+    needZoomIn = false;
     isInitFinish = false;
     isClear = false;
     currentPos = cc.v3(0, 0);
@@ -303,6 +304,7 @@ export default class Dungeon extends cc.Component {
 
     public shakeForKraken() {
         this.CameraZoom = 0.7;
+        this.needZoomIn = true;
         this.anim.playAdditive('DungeonShakeOnce');
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 2);

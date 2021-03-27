@@ -41,6 +41,7 @@ export default class Wall extends Building {
     roofName: string = '';
     resNameSecond: string = '';
     type: number = Wall.TYPE_EMPTY;
+    dir = 0;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -80,9 +81,22 @@ export default class Wall extends Building {
         this.roofsprite.node.scaleX = flipRoof.x;
         this.roofsprite.node.scaleY = flipRoof.y;
     }
+    public isTop():boolean{
+       return this.type == Wall.TYPE_NORMAL&&this.dir == 0
+       ||this.type == Wall.TYPE_CORNER&&this.dir < 2
+       ||this.type == Wall.TYPE_INNER&&this.dir < 2
+       ||this.type == Wall.TYPE_INNER_CORNER&&this.dir < 2
+       ||this.type == Wall.TYPE_CONVEX&&this.dir ==0
+       ||this.type == Wall.TYPE_CONCAVE&&this.dir ==0
+       ||this.type == Wall.TYPE_TWO_SIDES&&this.dir ==0;
+    }
+    public isSide():boolean{
+        return this.type == Wall.TYPE_NORMAL&&this.dir > 1
+    }
     init(mapStr: string, leveldata: LevelData) {
         this.mapStr = mapStr;
         let dir = parseInt(mapStr[2]);
+        this.dir = dir;
         let letter = mapStr[1];
         let isSencod = false;
         switch (letter) {

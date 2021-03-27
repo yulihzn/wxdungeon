@@ -1,5 +1,6 @@
 import Logic from "./Logic";
 import RectDungeon from "./Rect/RectDungeon";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,8 +37,9 @@ export default class Chapter extends cc.Component {
     clickChapter(event, chapter:string) {
         if (chapter) {
             Logic.profileManager.clearData();
-            Logic.resetData(parseInt(chapter));
-            cc.director.loadScene('loading');
+            Logic.jumpChapter = parseInt(chapter);
+            AudioPlayer.play(AudioPlayer.SELECT);
+            cc.director.loadScene('pickavatar');
         }
     }
     isTimeDelay(dt: number): boolean {

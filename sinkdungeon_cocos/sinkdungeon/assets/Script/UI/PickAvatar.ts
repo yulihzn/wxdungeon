@@ -386,7 +386,8 @@ export default class PickAvatar extends cc.Component {
         //清除存档
         Logic.profileManager.clearData();
         //重置数据
-        Logic.resetData();
+        Logic.resetData(Logic.jumpChapter);
+        Logic.jumpChapter = 0;
         //加载资源
         AudioPlayer.play(AudioPlayer.SELECT);
         Logic.playerData.AvatarData = this.data.clone();

@@ -105,10 +105,10 @@ export default class AreaOfEffect extends cc.Component {
                 let boss = other.node.getComponent(Boss);
                 let player = other.node.getComponent(Player);
                 let isAttack = true;
-                if (!this.data.isFromEnemy && (monster.data.isEnemy<1 || player)) {
+                if (!this.data.isFromEnemy && (monster&&monster.data.isEnemy<1 || player)) {
                     isAttack = false;
                 }
-                if (this.data.isFromEnemy && (monster.data.isEnemy>0|| boss)) {
+                if (this.data.isFromEnemy && (monster&&monster.data.isEnemy>0|| boss)) {
                     isAttack = false;
                 }
                 if (isAttack) {
@@ -121,6 +121,8 @@ export default class AreaOfEffect extends cc.Component {
         if (!attackTarget) {
             return;
         }
+        let normal = attackTarget.convertToWorldSpaceAR(cc.Vec3.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)).normalizeSelf();
+        
         let damage = new DamageData();
         let damageSuccess = false;
         damage.valueCopy(this.data.damage);
@@ -131,6 +133,9 @@ export default class AreaOfEffect extends cc.Component {
             if (damageSuccess) {
                 if (target.data.currentHealth <= 0 && this.killCallBack) {
                     this.killCallBack(target);
+                }
+                if(this.data.canBeatBack&&!target.getComponent(Boss)){
+                    this.beatBack(attackTarget,normal);
                 }
             }
             for (let status of this.data.statusList) {
@@ -151,6 +156,18 @@ export default class AreaOfEffect extends cc.Component {
             return;
         }
 
+    }
+    private beatBack(node: cc.Node,hv:cc.Vec3) {
+        let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
+        let pos = hv.clone();
+        if (pos.equals(cc.Vec3.ZERO)) {
+            pos = cc.v3(1, 0);
+        }
+        let power = 300;
+        pos = pos.normalizeSelf().mul(power);
+        this.scheduleOnce(()=>{
+            rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
+        },0.1);
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

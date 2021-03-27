@@ -604,7 +604,7 @@ export default class NonPlayer extends Actor {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
                         boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
-                            , true, true, false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
+                            , true, true, false,false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
                     }
                 }
@@ -754,6 +754,7 @@ export default class NonPlayer extends Actor {
             && !this.isPassive) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true;
+                this.enterWalk();
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.showAttackEffect(true);
                 this.move(this.getMovePosFromTarget(target), speed);

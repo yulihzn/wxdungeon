@@ -18,6 +18,7 @@ import AreaOfEffect from "../Actor/AreaOfEffect";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
 import Actor from "../Base/Actor";
+import AirExit from "../Building/AirExit";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -311,8 +312,11 @@ export default class Bullet extends cc.Component {
         if (otherCollider.sensor) {
             isDestory = false;
         }
-        //上面的墙上半部分是否销毁
-        if(wall&&this.skipTopwall){
+        //上面的墙上半部分不销毁
+        if(wall&&wall.isTop()){
+            isDestory = false;
+        }
+        if(this.skipTopwall&&otherCollider.node.getComponent(AirExit)){
             isDestory = false;
         }
         if(this.data.isInvincible>0){
@@ -329,6 +333,7 @@ export default class Bullet extends cc.Component {
         let player = other.node.getComponent(Player);
         let npc = other.node.getComponent(NonPlayer);
         let boss = other.node.getComponent(Boss);
+        
         if (!this.isFromPlayer && (npc&&npc.data.isEnemy>0 || boss )) {
             isAttack = false;
         }
@@ -404,6 +409,17 @@ export default class Bullet extends cc.Component {
             damageSuccess = true;
             hitBuilding.takeDamage(damage);
         }
+        let wall = attackTarget.getComponent(Wall);
+        if(wall){
+            if(wall.isTop()){
+                isDestory = !this.skipTopwall;
+            }else{
+                isDestory = wall.isSide();
+            }
+        }
+        if(this.skipTopwall&&attackTarget.getComponent(AirExit)){
+            isDestory = false;
+        }
         if(this.data.isInvincible>0){
             isDestory = false;
         }
@@ -448,7 +464,7 @@ export default class Bullet extends cc.Component {
             let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
             if(boom){
                 boom.show(this.node.parent,this.node.position,this.hv,0,new AreaOfEffectData().init(1,0.2,0,0,IndexZ.OVERHEAD,!this.isFromPlayer
-                    ,true,true,false,new DamageData(1),FromData.getClone('爆炸','boom000anim004'),[]));
+                    ,true,true,false,false,new DamageData(1),FromData.getClone('爆炸','boom000anim004'),[]));
                 cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
             }
             
