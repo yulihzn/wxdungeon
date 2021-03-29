@@ -1,6 +1,6 @@
 export default class FromData{
-    name:string;
-    res:string;
+    name:string = '';
+    res:string = '';
     public valueCopy(data: FromData): void {
         if(!data){
             return;

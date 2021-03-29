@@ -163,9 +163,9 @@ export default class PlayerData {
         let drainRate = data.lifeDrain/100;
         let drain = 0;
         if (Random.rand() < drainRate) {
-            drain = 1;
+            drain = 0.1;
             if (Random.rand() < chance) {
-                drain = 2;
+                drain = 0.5;
             }
         }
         return drain;

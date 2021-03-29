@@ -1,6 +1,3 @@
-import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
-import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import FromData from "../Data/FromData";

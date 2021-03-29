@@ -48,6 +48,7 @@ export default class SettingsDialog extends BaseDialog {
     toggleGamepad(toggle:cc.Toggle, customEventData:string){
         Logic.settings.showGamepad = toggle.isChecked;
         LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD,Logic.settings.showGamepad);
+        cc.director.emit(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD);
     }
     close(){
         this.dismiss();

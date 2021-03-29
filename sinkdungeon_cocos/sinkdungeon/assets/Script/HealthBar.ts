@@ -44,6 +44,9 @@ export default class HealthBar extends cc.Component {
             }
         }
 	}
+    shake(){
+        cc.tween(this.node).to(0.05,{scale:1.05}).to(0.05,{scale:0.95}).to(0.1,{scale:1.05}).to(0.05,{scale:1}).start();
+    }
     update (dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {

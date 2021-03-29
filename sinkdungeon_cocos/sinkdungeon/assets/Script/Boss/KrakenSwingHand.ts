@@ -1,5 +1,3 @@
-import { EventHelper } from "../EventHelper";
-import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import Kraken from "./Kraken";

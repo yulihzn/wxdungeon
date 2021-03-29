@@ -285,7 +285,7 @@ export default class NonPlayer extends Actor {
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
-            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName));
+            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000'));
             if (this.isVariation) {
                 this.shooter.data.bulletSize = 0.5;
             }
@@ -339,7 +339,7 @@ export default class NonPlayer extends Actor {
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName));
+                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000'));
             }
         });
 
@@ -353,7 +353,7 @@ export default class NonPlayer extends Actor {
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName));
+                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000'));
             }
             if (attacking) {
                 attacking(isSpecial);

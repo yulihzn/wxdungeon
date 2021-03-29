@@ -217,7 +217,7 @@
         "statusType": 20,
         "desc": "",
         "duration": 999,
-        "realDamageOvertime": -0.1,
+        "realDamageOvertime": -0.01,
         "common": {}
     },
     "status021": {

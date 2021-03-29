@@ -105,7 +105,7 @@ export default class ActorAttackBox extends cc.Component {
             let target = Actor.getCollisionTarget(other,!this.isEnemy);
             if(target){
                 this.isAttacking = false;
-                let from = FromData.getClone(m.data.nameCn, m.data.resName);
+                let from = FromData.getClone(m.data.nameCn, m.data.resName+'anim000');
                 let dd = m.data.getAttackPoint();
                 dd.isBackAttack = m.isFaceTargetBehind(a) && m.data.FinalCommon.damageBack > 0;
                 if (dd.isBackAttack) {

@@ -396,10 +396,10 @@
             <key type="filename">bullet/laser003light001.png</key>
             <key type="filename">bullet/laser003light002.png</key>
             <key type="filename">bullet/laser003light003.png</key>
+            <key type="filename">dungeon/bggrass.png</key>
+            <key type="filename">dungeon/bggrass1.png</key>
             <key type="filename">dungeon/darksides.png</key>
             <key type="filename">dungeon/darksidesbottom.png</key>
-            <key type="filename">dungeon/grass.png</key>
-            <key type="filename">dungeon/grass1.png</key>
             <key type="filename">dungeon/handrail.png</key>
             <key type="filename">dungeon/labbg.png</key>
             <key type="filename">dungeon/magmasea.png</key>
@@ -1461,6 +1461,26 @@
                 <rect>8,4,16,8</rect>
                 <key>scale9Paddings</key>
                 <rect>8,4,16,8</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/grass0.png</key>
+            <key type="filename">building/grass1.png</key>
+            <key type="filename">building/grass2.png</key>
+            <key type="filename">building/grass3.png</key>
+            <key type="filename">building/grass4.png</key>
+            <key type="filename">building/grass5.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,6,8,12</rect>
+                <key>scale9Paddings</key>
+                <rect>4,6,8,12</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

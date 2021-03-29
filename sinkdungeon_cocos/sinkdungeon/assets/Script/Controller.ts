@@ -37,7 +37,7 @@ export default class Controller extends cc.Component {
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
-        this.skillIcon = this.coolDown.getChildByName('sprite').getComponent(cc.Sprite);
+        this.skillIcon = this.coolDown.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
         this.skillIcon.spriteFrame = Logic.spriteFrameRes(Logic.playerData.AvatarData.professionData.talent);
         this.attackAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.attackActionTouched = true;
@@ -86,14 +86,26 @@ export default class Controller extends cc.Component {
             this.skillActionTouched = false;
         }, this)
         cc.director.on(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD
-            , (event) => { this.changeRes(event.detail.isShield) });
+            , (event) => { if(this.node)this.changeRes(event.detail.isShield) });
         cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
-            , (event) => { this.drawSkillCoolDown(event.detail.cooldown); });
+            , (event) => { if(this.node)this.drawSkillCoolDown(event.detail.cooldown); });
+            cc.director.on(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD
+                , (event) => { if(this.node)this.updateGamepad(); });
+                this.updateGamepad();
+    }
+    private updateGamepad(){
         if(!cc.sys.isMobile&&!Logic.settings.showGamepad){
             this.interactAction.active = false;
             this.attackAction.active = false;
             this.shootAction.active = false;
             this.skillAction.active = false;
+            this.coolDown.position = cc.v3(0,220);
+        }else{
+            this.interactAction.active = true;
+            this.attackAction.active = true;
+            this.shootAction.active = true;
+            this.skillAction.active = true;
+            this.coolDown.position = cc.v3(0,-128);
         }
     }
 
@@ -110,8 +122,7 @@ export default class Controller extends cc.Component {
         button.hoverSprite = Logic.spriteFrameRes(isShield?'uishieldlight':'uiremotelight');
         button.disabledSprite = Logic.spriteFrameRes(isShield?'uishieldpress':'uiremotepress');
     }
-
-    private drawSkillCoolDown(coolDown: number) {
+    private drawSkillCoolDown1(coolDown: number) {
         if (coolDown < 0) {
             return;
         }
@@ -150,6 +161,46 @@ export default class Controller extends cc.Component {
         }
         this.schedule(this.coolDownFuc, delta, cc.macro.REPEAT_FOREVER);
     }
+    private drawSkillCoolDown(coolDown: number) {
+        if (coolDown < 0) {
+            return;
+        }
+        if (!this.coolDown) {
+            return;
+        }
+        
+        if(this.coolDownFuc){
+            this.unschedule(this.coolDownFuc);
+        }
+        if (coolDown == 0) {
+            if (this.graphics) {
+                this.graphics.clear();
+            }
+        }
+        let p = this.coolDown.convertToWorldSpaceAR(cc.Vec3.ZERO);
+        p = this.node.convertToNodeSpaceAR(p);
+        let percent = 100;
+        let delta = 0.1;
+        //0.5为误差补偿
+        let offset = 100 / coolDown * delta;
+        this.coolDownFuc = () => {
+            percent -= offset;
+            if (this.graphics) {
+                this.graphics.clear();
+            }
+            this.drawArc(360*percent/100,p);
+            this.skillIcon.node.opacity = 200;
+            if (percent < 0) {
+                this.skillIcon.node.opacity = 0;
+                if (this.graphics) {
+                    this.graphics.clear();
+                }
+                this.unschedule(this.coolDownFuc);
+            }
+        }
+        this.schedule(this.coolDownFuc, delta, cc.macro.REPEAT_FOREVER);
+    }
+    
     private drawRect(height, center: cc.Vec3) {
         this.graphics.fillColor = cc.color(255, 255, 255, 150);
         this.graphics.rect(center.x - 32, center.y - 32, 64, height);

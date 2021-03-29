@@ -45,9 +45,6 @@ export default class NewClass extends cc.Component {
  
  
     onLoad() {
-        if(!cc.sys.isMobile&&!Logic.settings.showGamepad){
-            this.node.active = false;
-        }
         let nodeSize = this.node.getContentSize()
         this.touchArea = new cc.Vec3(nodeSize.width,nodeSize.height)
  

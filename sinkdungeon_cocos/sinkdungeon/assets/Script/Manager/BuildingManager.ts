@@ -91,10 +91,15 @@ export default class BuildingManager extends BaseManager {
     static readonly LAMPFIREPAN = 'LampFirePan';
     static readonly LAMPTORCH = 'LampTorch';
     static readonly LAMPROAD = 'LampRoad';
+    static readonly LAMPFIREFLY = 'LampFireFly';
     static readonly MUSHROOM01 = 'MushRoom01';
     static readonly MUSHROOM02 = 'MushRoom02';
     static readonly MUSHROOM03 = 'MushRoom03';
     static readonly MUSHROOM04 = 'MushRoom04';
+    static readonly GRASS01 = 'Grass01';
+    static readonly GRASS02 = 'Grass02';
+    static readonly GRASS03 = 'Grass03';
+    static readonly GRASS04 = 'Grass04';
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
@@ -241,6 +246,14 @@ export default class BuildingManager extends BaseManager {
                 arrow.getComponent(DecorationFloor).changeRes('exitarrow');
             } else if (mapDataStr == '+3') {
                 this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
+            } else if (mapDataStr == '+a') {
+                this.addBuilding(Logic.getBuildings(BuildingManager.GRASS01), indexPos);
+            } else if (mapDataStr == '+b') {
+                this.addBuilding(Logic.getBuildings(BuildingManager.GRASS02), indexPos);
+            } else if (mapDataStr == '+c') {
+                this.addBuilding(Logic.getBuildings(BuildingManager.GRASS03), indexPos);
+            } else if (mapDataStr == '+d') {
+                this.addBuilding(Logic.getBuildings(BuildingManager.GRASS04), indexPos);
             } else {
                 let fd = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
                 fd.zIndex = IndexZ.FLOOR;
@@ -442,6 +455,7 @@ export default class BuildingManager extends BaseManager {
             case 'L8':prefabName = BuildingManager.LAMPTORCH;break;
             case 'L9':prefabName = BuildingManager.LAMPFIREPAN;break;
             case 'La':prefabName = BuildingManager.LAMPROAD;break;
+            case 'Lb':prefabName = BuildingManager.LAMPFIREFLY;break;
         }
         let node = this.addBuilding(Logic.getBuildings(prefabName), indexPos);
         if(isOverHead){

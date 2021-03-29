@@ -66,6 +66,9 @@ export default class GameHud extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
             this.showDamageCorner();
+            if(this.healthBar){
+                this.healthBar.shake();
+            }
         })
         cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG, (event) => {
             this.showMartShelvesDialog(event.detail.type,event.detail.goodsNameList);
