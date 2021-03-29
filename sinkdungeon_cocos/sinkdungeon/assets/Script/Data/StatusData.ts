@@ -31,6 +31,8 @@ export default class StatusData {
     missRate: number = 0;//攻击落空几率
     realDamageDirect:number= 0;//瞬间真实伤害
     realDamageOvertime: number = 0;//持续真实伤害
+    dreamDirect:number= 0;//瞬间梦境扣除
+    dreamOvertime: number = 0;//持续梦境扣除
     magicDamageDirect = 0;//瞬间魔法元素伤害
     magicDamageOvertime = 0;//持续魔法元素伤害
     dizzDurationDirect = 0;//瞬间眩晕时长
@@ -67,6 +69,8 @@ export default class StatusData {
         this.dizzDurationDirect = data.dizzDurationDirect;
         this.dizzDurationOvertime = data.dizzDurationOvertime;
         this.invisibleDuratonDirect = data.invisibleDuratonDirect;
+        this.dreamDirect = data.dreamDirect;
+        this.dreamOvertime = data.dreamOvertime;
     }
     public clone(): StatusData {
         let e = new StatusData();
@@ -88,6 +92,8 @@ export default class StatusData {
         e.dizzDurationDirect = this.dizzDurationDirect;
         e.dizzDurationOvertime = this.dizzDurationOvertime;
         e.invisibleDuratonDirect = this.invisibleDuratonDirect;
+        e.dreamDirect = this.dreamDirect;
+        e.dreamOvertime = this.dreamOvertime;
         return e;
     }
 }

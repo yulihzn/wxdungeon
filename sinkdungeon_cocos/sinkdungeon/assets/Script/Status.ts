@@ -71,11 +71,13 @@ export default class Status extends cc.Component {
         }
         let dd = isDirect?this.getDamageDirect():this.getDamageOverTime();
         let dizzDuration = isDirect?this.data.dizzDurationDirect:this.data.dizzDurationOvertime;
+        let dream = isDirect?this.data.dreamDirect:this.data.dreamOvertime;
         let player = this.target.getComponent(Player);
         let takeD = dd.getTotalDamage() != 0;
         if(player){
             if(takeD){player.takeDamage(dd,this.data.From);}
             player.dizzCharacter(dizzDuration);
+            player.useDream(dream);
             if(this.data.invisibleDuratonDirect){
                 player.hideCharacter(this.data.invisibleDuratonDirect);
             }

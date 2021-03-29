@@ -34,7 +34,15 @@ export default class CoinCount extends cc.Component {
         if (!this.anim) {
             return;
         }
-        Logic.coins += parseInt(value) ;
+        let c = parseInt(value);
+        Logic.coins += c;
+        if(c>0){
+            Logic.coinDreamCount++;
+            if(Logic.coinDreamCount>=10){
+                Logic.coinDreamCount = 0;
+                EventHelper.emit(EventHelper.PLAYER_USEDREAM,{value:-1});
+            }
+        }
         
     }
 

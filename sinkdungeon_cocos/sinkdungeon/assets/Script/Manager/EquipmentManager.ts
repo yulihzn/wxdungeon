@@ -279,7 +279,7 @@ export default class EquipmentManager extends BaseManager {
             desc.color = EquipmentManager.getMixColor(desc.color
                 , health.y > 2 ? EquipmentManager.COLOR_HEALTHY : '#000000');
         }
-        //生命值0-5
+        //梦境0-5
         let dream = cc.v3(0, 0);
         if (data.Common.maxDream > 0) {
             dream = EquipmentManager.getRandomQuality(0, 5, chestQuality,rand4save);

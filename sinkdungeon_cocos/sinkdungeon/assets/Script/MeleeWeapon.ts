@@ -21,6 +21,7 @@ import Equipment from "./Equipment/Equipment";
 import HitBuilding from "./Building/HitBuilding";
 import CommonData from "./Data/CommonData";
 import Actor from "./Base/Actor";
+import AvatarData from "./Data/AvatarData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -554,6 +555,9 @@ export default class MeleeWeapon extends cc.Component {
             this.anim.pause();
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 } });
             this.scheduleOnce(() => { this.anim.resume() }, 0.1);
+        }
+        if(damageSuccess&&this.player.data.AvatarData.organizationIndex==AvatarData.FOLLOWER){
+            this.player.useDream(-1);
         }
     }
     private addTargetAllStatus(data:CommonData,target: Actor) {

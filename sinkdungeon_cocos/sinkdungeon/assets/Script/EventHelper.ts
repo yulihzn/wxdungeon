@@ -14,6 +14,7 @@ export class EventHelper extends cc.Component{
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM';
     public static readonly PLAYER_TAPTIPS = 'PLAYER_TAPTIPS';
     public static readonly PLAYER_TAKEDAMAGE= 'PLAYER_TAKEDAMAGE';
+    public static readonly PLAYER_USEDREAM= 'PLAYER_USEDREAM';
     public static readonly PLAYER_CHANGEITEM= 'PLAYER_CHANGEITEM';
     public static readonly PLAYER_CHANGEEQUIPMENT= 'PLAYER_CHANGEEQUIPMENT';
     public static readonly PLAYER_STATUSUPDATE = 'PLAYER_STATUSUPDATE';
@@ -51,6 +52,7 @@ export class EventHelper extends cc.Component{
     public static readonly HUD_UPDATE_PLAYER_INFODIALOG = 'HUD_UPDATE_PLAYER_INFO_DIALOG';
     public static readonly HUD_UPDATE_PLAYER_HEALTHBAR = 'HUD_UPDATE_PLAYER_HEALTHBAR';
     public static readonly HUD_UPDATE_PLAYER_DREAMBAR = 'HUD_UPDATE_PLAYER_DREAMBAR';
+    public static readonly HUD_SHAKE_PLAYER_DREAMBAR = 'HUD_SHAKE_PLAYER_DREAMBAR';
     public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE';
     public static readonly TALENT_TREE_SELECT = 'TALENT_TREE_SELECT';
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO';

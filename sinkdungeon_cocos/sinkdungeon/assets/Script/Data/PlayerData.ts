@@ -109,6 +109,9 @@ export default class PlayerData {
         dd.physicalDamage = attack;
         dd.realDamage = data.realDamage;
         dd.magicDamage = data.magicDamage;
+        if(this.avatarData.organizationIndex == AvatarData.FOLLOWER){
+            dd.physicalDamage+=this.currentDream*0.25;
+        }
         return dd;
     }
     //获取最终远程伤害
@@ -116,6 +119,9 @@ export default class PlayerData {
         let data = this.FinalCommon;
         let dd = new DamageData();
         let remoteDamage = data.remoteDamage;
+        if(this.avatarData.organizationIndex == AvatarData.HUNTER ){
+            remoteDamage += this.currentDream*0.25;
+        }
         let chance = data.remoteCritRate/100;
         let isCritical = Random.rand() < chance;
         let attack = isCritical ? remoteDamage+remoteDamage : remoteDamage;

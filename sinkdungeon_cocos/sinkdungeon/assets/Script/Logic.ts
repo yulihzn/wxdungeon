@@ -79,6 +79,7 @@ export default class Logic extends cc.Component {
     static coins = 0;//金币
     static oilGolds = 0;//油金
     static killCount = 0;//杀敌数
+    static coinDreamCount = 0;//金币累加数
     static time = '00:00:00';
     static seed = 5;
     static isFirst = 0;
@@ -127,6 +128,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.time = Logic.time;
         Logic.profileManager.saveData(isSavePoint);
         LocalStorage.saveData(LocalStorage.KEY_COIN,Logic.coins);
+        LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT,Logic.coinDreamCount);
         LocalStorage.saveData(LocalStorage.KEY_OIL_GOLD,Logic.oilGolds);
     }
     static resetData(chapter?: number) {
@@ -160,6 +162,8 @@ export default class Logic extends cc.Component {
         //加载金币
         let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN);
         Logic.coins = c ? parseInt(c) : 0;
+        let c1 = LocalStorage.getValueFromData(LocalStorage.KEY_COIN_DREAM_COUNT);
+        Logic.coinDreamCount = c1 ? parseInt(c1) : 0;
         let o = LocalStorage.getValueFromData(LocalStorage.KEY_OIL_GOLD);
         Logic.oilGolds = o ? parseInt(o) : 0;
         //重置bgm

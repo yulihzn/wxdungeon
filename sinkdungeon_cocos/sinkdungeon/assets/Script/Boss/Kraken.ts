@@ -111,14 +111,18 @@ export default class Kraken extends Boss {
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
-    getLoot(){
+    getLoot(isSteal?:boolean){
         if(this.dungeon){
             let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
             let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
             let pos = Dungeon.getPosInMap(p);
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } });
             cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: pos, count: rand4save.getRandomNum(1, 29) } });
-            cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: pos, res:Item.HEART } });
+            let chance = Logic.getHalfChance()&&isSteal||!isSteal;
+            if(chance){
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.DREAM } });
+            }
             this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), p,null,3);
         }
     }

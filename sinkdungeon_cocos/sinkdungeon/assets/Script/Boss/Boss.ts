@@ -91,7 +91,11 @@ export default abstract class Boss extends Actor {
             let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: isSteal?9:19 } });
             cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
-            cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
+            let chance = Logic.getHalfChance()&&isSteal||!isSteal;
+            if(chance){
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.DREAM } });
+            }
             this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos,null,isSteal?0:3);
         }
     }

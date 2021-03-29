@@ -635,8 +635,10 @@ export default class NonPlayer extends Actor {
             } else if (rand >= percent + offset * 4 && rand < percent + offset * 5) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_HEALING);
             } else if (rand >= percent + offset * 5 && rand < percent + offset * 6) {
+                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_DREAM);
+            }else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_REMOTE);
-            } else if (rand >= percent + offset * 6 && rand < 1) {
+            } else if (rand >= percent + offset * 7 && rand < 1) {
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
             }
         }

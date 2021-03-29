@@ -339,5 +339,25 @@
         "common": {
             "remoteDamage": 2
         }
+    },
+    "status031": {
+        "nameCn": "梦境恢复",
+        "nameEn": "dreaming",
+        "spriteFrameName": "icondream",
+        "statusType": 31,
+        "desc": "",
+        "duration": 0,
+        "realDamageDirect": -1,
+        "common": {}
+    },
+    "status032": {
+        "nameCn": "药瓶梦境恢复",
+        "nameEn": "dreaming",
+        "spriteFrameName": "icondream",
+        "statusType": 32,
+        "desc": "",
+        "duration": 3,
+        "realDamageOvertime": -1,
+        "common": {}
     }
 }

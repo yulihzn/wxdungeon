@@ -38,6 +38,7 @@ import TalentSkills from './Talent/TalentSkills';
 import ShadowOfSight from './Effect/ShadowOfSight';
 import LightManager from './Manager/LightManager';
 import NonPlayer from './NonPlayer';
+import AvatarData from './Data/AvatarData';
 @ccclass
 export default class Player extends Actor {
 
@@ -136,7 +137,8 @@ export default class Player extends Actor {
             , (event) => { if (this.node) this.statusUpdate() });
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
             , (event) => { if (this.node) this.takeDamage(event.detail.damage, event.detail.from) });
-
+            cc.director.on(EventHelper.PLAYER_USEDREAM
+                , (event) => { if (this.node) this.useDream(event.detail.value) });
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
             Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
         }
@@ -661,18 +663,19 @@ export default class Player extends Actor {
         // }
         dd = isDodge ? new DamageData() : dd;
         let health = this.data.getHealth();
-        let dream = this.data.getDream();
-        health.x -= dd.getTotalDamage();
+        let totalD = dd.getTotalDamage();
+        if (totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.GURAD) {
+            totalD = this.useDream(totalD*2);
+        }
+        if(totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.HUNTER){
+            this.useDream(1);
+        }
+        health.x -= totalD;
         if (health.x > health.y) {
             health.x = health.y;
         }
-        if (dream.x > dream.y) {
-            dream.x = dream.y;
-        }
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
         this.data.currentHealth = health.x;
-        this.data.currentDream = dream.x;
         this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false);
         if (this.data.currentHealth <= 0) {
             this.killed(from);
@@ -682,6 +685,20 @@ export default class Player extends Actor {
             this.showDamageEffect(blockLevel);
         }
         return valid;
+    }
+    public useDream(offset:number):number{
+        let dream = this.data.getDream();
+        dream.x -= offset;
+        let overflow = -dream.x;
+        if (dream.x > dream.y) {
+            dream.x = dream.y;
+        }
+        if(dream.x<0){
+            dream.x = 0;
+        }
+        this.data.currentDream = dream.x;
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
+        return overflow<0?0:overflow;
     }
     private showDamageEffect(blockLevel: number) {
         this.remoteExHurt(blockLevel);
@@ -754,6 +771,9 @@ export default class Player extends Actor {
         if (this.talentSkills && !isDashing && !this.isWeaponDashing) {
             this.move(dir, pos, dt);
         }
+        if(dungeon.isClear&&this.data.AvatarData.organizationIndex == AvatarData.TECH){
+            this.useDream(-0.1);
+        }
     }
 
     smokeTimeDelay = 0;
@@ -765,11 +785,22 @@ export default class Player extends Actor {
         }
         return false;
     }
-
+    dreamTimeDelay = 0;
+    isDreamTimeDelay(dt: number): boolean {
+        this.dreamTimeDelay += dt;
+        if (this.dreamTimeDelay > 2) {
+            this.dreamTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     update(dt) {
 
         if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
             this.getWalkSmoke(this.node.parent, this.node.position);
+        }
+        if(this.data.AvatarData.organizationIndex==AvatarData.FOLLOWER&&this.isDreamTimeDelay(dt)){
+            this.useDream(1);
         }
         let stone = this.isStone;
         this.isStone = this.statusManager.hasStatus(StatusManager.STONE);

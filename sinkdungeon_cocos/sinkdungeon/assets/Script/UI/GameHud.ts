@@ -64,6 +64,11 @@ export default class GameHud extends cc.Component {
         cc.director.on(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, (event) => {
             this.dreamBarUpdate(event.detail.x, event.detail.y);
         })
+        cc.director.on(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR, (event) => {
+            if(this.dreamBar){
+                this.dreamBar.shake();
+            }
+        })
         cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
             this.showDamageCorner();
             if(this.healthBar){

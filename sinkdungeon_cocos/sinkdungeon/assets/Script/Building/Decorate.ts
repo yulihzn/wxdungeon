@@ -30,7 +30,7 @@ export default class Decorate extends Building {
     decorateType = 0;
     resName = "decorate000";
     sprite: cc.Sprite;
-    mat:cc.MaterialVariant;
+    mat: cc.MaterialVariant;
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
 
@@ -63,20 +63,20 @@ export default class Decorate extends Building {
     BreakingFinish() {
         this.reset();
     }
-    hitLight(isHit:boolean){
-        if(!this.mat){
+    hitLight(isHit: boolean) {
+        if (!this.mat) {
             this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0);
         }
-        this.mat.setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.mat.setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
     }
-    takeDamage(damage: DamageData):boolean{
-        if (this.data.currentHealth< 1) {
+    takeDamage(damage: DamageData): boolean {
+        if (this.data.currentHealth < 1) {
             return;
         }
         this.data.currentHealth = 0;
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         this.sprite.node.runAction(cc.sequence(
-             cc.callFunc(() => {
+            cc.callFunc(() => {
                 this.changeRes(this.resName, 'anim001');
                 this.hitLight(true);
             }), cc.delayTime(0.1), cc.callFunc(() => {
@@ -95,18 +95,20 @@ export default class Decorate extends Building {
                 let rand = rand4save.rand();
                 if (rand > 0.6 && rand < 0.8) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 3) } });
-                    if(rand4save.getHalfChance()){
+                    if (rand4save.getHalfChance()) {
                         cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                     }
                 } else if (rand >= 0.8 && rand < 0.85) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
+                } else if (rand >= 0.85 && rand < 0.9) {
+                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.DREAM } });
                 }
             }), cc.delayTime(10), cc.callFunc(() => {
                 this.reset();
             })));
         return true;
     }
-    
+
     reset() {
         this.node.position = Dungeon.getPosInMap(cc.v3(-10, -10));
         this.data.currentHealth = this.data.maxHealth;

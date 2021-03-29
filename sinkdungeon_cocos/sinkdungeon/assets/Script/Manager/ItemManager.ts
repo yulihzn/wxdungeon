@@ -132,6 +132,10 @@ export default class ItemManager extends BaseManager {
         if (mapStr == 'A0') {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.HEART);
         }
+        //生成梦境
+        if (mapStr == 'A1') {
+            this.addItem(Dungeon.getPosInMap(indexPos), Item.DREAM);
+        }
         //生成红色药丸
         if (mapStr == 'A3') {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.REDCAPSULE);
@@ -160,8 +164,13 @@ export default class ItemManager extends BaseManager {
         if (mapStr == 'Ac') {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.BOTTLE_ATTACKSPEED);
         }
-        //远程瓶
+        //梦境瓶
         if (mapStr == 'Ad') {
+            this.addItem(Dungeon.getPosInMap(indexPos), Item.BOTTLE_DREAM);
+        }
+
+        //远程瓶
+        if (mapStr == 'Ae') {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.BOTTLE_REMOTE);
         }
     }

@@ -1707,6 +1707,9 @@
             <key type="filename">equipment/clothes022anim0.png</key>
             <key type="filename">equipment/clothes022anim1.png</key>
             <key type="filename">equipment/clothes022anim2.png</key>
+            <key type="filename">equipment/clothes023anim0.png</key>
+            <key type="filename">equipment/clothes023anim1.png</key>
+            <key type="filename">equipment/clothes023anim2.png</key>
             <key type="filename">equipment/helmet001anim0.png</key>
             <key type="filename">equipment/helmet001anim2.png</key>
             <key type="filename">equipment/helmet002anim0.png</key>
@@ -1787,6 +1790,9 @@
             <key type="filename">equipment/helmet027anim0.png</key>
             <key type="filename">equipment/helmet027anim1.png</key>
             <key type="filename">equipment/helmet027anim2.png</key>
+            <key type="filename">equipment/helmet028anim0.png</key>
+            <key type="filename">equipment/helmet028anim1.png</key>
+            <key type="filename">equipment/helmet028anim2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

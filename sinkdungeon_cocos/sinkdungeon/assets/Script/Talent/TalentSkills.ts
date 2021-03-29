@@ -14,6 +14,7 @@ import NonPlayer from "../NonPlayer";
 import Boss from "../Boss/Boss";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import NonPlayerManager from "../Manager/NonPlayerManager";
+import AvatarData from "../Data/AvatarData";
 
 /**
  * 技能管理器
@@ -99,11 +100,31 @@ export default class TalentSkills extends Talent {
             return;
         }
         let cooldown = this.activeTalentData.cooldown;
-        this.talentSkill.next(() => {
-            this.talentSkill.IsExcuting = true;
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
-            this.doSkill();
-        }, cooldown, true);
+        if(this.player.data.AvatarData.organizationIndex==AvatarData.TECH){
+            cooldown-=this.player.data.currentDream;
+            if(cooldown>1){
+                cooldown-=this.player.data.currentDream;
+                if(cooldown<1){
+                    cooldown = 1;
+                }
+            }else{
+                cooldown-=this.player.data.currentDream*0.1;
+                if(cooldown<0.1){
+                    cooldown = 0.1;
+                }
+            }
+        }
+        if(this.player.data.currentDream>0){
+            this.talentSkill.next(() => {
+                this.talentSkill.IsExcuting = true;
+                cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
+                this.player.useDream(1);
+                    this.doSkill();
+            }, cooldown, true);
+        }else{
+            cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
+        }
+        
     }
 
     private doSkill() {
@@ -233,7 +254,7 @@ export default class TalentSkills extends Talent {
         this.scheduleOnce(()=>{
             AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData();
-        d.physicalDamage = 1;
+        d.physicalDamage = 2;
         this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
             .init(0, 0.1, 0, 2, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.BURNING]));
             this.talentSkill.IsExcuting = false;
@@ -278,7 +299,7 @@ export default class TalentSkills extends Talent {
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
-        d.magicDamage = 1;
+        d.magicDamage = 2;
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
             .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.BURNING]));
     }
@@ -290,7 +311,7 @@ export default class TalentSkills extends Talent {
         let a1 = [angles1];
         let a = a1;
         let d = new DamageData();
-        d.magicDamage = 1;
+        d.magicDamage = 2;
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
@@ -316,7 +337,7 @@ export default class TalentSkills extends Talent {
     }
     private addBroom() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
-        let d = new DamageData(1);
+        let d = new DamageData(2);
         this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
             .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, false, true, true, true,true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
     }

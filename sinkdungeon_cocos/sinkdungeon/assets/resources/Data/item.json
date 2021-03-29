@@ -15,6 +15,13 @@
         "statusList":"status011",
         "price": 20
     },
+    "dream": {
+        "nameCn": "梦境",
+        "nameEn": "dream",
+        "resName": "dream",
+        "statusList":"status031",
+        "price": 20
+    },
     "redcapsule": {
         "nameCn": "红色攻击药丸",
         "nameEn": "red capsule",
@@ -62,9 +69,19 @@
         "price": 30
     },
     "bottle004": {
-        "nameCn": "远程瓶",
-        "nameEn": "hide bottle",
+        "nameCn": "梦境瓶",
+        "nameEn": "dream bottle",
         "resName": "bottle004",
+        "canSave":1,
+        "statusList":"status032",
+        "info":"回复三点梦境",
+        "desc":"这个梦好香",
+        "price": 30
+    },
+    "bottle005": {
+        "nameCn": "远程瓶",
+        "nameEn": "remote bottle",
+        "resName": "bottle005",
         "canSave":1,
         "statusList":"status030",
         "info":"15秒内远程攻击+2",

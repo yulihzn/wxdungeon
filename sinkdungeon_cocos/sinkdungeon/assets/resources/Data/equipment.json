@@ -1712,7 +1712,7 @@
         "desc": "上面有螺旋纹图案"
     },
     "helmet021": {
-        "nameCn": "进喜头盔",
+        "nameCn": "钢铁头盔",
         "nameEn": "Iron Helmet",
         "equipmetType": "helmet",
         "prefix": "",
@@ -1734,7 +1734,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "咱们工人有力量"
+        "desc": "高仿金属头盔"
     },
     "helmet022": {
         "nameCn": "斗笠",
@@ -1884,7 +1884,32 @@
             "dodge": 0,
             "maxHealth": 1
         },
-        "desc": "医用帽子"
+        "desc": "剑道常见头盔"
+    },
+    "helmet028": {
+        "nameCn": "睡帽",
+        "nameEn": "Sleep Helmet",
+        "equipmetType": "helmet",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "helmet028",
+        "hideHair":1,
+        "common": {
+            "remoteDamage":0,
+            "remoteCritRate":0,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dream": 2,
+            "maxHealth": 1
+        },
+        "desc": "很舒服的帽子"
     },
     "clothes001": {
         "nameCn": "背心",
@@ -2376,6 +2401,28 @@
             "maxHealth": 1
         },
         "desc": "侦探社款式"
+    },
+    "clothes023": {
+        "nameCn": "睡衣",
+        "nameEn": "Sleep Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes023",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dream": 2,
+            "maxHealth": 1
+        },
+        "desc": "宽松舒适，心情愉悦"
     },
     "cloak001": {
         "nameCn": "战袍",

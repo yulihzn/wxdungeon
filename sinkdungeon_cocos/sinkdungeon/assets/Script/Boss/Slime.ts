@@ -226,6 +226,7 @@ export default class Slime extends Boss {
                 let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
                 Achievements.addMonsterKillAchievement(this.data.resName);
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.DREAM } });
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 3);
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {

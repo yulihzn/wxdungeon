@@ -24,10 +24,12 @@ export default class Item extends cc.Component {
 
     public static readonly EMPTY = 'emptyitem';
     public static readonly HEART = 'heart';
+    public static readonly DREAM = 'dream';
     public static readonly BOTTLE_HEALING = 'bottle001';
     public static readonly BOTTLE_MOVESPEED = 'bottle002';
     public static readonly BOTTLE_ATTACKSPEED = 'bottle003';
-    public static readonly BOTTLE_REMOTE = 'bottle004';
+    public static readonly BOTTLE_DREAM = 'bottle004';
+    public static readonly BOTTLE_REMOTE = 'bottle005';
     public static readonly REDCAPSULE = 'redcapsule';
     public static readonly BLUECAPSULE = 'bluecapsule';
     public static readonly SHIELD = 'shield';

@@ -361,7 +361,7 @@ export default class Dungeon extends cc.Component {
     /** 玩家在地牢移动 */
     playerAction(dir: number, pos: cc.Vec3, dt: number) {
         if (this.player) {
-            this.player.playerAction(dir, pos, dt, this)
+            this.player.playerAction(dir, pos, dt, this);
         }
     }
     getMonsterAliveNum(): number {

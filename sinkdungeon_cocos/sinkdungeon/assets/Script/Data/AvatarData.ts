@@ -1,6 +1,10 @@
 import ProfessionData from "./ProfessionData";
 
 export default class AvatarData {
+    static readonly FOLLOWER = 0;
+    static readonly HUNTER = 1;
+    static readonly GURAD = 2;
+    static readonly TECH = 3;
     organizationIndex:number = 0;//['弥世逐流','宝藏猎人','幽光守护','翠金科技']
     professionData:ProfessionData = new ProfessionData();
     skinColor:string = '#ffe1c5';
