@@ -270,7 +270,7 @@ export default class BuildingManager extends BaseManager {
             if (mapDataStr == 'O1') {
                 head.angle = 90;
             }
-            head.opacity = 128;
+            head.opacity = 80;
             head.zIndex = IndexZ.ROOF;
         } else if (mapDataStr == '@@') {
             //生成踏板
@@ -451,8 +451,8 @@ export default class BuildingManager extends BaseManager {
             case 'L4':prefabName = BuildingManager.MUSHROOM02;break;
             case 'L5':prefabName = BuildingManager.MUSHROOM03;break;
             case 'L6':prefabName = BuildingManager.MUSHROOM04;break;
-            case 'L7':prefabName = BuildingManager.LAMPSEARCH;break;
-            case 'L8':prefabName = BuildingManager.LAMPTORCH;break;
+            case 'L7':prefabName = BuildingManager.LAMPSEARCH;isOverHead=true;break;
+            case 'L8':prefabName = BuildingManager.LAMPTORCH;isOverHead=true;break;
             case 'L9':prefabName = BuildingManager.LAMPFIREPAN;break;
             case 'La':prefabName = BuildingManager.LAMPROAD;break;
             case 'Lb':prefabName = BuildingManager.LAMPFIREFLY;break;

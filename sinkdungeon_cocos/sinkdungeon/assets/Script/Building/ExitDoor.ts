@@ -58,14 +58,15 @@ export default class ExitDoor extends Building {
             }
             this.node.position = Dungeon.getPosInMap(indexPos);
         }
+        let label = this.roof.getComponentInChildren(cc.Label);
         switch (this.dir % 4) {
             case 0: break;
-            case 1: this.node.angle = 180;break;
-            case 2: this.node.angle = 90;break;
-            case 3: this.node.angle = -90;break;
+            case 1: this.node.angle = 180;label.node.angle=180;break;
+            case 2: this.node.angle = 90;label.node.angle=-90;break;
+            case 3: this.node.angle = -90;label.node.angle=90;break;
         }
         
-        this.roof.getComponentInChildren(cc.Label).string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
+        label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
     }
     onLoad() {
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);
@@ -87,11 +88,11 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER099: this.changeRes('exit000'); break;
         }
         if (this.roof) {
-            this.roof.parent = this.node.parent;
-            let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
-            this.roof.position = this.roof.parent.convertToNodeSpaceAR(p);
-            this.roof.angle = this.node.angle;
-            this.roof.zIndex = IndexZ.OVERHEAD;
+            // this.roof.parent = this.node.parent;
+            // let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
+            // this.roof.position = this.roof.parent.convertToNodeSpaceAR(p);
+            // this.roof.angle = this.node.angle;
+            // this.roof.zIndex = IndexZ.SHADOW-1;
         }
     }
 

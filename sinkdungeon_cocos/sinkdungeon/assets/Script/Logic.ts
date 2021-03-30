@@ -244,9 +244,9 @@ export default class Logic extends cc.Component {
         if (!levelData) {
             return;
         }
-        if(exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter != Logic.CHAPTER099
+        if(exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
             &&exitData.fromChapter!=exitData.toChapter){
-            Logic.mapManager.rectDungeon.changeAllRoomsReborn();
+            Logic.mapManager.rectDungeon.changeAllClearRoomsReborn();
         }
         if(needSave){
             Logic.saveData(false);

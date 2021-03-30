@@ -29,7 +29,7 @@
     "_prefab": {
       "__id__": 4
     },
-    "_opacity": 255,
+    "_opacity": 128,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -128,7 +128,7 @@
     "asset": {
       "__uuid__": "f93bf273-6bab-44fe-af92-ec4c8d1f916c"
     },
-    "fileId": "60fhD5J+BENKxKhCx1Zenm",
+    "fileId": "",
     "sync": false
   }
 ]

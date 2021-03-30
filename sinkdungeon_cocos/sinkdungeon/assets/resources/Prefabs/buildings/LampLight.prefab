@@ -155,7 +155,7 @@
     "ray": {
       "__id__": 4
     },
-    "rayRadius": 300,
+    "rayRadius": 250,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,

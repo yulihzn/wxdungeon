@@ -60,6 +60,12 @@ export default class Door extends Building {
         }
         if(this.lockInfo&&this.isLock&&!Logic.mapManager.isNeighborRoomStateClear(this.dir)){
             this.lockInfo.opacity = 255;
+            switch (this.dir) {
+                case 0: break;
+                case 1: this.lockInfo.angle=180;break;
+                case 2: this.lockInfo.angle=-90;break;
+                case 3: this.lockInfo.angle=90;break;
+            }
             return;
         }
     }

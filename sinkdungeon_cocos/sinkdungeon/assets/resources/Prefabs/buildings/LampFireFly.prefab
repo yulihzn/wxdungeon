@@ -266,7 +266,7 @@
     "ray": {
       "__id__": 7
     },
-    "rayRadius": 300,
+    "rayRadius": 200,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -412,7 +412,7 @@
       "__uuid__": "b2c8bad8-d163-4d1c-8967-e45039d6ba6a"
     },
     "_texture": null,
-    "_stopped": false,
+    "_stopped": true,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 6,
