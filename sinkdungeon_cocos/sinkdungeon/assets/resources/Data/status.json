@@ -347,7 +347,7 @@
         "statusType": 31,
         "desc": "",
         "duration": 0,
-        "realDamageDirect": -1,
+        "dreamDirect": -1,
         "common": {}
     },
     "status032": {
@@ -357,7 +357,7 @@
         "statusType": 32,
         "desc": "",
         "duration": 3,
-        "realDamageOvertime": -1,
+        "dreamOvertime": -1,
         "common": {}
     }
 }

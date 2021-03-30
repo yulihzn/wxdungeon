@@ -3211,7 +3211,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 414
+      "height": 384
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3285,8 +3285,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 30
+      "width": 240,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3298,14 +3298,14 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        162,
+        152,
         0,
         0,
         0,
         0,
         1,
-        3,
-        3,
+        1,
+        1,
         0
       ]
     },
@@ -3347,8 +3347,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 44.2511312283978,
-      "height": 30.24
+      "width": 88.5022624567956,
+      "height": 50.4
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3401,8 +3401,8 @@
     "_dstBlendFactor": 771,
     "_string": "游玩",
     "_N$string": "游玩",
-    "_fontSize": 20,
-    "_lineHeight": 24,
+    "_fontSize": 40,
+    "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -3698,8 +3698,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 30
+      "width": 240,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3717,8 +3717,8 @@
         0,
         0,
         1,
-        3,
-        3,
+        1,
+        1,
         0
       ]
     },
@@ -3760,8 +3760,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 44.2511312283978,
-      "height": 30.24
+      "width": 88.5022624567956,
+      "height": 50.4
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3814,8 +3814,8 @@
     "_dstBlendFactor": 771,
     "_string": "继续",
     "_N$string": "继续",
-    "_fontSize": 20,
-    "_lineHeight": 24,
+    "_fontSize": 40,
+    "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -4105,7 +4105,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -61,
+        -56,
         0,
         0,
         0,
@@ -4167,8 +4167,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 80,
-      "height": 30
+      "width": 240,
+      "height": 80
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4180,14 +4180,14 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        -162,
+        -152,
         0,
         0,
         0,
         0,
         1,
-        3,
-        3,
+        1,
+        1,
         0
       ]
     },
@@ -4229,8 +4229,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 35.40090498271824,
-      "height": 30.24
+      "width": 66.3766968425967,
+      "height": 37.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4283,8 +4283,8 @@
     "_dstBlendFactor": 771,
     "_string": "成就",
     "_N$string": "成就",
-    "_fontSize": 16,
-    "_lineHeight": 24,
+    "_fontSize": 30,
+    "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -4551,7 +4551,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 414
+      "height": 384
     },
     "_resize": 1,
     "_N$layoutType": 2,

@@ -1906,7 +1906,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dream": 2,
+            "maxDream": 2,
             "maxHealth": 1
         },
         "desc": "很舒服的帽子"
@@ -2419,7 +2419,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "dream": 2,
+            "maxDream": 2,
             "maxHealth": 1
         },
         "desc": "宽松舒适，心情愉悦"

@@ -3,7 +3,7 @@
   "_name": "TitleIdle",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 8.016666666666667,
+  "_duration": 6,
   "sample": 60,
   "speed": 1,
   "wrapMode": 2,
@@ -37,7 +37,7 @@
               "value": 80
             },
             {
-              "frame": 6.016666666666667,
+              "frame": 6,
               "value": 64
             }
           ]
@@ -55,7 +55,7 @@
               }
             },
             {
-              "frame": 7.016666666666667,
+              "frame": 5,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 3,
@@ -63,7 +63,7 @@
               }
             },
             {
-              "frame": 7.516666666666667,
+              "frame": 5.5,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 3.1,
@@ -71,11 +71,49 @@
               }
             },
             {
-              "frame": 8.016666666666667,
+              "frame": 6,
               "value": {
                 "__type__": "cc.Vec2",
                 "x": 3,
                 "y": 3
+              }
+            }
+          ]
+        }
+      },
+      "labelshadow": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3,
+                "y": -1
+              }
+            },
+            {
+              "frame": 5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3,
+                "y": -1
+              }
+            },
+            {
+              "frame": 5.5,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3.1,
+                "y": -1
+              }
+            },
+            {
+              "frame": 6,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3,
+                "y": -1
               }
             }
           ]

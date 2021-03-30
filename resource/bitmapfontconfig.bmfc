@@ -2,8 +2,8 @@
 fileVersion=1
 
 # font settings
-fontName=ç«™é…·å¿«ä¹ä½“2016ä¿®è®¢ç‰ˆ
-fontFile=ç«™é…·å¿«ä¹ä½“2016ä¿®è®¢ç‰ˆ.ttf
+fontName=Õ¾¿á¿ìÀÖÌå2016ĞŞ¶©°æ
+fontFile=Õ¾¿á¿ìÀÖÌå2016ĞŞ¶©°æ.ttf
 charSet=0
 fontSize=18
 aa=1
@@ -50,6 +50,6 @@ invB=0
 outlineThickness=0
 
 # selected chars
-chars=32-39,42-90,97-123,125-126,9733,20002,22833,36991,38378
+chars=32-39,42-90,97-123,125-127,9733,20002,22659,22833,26790,28246,32736,36991,38378
 
 # imported icon images

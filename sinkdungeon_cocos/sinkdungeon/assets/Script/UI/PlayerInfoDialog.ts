@@ -81,7 +81,7 @@ export default class PlayerInfoDialog extends cc.Component {
         if(!this.attack){return;}
         let baseCommonData = playerData.Common.clone().add(playerData.AvatarData.professionData.Common);
         this.organization.string = AvatarData.ORGANIZATION[playerData.AvatarData.organizationIndex];
-        this.attack.string = this.getInfo(baseCommonData.damageMin,equipmentData.Common.damageMin,statusData.Common.damageMin)+'-'+this.getInfo(baseCommonData.damageMax,equipmentData.Common.damageMax,statusData.Common.damageMax);
+        this.attack.string = this.getInfo(baseCommonData.damageMin,equipmentData.Common.damageMin,statusData.Common.damageMin)+'    MAX:'+this.getInfo(baseCommonData.damageMax,equipmentData.Common.damageMax,statusData.Common.damageMax);
         this.criticalStrikeRate.string = this.getInfo(baseCommonData.criticalStrikeRate,equipmentData.Common.criticalStrikeRate,statusData.Common.criticalStrikeRate,true);
         this.defence.string = this.getInfo(baseCommonData.defence,equipmentData.Common.defence,statusData.Common.defence);
         this.lifeDrain.string = this.getInfo(baseCommonData.lifeDrain,equipmentData.Common.lifeDrain,statusData.Common.lifeDrain,true);
