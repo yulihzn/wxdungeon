@@ -5,7 +5,8 @@ const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class Start extends cc.Component {
-
+    @property(cc.Node)
+    startButton: cc.Node = null;
     @property(cc.Node)
     continueButton: cc.Node = null;
     @property(cc.Node)
@@ -21,6 +22,15 @@ export default class Start extends cc.Component {
         // init logic
         if(this.continueButton){
             this.continueButton.active = Logic.profileManager.hasSaveData;
+            if(this.continueButton.active){
+                this.scheduleOnce(()=>{
+                    this.continueButton.getComponent(cc.Animation).play();
+                },2)
+            }else{
+                this.scheduleOnce(()=>{
+                    this.startButton.getComponent(cc.Animation).play();
+                },2)
+            }
         }
     }
     startGame(){

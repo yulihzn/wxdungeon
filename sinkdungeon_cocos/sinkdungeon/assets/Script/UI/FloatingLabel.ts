@@ -34,11 +34,14 @@ export default class FloatingLabel extends cc.Component {
             }
             this.node.scale = scale;
         }
+        let sc = this.node.scale;
+        this.node.scale = sc*1.5;
         this.label.node.opacity = 255;
         this.label.node.position = cc.v3(0,0);
         this.label.string = text;
         this.label.node.color = color;
         this.anim.play('FontFloating');
+        cc.tween(this.node).to(0.1,{scale:sc}).start();
     }
     showMiss(){
         this.showLabel('丢失',cc.color(255, 255, 255),1);

@@ -2,10 +2,10 @@
 fileVersion=1
 
 # font settings
-fontName=等线
-fontFile=
-charSet=134
-fontSize=15
+fontName=站酷快乐体2016修订版
+fontFile=站酷快乐体2016修订版.ttf
+charSet=0
+fontSize=18
 aa=1
 scaleH=100
 useSmoothing=1
@@ -50,6 +50,6 @@ invB=0
 outlineThickness=0
 
 # selected chars
-chars=32-126,9733,20002,22833,36991,38378
+chars=32-39,42-90,97-123,125-126,9733,20002,22833,36991,38378
 
 # imported icon images

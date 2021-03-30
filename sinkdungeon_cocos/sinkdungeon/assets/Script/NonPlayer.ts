@@ -361,6 +361,7 @@ export default class NonPlayer extends Actor {
 
         });
         let attackfinish = cc.tween().call(() => {
+            this.changeBodyRes(this.data.resName,NonPlayer.RES_IDLE000);
             this.dangerBox.finish();
             this.setLinearVelocity(cc.Vec2.ZERO);
         });

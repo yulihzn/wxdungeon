@@ -1,0 +1,87 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "TitleIdle",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 8.016666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "dream": {
+        "props": {
+          "y": [
+            {
+              "frame": 0,
+              "value": 64
+            },
+            {
+              "frame": 1,
+              "value": 80
+            },
+            {
+              "frame": 1.5,
+              "value": 80
+            },
+            {
+              "frame": 3.0166666666666666,
+              "value": 64
+            },
+            {
+              "frame": 4,
+              "value": 80
+            },
+            {
+              "frame": 4.5,
+              "value": 80
+            },
+            {
+              "frame": 6.016666666666667,
+              "value": 64
+            }
+          ]
+        }
+      },
+      "label": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3,
+                "y": 3
+              }
+            },
+            {
+              "frame": 7.016666666666667,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3,
+                "y": 3
+              }
+            },
+            {
+              "frame": 7.516666666666667,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3.1,
+                "y": 3.1
+              }
+            },
+            {
+              "frame": 8.016666666666667,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 3,
+                "y": 3
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

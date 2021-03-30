@@ -467,7 +467,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140.01,
+      "width": 186.68,
       "height": 50.4
     },
     "_anchorPoint": {
@@ -479,8 +479,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        0,
-        -100.05,
+        440,
+        -270,
         0,
         0,
         0,
@@ -521,7 +521,7 @@
     "_dstBlendFactor": 771,
     "_string": "   加载中...",
     "_N$string": "   加载中...",
-    "_fontSize": 30,
+    "_fontSize": 40,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
