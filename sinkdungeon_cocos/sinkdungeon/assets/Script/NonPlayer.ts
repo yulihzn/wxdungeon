@@ -606,6 +606,7 @@ export default class NonPlayer extends Actor {
                         boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
                             , true, true, false,false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
+                        cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
                     }
                 }
                 this.scheduleOnce(() => { this.node.active = false; }, 5);
@@ -774,7 +775,7 @@ export default class NonPlayer extends Actor {
             isTracking = false;
         }
 
-        let needStop = (this.data.melee > 0 && targetDis < 64) || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300);
+        let needStop = (this.data.melee > 0 && targetDis < 60) || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300);
         if (!this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isPassive && !needStop) {
             if (this.sc.isMoving && isTracking || !this.sc.isMoving) {
                 this.moveStep.next(() => {

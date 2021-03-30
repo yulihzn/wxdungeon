@@ -110,7 +110,7 @@ export default class PlayerData {
         dd.realDamage = data.realDamage;
         dd.magicDamage = data.magicDamage;
         if(this.avatarData.organizationIndex == AvatarData.FOLLOWER){
-            dd.physicalDamage+=this.currentDream*0.25;
+            dd.physicalDamage+=this.currentDream*0.5;
         }
         return dd;
     }
@@ -120,7 +120,7 @@ export default class PlayerData {
         let dd = new DamageData();
         let remoteDamage = data.remoteDamage;
         if(this.avatarData.organizationIndex == AvatarData.HUNTER ){
-            remoteDamage += this.currentDream*0.25;
+            remoteDamage += this.currentDream*0.5;
         }
         let chance = data.remoteCritRate/100;
         let isCritical = Random.rand() < chance;

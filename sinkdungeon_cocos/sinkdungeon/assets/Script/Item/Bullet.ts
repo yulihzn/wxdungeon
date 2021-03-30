@@ -466,6 +466,7 @@ export default class Bullet extends cc.Component {
                 boom.show(this.node.parent,this.node.position,this.hv,0,new AreaOfEffectData().init(1,0.2,0,0,IndexZ.OVERHEAD,!this.isFromPlayer
                     ,true,true,false,false,new DamageData(1),FromData.getClone('爆炸','boom000anim004'),[]));
                 cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.BOOM}});
+                cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
             }
             
         }

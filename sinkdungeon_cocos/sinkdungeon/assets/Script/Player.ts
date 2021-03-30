@@ -137,8 +137,8 @@ export default class Player extends Actor {
             , (event) => { if (this.node) this.statusUpdate() });
         cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
             , (event) => { if (this.node) this.takeDamage(event.detail.damage, event.detail.from) });
-            cc.director.on(EventHelper.PLAYER_USEDREAM
-                , (event) => { if (this.node) this.useDream(event.detail.value) });
+        cc.director.on(EventHelper.PLAYER_USEDREAM
+            , (event) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.useDream(event.detail.value) });
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
             Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
         }
@@ -665,9 +665,12 @@ export default class Player extends Actor {
         let health = this.data.getHealth();
         let totalD = dd.getTotalDamage();
         if (totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.GURAD) {
-            totalD = this.useDream(totalD*2);
+            totalD = this.useDream(totalD);
         }
-        if(totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.HUNTER){
+        if (totalD > 0 &&
+            (this.data.AvatarData.organizationIndex == AvatarData.HUNTER
+                || this.data.AvatarData.organizationIndex == AvatarData.TECH)
+            || this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
             this.useDream(1);
         }
         health.x -= totalD;
@@ -686,19 +689,19 @@ export default class Player extends Actor {
         }
         return valid;
     }
-    public useDream(offset:number):number{
+    public useDream(offset: number): number {
         let dream = this.data.getDream();
         dream.x -= offset;
         let overflow = -dream.x;
         if (dream.x > dream.y) {
             dream.x = dream.y;
         }
-        if(dream.x<0){
+        if (dream.x < 0) {
             dream.x = 0;
         }
         this.data.currentDream = dream.x;
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
-        return overflow<0?0:overflow;
+        return overflow < 0 ? 0 : overflow;
     }
     private showDamageEffect(blockLevel: number) {
         this.remoteExHurt(blockLevel);
@@ -771,9 +774,6 @@ export default class Player extends Actor {
         if (this.talentSkills && !isDashing && !this.isWeaponDashing) {
             this.move(dir, pos, dt);
         }
-        if(dungeon.isClear&&this.data.AvatarData.organizationIndex == AvatarData.TECH){
-            this.useDream(-0.1);
-        }
     }
 
     smokeTimeDelay = 0;
@@ -786,6 +786,7 @@ export default class Player extends Actor {
         return false;
     }
     dreamTimeDelay = 0;
+    dreamLongTimeDelay = 0;
     isDreamTimeDelay(dt: number): boolean {
         this.dreamTimeDelay += dt;
         if (this.dreamTimeDelay > 2) {
@@ -794,14 +795,32 @@ export default class Player extends Actor {
         }
         return false;
     }
+    isDreamLongTimeDelay(dt: number): boolean {
+        this.dreamLongTimeDelay += dt;
+        if (this.dreamLongTimeDelay > 30) {
+            this.dreamLongTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     update(dt) {
-
         if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
-        if(this.data.AvatarData.organizationIndex==AvatarData.FOLLOWER&&this.isDreamTimeDelay(dt)){
-            this.useDream(1);
+        if (this.isDreamLongTimeDelay(dt)) {
+            if (this.data.AvatarData.organizationIndex == AvatarData.GURAD || this.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
+                this.useDream(-1);
+            }
         }
+        if (this.isDreamTimeDelay(dt)) {
+            if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER && this.isDreamTimeDelay(dt)) {
+                this.useDream(1);
+            }
+            if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
+                this.useDream(-1);
+            }
+        }
+
         let stone = this.isStone;
         this.isStone = this.statusManager.hasStatus(StatusManager.STONE);
         if (stone == !this.isStone) {

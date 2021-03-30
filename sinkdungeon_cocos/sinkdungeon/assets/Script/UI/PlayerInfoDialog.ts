@@ -1,6 +1,7 @@
 import PlayerData from "../Data/PlayerData";
 import EquipmentData from "../Data/EquipmentData";
 import StatusData from "../Data/StatusData";
+import AvatarData from "../Data/AvatarData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,6 +18,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class PlayerInfoDialog extends cc.Component {
     attack: cc.Label = null;
+    organization:cc.Label = null;
     criticalStrikeRate: cc.Label = null;
     defence: cc.Label = null;
     lifeDrain: cc.Label = null;
@@ -46,6 +48,7 @@ export default class PlayerInfoDialog extends cc.Component {
 
     onLoad() {
         this.attack = this.node.getChildByName('layout').getChildByName('attack').getChildByName('label').getComponent(cc.Label);
+        this.organization = this.node.getChildByName('layout').getChildByName('organization').getChildByName('label').getComponent(cc.Label);
         this.criticalStrikeRate = this.node.getChildByName('layout').getChildByName('criticalStrikeRate').getChildByName('label').getComponent(cc.Label);
         this.defence = this.node.getChildByName('layout').getChildByName('defence').getChildByName('label').getComponent(cc.Label);
         this.lifeDrain = this.node.getChildByName('layout').getChildByName('lifeDrain').getChildByName('label').getComponent(cc.Label);
@@ -77,7 +80,8 @@ export default class PlayerInfoDialog extends cc.Component {
     refreshDialog(playerData: PlayerData, equipmentData: EquipmentData,statusData:StatusData) {
         if(!this.attack){return;}
         let baseCommonData = playerData.Common.clone().add(playerData.AvatarData.professionData.Common);
-        this.attack.string = this.getInfo(baseCommonData.damageMin,equipmentData.Common.damageMin,statusData.Common.damageMin)+'    MAX:'+this.getInfo(baseCommonData.damageMax,equipmentData.Common.damageMax,statusData.Common.damageMax);
+        this.organization.string = AvatarData.ORGANIZATION[playerData.AvatarData.organizationIndex];
+        this.attack.string = this.getInfo(baseCommonData.damageMin,equipmentData.Common.damageMin,statusData.Common.damageMin)+'-'+this.getInfo(baseCommonData.damageMax,equipmentData.Common.damageMax,statusData.Common.damageMax);
         this.criticalStrikeRate.string = this.getInfo(baseCommonData.criticalStrikeRate,equipmentData.Common.criticalStrikeRate,statusData.Common.criticalStrikeRate,true);
         this.defence.string = this.getInfo(baseCommonData.defence,equipmentData.Common.defence,statusData.Common.defence);
         this.lifeDrain.string = this.getInfo(baseCommonData.lifeDrain,equipmentData.Common.lifeDrain,statusData.Common.lifeDrain,true);

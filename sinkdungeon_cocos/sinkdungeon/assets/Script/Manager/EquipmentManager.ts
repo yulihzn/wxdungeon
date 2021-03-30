@@ -359,6 +359,7 @@ export default class EquipmentManager extends BaseManager {
         desc.common.lighteningRate = lighteningRate.x;
         desc.common.toxicRate = toxicRate.x;
         desc.common.curseRate = curseRate.x;
+        desc.common.maxDream = dream.x;
         return desc;
     }
     static isTheEquipType(theType: string, types: string[]): boolean {

@@ -254,9 +254,8 @@ export default class PickAvatar extends cc.Component {
         this.loadingBackground.active = false;
         //组织
         let organList = new Array();
-        let organization = ['弥世逐流', '宝藏猎人', '幽光守护', '翠金科技'];
-        for (let i = 0; i < organization.length; i++) {
-            organList.push(new AttributeData(i, organization[i], '', '', '', ''));
+        for (let i = 0; i < AvatarData.ORGANIZATION.length; i++) {
+            organList.push(new AttributeData(i, AvatarData.ORGANIZATION[i], '', '', '', ''));
         }
         this.organizationSelector = this.addAttributeSelector('组织：', organList)
         this.organizationSelector.selectorCallback = (data: AttributeData) => {

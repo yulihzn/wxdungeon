@@ -77,7 +77,7 @@ export default class Status extends cc.Component {
         if(player){
             if(takeD){player.takeDamage(dd,this.data.From);}
             player.dizzCharacter(dizzDuration);
-            player.useDream(dream);
+            if(dream)player.useDream(dream);
             if(this.data.invisibleDuratonDirect){
                 player.hideCharacter(this.data.invisibleDuratonDirect);
             }
