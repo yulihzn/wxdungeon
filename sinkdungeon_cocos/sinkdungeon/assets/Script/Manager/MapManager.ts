@@ -138,11 +138,9 @@ export default class MapManager {
     /** 设置房间状态为清理*/
     public setRoomClear(x: number, y: number) {
         this.rectDungeon.map[x][y].state = RectRoom.STATE_CLEAR;
+        this.rectDungeon.map[x][y].reborn = 0;
     }
-    /** 设置房间状态为清理*/
-    public setRoomReborn(x: number, y: number,isReborn:boolean) {
-        this.rectDungeon.map[x][y].reborn = isReborn?1:0;
-    }
+  
     /** 获取当前房间状态*/
     public getCurrentRoomState(): number {
         return this.getCurrentRoom().state;

@@ -203,7 +203,7 @@ export default class Dungeon extends cc.Component {
         //加载随机怪物
         if ((!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoom().isReborn())
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
-            this.monsterManager.addRandomMonsters(this);
+            this.monsterManager.addRandomMonsters(this,Logic.mapManager.getCurrentRoom().isReborn());
         }
         //加载跟随npc
 
@@ -406,7 +406,6 @@ export default class Dungeon extends cc.Component {
                 this.buildingManager.savePointS.open();
             }
             Logic.mapManager.setRoomClear(this.currentPos.x, this.currentPos.y);
-            Logic.mapManager.setRoomReborn(this.currentPos.x, this.currentPos.y,false);
         }
     }
     private setDoors(isClear: boolean, immediately?: boolean) {

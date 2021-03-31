@@ -35,7 +35,6 @@ import State from './Base/fsm/State';
 import DefaultStateMachine from './Base/fsm/DefaultStateMachine';
 import NonPlayerActorState from './Actor/NonPlayerActorState';
 import StateContext from './Base/StateContext';
-import Random4Save from './Utils/Random4Save';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -616,6 +615,9 @@ export default class NonPlayer extends Actor {
         }, 2);
     }
     getLoot() {
+        if(this.data.reborn>0){
+            this.seed = Logic.mapManager.getSeedFromRoom();
+        }
         let rand4save = Logic.mapManager.getRandom4Save(this.seed);
         let rand = rand4save.rand();
         let percent = 0.75;
@@ -623,28 +625,39 @@ export default class NonPlayer extends Actor {
         if (this.isVariation) {
             percent = 0.6;
         }
+        
         if (this.dungeon) {
+            
             if (rand < percent) {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
             } else if (rand >= percent && rand < percent + offset) {
-                this.dungeon.addItem(this.node.position.clone(), Item.HEART);
+                this.addLootSaveItem(Item.HEART);
             } else if (rand >= percent + offset && rand < percent + offset * 2) {
-                this.dungeon.addItem(this.node.position.clone(), Item.HEART);
+                this.addLootSaveItem(Item.HEART);
             } else if (rand >= percent + offset * 2 && rand < percent + offset * 3) {
-                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_ATTACKSPEED);
+                this.addLootSaveItem(Item.BOTTLE_ATTACKSPEED);
             } else if (rand >= percent + offset * 3 && rand < percent + offset * 4) {
-                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_MOVESPEED);
+                this.addLootSaveItem(Item.BOTTLE_MOVESPEED);
             } else if (rand >= percent + offset * 4 && rand < percent + offset * 5) {
-                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_HEALING);
+                this.addLootSaveItem(Item.BOTTLE_HEALING);
             } else if (rand >= percent + offset * 5 && rand < percent + offset * 6) {
-                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_DREAM);
+                this.addLootSaveItem(Item.BOTTLE_DREAM);
             }else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
-                this.dungeon.addItem(this.node.position.clone(), Item.BOTTLE_REMOTE);
+                this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
+                if(this.data.reborn>0){
+                    if(rand4save.rand()>percent){
+                        this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
+                    }
+                }else{
+                    this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
+                }
             }
         }
+    }
+    private addLootSaveItem(resName:string){
+        this.dungeon.addItem(this.node.position.clone(), resName);
     }
 
     /**获取中心位置 */

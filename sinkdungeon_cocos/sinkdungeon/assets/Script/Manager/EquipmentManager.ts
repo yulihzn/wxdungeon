@@ -437,7 +437,7 @@ export default class EquipmentManager extends BaseManager {
         return equipment;
 
     }
-    static getNewEquipData(equipType,chestQuality?:number,notRandom?:boolean):EquipmentData{
+    static getNewEquipData(equipType,chestQuality?:number):EquipmentData{
         let data = new EquipmentData();
         data.valueCopy(Logic.equipments[equipType]);
         data.uuid = data.genNonDuplicateID();
