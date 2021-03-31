@@ -70,11 +70,9 @@ export default class GameOver extends cc.Component {
         }
     }
     retry() {
-        Logic.profileManager = new ProfileManager();
-        Logic.profileManager.loadProfile(true);
         Logic.resetData();
         AudioPlayer.play(AudioPlayer.SELECT);
-        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level),false);
+        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level));
     }
     home() {
         AudioPlayer.play(AudioPlayer.SELECT);

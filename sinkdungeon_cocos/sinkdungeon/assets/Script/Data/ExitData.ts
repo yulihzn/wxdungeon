@@ -42,9 +42,9 @@ export default class ExitData {
         let data = new ExitData();
         data.fromChapter = Logic.CHAPTER099;
         data.fromLevel = 0;
-        data.toChapter = Logic.lastChapterIndex;
-        data.toLevel = Logic.lastLevel;
-        data.toPos = cc.v3(-1, -1);
+        data.toChapter = Logic.savePoinitData.chapter;
+        data.toLevel = Logic.savePoinitData.level;
+        data.toPos = cc.v3(Logic.savePoinitData.x, Logic.savePoinitData.y);
         return data;
     }
 

@@ -5,9 +5,9 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import SavePointData from "../Data/SavePointData";
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
-import Player from "../Player";
 import Building from "./Building";
 
 const { ccclass, property } = cc._decorator;
@@ -49,7 +49,7 @@ export default class SavePoint extends Building {
         if(this.isOpen){
             return;
         }
-        Logic.savePonit();
+        Logic.savePonit(this.data.defaultPos);
         this.isOpen = true;
         this.scheduleOnce(()=>{
             this.anim.play('SavePointActive');

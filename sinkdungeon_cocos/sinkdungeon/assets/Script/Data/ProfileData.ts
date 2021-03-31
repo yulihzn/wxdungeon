@@ -3,6 +3,7 @@ import RectDungeon from "../Rect/RectDungeon";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
 import TalentData from "./TalentData";
+import SavePointData from "./SavePointData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -25,7 +26,6 @@ export default class ProfileData {
     playerItemList:ItemData[] = new Array();
     talentList:TalentData[] = new Array();
     level = 0;//当前层级
-    lastLevel = 0;//上次层级
-    lastChapterIndex = 0;//上次章节
     time = '00:00:00';
+    savePointData:SavePointData = new SavePointData();
 }

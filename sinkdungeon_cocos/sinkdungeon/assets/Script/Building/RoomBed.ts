@@ -56,7 +56,7 @@ export default class RoomBed extends Building {
                     Logic.playerData.pos.y=this.data.defaultPos.y-1;
                 }
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
-                Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal(),true);
+                Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal());
             },1)
         }
     }

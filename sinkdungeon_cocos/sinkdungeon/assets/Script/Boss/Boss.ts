@@ -88,7 +88,7 @@ export default abstract class Boss extends Actor {
     }
     getLoot(isSteal?:boolean){
         if(this.dungeon){
-            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+            let rand4save = Logic.mapManager.getRandom4Save(this.seed);
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: isSteal?9:19 } });
             cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
             let chance = Logic.getHalfChance()&&isSteal||!isSteal;

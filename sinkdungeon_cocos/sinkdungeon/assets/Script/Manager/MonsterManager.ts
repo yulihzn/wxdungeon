@@ -8,6 +8,7 @@ import Boss from "../Boss/Boss";
 import BaseManager from "./BaseManager";
 import GameHud from "../UI/GameHud";
 import MonsterRandomAttr from "./MonsterRandomAttr";
+import Random4Save from "../Utils/Random4Save";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -199,7 +200,8 @@ export default class MonsterManager extends BaseManager {
         monsterPrefab.parent = dungeon.node;
         let monster = monsterPrefab.getComponent(NonPlayer);
         let data = new MonsterData();
-        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+        monster.seed = Logic.mapManager.getSeedFromRoom();
+        let rand4save = new Random4Save(monster.seed);
         monster.dungeon = dungeon;
         data.valueCopy(Logic.monsters[resName]);
         //10%几率随机属性
@@ -347,7 +349,7 @@ export default class MonsterManager extends BaseManager {
     }
     addRandomMonsters(dungeon: Dungeon) {
         let arr = new Array();
-        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+        let rand4save = new Random4Save(Logic.mapManager.getSeedFromRoom());
         let num = rand4save.getRandomNum(1, 3);
         let up = 0;
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {

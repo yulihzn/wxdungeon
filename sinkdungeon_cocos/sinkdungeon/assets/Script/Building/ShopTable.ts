@@ -38,7 +38,7 @@ export default class ShopTable extends Building {
         if (this.node.parent && !this.data.isSaled) {
             let dungeon = this.node.parent.getComponent(Dungeon);
             if (dungeon) {
-                let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+                let rand4save = Logic.mapManager.getRandom4Save(this.seed);
                 if(this.data.shopType == ShopTable.EQUIPMENT){
                     dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.data.defaultPos, this.data.equipdata, 3, this);
                 }else if(this.data.shopType == ShopTable.ITEM){

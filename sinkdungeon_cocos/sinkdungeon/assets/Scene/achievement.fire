@@ -2670,19 +2670,19 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 51.11,
+      "width": 48.75,
       "height": 10
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_trs": {
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        32,
+        16,
         0,
         0,
         0,

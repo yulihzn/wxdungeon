@@ -1,4 +1,5 @@
 import ProfileData from "../Data/ProfileData";
+import SavePointData from "../Data/SavePointData";
 import TalentData from "../Data/TalentData";
 import RectDungeon from "../Rect/RectDungeon";
 import LocalStorage from "../Utils/LocalStorage";
@@ -22,22 +23,22 @@ export default class ProfileManager{
     data:ProfileData = new ProfileData();
     hasSaveData:boolean = false;
     constructor(){
-        this.loadData(false);
+        this.loadData();
     }
-    private loadData(isSavePoint:boolean){
+    private loadData(){
         //读取存档
-        this.loadProfile(isSavePoint);
+        this.loadProfile();
     }
    
-    private getSaveData(isSavePoint:boolean):ProfileData{
-        let s = LocalStorage.getValue(isSavePoint?LocalStorage.SAVE_DUNGEON_BY_POINT:LocalStorage.SAVE_DUNGEON);
+    private getSaveData():ProfileData{
+        let s = LocalStorage.getValue(false?LocalStorage.SAVE_DUNGEON_BY_POINT:LocalStorage.SAVE_DUNGEON);
         if(s){
             return JSON.parse(s);
         }
         return null;
     }
-    saveData(isSavePoint:boolean){
-        LocalStorage.putValue(isSavePoint?LocalStorage.SAVE_DUNGEON_BY_POINT:LocalStorage.SAVE_DUNGEON,this.data);
+    saveData(){
+        LocalStorage.putValue(LocalStorage.SAVE_DUNGEON,this.data);
         this.hasSaveData = true;
         console.log('save data');
     }
@@ -48,19 +49,15 @@ export default class ProfileManager{
         console.log('clear data');
     }
     
-    loadProfile(isSavePoint:boolean):boolean{
-        let data = this.getSaveData(isSavePoint);
+    loadProfile():boolean{
+        let data = this.getSaveData();
         if(!data){
-            if(!isSavePoint){
-                this.hasSaveData = false;
-            }
+            this.hasSaveData = false;
             return false;
         }
-        if(!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeons
+        if(!data.savePointData||!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeons
         ||!data.talentList){
-            if(!isSavePoint){
-                this.hasSaveData = false;
-            }
+            this.hasSaveData = false;
             return false;
         }
         //清空当前数据
@@ -71,8 +68,8 @@ export default class ProfileManager{
         //章节名称
         this.data.chapterIndex = data.chapterIndex;
         this.data.level = data.level;
-        this.data.lastLevel = data.lastLevel;
-        this.data.lastChapterIndex = data.lastChapterIndex;
+        //存档点
+        this.data.savePointData.valueCopy(data.savePointData);
         //玩家装备列表
         for(let i =0;i<data.playerEquipList.length;i++){
             this.data.playerEquipList[i]=data.playerEquipList[i];

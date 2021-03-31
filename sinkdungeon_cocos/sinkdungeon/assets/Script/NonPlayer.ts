@@ -35,6 +35,7 @@ import State from './Base/fsm/State';
 import DefaultStateMachine from './Base/fsm/DefaultStateMachine';
 import NonPlayerActorState from './Actor/NonPlayerActorState';
 import StateContext from './Base/StateContext';
+import Random4Save from './Utils/Random4Save';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -615,7 +616,7 @@ export default class NonPlayer extends Actor {
         }, 2);
     }
     getLoot() {
-        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+        let rand4save = Logic.mapManager.getRandom4Save(this.seed);
         let rand = rand4save.rand();
         let percent = 0.75;
         let offset = 0.025;

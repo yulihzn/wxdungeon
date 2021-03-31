@@ -110,7 +110,6 @@ export default class Player extends Actor {
             , (event) => { if (this.node) this.triggerThings() });
         cc.director.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
             , (event) => {
-                Logic.mapManager.setCurrentRoomExitPos(this.pos);
                 cc.director.loadScene('start');
             });
         cc.director.on(EventHelper.PLAYER_USEITEM
@@ -747,7 +746,6 @@ export default class Player extends Actor {
         this.scheduleOnce(() => {
             Logic.dieFrom.valueCopy(from);
             cc.audioEngine.stopMusic();
-            Logic.mapManager.setCurrentRoomExitPos(this.pos);
             cc.director.loadScene('gameover');
         }, 1.5);
         this.weaponLeft.meleeWeapon.dungeon.darkAfterKill();

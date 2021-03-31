@@ -80,7 +80,7 @@ export default class Chest extends Building {
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
-                        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+                        let rand4save = Logic.mapManager.getRandom4Save(this.seed);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_KATANA, this.data.defaultPos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_PITCHFORK, this.data.defaultPos.addSelf(cc.v3(1,0)), null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.WEAPON_DEATH, this.data.defaultPos.addSelf(cc.v3(-1,0)), null, this.data.quality);

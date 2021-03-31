@@ -28,7 +28,6 @@ export default class RectRoom {
     state: number = RectRoom.STATE_SLEEP;
     //伪随机数种子
     seed = 0;
-    exitPos:cc.Vec3 = cc.v3(-1,-1);//玩家离开点
     reborn = 0;
 
     constructor(x: number, y: number, roomType: RoomType) {
@@ -50,9 +49,6 @@ export default class RectRoom {
         this.state = room.state;
         this.reborn = room.reborn;
         this.seed = room.seed?room.seed:RectRoom.getRandomNum(0,100000000);
-        if(room.exitPos){
-            this.exitPos = cc.v3(room.exitPos.x,room.exitPos.y);
-        }
         return this;
     }
     

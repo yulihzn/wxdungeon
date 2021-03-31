@@ -113,7 +113,7 @@ export default class Kraken extends Boss {
     }
     getLoot(isSteal?:boolean){
         if(this.dungeon){
-            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+            let rand4save = Logic.mapManager.getRandom4Save(this.seed);
             let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
             let pos = Dungeon.getPosInMap(p);
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } });

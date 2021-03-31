@@ -75,10 +75,9 @@ export default class Portal extends Building {
             if (this.isOpen) {
                 this.closeGate();
                 let p = Dungeon.getIndexInMap(this.node.position);
-                Logic.mapManager.setCurrentRoomExitPos(cc.v3(p.x,p.y-1));
                 Logic.playerData = player.data.clone();
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
-                Logic.loadingNextLevel(this.isBackDream?ExitData.getDreamExitDataFromReal():ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level),true);
+                Logic.loadingNextLevel(this.isBackDream?ExitData.getDreamExitDataFromReal():ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level));
             }
         }
     }

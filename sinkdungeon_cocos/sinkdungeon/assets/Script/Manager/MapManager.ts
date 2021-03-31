@@ -173,11 +173,14 @@ export default class MapManager {
         }
         return this.rand4save;
     }
-    public setCurrentRoomExitPos(pos: cc.Vec3) {
-        let room = this.getCurrentRoom();
-        if (room && pos) {
-            room.exitPos = cc.v3(pos.x, pos.y);
-        }
+    public getSeedFromRoom(){
+        let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+        return rand4save.getRandomNum(0,100000000);
+    }
+    public getRandom4Save(seed:number){
+        let rand4save = new Random4Save(seed>0?seed:this.getSeedFromRoom());
+        rand4save.rand();
+        return rand4save;
     }
 
     /**添加随机元素 */

@@ -145,6 +145,7 @@ export default class BuildingManager extends BaseManager {
         building.zIndex = IndexZ.getActorZIndex(building.position);
         let b = building.getComponent(Building);
         if (b) {
+            b.seed = Logic.mapManager.getSeedFromRoom();
             b.data.defaultPos = indexPos.clone();
             b.lights = b.getComponentsInChildren(ShadowOfSight);
             if (b.lights) {
@@ -285,7 +286,7 @@ export default class BuildingManager extends BaseManager {
             let chest = this.addBuilding(Logic.getBuildings(BuildingManager.CHEST), indexPos);
             let c = chest.getComponent(Chest)
             c.seDefaultPos(indexPos);
-            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+            let rand4save = Logic.mapManager.getRandom4Save(c.seed);
             let rand = rand4save.rand();
             let quality = 1;
             if (rand > 0.5 && rand < 0.7) {
@@ -340,7 +341,8 @@ export default class BuildingManager extends BaseManager {
             let table = this.addBuilding(Logic.getBuildings(BuildingManager.SHOPTABLE), indexPos);
             let ta = table.getComponent(ShopTable);
             ta.setDefaultPos(indexPos);
-            let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
+            ta.seed = Logic.mapManager.getSeedFromRoom();
+            let rand4save = Logic.mapManager.getRandom4Save(ta.seed);
             ta.data.shopType = rand4save.rand() > 0.1 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
             let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos);
             if (saveTable) {

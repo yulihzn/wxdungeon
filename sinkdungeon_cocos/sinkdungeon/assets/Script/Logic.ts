@@ -18,6 +18,7 @@ import Random4Save from "./Utils/Random4Save";
 import ExitData from "./Data/ExitData";
 import Settings from "./Model/Settings";
 import LocalStorage from "./Utils/LocalStorage";
+import SavePointData from "./Data/SavePointData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -66,8 +67,6 @@ export default class Logic extends cc.Component {
 
     static level = 0;
     static chapterIndex = 0;
-    static lastLevel = 0;//梦境上次层级
-    static lastChapterIndex = 0;//梦境上次章节
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
 
@@ -92,10 +91,11 @@ export default class Logic extends cc.Component {
     static dieFrom: FromData = new FromData();
     static isMapReset = false;
     static lastBgmIndex = 0;
+    static savePoinitData: SavePointData = new SavePointData();
 
     static profileManager: ProfileManager = new ProfileManager();
 
-    static settings:Settings = new Settings();
+    static settings: Settings = new Settings();
 
     onLoad() {
         //关闭调试
@@ -116,20 +116,19 @@ export default class Logic extends cc.Component {
     start() {
 
     }
-    static saveData(isSavePoint:boolean) {
+    static saveData() {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
-        Logic.profileManager.data.lastLevel = Logic.lastLevel;
-        Logic.profileManager.data.lastChapterIndex = Logic.lastChapterIndex;
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.data.time = Logic.time;
-        Logic.profileManager.saveData(isSavePoint);
-        LocalStorage.saveData(LocalStorage.KEY_COIN,Logic.coins);
-        LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT,Logic.coinDreamCount);
-        LocalStorage.saveData(LocalStorage.KEY_OIL_GOLD,Logic.oilGolds);
+        Logic.profileManager.data.savePointData = Logic.savePoinitData.clone();
+        Logic.profileManager.saveData();
+        LocalStorage.saveData(LocalStorage.KEY_COIN, Logic.coins);
+        LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT, Logic.coinDreamCount);
+        LocalStorage.saveData(LocalStorage.KEY_OIL_GOLD, Logic.oilGolds);
     }
     static resetData(chapter?: number) {
         //重置时间
@@ -139,8 +138,8 @@ export default class Logic extends cc.Component {
         //加载关卡等级
         Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
         Logic.level = Logic.profileManager.data.level;
-        Logic.lastLevel = Logic.profileManager.data.lastLevel;
-        Logic.lastChapterIndex = Logic.profileManager.data.lastChapterIndex;
+        //加载最近使用的存档点
+        Logic.savePoinitData = Logic.profileManager.data.savePointData.clone();
         //加载玩家数据
         Logic.playerData = Logic.profileManager.data.playerData.clone();
         //加载装备
@@ -202,26 +201,30 @@ export default class Logic extends cc.Component {
             Dungeon.HEIGHT_SIZE = size.y;
         }
     }
-    static savePonit(){
-        Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
-        //非99chapter则保存当前关卡等级
-        if (Logic.chapterIndex != Logic.CHAPTER099) {
-            Logic.lastLevel = Logic.level;
-            Logic.lastChapterIndex = Logic.chapterIndex;
+    static savePonit(pos: cc.Vec3) {
+        //99chapter存档点无效
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
+            return;
         }
+        let savePointData = new SavePointData();
+        //转换当前坐标为地图坐标
+        let levelData = Logic.worldLoader.getCurrentLevelData();
+        let roomPos = Logic.mapManager.rectDungeon.currentPos;
+        let mapPos = cc.v3(0, 0);
+        mapPos.x = levelData.roomWidth * roomPos.x + pos.x;
+        mapPos.y = levelData.height * levelData.roomHeight - 1 - levelData.roomWidth * roomPos.y - pos.y;
+        savePointData.x = mapPos.x;
+        savePointData.y = mapPos.y;
+        savePointData.level = Logic.level;
+        savePointData.chapter = Logic.chapterIndex;
+        Logic.savePoinitData.valueCopy(savePointData);
         //保存数据
-        Logic.saveData(true);
+        Logic.saveData();
     }
     static loadingNextRoom(dir: number) {
-        Logic.mapManager.setCurrentRoomExitPos(Logic.playerData.pos);
         Logic.mapManager.rand4save = null;
-        //非99chapter则保存当前关卡等级
-        if (Logic.chapterIndex != Logic.CHAPTER099) {
-            Logic.lastLevel = Logic.level;
-            Logic.lastChapterIndex = Logic.chapterIndex;
-        }
         //保存数据
-        Logic.saveData(false);
+        Logic.saveData();
         AudioPlayer.play(AudioPlayer.EXIT);
         let room = Logic.mapManager.loadingNextRoom(dir);
         if (room) {
@@ -235,7 +238,7 @@ export default class Logic extends cc.Component {
             cc.director.loadScene('loading');
         }
     }
-    static loadingNextLevel(exitData: ExitData,needSave:boolean) {
+    static loadingNextLevel(exitData: ExitData) {
         if (!exitData) {
             return;
         }
@@ -244,43 +247,29 @@ export default class Logic extends cc.Component {
         if (!levelData) {
             return;
         }
-        if(exitData.fromChapter != Logic.CHAPTER099 && exitData.toChapter == Logic.CHAPTER099
-            &&exitData.fromChapter!=exitData.toChapter){
+        //如果是从梦境进入现实或者跨章节需要调整当前章节已经清理的房间为重生状态并保存
+        if (exitData.fromChapter != Logic.CHAPTER099 && exitData.fromChapter != exitData.toChapter) {
             Logic.mapManager.rectDungeon.changeAllClearRoomsReborn();
         }
-        if(needSave){
-            Logic.saveData(false);
-        }
-        let isBackDream = exitData.fromChapter == Logic.CHAPTER099 && exitData.toChapter != Logic.CHAPTER099;
+        Logic.saveData();
+        /**************加载exitData关卡数据***************** */
         Logic.chapterIndex = exitData.toChapter;
         Logic.level = exitData.toLevel;
-        if (exitData.toPos.equals(cc.v3(-1, -1))) {
-            Logic.playerData.pos = cc.v3(-1, -1);
-            if (isBackDream) {
-                Logic.level = Logic.lastLevel;
-                Logic.chapterIndex = Logic.lastChapterIndex;
-            }
-            Logic.mapManager.reset();
-        } else {
-            let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y;
-            let roomX = Math.floor(exitData.toPos.x / levelData.roomWidth);
-            let roomY = Math.floor(ty / levelData.roomHeight);
-            Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight);
-            Logic.mapManager.reset(cc.v3(roomX, roomY));
-        }
-        let exitPos = Logic.mapManager.getCurrentRoom().exitPos;
-        if (Logic.playerData.pos.equals(cc.v3(-1, -1)) && !exitPos.equals(cc.v3(-1, -1))) {
-            Logic.playerData.pos = exitPos;
-        }
+        //地图数据的y轴向下的
+        let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y;
+        let roomX = Math.floor(exitData.toPos.x / levelData.roomWidth);
+        let roomY = Math.floor(ty / levelData.roomHeight);
+        Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight);
+        Logic.mapManager.reset(cc.v3(roomX, roomY));
         Logic.changeDungeonSize();
         Logic.lastBgmIndex = -1;
-        if(exitData.fromChapter==Logic.CHAPTER00&&Logic.chapterIndex==Logic.CHAPTER01){
+        if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER01) {
             Logic.shipTransportScene = 1;
-        }else if(exitData.fromChapter==Logic.CHAPTER02&&Logic.chapterIndex==Logic.CHAPTER01){
+        } else if (exitData.fromChapter == Logic.CHAPTER02 && Logic.chapterIndex == Logic.CHAPTER01) {
             Logic.shipTransportScene = 2;
-        }else if(exitData.fromChapter==Logic.CHAPTER01&&Logic.chapterIndex==Logic.CHAPTER00){
+        } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER00) {
             Logic.shipTransportScene = 2;
-        }else if(exitData.fromChapter==Logic.CHAPTER01&&Logic.chapterIndex==Logic.CHAPTER02){
+        } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER02) {
             Logic.shipTransportScene = 1;
         }
         cc.director.loadScene('loading');
@@ -300,7 +289,7 @@ export default class Logic extends cc.Component {
         let y = v1.y - v2.y;
         return Math.sqrt(x * x + y * y);
     }
-    static lerp(a:number, b:number, r:number):number {
+    static lerp(a: number, b: number, r: number): number {
         return a + (b - a) * r;
     };
     static genNonDuplicateID(): string {
@@ -314,10 +303,10 @@ export default class Logic extends cc.Component {
     static getRandomItemType(rand4save: Random4Save): string {
         return Logic.itemNameList[rand4save.getRandomNum(1, Logic.itemNameList.length - 1)];
     }
-    static spriteFrameRes(spriteFrameName:string){
-        return Logic.spriteFrames[spriteFrameName]?Logic.spriteFrames[spriteFrameName]:null;
+    static spriteFrameRes(spriteFrameName: string) {
+        return Logic.spriteFrames[spriteFrameName] ? Logic.spriteFrames[spriteFrameName] : null;
     }
-    static getBuildings(name:string):cc.Prefab{
+    static getBuildings(name: string): cc.Prefab {
         return Logic.buildings[name];
     }
 }
