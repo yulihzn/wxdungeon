@@ -324,4 +324,16 @@ export default class Logic extends cc.Component {
             return 0;
         }
     }
+    static setKillPlayerCounts(dieFrom:FromData,isAdd:boolean){
+        if(dieFrom&&dieFrom.id){
+            Logic.killPlayerCounts[dieFrom.id] = Logic.getKillPlayerCount(dieFrom.id)+(isAdd?1:-1);
+            let counts = Logic.killPlayerCounts;
+            Logic.killPlayerCounts = {};
+            for(let key in counts){
+                if(counts[key]&&counts[key]>0){
+                    Logic.killPlayerCounts[key]=counts[key];
+                }
+            }
+        }
+    }
 }

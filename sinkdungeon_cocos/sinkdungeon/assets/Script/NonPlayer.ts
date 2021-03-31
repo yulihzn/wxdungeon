@@ -600,6 +600,7 @@ export default class NonPlayer extends Actor {
             this.getLoot();
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
+        Logic.setKillPlayerCounts(FromData.getClone(this.actorName(),this.data.resName+'anim000',this.seed),false);
         this.scheduleOnce(() => {
             if (this.node) {
                 if (this.data.isBoom > 0) {
@@ -625,7 +626,17 @@ export default class NonPlayer extends Actor {
         if (this.isVariation) {
             percent = 0.6;
         }
+        percent = percent - this.killPlayerCount/10;
+        if(percent<0.3){
+            percent = 0.3;
+        }
+
         let offset = (1-percent)/10;
+        let quality = 1+this.killPlayerCount/2;
+        quality = Math.floor(quality);
+        if(quality>4){
+            quality = 4;
+        }
         
         if (this.dungeon) {
             
@@ -647,7 +658,7 @@ export default class NonPlayer extends Actor {
             }else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null,quality);
             }
         }
     }

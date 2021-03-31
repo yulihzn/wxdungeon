@@ -743,8 +743,10 @@ export default class Player extends Actor {
         Achievements.addPlayerDiedLifesAchievement();
         this.weaponLeft.node.opacity = 0;
         this.weaponRight.node.opacity = 0;
+        Logic.dieFrom.valueCopy(from);
+        Logic.setKillPlayerCounts(from,true);
+        Logic.saveData();
         this.scheduleOnce(() => {
-            Logic.dieFrom.valueCopy(from);
             cc.audioEngine.stopMusic();
             cc.director.loadScene('gameover');
         }, 1.5);
@@ -785,10 +787,19 @@ export default class Player extends Actor {
     }
     dreamTimeDelay = 0;
     dreamLongTimeDelay = 0;
+    dreamShortTimeDelay = 0;
     isDreamTimeDelay(dt: number): boolean {
         this.dreamTimeDelay += dt;
         if (this.dreamTimeDelay > 5) {
             this.dreamTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    isDreamShortTimeDelay(dt: number): boolean {
+        this.dreamShortTimeDelay += dt;
+        if (this.dreamShortTimeDelay > 2) {
+            this.dreamShortTimeDelay = 0;
             return true;
         }
         return false;
@@ -811,11 +822,13 @@ export default class Player extends Actor {
             }
         }
         if (this.isDreamTimeDelay(dt)) {
-            if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER && this.isDreamTimeDelay(dt)) {
-                this.useDream(1);
-            }
             if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
                 this.useDream(-1);
+            }
+        }
+        if (this.isDreamShortTimeDelay(dt)) {
+            if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
+                this.useDream(1);
             }
         }
 
