@@ -28,4 +28,5 @@ export default class ProfileData {
     level = 0;//当前层级
     time = '00:00:00';
     savePointData:SavePointData = new SavePointData();
+    killPlayerCounts: { [key: number]: number } = {};//玩家怪物击杀表
 }

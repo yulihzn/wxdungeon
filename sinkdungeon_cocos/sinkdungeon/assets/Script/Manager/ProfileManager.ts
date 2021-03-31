@@ -92,6 +92,11 @@ export default class ProfileManager{
             rect.buildMapFromSave(data.rectDungeons[key]);
             this.data.rectDungeons[key] = rect;
          }
+         //加载怪物击杀玩家数据
+         if(data.killPlayerCounts){
+             this.data.killPlayerCounts = data.killPlayerCounts;
+         }
+
          //加载时间
          if(data.time){
              this.data.time = data.time;

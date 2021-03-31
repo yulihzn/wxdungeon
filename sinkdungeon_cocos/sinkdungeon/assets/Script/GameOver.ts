@@ -72,6 +72,9 @@ export default class GameOver extends cc.Component {
     retry() {
         Logic.resetData();
         AudioPlayer.play(AudioPlayer.SELECT);
+        if(Logic.dieFrom&&Logic.dieFrom.id){
+            Logic.killPlayerCounts[Logic.dieFrom.id] = Logic.getKillPlayerCount(Logic.dieFrom.id)+1;
+        }
         Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level));
     }
     home() {

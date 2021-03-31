@@ -108,6 +108,7 @@ export default class MonsterManager extends BaseManager {
     private monsters: NonPlayer[] = new Array();//房间怪物列表
     private bosses: Boss[] = new Array();
     isRoomInitWithEnemy = false;//初始化是否生成怪物
+    private seed = 0;
     get monsterList() {
         return this.monsters;
     }
@@ -126,8 +127,8 @@ export default class MonsterManager extends BaseManager {
         this.bosses = new Array();
     }
     /**添加怪物 */
-    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon,isReborn:boolean) {
-        this.addMonster(this.getMonster(resName, dungeon,isReborn), indexPos);
+    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isReborn: boolean) {
+        this.addMonster(this.getMonster(resName, dungeon, isReborn), indexPos);
     }
 
     public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
@@ -135,9 +136,9 @@ export default class MonsterManager extends BaseManager {
             let index = parseInt(mapDataStr[1]);
             if (isNaN(index)) {
                 if (mapDataStr[1] == 'a') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon,false);
+                    this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon, false);
                 } else if (mapDataStr[1] == 'b') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon,false);
+                    this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon, false);
                 }
             } else {
                 let arr = new Array();
@@ -150,7 +151,7 @@ export default class MonsterManager extends BaseManager {
                     case Logic.CHAPTER05: arr = MonsterManager.MONSTERS_DUNGEON; break;
                     case Logic.CHAPTER099: arr = MonsterManager.MONSTERS_LAB; break;
                 }
-                this.addMonsterFromData(arr[index], indexPos, dungeon,false);
+                this.addMonsterFromData(arr[index], indexPos, dungeon, false);
             }
             return;
         }
@@ -187,32 +188,36 @@ export default class MonsterManager extends BaseManager {
             this.addBoss(this.dragon, 'iconboss009', this.maxHealth09, 5, 2, indexPos, dungeon);
         }
     }
+    private getRandomMonsterSeed(): number {
+        return Logic.mapManager.getCurrentRoom().seed + this.seed++;
+    }
     /**
      * 
      * @param resName 图片
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    private getMonster(resName: string, dungeon: Dungeon,isReborn:boolean): NonPlayer {
+    private getMonster(resName: string, dungeon: Dungeon, isReborn: boolean): NonPlayer {
         let monsterPrefab: cc.Node = null;
         monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;
         monsterPrefab.parent = dungeon.node;
         let monster = monsterPrefab.getComponent(NonPlayer);
         let data = new MonsterData();
-        monster.seed = Logic.mapManager.getSeedFromRoom();
-        let rand4save = new Random4Save(monster.seed);
+        monster.seed = this.getRandomMonsterSeed();
+        monster.killPlayerCount = Logic.getKillPlayerCount(monster.seed);
+        let rand4save = Logic.mapManager.getRandom4Save(monster.seed);
         monster.dungeon = dungeon;
         data.valueCopy(Logic.monsters[resName]);
-        data.reborn = isReborn?1:0;
+        data.reborn = isReborn ? 1 : 0;
         //10%几率随机属性
         if (rand4save.rand() < 0.1) {
             this.monsterRandomAttr.addRandomAttrs(2, rand4save);
             data = this.monsterRandomAttr.updateMonsterData(data);
             monster.attrmap = this.monsterRandomAttr.attrmap;
         }
-        //5%的几率变异
-        let variationRate = 5;
+        //5%加击杀次数的几率变异
+        let variationRate = 5 + monster.killPlayerCount;
         let up = 0;
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {
             up = 10;
@@ -220,13 +225,15 @@ export default class MonsterManager extends BaseManager {
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.INSANE_ROOM)) {
             up = 30;
         }
+
         variationRate = variationRate + Logic.chapterIndex * 2 + Logic.level * 2 + up;
         monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
             data.Common.maxDream = data.Common.maxDream * 2;
             data.Common.damageMin = data.Common.damageMin * 2;
-            data.currentHealth = data.currentHealth * 2;
+            data.currentHealth = data.Common.maxHealth;
+
             if (data.melee > 0) {
                 data.melee = data.melee > 1 ? data.melee - 1 : 1;
             }
@@ -236,13 +243,27 @@ export default class MonsterManager extends BaseManager {
             if (data.dash > 0) {
                 data.dash = data.dash > 1 ? data.dash - 1 : 1;
             }
-            data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100) : 0;
+
+            data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100 + 10 * monster.killPlayerCount) : 0;
+        }
+        data.Common.maxDream += monster.killPlayerCount;
+        data.Common.damageMin += monster.killPlayerCount;
+        data.Common.maxHealth += monster.killPlayerCount;
+        data.Common.defence += monster.killPlayerCount;
+        if (data.melee - monster.killPlayerCount > 1) {
+            data.melee -= monster.killPlayerCount;
+        }
+        if (data.remote - monster.killPlayerCount > 1) {
+            data.remote -= monster.killPlayerCount;
+        }
+        if (data.dash - monster.killPlayerCount > 1) {
+            data.dash -= monster.killPlayerCount;
         }
         //5%几率添加元素
         let rand = rand4save.getRandomNum(0, 100);
         let df = rand4save.getRandomNum(80, 100);
         let er = rand4save.getRandomNum(80, 100);
-        let isAddElement = rand <= 5;
+        let isAddElement = rand <= 5 + monster.killPlayerCount;
         rand = rand4save.getRandomNum(0, 4);
         if (isAddElement) {
             data.Common.magicDamage += 1;
@@ -348,7 +369,7 @@ export default class MonsterManager extends BaseManager {
         this.bosses.push(slime);
         return slime;
     }
-    addRandomMonsters(dungeon: Dungeon,isReborn:boolean) {
+    addRandomMonsters(dungeon: Dungeon, isReborn: boolean) {
         let arr = new Array();
         let rand4save = new Random4Save(Logic.mapManager.getSeedFromRoom());
         let num = rand4save.getRandomNum(1, 3);
@@ -388,7 +409,7 @@ export default class MonsterManager extends BaseManager {
             let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
             let pos = indexmap[randindex];
             indexmap.splice(randindex, 1);
-            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon,isReborn);
+            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, isReborn);
         }
     }
     updateLogic(dt: number) {

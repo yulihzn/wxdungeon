@@ -95,6 +95,7 @@ export default class NonPlayer extends Actor {
     shooter: Shooter = null;
     currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
     isVariation: boolean = false;//是否变异
+    killPlayerCount = 0;//杀死玩家次数 
 
     particleBlood: cc.ParticleSystem;
     effectNode: cc.Node;
@@ -285,7 +286,7 @@ export default class NonPlayer extends Actor {
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
-            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000'));
+            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000',this.seed));
             if (this.isVariation) {
                 this.shooter.data.bulletSize = 0.5;
             }
@@ -339,7 +340,7 @@ export default class NonPlayer extends Actor {
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000'));
+                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000',this.seed));
             }
         });
 
@@ -353,7 +354,7 @@ export default class NonPlayer extends Actor {
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000'));
+                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000',this.seed));
             }
             if (attacking) {
                 attacking(isSpecial);
@@ -615,16 +616,16 @@ export default class NonPlayer extends Actor {
         }, 2);
     }
     getLoot() {
-        if(this.data.reborn>0){
-            this.seed = Logic.mapManager.getSeedFromRoom();
-        }
         let rand4save = Logic.mapManager.getRandom4Save(this.seed);
+        if(this.data.reborn>0){
+            rand4save = Logic.mapManager.getRandom4Save(0);
+        }
         let rand = rand4save.rand();
         let percent = 0.75;
-        let offset = 0.025;
         if (this.isVariation) {
             percent = 0.6;
         }
+        let offset = (1-percent)/10;
         
         if (this.dungeon) {
             
@@ -646,13 +647,7 @@ export default class NonPlayer extends Actor {
             }else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                if(this.data.reborn>0){
-                    if(rand4save.rand()>percent){
-                        this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
-                    }
-                }else{
-                    this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
-                }
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, 1);
             }
         }
     }
@@ -886,7 +881,7 @@ export default class NonPlayer extends Actor {
         if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
             this.sc.isDashing = false;
             this.setLinearVelocity(cc.Vec2.ZERO);
-            let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000');
+            let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000',this.seed);
             if (target.takeDamage(this.data.getAttackPoint(), from, this)) {
                 this.addPlayerStatus(target, from);
             }

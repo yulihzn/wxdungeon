@@ -92,7 +92,7 @@ export default class Logic extends cc.Component {
     static isMapReset = false;
     static lastBgmIndex = 0;
     static savePoinitData: SavePointData = new SavePointData();
-
+    static killPlayerCounts: { [key: number]: number } = {};//玩家怪物击杀表
     static profileManager: ProfileManager = new ProfileManager();
 
     static settings: Settings = new Settings();
@@ -125,6 +125,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.data.time = Logic.time;
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone();
+        Logic.profileManager.data.killPlayerCounts = Logic.killPlayerCounts;
         Logic.profileManager.saveData();
         LocalStorage.saveData(LocalStorage.KEY_COIN, Logic.coins);
         LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT, Logic.coinDreamCount);
@@ -167,6 +168,8 @@ export default class Logic extends cc.Component {
         Logic.oilGolds = o ? parseInt(o) : 0;
         //重置bgm
         Logic.lastBgmIndex = -1;
+        //加载怪物击杀玩家数据
+        Logic.killPlayerCounts = Logic.profileManager.data.killPlayerCounts;
     }
     private static initTalentMap() {
         Logic.hasTalentMap = {};
@@ -250,6 +253,11 @@ export default class Logic extends cc.Component {
         //如果是从梦境进入现实或者跨章节需要调整当前章节已经清理的房间为重生状态并保存
         if (exitData.fromChapter != Logic.CHAPTER099 && exitData.fromChapter != exitData.toChapter) {
             Logic.mapManager.rectDungeon.changeAllClearRoomsReborn();
+            for(let rd in Logic.profileManager.data.rectDungeons){
+                if(Logic.profileManager.data.rectDungeons[rd]){
+                    Logic.profileManager.data.rectDungeons[rd].changeAllClearRoomsReborn();
+                }
+            }
         }
         Logic.saveData();
         /**************加载exitData关卡数据***************** */
@@ -308,5 +316,12 @@ export default class Logic extends cc.Component {
     }
     static getBuildings(name: string): cc.Prefab {
         return Logic.buildings[name];
+    }
+    static getKillPlayerCount(seed:number){
+        if(Logic.killPlayerCounts[seed]){
+            return Logic.killPlayerCounts[seed];
+        }else{
+            return 0;
+        }
     }
 }
