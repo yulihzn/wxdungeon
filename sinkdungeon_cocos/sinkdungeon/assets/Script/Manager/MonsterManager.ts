@@ -371,7 +371,7 @@ export default class MonsterManager extends BaseManager {
     }
     addRandomMonsters(dungeon: Dungeon, isReborn: boolean) {
         let arr = new Array();
-        let rand4save = new Random4Save(Logic.mapManager.getSeedFromRoom());
+        let rand4save = new Random4Save(Logic.mapManager.getCurrentRoom().seed);
         let num = rand4save.getRandomNum(1, 3);
         let up = 0;
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {

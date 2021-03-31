@@ -839,6 +839,8 @@ export default class NonPlayer extends Actor {
         this.healthBar.node.y = this.data.boxType == 3 || this.data.boxType == 5 ? 150 : 120;
         //变异为紫色
         this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
+        this.healthBar.progressBar.barSprite.node.color = this.killPlayerCount>0 ? cc.color(255,215,0) : this.healthBar.progressBar.barSprite.node.color;
+        
         this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);
         if (this.attrNode) {
             this.attrNode.opacity = this.healthBar.node.opacity;
