@@ -798,7 +798,7 @@ export default class Player extends Actor {
     }
     isDreamShortTimeDelay(dt: number): boolean {
         this.dreamShortTimeDelay += dt;
-        if (this.dreamShortTimeDelay > 2) {
+        if (this.dreamShortTimeDelay > 5) {
             this.dreamShortTimeDelay = 0;
             return true;
         }

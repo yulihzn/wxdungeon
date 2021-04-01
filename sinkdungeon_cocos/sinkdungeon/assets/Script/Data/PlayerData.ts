@@ -73,10 +73,10 @@ export default class PlayerData {
         this.equipmentTotalData.valueCopy(data.equipmentTotalData);
         this.statusTotalData.valueCopy(data.statusTotalData);
         this.avatarData.valueCopy(data.avatarData);
-        this.currentHealth = data.currentHealth ? data.currentHealth : PlayerData.DEFAULT_HEALTH;
-        this.currentDream = data.currentDream ? data.currentDream : PlayerData.DEFAULT_DREAM;
-        this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : PlayerData.DEFAULT_HEALTH;
-        this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : PlayerData.DEFAULT_SPEED;
+        this.currentHealth = data.currentHealth ? data.currentHealth : 0;
+        this.currentDream = data.currentDream ? data.currentDream : 0;
+        this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : 0;
+        this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 0;
     }
 
     public clone(): PlayerData {

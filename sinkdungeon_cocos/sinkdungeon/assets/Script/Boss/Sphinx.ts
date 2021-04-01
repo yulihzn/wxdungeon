@@ -89,11 +89,11 @@ export default class Sphinx extends Boss {
             cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
             this.summonSkill.IsExcuting = true;
             let pos = Dungeon.getIndexInMap(this.node.position.clone());
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x, pos.y - 1),this.dungeon,false);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x+1, pos.y - 1),this.dungeon,false);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x-1, pos.y - 1),this.dungeon,false);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x-1, pos.y - 2),this.dungeon,false);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x+1, pos.y - 2),this.dungeon,false);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x, pos.y - 1),this.dungeon,0);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x+1, pos.y - 1),this.dungeon,0);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x-1, pos.y - 1),this.dungeon,0);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x-1, pos.y - 2),this.dungeon,0);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x+1, pos.y - 2),this.dungeon,0);
         }, 15, true);
     }
     fireStorm() {

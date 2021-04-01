@@ -3,7 +3,7 @@ import Random4Save from "../Utils/Random4Save";
 
 export default class MonsterRandomAttr {
     public static readonly ATTR_01 = 'attr_01';//命悬一线：怪物血量为1防御+50
-    public static readonly ATTR_02 = 'attr_02';//致命打击：：怪物基础攻击加5
+    public static readonly ATTR_02 = 'attr_02';//致命打击：怪物基础攻击加5
     public static readonly ATTR_03 = 'attr_03';//皮糙肉厚：怪物血量加5
     public static readonly ATTR_04 = 'attr_04';//体弱无力：怪物基础攻击变为1
     public static readonly ATTR_05 = 'attr_05';//步履蹒跚：怪物移动速度减100

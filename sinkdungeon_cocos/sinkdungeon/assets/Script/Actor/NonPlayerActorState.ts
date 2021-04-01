@@ -230,7 +230,7 @@ export class GLOBAL extends BaseNonPlayerActorState {
         }
         if (entity.data.currentHealth <= 0) {
             entity.stateMachine.changeState(NonPlayerActorState.DIED);
-        } else if (entity.sc.isHurting) {
+        } else if (entity.sc.isHurting&&!entity.specialStep.IsExcuting) {
             entity.stateMachine.changeState(NonPlayerActorState.HURT);
         }
     }
