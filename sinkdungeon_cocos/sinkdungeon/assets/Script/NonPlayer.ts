@@ -619,8 +619,12 @@ export default class NonPlayer extends Actor {
     getLoot() {
         let rand4save = Logic.mapManager.getRandom4Save(this.seed);
         let rand = rand4save.rand();
-        for(let i=0;i<this.data.reborn;i++){
-            rand = rand4save.rand();
+        
+        if(this.data.reborn>0){
+            let len = Logic.getRandomNum(0,10);
+            for(let i=0;i<len;i++){
+                rand = rand4save.rand();
+            }
         }
         let percent = 0.75;
         if (this.isVariation) {

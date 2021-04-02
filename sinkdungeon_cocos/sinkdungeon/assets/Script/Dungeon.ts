@@ -84,7 +84,7 @@ export default class Dungeon extends cc.Component {
      * 打开门
      */
     onLoad(): void {
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PLAY_BG } });
+        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: AudioPlayer.PLAY_BG });
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听
@@ -203,7 +203,7 @@ export default class Dungeon extends cc.Component {
         //加载随机怪物
         if ((!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoom().isReborn())
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
-            this.monsterManager.addRandomMonsters(this,Logic.mapManager.getCurrentRoom().isReborn());
+            this.monsterManager.addRandomMonsters(this,Logic.mapManager.getCurrentRoom().reborn);
         }
         //加载跟随npc
 

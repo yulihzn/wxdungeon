@@ -4803,38 +4803,18 @@
       "__uuid__": "3555a54d-635c-4043-a0ec-d576a0f9a1e6"
     },
     "bg01": {
-      "__uuid__": "e3eea0d2-34fe-44f6-afb1-801aa5d669a7"
+      "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },
-    "bg02": {
-      "__uuid__": "298a3b35-a603-4752-b461-6123d1ce3eb5"
-    },
-    "bg03": {
-      "__uuid__": "3ba51881-939c-4612-bf6f-a2c58185658d"
-    },
-    "bg04": {
-      "__uuid__": "0104a6ce-0918-4161-bd68-07e6830d1b98"
-    },
-    "bg05": {
-      "__uuid__": "2e6decc4-9ec2-4d81-86b9-f740c4d46f7a"
-    },
-    "bg06": {
-      "__uuid__": "74283d70-a3c5-49b4-bfbe-d4e731fccd72"
-    },
-    "bg07": {
-      "__uuid__": "1620e973-cc51-4afb-a570-2cde935452fb"
-    },
-    "bg08": {
-      "__uuid__": "304856bb-d1e7-4b24-8be7-b89552bfbc1e"
-    },
-    "bg09": {
-      "__uuid__": "708a0cfb-87a8-4161-881f-fd38018d36f8"
-    },
-    "bg10": {
-      "__uuid__": "bd29d52e-cb64-4570-9e0e-36fd2b5de91d"
-    },
-    "bg11": {
-      "__uuid__": "dbcb0ad9-8515-4f1c-9f48-3801376ac645"
-    },
+    "bg02": null,
+    "bg03": null,
+    "bg04": null,
+    "bg05": null,
+    "bg06": null,
+    "bg07": null,
+    "bg08": null,
+    "bg09": null,
+    "bg10": null,
+    "bg11": null,
     "_id": "a6IQjVTvdI/oYAE/QsKvyM"
   }
 ]

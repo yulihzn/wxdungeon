@@ -100,26 +100,11 @@ export default class AudioPlayer extends cc.Component {
     bossicedemonthron: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     bg01: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg02: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg03: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg04: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg05: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg06: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg07: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg08: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg09: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg10: cc.AudioClip = null;
-    @property({ type: cc.AudioClip })
-    bg11: cc.AudioClip = null;
+  
+   
+ 
+    
+
     lastName = '';
     isSoundNeedPause = false;
     // LIFE-CYCLE CALLBACKS:
@@ -130,17 +115,12 @@ export default class AudioPlayer extends cc.Component {
         cc.audioEngine.setEffectsVolume(0.3);
     }
     playbg() {
-        let bgms = [this.bg01, this.bg02, this.bg03, this.bg04, this.bg05, this.bg06, this.bg07, this.bg08, this.bg09, this.bg10,
-        this.bg11,]
+        let bgms = [this.bg01]
         if (Logic.lastBgmIndex == -1 || Logic.lastBgmIndex > bgms.length - 1) {
             Logic.lastBgmIndex = Random.getRandomNum(0, bgms.length - 1);
         }
-        let clip = bgms[Logic.lastBgmIndex];
-        if (Logic.mapManager.getCurrentRoomType() == RoomType.BOSS_ROOM
-            || Logic.mapManager.getCurrentRoomType() == RoomType.ELITE_ROOM) {
-            clip = this.bg02;
-        }
-        if (clip) {
+        let clip = bgms[bgms.length-1];
+        if (clip&&!cc.audioEngine.isMusicPlaying) {
             cc.audioEngine.stopMusic();
             cc.audioEngine.playMusic(clip, true);
         }

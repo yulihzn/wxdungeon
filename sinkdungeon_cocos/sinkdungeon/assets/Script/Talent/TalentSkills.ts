@@ -146,7 +146,7 @@ export default class TalentSkills extends Talent {
             case Talent.TALENT_012: this.addBroom(); break;
             case Talent.TALENT_013: this.showFireBall(); break;
             case Talent.TALENT_014:
-                AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
+                AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL1);
                 this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035',null,null);
                 break;
             case Talent.TALENT_015: this.dash(); break;
@@ -252,7 +252,7 @@ export default class TalentSkills extends Talent {
             cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: 0 } });
         }
         this.scheduleOnce(()=>{
-            AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+            AudioPlayer.play(AudioPlayer.BOOM);
         let d = new DamageData();
         d.physicalDamage = 2;
         this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
@@ -358,7 +358,7 @@ export default class TalentSkills extends Talent {
             });
     }
     private addSwordLight() {
-        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
         let d = new DamageData();
         let scale = 5;
         d.physicalDamage = 1;
