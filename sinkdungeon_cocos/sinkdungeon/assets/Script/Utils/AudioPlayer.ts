@@ -120,7 +120,7 @@ export default class AudioPlayer extends cc.Component {
             Logic.lastBgmIndex = Random.getRandomNum(0, bgms.length - 1);
         }
         let clip = bgms[bgms.length-1];
-        if (clip&&!cc.audioEngine.isMusicPlaying) {
+        if (clip&&!cc.audioEngine.isMusicPlaying()) {
             cc.audioEngine.stopMusic();
             cc.audioEngine.playMusic(clip, true);
         }
