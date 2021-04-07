@@ -649,6 +649,7 @@
         "nameEn": "Cyclops",
         "resName": "monster030",
         "chapter": 0,
+        "specialDistance":64,
         "stageLevel": 0,
         "isLineAim":0,
         "specialType":"special030",

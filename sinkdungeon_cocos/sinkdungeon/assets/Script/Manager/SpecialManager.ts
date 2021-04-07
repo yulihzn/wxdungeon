@@ -110,7 +110,7 @@ export default class SpecialManager extends cc.Component {
         pos.y += 32;
         let areaScript = ash.getComponent(AreaOfEffect);
         areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
-            .init(0, 0.15, 0.1, 3, IndexZ.getActorZIndex(ash.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.FROZEN]));
+            .init(0.3, 0.3, 0.1, 3, IndexZ.getActorZIndex(ash.position), true, true, true, true, false, new DamageData(1), from, [StatusManager.FROZEN]));
     }
     private addBlade(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let prefab = cc.instantiate(this.blade);

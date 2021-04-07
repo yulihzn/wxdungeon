@@ -137,7 +137,7 @@ export default class MonsterManager extends BaseManager {
             let index = parseInt(mapDataStr[1]);
             if (isNaN(index)) {
                 if (mapDataStr[1] == 'a') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_CYCLOPS, indexPos, dungeon, 0);
+                    this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon, 0);
                 } else if (mapDataStr[1] == 'b') {
                     this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon, 0);
                 }
