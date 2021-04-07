@@ -1,5 +1,4 @@
 import NonPlayer from "../NonPlayer";
-import MonsterData from "../Data/MonsterData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Slime from "../Boss/Slime";
@@ -9,6 +8,7 @@ import BaseManager from "./BaseManager";
 import GameHud from "../UI/GameHud";
 import MonsterRandomAttr from "./MonsterRandomAttr";
 import Random4Save from "../Utils/Random4Save";
+import NonPlayerData from "../Data/NonPlayerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -203,7 +203,7 @@ export default class MonsterManager extends BaseManager {
         monsterPrefab.active = false;
         monsterPrefab.parent = dungeon.node;
         let monster = monsterPrefab.getComponent(NonPlayer);
-        let data = new MonsterData();
+        let data = new NonPlayerData();
         monster.seed = this.getRandomMonsterSeed();
         monster.killPlayerCount = Logic.getKillPlayerCount(monster.seed);
         let rand4save = Logic.mapManager.getRandom4Save(monster.seed);
@@ -326,7 +326,7 @@ export default class MonsterManager extends BaseManager {
         prefab.parent = dungeon.node;
         let boss = prefab.getComponent(Boss);
         boss.dungeon = dungeon;
-        let data = new MonsterData();
+        let data = new NonPlayerData();
         data.resName = resName;
         data.updateHA(maxHealth, maxHealth, attackPoint);
         boss.data = data;
@@ -347,7 +347,7 @@ export default class MonsterManager extends BaseManager {
         prefab.parent = dungeon.node;
         let slime = prefab.getComponent(Slime);
         slime.dungeon = dungeon;
-        let data = new MonsterData();
+        let data = new NonPlayerData();
         data.resName = "iconboss004";
         data.Common.moveSpeed = 200;
         switch (type) {

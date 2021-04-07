@@ -1,4 +1,4 @@
-import MonsterData from "../Data/MonsterData";
+import NonPlayerData from "../Data/NonPlayerData";
 import Random4Save from "../Utils/Random4Save";
 
 export default class MonsterRandomAttr {
@@ -49,7 +49,7 @@ export default class MonsterRandomAttr {
         }
     }
 
-    updateMonsterData(data:MonsterData):MonsterData{
+    updateMonsterData(data:NonPlayerData):NonPlayerData{
         if(this.hasAttr(MonsterRandomAttr.ATTR_01)){
             data.Common.maxHealth = 1;
             data.currentHealth = 1;

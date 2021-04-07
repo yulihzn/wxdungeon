@@ -12,7 +12,6 @@ const { ccclass, property } = cc._decorator;
 import { EventHelper } from './EventHelper';
 import HealthBar from './HealthBar';
 import Logic from './Logic';
-import MonsterData from './Data/MonsterData';
 import Dungeon from './Dungeon';
 import Shooter from './Shooter';
 import StatusManager from './Manager/StatusManager';
@@ -35,6 +34,7 @@ import State from './Base/fsm/State';
 import DefaultStateMachine from './Base/fsm/DefaultStateMachine';
 import NonPlayerActorState from './Actor/NonPlayerActorState';
 import StateContext from './Base/StateContext';
+import NonPlayerData from './Data/NonPlayerData';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -48,10 +48,7 @@ export default class NonPlayer extends Actor {
     public static readonly RES_HIT001 = 'anim006';//图片资源 受击1
     public static readonly RES_HIT002 = 'anim007';//图片资源 受击2
     public static readonly RES_HIT003 = 'anim008';//图片资源 受击3
-    public static readonly RES_ATTACK01 = 'anim009';//图片资源 准备攻击
-    public static readonly RES_ATTACK02 = 'anim010';//图片资源 攻击
-    public static readonly RES_ATTACK03 = 'anim011';//图片资源 准备特殊攻击
-    public static readonly RES_ATTACK04 = 'anim012';//图片资源 特殊攻击
+    public static readonly RES_ATTACK01 = 'anim009';//图片资源 准备攻击后续动画由参数配置
 
 
 
@@ -109,7 +106,7 @@ export default class NonPlayer extends Actor {
     attrmap: { [key: string]: number } = {};
     mat: cc.MaterialVariant;
     animStatus = NonPlayer.ANIM_NONE;
-    data: MonsterData = new MonsterData();
+    data: NonPlayerData = new NonPlayerData();
 
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>;
 
@@ -286,7 +283,7 @@ export default class NonPlayer extends Actor {
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
-            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000',this.seed));
+            this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
             if (this.isVariation) {
                 this.shooter.data.bulletSize = 0.5;
             }
@@ -305,6 +302,8 @@ export default class NonPlayer extends Actor {
         }
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
+
+
         let pos = target.node.position.clone().sub(this.node.position);
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
@@ -326,13 +325,24 @@ export default class NonPlayer extends Actor {
             .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
             .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
             .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) });
+
+        let arr: string[] = [`anim009`];
+        let arrspecial: string[] = [];
+        let frameIndex = 0;
+
+        while (frameIndex < this.data.attackFrame - 1) {
+            arr.push(`anim01${frameIndex++}`);
+        }
+        for (let i = 0; i < this.data.attackFrame1; i++) {
+            arrspecial.push(`anim01${frameIndex++}`);
+        }
         //退后
         let backofftween = cc.tween().by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
         //前进
         let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
         let attackpreparetween = cc.tween().call(() => {
-            this.changeBodyRes(this.data.resName, isSpecial ? NonPlayer.RES_ATTACK03 : NonPlayer.RES_ATTACK01);
-            if (isMelee && !isSpecial || isSpecial&&isMelee && this.data.specialType.length <= 0) {
+            this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[0] : arr[0]);
+            if (isMelee && !isSpecial || isSpecial && isMelee && this.data.specialType.length <= 0) {
                 if (!this.dangerBox.dungeon) {
                     this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
                 }
@@ -340,12 +350,12 @@ export default class NonPlayer extends Actor {
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000',this.seed));
+                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
             }
         });
 
         let attackingtween = cc.tween().call(() => {
-            this.changeBodyRes(this.data.resName, isSpecial ? NonPlayer.RES_ATTACK04 : NonPlayer.RES_ATTACK02);
+            this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[1] : arr[1]);
             if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
                 this.dangerBox.hide(isMiss);
                 if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
@@ -354,33 +364,41 @@ export default class NonPlayer extends Actor {
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName+ 'anim000',this.seed));
+                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
             }
             if (attacking) {
                 attacking(isSpecial);
             }
 
         });
+        let attackback = cc.tween();
+        for(let i = 2;i<arr.length;i++){
+            attackback.then(cc.tween().delay(0.2).call(()=>{this.changeBodyRes(this.data.resName, arr[i]);}));
+        }
+        let attackbackspecial = cc.tween();
+        for(let i = 2;i<arrspecial.length;i++){
+            attackbackspecial.then(cc.tween().delay(0.2).call(()=>{this.changeBodyRes(this.data.resName, arrspecial[i]);}));
+        }
         let attackfinish = cc.tween().call(() => {
-            this.changeBodyRes(this.data.resName,NonPlayer.RES_IDLE000);
+            this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
             this.dangerBox.finish();
             this.setLinearVelocity(cc.Vec2.ZERO);
         });
         let aftertween = cc.tween().to(0.2, { position: cc.v3(0, 0) }).delay(0.2).call(() => {
             if (finish) { finish(isSpecial); }
         })
-        //普通近战 准备 退后 出击 前进 结束
+        //普通近战 准备 退后 出击 前进 回招 结束
         let normalMelee = cc.tween().then(attackpreparetween).then(backofftween)
-            .then(attackingtween).then(forwardtween).then(attackfinish);
-        //普通远程 准备 出击 结束
+            .then(attackingtween).then(forwardtween).then(attackback).then(attackfinish);
+        //普通远程 准备 出击 回招 结束
         let normalRemote = cc.tween().then(attackpreparetween).delay(0.5)
-            .then(attackingtween).delay(0.2).then(attackfinish);
-        //特殊近战 准备 退后 摇晃 出击 前进 结束
+            .then(attackingtween).delay(0.2).then(attackback).then(attackfinish);
+        //特殊近战 准备 退后 摇晃 出击 前进 回招 结束
         let specialMelee = cc.tween().then(attackpreparetween).then(backofftween)
-            .then(shaketween).then(attackingtween).then(forwardtween).then(attackfinish);
-        //特殊远程 准备 摇晃 出击 结束
+            .then(shaketween).then(attackingtween).then(forwardtween).then(attackbackspecial).then(attackfinish);
+        //特殊远程 准备 摇晃 出击 回招 结束
         let specialRemote = cc.tween().then(attackpreparetween).then(shaketween)
-            .then(attackingtween).delay(0.5).then(attackfinish);
+            .then(attackingtween).delay(0.5).then(attackbackspecial).then(attackfinish);
 
         let allAction = cc.tween().then(beforetween).then(normalRemote).then(aftertween);
         if (isMelee) {
@@ -600,14 +618,14 @@ export default class NonPlayer extends Actor {
             this.getLoot();
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        Logic.setKillPlayerCounts(FromData.getClone(this.actorName(),this.data.resName+'anim000',this.seed),false);
+        Logic.setKillPlayerCounts(FromData.getClone(this.actorName(), this.data.resName + 'anim000', this.seed), false);
         this.scheduleOnce(() => {
             if (this.node) {
                 if (this.data.isBoom > 0) {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
                         boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
-                            , true, true, false,false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
+                            , true, true, false, false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
                         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
                     }
@@ -619,10 +637,10 @@ export default class NonPlayer extends Actor {
     getLoot() {
         let rand4save = Logic.mapManager.getRandom4Save(this.seed);
         let rand = rand4save.rand();
-        
-        if(this.data.reborn>0){
-            let len = Logic.getRandomNum(0,10);
-            for(let i=0;i<len;i++){
+
+        if (this.data.reborn > 0) {
+            let len = Logic.getRandomNum(0, 10);
+            for (let i = 0; i < len; i++) {
                 rand = rand4save.rand();
             }
         }
@@ -630,20 +648,20 @@ export default class NonPlayer extends Actor {
         if (this.isVariation) {
             percent = 0.6;
         }
-        percent = percent - this.killPlayerCount/10;
-        if(percent<0.3){
+        percent = percent - this.killPlayerCount / 10;
+        if (percent < 0.3) {
             percent = 0.3;
         }
 
-        let offset = (1-percent)/10;
-        let quality = 1+this.killPlayerCount/2;
+        let offset = (1 - percent) / 10;
+        let quality = 1 + this.killPlayerCount / 2;
         quality = Math.floor(quality);
-        if(quality>4){
+        if (quality > 4) {
             quality = 4;
         }
-        
+
         if (this.dungeon) {
-            
+
             if (rand < percent) {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
@@ -659,14 +677,14 @@ export default class NonPlayer extends Actor {
                 this.addLootSaveItem(Item.BOTTLE_HEALING);
             } else if (rand >= percent + offset * 5 && rand < percent + offset * 6) {
                 this.addLootSaveItem(Item.BOTTLE_DREAM);
-            }else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
+            } else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null,quality);
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, quality);
             }
         }
     }
-    private addLootSaveItem(resName:string){
+    private addLootSaveItem(resName: string) {
         this.dungeon.addItem(this.node.position.clone(), resName);
     }
 
@@ -814,7 +832,7 @@ export default class NonPlayer extends Actor {
                     } else {
                         cc.log('isMoving');
                     }
-                    this.move(pos, isTracking ? speed*0.5 : speed);
+                    this.move(pos, isTracking ? speed * 0.5 : speed);
                 }, isTracking ? 0 : 2, true);
             }
 
@@ -854,8 +872,8 @@ export default class NonPlayer extends Actor {
         this.healthBar.node.y = this.data.boxType == 3 || this.data.boxType == 5 ? 150 : 120;
         //变异为紫色
         this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
-        this.healthBar.progressBar.barSprite.node.color = this.killPlayerCount>0 ? cc.color(255,215,0) : this.healthBar.progressBar.barSprite.node.color;
-        
+        this.healthBar.progressBar.barSprite.node.color = this.killPlayerCount > 0 ? cc.color(255, 215, 0) : this.healthBar.progressBar.barSprite.node.color;
+
         this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);
         if (this.attrNode) {
             this.attrNode.opacity = this.healthBar.node.opacity;
@@ -898,7 +916,7 @@ export default class NonPlayer extends Actor {
         if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
             this.sc.isDashing = false;
             this.setLinearVelocity(cc.Vec2.ZERO);
-            let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000',this.seed);
+            let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed);
             if (target.takeDamage(this.data.getAttackPoint(), from, this)) {
                 this.addPlayerStatus(target, from);
             }

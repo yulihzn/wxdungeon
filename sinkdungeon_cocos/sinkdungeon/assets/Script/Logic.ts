@@ -2,7 +2,6 @@ import PlayerData from "./Data/PlayerData";
 import EquipmentData from "./Data/EquipmentData";
 import MapManager from "./Manager/MapManager";
 import Dungeon from "./Dungeon";
-import MonsterData from "./Data/MonsterData";
 import StatusData from "./Data/StatusData";
 import InventoryManager from "./Manager/InventoryManager";
 import BulletData from "./Data/BulletData";
@@ -19,6 +18,7 @@ import ExitData from "./Data/ExitData";
 import Settings from "./Model/Settings";
 import LocalStorage from "./Utils/LocalStorage";
 import SavePointData from "./Data/SavePointData";
+import NonPlayerData from "./Data/NonPlayerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,9 +47,9 @@ export default class Logic extends cc.Component {
     static itemNameList: string[] = [];
     static goodsNameList: string[] = [];
     //怪物json
-    static monsters: { [key: string]: MonsterData } = null;
+    static monsters: { [key: string]: NonPlayerData } = null;
     //npc json
-    static nonplayers: { [key: string]: MonsterData } = null;
+    static nonplayers: { [key: string]: NonPlayerData } = null;
     //图片资源
     static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     //状态json

@@ -3,7 +3,7 @@ import Logic from "../Logic";
 import BaseManager from "./BaseManager";
 import Utils from "../Utils/Utils";
 import NonPlayer from "../NonPlayer";
-import MonsterData from "../Data/MonsterData";
+import NonPlayerData from "../Data/NonPlayerData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,7 +52,7 @@ export default class NonPlayerManager extends BaseManager {
         nonPlayerPrefab.active = false;
         nonPlayerPrefab.parent = dungeon.node;
         let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer);
-        let data = new MonsterData();
+        let data = new NonPlayerData();
         nonPlayer.dungeon = dungeon;
         data.valueCopy(Logic.nonplayers[resName]);
         data.isEnemy = 0;
