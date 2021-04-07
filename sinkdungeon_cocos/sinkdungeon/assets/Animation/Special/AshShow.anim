@@ -1,0 +1,53 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "AshShow",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.35,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "f369da06-6725-4a6e-95cc-e5ebbf03cd41"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "22d9da37-ee26-4fda-af28-37f1a175a9a7"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "5f901dab-818e-4473-9a27-65e92bacb17b"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "14f97c84-7368-472f-a651-a9eabe055a3e"
+                }
+              },
+              {
+                "frame": 1.3333333333333333,
+                "value": {
+                  "__uuid__": "d6a427d6-a8b5-4495-8040-b1d6c4ab57bb"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "events": []
+}

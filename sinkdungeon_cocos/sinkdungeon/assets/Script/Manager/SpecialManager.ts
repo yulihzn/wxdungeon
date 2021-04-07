@@ -27,6 +27,7 @@ export default class SpecialManager extends cc.Component {
     static readonly AFTER_VENOM = 'special019';
     static readonly AFTER_CLAW = 'special024';
     static readonly AFTER_BLADE = 'special008';
+    static readonly AFTER_ASH = 'special030';
     @property(cc.Prefab)
     venom: cc.Prefab = null;
     @property(cc.Prefab)
@@ -35,10 +36,12 @@ export default class SpecialManager extends cc.Component {
     claw: cc.Prefab = null;
     @property(cc.Prefab)
     blade: cc.Prefab = null;
+    @property(cc.Prefab)
+    ash: cc.Prefab = null;
     dungeon: Dungeon;
     clear(): void {
     }
-    addPlacement(placeType: string, distance: number,isFaceRight:boolean,from:FromData) {
+    addPlacement(placeType: string, distance: number, isFaceRight: boolean, from: FromData) {
         if (!this.dungeon) {
             return;
         }
@@ -47,17 +50,20 @@ export default class SpecialManager extends cc.Component {
 
         switch (placeType) {
             case SpecialManager.AFTER_VENOM:
-                this.addVenom(pos,isFaceRight,from);
+                this.addVenom(pos, isFaceRight, from);
                 break;
             case SpecialManager.AFTER_CLAW:
-                this.addClaw(pos,isFaceRight,from);
+                this.addClaw(pos, isFaceRight, from);
                 break;
             case SpecialManager.AFTER_BLADE:
-                this.addBlade(pos,isFaceRight,from);
+                this.addBlade(pos, isFaceRight, from);
+                break;
+            case SpecialManager.AFTER_ASH:
+                this.addAsh(pos, isFaceRight, from);
                 break;
         }
     }
-    addEffect(placeType: string, distance: number,isFaceRight:boolean,from:FromData) {
+    addEffect(placeType: string, distance: number, isFaceRight: boolean, from: FromData) {
         if (!this.dungeon) {
             return;
         }
@@ -66,12 +72,12 @@ export default class SpecialManager extends cc.Component {
 
         switch (placeType) {
             case SpecialManager.BEFORE_HOWL:
-                this.addHowl(pos,isFaceRight,from);
+                this.addHowl(pos, isFaceRight, from);
                 break;
         }
     }
 
-    private addVenom(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
+    private addVenom(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let venom = cc.instantiate(this.venom);
         venom.getComponent(SlimeVenom).player = this.dungeon.player;
         venom.getComponent(SlimeVenom).isForever = false;
@@ -82,30 +88,36 @@ export default class SpecialManager extends cc.Component {
         venom.scale = 0;
         venom.runAction(cc.scaleTo(0.5, 2, 2))
     }
-    private addHowl(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
+    private addHowl(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let monster = this.node.parent.getComponent(NonPlayer);
         if (monster) {
-            monster.addStatus(StatusManager.WEREWOLFDEFENCE,from);
+            monster.addStatus(StatusManager.WEREWOLFDEFENCE, from);
         }
         let howl = cc.instantiate(this.howl);
         let howlScript = howl.getComponent(AreaOfEffect);
-        howlScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
-        .init(0,2,1,2,IndexZ.getActorZIndex(howl.position),true,false,true,false,false,new DamageData(1),from,[StatusManager.DIZZ]));
+        howlScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
+            .init(0, 2, 1, 2, IndexZ.getActorZIndex(howl.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.DIZZ]));
     }
-    private addClaw(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
+    private addClaw(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let claw = cc.instantiate(this.claw);
         pos.y += 32;
         let areaScript = claw.getComponent(AreaOfEffect);
-        areaScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
-        .init(0,0.15,0.1,1,IndexZ.getActorZIndex(claw.position),true,false,true,false,false,new DamageData(2),from,[StatusManager.BLEEDING]));
+        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
+            .init(0, 0.15, 0.1, 1, IndexZ.getActorZIndex(claw.position), true, false, true, false, false, new DamageData(2), from, [StatusManager.BLEEDING]));
     }
-    
-    private addBlade(pos: cc.Vec3,isFaceRight:boolean,from:FromData) {
+    private addAsh(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
+        let ash = cc.instantiate(this.ash);
+        pos.y += 32;
+        let areaScript = ash.getComponent(AreaOfEffect);
+        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
+            .init(0, 0.15, 0.1, 3, IndexZ.getActorZIndex(ash.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.FROZEN]));
+    }
+    private addBlade(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let prefab = cc.instantiate(this.blade);
         pos.y += 64;
-        prefab.scaleX = isFaceRight?1:-1;
+        prefab.scaleX = isFaceRight ? 1 : -1;
         let areaScript = prefab.getComponent(AreaOfEffect);
-        areaScript.show(this.dungeon.node,pos,cc.v3(1,0),0,new AreaOfEffectData()
-        .init(0,0.2,0.1,1,IndexZ.getActorZIndex(prefab.position),true,false,true,false,false,new DamageData(2),from,[]));
+        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
+            .init(0, 0.2, 0.1, 1, IndexZ.getActorZIndex(prefab.position), true, false, true, false, false, new DamageData(2), from, []));
     }
 }

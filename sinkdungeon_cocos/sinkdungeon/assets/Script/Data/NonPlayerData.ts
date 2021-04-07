@@ -47,7 +47,9 @@ export default class NonPlayerData{
     bodyColor = '#ffffff';
     pos:cc.Vec3 = cc.v3(0,0);
     currentHealth:number=0;
-    /**box规格 爬行的21x21 0:y32w80h64，站立的21x21 1:y48w48h96，占满的21x21 2:y48w80h80，站立的32x32 3:y64w80h128，爬行的32x32 4:y32w128h48，站立的48x48 5:y48w80h112*/
+    /**box规格 
+     * 小型爬行的21x21 0:y32w80h64，站立的21x21 1:y48w48h96， 占满的21x21 2:y48w80h80，
+     * 中等站立的32x32 3:y64w80h128，中等爬行的32x32 4:y32w128h48，大型站立或爬行的48x24 5:y48w128h96*/
     boxType = 0;
     attackType = 0;//近战攻击模式 0：普通 1：突刺 2：范围
     isEnemy = 0;//是否是敌人

@@ -20,7 +20,7 @@ export default class ActorAttackBox extends cc.Component {
 
     static readonly ATTACK_NORMAL = 0;
     static readonly ATTACK_STAB = 1;//位移突刺
-    static readonly ATTACK_AREA = 2;
+    static readonly ATTACK_AREA = 2;//范围攻击
     isEnemy = false;
     attackType = 0;
     collider: cc.BoxCollider
@@ -29,6 +29,7 @@ export default class ActorAttackBox extends cc.Component {
     dungeon: Dungeon;
     hv: cc.Vec3 = cc.v3(1, 0);
     isSpecial = false;
+    isLarge = false;//是否放大
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -45,22 +46,26 @@ export default class ActorAttackBox extends cc.Component {
 
     }
     //展示
-    show(attackType: number,isSpecial?:boolean) {
+    show(attackType: number,isSpecial:boolean,isLarge:boolean,hv:cc.Vec3) {
         if (!this.holderActor) {
             return;
         }
+        this.isLarge = isLarge;
         this.isSpecial = isSpecial;
         this.attackType = attackType;
         this.changeBoxSize(attackType);
         this.node.opacity = 80;
         let p = this.node.position.clone();
-        let hv = this.holderActor.getNearestTargetPosition(
-            this.isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], this.dungeon).sub(this.holderActor.node.position.add(p));
+        // let hv = this.holderActor.getNearestTargetPosition(
+            // this.isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], this.dungeon).sub(this.holderActor.node.position.add(p));
         this.setHv(hv);
     }
     private changeBoxSize(attackType: number) {
         let length = 80;
-        let offset = cc.v2(40, 0);
+        if(this.isLarge){
+            length = 160;
+        }
+        let offset = cc.v2(length/2, 0);
         this.node.anchorX = 0;
         this.node.width = length;
         this.node.height = length;
@@ -78,6 +83,9 @@ export default class ActorAttackBox extends cc.Component {
             case ActorAttackBox.ATTACK_AREA:
                 this.node.anchorX = 0.5;
                 length = 160;
+                if(this.isLarge){
+                    length = 320;
+                }
                 this.node.width = length;
                 this.node.height = length;
                 this.node.position = cc.v3(0, 32);
@@ -145,7 +153,6 @@ export default class ActorAttackBox extends cc.Component {
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
         this.node.scaleX = this.holderActor.node.scaleX > 0 ? 1 : -1;
-        // this.node.scaleY = this.monster.node.scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         this.node.angle = this.node.scaleX == -1 ? -angle : angle;
 

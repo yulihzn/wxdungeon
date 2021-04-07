@@ -1949,6 +1949,9 @@
     "blade": {
       "__uuid__": "395e3209-66cb-400d-9da2-7cb674b4660d"
     },
+    "ash": {
+      "__uuid__": "6a4b0ed8-d934-42cb-9404-2d76b28fe5c0"
+    },
     "_id": ""
   },
   {
@@ -2501,7 +2504,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 28,
+      "width": 46.25,
       "height": 20
     },
     "_anchorPoint": {

@@ -16,6 +16,8 @@
         "remote": 0,
         "melee": 15,
         "boxType":0,
+        "attackFrame":3,
+        "attackFrame1":3,
         "dash": 5
     },
     "monster001": {
@@ -641,5 +643,29 @@
         "sizeType":1.5,
         "boxType":4,
         "dash": 10
+    },
+    "monster030": {
+        "nameCn": "独眼巨人",
+        "nameEn": "Cyclops",
+        "resName": "monster030",
+        "chapter": 0,
+        "stageLevel": 0,
+        "isLineAim":0,
+        "specialType":"special030",
+        "specialAttack":15,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 100,
+            "damageMin": 10
+        },
+        "currentHealth": 100,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 4,
+        "sizeType":1,
+        "attackFrame":3,
+        "attackFrame1":3,
+        "boxType":5,
+        "dash": 0
     }
 }

@@ -223,7 +223,7 @@ export default class NonPlayer extends Actor {
             case 2: y = 48; w = 80; h = 80; break;
             case 3: y = 64; w = 80; h = 128; break;
             case 4: y = 32; w = 128; h = 48; break;
-            case 5: y = 48; w = 80; h = 112; break;
+            case 5: y = 48; w = 128; h = 96; break;
             default: y = 48; w = 80; h = 80; break;
         }
         this.boxCollider.offset = cc.v2(0, y);
@@ -342,11 +342,12 @@ export default class NonPlayer extends Actor {
         let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
         let attackpreparetween = cc.tween().call(() => {
             this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[0] : arr[0]);
-            if (isMelee && !isSpecial || isSpecial && isMelee && this.data.specialType.length <= 0) {
+            let specialTypeCanMelee = this.data.specialType.length <= 0||this.data.specialType == SpecialManager.AFTER_ASH;
+            if (isMelee && !isSpecial || (isSpecial && isMelee && specialTypeCanMelee)) {
                 if (!this.dangerBox.dungeon) {
                     this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
                 }
-                this.dangerBox.show(this.data.attackType, isSpecial);
+                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5,pos);
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
@@ -379,7 +380,7 @@ export default class NonPlayer extends Actor {
         for(let i = 2;i<arrspecial.length;i++){
             attackbackspecial.then(cc.tween().delay(0.2).call(()=>{this.changeBodyRes(this.data.resName, arrspecial[i]);}));
         }
-        let attackfinish = cc.tween().call(() => {
+        let attackfinish = cc.tween().delay(0.2).call(() => {
             this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
             this.dangerBox.finish();
             this.setLinearVelocity(cc.Vec2.ZERO);
@@ -444,10 +445,10 @@ export default class NonPlayer extends Actor {
         }
         movement = movement.mul(speed);
         this.setLinearVelocity(movement);
-        let isMoving = h != 0 || v != 0;
-        if (isMoving && this.data.isHeavy < 1) {
-            this.isFaceRight = h >= 0;
-        }
+        // let isMoving = h != 0 || v != 0;
+        // if (isMoving && this.data.isHeavy < 1) {
+        //     this.isFaceRight = h >= 0;
+        // }
         this.changeZIndex();
     }
     setLinearVelocity(movement: cc.Vec2) {
