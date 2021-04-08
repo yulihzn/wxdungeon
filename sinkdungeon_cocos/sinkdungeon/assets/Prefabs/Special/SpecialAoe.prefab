@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Ash",
+    "_name": "SpecialAoe",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -28,13 +28,10 @@
       },
       {
         "__id__": 6
-      },
-      {
-        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 7
     },
     "_opacity": 255,
     "_color": {
@@ -100,7 +97,7 @@
     "_prefab": {
       "__id__": 4
     },
-    "_opacity": 200,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -162,9 +159,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "f369da06-6725-4a6e-95cc-e5ebbf03cd41"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -176,9 +171,7 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": true,
-    "_atlas": {
-      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
-    },
+    "_atlas": null,
     "_id": ""
   },
   {
@@ -187,29 +180,10 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6a4b0ed8-d934-42cb-9404-2d76b28fe5c0"
+      "__uuid__": "7075d6ca-605c-4436-a1e6-80b1de78ca75"
     },
     "fileId": "0eWWC+61hOuYKZHftcnyUZ",
     "sync": false
-  },
-  {
-    "__type__": "cc.Animation",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_defaultClip": {
-      "__uuid__": "daf4c59f-33e1-4fe4-a7ec-a9baff42f100"
-    },
-    "_clips": [
-      {
-        "__uuid__": "daf4c59f-33e1-4fe4-a7ec-a9baff42f100"
-      }
-    ],
-    "playOnLoad": true,
-    "_id": ""
   },
   {
     "__type__": "6a73blWLNVEw7zhXpbo521b",
@@ -237,8 +211,8 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 128,
-      "height": 80
+      "width": 96,
+      "height": 96
     },
     "_id": ""
   },
@@ -248,7 +222,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6a4b0ed8-d934-42cb-9404-2d76b28fe5c0"
+      "__uuid__": "7075d6ca-605c-4436-a1e6-80b1de78ca75"
     },
     "fileId": "",
     "sync": false

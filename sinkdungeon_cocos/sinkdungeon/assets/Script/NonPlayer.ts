@@ -340,14 +340,14 @@ export default class NonPlayer extends Actor {
         let backofftween = cc.tween().by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
         //前进
         let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
+        let specialTypeCanMelee = this.data.specialType.length <= 0||this.data.specialType == SpecialManager.AFTER_ASH;
         let attackpreparetween = cc.tween().call(() => {
             this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[0] : arr[0]);
-            let specialTypeCanMelee = this.data.specialType.length <= 0||this.data.specialType == SpecialManager.AFTER_ASH;
             if (isMelee && !isSpecial || (isSpecial && isMelee && specialTypeCanMelee)) {
                 if (!this.dangerBox.dungeon) {
                     this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
                 }
-                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5,pos);
+                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5,pos.normalize());
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
@@ -408,7 +408,7 @@ export default class NonPlayer extends Actor {
         if (isSpecial) {
             this.showDangerTips();
             allAction = cc.tween().then(beforetween).then(specialRemote).then(aftertween);
-            if (isMelee) {
+            if (isMelee&&specialTypeCanMelee) {
                 allAction = cc.tween().then(beforetween).then(specialMelee).then(aftertween);
             }
         }

@@ -48,17 +48,18 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_ZOOMBIE = 'monster019';
     public static readonly MONSTER_ELECTRICEYE = 'monster020';
     public static readonly MONSTER_FISH = 'monster021';
-    public static readonly MONSTER_CROCODILE = 'monster022'
-    public static readonly MONSTER_SNAKE = 'monster023'
-    public static readonly MONSTER_DEMON = 'monster024'
-    public static readonly MONSTER_WARLOCK = 'monster025'
-    public static readonly MONSTER_SPIDER = 'monster026'
-    public static readonly MONSTER_BOOMER = 'monster027'
-    public static readonly MONSTER_SANDSTATUE = 'monster028'
-    public static readonly MONSTER_HIPPO = 'monster029'
-    public static readonly MONSTER_CYCLOPS = 'monster030'
+    public static readonly MONSTER_CROCODILE = 'monster022';
+    public static readonly MONSTER_SNAKE = 'monster023';
+    public static readonly MONSTER_DEMON = 'monster024';
+    public static readonly MONSTER_WARLOCK = 'monster025';
+    public static readonly MONSTER_SPIDER = 'monster026';
+    public static readonly MONSTER_BOOMER = 'monster027';
+    public static readonly MONSTER_SANDSTATUE = 'monster028';
+    public static readonly MONSTER_HIPPO = 'monster029';
+    public static readonly MONSTER_CYCLOPS = 'monster030';
+    public static readonly MONSTER_ICEDEMON = 'monster031';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
-    MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE];
+    MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE,MonsterManager.MONSTER_ICEDEMON];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
         , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
     public static readonly MONSTERS_FOREST = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER

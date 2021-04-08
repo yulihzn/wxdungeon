@@ -1937,6 +1937,9 @@
       "__id__": 51
     },
     "_enabled": true,
+    "aoe": {
+      "__uuid__": "7075d6ca-605c-4436-a1e6-80b1de78ca75"
+    },
     "venom": {
       "__uuid__": "9e694d06-9f7e-4c6e-a6f0-bb892feb9cf0"
     },

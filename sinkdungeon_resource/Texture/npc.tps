@@ -609,7 +609,23 @@
             <key type="filename">monster/monster029anim010.png</key>
             <key type="filename">monster/monster029anim011.png</key>
             <key type="filename">monster/monster029anim012.png</key>
-            <key type="filename">monster/monster031.png</key>
+            <key type="filename">monster/monster0315.png</key>
+            <key type="filename">monster/monster031anim000.png</key>
+            <key type="filename">monster/monster031anim001.png</key>
+            <key type="filename">monster/monster031anim002.png</key>
+            <key type="filename">monster/monster031anim003.png</key>
+            <key type="filename">monster/monster031anim004.png</key>
+            <key type="filename">monster/monster031anim005.png</key>
+            <key type="filename">monster/monster031anim006.png</key>
+            <key type="filename">monster/monster031anim007.png</key>
+            <key type="filename">monster/monster031anim008.png</key>
+            <key type="filename">monster/monster031anim009.png</key>
+            <key type="filename">monster/monster031anim010.png</key>
+            <key type="filename">monster/monster031anim011.png</key>
+            <key type="filename">monster/monster031anim012.png</key>
+            <key type="filename">monster/monster031anim013.png</key>
+            <key type="filename">monster/monster031anim014.png</key>
+            <key type="filename">monster/monster031anim015.png</key>
             <key type="filename">monster/monster032.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -638,7 +654,6 @@
             <key type="filename">monster/monster023anim010.png</key>
             <key type="filename">monster/monster023anim011.png</key>
             <key type="filename">monster/monster023anim012.png</key>
-            <key type="filename">monster/monster030.png</key>
             <key type="filename">monster/monster030anim000.png</key>
             <key type="filename">monster/monster030anim001.png</key>
             <key type="filename">monster/monster030anim002.png</key>

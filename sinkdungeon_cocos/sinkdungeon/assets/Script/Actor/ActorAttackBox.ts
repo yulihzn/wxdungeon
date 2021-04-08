@@ -55,7 +55,7 @@ export default class ActorAttackBox extends cc.Component {
         this.attackType = attackType;
         this.changeBoxSize(attackType);
         this.node.opacity = 80;
-        let p = this.node.position.clone();
+        // let p = this.node.position.clone();
         // let hv = this.holderActor.getNearestTargetPosition(
             // this.isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], this.dungeon).sub(this.holderActor.node.position.add(p));
         this.setHv(hv);

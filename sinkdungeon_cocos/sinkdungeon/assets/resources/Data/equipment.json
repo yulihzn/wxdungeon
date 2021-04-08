@@ -976,6 +976,31 @@
         "desc": "金黄色龙头看起来很生猛",
         "far": 1
     },
+    "weapon035": {
+        "nameCn": "冰刺",
+        "nameEn": "Ice Thron",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon035",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 1,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 10,
+            "magicDamage": 1,
+            "iceRate":20,
+            "maxHealth": 0
+        },
+        "desc": "锋利冰冷的刺"
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",

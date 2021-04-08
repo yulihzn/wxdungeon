@@ -415,7 +415,7 @@
         "currentHealth": 15,
         "invisible": 0,
         "remote": 0,
-        "melee": 4,
+        "melee": 2,
         "boxType":1,
         "dash": 0
     },
@@ -667,6 +667,31 @@
         "attackFrame":3,
         "attackFrame1":3,
         "boxType":5,
+        "dash": 0
+    },
+    "monster031": {
+        "nameCn": "冰魔",
+        "nameEn": "ice demon",
+        "resName": "monster031",
+        "chapter": 0,
+        "stageLevel": 0,
+        "specialAttack":15,
+        "specialType":"special031",
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 20,
+            "iceRate":100,
+            "magicDamage":2,
+            "damageMin": 1
+        },
+        "currentHealth": 20,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 3,
+        "sizeType":1,
+        "boxType":3,
+        "attackFrame":3,
+        "attackFrame1":4,
         "dash": 0
     }
 }

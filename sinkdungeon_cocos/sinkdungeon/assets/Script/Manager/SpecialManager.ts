@@ -7,6 +7,8 @@ import FromData from "../Data/FromData";
 import IndexZ from "../Utils/IndexZ";
 import AreaOfEffect from "../Actor/AreaOfEffect";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
+import Logic from "../Logic";
+import { EventHelper } from "../EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,6 +30,9 @@ export default class SpecialManager extends cc.Component {
     static readonly AFTER_CLAW = 'special024';
     static readonly AFTER_BLADE = 'special008';
     static readonly AFTER_ASH = 'special030';
+    static readonly AFTER_ICE = 'special031';
+    @property(cc.Prefab)
+    aoe: cc.Prefab = null;
     @property(cc.Prefab)
     venom: cc.Prefab = null;
     @property(cc.Prefab)
@@ -59,7 +64,18 @@ export default class SpecialManager extends cc.Component {
                 this.addBlade(pos, isFaceRight, from);
                 break;
             case SpecialManager.AFTER_ASH:
-                this.addAsh(pos, isFaceRight, from);
+                this.addAoe(pos, new AreaOfEffectData()
+                    .init(0.3, 0.3, 0.1, 3, IndexZ.getActorZIndex(this.node.parent.position)
+                        , true, true, true, false, false, new DamageData(2), from, [StatusManager.DIZZ])
+                    , ['ash001', 'ash002', 'ash003', 'ash004'], false);
+                cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
+                break;
+            case SpecialManager.AFTER_ICE:
+                this.addAoe(pos, new AreaOfEffectData()
+                    .init(0.8, 1, 0.2, 2, IndexZ.getActorZIndex(this.node.parent.position)
+                        , true, true, true, false, false, new DamageData(3), from, [StatusManager.FROZEN])
+                    , ['ice001', 'ice002', 'ice002', 'ice003', 'ice004'], false);
+                cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
                 break;
         }
     }
@@ -105,12 +121,35 @@ export default class SpecialManager extends cc.Component {
         areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
             .init(0, 0.15, 0.1, 1, IndexZ.getActorZIndex(claw.position), true, false, true, false, false, new DamageData(2), from, [StatusManager.BLEEDING]));
     }
-    private addAsh(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
-        let ash = cc.instantiate(this.ash);
+
+    private addAoe(pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean) {
+        let aoe = cc.instantiate(this.aoe);
         pos.y += 32;
-        let areaScript = ash.getComponent(AreaOfEffect);
-        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
-            .init(0.3, 0.3, 0.1, 3, IndexZ.getActorZIndex(ash.position), true, true, true, true, false, new DamageData(1), from, [StatusManager.FROZEN]));
+        let sprite = aoe.getChildByName('sprite').getComponent(cc.Sprite);
+        let collider = aoe.getComponent(cc.BoxCollider);
+        if (spriteFrameNames.length > 0) {
+            let spriteframe = Logic.spriteFrameRes(spriteFrameNames[0]);
+            sprite.node.width = spriteframe.getRect().width;
+            sprite.node.height = spriteframe.getRect().height;
+            sprite.node.scale = 4;
+            collider.size.width = sprite.node.width * 3;
+            collider.size.height = sprite.node.height * 3;
+        }
+        let tween = cc.tween();
+        for (let name of spriteFrameNames) {
+            tween.then(cc.tween().delay(0.2).call(() => {
+                sprite.spriteFrame = Logic.spriteFrameRes(name);
+            }));
+        }
+        if (repeatForever) {
+            cc.tween(aoe).repeatForever(tween).start();
+        } else {
+            cc.tween(aoe).then(tween).delay(0.2).call(() => {
+                sprite.spriteFrame = null;
+            }).start();
+        }
+        let areaScript = aoe.getComponent(AreaOfEffect);
+        areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, aoeData);
     }
     private addBlade(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let prefab = cc.instantiate(this.blade);
