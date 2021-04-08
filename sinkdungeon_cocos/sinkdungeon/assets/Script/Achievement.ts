@@ -73,13 +73,13 @@ export default class Achievements extends cc.Component {
             this.isMonsterLoaded = true;
             return;
         }
-        cc.resources.load('Texture/texures', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+        cc.resources.load('Texture/npc', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
             this.spriteFrames = {};
             for (let frame of atlas.getSpriteFrames()) {
                 this.spriteFrames[frame.name] = frame;
             }
             this.isMonsterLoaded = true;
-            cc.log('texures spriteatlas loaded');
+            cc.log('npc spriteatlas loaded');
         })
     }
     loadBossSpriteFrames() {

@@ -25,6 +25,7 @@ export default class Loading extends cc.Component {
     shipTransportScene:cc.Node = null;
     private static readonly KEY_AUTO = 'auto';
     private static readonly KEY_TEXURES = 'texures';
+    private static readonly KEY_NPC = 'npc';
     private spriteFrameNames: { [key: string]: boolean } = null;
     private timeDelay = 0;
     private isEquipmentLoaded = false;
@@ -65,7 +66,8 @@ export default class Loading extends cc.Component {
         this.loadWorld();
         this.loadEquipment();
         this.loadAutoSpriteFrames();
-        this.loadSpriteAtlas('texures','monster000');
+        this.loadSpriteAtlas(Loading.KEY_TEXURES,'ammo');
+        this.loadSpriteAtlas(Loading.KEY_NPC,'monster000anim000');
         this.loadMonsters();
         this.loadDebuffs();
         this.loadBullets();
@@ -93,6 +95,7 @@ export default class Loading extends cc.Component {
         this.spriteFrameNames = {};
         this.spriteFrameNames[Loading.KEY_AUTO] = false;
         this.spriteFrameNames[Loading.KEY_TEXURES] = false;
+        this.spriteFrameNames[Loading.KEY_NPC] = false;
     }
     showLoadingLabel(){
         if (this.isAllSpriteFramesLoaded()) {
