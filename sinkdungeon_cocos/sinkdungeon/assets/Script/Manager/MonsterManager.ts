@@ -311,7 +311,7 @@ export default class MonsterManager extends BaseManager {
         monster.node.active = true;
         monster.pos = pos;
         monster.node.position = Dungeon.getPosInMap(pos);
-        this.isRoomInitWithEnemy = true;
+        this.isRoomInitWithEnemy = monster.data.isTest<1;
         this.monsterList.push(monster);
     }
     public addBossSlime(type: number, index: cc.Vec3, dungeon: Dungeon) {

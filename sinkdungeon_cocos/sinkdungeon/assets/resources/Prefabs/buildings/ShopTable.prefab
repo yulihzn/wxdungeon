@@ -126,7 +126,7 @@
       "ctor": "Float64Array",
       "array": [
         2,
-        -6.83,
+        -8.775,
         0,
         0,
         0,
@@ -286,7 +286,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 12.27,
+      "width": 14.75,
       "height": 10
     },
     "_anchorPoint": {
@@ -338,7 +338,6 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_useOriginalSize": false,
     "_string": "999",
     "_N$string": "999",
     "_fontSize": 8,
@@ -454,7 +453,7 @@
     "asset": {
       "__uuid__": "f8d6b395-8a3d-4f71-bf62-156b8ec6569f"
     },
-    "fileId": "8fpb8GtkhNZI30hpxdmlL2",
+    "fileId": "",
     "sync": false
   }
 ]

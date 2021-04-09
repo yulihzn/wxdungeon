@@ -343,7 +343,7 @@ export default class BuildingManager extends BaseManager {
             ta.setDefaultPos(indexPos);
             ta.seed = Logic.mapManager.getSeedFromRoom();
             let rand4save = Logic.mapManager.getRandom4Save(ta.seed);
-            ta.data.shopType = rand4save.rand() > 0.1 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+            ta.data.shopType = rand4save.getRandomNum(0,100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
             let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos);
             if (saveTable) {
                 if (saveTable.equipdata) {

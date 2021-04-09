@@ -2054,7 +2054,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -462.654,
+        -478.494,
         104.419,
         0,
         0,
@@ -2439,7 +2439,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -388.258,
+        -419.938,
         101.058,
         0,
         0,
@@ -2826,7 +2826,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -254.912,
+        -320,
         28.257,
         0,
         0,
@@ -4805,16 +4805,6 @@
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },
-    "bg02": null,
-    "bg03": null,
-    "bg04": null,
-    "bg05": null,
-    "bg06": null,
-    "bg07": null,
-    "bg08": null,
-    "bg09": null,
-    "bg10": null,
-    "bg11": null,
     "_id": "a6IQjVTvdI/oYAE/QsKvyM"
   }
 ]

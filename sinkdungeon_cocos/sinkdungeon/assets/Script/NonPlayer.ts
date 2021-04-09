@@ -510,6 +510,7 @@ export default class NonPlayer extends Actor {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }
+        let needShowHurtAnim = !this.specialStep.IsExcuting;
         this.sc.isHurting = dd.getTotalDamage() > 0;
         this.sc.isDisguising = false;
         if (!this.specialStep.IsExcuting) {
@@ -521,19 +522,21 @@ export default class NonPlayer extends Actor {
         }
         //100ms后修改受伤
         if (this.sc.isHurting) {
-            this.sprite.stopAllActions();
-            this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002);
-            if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
-                this.anim.pause();
-            }
-            if (!damageData.isRemote) {
-                this.dangerBox.finish();
+            if(needShowHurtAnim){
+                this.sprite.stopAllActions();
+                this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002);
+                if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
+                    this.anim.pause();
+                }
+                if (!damageData.isRemote) {
+                    this.dangerBox.finish();
+                }
+                this.setLinearVelocity(cc.Vec2.ZERO);
             }
             this.hitLight(true);
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }
-            this.setLinearVelocity(cc.Vec2.ZERO);
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.scheduleOnce(() => {
                 if (this.node) {

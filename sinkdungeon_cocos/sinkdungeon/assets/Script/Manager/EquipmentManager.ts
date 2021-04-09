@@ -421,7 +421,7 @@ export default class EquipmentManager extends BaseManager {
             if (shopTable) {
                 equipment.shopTable = shopTable;
                 shopTable.data.equipdata = equipData.clone();
-                shopTable.data.price = 20 * (equipData.level + 1);
+                shopTable.data.price = 30 * (equipData.level + 1);
             }
             equipment.refresh(equipData);
         } else {
@@ -430,7 +430,7 @@ export default class EquipmentManager extends BaseManager {
             if (shopTable) {
                 equipment.shopTable = shopTable;
                 shopTable.data.equipdata = data.clone();
-                shopTable.data.price = 20 * (data.level + 1);
+                shopTable.data.price = 30 * (data.level + 1);
             }
             equipment.refresh(data);
         }
