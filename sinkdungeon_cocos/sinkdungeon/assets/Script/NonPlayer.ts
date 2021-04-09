@@ -347,7 +347,7 @@ export default class NonPlayer extends Actor {
                 if (!this.dangerBox.dungeon) {
                     this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
                 }
-                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5,pos.normalize());
+                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5);
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
@@ -727,6 +727,7 @@ export default class NonPlayer extends Actor {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
                 this.showAttackEffect(false);
+                this.changeFaceRight(target);
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
                 if (isMiss) {
