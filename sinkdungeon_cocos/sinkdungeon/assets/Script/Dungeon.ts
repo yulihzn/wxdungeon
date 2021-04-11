@@ -100,7 +100,7 @@ export default class Dungeon extends cc.Component {
             // this.addOilGold(event.detail.pos, event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_ITEM, (event) => {
-            this.addItem(event.detail.pos, event.detail.res, event.detail.count);
+            if(this.node)this.addItem(event.detail.pos, event.detail.res, event.detail.count);
         })
         cc.director.on(EventHelper.DUNGEON_ADD_FALLSTONE, (event) => {
             this.addFallStone(event.detail.pos, event.detail.isAuto);
@@ -201,7 +201,7 @@ export default class Dungeon extends cc.Component {
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
         //加载随机怪物
-        if ((!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoom().isReborn())
+        if ((!Logic.mapManager.isCurrentRoomStateClear()||Logic.mapManager.getCurrentRoom().isReborn)
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
             this.monsterManager.addRandomMonsters(this,Logic.mapManager.getCurrentRoom().reborn);
         }
@@ -262,7 +262,7 @@ export default class Dungeon extends cc.Component {
         if (currequipments) {
             for (let tempequip of currequipments) {
                 if (this.equipmentManager) {
-                    this.equipmentManager.getEquipment(tempequip.img, tempequip.pos, this.node, tempequip, null, null).data;
+                    this.equipmentManager.getEquipment(tempequip.img, Dungeon.getPosInMap(tempequip.pos), this.node, tempequip, null, null).data;
                 }
             }
         }
@@ -378,8 +378,7 @@ export default class Dungeon extends cc.Component {
         //检查怪物是否清理
         let count = this.getMonsterAliveNum();
         this.isClear = count <= 0;
-        if (this.monsterManager.bossList.length > 0) {
-            count = 0;
+        if (count<=0&&this.monsterManager.bossList.length > 0) {
             for (let boss of this.monsterManager.bossList) {
                 if (boss.sc.isDied) {
                     count++;

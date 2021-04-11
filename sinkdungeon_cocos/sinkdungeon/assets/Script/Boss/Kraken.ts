@@ -123,7 +123,7 @@ export default class Kraken extends Boss {
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.DREAM } });
             }
-            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), p,null,3);
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(p),null,3);
         }
     }
     showBoss() {

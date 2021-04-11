@@ -129,7 +129,7 @@ export default class AreaOfEffect extends cc.Component {
         damage.isRemote = true;
         let target = Actor.getEnemyActorByNode(attackTarget,!this.data.isFromEnemy);
         if (target && !target.sc.isDied) {
-            damageSuccess = target.takeDamage(damage);
+            damageSuccess = target.takeDamage(damage,this.data.from);
             if (damageSuccess) {
                 if (target.data.currentHealth <= 0 && this.killCallBack) {
                     this.killCallBack(target);

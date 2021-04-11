@@ -172,24 +172,24 @@ export default class NonPlayer extends Actor {
         this.dangerTips.opacity = 255;
         this.scheduleOnce(() => { this.dangerTips.opacity = 0; }, 1)
     }
-    private showCircle() {
-        let r = 0;
-        let call = () => {
-            this.graphics.clear();
-            this.graphics.fillColor = cc.color(255, 0, 0, 80);
-            this.graphics.arc(0, 0, r, Math.PI / 2, Math.PI + Math.PI / 2);
-            r += 2;
-            this.graphics.fill();
-            if (r > 80 * this.node.scaleY) {
-                r = 80 * this.node.scaleY;
-            }
-            if (this.sc.isHurting) {
-                this.unschedule(call);
-                this.graphics.clear();
-            }
-        }
-        this.schedule(call, 0.016, 40);
-    }
+    // private showCircle() {
+    //     let r = 0;
+    //     let call = () => {
+    //         this.graphics.clear();
+    //         this.graphics.fillColor = cc.color(255, 0, 0, 80);
+    //         this.graphics.arc(0, 0, r, Math.PI / 2, Math.PI + Math.PI / 2);
+    //         r += 2;
+    //         this.graphics.fill();
+    //         if (r > 80 * this.node.scaleY) {
+    //             r = 80 * this.node.scaleY;
+    //         }
+    //         if (this.sc.isHurting) {
+    //             this.unschedule(call);
+    //             this.graphics.clear();
+    //         }
+    //     }
+    //     this.schedule(call, 0.016, 40);
+    // }
     private getCurrentBodyRes(): string {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite');
@@ -305,6 +305,7 @@ export default class NonPlayer extends Actor {
 
 
         let pos = target.node.position.clone().sub(this.node.position);
+       
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
         }
@@ -313,6 +314,9 @@ export default class NonPlayer extends Actor {
             pos = cc.v3(1, 0);
         }
         pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 48 : -48);
+        if(this.node.scaleX<0){
+            pos.y = -pos.y;
+        }
         this.sprite.stopAllActions();
         let stabDelay = 0;
         if (this.data.attackType == ActorAttackBox.ATTACK_STAB && isMelee) {
@@ -347,7 +351,7 @@ export default class NonPlayer extends Actor {
                 if (!this.dangerBox.dungeon) {
                     this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
                 }
-                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5);
+                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5,pos);
             }
             if (isSpecial) {
                 this.specialManager.dungeon = this.dungeon;
@@ -510,34 +514,30 @@ export default class NonPlayer extends Actor {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }
-        let needShowHurtAnim = !this.specialStep.IsExcuting;
-        this.sc.isHurting = dd.getTotalDamage() > 0;
-        this.sc.isDisguising = false;
-        if (!this.specialStep.IsExcuting) {
+        let isHurting = dd.getTotalDamage() > 0;
+        //特殊攻击和远程伤害情况下不改变状态
+        this.sc.isHurting = isHurting&&!this.specialStep.IsExcuting&&!damageData.isRemote;
+        if (this.sc.isHurting) {
+            this.sc.isDisguising = false;
             this.sc.isAttacking = false;
             if (damageData.isCriticalStrike) {
                 this.fall();
             }
-
-        }
-        //100ms后修改受伤
-        if (this.sc.isHurting) {
-            if(needShowHurtAnim){
-                this.sprite.stopAllActions();
-                this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002);
-                if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
-                    this.anim.pause();
-                }
-                if (!damageData.isRemote) {
-                    this.dangerBox.finish();
-                }
-                this.setLinearVelocity(cc.Vec2.ZERO);
+            this.sprite.stopAllActions();
+            this.changeBodyRes(this.data.resName, Logic.getHalfChance() ? NonPlayer.RES_HIT001 : NonPlayer.RES_HIT002);
+            if (this.anim.getAnimationState("MonsterIdle").isPlaying) {
+                this.anim.pause();
             }
+            this.dangerBox.finish();
+        }
+        if(isHurting){
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.hitLight(true);
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+            this.setLinearVelocity(cc.Vec2.ZERO);
+            //100ms后修改受伤
             this.scheduleOnce(() => {
                 if (this.node) {
                     this.sc.isHurting = false;
@@ -545,8 +545,9 @@ export default class NonPlayer extends Actor {
                     this.resetBodyColor();
                     this.anim.resume();
                 }
-            }, 0.2);
+            }, 0.1);
         }
+        
         this.sprite.opacity = 255;
         this.data.currentHealth -= dd.getTotalDamage();
         if (this.data.currentHealth > this.data.getHealth().y) {
@@ -554,11 +555,10 @@ export default class NonPlayer extends Actor {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.getHealth().y);
         this.showFloatFont(this.dungeon.node, dd.getTotalDamage(), false, false, damageData.isCriticalStrike, damageData.isBackAttack);
-        if (this.data.isRecovery > 0 && this.sc.isHurting) {
+        if (this.data.isRecovery > 0 && isHurting) {
             this.addStatus(StatusManager.RECOVERY, new FromData());
-            this.setLinearVelocity(cc.Vec2.ZERO);//停下来
         }
-        return this.sc.isHurting;
+        return isHurting;
     }
     private resetBodyColor(): void {
         if (!this.data) {
@@ -639,15 +639,8 @@ export default class NonPlayer extends Actor {
         }, 2);
     }
     getLoot() {
-        let rand4save = Logic.mapManager.getRandom4Save(this.seed);
+        let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
         let rand = rand4save.rand();
-
-        if (this.data.reborn > 0) {
-            let len = Logic.getRandomNum(0, 10);
-            for (let i = 0; i < len; i++) {
-                rand = rand4save.rand();
-            }
-        }
         let percent = 0.75;
         if (this.isVariation) {
             percent = 0.6;
@@ -684,7 +677,7 @@ export default class NonPlayer extends Actor {
             } else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos, null, quality);
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
             }
         }
     }
@@ -730,7 +723,6 @@ export default class NonPlayer extends Actor {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
                 this.showAttackEffect(false);
-                this.changeFaceRight(target);
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
                 if (isMiss) {
@@ -975,6 +967,7 @@ export default class NonPlayer extends Actor {
         this.setLinearVelocity(cc.Vec2.ZERO);
         cc.tween(this.sprite).repeatForever(action).start();
         this.anim.play('MonsterIdle');
+        this.dangerBox.finish();
     }
     /** 移动*/
     public enterWalk() {

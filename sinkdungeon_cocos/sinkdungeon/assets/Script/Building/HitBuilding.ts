@@ -71,7 +71,7 @@ export default class HitBuilding extends Building {
             }
             for(let name of this.equipmentNames){
                 if (name && name.length > 0) {
-                    this.dungeon.addEquipment(name, this.data.defaultPos, null, 1);
+                    this.dungeon.addEquipment(name, Dungeon.getPosInMap(this.data.defaultPos), null, 1);
                 }
             }
             

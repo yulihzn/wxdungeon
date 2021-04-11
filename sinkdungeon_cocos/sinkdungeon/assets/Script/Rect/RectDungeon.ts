@@ -192,6 +192,7 @@ export default class RectDungeon {
             for (let j = 0; j < this.height; j++) {
                 if(this.map[i][j].isClear()){
                     this.map[i][j].reborn++;
+                    this.map[i][j].isReborn = true;
                 }
             }
         }

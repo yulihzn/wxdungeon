@@ -96,7 +96,7 @@ export default abstract class Boss extends Actor {
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.DREAM } });
             }
-            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.pos,null,isSteal?0:3);
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos),null,isSteal?0:3);
         }
     }
     showBoss() {

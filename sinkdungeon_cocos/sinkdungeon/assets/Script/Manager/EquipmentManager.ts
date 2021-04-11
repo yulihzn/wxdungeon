@@ -412,10 +412,10 @@ export default class EquipmentManager extends BaseManager {
     getEquipment(equipType: string, pos: cc.Vec3, parent: cc.Node, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable): Equipment {
         let equipmentPrefab = cc.instantiate(this.equipment);
         equipmentPrefab.parent = parent;
-        equipmentPrefab.position = Dungeon.getPosInMap(pos);
+        equipmentPrefab.position = pos;
         equipmentPrefab.zIndex = IndexZ.OVERHEAD;
         let equipment = equipmentPrefab.getComponent(Equipment);
-        equipment.pos = pos;
+        equipment.pos = Dungeon.getIndexInMap(pos);
         if (equipData) {
             //复制已有装备
             if (shopTable) {

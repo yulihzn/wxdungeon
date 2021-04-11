@@ -62,7 +62,8 @@ export default class RoomType{
     }
     static isMonsterGenerateRoom(roomType:RoomType){
         return RoomType.DANGER_ROOM.isEqual(roomType)||RoomType.INSANE_ROOM.isEqual(roomType)||RoomType.BOSS_ROOM.isEqual(roomType)
-        ||RoomType.KEY_ROOM.isEqual(roomType)||RoomType.LOOT_ROOM.isEqual(roomType)||RoomType.NORMAL_ROOM.isEqual(roomType);
+        ||RoomType.KEY_ROOM.isEqual(roomType)||RoomType.LOOT_ROOM.isEqual(roomType)||RoomType.NORMAL_ROOM.isEqual(roomType)
+        ||RoomType.END_ROOM.isEqual(roomType)||RoomType.VERTICAL_ROOM.isEqual(roomType)||RoomType.HORIZONTAL_ROOM.isEqual(roomType);
     }
     isEqual(roomType:RoomType):boolean{
         return roomType.ID==this.ID;

@@ -641,7 +641,7 @@ export default class Player extends Actor {
      * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
-        if (!this.data || this.sc.isJumping) {
+        if (!this.data || this.sc.isJumping||this.sc.isDied) {
             return false;
         }
         //盾牌
@@ -725,7 +725,7 @@ export default class Player extends Actor {
             flabel.showDoge();
         } else if (isMiss) {
             flabel.showMiss();
-        } else if (d != 0) {
+        } else if (d != 0&&d) {
             flabel.showDamage(-d, isCritical);
         } else {
             flabel.hideLabel();
@@ -847,7 +847,7 @@ export default class Player extends Actor {
         }
     }
     private useSkill(): void {
-        if (this.talentSkills && !this.sc.isJumping) {
+        if (this.talentSkills && !this.sc.isJumping&&!this.sc.isAttacking) {
             this.talentSkills.useSKill();
         }
 

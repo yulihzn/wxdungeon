@@ -322,13 +322,18 @@ export default class BuildingManager extends BaseManager {
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             let saveBox = Logic.mapManager.getCurrentMapBuilding(indexPos);
+            let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
             if (saveBox) {
                 //生命值小于1不生成
-                if (saveBox.currentHealth > 0) {
+                if (saveBox.currentHealth > 0 || isReborn) {
                     let decorate = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATE), indexPos);
                     let d = decorate.getComponent(Decorate);
                     d.decorateType = parseInt(mapDataStr[1]);
                     d.node.position = saveBox.position.clone();
+                    if (isReborn) {
+                        d.node.position = Dungeon.getPosInMap(d.data.defaultPos);
+                        d.data.currentHealth = d.data.maxHealth;
+                    }
                 }
             } else {
                 let decorate = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATE), indexPos);
@@ -341,9 +346,9 @@ export default class BuildingManager extends BaseManager {
             let table = this.addBuilding(Logic.getBuildings(BuildingManager.SHOPTABLE), indexPos);
             let ta = table.getComponent(ShopTable);
             ta.setDefaultPos(indexPos);
-            ta.seed = Logic.mapManager.getSeedFromRoom();
+            let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
             let rand4save = Logic.mapManager.getRandom4Save(ta.seed);
-            ta.data.shopType = rand4save.getRandomNum(0,100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+            ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
             let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos);
             if (saveTable) {
                 if (saveTable.equipdata) {
@@ -355,9 +360,16 @@ export default class BuildingManager extends BaseManager {
                 ta.data.isSaled = saveTable.isSaled;
                 ta.data.shopType = saveTable.shopType;
                 ta.data.price = saveTable.price;
-                ta.showItem();
+                if (isReborn && ta.data.isSaled) {
+                    ta.data.isSaled = false;
+                    ta.data.equipdata = null;
+                    ta.data.itemdata = null;
+                    rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(ta.seed));
+                    ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+                }
+                ta.showItem(isReborn && ta.data.isSaled);
             } else {
-                ta.showItem();
+                ta.showItem(false);
                 Logic.mapManager.setCurrentBuildingData(ta.data);
             }
         } else if (mapDataStr == 'S1') {
@@ -445,23 +457,23 @@ export default class BuildingManager extends BaseManager {
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {
         let prefabName = BuildingManager.LAMPLIGHT;
         let isOverHead = false;
-        switch(mapDataStr){
-            case 'L0':prefabName = BuildingManager.LAMPLIGHT;break;
-            case 'L1':prefabName = BuildingManager.LAMPSUN;isOverHead=true;break;
-            case 'L2':prefabName = BuildingManager.LAMPSHIP;isOverHead=true;break;
-            case 'L3':prefabName = BuildingManager.MUSHROOM01;break;
-            case 'L4':prefabName = BuildingManager.MUSHROOM02;break;
-            case 'L5':prefabName = BuildingManager.MUSHROOM03;break;
-            case 'L6':prefabName = BuildingManager.MUSHROOM04;break;
-            case 'L7':prefabName = BuildingManager.LAMPSEARCH;isOverHead=true;break;
-            case 'L8':prefabName = BuildingManager.LAMPTORCH;isOverHead=true;break;
-            case 'L9':prefabName = BuildingManager.LAMPFIREPAN;break;
-            case 'La':prefabName = BuildingManager.LAMPROAD;break;
-            case 'Lb':prefabName = BuildingManager.LAMPFIREFLY;break;
+        switch (mapDataStr) {
+            case 'L0': prefabName = BuildingManager.LAMPLIGHT; break;
+            case 'L1': prefabName = BuildingManager.LAMPSUN; isOverHead = true; break;
+            case 'L2': prefabName = BuildingManager.LAMPSHIP; isOverHead = true; break;
+            case 'L3': prefabName = BuildingManager.MUSHROOM01; break;
+            case 'L4': prefabName = BuildingManager.MUSHROOM02; break;
+            case 'L5': prefabName = BuildingManager.MUSHROOM03; break;
+            case 'L6': prefabName = BuildingManager.MUSHROOM04; break;
+            case 'L7': prefabName = BuildingManager.LAMPSEARCH; isOverHead = true; break;
+            case 'L8': prefabName = BuildingManager.LAMPTORCH; isOverHead = true; break;
+            case 'L9': prefabName = BuildingManager.LAMPFIREPAN; break;
+            case 'La': prefabName = BuildingManager.LAMPROAD; break;
+            case 'Lb': prefabName = BuildingManager.LAMPFIREFLY; break;
         }
         let node = this.addBuilding(Logic.getBuildings(prefabName), indexPos);
-        if(isOverHead){
-            node.zIndex = IndexZ.OVERHEAD+100;
+        if (isOverHead) {
+            node.zIndex = IndexZ.OVERHEAD + 100;
         }
     }
     private getGoodsList(type: string): string[] {

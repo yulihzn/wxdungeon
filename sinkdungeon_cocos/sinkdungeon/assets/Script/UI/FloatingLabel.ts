@@ -60,7 +60,10 @@ export default class FloatingLabel extends cc.Component {
         if(isBackStab){
             color = cc.color(186,85,211);
         }
-        this.showLabel(`${damage>0?'+':''}${parseFloat((damage).toFixed(1))}`,color,baseScale+Math.abs(damage/50));
+        let absd = Math.abs(damage);
+        let sd = parseFloat((damage).toFixed(1));
+       
+        this.showLabel(`${damage>0?'+':''}${sd!=0?sd:''}`,color,baseScale+absd/50);
     }
 
     hideLabel(){

@@ -91,7 +91,7 @@ export default class Decorate extends Building {
                     collider.sensor = true;
                     collider.apply();
                 }
-                let rand4save = Logic.mapManager.getRandom4Save(this.seed);
+                let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
                 let rand = rand4save.rand();
                 if (rand > 0.6 && rand < 0.8) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 3) } });

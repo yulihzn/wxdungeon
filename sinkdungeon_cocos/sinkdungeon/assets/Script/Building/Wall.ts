@@ -87,11 +87,10 @@ export default class Wall extends Building {
        ||this.type == Wall.TYPE_INNER&&this.dir < 2
        ||this.type == Wall.TYPE_INNER_CORNER&&this.dir < 2
        ||this.type == Wall.TYPE_CONVEX&&this.dir ==0
-       ||this.type == Wall.TYPE_CONCAVE&&this.dir ==0
-       ||this.type == Wall.TYPE_TWO_SIDES&&this.dir ==0;
+       ||this.type == Wall.TYPE_CONCAVE&&this.dir ==0;
     }
     public isSide():boolean{
-        return this.type == Wall.TYPE_NORMAL&&this.dir > 1
+        return this.type == Wall.TYPE_NORMAL&&this.dir > 1;
     }
     init(mapStr: string, leveldata: LevelData) {
         this.mapStr = mapStr;

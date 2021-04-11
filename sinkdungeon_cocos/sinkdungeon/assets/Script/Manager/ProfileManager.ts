@@ -1,5 +1,4 @@
 import ProfileData from "../Data/ProfileData";
-import SavePointData from "../Data/SavePointData";
 import TalentData from "../Data/TalentData";
 import RectDungeon from "../Rect/RectDungeon";
 import LocalStorage from "../Utils/LocalStorage";

@@ -475,11 +475,11 @@ export default class PickAvatar extends cc.Component {
         this.faceColorSelector.selectRandom();
         AudioPlayer.play(AudioPlayer.SELECT);
     }
-    ButtonSelect(event:cc.Event, isLeft:boolean){
+    ButtonSelect(event:cc.Event, isLeft:number){
         if (this.loadingBackground.active) {
             return;
         }
-        this.professionSelector.slectNext(isLeft);
+        this.professionSelector.selectNext(isLeft==0);
         AudioPlayer.play(AudioPlayer.SELECT);
     }
 }

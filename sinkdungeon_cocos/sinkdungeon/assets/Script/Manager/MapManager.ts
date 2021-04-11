@@ -138,7 +138,7 @@ export default class MapManager {
     /** 设置房间状态为清理*/
     public setRoomClear(x: number, y: number) {
         this.rectDungeon.map[x][y].state = RectRoom.STATE_CLEAR;
-        this.rectDungeon.map[x][y].reborn = 0;
+        this.rectDungeon.map[x][y].isReborn = false;
     }
   
     /** 获取当前房间状态*/
@@ -170,6 +170,9 @@ export default class MapManager {
             }
         }
         return this.rand4save;
+    }
+    public getRebornSeed(seed:number){
+        return seed+Logic.mapManager.getCurrentRoom().reborn*100000000;
     }
     public getSeedFromRoom(){
         let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();

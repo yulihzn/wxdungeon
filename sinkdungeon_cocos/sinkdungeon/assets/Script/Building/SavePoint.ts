@@ -5,7 +5,6 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import SavePointData from "../Data/SavePointData";
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
 import Building from "./Building";

@@ -28,6 +28,7 @@ export default class RectRoom {
     state: number = RectRoom.STATE_SLEEP;
     //伪随机数种子
     seed = 0;
+    isReborn = false;
     reborn = 0;
 
     constructor(x: number, y: number, roomType: RoomType) {
@@ -48,6 +49,7 @@ export default class RectRoom {
         this.roomType.valueCopy(room.roomType);
         this.state = room.state;
         this.reborn = room.reborn;
+        this.isReborn = room.isReborn;
         this.seed = room.seed?room.seed:RectRoom.getRandomNum(0,100000000);
         return this;
     }
@@ -62,9 +64,6 @@ export default class RectRoom {
 
     public isClear():boolean{
         return this.state == RectRoom.STATE_CLEAR;
-    }
-    public isReborn():boolean{
-        return this.reborn > 0;
     }
 
     static getRandomNum(min, max): number {//生成一个随机数从[min,max]

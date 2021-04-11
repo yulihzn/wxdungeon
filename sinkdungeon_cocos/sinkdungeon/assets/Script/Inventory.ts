@@ -79,7 +79,7 @@ export default class Inventory extends cc.Component {
         this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
-            , (event) => { this.refreshEquipment(event.detail.equipData, true) });
+            , (event) => { if(this.node)this.refreshEquipment(event.detail.equipData, true) });
         if (this.equipmentGroundDialog) { this.equipmentGroundDialog.hideDialog(); }
         if (this.itemGroundDialog) { this.itemGroundDialog.hideDialog(); }
         cc.director.on(EventHelper.PLAYER_CHANGEITEM
@@ -218,7 +218,7 @@ export default class Inventory extends cc.Component {
    
     private setEquipment(equipmentData: EquipmentData, isChange: boolean) {
         if (isChange && equipmentData.equipmetType != Equipment.EMPTY) {
-            let p = this.dungeon.player.getComponent(Player).pos.clone();
+            let p = this.dungeon.player.node.position.clone();
             this.dungeon.addEquipment(equipmentData.img, p, equipmentData);
         }
     }
@@ -457,13 +457,10 @@ export default class Inventory extends cc.Component {
         }
     }
     setItem(itemData: ItemData) {
-        let p = this.dungeon.player.pos.clone();
-        let pos = Dungeon.getPosInMap(p);
-        pos.y += Logic.getHalfChance() ? 2 : -2;
-        pos.x += Logic.getHalfChance() ? 2 : -2;
+        let p = this.dungeon.player.node.position.clone();
         if (itemData.resName != Item.EMPTY) {
             cc.director.emit(EventHelper.DUNGEON_ADD_ITEM
-                , { detail: { pos: Dungeon.getPosInMap(p), res: itemData.resName, count: itemData.count } })
+                , { detail: { pos: p, res: itemData.resName, count: itemData.count } })
         }
     }
 

@@ -46,7 +46,7 @@ export default class ActorAttackBox extends cc.Component {
 
     }
     //展示
-    show(attackType: number,isSpecial:boolean,isLarge:boolean) {
+    show(attackType: number,isSpecial:boolean,isLarge:boolean,hv:cc.Vec3) {
         if (!this.holderActor) {
             return;
         }
@@ -55,9 +55,9 @@ export default class ActorAttackBox extends cc.Component {
         this.attackType = attackType;
         this.changeBoxSize(attackType);
         this.node.opacity = 80;
-        let p = this.node.position.clone();
-        let hv = this.holderActor.getNearestTargetPosition(
-            this.isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], this.dungeon).sub(this.holderActor.node.position.add(p));
+        // let p = this.node.position.clone();
+        // let hv = this.holderActor.getNearestTargetPosition(
+            // this.isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], this.dungeon).sub(this.holderActor.node.position.add(p));
         this.setHv(hv);
     }
     private changeBoxSize(attackType: number) {
@@ -154,7 +154,7 @@ export default class ActorAttackBox extends cc.Component {
         let offsetAngle = 90;
         this.node.scaleX = this.holderActor.node.scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
-        this.node.angle = this.node.scaleX == -1 ? -angle : angle;
+        this.node.angle = this.node.scaleX == -1 ? angle-180 : angle;
 
     }
 }

@@ -88,7 +88,7 @@ export default class Chest extends Building {
                         // dungeon.addEquipment(EquipmentManager.REMOTE_WINCHESTER, this.data.defaultPos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.SHIELD_POLICE, this.data.pos, null, this.data.quality);
                         // dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, this.data.pos, null, this.data.quality);
-                        dungeon.addEquipment(Logic.getRandomEquipType(rand4save), this.data.defaultPos, null, this.data.quality);
+                        dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                     }
                 }
             }));

@@ -28,6 +28,16 @@
               "frame": 2,
               "value": 0
             }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                10,
+                0
+              ]
+            }
           ]
         }
       },

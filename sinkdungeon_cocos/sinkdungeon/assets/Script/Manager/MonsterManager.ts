@@ -229,7 +229,7 @@ export default class MonsterManager extends BaseManager {
         }
 
         variationRate = variationRate + Logic.chapterIndex * 2 + Logic.level * 2 + up;
-        monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate;
+        monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate&&data.isTest<1;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
             data.Common.maxDream = data.Common.maxDream * 2;
@@ -399,6 +399,10 @@ export default class MonsterManager extends BaseManager {
             case Logic.CHAPTER099: arr = MonsterManager.MONSTERS_LAB;
                 num = rand4save.getRandomNum(1, 3);
                 break;
+        }
+        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.VERTICAL_ROOM)||
+        Logic.mapManager.getCurrentRoomType().isEqual(RoomType.HORIZONTAL_ROOM)){
+            num = Math.floor(num/2);
         }
         let indexmap = [];
         for (let i = 0; i < dungeon.floorIndexmap.length; i++) {

@@ -41,7 +41,7 @@ export default class AttributeSelector extends cc.Component {
         this.currentIndex = Logic.getRandomNum(0,this.nameList.length-1);
         this.updateAttribute();
     }
-    slectNext(isLeft:boolean){
+    selectNext(isLeft:boolean){
         if(isLeft){
             this.currentIndex--;
         }else{
