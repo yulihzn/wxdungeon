@@ -224,9 +224,9 @@ export default class Dungeon extends cc.Component {
         let isequal = mapStr[0] == typeStr;
         return isequal;
     }
-    addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable) {
+    addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable,notSave?:boolean) {
         if (this.itemManager) {
-            this.itemManager.addItem(pos, resName, count, shopTable)
+            this.itemManager.addItem(pos, resName, count, shopTable,notSave)
         }
     }
 
@@ -282,10 +282,10 @@ export default class Dungeon extends cc.Component {
 
     }
     /**添加装备 */
-    addEquipment(equipType: string, pos: cc.Vec3, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable,saveData?:boolean) {
+    addEquipment(equipType: string, pos: cc.Vec3, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable,notSave?:boolean) {
         if (this.equipmentManager) {
             let data = this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality, shopTable).data;
-            if(!saveData){
+            if(notSave){
                 return;
             }
             let currequipments = Logic.mapManager.getCurrentMapEquipments();

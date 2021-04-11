@@ -40,9 +40,9 @@ export default class ShopTable extends Building {
             if (dungeon) {
                 let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
                 if(this.data.shopType == ShopTable.EQUIPMENT){
-                    dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), this.data.equipdata, 3, this);
+                    dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), this.data.equipdata, 3, this,true);
                 }else if(this.data.shopType == ShopTable.ITEM){
-                    dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos),Logic.getRandomItemType(rand4save),0,this);
+                    dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos),Logic.getRandomItemType(rand4save),0,this,true);
                 }
             }
         }

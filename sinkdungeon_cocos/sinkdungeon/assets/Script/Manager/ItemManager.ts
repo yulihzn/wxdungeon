@@ -107,7 +107,7 @@ export default class ItemManager extends BaseManager {
             this.oilPool.put(oilGoldNode);
         }
     }
-    public addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable) {
+    public addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable,notSave?:boolean) {
         if (!this.item || !Logic.items[resName]) {
             return;
         }
@@ -118,6 +118,9 @@ export default class ItemManager extends BaseManager {
         item.zIndex = IndexZ.OVERHEAD;
         item.getComponent(Item).init(resName, indexpos.clone(), count, shopTable);
         let data = item.getComponent(Item).data;
+        if(notSave){
+            return;
+        }
         let curritems = Logic.mapManager.getCurrentMapItems();
         if (curritems) {
             curritems.push(data);
