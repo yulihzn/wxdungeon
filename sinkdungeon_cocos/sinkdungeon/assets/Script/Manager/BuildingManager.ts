@@ -367,9 +367,9 @@ export default class BuildingManager extends BaseManager {
                     rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(ta.seed));
                     ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
                 }
-                ta.showItem(isReborn && ta.data.isSaled);
+                ta.showItem();
             } else {
-                ta.showItem(false);
+                ta.showItem();
                 Logic.mapManager.setCurrentBuildingData(ta.data);
             }
         } else if (mapDataStr == 'S1') {

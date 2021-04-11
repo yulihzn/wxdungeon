@@ -34,11 +34,11 @@ export default class ShopTable extends Building {
     start() {
 
     }
-    showItem(useReborn:boolean) {
+    showItem() {
         if (this.node.parent && !this.data.isSaled) {
             let dungeon = this.node.parent.getComponent(Dungeon);
             if (dungeon) {
-                let rand4save = Logic.mapManager.getRandom4Save(useReborn?Logic.mapManager.getRebornSeed(this.seed):this.seed);
+                let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
                 if(this.data.shopType == ShopTable.EQUIPMENT){
                     dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), this.data.equipdata, 3, this);
                 }else if(this.data.shopType == ShopTable.ITEM){
