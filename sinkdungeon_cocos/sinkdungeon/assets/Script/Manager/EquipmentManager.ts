@@ -420,8 +420,9 @@ export default class EquipmentManager extends BaseManager {
             //复制已有装备
             if (shopTable) {
                 equipment.shopTable = shopTable;
+                equipData.price = 30 * (equipData.level + 1);
                 shopTable.data.equipdata = equipData.clone();
-                shopTable.data.price = 30 * (equipData.level + 1);
+                shopTable.data.price = equipData.price;
             }
             equipment.refresh(equipData);
         } else {
@@ -429,8 +430,9 @@ export default class EquipmentManager extends BaseManager {
             let data = EquipmentManager.getNewEquipData(equipType,chestQuality);
             if (shopTable) {
                 equipment.shopTable = shopTable;
+                data.price = 30 * (data.level + 1);
                 shopTable.data.equipdata = data.clone();
-                shopTable.data.price = 30 * (data.level + 1);
+                shopTable.data.price = data.price;
             }
             equipment.refresh(data);
         }

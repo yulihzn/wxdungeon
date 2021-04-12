@@ -1,8 +1,6 @@
 import Logic from "./Logic";
 import AudioPlayer from "./Utils/AudioPlayer";
 import Random from "./Utils/Random";
-import Achievements from "./Achievement";
-import ProfileManager from "./Manager/ProfileManager";
 import ExitData from "./Data/ExitData";
 import LocalStorage from "./Utils/LocalStorage";
 // Learn TypeScript:
@@ -51,6 +49,8 @@ export default class GameOver extends cc.Component {
         }
         if (this.infoIcon && Logic.dieFrom.res.length > 0) {
             this.infoIcon.spriteFrame = Logic.spriteFrameRes(Logic.dieFrom.res);
+            this.infoIcon.node.width = 64;
+            this.infoIcon.node.height = 64/this.infoIcon.spriteFrame.getRect().width*this.infoIcon.spriteFrame.getRect().height;
         }
         if (this.info) {
             this.info.string = dieinfo;

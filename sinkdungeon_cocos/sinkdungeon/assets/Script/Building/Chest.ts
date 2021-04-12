@@ -103,7 +103,7 @@ export default class Chest extends Building {
         }
         if (needNew) {
             newlist.push(this.data)
-            Logic.mapManager.setCurrentBuildingData(this.data);
+            Logic.mapManager.setCurrentBuildingData(this.data.clone());
         }
     }
 

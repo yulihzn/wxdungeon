@@ -612,6 +612,7 @@ export default class NonPlayer extends Actor {
         this.sc.isDisguising = false;
         this.dashStep.IsExcuting = false;
         this.sprite.stopAllActions();
+        this.dangerBox.finish();
         this.bodySprite.node.angle = 0;
         this.anim.play('MonsterDie');
         this.setLinearVelocity(cc.Vec2.ZERO);

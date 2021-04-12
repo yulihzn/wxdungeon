@@ -62,16 +62,13 @@ export default class ActorAttackBox extends cc.Component {
     }
     private changeBoxSize(attackType: number) {
         let length = 80;
-        if(this.isLarge){
-            length = 160;
-        }
         let offset = cc.v2(length/2, 0);
         this.node.anchorX = 0;
-        this.node.width = length;
+        this.node.width = this.isLarge?length*1.5:length;;
         this.node.height = length;
         this.node.position = cc.v3(-16, 32);
         this.collider.offset = offset;
-        this.collider.size.width = length;
+        this.collider.size.width = this.isLarge?length*1.5:length;;
         this.collider.size.height = length;
         switch (attackType) {
             case ActorAttackBox.ATTACK_NORMAL:

@@ -5,8 +5,8 @@
   "_native": "",
   "_duration": 0.6666666666666666,
   "sample": 60,
-  "speed": 0.5,
-  "wrapMode": "2",
+  "speed": 1,
+  "wrapMode": 2,
   "curveData": {
     "paths": {
       "sprite/body": {
@@ -52,7 +52,8 @@
                 "y": 1
               }
             }
-          ]
+          ],
+          "position": []
         }
       },
       "sprite/crown": {
@@ -315,6 +316,28 @@
             {
               "frame": 0.6666666666666666,
               "value": 15
+            }
+          ]
+        }
+      },
+      "sprite": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                12,
+                0
+              ]
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": [
+                0,
+                12,
+                0
+              ]
             }
           ]
         }

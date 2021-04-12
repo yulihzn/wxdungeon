@@ -35,16 +35,22 @@ export default class ShopTable extends Building {
 
     }
     showItem() {
-        if (this.node.parent && !this.data.isSaled) {
+        if (!this.node.parent) {
+            return;
+        }
+        if (!this.data.isSaled) {
             let dungeon = this.node.parent.getComponent(Dungeon);
             if (dungeon) {
                 let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
-                if(this.data.shopType == ShopTable.EQUIPMENT){
-                    dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), this.data.equipdata, 3, this,true);
-                }else if(this.data.shopType == ShopTable.ITEM){
-                    dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos),Logic.getRandomItemType(rand4save),0,this,true);
+                if (this.data.shopType == ShopTable.EQUIPMENT) {
+                    dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), this.data.equipdata, 3, this);
+                } else if (this.data.shopType == ShopTable.ITEM) {
+                    dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Logic.getRandomItemType(rand4save), 0, this);
                 }
             }
+            this.sale(false);
+        } else {
+            this.sale(true);
         }
     }
     setDefaultPos(defaultPos: cc.Vec3) {
@@ -52,28 +58,26 @@ export default class ShopTable extends Building {
         this.node.position = Dungeon.getPosInMap(defaultPos);
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
-    timeDelay = 0;
-    update(dt) {
-        this.timeDelay += dt;
-        if (this.timeDelay > 0.2) {
-            this.label.string = `${this.data.price}`;
-            this.info.opacity = this.data.isSaled ? 0 : 255;
-            let saveTable = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
-            if (saveTable) {
-                saveTable.isSaled = this.data.isSaled;
-                saveTable.price = this.data.price;
-            }
+    public sale(isSaled: boolean) {
+        if (!this.info) { this.info = this.node.getChildByName('info'); }
+        if (!this.label) { this.label = this.info.getComponentInChildren(cc.Label); }
+        this.data.isSaled = isSaled;
+        this.label.string = `${this.data.price}`;
+        this.info.opacity = this.data.isSaled ? 0 : 255;
+        let saveTable = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
+        if (saveTable) {
+            saveTable.valueCopy(this.data);
         }
     }
-  
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
-        }
-    }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
-        }
-    }
+
+    // onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    //     let player = other.node.getComponent(Player);
+    //     if (player) {
+    //     }
+    // }
+    // onCollisionExit(other: cc.Collider, self: cc.Collider) {
+    //     let player = other.node.getComponent(Player);
+    //     if (player) {
+    //     }
+    // }
 }

@@ -205,7 +205,7 @@ export default class Player extends Actor {
         }
     }
     dizzCharacter(dizzDuration: number) {
-        if (dizzDuration > 0) {
+        if (dizzDuration > 0&&!this.sc.isJumping) {
             this.sc.isDizzing = true;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
@@ -641,7 +641,7 @@ export default class Player extends Actor {
      * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
-        if (!this.data || this.sc.isJumping||this.sc.isDied) {
+        if (!this.data || this.sc.isJumping || this.sc.isDied) {
             return false;
         }
         //盾牌
@@ -725,7 +725,7 @@ export default class Player extends Actor {
             flabel.showDoge();
         } else if (isMiss) {
             flabel.showMiss();
-        } else if (d != 0&&d) {
+        } else if (d != 0 && d) {
             flabel.showDamage(-d, isCritical);
         } else {
             flabel.hideLabel();
@@ -744,7 +744,7 @@ export default class Player extends Actor {
         this.weaponLeft.node.opacity = 0;
         this.weaponRight.node.opacity = 0;
         Logic.dieFrom.valueCopy(from);
-        Logic.setKillPlayerCounts(from,true);
+        Logic.setKillPlayerCounts(from, true);
         Logic.saveData();
         this.scheduleOnce(() => {
             cc.audioEngine.stopMusic();
@@ -847,7 +847,7 @@ export default class Player extends Actor {
         }
     }
     private useSkill(): void {
-        if (this.talentSkills && !this.sc.isJumping&&!this.sc.isAttacking) {
+        if (this.talentSkills && !this.sc.isJumping && !this.sc.isAttacking) {
             this.talentSkills.useSKill();
         }
 
@@ -857,35 +857,11 @@ export default class Player extends Actor {
         if (this.sc.isJumping) {
             return;
         }
-        if (this.touchedEquipment && !this.touchedEquipment.isTaken) {
-            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
-            if (this.touchedEquipment.shopTable) {
-                if (Logic.coins >= this.touchedEquipment.shopTable.data.price) {
-                    cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.touchedEquipment.shopTable.data.price } });
-                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
-                    this.touchedEquipment.taken();
-                    this.touchedEquipment.shopTable.data.isSaled = true;
-                    this.touchedEquipment = null;
-                }
-            } else {
-                this.touchedEquipment.taken();
-                this.touchedEquipment = null;
-            }
+        if (this.touchedEquipment && this.touchedEquipment.taken()) {
+            this.touchedEquipment = null;
         }
-        if (this.touchedItem && !this.touchedItem.data.isTaken && this.touchedItem.data.canSave) {
-            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
-            if (this.touchedItem.shopTable) {
-                if (Logic.coins >= this.touchedItem.shopTable.data.price) {
-                    cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.touchedItem.shopTable.data.price } });
-                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
-                    this.touchedItem.taken(this);
-                    this.touchedItem.shopTable.data.isSaled = true;
-                    this.touchedItem = null;
-                }
-            } else {
-                this.touchedItem.taken(this);
-                this.touchedItem = null;
-            }
+        if (this.touchedItem && !this.touchedItem.taken(this)) {
+            this.touchedItem = null;
         }
         if (this.touchedTips) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);

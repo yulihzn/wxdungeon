@@ -1,5 +1,4 @@
 import Logic from "../Logic";
-import EquipmentDialog from "./EquipmentDialog";
 import EquipmentData from "../Data/EquipmentData";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
@@ -24,7 +23,7 @@ export default class Equipment extends cc.Component {
     public static readonly EMPTY = 'empty';
     public static readonly WEAPON = 'weapon';
     public static readonly REMOTE = 'remote';
-    public static readonly SHIELD= 'shield';
+    public static readonly SHIELD = 'shield';
     public static readonly CLOTHES = 'clothes';
     public static readonly HELMET = 'helmet';
     public static readonly CLOAK = 'cloak';
@@ -37,7 +36,7 @@ export default class Equipment extends cc.Component {
     pos: cc.Vec3 = cc.v3(0, 0);
     isTaken = false;
     shopTable: ShopTable;
-    mat:cc.MaterialVariant;
+    mat: cc.MaterialVariant;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -48,14 +47,14 @@ export default class Equipment extends cc.Component {
         this.data.valueCopy(data);
         let spriteFrame = Logic.spriteFrameRes(this.data.img);
         if (data.equipmetType == 'trousers') {
-            spriteFrame = data.trouserslong==1?Logic.spriteFrameRes('trousers000'):spriteFrame;
+            spriteFrame = data.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
         }
         if (data.equipmetType == 'clothes') {
-            spriteFrame = Logic.spriteFrameRes(this.data.img+'anim0');
-        }else if (data.equipmetType == 'helmet') {
-            spriteFrame = Logic.spriteFrameRes(this.data.img+'anim0');
-        }else if (data.equipmetType == 'remote') {
-            spriteFrame = Logic.spriteFrameRes(this.data.img+'anim0');
+            spriteFrame = Logic.spriteFrameRes(this.data.img + 'anim0');
+        } else if (data.equipmetType == 'helmet') {
+            spriteFrame = Logic.spriteFrameRes(this.data.img + 'anim0');
+        } else if (data.equipmetType == 'remote') {
+            spriteFrame = Logic.spriteFrameRes(this.data.img + 'anim0');
         }
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         this.sprite.width = spriteFrame.getRect().width;
@@ -63,9 +62,9 @@ export default class Equipment extends cc.Component {
         let color = cc.color(255, 255, 255).fromHEX(this.data.color);
         this.sprite.color = color;
         this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
-        this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.scaleX);
-        this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.scaleY);
-        this.mat.setProperty('outlineColor',cc.Color.WHITE);
+        this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.scaleX);
+        this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.scaleY);
+        this.mat.setProperty('outlineColor', cc.Color.WHITE);
         this.highLight(false);
         if (data.equipmetType == 'remote') {
             this.sprite.width = this.sprite.width / 2;
@@ -75,11 +74,11 @@ export default class Equipment extends cc.Component {
 
     }
 
-    highLight(isHigh:boolean){
-        if(!this.mat){
+    highLight(isHigh: boolean) {
+        if (!this.mat) {
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
         }
-        this.mat.setProperty('openOutline',isHigh?1:0);
+        this.mat.setProperty('openOutline', isHigh ? 1 : 0);
     }
 
     start() {
@@ -89,7 +88,25 @@ export default class Equipment extends cc.Component {
     onEnable() {
 
     }
-    taken() {
+    taken():boolean{
+        if (this.isTaken) {
+            return false;
+        }
+        if (this.shopTable) {
+            if (Logic.coins >= this.data.price) {
+                cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.data.price } });
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
+                this.shopTable.sale(true);
+                this._taken();
+                return true;
+            }
+        } else {
+            this._taken();
+            return true;
+        }
+        return false;
+    }
+    private _taken() {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
         cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
@@ -110,8 +127,7 @@ export default class Equipment extends cc.Component {
             }
         }
         Logic.mapManager.setCurrentEquipmentsArr(newlist);
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.PICK_UP}})
-
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_UP } });
     }
 
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
@@ -125,8 +141,8 @@ export default class Equipment extends cc.Component {
         let player = other.node.getComponent(Player);
         if (player) {
             this.highLight(true);
-            this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2),cc.delayTime(1),cc.fadeOut(0.2)));
-            cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW,{detail:{equipData:this.data}});
+            this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2), cc.delayTime(1), cc.fadeOut(0.2)));
+            cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { equipData: this.data } });
         }
     }
     // update (dt) {}

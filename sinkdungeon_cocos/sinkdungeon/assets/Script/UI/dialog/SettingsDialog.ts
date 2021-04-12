@@ -54,6 +54,7 @@ export default class SettingsDialog extends BaseDialog {
         this.dismiss();
     }
     home(){
-        cc.director.emit(EventHelper.PLAYER_EXIT_FROM_SETTINGS);
+        Logic.saveData();
+        cc.director.loadScene('start');
     }
 }

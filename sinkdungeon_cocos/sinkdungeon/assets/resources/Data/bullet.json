@@ -151,6 +151,7 @@
         "isRect": 0,
         "canBreakBuilding":1,
         "isRotate": 0,
+        "isBoom":1,
         "size": 1.5,
         "damage": {
             "physicalDamage": 1
@@ -258,12 +259,12 @@
     },
     "bullet015": {
         "name":"战争机器追踪导弹",
-        "speed": 200,
+        "speed": 300,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 3,
+        "size": 2,
         "isTracking":1,
         "resName":"bullet015",
         "lightName": "bulletlight001",
@@ -274,7 +275,7 @@
     },
     "bullet016": {
         "name":"战争机器爆炸导弹",
-        "speed": 400,
+        "speed": 500,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,

@@ -27,16 +27,12 @@ export default class BuildingData {
     valueCopy(data:BuildingData){
         this.defaultPos = data.defaultPos?cc.v3(data.defaultPos.x,data.defaultPos.y):cc.v3(0,0);
         this.position = data.position?cc.v3(data.position.x,data.position.y):cc.v3(0,0);
-        if(!this.equipdata){
-            this.equipdata = new EquipmentData();
-        }
-        if(!this.itemdata){
-            this.itemdata = new ItemData();
-        }
         if(data.equipdata){
+            this.equipdata = new EquipmentData();
             this.equipdata.valueCopy(data.equipdata);
         }
         if(data.itemdata){
+            this.itemdata = new ItemData();
             this.itemdata.valueCopy(data.itemdata);
         }
         this.price = data.price;
@@ -46,5 +42,26 @@ export default class BuildingData {
         this.isOpen = data.isOpen;
         this.maxHealth = data.maxHealth?data.maxHealth:0;
         this.currentHealth = data.currentHealth?data.currentHealth:0;
+    }
+    clone():BuildingData{
+        let data = new BuildingData();
+        data.defaultPos=this.defaultPos;
+        data.position=this.position;
+        data.isOpen=this.isOpen;
+        data.quality=this.quality;
+        if(this.equipdata){
+            data.equipdata = new EquipmentData();
+            data.equipdata.valueCopy(this.equipdata);
+        }
+        if(this.itemdata){
+            data.itemdata = new ItemData();
+            data.itemdata.valueCopy(this.itemdata);
+        }
+        data.price = this.price;
+        data.shopType = this.shopType;
+        data.isSaled = this.isSaled;
+        data.maxHealth = this.maxHealth;
+        data.currentHealth = this.currentHealth;
+        return data;
     }
 }

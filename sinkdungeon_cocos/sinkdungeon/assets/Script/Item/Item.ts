@@ -2,7 +2,6 @@ import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import Logic from "../Logic";
 import ItemData from "../Data/ItemData";
-import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import ShopTable from "../Building/ShopTable";
@@ -82,7 +81,30 @@ export default class Item extends cc.Component {
         this.mat.setProperty('openOutline',isHigh?1:0);
     }
 
-    public taken(player: Player): void {
+    public taken(player: Player): boolean {
+        if(this.data.isTaken){
+            return false;
+        }
+        if (this.data.canSave) {
+            if (this.shopTable) {
+                if (Logic.coins >= this.data.price) {
+                    cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.data.price } });
+                    cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
+                    this._taken(player);
+                    this.shopTable.sale(true);
+                    return true;
+                }
+            } else {
+                this._taken(player);
+                return true;
+            }
+        }else{
+            this._taken(player);
+                return true;
+        }
+        return false;
+    }
+    private _taken(player: Player){
         if (!this.data.isTaken && this.anim) {
             this.anim.play('ItemTaken');
             this.data.isTaken = true;

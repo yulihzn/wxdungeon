@@ -61,6 +61,8 @@ export default class EquipmentData extends BaseData{
     exBulletCombo3 = 0;
     exBulletOffsetX = 0;//额外子弹偏移x
 
+    price:number = 0;
+
     private common:CommonData;
 
     info1:string = '';
@@ -138,7 +140,7 @@ export default class EquipmentData extends BaseData{
         this.exBulletCombo2 = data.exBulletCombo2?data.exBulletCombo2:0;
         this.exBulletCombo3 = data.exBulletCombo3?data.exBulletCombo3:0;
         this.exBulletOffsetX = data.exBulletOffsetX?data.exBulletOffsetX:0;
-  
+        this.price = data.price?data.price:0;
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
         this.info3 = data.info3?data.info3:'';
@@ -206,7 +208,7 @@ export default class EquipmentData extends BaseData{
         e.exBulletCombo2 = this.exBulletCombo2;
         e.exBulletCombo3 = this.exBulletCombo3;
         e.exBulletOffsetX = this.exBulletOffsetX;
-
+        e.price = this.price;
         e.info1 = this.info1;
         e.info2 = this.info2;
         e.info3 = this.info3;

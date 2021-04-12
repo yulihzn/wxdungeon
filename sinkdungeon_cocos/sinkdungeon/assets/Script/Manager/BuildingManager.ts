@@ -301,7 +301,7 @@ export default class BuildingManager extends BaseManager {
             if (saveChest) {
                 c.setQuality(saveChest.quality, saveChest.isOpen);
             } else {
-                Logic.mapManager.setCurrentBuildingData(c.data);
+                Logic.mapManager.setCurrentBuildingData(c.data.clone());
             }
         } else if (this.isFirstEqual(mapDataStr, 'B')) {
             //生成木盒子 并且根据之前记录的位置放置
@@ -317,7 +317,7 @@ export default class BuildingManager extends BaseManager {
             if (saveBox) {
                 b.node.position = saveBox.position.clone();
             } else {
-                Logic.mapManager.setCurrentBuildingData(b.data);
+                Logic.mapManager.setCurrentBuildingData(b.data.clone());
             }
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
@@ -339,7 +339,7 @@ export default class BuildingManager extends BaseManager {
                 let decorate = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATE), indexPos);
                 let d = decorate.getComponent(Decorate);
                 d.decorateType = parseInt(mapDataStr[1]);
-                Logic.mapManager.setCurrentBuildingData(d.data);
+                Logic.mapManager.setCurrentBuildingData(d.data.clone());
             }
         } else if (mapDataStr == 'S0') {
             //生成商店
@@ -351,27 +351,18 @@ export default class BuildingManager extends BaseManager {
             ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
             let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos);
             if (saveTable) {
-                if (saveTable.equipdata) {
-                    ta.data.equipdata = saveTable.equipdata.clone();
-                }
-                if (saveTable.itemdata) {
-                    ta.data.itemdata = saveTable.itemdata.clone();
-                }
-                ta.data.isSaled = saveTable.isSaled;
-                ta.data.shopType = saveTable.shopType;
-                ta.data.price = saveTable.price;
-                if (isReborn && ta.data.isSaled) {
-                    ta.data.isSaled = false;
-                    ta.data.equipdata = null;
-                    ta.data.itemdata = null;
+                if (isReborn && saveTable.isSaled) {
+                    saveTable.isSaled = false;
+                    saveTable.equipdata = null;
+                    saveTable.itemdata = null;
                     rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(ta.seed));
-                    ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+                    saveTable.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
                 }
-                ta.showItem();
+                ta.data.valueCopy(saveTable);
             } else {
-                ta.showItem();
-                Logic.mapManager.setCurrentBuildingData(ta.data);
+                Logic.mapManager.setCurrentBuildingData(ta.data.clone());
             }
+            ta.showItem();
         } else if (mapDataStr == 'S1') {
             //生成店主
             this.addBuilding(Logic.getBuildings(BuildingManager.SHOP), indexPos);
@@ -616,7 +607,7 @@ export default class BuildingManager extends BaseManager {
         if (saveHit) {
             h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale, hideShadow);
         } else {
-            Logic.mapManager.setCurrentBuildingData(h.data);
+            Logic.mapManager.setCurrentBuildingData(h.data.clone());
         }
     }
 
