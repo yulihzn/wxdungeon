@@ -520,8 +520,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 34,
-      "height": 34
+      "width": 32,
+      "height": 32
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -712,7 +712,7 @@
       "__id__": 1
     },
     "_enabled": false,
-    "tag": 0,
+    "tag": 11,
     "_density": 1,
     "_sensor": true,
     "_friction": 0.2,
@@ -738,7 +738,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 11,
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -759,7 +759,7 @@
     "asset": {
       "__uuid__": "f3bf6037-b873-43ed-bde1-6a9844eab526"
     },
-    "fileId": "31iyOrC8FBTJX3Nf5K2bT5",
+    "fileId": "",
     "sync": false
   }
 ]

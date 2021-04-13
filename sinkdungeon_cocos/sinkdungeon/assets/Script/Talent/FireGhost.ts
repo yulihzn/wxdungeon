@@ -55,7 +55,7 @@ export default class FireGhost extends cc.Component {
 
     onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
         if (self.radius > 0 && this.isAttacking && this.isRotating) {
-            let target = Actor.getCollisionTarget(other,true);
+            let target = Actor.getCollisionTarget(other, true);
             if (target) {
                 this.isAttacking = false;
                 this.attacking(other.node);
@@ -70,13 +70,13 @@ export default class FireGhost extends cc.Component {
         let status = StatusManager.BURNING;
         let d = 1;
         damage.magicDamage = d;
-        let target = Actor.getEnemyActorByNode(attackTarget,true);
+        let target = Actor.getEnemyActorByNode(attackTarget, true);
         if (target && !target.sc.isDied) {
             target.takeDamage(damage);
             target.addStatus(status, new FromData());
         }
         this.isDied = true;
-        cc.director.emit('destoryfireghost',{detail:{coinNode:this.node}});
+        cc.director.emit('destoryfireghost', { detail: { coinNode: this.node } });
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
@@ -93,7 +93,7 @@ export default class FireGhost extends cc.Component {
             if (!pos.equals(cc.Vec3.ZERO)) {
                 this.isAttacking = true;
                 let ps = pos.normalizeSelf().mulSelf(400);
-                this.rigidBody.linearVelocity = cc.v2(ps.x,ps.y);
+                this.rigidBody.linearVelocity = cc.v2(ps.x, ps.y);
             } else if (this.isRotating && this.player) {
                 this.angle += 5;
                 if (this.angle > 360) {
@@ -101,7 +101,7 @@ export default class FireGhost extends cc.Component {
                 }
                 pos = this.getPlayerFarPosition(this.player, 50, this.angle + this.angleOffset);
                 let ps = pos.sub(this.node.position).normalizeSelf().mulSelf(200);
-                this.rigidBody.linearVelocity = cc.v2(ps.x,ps.y);
+                this.rigidBody.linearVelocity = cc.v2(ps.x, ps.y);
             }
         }
     }
@@ -112,26 +112,13 @@ export default class FireGhost extends cc.Component {
         }
         let olddis = 1000;
         let pos = cc.v3(0, 0);
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
-            let dis = Logic.getDistance(this.node.position, monster.node.position);
-            if (dis < 400 && dis < olddis && !monster.sc.isDied && !monster.sc.isDisguising) {
-                olddis = dis;
-                let p = this.node.position.clone();
-                p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                pos = monster.node.position.sub(p);
-            }
-        }
-        if (pos.equals(cc.Vec3.ZERO)) {
-            for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
-                let dis = Logic.getDistance(this.node.position, boss.node.position);
-                if (dis < 400 && dis < olddis && !boss.sc.isDied) {
-                    olddis = dis;
-                    let p = this.node.position.clone();
-                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = boss.node.position.sub(p);
-                }
-            }
-
+        let enemy = this.player.getNearestEnemyActor(false, this.player.weaponRight.meleeWeapon.dungeon);
+        let dis = Logic.getDistance(this.node.position, enemy.node.position);
+        if (dis < 400 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
+            olddis = dis;
+            let p = this.node.position.clone();
+            p.x = this.node.scaleX > 0 ? p.x : -p.x;
+            pos = enemy.node.position.sub(p);
         }
         if (olddis != 1000) {
             pos = pos.normalizeSelf();

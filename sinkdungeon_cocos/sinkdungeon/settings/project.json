@@ -23,6 +23,8 @@
       true,
       true,
       null,
+      true,
+      null,
       true
     ],
     [
@@ -30,6 +32,8 @@
       false,
       true,
       false,
+      null,
+      true,
       null,
       true
     ],
@@ -46,7 +50,9 @@
       true,
       true,
       false,
-      false
+      false,
+      null,
+      true
     ],
     [
       false,
@@ -54,6 +60,16 @@
       false,
       false,
       false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      true,
+      true,
+      false,
+      true,
       false,
       false
     ]
@@ -96,7 +112,8 @@
     "building",
     "ui",
     "player",
-    "shadow"
+    "shadow",
+    "bullet"
   ],
   "last-module-event-record-time": 1617962738409,
   "simulator-orientation": false,

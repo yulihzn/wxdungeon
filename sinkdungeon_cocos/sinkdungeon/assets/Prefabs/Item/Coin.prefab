@@ -370,7 +370,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 12,
     "_density": 1,
     "_sensor": true,
     "_friction": 0.2,
@@ -392,7 +392,7 @@
     "asset": {
       "__uuid__": "d15981e3-20d5-42fa-a23a-3e3c848f0ddb"
     },
-    "fileId": "8bY523aIRAUpgzrGRH0ZJN",
+    "fileId": "",
     "sync": false
   }
 ]

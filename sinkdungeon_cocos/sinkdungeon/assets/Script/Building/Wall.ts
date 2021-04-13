@@ -188,7 +188,7 @@ export default class Wall extends Building {
     }
 
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.MONSTER)) {
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
             if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
                 this.wallsprite.node.opacity = 180;
             }else{
@@ -197,7 +197,7 @@ export default class Wall extends Building {
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.MONSTER)) {
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
             if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
                 this.wallsprite.node.opacity = 180;
             }else{
@@ -206,7 +206,7 @@ export default class Wall extends Building {
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (this.type != Wall.TYPE_EMPTY&& (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.MONSTER)) {
+        if (this.type != Wall.TYPE_EMPTY&& (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
             if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
                 this.wallsprite.node.opacity = 255;
             }else{

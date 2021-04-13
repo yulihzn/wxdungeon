@@ -79,8 +79,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 2,
+    "groupIndex": 2,
     "_id": ""
   },
   {
@@ -143,8 +143,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 2,
+    "groupIndex": 2,
     "_id": ""
   },
   {
@@ -229,7 +229,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 9,
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -250,7 +250,7 @@
     "asset": {
       "__uuid__": "646942b6-b84b-4f13-bd75-3c6505479e67"
     },
-    "fileId": "85hyCcCV1Dlaa15qTnUGGt",
+    "fileId": "",
     "sync": false
   }
 ]

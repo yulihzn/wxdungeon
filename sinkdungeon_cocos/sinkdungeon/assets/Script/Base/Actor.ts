@@ -44,17 +44,17 @@ export default abstract class Actor extends cc.Component {
      * @param distance 
      */
     getPlayerPosition(dungeon: Dungeon, distance?: number) {
-        return this.getNearestTargetPosition([Actor.TARGET_PLAYER], dungeon, distance);
+        return this.getNearestTargetPosition([Actor.TARGET_PLAYER], dungeon,true, distance);
     }
     /**
      * 获取最近的敌人
-     * @param isEnemy 自身是否的玩家的对立面
+     * @param selfIsEnemy 自身是否的玩家的对立面
      * @param dungeon 
      * @param distance 
      */
-    getNearestEnemyPosition(isEnemy: boolean, dungeon: Dungeon, distance?: number) {
-        return this.getNearestTargetPosition(isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
-            : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon, distance);
+    getNearestEnemyPosition(selfIsEnemy: boolean, dungeon: Dungeon,needRandom:boolean, distance?: number) {
+        return this.getNearestTargetPosition(selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
+            : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon,needRandom, distance);
     }
     /**
      * 获取最近的目标
@@ -62,13 +62,17 @@ export default abstract class Actor extends cc.Component {
      * @param dungeon 
      * @param distance 
      */
-    getNearestTargetPosition(targetTypes: number[], dungeon: Dungeon, distance?: number): cc.Vec3 {
+    getNearestTargetPosition(targetTypes: number[], dungeon: Dungeon,needRandom:boolean, distance?: number): cc.Vec3 {
         let targetActor: Actor = this.getNearestTargetActor(targetTypes, dungeon, distance ? distance : 999999);
         if (targetActor) {
             return targetActor.node.position;
         }
-        return this.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
+        if(needRandom){
+            return this.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
+        }
+        return cc.Vec3.ZERO;
     }
+ 
     /**
      * 获取玩家的节点
      */
@@ -77,12 +81,12 @@ export default abstract class Actor extends cc.Component {
     }
     /**
      * 获取最近的敌人节点
-     * @param isEnemy 
+     * @param selfIsEnemy 
      * @param dungeon 
      * @param distance 
      */
-    getNearestEnemyActor(isEnemy: boolean, dungeon: Dungeon) {
-        return this.getNearestTargetActor(isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
+    getNearestEnemyActor(selfIsEnemy: boolean, dungeon: Dungeon) {
+        return this.getNearestTargetActor(selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
             : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon);
     }
 

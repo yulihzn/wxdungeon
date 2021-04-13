@@ -41,8 +41,6 @@ export default class SpecialManager extends cc.Component {
     claw: cc.Prefab = null;
     @property(cc.Prefab)
     blade: cc.Prefab = null;
-    @property(cc.Prefab)
-    ash: cc.Prefab = null;
     dungeon: Dungeon;
     clear(): void {
     }

@@ -82,8 +82,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 3,
-    "groupIndex": 3,
+    "_groupIndex": 0,
+    "groupIndex": 0,
     "_id": ""
   },
   {
@@ -479,7 +479,7 @@
     "asset": {
       "__uuid__": "bf97e736-6c8e-4bc6-bbb6-1cf94cca7a96"
     },
-    "fileId": "5982KCYc5O4omhqvzgrMMy",
+    "fileId": "",
     "sync": false
   }
 ]

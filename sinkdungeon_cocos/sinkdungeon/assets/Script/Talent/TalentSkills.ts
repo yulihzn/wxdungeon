@@ -333,7 +333,7 @@ export default class TalentSkills extends Talent {
 
     }
     addLighteningFall(isArea: boolean, damagePoint: number) {
-        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.player.getNearestEnemyPosition(false,this.player.weaponRight.meleeWeapon.dungeon), showArea: isArea, damage: damagePoint })
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.player.getNearestEnemyPosition(false,this.player.weaponRight.meleeWeapon.dungeon,true), showArea: isArea, damage: damagePoint })
     }
     private addBroom() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);

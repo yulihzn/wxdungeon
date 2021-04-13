@@ -88,8 +88,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 3,
+    "groupIndex": 3,
     "_id": ""
   },
   {
@@ -152,8 +152,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 3,
+    "groupIndex": 3,
     "_id": ""
   },
   {
@@ -259,8 +259,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 3,
+    "groupIndex": 3,
     "_id": ""
   },
   {
@@ -333,7 +333,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 9,
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -375,7 +375,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 9,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -407,7 +407,7 @@
     "asset": {
       "__uuid__": "d517097f-0278-4411-b8a3-c05f0044c737"
     },
-    "fileId": "75fNdGIt5DpJXRX1iPbgzR",
+    "fileId": "",
     "sync": false
   }
 ]

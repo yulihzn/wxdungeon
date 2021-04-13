@@ -4,6 +4,7 @@ import Player from "../Player";
 import Box from "./Box";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 
 // Learn TypeScript:
@@ -58,37 +59,31 @@ export default class FootBoard extends Building {
     }
 
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let box = other.node.getComponent(Box);
-        if (box) {
+        if (other.tag == ColliderTag.BUILDING) {
             this.isOpen = true;
             this.hasActive = true;
         }
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             this.isOpen = true;
             this.hasActive = true;
         }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let box = other.node.getComponent(Box);
-        if (box) {
+        if (other.tag == ColliderTag.BUILDING) {
             this.isOpen = true;
             this.hasActive = true;
 
         }
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             this.isOpen = true;
             this.hasActive = true;
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        let box = other.node.getComponent(Box);
-        if (box) {
+        if (other.tag == ColliderTag.BUILDING) {
             this.isOpen = false;
         }
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             this.isOpen = false;
         }
     }

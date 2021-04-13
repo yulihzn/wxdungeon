@@ -129,8 +129,8 @@ export default class MonsterManager extends BaseManager {
         this.bosses = new Array();
     }
     /**添加怪物 */
-    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, reborn: number) {
-        this.addMonster(this.getMonster(resName, dungeon, reborn), indexPos);
+    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean) {
+        this.addMonster(this.getMonster(resName, dungeon, isSummon), indexPos);
     }
 
     public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
@@ -138,9 +138,9 @@ export default class MonsterManager extends BaseManager {
             let index = parseInt(mapDataStr[1]);
             if (isNaN(index)) {
                 if (mapDataStr[1] == 'a') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon, 0);
+                    this.addMonsterFromData(MonsterManager.MONSTER_DUMMY, indexPos, dungeon, false);
                 } else if (mapDataStr[1] == 'b') {
-                    this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon, 0);
+                    this.addMonsterFromData(MonsterManager.MONSTER_CHEST, indexPos, dungeon, false);
                 }
             } else {
                 let arr = new Array();
@@ -153,7 +153,7 @@ export default class MonsterManager extends BaseManager {
                     case Logic.CHAPTER05: arr = MonsterManager.MONSTERS_DUNGEON; break;
                     case Logic.CHAPTER099: arr = MonsterManager.MONSTERS_LAB; break;
                 }
-                this.addMonsterFromData(arr[index], indexPos, dungeon, 0);
+                this.addMonsterFromData(arr[index], indexPos, dungeon, false);
             }
             return;
         }
@@ -199,7 +199,7 @@ export default class MonsterManager extends BaseManager {
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    private getMonster(resName: string, dungeon: Dungeon, reborn: number): NonPlayer {
+    private getMonster(resName: string, dungeon: Dungeon, isSummon: boolean): NonPlayer {
         let monsterPrefab: cc.Node = null;
         monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;
@@ -211,7 +211,9 @@ export default class MonsterManager extends BaseManager {
         let rand4save = Logic.mapManager.getRandom4Save(monster.seed);
         monster.dungeon = dungeon;
         data.valueCopy(Logic.monsters[resName]);
+        let reborn = Logic.mapManager.getCurrentRoom().reborn;
         data.reborn = reborn ? reborn : 0;
+        monster.isSummon = isSummon;
         //10%几率随机属性
         if (rand4save.rand() < 0.1+monster.killPlayerCount/10) {
             this.monsterRandomAttr.addRandomAttrs(2, rand4save);
@@ -415,7 +417,7 @@ export default class MonsterManager extends BaseManager {
             let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
             let pos = indexmap[randindex];
             indexmap.splice(randindex, 1);
-            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, reborn);
+            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false);
         }
     }
     updateLogic(dt: number) {

@@ -8,6 +8,7 @@ import HitBuilding from "../Building/HitBuilding";
 import Decorate from "../Building/Decorate";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import Actor from "../Base/Actor";
+import { ColliderTag } from "./ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -34,13 +35,13 @@ export default class AreaOfEffect extends cc.Component {
     destoryCallBack: Function;
     usePool = false;
 
-    get IsAttacking(){
+    get IsAttacking() {
         return this.isAttacking;
     }
     onLoad() {
     }
 
-    onEnable(){
+    onEnable() {
         this.hasTargetMap = {};
         this.isAttacking = false;
     }
@@ -55,14 +56,14 @@ export default class AreaOfEffect extends cc.Component {
             if (this.node && this.node.isValid && !this.usePool) {
                 this.node.destroy();
             }
-            if(this.destoryCallBack&&this.usePool){
+            if (this.destoryCallBack && this.usePool) {
                 this.destoryCallBack(this.node);
             }
         }, 1);
         this.isAttacking = false;
     }
 
-    show(parentNode: cc.Node, postion: cc.Vec3, hv: cc.Vec3, angleOffset: number, data: AreaOfEffectData, killCallBack?: Function, usePool?: boolean,destoryCallBack?:Function) {
+    show(parentNode: cc.Node, postion: cc.Vec3, hv: cc.Vec3, angleOffset: number, data: AreaOfEffectData, killCallBack?: Function, usePool?: boolean, destoryCallBack?: Function) {
         this.data.valueCopy(data);
         this.node.active = true;
         this.node.parent = parentNode;
@@ -86,7 +87,7 @@ export default class AreaOfEffect extends cc.Component {
             this.scheduleOnce(() => { this.close() }, this.data.duration);
         }
         let anim = this.getComponent(cc.Animation);
-        if(anim&&!anim.playOnLoad){
+        if (anim && !anim.playOnLoad) {
             anim.play();
         }
     }
@@ -101,63 +102,58 @@ export default class AreaOfEffect extends cc.Component {
                 this.hasTargetMap[other.node.uuid]++;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
-                let monster = other.node.getComponent(NonPlayer);
-                let boss = other.node.getComponent(Boss);
-                let player = other.node.getComponent(Player);
                 let isAttack = true;
-                if (!this.data.isFromEnemy && (monster&&monster.data.isEnemy<1 || player)) {
+                if (!this.data.isFromEnemy && (other.tag == ColliderTag.GOODNONPLAYER || other.tag == ColliderTag.PLAYER)) {
                     isAttack = false;
                 }
-                if (this.data.isFromEnemy && (monster&&monster.data.isEnemy>0|| boss)) {
+                if (this.data.isFromEnemy && (other.tag == ColliderTag.NONPLAYER || other.tag == ColliderTag.BOSS)) {
                     isAttack = false;
                 }
                 if (isAttack) {
-                    this.attacking(other.node);
+                    this.attacking(other.node, other.tag);
                 }
             }
         }
     }
-    attacking(attackTarget: cc.Node) {
+    private attacking(attackTarget: cc.Node, tag: number) {
         if (!attackTarget) {
             return;
         }
-        let normal = attackTarget.convertToWorldSpaceAR(cc.Vec3.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)).normalizeSelf();
-        
         let damage = new DamageData();
-        let damageSuccess = false;
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
-        let target = Actor.getEnemyActorByNode(attackTarget,!this.data.isFromEnemy);
-        if (target && !target.sc.isDied) {
-            damageSuccess = target.takeDamage(damage,this.data.from);
-            if (damageSuccess) {
-                if (target.data.currentHealth <= 0 && this.killCallBack) {
-                    this.killCallBack(target);
+        if (tag == ColliderTag.PLAYER || tag == ColliderTag.NONPLAYER || tag == ColliderTag.GOODNONPLAYER || tag == ColliderTag.BOSS) {
+            let normal = attackTarget.convertToWorldSpaceAR(cc.Vec3.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)).normalizeSelf();
+            let target = Actor.getEnemyActorByNode(attackTarget, !this.data.isFromEnemy);
+            if (target && !target.sc.isDied) {
+                let damageSuccess = target.takeDamage(damage, this.data.from);
+                if (damageSuccess) {
+                    if (target.data.currentHealth <= 0 && this.killCallBack) {
+                        this.killCallBack(target);
+                    }
+                    if (this.data.canBeatBack && !target.getComponent(Boss)) {
+                        this.beatBack(attackTarget, normal);
+                    }
                 }
-                if(this.data.canBeatBack&&!target.getComponent(Boss)){
-                    this.beatBack(attackTarget,normal);
+                for (let status of this.data.statusList) {
+                    target.addStatus(status, this.data.from);
                 }
             }
-            for (let status of this.data.statusList) {
-                target.addStatus(status, this.data.from);
+        } else if (tag == ColliderTag.BUILDING) {
+            let decorate = attackTarget.getComponent(Decorate);
+            if (this.data.canBreakBuilding && decorate) {
+                decorate.takeDamage(damage);
+                return;
             }
-            return;
-        }
-        let decorate = attackTarget.getComponent(Decorate);
-        if (this.data.canBreakBuilding && decorate) {
-            damageSuccess = true;
-            decorate.takeDamage(damage);
-            return;
-        }
-        let hitBuilding = attackTarget.getComponent(HitBuilding);
-        if (this.data.canBreakBuilding && hitBuilding) {
-            damageSuccess = true;
-            hitBuilding.takeDamage(damage);
-            return;
+            let hitBuilding = attackTarget.getComponent(HitBuilding);
+            if (this.data.canBreakBuilding && hitBuilding) {
+                hitBuilding.takeDamage(damage);
+            }
         }
 
+
     }
-    private beatBack(node: cc.Node,hv:cc.Vec3) {
+    private beatBack(node: cc.Node, hv: cc.Vec3) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = hv.clone();
         if (pos.equals(cc.Vec3.ZERO)) {
@@ -165,9 +161,9 @@ export default class AreaOfEffect extends cc.Component {
         }
         let power = 300;
         pos = pos.normalizeSelf().mul(power);
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
-        },0.1);
+        }, 0.1);
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

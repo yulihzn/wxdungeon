@@ -22,6 +22,7 @@ import HitBuilding from "./Building/HitBuilding";
 import CommonData from "./Data/CommonData";
 import Actor from "./Base/Actor";
 import AvatarData from "./Data/AvatarData";
+import { ColliderTag } from "./Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -92,16 +93,16 @@ export default class MeleeWeapon extends cc.Component {
     private hasTargetMap: { [key: string]: number } = {};
     private isSecond = false;//是否是副手
     private currentAngle = 0;
-    get IsSword(){
-        return !this.isStab&&!this.isFar&&!this.isFist&&!this.isBlunt;
+    get IsSword() {
+        return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
     }
-    set IsSecond(isSecond:boolean){
+    set IsSecond(isSecond: boolean) {
         this.isSecond = isSecond;
     }
-    get IsFist(){
+    get IsFist() {
         return this.isFist;
     }
-    get IsComboing(){
+    get IsComboing() {
         return this.isComboing;
     }
     get IsAttacking() {
@@ -113,7 +114,7 @@ export default class MeleeWeapon extends cc.Component {
     get GloveSprite() {
         return this.gloveSprite;
     }
-    
+
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
@@ -121,7 +122,7 @@ export default class MeleeWeapon extends cc.Component {
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos));
         this.weaponSprite = this.getSpriteChildSprite(['sprite', Equipment.WEAPON]);
-        this.weaponStabSprite = this.getSpriteChildSprite( ['sprite', 'stabweapon']);
+        this.weaponStabSprite = this.getSpriteChildSprite(['sprite', 'stabweapon']);
         this.weaponStabLightSprite = this.getSpriteChildSprite(['sprite', 'stablight']);
         this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight']);
         this.handSprite = this.getSpriteChildSprite(['sprite', 'hand']);
@@ -157,7 +158,7 @@ export default class MeleeWeapon extends cc.Component {
         this.isFar = equipData.far == 1;
         this.isReflect = equipData.isReflect == 1;
         this.isFist = false;
-        this.isBlunt = equipData.blunt==1;
+        this.isBlunt = equipData.blunt == 1;
         if (equipData.stab == 1) {
             this.weaponSprite.spriteFrame = null;
             this.weaponStabSprite.spriteFrame = spriteFrame;
@@ -240,18 +241,18 @@ export default class MeleeWeapon extends cc.Component {
             , finalCommon.magicDamage > 0 && ran < finalCommon.lighteningRate ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
             , finalCommon.magicDamage > 0 && ran < finalCommon.toxicRate ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
             , finalCommon.magicDamage > 0 && ran < finalCommon.curseRate ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
-        let delay = (!this.isStab&&this.isFar)?0.5:0;
-        this.scheduleOnce(()=>{
+        let delay = (!this.isStab && this.isFar) ? 0.5 : 0;
+        this.scheduleOnce(() => {
             for (let w of waves) {
                 this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
             }
-        },delay)
+        }, delay)
         return true;
 
     }
-    attackIdle(isReverse:boolean){
+    attackIdle(isReverse: boolean) {
         if (this.anim) {
-            this.anim.play(isReverse?'MeleeAttackIdleReverse':'MeleeAttackIdle');
+            this.anim.play(isReverse ? 'MeleeAttackIdleReverse' : 'MeleeAttackIdle');
         }
     }
     getMeleeSlowRatio(): number {
@@ -269,19 +270,19 @@ export default class MeleeWeapon extends cc.Component {
     private getAttackAnimName(): string {
         let name = "MeleeAttackStab";
         if (!this.isFar && this.isStab) {
-            name = this.isFist?"MeleeAttackFist":"MeleeAttackStab";
+            name = this.isFist ? "MeleeAttackFist" : "MeleeAttackStab";
         } else if (this.isFar && this.isStab) {
             name = "MeleeAttackStabFar";
         } else if (this.isFar && !this.isStab) {
             name = "MeleeAttackFar";
         } else {
-            name = this.isBlunt?"MeleeAttackBlunt":"MeleeAttack";
+            name = this.isBlunt ? "MeleeAttackBlunt" : "MeleeAttack";
         }
         return name + this.getComboSuffix();
     }
     private getComboSuffix(): string {
         if (this.isFist) {
-            if(this.isSecond){
+            if (this.isSecond) {
                 return '2';
             }
             return '1';
@@ -356,9 +357,9 @@ export default class MeleeWeapon extends cc.Component {
         this.hasTargetMap = {};
     }
     /**Anim 冲刺*/
-    DashTime(speed?:number) {
+    DashTime(speed?: number) {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
-        if(!speed){
+        if (!speed) {
             speed = 800;
         }
         this.schedule(() => {
@@ -383,8 +384,8 @@ export default class MeleeWeapon extends cc.Component {
         }, 0.2)
     }
 
-    updateLogic(dt:number) {
-        this.node.angle = Logic.lerp(this.node.angle,this.currentAngle,dt*10);
+    updateLogic(dt: number) {
+        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 10);
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
             if (!this.isAttacking) {
@@ -400,27 +401,13 @@ export default class MeleeWeapon extends cc.Component {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         if (this.dungeon) {
-            for (let monster of this.dungeon.monsterManager.monsterList) {
-                let dis = Logic.getDistance(this.player.node.position, monster.node.position);
-                if (dis < 200 && dis < olddis && !monster.sc.isDied) {
-                    olddis = dis;
-                    let p = this.node.position.clone();
-                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = monster.getCenterPosition().sub(this.player.node.position.add(p));
-                }
-            }
-
-            if (pos.equals(cc.Vec3.ZERO)) {
-                for (let boss of this.dungeon.monsterManager.bossList) {
-                    let dis = Logic.getDistance(this.player.node.position, boss.node.position);
-                    if (dis < 200 && dis < olddis && !boss.sc.isDied) {
-                        olddis = dis;
-                        let p = this.node.position.clone();
-                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        pos = boss.getCenterPosition().sub(this.player.node.position.add(p));
-                    }
-                }
-
+            let enemy = this.player.getNearestEnemyActor(false, this.dungeon);
+            let dis = Logic.getDistance(this.player.node.position, enemy.node.position);
+            if (dis < 200 && dis < olddis && !enemy.sc.isDied) {
+                olddis = dis;
+                let p = this.node.position.clone();
+                p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                pos = enemy.getCenterPosition().sub(this.player.node.position.add(p));
             }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();
@@ -449,7 +436,7 @@ export default class MeleeWeapon extends cc.Component {
         // 将当前物体的角度设置为对应角度
         let lastAngle = this.currentAngle;
         this.currentAngle = this.node.scaleX < 0 ? -angle : angle;
-        if(lastAngle>=0&&this.currentAngle<0||lastAngle<0&&this.currentAngle>=0){
+        if (lastAngle >= 0 && this.currentAngle < 0 || lastAngle < 0 && this.currentAngle >= 0) {
             this.node.angle = this.currentAngle;
         }
 
@@ -485,11 +472,11 @@ export default class MeleeWeapon extends cc.Component {
             power += 50;
         }
         pos = pos.normalizeSelf().mul(power);
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
-        },0.1);
+        }, 0.1);
     }
-    attacking(attackTarget: cc.Collider) {
+    private attacking(attackTarget: cc.Collider) {
         if (!attackTarget || !this.isAttacking) {
             return;
         }
@@ -503,42 +490,49 @@ export default class MeleeWeapon extends cc.Component {
         }
         let damageSuccess = false;
         let attackSuccess = false;
-        let monster = attackTarget.node.getComponent(NonPlayer);
-        if (monster && !monster.sc.isDied && !this.isMiss && monster.data.isEnemy>0) {
-            damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
-            if (damage.isBackAttack) {
-                damage.realDamage += common.damageBack;
+        if (attackTarget.tag == ColliderTag.NONPLAYER) {
+            let monster = attackTarget.node.getComponent(NonPlayer);
+            if (monster && !monster.sc.isDied && !this.isMiss && monster.data.isEnemy > 0) {
+                damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
+                if (damage.isBackAttack) {
+                    damage.realDamage += common.damageBack;
+                }
+                damageSuccess = monster.takeDamage(damage);
+                if (damageSuccess) {
+                    this.beatBack(monster.node);
+                    this.addTargetAllStatus(common, monster);
+                }
             }
-            damageSuccess = monster.takeDamage(damage);
-            if (damageSuccess) {
-                this.beatBack(monster.node);
-                this.addTargetAllStatus(common,monster);
+        } else if (attackTarget.tag == ColliderTag.BOSS) {
+            let boss = attackTarget.node.getComponent(Boss);
+            if (boss && !boss.sc.isDied && !this.isMiss) {
+                damageSuccess = boss.takeDamage(damage);
+                if (damageSuccess) {
+                    this.addTargetAllStatus(common, boss);
+                }
             }
-        }
-
-        let boss = attackTarget.node.getComponent(Boss);
-        if (boss && !boss.sc.isDied && !this.isMiss) {
-            damageSuccess = boss.takeDamage(damage);
-            if (damageSuccess) {
-                this.addTargetAllStatus(common,boss);
+        } else if (attackTarget.tag == ColliderTag.BUILDING || attackTarget.tag == ColliderTag.WALL) {
+            let box = attackTarget.node.getComponent(Box);
+            if (box) {
+                attackSuccess = true;
+                box.breakBox();
             }
-        }
-    
-        let box = attackTarget.node.getComponent(Box);
-        if (box) {
-            attackSuccess = true;
-            box.breakBox();
-        }
-        let decorate = attackTarget.node.getComponent(Decorate);
-        if (decorate) {
-            attackSuccess = true;
-            decorate.takeDamage(damage)
-        }
-        let hitBuilding = attackTarget.node.getComponent(HitBuilding);
-        if (hitBuilding) {
-            attackSuccess = true;
-            hitBuilding.takeDamage(damage);
-        }
+            if(!attackSuccess){
+                let decorate = attackTarget.node.getComponent(Decorate);
+                if (decorate) {
+                    attackSuccess = true;
+                    decorate.takeDamage(damage)
+                }
+            }
+            if(!attackSuccess){
+                let hitBuilding = attackTarget.node.getComponent(HitBuilding);
+                if (hitBuilding) {
+                    attackSuccess = true;
+                    hitBuilding.takeDamage(damage);
+                }
+            }
+            
+        } 
         //生命汲取,内置1s cd
         if (damageSuccess) {
             this.drainSkill.next(() => {
@@ -556,11 +550,11 @@ export default class MeleeWeapon extends cc.Component {
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 } });
             this.scheduleOnce(() => { this.anim.resume() }, 0.1);
         }
-        if(damageSuccess&&this.player.data.AvatarData.organizationIndex==AvatarData.FOLLOWER){
+        if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
             this.player.useDream(-1);
         }
     }
-    private addTargetAllStatus(data:CommonData,target: Actor) {
+    private addTargetAllStatus(data: CommonData, target: Actor) {
         this.addTargetStatus(data.iceRate, target, StatusManager.FROZEN);
         this.addTargetStatus(data.fireRate, target, StatusManager.BURNING);
         this.addTargetStatus(data.lighteningRate, target, StatusManager.DIZZ);
@@ -568,10 +562,10 @@ export default class MeleeWeapon extends cc.Component {
         this.addTargetStatus(data.curseRate, target, StatusManager.CURSING);
         this.addTargetStatus(data.realRate, target, StatusManager.BLEEDING);
     }
-    
+
     private addTargetStatus(rate: number, target: Actor, statusType) {
         if (Logic.getRandomNum(0, 100) < rate) { target.addStatus(statusType, new FromData()); }
     }
-    
+
 
 }

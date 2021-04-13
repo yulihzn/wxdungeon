@@ -254,7 +254,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 8,
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,

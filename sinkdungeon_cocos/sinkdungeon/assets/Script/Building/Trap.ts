@@ -79,14 +79,12 @@ export default class Trap extends Building {
         }
     }
     onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
-        let player = otherCollider.body.node.getComponent(Player);
-        if(player){
+        if(otherCollider.tag == ColliderTag.PLAYER){
             this.isPlayerIn = true;
         }
     }
     onEndContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
-        let player = otherCollider.body.node.getComponent(Player);
-        if(player){
+        if(otherCollider.tag == ColliderTag.PLAYER){
             this.isPlayerIn = false;
         }
     }

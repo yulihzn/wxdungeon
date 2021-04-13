@@ -1,11 +1,9 @@
 import Dungeon from "./Dungeon";
 import Player from "./Player";
 import Bullet from "./Item/Bullet";
-import NonPlayer from "./NonPlayer";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
-import Boss from "./Boss/Boss";
 import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
@@ -14,6 +12,7 @@ import IndexZ from "./Utils/IndexZ";
 import Equipment from "./Equipment/Equipment";
 import AreaOfEffectData from "./Data/AreaOfEffectData";
 import AreaOfEffect from "./Actor/AreaOfEffect";
+import { ColliderTag } from "./Actor/ColliderTag";
 
 
 // Learn TypeScript:
@@ -37,6 +36,7 @@ export default class Shooter extends cc.Component {
     bullet: cc.Prefab = null;
     @property
     isAI: boolean = false;
+    isFromPlayer = false;
     dungeon: Dungeon = null;
     //只有赋值才代表是玩家真正的shooter
     player: Player = null;
@@ -273,7 +273,7 @@ export default class Shooter extends cc.Component {
         // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = IndexZ.OVERHEAD;
-        bullet.isFromPlayer = !this.isAI;
+        bullet.isFromPlayer = !this.isAI||this.isFromPlayer;
         bullet.dungeon = this.dungeon;
         bullet.skipTopwall = this.skipTopwall;
         let bd = new BulletData();
@@ -348,15 +348,11 @@ export default class Shooter extends cc.Component {
     private isValidRayCastCollider(collider: cc.PhysicsCollider): boolean {
         let isInvalid = false;
         if (!this.isAI) {
-            let player = collider.node.getComponent(Player);
-            if (player) { isInvalid = true; }
+            if (collider.tag==ColliderTag.PLAYER) { isInvalid = true; }
         } else {
-            let monster = collider.node.getComponent(NonPlayer);
-            let boss = collider.node.getComponent(Boss);
-            if (monster || boss) { isInvalid = true; }
+            if (collider.tag==ColliderTag.NONPLAYER || collider.tag==ColliderTag.BOSS) { isInvalid = true; }
         }
-        let bullet = collider.node.getComponent(Bullet);
-        if (bullet) { isInvalid = true; }
+        if (collider.tag==ColliderTag.BULLET) { isInvalid = true; }
         if (collider.sensor) { isInvalid = true; }
         return !isInvalid;
     }
@@ -414,7 +410,7 @@ export default class Shooter extends cc.Component {
         this.graphics.fill();
     }
 
-    update(dt) {
+    update(dt:number) {
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
@@ -439,31 +435,16 @@ export default class Shooter extends cc.Component {
         let pos = cc.v3(0, 0);
         if (this.isAI) {
         } else if (this.dungeon) {
-            for (let monster of this.dungeon.monsterManager.monsterList) {
-                let dis = Logic.getDistance(this.getParentNode().position, monster.node.position);
-                if (dis < 600 && dis < olddis && !monster.sc.isDied && !monster.sc.isDisguising) {
+            let enemy = this.player.getNearestEnemyActor(false, this.dungeon);
+            let dis = Logic.getDistance(this.getParentNode().position, enemy.node.position);
+                if (dis < 600 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    let mp = monster.node.position.clone();
+                    let mp = enemy.node.position.clone();
                     mp.y += 32;
                     pos = mp.sub(this.getParentNode().position.add(p));
                 }
-            }
-            if (pos.equals(cc.Vec3.ZERO)) {
-                for (let boss of this.dungeon.monsterManager.bossList) {
-                    let dis = Logic.getDistance(this.getParentNode().position, boss.node.position);
-                    if (dis < 600 && dis < olddis && !boss.sc.isDied) {
-                        olddis = dis;
-                        let p = this.node.position.clone();
-                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        let bp = boss.node.position.clone();
-                        bp.y += 32;
-                        pos = bp.sub(this.getParentNode().position.add(p));
-                    }
-                }
-
-            }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();
             }

@@ -35,6 +35,7 @@ import DefaultStateMachine from './Base/fsm/DefaultStateMachine';
 import NonPlayerActorState from './Actor/NonPlayerActorState';
 import StateContext from './Base/StateContext';
 import NonPlayerData from './Data/NonPlayerData';
+import { ColliderTag } from './Actor/ColliderTag';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -92,6 +93,7 @@ export default class NonPlayer extends Actor {
     shooter: Shooter = null;
     currentlinearVelocitySpeed: cc.Vec2 = cc.Vec2.ZERO;//当前最大速度
     isVariation: boolean = false;//是否变异
+    isSummon = false;//是否召唤出来的，召唤生物无法掉落装备
     killPlayerCount = 0;//杀死玩家次数 
 
     particleBlood: cc.ParticleSystem;
@@ -229,6 +231,7 @@ export default class NonPlayer extends Actor {
         this.boxCollider.offset = cc.v2(0, y);
         this.boxCollider.size.width = w;
         this.boxCollider.size.height = h;
+        this.boxCollider.tag = this.data.isEnemy>0?ColliderTag.NONPLAYER:ColliderTag.GOODNONPLAYER;
         if (this.data.boxType > 2) {
             this.shadow.scale = 3;
         } else {
@@ -288,6 +291,7 @@ export default class NonPlayer extends Actor {
                 this.shooter.data.bulletSize = 0.5;
             }
             this.shooter.dungeon = this.dungeon;
+            this.shooter.isFromPlayer = this.data.isEnemy<1;
             this.shooter.data.bulletArcExNum = this.data.bulletArcExNum;
             this.shooter.data.bulletLineExNum = this.data.bulletLineExNum;
             this.shooter.data.bulletLineInterval = this.data.bulletLineInterval;
@@ -664,9 +668,9 @@ export default class NonPlayer extends Actor {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
             } else if (rand >= percent && rand < percent + offset) {
-                this.addLootSaveItem(Item.HEART);
+                this.addLootSaveItem(Item.HEART,true);
             } else if (rand >= percent + offset && rand < percent + offset * 2) {
-                this.addLootSaveItem(Item.HEART);
+                this.addLootSaveItem(Item.HEART,true);
             } else if (rand >= percent + offset * 2 && rand < percent + offset * 3) {
                 this.addLootSaveItem(Item.BOTTLE_ATTACKSPEED);
             } else if (rand >= percent + offset * 3 && rand < percent + offset * 4) {
@@ -678,12 +682,16 @@ export default class NonPlayer extends Actor {
             } else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
+                if(!this.isSummon){
+                    this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
+                }
             }
         }
     }
-    private addLootSaveItem(resName: string) {
-        this.dungeon.addItem(this.node.position.clone(), resName);
+    private addLootSaveItem(resName: string,isAuto?:boolean) {
+        if(isAuto||!this.isSummon){
+            this.dungeon.addItem(this.node.position.clone(), resName);
+        }
     }
 
     /**获取中心位置 */
@@ -991,7 +999,7 @@ export default class NonPlayer extends Actor {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
         let body = this.bodySprite.node;
         cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
-            let newPos = this.getNearestEnemyPosition(true, this.dungeon);
+            let newPos = this.getNearestEnemyPosition(true, this.dungeon,true);
             newPos = Dungeon.getIndexInMap(newPos);
             if (newPos.x > this.pos.x) {
                 newPos = newPos.addSelf(cc.v3(1, 0));
