@@ -478,12 +478,14 @@ export default class Bullet extends cc.Component {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         let enemy = this.dungeon.player.getNearestEnemyActor(!this.isFromPlayer, this.dungeon);
-        let dis = Logic.getDistance(this.node.position, enemy.node.position);
-        if (dis < 500 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising && !enemy.sc.isFalling && !enemy.sc.isJumping) {
-            olddis = dis;
-            let p = this.node.position.clone();
-            p.x = this.node.scaleX > 0 ? p.x : -p.x;
-            pos = enemy.node.position.sub(p);
+        if(enemy){               
+            let dis = Logic.getDistance(this.node.position, enemy.node.position);
+            if (dis < 500 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising && !enemy.sc.isFalling && !enemy.sc.isJumping) {
+                olddis = dis;
+                let p = this.node.position.clone();
+                p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                pos = enemy.node.position.sub(p);
+            }
         }
 
         if (olddis != 1000) {

@@ -436,15 +436,17 @@ export default class Shooter extends cc.Component {
         if (this.isAI) {
         } else if (this.dungeon) {
             let enemy = this.player.getNearestEnemyActor(false, this.dungeon);
-            let dis = Logic.getDistance(this.getParentNode().position, enemy.node.position);
-                if (dis < 600 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
-                    olddis = dis;
-                    let p = this.node.position.clone();
-                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    let mp = enemy.node.position.clone();
-                    mp.y += 32;
-                    pos = mp.sub(this.getParentNode().position.add(p));
-                }
+            if(enemy){
+                let dis = Logic.getDistance(this.getParentNode().position, enemy.node.position);
+                    if (dis < 600 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
+                        olddis = dis;
+                        let p = this.node.position.clone();
+                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                        let mp = enemy.node.position.clone();
+                        mp.y += 32;
+                        pos = mp.sub(this.getParentNode().position.add(p));
+                    }        
+            }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();
             }

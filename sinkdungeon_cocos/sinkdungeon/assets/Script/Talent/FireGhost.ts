@@ -113,12 +113,14 @@ export default class FireGhost extends cc.Component {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         let enemy = this.player.getNearestEnemyActor(false, this.player.weaponRight.meleeWeapon.dungeon);
-        let dis = Logic.getDistance(this.node.position, enemy.node.position);
-        if (dis < 400 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
-            olddis = dis;
-            let p = this.node.position.clone();
-            p.x = this.node.scaleX > 0 ? p.x : -p.x;
-            pos = enemy.node.position.sub(p);
+        if(enemy){                
+            let dis = Logic.getDistance(this.node.position, enemy.node.position);
+            if (dis < 400 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
+                olddis = dis;
+                let p = this.node.position.clone();
+                p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                pos = enemy.node.position.sub(p);
+            }
         }
         if (olddis != 1000) {
             pos = pos.normalizeSelf();

@@ -402,12 +402,14 @@ export default class MeleeWeapon extends cc.Component {
         let pos = cc.v3(0, 0);
         if (this.dungeon) {
             let enemy = this.player.getNearestEnemyActor(false, this.dungeon);
-            let dis = Logic.getDistance(this.player.node.position, enemy.node.position);
-            if (dis < 200 && dis < olddis && !enemy.sc.isDied) {
-                olddis = dis;
-                let p = this.node.position.clone();
-                p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                pos = enemy.getCenterPosition().sub(this.player.node.position.add(p));
+            if(enemy){
+                let dis = Logic.getDistance(this.player.node.position, enemy.node.position);
+                if (dis < 200 && dis < olddis && !enemy.sc.isDied) {
+                    olddis = dis;
+                    let p = this.node.position.clone();
+                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
+                    pos = enemy.getCenterPosition().sub(this.player.node.position.add(p));
+                }
             }
             if (olddis != 1000) {
                 pos = pos.normalizeSelf();

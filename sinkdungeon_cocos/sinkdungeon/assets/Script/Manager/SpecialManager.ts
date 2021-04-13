@@ -110,7 +110,7 @@ export default class SpecialManager extends cc.Component {
         let howl = cc.instantiate(this.howl);
         let howlScript = howl.getComponent(AreaOfEffect);
         howlScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
-            .init(0, 2, 1, 2, IndexZ.getActorZIndex(howl.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.DIZZ]));
+            .init(0, 2, 1.5, 2, IndexZ.getActorZIndex(howl.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.DIZZ]));
     }
     private addClaw(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let claw = cc.instantiate(this.claw);

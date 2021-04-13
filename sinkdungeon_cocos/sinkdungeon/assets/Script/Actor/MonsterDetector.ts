@@ -29,7 +29,7 @@ export default class MonsterDetector extends cc.Component {
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let bullet = other.getComponent(Bullet);
         let monster = this.node.parent.getComponent(NonPlayer);
-        if(bullet&&bullet.isFromPlayer && monster){
+        if(bullet&&(bullet.isFromPlayer && monster.data.isEnemy>0||!bullet.isFromPlayer && monster.data.isEnemy<1)){
             let pos = this.getRoate90Point(bullet.node.position,monster.node.position,Random.getHalfChance());
             pos = pos.sub(monster.node.position);
             monster.dodge(pos);
