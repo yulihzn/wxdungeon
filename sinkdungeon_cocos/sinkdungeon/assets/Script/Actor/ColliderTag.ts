@@ -4,7 +4,7 @@
 export enum ColliderTag{
     DEFAULT=0,//默认
     WALL=1,//墙
-    GOODNONPLAYER=2,//好的npc
+    WALL_TOP=2,
     PLAYER=3,//玩家（唯一）
     NONPLAYER=4,//敌人或者坏的npc
     BOSS_ATTACK=5,//boss攻击部分
@@ -16,5 +16,6 @@ export enum ColliderTag{
     EQUIPMENT=11,//装备
     COIN=12,//金币
     TIPS=13,//提示
-    MELEE=14//近战武器
+    MELEE=14,//近战武器
+    GOODNONPLAYER=15//好的npc
 }

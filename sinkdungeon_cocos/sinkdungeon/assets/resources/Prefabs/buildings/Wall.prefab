@@ -567,12 +567,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 64
+      "y": 128
     },
     "_size": {
       "__type__": "cc.Size",
       "width": 128,
-      "height": 256
+      "height": 128
     },
     "_id": ""
   },

@@ -182,6 +182,10 @@ export default class Wall extends Building {
                 this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip);
                 break;
         }
+        if(this.isTop()){
+            let collider = this.getComponent(cc.PhysicsBoxCollider);
+            collider.tag = ColliderTag.WALL_TOP;
+        }
     }
     private isInnerOrCorner(type:number):boolean{
         return type == Wall.TYPE_INNER||type == Wall.TYPE_CORNER||type == Wall.TYPE_INNER_CORNER;

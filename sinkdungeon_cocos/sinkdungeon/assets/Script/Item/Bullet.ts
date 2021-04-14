@@ -298,28 +298,23 @@ export default class Bullet extends cc.Component {
     start() {
 
     }
-    // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-    //     let isDestory = true;
+    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+        let isDestory = true;
 
-    //     //子弹玩家怪物boss武器墙不销毁
-    //     if (otherCollider.tag == ColliderTag.PLAYER 
-    //         || otherCollider.tag  == ColliderTag.NONPLAYER 
-    //         || otherCollider.tag  == ColliderTag.BOSS 
-    //         || otherCollider.tag  == ColliderTag.BULLET
-    //         || otherCollider.tag  == ColliderTag.WALL ) {
-    //         isDestory = false;
-    //     }
-    //     //触发器不销毁
-    //     if (otherCollider.sensor) {
-    //         isDestory = false;
-    //     }
-    //     if (this.data.isInvincible > 0) {
-    //         isDestory = false;
-    //     }
-    //     if (isDestory) {
-    //         this.bulletHit();
-    //     }
-    // }
+        //子弹玩家怪物boss武器墙不销毁
+        if (otherCollider.tag == ColliderTag.PLAYER
+            || otherCollider.tag == ColliderTag.NONPLAYER
+            || otherCollider.tag == ColliderTag.BOSS
+            || otherCollider.tag == ColliderTag.BULLET
+            || otherCollider.sensor
+            || otherCollider.tag == ColliderTag.WALL_TOP
+            || this.data.isInvincible > 0) {
+            isDestory = false;
+        }
+        if (isDestory) {
+            this.bulletHit();
+        }
+    }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let isAttack = true;
         if (!this.isFromPlayer && (other.tag == ColliderTag.NONPLAYER || other.tag == ColliderTag.BOSS)) {
@@ -345,8 +340,9 @@ export default class Bullet extends cc.Component {
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
         let isDestory = false;
-
-        if (tag == ColliderTag.NONPLAYER || tag == ColliderTag.GOODNONPLAYER) {
+        if (this.data.isInvincible > 0) {
+            isDestory = false;
+        } else if (tag == ColliderTag.NONPLAYER || tag == ColliderTag.GOODNONPLAYER) {
             let monster = attackTarget.getComponent(NonPlayer);
             if (monster && !monster.sc.isDied) {
                 damageSuccess = monster.takeDamage(damage);
@@ -397,26 +393,29 @@ export default class Bullet extends cc.Component {
                 damageSuccess = true;
                 decorate.takeDamage(damage);
             }
-            let hitBuilding = attackTarget.getComponent(HitBuilding);
-            if (this.data.canBreakBuilding == 1 && hitBuilding) {
-                damageSuccess = true;
-                hitBuilding.takeDamage(damage);
-            }
-            let wall = attackTarget.getComponent(Wall);
-            if (wall) {
-                if (wall.isTop()) {
-                    isDestory = !this.skipTopwall;
-                } else {
-                    isDestory = wall.isSide();
+            if (!damageSuccess) {
+                let hitBuilding = attackTarget.getComponent(HitBuilding);
+                if (this.data.canBreakBuilding == 1 && hitBuilding) {
+                    damageSuccess = true;
+                    hitBuilding.takeDamage(damage);
                 }
             }
-            if (this.skipTopwall && attackTarget.getComponent(ExitDoor)) {
-                isDestory = false;
+            if (!damageSuccess) {
+                let wall = attackTarget.getComponent(Wall);
+                if (wall) {
+                    if (wall.isTop()) {
+                        isDestory = !this.skipTopwall;
+                    } else {
+                        isDestory = wall.isSide();
+                    }
+                }
+                if (isDestory && attackTarget.getComponent(ExitDoor)) {
+                    isDestory = false;
+                }
             }
+
         }
-        if (this.data.isInvincible > 0) {
-            isDestory = false;
-        }
+
         if (isDestory) {
             this.bulletHit();
         }
@@ -478,7 +477,7 @@ export default class Bullet extends cc.Component {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         let enemy = this.dungeon.player.getNearestEnemyActor(!this.isFromPlayer, this.dungeon);
-        if(enemy){               
+        if (enemy) {
             let dis = Logic.getDistance(this.node.position, enemy.node.position);
             if (dis < 500 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising && !enemy.sc.isFalling && !enemy.sc.isJumping) {
                 olddis = dis;

@@ -54,9 +54,7 @@ export default class MartShelvesDialog extends BaseDialog {
     anim:cc.Animation;
     goodsData:GoodsData;
     onLoad() {
-        this.fridgeNode.active =false;
-        this.spriteNode.active = false;
-        this.payNode.active = false;
+        
         cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG_PAY, (event) => {
             this.showPay(event.detail.data);
         })
