@@ -7,6 +7,7 @@ import IndexZ from "../Utils/IndexZ";
 import ExitData from "../Data/ExitData";
 import Dungeon from "../Dungeon";
 import Utils from "../Utils/Utils";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -26,17 +27,15 @@ export default class MushroomChild extends Building {
     isPlus = false;
    
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             this.isRotate = true;
-            let ppos = player.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
+            let ppos = other.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             let mpos = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             this.isPlus = ppos.x>mpos.x;
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             this.isRotate = false;
         }
     }

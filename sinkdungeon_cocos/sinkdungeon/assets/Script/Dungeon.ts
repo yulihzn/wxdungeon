@@ -187,7 +187,8 @@ export default class Dungeon extends cc.Component {
                     this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j));
                 }
                 //房间未清理时加载怪物
-                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
+                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
+                || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)) {
                     if (!Logic.isTour) {
                         this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
                     }

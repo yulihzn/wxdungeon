@@ -6,6 +6,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
 import ExitData from "../Data/ExitData";
 import Dungeon from "../Dungeon";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -115,9 +116,9 @@ export default class ExitDoor extends Building {
         cc.tween(this.closeSprite.node).to(immediately ? 0 : 1,{opacity:255}).start();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
-            if (this.isOpen) {
+        if (other.tag == ColliderTag.PLAYER) {
+            let player = other.node.getComponent(Player);
+            if (player&&this.isOpen) {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.playerData = player.data.clone();

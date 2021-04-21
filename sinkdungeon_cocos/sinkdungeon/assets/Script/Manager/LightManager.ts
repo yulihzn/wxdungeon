@@ -35,11 +35,6 @@ export default class LightManager extends BaseManager {
 
     }
     private render() {
-        if (this.shadow && this.camera) {
-            let p1 = this.camera.node.convertToWorldSpaceAR(cc.v2(0, 0));
-            let c1 = this.ray.node.convertToNodeSpaceAR(p1);
-            this.shadow.node.position = cc.v3(c1);
-        }
         for (let i = 0; i < LightManager.lightList.length; i++) {
             let light = LightManager.lightList[i];
             if (light) {
@@ -49,7 +44,7 @@ export default class LightManager extends BaseManager {
         }
         if (!this.shadowTexture&&Logic.settings.showShadow) {
             this.shadowTexture = new cc.RenderTexture();
-            this.shadowTexture.initWithSize(cc.visibleRect.width / 16, cc.visibleRect.height / 16);
+            this.shadowTexture.initWithSize(cc.visibleRect.width / 8, cc.visibleRect.height / 8);
             this.shadowTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST);
             this.shadowCamera.targetTexture = this.shadowTexture;
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
@@ -155,6 +150,13 @@ export default class LightManager extends BaseManager {
         }
         
     }
+    fixShadowPos(){
+        if (this.shadow && this.camera) {
+            let p1 = this.camera.node.convertToWorldSpaceAR(cc.v2(0, 0));
+            let c1 = this.ray.node.convertToNodeSpaceAR(p1);
+            this.shadow.node.position = cc.v3(c1);
+        }
+    }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
@@ -168,5 +170,6 @@ export default class LightManager extends BaseManager {
         if (this.isCheckTimeDelay(dt)) {
             this.render();
         }
+        this.fixShadowPos();
     }
 }

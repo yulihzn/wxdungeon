@@ -5,6 +5,7 @@ import ItemData from "../Data/ItemData";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import ShopTable from "../Building/ShopTable";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -149,21 +150,20 @@ export default class Item extends cc.Component {
         
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
+            let player = other.node.getComponent(Player);
             if (this.data.canSave) {
                 cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{itemData:this.data}});
                 this.highLight(true);
                 this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2),cc.delayTime(1),cc.fadeOut(0.2)));
-            } else {
+            } else if(player) {
                 this.taken(player);
             }
         }
 
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             this.highLight(false);
             cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE);
         }

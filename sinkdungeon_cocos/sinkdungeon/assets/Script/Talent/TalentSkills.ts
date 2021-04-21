@@ -256,7 +256,7 @@ export default class TalentSkills extends Talent {
         let d = new DamageData();
         d.physicalDamage = 2;
         this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
-            .init(0, 0.1, 0, 2, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.BURNING]));
+            .init(0, 0.1, 0, 2, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.DIZZ]));
             this.talentSkill.IsExcuting = false;
         },0.8)
     }
@@ -293,7 +293,7 @@ export default class TalentSkills extends Talent {
         let d = new DamageData();
         d.magicDamage = 1;
         this.shoot(this.player.shooterEx, 0, 0, 'bullet041',this.smokePrefab,new AreaOfEffectData().init(
-            7,0.1,0,1,IndexZ.OVERHEAD,false,false,false,false,false,new DamageData(),new FromData(),[StatusManager.CURSING]
+            7,0.1,0,1,IndexZ.OVERHEAD,false,false,false,false,false,new DamageData(),new FromData(),[StatusManager.WINE_CLOUD]
         ));
     }
     showFireBall() {

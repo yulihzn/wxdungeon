@@ -176,6 +176,9 @@ export default class NonPlayerData{
         dd.realDamage = data.realDamage;
         dd.physicalDamage = data.damageMin;
         dd.magicDamage = data.magicDamage;
+        if(dd.physicalDamage<0){
+            dd.physicalDamage = 0;
+        }
         return dd;
     }
     //伤害减免

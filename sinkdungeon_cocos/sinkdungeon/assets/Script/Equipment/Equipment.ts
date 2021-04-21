@@ -5,6 +5,7 @@ import Player from "../Player";
 import ShopTable from "../Building/ShopTable";
 import Dungeon from "../Dungeon";
 import AudioPlayer from "../Utils/AudioPlayer";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -131,15 +132,13 @@ export default class Equipment extends cc.Component {
     }
 
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE);
             this.highLight(false);
         }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
+        if (other.tag == ColliderTag.PLAYER) {
             this.highLight(true);
             this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2), cc.delayTime(1), cc.fadeOut(0.2)));
             cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { equipData: this.data } });

@@ -5,6 +5,7 @@ import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
 import AudioPlayer from "../Utils/AudioPlayer";
 import Dungeon from "../Dungeon";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -83,9 +84,9 @@ export default class AirExit extends Building {
     }
 
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let player = other.node.getComponent(Player);
-        if (player) {
-            if (this.status == AirExit.STATUS_OPEN) {
+        if (other.tag == ColliderTag.PLAYER) {
+            let player = other.node.getComponent(Player);
+            if (player&&this.status == AirExit.STATUS_OPEN) {
                 this.scheduleOnce(()=>{
                     Logic.playerData = player.data.clone();
                     Logic.loadingNextRoom(this.dir);

@@ -7,7 +7,8 @@
         "desc": "",
         "duration": 3,
         "common": {
-            "moveSpeed": -150
+            "moveSpeed": -150,
+            "attackSpeed": -150
         }
     },
     "status002": {
@@ -16,9 +17,10 @@
         "spriteFrameName": "status002",
         "statusType": 2,
         "desc": "",
-        "duration": 3,
+        "magicDamageOvertime": 1,
+        "duration": 5,
         "common": {
-            "defence": -50
+            "damgeMin": -3
         }
     },
     "status003": {
@@ -27,10 +29,10 @@
         "spriteFrameName": "status003",
         "statusType": 3,
         "desc": "",
-        "duration": 3,
+        "duration": 5,
         "dizzDurationDirect":1,
+        "missRate": 80,
         "common": {
-            "attackSpeed": -200
         }
     },
     "status004": {
@@ -40,7 +42,7 @@
         "statusType": 4,
         "desc": "",
         "magicDamageOvertime": 1,
-        "duration": 3,
+        "duration": 5,
         "common": {
         }
     },
@@ -51,9 +53,8 @@
         "statusType": 5,
         "desc": "",
         "duration": 5,
-        "missRate": 80,
         "common": {
-            "maxHealth": -5
+            "defence": -50
         }
     },
     "status006": {
@@ -359,5 +360,16 @@
         "duration": 3,
         "dreamOvertime": -1,
         "common": {}
+    },
+    "status033": {
+        "nameCn": "醉酒乌云",
+        "nameEn": "wine cloud",
+        "spriteFrameName": "status003",
+        "statusType": 33,
+        "desc": "",
+        "duration": 3,
+        "missRate":80,
+        "common": {
+        }
     }
 }

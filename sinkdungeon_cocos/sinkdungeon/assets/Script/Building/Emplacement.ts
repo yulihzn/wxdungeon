@@ -1,6 +1,4 @@
 import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
-import Player from "../Player";
 import Shooter from "../Shooter";
 import Logic from "../Logic";
 import Building from "./Building";
