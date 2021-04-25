@@ -1353,6 +1353,7 @@
             <key type="filename">building/wallship01anim000.png</key>
             <key type="filename">building/wallship01anim001.png</key>
             <key type="filename">equipment/weapon035.png</key>
+            <key type="filename">equipment/weapon036.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -1649,6 +1650,18 @@
             <key type="filename">equipment/clothes023anim0.png</key>
             <key type="filename">equipment/clothes023anim1.png</key>
             <key type="filename">equipment/clothes023anim2.png</key>
+            <key type="filename">equipment/clothes024anim0.png</key>
+            <key type="filename">equipment/clothes024anim1.png</key>
+            <key type="filename">equipment/clothes024anim2.png</key>
+            <key type="filename">equipment/clothes025anim0.png</key>
+            <key type="filename">equipment/clothes025anim1.png</key>
+            <key type="filename">equipment/clothes025anim2.png</key>
+            <key type="filename">equipment/clothes026anim0.png</key>
+            <key type="filename">equipment/clothes026anim1.png</key>
+            <key type="filename">equipment/clothes026anim2.png</key>
+            <key type="filename">equipment/clothes027anim0.png</key>
+            <key type="filename">equipment/clothes027anim1.png</key>
+            <key type="filename">equipment/clothes027anim2.png</key>
             <key type="filename">equipment/helmet001anim0.png</key>
             <key type="filename">equipment/helmet001anim2.png</key>
             <key type="filename">equipment/helmet002anim0.png</key>
@@ -1792,6 +1805,7 @@
             <key type="filename">equipment/trousers009.png</key>
             <key type="filename">equipment/trousers010.png</key>
             <key type="filename">equipment/trousers011.png</key>
+            <key type="filename">equipment/trousers012.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

@@ -2295,7 +2295,7 @@
         "desc": "看起来还行"
     },
     "clothes017": {
-        "nameCn": "进喜装甲",
+        "nameCn": "钢铁装甲",
         "nameEn": "Iron Armor",
         "equipmetType": "clothes",
         "prefix": "",
@@ -2314,7 +2314,7 @@
             "dodge": 0,
             "maxHealth": 1
         },
-        "desc": "咱们工人有力量"
+        "desc": "其实是塑料做的"
     },
     "clothes018": {
         "nameCn": "黑色袍子",
