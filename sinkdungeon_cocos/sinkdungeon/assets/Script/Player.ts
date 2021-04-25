@@ -134,8 +134,6 @@ export default class Player extends Actor {
             });
         cc.director.on(EventHelper.PLAYER_STATUSUPDATE
             , (event) => { if (this.node) this.statusUpdate() });
-        cc.director.on(EventHelper.PLAYER_TAKEDAMAGE
-            , (event) => { if (this.node) this.takeDamage(event.detail.damage, event.detail.from) });
         cc.director.on(EventHelper.PLAYER_USEDREAM
             , (event) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.useDream(event.detail.value) });
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
@@ -448,7 +446,7 @@ export default class Player extends Actor {
         }
     }
     //特效受击
-    remoteExHurt(blockLevel: number): void {
+    remoteOrStatusExHurt(blockLevel: number,from: FromData, actor: Actor): void {
         for (let data of this.inventoryManager.list) {
             let needFire = false;
             if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
@@ -470,6 +468,12 @@ export default class Player extends Actor {
                 this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
                 this.shooterEx.data.bulletSize = data.bulletSize;
                 this.shooterEx.fireBullet(0);
+            }
+            if(data.statusNameHurtOther.length>0&&data.statusRateHurt>Logic.getRandomNum(0,100)){
+                actor.addStatus(data.statusNameHurtOther,new FromData());
+            }
+            if(data.statusNameHurtSelf.length>0&&data.statusRateHurt>Logic.getRandomNum(0,100)){
+                this.addStatus(data.statusNameHurtSelf,new FromData());
             }
         }
     }
@@ -684,7 +688,7 @@ export default class Player extends Actor {
         }
         let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_PARRY;
         if (valid || blockLevel == Shield.BLOCK_PARRY) {
-            this.showDamageEffect(blockLevel);
+            this.showDamageEffect(blockLevel,from,actor);
         }
         return valid;
     }
@@ -702,8 +706,8 @@ export default class Player extends Actor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
         return overflow < 0 ? 0 : overflow;
     }
-    private showDamageEffect(blockLevel: number) {
-        this.remoteExHurt(blockLevel);
+    private showDamageEffect(blockLevel: number,from: FromData, actor: Actor) {
+        this.remoteOrStatusExHurt(blockLevel,from,actor);
         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
         if (blockLevel == Shield.BLOCK_NORMAL) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);

@@ -13,7 +13,6 @@ export class EventHelper extends cc.Component{
     public static readonly PLAYER_REMOTEATTACK_CANCEL = 'PLAYER_REMOTEATTACK_CANCEL';
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM';
     public static readonly PLAYER_TAPTIPS = 'PLAYER_TAPTIPS';
-    public static readonly PLAYER_TAKEDAMAGE= 'PLAYER_TAKEDAMAGE';
     public static readonly PLAYER_USEDREAM= 'PLAYER_USEDREAM';
     public static readonly PLAYER_CHANGEITEM= 'PLAYER_CHANGEITEM';
     public static readonly PLAYER_CHANGEEQUIPMENT= 'PLAYER_CHANGEEQUIPMENT';

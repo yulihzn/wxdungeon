@@ -51,6 +51,9 @@ export default class EquipmentData extends BaseData{
     statusNameBlockSelf = '';//普通盾防对自己添加的状态
     statusNameBlockOther = '';//普通盾防对敌人添加的状态
     statusRateBlock = 0;//普通盾防添加状态的几率
+    statusNameHurtSelf = '';//受伤对自己添加的状态
+    statusNameHurtOther = '';//受伤对敌人添加的状态
+    statusRateHurt = 0;//受伤添加状态的几率
     exBulletTypeAttack = '';//攻击额外子弹类别
     exBulletTypeHurt = '';//受伤害额外子弹类别
     exBulletTypeParry = '';//盾反额外子弹类别
@@ -60,6 +63,7 @@ export default class EquipmentData extends BaseData{
     exBulletCombo2 = 0;
     exBulletCombo3 = 0;
     exBulletOffsetX = 0;//额外子弹偏移x
+    ignoreTrap = 0;//无视尖刺伤害
 
     price:number = 0;
 
@@ -69,6 +73,8 @@ export default class EquipmentData extends BaseData{
     info2:string = '';
     info3:string = '';
     extraInfo:string = '';
+    suitNames = '';//套装资源名列表（3个）
+    suitStatus = '';//套装状态列表（3个）
     suit1:string = '';
     suit2:string = '';
     suit3:string = '';
@@ -132,6 +138,9 @@ export default class EquipmentData extends BaseData{
         this.statusRateParry = data.statusRateParry?data.statusRateParry:0;
         this.statusNameBlockOther = data.statusNameBlockOther?data.statusNameBlockOther:'';
         this.statusNameBlockSelf = data.statusNameBlockSelf?data.statusNameBlockSelf:'';
+        this.statusNameHurtSelf = data.statusNameHurtSelf?data.statusNameHurtSelf:'';
+        this.statusNameHurtOther = data.statusNameHurtOther?data.statusNameHurtOther:'';
+        this.statusRateHurt = data.statusRateHurt?data.statusRateHurt:0;
         this.statusRateBlock = data.statusRateBlock?data.statusRateBlock:0;
         this.statusInterval = data.statusInterval?data.statusInterval:0;
         this.isReflect = data.isReflect?data.isReflect:0;
@@ -140,6 +149,7 @@ export default class EquipmentData extends BaseData{
         this.exBulletCombo2 = data.exBulletCombo2?data.exBulletCombo2:0;
         this.exBulletCombo3 = data.exBulletCombo3?data.exBulletCombo3:0;
         this.exBulletOffsetX = data.exBulletOffsetX?data.exBulletOffsetX:0;
+        this.ignoreTrap = data.ignoreTrap?data.ignoreTrap:0;
         this.price = data.price?data.price:0;
         this.info1 = data.info1?data.info1:'';
         this.info2 = data.info2?data.info2:'';
@@ -148,6 +158,8 @@ export default class EquipmentData extends BaseData{
         this.suit1 = data.suit1?data.suit1:'';
         this.suit2 = data.suit2?data.suit2:'';
         this.suit3 = data.suit3?data.suit3:'';
+        this.suitNames = data.suitNames?data.suitNames:'';
+        this.suitStatus = data.suitStatus?data.suitStatus:'';
         this.infobase = data.infobase?data.infobase:'';
         this.infocolor1 = data.infocolor1?data.infocolor1:'#ffffff';
         this.infocolor2 = data.infocolor2?data.infocolor2:'#ffffff';
@@ -203,11 +215,17 @@ export default class EquipmentData extends BaseData{
         e.statusRateParry = this.statusRateParry;
         e.statusNameParryOther = this.statusNameParryOther;
         e.statusNameParrySelf = this.statusNameParrySelf;
+        e.statusNameHurtSelf = this.statusNameHurtSelf;
+        e.statusNameHurtOther = this.statusNameHurtOther;
+        e.statusRateHurt = this.statusRateHurt;
         e.exBulletRate = this.exBulletRate;
         e.exBulletCombo1 = this.exBulletCombo1;
         e.exBulletCombo2 = this.exBulletCombo2;
         e.exBulletCombo3 = this.exBulletCombo3;
         e.exBulletOffsetX = this.exBulletOffsetX;
+        e.ignoreTrap = this.ignoreTrap;
+        e.suitStatus = this.suitStatus;
+        e.suitNames = this.suitNames;
         e.price = this.price;
         e.info1 = this.info1;
         e.info2 = this.info2;

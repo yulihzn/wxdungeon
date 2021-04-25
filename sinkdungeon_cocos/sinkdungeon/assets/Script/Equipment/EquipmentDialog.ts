@@ -1,6 +1,7 @@
 import Equipment from "./Equipment";
 import Logic from "../Logic";
 import EquipmentData from "../Data/EquipmentData";
+import InventoryManager from "../Manager/InventoryManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -36,9 +37,11 @@ export default class EquipmentDialog extends cc.Component {
     infoSuit3: cc.Label = null;//套装附加词条3
     @property(cc.Label)
     infoDesc: cc.Label = null;//描述
+
+    isInventory = false;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
     }
 
     start() {
@@ -54,35 +57,50 @@ export default class EquipmentDialog extends cc.Component {
         this.infoSuit1.node.active = true;
         this.infoSuit2.node.active = true;
         this.infoSuit3.node.active = true;
-        this.labelTile.string = equipment.prefix  + equipment.nameCn;
-        this.labelTile.node.color=this.labelTile.node.color.fromHEX(equipment.titlecolor);
+        this.labelTile.string = equipment.prefix + equipment.nameCn;
+        this.labelTile.node.color = this.labelTile.node.color.fromHEX(equipment.titlecolor);
         this.infoBase.string = equipment.infobase;
-        this.infoBase.node.color=this.infoBase.node.color.fromHEX(equipment.infobasecolor);
+        this.infoBase.node.color = this.infoBase.node.color.fromHEX(equipment.infobasecolor);
         this.info1.string = equipment.info1;
-        this.info1.node.color=this.info1.node.color.fromHEX(equipment.infocolor1);
+        this.info1.node.color = this.info1.node.color.fromHEX(equipment.infocolor1);
         this.info2.string = equipment.info2;
-        this.info2.node.color=this.info2.node.color.fromHEX(equipment.infocolor2);
+        this.info2.node.color = this.info2.node.color.fromHEX(equipment.infocolor2);
         this.info3.string = equipment.info3;
-        this.info3.node.color=this.info3.node.color.fromHEX(equipment.infocolor3);
+        this.info3.node.color = this.info3.node.color.fromHEX(equipment.infocolor3);
         this.extraInfo.string = equipment.extraInfo;
         this.infoSuit1.string = equipment.suit1;
-        this.infoSuit1.node.color=this.infoSuit1.node.color.fromHEX(equipment.suitcolor1);
+        this.infoSuit1.node.color = this.infoSuit1.node.color.fromHEX(equipment.suitcolor1);
         this.infoSuit2.string = equipment.suit2;
-        this.infoSuit2.node.color=this.infoSuit2.node.color.fromHEX(equipment.suitcolor2);
+        this.infoSuit2.node.color = this.infoSuit2.node.color.fromHEX(equipment.suitcolor2);
         this.infoSuit3.string = equipment.suit3;
-        this.infoSuit3.node.color=this.infoSuit3.node.color.fromHEX(equipment.suitcolor3);
+        this.infoSuit3.node.color = this.infoSuit3.node.color.fromHEX(equipment.suitcolor3);
         this.infoDesc.string = equipment.desc;
-        this.infoBase.node.active = this.infoBase.string.length>0;
-        this.info1.node.active = this.info1.string.length>0;
-        this.info2.node.active = this.info2.string.length>0;
-        this.info3.node.active = this.info3.string.length>0;
-        this.extraInfo.node.active = this.extraInfo.string.length>0;
-        this.infoSuit1.node.active = this.infoSuit1.string.length>0;
-        this.infoSuit2.node.active = this.infoSuit2.string.length>0;
-        this.infoSuit3.node.active = this.infoSuit3.string.length>0;
+        this.infoBase.node.active = this.infoBase.string.length > 0;
+        this.info1.node.active = this.info1.string.length > 0;
+        this.info2.node.active = this.info2.string.length > 0;
+        this.info3.node.active = this.info3.string.length > 0;
+        this.extraInfo.node.active = this.extraInfo.string.length > 0;
+        this.infoSuit1.node.active = this.infoSuit1.string.length > 0;
+        this.infoSuit2.node.active = this.infoSuit2.string.length > 0;
+        this.infoSuit3.node.active = this.infoSuit3.string.length > 0;
     }
-    showDialog() {
+    showDialog(equipment: EquipmentData, inventoryManager?: InventoryManager) {
+        this.refreshDialog(equipment);
         this.node.opacity = 255;
+        if (inventoryManager) {
+            let suitNames = equipment.suitNames.length > 0 ? equipment.suitNames.split(',') : [];
+            let count = 0;
+            for (let name of suitNames) {
+                for (let e of inventoryManager.list) {
+                    if (name == e.img) {
+                        count++;
+                    }
+                }
+            }
+            this.infoSuit1.node.opacity = count>0?255:128;
+            this.infoSuit2.node.opacity = count>1?255:128;
+            this.infoSuit2.node.opacity = count>2?255:128;
+        }
     }
     hideDialog() {
         this.node.opacity = 0;

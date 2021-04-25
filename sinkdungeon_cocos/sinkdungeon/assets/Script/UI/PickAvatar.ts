@@ -240,13 +240,13 @@ export default class PickAvatar extends cc.Component {
             this.isSpirteLoaded = true;
             return;
         }
-        cc.resources.load('Texture/texures', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+        cc.resources.load('Texture/textures', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
             this.spriteFrames = {};
             for (let frame of atlas.getSpriteFrames()) {
                 this.spriteFrames[frame.name] = frame;
             }
             this.isSpirteLoaded = true;
-            cc.log('texures spriteatlas loaded');
+            cc.log('textures spriteatlas loaded');
         })
     }
     show() {

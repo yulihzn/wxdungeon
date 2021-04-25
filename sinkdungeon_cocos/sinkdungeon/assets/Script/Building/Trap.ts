@@ -6,6 +6,8 @@ import Building from "./Building";
 import FromData from "../Data/FromData";
 import { ColliderTag } from "../Actor/ColliderTag";
 import IndexZ from "../Utils/IndexZ";
+import Equipment from "../Equipment/Equipment";
+import EquipmentManager from "../Manager/EquipmentManager";
 
 
 // Learn TypeScript:
@@ -74,7 +76,10 @@ export default class Trap extends Building {
         if(other.tag == ColliderTag.PLAYER){
             if(this.isOpen && this.isPlayerIn){
                 this.isOpen = false;
-                cc.director.emit(EventHelper.PLAYER_TAKEDAMAGE,{detail:{damage:new DamageData(1),from:FromData.getClone(this.actorName(),'trap001')}});
+                let player = other.getComponent(Player);
+                if(player&&player.inventoryManager.shoes.ignoreTrap<1){
+                    player.takeDamage(new DamageData(1),FromData.getClone(this.actorName(),'trap001'),this);
+                }
             }
         }
     }

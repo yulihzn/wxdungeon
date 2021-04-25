@@ -453,6 +453,9 @@ export default class EquipmentManager extends BaseManager {
         data.infocolor1 = '#9370DB';//适中的紫色
         data.infocolor2 = '#87CEFA';//淡蓝色
         data.infocolor3 = '#BC8F8F';//玫瑰棕色
+        data.suitcolor1 = '#98FB98';//苍白的绿色
+        data.suitcolor2 = '#32CD32';//酸橙绿
+        data.suitcolor3 = '#00FF00';//酸橙色
         data.Common.add(desc.common);
       
         data.prefix = desc.prefix;

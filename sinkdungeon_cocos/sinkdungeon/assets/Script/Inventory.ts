@@ -12,7 +12,6 @@ const { ccclass, property } = cc._decorator;
 import { EventHelper } from './EventHelper';
 import Logic from './Logic';
 import EquipmentData from './Data/EquipmentData';
-import Player from './Player';
 import EquipmentDialog from './Equipment/EquipmentDialog';
 import InventoryManager from './Manager/InventoryManager';
 import Dungeon from './Dungeon';
@@ -72,10 +71,14 @@ export default class Inventory extends cc.Component {
     glovesTimeDelay = 0;
     shoesTimeDelay = 0;
     cloakTimeDelay = 0;
+    suitTimeDelay = 0;
+    suitStatus: { [key: string]: string } = {};
+    suitNames: { [key: string]: number } = {};
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.equipmentDialog.isInventory = true;
         this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
@@ -87,8 +90,7 @@ export default class Inventory extends cc.Component {
         cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
             , (event) => {
                 if (this.equipmentGroundDialog) {
-                    this.equipmentGroundDialog.refreshDialog(event.detail.equipData);
-                    this.equipmentGroundDialog.showDialog();
+                    this.equipmentGroundDialog.showDialog(event.detail.equipData);
                 }
             });
         cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE
@@ -169,8 +171,7 @@ export default class Inventory extends cc.Component {
                 case Equipment.SHOES: equipData = this.inventoryManager.shoes.clone(); break;
                 case Equipment.CLOAK: equipData = this.inventoryManager.cloak.clone(); break;
             }
-            this.equipmentDialog.refreshDialog(equipData)
-            this.equipmentDialog.showDialog();
+            this.equipmentDialog.showDialog(equipData,this.inventoryManager);
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentDialog.hideDialog();
@@ -221,6 +222,13 @@ export default class Inventory extends cc.Component {
             let p = this.dungeon.player.node.position.clone();
             this.dungeon.addEquipment(equipmentData.img, p, equipmentData);
         }
+    }
+    refreshSuits(){
+        for(let equip of this.inventoryManager.list){
+            this.suitStatus[equip.suitNames]=equip.suitStatus;
+            this.suitNames[equip.suitNames]=1;
+        }
+
     }
     refreshEquipment(equipmentDataNew: EquipmentData, isChange: boolean) {
         if (!equipmentDataNew || !this.weapon) {
@@ -379,6 +387,9 @@ export default class Inventory extends cc.Component {
         }
         if (this.isTimeDelay(dt, this.inventoryManager.cloak)) {
             this.addPlayerStatus(this.inventoryManager.cloak);
+        }
+        if(this.getTimeDelay(this.suitTimeDelay,1,dt)){
+            
         }
     }
 

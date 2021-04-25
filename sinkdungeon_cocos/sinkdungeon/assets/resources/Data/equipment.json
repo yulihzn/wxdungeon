@@ -674,7 +674,7 @@
         "far": 1
     },
     "weapon024": {
-        "nameCn": "冰刺",
+        "nameCn": "冰刺长枪",
         "nameEn": "ice thron",
         "equipmetType": "weapon",
         "equipmetTypeCn": "",
@@ -1001,6 +1001,30 @@
         },
         "desc": "锋利冰冷的刺"
     },
+    "weapon036": {
+        "nameCn": "键盘",
+        "nameEn": "Keyboard",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ffffff",
+        "img": "weapon036",
+        "common": {
+            "damageMin": 1,
+            "damageMax": 1,
+            "criticalStrikeRate": 10,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "lighteningRate":30,
+            "maxHealth": 0
+        },
+        "blunt":1,
+        "desc": "经典键盘"
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",
@@ -1288,6 +1312,35 @@
         },
         "stab":1,
         "desc": "经典92"
+    },
+    "remote011": {
+        "nameCn": "篮球",
+        "nameEn": "Basketball",
+        "equipmetType": "remote",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "remote011",
+        "bulletType":"bullet042",
+        "bulletArcExNum":0,
+        "isHeavy":0,
+        "common": {
+            "remoteDamage":1,
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "remoteCooldown":1000,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "stab":1,
+        "desc": "一个篮球"
     },
     "helmet002": {
         "nameCn": "侦探帽",
@@ -2449,6 +2502,99 @@
         },
         "desc": "宽松舒适，心情愉悦"
     },
+    "clothes024": {
+        "nameCn": "练功服",
+        "nameEn": "Practice Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes024",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 20,
+            "attackSpeed": 0,
+            "maxDream": 0,
+            "maxHealth": 1
+        },
+        "desc": "练功的普通服装"
+    },
+    "clothes025": {
+        "nameCn": "袈裟",
+        "nameEn": "Monk Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes025",
+        "statusRateHurt":30,
+        "statusNameHurtOther":"status003",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "maxDream": 0,
+            "maxHealth": 3
+        },
+        "extraInfo":"受伤时概率震晕敌人",
+        "desc": "大威天龙大罗法咒袈裟"
+    },
+    "clothes026": {
+        "nameCn": "背带装",
+        "nameEn": "Cai Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes026",
+        "statusRateHurt":30,
+        "statusNameHurtOther":"status003",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 20,
+            "attackSpeed": 30,
+            "maxDream": 0,
+            "maxHealth": 1
+        },
+        "desc": "带白色背带的衬衫"
+    },
+    "clothes027": {
+        "nameCn": "格子衫",
+        "nameEn": "Block Clothes",
+        "equipmetType": "clothes",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "clothes027",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "maxDream": 0,
+            "maxHealth": 1
+        },
+        "desc": "格子衫"
+    },
     "cloak001": {
         "nameCn": "战袍",
         "nameEn": "Warrior Cloak",
@@ -2704,7 +2850,7 @@
         "trouserslong": 1
     },
     "trousers010": {
-        "nameCn": "进喜裤子",
+        "nameCn": "钢铁裤子",
         "nameEn": "Energy Trousers",
         "equipmetType": "trousers",
         "prefix": "",
@@ -2723,7 +2869,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "咱们工人有力量",
+        "desc": "其实是塑料",
         "trouserslong": 1
     },
     "trousers011": {
@@ -2748,6 +2894,29 @@
         },
         "desc": "夏威夷",
         "trouserslong": 0
+    },
+    "trousers012": {
+        "nameCn": "牛仔裤",
+        "nameEn": "Cow Boy Trousers",
+        "equipmetType": "trousers",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "img": "trousers012",
+        "common": {
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 1,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        },
+        "desc": "普通的牛仔裤",
+        "trouserslong": 1
     },
     "gloves001": {
         "nameCn": "战士手套",
@@ -3122,6 +3291,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes007",
+        "ignoreTrap":1,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3135,7 +3305,8 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "骑士精神...无视尖刺伤害"
+        "extraInfo":"无视尖刺伤害",
+        "desc": "骑士精神"
     },
     "shoes008": {
         "nameCn": "死神鞋",

@@ -273,7 +273,7 @@ export default class Bullet extends cc.Component {
             cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001', true); }),
             cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002', true); }));
         let spawn = cc.spawn(idleAction, cc.rotateBy(0.3, this.data.rotateAngle > 0 ? this.data.rotateAngle : 15));
-        if (this.data.isRotate == 1) {
+        if (this.data.isRotate > 0) {
             this.sprite.runAction(cc.repeatForever(spawn));
         } else {
             this.sprite.runAction(cc.repeatForever(idleAction));

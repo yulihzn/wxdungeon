@@ -132,7 +132,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../../sinkdungeon_cocos/sinkdungeon/assets/resources/Texture/texures.plist</filename>
+                <filename>../../sinkdungeon_cocos/sinkdungeon/assets/resources/Texture/textures.plist</filename>
             </struct>
             <key>header</key>
             <key>source</key>

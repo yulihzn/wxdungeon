@@ -872,6 +872,23 @@
             "physicalDamage": 1
         }
     },
+    "bullet042": {
+        "name":"篮球",
+        "resName": "bullet042",
+        "lightName": "bulletlight001",
+        "lightColor": "#ffffff",
+        "speed": 400,
+        "isRect": 0,
+        "isRotate": 1,
+        "lifeTime":30,
+        "isPhysical":1,
+        "isDecelerate":3,
+        "size": 2,
+        "isBoom":0,
+        "damage": {
+            "physicalDamage": 1
+        }
+    },
     "laser001": {
         "name":"红色激光",
         "speed": 5000,
