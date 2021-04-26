@@ -14,6 +14,11 @@ import FromData from "./FromData";
 /**
  * 状态
  * 状态有两种添加方式，一种是立即触发，一种是持续触发
+ * 状态出现添加时机有：物品装备加载，使用物品，物品装备间隔定时触发，近战攻击按键，远程攻 击按键，
+ * 近战攻击击中，aoe持续击中，子弹击中受到伤害，击杀敌人,开始使用技能，
+ * 技能持续，技能结束，静止，移动，梦境值耗尽，梦境值满，生命值满，半血，濒死，进出指定范围
+ * 状态移除时机有：状态倒计时结束，技能开始，技能结束，物品装备更换，死亡，受到伤害，驱散，
+ * 静止，移动，近战攻击按键，远程攻击按键，梦境值耗尽，半血，濒死，进出指定范围
  * 负面：冰冻、燃烧、减速、中毒、诅咒、流血、道具
  * 正面：祝福、道具、天赋、隐身
  */
@@ -38,6 +43,7 @@ export default class StatusData {
     dizzDurationDirect = 0;//瞬间眩晕时长
     dizzDurationOvertime = 0;//持续眩晕时长
     invisibleDuratonDirect = 0;//隐身持续时长
+    
     private from:FromData;//来源
     constructor(){
         this.common = new CommonData();

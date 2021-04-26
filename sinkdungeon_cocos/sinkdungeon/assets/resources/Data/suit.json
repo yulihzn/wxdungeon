@@ -1,0 +1,23 @@
+{
+    "suit001":{
+        "nameCn": "唱跳Rap篮球",
+        "nameEn": "",
+        "suitType":"suit001",
+        "suitNames":"remote011,clothes026",
+        "statusList":[],
+        "commonList": [{
+            "damageMin": 0,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "remoteDamage":5,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 0,
+            "dodge": 0,
+            "maxHealth": 0
+        }],
+        "desc": ""
+    }
+}

@@ -19,6 +19,7 @@ import Settings from "./Model/Settings";
 import LocalStorage from "./Utils/LocalStorage";
 import SavePointData from "./Data/SavePointData";
 import NonPlayerData from "./Data/NonPlayerData";
+import SuitData from "./Data/SuitData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,6 +55,8 @@ export default class Logic extends cc.Component {
     static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     //状态json
     static debuffs: { [key: string]: StatusData } = null;
+    //套装json
+    static suits: { [key: string]: SuitData } = null;
     //子弹json
     static bullets: { [key: string]: BulletData } = null;
     //物品json

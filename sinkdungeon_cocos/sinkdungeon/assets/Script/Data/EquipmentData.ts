@@ -73,8 +73,7 @@ export default class EquipmentData extends BaseData{
     info2:string = '';
     info3:string = '';
     extraInfo:string = '';
-    suitNames = '';//套装资源名列表（3个）
-    suitStatus = '';//套装状态列表（3个）
+    suitType = '';//套装资源名
     suit1:string = '';
     suit2:string = '';
     suit3:string = '';
@@ -158,8 +157,7 @@ export default class EquipmentData extends BaseData{
         this.suit1 = data.suit1?data.suit1:'';
         this.suit2 = data.suit2?data.suit2:'';
         this.suit3 = data.suit3?data.suit3:'';
-        this.suitNames = data.suitNames?data.suitNames:'';
-        this.suitStatus = data.suitStatus?data.suitStatus:'';
+        this.suitType = data.suitType?data.suitType:'';
         this.infobase = data.infobase?data.infobase:'';
         this.infocolor1 = data.infocolor1?data.infocolor1:'#ffffff';
         this.infocolor2 = data.infocolor2?data.infocolor2:'#ffffff';
@@ -224,8 +222,7 @@ export default class EquipmentData extends BaseData{
         e.exBulletCombo3 = this.exBulletCombo3;
         e.exBulletOffsetX = this.exBulletOffsetX;
         e.ignoreTrap = this.ignoreTrap;
-        e.suitStatus = this.suitStatus;
-        e.suitNames = this.suitNames;
+        e.suitType = this.suitType;
         e.price = this.price;
         e.info1 = this.info1;
         e.info2 = this.info2;

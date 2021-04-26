@@ -1,5 +1,6 @@
 import EquipmentData from "../Data/EquipmentData";
 import ItemData from "../Data/ItemData";
+import SuitData from "../Data/SuitData";
 import NextStep from "../Utils/NextStep";
 
 // Learn TypeScript:
@@ -28,6 +29,7 @@ export default class InventoryManager {
     list:EquipmentData[] = [];
     itemList:ItemData[] = [];
     itemCoolDownList:NextStep[]=[];
+    suitMap: { [key: string]: SuitData } = {};
     
     clear(): void {
     }
@@ -39,6 +41,7 @@ export default class InventoryManager {
             this.itemList.push(data);
             this.itemCoolDownList.push(new NextStep());
         }
+        this.suitMap = {};
     }
     getTotalEquipmentData():EquipmentData{
         let e = new EquipmentData();
@@ -52,6 +55,14 @@ export default class InventoryManager {
         .add(this.clothes.Common)
         .add(this.cloak.Common)
         .add(this.buffer.Common);
+        for(let key in this.suitMap){
+            let suit = this.suitMap[key];
+            if(suit){
+                for(let i = 0;i<suit.count-2;i++){
+                    e.Common.add(suit.CommonList[i]);
+                }
+            }
+        }
         return e;
     }
 }

@@ -33,6 +33,7 @@ export default class Loading extends cc.Component {
     private isNonplayerLoaded = false;
     private isWorldLoaded = false;
     private isDebuffsLoaded = false;
+    private isSuitsLoaded = false;
     private isBulletsLoaded = false;
     private isProfessionLoaded = false;
     private isItemsLoaded = false;
@@ -76,6 +77,7 @@ export default class Loading extends cc.Component {
         this.loadProfession();
         this.loadNonplayer();
         this.loadBuildings();
+        this.loadSuits();
         this.showLoadingLabel();
         //显示过场
         if (Logic.isFirst == 1) {
@@ -186,6 +188,21 @@ export default class Loading extends cc.Component {
                 Logic.debuffs = resource.json;
                 this.isDebuffsLoaded = true;
                 cc.log('debuffs loaded');
+            }
+        })
+    }
+    loadSuits() {
+        if (Logic.suits) {
+            this.isSuitsLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/suits', (err: Error, resource:cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.suits = resource.json;
+                this.isSuitsLoaded = true;
+                cc.log('suits loaded');
             }
         })
     }
@@ -332,6 +349,7 @@ export default class Loading extends cc.Component {
             && this.isSkillsLoaded
             && this.isWorldLoaded
             && this.isBuildingLoaded
+            && this.isSuitsLoaded
             && this.cutScene.isSkip
             && this.isTransportAnimFinished) {
             this.timeDelay = 0;
@@ -348,6 +366,7 @@ export default class Loading extends cc.Component {
             this.isSkillsLoaded = false;
             this.isBuildingLoaded = false;
             this.isTransportAnimFinished = false;
+            this.isSuitsLoaded = false;
             Logic.mapManager.loadMap();
             cc.director.loadScene('game');
         }

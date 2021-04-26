@@ -88,7 +88,7 @@ export default class EquipmentDialog extends cc.Component {
         this.refreshDialog(equipment);
         this.node.opacity = 255;
         if (inventoryManager) {
-            let suitNames = equipment.suitNames.length > 0 ? equipment.suitNames.split(',') : [];
+            let suitNames = equipment.suitType.length > 0 ? equipment.suitType.split(',') : [];
             let count = 0;
             for (let name of suitNames) {
                 for (let e of inventoryManager.list) {

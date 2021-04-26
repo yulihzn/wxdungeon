@@ -1,4 +1,5 @@
 import BaseData from "./BaseData";
+import CommonData from "./CommonData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,9 +29,18 @@ export default class ItemData extends BaseData {
     cooldown = 1;//冷却时间
     statusList:string = '';
     canSave = 0;
+    private common:CommonData;
+    constructor(){
+        super();
+        this.common = new CommonData();
+    }
 
+    get Common(){
+        return this.common;
+    }
     public valueCopy(data: ItemData): void {
         this.uuid = data.uuid?data.uuid:'';
+        this.common.valueCopy(data.common);
         this.pos = data.pos?cc.v3(data.pos.x,data.pos.y):cc.v3(0,0);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
@@ -50,6 +60,7 @@ export default class ItemData extends BaseData {
     public clone(): ItemData {
         let e = new ItemData();
         e.uuid = this.uuid;
+        e.common = this.common.clone();
         e.pos = this.pos;
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;

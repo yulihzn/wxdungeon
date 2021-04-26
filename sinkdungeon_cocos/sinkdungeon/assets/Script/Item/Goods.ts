@@ -1,5 +1,4 @@
 import GoodsData from "../Data/GoodsData";
-import TarotData from "../Data/TarotData";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 

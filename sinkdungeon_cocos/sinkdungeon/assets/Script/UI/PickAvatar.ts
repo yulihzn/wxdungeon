@@ -39,6 +39,7 @@ export default class PickAvatar extends cc.Component {
     private isEquipmentLoaded = false;
     private isItemsLoaded = false;
     private isTalentsLoaded = false;
+    private isSuitsLoaded = false;
     //图片资源
     private spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     @property(cc.Node)
@@ -135,6 +136,7 @@ export default class PickAvatar extends cc.Component {
         this.loadEquipment();
         this.loadTalents();
         this.loadItems();
+        this.loadSuits();
         this.attributeLayout.active = false;
         this.randomButton.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.randomTouched = true;
@@ -232,6 +234,21 @@ export default class PickAvatar extends cc.Component {
                 }
                 this.isItemsLoaded = true;
                 cc.log('items loaded');
+            }
+        })
+    }
+    loadSuits() {
+        if (Logic.suits) {
+            this.isSuitsLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/suits', (err: Error, resource:cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.suits = resource.json;
+                this.isSuitsLoaded = true;
+                cc.log('suits loaded');
             }
         })
     }
@@ -429,12 +446,18 @@ export default class PickAvatar extends cc.Component {
         return script;
     }
     update(dt) {
-        if (this.isSpirteLoaded && this.isProfessionLoaded && this.isEquipmentLoaded && this.isTalentsLoaded && this.isItemsLoaded) {
+        if (this.isSpirteLoaded 
+            && this.isProfessionLoaded 
+            && this.isEquipmentLoaded 
+            && this.isTalentsLoaded 
+            && this.isItemsLoaded
+            && this.isSuitsLoaded) {
             this.isSpirteLoaded = false;
             this.isProfessionLoaded = false;
             this.isEquipmentLoaded = false;
             this.isItemsLoaded = false;
             this.isTalentsLoaded = false;
+            this.isSuitsLoaded = false;
             this.show();
         }
         if(this.isShow){

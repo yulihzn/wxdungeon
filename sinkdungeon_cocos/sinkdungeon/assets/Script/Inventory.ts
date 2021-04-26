@@ -20,6 +20,7 @@ import ItemData from './Data/ItemData';
 import Item from './Item/Item';
 import Equipment from './Equipment/Equipment';
 import ItemDialog from './Item/ItemDialog';
+import SuitData from './Data/SuitData';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -72,8 +73,6 @@ export default class Inventory extends cc.Component {
     shoesTimeDelay = 0;
     cloakTimeDelay = 0;
     suitTimeDelay = 0;
-    suitStatus: { [key: string]: string } = {};
-    suitNames: { [key: string]: number } = {};
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -82,11 +81,20 @@ export default class Inventory extends cc.Component {
         this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
-            , (event) => { if(this.node)this.refreshEquipment(event.detail.equipData, true) });
+            , (event) => {
+                if (this.node) {
+                    this.refreshEquipment(event.detail.equipData, true);
+                    this.refreshSuits();
+                }
+            });
         if (this.equipmentGroundDialog) { this.equipmentGroundDialog.hideDialog(); }
         if (this.itemGroundDialog) { this.itemGroundDialog.hideDialog(); }
         cc.director.on(EventHelper.PLAYER_CHANGEITEM
-            , (event) => { this.refreshItem(event.detail.itemData) });
+            , (event) => {
+                if (this.node) {
+                    this.refreshItem(event.detail.itemData);
+                }
+            });
         cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
             , (event) => {
                 if (this.equipmentGroundDialog) {
@@ -149,9 +157,10 @@ export default class Inventory extends cc.Component {
         this.refreshEquipment(this.inventoryManager.cloak, false);
         this.refreshItemRes();
         let itemSpriteList = [this.item1, this.item2, this.item3];
-        for(let i =0;i<itemSpriteList.length;i++){
-            this.addItemSpriteTouchEvent(itemSpriteList[i],i);
+        for (let i = 0; i < itemSpriteList.length; i++) {
+            this.addItemSpriteTouchEvent(itemSpriteList[i], i);
         }
+        this.refreshSuits();
     }
 
     private addEquipSpriteTouchEvent(sprite: cc.Sprite, equipmetType: string) {
@@ -171,7 +180,7 @@ export default class Inventory extends cc.Component {
                 case Equipment.SHOES: equipData = this.inventoryManager.shoes.clone(); break;
                 case Equipment.CLOAK: equipData = this.inventoryManager.cloak.clone(); break;
             }
-            this.equipmentDialog.showDialog(equipData,this.inventoryManager);
+            this.equipmentDialog.showDialog(equipData, this.inventoryManager);
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentDialog.hideDialog();
@@ -180,7 +189,7 @@ export default class Inventory extends cc.Component {
             this.equipmentDialog.hideDialog();
         })
     }
-    private addItemSpriteTouchEvent(sprite:cc.Sprite,itemIndex:number){
+    private addItemSpriteTouchEvent(sprite: cc.Sprite, itemIndex: number) {
         let isLongPress = false;
         let touchStart = false;
         sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_START, () => {
@@ -188,24 +197,24 @@ export default class Inventory extends cc.Component {
                 return;
             }
             touchStart = true;
-            this.scheduleOnce(()=>{
-                if (!touchStart||!this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
+            this.scheduleOnce(() => {
+                if (!touchStart || !this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
                     return;
                 }
                 isLongPress = true;
                 let item = this.inventoryManager.itemList[itemIndex].clone();
-                if(item.resName == Item.EMPTY){
+                if (item.resName == Item.EMPTY) {
                     return;
                 }
                 this.itemDialog.refreshDialog(item);
                 this.itemDialog.showDialog();
-            },0.3)
-            
+            }, 0.3)
+
         })
         sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.itemDialog.hideDialog();
-            if(!isLongPress){
-                this.userItem(sprite.node,itemIndex);
+            if (!isLongPress) {
+                this.userItem(sprite.node, itemIndex);
             }
             touchStart = false;
             isLongPress = false;
@@ -216,17 +225,27 @@ export default class Inventory extends cc.Component {
             isLongPress = false;
         })
     }
-   
+
     private setEquipment(equipmentData: EquipmentData, isChange: boolean) {
         if (isChange && equipmentData.equipmetType != Equipment.EMPTY) {
             let p = this.dungeon.player.node.position.clone();
             this.dungeon.addEquipment(equipmentData.img, p, equipmentData);
         }
     }
-    refreshSuits(){
-        for(let equip of this.inventoryManager.list){
-            this.suitStatus[equip.suitNames]=equip.suitStatus;
-            this.suitNames[equip.suitNames]=1;
+    refreshSuits() {
+        this.inventoryManager.suitMap = {};
+        for (let equip of this.inventoryManager.list) {
+            if(equip.suitType.length<1){
+                continue;
+            }
+            if (this.inventoryManager.suitMap[equip.suitType]) {
+                let data = new SuitData();
+                data.valueCopy(Logic.suits[equip.suitType]);
+                data.count = 1;
+                this.inventoryManager.suitMap[equip.suitType] = data;
+            } else {
+                this.inventoryManager.suitMap[equip.suitType].count++;
+            }
         }
 
     }
@@ -237,11 +256,11 @@ export default class Inventory extends cc.Component {
         let color = cc.color(255, 255, 255).fromHEX(equipmentDataNew.color);
         let spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img);
         if (equipmentDataNew.equipmetType == 'clothes') {
-            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img+'anim0');
-        }else if (equipmentDataNew.equipmetType == 'helmet') {
-            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img+'anim0');
-        }else if (equipmentDataNew.equipmetType == 'remote') {
-            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img+'anim0');
+            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img + 'anim0');
+        } else if (equipmentDataNew.equipmetType == 'helmet') {
+            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img + 'anim0');
+        } else if (equipmentDataNew.equipmetType == 'remote') {
+            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img + 'anim0');
         }
         switch (equipmentDataNew.equipmetType) {
             case Equipment.WEAPON: this.weapon.spriteFrame = spriteFrame;
@@ -388,21 +407,18 @@ export default class Inventory extends cc.Component {
         if (this.isTimeDelay(dt, this.inventoryManager.cloak)) {
             this.addPlayerStatus(this.inventoryManager.cloak);
         }
-        if(this.getTimeDelay(this.suitTimeDelay,1,dt)){
-            
-        }
     }
 
-    userItem(node:cc.Node, itemIndex:number) {
+    userItem(node: cc.Node, itemIndex: number) {
         if (!this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
             return;
         }
         let item = this.inventoryManager.itemList[itemIndex].clone();
-        if(item.resName == Item.EMPTY){
+        if (item.resName == Item.EMPTY) {
             return;
         }
-        this.inventoryManager.itemCoolDownList[itemIndex].next(()=>{
-            this.drawItemCoolDown(item.cooldown,node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+        this.inventoryManager.itemCoolDownList[itemIndex].next(() => {
+            this.drawItemCoolDown(item.cooldown, node.convertToWorldSpaceAR(cc.Vec3.ZERO));
             if (item.count != -1) {
                 item.count--;
             }
@@ -415,8 +431,8 @@ export default class Inventory extends cc.Component {
             if (item.resName != Item.EMPTY) {
                 cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
             }
-        },item.cooldown,true)
-        
+        }, item.cooldown, true)
+
     }
     refreshItem(itemDataNew: ItemData) {
         if (!this.node) {
@@ -475,7 +491,7 @@ export default class Inventory extends cc.Component {
         }
     }
 
-    private drawItemCoolDown(coolDown: number,position:cc.Vec3) {
+    private drawItemCoolDown(coolDown: number, position: cc.Vec3) {
         if (coolDown <= 0) {
             return;
         }

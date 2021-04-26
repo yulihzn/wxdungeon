@@ -1325,6 +1325,8 @@
         "bulletType":"bullet042",
         "bulletArcExNum":0,
         "isHeavy":0,
+        "suitType":"suit001",
+        "suit1":"远程攻击+5",
         "common": {
             "remoteDamage":1,
             "damageMin": 0,
@@ -2557,8 +2559,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes026",
-        "statusRateHurt":30,
-        "statusNameHurtOther":"status003",
+        "suitType":"suit001",
+        "suit1":"远程攻击+5",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2581,6 +2583,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes027",
+        "suitType":"suit001",
         "common": {
             "damageMin": 0,
             "damageMax": 0,
