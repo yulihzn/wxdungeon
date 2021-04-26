@@ -69,10 +69,10 @@ export default class EquipmentDialog extends cc.Component {
         this.info3.node.color = this.info3.node.color.fromHEX(equipment.infocolor3);
         this.extraInfo.string = equipment.extraInfo;
         this.infoSuit1.string = equipment.suit1;
-        this.infoSuit1.node.color = this.infoSuit1.node.color.fromHEX(equipment.suitcolor1);
         this.infoSuit2.string = equipment.suit2;
-        this.infoSuit2.node.color = this.infoSuit2.node.color.fromHEX(equipment.suitcolor2);
         this.infoSuit3.string = equipment.suit3;
+        this.infoSuit1.node.color = this.infoSuit1.node.color.fromHEX(equipment.suitcolor1);
+        this.infoSuit2.node.color = this.infoSuit2.node.color.fromHEX(equipment.suitcolor2);
         this.infoSuit3.node.color = this.infoSuit3.node.color.fromHEX(equipment.suitcolor3);
         this.infoDesc.string = equipment.desc;
         this.infoBase.node.active = this.infoBase.string.length > 0;
@@ -88,18 +88,13 @@ export default class EquipmentDialog extends cc.Component {
         this.refreshDialog(equipment);
         this.node.opacity = 255;
         if (inventoryManager) {
-            let suitNames = equipment.suitType.length > 0 ? equipment.suitType.split(',') : [];
             let count = 0;
-            for (let name of suitNames) {
-                for (let e of inventoryManager.list) {
-                    if (name == e.img) {
-                        count++;
-                    }
-                }
+            if(equipment.suitType.length>0&&inventoryManager.suitMap[equipment.suitType]){
+                count = inventoryManager.suitMap[equipment.suitType].count;
             }
-            this.infoSuit1.node.opacity = count>0?255:128;
-            this.infoSuit2.node.opacity = count>1?255:128;
-            this.infoSuit2.node.opacity = count>2?255:128;
+            this.infoSuit1.node.opacity = count>1?255:80;
+            this.infoSuit2.node.opacity = count>2?255:80;
+            this.infoSuit2.node.opacity = count>3?255:80;
         }
     }
     hideDialog() {

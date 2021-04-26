@@ -1326,7 +1326,7 @@
         "bulletArcExNum":0,
         "isHeavy":0,
         "suitType":"suit001",
-        "suit1":"远程攻击+5",
+        "suit1":"套装：远程攻击+5",
         "common": {
             "remoteDamage":1,
             "damageMin": 0,
@@ -2560,7 +2560,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes026",
         "suitType":"suit001",
-        "suit1":"远程攻击+5",
+        "suit1":"套装：远程攻击+5",
         "common": {
             "damageMin": 0,
             "damageMax": 0,

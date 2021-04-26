@@ -238,7 +238,7 @@ export default class Inventory extends cc.Component {
             if(equip.suitType.length<1){
                 continue;
             }
-            if (this.inventoryManager.suitMap[equip.suitType]) {
+            if (!this.inventoryManager.suitMap[equip.suitType]) {
                 let data = new SuitData();
                 data.valueCopy(Logic.suits[equip.suitType]);
                 data.count = 1;

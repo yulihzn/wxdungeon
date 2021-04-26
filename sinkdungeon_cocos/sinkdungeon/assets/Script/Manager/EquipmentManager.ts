@@ -56,6 +56,7 @@ export default class EquipmentManager extends BaseManager {
     public static readonly REMOTE_SHURIKEN = "remote007";
     public static readonly REMOTE_CHICKEN = "remote008";
     public static readonly REMOTE_OLDGUN = "remote009";
+    public static readonly REMOTE_BASKETBALL = "remote011";
     public static readonly SHIELD_CIRCLE = "shield000";
     public static readonly SHIELD_CARDOOR = "shield001";
     public static readonly SHIELD_POLICE = "shield002";
@@ -73,6 +74,7 @@ export default class EquipmentManager extends BaseManager {
     public static readonly CLOTHES_KNIGHT = "clothes012";
     public static readonly CLOTHES_DEATH = "clothes013";
     public static readonly CLOTHES_ENERGY = "clothes014";
+    public static readonly CLOTHES_CAI = "clothes026";
     public static readonly HELMET_BUCKETHAT = "helmet002";
     public static readonly HELMET_PIRATEHAT = "helmet003";
     public static readonly HELMET_REDHAT = "helmet004";

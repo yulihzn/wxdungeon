@@ -58,7 +58,7 @@ export default class InventoryManager {
         for(let key in this.suitMap){
             let suit = this.suitMap[key];
             if(suit){
-                for(let i = 0;i<suit.count-2;i++){
+                for(let i = 0;i<suit.count-1;i++){
                     e.Common.add(suit.CommonList[i]);
                 }
             }
