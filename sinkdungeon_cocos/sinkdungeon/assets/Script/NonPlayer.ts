@@ -501,7 +501,7 @@ export default class NonPlayer extends Actor {
             return false;
         }
         //隐身中
-        if (this.data.invisible > 0 && this.sprite.opacity < 200 && Logic.getRandomNum(1, 10) > 4) {
+        if (this.data.invisible > 0 && this.sprite.opacity < 100 && Logic.getRandomNum(1, 10) > 4) {
             this.showFloatFont(this.dungeon.node, 0, true, false, damageData.isCriticalStrike, false);
             return false;
         }

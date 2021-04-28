@@ -5,7 +5,7 @@
         "spriteFrameName": "status001",
         "statusType": 1,
         "desc": "",
-        "duration": 3,
+        "duration": 5,
         "common": {
             "moveSpeed": -150,
             "attackSpeed": -150
@@ -17,7 +17,7 @@
         "spriteFrameName": "status002",
         "statusType": 2,
         "desc": "",
-        "magicDamageOvertime": 1,
+        "magicDamageOvertime": 0.4,
         "duration": 5,
         "common": {
             "damgeMin": -3
