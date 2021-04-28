@@ -50,6 +50,10 @@ export default class Inventory extends cc.Component {
     item2: cc.Sprite = null;
     @property(cc.Sprite)
     item3: cc.Sprite = null;
+    @property(cc.Sprite)
+    item4: cc.Sprite = null;
+    @property(cc.Sprite)
+    item5: cc.Sprite = null;
 
     @property(EquipmentDialog)
     equipmentDialog: EquipmentDialog = null;
@@ -156,7 +160,7 @@ export default class Inventory extends cc.Component {
         this.refreshEquipment(this.inventoryManager.shoes, false);
         this.refreshEquipment(this.inventoryManager.cloak, false);
         this.refreshItemRes();
-        let itemSpriteList = [this.item1, this.item2, this.item3];
+        let itemSpriteList = [this.item1, this.item2, this.item3,this.item4,this.item5];
         for (let i = 0; i < itemSpriteList.length; i++) {
             this.addItemSpriteTouchEvent(itemSpriteList[i], i);
         }
@@ -234,7 +238,7 @@ export default class Inventory extends cc.Component {
     }
     refreshSuits() {
         this.inventoryManager.suitMap = {};
-        for (let equip of this.inventoryManager.list) {
+        for (let equip of this.inventoryManager.equipList) {
             if(equip.suitType.length<1){
                 continue;
             }
@@ -476,7 +480,7 @@ export default class Inventory extends cc.Component {
         this.refreshItemRes();
     }
     private refreshItemRes() {
-        let itemSpriteList = [this.item1, this.item2, this.item3];
+        let itemSpriteList = [this.item1, this.item2, this.item3,this.item4,this.item5];
         for (let i = 0; i < itemSpriteList.length; i++) {
             let item = this.inventoryManager.itemList[i];
             itemSpriteList[i].spriteFrame = Logic.spriteFrameRes(item.resName);

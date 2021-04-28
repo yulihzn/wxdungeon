@@ -425,7 +425,7 @@ export default class Player extends Actor {
     }
     //特效攻击
     remoteExAttack(comboType: number): void {
-        for (let data of this.inventoryManager.list) {
+        for (let data of this.inventoryManager.equipList) {
             let canShoot = false;
             if (comboType == MeleeWeapon.COMBO1 && data.exBulletCombo1 > 0) {
                 canShoot = true;
@@ -447,7 +447,7 @@ export default class Player extends Actor {
     }
     //特效受击
     remoteOrStatusExHurt(blockLevel: number,from: FromData, actor: Actor): void {
-        for (let data of this.inventoryManager.list) {
+        for (let data of this.inventoryManager.equipList) {
             let needFire = false;
             if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
                 needFire = true;

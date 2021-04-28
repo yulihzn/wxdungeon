@@ -121,8 +121,9 @@ export default class Logic extends cc.Component {
     }
     static saveData() {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
-        Logic.profileManager.data.playerEquipList = Logic.inventoryManager.list;
+        Logic.profileManager.data.playerEquipList = Logic.inventoryManager.equipList;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
+        Logic.profileManager.data.playerInventoryList = Logic.inventoryManager.inventoryList;
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
@@ -149,10 +150,13 @@ export default class Logic extends cc.Component {
         //加载装备
         Logic.inventoryManager = new InventoryManager();
         for (let i = 0; i < Logic.profileManager.data.playerEquipList.length; i++) {
-            Logic.inventoryManager.list[i].valueCopy(Logic.profileManager.data.playerEquipList[i]);
+            Logic.inventoryManager.equipList[i].valueCopy(Logic.profileManager.data.playerEquipList[i]);
         }
         for (let i = 0; i < Logic.profileManager.data.playerItemList.length; i++) {
             Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i]);
+        }
+        for (let i = 0; i < Logic.profileManager.data.playerInventoryList.length; i++) {
+            Logic.inventoryManager.inventoryList[i].valueCopy(Logic.profileManager.data.playerInventoryList[i]);
         }
         //加载技能列表
         Logic.talentList = Logic.profileManager.data.talentList;

@@ -79,6 +79,12 @@ export default class ProfileManager{
                 this.data.playerItemList[i]=data.playerItemList[i];
             }
         }
+        //玩家背包列表
+        if(data.playerInventoryList){
+            for(let i=0;i<data.playerInventoryList.length;i++){
+                this.data.playerInventoryList[i]=data.playerInventoryList[i];
+            }
+        }
         //加载技能
         for(let i =0;i<data.talentList.length;i++){
             let td = new TalentData();

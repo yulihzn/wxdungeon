@@ -5,6 +5,7 @@ import PlayerData from "../Data/PlayerData";
 import Logic from "../Logic";
 import SettingsDialog from "./dialog/SettingsDialog";
 import MartShelvesDialog from "./dialog/MartShelvesDialog";
+import InventoryDialog from "./dialog/InventoryDialog";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -44,6 +45,8 @@ export default class GameHud extends cc.Component {
     martShelvesDialog:MartShelvesDialog = null;
     @property(cc.Label)
     completeLabel:cc.Label=null;
+    @property(InventoryDialog)
+    inventoryDialog:InventoryDialog=null;
     private isCompleteShowed = false;
     private checkTimeDelay = 0;
     private startCountTime = true;
@@ -229,6 +232,9 @@ export default class GameHud extends cc.Component {
         //     this.scheduleOnce(()=>{cc.director.pause();},0.1)
         // }
         this.showSettingsDialog();
+    }
+    showInventoryDialog(){
+        this.inventoryDialog.show();
     }
     showSettingsDialog(){
         this.settingsDialog.show();

@@ -1,4 +1,5 @@
 import EquipmentData from "../Data/EquipmentData";
+import InventoryData from "../Data/InventoryData";
 import ItemData from "../Data/ItemData";
 import SuitData from "../Data/SuitData";
 import NextStep from "../Utils/NextStep";
@@ -26,16 +27,17 @@ export default class InventoryManager {
     shield:EquipmentData = new EquipmentData();
     //buffer效果
     buffer:EquipmentData = new EquipmentData();
-    list:EquipmentData[] = [];
+    equipList:EquipmentData[] = [];
     itemList:ItemData[] = [];
+    inventoryList:InventoryData[] = [];
     itemCoolDownList:NextStep[]=[];
     suitMap: { [key: string]: SuitData } = {};
     
     clear(): void {
     }
     constructor(){
-        this.list = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.shield,this.buffer,this.remote];
-        for(let i = 0;i <3;i++){
+        this.equipList = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.shield,this.buffer,this.remote];
+        for(let i = 0;i <5;i++){
             let data = new ItemData();
             data.count = -1;
             this.itemList.push(data);
