@@ -304,13 +304,13 @@ export default class Inventory extends cc.Component {
         }
 
     }
-    refreshEquipment(equipmentDataNew: EquipmentData, isChange: boolean, isReplace?: boolean, indexFromBag?: number) {
+    refreshEquipment(equipmentDataNew: EquipmentData, isChange: boolean, isReplace?: boolean,indexFromBag?:number) {
         if (!equipmentDataNew || !this.weapon) {
             return;
         }
         let list = Logic.inventoryManager.inventoryList;
         //如果背包已满而且不是从背包里交换那么跳过，执行下面直接替换身上的装备逻辑
-        if (isReplace && list.length < InventoryManager.INVENTORY_MAX || indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
+        if (isReplace&&list.length<InventoryManager.INVENTORY_MAX|| indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
             this.setEquipment(equipmentDataNew, true);
             return;
         }
