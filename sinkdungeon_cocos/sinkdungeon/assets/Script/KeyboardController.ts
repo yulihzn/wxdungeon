@@ -27,6 +27,9 @@ export default class KeyboardController extends cc.Component {
     isB = false;
     isC = false;
     isD = false;
+
+    isLongPress = false;
+    touchStart = false;
     @property(cc.Node)
     mouseArea: cc.Node = null;
     onLoad() {
@@ -54,9 +57,16 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.a: this.isLeft = true; break;
             case cc.macro.KEY.d: this.isRight = true; break;
 
-            case cc.macro.KEY.j:this.isA = true;break;
+            case cc.macro.KEY.i: EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW);break;
+            case cc.macro.KEY.j: this.isA = true; break;
             case cc.macro.KEY.space: this.isB = true; break;
-            case cc.macro.KEY.e: this.isC = true; break;
+            case cc.macro.KEY.e: this.isC = true; this.touchStart = true; this.scheduleOnce(() => {
+                if (!this.touchStart) {
+                    return;
+                }
+                this.isLongPress = true;
+                EventHelper.emit(EventHelper.PLAYER_TRIGGER, { isLongPress: true });
+            }, 0.3); break;
             case cc.macro.KEY.shift: this.isD = true; break;
             case cc.macro.KEY.num1: this.useItem(0); break;
             case cc.macro.KEY.num2: this.useItem(1); break;
@@ -66,7 +76,7 @@ export default class KeyboardController extends cc.Component {
             case 51: this.useItem(2); break;
         }
     }
-    useItem(index:number){
+    useItem(index: number) {
         EventHelper.emit(EventHelper.USEITEM_KEYBOARD, { index: index });
     }
     onKeyUp(event: cc.Event.EventKeyboard) {
@@ -76,9 +86,11 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.a: this.isLeft = false; break;
             case cc.macro.KEY.d: this.isRight = false; break;
 
-            case cc.macro.KEY.j:this.isA = false;break;
+            case cc.macro.KEY.j: this.isA = false; break;
             case cc.macro.KEY.space: this.isB = false; cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
-            case cc.macro.KEY.e: this.isC = false; break;
+            case cc.macro.KEY.e: this.isC = false; this.touchStart = false; this.isLongPress = false;
+                if (!this.isLongPress) { EventHelper.emit(EventHelper.PLAYER_TRIGGER); }
+                break;
             case cc.macro.KEY.shift: this.isD = false; break;
         }
     }
@@ -89,7 +101,7 @@ export default class KeyboardController extends cc.Component {
 
     }
     sendMoveMessageToPlayer(dt: number) {
-        if(Logic.isDialogShow){
+        if (Logic.isDialogShow) {
             return;
         }
         let pos = cc.v3(0, 0);
@@ -132,9 +144,7 @@ export default class KeyboardController extends cc.Component {
         if (this.isB) {
             cc.director.emit(EventHelper.PLAYER_REMOTEATTACK);
         }
-        if (this.isC) {
-            cc.director.emit(EventHelper.PLAYER_TRIGGER);
-        }
+        
         if (this.isD) {
             cc.director.emit(EventHelper.PLAYER_SKILL);
         }

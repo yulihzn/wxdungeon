@@ -48,7 +48,7 @@ export default class EquipmentDialog extends cc.Component {
         // Logic.setAlias(this.node);
         this.node.opacity = 0;
     }
-    refreshDialog(equipment: EquipmentData) {
+    private refreshDialog(equipment: EquipmentData) {
         this.infoBase.node.active = true;
         this.info1.node.active = true;
         this.info2.node.active = true;

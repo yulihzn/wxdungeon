@@ -21,6 +21,8 @@ import Item from './Item/Item';
 import Equipment from './Equipment/Equipment';
 import ItemDialog from './Item/ItemDialog';
 import SuitData from './Data/SuitData';
+import InventoryData from './Data/InventoryData';
+import InventoryItem from './UI/InventoryItem';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -87,7 +89,7 @@ export default class Inventory extends cc.Component {
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
             , (event) => {
                 if (this.node) {
-                    this.refreshEquipment(event.detail.equipData, true);
+                    this.refreshEquipment(event.detail.equipData, true, event.detail.isReplace, event.detail.index);
                     this.refreshSuits();
                 }
             });
@@ -96,7 +98,7 @@ export default class Inventory extends cc.Component {
         cc.director.on(EventHelper.PLAYER_CHANGEITEM
             , (event) => {
                 if (this.node) {
-                    this.refreshItem(event.detail.itemData);
+                    this.refreshItem(event.detail.itemData, event.detail.isReplace, event.detail.index);
                 }
             });
         cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
@@ -114,8 +116,7 @@ export default class Inventory extends cc.Component {
         cc.director.on(EventHelper.HUD_GROUND_ITEM_INFO_SHOW
             , (event) => {
                 if (this.itemGroundDialog) {
-                    this.itemGroundDialog.refreshDialog(event.detail.itemData);
-                    this.itemGroundDialog.showDialog();
+                    this.itemGroundDialog.showDialog(event.detail.itemData);
                 }
             });
         cc.director.on(EventHelper.HUD_GROUND_ITEM_INFO_HIDE
@@ -160,7 +161,7 @@ export default class Inventory extends cc.Component {
         this.refreshEquipment(this.inventoryManager.shoes, false);
         this.refreshEquipment(this.inventoryManager.cloak, false);
         this.refreshItemRes();
-        let itemSpriteList = [this.item1, this.item2, this.item3,this.item4,this.item5];
+        let itemSpriteList = [this.item1, this.item2, this.item3, this.item4, this.item5];
         for (let i = 0; i < itemSpriteList.length; i++) {
             this.addItemSpriteTouchEvent(itemSpriteList[i], i);
         }
@@ -210,8 +211,7 @@ export default class Inventory extends cc.Component {
                 if (item.resName == Item.EMPTY) {
                     return;
                 }
-                this.itemDialog.refreshDialog(item);
-                this.itemDialog.showDialog();
+                this.itemDialog.showDialog(item);
             }, 0.3)
 
         })
@@ -229,17 +229,68 @@ export default class Inventory extends cc.Component {
             isLongPress = false;
         })
     }
-
-    private setEquipment(equipmentData: EquipmentData, isChange: boolean) {
-        if (isChange && equipmentData.equipmetType != Equipment.EMPTY) {
+    updateList() {
+        let list: InventoryData[] = [];
+        for (let i = 0; i < Logic.inventoryManager.inventoryList.length; i++) {
+            if (Logic.inventoryManager.inventoryList[i].type != InventoryItem.TYPE_EMPTY) {
+                list.push(Logic.inventoryManager.inventoryList[i]);
+            }
+        }
+        Logic.inventoryManager.inventoryList = list;
+    }
+    private setItem(itemData: ItemData, indexFromBag: number) {
+        if(!indexFromBag){
+            this.updateList();
+        }
+        let list = Logic.inventoryManager.inventoryList;
+        //如果背包已满而且不是从背包里交换，直接放置在地上
+        if (list.length < InventoryManager.INVENTORY_MAX || indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
+            let data = new InventoryData();
+            data.itemData = new ItemData();
+            data.itemData.valueCopy(itemData);
+            data.index = list.length;
+            data.type = InventoryItem.TYPE_ITEM;
+            data.createTime = new Date().getTime();
+            if (indexFromBag) {
+                list[indexFromBag].valueCopy(data);
+            } else {
+                list.push(data);
+            }
+        } else {
             let p = this.dungeon.player.node.position.clone();
-            this.dungeon.addEquipment(equipmentData.img, p, equipmentData);
+            if (itemData.resName != Item.EMPTY) {
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: p, res: itemData.resName, count: itemData.count });
+            }
+        }
+
+    }
+    private setEquipment(equipmentData: EquipmentData, isChange: boolean, indexFromBag?: number) {
+        if (!isChange || equipmentData.equipmetType == Equipment.EMPTY) {
+            return;
+        }
+        let list = Logic.inventoryManager.inventoryList;
+        //如果背包已满而且不是从背包里交换，直接放置在地上
+        if (list.length < InventoryManager.INVENTORY_MAX || indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
+            let data = new InventoryData();
+            data.equipmentData = new EquipmentData();
+            data.equipmentData.valueCopy(equipmentData);
+            data.index = list.length;
+            data.type = InventoryItem.TYPE_EQUIP;
+            data.createTime = new Date().getTime();
+            if (indexFromBag) {
+                list[indexFromBag].valueCopy(data);
+            } else {
+                list.push(data);
+            }
+        } else {
+            let p = this.dungeon.player.node.position.clone();
+            EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { pos: p, res: equipmentData.img, equipmentData: equipmentData });
         }
     }
     refreshSuits() {
         this.inventoryManager.suitMap = {};
         for (let equip of this.inventoryManager.equipList) {
-            if(equip.suitType.length<1){
+            if (equip.suitType.length < 1) {
                 continue;
             }
             if (!this.inventoryManager.suitMap[equip.suitType]) {
@@ -253,8 +304,14 @@ export default class Inventory extends cc.Component {
         }
 
     }
-    refreshEquipment(equipmentDataNew: EquipmentData, isChange: boolean) {
+    refreshEquipment(equipmentDataNew: EquipmentData, isChange: boolean, isReplace?: boolean, indexFromBag?: number) {
         if (!equipmentDataNew || !this.weapon) {
+            return;
+        }
+        let list = Logic.inventoryManager.inventoryList;
+        //如果背包已满而且不是从背包里交换那么跳过，执行下面直接替换身上的装备逻辑
+        if (isReplace && list.length < InventoryManager.INVENTORY_MAX || indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
+            this.setEquipment(equipmentDataNew, true);
             return;
         }
         let color = cc.color(255, 255, 255).fromHEX(equipmentDataNew.color);
@@ -438,7 +495,7 @@ export default class Inventory extends cc.Component {
         }, item.cooldown, true)
 
     }
-    refreshItem(itemDataNew: ItemData) {
+    refreshItem(itemDataNew: ItemData, isReplace: boolean, indexFromBag: number) {
         if (!this.node) {
             return;
         }
@@ -466,34 +523,35 @@ export default class Inventory extends cc.Component {
                 }
             }
         }
-
-        //先进先出
         if (!isRefreshed) {
-            let item0 = this.inventoryManager.itemList[0].clone();
-            let item1 = this.inventoryManager.itemList[1].clone();
-            let item2 = this.inventoryManager.itemList[2].clone();
-            this.inventoryManager.itemList[0].valueCopy(item1);
-            this.inventoryManager.itemList[1].valueCopy(item2);
-            this.inventoryManager.itemList[2].valueCopy(itemDataNew);
-            this.setItem(item0);
+            //先进先出 如果列表已满，移出第一个到背包，新的放在末尾
+            if (isReplace) {
+                let item0 = this.inventoryManager.itemList[0].clone();
+                let arr = new Array();
+                for (let i = 1; i < this.inventoryManager.itemList.length; i++) {
+                    arr.push(this.inventoryManager.itemList[i]);
+                }
+                arr.push(itemDataNew);
+                for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
+                    this.inventoryManager.itemList[i].valueCopy(arr[i]);
+                }
+                this.setItem(item0, indexFromBag);
+            } else {
+                //直接放置新的物品到背包
+                this.setItem(itemDataNew, indexFromBag);
+            }
         }
         this.refreshItemRes();
     }
     private refreshItemRes() {
-        let itemSpriteList = [this.item1, this.item2, this.item3,this.item4,this.item5];
+        let itemSpriteList = [this.item1, this.item2, this.item3, this.item4, this.item5];
         for (let i = 0; i < itemSpriteList.length; i++) {
             let item = this.inventoryManager.itemList[i];
             itemSpriteList[i].spriteFrame = Logic.spriteFrameRes(item.resName);
             itemSpriteList[i].node.parent.parent.getComponentInChildren(cc.Label).string = `${item.count > 0 ? ('x' + item.count) : ''}`;
         }
     }
-    setItem(itemData: ItemData) {
-        let p = this.dungeon.player.node.position.clone();
-        if (itemData.resName != Item.EMPTY) {
-            cc.director.emit(EventHelper.DUNGEON_ADD_ITEM
-                , { detail: { pos: p, res: itemData.resName, count: itemData.count } })
-        }
-    }
+
 
     private drawItemCoolDown(coolDown: number, position: cc.Vec3) {
         if (coolDown <= 0) {

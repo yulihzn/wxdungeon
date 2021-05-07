@@ -1,11 +1,9 @@
 import Logic from "../Logic";
 import EquipmentData from "../Data/EquipmentData";
 import { EventHelper } from "../EventHelper";
-import Player from "../Player";
 import ShopTable from "../Building/ShopTable";
 import Dungeon from "../Dungeon";
 import AudioPlayer from "../Utils/AudioPlayer";
-import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,11 +36,13 @@ export default class Equipment extends cc.Component {
     isTaken = false;
     shopTable: ShopTable;
     mat: cc.MaterialVariant;
+    taketips:cc.Node;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.isTaken = false;
         this.sprite = this.node.getChildByName('sprite');
+        this.taketips =  this.node.getChildByName('sprite').getChildByName('taketips');
     }
     refresh(data: EquipmentData) {
         this.data.valueCopy(data);
@@ -89,7 +89,7 @@ export default class Equipment extends cc.Component {
     onEnable() {
 
     }
-    taken():boolean{
+    taken(isReplace:boolean):boolean{
         if (this.isTaken) {
             return false;
         }
@@ -98,16 +98,16 @@ export default class Equipment extends cc.Component {
                 cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.data.price } });
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
                 this.shopTable.sale(true);
-                this._taken();
+                this._taken(isReplace);
                 return true;
             }
         } else {
-            this._taken();
+            this._taken(isReplace);
             return true;
         }
         return false;
     }
-    private _taken() {
+    private _taken(isReplace:boolean) {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
         cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
@@ -131,18 +131,4 @@ export default class Equipment extends cc.Component {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_UP } });
     }
 
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
-            cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE);
-            this.highLight(false);
-        }
-    }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
-            this.highLight(true);
-            this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2), cc.delayTime(1), cc.fadeOut(0.2)));
-            cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { equipData: this.data } });
-        }
-    }
-    // update (dt) {}
 }

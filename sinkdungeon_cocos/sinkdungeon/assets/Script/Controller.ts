@@ -63,17 +63,7 @@ export default class Controller extends cc.Component {
             this.shootActionTouched = false;
             cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL);
         }, this)
-        this.interactAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
-            this.interactActionTouched = true;
-        }, this)
-
-        this.interactAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
-            this.interactActionTouched = false;
-        }, this)
-
-        this.interactAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
-            this.interactActionTouched = false;
-        }, this)
+        
         this.skillAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.skillActionTouched = true;
         }, this)
@@ -85,6 +75,35 @@ export default class Controller extends cc.Component {
         this.skillAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             this.skillActionTouched = false;
         }, this)
+        let isLongPress = false;
+        let touchStart = false;
+        this.interactAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            this.interactActionTouched = true;
+            touchStart = true;
+            this.scheduleOnce(()=>{
+                if(!touchStart){
+                    return;
+                }
+                isLongPress = true;
+                EventHelper.emit(EventHelper.PLAYER_TRIGGER,{isLongPress:true})
+            },0.3);
+        }, this)
+
+        this.interactAction.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            this.interactActionTouched = false;
+            if(!isLongPress){
+                EventHelper.emit(EventHelper.PLAYER_TRIGGER);
+            }
+            touchStart = false;
+            isLongPress = false;
+        }, this)
+
+        this.interactAction.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            this.interactActionTouched = false;
+            touchStart = false;
+            isLongPress = false;
+        }, this)
+
         cc.director.on(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD
             , (event) => { if(this.node)this.changeRes(event.detail.isShield) });
         cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
@@ -229,38 +248,13 @@ export default class Controller extends cc.Component {
         }
         return false;
     }
-    interactTimeDelay = 0;
-    isInteractTimeDelay(dt: number): boolean {
-        this.interactTimeDelay += dt;
-        if (this.interactTimeDelay > 0.1) {
-            this.interactTimeDelay = 0;
-            //防止反复拾取
-            this.interactActionTouched = false;
-            return true;
-        }
-        return false;
-    }
-    skillTimeDelay = 0;
-    isSkillTimeDelay(dt: number): boolean {
-        this.skillTimeDelay += dt;
-        if (this.skillTimeDelay > 0.1) {
-            this.skillTimeDelay = 0;
-            return true;
-        }
-        return false;
-    }
     update(dt) {
-        this.isInteractTimeDelay(dt);
-        this.isSkillTimeDelay(dt);
         if (this.isTimeDelay(dt)&&!Logic.isDialogShow) {
             if (this.attackActionTouched) {
                 cc.director.emit(EventHelper.PLAYER_ATTACK);
             }
             if (this.shootActionTouched) {
                 cc.director.emit(EventHelper.PLAYER_REMOTEATTACK);
-            }
-            if (this.interactActionTouched) {
-                cc.director.emit(EventHelper.PLAYER_TRIGGER);
             }
             if (this.skillActionTouched) {
                 cc.director.emit(EventHelper.PLAYER_SKILL);

@@ -672,7 +672,7 @@ export default class NonPlayer extends Actor {
             } else if (rand >= percent + offset && rand < percent + offset * 2) {
                 this.addLootSaveItem(Item.HEART,true);
             } else if (rand >= percent + offset * 2 && rand < percent + offset * 3) {
-                this.addLootSaveItem(Item.BOTTLE_ATTACKSPEED);
+                this.addLootSaveItem(Item.BOTTLE_ATTACK);
             } else if (rand >= percent + offset * 3 && rand < percent + offset * 4) {
                 this.addLootSaveItem(Item.BOTTLE_MOVESPEED);
             } else if (rand >= percent + offset * 4 && rand < percent + offset * 5) {

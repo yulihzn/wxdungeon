@@ -16,6 +16,7 @@ import NextStep from "../Utils/NextStep";
 
 
 export default class InventoryManager {
+    static readonly INVENTORY_MAX = 5;
     weapon:EquipmentData = new EquipmentData();
     remote:EquipmentData = new EquipmentData();
     helmet:EquipmentData = new EquipmentData();

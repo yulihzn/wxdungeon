@@ -84,6 +84,9 @@ export default class GameHud extends cc.Component {
         cc.director.on(EventHelper.HUD_COMPLETE_SHOW, (event) => {
             this.showComplete();
         })
+        cc.director.on(EventHelper.HUD_INVENTORY_SHOW, (event) => {
+            this.showInventoryDialog();
+        })
         cc.director.on(EventHelper.HUD_STOP_COUNTTIME
             , (event) => { this.startCountTime = false; });
             cc.director.on(EventHelper.HUD_FADE_IN, (event) => {
@@ -234,9 +237,15 @@ export default class GameHud extends cc.Component {
         this.showSettingsDialog();
     }
     showInventoryDialog(){
+        if(!this.node){
+            return;
+        }
         this.inventoryDialog.show();
     }
     showSettingsDialog(){
+        if(!this.node){
+            return;
+        }
         this.settingsDialog.show();
     }
     showMartShelvesDialog(type:string,goodsList:string[]){

@@ -6,6 +6,8 @@ import BaseManager from "./BaseManager";
 import ShopTable from "../Building/ShopTable";
 import Logic from "../Logic";
 import Item from "../Item/Item";
+import Player from "../Player";
+import { EventHelper } from "../EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,6 +33,8 @@ export default class ItemManager extends BaseManager {
     private coinPool: cc.NodePool;
     private oilPool: cc.NodePool;
     // LIFE-CYCLE CALLBACKS:
+    groundList: Item[] = [];
+    lastGroundItem: Item;
 
     onLoad() {
         this.coinPool = new cc.NodePool();
@@ -47,6 +51,7 @@ export default class ItemManager extends BaseManager {
             this.coinPool.clear();
             this.oilPool.clear();
         }
+        this.groundList = [];
     }
     getValueCoin(count: number, pos: cc.Vec3, parentNode: cc.Node) {
         let updateValue = Coin.FACE_VALUE;
@@ -116,7 +121,8 @@ export default class ItemManager extends BaseManager {
         item.position = pos;
         let indexpos = Dungeon.getIndexInMap(pos);
         item.zIndex = IndexZ.OVERHEAD;
-        item.getComponent(Item).init(resName, indexpos.clone(), count, shopTable);
+        let itemScript = item.getComponent(Item);
+        itemScript.init(resName, indexpos.clone(), count, shopTable);
         let data = item.getComponent(Item).data;
         if(shopTable){
             return;
@@ -129,6 +135,7 @@ export default class ItemManager extends BaseManager {
             curritems.push(data);
             Logic.mapManager.setCurrentItemsArr(curritems);
         }
+        this.groundList.push(itemScript);
     }
     public addItemFromMap(mapStr: string, indexPos: cc.Vec3) {
         //生成心
@@ -165,7 +172,7 @@ export default class ItemManager extends BaseManager {
         }
         //攻速瓶
         if (mapStr == 'Ac') {
-            this.addItem(Dungeon.getPosInMap(indexPos), Item.BOTTLE_ATTACKSPEED);
+            this.addItem(Dungeon.getPosInMap(indexPos), Item.BOTTLE_ATTACK);
         }
         //梦境瓶
         if (mapStr == 'Ad') {
@@ -175,6 +182,57 @@ export default class ItemManager extends BaseManager {
         //远程瓶
         if (mapStr == 'Ae') {
             this.addItem(Dungeon.getPosInMap(indexPos), Item.BOTTLE_REMOTE);
+        }
+    }
+
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.2) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+
+    updateLogic(dt: number, player: Player) {
+        if (this.isCheckTimeDelay(dt)) {
+            let distance = 200;
+            let item: Item = null;
+            for (let i=this.groundList.length-1;i>=0;i--) {
+                let e = this.groundList[i];
+                e.highLight(false);
+                if(!e.isValid||e.data.isTaken){
+                    this.groundList.splice(i,1);
+                    continue;
+                }
+                let d = Logic.getDistance(e.node.position, player.node.position);
+                if (d < distance) {
+                    distance = d;
+                    item = e;
+                }
+            }
+            let min = item&&item.data.canSave?64:32;
+            if (distance < min && item) {
+                item.highLight(true);
+                if (!item.taketips) {
+                    item.taketips = this.node.getChildByName('sprite').getChildByName('taketips');
+                }
+                if (item.data.canSave) {
+                    if (!this.lastGroundItem||this.lastGroundItem.uuid != item.uuid) {
+                        item.taketips.runAction(cc.sequence(cc.fadeIn(0.2), cc.delayTime(1), cc.fadeOut(0.2)));
+                        cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{itemData:item.data}});
+                    }
+                    this.lastGroundItem = item;
+                }else{
+                    item.taken(player,false);
+                    this.lastGroundItem = null;
+                }
+            } else {
+                this.lastGroundItem = null;
+                cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE);
+
+            }
         }
     }
 }

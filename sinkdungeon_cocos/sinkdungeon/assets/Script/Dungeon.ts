@@ -90,7 +90,7 @@ export default class Dungeon extends cc.Component {
         //初始化监听
         cc.director.on(EventHelper.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir, event.detail.pos, event.detail.dt) });
         cc.director.on(EventHelper.DUNGEON_SETEQUIPMENT, (event) => {
-            this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
+            if(this.node)this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
         });
         cc.director.on(EventHelper.DUNGEON_ADD_COIN, (event) => {
             this.addCoin(event.detail.pos, event.detail.count);
@@ -227,6 +227,9 @@ export default class Dungeon extends cc.Component {
     }
     addItem(pos: cc.Vec3, resName: string, count?: number, shopTable?: ShopTable) {
         if (this.itemManager) {
+            if(!pos){
+                pos = this.player.node.position.clone();
+            }
             this.itemManager.addItem(pos, resName, count, shopTable);
         }
     }
@@ -285,6 +288,9 @@ export default class Dungeon extends cc.Component {
     /**添加装备 */
     addEquipment(equipType: string, pos: cc.Vec3, equipData?: EquipmentData, chestQuality?: number, shopTable?: ShopTable) {
         if (this.equipmentManager) {
+            if(!pos){
+                pos = this.player.node.position.clone();
+            }
             let data = this.equipmentManager.getEquipment(equipType, pos, this.node, equipData, chestQuality, shopTable).data;
             if(shopTable){
                 return;
@@ -472,6 +478,8 @@ export default class Dungeon extends cc.Component {
             this.checkPlayerPos(dt);
             this.monsterManager.updateLogic(dt);
             this.nonPlayerManager.updateLogic(dt);
+            this.equipmentManager.updateLogic(dt,this.player);
+            this.itemManager.updateLogic(dt,this.player);
         }
         if (this.isCheckTimeDelay(dt) && this.isInitFinish) {
             this.checkRoomClear();

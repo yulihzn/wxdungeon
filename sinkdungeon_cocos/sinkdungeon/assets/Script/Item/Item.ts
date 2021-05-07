@@ -27,7 +27,7 @@ export default class Item extends cc.Component {
     public static readonly DREAM = 'dream';
     public static readonly BOTTLE_HEALING = 'bottle001';
     public static readonly BOTTLE_MOVESPEED = 'bottle002';
-    public static readonly BOTTLE_ATTACKSPEED = 'bottle003';
+    public static readonly BOTTLE_ATTACK = 'bottle003';
     public static readonly BOTTLE_DREAM = 'bottle004';
     public static readonly BOTTLE_REMOTE = 'bottle005';
     public static readonly REDCAPSULE = 'redcapsule';
@@ -41,10 +41,11 @@ export default class Item extends cc.Component {
 
     sprite:cc.Sprite;
     mat:cc.MaterialVariant;
-
+    taketips:cc.Node;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.taketips =  this.node.getChildByName('sprite').getChildByName('taketips');
     }
 
     start() {
@@ -82,7 +83,7 @@ export default class Item extends cc.Component {
         this.mat.setProperty('openOutline',isHigh?1:0);
     }
 
-    public taken(player: Player): boolean {
+    public taken(player: Player,isReplace:boolean): boolean {
         if(this.data.isTaken){
             return false;
         }
@@ -91,21 +92,21 @@ export default class Item extends cc.Component {
                 if (Logic.coins >= this.data.price) {
                     cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: -this.data.price } });
                     cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
-                    this._taken(player);
+                    this._taken(player,isReplace);
                     this.shopTable.sale(true);
                     return true;
                 }
             } else {
-                this._taken(player);
+                this._taken(player,isReplace);
                 return true;
             }
         }else{
-            this._taken(player);
+            this._taken(player,isReplace);
                 return true;
         }
         return false;
     }
-    private _taken(player: Player){
+    private _taken(player: Player,isReplace:boolean){
         if (!this.data.isTaken && this.anim) {
             this.anim.play('ItemTaken');
             this.data.isTaken = true;
@@ -113,7 +114,7 @@ export default class Item extends cc.Component {
             if (this.data.canSave < 1) {
                 Item.userIt(this.data, player);
             } else {
-                cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.data } })
+                cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.data,isReplace:isReplace } })
             }
             this.scheduleOnce(() => {
                 if (this.node) {
@@ -149,25 +150,5 @@ export default class Item extends cc.Component {
         }
         
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
-            let player = other.node.getComponent(Player);
-            if (this.data.canSave) {
-                cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{itemData:this.data}});
-                this.highLight(true);
-                this.node.getChildByName('sprite').getChildByName('taketips').runAction(cc.sequence(cc.fadeIn(0.2),cc.delayTime(1),cc.fadeOut(0.2)));
-            } else if(player) {
-                this.taken(player);
-            }
-        }
-
-    }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
-            this.highLight(false);
-            cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_HIDE);
-        }
-    }
-
     // update (dt) {}
 }

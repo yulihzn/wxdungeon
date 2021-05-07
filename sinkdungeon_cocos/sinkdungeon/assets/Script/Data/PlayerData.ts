@@ -171,7 +171,7 @@ export default class PlayerData {
         if (Random.rand() < drainRate) {
             drain = 0.1;
             if (Random.rand() < chance) {
-                drain = 0.5;
+                drain = 1;
             }
         }
         return drain;

@@ -68,10 +68,6 @@ export default class Player extends Actor {
 
     baseAttackPoint: number = 1;
 
-    //触碰到的装备
-    touchedEquipment: Equipment;
-    //触碰到的物品
-    touchedItem: Item;
     //触碰到的提示
     touchedTips: Tips;
     private touchDelay = false;
@@ -89,6 +85,7 @@ export default class Player extends Actor {
     talentSkills: TalentSkills;
     isWeaponDashing = false;
     fistCombo = 0;
+    dungeon:Dungeon;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -107,7 +104,7 @@ export default class Player extends Actor {
         this.remoteCooldown.width = 0;
         this.remoteCooldown.opacity = 200;
         cc.director.on(EventHelper.PLAYER_TRIGGER
-            , (event) => { if (this.node) this.triggerThings() });
+            , (event) => { if (this.node) this.triggerThings(event&&event.detail&&event.detail.isLongPress) });
         cc.director.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
             , (event) => {
                 cc.director.loadScene('start');
@@ -758,6 +755,7 @@ export default class Player extends Actor {
     }
     //玩家行动
     playerAction(dir: number, pos: cc.Vec3, dt: number, dungeon: Dungeon) {
+        this.dungeon = dungeon;
         if (this.weaponLeft.meleeWeapon && !this.weaponLeft.meleeWeapon.dungeon) {
             this.weaponLeft.meleeWeapon.dungeon = dungeon;
         }
@@ -857,16 +855,17 @@ export default class Player extends Actor {
 
     }
 
-    triggerThings() {
-        if (this.sc.isJumping) {
+    triggerThings(isLongPress:boolean) {
+        if (this.sc.isJumping||!this.dungeon) {
             return;
         }
-        if (this.touchedEquipment && this.touchedEquipment.taken()) {
-            this.touchedEquipment = null;
+        if (this.dungeon.equipmentManager.lastGroundEquip && this.dungeon.equipmentManager.lastGroundEquip.taken(isLongPress)) {
+            this.dungeon.equipmentManager.lastGroundEquip = null;
         }
-        if (this.touchedItem && !this.touchedItem.taken(this)) {
-            this.touchedItem = null;
+        if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this,isLongPress)) {
+            this.dungeon.itemManager.lastGroundItem = null;
         }
+       
         if (this.touchedTips) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
             this.touchedTips.next();
@@ -887,14 +886,10 @@ export default class Player extends Actor {
     //     this.touchedEquipment = null;
     // }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        this.touchedEquipment = null;
-        this.touchedItem = null;
         this.touchedTips = null;
         // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        this.touchedEquipment = null;
-        this.touchedItem = null;
         this.touchedTips = null;
         // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
@@ -906,13 +901,10 @@ export default class Player extends Actor {
         let equipment = other.node.getComponent(Equipment);
         if (equipment) {
             isInteract = true;
-            this.touchedEquipment = equipment;
         }
         let item = other.node.getComponent(Item);
         if (item) {
             isInteract = true;
-            this.touchedItem = item;
-
         }
         let tips = other.node.getComponent(Tips);
         if (tips) {

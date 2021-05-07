@@ -5,7 +5,6 @@ import Building from "./Building";
 import AudioPlayer from "../Utils/AudioPlayer";
 import { ColliderTag } from "../Actor/ColliderTag";
 import IndexZ from "../Utils/IndexZ";
-import EquipmentManager from "../Manager/EquipmentManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

@@ -20,6 +20,7 @@ import LocalStorage from "./Utils/LocalStorage";
 import SavePointData from "./Data/SavePointData";
 import NonPlayerData from "./Data/NonPlayerData";
 import SuitData from "./Data/SuitData";
+import InventoryData from "./Data/InventoryData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -156,7 +157,8 @@ export default class Logic extends cc.Component {
             Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i]);
         }
         for (let i = 0; i < Logic.profileManager.data.playerInventoryList.length; i++) {
-            Logic.inventoryManager.inventoryList[i].valueCopy(Logic.profileManager.data.playerInventoryList[i]);
+            let data = new InventoryData(); data.valueCopy(Logic.profileManager.data.playerInventoryList[i]);
+            Logic.inventoryManager.inventoryList.push(data);
         }
         //加载技能列表
         Logic.talentList = Logic.profileManager.data.talentList;
@@ -260,8 +262,8 @@ export default class Logic extends cc.Component {
         //如果是从梦境进入现实或者跨章节需要调整当前章节已经清理的房间为重生状态并保存
         if (exitData.fromChapter != Logic.CHAPTER099 && exitData.fromChapter != exitData.toChapter) {
             Logic.mapManager.rectDungeon.changeAllClearRoomsReborn();
-            for(let rd in Logic.profileManager.data.rectDungeons){
-                if(Logic.profileManager.data.rectDungeons[rd]){
+            for (let rd in Logic.profileManager.data.rectDungeons) {
+                if (Logic.profileManager.data.rectDungeons[rd]) {
                     Logic.profileManager.data.rectDungeons[rd].changeAllClearRoomsReborn();
                 }
             }
@@ -324,21 +326,21 @@ export default class Logic extends cc.Component {
     static getBuildings(name: string): cc.Prefab {
         return Logic.buildings[name];
     }
-    static getKillPlayerCount(seed:number){
-        if(Logic.killPlayerCounts[seed]){
+    static getKillPlayerCount(seed: number) {
+        if (Logic.killPlayerCounts[seed]) {
             return Logic.killPlayerCounts[seed];
-        }else{
+        } else {
             return 0;
         }
     }
-    static setKillPlayerCounts(dieFrom:FromData,isAdd:boolean){
-        if(dieFrom&&dieFrom.id){
-            Logic.killPlayerCounts[dieFrom.id] = Logic.getKillPlayerCount(dieFrom.id)+(isAdd?1:-1);
+    static setKillPlayerCounts(dieFrom: FromData, isAdd: boolean) {
+        if (dieFrom && dieFrom.id) {
+            Logic.killPlayerCounts[dieFrom.id] = Logic.getKillPlayerCount(dieFrom.id) + (isAdd ? 1 : -1);
             let counts = Logic.killPlayerCounts;
             Logic.killPlayerCounts = {};
-            for(let key in counts){
-                if(counts[key]&&counts[key]>0){
-                    Logic.killPlayerCounts[key]=counts[key];
+            for (let key in counts) {
+                if (counts[key] && counts[key] > 0) {
+                    Logic.killPlayerCounts[key] = counts[key];
                 }
             }
         }

@@ -32,14 +32,15 @@ export default class ItemDialog extends cc.Component {
     start() {
         this.node.opacity = 0;
     }
-    refreshDialog(item: ItemData) {
+    private refreshDialog(item: ItemData) {
         this.labelTitle.string = `${item.nameCn}`;
         this.infoBase.string = item.info;
         this.infoDesc.string = item.desc;
         this.count.string = `${item.count>0?'×'+item.count:'∞'}`
     }
-    showDialog() {
+    showDialog(item: ItemData) {
         this.node.opacity = 255;
+        this.refreshDialog(item);
     }
     hideDialog() {
         this.node.opacity = 0;
