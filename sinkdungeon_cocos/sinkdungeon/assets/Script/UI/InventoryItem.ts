@@ -27,7 +27,7 @@ export default class InventoryItem extends cc.Component {
     sprite: cc.Sprite = null;
     @property(cc.Label)
     label: cc.Label = null;
-
+    index = 0;//列表里的下标
     data: InventoryData = new InventoryData();
     dialog: InventoryDialog;
 
@@ -38,7 +38,7 @@ export default class InventoryItem extends cc.Component {
         }, this)
 
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
-            if(this.isSelect&&this == this.dialog.currentSelectItem){
+            if(this.isSelect&&this.index == this.dialog.currentSelectIndex){
                 this.isSelect = false;
             }else{
                 this.isSelect = this.data.type != InventoryItem.TYPE_EMPTY;
@@ -53,8 +53,13 @@ export default class InventoryItem extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
         }, this)
     }
-    init(inventoryDialog: InventoryDialog, data: InventoryData) {
+    init(inventoryDialog: InventoryDialog,index:number, data: InventoryData) {
         this.dialog = inventoryDialog;
+        this.index = index;
+        this.isSelect = false;
+        this.updateData(data);
+    }
+    updateData(data: InventoryData){
         this.isSelect = false;
         this.data.valueCopy(data);
         if (this.data.type == InventoryItem.TYPE_EMPTY) {

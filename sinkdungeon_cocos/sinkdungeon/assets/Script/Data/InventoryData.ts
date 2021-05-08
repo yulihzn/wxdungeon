@@ -14,7 +14,6 @@ import ItemData from "./ItemData";
 
 
 export default class InventoryData extends BaseData{
-    index: number = 0;
     createTime: number = 0;
     equipmentData:EquipmentData;
     itemData:ItemData;
@@ -34,14 +33,12 @@ export default class InventoryData extends BaseData{
             this.itemData.valueCopy(data.itemData);
         }
         this.itemData=data.itemData;
-        this.index = data.index?data.index:0;
         this.createTime = data.createTime?data.createTime:0;
     }
     public clone():InventoryData{
         let e = new InventoryData();
         e.equipmentData = this.equipmentData;
         e.itemData = this.itemData;
-        e.index = this.index;
         e.createTime = this.createTime;
         e.type = this.type;
         return e;

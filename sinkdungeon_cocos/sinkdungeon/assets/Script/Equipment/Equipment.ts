@@ -19,16 +19,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Equipment extends cc.Component {
-    public static readonly EMPTY = 'empty';
-    public static readonly WEAPON = 'weapon';
-    public static readonly REMOTE = 'remote';
-    public static readonly SHIELD = 'shield';
-    public static readonly CLOTHES = 'clothes';
-    public static readonly HELMET = 'helmet';
-    public static readonly CLOAK = 'cloak';
-    public static readonly TROUSERS = 'trousers';
-    public static readonly SHOES = 'shoes';
-    public static readonly GLOVES = 'gloves';
+    
     data: EquipmentData = new EquipmentData();
     anim: cc.Animation;
     private sprite: cc.Node;

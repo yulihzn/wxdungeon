@@ -10,6 +10,7 @@ import Random4Save from "../Utils/Random4Save";
 import BaseManager from "./BaseManager";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
+import InventoryManager from "./InventoryManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -164,8 +165,8 @@ export default class EquipmentManager extends BaseManager {
         let rand4save = Logic.mapManager.getCurrentRoomRandom4Save();
         //暴击0-20减去装备自带
         let criticalStrikeRate = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.HELMET
-            , Equipment.GLOVES, Equipment.CLOAK, Equipment.REMOTE])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.HELMET
+            , InventoryManager.GLOVES, InventoryManager.CLOAK, InventoryManager.REMOTE])
             && data.Common.criticalStrikeRate > 0) {
             let csk = 20 - data.Common.criticalStrikeRate;
             if (csk < 5) { csk = 5; }
@@ -178,16 +179,16 @@ export default class EquipmentManager extends BaseManager {
 
         //基础攻击0-5
         let damageMin = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.GLOVES
-            , Equipment.CLOTHES, Equipment.REMOTE])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
+            , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageMin > 0) {
             damageMin = EquipmentManager.getRandomQuality(0, 5, chestQuality, rand4save);
             level = damageMin.y > level ? damageMin.y : level;
         }
         //最大攻击0-5
         let damageMax = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.GLOVES
-            , Equipment.CLOTHES, Equipment.REMOTE])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
+            , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageMax > 0) {
             damageMax = EquipmentManager.getRandomQuality(damageMin.x, damageMin.x + 5, chestQuality, rand4save);
             level = damageMax.y > level ? damageMax.y : level;
@@ -197,9 +198,9 @@ export default class EquipmentManager extends BaseManager {
         }
         //物理防御0-10
         let defence = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.HELMET, Equipment.GLOVES
-            , Equipment.CLOAK, Equipment.TROUSERS, Equipment.SHOES, Equipment.SHIELD
-            , Equipment.CLOTHES])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.HELMET, InventoryManager.GLOVES
+            , InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHOES, InventoryManager.SHIELD
+            , InventoryManager.CLOTHES])
             && data.Common.defence > 0) {
             defence = EquipmentManager.getRandomQuality(0, 10, chestQuality, rand4save);
             level = defence.y > level ? defence.y : level;
@@ -209,8 +210,8 @@ export default class EquipmentManager extends BaseManager {
         }
         //吸血0%-50%
         let lifeDrain = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.HELMET
-            , Equipment.GLOVES, Equipment.REMOTE])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.HELMET
+            , InventoryManager.GLOVES, InventoryManager.REMOTE])
             && data.Common.lifeDrain > 0) {
             let ld = 50 - data.Common.lifeDrain;
             if (ld < 5) { ld = 5; }
@@ -222,8 +223,8 @@ export default class EquipmentManager extends BaseManager {
         }
         //背刺伤害10% 0-5
         let damageBack = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.WEAPON, Equipment.GLOVES
-            , Equipment.CLOTHES, Equipment.REMOTE])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
+            , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageBack > 0) {
             damageBack = EquipmentManager.getRandomQuality(0, 5, chestQuality, rand4save);
             level = damageBack.y > level ? damageBack.y : level;
@@ -233,8 +234,8 @@ export default class EquipmentManager extends BaseManager {
         }
         //移动速度0-80减去装备自带移动速度
         let moveSpeed = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.CLOAK, Equipment.TROUSERS
-            , Equipment.SHOES, Equipment.CLOTHES])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.CLOAK, InventoryManager.TROUSERS
+            , InventoryManager.SHOES, InventoryManager.CLOTHES])
             && data.Common.moveSpeed > 0) {
             let ms = 80 - data.Common.moveSpeed;
             if (ms < 10) { ms = 10; }
@@ -246,9 +247,9 @@ export default class EquipmentManager extends BaseManager {
         }
         //攻击速度0-30减去装备自带攻速
         let attackSpeed = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.WEAPON
-            , Equipment.GLOVES, Equipment.CLOTHES
-            , Equipment.REMOTE])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON
+            , InventoryManager.GLOVES, InventoryManager.CLOTHES
+            , InventoryManager.REMOTE])
             && data.Common.attackSpeed > 0) {
             let as = 30 - data.Common.attackSpeed;
             if (as < 5) { as = 5; }
@@ -260,9 +261,9 @@ export default class EquipmentManager extends BaseManager {
         }
         //闪避0-30减去装备自带闪避
         let dodge = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.HELMET
-            , Equipment.CLOAK, Equipment.TROUSERS
-            , Equipment.SHOES, Equipment.CLOTHES])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.HELMET
+            , InventoryManager.CLOAK, InventoryManager.TROUSERS
+            , InventoryManager.SHOES, InventoryManager.CLOTHES])
             && data.Common.dodge > 0) {
             let d1 = 30 - data.Common.dodge;
             if (d1 < 10) { d1 = 10; }
@@ -274,9 +275,9 @@ export default class EquipmentManager extends BaseManager {
         }
         //生命值0-5
         let health = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.HELMET
-            , Equipment.GLOVES, Equipment.CLOAK, Equipment.TROUSERS, Equipment.SHIELD
-            , Equipment.SHOES, Equipment.CLOTHES])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.HELMET
+            , InventoryManager.GLOVES, InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHIELD
+            , InventoryManager.SHOES, InventoryManager.CLOTHES])
             && data.Common.maxHealth > 0) {
             health = EquipmentManager.getRandomQuality(0, 5, chestQuality, rand4save);
             level = health.y > level ? health.y : level;
@@ -295,7 +296,7 @@ export default class EquipmentManager extends BaseManager {
         }
         let damageRate = 0.1;
         let damage = 5;
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [Equipment.GLOVES, Equipment.REMOTE, Equipment.WEAPON])) {
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE, InventoryManager.WEAPON])) {
             //流血伤害0-5
             let realDamage = rand4save.rand() < damageRate ? EquipmentManager.getRandomQuality(0, damage, chestQuality, rand4save) : cc.v3(0, 0);
             level = realDamage.y > level ? realDamage.y : level;
@@ -446,6 +447,9 @@ export default class EquipmentManager extends BaseManager {
 
     }
     static getNewEquipData(equipType, chestQuality?: number): EquipmentData {
+        if(equipType.length==0){
+            return;
+        }
         let data = new EquipmentData();
         data.valueCopy(Logic.equipments[equipType]);
         data.uuid = data.genNonDuplicateID();

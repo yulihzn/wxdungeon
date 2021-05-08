@@ -9,10 +9,10 @@ import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
 import DamageData from "./Data/DamageData";
 import IndexZ from "./Utils/IndexZ";
-import Equipment from "./Equipment/Equipment";
 import AreaOfEffectData from "./Data/AreaOfEffectData";
 import AreaOfEffect from "./Actor/AreaOfEffect";
 import { ColliderTag } from "./Actor/ColliderTag";
+import InventoryManager from "./Manager/InventoryManager";
 
 
 // Learn TypeScript:
@@ -186,7 +186,7 @@ export default class Shooter extends cc.Component {
         if (!this.dungeon) {
             return;
         }
-        if (!this.isAI && !this.isEx && this.player.inventoryManager.remote.equipmetType != Equipment.REMOTE) {
+        if (!this.isAI && !this.isEx && this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
             return;
         }
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });

@@ -22,7 +22,7 @@ export default class ProfileData {
     chapterIndex:number = 0;//当前章节
     playerData:PlayerData = new PlayerData();
     //玩家装备列表
-    playerEquipList:EquipmentData[] = new Array();
+    playerEquips: { [key: string]: EquipmentData } = {};
     //玩家物品列表
     playerItemList:ItemData[] = new Array();
     //玩家背包列表

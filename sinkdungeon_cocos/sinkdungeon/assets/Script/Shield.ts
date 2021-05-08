@@ -1,7 +1,6 @@
 import Logic from "./Logic";
 import PlayerAvatar from "./PlayerAvatar";
 import EquipmentData from "./Data/EquipmentData";
-import Equipment from "./Equipment/Equipment";
 import { EventHelper } from "./EventHelper";
 import IndexZ from "./Utils/IndexZ";
 import Actor from "./Base/Actor";
@@ -10,6 +9,7 @@ import DamageData from "./Data/DamageData";
 import StatusManager from "./Manager/StatusManager";
 import FromData from "./Data/FromData";
 import Player from "./Player";
+import InventoryManager from "./Manager/InventoryManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -205,7 +205,7 @@ export default class Shield extends cc.Component {
     }
     public use() {
         this.isButtonPressing = true;
-        if (this.data.equipmetType != Equipment.SHIELD) {
+        if (this.data.equipmetType != InventoryManager.SHIELD) {
             return;
         }
         if (this.status == Shield.STATUS_PUTDOWN) {
@@ -230,7 +230,7 @@ export default class Shield extends cc.Component {
         this.sprite.spriteFrame = Logic.spriteFrameRes(resName);
         this.sprite.node.width = this.data.isHeavy==1?80:64;
         this.sprite.node.height = this.data.isHeavy==1?80:64;
-        if(this.data.equipmetType == Equipment.SHIELD){
+        if(this.data.equipmetType == InventoryManager.SHIELD){
             this.playIdle();
         }
     }

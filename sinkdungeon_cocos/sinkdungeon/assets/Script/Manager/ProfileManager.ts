@@ -54,7 +54,7 @@ export default class ProfileManager{
             this.hasSaveData = false;
             return false;
         }
-        if(!data.savePointData||!data.playerData||!data.playerEquipList||!data.playerItemList||!data.rectDungeons
+        if(!data.savePointData||!data.playerData||!data.playerEquips||!data.playerItemList||!data.rectDungeons
         ||!data.talentList){
             this.hasSaveData = false;
             return false;
@@ -70,8 +70,8 @@ export default class ProfileManager{
         //存档点
         this.data.savePointData.valueCopy(data.savePointData);
         //玩家装备列表
-        for(let i =0;i<data.playerEquipList.length;i++){
-            this.data.playerEquipList[i]=data.playerEquipList[i];
+        for(let key in data.playerEquips){
+            this.data.playerEquips[key]=data.playerEquips[key];
         }
         //玩家物品列表
         if(data.playerItemList){

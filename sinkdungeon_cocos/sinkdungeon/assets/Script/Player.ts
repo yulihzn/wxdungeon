@@ -117,13 +117,13 @@ export default class Player extends Actor {
             , (event) => { if (this.node) this.meleeAttack() });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
             , (event) => {
-                if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
+                if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
                     this.shield.cancel();
                 }
             });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK
             , (event) => {
-                if (this.shield && this.shield.data.equipmetType == Equipment.SHIELD) {
+                if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
                     this.shield.use();
                 } else {
                     if (this.node) this.remoteAttack();
@@ -256,53 +256,54 @@ export default class Player extends Actor {
     }
 
     public changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+        let inventoryEquip = this.inventoryManager.equips[equipData.equipmetType];
         switch (equipData.equipmetType) {
-            case Equipment.WEAPON:
+            case InventoryManager.WEAPON:
                 this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame, this.inventoryManager);
                 break;
-            case Equipment.REMOTE:
+            case InventoryManager.REMOTE:
                 this.weaponLeft.shooter.data = equipData.clone();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);
                 this.weaponLeft.shooter.changeResColor(c);
 
                 this.shield.data = new EquipmentData();
-                this.updateEquipment(this.shield.sprite, this.inventoryManager.shield.color
-                    , Logic.spriteFrameRes(Equipment.EMPTY), this.shield.data.isHeavy == 1 ? 80 : 64);
+                this.updateEquipment(this.shield.sprite, this.inventoryManager.equips[InventoryManager.SHIELD].color
+                    , Logic.spriteFrameRes(InventoryManager.EMPTY), this.shield.data.isHeavy == 1 ? 80 : 64);
                 EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: false });
                 break;
-            case Equipment.SHIELD:
+            case InventoryManager.SHIELD:
                 this.shield.data = equipData.clone();
-                this.shield.node.color = cc.Color.WHITE.fromHEX(this.inventoryManager.shield.color);
-                this.updateEquipment(this.shield.sprite, this.inventoryManager.shield.color
+                this.shield.node.color = cc.Color.WHITE.fromHEX(inventoryEquip.color);
+                this.updateEquipment(this.shield.sprite, inventoryEquip.color
                     , spriteFrame, this.shield.data.isHeavy == 1 ? 80 : 64);
 
                 this.weaponLeft.shooter.data = new EquipmentData();
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 EventHelper.emit(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD, { isShield: true });
                 break;
-            case Equipment.HELMET:
-                this.avatar.hairSprite.node.opacity = this.inventoryManager.helmet.hideHair == 1 ? 0 : 255;
-                this.updateEquipment(this.avatar.helmetSprite, this.inventoryManager.helmet.color, spriteFrame);
+            case InventoryManager.HELMET:
+                this.avatar.hairSprite.node.opacity = inventoryEquip.hideHair == 1 ? 0 : 255;
+                this.updateEquipment(this.avatar.helmetSprite, inventoryEquip.color, spriteFrame);
                 break;
-            case Equipment.CLOTHES:
-                this.updateEquipment(this.avatar.clothesSprite, this.inventoryManager.clothes.color, spriteFrame);
+            case InventoryManager.CLOTHES:
+                this.updateEquipment(this.avatar.clothesSprite, inventoryEquip.color, spriteFrame);
                 break;
-            case Equipment.TROUSERS:
-                let isLong = this.inventoryManager.trousers.trouserslong == 1;
-                this.avatar.changeLegColor(isLong, this.inventoryManager.trousers.color);
-                this.updateEquipment(this.avatar.pantsSprite, this.inventoryManager.trousers.color, spriteFrame);
+            case InventoryManager.TROUSERS:
+                let isLong = inventoryEquip.trouserslong == 1;
+                this.avatar.changeLegColor(isLong, inventoryEquip.color);
+                this.updateEquipment(this.avatar.pantsSprite, inventoryEquip.color, spriteFrame);
                 break;
-            case Equipment.GLOVES:
-                this.updateEquipment(this.weaponRight.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
-                this.updateEquipment(this.weaponLeft.meleeWeapon.GloveSprite, this.inventoryManager.gloves.color, spriteFrame);
+            case InventoryManager.GLOVES:
+                this.updateEquipment(this.weaponRight.meleeWeapon.GloveSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.weaponLeft.meleeWeapon.GloveSprite, inventoryEquip.color, spriteFrame);
                 break;
-            case Equipment.SHOES:
-                this.updateEquipment(this.avatar.shoesLeftSprite, this.inventoryManager.shoes.color, spriteFrame);
-                this.updateEquipment(this.avatar.shoesRightSprite, this.inventoryManager.shoes.color, spriteFrame);
+            case InventoryManager.SHOES:
+                this.updateEquipment(this.avatar.shoesLeftSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.avatar.shoesRightSprite, inventoryEquip.color, spriteFrame);
                 break;
-            case Equipment.CLOAK:
-                this.updateEquipment(this.avatar.cloakSprite, this.inventoryManager.cloak.color, spriteFrame);
+            case InventoryManager.CLOAK:
+                this.updateEquipment(this.avatar.cloakSprite, inventoryEquip.color, spriteFrame);
                 break;
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
@@ -422,7 +423,8 @@ export default class Player extends Actor {
     }
     //特效攻击
     remoteExAttack(comboType: number): void {
-        for (let data of this.inventoryManager.equipList) {
+        for (let key in this.inventoryManager.equips) {
+            let data = this.inventoryManager[key];
             let canShoot = false;
             if (comboType == MeleeWeapon.COMBO1 && data.exBulletCombo1 > 0) {
                 canShoot = true;
@@ -444,7 +446,8 @@ export default class Player extends Actor {
     }
     //特效受击
     remoteOrStatusExHurt(blockLevel: number,from: FromData, actor: Actor): void {
-        for (let data of this.inventoryManager.equipList) {
+        for (let key in this.inventoryManager.equips) {
+            let data = this.inventoryManager[key];
             let needFire = false;
             if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
                 needFire = true;

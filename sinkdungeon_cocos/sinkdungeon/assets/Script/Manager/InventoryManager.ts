@@ -17,27 +17,32 @@ import NextStep from "../Utils/NextStep";
 
 export default class InventoryManager {
     static readonly INVENTORY_MAX = 5;
-    weapon:EquipmentData = new EquipmentData();
-    remote:EquipmentData = new EquipmentData();
-    helmet:EquipmentData = new EquipmentData();
-    clothes:EquipmentData = new EquipmentData();
-    trousers:EquipmentData = new EquipmentData();
-    gloves:EquipmentData = new EquipmentData();
-    shoes:EquipmentData = new EquipmentData();
-    cloak:EquipmentData = new EquipmentData();
-    shield:EquipmentData = new EquipmentData();
+    public static readonly EMPTY = 'empty';
+    public static readonly WEAPON = 'weapon';
+    public static readonly REMOTE = 'remote';
+    public static readonly SHIELD = 'shield';
+    public static readonly CLOTHES = 'clothes';
+    public static readonly HELMET = 'helmet';
+    public static readonly CLOAK = 'cloak';
+    public static readonly TROUSERS = 'trousers';
+    public static readonly SHOES = 'shoes';
+    public static readonly GLOVES = 'gloves';
+    static readonly EQUIP_TAGS = [InventoryManager.WEAPON,InventoryManager.HELMET,InventoryManager.CLOTHES,InventoryManager.TROUSERS,InventoryManager.GLOVES
+        ,InventoryManager.SHOES,InventoryManager.CLOAK,InventoryManager.SHIELD,InventoryManager.REMOTE];
     //buffer效果
     buffer:EquipmentData = new EquipmentData();
-    equipList:EquipmentData[] = [];
     itemList:ItemData[] = [];
     inventoryList:InventoryData[] = [];
     itemCoolDownList:NextStep[]=[];
+    equips:{[key:string]:EquipmentData}={};
     suitMap: { [key: string]: SuitData } = {};
     
     clear(): void {
     }
     constructor(){
-        this.equipList = [this.weapon,this.helmet,this.clothes,this.trousers,this.gloves,this.shoes,this.cloak,this.shield,this.buffer,this.remote];
+        for(let name of InventoryManager.EQUIP_TAGS){
+            this.equips[name]=new EquipmentData();
+        }
         for(let i = 0;i <5;i++){
             let data = new ItemData();
             data.count = -1;
@@ -48,16 +53,10 @@ export default class InventoryManager {
     }
     getTotalEquipmentData():EquipmentData{
         let e = new EquipmentData();
-        e.Common.add(this.weapon.Common)
-        .add(this.helmet.Common)
-        .add(this.trousers.Common)
-        .add(this.gloves.Common)
-        .add(this.shield.Common)
-        .add(this.shoes.Common)
-        .add(this.remote.Common)
-        .add(this.clothes.Common)
-        .add(this.cloak.Common)
-        .add(this.buffer.Common);
+        for(let key in this.equips){
+            e.Common.add(this.equips[key].Common);
+        }
+        e.Common.add(this.buffer.Common);
         for(let key in this.suitMap){
             let suit = this.suitMap[key];
             if(suit){

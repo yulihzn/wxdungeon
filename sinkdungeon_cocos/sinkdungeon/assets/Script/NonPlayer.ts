@@ -834,9 +834,6 @@ export default class NonPlayer extends Actor {
                     pos.y += Logic.getRandomNum(0, 400) - 200;
                     if (isTracking) {
                         pos = this.getMovePosFromTarget(target);
-                        cc.log('isTracking');
-                    } else {
-                        cc.log('isMoving');
                     }
                     this.move(pos, isTracking ? speed * 0.5 : speed);
                 }, isTracking ? 0 : 2, true);

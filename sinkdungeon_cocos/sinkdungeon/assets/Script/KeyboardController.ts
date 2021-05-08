@@ -88,8 +88,9 @@ export default class KeyboardController extends cc.Component {
 
             case cc.macro.KEY.j: this.isA = false; break;
             case cc.macro.KEY.space: this.isB = false; cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
-            case cc.macro.KEY.e: this.isC = false; this.touchStart = false; this.isLongPress = false;
+            case cc.macro.KEY.e: this.isC = false;
                 if (!this.isLongPress) { EventHelper.emit(EventHelper.PLAYER_TRIGGER); }
+                this.touchStart = false; this.isLongPress = false;
                 break;
             case cc.macro.KEY.shift: this.isD = false; break;
         }

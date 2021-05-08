@@ -17,6 +17,7 @@ import PaletteSelector from "./PaletteSelector";
 import AvatarData from "../Data/AvatarData";
 import ProfessionData from "../Data/ProfessionData";
 import EquipmentManager from "../Manager/EquipmentManager";
+import InventoryManager from "../Manager/InventoryManager";
 
 
 const { ccclass, property } = cc._decorator;
@@ -360,17 +361,17 @@ export default class PickAvatar extends cc.Component {
         this.ButtonRandom();
     }
     private changeEquipment(data: ProfessionData) {
-        this.changeRes(this.helmetSprite, data.helmet, 'anim0');
-        this.changeRes(this.pantsSprite, data.trousers);
-        this.changeRes(this.cloakSprite, data.cloak);
-        this.changeRes(this.weaponSprite, data.weapon);
-        this.changeRes(this.remoteSprite, data.remote, 'anim0');
-        this.changeRes(this.shieldSprite, data.shield);
-        this.changeRes(this.clothesSprite, data.clothes, 'anim0');
-        this.changeRes(this.glovesSprite1, data.gloves);
-        this.changeRes(this.glovesSprite2, data.gloves);
-        this.changeRes(this.shoesSprite1, data.shoes);
-        this.changeRes(this.shoesSprite2, data.shoes);
+        this.changeRes(this.helmetSprite, data.equips[InventoryManager.HELMET], 'anim0');
+        this.changeRes(this.pantsSprite, data.equips[InventoryManager.TROUSERS]);
+        this.changeRes(this.cloakSprite, data.equips[InventoryManager.CLOAK]);
+        this.changeRes(this.weaponSprite, data.equips[InventoryManager.WEAPON]);
+        this.changeRes(this.remoteSprite, data.equips[InventoryManager.REMOTE], 'anim0');
+        this.changeRes(this.shieldSprite, data.equips[InventoryManager.SHIELD]);
+        this.changeRes(this.clothesSprite, data.equips[InventoryManager.CLOTHES], 'anim0');
+        this.changeRes(this.glovesSprite1, data.equips[InventoryManager.GLOVES]);
+        this.changeRes(this.glovesSprite2, data.equips[InventoryManager.GLOVES]);
+        this.changeRes(this.shoesSprite1, data.equips[InventoryManager.SHOES]);
+        this.changeRes(this.shoesSprite2, data.equips[InventoryManager.SHOES]);
         this.resetSpriteSize(this.weaponSprite);
         this.resetSpriteSize(this.remoteSprite);
         this.resetSpriteSize(this.shieldSprite);
@@ -415,15 +416,9 @@ export default class PickAvatar extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     addPorfessionEquipment() {
-        Logic.inventoryManager.weapon.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.weapon));
-        Logic.inventoryManager.remote.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.remote));
-        Logic.inventoryManager.shield.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.shield));
-        Logic.inventoryManager.shoes.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.shoes));
-        Logic.inventoryManager.cloak.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.cloak));
-        Logic.inventoryManager.clothes.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.clothes));
-        Logic.inventoryManager.gloves.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.gloves));
-        Logic.inventoryManager.helmet.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.helmet));
-        Logic.inventoryManager.trousers.valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.trousers));
+        for(let key in Logic.inventoryManager.equips){
+            Logic.inventoryManager.equips[key].valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.equips[key]?this.data.professionData.equips[key]:''));
+        }
     }
     addBrightnessBar(): BrightnessBar {
         let prefab = cc.instantiate(this.brightnessBarPrefab);

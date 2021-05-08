@@ -12,7 +12,6 @@ import EquipmentData from "./Data/EquipmentData";
 import InventoryManager from "./Manager/InventoryManager";
 import PlayerData from "./Data/PlayerData";
 import PlayerAvatar from "./PlayerAvatar";
-import Equipment from "./Equipment/Equipment";
 
 const { ccclass, property } = cc._decorator;
 /**
@@ -62,10 +61,10 @@ export default class PlayerWeapon extends cc.Component {
     }
     changeWeapon(equipData: EquipmentData, spriteFrame: cc.SpriteFrame, inventoryManager: InventoryManager) {
         switch (equipData.equipmetType) {
-            case Equipment.WEAPON:
+            case InventoryManager.WEAPON:
                 this.meleeWeapon.changeEquipment(equipData,spriteFrame,inventoryManager);
                 break;
-            case Equipment.REMOTE: this.shooter.data = equipData.clone();
+            case InventoryManager.REMOTE: this.shooter.data = equipData.clone();
                 this.shooter.changeRes(this.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.shooter.data.color);
                 this.shooter.changeResColor(c);

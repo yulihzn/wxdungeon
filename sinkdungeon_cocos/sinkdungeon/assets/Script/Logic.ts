@@ -98,7 +98,7 @@ export default class Logic extends cc.Component {
     static savePoinitData: SavePointData = new SavePointData();
     static killPlayerCounts: { [key: number]: number } = {};//玩家怪物击杀表
     static profileManager: ProfileManager = new ProfileManager();
-
+    static bagSortIndex = 0;//0时间,1类别,2品质
     static settings: Settings = new Settings();
 
     onLoad() {
@@ -122,7 +122,7 @@ export default class Logic extends cc.Component {
     }
     static saveData() {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
-        Logic.profileManager.data.playerEquipList = Logic.inventoryManager.equipList;
+        Logic.profileManager.data.playerEquips = Logic.inventoryManager.equips;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
         Logic.profileManager.data.playerInventoryList = Logic.inventoryManager.inventoryList;
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
@@ -150,8 +150,8 @@ export default class Logic extends cc.Component {
         Logic.playerData = Logic.profileManager.data.playerData.clone();
         //加载装备
         Logic.inventoryManager = new InventoryManager();
-        for (let i = 0; i < Logic.profileManager.data.playerEquipList.length; i++) {
-            Logic.inventoryManager.equipList[i].valueCopy(Logic.profileManager.data.playerEquipList[i]);
+        for (let key in Logic.profileManager.data.playerEquips) {
+            Logic.inventoryManager.equips[key].valueCopy(Logic.profileManager.data.playerEquips[key]);
         }
         for (let i = 0; i < Logic.profileManager.data.playerItemList.length; i++) {
             Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i]);

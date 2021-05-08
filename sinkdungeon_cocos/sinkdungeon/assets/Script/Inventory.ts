@@ -18,7 +18,6 @@ import Dungeon from './Dungeon';
 import FromData from './Data/FromData';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
-import Equipment from './Equipment/Equipment';
 import ItemDialog from './Item/ItemDialog';
 import SuitData from './Data/SuitData';
 import InventoryData from './Data/InventoryData';
@@ -80,6 +79,9 @@ export default class Inventory extends cc.Component {
     cloakTimeDelay = 0;
     suitTimeDelay = 0;
 
+    equipTimeDelays: { [key: string]: number } = {};
+    equipSprites: { [key: string]: cc.Sprite } = {};
+
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -89,7 +91,7 @@ export default class Inventory extends cc.Component {
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
             , (event) => {
                 if (this.node) {
-                    this.refreshEquipment(event.detail.equipData, true, event.detail.isReplace, event.detail.index);
+                    this.refreshEquipment(event.detail.equipData, false, event.detail.isReplace, event.detail.index);
                     this.refreshSuits();
                 }
             });
@@ -130,36 +132,28 @@ export default class Inventory extends cc.Component {
         });
         this.remote.node.parent.active = true;
         this.shield.node.parent.active = false;
+        for (let name of InventoryManager.EQUIP_TAGS) {
+            this.equipTimeDelays[name] = 0;
+        }
+        this.equipSprites[InventoryManager.WEAPON] = this.weapon;
+        this.equipSprites[InventoryManager.REMOTE] = this.remote;
+        this.equipSprites[InventoryManager.SHIELD] = this.shield;
+        this.equipSprites[InventoryManager.HELMET] = this.helmet;
+        this.equipSprites[InventoryManager.CLOTHES] = this.clothes;
+        this.equipSprites[InventoryManager.TROUSERS] = this.trousers;
+        this.equipSprites[InventoryManager.GLOVES] = this.gloves;
+        this.equipSprites[InventoryManager.SHOES] = this.shoes;
+        this.equipSprites[InventoryManager.CLOAK] = this.cloak;
     }
 
     start() {
-        this.weapon.spriteFrame = null;
-        this.remote.spriteFrame = null;
-        this.shield.spriteFrame = null;
-        this.helmet.spriteFrame = null;
-        this.clothes.spriteFrame = null;
-        this.trousers.spriteFrame = null;
-        this.gloves.spriteFrame = null;
-        this.shoes.spriteFrame = null;
-        this.cloak.spriteFrame = null;
-        this.addEquipSpriteTouchEvent(this.weapon, Equipment.WEAPON);
-        this.addEquipSpriteTouchEvent(this.remote, Equipment.REMOTE);
-        this.addEquipSpriteTouchEvent(this.shield, Equipment.SHIELD);
-        this.addEquipSpriteTouchEvent(this.helmet, Equipment.HELMET);
-        this.addEquipSpriteTouchEvent(this.clothes, Equipment.CLOTHES);
-        this.addEquipSpriteTouchEvent(this.trousers, Equipment.TROUSERS);
-        this.addEquipSpriteTouchEvent(this.gloves, Equipment.GLOVES);
-        this.addEquipSpriteTouchEvent(this.shoes, Equipment.SHOES);
-        this.addEquipSpriteTouchEvent(this.cloak, Equipment.CLOAK);
-        this.refreshEquipment(this.inventoryManager.weapon, false);
-        this.refreshEquipment(this.inventoryManager.remote, false);
-        this.refreshEquipment(this.inventoryManager.shield, false);
-        this.refreshEquipment(this.inventoryManager.helmet, false);
-        this.refreshEquipment(this.inventoryManager.clothes, false);
-        this.refreshEquipment(this.inventoryManager.trousers, false);
-        this.refreshEquipment(this.inventoryManager.gloves, false);
-        this.refreshEquipment(this.inventoryManager.shoes, false);
-        this.refreshEquipment(this.inventoryManager.cloak, false);
+        for (let key in this.equipSprites) {
+            this.equipSprites[key].spriteFrame = null;
+            this.addEquipSpriteTouchEvent(this.equipSprites[key], key);
+        }
+        for (let key in this.inventoryManager.equips) {
+            this.refreshEquipment(this.inventoryManager.equips[key], true);
+        }
         this.refreshItemRes();
         let itemSpriteList = [this.item1, this.item2, this.item3, this.item4, this.item5];
         for (let i = 0; i < itemSpriteList.length; i++) {
@@ -174,16 +168,8 @@ export default class Inventory extends cc.Component {
                 return;
             }
             let equipData = new EquipmentData();
-            switch (equipmetType) {
-                case Equipment.WEAPON: equipData = this.inventoryManager.weapon.clone(); break;
-                case Equipment.REMOTE: equipData = this.inventoryManager.remote.clone(); break;
-                case Equipment.SHIELD: equipData = this.inventoryManager.shield.clone(); break;
-                case Equipment.HELMET: equipData = this.inventoryManager.helmet.clone(); break;
-                case Equipment.CLOTHES: equipData = this.inventoryManager.clothes.clone(); break;
-                case Equipment.TROUSERS: equipData = this.inventoryManager.trousers.clone(); break;
-                case Equipment.GLOVES: equipData = this.inventoryManager.gloves.clone(); break;
-                case Equipment.SHOES: equipData = this.inventoryManager.shoes.clone(); break;
-                case Equipment.CLOAK: equipData = this.inventoryManager.cloak.clone(); break;
+            if (this.inventoryManager.equips[equipmetType]) {
+                equipData = this.inventoryManager.equips[equipmetType].clone();
             }
             this.equipmentDialog.showDialog(equipData, this.inventoryManager);
         })
@@ -229,67 +215,104 @@ export default class Inventory extends cc.Component {
             isLongPress = false;
         })
     }
-    updateList() {
-        let list: InventoryData[] = [];
-        for (let i = 0; i < Logic.inventoryManager.inventoryList.length; i++) {
-            if (Logic.inventoryManager.inventoryList[i].type != InventoryItem.TYPE_EMPTY) {
-                list.push(Logic.inventoryManager.inventoryList[i]);
-            }
-        }
-        Logic.inventoryManager.inventoryList = list;
-    }
-    private setItem(itemData: ItemData, indexFromBag: number) {
-        if(!indexFromBag){
-            this.updateList();
-        }
+    private setItemToBag(itemData: ItemData, indexFromBag: number) {
         let list = Logic.inventoryManager.inventoryList;
-        //如果背包已满而且不是从背包里交换，直接放置在地上
-        if (list.length < InventoryManager.INVENTORY_MAX || indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
-            let data = new InventoryData();
-            data.itemData = new ItemData();
-            data.itemData.valueCopy(itemData);
-            data.index = list.length;
-            data.type = InventoryItem.TYPE_ITEM;
-            data.createTime = new Date().getTime();
-            if (indexFromBag) {
-                list[indexFromBag].valueCopy(data);
-            } else {
-                list.push(data);
-            }
-        } else {
-            let p = this.dungeon.player.node.position.clone();
-            if (itemData.resName != Item.EMPTY) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: p, res: itemData.resName, count: itemData.count });
+        //可插入的下标,默认为列表末尾，如果已满为-1，遍历选中第一个空位
+        let insertIndex = list.length < InventoryManager.INVENTORY_MAX ? list.length : -1;
+        let isFromBag = indexFromBag && indexFromBag > -1 && indexFromBag < list.length;
+        //遍历相同物品，如果有+1,如果是来自背包交换通知背包刷新
+        for (let i = list.length - 1; i >= 0; i--) {
+            let idata = list[i];
+            if (idata.type == InventoryItem.TYPE_EMPTY) {
+                insertIndex = i;
+            } else if (idata.type == InventoryItem.TYPE_ITEM && this.isItemEqualCanAdd(idata.itemData, itemData)) {
+                let count = idata.itemData.count + itemData.count;
+                idata.itemData = new ItemData();
+                idata.itemData.valueCopy(itemData);
+                idata.itemData.count = count;
+                if (isFromBag) {
+                    EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
+                }
+                return;
             }
         }
-
+        let newdata = new InventoryData();
+        newdata.itemData = new ItemData();
+        newdata.itemData.valueCopy(itemData);
+        newdata.type = InventoryItem.TYPE_ITEM;
+        newdata.createTime = new Date().getTime();
+        //如果是来自背包交换，填补交换下标的数据并通知背包刷新
+        if (isFromBag) {
+            list[indexFromBag] = new InventoryData();
+            list[indexFromBag].valueCopy(newdata);
+            EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
+        } else {
+            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包
+            if (insertIndex == -1) {
+                let p = this.dungeon.player.node.position.clone();
+                if (itemData.resName != Item.EMPTY) {
+                    EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: p, res: itemData.resName, count: itemData.count });
+                }
+            } else {
+                let d = new InventoryData();
+                d.valueCopy(newdata);
+                if (insertIndex < list.length) {
+                    list[insertIndex] = d;
+                } else {
+                    list.push(d);
+                }
+            }
+        }
     }
-    private setEquipment(equipmentData: EquipmentData, isChange: boolean, indexFromBag?: number) {
-        if (!isChange || equipmentData.equipmetType == Equipment.EMPTY) {
+    private setEquipmentToBag(equipmentData: EquipmentData, isInit: boolean, indexFromBag?: number) {
+        //来自初始化或者空装备直接返回
+        if (isInit || equipmentData.equipmetType == InventoryManager.EMPTY) {
             return;
         }
         let list = Logic.inventoryManager.inventoryList;
-        //如果背包已满而且不是从背包里交换，直接放置在地上
-        if (list.length < InventoryManager.INVENTORY_MAX || indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
-            let data = new InventoryData();
-            data.equipmentData = new EquipmentData();
-            data.equipmentData.valueCopy(equipmentData);
-            data.index = list.length;
-            data.type = InventoryItem.TYPE_EQUIP;
-            data.createTime = new Date().getTime();
-            if (indexFromBag) {
-                list[indexFromBag].valueCopy(data);
-            } else {
-                list.push(data);
+        //可插入的下标,默认为列表末尾，如果已满为-1，遍历选中第一个空位
+        let insertIndex = list.length < InventoryManager.INVENTORY_MAX ? list.length : -1;
+        let isFromBag = indexFromBag && indexFromBag > -1 && indexFromBag < list.length;
+        //遍历选中第一个空位
+        for (let i = 0; i < list.length; i++) {
+            let idata = list[i];
+            if (idata.type == InventoryItem.TYPE_EMPTY) {
+                insertIndex = i;
+                break;
             }
+        }
+        let newdata = new InventoryData();
+        newdata.equipmentData = new EquipmentData();
+        newdata.equipmentData.valueCopy(equipmentData);
+        newdata.type = InventoryItem.TYPE_EQUIP;
+        newdata.createTime = new Date().getTime();
+        //如果是来自背包交换，填补交换下标的数据并通知背包刷新
+        if (isFromBag) {
+            list[indexFromBag] = new InventoryData();
+            list[indexFromBag].valueCopy(newdata);
+            EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
         } else {
-            let p = this.dungeon.player.node.position.clone();
-            EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { pos: p, res: equipmentData.img, equipmentData: equipmentData });
+            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包
+            if (insertIndex == -1) {
+                let p = this.dungeon.player.node.position.clone();
+                if (equipmentData.equipmetType != InventoryManager.EMPTY) {
+                    EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { pos: p, res: equipmentData.img, equipmentData: equipmentData });
+                }
+            } else {
+                let d = new InventoryData();
+                d.valueCopy(newdata);
+                if (insertIndex < list.length) {
+                    list[insertIndex] = d;
+                } else {
+                    list.push(d);
+                }
+            }
         }
     }
     refreshSuits() {
         this.inventoryManager.suitMap = {};
-        for (let equip of this.inventoryManager.equipList) {
+        for (let key in this.inventoryManager.equips) {
+            let equip = this.inventoryManager.equips[key];
             if (equip.suitType.length < 1) {
                 continue;
             }
@@ -304,54 +327,53 @@ export default class Inventory extends cc.Component {
         }
 
     }
-    refreshEquipment(equipmentDataNew: EquipmentData, isChange: boolean, isReplace?: boolean,indexFromBag?:number) {
-        if (!equipmentDataNew || !this.weapon) {
+    refreshEquipment(equipDataNew: EquipmentData, isInit: boolean, isReplace?: boolean, indexFromBag?: number) {
+        if (!equipDataNew || !this.weapon) {
             return;
         }
-        let list = Logic.inventoryManager.inventoryList;
-        //如果背包已满而且不是从背包里交换那么跳过，执行下面直接替换身上的装备逻辑
-        if (isReplace&&list.length<InventoryManager.INVENTORY_MAX|| indexFromBag && indexFromBag > -1 && indexFromBag < list.length) {
-            this.setEquipment(equipmentDataNew, true);
+        //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
+        if (!isReplace && !isInit&&this.inventoryManager.equips[equipDataNew.equipmetType].equipmetType != InventoryManager.EMPTY) {
+            this.setEquipmentToBag(equipDataNew, isInit,indexFromBag);
             return;
         }
-        let color = cc.color(255, 255, 255).fromHEX(equipmentDataNew.color);
-        let spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img);
-        if (equipmentDataNew.equipmetType == 'clothes') {
-            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img + 'anim0');
-        } else if (equipmentDataNew.equipmetType == 'helmet') {
-            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img + 'anim0');
-        } else if (equipmentDataNew.equipmetType == 'remote') {
-            spriteFrame = Logic.spriteFrameRes(equipmentDataNew.img + 'anim0');
+        //2.如果是长按或者来自背包装备的替换操作，替换新的，移出旧的到背包
+        let color = cc.color(255, 255, 255).fromHEX(equipDataNew.color);
+        let spriteFrame = Logic.spriteFrameRes(equipDataNew.img);
+        if (equipDataNew.equipmetType == InventoryManager.CLOTHES) {
+            spriteFrame = Logic.spriteFrameRes(equipDataNew.img + 'anim0');
+        } else if (equipDataNew.equipmetType == InventoryManager.HELMET) {
+            spriteFrame = Logic.spriteFrameRes(equipDataNew.img + 'anim0');
+        } else if (equipDataNew.equipmetType == InventoryManager.REMOTE) {
+            spriteFrame = Logic.spriteFrameRes(equipDataNew.img + 'anim0');
         }
-        switch (equipmentDataNew.equipmetType) {
-            case Equipment.WEAPON: this.weapon.spriteFrame = spriteFrame;
-                this.weapon.node.color = color;
-                this.setEquipment(this.inventoryManager.weapon, isChange);
-                this.inventoryManager.weapon.valueCopy(equipmentDataNew);
-                break;
-            case Equipment.REMOTE:
+        //更新当前装备数据
+        this.inventoryManager.equips[equipDataNew.equipmetType].valueCopy(equipDataNew);
+        //更新贴图和颜色
+        this.equipSprites[equipDataNew.equipmetType].node.color = color;
+        this.equipSprites[equipDataNew.equipmetType].spriteFrame = equipDataNew.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
+        if (equipDataNew.equipmetType == InventoryManager.TROUSERS && equipDataNew.trouserslong == 1) {
+            this.equipSprites[equipDataNew.equipmetType].spriteFrame = Logic.spriteFrameRes('trousers000');
+        }
+        switch (equipDataNew.equipmetType) {
+            case InventoryManager.REMOTE:
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
-                this.remote.spriteFrame = spriteFrame;
-                this.remote.node.color = color;
-                this.setEquipment(this.inventoryManager.remote, isChange);
-                this.setEquipment(this.inventoryManager.shield, isChange);
-                this.inventoryManager.remote.valueCopy(equipmentDataNew);
-                this.inventoryManager.shield.valueCopy(new EquipmentData());
-                this.shield.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.shield.img);
+                //替换盾牌到背包
+                this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit, indexFromBag);
+                //清空盾牌和贴图
+                this.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData());
+                this.shield.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.SHIELD].img);
                 this.shield.node.parent.active = false;
                 break;
-            case Equipment.SHIELD:
+            case InventoryManager.SHIELD:
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
-                this.shield.spriteFrame = spriteFrame;
-                this.shield.node.color = color;
-                this.setEquipment(this.inventoryManager.shield, isChange);
-                this.setEquipment(this.inventoryManager.remote, isChange);
-                this.inventoryManager.shield.valueCopy(equipmentDataNew);
-                if (this.inventoryManager.shield.equipmetType != Equipment.EMPTY) {
-                    this.inventoryManager.remote.valueCopy(new EquipmentData());
-                    this.remote.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.remote.img);
+                //替换远程到背包
+                this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, indexFromBag);
+                //如果当前盾牌不为空清空远程和贴图并展示盾牌栏，否则显示远程隐藏盾牌栏
+                if (this.inventoryManager.equips[equipDataNew.equipmetType].equipmetType != InventoryManager.EMPTY) {
+                    this.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData());
+                    this.remote.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.REMOTE].img);
                     this.remote.node.parent.active = false;
                     this.shield.node.parent.active = true;
                 } else {
@@ -359,43 +381,13 @@ export default class Inventory extends cc.Component {
                     this.shield.node.parent.active = false;
                 }
                 break;
-            case Equipment.HELMET: this.helmet.spriteFrame = spriteFrame;
-                this.helmet.node.color = color;
-                this.setEquipment(this.inventoryManager.helmet, isChange);
-                this.inventoryManager.helmet.valueCopy(equipmentDataNew);
-                break;
-            case Equipment.CLOTHES: this.clothes.spriteFrame = spriteFrame;
-                this.clothes.node.color = color;
-                this.setEquipment(this.inventoryManager.clothes, isChange);
-                this.inventoryManager.clothes.valueCopy(equipmentDataNew);
-                break;
-            case Equipment.TROUSERS:
-                this.trousers.spriteFrame = equipmentDataNew.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
-                this.trousers.node.color = color;
-                this.setEquipment(this.inventoryManager.trousers, isChange);
-                this.inventoryManager.trousers.valueCopy(equipmentDataNew);
-                break;
-            case Equipment.GLOVES: this.gloves.spriteFrame = spriteFrame;
-                this.gloves.node.color = color;
-                this.setEquipment(this.inventoryManager.gloves, isChange);
-                this.inventoryManager.gloves.valueCopy(equipmentDataNew);
-                break;
-            case Equipment.SHOES: this.shoes.spriteFrame = spriteFrame;
-                this.shoes.node.color = color;
-                this.setEquipment(this.inventoryManager.shoes, isChange);
-                this.inventoryManager.shoes.valueCopy(equipmentDataNew);
-                break;
-            case Equipment.CLOAK: this.cloak.spriteFrame = spriteFrame;
-                this.cloak.node.color = color;
-                this.setEquipment(this.inventoryManager.cloak, isChange);
-                this.inventoryManager.cloak.valueCopy(equipmentDataNew);
-                break;
         }
+        //更新玩家装备贴图和状态
         if (this.dungeon.player) {
             this.dungeon.player.inventoryManager = this.inventoryManager;
-            this.dungeon.player.changeEquipment(equipmentDataNew, spriteFrame);
-            if (equipmentDataNew.statusInterval > 0 && equipmentDataNew.statusName.length > 0) {
-                this.dungeon.player.addStatus(equipmentDataNew.statusName, FromData.getClone(equipmentDataNew.nameCn, equipmentDataNew.img));
+            this.dungeon.player.changeEquipment(equipDataNew, spriteFrame);
+            if (equipDataNew.statusInterval > 0 && equipDataNew.statusName.length > 0) {
+                this.dungeon.player.addStatus(equipDataNew.statusName, FromData.getClone(equipDataNew.nameCn, equipDataNew.img));
             }
         }
     }
@@ -418,55 +410,15 @@ export default class Inventory extends cc.Component {
     }
     isTimeDelay(dt: number, equipmentData: EquipmentData) {
         let timeDelay = -1;
-        switch (equipmentData.equipmetType) {
-            case Equipment.WEAPON: this.weaponTimeDelay = this.getTimeDelay(this.weaponTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.weaponTimeDelay; break;
-            case Equipment.REMOTE: this.remoteTimeDelay = this.getTimeDelay(this.remoteTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.remoteTimeDelay; break;
-            case Equipment.SHIELD: this.shieldTimeDelay = this.getTimeDelay(this.shieldTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.shieldTimeDelay; break;
-            case Equipment.HELMET: this.helmetTimeDelay = this.getTimeDelay(this.helmetTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.helmetTimeDelay; break;
-            case Equipment.CLOTHES: this.clothesTimeDelay = this.getTimeDelay(this.clothesTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.clothesTimeDelay; break;
-            case Equipment.TROUSERS: this.trousersTimeDelay = this.getTimeDelay(this.trousersTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.trousersTimeDelay; break;
-            case Equipment.GLOVES: this.glovesTimeDelay = this.getTimeDelay(this.glovesTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.glovesTimeDelay; break;
-            case Equipment.SHOES: this.shoesTimeDelay = this.getTimeDelay(this.shoesTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.shoesTimeDelay; break;
-            case Equipment.CLOAK: this.cloakTimeDelay = this.getTimeDelay(this.cloakTimeDelay, equipmentData.statusInterval, dt);
-                timeDelay = this.cloakTimeDelay; break;
-        }
+        this.equipTimeDelays[equipmentData.equipmetType] = this.getTimeDelay(this.equipTimeDelays[equipmentData.equipmetType], equipmentData.statusInterval, dt);;
+        timeDelay = this.equipTimeDelays[equipmentData.equipmetType];
         return timeDelay == 0;
     }
     update(dt) {
-        if (this.isTimeDelay(dt, this.inventoryManager.weapon)) {
-            this.addPlayerStatus(this.inventoryManager.weapon);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.remote)) {
-            this.addPlayerStatus(this.inventoryManager.remote);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.shield)) {
-            this.addPlayerStatus(this.inventoryManager.shield);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.helmet)) {
-            this.addPlayerStatus(this.inventoryManager.helmet);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.clothes)) {
-            this.addPlayerStatus(this.inventoryManager.clothes);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.trousers)) {
-            this.addPlayerStatus(this.inventoryManager.trousers);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.gloves)) {
-            this.addPlayerStatus(this.inventoryManager.gloves);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.shoes)) {
-            this.addPlayerStatus(this.inventoryManager.shoes);
-        }
-        if (this.isTimeDelay(dt, this.inventoryManager.cloak)) {
-            this.addPlayerStatus(this.inventoryManager.cloak);
+        for (let key in this.inventoryManager.equips) {
+            if (this.isTimeDelay(dt, this.inventoryManager.equips[key])) {
+                this.addPlayerStatus(this.inventoryManager.equips[key]);
+            }
         }
     }
 
@@ -495,6 +447,10 @@ export default class Inventory extends cc.Component {
         }, item.cooldown, true)
 
     }
+    isItemEqualCanAdd(item1: ItemData, item2: ItemData): boolean {
+        return item1.resName != Item.EMPTY && item1.resName == item2.resName
+            && item1.count > 0 && item2.count > 0;
+    }
     refreshItem(itemDataNew: ItemData, isReplace: boolean, indexFromBag: number) {
         if (!this.node) {
             return;
@@ -503,8 +459,7 @@ export default class Inventory extends cc.Component {
         //填补相同可叠加
         for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
             let item = this.inventoryManager.itemList[i];
-            if (item.resName != Item.EMPTY && item.resName == itemDataNew.resName
-                && item.count > 0 && itemDataNew.count > 0) {
+            if (this.isItemEqualCanAdd(item, itemDataNew)) {
                 let count = item.count + itemDataNew.count;
                 item.valueCopy(itemDataNew);
                 item.count = count;
@@ -523,9 +478,11 @@ export default class Inventory extends cc.Component {
                 }
             }
         }
+        //列表已满 
+
         if (!isRefreshed) {
-            //先进先出 如果列表已满，移出第一个到背包，新的放在末尾
             if (isReplace) {
+                //1.如果是长按或者来自背包装备的替换操作，移出第一个到背包，新的放在末尾
                 let item0 = this.inventoryManager.itemList[0].clone();
                 let arr = new Array();
                 for (let i = 1; i < this.inventoryManager.itemList.length; i++) {
@@ -535,10 +492,10 @@ export default class Inventory extends cc.Component {
                 for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
                     this.inventoryManager.itemList[i].valueCopy(arr[i]);
                 }
-                this.setItem(item0, indexFromBag);
+                this.setItemToBag(item0, indexFromBag);
             } else {
-                //直接放置新的物品到背包
-                this.setItem(itemDataNew, indexFromBag);
+                //2.如果是捡起到背包或者购买，直接放置到背包
+                this.setItemToBag(itemDataNew, indexFromBag);
             }
         }
         this.refreshItemRes();

@@ -30291,11 +30291,13 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": null,
+    "target": {
+      "__id__": 665
+    },
     "component": "",
-    "_componentId": "201faQ17bhLsoyeY0sNn6x5",
-    "handler": "toggleShadow",
-    "customEventData": ""
+    "_componentId": "66439SRIlRDCK2s/WLS+qDi",
+    "handler": "changeSort",
+    "customEventData": "0"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -30786,11 +30788,13 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": null,
+    "target": {
+      "__id__": 665
+    },
     "component": "",
-    "_componentId": "201faQ17bhLsoyeY0sNn6x5",
-    "handler": "toggleShadow",
-    "customEventData": ""
+    "_componentId": "66439SRIlRDCK2s/WLS+qDi",
+    "handler": "changeSort",
+    "customEventData": "1"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -31281,11 +31285,13 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": null,
+    "target": {
+      "__id__": 665
+    },
     "component": "",
-    "_componentId": "201faQ17bhLsoyeY0sNn6x5",
-    "handler": "toggleShadow",
-    "customEventData": ""
+    "_componentId": "66439SRIlRDCK2s/WLS+qDi",
+    "handler": "changeSort",
+    "customEventData": "2"
   },
   {
     "__type__": "cc.PrefabInfo",

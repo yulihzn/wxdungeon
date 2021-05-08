@@ -17,7 +17,6 @@ import IndexZ from "./Utils/IndexZ";
 import PlayerAvatar from "./PlayerAvatar";
 import EquipmentData from "./Data/EquipmentData";
 import InventoryManager from "./Manager/InventoryManager";
-import Equipment from "./Equipment/Equipment";
 import HitBuilding from "./Building/HitBuilding";
 import CommonData from "./Data/CommonData";
 import Actor from "./Base/Actor";
@@ -121,7 +120,7 @@ export default class MeleeWeapon extends cc.Component {
         this.weaponFirePoint = this.node.getChildByName('firepoint');
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos));
-        this.weaponSprite = this.getSpriteChildSprite(['sprite', Equipment.WEAPON]);
+        this.weaponSprite = this.getSpriteChildSprite(['sprite', InventoryManager.WEAPON]);
         this.weaponStabSprite = this.getSpriteChildSprite(['sprite', 'stabweapon']);
         this.weaponStabLightSprite = this.getSpriteChildSprite(['sprite', 'stablight']);
         this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight']);
@@ -150,7 +149,7 @@ export default class MeleeWeapon extends cc.Component {
         return node.getComponent(cc.Sprite);
     }
     changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame, inventoryManager: InventoryManager) {
-        if (Equipment.WEAPON != equipData.equipmetType) {
+        if (InventoryManager.WEAPON != equipData.equipmetType) {
             cc.log('its not a weapon');
             return;
         }
@@ -167,8 +166,8 @@ export default class MeleeWeapon extends cc.Component {
             this.weaponSprite.spriteFrame = spriteFrame;
             this.weaponStabSprite.spriteFrame = null;
         }
-        let color1 = cc.color(255, 255, 255).fromHEX(inventoryManager.weapon.color);
-        let color2 = cc.color(255, 255, 255).fromHEX(inventoryManager.weapon.lightcolor);
+        let color1 = cc.color(255, 255, 255).fromHEX(inventoryManager.equips[InventoryManager.WEAPON].color);
+        let color2 = cc.color(255, 255, 255).fromHEX(inventoryManager.equips[InventoryManager.WEAPON].lightcolor);
         this.weaponSprite.node.color = color1;
         this.weaponStabSprite.node.color = color1;
         this.weaponStabLightSprite.node.color = color2;
