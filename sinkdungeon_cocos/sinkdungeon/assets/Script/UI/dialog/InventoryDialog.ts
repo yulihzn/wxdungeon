@@ -43,8 +43,14 @@ export default class InventoryDialog extends BaseDialog {
         for (let i = 0; i < InventoryManager.INVENTORY_MAX; i++) {
             let data = new InventoryData();
             data.createTime = new Date().getTime();
-            this.list.push(this.getItem(i,data));
+            this.list.push(this.getItem(i, data));
         }
+        cc.director.on(EventHelper.HUD_INVENTORY_ALL_UPDATE
+            , (event) => {
+                if (this.node) {
+                    this.updateList(Logic.bagSortIndex);
+                }
+            });
         cc.director.on(EventHelper.HUD_INVENTORY_ITEM_UPDATE
             , (event) => {
                 if (this.node) {
@@ -54,11 +60,11 @@ export default class InventoryDialog extends BaseDialog {
             });
         this.toggleContainer.toggleItems[Logic.bagSortIndex].isChecked = true;
     }
-    private getItem(index:number,data: InventoryData) {
+    private getItem(index: number, data: InventoryData) {
         let prefab = cc.instantiate(this.item);
         prefab.parent = this.layout;
         let item = prefab.getComponent(InventoryItem);
-        item.init(this,index, data);
+        item.init(this, index, data);
         return item;
     }
 
@@ -70,7 +76,7 @@ export default class InventoryDialog extends BaseDialog {
         this.updateList(Logic.bagSortIndex);
     }
     //toggle
-    changeSort(toggle:cc.Toggle,index:number){
+    changeSort(toggle: cc.Toggle, index: number) {
         Logic.bagSortIndex = index;
         this.updateList(index);
     }
@@ -98,27 +104,27 @@ export default class InventoryDialog extends BaseDialog {
             this.itemDialog.showDialog(item.data.itemData);
         }
     }
-    updateList(sortIndex:number) {
+    updateList(sortIndex: number) {
         this.clearSelect();
         let itemlist: InventoryData[] = [];
         let equiplist: InventoryData[] = [];
         let list: InventoryData[] = [];
         for (let i = 0; i < Logic.inventoryManager.inventoryList.length; i++) {
             let data = Logic.inventoryManager.inventoryList[i];
-            if(data.type != InventoryItem.TYPE_EMPTY){
+            if (data.type != InventoryItem.TYPE_EMPTY) {
                 list.push(data);
-                if(data.type == InventoryItem.TYPE_EQUIP){
+                if (data.type == InventoryItem.TYPE_EQUIP) {
                     equiplist.push(data);
-                }else if(data.type == InventoryItem.TYPE_ITEM){
+                } else if (data.type == InventoryItem.TYPE_ITEM) {
                     itemlist.push(data);
                 }
             }
         }
-        if(sortIndex==0){
+        if (sortIndex == 0) {
             list.sort((a, b) => {
                 return a.createTime - b.createTime;
             });
-        }else if(sortIndex ==1){
+        } else if (sortIndex == 1) {
             itemlist.sort((a, b) => {
                 return a.createTime - b.createTime;
             });
@@ -126,12 +132,12 @@ export default class InventoryDialog extends BaseDialog {
                 return a.createTime - b.createTime;
             });
             list = equiplist.concat(itemlist);
-        }else if(sortIndex ==2){
+        } else if (sortIndex == 2) {
             itemlist.sort((a, b) => {
                 return a.createTime - b.createTime;
             });
             equiplist.sort((a, b) => {
-                return a.equipmentData.level - b.equipmentData.level;
+                return b.equipmentData.level - a.equipmentData.level;
             });
             list = equiplist.concat(itemlist);
         }
@@ -148,30 +154,34 @@ export default class InventoryDialog extends BaseDialog {
     //button 装备
     use() {
         //未选中或者为空直接返回
-        if (this.currentSelectIndex==-1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+        if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
         let current = this.list[this.currentSelectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
-            let equipData = current.data.equipmentData;
+            let equipData = current.data.equipmentData.clone();
             if (equipData.equipmetType != InventoryManager.EMPTY) {
+                //置空当前放下的数据，清除选中
+                Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
+                this.list[this.currentSelectIndex].setEmpty();
                 EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipData: equipData, isReplace: true, index: this.currentSelectIndex });
             }
         } else {
-            let itemData = current.data.itemData;
+            let itemData = current.data.itemData.clone();
             if (itemData.resName != Item.EMPTY) {
+                //置空当前放下的数据，清除选中
+                Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
+                this.list[this.currentSelectIndex].setEmpty();
                 EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: itemData, isReplace: true, index: this.currentSelectIndex });
             }
         }
-        //置空当前放下的数据，清除选中
-        Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
-        this.list[this.currentSelectIndex].setEmpty();
+
         this.clearSelect();
     }
     //button 放下
     drop() {
         //未选中或者为空直接返回
-        if (this.currentSelectIndex==-1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+        if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
         let current = this.list[this.currentSelectIndex];

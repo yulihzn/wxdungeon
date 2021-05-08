@@ -241,13 +241,13 @@ export default class Inventory extends cc.Component {
         newdata.itemData.valueCopy(itemData);
         newdata.type = InventoryItem.TYPE_ITEM;
         newdata.createTime = new Date().getTime();
-        //如果是来自背包交换，填补交换下标的数据并通知背包刷新
+        //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
         if (isFromBag) {
             list[indexFromBag] = new InventoryData();
             list[indexFromBag].valueCopy(newdata);
             EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
         } else {
-            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包
+            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包并通知背包全局刷新
             if (insertIndex == -1) {
                 let p = this.dungeon.player.node.position.clone();
                 if (itemData.resName != Item.EMPTY) {
@@ -261,6 +261,7 @@ export default class Inventory extends cc.Component {
                 } else {
                     list.push(d);
                 }
+                EventHelper.emit(EventHelper.HUD_INVENTORY_ALL_UPDATE);
             }
         }
     }
@@ -286,13 +287,13 @@ export default class Inventory extends cc.Component {
         newdata.equipmentData.valueCopy(equipmentData);
         newdata.type = InventoryItem.TYPE_EQUIP;
         newdata.createTime = new Date().getTime();
-        //如果是来自背包交换，填补交换下标的数据并通知背包刷新
+        //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
         if (isFromBag) {
             list[indexFromBag] = new InventoryData();
             list[indexFromBag].valueCopy(newdata);
             EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
         } else {
-            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包
+            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包并通知背包全局刷新
             if (insertIndex == -1) {
                 let p = this.dungeon.player.node.position.clone();
                 if (equipmentData.equipmetType != InventoryManager.EMPTY) {
@@ -306,6 +307,7 @@ export default class Inventory extends cc.Component {
                 } else {
                     list.push(d);
                 }
+                EventHelper.emit(EventHelper.HUD_INVENTORY_ALL_UPDATE);
             }
         }
     }
@@ -331,8 +333,19 @@ export default class Inventory extends cc.Component {
         if (!equipDataNew || !this.weapon) {
             return;
         }
+        let equip = this.inventoryManager.equips[equipDataNew.equipmetType];
+        let hasEquip = equip&&equip.equipmetType != InventoryManager.EMPTY;
+        if(!hasEquip){
+            if(equipDataNew.equipmetType == InventoryManager.REMOTE&&this.inventoryManager.equips[InventoryManager.SHIELD].equipmetType != InventoryManager.EMPTY){
+                hasEquip = true;
+            }
+            if(equipDataNew.equipmetType == InventoryManager.SHIELD&&this.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.EMPTY){
+                hasEquip = true;
+            }
+        }
+        
         //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
-        if (!isReplace && !isInit&&this.inventoryManager.equips[equipDataNew.equipmetType].equipmetType != InventoryManager.EMPTY) {
+        if (!isReplace && !isInit&&equip&&hasEquip) {
             this.setEquipmentToBag(equipDataNew, isInit,indexFromBag);
             return;
         }
@@ -347,12 +360,18 @@ export default class Inventory extends cc.Component {
             spriteFrame = Logic.spriteFrameRes(equipDataNew.img + 'anim0');
         }
         //更新当前装备数据
-        this.inventoryManager.equips[equipDataNew.equipmetType].valueCopy(equipDataNew);
+        if(equip){
+            this.setEquipmentToBag(equip, isInit, indexFromBag);
+            equip.valueCopy(equipDataNew);
+        }
         //更新贴图和颜色
-        this.equipSprites[equipDataNew.equipmetType].node.color = color;
-        this.equipSprites[equipDataNew.equipmetType].spriteFrame = equipDataNew.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
-        if (equipDataNew.equipmetType == InventoryManager.TROUSERS && equipDataNew.trouserslong == 1) {
-            this.equipSprites[equipDataNew.equipmetType].spriteFrame = Logic.spriteFrameRes('trousers000');
+        let sprite = this.equipSprites[equipDataNew.equipmetType];
+        if(sprite){
+            sprite.node.color = color;
+            sprite.spriteFrame = equipDataNew.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
+            if (equipDataNew.equipmetType == InventoryManager.TROUSERS && equipDataNew.trouserslong == 1) {
+                sprite.spriteFrame = Logic.spriteFrameRes('trousers000');
+            }
         }
         switch (equipDataNew.equipmetType) {
             case InventoryManager.REMOTE:

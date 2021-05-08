@@ -124,6 +124,7 @@ export default class ItemManager extends BaseManager {
         let itemScript = item.getComponent(Item);
         itemScript.init(resName, indexpos.clone(), count, shopTable);
         let data = item.getComponent(Item).data;
+        this.groundList.push(itemScript);
         if(shopTable){
             return;
         }
@@ -135,7 +136,6 @@ export default class ItemManager extends BaseManager {
             curritems.push(data);
             Logic.mapManager.setCurrentItemsArr(curritems);
         }
-        this.groundList.push(itemScript);
     }
     public addItemFromMap(mapStr: string, indexPos: cc.Vec3) {
         //生成心

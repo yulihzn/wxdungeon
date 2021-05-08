@@ -1,6 +1,7 @@
 import InventoryData from "../Data/InventoryData";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
+import InventoryManager from "../Manager/InventoryManager";
 import Player from "../Player";
 import InventoryDialog from "./dialog/InventoryDialog";
 
@@ -38,41 +39,48 @@ export default class InventoryItem extends cc.Component {
         }, this)
 
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
-            if(this.isSelect&&this.index == this.dialog.currentSelectIndex){
+            if (this.isSelect && this.index == this.dialog.currentSelectIndex) {
                 this.isSelect = false;
-            }else{
+            } else {
                 this.isSelect = this.data.type != InventoryItem.TYPE_EMPTY;
             }
             this.dialog.clearSelect();
             if (this.isSelect) {
                 this.dialog.showSelect(this);
             }
-            
+
         }, this)
 
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
         }, this)
     }
-    init(inventoryDialog: InventoryDialog,index:number, data: InventoryData) {
+    init(inventoryDialog: InventoryDialog, index: number, data: InventoryData) {
         this.dialog = inventoryDialog;
         this.index = index;
         this.isSelect = false;
         this.updateData(data);
     }
-    updateData(data: InventoryData){
+    updateData(data: InventoryData) {
         this.isSelect = false;
         this.data.valueCopy(data);
-        if (this.data.type == InventoryItem.TYPE_EMPTY) {
-            this.label.string = ``;
-            this.sprite.spriteFrame = null;
-        } else if (this.data.type == InventoryItem.TYPE_ITEM && this.data.itemData) {
+        this.label.string = ``;
+        this.sprite.spriteFrame = null;
+        if (this.data.type == InventoryItem.TYPE_ITEM && this.data.itemData) {
             this.label.string = `${data.itemData.count > 0 ? ('x' + data.itemData.count) : ''}`;
             this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.itemData.resName);
         } else if (this.data.equipmentData) {
-            this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img);
+            let spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img);
+            if (this.data.equipmentData.equipmetType == InventoryManager.CLOTHES) {
+                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0');
+            } else if (this.data.equipmentData.equipmetType == InventoryManager.HELMET) {
+                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0');
+            } else if (this.data.equipmentData.equipmetType == InventoryManager.REMOTE) {
+                spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0');
+            }
+            this.sprite.spriteFrame = spriteFrame;
         }
     }
-    setEmpty(){
+    setEmpty() {
         this.data.setEmpty();
         this.label.string = ``;
         this.sprite.spriteFrame = null;

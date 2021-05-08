@@ -82,19 +82,20 @@ export default class Chest extends Building {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
                         let rand4save = Logic.mapManager.getRandom4Save(this.seed);
-                        dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.HEART);
-                        dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.DREAM);
-                        dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM);
-                        dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING);
-                        dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_MOVESPEED);
-                        dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_REMOTE);
-                        dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_ATTACK);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.WEAPON_CHOPPER, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-                        dungeon.addEquipment(EquipmentManager.REMOTE_RPG, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.HEART);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.DREAM);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_MOVESPEED);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_REMOTE);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_ATTACK);
+                        // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), "food000");
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_BLOOD, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.WEAPON_CHOPPER, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.SHIELD_CIRCLE, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.REMOTE_CROSSBOW, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                        // dungeon.addEquipment(EquipmentManager.REMOTE_RPG, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                         dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                     }
                 }

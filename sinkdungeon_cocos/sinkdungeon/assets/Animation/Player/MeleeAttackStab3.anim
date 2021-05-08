@@ -297,6 +297,13 @@
       "params": []
     },
     {
+      "frame": 0.2,
+      "func": "DashTime",
+      "params": [
+        1200
+      ]
+    },
+    {
       "frame": 0.3333333333333333,
       "func": "ExAttackTime",
       "params": []

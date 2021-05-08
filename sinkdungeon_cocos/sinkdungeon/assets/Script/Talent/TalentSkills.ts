@@ -253,10 +253,9 @@ export default class TalentSkills extends Talent {
         }
         this.scheduleOnce(()=>{
             AudioPlayer.play(AudioPlayer.BOOM);
-        let d = new DamageData();
-        d.physicalDamage = 2;
+        let d = this.player.data.getFinalAttackPoint();
         this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
-            .init(0, 0.1, 0, 2, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.DIZZ]));
+            .init(0, 0.15, 0, 2, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.DIZZ]));
             this.talentSkill.IsExcuting = false;
         },0.8)
     }
@@ -291,7 +290,7 @@ export default class TalentSkills extends Talent {
     showSmoke() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData();
-        d.magicDamage = 1;
+        d.magicDamage = 3;
         this.shoot(this.player.shooterEx, 0, 0, 'bullet041',this.smokePrefab,new AreaOfEffectData().init(
             7,0.1,0,1,IndexZ.OVERHEAD,false,false,false,false,false,new DamageData(),new FromData(),[StatusManager.WINE_CLOUD]
         ));
@@ -299,7 +298,7 @@ export default class TalentSkills extends Talent {
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
-        d.magicDamage = 2;
+        d.magicDamage = 3;
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
             .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.BURNING]));
     }
@@ -311,7 +310,7 @@ export default class TalentSkills extends Talent {
         let a1 = [angles1];
         let a = a1;
         let d = new DamageData();
-        d.magicDamage = 2;
+        d.magicDamage = 3;
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
@@ -337,14 +336,14 @@ export default class TalentSkills extends Talent {
     }
     private addBroom() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
-        let d = new DamageData(2);
+        let d = this.player.data.getFinalAttackPoint();
         this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
             .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, false, true, true, true,true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
     }
     
     private cooking() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
-        let d = new DamageData(1);
+        let d = this.player.data.getFinalAttackPoint();
         this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
             .init(0, 2, 0, 1, IndexZ.OVERHEAD, false, false, false, false,false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
                 let monster = actor.node.getComponent(NonPlayer);
@@ -361,9 +360,9 @@ export default class TalentSkills extends Talent {
         AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
         let d = new DamageData();
         let scale = 5;
-        d.physicalDamage = 1;
+        d.physicalDamage = 2;
         if (this.player.weaponRight.meleeWeapon.IsSword) {
-            d.physicalDamage = 2;
+            d = this.player.data.getFinalAttackPoint();
             scale = 6;
         }
         let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()

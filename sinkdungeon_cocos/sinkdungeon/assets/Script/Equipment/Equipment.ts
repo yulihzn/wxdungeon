@@ -101,7 +101,7 @@ export default class Equipment extends cc.Component {
     private _taken(isReplace:boolean) {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
-        cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data } })
+        cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data ,isReplace:isReplace} })
         this.node.getChildByName('shadow').active = false;
         cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE);
         this.scheduleOnce(() => {
