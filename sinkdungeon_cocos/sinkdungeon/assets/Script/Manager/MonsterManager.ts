@@ -58,6 +58,7 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_HIPPO = 'monster029';
     public static readonly MONSTER_CYCLOPS = 'monster030';
     public static readonly MONSTER_ICEDEMON = 'monster031';
+    public static readonly MONSTER_BITE_ZOMBIE = 'monster032';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE,MonsterManager.MONSTER_ICEDEMON];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS

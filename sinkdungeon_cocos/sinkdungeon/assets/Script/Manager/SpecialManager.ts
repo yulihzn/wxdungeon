@@ -31,6 +31,7 @@ export default class SpecialManager extends cc.Component {
     static readonly AFTER_BLADE = 'special008';
     static readonly AFTER_ASH = 'special030';
     static readonly AFTER_ICE = 'special031';
+    static readonly AFTER_DOWN = 'special032';
     @property(cc.Prefab)
     aoe: cc.Prefab = null;
     @property(cc.Prefab)
@@ -75,6 +76,13 @@ export default class SpecialManager extends cc.Component {
                     , ['ice001', 'ice002', 'ice002', 'ice003', 'ice004'], false);
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
                 break;
+            case SpecialManager.AFTER_DOWN:
+                this.addAoe(pos, new AreaOfEffectData()
+                .init(0.3, 1, 0.1, 1, IndexZ.getActorZIndex(this.node.parent.position)
+                    , true, true, true, false, false, new DamageData(3), from, [StatusManager.FALLEN_DOWN])
+                , ['ash001', 'ash002', 'ash003', 'ash004'], false);
+            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });    
+            break;
         }
     }
     addEffect(placeType: string, distance: number, isFaceRight: boolean, from: FromData) {

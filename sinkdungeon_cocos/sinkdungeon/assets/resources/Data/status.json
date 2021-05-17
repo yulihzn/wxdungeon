@@ -371,5 +371,17 @@
         "missRate":80,
         "common": {
         }
+    },
+    "status034": {
+        "nameCn": "扑倒",
+        "nameEn": "frozen",
+        "spriteFrameName": "status014",
+        "statusType": 1,
+        "desc": "",
+        "duration": 5,
+        "common": {
+            "moveSpeed": -400,
+            "attackSpeed": -150
+        }
     }
 }

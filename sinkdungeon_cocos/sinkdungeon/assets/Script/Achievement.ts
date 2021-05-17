@@ -17,7 +17,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Achievements extends cc.Component {
 
-    readonly MONSTER_SIZE = 25;
+    readonly MONSTER_SIZE = 31;
     readonly BOSS_SIZE = 9;
     @property(cc.Node)
     content: cc.Node = null;

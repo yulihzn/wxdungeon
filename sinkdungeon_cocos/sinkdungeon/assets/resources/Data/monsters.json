@@ -398,8 +398,8 @@
         "dash": 0
     },
     "monster019": {
-        "nameCn": "僵尸",
-        "nameEn": "Zombie",
+        "nameCn": "喷吐僵尸",
+        "nameEn": "Spitting Zombie",
         "resName": "monster019",
         "chapter": 0,
         "stageLevel": 0,
@@ -692,6 +692,32 @@
         "boxType":3,
         "attackFrame":3,
         "attackFrame1":4,
+        "dash": 0
+    },
+    "monster032": {
+        "nameCn": "扑咬僵尸",
+        "nameEn": "Bite Zombie",
+        "resName": "monster032",
+        "chapter": 0,
+        "stageLevel": 0,
+        "specialAttack":15,
+        "specialType":"special032",
+        "specialDistance":114,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 20,
+            "toxicRate":5,
+            "magicDamage":0,
+            "damageMin": 2
+        },
+        "currentHealth": 20,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 2,
+        "sizeType":1,
+        "boxType":1,
+        "attackFrame":2,
+        "attackFrame1":5,
         "dash": 0
     }
 }

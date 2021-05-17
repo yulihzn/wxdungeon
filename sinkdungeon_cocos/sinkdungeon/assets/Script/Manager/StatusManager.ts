@@ -51,6 +51,7 @@ export default class StatusManager extends cc.Component {
     public static readonly TALENT_FLASH_SPEED = "status029";
     public static readonly BOTTLE_REMOTE = "status030";
     public static readonly WINE_CLOUD = "status033";
+    public static readonly FALLEN_DOWN = "status034";
     
 
     @property(cc.Prefab)
