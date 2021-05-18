@@ -380,7 +380,7 @@
         "desc": "",
         "duration": 5,
         "common": {
-            "moveSpeed": -400,
+            "moveSpeed": -290,
             "attackSpeed": -150
         }
     }

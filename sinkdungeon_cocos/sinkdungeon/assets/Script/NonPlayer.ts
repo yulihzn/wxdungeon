@@ -231,7 +231,7 @@ export default class NonPlayer extends Actor {
         this.boxCollider.offset = cc.v2(0, y);
         this.boxCollider.size.width = w;
         this.boxCollider.size.height = h;
-        this.boxCollider.tag = this.data.isEnemy>0?ColliderTag.NONPLAYER:ColliderTag.GOODNONPLAYER;
+        this.boxCollider.tag = this.data.isEnemy > 0 ? ColliderTag.NONPLAYER : ColliderTag.GOODNONPLAYER;
         if (this.data.boxType > 2) {
             this.shadow.scale = 3;
         } else {
@@ -291,7 +291,7 @@ export default class NonPlayer extends Actor {
                 this.shooter.data.bulletSize = 0.5;
             }
             this.shooter.dungeon = this.dungeon;
-            this.shooter.isFromPlayer = this.data.isEnemy<1;
+            this.shooter.isFromPlayer = this.data.isEnemy < 1;
             this.shooter.data.bulletArcExNum = this.data.bulletArcExNum;
             this.shooter.data.bulletLineExNum = this.data.bulletLineExNum;
             this.shooter.data.bulletLineInterval = this.data.bulletLineInterval;
@@ -309,7 +309,7 @@ export default class NonPlayer extends Actor {
 
 
         let pos = target.node.position.clone().sub(this.node.position);
-       
+
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
         }
@@ -318,7 +318,7 @@ export default class NonPlayer extends Actor {
             pos = cc.v3(1, 0);
         }
         pos = pos.normalizeSelf().mul(this.node.scaleX > 0 ? 48 : -48);
-        if(this.node.scaleX<0){
+        if (this.node.scaleX < 0) {
             pos.y = -pos.y;
         }
         this.sprite.stopAllActions();
@@ -349,36 +349,40 @@ export default class NonPlayer extends Actor {
         //前进
         let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
         let specialTypeCanMelee = this.data.specialType.length <= 0
-        ||this.data.specialType == SpecialManager.AFTER_ASH;
+            || this.data.specialType == SpecialManager.AFTER_ASH;
+      
         let attackpreparetween = cc.tween().call(() => {
             this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[0] : arr[0]);
             if (isMelee && !isSpecial || (isSpecial && isMelee && specialTypeCanMelee)) {
-                if (!this.dangerBox.dungeon) {
-                    this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
-                }
-                this.dangerBox.show(this.data.attackType, isSpecial,this.data.boxType==5
-                    ||(this.data.specialType == SpecialManager.AFTER_DOWN&&isSpecial),pos);
+                this.dangerBox.show(this.data.attackType, isSpecial, this.data.boxType == 5, pos);
             }
             if (isSpecial) {
-                this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
+                if (this.data.specialType == SpecialManager.AFTER_DOWN) {
+                    this.dangerBox.show(ActorAttackBox.ATTACK_STAB, false, false, pos);
+                }
+                this.scheduleOnce(() => {
+                    this.specialManager.dungeon = this.dungeon;
+                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
+                }, this.data.specialDelay);
             }
         });
 
         let attackingtween = cc.tween().call(() => {
             this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[1] : arr[1]);
+            this.dangerBox.hide(isMiss);
             if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
-                this.dangerBox.hide(isMiss);
                 if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-                    this.move(this.dangerBox.hv, isSpecial ? 2000 : 1000);
+                    this.move(cc.v3(this.isFaceRight?this.dangerBox.hv.x:-this.dangerBox.hv.x,this.dangerBox.hv.y), isSpecial ? 2000 : 1000);
                 }
             }
-            if(this.data.specialType == SpecialManager.AFTER_DOWN&&isSpecial){
-                this.move(this.dangerBox.hv, 500);
-            }
             if (isSpecial) {
-                this.specialManager.dungeon = this.dungeon;
-                this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
+                if (this.data.specialType == SpecialManager.AFTER_DOWN) {
+                    this.move(cc.v3(this.isFaceRight?this.dangerBox.hv.x:-this.dangerBox.hv.x,this.dangerBox.hv.y), 1000);
+                }
+                this.scheduleOnce(() => {
+                    this.specialManager.dungeon = this.dungeon;
+                    this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
+                }, this.data.specialDelay);
             }
             if (attacking) {
                 attacking(isSpecial);
@@ -386,12 +390,12 @@ export default class NonPlayer extends Actor {
 
         });
         let attackback = cc.tween();
-        for(let i = 2;i<arr.length;i++){
-            attackback.then(cc.tween().delay(0.2).call(()=>{this.changeBodyRes(this.data.resName, arr[i]);}));
+        for (let i = 2; i < arr.length; i++) {
+            attackback.then(cc.tween().delay(0.2).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
         }
         let attackbackspecial = cc.tween();
-        for(let i = 2;i<arrspecial.length;i++){
-            attackbackspecial.then(cc.tween().delay(0.2).call(()=>{this.changeBodyRes(this.data.resName, arrspecial[i]);}));
+        for (let i = 2; i < arrspecial.length; i++) {
+            attackbackspecial.then(cc.tween().delay(0.2).call(() => { this.changeBodyRes(this.data.resName, arrspecial[i]); }));
         }
         let attackfinish = cc.tween().delay(0.2).call(() => {
             this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
@@ -421,7 +425,7 @@ export default class NonPlayer extends Actor {
         if (isSpecial) {
             this.showDangerTips();
             allAction = cc.tween().then(beforetween).then(specialRemote).then(aftertween);
-            if (isMelee&&specialTypeCanMelee) {
+            if (isMelee && specialTypeCanMelee) {
                 allAction = cc.tween().then(beforetween).then(specialMelee).then(aftertween);
             }
         }
@@ -525,7 +529,7 @@ export default class NonPlayer extends Actor {
         }
         let isHurting = dd.getTotalDamage() > 0;
         //特殊攻击和远程伤害情况下不改变状态
-        this.sc.isHurting = isHurting&&!this.specialStep.IsExcuting&&!damageData.isRemote;
+        this.sc.isHurting = isHurting && !this.specialStep.IsExcuting && !damageData.isRemote;
         if (this.sc.isHurting) {
             this.sc.isDisguising = false;
             this.sc.isAttacking = false;
@@ -539,7 +543,7 @@ export default class NonPlayer extends Actor {
             }
             this.dangerBox.finish();
         }
-        if(isHurting){
+        if (isHurting) {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.hitLight(true);
             if (damageData.isBackAttack) {
@@ -556,7 +560,7 @@ export default class NonPlayer extends Actor {
                 }
             }, 0.1);
         }
-        
+
         this.sprite.opacity = 255;
         this.data.currentHealth -= dd.getTotalDamage();
         if (this.data.currentHealth > this.data.getHealth().y) {
@@ -673,9 +677,9 @@ export default class NonPlayer extends Actor {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
             } else if (rand >= percent && rand < percent + offset) {
-                this.addLootSaveItem(Item.HEART,true);
+                this.addLootSaveItem(Item.HEART, true);
             } else if (rand >= percent + offset && rand < percent + offset * 2) {
-                this.addLootSaveItem(Item.HEART,true);
+                this.addLootSaveItem(Item.HEART, true);
             } else if (rand >= percent + offset * 2 && rand < percent + offset * 3) {
                 this.addLootSaveItem(Item.BOTTLE_ATTACK);
             } else if (rand >= percent + offset * 3 && rand < percent + offset * 4) {
@@ -687,14 +691,14 @@ export default class NonPlayer extends Actor {
             } else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                if(!this.isSummon){
+                if (!this.isSummon) {
                     this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
                 }
             }
         }
     }
-    private addLootSaveItem(resName: string,isAuto?:boolean) {
-        if(isAuto||!this.isSummon){
+    private addLootSaveItem(resName: string, isAuto?: boolean) {
+        if (isAuto || !this.isSummon) {
             this.dungeon.addItem(this.node.position.clone(), resName);
         }
     }
@@ -1001,7 +1005,7 @@ export default class NonPlayer extends Actor {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
         let body = this.bodySprite.node;
         cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
-            let newPos = this.getNearestEnemyPosition(true, this.dungeon,true);
+            let newPos = this.getNearestEnemyPosition(true, this.dungeon, true);
             newPos = Dungeon.getIndexInMap(newPos);
             if (newPos.x > this.pos.x) {
                 newPos = newPos.addSelf(cc.v3(1, 0));

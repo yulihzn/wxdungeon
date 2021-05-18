@@ -44,6 +44,7 @@ export default class NonPlayerData{
     specialDistance = 0;//特殊类型位置x
     specialBulletArcExNum = 0;//特殊额外扇形喷射子弹数量,为0的时候不计入,最大18
     specialBulletLineExNum = 0;//特殊额外线性喷射子弹数量，为0的时候不计入
+    specialDelay = 0;//特殊攻击延迟放置时间
     bodyColor = '#ffffff';
     pos:cc.Vec3 = cc.v3(0,0);
     currentHealth:number=0;
@@ -113,6 +114,7 @@ export default class NonPlayerData{
         this.specialDistance = data.specialDistance?data.specialDistance:0;
         this.specialBulletArcExNum = data.specialBulletArcExNum?data.specialBulletArcExNum:0;
         this.specialBulletLineExNum = data.specialBulletLineExNum?data.specialBulletLineExNum:0;
+        this.specialDelay = data.specialDelay?data.specialDelay:0;
         this.boxType = data.boxType?data.boxType:0;
         this.attackType = data.attackType?data.attackType:0;
         this.isRecovery = data.isRecovery?data.isRecovery:0;
@@ -158,6 +160,7 @@ export default class NonPlayerData{
         e.specialDistance = this.specialDistance;
         e.specialBulletArcExNum = this.specialBulletArcExNum;
         e.specialBulletLineExNum = this.specialBulletLineExNum;
+        e.specialDelay = this.specialDelay;
         e.boxType = this.boxType;
         e.attackType = this.attackType;
         e.isRecovery = this.isRecovery;

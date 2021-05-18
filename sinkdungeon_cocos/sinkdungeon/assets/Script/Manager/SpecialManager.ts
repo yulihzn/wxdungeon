@@ -79,7 +79,7 @@ export default class SpecialManager extends cc.Component {
             case SpecialManager.AFTER_DOWN:
                 this.addAoe(pos, new AreaOfEffectData()
                 .init(0.3, 1, 0.1, 1, IndexZ.getActorZIndex(this.node.parent.position)
-                    , true, true, true, false, false, new DamageData(3), from, [StatusManager.FALLEN_DOWN])
+                    , true, true, true, false, false, new DamageData(1), from, [StatusManager.FALLEN_DOWN])
                 , ['ash001', 'ash002', 'ash003', 'ash004'], false);
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });    
             break;
