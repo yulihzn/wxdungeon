@@ -44,10 +44,12 @@ export default class DungeonStyleManager extends BaseManager {
         }
         this.background01.stopAllActions();
         let sprite = this.background01.getComponent(cc.Sprite);
-        let action = cc.repeatForever(cc.sequence(
-            cc.moveBy(0.4, 0, 0), cc.callFunc(() => { sprite.spriteFrame = spf1; }),
-            cc.moveBy(0.4, 0, 0), cc.callFunc(() => { sprite.spriteFrame = spf2; })));
-        this.background01.runAction(action);
+        cc.tween(this.background01).repeatForever(cc.tween()
+            .delay(0.4).call(() => {
+                sprite.spriteFrame = spf1;
+            }).delay(0.4).call(() => {
+                sprite.spriteFrame = spf2;
+            })).start();
 
     }
     addDecorations() {
@@ -78,17 +80,17 @@ export default class DungeonStyleManager extends BaseManager {
         bg.setPosition(pos);
         bg.zIndex = IndexZ.BACKGROUND;
         let pbg = bg.getComponent(ParallexBackground);
-        pbg.background.width = Dungeon.TILE_SIZE/2 * Dungeon.WIDTH_SIZE;
-        pbg.background.height = Dungeon.TILE_SIZE/2 * (Dungeon.HEIGHT_SIZE + 4);
+        pbg.background.width = Dungeon.TILE_SIZE / 2 * Dungeon.WIDTH_SIZE;
+        pbg.background.height = Dungeon.TILE_SIZE / 2 * (Dungeon.HEIGHT_SIZE + 4);
         pbg.background.color = cc.Color.WHITE.fromHEX(this.styleData.bg02color);
         pbg.init();
     }
     private addFloor() {
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
-        this.floor.width = Dungeon.TILE_SIZE/4 * (Dungeon.WIDTH_SIZE + 0);
-        this.floor.height = Dungeon.TILE_SIZE/4 * (Dungeon.HEIGHT_SIZE + 0);
+        this.floor.width = Dungeon.TILE_SIZE / 4 * (Dungeon.WIDTH_SIZE + 0);
+        this.floor.height = Dungeon.TILE_SIZE / 4 * (Dungeon.HEIGHT_SIZE + 0);
         let pos = Dungeon.getPosInMap(cc.v3(0, 0));
-        this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE/2, pos.y - Dungeon.TILE_SIZE/2);
+        this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2);
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`${leveldata.floorRes}001`);
     }

@@ -181,12 +181,12 @@ export default class Bullet extends cc.Component {
         this.laserHeadSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'head');
         this.laserNode.stopAllActions();
 
-        let idleAction = cc.repeatForever(cc.sequence(
-            cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light001'); }),
-            cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light002'); }),
-            cc.moveBy(0.05, 0, 0), cc.callFunc(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light003'); })));
-
-        this.laserLightSprite.node.runAction(idleAction);
+        cc.tween(this.laserLightSprite.node).repeatForever(
+            cc.tween()
+            .delay(0.05).call(()=>{this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light001');})
+            .delay(0.05).call(()=>{this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light002');})
+            .delay(0.05).call(()=>{this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light003');})
+        ).start();
     }
     private showLaser(): void {
         if (this.data.isLaser != 1) {
@@ -211,8 +211,7 @@ export default class Bullet extends cc.Component {
         this.laserNode.scaleX = 1;
         this.laserNode.scaleY = 1;
         this.laserLightSprite.node.setPosition(-16 * this.node.scaleY, 0);
-        let scaleAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.scaleTo(0.1, 1, 0));
-        this.laserNode.runAction(scaleAction);
+        cc.tween(this.laserNode).to(0.1,{scale:1}).to(0.1,{scaleY:0}).start();
         this.scheduleOnce(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 0.2);
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.REMOTE_LASER } });
     }
@@ -269,15 +268,16 @@ export default class Bullet extends cc.Component {
         this.sprite.stopAllActions();
         this.node.stopAllActions();
         let ss = this.sprite.getComponent(cc.Sprite);
-        let idleAction = cc.sequence(
-            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim000', true); }),
-            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001', true); }),
-            cc.moveBy(0.1, 0, 0), cc.callFunc(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002', true); }));
-        let spawn = cc.spawn(idleAction, cc.rotateBy(0.3, this.data.rotateAngle > 0 ? this.data.rotateAngle : 15));
+        let idletween = cc.tween()
+        .delay(0.1).call(()=>{ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim000', true);})
+        .delay(0.1).call(()=>{ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001', true);})
+        .delay(0.1).call(()=>{ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002', true);});
+        let spawntween = cc.tween(this.sprite).parallel(idletween,cc.tween().by(0.3,{angle:this.data.rotateAngle > 0 ? this.data.rotateAngle : 15}))
+        
         if (this.data.isRotate > 0) {
-            this.sprite.runAction(cc.repeatForever(spawn));
+            cc.tween(this.sprite).repeatForever(spawntween).start();
         } else {
-            this.sprite.runAction(cc.repeatForever(idleAction));
+            cc.tween(this.sprite).repeatForever(idletween).start();
         }
 
         if (this.data.lifeTime > 0) {

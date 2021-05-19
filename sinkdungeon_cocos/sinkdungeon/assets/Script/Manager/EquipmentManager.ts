@@ -592,7 +592,7 @@ export default class EquipmentManager extends BaseManager {
                     equip.taketips = this.node.getChildByName('sprite').getChildByName('taketips');
                 }
                 if (!this.lastGroundEquip||this.lastGroundEquip.uuid != equip.uuid) {
-                    equip.taketips.runAction(cc.sequence(cc.fadeIn(0.2), cc.delayTime(1), cc.fadeOut(0.2)));
+                    cc.tween(equip.taketips).to(0.2,{opacity:255}).delay(1).to(0.2,{opacity:0}).start();
                     cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { equipData: equip.data } });
                 }
                 this.lastGroundEquip = equip;

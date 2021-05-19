@@ -18,6 +18,7 @@ import AvatarData from "../Data/AvatarData";
 import ProfessionData from "../Data/ProfessionData";
 import EquipmentManager from "../Manager/EquipmentManager";
 import InventoryManager from "../Manager/InventoryManager";
+import LoadingManager from "../Manager/LoadingManager";
 
 
 const { ccclass, property } = cc._decorator;
@@ -35,14 +36,6 @@ export default class PickAvatar extends cc.Component {
     readonly SELECTOR_BODY = 8;
     readonly PROGRESS_SKIN_COLOR = 9;
     readonly SELECTOR_PROFESSION = 10;
-    private isSpirteLoaded = false;
-    private isProfessionLoaded = false;
-    private isEquipmentLoaded = false;
-    private isItemsLoaded = false;
-    private isTalentsLoaded = false;
-    private isSuitsLoaded = false;
-    //图片资源
-    private spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     @property(cc.Node)
     loadingBackground: cc.Node = null;
     @property(cc.Node)
@@ -62,7 +55,7 @@ export default class PickAvatar extends cc.Component {
     @property(cc.Label)
     randomLabelSkillDesc: cc.Label = null;
     @property(cc.Node)
-    randomButton:cc.Node = null;
+    randomButton: cc.Node = null;
     @property(cc.Prefab)
     selectorPrefab: cc.Prefab = null;
     @property(cc.Prefab)
@@ -106,8 +99,10 @@ export default class PickAvatar extends cc.Component {
 
     private randomTouched = false;
     private isShow = false;
+    private loadingManager: LoadingManager = new LoadingManager();
 
     onLoad() {
+        this.loadingManager.init();
         this.data = new AvatarData();
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable, ['bed']);
         this.coverSprite = this.getSpriteChildSprite(this.avatarTable, ['cover']);
@@ -132,12 +127,12 @@ export default class PickAvatar extends cc.Component {
         this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg1', 'shoes']);
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg2', 'shoes']);
         this.loadingBackground.active = true;
-        this.loadSpriteFrames();
-        this.loadProfession();
-        this.loadEquipment();
-        this.loadTalents();
-        this.loadItems();
-        this.loadSuits();
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
+        this.loadingManager.loadProfession();
+        this.loadingManager.loadEquipment();
+        this.loadingManager.loadTalents();
+        this.loadingManager.loadItems();
+        this.loadingManager.loadSuits();
         this.attributeLayout.active = false;
         this.randomButton.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.randomTouched = true;
@@ -157,116 +152,7 @@ export default class PickAvatar extends cc.Component {
         }
         return node.getComponent(cc.Sprite);
     }
-    loadEquipment() {
-        if (Logic.equipments) {
-            this.isEquipmentLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/equipment', (err: Error, resource: cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.equipments = resource.json;
-                this.isEquipmentLoaded = true;
-                cc.log('equipment loaded');
-                Logic.equipmentNameList = new Array();
-                for (let key in resource.json) {
-                    Logic.equipmentNameList.push(key);
-                }
-            }
-        })
-    }
-    loadProfession() {
-        if (Logic.professionList && Logic.professionList.length > 0) {
-            this.isProfessionLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/profession', (err: Error, resource: cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.professionList = new Array();
-                let arr: ProfessionData[] = resource.json;
-                for (let i = 0; i < arr.length; i++) {
-                    let data = new ProfessionData();
-                    data.valueCopy(arr[i])
-                    data.id = i;
-                    Logic.professionList.push(data);
-                }
 
-                this.isProfessionLoaded = true;
-                cc.log('professionList loaded');
-            }
-        })
-    }
-    loadTalents() {
-        if (Logic.talents) {
-            this.isTalentsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/talent', (err: Error, resource: cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.talents = resource.json;
-                this.isTalentsLoaded = true;
-                cc.log('talents loaded');
-            }
-        })
-    }
-    loadItems() {
-        if (Logic.items) {
-            this.isItemsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/item', (err: Error, resource: cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.items = resource.json;
-                Logic.itemNameList = new Array();
-                Logic.goodsNameList = new Array();
-                for (let key in resource.json) {
-                    if (Logic.items[key].canSave&&key.indexOf('food')==-1&&key.indexOf('goods')==-1) {
-                        Logic.itemNameList.push(key);
-                    }else if(key.indexOf('goods')!=-1){
-                        Logic.goodsNameList.push(key);
-                    }
-                }
-                this.isItemsLoaded = true;
-                cc.log('items loaded');
-            }
-        })
-    }
-    loadSuits() {
-        if (Logic.suits) {
-            this.isSuitsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/suits', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.suits = resource.json;
-                this.isSuitsLoaded = true;
-                cc.log('suits loaded');
-            }
-        })
-    }
-    loadSpriteFrames() {
-        if (this.spriteFrames) {
-            this.isSpirteLoaded = true;
-            return;
-        }
-        cc.resources.load('Texture/textures', cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
-            this.spriteFrames = {};
-            for (let frame of atlas.getSpriteFrames()) {
-                this.spriteFrames[frame.name] = frame;
-            }
-            this.isSpirteLoaded = true;
-            cc.log('textures spriteatlas loaded');
-        })
-    }
     show() {
         this.isShow = true;
         this.loadingBackground.active = false;
@@ -278,8 +164,8 @@ export default class PickAvatar extends cc.Component {
         this.organizationSelector = this.addAttributeSelector('组织：', organList)
         this.organizationSelector.selectorCallback = (data: AttributeData) => {
             this.data.organizationIndex = data.id;
-            this.bedSprite.spriteFrame = this.spriteFrames[`avatarbed00${data.id}`];
-            this.coverSprite.spriteFrame = this.spriteFrames[`avatarcover00${data.id}`];
+            this.bedSprite.spriteFrame = Logic.spriteFrameRes(`avatarbed00${data.id}`);
+            this.coverSprite.spriteFrame = Logic.spriteFrameRes(`avatarcover00${data.id}`);
             this.randomLabelTitle.string = data.name;
         };
         //职业
@@ -317,7 +203,7 @@ export default class PickAvatar extends cc.Component {
         }
         this.hairSelector = this.addAttributeSelector('发型：', hairList)
         this.hairSelector.selectorCallback = (data: AttributeData) => {
-            this.hairSprite.spriteFrame = this.spriteFrames[data.resName + '0'];
+            this.hairSprite.spriteFrame = Logic.spriteFrameRes(data.resName + '0');
             this.data.hairResName = data.resName;
         };
         //头发颜色
@@ -333,7 +219,7 @@ export default class PickAvatar extends cc.Component {
         }
         this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList)
         this.eyesSelector.selectorCallback = (data: AttributeData) => {
-            this.eyesSprite.spriteFrame = this.spriteFrames[data.resName + '0'];
+            this.eyesSprite.spriteFrame = Logic.spriteFrameRes(data.resName + '0');
             this.data.eyesResName = data.resName;
         };
         //眼睛颜色
@@ -349,7 +235,7 @@ export default class PickAvatar extends cc.Component {
         }
         this.faceSelector = this.addAttributeSelector('面颊：', faceList)
         this.faceSelector.selectorCallback = (data: AttributeData) => {
-            this.faceSprite.spriteFrame = this.spriteFrames[data.resName + '0'];
+            this.faceSprite.spriteFrame = Logic.spriteFrameRes(data.resName + '0');
             this.data.faceResName = data.resName;
         };
         //脸部颜色
@@ -386,13 +272,13 @@ export default class PickAvatar extends cc.Component {
         if (!sprite) {
             return false;
         }
-        let spriteFrame = this.spriteFrames[resName];
-        if (subfix && this.spriteFrames[resName+subfix]) {
-            spriteFrame = this.spriteFrames[resName+subfix];
+        let spriteFrame = Logic.spriteFrameRes(resName);
+        if (subfix && Logic.spriteFrameRes(resName + subfix)) {
+            spriteFrame = Logic.spriteFrameRes(resName + subfix);
         }
-        if(spriteFrame){
+        if (spriteFrame) {
             sprite.spriteFrame = spriteFrame;
-        }else{
+        } else {
             sprite.spriteFrame = null;
         }
     }
@@ -416,8 +302,8 @@ export default class PickAvatar extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     addPorfessionEquipment() {
-        for(let key in Logic.inventoryManager.equips){
-            Logic.inventoryManager.equips[key].valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.equips[key]?this.data.professionData.equips[key]:''));
+        for (let key in Logic.inventoryManager.equips) {
+            Logic.inventoryManager.equips[key].valueCopy(EquipmentManager.getNewEquipData(this.data.professionData.equips[key] ? this.data.professionData.equips[key] : ''));
         }
     }
     addBrightnessBar(): BrightnessBar {
@@ -441,22 +327,17 @@ export default class PickAvatar extends cc.Component {
         return script;
     }
     update(dt) {
-        if (this.isSpirteLoaded 
-            && this.isProfessionLoaded 
-            && this.isEquipmentLoaded 
-            && this.isTalentsLoaded 
-            && this.isItemsLoaded
-            && this.isSuitsLoaded) {
-            this.isSpirteLoaded = false;
-            this.isProfessionLoaded = false;
-            this.isEquipmentLoaded = false;
-            this.isItemsLoaded = false;
-            this.isTalentsLoaded = false;
-            this.isSuitsLoaded = false;
+        if (this.loadingManager.isSpriteFramesLoaded(LoadingManager.KEY_TEXTURES)
+            && this.loadingManager.isProfessionLoaded
+            && this.loadingManager.isEquipmentLoaded
+            && this.loadingManager.isSkillsLoaded
+            && this.loadingManager.isItemsLoaded
+            && this.loadingManager.isSuitsLoaded) {
+            this.loadingManager.reset();
             this.show();
         }
-        if(this.isShow){
-            if(this.isTimeDelay(dt)&&this.randomTouched){
+        if (this.isShow) {
+            if (this.isTimeDelay(dt) && this.randomTouched) {
                 this.ButtonRandom();
             }
         }
@@ -493,11 +374,11 @@ export default class PickAvatar extends cc.Component {
         this.faceColorSelector.selectRandom();
         AudioPlayer.play(AudioPlayer.SELECT);
     }
-    ButtonSelect(event:cc.Event, isLeft:number){
+    ButtonSelect(event: cc.Event, isLeft: number) {
         if (this.loadingBackground.active) {
             return;
         }
-        this.professionSelector.selectNext(isLeft==0);
+        this.professionSelector.selectNext(isLeft == 0);
         AudioPlayer.play(AudioPlayer.SELECT);
     }
 }

@@ -73,9 +73,9 @@ export default class Rah extends Boss {
             return;
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.node.runAction(cc.fadeOut(3));
+        cc.tween(this.node).to(3,{opacity:0}).start();
         this.sc.isDied = true;
-        this.dungeon.fog.runAction(cc.scaleTo(1, 3));
+        cc.tween(this.dungeon.fog).to(1,{scale:3}).start();
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
@@ -124,22 +124,17 @@ export default class Rah extends Boss {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
             this.blinkSkill.IsExcuting = true;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            let action = cc.sequence(cc.callFunc(() => { }),
-                cc.fadeOut(1),
-                cc.callFunc(() => {
-                    let p = this.dungeon.player.pos.clone();
+            cc.tween(this.node).to(1,{opacity:0}).call(()=>{
+                let p = this.dungeon.player.pos.clone();
                     if (p.y > Dungeon.HEIGHT_SIZE - 1) {
                         p.y -= 1;
                     } else {
                         p.y += 1;
                     }
                     this.transportBoss(p.x, p.y);
-                }),
-                cc.fadeIn(1),
-                cc.callFunc(() => {
-                    this.attack();
-                }));
-            this.node.runAction(action);
+            }).to(1,{opacity:255}).call(()=>{
+                this.attack();
+            }).start();
             this.scheduleOnce(() => {
                 this.blinkSkill.IsExcuting = false;
             }, 5);
@@ -159,8 +154,7 @@ export default class Rah extends Boss {
     }
     dark() {
         this.darkSkill.next(() => {
-            let action = cc.sequence(cc.scaleTo(2, 1.75, 1.75), cc.rotateTo(6, 0), cc.scaleTo(2, 0.6, 0.6));
-            this.dungeon.fog.runAction(action);
+            cc.tween(this.dungeon.fog).to(2,{scale:1.75}).to(6,{angle:0}).to(2,{scale:0.6}).start();
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }

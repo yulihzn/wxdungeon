@@ -74,9 +74,8 @@ export default class Chest extends Building {
         }
         this.data.isOpen = true;
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.PICK_UP } });
-        let action = cc.sequence(cc.moveTo(0.1, 5, 16)
-            , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 5, 0)
-            , cc.moveTo(0.1, -5, 0), cc.moveTo(0.1, 0, 0), cc.callFunc(() => {
+        cc.tween(this.sprite).to(0.1, { position: cc.v3(5, 16) }).to(0.1, { position: cc.v3(-5, 0) }).to(0.1, { position: cc.v3(5, 0) })
+            .to(0.1, { position: cc.v3(-5, 0) }).to(0.1, { position: cc.v3(0, 0) }).call(() => {
                 this.sprite.getComponent(cc.Sprite).spriteFrame = this.closeSpriteFrame;
                 if (this.node.parent) {
                     let dungeon = this.node.parent.getComponent(Dungeon);
@@ -99,8 +98,7 @@ export default class Chest extends Building {
                         dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                     }
                 }
-            }));
-        this.sprite.runAction(action);
+            }).start();
         let saveChest = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
         let newlist = new Array();
         let needNew = true;

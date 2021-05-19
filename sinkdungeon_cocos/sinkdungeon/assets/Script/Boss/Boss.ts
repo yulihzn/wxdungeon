@@ -60,8 +60,9 @@ export default abstract class Boss extends Actor {
         if(sprite){
             sprite.stopAllActions();
             sprite.position = cc.v3(0,0);
-            sprite.runAction(cc.sequence(cc.moveTo(0.1,2,0),cc.moveTo(0.1,-2,0),cc.moveTo(0.1,2,0),
-            cc.moveTo(0.1,-2,0),cc.moveTo(0.1,0,2),cc.moveTo(0.1,0,-2),cc.moveTo(0.1,0,2),cc.moveTo(0.1,0,0)));
+            cc.tween(sprite).to(0.1,{position:cc.v3(2,0)}).to(0.1,{position:cc.v3(-2,0)})
+            .to(0.1,{position:cc.v3(2,0)}).to(0.1,{position:cc.v3(-2,0)}).to(0.1,{position:cc.v3(2,0)})
+            .to(0.1,{position:cc.v3(-2,0)}).to(0.1,{position:cc.v3(2,0)}).to(0.1,{position:cc.v3(0,0)}).start();
         }
     }
     updatePlayerPos() {

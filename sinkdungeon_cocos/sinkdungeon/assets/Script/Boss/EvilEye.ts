@@ -105,7 +105,7 @@ export default class EvilEye extends Boss {
             return;
         }
         Achievements.addMonsterKillAchievement(this.data.resName);
-        this.node.runAction(cc.fadeOut(3));
+        cc.tween(this.node).to(3,{opacity:0}).start();
         this.sc.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();

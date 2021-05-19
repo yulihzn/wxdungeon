@@ -1,6 +1,7 @@
 import Logic from "./Logic";
 import CutScene from "./UI/CutScene";
 import ProfessionData from "./Data/ProfessionData";
+import LoadingManager from "./Manager/LoadingManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,66 +19,38 @@ const { ccclass, property } = cc._decorator;
 export default class Loading extends cc.Component {
 
     @property(cc.Node)
-    loadingIcon:cc.Node = null;
+    loadingIcon: cc.Node = null;
     @property(CutScene)
     cutScene: CutScene = null;
     @property(cc.Node)
-    shipTransportScene:cc.Node = null;
-    private static readonly KEY_AUTO = 'auto';
-    private static readonly KEY_TEXTURES = 'textures';
-    private static readonly KEY_NPC = 'npc';
-    private spriteFrameNames: { [key: string]: boolean } = null;
+    shipTransportScene: cc.Node = null;
     private timeDelay = 0;
-    private isEquipmentLoaded = false;
-    private isMonsterLoaded = false;
-    private isNonplayerLoaded = false;
-    private isWorldLoaded = false;
-    private isDebuffsLoaded = false;
-    private isSuitsLoaded = false;
-    private isBulletsLoaded = false;
-    private isProfessionLoaded = false;
-    private isItemsLoaded = false;
-    private isSkillsLoaded = false;
-    private isBuildingLoaded = false;
     private isTransportAnimFinished = true;
+    private loadingManager: LoadingManager = new LoadingManager();
     // LIFE-CYCLE CALLBACKS:
 
 
     onLoad() {
-        this.setAllSpriteFramesUnload();
-        if(!Logic.spriteFrames){
-            Logic.spriteFrames = {};
-        }
-        if(!Logic.buildings){
-            Logic.buildings = {};
-        }
-        
+        this.loadingManager.init();
         this.loadingIcon.active = true;
-    
     }
 
     start() {
         //加载地图，装备，贴图，敌人，状态，子弹，物品资源,建筑预制
-        this.isWorldLoaded = false;
-        this.isEquipmentLoaded = false;
-        this.isMonsterLoaded = false;
-        this.isDebuffsLoaded = false;
-        this.isNonplayerLoaded = false;
-        this.isBuildingLoaded = false;
-        this.loadWorld();
-        this.loadEquipment();
-        this.loadAutoSpriteFrames();
-        this.loadSpriteAtlas(Loading.KEY_TEXTURES,'ammo');
-        this.loadSpriteAtlas(Loading.KEY_NPC,'monster000anim000');
-        this.loadMonsters();
-        this.loadDebuffs();
-        this.loadBullets();
-        this.loadItems();
-        this.loadTalents();
-        this.loadProfession();
-        this.loadNonplayer();
-        this.loadBuildings();
-        this.loadSuits();
+        this.loadingManager.loadWorld();
+        this.loadingManager.loadEquipment();
+        this.loadingManager.loadAutoSpriteFrames();
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'monster000anim000');
+        this.loadingManager.loadMonsters();
+        this.loadingManager.loadDebuffs();
+        this.loadingManager.loadBullets();
+        this.loadingManager.loadItems();
+        this.loadingManager.loadTalents();
+        this.loadingManager.loadProfession();
+        this.loadingManager.loadNonplayer();
+        this.loadingManager.loadBuildings();
+        this.loadingManager.loadSuits();
         this.showLoadingLabel();
         //显示过场
         if (Logic.isFirst == 1) {
@@ -85,288 +58,55 @@ export default class Loading extends cc.Component {
             this.cutScene.unregisterClick();
         }
     }
-    isAllSpriteFramesLoaded(){
-        for(let loadedName in this.spriteFrameNames){
-            if(!this.spriteFrameNames[loadedName]){
-                return false;
-            }
-        }
-        return true;
-    }
-    setAllSpriteFramesUnload(){
-        this.spriteFrameNames = {};
-        this.spriteFrameNames[Loading.KEY_AUTO] = false;
-        this.spriteFrameNames[Loading.KEY_TEXTURES] = false;
-        this.spriteFrameNames[Loading.KEY_NPC] = false;
-    }
-    showLoadingLabel(){
-        if (this.isAllSpriteFramesLoaded()) {
+
+    showLoadingLabel() {
+        if (this.loadingManager.isAllSpriteFramesLoaded()) {
             return;
         }
         this.loadingIcon.active = true;
     }
 
-    loadWorld() {
-        Logic.worldLoader.isloaded = false;
-        Logic.worldLoader.loadWorld();
-    }
-    loadEquipment() {
-        if (Logic.equipments) {
-            this.isEquipmentLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/equipment', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.equipments = resource.json;
-                this.isEquipmentLoaded = true;
-                cc.log('equipment loaded');
-                Logic.equipmentNameList = new Array();
-                for (let key in resource.json) {
-                    Logic.equipmentNameList.push(key);
-                }
-                // let stringmap = new Array();
-                // for(let key in resource.json){
-                //     let temp = new EquipmentStringData();
-                //     let temp1 = new EquipmentData();
-                //     temp1.valueCopy(resource.json[key]);
-                //     temp.valueCopy(temp1);
-                //     stringmap.push(temp);
-                // }
-                // cc.log(JSON.stringify(stringmap));
-            }
-        })
-    }
-    loadProfession() {
-        if (Logic.professionList&&Logic.professionList.length>0) {
-            this.isProfessionLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/profession', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.professionList = new Array();
-                let arr:ProfessionData[] = resource.json;
-                for(let i =0;i<arr.length;i++){
-                    let data = new ProfessionData();
-                    data.valueCopy(arr[i])
-                    data.id = i;
-                    Logic.professionList.push(data);
-                }
-                
-                this.isProfessionLoaded = true;
-                cc.log('professionList loaded');
-            }
-        })
-    }
-    loadTalents() {
-        if (Logic.talents) {
-            this.isSkillsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/talent', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.talents = resource.json;
-                this.isSkillsLoaded = true;
-                cc.log('talent loaded');
-            }
-        })
-    }
-    loadDebuffs() {
-        if (Logic.debuffs) {
-            this.isDebuffsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/status', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.debuffs = resource.json;
-                this.isDebuffsLoaded = true;
-                cc.log('debuffs loaded');
-            }
-        })
-    }
-    loadSuits() {
-        if (Logic.suits) {
-            this.isSuitsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/suits', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.suits = resource.json;
-                this.isSuitsLoaded = true;
-                cc.log('suits loaded');
-            }
-        })
-    }
-    loadBullets() {
-        if (Logic.bullets) {
-            this.isBulletsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/bullet', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.bullets = resource.json;
-                this.isBulletsLoaded = true;
-                cc.log('bullets loaded');
-            }
-        })
-    }
-
-    loadMonsters() {
-        if (Logic.monsters) {
-            this.isMonsterLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/monsters', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.monsters = resource.json;
-                this.isMonsterLoaded = true;
-                cc.log('monsters loaded');
-            }
-        })
-    }
-    loadNonplayer() {
-        if (Logic.nonplayers) {
-            this.isNonplayerLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/nonplayers', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.nonplayers = resource.json;
-                this.isNonplayerLoaded = true;
-                cc.log('nonplayers loaded');
-            }
-        })
-    }
-    loadBuildings() {
-        if (Logic.buildings&&Logic.buildings['Door']) {
-            this.isBuildingLoaded = true;
-            return;
-        }
-        cc.resources.loadDir('Prefabs/buildings', cc.Prefab, (err: Error, assert: cc.Prefab[]) => {
-            for (let prefab of assert) {
-                Logic.buildings[prefab.name] = prefab;
-            }
-            this.isBuildingLoaded = true;
-            cc.log('buildings loaded');
-        })
-    }
-    loadItems() {
-        if (Logic.items) {
-            this.isItemsLoaded = true;
-            return;
-        }
-        cc.resources.load('Data/item', (err: Error, resource:cc.JsonAsset) => {
-            if (err) {
-                cc.error(err);
-            } else {
-                Logic.items = resource.json;
-                Logic.itemNameList = new Array();
-                Logic.goodsNameList = new Array();
-                for (let key in resource.json) {
-                    if (Logic.items[key].canSave&&key.indexOf('food')==-1&&key.indexOf('goods')==-1) {
-                        Logic.itemNameList.push(key);
-                    }else if(key.indexOf('goods')!=-1){
-                        Logic.goodsNameList.push(key);
-                    }
-                }
-                this.isItemsLoaded = true;
-                cc.log('items loaded');
-            }
-        })
-    }
-    private loadAutoSpriteFrames() {
-        if (Logic.spriteFrames&&Logic.spriteFrameRes('singleColor')) {
-            this.spriteFrameNames[Loading.KEY_AUTO] = true;
-            return;
-        }
-        cc.resources.loadDir('Texture/Auto', cc.SpriteFrame, (err: Error, assert: cc.SpriteFrame[]) => {
-            for (let frame of assert) {
-                Logic.spriteFrames[frame.name] = frame;
-            }
-            this.spriteFrameNames[Loading.KEY_AUTO] = true;
-            cc.log('auto texture loaded');
-        })
-    }
-    private loadSpriteAtlas(typeKey:string,hasKey:string){
-        if (Logic.spriteFrames&&Logic.spriteFrames[hasKey]) {
-            this.spriteFrameNames[typeKey] = true;
-            return;
-        }
-        cc.resources.load(`Texture/${typeKey}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
-            for (let frame of atlas.getSpriteFrames()) {
-                Logic.spriteFrames[frame.name]= frame;
-            }
-            this.spriteFrameNames[typeKey] = true;
-            cc.log(`${typeKey} loaded`);
-        })
-    }
     showCut(): void {
-        if (this.isAllSpriteFramesLoaded() && Logic.isFirst != 1) {
+        if (this.loadingManager.isAllSpriteFramesLoaded() && Logic.isFirst != 1) {
             Logic.isFirst = 1;
             this.cutScene.playShow();
         }
     }
-    showTransport(){
-        if(this.isAllSpriteFramesLoaded()&&Logic.shipTransportScene>0){
+    showTransport() {
+        if (this.loadingManager.isAllSpriteFramesLoaded() && Logic.shipTransportScene > 0) {
             this.isTransportAnimFinished = false;
             this.shipTransportScene.active = true;
-            if(Logic.shipTransportScene==2){
+            if (Logic.shipTransportScene == 2) {
                 this.shipTransportScene.scaleX = -1;
             }
             Logic.shipTransportScene = 0;
-            this.scheduleOnce(()=>{this.isTransportAnimFinished = true;},2)
+            this.scheduleOnce(() => { this.isTransportAnimFinished = true; }, 2)
         }
     }
     update(dt) {
         this.timeDelay += dt;
-        this.isWorldLoaded = Logic.worldLoader.isloaded;
+        this.loadingManager.isWorldLoaded = Logic.worldLoader.isloaded;
         this.showCut();
         this.showTransport();
         if (this.timeDelay > 0.02
-            && this.isEquipmentLoaded
-            && this.isAllSpriteFramesLoaded()
-            && this.isMonsterLoaded
-            && this.isNonplayerLoaded
-            && this.isDebuffsLoaded
-            && this.isProfessionLoaded
-            && this.isBulletsLoaded
-            && this.isItemsLoaded
-            && this.isSkillsLoaded
-            && this.isWorldLoaded
-            && this.isBuildingLoaded
-            && this.isSuitsLoaded
+            && this.loadingManager.isEquipmentLoaded
+            && this.loadingManager.isAllSpriteFramesLoaded()
+            && this.loadingManager.isMonsterLoaded
+            && this.loadingManager.isNonplayerLoaded
+            && this.loadingManager.isDebuffsLoaded
+            && this.loadingManager.isProfessionLoaded
+            && this.loadingManager.isBulletsLoaded
+            && this.loadingManager.isItemsLoaded
+            && this.loadingManager.isSkillsLoaded
+            && this.loadingManager.isWorldLoaded
+            && this.loadingManager.isBuildingLoaded
+            && this.loadingManager.isSuitsLoaded
             && this.cutScene.isSkip
             && this.isTransportAnimFinished) {
             this.timeDelay = 0;
             this.cutScene.unregisterClick();
-            this.isWorldLoaded = false;
-            this.isEquipmentLoaded = false;
-            this.setAllSpriteFramesUnload();
-            this.isDebuffsLoaded = false;
-            this.isProfessionLoaded = false;
-            this.isBulletsLoaded = false;
-            this.isMonsterLoaded = false;
-            this.isNonplayerLoaded = false;
-            this.isItemsLoaded = false;
-            this.isSkillsLoaded = false;
-            this.isBuildingLoaded = false;
             this.isTransportAnimFinished = false;
-            this.isSuitsLoaded = false;
+            this.loadingManager.reset();
             Logic.mapManager.loadMap();
             cc.director.loadScene('game');
         }

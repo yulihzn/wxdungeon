@@ -11,7 +11,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class TalentShield extends Talent {
-    
+
     private shieldBackSprite: cc.Sprite = null;
     private shieldFrontSprite: cc.Sprite = null;
     private sprites: cc.Sprite[];
@@ -32,7 +32,7 @@ export default class TalentShield extends Talent {
             this.sprites.push(sprite);
         }
     }
-    
+
     changePerformance() {
         //隐藏所有额外显示
         for (let sprite of this.sprites) {
@@ -42,7 +42,7 @@ export default class TalentShield extends Talent {
         let isThrow = false;
         this.changeRes(isThrow ? 'shield06' : 'shield01');
     }
-   
+
     changeRes(resName: string) {
         if (!resName || resName.length < 1) {
             return;
@@ -50,7 +50,7 @@ export default class TalentShield extends Talent {
         this.shieldBackSprite.spriteFrame = Logic.spriteFrameRes(resName);
         this.shieldFrontSprite.spriteFrame = Logic.spriteFrameRes(resName);
     }
-    useSKill(){
+    useSKill() {
         this.useShield();
     }
     public useShield(): void {
@@ -84,14 +84,16 @@ export default class TalentShield extends Talent {
                 invulnerabilityTime = 0;
                 animOverTime = 0;
             }
-            let backAction = cc.sequence(cc.scaleTo(0.1, 0, 1), cc.moveTo(0.1, cc.v2(-16, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 1, 1));
-            let frontAction = cc.sequence(cc.scaleTo(0.1, 1, 1), cc.moveTo(0.1, cc.v2(8, y))
-                , cc.delayTime(invulnerabilityTime), cc.moveTo(animOverTime, cc.v2(-8, y)), cc.scaleTo(animOverTime, 0, 1));
-            this.shieldBackSprite.node.runAction(backAction);
-            this.shieldFrontSprite.node.runAction(frontAction);
+            cc.tween(this.shieldBackSprite.node)
+                .to(0.1, { scaleX: 0, scaleY: 1 }).to(0.1, { position: cc.v3(-16, y) })
+                .delay(invulnerabilityTime).to(animOverTime, { position: cc.v3(-8, y) })
+                .to(animOverTime, { scale: 1 }).start();
+            cc.tween(this.shieldFrontSprite.node)
+                .to(0.1, { scale: 1 }).to(0.1, { position: cc.v3(8, y) })
+                .delay(invulnerabilityTime).to(animOverTime, { position: cc.v3(-8, y) })
+                .to(animOverTime, { scaleX: 0, scaleY: 1 }).start();
             //添加状态
-            this.player.addStatus(statusName,new FromData());
+            this.player.addStatus(statusName, new FromData());
             this.scheduleOnce(() => {
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             }, 0.2);
@@ -101,7 +103,7 @@ export default class TalentShield extends Talent {
             this.scheduleOnce(() => {
                 this.shieldBackSprite.node.opacity = 255;
             }, 1)
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown,talentType:2 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 2 } });
         }, cooldown, true);
     }
     hashTalent(id: string): boolean {

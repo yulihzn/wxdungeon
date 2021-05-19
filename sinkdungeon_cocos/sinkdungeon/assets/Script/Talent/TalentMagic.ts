@@ -207,11 +207,11 @@ export default class TalentMagic extends Talent {
     showLighteningCircle() {
         this.magicLighteningCircle.opacity = 128;
         this.magicLighteningCircle.scale = 1;
-        this.magicLighteningCircle.runAction(cc.sequence(cc.scaleTo(1, 10), cc.callFunc(() => {
+        cc.tween(this.magicLighteningCircle).to(1,{scale:10}).call(()=>{
             this.addStatus2NearEnemy(StatusManager.DIZZ, 300);
             this.magicLighteningCircle.opacity = 0;
             this.magicLighteningCircle.scale = 1;
-        })));
+        }).start();
     }
     initFireGhosts() {
         let length = 5;

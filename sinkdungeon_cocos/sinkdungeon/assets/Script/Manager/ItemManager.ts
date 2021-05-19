@@ -220,7 +220,7 @@ export default class ItemManager extends BaseManager {
                 }
                 if (item.data.canSave) {
                     if (!this.lastGroundItem||this.lastGroundItem.uuid != item.uuid) {
-                        item.taketips.runAction(cc.sequence(cc.fadeIn(0.2), cc.delayTime(1), cc.fadeOut(0.2)));
+                        cc.tween(item.taketips).to(0.2,{opacity:255}).delay(1).to(0.2,{opacity:0}).start();
                         cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{itemData:item.data}});
                     }
                     this.lastGroundItem = item;

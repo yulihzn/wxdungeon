@@ -75,16 +75,16 @@ export default class Decorate extends Building {
         }
         this.data.currentHealth = 0;
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
-        this.sprite.node.runAction(cc.sequence(
-            cc.callFunc(() => {
+        cc.tween(this.sprite.node)
+            .call(() => {
                 this.changeRes(this.resName, 'anim001');
                 this.hitLight(true);
-            }), cc.delayTime(0.1), cc.callFunc(() => {
+            }).delay(0.1).call(() => {
                 this.hitLight(false);
                 this.changeRes(this.resName, 'anim002');
-            }), cc.delayTime(0.1), cc.callFunc(() => {
+            }).delay(0.1).call(() => {
                 this.changeRes(this.resName, 'anim003');
-            }), cc.delayTime(0.1), cc.callFunc(() => {
+            }).delay(0.1).call(() => {
                 this.changeRes(this.resName, 'anim004');
                 let collider = this.getComponent(cc.PhysicsBoxCollider);
                 if (collider) {
@@ -103,9 +103,9 @@ export default class Decorate extends Building {
                 } else if (rand >= 0.85 && rand < 0.9) {
                     cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.DREAM } });
                 }
-            }), cc.delayTime(10), cc.callFunc(() => {
+            }).delay(10).call(() => {
                 this.reset();
-            })));
+            }).start();
         return true;
     }
 

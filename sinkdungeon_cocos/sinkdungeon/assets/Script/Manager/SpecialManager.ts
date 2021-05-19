@@ -108,7 +108,7 @@ export default class SpecialManager extends cc.Component {
         venom.position = pos;
         venom.zIndex = IndexZ.ACTOR;
         venom.scale = 0;
-        venom.runAction(cc.scaleTo(0.5, 2, 2))
+        cc.tween(venom).to(0.5,{scale:2}).start();
     }
     private addHowl(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let monster = this.node.parent.getComponent(NonPlayer);
