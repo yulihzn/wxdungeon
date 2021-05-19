@@ -21,6 +21,7 @@ import Actor from "../Base/Actor";
 import AirExit from "../Building/AirExit";
 import { ColliderTag } from "../Actor/ColliderTag";
 import ExitDoor from "../Building/ExitDoor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -476,7 +477,7 @@ export default class Bullet extends cc.Component {
         }
         let olddis = 1000;
         let pos = cc.v3(0, 0);
-        let enemy = this.dungeon.player.getNearestEnemyActor(!this.isFromPlayer, this.dungeon);
+        let enemy = ActorUtils.getNearestEnemyActor(this.dungeon.player,!this.isFromPlayer, this.dungeon);
         if (enemy) {
             let dis = Logic.getDistance(this.node.position, enemy.node.position);
             if (dis < 500 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising && !enemy.sc.isFalling && !enemy.sc.isJumping) {

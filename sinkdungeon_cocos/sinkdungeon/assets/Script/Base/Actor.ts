@@ -1,11 +1,7 @@
-import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
-import Dungeon from "../Dungeon";
+import StatusData from "../Data/StatusData";
 import ShadowOfSight from "../Effect/ShadowOfSight";
-import Logic from "../Logic";
-import NonPlayer from "../NonPlayer";
-import Player from "../Player";
 import StateContext from "./StateContext";
 
 // Learn TypeScript:
@@ -29,8 +25,12 @@ export default abstract class Actor extends cc.Component {
     static readonly TARGET_NONPLAYER_ENEMY = 4;
     abstract takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean;
     abstract actorName(): string;
-    abstract addStatus(statusType: string, from: FromData);
+    abstract addStatus(statusType: string, from: FromData):void;
     abstract getCenterPosition(): cc.Vec3;
+    abstract takeDizz(dizzDuration: number):void;
+    abstract updateStatus(statusData:StatusData):void;
+    abstract hideSelf(hideDuration: number):void;
+    abstract updateDream(offset: number): number;
     invisible = false;//是否隐身
     isFaceRight = true;
     isFaceUp = true;
@@ -38,141 +38,4 @@ export default abstract class Actor extends cc.Component {
     sc:StateContext = new StateContext();
     seed:number = 0;//随机种子，为所在房间分配的随机数生成的种子，决定再次生成该Actor的随机元素一致
 
-    /**
-     * 获取最近的玩家
-     * @param dungeon 
-     * @param distance 
-     */
-    getPlayerPosition(dungeon: Dungeon, distance?: number) {
-        return this.getNearestTargetPosition([Actor.TARGET_PLAYER], dungeon,true, distance);
-    }
-    /**
-     * 获取最近的敌人
-     * @param selfIsEnemy 自身是否的玩家的对立面
-     * @param dungeon 
-     * @param distance 
-     */
-    getNearestEnemyPosition(selfIsEnemy: boolean, dungeon: Dungeon,needRandom:boolean, distance?: number) {
-        return this.getNearestTargetPosition(selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
-            : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon,needRandom, distance);
-    }
-    /**
-     * 获取最近的目标
-     * @param targetTypes 
-     * @param dungeon 
-     * @param distance 
-     */
-    getNearestTargetPosition(targetTypes: number[], dungeon: Dungeon,needRandom:boolean, distance?: number): cc.Vec3 {
-        let targetActor: Actor = this.getNearestTargetActor(targetTypes, dungeon, distance ? distance : 999999);
-        if (targetActor) {
-            return targetActor.node.position;
-        }
-        if(needRandom){
-            return this.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
-        }
-        return cc.Vec3.ZERO;
-    }
- 
-    /**
-     * 获取玩家的节点
-     */
-    getPlayer(dungeon: Dungeon): Player {
-        return dungeon.player;
-    }
-    /**
-     * 获取最近的敌人节点
-     * @param selfIsEnemy 
-     * @param dungeon 
-     * @param distance 
-     */
-    getNearestEnemyActor(selfIsEnemy: boolean, dungeon: Dungeon) {
-        return this.getNearestTargetActor(selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
-            : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon);
-    }
-
-    /**
-     * 获取最近目标节点
-     * @param targetTypes 
-     * @param dungeon 
-     * @param distance 
-     */
-    getNearestTargetActor(targetTypes: number[], dungeon: Dungeon, distance?: number): Actor {
-        let shortdis = distance ? distance : 999999;
-        let targetActor: Actor;
-        let targetList: Actor[] = [];
-        for (let targetType of targetTypes) {
-            if (targetType == Actor.TARGET_PLAYER) {
-                targetList.push(dungeon.player);
-            } else if (targetType == Actor.TARGET_MONSTER) {
-                for (let monster of dungeon.monsterManager.monsterList) {
-                    targetList.push(monster);
-                }
-            } else if (targetType == Actor.TARGET_BOSS) {
-                for (let boss of dungeon.monsterManager.bossList) {
-                    targetList.push(boss);
-                }
-            } else if (targetType == Actor.TARGET_NONPLAYER) {
-                for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (non.data.isEnemy<1) {
-                        targetList.push(non);
-                    }
-                }
-            } else if (targetType == Actor.TARGET_NONPLAYER_ENEMY) {
-                for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (non.data.isEnemy>0) {
-                        targetList.push(non);
-                    }
-                }
-            }
-        }
-        for (let target of targetList) {
-            if (target.isValid && !target.sc.isDied && target.sc.isShow) {
-                let dis = Logic.getDistance(this.node.position, target.getCenterPosition());
-                if (dis < shortdis) {
-                    shortdis = dis;
-                    targetActor = target;
-                }
-            }
-        }
-        if (targetActor) {
-            return targetActor;
-        }
-        return null;
-    }
-    /**
-     * 获取最近目标节点距离
-     * @param playerNode 
-     */
-    getNearestTargetDistance(actor: Actor): number {
-        if (!actor) {
-            return 999999;
-        }
-        let dis = Logic.getDistance(this.node.position, actor.node.position);
-        return dis;
-    }
-    static getCollisionTarget(other: cc.Collider, isPlayer?: boolean) {
-        return Actor.getEnemyActorByNode(other.node,isPlayer);
-    }
-    static getEnemyActorByNode(other: cc.Node, isPlayer?: boolean) {
-        if (isPlayer) {
-            let non = other.getComponent(NonPlayer);
-            if (non&&non.data.isEnemy>0) {
-                return non;
-            }
-            let boss = other.getComponent(Boss);
-            if (boss) {
-                return boss;
-            }
-        } else {
-            let player = other.getComponent(Player);
-            if (player) {
-                return player;
-            }
-            let non = other.getComponent(NonPlayer);
-            if (non && non.data.isEnemy<1) {
-                return non;
-            }
-        }
-        return null;
-    }
 }

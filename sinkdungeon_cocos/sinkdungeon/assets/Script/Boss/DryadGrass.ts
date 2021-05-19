@@ -1,10 +1,9 @@
-import Logic from "../Logic";
-import Player from "../Player";
 import DamageData from "../Data/DamageData";
-import { EventHelper } from "../EventHelper";
 import Actor from "../Base/Actor";
 import StatusManager from "../Manager/StatusManager";
 import FromData from "../Data/FromData";
+import StatusData from "../Data/StatusData";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,13 +53,13 @@ export default class DryadGrass extends Actor {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if(target && !this.isAuto && !this.isUping){
             this.fall();
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if (target) {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;
@@ -79,5 +78,16 @@ export default class DryadGrass extends Actor {
     }
     actorName(){
         return '树根缠绕';
+    }
+    takeDizz(dizzDuration: number):void{
+
+    }
+
+    updateStatus(statusData: StatusData): void {
+    }
+    hideSelf(hideDuration: number): void {
+    }
+    updateDream(offset: number): number {
+        return 0;
     }
 }

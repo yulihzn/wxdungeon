@@ -36,6 +36,8 @@ import NonPlayerActorState from './Actor/NonPlayerActorState';
 import StateContext from './Base/StateContext';
 import NonPlayerData from './Data/NonPlayerData';
 import { ColliderTag } from './Actor/ColliderTag';
+import StatusData from './Data/StatusData';
+import ActorUtils from './Utils/ActorUtils';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -481,7 +483,7 @@ export default class NonPlayer extends Actor {
      * 是否玩家背后攻击
      */
     isPlayerBehindAttack(): boolean {
-        let isPlayerRight = this.getPlayer(this.dungeon).node.position.x > this.node.position.x;
+        let isPlayerRight = this.dungeon.player.node.position.x > this.node.position.x;
         let isSelfFaceRight = this.node.scaleX > 0;
         return (isPlayerRight && !isSelfFaceRight) || (!isPlayerRight && isSelfFaceRight);
     }
@@ -546,6 +548,7 @@ export default class NonPlayer extends Actor {
         if (isHurting) {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.hitLight(true);
+            this.dangerBox.hide(false);
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }
@@ -716,8 +719,8 @@ export default class NonPlayer extends Actor {
         if (this.isPassive) {
             return;
         }
-        let target = this.getNearestEnemyActor(this.data.isEnemy > 0, this.dungeon);
-        let targetDis = this.getNearestTargetDistance(target);
+        let target = ActorUtils.getNearestEnemyActor(this,this.data.isEnemy > 0, this.dungeon);
+        let targetDis = ActorUtils.getNearestTargetDistance(this,target);
         //特殊攻击
         if (this.data.specialAttack > 0) {
             this.specialStep.next(() => {
@@ -796,8 +799,8 @@ export default class NonPlayer extends Actor {
         this.changeZIndex();
 
         this.updateAttack();
-        let target = this.getNearestEnemyActor(this.data.isEnemy > 0, this.dungeon);
-        let targetDis = this.getNearestTargetDistance(target);
+        let target = ActorUtils.getNearestEnemyActor(this,this.data.isEnemy > 0, this.dungeon);
+        let targetDis = ActorUtils.getNearestTargetDistance(this,target);
         //靠近取消伪装
         if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
             this.sc.isDisguising = false;
@@ -823,7 +826,7 @@ export default class NonPlayer extends Actor {
             }, this.data.dash);
         }
         if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
-            targetDis = this.getNearestTargetDistance(this.getPlayer(this.dungeon));
+            targetDis = ActorUtils.getNearestTargetDistance(this,this.dungeon.player);
         }
         let isTracking = targetDis < 500 && targetDis > 64 && this.data.melee > 0;
         if (targetDis < 500 && targetDis > 300 && this.data.remote > 0) {
@@ -905,8 +908,8 @@ export default class NonPlayer extends Actor {
         }
         let pos = Dungeon.getPosInMap(newPos);
         if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
-            pos = this.getPlayerPosition(this.dungeon);
-            target = this.getPlayer(this.dungeon);
+            pos = ActorUtils.getPlayerPosition(this,this.dungeon);
+            target = this.dungeon.player;
         }
         pos = pos.sub(this.node.position);
         if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isHeavy < 1) {
@@ -924,7 +927,7 @@ export default class NonPlayer extends Actor {
         return a + (b - a) * r;
     };
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other, this.data.isEnemy < 1);
+        let target = ActorUtils.getCollisionTarget(other, this.data.isEnemy < 1);
         if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
             this.sc.isDashing = false;
             this.setLinearVelocity(cc.Vec2.ZERO);
@@ -1005,7 +1008,7 @@ export default class NonPlayer extends Actor {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
         let body = this.bodySprite.node;
         cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
-            let newPos = this.getNearestEnemyPosition(true, this.dungeon, true);
+            let newPos = ActorUtils.getNearestEnemyPosition(this,true, this.dungeon, true);
             newPos = Dungeon.getIndexInMap(newPos);
             if (newPos.x > this.pos.x) {
                 newPos = newPos.addSelf(cc.v3(1, 0));
@@ -1030,5 +1033,15 @@ export default class NonPlayer extends Actor {
     public enterFall() {
         this.bodySprite.node.angle = this.isPlayerBehindAttack() ? -75 : 105;
         this.anim.play('MonsterFall');
+    }
+
+
+    updateStatus(statusData: StatusData): void {
+        this.data.StatusTotalData.valueCopy(statusData);
+    }
+    hideSelf(hideDuration: number): void {
+    }
+    updateDream(offset: number): number {
+        return 0;
     }
 }

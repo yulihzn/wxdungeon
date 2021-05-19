@@ -1,11 +1,8 @@
-import Player from "../Player";
-import NonPlayer from "../NonPlayer";
-import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import StatusManager from "../Manager/StatusManager";
-import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -64,7 +61,7 @@ export default class MagicLightening extends cc.Component {
             }, 2);
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if(target && this.isTrigger){
             this.isTrigger = false;
             this.fall(true,true);
@@ -83,7 +80,7 @@ export default class MagicLightening extends cc.Component {
         let status = StatusManager.BURNING;
         damage.magicDamage = this.damagePoint;
         status = StatusManager.DIZZ;
-        let target = Actor.getEnemyActorByNode(attackTarget,!this.needPrepare);
+        let target = ActorUtils.getEnemyActorByNode(attackTarget,!this.needPrepare);
         if (target && !target.sc.isDied) {
             target.takeDamage(damage);
             let fd = FromData.getClone('闪电','magiclighteningdown1');

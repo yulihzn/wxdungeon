@@ -2,6 +2,7 @@ import FromData from "../Data/FromData";
 import Actor from "../Base/Actor";
 import Dungeon from "../Dungeon";
 import NonPlayer from "../NonPlayer";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -107,7 +108,7 @@ export default class ActorAttackBox extends cc.Component {
         if (this.isAttacking && this.holderActor) {
             let a = other.getComponent(Actor);
             let m = this.holderActor.getComponent(NonPlayer);
-            let target = Actor.getCollisionTarget(other,!this.isEnemy);
+            let target = ActorUtils.getCollisionTarget(other,!this.isEnemy);
             if(target){
                 this.isAttacking = false;
                 let from = FromData.getClone(m.data.nameCn, m.data.resName+'anim000');

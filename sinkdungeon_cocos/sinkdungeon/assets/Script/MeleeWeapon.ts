@@ -22,6 +22,7 @@ import CommonData from "./Data/CommonData";
 import Actor from "./Base/Actor";
 import AvatarData from "./Data/AvatarData";
 import { ColliderTag } from "./Actor/ColliderTag";
+import ActorUtils from "./Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -400,7 +401,7 @@ export default class MeleeWeapon extends cc.Component {
         let olddis = 1000;
         let pos = cc.v3(0, 0);
         if (this.dungeon) {
-            let enemy = this.player.getNearestEnemyActor(false, this.dungeon);
+            let enemy = ActorUtils.getNearestEnemyActor(this.player,false, this.dungeon);
             if(enemy){
                 let dis = Logic.getDistance(this.player.node.position, enemy.node.position);
                 if (dis < 200 && dis < olddis && !enemy.sc.isDied) {
@@ -552,7 +553,7 @@ export default class MeleeWeapon extends cc.Component {
             this.scheduleOnce(() => { this.anim.resume() }, 0.1);
         }
         if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
-            this.player.useDream(-1);
+            this.player.updateDream(-1);
         }
     }
     private addTargetAllStatus(data: CommonData, target: Actor) {

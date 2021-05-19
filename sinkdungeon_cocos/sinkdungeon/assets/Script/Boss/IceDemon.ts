@@ -1,5 +1,4 @@
 import Dungeon from "../Dungeon";
-import Player from "../Player";
 import { EventHelper } from "../EventHelper";
 import Shooter from "../Shooter";
 import DamageData from "../Data/DamageData";
@@ -11,7 +10,7 @@ import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
-import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -344,7 +343,7 @@ export default class IceDemon extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if (target && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.sc.isDied) {
             let d = new DamageData();
             d.physicalDamage = 3;

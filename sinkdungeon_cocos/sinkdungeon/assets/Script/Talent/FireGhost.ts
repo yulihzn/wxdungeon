@@ -5,6 +5,7 @@ import FromData from "../Data/FromData";
 import Logic from "../Logic";
 import IndexZ from "../Utils/IndexZ";
 import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,7 +56,7 @@ export default class FireGhost extends cc.Component {
 
     onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
         if (self.radius > 0 && this.isAttacking && this.isRotating) {
-            let target = Actor.getCollisionTarget(other, true);
+            let target = ActorUtils.getCollisionTarget(other, true);
             if (target) {
                 this.isAttacking = false;
                 this.attacking(other.node);
@@ -70,7 +71,7 @@ export default class FireGhost extends cc.Component {
         let status = StatusManager.BURNING;
         let d = 1;
         damage.magicDamage = d;
-        let target = Actor.getEnemyActorByNode(attackTarget, true);
+        let target = ActorUtils.getEnemyActorByNode(attackTarget, true);
         if (target && !target.sc.isDied) {
             target.takeDamage(damage);
             target.addStatus(status, new FromData());
@@ -112,7 +113,7 @@ export default class FireGhost extends cc.Component {
         }
         let olddis = 1000;
         let pos = cc.v3(0, 0);
-        let enemy = this.player.getNearestEnemyActor(false, this.player.weaponRight.meleeWeapon.dungeon);
+        let enemy = ActorUtils.getNearestEnemyActor(this.player,false, this.player.weaponRight.meleeWeapon.dungeon);
         if(enemy){                
             let dis = Logic.getDistance(this.node.position, enemy.node.position);
             if (dis < 400 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {

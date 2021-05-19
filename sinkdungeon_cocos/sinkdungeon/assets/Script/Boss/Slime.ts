@@ -1,7 +1,6 @@
 import Boss from "./Boss";
 import DamageData from "../Data/DamageData";
 import HealthBar from "../HealthBar";
-import Player from "../Player";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Dungeon from "../Dungeon";
@@ -13,7 +12,7 @@ import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import Item from "../Item/Item";
 import IndexZ from "../Utils/IndexZ";
-import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -93,7 +92,7 @@ export default class Slime extends Boss {
         venomPrefab.parent = parentNode;
         venomPrefab.position = pos;
         venomPrefab.scale = this.slimeType == 0 ? 1.5 : 1;
-        venomPrefab.getComponent(SlimeVenom).player = this.dungeon.player;
+        venomPrefab.getComponent(SlimeVenom).target = this.dungeon.player;
         venomPrefab.zIndex = IndexZ.getActorZIndex(this.node.position);
         venomPrefab.opacity = 255;
         venomPrefab.active = true;
@@ -113,12 +112,12 @@ export default class Slime extends Boss {
     AnimAttacking() {
         this.meleeSkill.IsExcuting = false;
         let attackRange = 64 + 50 * this.scaleSize;
-        let target = this.getNearestEnemyActor(true,this.dungeon);
-        let newdis = this.getNearestTargetDistance(target);
+        let target = ActorUtils.getNearestEnemyActor(this,true,this.dungeon);
+        let newdis = ActorUtils.getNearestTargetDistance(this,target);
         if (newdis < attackRange&&target) { target.takeDamage(this.data.getAttackPoint(),FromData.getClone(this.actorName(),'bossslimehelmet'),this); }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if (target && this.isDashing && this.dungeon && !this.isHurt && !this.sc.isDied) {
             this.isDashing = false;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;

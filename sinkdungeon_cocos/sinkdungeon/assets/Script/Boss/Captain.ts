@@ -10,7 +10,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import { ColliderTag } from "../Actor/ColliderTag";
-import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -137,7 +137,7 @@ export default class Captain extends Boss {
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if (target && self.tag == ColliderTag.BOSS_ATTACK) {
             if (this.isFall&&!this.sc.isDied) {
                 this.isFall = false;

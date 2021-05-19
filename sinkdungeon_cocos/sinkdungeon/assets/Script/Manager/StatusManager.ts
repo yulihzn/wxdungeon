@@ -1,10 +1,8 @@
-import Status from "../Status";
 import StatusData from "../Data/StatusData";
 import Logic from "../Logic";
-import { EventHelper } from "../EventHelper";
-import Player from "../Player";
-import NonPlayer from "../NonPlayer";
 import FromData from "../Data/FromData";
+import Status from "../Status/Status";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,23 +50,25 @@ export default class StatusManager extends cc.Component {
     public static readonly BOTTLE_REMOTE = "status030";
     public static readonly WINE_CLOUD = "status033";
     public static readonly FALLEN_DOWN = "status034";
-    
+
 
     @property(cc.Prefab)
     statusPrefab: cc.Prefab = null;
     private statusList: Status[];
 
+    private actor:Actor;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.statusList = new Array();
+        this.actor = this.node.parent.getComponent(Actor);
     }
 
     start() {
 
     }
-    addStatus(resName:string,from:FromData) {
-        if(resName.length<1){
+    addStatus(resName: string, from: FromData) {
+        if (resName.length < 1) {
             return;
         }
         let sd = new StatusData();
@@ -76,7 +76,7 @@ export default class StatusManager extends cc.Component {
         sd.From.valueCopy(from);
         this.showStatus(sd);
     }
-    hasStatus(resName:string):boolean{
+    hasStatus(resName: string): boolean {
         let hasStatus = false;
         let sd = new StatusData();
         sd.valueCopy(Logic.debuffs[resName]);
@@ -89,7 +89,7 @@ export default class StatusManager extends cc.Component {
         }
         return hasStatus;
     }
-    stopStatus(resName:string):void{
+    stopStatus(resName: string): void {
         let sd = new StatusData();
         sd.valueCopy(Logic.debuffs[resName]);
         for (let i = this.statusList.length - 1; i >= 0; i--) {
@@ -100,7 +100,7 @@ export default class StatusManager extends cc.Component {
         }
         return undefined;
     }
-    stopAllStatus():void{
+    stopAllStatus(): void {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             s.stopStatus();
@@ -119,42 +119,39 @@ export default class StatusManager extends cc.Component {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == data.statusType) {
-                s.data.duration=data.duration;
-                s.showStatus(this.node.parent, data);
+                s.data.duration = data.duration;
+                s.showStatus(data,this.actor);
                 hasStatus = true;
                 break;
             }
         }
-        if(hasStatus){
+        if (hasStatus) {
             return;
         }
-        
+
         let statusNode: cc.Node = cc.instantiate(this.statusPrefab);
         statusNode.parent = this.node;
         statusNode.active = true;
         let status = statusNode.getComponent(Status);
         this.statusList.push(status);
-        status.showStatus(this.node.parent, data);
+        status.showStatus(data,this.actor);
     }
-    
+
     update(dt) {
         if (this.node.parent) {
-            this.node.scaleX = this.node.parent.scaleX>0?1:-1;
+            this.node.scaleX = this.node.parent.scaleX > 0 ? 1 : -1;
         }
         if (this.isTimeDelay(dt)) {
-            let monster = this.node.parent.getComponent(NonPlayer);
-            if(this.node.parent&&this.node.parent.getComponent(Player)){
-                Logic.playerData.StatusTotalData.valueCopy(this.updateStatus());
-                cc.director.emit(EventHelper.PLAYER_STATUSUPDATE);
-            }else if(this.node.parent&&monster){
-                monster.data.StatusTotalData.valueCopy(this.updateStatus());
+            if (this.actor) {
+                let statusData = this.updateStatus();
+                this.actor.updateStatus(statusData);
             }
         }
     }
     private timeDelay = 0;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
-        if (this.timeDelay > 0.2) {
+        if (this.timeDelay > 1) {
             this.timeDelay = 0;
             return true;
         }
@@ -167,7 +164,8 @@ export default class StatusManager extends cc.Component {
             if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
                 continue;
             }
-            e.missRate += s.data.missRate?s.data.missRate:0;
+            s.updateLogic();
+            e.missRate += s.data.missRate ? s.data.missRate : 0;
             e.Common.add(s.data.Common);
         }
         return e;

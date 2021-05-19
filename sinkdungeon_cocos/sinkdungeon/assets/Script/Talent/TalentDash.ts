@@ -7,6 +7,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import PlayerAvatar from "../PlayerAvatar";
 import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 const { ccclass, property } = cc._decorator;
 
@@ -98,7 +99,7 @@ export default class TalentDash extends Talent {
         }
 
         let damageSuccess = false;
-        let target = Actor.getEnemyActorByNode(attackTarget.node,true);
+        let target = ActorUtils.getEnemyActorByNode(attackTarget.node,true);
         if (target && !target.sc.isDied) {
             damageSuccess = target.takeDamage(damage);
             if (damageSuccess) {

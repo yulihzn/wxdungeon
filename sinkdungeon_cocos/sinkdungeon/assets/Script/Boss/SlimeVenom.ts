@@ -1,9 +1,8 @@
 import Logic from "../Logic";
-import Player from "../Player";
 import DamageData from "../Data/DamageData";
-import { EventHelper } from "../EventHelper";
 import Actor from "../Base/Actor";
 import FromData from "../Data/FromData";
+import StatusData from "../Data/StatusData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,12 +21,12 @@ export default class SlimeVenom extends Actor {
     venom1: cc.Node;
     venom2: cc.Node;
     venom3: cc.Node;
-    player:Player;
-    anim:cc.Animation;
-    sprite:cc.Node;
+    target: Actor;
+    anim: cc.Animation;
+    sprite: cc.Node;
     isHide = false;
     isForever = false;
-    from:FromData = FromData.getClone('史莱姆毒液','venom');
+    from: FromData = FromData.getClone('史莱姆毒液', 'venom');
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -41,18 +40,18 @@ export default class SlimeVenom extends Actor {
     onEnable() {
         this.isHide = false;
         this.sprite.opacity = 255;
-        this.venom1.angle = Logic.getRandomNum(0,180);
-        this.venom2.angle = Logic.getRandomNum(0,180);
-        this.venom2.angle = Logic.getRandomNum(0,180);
+        this.venom1.angle = Logic.getRandomNum(0, 180);
+        this.venom2.angle = Logic.getRandomNum(0, 180);
+        this.venom2.angle = Logic.getRandomNum(0, 180);
         this.anim.play();
-        if(!this.isForever){
-            this.scheduleOnce(()=>{
-                if(this.anim){
+        if (!this.isForever) {
+            this.scheduleOnce(() => {
+                if (this.anim) {
                     this.isHide = true;
                     this.anim.play('VenomHide');
-                    this.scheduleOnce(()=>{cc.director.emit('destoryvenom',{detail:{coinNode:this.node}});},1.5);
+                    this.scheduleOnce(() => { cc.director.emit('destoryvenom', { detail: { coinNode: this.node } }); }, 1.5);
                 }
-            },3);
+            }, 3);
         }
         this.damagePlayer(this.from);
     }
@@ -72,25 +71,36 @@ export default class SlimeVenom extends Actor {
         }
         return false;
     }
-    update (dt) {
+    update(dt) {
         if (this.isCheckTimeDelay(dt)) {
             this.damagePlayer(this.from);
         }
     }
-    private damagePlayer(from:FromData){
-        if (this.player&&this.getNearPlayerDistance(this.player.node)<60*this.node.scale&&this.node.active && !this.isHide) {
+    private damagePlayer(from: FromData) {
+        if (this.target && this.getNearPlayerDistance(this.target.node) < 60 * this.node.scale && this.node.active && !this.isHide) {
             let dd = new DamageData();
             dd.magicDamage = 1;
-            this.player.takeDamage(dd,from);
+            this.target.takeDamage(dd, from);
         }
     }
     getCenterPosition(): cc.Vec3 {
         return this.node.position.clone();
     }
-    takeDamage(damge:DamageData){
+    takeDamage(damge: DamageData) {
         return false;
     }
-    actorName(){
+    actorName() {
         return '史莱姆毒液';
+    }
+
+    takeDizz(dizzDuration: number): void {
+    }
+
+    updateStatus(statusData: StatusData): void {
+    }
+    hideSelf(hideDuration: number): void {
+    }
+    updateDream(offset: number): number {
+        return 0;
     }
 }

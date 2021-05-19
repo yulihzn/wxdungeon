@@ -13,6 +13,7 @@ import AreaOfEffectData from "./Data/AreaOfEffectData";
 import AreaOfEffect from "./Actor/AreaOfEffect";
 import { ColliderTag } from "./Actor/ColliderTag";
 import InventoryManager from "./Manager/InventoryManager";
+import ActorUtils from "./Utils/ActorUtils";
 
 
 // Learn TypeScript:
@@ -435,7 +436,7 @@ export default class Shooter extends cc.Component {
         let pos = cc.v3(0, 0);
         if (this.isAI) {
         } else if (this.dungeon) {
-            let enemy = this.player.getNearestEnemyActor(false, this.dungeon);
+            let enemy = ActorUtils.getNearestEnemyActor(this.player,false, this.dungeon);
             if(enemy){
                 let dis = Logic.getDistance(this.getParentNode().position, enemy.node.position);
                     if (dis < 600 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {

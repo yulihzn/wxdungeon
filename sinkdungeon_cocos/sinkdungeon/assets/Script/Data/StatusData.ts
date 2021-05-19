@@ -57,6 +57,9 @@ export default class StatusData {
         return this.from;
     }
     public valueCopy(data: StatusData): void {
+        if(!data){
+            return;
+        }
         this.common.valueCopy(data.common);
         this.from.valueCopy(data.from);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;

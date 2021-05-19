@@ -101,7 +101,7 @@ export default class SpecialManager extends cc.Component {
 
     private addVenom(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
         let venom = cc.instantiate(this.venom);
-        venom.getComponent(SlimeVenom).player = this.dungeon.player;
+        venom.getComponent(SlimeVenom).target = this.dungeon.player;
         venom.getComponent(SlimeVenom).isForever = false;
         venom.getComponent(SlimeVenom).from.valueCopy(from);
         venom.parent = this.dungeon.node;

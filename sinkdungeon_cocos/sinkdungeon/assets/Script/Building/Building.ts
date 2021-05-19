@@ -2,6 +2,7 @@ import Actor from "../Base/Actor";
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import BuildingData from "../Data/BuildingData";
+import StatusData from "../Data/StatusData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,5 +29,16 @@ export abstract default class Building extends Actor {
     }
     actorName(){
         return '';
+    }
+    takeDizz(dizzDuration: number):void{
+
+    }
+
+    updateStatus(statusData: StatusData): void {
+    }
+    hideSelf(hideDuration: number): void {
+    }
+    updateDream(offset: number): number {
+        return 0;
     }
 }

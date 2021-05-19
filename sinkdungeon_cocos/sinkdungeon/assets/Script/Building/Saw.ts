@@ -1,12 +1,11 @@
 import Dungeon from "../Dungeon";
-import Player from "../Player";
 import DamageData from "../Data/DamageData";
 import Building from "./Building";
 import StatusManager from "../Manager/StatusManager";
 import Random from "../Utils/Random";
 import FromData from "../Data/FromData";
 import IndexZ from "../Utils/IndexZ";
-import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 
 // Learn TypeScript:
@@ -49,7 +48,7 @@ export default class Saw extends Building {
     }
     
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if (target) {
             let from = FromData.getClone(this.actorName(),'saw002');
             target.takeDamage(new DamageData(1),from);

@@ -1,5 +1,3 @@
-import Player from "../Player";
-import NonPlayer from "../NonPlayer";
 import Boss from "../Boss/Boss";
 import DamageData from "../Data/DamageData";
 import IndexZ from "../Utils/IndexZ";
@@ -7,8 +5,8 @@ import Dungeon from "../Dungeon";
 import HitBuilding from "../Building/HitBuilding";
 import Decorate from "../Building/Decorate";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
-import Actor from "../Base/Actor";
 import { ColliderTag } from "./ColliderTag";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -124,7 +122,7 @@ export default class AreaOfEffect extends cc.Component {
         damage.isRemote = true;
         if (tag == ColliderTag.PLAYER || tag == ColliderTag.NONPLAYER || tag == ColliderTag.GOODNONPLAYER || tag == ColliderTag.BOSS) {
             let normal = attackTarget.convertToWorldSpaceAR(cc.Vec3.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)).normalizeSelf();
-            let target = Actor.getEnemyActorByNode(attackTarget, !this.data.isFromEnemy);
+            let target = ActorUtils.getEnemyActorByNode(attackTarget, !this.data.isFromEnemy);
             if (target && !target.sc.isDied) {
                 let damageSuccess = target.takeDamage(damage, this.data.from);
                 if (damageSuccess) {

@@ -9,6 +9,7 @@ import FromData from "../Data/FromData";
 import Item from "../Item/Item";
 import IndexZ from "../Utils/IndexZ";
 import NonPlayerData from "../Data/NonPlayerData";
+import StatusData from "../Data/StatusData";
 
 
 // Learn TypeScript:
@@ -108,5 +109,15 @@ export default abstract class Boss extends Actor {
         shooter.data.bulletLineExNum = bulletLineExNum;
         shooter.fireBullet(angle);
     }
-    
+    takeDizz(dizzDuration: number):void{
+
+    }
+    updateStatus(statusData: StatusData): void {
+        this.data.StatusTotalData.valueCopy(statusData);
+    }
+    hideSelf(hideDuration: number): void {
+    }
+    updateDream(offset: number): number {
+        return 0;
+    }
 }

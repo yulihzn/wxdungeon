@@ -15,6 +15,7 @@ import Boss from "../Boss/Boss";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import NonPlayerManager from "../Manager/NonPlayerManager";
 import AvatarData from "../Data/AvatarData";
+import ActorUtils from "../Utils/ActorUtils";
 
 /**
  * 技能管理器
@@ -118,7 +119,7 @@ export default class TalentSkills extends Talent {
             this.talentSkill.next(() => {
                 this.talentSkill.IsExcuting = true;
                 cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
-                this.player.useDream(1);
+                this.player.updateDream(1);
                     this.doSkill();
             }, cooldown, true);
         }else{
@@ -266,7 +267,7 @@ export default class TalentSkills extends Talent {
         this.sprite.node.opacity = 255;
         this.sprite.node.scale = 1;
         this.sprite.node.position = cc.v3(0, 128);
-        let node = this.player.getNearestEnemyActor(false,this.player.weaponRight.meleeWeapon.dungeon);
+        let node = ActorUtils.getNearestEnemyActor(this.player,false,this.player.weaponRight.meleeWeapon.dungeon);
         if (!node) {
             return;
         }
@@ -332,7 +333,7 @@ export default class TalentSkills extends Talent {
 
     }
     addLighteningFall(isArea: boolean, damagePoint: number) {
-        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: this.player.getNearestEnemyPosition(false,this.player.weaponRight.meleeWeapon.dungeon,true), showArea: isArea, damage: damagePoint })
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: ActorUtils.getNearestEnemyPosition(this.player,false,this.player.weaponRight.meleeWeapon.dungeon,true), showArea: isArea, damage: damagePoint })
     }
     private addBroom() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);

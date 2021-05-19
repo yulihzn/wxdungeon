@@ -3,7 +3,7 @@ import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import StatusManager from "../Manager/StatusManager";
 import IndexZ from "../Utils/IndexZ";
-import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,7 +60,7 @@ export default class IceThron extends cc.Component {
                 this.hasTargetMap[other.node.uuid]++;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
-                let target = Actor.getCollisionTarget(other,true);
+                let target = ActorUtils.getCollisionTarget(other,true);
                 if (target) {
                     this.attacking(other.node);
                 }
@@ -76,7 +76,7 @@ export default class IceThron extends cc.Component {
         let d = 4;
         
         damage.magicDamage = d;
-        let target = Actor.getEnemyActorByNode(attackTarget,true);
+        let target = ActorUtils.getEnemyActorByNode(attackTarget,true);
         if (target && !target.sc.isDied) {
             target.takeDamage(damage);
             target.addStatus(status,new FromData());

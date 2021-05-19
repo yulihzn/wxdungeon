@@ -2,7 +2,6 @@ import Boss from "./Boss";
 import DamageData from "../Data/DamageData";
 import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
-import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import NextStep from "../Utils/NextStep";
 import Random from "../Utils/Random";
@@ -11,7 +10,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import IndexZ from "../Utils/IndexZ";
-import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -201,7 +200,7 @@ export default class Dragon extends Boss {
         this.healthBar.node.active = !this.sc.isDied;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if(target&&!this.sc.isDied && !this.physicBox.sensor){
             let d = new DamageData();
             d.physicalDamage = 3;

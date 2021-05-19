@@ -2,6 +2,7 @@ import DamageData from "../Data/DamageData";
 import StatusManager from "../Manager/StatusManager";
 import FromData from "../Data/FromData";
 import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 
 // Learn TypeScript:
@@ -51,13 +52,13 @@ export default class IceDemonThron extends cc.Component {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if(target && !this.isAuto && !this.isUping){
             this.fall();
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if (target) {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;

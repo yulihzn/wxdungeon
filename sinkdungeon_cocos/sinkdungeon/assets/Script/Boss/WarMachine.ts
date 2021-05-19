@@ -10,6 +10,7 @@ import { EventHelper } from "../EventHelper";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import Actor from "../Base/Actor";
+import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -262,7 +263,7 @@ export default class WarMachine extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let target = Actor.getCollisionTarget(other);
+        let target = ActorUtils.getCollisionTarget(other);
         if(target&&!this.sc.isDied){
             let d = new DamageData();
             d.physicalDamage = 2;

@@ -39,6 +39,7 @@ import ShadowOfSight from './Effect/ShadowOfSight';
 import LightManager from './Manager/LightManager';
 import NonPlayer from './NonPlayer';
 import AvatarData from './Data/AvatarData';
+import StatusData from './Data/StatusData';
 @ccclass
 export default class Player extends Actor {
 
@@ -85,14 +86,14 @@ export default class Player extends Actor {
     talentSkills: TalentSkills;
     isWeaponDashing = false;
     fistCombo = 0;
-    dungeon:Dungeon;
+    dungeon: Dungeon;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData.clone();
-        this.statusUpdate();
+        this.updateStatus(null);
         this.pos = cc.v3(0, 0);
         this.sc.isDied = false;
         this.isStone = false;
@@ -104,7 +105,7 @@ export default class Player extends Actor {
         this.remoteCooldown.width = 0;
         this.remoteCooldown.opacity = 200;
         cc.director.on(EventHelper.PLAYER_TRIGGER
-            , (event) => { if (this.node) this.triggerThings(event&&event.detail&&event.detail.isLongPress) });
+            , (event) => { if (this.node) this.triggerThings(event && event.detail && event.detail.isLongPress) });
         cc.director.on(EventHelper.PLAYER_EXIT_FROM_SETTINGS
             , (event) => {
                 cc.director.loadScene('start');
@@ -129,10 +130,8 @@ export default class Player extends Actor {
                     if (this.node) this.remoteAttack();
                 }
             });
-        cc.director.on(EventHelper.PLAYER_STATUSUPDATE
-            , (event) => { if (this.node) this.statusUpdate() });
         cc.director.on(EventHelper.PLAYER_USEDREAM
-            , (event) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.useDream(event.detail.value) });
+            , (event) => { if (this.node && this.data.AvatarData.organizationIndex == AvatarData.HUNTER) this.updateDream(event.detail.value) });
         if (Logic.playerData.pos.y == Dungeon.HEIGHT_SIZE - 1) {
             Logic.playerData.pos.y = Dungeon.HEIGHT_SIZE - 2;
         }
@@ -199,8 +198,8 @@ export default class Player extends Actor {
             this.fistCombo = MeleeWeapon.COMBO1;
         }
     }
-    dizzCharacter(dizzDuration: number) {
-        if (dizzDuration > 0&&!this.sc.isJumping) {
+    takeDizz(dizzDuration: number): void {
+        if (dizzDuration > 0 && !this.sc.isJumping) {
             this.sc.isDizzing = true;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
@@ -209,7 +208,7 @@ export default class Player extends Actor {
             }, dizzDuration)
         }
     }
-    hideCharacter(hideDuration: number) {
+    hideSelf(hideDuration: number) {
         if (hideDuration > 0) {
             this.invisible = true;
             this.scheduleOnce(() => {
@@ -221,11 +220,11 @@ export default class Player extends Actor {
         this.invisible = false;
         this.statusManager.stopStatus(StatusManager.TALENT_INVISIBLE);
     }
-
-    private statusUpdate() {
+    public updateStatus(statusData: StatusData) {
         if (!this.inventoryManager) {
             return;
         }
+        Logic.playerData.StatusTotalData.valueCopy(statusData);
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
@@ -445,7 +444,7 @@ export default class Player extends Actor {
         }
     }
     //特效受击
-    remoteOrStatusExHurt(blockLevel: number,from: FromData, actor: Actor): void {
+    remoteOrStatusExHurt(blockLevel: number, from: FromData, actor: Actor): void {
         for (let key in this.inventoryManager.equips) {
             let data = this.inventoryManager.equips[key];
             let needFire = false;
@@ -469,11 +468,11 @@ export default class Player extends Actor {
                 this.shooterEx.data.bulletSize = data.bulletSize;
                 this.shooterEx.fireBullet(0);
             }
-            if(data.statusNameHurtOther.length>0&&data.statusRateHurt>Logic.getRandomNum(0,100)){
-                actor.addStatus(data.statusNameHurtOther,new FromData());
+            if (data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+                actor.addStatus(data.statusNameHurtOther, new FromData());
             }
-            if(data.statusNameHurtSelf.length>0&&data.statusRateHurt>Logic.getRandomNum(0,100)){
-                this.addStatus(data.statusNameHurtSelf,new FromData());
+            if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+                this.addStatus(data.statusNameHurtSelf, new FromData());
             }
         }
     }
@@ -668,13 +667,13 @@ export default class Player extends Actor {
         let health = this.data.getHealth();
         let totalD = dd.getTotalDamage();
         if (totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.GURAD) {
-            totalD = this.useDream(totalD);
+            totalD = this.updateDream(totalD);
         }
         if (totalD > 0 &&
             (this.data.AvatarData.organizationIndex == AvatarData.HUNTER
                 || this.data.AvatarData.organizationIndex == AvatarData.TECH)
             || this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
-            this.useDream(1);
+            this.updateDream(1);
         }
         health.x -= totalD;
         if (health.x > health.y) {
@@ -688,11 +687,11 @@ export default class Player extends Actor {
         }
         let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_PARRY;
         if (valid || blockLevel == Shield.BLOCK_PARRY) {
-            this.showDamageEffect(blockLevel,from,actor);
+            this.showDamageEffect(blockLevel, from, actor);
         }
         return valid;
     }
-    public useDream(offset: number): number {
+    public updateDream(offset: number): number {
         let dream = this.data.getDream();
         dream.x -= offset;
         let overflow = -dream.x;
@@ -706,8 +705,8 @@ export default class Player extends Actor {
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
         return overflow < 0 ? 0 : overflow;
     }
-    private showDamageEffect(blockLevel: number,from: FromData, actor: Actor) {
-        this.remoteOrStatusExHurt(blockLevel,from,actor);
+    private showDamageEffect(blockLevel: number, from: FromData, actor: Actor) {
+        this.remoteOrStatusExHurt(blockLevel, from, actor);
         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
         if (blockLevel == Shield.BLOCK_NORMAL) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
@@ -823,17 +822,17 @@ export default class Player extends Actor {
         }
         if (this.isDreamLongTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.GURAD || this.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
-                this.useDream(-1);
+                this.updateDream(-1);
             }
         }
         if (this.isDreamTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
-                this.useDream(-1);
+                this.updateDream(-1);
             }
         }
         if (this.isDreamShortTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
-                this.useDream(1);
+                this.updateDream(1);
             }
         }
 
@@ -858,17 +857,17 @@ export default class Player extends Actor {
 
     }
 
-    triggerThings(isLongPress:boolean) {
-        if (this.sc.isJumping||!this.dungeon) {
+    triggerThings(isLongPress: boolean) {
+        if (this.sc.isJumping || !this.dungeon) {
             return;
         }
         if (this.dungeon.equipmentManager.lastGroundEquip && this.dungeon.equipmentManager.lastGroundEquip.taken(isLongPress)) {
             this.dungeon.equipmentManager.lastGroundEquip = null;
         }
-        if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this,isLongPress)) {
+        if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
             this.dungeon.itemManager.lastGroundItem = null;
         }
-       
+
         if (this.touchedTips) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
             this.touchedTips.next();
