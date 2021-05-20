@@ -31,6 +31,7 @@ export default class DamageData {
     isFar = false;//近程
     isFist = false;//空手 
     isBlunt = false;//钝器
+    isMelee = false;//是否近战
     comboType = 0;//连击级别
 
     constructor(realDamage?:number){
@@ -55,6 +56,7 @@ export default class DamageData {
         this.isFar = data.isFar?true:false;
         this.isFist = data.isFist?true:false;
         this.isBlunt = data.isBlunt?true:false;
+        this.isMelee = data.isMelee?true:false;
         this.comboType = data.comboType?data.comboType:0;
     }
    
@@ -77,6 +79,7 @@ export default class DamageData {
         e.isFar = this.isFar;
         e.isFist = this.isFist;
         e.isStab = this.isStab;
+        e.isMelee = this.isMelee;
         e.comboType = this.comboType;
         return e;
     }

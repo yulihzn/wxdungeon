@@ -494,6 +494,7 @@ export default class MeleeWeapon extends cc.Component {
         damage.isFist = this.isFist;
         damage.isFar = this.isFist;
         damage.isBlunt = this.isBlunt;
+        damage.isMelee = true;
         damage.comboType = this.comboType;
         if(this.isFist){
             damage.comboType = this.fistCombo;

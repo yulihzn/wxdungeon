@@ -101,7 +101,7 @@ export default class NonPlayer extends Actor {
 
     particleBlood: cc.ParticleSystem;
     effectNode: cc.Node;
-    hitLightSprite:cc.Sprite;
+    hitLightSprite: cc.Sprite;
 
     moveStep = new NextStep();
     remoteStep = new NextStep();
@@ -158,31 +158,31 @@ export default class NonPlayer extends Actor {
             this.scheduleOnce(() => { this.data.currentHealth = 0; }, this.data.lifeTime)
         }
     }
-    private hitLightS(damage:DamageData){
+    private hitLightS(damage: DamageData) {
         let resName = 'hitlight1';
         let scale = 8;
-        if(damage.isFist){
-            resName = Logic.getHalfChance()?'hitlight1':'hitlight2';
-        }else if(damage.isRemote){
-            resName = Logic.getHalfChance()?'hitlight9':'hitlight10';
-        }else if(damage.isBlunt){
-            resName = Logic.getHalfChance()?'hitlight3':'hitlight4';
-            scale = damage.isFar?10:8;
-        }else {
-            if(damage.isStab){
-                resName = Logic.getHalfChance()?'hitlight5':'hitlight6';
-                scale = damage.isFar?10:8;
-            }else{
-                resName = Logic.getHalfChance()?'hitlight7':'hitlight8';
-                scale = damage.isFar?10:8;
+        if (damage.isFist) {
+            resName = Logic.getHalfChance() ? 'hitlight1' : 'hitlight2';
+        } else if (damage.isRemote) {
+            resName = Logic.getHalfChance() ? 'hitlight9' : 'hitlight10';
+        } else if (damage.isBlunt) {
+            resName = Logic.getHalfChance() ? 'hitlight3' : 'hitlight4';
+            scale = damage.isFar ? 10 : 8;
+        } else if (damage.isMelee) {
+            if (damage.isStab) {
+                resName = Logic.getHalfChance() ? 'hitlight5' : 'hitlight6';
+                scale = damage.isFar ? 10 : 8;
+            } else {
+                resName = Logic.getHalfChance() ? 'hitlight7' : 'hitlight8';
+                scale = damage.isFar ? 10 : 8;
             }
         }
         this.hitLightSprite.node.stopAllActions();
         this.hitLightSprite.spriteFrame = Logic.spriteFrameRes(resName);
-        this.hitLightSprite.node.opacity = 200;
+        this.hitLightSprite.node.opacity = 220;
         this.hitLightSprite.node.color = cc.Color.WHITE;
-        this.hitLightSprite.node.scale = damage.isCriticalStrike?scale:scale+3;
-        cc.tween(this.hitLightSprite.node).to(0.3,{opacity:0,color:cc.Color.BLACK}).start();
+        this.hitLightSprite.node.scale = damage.isCriticalStrike ? scale : scale + 3;
+        cc.tween(this.hitLightSprite.node).to(0.5, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0}).start();
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {
@@ -382,7 +382,7 @@ export default class NonPlayer extends Actor {
         let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
         let specialTypeCanMelee = this.data.specialType.length <= 0
             || this.data.specialType == SpecialManager.AFTER_ASH;
-      
+
         let attackpreparetween = cc.tween().call(() => {
             this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[0] : arr[0]);
             if (isMelee && !isSpecial || (isSpecial && isMelee && specialTypeCanMelee)) {
@@ -404,12 +404,12 @@ export default class NonPlayer extends Actor {
             this.dangerBox.hide(isMiss);
             if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
                 if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-                    this.move(cc.v3(this.isFaceRight?this.dangerBox.hv.x:-this.dangerBox.hv.x,this.dangerBox.hv.y), isSpecial ? 2000 : 1000);
+                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), isSpecial ? 2000 : 1000);
                 }
             }
             if (isSpecial) {
                 if (this.data.specialType == SpecialManager.AFTER_DOWN) {
-                    this.move(cc.v3(this.isFaceRight?this.dangerBox.hv.x:-this.dangerBox.hv.x,this.dangerBox.hv.y), 1000);
+                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), 1000);
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
@@ -750,8 +750,8 @@ export default class NonPlayer extends Actor {
         if (this.isPassive) {
             return;
         }
-        let target = ActorUtils.getNearestEnemyActor(this,this.data.isEnemy > 0, this.dungeon);
-        let targetDis = ActorUtils.getNearestTargetDistance(this,target);
+        let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
+        let targetDis = ActorUtils.getNearestTargetDistance(this, target);
         //特殊攻击
         if (this.data.specialAttack > 0) {
             this.specialStep.next(() => {
@@ -830,8 +830,8 @@ export default class NonPlayer extends Actor {
         this.changeZIndex();
 
         this.updateAttack();
-        let target = ActorUtils.getNearestEnemyActor(this,this.data.isEnemy > 0, this.dungeon);
-        let targetDis = ActorUtils.getNearestTargetDistance(this,target);
+        let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
+        let targetDis = ActorUtils.getNearestTargetDistance(this, target);
         //靠近取消伪装
         if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
             this.sc.isDisguising = false;
@@ -857,7 +857,7 @@ export default class NonPlayer extends Actor {
             }, this.data.dash);
         }
         if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
-            targetDis = ActorUtils.getNearestTargetDistance(this,this.dungeon.player);
+            targetDis = ActorUtils.getNearestTargetDistance(this, this.dungeon.player);
         }
         let isTracking = targetDis < 500 && targetDis > 64 && this.data.melee > 0;
         if (targetDis < 500 && targetDis > 300 && this.data.remote > 0) {
@@ -939,7 +939,7 @@ export default class NonPlayer extends Actor {
         }
         let pos = Dungeon.getPosInMap(newPos);
         if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
-            pos = ActorUtils.getPlayerPosition(this,this.dungeon);
+            pos = ActorUtils.getPlayerPosition(this, this.dungeon);
             target = this.dungeon.player;
         }
         pos = pos.sub(this.node.position);
@@ -1039,7 +1039,7 @@ export default class NonPlayer extends Actor {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
         let body = this.bodySprite.node;
         cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
-            let newPos = ActorUtils.getNearestEnemyPosition(this,true, this.dungeon, true);
+            let newPos = ActorUtils.getNearestEnemyPosition(this, true, this.dungeon, true);
             newPos = Dungeon.getIndexInMap(newPos);
             if (newPos.x > this.pos.x) {
                 newPos = newPos.addSelf(cc.v3(1, 0));
