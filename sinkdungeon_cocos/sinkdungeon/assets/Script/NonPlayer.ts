@@ -159,6 +159,7 @@ export default class NonPlayer extends Actor {
         }
     }
     private hitLightS(damage: DamageData) {
+        let show = true;
         let resName = 'hitlight1';
         let scale = 8;
         if (damage.isFist) {
@@ -176,13 +177,18 @@ export default class NonPlayer extends Actor {
                 resName = Logic.getHalfChance() ? 'hitlight7' : 'hitlight8';
                 scale = damage.isFar ? 10 : 8;
             }
+        }else{
+            show = false;
         }
-        this.hitLightSprite.node.stopAllActions();
-        this.hitLightSprite.spriteFrame = Logic.spriteFrameRes(resName);
-        this.hitLightSprite.node.opacity = 220;
-        this.hitLightSprite.node.color = cc.Color.WHITE;
-        this.hitLightSprite.node.scale = damage.isCriticalStrike ? scale : scale + 3;
-        cc.tween(this.hitLightSprite.node).to(0.5, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0}).start();
+        if(show){
+            this.hitLightSprite.node.stopAllActions();
+            this.hitLightSprite.spriteFrame = Logic.spriteFrameRes(resName);
+            this.hitLightSprite.node.opacity = 220;
+            this.hitLightSprite.node.color = cc.Color.WHITE;
+            this.hitLightSprite.node.scale = damage.isCriticalStrike ? scale : scale + 3;
+            cc.tween(this.hitLightSprite.node).to(0.5, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0}).start();
+        }
+        
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {
@@ -770,7 +776,7 @@ export default class NonPlayer extends Actor {
         }
         let canMelee = this.data.melee > 0;
         let canRemote = this.data.remote > 0;
-        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.isInCooling) {
+        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.isInCooling&&target&&!target.invisible) {
             this.meleeStep.next(() => {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
@@ -786,7 +792,7 @@ export default class NonPlayer extends Actor {
                 }, target, this.specialStep.IsExcuting, true, isMiss)
 
             }, this.data.melee);
-        } else if (canRemote && targetDis < 600 * this.node.scaleY) {
+        } else if (canRemote && targetDis < 600 * this.node.scaleY&&target&&!target.invisible) {
             this.remoteStep.next(() => {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
