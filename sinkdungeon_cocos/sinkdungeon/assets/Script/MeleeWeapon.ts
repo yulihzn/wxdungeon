@@ -93,6 +93,7 @@ export default class MeleeWeapon extends cc.Component {
     private hasTargetMap: { [key: string]: number } = {};
     private isSecond = false;//是否是副手
     private currentAngle = 0;
+    private fistCombo = 0;
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
     }
@@ -189,10 +190,11 @@ export default class MeleeWeapon extends cc.Component {
             this.isComboing = true;
         }
     }
-    attack(data: PlayerData, isMiss: boolean): boolean {
+    attack(data: PlayerData, isMiss: boolean,fistCombo:number): boolean {
         if (this.isAttacking) {
             return false;
         }
+        this.fistCombo = fistCombo;
         let audiodelay = 0;
         //匕首
         if (this.isStab && !this.isFar) {
@@ -487,6 +489,14 @@ export default class MeleeWeapon extends cc.Component {
         if (this.player) {
             damage = this.player.data.getFinalAttackPoint();
             common = this.player.data.FinalCommon;
+        }
+        damage.isStab = this.isStab;
+        damage.isFist = this.isFist;
+        damage.isFar = this.isFist;
+        damage.isBlunt = this.isBlunt;
+        damage.comboType = this.comboType;
+        if(this.isFist){
+            damage.comboType = this.fistCombo;
         }
         let damageSuccess = false;
         let attackSuccess = false;

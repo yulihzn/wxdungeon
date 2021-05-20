@@ -163,7 +163,7 @@ export default class GameHud extends cc.Component {
         this.damageCorner.stopAllActions();
         this.damageCorner.opacity = 255;
         this.damageCorner.scale = 1;
-        cc.tween(this.damageCorner).parallel(cc.tween(this.damageCorner).to(0.5,{scale:1.05}).to(1,{opacity:0})).start();
+        cc.tween(this.damageCorner).parallel(cc.tween(this.damageCorner).to(0.5,{scale:1.05}),cc.tween(this.damageCorner).to(1,{opacity:0})).start();
     }
     private healthBarUpdate(currentHealth, maxHealth): void {
         if (this.healthBar) {

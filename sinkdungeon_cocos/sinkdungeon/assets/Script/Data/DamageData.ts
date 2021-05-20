@@ -27,6 +27,11 @@ export default class DamageData {
     isCriticalStrike = false;
     isBackAttack = false;
     isRemote = false;
+    isStab = false;//刺
+    isFar = false;//近程
+    isFist = false;//空手 
+    isBlunt = false;//钝器
+    comboType = 0;//连击级别
 
     constructor(realDamage?:number){
         this.realDamage = realDamage?realDamage:0;
@@ -46,6 +51,11 @@ export default class DamageData {
         this.isCriticalStrike = data.isCriticalStrike?true:false;
         this.isBackAttack = data.isBackAttack?true:false;
         this.isRemote = data.isRemote?true:false;
+        this.isStab = data.isStab?true:false;
+        this.isFar = data.isFar?true:false;
+        this.isFist = data.isFist?true:false;
+        this.isBlunt = data.isBlunt?true:false;
+        this.comboType = data.comboType?data.comboType:0;
     }
    
     public clone(): DamageData {
@@ -63,12 +73,18 @@ export default class DamageData {
         e.isCriticalStrike = this.isCriticalStrike;
         e.isBackAttack = this.isBackAttack;
         e.isRemote = this.isRemote;
+        e.isBlunt = this.isBlunt;
+        e.isFar = this.isFar;
+        e.isFist = this.isFist;
+        e.isStab = this.isStab;
+        e.comboType = this.comboType;
         return e;
     }
     public getTotalDamage():number{
         let d = this.physicalDamage+this.magicDamage+this.realDamage;
-        if(d == NaN){
+        if(isNaN(d)){
             console.log(d);
+            d = 0;
         }
         return d;
     }

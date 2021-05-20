@@ -66,7 +66,7 @@ export default class Status extends cc.Component {
         if (this.actor) {
             if (dd.getTotalDamage() != 0) { this.actor.takeDamage(dd, this.data.From); }
             if(dizzDuration>0)this.actor.takeDizz(dizzDuration);
-            if (dream != 0) this.actor.updateDream(dream);
+            if (dream&&dream != 0) this.actor.updateDream(dream);
             if(this.data.invisibleDuratonDirect>0)this.actor.hideSelf(this.data.invisibleDuratonDirect);
         }
     }

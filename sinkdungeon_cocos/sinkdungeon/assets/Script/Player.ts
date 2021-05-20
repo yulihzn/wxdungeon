@@ -377,16 +377,16 @@ export default class Player extends Actor {
         }
         this.updateCombo();
         if (this.fistCombo == MeleeWeapon.COMBO1) {
-            this.weaponRight.meleeWeapon.attack(this.data, isMiss);
+            this.weaponRight.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
             this.weaponLeft.meleeWeapon.attackIdle(false);
         } else if (this.fistCombo == MeleeWeapon.COMBO2) {
             this.weaponRight.meleeWeapon.attackIdle(true);
-            this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
+            this.weaponLeft.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
         } else if (this.fistCombo == MeleeWeapon.COMBO3) {
-            this.weaponRight.meleeWeapon.attack(this.data, isMiss);
+            this.weaponRight.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
             this.weaponRight.meleeWeapon.DashTime(400);
             this.scheduleOnce(() => {
-                this.weaponLeft.meleeWeapon.attack(this.data, isMiss);
+                this.weaponLeft.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
             }, 0.15);
         }
         this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
@@ -810,7 +810,7 @@ export default class Player extends Actor {
     }
     isDreamLongTimeDelay(dt: number): boolean {
         this.dreamLongTimeDelay += dt;
-        if (this.dreamLongTimeDelay > 30) {
+        if (this.dreamLongTimeDelay > 20) {
             this.dreamLongTimeDelay = 0;
             return true;
         }

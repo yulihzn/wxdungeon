@@ -38,6 +38,7 @@ import NonPlayerData from './Data/NonPlayerData';
 import { ColliderTag } from './Actor/ColliderTag';
 import StatusData from './Data/StatusData';
 import ActorUtils from './Utils/ActorUtils';
+import MeleeWeapon from './MeleeWeapon';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -100,6 +101,7 @@ export default class NonPlayer extends Actor {
 
     particleBlood: cc.ParticleSystem;
     effectNode: cc.Node;
+    hitLightSprite:cc.Sprite;
 
     moveStep = new NextStep();
     remoteStep = new NextStep();
@@ -132,6 +134,8 @@ export default class NonPlayer extends Actor {
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.effectNode = this.node.getChildByName('Effect');
+        this.hitLightSprite = this.node.getChildByName('Effect').getChildByName('hitlight').getComponent(cc.Sprite);
+        this.hitLightSprite.node.opacity = 0;
         this.particleBlood = this.node.getChildByName('Effect').getChildByName('blood').getComponent(cc.ParticleSystem);
         this.particleBlood.stopSystem();
         this.attrNode = this.node.getChildByName('attr');
@@ -153,6 +157,32 @@ export default class NonPlayer extends Actor {
         if (this.data.lifeTime > 0) {
             this.scheduleOnce(() => { this.data.currentHealth = 0; }, this.data.lifeTime)
         }
+    }
+    private hitLightS(damage:DamageData){
+        let resName = 'hitlight1';
+        let scale = 8;
+        if(damage.isFist){
+            resName = Logic.getHalfChance()?'hitlight1':'hitlight2';
+        }else if(damage.isRemote){
+            resName = Logic.getHalfChance()?'hitlight9':'hitlight10';
+        }else if(damage.isBlunt){
+            resName = Logic.getHalfChance()?'hitlight3':'hitlight4';
+            scale = damage.isFar?10:8;
+        }else {
+            if(damage.isStab){
+                resName = Logic.getHalfChance()?'hitlight5':'hitlight6';
+                scale = damage.isFar?10:8;
+            }else{
+                resName = Logic.getHalfChance()?'hitlight7':'hitlight8';
+                scale = damage.isFar?10:8;
+            }
+        }
+        this.hitLightSprite.node.stopAllActions();
+        this.hitLightSprite.spriteFrame = Logic.spriteFrameRes(resName);
+        this.hitLightSprite.node.opacity = 200;
+        this.hitLightSprite.node.color = cc.Color.WHITE;
+        this.hitLightSprite.node.scale = damage.isCriticalStrike?scale:scale+3;
+        cc.tween(this.hitLightSprite.node).to(0.3,{opacity:0,color:cc.Color.BLACK}).start();
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {
@@ -548,7 +578,8 @@ export default class NonPlayer extends Actor {
         if (isHurting) {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.hitLight(true);
-            this.dangerBox.hide(false);
+            this.hitLightS(damageData);
+            this.dangerBox.finish();
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }

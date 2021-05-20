@@ -64,22 +64,22 @@ export default class StatusData {
         this.from.valueCopy(data.from);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
-        this.statusType = data.statusType;
-        this.duration = data.duration;
+        this.statusType = data.statusType?data.statusType:0;
+        this.duration = data.duration?data.duration:0;
         this.spriteFrameName = data.spriteFrameName;
         this.desc = data.desc;
-        this.physicalDamageDirect = data.physicalDamageDirect;
-        this.physicalDamageOvertime = data.physicalDamageOvertime;
-        this.missRate = data.missRate;
-        this.realDamageDirect = data.realDamageDirect;
-        this.realDamageOvertime = data.realDamageOvertime;
-        this.magicDamageDirect = data.magicDamageDirect;
-        this.magicDamageOvertime = data.magicDamageOvertime;
-        this.dizzDurationDirect = data.dizzDurationDirect;
-        this.dizzDurationOvertime = data.dizzDurationOvertime;
-        this.invisibleDuratonDirect = data.invisibleDuratonDirect;
-        this.dreamDirect = data.dreamDirect;
-        this.dreamOvertime = data.dreamOvertime;
+        this.physicalDamageDirect = data.physicalDamageDirect?data.physicalDamageDirect:0;
+        this.physicalDamageOvertime = data.physicalDamageOvertime?data.physicalDamageOvertime:0;
+        this.missRate = data.missRate?data.missRate:0;
+        this.realDamageDirect = data.realDamageDirect?data.realDamageDirect:0;
+        this.realDamageOvertime = data.realDamageOvertime?data.realDamageOvertime:0;
+        this.magicDamageDirect = data.magicDamageDirect?data.magicDamageDirect:0;
+        this.magicDamageOvertime = data.magicDamageOvertime?data.magicDamageOvertime:0;
+        this.dizzDurationDirect = data.dizzDurationDirect?data.dizzDurationDirect:0;
+        this.dizzDurationOvertime = data.dizzDurationOvertime?data.dizzDurationOvertime:0;
+        this.invisibleDuratonDirect = data.invisibleDuratonDirect?data.invisibleDuratonDirect:0;
+        this.dreamDirect = data.dreamDirect?data.dreamDirect:0;
+        this.dreamOvertime = data.dreamOvertime?data.dreamOvertime:0;
     }
     public clone(): StatusData {
         let e = new StatusData();
