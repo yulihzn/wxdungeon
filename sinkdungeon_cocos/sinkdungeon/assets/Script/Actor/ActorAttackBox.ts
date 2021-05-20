@@ -26,7 +26,7 @@ export default class ActorAttackBox extends cc.Component {
     attackType = 0;
     collider: cc.BoxCollider
     isAttacking = false;
-    holderActor: Actor;
+    nonPlayer: NonPlayer;
     dungeon: Dungeon;
     hv: cc.Vec3 = cc.v3(1, 0);
     isSpecial = false;
@@ -38,9 +38,9 @@ export default class ActorAttackBox extends cc.Component {
         this.collider = this.getComponent(cc.BoxCollider);
     }
 
-    init(holderActor: Actor, dungeon: Dungeon,isEnemy:boolean) {
+    init(nonPlayer: NonPlayer, dungeon: Dungeon,isEnemy:boolean) {
         this.isEnemy = isEnemy;
-        this.holderActor = holderActor;
+        this.nonPlayer = nonPlayer;
         this.dungeon = dungeon;
     }
     start() {
@@ -48,7 +48,7 @@ export default class ActorAttackBox extends cc.Component {
     }
     //展示
     show(attackType: number,isSpecial:boolean,isLarge:boolean,hv:cc.Vec3) {
-        if (!this.holderActor) {
+        if (!this.nonPlayer) {
             return;
         }
         this.isLarge = isLarge;
@@ -105,10 +105,10 @@ export default class ActorAttackBox extends cc.Component {
         this.isSpecial = false;
     }
     onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
-        if (this.isAttacking && this.holderActor) {
+        if (this.isAttacking && this.nonPlayer) {
             let a = other.getComponent(Actor);
-            let m = this.holderActor.getComponent(NonPlayer);
-            let target = ActorUtils.getCollisionTarget(other,!this.isEnemy);
+            let m = this.nonPlayer;
+            let target = ActorUtils.getEnemyCollisionTarget(other,!this.isEnemy);
             if(target){
                 this.isAttacking = false;
                 let from = FromData.getClone(m.data.nameCn, m.data.resName+'anim000');
@@ -120,7 +120,7 @@ export default class ActorAttackBox extends cc.Component {
                 if(this.isSpecial){
                     dd.physicalDamage = dd.physicalDamage*2;
                 }
-                if (a.takeDamage(dd, from, this.holderActor)) {
+                if (a.takeDamage(dd, from, this.nonPlayer)) {
                     m.addPlayerStatus(a, from);
                 }
                 this.isSpecial = false;
@@ -150,7 +150,7 @@ export default class ActorAttackBox extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        this.node.scaleX = this.holderActor.node.scaleX > 0 ? 1 : -1;
+        this.node.scaleX = this.nonPlayer.node.scaleX > 0 ? 1 : -1;
         angle += offsetAngle;
         this.node.angle = this.node.scaleX == -1 ? angle-180 : angle;
 

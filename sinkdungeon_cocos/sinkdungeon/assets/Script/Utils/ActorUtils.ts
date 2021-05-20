@@ -1,3 +1,4 @@
+import { ColliderTag } from "../Actor/ColliderTag";
 import Actor from "../Base/Actor";
 import Boss from "../Boss/Boss";
 import Dungeon from "../Dungeon";
@@ -9,8 +10,17 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class ActorUtils {
-    static getCollisionTarget(other: cc.Collider, isPlayer?: boolean) {
-        return ActorUtils.getEnemyActorByNode(other.node,isPlayer);
+    static getEnemyCollisionTarget(other: cc.Collider, isPlayer?: boolean):Actor {
+        if (isPlayer) {
+            if (other.tag == ColliderTag.NONPLAYER||other.tag == ColliderTag.BOSS) {
+                return other.node.getComponent(Actor);
+            }
+        } else {
+            if (other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.GOODNONPLAYER) {
+                return other.node.getComponent(Actor);
+            }
+        }
+        return null;
     }
     static getEnemyActorByNode(other: cc.Node, isPlayer?: boolean) {
         if (isPlayer) {

@@ -61,7 +61,7 @@ export default class MagicLightening extends cc.Component {
             }, 2);
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && this.isTrigger){
             this.isTrigger = false;
             this.fall(true,true);

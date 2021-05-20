@@ -58,13 +58,13 @@ export default class FallStone extends Building {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && !this.isAuto && !this.isFalling){
             this.fall();
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target) {
             if (this.isFall&&this.isValid) {
                 this.isFall = false;

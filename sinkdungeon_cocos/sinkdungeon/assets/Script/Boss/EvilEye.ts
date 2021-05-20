@@ -279,7 +279,7 @@ export default class EvilEye extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && (this.dashSkill.IsExcuting)) {
             let d = new DamageData();
             d.physicalDamage = 5;

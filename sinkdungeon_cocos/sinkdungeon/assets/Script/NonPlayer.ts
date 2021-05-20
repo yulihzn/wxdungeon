@@ -927,7 +927,7 @@ export default class NonPlayer extends Actor {
         return a + (b - a) * r;
     };
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other, this.data.isEnemy < 1);
+        let target = ActorUtils.getEnemyCollisionTarget(other, this.data.isEnemy < 1);
         if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
             this.sc.isDashing = false;
             this.setLinearVelocity(cc.Vec2.ZERO);

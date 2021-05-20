@@ -263,7 +263,7 @@ export default class WarMachine extends Boss {
         this.changeZIndex();
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target&&!this.sc.isDied){
             let d = new DamageData();
             d.physicalDamage = 2;

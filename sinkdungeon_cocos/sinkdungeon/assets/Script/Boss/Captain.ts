@@ -137,7 +137,7 @@ export default class Captain extends Boss {
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && self.tag == ColliderTag.BOSS_ATTACK) {
             if (this.isFall&&!this.sc.isDied) {
                 this.isFall = false;

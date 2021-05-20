@@ -60,7 +60,7 @@ export default class IceThron extends cc.Component {
                 this.hasTargetMap[other.node.uuid]++;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
-                let target = ActorUtils.getCollisionTarget(other,true);
+                let target = ActorUtils.getEnemyCollisionTarget(other,true);
                 if (target) {
                     this.attacking(other.node);
                 }

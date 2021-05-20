@@ -53,13 +53,13 @@ export default class DryadGrass extends Actor {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && !this.isAuto && !this.isUping){
             this.fall();
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target) {
             if (this.isUp&&this.isValid) {
                 this.isUp = false;

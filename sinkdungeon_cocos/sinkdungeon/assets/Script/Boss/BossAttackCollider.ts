@@ -41,7 +41,7 @@ export default class BossAttackCollider extends cc.Component {
         this.scheduleOnce(()=>{this.isShow = false;},coolingTime);
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && this.isShow && this.node.active){
             this.isShow = false;
             let dd = new DamageData();

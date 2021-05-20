@@ -30,7 +30,7 @@ export default class CaptainSword extends cc.Component {
         this.isShow = false;
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && this.isShow && this.node.active){
             this.isShow = false;
             let dd = new DamageData();

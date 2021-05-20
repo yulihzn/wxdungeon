@@ -56,7 +56,7 @@ export default class FireGhost extends cc.Component {
 
     onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
         if (self.radius > 0 && this.isAttacking && this.isRotating) {
-            let target = ActorUtils.getCollisionTarget(other, true);
+            let target = ActorUtils.getEnemyCollisionTarget(other, true);
             if (target) {
                 this.isAttacking = false;
                 this.attacking(other.node);

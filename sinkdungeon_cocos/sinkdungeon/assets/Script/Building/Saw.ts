@@ -48,7 +48,7 @@ export default class Saw extends Building {
     }
     
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let target = ActorUtils.getCollisionTarget(other);
+        let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target) {
             let from = FromData.getClone(this.actorName(),'saw002');
             target.takeDamage(new DamageData(1),from);
