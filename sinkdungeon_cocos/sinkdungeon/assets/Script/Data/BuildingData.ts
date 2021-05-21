@@ -15,7 +15,7 @@ import ItemData from "./ItemData";
 export default class BuildingData {
     defaultPos:cc.Vec3;//默认下标
     position:cc.Vec3;//当前位置
-    isOpen = false;//宝箱是否打开
+    isOpen = false;//宝箱是否打开或者建筑物是否触发
     quality = 1;//宝箱品质
     equipdata:EquipmentData;//携带装备数据
     itemdata:ItemData;//携带物品数据
@@ -24,6 +24,9 @@ export default class BuildingData {
     isSaled = false;//是否卖出
     maxHealth = 1;//最大生命,默认1
     currentHealth = 1;//当前生命,默认1
+    generatorList:string[] = [];
+    generatorCount = 0;
+    generatorInterval = 0;
     valueCopy(data:BuildingData){
         this.defaultPos = data.defaultPos?cc.v3(data.defaultPos.x,data.defaultPos.y):cc.v3(0,0);
         this.position = data.position?cc.v3(data.position.x,data.position.y):cc.v3(0,0);
@@ -42,6 +45,12 @@ export default class BuildingData {
         this.isOpen = data.isOpen;
         this.maxHealth = data.maxHealth?data.maxHealth:0;
         this.currentHealth = data.currentHealth?data.currentHealth:0;
+        this.generatorList = [];
+        if(data.generatorList){
+            this.generatorList = data.generatorList;
+        }
+        this.generatorCount = data.generatorCount?data.generatorCount:0;
+        this.generatorInterval = data.generatorInterval?data.generatorInterval:0;
     }
     clone():BuildingData{
         let data = new BuildingData();
@@ -62,6 +71,9 @@ export default class BuildingData {
         data.isSaled = this.isSaled;
         data.maxHealth = this.maxHealth;
         data.currentHealth = this.currentHealth;
+        data.generatorInterval = this.generatorInterval;
+        data.generatorCount = this.generatorCount;
+        data.generatorList = this.generatorList;
         return data;
     }
 }

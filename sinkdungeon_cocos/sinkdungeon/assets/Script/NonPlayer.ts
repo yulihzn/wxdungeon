@@ -164,12 +164,15 @@ export default class NonPlayer extends Actor {
         let scale = 8;
         if (damage.isFist) {
             resName = Logic.getHalfChance() ? 'hitlight1' : 'hitlight2';
+            AudioPlayer.play(AudioPlayer.PUNCH);
         } else if (damage.isRemote) {
             resName = Logic.getHalfChance() ? 'hitlight9' : 'hitlight10';
         } else if (damage.isBlunt) {
             resName = Logic.getHalfChance() ? 'hitlight3' : 'hitlight4';
             scale = damage.isFar ? 10 : 8;
+            AudioPlayer.play(AudioPlayer.SWORD_HIT);
         } else if (damage.isMelee) {
+            AudioPlayer.play(AudioPlayer.SWORD_HIT);
             if (damage.isStab) {
                 resName = Logic.getHalfChance() ? 'hitlight5' : 'hitlight6';
                 scale = damage.isFar ? 10 : 8;
@@ -186,7 +189,7 @@ export default class NonPlayer extends Actor {
             this.hitLightSprite.node.opacity = 220;
             this.hitLightSprite.node.color = cc.Color.WHITE;
             this.hitLightSprite.node.scale = damage.isCriticalStrike ? scale : scale + 3;
-            cc.tween(this.hitLightSprite.node).to(0.5, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0}).start();
+            cc.tween(this.hitLightSprite.node).delay(0.2).to(0.3, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0}).start();
         }
         
     }
@@ -462,6 +465,11 @@ export default class NonPlayer extends Actor {
         }
         if (isSpecial) {
             this.showDangerTips();
+            if(this.data.specialType == SpecialManager.AFTER_VENOM){
+                AudioPlayer.play(AudioPlayer.ZOMBIE_SPITTING);
+            }else if(this.data.specialType == SpecialManager.AFTER_DOWN){
+                AudioPlayer.play(AudioPlayer.ZOMBIE_ATTACK);
+            }
             allAction = cc.tween().then(beforetween).then(specialRemote).then(aftertween);
             if (isMelee && specialTypeCanMelee) {
                 allAction = cc.tween().then(beforetween).then(specialMelee).then(aftertween);
@@ -646,6 +654,7 @@ export default class NonPlayer extends Actor {
     }
 
     private showBloodEffect() {
+        AudioPlayer.play(AudioPlayer.BLEEDING);
         this.particleBlood.resetSystem();
         this.scheduleOnce(() => { this.particleBlood.stopSystem(); }, 0.5);
     }
@@ -998,7 +1007,8 @@ export default class NonPlayer extends Actor {
     /**出场动作 */
     public enterShow() {
         this.sprite.stopAllActions();
-        cc.tween(this.sprite).to(1, { opacity: 255 }).call(() => { this.sc.isShow = true; }).start();
+        this.bodySprite.node.color = cc.Color.BLACK;
+        cc.tween(this.bodySprite.node).to(2, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) }).call(() => { this.sc.isShow = true; }).start();
     }
     /**伪装 */
     public enterDisguise() {

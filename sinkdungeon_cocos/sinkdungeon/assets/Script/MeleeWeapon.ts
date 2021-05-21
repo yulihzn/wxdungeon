@@ -194,26 +194,31 @@ export default class MeleeWeapon extends cc.Component {
         if (this.isAttacking) {
             return false;
         }
+        let audioName = AudioPlayer.MELEE;
         this.fistCombo = fistCombo;
         let audiodelay = 0;
         //匕首
         if (this.isStab && !this.isFar) {
             audiodelay = 0;
+            audioName = AudioPlayer.FIST;
         }
         //长剑
         if (!this.isStab && !this.isFar) {
             audiodelay = 0.1;
+            audioName = AudioPlayer.SWORD_ATTACK;
         }
         //长枪
         if (this.isStab && this.isFar) {
             audiodelay = 0.1;
+            audioName = AudioPlayer.MELEE;
         }
         //大剑
         if (!this.isStab && this.isFar) {
             audiodelay = 0.3;
+            audioName = AudioPlayer.MELEE;
         }
         this.scheduleOnce(() => {
-            AudioPlayer.play(AudioPlayer.MELEE);
+            AudioPlayer.play(audioName);
         }, audiodelay);
         this.hasTargetMap = {};
         this.updateCombo();

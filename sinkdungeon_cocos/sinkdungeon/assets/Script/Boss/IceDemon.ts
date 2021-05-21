@@ -11,6 +11,7 @@ import Achievements from "../Achievement";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
 import ActorUtils from "../Utils/ActorUtils";
+import MagicIce from "../Talent/MagicIce";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,7 +43,8 @@ export default class IceDemon extends Boss {
     @property(cc.Prefab)
     selfThron: cc.Prefab = null;
     thronPool:cc.NodePool;
-
+    @property(MagicIce)
+    magicice: MagicIce = null;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -102,6 +104,9 @@ export default class IceDemon extends Boss {
         let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        }
+        if(isHalf&&!this.magicice.isShow&&!this.defenceSkill.isInCooling){
+            this.magicice.showIce();
         }
         if (playerDis < 200 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting && !this.dashSkill.IsExcuting) {
             this.attack();
@@ -194,8 +199,9 @@ export default class IceDemon extends Boss {
     thronSelf() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
         const angles = [0, 45, 90, 135, 180, 225, 270, 315];
-        const posRight = [cc.v3(0,20),cc.v3(-10,10),cc.v3(-20,0),cc.v3(-10,-10),cc.v3(0,-20),cc.v3(10,-10),cc.v3(20,0),cc.v3(10,60)];
-        const posLeft = [cc.v3(0,-20),cc.v3(-10,-10),cc.v3(-20,0),cc.v3(-10,10),cc.v3(0,20),cc.v3(10,10),cc.v3(20,0),cc.v3(10,-10)];
+        const disdance = 40;
+        const posRight = [cc.v3(0,disdance),cc.v3(-disdance/2,disdance/2),cc.v3(-disdance,0),cc.v3(-disdance/2,-disdance/2),cc.v3(0,-disdance),cc.v3(disdance/2,-disdance/2),cc.v3(disdance,0),cc.v3(disdance/2,disdance/2)];
+        const posLeft = [cc.v3(0,-disdance),cc.v3(-disdance/2,-disdance/2),cc.v3(-disdance,0),cc.v3(-disdance/2,disdance/2),cc.v3(0,disdance),cc.v3(disdance/2,disdance/2),cc.v3(disdance,0),cc.v3(disdance/2,-disdance/2)];
         let d = new DamageData();
         d.magicDamage = 1;
         for (let i = 0; i < angles.length; i++) {
@@ -267,6 +273,9 @@ export default class IceDemon extends Boss {
                 this.data.Common.magicDefence = 0;
             }, 3);
             if(isHalf){
+                if(this.magicice.isShow){
+                    this.magicice.breakIce();
+                }
                 this.thronSelf();
             }
         }, 6, true);

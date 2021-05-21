@@ -29,6 +29,9 @@ import LightManager from "./LightManager";
 import SavePoint from "../Building/SavePoint";
 import MartShelves from "../Building/MartShelves";
 import NonPlayerManager from "./NonPlayerManager";
+import MonsterManager from "./MonsterManager";
+import MonsterGenerator from "../Building/MonsterGenerator";
+import MgWentLine from "../Building/MgWentLine";
 
 
 // Learn TypeScript:
@@ -100,12 +103,14 @@ export default class BuildingManager extends BaseManager {
     static readonly GRASS02 = 'Grass02';
     static readonly GRASS03 = 'Grass03';
     static readonly GRASS04 = 'Grass04';
+    static readonly WENTLINE = 'WentLine';
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
     portals: Portal[] = new Array();
     doors: Door[] = new Array();
     airExits: AirExit[] = new Array();
+    monsterGeneratorList:MonsterGenerator[] = new Array();
     savePointS: SavePoint;
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
@@ -443,6 +448,11 @@ export default class BuildingManager extends BaseManager {
         } else if (this.isFirstEqual(mapDataStr, 'L')) {
             //生成灯
             this.addLamp(mapDataStr, indexPos)
+        } else if (mapDataStr == 'I0') {
+            //生成通风管
+            let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
+            p.init(dungeon,5,3,[MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
+            this.monsterGeneratorList.push(p);
         }
     }
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {

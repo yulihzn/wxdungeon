@@ -4802,6 +4802,39 @@
     "bossicedemonthron": {
       "__uuid__": "3555a54d-635c-4043-a0ec-d576a0f9a1e6"
     },
+    "wentlineopen": {
+      "__uuid__": "1bb4eb18-9d52-431f-a80d-fe525346a021"
+    },
+    "wentlineshow": {
+      "__uuid__": "16caa974-593f-45fb-82db-76da64d2d7ce"
+    },
+    "zombieattack": {
+      "__uuid__": "9c1bf38b-a792-4105-9e94-6f845d428208"
+    },
+    "zombiespitting": {
+      "__uuid__": "9c9b531a-f27b-4046-af42-46c5bf1ee1d1"
+    },
+    "swordshow": {
+      "__uuid__": "a033afbe-b5e4-4405-9293-633943a32923"
+    },
+    "electricattack": {
+      "__uuid__": "8897a08e-833e-418f-825a-62989f5ce39e"
+    },
+    "punch": {
+      "__uuid__": "4b9b2ed2-f708-4f8e-8136-1254a1a76208"
+    },
+    "fist": {
+      "__uuid__": "413e1640-797e-49c1-9ee6-bb65cd196f19"
+    },
+    "swordattack": {
+      "__uuid__": "728531eb-eb45-480a-9407-ee2ea4e21720"
+    },
+    "swordhit": {
+      "__uuid__": "5c620cb0-3846-4586-9e0b-f8cfb2ec9e44"
+    },
+    "bleeding": {
+      "__uuid__": "a4bbca9e-9662-4617-94a8-09407b6d73dd"
+    },
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
     },

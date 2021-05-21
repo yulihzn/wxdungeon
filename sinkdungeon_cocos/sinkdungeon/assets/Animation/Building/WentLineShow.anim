@@ -1,0 +1,69 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "WentLineShow",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.35,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite/door": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "sprite/bg": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "db88ca5c-2c97-473e-a6a8-8bafd385e7bc"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "dc1622be-3e2e-4d72-ac42-d3dfcfae17f6"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "3af24f3b-2696-4375-a951-3ec9be98902a"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "4e73cf31-e070-4e81-b314-bb9e941278b6"
+                }
+              },
+              {
+                "frame": 1.3333333333333333,
+                "value": {
+                  "__uuid__": "db88ca5c-2c97-473e-a6a8-8bafd385e7bc"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 1.3333333333333333,
+      "func": "ShowFinish",
+      "params": []
+    }
+  ]
+}

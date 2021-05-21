@@ -351,6 +351,10 @@
             <key type="filename">building/wallroom01anim002.png</key>
             <key type="filename">building/wallroom02anim002.png</key>
             <key type="filename">building/wallship01anim002.png</key>
+            <key type="filename">building/wentlinedoor003.png</key>
+            <key type="filename">building/wentlinedoor004.png</key>
+            <key type="filename">building/wentlinedoor005.png</key>
+            <key type="filename">building/wentlinedoor006.png</key>
             <key type="filename">bullet/bullet000anim000.png</key>
             <key type="filename">bullet/bullet001anim000.png</key>
             <key type="filename">bullet/bullet001anim001.png</key>
@@ -1538,6 +1542,23 @@
                 <rect>6,4,12,8</rect>
                 <key>scale9Paddings</key>
                 <rect>6,4,12,8</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/wentlinedoor000.png</key>
+            <key type="filename">building/wentlinedoor001.png</key>
+            <key type="filename">building/wentlinedoor002.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>4,3,8,7</rect>
+                <key>scale9Paddings</key>
+                <rect>4,3,8,7</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

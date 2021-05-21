@@ -84,7 +84,7 @@ export default class Dungeon extends cc.Component {
      * 打开门
      */
     onLoad(): void {
-        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: AudioPlayer.PLAY_BG });
+        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: AudioPlayer.PLAY_BG,bgm:true });
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听
@@ -399,6 +399,12 @@ export default class Dungeon extends cc.Component {
         //检查踏板是否触发过
         for (let footboard of this.buildingManager.footboards) {
             if (!footboard.isOpen && !footboard.hasActive) {
+                this.isClear = false;
+            }
+        }
+        //检查是否怪物生成建筑生成完毕
+        for(let monsterGenerator of this.buildingManager.monsterGeneratorList){
+            if(!monsterGenerator.addFinish){
                 this.isClear = false;
             }
         }

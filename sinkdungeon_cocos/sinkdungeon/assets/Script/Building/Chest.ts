@@ -100,15 +100,10 @@ export default class Chest extends Building {
                 }
             }).start();
         let saveChest = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
-        let newlist = new Array();
-        let needNew = true;
         if (saveChest) {
             saveChest.isOpen = this.data.isOpen;
             saveChest.quality = this.data.quality;
-            needNew = false;
-        }
-        if (needNew) {
-            newlist.push(this.data)
+        }else{
             Logic.mapManager.setCurrentBuildingData(this.data.clone());
         }
     }

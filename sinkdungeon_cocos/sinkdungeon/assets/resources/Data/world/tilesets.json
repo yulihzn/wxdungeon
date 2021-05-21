@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":310,
+ "tilecount":311,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3245,6 +3245,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"Lb"
+        }, 
+        {
+         "id":688,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/generatorwentline.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"I0"
         }],
  "tilewidth":16,
  "type":"tileset",

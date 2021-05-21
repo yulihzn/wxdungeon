@@ -359,6 +359,7 @@ export default class TalentSkills extends Talent {
     }
     private addSwordLight() {
         AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
+        AudioPlayer.play(AudioPlayer.SWORD_SHOW);
         let d = new DamageData();
         let scale = 5;
         d.physicalDamage = 2;
