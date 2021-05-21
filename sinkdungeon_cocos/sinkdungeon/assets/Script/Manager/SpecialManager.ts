@@ -9,6 +9,7 @@ import AreaOfEffect from "../Actor/AreaOfEffect";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import Logic from "../Logic";
 import { EventHelper } from "../EventHelper";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -63,6 +64,7 @@ export default class SpecialManager extends cc.Component {
                 this.addBlade(pos, isFaceRight, from);
                 break;
             case SpecialManager.AFTER_ASH:
+                AudioPlayer.play(AudioPlayer.BOOM);
                 this.addAoe(pos, new AreaOfEffectData()
                     .init(0.3, 0.3, 0.1, 3, IndexZ.getActorZIndex(this.node.parent.position)
                         , true, true, true, false, false, new DamageData(2), from, [StatusManager.DIZZ])
@@ -77,6 +79,7 @@ export default class SpecialManager extends cc.Component {
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
                 break;
             case SpecialManager.AFTER_DOWN:
+                AudioPlayer.play(AudioPlayer.BOOM);
                 this.addAoe(pos, new AreaOfEffectData()
                 .init(0.3, 1, 0.1, 1, IndexZ.getActorZIndex(this.node.parent.position)
                     , true, true, true, false, false, new DamageData(1), from, [StatusManager.FALLEN_DOWN])
