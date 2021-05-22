@@ -363,6 +363,11 @@
       "params": []
     },
     {
+      "frame": 0.5,
+      "func": "AudioTime",
+      "params": []
+    },
+    {
       "frame": 0.5833333333333334,
       "func": "RefreshTime",
       "params": []

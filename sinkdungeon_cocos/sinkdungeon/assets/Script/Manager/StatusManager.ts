@@ -110,7 +110,7 @@ export default class StatusManager extends cc.Component {
         //去除已经失效的状态
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
+            if (!s || !s.node || !s.isValid) {
                 this.statusList.splice(i, 1);
             }
         }
@@ -161,7 +161,7 @@ export default class StatusManager extends cc.Component {
         let e = new StatusData();
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if (!s || !s.node || !s.isValid || !s.isStatusRunning()) {
+            if (!s || !s.node || !s.isValid) {
                 continue;
             }
             s.updateLogic();

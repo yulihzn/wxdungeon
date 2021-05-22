@@ -204,7 +204,7 @@ export default class MeleeWeapon extends cc.Component {
         }
         //长剑
         if (!this.isStab && !this.isFar) {
-            audiodelay = 0.1;
+            audiodelay = 0;
             audioName = AudioPlayer.SWORD_ATTACK;
         }
         //长枪
@@ -357,13 +357,34 @@ export default class MeleeWeapon extends cc.Component {
     ExAttackTime() {
         this.player.remoteExAttack(this.comboType);
     }
+    //Anim
+    AudioTime(){
+        let audioName = AudioPlayer.MELEE;
+        //匕首
+        if (this.isStab && !this.isFar) {
+            audioName = AudioPlayer.FIST;
+        }
+        //长剑
+        if (!this.isStab && !this.isFar) {
+            audioName = AudioPlayer.SWORD_ATTACK;
+        }
+        //长枪
+        if (this.isStab && this.isFar) {
+            audioName = AudioPlayer.MELEE;
+        }
+        //大剑
+        if (!this.isStab && this.isFar) {
+            audioName = AudioPlayer.MELEE;
+        }
+        AudioPlayer.play(audioName);
+    }
     /**Anim 清空攻击列表*/
     RefreshTime() {
         this.hasTargetMap = {};
     }
     /**Anim 冲刺*/
     DashTime(speed?: number) {
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
+        AudioPlayer.play(AudioPlayer.DASH);
         if (!speed) {
             speed = 600;
         }
