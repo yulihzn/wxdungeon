@@ -194,7 +194,7 @@ export default class BuildingManager extends BaseManager {
                 } else if (mapDataStr == '~b') {
                     fint = 11;
                 }
-                co.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`);
+                co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`);
                 let arr = this.coastColliderList[fint].split(',');
                 pbc.size = cc.size(parseInt(arr[0]), parseInt(arr[1]));
                 pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
