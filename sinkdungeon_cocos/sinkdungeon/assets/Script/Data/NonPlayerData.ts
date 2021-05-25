@@ -60,6 +60,7 @@ export default class NonPlayerData{
     reborn = 0;//是否是房间重生的数字代表重生等级
     attackFrame = 2;//攻击帧数
     attackFrame1 = 2;//特殊攻击帧数
+    remoteAudio = '';//远程音效
     private statusTotalData: StatusData;
     private common:CommonData;
     constructor(){
@@ -126,6 +127,7 @@ export default class NonPlayerData{
         this.attackFrame = data.attackFrame?data.attackFrame:2;
         this.attackFrame1 = data.attackFrame1?data.attackFrame1:2;
         this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff';
+        this.remoteAudio = data.remoteAudio?data.remoteAudio:'';
     }
     public clone():NonPlayerData{
         let e = new NonPlayerData();
@@ -170,6 +172,7 @@ export default class NonPlayerData{
         e.lifeTime = this.lifeTime;
         e.isTest = this.isTest;
         e.reborn = this.reborn;
+        e.remoteAudio = this.remoteAudio;
         return e;
     }
     

@@ -186,7 +186,7 @@ export default class TalentSkills extends Talent {
         }, 3);
     }
     private flash() {
-        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        AudioPlayer.play(AudioPlayer.TAKEPHOTO);
         cc.tween(this.sprite.node).call(() => {
             this.player.addStatus(StatusManager.TALENT_FLASH_SPEED, new FromData());
             this.sprite.spriteFrame = Logic.spriteFrameRes('flash');
@@ -206,7 +206,7 @@ export default class TalentSkills extends Talent {
 
     }
     private aimedShoot() {
-        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        AudioPlayer.play(AudioPlayer.RELOAD);
         cc.tween(this.sprite.node).call(() => {
             this.player.addStatus(StatusManager.TALENT_AIMED, new FromData());
             this.sprite.spriteFrame = Logic.spriteFrameRes('talentshoot');
@@ -261,7 +261,7 @@ export default class TalentSkills extends Talent {
         },0.8)
     }
     private steal() {
-        AudioPlayer.play(AudioPlayer.MELEE_PARRY);
+        AudioPlayer.play(AudioPlayer.FIREBALL);
         this.sprite.node.width = 128;
         this.sprite.node.height = 128;
         this.sprite.node.opacity = 255;

@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import AudioPlayer from "../Utils/AudioPlayer";
 import Building from "./Building";
 
 const { ccclass, property } = cc._decorator;
@@ -15,6 +16,9 @@ export default class MartCashier extends Building {
     }
     // update (dt) {}
 
+    start(){
+        AudioPlayer.play(AudioPlayer.WELCOME);
+    }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
 
     }

@@ -364,6 +364,7 @@
         "bulletType":"bullet038",
         "specialBulletArcExNum":2,
         "specialAttack":15,
+        "remoteAudio":"SHOOT003",
         "common": {
             "moveSpeed": 300,
             "maxHealth": 15,

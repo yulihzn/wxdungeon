@@ -61,6 +61,7 @@ export default class ExitDoor extends Building {
             this.node.position = Dungeon.getPosInMap(indexPos);
         }
         let label = this.roof.getComponentInChildren(cc.Label);
+        label.node.angle = this.dir% 4 == 1?180:0;
         label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter, this.exitData.toLevel).name}`
     }
     onLoad() {

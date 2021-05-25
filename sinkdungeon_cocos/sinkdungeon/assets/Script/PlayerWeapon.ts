@@ -72,11 +72,11 @@ export default class PlayerWeapon extends cc.Component {
         }
     }
 
-    meleeAttack(data: PlayerData, isMiss: boolean) {
+    meleeAttack(data: PlayerData, isMiss: boolean,fistCombo:number) {
         if (!this.meleeWeapon || this.meleeWeapon.IsAttacking) {
             return;
         }
-        this.meleeWeapon.attack(data, isMiss);
+        this.meleeWeapon.attack(data, isMiss,fistCombo);
         
     }
     remoteIntervalTime = 0;

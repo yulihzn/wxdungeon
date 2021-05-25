@@ -84,7 +84,8 @@ export default class Dungeon extends cc.Component {
      * 打开门
      */
     onLoad(): void {
-        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: AudioPlayer.PLAY_BG,bgm:true });
+        Logic.lastBgmIndex = Logic.chapterIndex == Logic.CHAPTER099?1:0;
+        AudioPlayer.play(AudioPlayer.PLAY_BG,true);
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听

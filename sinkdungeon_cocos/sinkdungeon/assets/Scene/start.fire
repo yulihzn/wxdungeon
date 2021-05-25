@@ -4835,8 +4835,59 @@
     "bleeding": {
       "__uuid__": "a4bbca9e-9662-4617-94a8-09407b6d73dd"
     },
+    "cashiering": {
+      "__uuid__": "bf439084-4e9a-4f92-a8d4-81777c69cea3"
+    },
+    "chicken": {
+      "__uuid__": "6f4c8147-0dc9-47ea-a11b-76599fe0ce3e"
+    },
+    "closestool": {
+      "__uuid__": "35accc31-1247-4014-8869-0904e5daccaf"
+    },
+    "fireball": {
+      "__uuid__": "ac40dc08-131e-4edc-88f7-c39f016a4193"
+    },
+    "mutant": {
+      "__uuid__": "bc56d2a5-ff71-4798-9859-2c5258dd374f"
+    },
+    "reload": {
+      "__uuid__": "4853a246-bc44-4287-8096-6322d2503668"
+    },
+    "scarabcrawl": {
+      "__uuid__": "dd864753-7360-4947-a24e-84f02c585beb"
+    },
+    "shoot001": {
+      "__uuid__": "959fb459-343a-4984-8d5f-66b1dd22689b"
+    },
+    "shoot002": {
+      "__uuid__": "0cfec256-f169-4974-9a10-05b428d6956b"
+    },
+    "shoot003": {
+      "__uuid__": "2019a9e6-aa79-4726-9d83-c0562156765b"
+    },
+    "shoot004": {
+      "__uuid__": "31513b79-02ed-4d65-9194-f1bbbb402838"
+    },
+    "takephoto": {
+      "__uuid__": "7fa407c1-3823-49f6-8ab1-440e6abad1cb"
+    },
+    "transportship": {
+      "__uuid__": "289c0213-26d5-45b8-b6cb-a9ac2917e64b"
+    },
+    "tvcolor": {
+      "__uuid__": "d7758129-c6c1-4989-a21b-d18ee23abb47"
+    },
+    "tvwhite": {
+      "__uuid__": "f1495aed-180b-4197-bd68-f2954ba21988"
+    },
+    "welcome": {
+      "__uuid__": "a11b43ed-d72a-4255-a089-bdbac271f9d1"
+    },
     "bg01": {
       "__uuid__": "a601a25d-abcb-42b9-9e58-2f8cfea4ebc9"
+    },
+    "bg02": {
+      "__uuid__": "cc30cb25-3087-45d4-af9e-3f82f07fe251"
     },
     "_id": "a6IQjVTvdI/oYAE/QsKvyM"
   }

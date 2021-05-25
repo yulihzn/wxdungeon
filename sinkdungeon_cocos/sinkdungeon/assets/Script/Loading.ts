@@ -2,6 +2,7 @@ import Logic from "./Logic";
 import CutScene from "./UI/CutScene";
 import ProfessionData from "./Data/ProfessionData";
 import LoadingManager from "./Manager/LoadingManager";
+import AudioPlayer from "./Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -79,6 +80,7 @@ export default class Loading extends cc.Component {
             if (Logic.shipTransportScene == 2) {
                 this.shipTransportScene.scaleX = -1;
             }
+            AudioPlayer.play(AudioPlayer.TRANSPORTSHIP);
             Logic.shipTransportScene = 0;
             this.scheduleOnce(() => { this.isTransportAnimFinished = true; }, 2)
         }

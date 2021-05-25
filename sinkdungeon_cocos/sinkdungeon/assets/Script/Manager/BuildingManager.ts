@@ -32,6 +32,7 @@ import NonPlayerManager from "./NonPlayerManager";
 import MonsterManager from "./MonsterManager";
 import MonsterGenerator from "../Building/MonsterGenerator";
 import MgWentLine from "../Building/MgWentLine";
+import RoomStool from "../Building/RoomStool";
 
 
 // Learn TypeScript:
@@ -77,6 +78,7 @@ export default class BuildingManager extends BaseManager {
     static readonly PORTAL = 'Portal';
     static readonly ROOMBED = 'RoomBed';
     static readonly ROOMTV = 'RoomTv';
+    static readonly ROOMSTOOL = 'RoomStool';
     static readonly SAVEPOINT = 'SavePoint';
     static readonly SAW = 'Saw';
     static readonly SHIPSTAIRS = 'Shipstairs';
@@ -570,9 +572,12 @@ export default class BuildingManager extends BaseManager {
     }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        let hitBuilding;
+        let hitBuilding:cc.Node;
         if (mapDataStr == 'Z3') {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
+        } else if (mapDataStr == 'Z9') {
+            hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
+            hitBuilding.getComponent(RoomStool).init(indexPos);
         } else {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.HITBUILDING), indexPos);
         }

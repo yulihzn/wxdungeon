@@ -57,6 +57,22 @@ export default class AudioPlayer extends cc.Component {
     public static readonly SWORD_ATTACK = 'SWORD_ATTACK';
     public static readonly SWORD_HIT = 'SWORD_HIT';
     public static readonly BLEEDING = 'BLEEDING';
+    public static readonly CASHIERING = 'CASHIERING';
+    public static readonly CHICKEN = 'CHICKEN';
+    public static readonly CLOSESTOOL = 'CLOSESTOOL';
+    public static readonly FIREBALL = 'FIREBALL';
+    public static readonly MUTANT = 'MUTANT ';
+    public static readonly RELOAD = 'RELOAD ';
+    public static readonly SCARABCRAWL = 'SCARABCRAWL';
+    public static readonly SHOOT001 = 'SHOOT001';
+    public static readonly SHOOT002 = 'SHOOT002';
+    public static readonly SHOOT003 = 'SHOOT003';
+    public static readonly SHOOT004 = 'SHOOT004';
+    public static readonly TAKEPHOTO = 'TAKEPHOTO ';
+    public static readonly TRANSPORTSHIP = 'TRANSPORTSHIP';
+    public static readonly TVCOLOR = 'TVCOLOR';
+    public static readonly TVWHITE = 'TVWHITE';
+    public static readonly WELCOME = 'WELCOME';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -114,34 +130,69 @@ export default class AudioPlayer extends cc.Component {
     @property({ type: cc.AudioClip })
     wentlineshow: cc.AudioClip = null;
     @property(cc.AudioClip)
-    zombieattack:cc.AudioClip=null;
+    zombieattack: cc.AudioClip = null;
     @property(cc.AudioClip)
-    zombiespitting:cc.AudioClip=null;
+    zombiespitting: cc.AudioClip = null;
     @property(cc.AudioClip)
-    swordshow:cc.AudioClip=null;
+    swordshow: cc.AudioClip = null;
     @property(cc.AudioClip)
-    electricattack:cc.AudioClip=null;
+    electricattack: cc.AudioClip = null;
     @property(cc.AudioClip)
-    punch:cc.AudioClip=null;
+    punch: cc.AudioClip = null;
     @property(cc.AudioClip)
-    fist:cc.AudioClip=null;
+    fist: cc.AudioClip = null;
     @property(cc.AudioClip)
-    swordattack:cc.AudioClip=null;
+    swordattack: cc.AudioClip = null;
     @property(cc.AudioClip)
-    swordhit:cc.AudioClip=null;
+    swordhit: cc.AudioClip = null;
     @property(cc.AudioClip)
-    bleeding:cc.AudioClip=null;
-    @property({ type: cc.AudioClip })
+    bleeding: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    cashiering: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    chicken: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    closestool: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    fireball: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    mutant: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    reload: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    scarabcrawl: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    shoot001: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    shoot002: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    shoot003: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    shoot004: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    takephoto: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    transportship: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    tvcolor: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    tvwhite: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    welcome: cc.AudioClip = null;
+    @property(cc.AudioClip )
     bg01: cc.AudioClip = null;
-
+    @property(cc.AudioClip )
+    bg02: cc.AudioClip = null;
     lastName = '';
     isSoundNeedPause = false;
     audioList: { [key: string]: cc.AudioClip } = {};
+    lastBgmIndex = -1;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name,detail.bgm); });
-        cc.audioEngine.setMusicVolume(0.1);
+        EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name, detail.bgm,detail.loop); });
+        EventHelper.on(EventHelper.STOP_ALL_AUDIO_EFFECT, (detail) => { this.stopAllEffect(); });
+        cc.audioEngine.setMusicVolume(0.2);
         cc.audioEngine.setEffectsVolume(0.3);
         this.audioList[AudioPlayer.MONSTER_HIT] = this.monsterHit;
         this.audioList[AudioPlayer.PICK_UP] = this.pickUp;
@@ -180,25 +231,42 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.SWORD_HIT] = this.swordhit;
         this.audioList[AudioPlayer.FIST] = this.fist;
         this.audioList[AudioPlayer.BLEEDING] = this.bleeding;
+        this.audioList[AudioPlayer.CASHIERING] = this.cashiering;
+        this.audioList[AudioPlayer.CHICKEN] = this.chicken;
+        this.audioList[AudioPlayer.CLOSESTOOL] = this.closestool;
+        this.audioList[AudioPlayer.FIREBALL] = this.fireball;
+        this.audioList[AudioPlayer.MUTANT] = this.mutant;
+        this.audioList[AudioPlayer.RELOAD] = this.reload;
+        this.audioList[AudioPlayer.SCARABCRAWL] = this.scarabcrawl;
+        this.audioList[AudioPlayer.SHOOT001] = this.shoot001;
+        this.audioList[AudioPlayer.SHOOT002] = this.shoot002;
+        this.audioList[AudioPlayer.SHOOT003] = this.shoot003;
+        this.audioList[AudioPlayer.SHOOT004] = this.shoot004;
+        this.audioList[AudioPlayer.TAKEPHOTO] = this.takephoto;
+        this.audioList[AudioPlayer.TRANSPORTSHIP] = this.transportship;
+        this.audioList[AudioPlayer.TVCOLOR] = this.tvcolor;
+        this.audioList[AudioPlayer.TVWHITE] = this.tvwhite;
+        this.audioList[AudioPlayer.WELCOME] = this.welcome;
 
     }
     playbg() {
-        let bgms = [this.bg01]
-        if (Logic.lastBgmIndex == -1 || Logic.lastBgmIndex > bgms.length - 1) {
-            Logic.lastBgmIndex = Random.getRandomNum(0, bgms.length - 1);
-        }
-        let clip = bgms[bgms.length - 1];
-        if (clip && !cc.audioEngine.isMusicPlaying()) {
+        let bgms = [this.bg01,this.bg02];
+        let clip = bgms[Logic.lastBgmIndex];
+        if (clip && (!cc.audioEngine.isMusicPlaying()||this.lastBgmIndex != Logic.lastBgmIndex)) {
             cc.audioEngine.stopMusic();
             cc.audioEngine.playMusic(clip, true);
+            this.lastBgmIndex = Logic.lastBgmIndex;
         }
 
     }
-    private playSound(name: string,isBgm:boolean) {
+    private stopAllEffect(){
+        cc.audioEngine.stopAllEffects();
+    }
+    private playSound(name: string, isBgm: boolean,loop:boolean) {
         if (name == this.lastName && this.isSoundNeedPause) {
             return;
         }
-        if(isBgm){
+        if (isBgm) {
             switch (name) {
                 case AudioPlayer.STOP_BG:
                     cc.audioEngine.stopMusic();
@@ -207,8 +275,9 @@ export default class AudioPlayer extends cc.Component {
                     this.playbg();
                     break;
             }
-        }else if(this.audioList[name]){
-            cc.audioEngine.playEffect(this.audioList[name], false);
+        } else if (this.audioList[name]) {
+            cc.audioEngine.playEffect(this.audioList[name],loop);
+            
         }
         this.lastName = name;
         this.isSoundNeedPause = true;
@@ -217,7 +286,10 @@ export default class AudioPlayer extends cc.Component {
         }, 0.1)
     }
 
-    static play(audioName: string, bgm?: boolean) {
-        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: audioName ,bgm:bgm});
+    static play(audioName: string, bgm?: boolean,loop?:boolean) {
+        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: audioName, bgm: bgm,loop:loop });
+    }
+    static stopAllEffect() {
+        EventHelper.emit(EventHelper.STOP_ALL_AUDIO_EFFECT,{});
     }
 }

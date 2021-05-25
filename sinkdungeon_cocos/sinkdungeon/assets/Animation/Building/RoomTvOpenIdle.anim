@@ -27,6 +27,18 @@
               }
             }
           ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "29dcb9b8-21a8-4ae9-a14d-4e2b0db11d3c"
+                }
+              }
+            ]
+          }
         }
       },
       "sprite/light": {

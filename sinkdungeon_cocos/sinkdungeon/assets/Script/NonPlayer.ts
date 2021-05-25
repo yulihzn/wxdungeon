@@ -39,6 +39,7 @@ import { ColliderTag } from './Actor/ColliderTag';
 import StatusData from './Data/StatusData';
 import ActorUtils from './Utils/ActorUtils';
 import MeleeWeapon from './MeleeWeapon';
+import MonsterManager from './Manager/MonsterManager';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -332,6 +333,7 @@ export default class NonPlayer extends Actor {
                 this.shooter.data.bulletSize = 0.5;
             }
             this.shooter.dungeon = this.dungeon;
+            this.shooter.data.remoteAudio = this.data.remoteAudio;
             this.shooter.isFromPlayer = this.data.isEnemy < 1;
             this.shooter.data.bulletArcExNum = this.data.bulletArcExNum;
             this.shooter.data.bulletLineExNum = this.data.bulletLineExNum;
@@ -465,6 +467,9 @@ export default class NonPlayer extends Actor {
         }
         if (isSpecial) {
             this.showDangerTips();
+            if(this.data.resName == MonsterManager.MONSTER_CHICKEN){
+                AudioPlayer.play(AudioPlayer.CHICKEN);
+            }
             if(this.data.specialType == SpecialManager.AFTER_VENOM){
                 AudioPlayer.play(AudioPlayer.ZOMBIE_SPITTING);
             }else if(this.data.specialType == SpecialManager.AFTER_DOWN){

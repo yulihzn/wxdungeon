@@ -4,7 +4,6 @@ import Bullet from "./Item/Bullet";
 import Logic from "./Logic";
 import EquipmentData from "./Data/EquipmentData";
 import BulletData from "./Data/BulletData";
-import { EventHelper } from "./EventHelper";
 import AudioPlayer from "./Utils/AudioPlayer";
 import FromData from "./Data/FromData";
 import DamageData from "./Data/DamageData";
@@ -192,7 +191,11 @@ export default class Shooter extends cc.Component {
         if (!this.isAI && !this.isEx && this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
             return;
         }
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.SHOOT } });
+        if(this.data.remoteAudio&&this.data.remoteAudio.length>0){
+            AudioPlayer.play(this.data.remoteAudio);
+        }else{
+            AudioPlayer.play(AudioPlayer.SHOOT);
+        }
         this.fire(this.data.bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos, prefab, aoeData);
         this.fireArcBullet(this.data.bulletType, defaultPos, bulletArcExNum, prefab, aoeData);
         this.fireLinecBullet(this.data.bulletType, angleOffset, defaultPos, bulletArcExNum, bulletLineExNum, prefab, aoeData);

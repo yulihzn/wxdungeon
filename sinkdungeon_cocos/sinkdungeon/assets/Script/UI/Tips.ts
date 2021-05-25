@@ -18,6 +18,7 @@ const {ccclass, property} = cc._decorator;
 export default class Tips extends cc.Component {
     static readonly TAROT_TABLE = "Tips.TAROT_TABLE";
     static readonly MART_SHELVES = "Tips.MART_SHELVES";
+    static readonly ROOM_STOOL = "Tips.ROOM_STOOL";
     isUse = false;
     tipsType = '';
 

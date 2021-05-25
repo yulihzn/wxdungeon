@@ -176,7 +176,7 @@ export default class Logic extends cc.Component {
         let o = LocalStorage.getValueFromData(LocalStorage.KEY_OIL_GOLD);
         Logic.oilGolds = o ? parseInt(o) : 0;
         //重置bgm
-        Logic.lastBgmIndex = -1;
+        Logic.lastBgmIndex = 0;
         //加载怪物击杀玩家数据
         Logic.killPlayerCounts = Logic.profileManager.data.killPlayerCounts;
     }
@@ -279,7 +279,6 @@ export default class Logic extends cc.Component {
         Logic.playerData.pos = cc.v3(exitData.toPos.x % levelData.roomWidth, ty % levelData.roomHeight);
         Logic.mapManager.reset(cc.v3(roomX, roomY));
         Logic.changeDungeonSize();
-        Logic.lastBgmIndex = -1;
         if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER01) {
             Logic.shipTransportScene = 1;
         } else if (exitData.fromChapter == Logic.CHAPTER02 && Logic.chapterIndex == Logic.CHAPTER01) {

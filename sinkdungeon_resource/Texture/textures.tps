@@ -1500,6 +1500,7 @@
                 <false/>
             </struct>
             <key type="filename">building/roombath.png</key>
+            <key type="filename">building/roomstoolmosaic.png</key>
             <key type="filename">equipment/weapon029.png</key>
             <key type="filename">equipment/weapon030.png</key>
             <key type="filename">equipment/weapon031.png</key>

@@ -58,6 +58,7 @@ export class EventHelper extends cc.Component{
     public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE';
     public static readonly TALENT_TREE_SELECT = 'TALENT_TREE_SELECT';
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO';
+    public static readonly STOP_ALL_AUDIO_EFFECT = 'STOP_AUDIO_EFFECT';
     public static readonly CAMERA_SHAKE = 'CAMERA_SHAKE';
     public static readonly CAMERA_LOOK = 'CAMERA_LOOK';
     public static readonly CHUNK_LOAD = 'CHUNK_LOAD';

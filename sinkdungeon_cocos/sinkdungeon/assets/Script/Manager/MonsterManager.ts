@@ -298,7 +298,6 @@ export default class MonsterManager extends BaseManager {
         }
         data.isEnemy = 1;
         monster.data = data;
-
         monster.sc.isDisguising = data.disguise > 0;
         if (monster.sc.isDisguising) {
             monster.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE);

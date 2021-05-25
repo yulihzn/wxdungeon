@@ -64,6 +64,7 @@ export default class EquipmentData extends BaseData{
     exBulletCombo3 = 0;
     exBulletOffsetX = 0;//额外子弹偏移x
     ignoreTrap = 0;//无视尖刺伤害
+    remoteAudio = '';//远程音效
 
     price:number = 0;
 
@@ -166,6 +167,7 @@ export default class EquipmentData extends BaseData{
         this.suitcolor2 = data.suitcolor2?data.suitcolor2:'#ffffff';
         this.suitcolor3 = data.suitcolor3?data.suitcolor3:'#ffffff';
         this.infobasecolor = data.infobasecolor?data.infobasecolor:'#ffffff';
+        this.remoteAudio = data.remoteAudio?data.remoteAudio:'';
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -239,6 +241,7 @@ export default class EquipmentData extends BaseData{
         e.suitcolor2 = this.suitcolor2;
         e.suitcolor3 = this.suitcolor3;
         e.infobasecolor = this.infobasecolor;
+        e.remoteAudio = this.remoteAudio;
         return e;
     }
     
