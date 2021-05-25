@@ -383,5 +383,17 @@
             "moveSpeed": -290,
             "attackSpeed": -150
         }
+    },
+    "status035": {
+        "nameCn": "长眩晕",
+        "nameEn": "dizz",
+        "spriteFrameName": "status014",
+        "statusType": 3,
+        "desc": "",
+        "duration": 5,
+        "dizzDurationDirect":5,
+        "missRate": 80,
+        "common": {
+        }
     }
 }

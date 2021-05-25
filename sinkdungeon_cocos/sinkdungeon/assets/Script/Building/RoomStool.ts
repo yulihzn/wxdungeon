@@ -5,7 +5,10 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import FromData from "../Data/FromData";
+import Dungeon from "../Dungeon";
 import { EventHelper } from "../EventHelper";
+import StatusManager from "../Manager/StatusManager";
 import Tips from "../UI/Tips";
 import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
@@ -19,6 +22,7 @@ export default class RoomStool extends Building {
     mosaic: cc.Node = null;
     tips: Tips;
     isOpen = false;
+    dungeon:Dungeon;
 
     onLoad() {
         this.tips = this.getComponentInChildren(Tips);
@@ -29,7 +33,8 @@ export default class RoomStool extends Building {
                 }
             });
     }
-    init(indexPos:cc.Vec3) {
+    init(indexPos:cc.Vec3,dungeon:Dungeon) {
+        this.dungeon = dungeon;
         if(this.tips){
             this.tips.tipsType = Tips.ROOM_STOOL+`x=${indexPos.x}y=${indexPos.y}`;
         }
@@ -48,6 +53,9 @@ export default class RoomStool extends Building {
         this.isOpen = true;
         this.mosaic.opacity = 255;
         this.unscheduleAllCallbacks();
+        if(this.dungeon){
+            this.dungeon.player.addStatus(StatusManager.DIZZ_LONG,new FromData());
+        }
         this.scheduleOnce(() => {
             this.mosaic.opacity = 0;
             AudioPlayer.play(AudioPlayer.CLOSESTOOL);

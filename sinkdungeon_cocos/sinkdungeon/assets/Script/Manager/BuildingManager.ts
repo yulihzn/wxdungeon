@@ -577,7 +577,7 @@ export default class BuildingManager extends BaseManager {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
         } else if (mapDataStr == 'Z9') {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
-            hitBuilding.getComponent(RoomStool).init(indexPos);
+            hitBuilding.getComponent(RoomStool).init(indexPos,dungeon);
         } else {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.HITBUILDING), indexPos);
         }
