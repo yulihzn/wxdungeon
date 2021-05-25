@@ -27,53 +27,48 @@ export default class ExitDoor extends Building {
     bgSprite: cc.Sprite = null;
     closeSprite: cc.Sprite = null;
     openSprite: cc.Sprite = null;
-    roof: cc.Node = null;
+    spriteNode: cc.Node = null;
+    roof: cc.Sprite = null;
     isBackToUpLevel = false;
     dir = 0;
-    exitData:ExitData = new ExitData();
+    exitData: ExitData = new ExitData();
 
     // LIFE-CYCLE CALLBACKS:
 
-    init(dir: number,exitData:ExitData) {
+    init(dir: number, exitData: ExitData) {
         this.dir = dir;
         this.exitData.valueCopy(exitData);
         this.isBackToUpLevel = dir == 4 || dir == 5 || dir == 6 || dir == 7;
         if (this.dir > 7) {
             this.node.opacity = 0;
-            this.roof.opacity = 0;
+            this.roof.node.opacity = 0;
             let indexPos = this.data.defaultPos.clone();
             let collider = this.node.getComponent(cc.BoxCollider);
-            collider.size = cc.size(128,128);
-                collider.offset = cc.v2(0,0);
-            if(this.dir==8){
-                indexPos.y+=1;
+            collider.size = cc.size(128, 128);
+            collider.offset = cc.v2(0, 0);
+            if (this.dir == 8) {
+                indexPos.y += 1;
             }
-            if(this.dir==9){
-                indexPos.y-=1;
+            if (this.dir == 9) {
+                indexPos.y -= 1;
             }
-            if(this.dir==10){
-                indexPos.x-=1;
+            if (this.dir == 10) {
+                indexPos.x -= 1;
             }
-            if(this.dir==11){
-                indexPos.x+=1;
+            if (this.dir == 11) {
+                indexPos.x += 1;
             }
             this.node.position = Dungeon.getPosInMap(indexPos);
         }
         let label = this.roof.getComponentInChildren(cc.Label);
-        switch (this.dir % 4) {
-            case 0: break;
-            case 1: this.node.angle = 180;label.node.angle=180;break;
-            case 2: this.node.angle = 90;label.node.angle=-90;break;
-            case 3: this.node.angle = -90;label.node.angle=90;break;
-        }
-        
-        label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter,this.exitData.toLevel).name}`
+        label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter, this.exitData.toLevel).name}`
     }
     onLoad() {
+        this.spriteNode = this.node.getChildByName('sprite');
         this.bgSprite = this.node.getChildByName('sprite').getChildByName('exitbg').getComponent(cc.Sprite);
         this.closeSprite = this.node.getChildByName('sprite').getChildByName('exitopen').getComponent(cc.Sprite);
         this.openSprite = this.node.getChildByName('sprite').getChildByName('exitclose').getComponent(cc.Sprite);
-        this.roof = this.node.getChildByName('roof');
+        this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         this.openSprite.node.zIndex = IndexZ.FLOOR;
         this.closeSprite.node.zIndex = IndexZ.ACTOR;
     }
@@ -88,13 +83,24 @@ export default class ExitDoor extends Building {
             case Logic.CHAPTER05: this.changeRes('exit004'); break;
             case Logic.CHAPTER099: this.changeRes('exit000'); break;
         }
-        if (this.roof) {
-            // this.roof.parent = this.node.parent;
-            // let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
-            // this.roof.position = this.roof.parent.convertToNodeSpaceAR(p);
-            // this.roof.angle = this.node.angle;
-            // this.roof.zIndex = IndexZ.SHADOW-1;
+        let subfix = 'anim000';
+        let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}${subfix}`);
+        if (this.dir % 4 > 1 || this.dir > 7) {
+            spriteframe = null;
         }
+        this.roof.spriteFrame = spriteframe;
+        this.roof.node.parent = this.node.parent;
+        let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128));
+        this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p);
+        this.roof.node.zIndex = IndexZ.OVERHEAD;
+        this.roof.node.opacity = 255;
+        switch (this.dir % 4) {
+            case 0: break;
+            case 1: this.roof.node.angle = 180;this.roof.node.opacity = 128; break;
+            case 2: break;
+            case 3: break;
+        }
+
     }
 
     openGate(immediately?: boolean) {
@@ -104,7 +110,7 @@ export default class ExitDoor extends Building {
         this.isOpen = true;
         this.getComponent(cc.PhysicsBoxCollider).sensor = true;
         this.getComponent(cc.PhysicsBoxCollider).apply();
-        cc.tween(this.closeSprite.node).to(immediately ? 0 : 1,{opacity:0}).start();
+        cc.tween(this.closeSprite.node).to(immediately ? 0 : 1, { opacity: 0 }).start();
     }
     closeGate(immediately?: boolean) {
         if (!this.isOpen) {
@@ -113,12 +119,13 @@ export default class ExitDoor extends Building {
         this.isOpen = false;
         this.getComponent(cc.PhysicsBoxCollider).sensor = false;
         this.getComponent(cc.PhysicsBoxCollider).apply();
-        cc.tween(this.closeSprite.node).to(immediately ? 0 : 1,{opacity:255}).start();
+        cc.tween(this.closeSprite.node).to(immediately ? 0 : 1, { opacity: 255 }).start();
     }
+
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         if (other.tag == ColliderTag.PLAYER) {
             let player = other.node.getComponent(Player);
-            if (player&&this.isOpen) {
+            if (player && this.isOpen) {
                 this.isOpen = false;
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
                 Logic.playerData = player.data.clone();

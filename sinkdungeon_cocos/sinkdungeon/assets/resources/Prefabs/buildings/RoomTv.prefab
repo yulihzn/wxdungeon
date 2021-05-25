@@ -544,7 +544,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        85.531,
+        80.227,
         0,
         0,
         0,
@@ -592,7 +592,6 @@
     "showRayCast": false,
     "isCircle": true,
     "isSector": true,
-    "isScale": true,
     "_id": ""
   },
   {

@@ -8,8 +8,8 @@ set /p "i=请输入数字的位数:"
 set /p "m=请输入额外:"
 set "num=100000"
 for /f "delims=" %%i in ('dir /b /o:n "*!e!"') do (
-set /a num+=1
 ren "%%i" "!n!0!num:~-%i%!%m%%%~xi"
+set /a num+=1
 )
 pause
 exit /b

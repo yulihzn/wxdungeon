@@ -3,6 +3,7 @@ import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
+import { ColliderTag } from "../Actor/ColliderTag";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -22,14 +23,15 @@ export default class Door extends Building {
     isOpen: boolean = false;
     isDoor: boolean = true;
     isHidden: boolean = false;
-    isEmpty:boolean =false;
-    isLock:boolean = false;
+    isEmpty: boolean = false;
+    isLock: boolean = false;
     //0top1bottom2left3right
     dir = 0;
     sprite: cc.Sprite = null;
     roof: cc.Sprite = null;
-    lockInfo:cc.Node = null;
+    lockInfo: cc.Node = null;
     boxCollider: cc.PhysicsBoxCollider;
+    arrow:cc.Node;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -37,6 +39,7 @@ export default class Door extends Building {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         this.lockInfo = this.node.getChildByName('info');
+        this.arrow = this.node.getChildByName('doorarrow')
         this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
 
@@ -44,32 +47,42 @@ export default class Door extends Building {
 
     start() {
         if (this.sprite) {
-            this.sprite.spriteFrame = Logic.spriteFrameRes(`door0${Logic.chapterIndex}anim000`);
+            this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim000`);
+            this.sprite.node.width = 128;
+            this.sprite.node.height = this.dir>1?256:128;
         }
-        if (this.roof) {
-            let subfix = this.dir>0?'anim008':'anim000';
-            let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}${subfix}`);
-            this.roof.spriteFrame = spriteframe;
-            this.roof.node.getChildByName('roof1').getComponent(cc.Sprite).spriteFrame = spriteframe;
-            this.roof.node.getChildByName('roof2').getComponent(cc.Sprite).spriteFrame = spriteframe;
-            this.roof.node.parent = this.node.parent;
-            let p = this.node.convertToWorldSpaceAR(cc.v3(0,128));
-            this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p);
-            this.roof.node.angle = this.node.angle;
-            this.roof.node.zIndex = IndexZ.OVERHEAD;
+        if (!this.roof) {
+            this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         }
-        if(this.lockInfo&&this.isLock&&!Logic.mapManager.isNeighborRoomStateClear(this.dir)){
+        let subfix = 'anim000';
+        let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}${subfix}`);
+        if (this.dir > 1) {
+            spriteframe = null;
+        }
+        this.roof.spriteFrame = spriteframe;
+        this.roof.node.parent = this.node.parent;
+        let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128));
+        this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p);
+        this.roof.node.zIndex = IndexZ.OVERHEAD;
+        switch (this.dir) {
+            case 0: break;
+            case 1: this.roof.node.angle = 180; break;
+            case 2: break;
+            case 3: this.sprite.node.scaleX = -1; break;
+        }
+        if (this.lockInfo && this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir)) {
             this.lockInfo.opacity = 255;
-            switch (this.dir) {
-                case 0: break;
-                case 1: this.lockInfo.angle=180;break;
-                case 2: this.lockInfo.angle=-90;break;
-                case 3: this.lockInfo.angle=90;break;
-            }
-            return;
         }
+        let collider = this.boxCollider;
+        collider.offset = cc.v2(0, 7);
+        collider.size = cc.size(128, 114);
+        if (this.dir > 1) {
+            collider.offset = cc.v2(0, 8);
+            collider.size = cc.size(64, 128);
+        }
+        collider.apply();
     }
-   
+
     setOpen(isOpen: boolean, immediately?: boolean) {
         if (!this.isDoor) {
             return;
@@ -81,10 +94,10 @@ export default class Door extends Building {
         }
     }
     openGate(immediately?: boolean) {
-        if(!this.lockInfo){
+        if (!this.lockInfo) {
             this.lockInfo = this.node.getChildByName('info');
         }
-        if(this.isLock&&!Logic.mapManager.isNeighborRoomStateClear(this.dir)){
+        if (this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir)) {
             this.lockInfo.opacity = 255;
             return;
         }
@@ -98,29 +111,48 @@ export default class Door extends Building {
         this.isOpen = true;
         let index = 0;
         this.schedule(() => {
-            this.sprite.spriteFrame = Logic.spriteFrameRes(`door0${Logic.chapterIndex}anim00${index++}`);
+            this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim00${index++}`);
             if (index > 4) {
                 this.boxCollider.sensor = true;
                 this.boxCollider.apply();
+                if(!this.isEmpty){
+                    cc.tween(this.arrow).to(1,{opacity:255}).start();
+                }
             }
         }, immediately ? 0 : 0.15, 4);
     }
     closeGate(immediately?: boolean) {
-        if (!this.isOpen||this.isEmpty) {
+        if (!this.isOpen || this.isEmpty) {
             return;
         }
         this.isOpen = false;
         let index = 4;
         this.schedule(() => {
-            this.sprite.spriteFrame = Logic.spriteFrameRes(`door0${Logic.chapterIndex}anim00${index--}`);
+            this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim00${index--}`);
             if (index < 0) {
                 this.boxCollider.sensor = false;
                 this.boxCollider.apply();
+                cc.tween(this.arrow).to(1,{opacity:0}).start();
             }
         }, immediately ? 0 : 0.1, 4);
 
     }
-    checkLock(){
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        if (this.dir == 1 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+            this.roof.node.opacity = 180;
+        }
+    }
+    onCollisionStay(other: cc.Collider, self: cc.Collider) {
+        if (this.dir == 1 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+            this.roof.node.opacity = 180;
+        }
+    }
+    onCollisionExit(other: cc.Collider, self: cc.Collider) {
+        if (this.dir == 1 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+            this.roof.node.opacity = 255;
+        }
+    }
+    checkLock() {
 
     }
 }

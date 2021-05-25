@@ -516,7 +516,6 @@ export default class BuildingManager extends BaseManager {
             }
         }
         let p = this.addBuilding(Logic.getBuildings(BuildingManager.EXITDOOR), indexPos);
-        p.zIndex = IndexZ.ACTOR;
         let exitdoor = p.getComponent(ExitDoor);
         exitdoor.init(dir, d);
         this.exitdoors.push(exitdoor);
@@ -537,14 +536,8 @@ export default class BuildingManager extends BaseManager {
     }
     private addDoor(mapDataStrIndex: number, indexPos: cc.Vec3) {
         let door = this.addBuilding(Logic.getBuildings(BuildingManager.DOOR), indexPos).getComponent(Door);
-        door.node.zIndex = IndexZ.FLOOR;
+        // door.node.zIndex = IndexZ.FLOOR;
         door.isDoor = true;
-        switch (mapDataStrIndex % 4) {
-            case 0: door.node.angle = 0; break;
-            case 1: door.node.angle = 180; break;
-            case 2: door.node.angle = 90; break;
-            case 3: door.node.angle = -90; break;
-        }
         door.dir = mapDataStrIndex % 4;
         door.isEmpty = mapDataStrIndex > 3 && mapDataStrIndex < 8;
         door.isLock = mapDataStrIndex > 7;
