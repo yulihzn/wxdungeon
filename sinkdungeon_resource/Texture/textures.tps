@@ -230,6 +230,10 @@
             <key type="filename">building/chestopen002.png</key>
             <key type="filename">building/chestopen003.png</key>
             <key type="filename">building/chestopen004.png</key>
+            <key type="filename">building/crack000.png</key>
+            <key type="filename">building/crack001.png</key>
+            <key type="filename">building/crack002.png</key>
+            <key type="filename">building/crack003.png</key>
             <key type="filename">building/door099anim000.png</key>
             <key type="filename">building/door099anim001.png</key>
             <key type="filename">building/door099anim002.png</key>

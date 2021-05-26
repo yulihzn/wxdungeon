@@ -33,6 +33,7 @@ import MonsterManager from "./MonsterManager";
 import MonsterGenerator from "../Building/MonsterGenerator";
 import MgWentLine from "../Building/MgWentLine";
 import RoomStool from "../Building/RoomStool";
+import MgCrack from "../Building/MgCrack";
 
 
 // Learn TypeScript:
@@ -106,6 +107,7 @@ export default class BuildingManager extends BaseManager {
     static readonly GRASS03 = 'Grass03';
     static readonly GRASS04 = 'Grass04';
     static readonly WENTLINE = 'WentLine';
+    static readonly CRACK = 'Crack';
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
@@ -454,6 +456,11 @@ export default class BuildingManager extends BaseManager {
             //生成通风管
             let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
             p.init(dungeon,5,3,[MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
+            this.monsterGeneratorList.push(p);
+        } else if (mapDataStr == 'I6') {
+            //生成墙缝
+            let p = this.addBuilding(Logic.getBuildings(BuildingManager.CRACK), indexPos).getComponent(MgCrack);
+            p.init(dungeon,0.5,15,[MonsterManager.MONSTER_SCARAB]);
             this.monsterGeneratorList.push(p);
         }
     }

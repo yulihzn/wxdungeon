@@ -61,7 +61,6 @@ export default class ExitDoor extends Building {
             this.node.position = Dungeon.getPosInMap(indexPos);
         }
         let label = this.roof.getComponentInChildren(cc.Label);
-        label.node.angle = this.dir% 4 == 1?180:0;
         label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter, this.exitData.toLevel).name}`
     }
     onLoad() {
@@ -97,7 +96,11 @@ export default class ExitDoor extends Building {
         this.roof.node.opacity = 255;
         switch (this.dir % 4) {
             case 0: break;
-            case 1: this.roof.node.angle = 180;this.roof.node.opacity = 128; break;
+            case 1:
+                this.roof.node.angle = 180;
+                this.roof.node.opacity = 128;
+                this.roof.node.getChildByName('info').angle = 180;
+                 break;
             case 2: break;
             case 3: break;
         }

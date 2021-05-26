@@ -56,7 +56,7 @@ export default abstract class MonsterGenerator extends Building {
         }
     }
     addMonster():boolean {
-        if (this.count >= this.data.generatorInterval) {
+        if (this.count >= this.data.generatorCount) {
             this.addFinish = true;
             return false;
         }

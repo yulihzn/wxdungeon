@@ -71,6 +71,7 @@ export default class SpecialManager extends cc.Component {
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
                 break;
             case SpecialManager.AFTER_ICE:
+                AudioPlayer.play(AudioPlayer.ICEBOOM);
                 this.addAoe(pos, new AreaOfEffectData()
                     .init(0.8, 1, 0.2, 2, IndexZ.getActorZIndex(this.node.parent.position)
                         , true, true, true, false, false, new DamageData(3), from, [StatusManager.FROZEN])

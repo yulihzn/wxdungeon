@@ -1,6 +1,5 @@
 import Logic from "./Logic";
 import CutScene from "./UI/CutScene";
-import ProfessionData from "./Data/ProfessionData";
 import LoadingManager from "./Manager/LoadingManager";
 import AudioPlayer from "./Utils/AudioPlayer";
 

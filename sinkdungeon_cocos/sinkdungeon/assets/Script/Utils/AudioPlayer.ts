@@ -73,6 +73,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly TVCOLOR = 'TVCOLOR';
     public static readonly TVWHITE = 'TVWHITE';
     public static readonly WELCOME = 'WELCOME';
+    public static readonly ICEBOOM = 'ICEBOOM';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -179,6 +180,8 @@ export default class AudioPlayer extends cc.Component {
     tvwhite: cc.AudioClip = null;
     @property(cc.AudioClip)
     welcome: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    iceboom: cc.AudioClip = null;
     @property(cc.AudioClip )
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip )
@@ -247,6 +250,7 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.TVCOLOR] = this.tvcolor;
         this.audioList[AudioPlayer.TVWHITE] = this.tvwhite;
         this.audioList[AudioPlayer.WELCOME] = this.welcome;
+        this.audioList[AudioPlayer.ICEBOOM] = this.iceboom;
 
     }
     playbg() {

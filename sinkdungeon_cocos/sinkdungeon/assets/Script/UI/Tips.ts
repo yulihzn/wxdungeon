@@ -1,3 +1,4 @@
+import { ColliderTag } from "../Actor/ColliderTag";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 
@@ -43,12 +44,12 @@ export default class Tips extends cc.Component {
         this.isUse = false;
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if(other.getComponent(Player)){
+        if(other.tag == ColliderTag.PLAYER){
             this.node.opacity = 255;
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if(other.getComponent(Player)){
+        if(other.tag == ColliderTag.PLAYER){
             this.node.opacity = 0;
         }
     }
