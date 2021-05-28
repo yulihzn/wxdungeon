@@ -485,6 +485,7 @@ export default class Dungeon extends cc.Component {
             this.checkPlayerPos(dt);
             this.monsterManager.updateLogic(dt);
             this.nonPlayerManager.updateLogic(dt);
+            this.buildingManager.updateLogic(dt,this.player);
             this.equipmentManager.updateLogic(dt,this.player);
             this.itemManager.updateLogic(dt,this.player);
         }

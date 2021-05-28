@@ -62,9 +62,6 @@ export default class Shooter extends cc.Component {
         this.graphics = this.getComponent(cc.Graphics);
         this.bulletPool = new cc.NodePool(Bullet);
         this.sprite = this.node.getChildByName('sprite');
-        cc.director.on('destorybullet', (event) => {
-            this.destroyBullet(event.detail.bulletNode);
-        })
         this.anim = this.getComponent(cc.Animation);
 
     }
@@ -276,6 +273,7 @@ export default class Shooter extends cc.Component {
         bulletPrefab.scaleY = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
+        bullet.shooter = this;
         // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = IndexZ.OVERHEAD;
@@ -301,7 +299,7 @@ export default class Shooter extends cc.Component {
         bullet.aoePrefab = aoePrefab;
         bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
     }
-    private destroyBullet(bulletNode: cc.Node) {
+    public destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
         bulletNode.active = false;
         let bullet = bulletNode.getComponent(Bullet);

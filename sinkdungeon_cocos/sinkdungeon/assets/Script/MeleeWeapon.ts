@@ -11,7 +11,6 @@ import PlayerData from "./Data/PlayerData";
 import Boss from "./Boss/Boss";
 import NextStep from "./Utils/NextStep";
 import FromData from "./Data/FromData";
-import Decorate from "./Building/Decorate";
 import AudioPlayer from "./Utils/AudioPlayer";
 import IndexZ from "./Utils/IndexZ";
 import PlayerAvatar from "./PlayerAvatar";
@@ -23,6 +22,7 @@ import Actor from "./Base/Actor";
 import AvatarData from "./Data/AvatarData";
 import { ColliderTag } from "./Actor/ColliderTag";
 import ActorUtils from "./Utils/ActorUtils";
+import InteractBuilding from "./Building/InteractBuilding";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -555,10 +555,10 @@ export default class MeleeWeapon extends cc.Component {
                 box.breakBox();
             }
             if(!attackSuccess){
-                let decorate = attackTarget.node.getComponent(Decorate);
-                if (decorate) {
+                let interactBuilding = attackTarget.node.getComponent(InteractBuilding);
+                if (interactBuilding) {
                     attackSuccess = true;
-                    decorate.takeDamage(damage)
+                    interactBuilding.takeDamage(damage)
                 }
             }
             if(!attackSuccess){

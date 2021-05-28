@@ -10,7 +10,6 @@ import Dungeon from "../Dungeon";
 import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Decorate from "../Building/Decorate";
 import HitBuilding from "../Building/HitBuilding";
 import Shield from "../Shield";
 import Wall from "../Building/Wall";
@@ -18,10 +17,11 @@ import AreaOfEffect from "../Actor/AreaOfEffect";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
 import Actor from "../Base/Actor";
-import AirExit from "../Building/AirExit";
 import { ColliderTag } from "../Actor/ColliderTag";
 import ExitDoor from "../Building/ExitDoor";
 import ActorUtils from "../Utils/ActorUtils";
+import Shooter from "../Shooter";
+import InteractBuilding from "../Building/InteractBuilding";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -71,6 +71,7 @@ export default class Bullet extends cc.Component {
     skipTopwall = false;
     aoePrefab: cc.Prefab;
     aoeData = new AreaOfEffectData();
+    shooter:Shooter;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -212,7 +213,7 @@ export default class Bullet extends cc.Component {
         this.laserNode.scaleY = 1;
         this.laserLightSprite.node.setPosition(-16 * this.node.scaleY, 0);
         cc.tween(this.laserNode).to(0.1,{scale:1}).to(0.1,{scaleY:0}).start();
-        this.scheduleOnce(() => { cc.director.emit('destorybullet', { detail: { bulletNode: this.node } }); }, 0.2);
+        this.scheduleOnce(() => { this.shooter.destroyBullet(this.node); }, 0.2);
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.REMOTE_LASER } });
     }
 
@@ -389,10 +390,10 @@ export default class Bullet extends cc.Component {
                 }
             }
         } else if (tag == ColliderTag.BUILDING || tag == ColliderTag.WALL) {
-            let decorate = attackTarget.getComponent(Decorate);
-            if (this.data.canBreakBuilding == 1 && decorate) {
+            let interactBuilding = attackTarget.getComponent(InteractBuilding);
+            if (this.data.canBreakBuilding == 1 && interactBuilding) {
                 damageSuccess = true;
-                decorate.takeDamage(damage);
+                interactBuilding.takeDamage(damage);
             }
             if (!damageSuccess) {
                 let hitBuilding = attackTarget.getComponent(HitBuilding);

@@ -7,7 +7,6 @@ import Emplacement from "../Building/Emplacement";
 import DecorationFloor from "../Building/DecorationFloor";
 import Chest from "../Building/Chest";
 import Box from "../Building/Box";
-import Decorate from "../Building/Decorate";
 import ShopTable from "../Building/ShopTable";
 import FallStone from "../Building/FallStone";
 import MagicLightening from "../Building/MagicLightening";
@@ -34,6 +33,8 @@ import MonsterGenerator from "../Building/MonsterGenerator";
 import MgWentLine from "../Building/MgWentLine";
 import RoomStool from "../Building/RoomStool";
 import MgCrack from "../Building/MgCrack";
+import InteractBuilding from "../Building/InteractBuilding";
+import Player from "../Player";
 
 
 // Learn TypeScript:
@@ -59,7 +60,7 @@ export default class BuildingManager extends BaseManager {
     static readonly CHEST = 'Chest';
     static readonly COAST = 'Coast';
     static readonly DARKNESS = 'Darkness';
-    static readonly DECORATE = 'Decorate';
+    static readonly INTERACTBUILDING = 'InteractBuilding';
     static readonly DECORATIONFLOOR = 'DecorationFloor';
     static readonly DECORATIONOVERHEAD = 'DecorationOverHead';
     static readonly DOOR = 'Door';
@@ -122,6 +123,8 @@ export default class BuildingManager extends BaseManager {
     private shelvesFoodIndex = 0;
     private drinkList: string[] = [];
     private foodList: string[] = [];
+    private interactBuildings:InteractBuilding[] = [];
+    public lastInteractBuilding:InteractBuilding;
 
     clear(): void {
         Utils.clearComponentArray(this.footboards);
@@ -129,6 +132,7 @@ export default class BuildingManager extends BaseManager {
         Utils.clearComponentArray(this.portals);
         Utils.clearComponentArray(this.doors);
         Utils.clearComponentArray(this.airExits);
+        Utils.clearComponentArray(this.interactBuildings);
         this.footboards = new Array();
         this.exitdoors = new Array();
         this.portals = new Array();
@@ -136,6 +140,7 @@ export default class BuildingManager extends BaseManager {
         this.airExits = new Array();
         this.drinkList = new Array();
         this.foodList = new Array();
+        this.interactBuildings = new Array();
         this.shelvesFoodIndex = 0;
     }
 
@@ -333,22 +338,26 @@ export default class BuildingManager extends BaseManager {
             let saveBox = Logic.mapManager.getCurrentMapBuilding(indexPos);
             let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
             if (saveBox) {
-                //生命值小于1不生成
+                //生命值大于0才生成
                 if (saveBox.currentHealth > 0 || isReborn) {
-                    let decorate = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATE), indexPos);
-                    let d = decorate.getComponent(Decorate);
-                    d.decorateType = parseInt(mapDataStr[1]);
+                    let interactBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.INTERACTBUILDING), indexPos);
+                    let d = interactBuilding.getComponent(InteractBuilding);
                     d.node.position = saveBox.position.clone();
+                    d.data.valueCopy(saveBox);
                     if (isReborn) {
                         d.node.position = Dungeon.getPosInMap(d.data.defaultPos);
                         d.data.currentHealth = d.data.maxHealth;
                     }
+                    d.init(parseInt(mapDataStr[1]));
+                    this.interactBuildings.push(d);
                 }
             } else {
-                let decorate = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATE), indexPos);
-                let d = decorate.getComponent(Decorate);
-                d.decorateType = parseInt(mapDataStr[1]);
+                let interactBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.INTERACTBUILDING), indexPos);
+                let d = interactBuilding.getComponent(InteractBuilding);
+                d.data.currentHealth = 5;
                 Logic.mapManager.setCurrentBuildingData(d.data.clone());
+                d.init(parseInt(mapDataStr[1]));
+                this.interactBuildings.push(d);
             }
         } else if (mapDataStr == 'S0') {
             //生成商店
@@ -670,6 +679,39 @@ export default class BuildingManager extends BaseManager {
         grass.zIndex = IndexZ.getActorZIndex(pos);
         if (dryadGrassScript.isAuto) {
             dryadGrassScript.fall();
+        }
+    }
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.2) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    updateLogic(dt: number, player: Player) {
+        if (this.isCheckTimeDelay(dt)) {
+            let distance = 200;
+            let building: InteractBuilding = null;
+            for (let i=this.interactBuildings.length-1;i>=0;i--) {
+                let b = this.interactBuildings[i];
+                b.highLight(false);
+                if(b.isTaken||!b.isValid||b.data.currentHealth<=0){
+                    continue;
+                }
+                let d = Logic.getDistance(b.node.position, player.node.position);
+                if (d < distance) {
+                    distance = d;
+                    building = b;
+                }
+            }
+            if (distance < 96 && building) {
+                building.highLight(true);
+                this.lastInteractBuilding = building;
+            }else{
+                this.lastInteractBuilding = null;
+            }
         }
     }
 }

@@ -40,6 +40,7 @@ import LightManager from './Manager/LightManager';
 import NonPlayer from './NonPlayer';
 import AvatarData from './Data/AvatarData';
 import StatusData from './Data/StatusData';
+import InteractBuilding from './Building/InteractBuilding';
 @ccclass
 export default class Player extends Actor {
 
@@ -87,6 +88,7 @@ export default class Player extends Actor {
     isWeaponDashing = false;
     fistCombo = 0;
     dungeon: Dungeon;
+    interactBuilding:InteractBuilding;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -864,10 +866,14 @@ export default class Player extends Actor {
         if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
             this.dungeon.itemManager.lastGroundItem = null;
         }
+        if(this.interactBuilding){
 
+        }else if (this.dungeon.buildingManager.lastInteractBuilding && this.dungeon.buildingManager.lastInteractBuilding.taken(this, isLongPress)) {
+            this.dungeon.buildingManager.lastInteractBuilding = null;
+        }
         if (this.touchedTips) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
-            this.touchedTips.next();
+            this.touchedTips.next(isLongPress);
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {

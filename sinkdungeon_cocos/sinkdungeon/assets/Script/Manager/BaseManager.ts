@@ -1,27 +1,3 @@
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
-import FootBoard from "../Building/FootBoard";
-import IndexZ from "../Utils/IndexZ";
-import Saw from "../Building/Saw";
-import Emplacement from "../Building/Emplacement";
-import DecorationFloor from "../Building/DecorationFloor";
-import Chest from "../Building/Chest";
-import Box from "../Building/Box";
-import Decorate from "../Building/Decorate";
-import ShopTable from "../Building/ShopTable";
-import FallStone from "../Building/FallStone";
-import MagicLightening from "../Building/MagicLightening";
-import HitBuilding from "../Building/HitBuilding";
-import ExitDoor from "../Building/ExitDoor";
-import Door from "../Building/Door";
-import Wall from "../Building/Wall";
-import AirExit from "../Building/AirExit";
-import LevelData from "../Data/LevelData";
-import Portal from "../Building/Portal";
-import RoomBed from "../Building/RoomBed";
-import Building from "../Building/Building";
-import ExitData from "../Data/ExitData";
-
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

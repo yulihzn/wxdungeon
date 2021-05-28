@@ -27,6 +27,9 @@ export default class BuildingData {
     generatorList:string[] = [];
     generatorCount = 0;
     generatorInterval = 0;
+    interact = 0;//是否可以互动拾取
+    rollover = 0;//是否翻倒
+
     valueCopy(data:BuildingData){
         this.defaultPos = data.defaultPos?cc.v3(data.defaultPos.x,data.defaultPos.y):cc.v3(0,0);
         this.position = data.position?cc.v3(data.position.x,data.position.y):cc.v3(0,0);
@@ -51,6 +54,8 @@ export default class BuildingData {
         }
         this.generatorCount = data.generatorCount?data.generatorCount:0;
         this.generatorInterval = data.generatorInterval?data.generatorInterval:0;
+        this.interact = data.interact?data.interact:0;
+        this.rollover = data.rollover?data.rollover:0;
     }
     clone():BuildingData{
         let data = new BuildingData();
@@ -74,6 +79,8 @@ export default class BuildingData {
         data.generatorInterval = this.generatorInterval;
         data.generatorCount = this.generatorCount;
         data.generatorList = this.generatorList;
+        data.interact = this.interact;
+        data.rollover = this.rollover;
         return data;
     }
 }

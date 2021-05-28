@@ -3,10 +3,10 @@ import DamageData from "../Data/DamageData";
 import IndexZ from "../Utils/IndexZ";
 import Dungeon from "../Dungeon";
 import HitBuilding from "../Building/HitBuilding";
-import Decorate from "../Building/Decorate";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import { ColliderTag } from "./ColliderTag";
 import ActorUtils from "../Utils/ActorUtils";
+import InteractBuilding from "../Building/InteractBuilding";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -138,9 +138,9 @@ export default class AreaOfEffect extends cc.Component {
                 }
             }
         } else if (tag == ColliderTag.BUILDING) {
-            let decorate = attackTarget.getComponent(Decorate);
-            if (this.data.canBreakBuilding && decorate) {
-                decorate.takeDamage(damage);
+            let interactBuilding = attackTarget.getComponent(InteractBuilding);
+            if (this.data.canBreakBuilding && interactBuilding) {
+                interactBuilding.takeDamage(damage);
                 return;
             }
             let hitBuilding = attackTarget.getComponent(HitBuilding);

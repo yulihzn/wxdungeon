@@ -32,12 +32,12 @@ export default class Tips extends cc.Component {
     start () {
 
     }
-    next():void{
+    next(isLongPress:boolean):void{
         if(this.isUse){
             return;
         }
         this.isUse = true;
-        cc.director.emit(EventHelper.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType}});
+        cc.director.emit(EventHelper.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType,isLongPress:isLongPress}});
         setTimeout(()=>{this.isUse = false;},0.1);
     }
     onDestroy(){

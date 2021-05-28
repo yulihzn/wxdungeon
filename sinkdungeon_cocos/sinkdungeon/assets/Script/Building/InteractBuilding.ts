@@ -6,6 +6,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import Item from "../Item/Item";
 import IndexZ from "../Utils/IndexZ";
 import DamageData from "../Data/DamageData";
+import Player from "../Player";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,7 +21,7 @@ import DamageData from "../Data/DamageData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Decorate extends Building {
+export default class InteractBuilding extends Building {
 
     static readonly BOX = 0;
     static readonly PLANT = 1;
@@ -31,11 +32,15 @@ export default class Decorate extends Building {
     resName = "decorate000";
     sprite: cc.Sprite;
     mat: cc.MaterialVariant;
+    isTaken = false;
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
-
     }
     start() {
+
+    }
+    init(decorateType: number) {
+        this.decorateType = decorateType;
         switch (Logic.chapterIndex) {
             case Logic.CHAPTER00: this.resName = `decorate000${this.decorateType}`; break;
             case Logic.CHAPTER01: this.resName = `decorate010${this.decorateType}`; break;
@@ -45,7 +50,24 @@ export default class Decorate extends Building {
             case Logic.CHAPTER05: this.resName = `decorate040${this.decorateType}`; break;
             case Logic.CHAPTER099: this.resName = `decorate000${this.decorateType}`; break;
         }
+        this.updateCollider();
         this.changeRes(this.resName);
+    }
+    updateCollider(){
+        let spriteFrame = Logic.spriteFrameRes(this.resName);
+        let width = spriteFrame.getRect().width * this.sprite.node.scale;
+        let height = spriteFrame.getRect().height * this.sprite.node.scale / 4;
+        let physicCollider = this.getComponent(cc.PhysicsBoxCollider);
+        let collider = this.getComponent(cc.BoxCollider);
+        if (this.sprite.node.angle == 0) {
+            physicCollider.size = cc.size(width, height);
+            collider.size = cc.size(width, height);
+        } else {
+            physicCollider.size = cc.size(height, width);
+            collider.size = cc.size(height, width);
+            
+        }
+        physicCollider.apply();
     }
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
@@ -57,6 +79,12 @@ export default class Decorate extends Building {
         }
         this.sprite.node.opacity = 255;
         this.sprite.spriteFrame = spriteFrame;
+        if (!this.mat) {
+            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0);
+        }
+        this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.node.scaleX);
+        this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY);
+        this.mat.setProperty('outlineColor', cc.Color.WHITE);
     }
 
     //Animation
@@ -69,12 +97,25 @@ export default class Decorate extends Building {
         }
         this.mat.setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
     }
+    highLight(isHigh: boolean) {
+        if (!this.mat) {
+            this.mat = this.node.getChildByName('sprite').getComponent(cc.Sprite).getMaterial(0);
+        }
+        this.mat.setProperty('openOutline', isHigh ? 1 : 0);
+    }
     takeDamage(damage: DamageData): boolean {
-        if (this.data.currentHealth < 1) {
+        if (this.data.currentHealth <= 0) {
             return;
         }
-        this.data.currentHealth = 0;
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+        this.data.currentHealth -= damage.getTotalDamage();
+        AudioPlayer.play(AudioPlayer.MONSTER_HIT);
+        if (this.data.currentHealth > 0) {
+            this.hitLight(true);
+            this.scheduleOnce(() => {
+                this.hitLight(false);
+            }, 0.1)
+            return true;
+        }
         cc.tween(this.sprite.node)
             .call(() => {
                 this.changeRes(this.resName, 'anim001');
@@ -113,7 +154,25 @@ export default class Decorate extends Building {
         this.node.position = Dungeon.getPosInMap(cc.v3(-10, -10));
         this.data.currentHealth = this.data.maxHealth;
     }
+    rollover() {
+        this.sprite.node.angle = this.sprite.node.angle == 0 ? 90 : 0;
+        this.updateCollider();
+    }
+    taken(player:Player,isLongPress: boolean): boolean {
+        if (this.isTaken) {
+            return false;
+        }
+        if (isLongPress) {
 
+        } else {
+
+        }
+        this._taken(isLongPress);
+        return false;
+    }
+    private _taken(isLongPress: boolean) {
+        
+    }
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.2) {
@@ -122,6 +181,7 @@ export default class Decorate extends Building {
             if (saveDecorate) {
                 saveDecorate.currentHealth = this.data.currentHealth;
                 saveDecorate.position = this.data.position;
+                saveDecorate.rollover = this.data.rollover;
             }
             this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
         }
