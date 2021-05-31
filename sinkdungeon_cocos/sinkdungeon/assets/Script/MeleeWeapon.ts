@@ -195,9 +195,14 @@ export default class MeleeWeapon extends cc.Component {
         if (this.isAttacking) {
             return false;
         }
+        this.hasTargetMap = {};
         if(this.player.useInteractBuilding(true)){
             this.isBuildingAttack = true;
             this.isAttacking = true;
+            this.scheduleOnce(()=>{
+                this.hasTargetMap = {};
+                this.MeleeAttackFinish();
+            },1)
             return true;
         }else{
             this.isAttacking = false;
@@ -229,7 +234,6 @@ export default class MeleeWeapon extends cc.Component {
         this.scheduleOnce(() => {
             AudioPlayer.play(audioName);
         }, audiodelay);
-        this.hasTargetMap = {};
         this.updateCombo();
 
         this.isMiss = isMiss;

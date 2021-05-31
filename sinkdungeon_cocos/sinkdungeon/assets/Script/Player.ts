@@ -902,7 +902,8 @@ export default class Player extends Actor {
         if(otherCollider.tag == ColliderTag.NONPLAYER){
             contact.disabledOnce = true;
         }else if(otherCollider.tag == ColliderTag.BUILDING){
-            if (otherCollider.node.getComponent(InteractBuilding).isTaken) {
+            let b = otherCollider.node.getComponent(InteractBuilding);
+            if (b&&(b.isTaken||b.isAttacking)) {
                 contact.disabledOnce = true;
             }
         }

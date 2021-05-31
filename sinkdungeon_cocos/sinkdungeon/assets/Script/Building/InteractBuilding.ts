@@ -8,13 +8,6 @@ import IndexZ from "../Utils/IndexZ";
 import DamageData from "../Data/DamageData";
 import Player from "../Player";
 import { ColliderTag } from "../Actor/ColliderTag";
-import Boss from "../Boss/Boss";
-import AvatarData from "../Data/AvatarData";
-import CommonData from "../Data/CommonData";
-import MeleeWeapon from "../MeleeWeapon";
-import NonPlayer from "../NonPlayer";
-import Box from "./Box";
-import HitBuilding from "./HitBuilding";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -43,6 +36,7 @@ export default class InteractBuilding extends Building {
     mat: cc.MaterialVariant;
     isTaken = false;
     isAttacking = false;
+    isThrowing = false;
     player: Player;
     isLift = false;
     onLoad() {
@@ -81,6 +75,7 @@ export default class InteractBuilding extends Building {
             collider.size = cc.size(height, width);
 
         }
+        physicCollider.density = this.isAttacking ? 1 : 300;
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false;
         physicCollider.apply();
     }
@@ -178,7 +173,7 @@ export default class InteractBuilding extends Building {
         }
         this.player = player;
         if (isAttack) {
-            return this._attack();
+            return this.attack();
         } else if (isRemote) {
             return this.throwOrKick();
         } else if (isLongPress) {
@@ -186,7 +181,6 @@ export default class InteractBuilding extends Building {
         } else {
             return this.switchMode();
         }
-        return false;
     }
     taken(player: Player, isLongPress: boolean): boolean {
         if (this.data.interact < 1) {
@@ -207,65 +201,86 @@ export default class InteractBuilding extends Building {
     }
     //拿起
     private _taken(): boolean {
+        if (this.isAttacking) {
+            return;
+        }
         this.isTaken = true;
-        this.isLift = false;
+        this.isLift = true;
         return true;
     }
     //放下
     private putDown(): boolean {
+        if (this.isAttacking) {
+            return;
+        }
         this.isTaken = false;
         return true;
     }
     //模式切换
     private switchMode(): boolean {
+        if (this.isAttacking) {
+            return;
+        }
         this.isLift = !this.isLift;
         return true;
     }
     //投掷
     private throwOrKick(): boolean {
-        this.isTaken = false;
-        this.isAttacking = true;
-        let rigidBody: cc.RigidBody = this.getComponent(cc.RigidBody);
-        let pos = this.player.weaponLeft.meleeWeapon.Hv.clone();
-        let power = 1000;
-        pos = pos.normalizeSelf().mul(power);
-        rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
-        if (this.isLift) {
-            cc.tween(this.sprite.node)
-                .to(0.5, { position: cc.v3(0, 128) }, { easing: 'quadOut' })
-                .to(0.5, { position: cc.v3(0, 0) }, { easing: 'bounceOut' }).start();
-            cc.tween(this.shadow).to(0.5, { scale: 3 }).to(0.5, { scale: 4 }).start();
+        if (this.isAttacking || this.isThrowing) {
+            return;
         }
+        this.isAttacking = true;
+        this.isThrowing = true;
+        AudioPlayer.play(AudioPlayer.DASH);
+        this.scheduleOnce(() => {
+            let rigidBody: cc.RigidBody = this.getComponent(cc.RigidBody);
+            this.updateCollider();
+            let pos = this.player.weaponLeft.meleeWeapon.Hv.clone();
+            let power = this.isLift ? 2000 : 3000;
+            pos = pos.normalizeSelf().mul(power);
+            rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
+            if (this.isLift) {
+                cc.tween(this.sprite.node)
+                    .to(0.2, { position: cc.v3(0, 128) }, { easing: 'quadOut' })
+                    .to(0.2, { position: cc.v3(0, 0) }, { easing: 'bounceOut' }).start();
+                cc.tween(this.shadow).to(0.5, { scale: 3 }).to(0.5, { scale: 4 }).start();
+            }
+        }, 0.1)
         this.scheduleOnce(() => {
             this.isAttacking = false;
-        }, 1)
+            this.isTaken = false;
+            this.isThrowing = false;
+            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
+            this.updateCollider();
+        }, 2)
         return true;
 
     }
     //攻击
-    private _attack(): boolean {
+    private attack(): boolean {
         if (!this.isTaken || this.isAttacking || !this.player) {
             return false;
         }
+        AudioPlayer.play(AudioPlayer.MELEE);
         this.isAttacking = true;
         if (this.isLift) {
             let p = this.player.weaponLeft.meleeWeapon.Hv.clone().mul(64);
             cc.tween(this.sprite.node).to(0.2, { position: p }).to(0.6, { position: cc.v3(0, 96) })
                 .call(() => {
                     this.isAttacking = false;
-                    this.player.weaponLeft.meleeWeapon.MeleeAttackFinish();
                 }).start();
         } else {
-            cc.tween(this.sprite.node).to(0.3, { position: cc.v3(0, 96) }).to(0.2, { position: cc.v3(0, 0) })
+            let p = this.player.node.convertToWorldSpaceAR(cc.v3(0, 0));
+            p = this.sprite.node.convertToNodeSpaceAR(p).add(cc.v3(0, 96));
+            cc.tween(this.sprite.node).to(0.3, { position: p }).to(0.2, { position: cc.v3(0, 0) })
                 .call(() => {
                     this.isAttacking = false;
-                    this.player.weaponLeft.meleeWeapon.MeleeAttackFinish();
                 }).start();
         }
         return true;
     }
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
-        if (other.tag != ColliderTag.PLAYER && this.player && this.isTaken) {
+        if (other.tag != ColliderTag.PLAYER && this.player && this.isTaken&& this.isAttacking) {
             let success = this.player.weaponLeft.meleeWeapon.checkAttacking(other);
             if (success) {
                 this.isAttacking = false;
@@ -277,19 +292,20 @@ export default class InteractBuilding extends Building {
     }
     private updatePosition() {
         this.shadow.opacity = 255;
-        if (this.player && this.isTaken && !this.isAttacking) {
-            if (!this.shadow) {
-                this.shadow = this.node.getChildByName('shadow');
+        if (this.player && this.isTaken) {
+            this.shadow.opacity = this.isThrowing ? 255 : 0;
+            if (!this.isAttacking) {
+                if (this.isLift) {
+                    this.sprite.node.position = Logic.lerpPos(this.sprite.node.position, cc.v3(0, 96), 0.1);
+                    this.node.position = Logic.lerpPos(this.node.position, this.player.node.position.clone(), 0.1);
+                } else {
+                    let p = this.player.weaponLeft.meleeWeapon.Hv.clone().mul(64);
+                    let pos = this.player.node.position.add(p);
+                    this.sprite.node.position = Logic.lerpPos(this.sprite.node.position, cc.v3(0, 0), 0.1);
+                    this.node.position = Logic.lerpPos(this.node.position, pos, 0.1);
+                }
             }
-            this.shadow.opacity = 0;
-            if (this.isLift) {
-                let pos = this.player.node.position.add(cc.v3(0, 96));
-                this.node.position = Logic.lerpPos(this.node.position, pos, 0.1);
-            } else {
-                let p = this.player.weaponLeft.meleeWeapon.Hv.clone().mul(64);
-                let pos = this.player.node.position.add(p);
-                this.node.position = Logic.lerpPos(this.node.position, pos, 0.1);
-            }
+
 
         }
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
