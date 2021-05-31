@@ -41,6 +41,7 @@ import NonPlayer from './NonPlayer';
 import AvatarData from './Data/AvatarData';
 import StatusData from './Data/StatusData';
 import InteractBuilding from './Building/InteractBuilding';
+import { ColliderTag } from './Actor/ColliderTag';
 @ccclass
 export default class Player extends Actor {
 
@@ -88,7 +89,7 @@ export default class Player extends Actor {
     isWeaponDashing = false;
     fistCombo = 0;
     dungeon: Dungeon;
-    interactBuilding:InteractBuilding;
+    interactBuilding: InteractBuilding;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -117,7 +118,9 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.PLAYER_SKILL
             , (event) => { if (this.node) this.useSkill() });
         cc.director.on(EventHelper.PLAYER_ATTACK
-            , (event) => { if (this.node) this.meleeAttack() });
+            , (event) => { 
+                if (this.node) this.meleeAttack();
+            });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
             , (event) => {
                 if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
@@ -126,6 +129,9 @@ export default class Player extends Actor {
             });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK
             , (event) => {
+                if(this.useInteractBuilding(false)){
+                    return;
+                }
                 if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
                     this.shield.use();
                 } else {
@@ -369,23 +375,22 @@ export default class Player extends Actor {
             this.isFaceRight = pos.x > 0;
         }
         this.isFaceUp = pos.y > 0;
-
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
         if (isMiss) {
             this.showFloatFont(this.node.parent, 0, false, true, false);
         }
         this.updateCombo();
         if (this.fistCombo == MeleeWeapon.COMBO1) {
-            this.weaponRight.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
+            this.weaponRight.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
             this.weaponLeft.meleeWeapon.attackIdle(false);
         } else if (this.fistCombo == MeleeWeapon.COMBO2) {
             this.weaponRight.meleeWeapon.attackIdle(true);
-            this.weaponLeft.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
+            this.weaponLeft.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
         } else if (this.fistCombo == MeleeWeapon.COMBO3) {
-            this.weaponRight.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
+            this.weaponRight.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
             this.weaponRight.meleeWeapon.DashTime(400);
             this.scheduleOnce(() => {
-                this.weaponLeft.meleeWeapon.attack(this.data, isMiss,this.fistCombo);
+                this.weaponLeft.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
             }, 0.15);
         }
         this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
@@ -403,9 +408,22 @@ export default class Player extends Actor {
             return;
         }
     }
-    remoteRate = 0;
+    useInteractBuilding(isMelee:boolean) {
+        if (!this.interactBuilding) {
+            return false;
+        }
+        if (!this.interactBuilding.isTaken) {
+            return false;
+        }
+        if (!this.interactBuilding.isAttacking) {
+            this.stopHiding();
+            return this.interactBuilding.interact(this, false, isMelee, !isMelee);
+        }
+        return true;
+    }
     remoteAttack() {
-        if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || !this.weaponLeft.shooter || this.sc.isJumping) {
+        if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling
+            || !this.weaponLeft.shooter || this.sc.isJumping) {
             return;
         }
         let arcEx = 0;
@@ -492,6 +510,9 @@ export default class Player extends Actor {
             pos = pos.mul(0.01);
         }
         if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
+            pos = pos.mul(0.5);
+        }
+        if (this.interactBuilding&&this.interactBuilding.isTaken) {
             pos = pos.mul(0.5);
         }
         if (this.talentSkills.IsExcuting && this.talentSkills.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
@@ -866,9 +887,10 @@ export default class Player extends Actor {
         if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
             this.dungeon.itemManager.lastGroundItem = null;
         }
-        if(this.interactBuilding){
-
-        }else if (this.dungeon.buildingManager.lastInteractBuilding && this.dungeon.buildingManager.lastInteractBuilding.taken(this, isLongPress)) {
+        if (this.interactBuilding&&this.interactBuilding.isTaken) {
+            this.interactBuilding.interact(this, isLongPress, false, false);
+        } else if (this.dungeon.buildingManager.lastInteractBuilding && this.dungeon.buildingManager.lastInteractBuilding.taken(this, isLongPress)) {
+            this.interactBuilding = this.dungeon.buildingManager.lastInteractBuilding;
             this.dungeon.buildingManager.lastInteractBuilding = null;
         }
         if (this.touchedTips) {
@@ -877,9 +899,14 @@ export default class Player extends Actor {
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.node.getComponent(NonPlayer)) {
+        if(otherCollider.tag == ColliderTag.NONPLAYER){
             contact.disabledOnce = true;
+        }else if(otherCollider.tag == ColliderTag.BUILDING){
+            if (otherCollider.node.getComponent(InteractBuilding).isTaken) {
+                contact.disabledOnce = true;
+            }
         }
+        
     }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
     //     let equipment = otherCollider.body.node.getComponent(Equipment);

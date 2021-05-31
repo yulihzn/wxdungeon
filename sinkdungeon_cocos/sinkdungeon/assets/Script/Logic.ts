@@ -307,7 +307,15 @@ export default class Logic extends cc.Component {
     }
     static lerp(a: number, b: number, r: number): number {
         return a + (b - a) * r;
-    };
+    }
+    static lerpPos(self: cc.Vec3, to: cc.Vec3, ratio: number): cc.Vec3 {
+        let out = cc.v3(0, 0);
+        let x = self.x;
+        let y = self.y;
+        out.x = x + (to.x - x) * ratio;
+        out.y = y + (to.y - y) * ratio;
+        return out;
+    }
     static genNonDuplicateID(): string {
         return Number(Random.rand().toString().substr(3, 16) + Date.now()).toString(36);
     }

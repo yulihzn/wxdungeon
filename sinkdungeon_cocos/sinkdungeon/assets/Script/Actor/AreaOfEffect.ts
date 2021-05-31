@@ -148,8 +148,6 @@ export default class AreaOfEffect extends cc.Component {
                 hitBuilding.takeDamage(damage);
             }
         }
-
-
     }
     private beatBack(node: cc.Node, hv: cc.Vec3) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);

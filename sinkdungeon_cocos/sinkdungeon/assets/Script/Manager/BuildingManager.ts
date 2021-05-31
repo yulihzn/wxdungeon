@@ -348,7 +348,7 @@ export default class BuildingManager extends BaseManager {
                         d.node.position = Dungeon.getPosInMap(d.data.defaultPos);
                         d.data.currentHealth = d.data.maxHealth;
                     }
-                    d.init(parseInt(mapDataStr[1]));
+                    d.init(true,parseInt(mapDataStr[1]));
                     this.interactBuildings.push(d);
                 }
             } else {
@@ -356,7 +356,7 @@ export default class BuildingManager extends BaseManager {
                 let d = interactBuilding.getComponent(InteractBuilding);
                 d.data.currentHealth = 5;
                 Logic.mapManager.setCurrentBuildingData(d.data.clone());
-                d.init(parseInt(mapDataStr[1]));
+                d.init(true,parseInt(mapDataStr[1]));
                 this.interactBuildings.push(d);
             }
         } else if (mapDataStr == 'S0') {

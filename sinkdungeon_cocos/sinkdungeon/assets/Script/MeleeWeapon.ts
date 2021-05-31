@@ -94,6 +94,7 @@ export default class MeleeWeapon extends cc.Component {
     private isSecond = false;//是否是副手
     private currentAngle = 0;
     private fistCombo = 0;
+    private isBuildingAttack = false;
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
     }
@@ -193,6 +194,14 @@ export default class MeleeWeapon extends cc.Component {
     attack(data: PlayerData, isMiss: boolean,fistCombo:number): boolean {
         if (this.isAttacking) {
             return false;
+        }
+        if(this.player.useInteractBuilding(true)){
+            this.isBuildingAttack = true;
+            this.isAttacking = true;
+            return true;
+        }else{
+            this.isAttacking = false;
+            this.isBuildingAttack = false;
         }
         let audioName = AudioPlayer.MELEE;
         this.fistCombo = fistCombo;
@@ -472,12 +481,16 @@ export default class MeleeWeapon extends cc.Component {
 
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
         if (self.radius > 0) {
-            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
-                this.hasTargetMap[other.node.uuid]++;
-            } else {
-                this.hasTargetMap[other.node.uuid] = 1;
-                this.attacking(other);
-            }
+            this.checkAttacking(other);
+        }
+    }
+    checkAttacking(other: cc.Collider):boolean{
+        if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
+            this.hasTargetMap[other.node.uuid]++;
+            return false;
+        } else {
+            this.hasTargetMap[other.node.uuid] = 1;
+            return this.attacking(other);
         }
     }
     private beatBack(node: cc.Node) {
@@ -499,14 +512,17 @@ export default class MeleeWeapon extends cc.Component {
         if (this.comboType == MeleeWeapon.COMBO3) {
             power += 50;
         }
+        if(this.isBuildingAttack){
+            power = 500;
+        }
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
         }, 0.1);
     }
-    private attacking(attackTarget: cc.Collider) {
+    private attacking(attackTarget: cc.Collider):boolean {
         if (!attackTarget || !this.isAttacking) {
-            return;
+            return false;
         }
         // this.waveWeapon.isAttacking = true;
         // this.stabWeapon.isAttacking = true;
@@ -518,12 +534,15 @@ export default class MeleeWeapon extends cc.Component {
         }
         damage.isStab = this.isStab;
         damage.isFist = this.isFist;
-        damage.isFar = this.isFist;
+        damage.isFar = this.isFar;
         damage.isBlunt = this.isBlunt;
         damage.isMelee = true;
         damage.comboType = this.comboType;
         if(this.isFist){
             damage.comboType = this.fistCombo;
+        }
+        if(this.isBuildingAttack){
+            damage.physicalDamage+=3;
         }
         let damageSuccess = false;
         let attackSuccess = false;
@@ -590,6 +609,7 @@ export default class MeleeWeapon extends cc.Component {
         if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
             this.player.updateDream(-1);
         }
+        return damageSuccess || attackSuccess;
     }
     private addTargetAllStatus(data: CommonData, target: Actor) {
         this.addTargetStatus(data.iceRate, target, StatusManager.FROZEN);
