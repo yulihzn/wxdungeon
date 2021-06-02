@@ -34,6 +34,10 @@ export default class PlayerAvatar extends cc.Component {
     footRightSprite: cc.Sprite = null;
     shoesLeftSprite: cc.Sprite = null;
     shoesRightSprite: cc.Sprite = null;
+    handLeftSprite: cc.Sprite = null;
+    glovesLeftSprite: cc.Sprite = null;
+    handRightSprite: cc.Sprite = null;
+    glovesRightSprite: cc.Sprite = null;
     headSprite: cc.Sprite = null;
     faceSprite: cc.Sprite = null;
     eyesSprite: cc.Sprite = null;
@@ -62,6 +66,10 @@ export default class PlayerAvatar extends cc.Component {
         this.footRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright', 'foot']);
         this.shoesLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft', 'foot', 'shoes']);
         this.shoesRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright', 'foot', 'shoes']);
+        this.handLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handleft']);
+        this.handRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handright']);
+        this.glovesLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handleft', 'gloves']);
+        this.glovesRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'handright', 'gloves']);
         this.headSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head']);
         this.faceSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'face']);
         this.eyesSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'head', 'eyes']);
@@ -79,6 +87,8 @@ export default class PlayerAvatar extends cc.Component {
         this.legRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.footLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.footRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+        this.handLeftSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
+        this.handRightSprite.node.color = cc.Color.WHITE.fromHEX(this.data.skinColor);
         this.hairSprite.node.stopAllActions();
         this.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
         let index = 0;
@@ -102,6 +112,24 @@ export default class PlayerAvatar extends cc.Component {
             node = node.getChildByName(name);
         }
         return node;
+    }
+    showHandsWithInteract(flag: boolean, isLift: boolean) {
+        this.handLeftSprite.node.scaleY = 0.2;
+        this.handRightSprite.node.scaleY = 0.2;
+        this.handLeftSprite.node.opacity = 0;
+        this.handRightSprite.node.opacity = 0;
+        this.handLeftSprite.node.y = 8;
+        this.handRightSprite.node.y = 8;
+        if (flag) {
+            this.handLeftSprite.node.opacity = 255;
+            this.handRightSprite.node.opacity = 255;
+            if (isLift) {
+                this.handLeftSprite.node.scaleY = 0.3;
+                this.handRightSprite.node.scaleY = 0.3;
+                this.handLeftSprite.node.y = 16;
+                this.handRightSprite.node.y = 16;
+            }
+        }
     }
     playAnim(status: number, dir: number) {
         if (!this.anim) {
@@ -166,8 +194,8 @@ export default class PlayerAvatar extends cc.Component {
         this.hairSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
         this.faceSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
         this.eyesSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
-        // this.handLeftSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
-        // this.handRightSprite.getMaterial(0).setProperty('addColor',isHit?cc.color(200,200,200,100):cc.Color.TRANSPARENT);
+        this.handLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
+        this.handRightSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
         this.legLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
         this.legRightSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
         this.footLeftSprite.getMaterial(0).setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
@@ -178,19 +206,19 @@ export default class PlayerAvatar extends cc.Component {
         let helmet = inventoryManager.equips[InventoryManager.HELMET];
         let clothes = inventoryManager.equips[InventoryManager.CLOTHES];
         this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
-        if (dir == 0 && Logic.spriteFrameRes(helmet.img+'anim2')) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img+'anim2');
-        } else if (dir == 1 && Logic.spriteFrameRes(helmet.img+'anim1')) {
-            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img+'anim1');
+        if (dir == 0 && Logic.spriteFrameRes(helmet.img + 'anim2')) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img + 'anim2');
+        } else if (dir == 1 && Logic.spriteFrameRes(helmet.img + 'anim1')) {
+            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img + 'anim1');
         } else {
-            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img+'anim0');
+            this.helmetSprite.spriteFrame = Logic.spriteFrameRes(helmet.img + 'anim0');
         }
-        if (dir == 0 && Logic.spriteFrameRes(clothes.img+'anim2')) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img+'anim2');
-        } else if (dir == 1 && Logic.spriteFrameRes(clothes.img+'anim1')) {
-            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img+'anim1');
+        if (dir == 0 && Logic.spriteFrameRes(clothes.img + 'anim2')) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img + 'anim2');
+        } else if (dir == 1 && Logic.spriteFrameRes(clothes.img + 'anim1')) {
+            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img + 'anim1');
         } else {
-            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img+'anim0');
+            this.clothesSprite.spriteFrame = Logic.spriteFrameRes(clothes.img + 'anim0');
         }
     }
     private playDie() {
@@ -229,6 +257,7 @@ export default class PlayerAvatar extends cc.Component {
         this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[0]);
         if (dir != 4) {
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
+            this.handRightSprite.node.zIndex = dir == 0 ? this.bodySprite.node.zIndex - 1 : this.bodySprite.node.zIndex + 1;
         }
     }
     private playWalk(dir: number) {

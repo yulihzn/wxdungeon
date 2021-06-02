@@ -49,7 +49,7 @@ export default class FireGhost extends cc.Component {
         }, 0.2);
     }
     getPlayerFarPosition(player: Player, distance: number, angleOffset: number): cc.Vec3 {
-        let hv = player.weaponRight.meleeWeapon.Hv.clone();
+        let hv = player.Hv.clone();
         let pos = cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180).mul(distance));
         return player.node.position.clone().addSelf(cc.v3(8, 48).addSelf(pos));
     }

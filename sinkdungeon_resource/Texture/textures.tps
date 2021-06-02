@@ -1403,6 +1403,7 @@
             <key type="filename">building/wallship01anim001.png</key>
             <key type="filename">equipment/weapon035.png</key>
             <key type="filename">equipment/weapon036.png</key>
+            <key type="filename">equipment/weapon037.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

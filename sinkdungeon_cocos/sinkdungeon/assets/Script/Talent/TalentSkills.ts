@@ -231,7 +231,7 @@ export default class TalentSkills extends Talent {
         this.player.sc.isMoving = false;
         if (pos.equals(cc.Vec2.ZERO)) {
             // pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
-            pos = cc.v2(this.player.weaponRight.meleeWeapon.Hv.clone());
+            pos = cc.v2(this.player.Hv.clone());
         } else {
             pos = pos.normalizeSelf();
         }

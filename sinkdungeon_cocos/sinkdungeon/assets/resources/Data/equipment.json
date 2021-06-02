@@ -1025,6 +1025,32 @@
         "blunt":1,
         "desc": "经典键盘"
     },
+    "weapon037": {
+        "nameCn": "球棍",
+        "nameEn": "Baseball Bat",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ebd086",
+        "img": "weapon037",
+        "exBeatBack":100,
+        "isReflect":1,
+        "common": {
+            "damageMin": 2,
+            "damageMax": 1,
+            "criticalStrikeRate": 10,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "lighteningRate":30,
+            "maxHealth": 0
+        },
+        "blunt":1,
+        "desc": "来一记全垒打吧"
+    },
     "remote001": {
         "nameCn": "十字弩",
         "nameEn": "Cross Bow",

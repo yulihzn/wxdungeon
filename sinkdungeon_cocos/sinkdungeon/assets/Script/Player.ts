@@ -37,7 +37,6 @@ import { EventHelper } from './EventHelper';
 import TalentSkills from './Talent/TalentSkills';
 import ShadowOfSight from './Effect/ShadowOfSight';
 import LightManager from './Manager/LightManager';
-import NonPlayer from './NonPlayer';
 import AvatarData from './Data/AvatarData';
 import StatusData from './Data/StatusData';
 import InteractBuilding from './Building/InteractBuilding';
@@ -119,6 +118,9 @@ export default class Player extends Actor {
             , (event) => { if (this.node) this.useSkill() });
         cc.director.on(EventHelper.PLAYER_ATTACK
             , (event) => { 
+                if(this.useInteractBuilding(true)){
+                    return;
+                }
                 if (this.node) this.meleeAttack();
             });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
@@ -299,8 +301,10 @@ export default class Player extends Actor {
                 this.updateEquipment(this.avatar.pantsSprite, inventoryEquip.color, spriteFrame);
                 break;
             case InventoryManager.GLOVES:
-                this.updateEquipment(this.weaponRight.meleeWeapon.GloveSprite, inventoryEquip.color, spriteFrame);
-                this.updateEquipment(this.weaponLeft.meleeWeapon.GloveSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.weaponRight.meleeWeapon.GlovesSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.weaponLeft.meleeWeapon.GlovesSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.avatar.glovesLeftSprite, inventoryEquip.color, spriteFrame);
+                this.updateEquipment(this.avatar.glovesRightSprite, inventoryEquip.color, spriteFrame);
                 break;
             case InventoryManager.SHOES:
                 this.updateEquipment(this.avatar.shoesLeftSprite, inventoryEquip.color, spriteFrame);
@@ -363,10 +367,15 @@ export default class Player extends Actor {
         }
         this.statusManager.stopAllStatus();
     }
+    get isInteractBuildingAniming(){
+        return this.interactBuilding 
+        &&this.interactBuilding.isTaken && this.interactBuilding.isAniming;
+    }
     meleeAttack() {
         if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking
+            || this.isInteractBuildingAniming
             || this.shield.isDefendOrParrying) {
             return;
         }
@@ -401,7 +410,8 @@ export default class Player extends Actor {
     useShield() {
         if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
-            || this.weaponLeft.meleeWeapon.IsAttacking) {
+            || this.weaponLeft.meleeWeapon.IsAttacking
+            || this.isInteractBuildingAniming) {
             return;
         }
         if (this.shield.Status == Shield.STATUS_PARRY || this.shield.Status == Shield.STATUS_PUTDOWN) {
@@ -415,8 +425,9 @@ export default class Player extends Actor {
         if (!this.interactBuilding.isTaken) {
             return false;
         }
-        if (!this.interactBuilding.isAttacking) {
+        if (!this.interactBuilding.isAniming) {
             this.stopHiding();
+            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
             return this.interactBuilding.interact(this, false, isMelee, !isMelee);
         }
         return true;
@@ -639,7 +650,8 @@ export default class Player extends Actor {
     jump() {
         if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow || this.sc.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
-            || this.weaponLeft.meleeWeapon.IsAttacking) {
+            || this.weaponLeft.meleeWeapon.IsAttacking
+            || this.isInteractBuildingAniming) {
             return false;
         }
         this.sc.isJumping = true;
@@ -863,11 +875,19 @@ export default class Player extends Actor {
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
         this.node.opacity = this.invisible ? 80 : 255;
+
+        let showHands = this.interactBuilding&&this.interactBuilding.isTaken;
+        let isLift = this.interactBuilding&&this.interactBuilding.isTaken&&this.interactBuilding.isLift;
         if (this.weaponLeft) {
             this.weaponLeft.updateLogic(dt);
+            this.weaponLeft.meleeWeapon.setHandAndWeaponInVisible(showHands);
         }
         if (this.weaponRight) {
             this.weaponRight.updateLogic(dt);
+            this.weaponRight.meleeWeapon.setHandAndWeaponInVisible(showHands);
+        }
+        if(this.avatar){
+            this.avatar.showHandsWithInteract(showHands,isLift);
         }
     }
     private useSkill(): void {
@@ -901,13 +921,7 @@ export default class Player extends Actor {
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
         if(otherCollider.tag == ColliderTag.NONPLAYER){
             contact.disabledOnce = true;
-        }else if(otherCollider.tag == ColliderTag.BUILDING){
-            let b = otherCollider.node.getComponent(InteractBuilding);
-            if (b&&(b.isTaken||b.isAttacking)) {
-                contact.disabledOnce = true;
-            }
         }
-        
     }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
     //     let equipment = otherCollider.body.node.getComponent(Equipment);
@@ -951,7 +965,9 @@ export default class Player extends Actor {
         }
 
     }
-
+    get Hv():cc.Vec3{
+        return this.weaponRight.meleeWeapon.Hv;
+    }
     useItem(data: ItemData) {
         Item.userIt(data, this);
     }

@@ -87,14 +87,15 @@ export default class MeleeWeapon extends cc.Component {
     private weaponStabLightSprite: cc.Sprite = null;
     private weaponLightSprite: cc.Sprite = null;
     private handSprite: cc.Sprite = null;
-    private gloveSprite: cc.Sprite = null;
+    private glovesSprite: cc.Sprite = null;
     private comboType = 0;
     private isComboing = false;
     private hasTargetMap: { [key: string]: number } = {};
     private isSecond = false;//是否是副手
     private currentAngle = 0;
     private fistCombo = 0;
-    private isBuildingAttack = false;
+    private exBeatBack:number = 0;
+    
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
     }
@@ -113,8 +114,8 @@ export default class MeleeWeapon extends cc.Component {
     get IsReflect() {
         return this.isReflect;
     }
-    get GloveSprite() {
-        return this.gloveSprite;
+    get GlovesSprite() {
+        return this.glovesSprite;
     }
 
     onLoad() {
@@ -128,7 +129,7 @@ export default class MeleeWeapon extends cc.Component {
         this.weaponStabLightSprite = this.getSpriteChildSprite(['sprite', 'stablight']);
         this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight']);
         this.handSprite = this.getSpriteChildSprite(['sprite', 'hand']);
-        this.gloveSprite = this.getSpriteChildSprite(['sprite', 'hand', 'glove']);
+        this.glovesSprite = this.getSpriteChildSprite(['sprite', 'hand', 'gloves']);
         this.handSprite.node.color = cc.Color.WHITE.fromHEX(this.player.avatar.data.skinColor);
 
     }
@@ -161,6 +162,7 @@ export default class MeleeWeapon extends cc.Component {
         this.isReflect = equipData.isReflect == 1;
         this.isFist = false;
         this.isBlunt = equipData.blunt == 1;
+        this.exBeatBack = equipData.exBeatBack;
         if (equipData.stab == 1) {
             this.weaponSprite.spriteFrame = null;
             this.weaponStabSprite.spriteFrame = spriteFrame;
@@ -196,18 +198,6 @@ export default class MeleeWeapon extends cc.Component {
             return false;
         }
         this.hasTargetMap = {};
-        if(this.player.useInteractBuilding(true)){
-            this.isBuildingAttack = true;
-            this.isAttacking = true;
-            this.scheduleOnce(()=>{
-                this.hasTargetMap = {};
-                this.MeleeAttackFinish();
-            },1)
-            return true;
-        }else{
-            this.isAttacking = false;
-            this.isBuildingAttack = false;
-        }
         let audioName = AudioPlayer.MELEE;
         this.fistCombo = fistCombo;
         let audiodelay = 0;
@@ -423,6 +413,17 @@ export default class MeleeWeapon extends cc.Component {
         }, 0.2)
     }
 
+    setHandAndWeaponInVisible(flag:boolean){
+        if(flag){
+            this.weaponSprite.node.opacity = 0;
+            this.weaponStabSprite.node.opacity = 0;
+            this.handSprite.node.opacity = 0;
+        }else{
+            this.weaponSprite.node.opacity = 255;
+            this.weaponStabSprite.node.opacity = 255;
+            this.handSprite.node.opacity = 255;
+        }
+    }
     updateLogic(dt: number) {
         this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 10);
         let pos = this.hasNearEnemy();
@@ -435,6 +436,7 @@ export default class MeleeWeapon extends cc.Component {
             let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
             this.rotateColliderManager(olderTarget);
         }
+        
     }
     private hasNearEnemy() {
         let olddis = 1000;
@@ -485,25 +487,23 @@ export default class MeleeWeapon extends cc.Component {
 
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
         if (self.radius > 0) {
-            this.checkAttacking(other);
+            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
+                this.hasTargetMap[other.node.uuid]++;
+                return false;
+            } else {
+                this.hasTargetMap[other.node.uuid] = 1;
+                return this.attacking(other);
+            }
         }
     }
-    checkAttacking(other: cc.Collider):boolean{
-        if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
-            this.hasTargetMap[other.node.uuid]++;
-            return false;
-        } else {
-            this.hasTargetMap[other.node.uuid] = 1;
-            return this.attacking(other);
-        }
-    }
+  
     private beatBack(node: cc.Node) {
         let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.Hv.clone();
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
         }
-        let power = 50;
+        let power = 50+this.exBeatBack;
         if (!this.isFar && this.isStab) {
             power = 50;
         } else if (this.isFar && this.isStab) {
@@ -516,9 +516,7 @@ export default class MeleeWeapon extends cc.Component {
         if (this.comboType == MeleeWeapon.COMBO3) {
             power += 50;
         }
-        if(this.isBuildingAttack){
-            power = 500;
-        }
+        
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
@@ -544,9 +542,6 @@ export default class MeleeWeapon extends cc.Component {
         damage.comboType = this.comboType;
         if(this.isFist){
             damage.comboType = this.fistCombo;
-        }
-        if(this.isBuildingAttack){
-            damage.physicalDamage+=3;
         }
         let damageSuccess = false;
         let attackSuccess = false;
