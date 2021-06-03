@@ -92,7 +92,7 @@ export default class Wall extends Building {
     public isSide():boolean{
         return this.type == Wall.TYPE_NORMAL&&this.dir > 1;
     }
-    init(mapStr: string, leveldata: LevelData) {
+    init(mapStr: string, leveldata: LevelData,onlyShow:boolean) {
         this.mapStr = mapStr;
         let dir = parseInt(mapStr[2]);
         this.dir = dir;
@@ -185,6 +185,11 @@ export default class Wall extends Building {
         if(this.isTop()){
             let collider = this.getComponent(cc.PhysicsBoxCollider);
             collider.tag = ColliderTag.WALL_TOP;
+        }
+        if(onlyShow){
+            this.node.removeComponent(cc.PhysicsBoxCollider);
+            this.node.removeComponent(cc.RigidBody);
+            this.node.removeComponent(cc.BoxCollider);
         }
     }
     private isInnerOrCorner(type:number):boolean{

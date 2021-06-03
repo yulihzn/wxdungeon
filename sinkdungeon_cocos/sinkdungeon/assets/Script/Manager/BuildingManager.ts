@@ -181,11 +181,11 @@ export default class BuildingManager extends BaseManager {
                 offset = cc.v3(0, -1);
             }
             if (offset.x != 0 || offset.y != 0) {
-                this.addBuilding(Logic.getBuildings(BuildingManager.MIST), cc.v3(indexPos.x + offset.x, indexPos.y + offset.y)).zIndex = IndexZ.OVERHEAD;
+                // this.addBuilding(Logic.getBuildings(BuildingManager.MIST), cc.v3(indexPos.x + offset.x, indexPos.y + offset.y)).zIndex = IndexZ.OVERHEAD;
             }
         } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
-            this.addDirWalls(mapDataStr, indexPos, levelData);
+            this.addDirWalls(mapDataStr, indexPos, levelData,false);
         } else if (this.isFirstEqual(mapDataStr, '-')) {
             let dn = this.addBuilding(Logic.getBuildings(BuildingManager.DARKNESS), indexPos);
             dn.zIndex = IndexZ.DARKNESS;
@@ -473,6 +473,53 @@ export default class BuildingManager extends BaseManager {
             this.monsterGeneratorList.push(p);
         }
     }
+    public addBuildingsFromSideMap(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
+        if (this.isFirstEqual(mapDataStr, '#')) {
+            //生成墙
+            this.addDirWalls(mapDataStr, indexPos, levelData,true);
+        } else if (this.isFirstEqual(mapDataStr, '-')) {
+            let dn = this.addBuilding(Logic.getBuildings(BuildingManager.DARKNESS), indexPos);
+            dn.zIndex = IndexZ.DARKNESS;
+            if (mapDataStr == '-0') {
+                dn.zIndex = IndexZ.ROOF;
+            }
+        } else if (this.isFirstEqual(mapDataStr, '~')) {
+            let pint = parseInt(mapDataStr[1]);
+            if (pint >= 0 && pint <= 9 || mapDataStr == '~a' || mapDataStr == '~b') {
+                let co = this.addBuilding(Logic.getBuildings(BuildingManager.COAST), indexPos);
+                let pbc = co.getComponent(cc.PhysicsBoxCollider);
+                let fint = pint;
+                if (mapDataStr == '~a') {
+                    fint = 10;
+                } else if (mapDataStr == '~b') {
+                    fint = 11;
+                }
+                co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`);
+                let arr = this.coastColliderList[fint].split(',');
+                pbc.size = cc.size(parseInt(arr[0]), parseInt(arr[1]));
+                pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
+                pbc.apply();
+                co.zIndex = IndexZ.WALL;
+            } else {
+                let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATER), indexPos);
+                dn.zIndex = IndexZ.WALL;
+            }
+        } else if (this.isFirstEqual(mapDataStr, 'D')) {
+            let dir = parseInt(mapDataStr[1]);
+            if (isNaN(dir)) {
+                if (mapDataStr == 'Da') {
+                    dir = 8;
+                } else if (mapDataStr == 'Db') {
+                    dir = 9;
+                } else if (mapDataStr == 'Dc') {
+                    dir = 10;
+                } else if (mapDataStr == 'Dd') {
+                    dir = 11;
+                }
+            }
+            this.addDoor(dir, indexPos);
+        }
+    }
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {
         let prefabName = BuildingManager.LAMPLIGHT;
         let isOverHead = false;
@@ -579,10 +626,10 @@ export default class BuildingManager extends BaseManager {
             }
         }
     }
-    private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
+    private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData,onlyShow:boolean) {
         let node: cc.Node = this.addBuilding(Logic.getBuildings(BuildingManager.WALL), indexPos);
         let wall = node.getComponent(Wall);
-        wall.init(mapDataStr, levelData);
+        wall.init(mapDataStr, levelData,onlyShow);
 
 
     }

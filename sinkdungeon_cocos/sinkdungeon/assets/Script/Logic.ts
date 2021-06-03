@@ -85,7 +85,7 @@ export default class Logic extends cc.Component {
     static coinDreamCount = 0;//金币累加数
     static time = '00:00:00';
     static seed = 5;
-    static isFirst = 0;
+    static isFirst = 1;
     static jumpChapter = 0;
     static shipTransportScene = 0;
     static isCheatMode = false;//作弊

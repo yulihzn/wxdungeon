@@ -90,6 +90,9 @@ export default class LevelData {
     }
     getRoomMap(x: number, y: number): string[][] {
         let temp: string[][] = new Array();
+        if(x<0||y<0||x>this.width-1||y>this.height-1){
+            return temp;
+        }
         for (let i = 0; i < this.roomWidth; i++) {
             temp[i] = new Array();
             for (let j = 0; j < this.roomHeight; j++) {

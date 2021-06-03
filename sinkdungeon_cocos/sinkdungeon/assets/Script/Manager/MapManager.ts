@@ -90,6 +90,13 @@ export default class MapManager {
         let mapdata = this.addGenerateThings(mdd, room.roomType, room.seed, data.needRadomDecorate);
         return mapdata.map;
     }
+    public getCurrentSideMapStringArray(offset:cc.Vec3):string[][]{
+        let room = this.getCurrentRoom();
+        let mdd = new MapData('');
+        let data = Logic.worldLoader.getCurrentLevelData();
+        mdd.map = data.getRoomMap(room.x+offset.x, room.y+offset.y);
+        return mdd.map;
+    }
     public getCurrentMapSize(): cc.Vec3 {
         let data = Logic.worldLoader.getCurrentLevelData();
         return cc.v3(data.roomWidth, data.roomHeight);
@@ -101,6 +108,7 @@ export default class MapManager {
         }
         return null;
     }
+   
     /** 获取当前房间指定建筑*/
     public getCurrentMapBuilding(defaultPos: cc.Vec3): BuildingData {
         let buildings = this.rectDungeon.buildings[`x=${this.rectDungeon.currentPos.x}y=${this.rectDungeon.currentPos.y}`];

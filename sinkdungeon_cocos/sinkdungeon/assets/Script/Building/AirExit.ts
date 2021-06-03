@@ -48,7 +48,7 @@ export default class AirExit extends Building {
             case 2:this.node.angle = 90;break;
             case 3: this.node.angle = 90;this.node.scaleY = -8;break;
         }
-        this.node.opacity = 10;
+        this.node.opacity = 60;
         this.node.width = Dungeon.TILE_SIZE / 8 * length;
         if(!this.collider){
             this.collider = this.getComponent(cc.PhysicsBoxCollider);

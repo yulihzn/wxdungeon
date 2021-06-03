@@ -39,7 +39,8 @@ export default class Door extends Building {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         this.lockInfo = this.node.getChildByName('info');
-        this.arrow = this.node.getChildByName('doorarrow')
+        this.arrow = this.node.getChildByName('doorarrow');
+        this.arrow.opacity = 0;
         this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
 
@@ -115,9 +116,6 @@ export default class Door extends Building {
             if (index > 4) {
                 this.boxCollider.sensor = true;
                 this.boxCollider.apply();
-                if(!this.isEmpty){
-                    cc.tween(this.arrow).to(1,{opacity:255}).start();
-                }
             }
         }, immediately ? 0 : 0.15, 4);
     }
@@ -132,7 +130,6 @@ export default class Door extends Building {
             if (index < 0) {
                 this.boxCollider.sensor = false;
                 this.boxCollider.apply();
-                cc.tween(this.arrow).to(1,{opacity:0}).start();
             }
         }, immediately ? 0 : 0.1, 4);
 

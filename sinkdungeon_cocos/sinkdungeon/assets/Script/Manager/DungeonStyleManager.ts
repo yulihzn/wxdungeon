@@ -87,9 +87,9 @@ export default class DungeonStyleManager extends BaseManager {
     }
     private addFloor() {
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
-        this.floor.width = Dungeon.TILE_SIZE / 4 * (Dungeon.WIDTH_SIZE + 0);
-        this.floor.height = Dungeon.TILE_SIZE / 4 * (Dungeon.HEIGHT_SIZE + 0);
-        let pos = Dungeon.getPosInMap(cc.v3(0, 0));
+        this.floor.width = Dungeon.TILE_SIZE / 4 * (Dungeon.WIDTH_SIZE*3 + 0);
+        this.floor.height = Dungeon.TILE_SIZE / 4 * (Dungeon.HEIGHT_SIZE*3 + 0);
+        let pos = Dungeon.getPosInMap(cc.v3(-Dungeon.WIDTH_SIZE, -Dungeon.HEIGHT_SIZE));
         this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2);
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`${leveldata.floorRes}001`);

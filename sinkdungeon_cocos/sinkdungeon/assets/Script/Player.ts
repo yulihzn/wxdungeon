@@ -496,7 +496,7 @@ export default class Player extends Actor {
                 this.shooterEx.data.bulletSize = data.bulletSize;
                 this.shooterEx.fireBullet(0);
             }
-            if (data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+            if (actor&&data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
                 actor.addStatus(data.statusNameHurtOther, new FromData());
             }
             if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
