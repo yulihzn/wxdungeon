@@ -3,11 +3,8 @@ package com.banditcat.dream;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.widget.RadioGroup;
-
-import com.bill99.kuaiqian.testsdk.R;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;

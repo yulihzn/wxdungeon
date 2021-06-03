@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bill99.kuaiqian.testsdk">
+    package="com.banditcat.dream">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="false"
