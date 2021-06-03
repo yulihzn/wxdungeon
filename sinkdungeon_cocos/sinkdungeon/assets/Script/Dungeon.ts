@@ -84,38 +84,36 @@ export default class Dungeon extends cc.Component {
      * 打开门
      */
     onLoad(): void {
-        Logic.lastBgmIndex = Logic.chapterIndex == Logic.CHAPTER099?1:0;
-        AudioPlayer.play(AudioPlayer.PLAY_BG,true);
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听
-        cc.director.on(EventHelper.PLAYER_MOVE, (event) => { this.playerAction(event.detail.dir, event.detail.pos, event.detail.dt) });
-        cc.director.on(EventHelper.DUNGEON_SETEQUIPMENT, (event) => {
-            if(this.node)this.addEquipment(event.detail.equipmentData.img, event.detail.pos, event.detail.equipmentData);
+        EventHelper.on(EventHelper.PLAYER_MOVE, (detail) => { this.playerAction(detail.dir, detail.pos, detail.dt) });
+        EventHelper.on(EventHelper.DUNGEON_SETEQUIPMENT, (detail) => {
+            if(this.node)this.addEquipment(detail.equipmentData.img, detail.pos, detail.equipmentData);
         });
-        cc.director.on(EventHelper.DUNGEON_ADD_COIN, (event) => {
-            this.addCoin(event.detail.pos, event.detail.count);
+        EventHelper.on(EventHelper.DUNGEON_ADD_COIN, (detail) => {
+            this.addCoin(detail.pos, detail.count);
         })
-        cc.director.on(EventHelper.DUNGEON_ADD_OILGOLD, (event) => {
+        EventHelper.on(EventHelper.DUNGEON_ADD_OILGOLD, (detail) => {
             //暂时屏蔽
-            // this.addOilGold(event.detail.pos, event.detail.count);
+            // this.addOilGold(detail.pos, detail.count);
         })
-        cc.director.on(EventHelper.DUNGEON_ADD_ITEM, (event) => {
-            if(this.node)this.addItem(event.detail.pos, event.detail.res, event.detail.count);
+        EventHelper.on(EventHelper.DUNGEON_ADD_ITEM, (detail) => {
+            if(this.node)this.addItem(detail.pos, detail.res, detail.count);
         })
-        cc.director.on(EventHelper.DUNGEON_ADD_FALLSTONE, (event) => {
-            this.addFallStone(event.detail.pos, event.detail.isAuto);
+        EventHelper.on(EventHelper.DUNGEON_ADD_FALLSTONE, (detail) => {
+            this.addFallStone(detail.pos, detail.isAuto);
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, (detail) => {
             this.addLighteningFall(detail.pos, false, false, detail.showArea, detail.damage);
         })
-        cc.director.on(EventHelper.DUNGEON_SHAKEONCE, (event) => {
+        EventHelper.on(EventHelper.DUNGEON_SHAKEONCE, (detail) => {
             if (this.anim) {
                 this.anim.play('DungeonShakeOnce');
             }
         });
-        cc.director.on(EventHelper.BOSS_ADDSLIME, (event) => {
-            this.addBossSlime(event.detail.slimeType, event.detail.posIndex);
+        EventHelper.on(EventHelper.BOSS_ADDSLIME, (detail) => {
+            this.addBossSlime(detail.slimeType, detail.posIndex);
         })
         this.monsterManager = this.getComponent(MonsterManager);
         this.nonPlayerManager = this.getComponent(NonPlayerManager);
@@ -127,6 +125,8 @@ export default class Dungeon extends cc.Component {
         this.reset();
     }
     reset() {
+        Logic.lastBgmIndex = Logic.chapterIndex == Logic.CHAPTER099?1:0;
+        AudioPlayer.play(AudioPlayer.PLAY_BG,true);
         this.monsterManager.clear();
         this.nonPlayerManager.clear();
         this.equipmentManager.clear();
@@ -481,17 +481,18 @@ export default class Dungeon extends cc.Component {
     }
     
     update(dt) {
-        if (this.isTimeDelay(dt)) {
-            this.checkPlayerPos(dt);
-            this.monsterManager.updateLogic(dt);
-            this.nonPlayerManager.updateLogic(dt);
-            this.buildingManager.updateLogic(dt,this.player);
-            this.equipmentManager.updateLogic(dt,this.player);
-            this.itemManager.updateLogic(dt,this.player);
+        if(this.isInitFinish){
+            if (this.isTimeDelay(dt)) {
+                this.checkPlayerPos(dt);
+                this.monsterManager.updateLogic(dt);
+                this.nonPlayerManager.updateLogic(dt);
+                this.buildingManager.updateLogic(dt,this.player);
+                this.equipmentManager.updateLogic(dt,this.player);
+                this.itemManager.updateLogic(dt,this.player);
+            }
+            if (this.isCheckTimeDelay(dt)) {
+                this.checkRoomClear();
+            }
         }
-        if (this.isCheckTimeDelay(dt) && this.isInitFinish) {
-            this.checkRoomClear();
-        }
-
     }
 }

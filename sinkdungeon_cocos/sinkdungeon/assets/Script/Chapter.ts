@@ -50,10 +50,5 @@ export default class Chapter extends cc.Component {
         }
         return false;
     }
-    update(dt) {
-        if (this.isTimeDelay(dt)) {
-            // Logic.setAlias(this.chapter00.node);
-            // Logic.setAlias(this.chapter01.node);
-        }
-    }
+   
 }

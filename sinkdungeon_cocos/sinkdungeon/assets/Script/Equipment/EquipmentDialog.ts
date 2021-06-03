@@ -98,11 +98,5 @@ export default class EquipmentDialog extends cc.Component {
     hideDialog() {
         this.node.opacity = 0;
     }
-
-    update(dt) {
-        // this.node.opacity = this.lerp(this.node.opacity, this.alpha, dt * this.showSpeed);
-    }
-    lerp(a, b, r) {
-        return a + (b - a) * r;
-    }
+    
 }

@@ -91,6 +91,7 @@ export default class FootBoard extends Building {
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.2) {
+            this.timeDelay = 0;
             this.sprite.spriteFrame = this.isOpen ? this.openSpriteFrame : this.closeSpriteFrame;
         }
     }
