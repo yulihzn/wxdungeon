@@ -1721,7 +1721,7 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -80
+      "y": -110
     },
     "_size": {
       "__type__": "cc.Size",

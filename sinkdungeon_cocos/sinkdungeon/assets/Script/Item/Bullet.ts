@@ -308,6 +308,7 @@ export default class Bullet extends cc.Component {
             || otherCollider.tag == ColliderTag.NONPLAYER
             || otherCollider.tag == ColliderTag.BOSS
             || otherCollider.tag == ColliderTag.BULLET
+            || otherCollider.tag == ColliderTag.WARTER
             || otherCollider.sensor
             || otherCollider.tag == ColliderTag.WALL_TOP
             || this.data.isInvincible > 0) {

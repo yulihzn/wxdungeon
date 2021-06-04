@@ -242,12 +242,12 @@
     },
     "bullet014": {
         "name":"毒蛇",
-        "speed": 500,
+        "speed": 450,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
         "lifeTime":5,
-        "size": 2,
+        "size": 2.5,
         "isTracking":0,
         "resName":"bullet014",
         "lightName": "bulletlight001",
@@ -259,13 +259,14 @@
     },
     "bullet015": {
         "name":"战争机器追踪导弹",
-        "speed": 300,
+        "speed": 200,
         "isLaser":0,
         "isRect": 1,
         "isRotate": 0,
-        "lifeTime":5,
+        "lifeTime":10,
         "size": 2,
         "isTracking":1,
+        "delaytrack":1,
         "resName":"bullet015",
         "lightName": "bulletlight001",
         "lightColor": "#C72C2C",
@@ -281,7 +282,7 @@
         "isRotate": 0,
         "canBreakBuilding":1,
         "lifeTime":1,
-        "size": 3,
+        "size": 3.5,
         "isBoom":1,
         "resName":"bullet016",
         "lightName": "bulletlight001",
@@ -647,7 +648,7 @@
         "resName": "bullet033",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
-        "speed": 400,
+        "speed": 300,
         "isRect": 0,
         "isRotate": 0,
         "lifeTime":2,
@@ -887,6 +888,21 @@
         "isBoom":0,
         "damage": {
             "physicalDamage": 1
+        }
+    },
+    "bullet043": {
+        "name":"船长刀气",
+        "resName": "bullet032",
+        "lightName": "bulletlight005",
+        "lightColor": "#ffffff",
+        "speed": 500,
+        "isRect": 1,
+        "isRotate": 0,
+        "lifeTime":0.5,
+        "canBreakBuilding":1,
+        "size": 7,
+        "damage": {
+            "physicalDamage": 3
         }
     },
     "laser001": {

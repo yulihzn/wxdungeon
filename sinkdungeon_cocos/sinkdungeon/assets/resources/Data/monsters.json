@@ -253,7 +253,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "specialAttack":15,
-        "sizeType":0.3,
+        "sizeType":0.5,
         "common": {
             "moveSpeed": 400,
             "maxHealth": 10,

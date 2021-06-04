@@ -1,8 +1,6 @@
 export default class IndexZ{
     /** 背景*/
     static readonly BACKGROUND = 100;
-    /** 海妖身躯*/
-    static readonly KRAKENBODY = 200;
     /** 背景地板*/
     static readonly BACKGROUNDFLOOR = 300;
     /** 门后的墙*/
@@ -11,6 +9,10 @@ export default class IndexZ{
     static readonly BASE = 500;
     /**地板 */
     static readonly FLOOR = 600;
+    /**水 */
+    static readonly WATER = 610;
+    /** 海妖身躯*/
+    static readonly KRAKENBODY = 620;
     /**黑暗 */
     static readonly DARKNESS = 650;
     /**边墙 */

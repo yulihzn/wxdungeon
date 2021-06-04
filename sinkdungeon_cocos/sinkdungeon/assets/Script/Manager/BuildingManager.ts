@@ -109,6 +109,7 @@ export default class BuildingManager extends BaseManager {
     static readonly GRASS04 = 'Grass04';
     static readonly WENTLINE = 'WentLine';
     static readonly CRACK = 'Crack';
+    static readonly WATERCOLLIDER = 'WaterCollider';
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
@@ -208,10 +209,10 @@ export default class BuildingManager extends BaseManager {
                 pbc.size = cc.size(parseInt(arr[0]), parseInt(arr[1]));
                 pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
                 pbc.apply();
-                co.zIndex = IndexZ.WALL;
+                co.zIndex = IndexZ.WATER;
             } else {
-                let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATER), indexPos);
-                dn.zIndex = IndexZ.WALL;
+                let dn = this.addBuilding(Logic.getBuildings(mapDataStr == '~#'?BuildingManager.WATERCOLLIDER:BuildingManager.WATER), indexPos);
+                dn.zIndex = IndexZ.WATER;
             }
 
         } else if (mapDataStr == 'T0') {
@@ -499,10 +500,10 @@ export default class BuildingManager extends BaseManager {
                 pbc.size = cc.size(parseInt(arr[0]), parseInt(arr[1]));
                 pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
                 pbc.apply();
-                co.zIndex = IndexZ.WALL;
+                co.zIndex = IndexZ.WATER;
             } else {
-                let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATER), indexPos);
-                dn.zIndex = IndexZ.WALL;
+                let dn = this.addBuilding(Logic.getBuildings(mapDataStr == '~#'?BuildingManager.WATERCOLLIDER:BuildingManager.WATER), indexPos);
+                dn.zIndex = IndexZ.WATER;
             }
         }
     }

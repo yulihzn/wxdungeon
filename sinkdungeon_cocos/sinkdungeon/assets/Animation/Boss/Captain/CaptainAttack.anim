@@ -6,7 +6,7 @@
   "_duration": 0.6666666666666666,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "1",
+  "wrapMode": 1,
   "curveData": {
     "paths": {
       "sprite/body": {
@@ -156,6 +156,72 @@
             }
           ]
         }
+      },
+      "sprite/leftarm/sword/light": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0
+            },
+            {
+              "frame": 0.35,
+              "value": 128
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            }
+          ],
+          "position": [
+            {
+              "frame": 0.35,
+              "value": [
+                -1.22,
+                21.948,
+                0
+              ]
+            }
+          ],
+          "angle": [
+            {
+              "frame": 0.35,
+              "value": -43.508
+            }
+          ],
+          "scale": [
+            {
+              "frame": 0.35,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 2,
+                "y": 1.5
+              }
+            }
+          ]
+        },
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0.35,
+                "value": {
+                  "__uuid__": "8df3fb0a-945c-4d72-9e8e-7b4cb2af6452"
+                }
+              },
+              {
+                "frame": 0.45,
+                "value": {
+                  "__uuid__": "a1de03f6-5204-4a35-9333-7dd057c7286d"
+                }
+              }
+            ]
+          }
+        }
       }
     }
   },
@@ -168,6 +234,11 @@
     {
       "frame": 0.3333333333333333,
       "func": "AttackDamageStart",
+      "params": []
+    },
+    {
+      "frame": 0.5,
+      "func": "FireSwordLight",
       "params": []
     },
     {

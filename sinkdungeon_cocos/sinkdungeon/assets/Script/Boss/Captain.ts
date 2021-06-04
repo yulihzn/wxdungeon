@@ -22,14 +22,14 @@ import ActorUtils from "../Utils/ActorUtils";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Captain extends Boss {
-    
+
     @property(CaptainSword)
     sword: CaptainSword = null;
-    
+
     healthBar: HealthBar = null;
     private anim: cc.Animation;
     rigidbody: cc.RigidBody;
@@ -38,56 +38,63 @@ export default class Captain extends Boss {
     private timeDelay = 0;
     isFall = false;
     shooter: Shooter = null;
-    exshooter:Shooter = null;
+    exshooter: Shooter = null;
     attackSkill = new NextStep();
     fireSkill = new NextStep();
     jumpSkill = new NextStep();
-    onLoad () {
+    onLoad() {
         this.attackSkill.IsExcuting = false;
         this.sc.isDied = false;
         this.anim = this.getComponent(cc.Animation);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.exshooter = this.node.getChildByName('ExShooter').getComponent(Shooter);
-        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'captain_head'));
-        this.exshooter.from.valueCopy(FromData.getClone(this.actorName(),'captain_head'));
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'captain_head'));
+        this.exshooter.from.valueCopy(FromData.getClone(this.actorName(), 'captain_head'));
         this.updatePlayerPos();
     }
 
-    start () {
+    start() {
         super.start();
     }
     //Animation
-    AttackDamageStart(){
+    AttackDamageStart() {
         this.sword.isShow = true;
     }
     //Animation
-    AttackDamageFinish(){
+    AttackDamageFinish() {
         this.sword.isShow = false;
     }
     //Animation
-    AttackStart(){
+    AttackStart() {
         this.attackSkill.IsExcuting = true;
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
     }
     //Animation
-    AttackFinish(){
+    AttackFinish() {
         this.attackSkill.IsExcuting = false;
     }
     //Animation
-    JumpStart(){
+    JumpStart() {
         this.jumpSkill.IsExcuting = true;
         this.getComponent(cc.PhysicsBoxCollider).sensor = true;
         this.getComponent(cc.PhysicsBoxCollider).apply();
     }
     //Animation
-    JumpFinish(){
+    FireSwordLight() {
+        this.shooter.setHv(cc.v3(1, 0));
+        this.shooter.dungeon = this.dungeon;
+        this.shooter.data.bulletType = "bullet043";
+        this.shooter.fireBullet(0, cc.v3(16, 0));
+    }
+    //Animation
+    JumpFinish() {
         this.jumpSkill.IsExcuting = false;
         this.isFall = true;
-        this.scheduleOnce(()=>{this.isFall = false;},0.1);
+        this.scheduleOnce(() => { this.isFall = false; }, 0.1);
         this.getComponent(cc.PhysicsBoxCollider).sensor = false;
         this.getComponent(cc.PhysicsBoxCollider).apply();
-        if(!this.dungeon || !this.exshooter){
+        if (!this.dungeon || !this.exshooter) {
             return;
         }
         let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
@@ -98,15 +105,15 @@ export default class Captain extends Boss {
             this.exshooter.data.bulletType = "bullet033";
             this.exshooter.data.bulletArcExNum = 99;
             this.exshooter.data.bulletLineInterval = 1;
-            if(this.data.currentHealth<this.data.Common.maxHealth/2){
+            if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
                 this.exshooter.data.bulletLineExNum = 1;
             }
-            this.exshooter.fireBullet(0,cc.v3(0,0));
+            this.exshooter.fireBullet(0, cc.v3(16, 0));
 
         }
     }
-    fireWithAngles(angles:number[]){
-        if(!this.dungeon || !this.shooter){
+    fireWithAngles(angles: number[]) {
+        if (!this.dungeon || !this.shooter) {
             return;
         }
         let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
@@ -115,40 +122,40 @@ export default class Captain extends Boss {
             this.shooter.setHv(hv);
             this.shooter.dungeon = this.dungeon;
             this.shooter.data.bulletType = "bullet002";
-            for(let angle of angles){
-                this.shooter.fireBullet(angle);
+            for (let angle of angles) {
+                this.shooter.fireBullet(angle, cc.v3(16, 0));
             }
         }
     }
     //Animation
-    OpenFire(){
-        if(!this.dungeon || !this.shooter){
+    OpenFire() {
+        if (!this.dungeon || !this.shooter) {
             return;
         }
-        let angles1 = [0,10,15,-30,-40,-10,-15,30,40];
-        let angles2 = [5,10,-10];
-        let angles3 = [-5,10,20,-10,-20,-30,-40,30,40];
+        let angles1 = [0, 10, 15, -30, -40, -10, -15, 30, 40];
+        let angles2 = [5, 10, -10];
+        let angles3 = [-5, 10, 20, -10, -20, -30, -40, 30, 40];
         this.shooter.data.bulletArcExNum = 0;
         this.fireWithAngles(angles1);
-        if(this.data.currentHealth<this.data.Common.maxHealth/2){
-            this.scheduleOnce(()=>{this.fireWithAngles(angles2);},0.3);
-            this.scheduleOnce(()=>{this.fireWithAngles(angles3);},0.5);
-            
+        if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
+            this.scheduleOnce(() => { this.fireWithAngles(angles2); }, 0.3);
+            this.scheduleOnce(() => { this.fireWithAngles(angles3); }, 0.5);
+
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && self.tag == ColliderTag.BOSS_ATTACK) {
-            if (this.isFall&&!this.sc.isDied) {
+            if (this.isFall && !this.sc.isDied) {
                 this.isFall = false;
                 let dd = new DamageData();
                 dd.physicalDamage = 2;
-                target.takeDamage(dd,FromData.getClone(this.actorName(),'captain_head'),this);
+                target.takeDamage(dd, FromData.getClone(this.actorName(), 'captain_head'), this);
             }
         }
     }
-    
-    update (dt) {
+
+    update(dt) {
         this.healthBar.node.active = !this.sc.isDied;
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
@@ -171,22 +178,22 @@ export default class Captain extends Boss {
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
-    takeDamage(damage: DamageData):boolean {
+    takeDamage(damage: DamageData): boolean {
         let isPlayJump = this.anim.getAnimationState("CaptainJump").isPlaying;
-        if(this.sc.isDied||isPlayJump){
+        if (this.sc.isDied || isPlayJump) {
             return false;
         }
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
-        
+
         // this.anim.playAdditive('CaptainHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
         return true;
     }
-    
+
     killed() {
         if (this.sc.isDied) {
             return;
@@ -217,41 +224,41 @@ export default class Captain extends Boss {
         let absh = Math.abs(h);
         let absv = Math.abs(v);
         this.isFaceRight = h > 0;
-        if(isPlayJump||isPlayFire){
+        if (isPlayJump || isPlayFire) {
             return;
         }
         let speed = 200;
-        if(!isPlayJump){
-            this.fireSkill.next(()=>{
+        if (!isPlayJump) {
+            this.fireSkill.next(() => {
                 speed = 50;
                 this.anim.play("CaptainFire");
-            },5)
+            }, 5)
         }
         if (playerDis < 140 && !this.dungeon.player.sc.isDied) {
-            this.attackSkill.next(()=>{
+            this.attackSkill.next(() => {
                 this.attackSkill.IsExcuting = true;
                 this.anim.play("CaptainAttack");
-            },1);
-        }else{
-            if(playerDis > 300){
-                this.jumpSkill.next(()=>{
+            }, 1);
+        } else {
+            if (playerDis > 300) {
+                this.jumpSkill.next(() => {
                     this.anim.play("CaptainJump");
                     isPlayJump = true;
-                },5);
-                
+                }, 8);
+
             }
-          
-            if (!pos.equals(cc.Vec3.ZERO)&&!isPlayJump && !this.attackSkill.IsExcuting) {
+
+            if (!pos.equals(cc.Vec3.ZERO) && !isPlayJump && !this.attackSkill.IsExcuting) {
                 pos = pos.normalizeSelf();
                 this.move(pos, speed);
             }
         }
-        
-        
+
+
     }
-    
-    JumpMove(){
-        if(!this.dungeon || !this.jumpSkill.IsExcuting){
+
+    JumpMove() {
+        if (!this.dungeon || !this.jumpSkill.IsExcuting) {
             return;
         }
         let newPos = this.dungeon.player.pos.clone();
@@ -259,7 +266,7 @@ export default class Captain extends Boss {
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.node.position);
             pos = pos.normalizeSelf();
-            
+
         }
         let h = pos.x;
         let v = pos.y;
@@ -268,7 +275,7 @@ export default class Captain extends Boss {
 
         let movement = cc.v2(h, v);
         let speed = 200;
-        if(this.data.currentHealth<this.data.Common.maxHealth/2){
+        if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
             speed = 240;
         }
         movement = movement.mul(speed);
@@ -309,7 +316,7 @@ export default class Captain extends Boss {
         }
         this.changeZIndex();
     }
-    actorName(){
+    actorName() {
         return '邪恶船长';
     }
 }

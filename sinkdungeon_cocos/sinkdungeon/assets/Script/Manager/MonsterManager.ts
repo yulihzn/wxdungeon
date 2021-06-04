@@ -68,7 +68,7 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTERS_PYRAMID = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
         , MonsterManager.MONSTER_SANDSTATUE];
     public static readonly MONSTERS_DUNGEON = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_CYCLOPS
-        , MonsterManager.MONSTER_SPIDER];
+        , MonsterManager.MONSTER_SPIDER,MonsterManager.MONSTER_CYCLOPS];
     public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST];
     // LIFE-CYCLE CALLBACKS:
 

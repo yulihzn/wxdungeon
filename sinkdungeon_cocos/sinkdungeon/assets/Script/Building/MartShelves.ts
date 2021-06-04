@@ -9,7 +9,6 @@ import GoodsData from "../Data/GoodsData";
 import { EventHelper } from "../EventHelper";
 import Goods from "../Item/Goods";
 import Logic from "../Logic";
-import Player from "../Player";
 import Tips from "../UI/Tips";
 import Building from "./Building";
 

@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":324,
+ "tilecount":325,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3343,6 +3343,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"=="
+        }, 
+        {
+         "id":713,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/watercollider.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"~#"
         }],
  "tilewidth":16,
  "type":"tileset",

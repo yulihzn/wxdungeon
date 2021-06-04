@@ -102,16 +102,16 @@ export default class WarMachine extends Boss {
             return;
         }
         this.changeZIndex();
+        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
         if (this.dungeon) {
             if (Logic.getChance(90)) { this.fireMainGun(); }
         }
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-        if (playerDis < 200) {
-            this.fireMissile();
+        if (playerDis < 300) {
+            this.fireMissile(isHalf);
         } else if (Logic.getChance(20)) {
-            this.fireMissile();
+            this.fireMissile(isHalf);
         }
-        let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
         this.fireGatling(isHalf);
         if (isHalf) {
             this.actionCount++;
@@ -126,8 +126,15 @@ export default class WarMachine extends Boss {
             }
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf();
-                this.move(pos, 500);
+                this.move(pos, 600);
             }
+        }
+        this.shooter01.setHv(cc.v3(0, -1));
+        let pos = this.node.position.clone().add(this.shooter01.node.position);
+        let hv = this.dungeon.player.getCenterPosition().sub(pos);
+        if (!hv.equals(cc.Vec3.ZERO)) {
+            hv = hv.normalizeSelf();
+            this.shooter01.setHv(hv);
         }
 
     }
@@ -152,17 +159,21 @@ export default class WarMachine extends Boss {
             return;
         }
         this.isMainGunCoolDown = true;
+        this.anim.play('WarMachineMainGunShoot');
+        this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 10);
+    }
+    //Anim
+    MainGunShootFinish(){
         this.shooter01.setHv(cc.v3(0, -1));
         let pos = this.node.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter01.setHv(hv);
-            this.fireShooter(this.shooter01, "bullet016", 0, 0);
+            this.fireShooter(this.shooter01, "bullet016", 0, 0,0,cc.v3(48,0));
         }
-        this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 10);
+        this.anim.play('WarMachineIdle');
     }
-    
     fireGatling(isHalf: boolean) {
         if (this.isGatlingCoolDown) {
             return;
@@ -185,24 +196,26 @@ export default class WarMachine extends Boss {
         }
         this.scheduleOnce(() => { this.isGatlingCoolDown = false; }, cooldown);
     }
-    fireMissile() {
+    fireMissile(isHalf: boolean) {
         if (this.isMissileCoolDown) {
             return;
         }
         this.isMissileCoolDown = true;
         this.shooter04.setHv(cc.v3(0, -1));
         this.shooter05.setHv(cc.v3(0, -1));
-        this.fireShooter(this.shooter04, "bullet015", 0, 0);
-        this.fireShooter(this.shooter05, "bullet015", 0, 0);
-        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, 16);
+        this.shooter04.data.bulletLineInterval=0.5;
+        this.shooter05.data.bulletLineInterval=0.5;
+        this.fireShooter(this.shooter04, "bullet015", 2, isHalf?1:0);
+        this.fireShooter(this.shooter05, "bullet015", 2, isHalf?1:0);
+        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, isHalf?8:16);
     }
-    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number): void {
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number,defaultPos?: cc.Vec3): void {
         shooter.dungeon = this.dungeon;
         // shooter.setHv(cc.v3(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(angle);
+        shooter.fireBullet(angle,defaultPos);
     }
     showBoss() {
         this.initGuns();
@@ -251,22 +264,13 @@ export default class WarMachine extends Boss {
         movement = movement.mul(speed);
         this.rigidbody.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
-        // if (this.isMoving) {
-        //     if (!this.anim.getAnimationState('CaptainMove').isPlaying) {
-        //         this.anim.playAdditive('CaptainMove');
-        //     }
-        // } else {
-        //     if (this.anim.getAnimationState('CaptainMove').isPlaying) {
-        //         this.anim.play('CaptainIdle');
-        //     }
-        // }
         this.changeZIndex();
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target&&!this.sc.isDied){
             let d = new DamageData();
-            d.physicalDamage = 2;
+            d.physicalDamage = 5;
             target.takeDamage(d,FromData.getClone(this.actorName(),'bossmachinehead'),this);
         }
     }

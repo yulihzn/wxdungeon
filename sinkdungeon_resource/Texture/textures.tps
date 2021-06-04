@@ -1054,6 +1054,8 @@
             <key type="filename">bullet/bullet042anim000.png</key>
             <key type="filename">bullet/bullet042anim001.png</key>
             <key type="filename">bullet/bullet042anim002.png</key>
+            <key type="filename">bullet/bullet043anim000.png</key>
+            <key type="filename">bullet/bulletlight005.png</key>
             <key type="filename">dungeon/coast000.png</key>
             <key type="filename">dungeon/coast001.png</key>
             <key type="filename">dungeon/coast0010.png</key>
