@@ -504,20 +504,6 @@ export default class BuildingManager extends BaseManager {
                 let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATER), indexPos);
                 dn.zIndex = IndexZ.WALL;
             }
-        } else if (this.isFirstEqual(mapDataStr, 'D')) {
-            let dir = parseInt(mapDataStr[1]);
-            if (isNaN(dir)) {
-                if (mapDataStr == 'Da') {
-                    dir = 8;
-                } else if (mapDataStr == 'Db') {
-                    dir = 9;
-                } else if (mapDataStr == 'Dc') {
-                    dir = 10;
-                } else if (mapDataStr == 'Dd') {
-                    dir = 11;
-                }
-            }
-            this.addDoor(dir, indexPos);
         }
     }
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {
@@ -557,7 +543,6 @@ export default class BuildingManager extends BaseManager {
         if (type == MartShelves.TYPE_FRIDGE) {
             return this.drinkList;
         } else {
-            this.shelvesFoodIndex = 0;
             let tempfoods: string[] = [];
             for (let i = this.shelvesFoodIndex; i < MartShelves.SIZE_NORMAL; i++) {
                 if (this.shelvesFoodIndex < this.foodList.length) {
