@@ -101,8 +101,7 @@ export default class TalentSkills extends Talent {
             return;
         }
         let cooldown = this.activeTalentData.cooldown;
-        if(this.player.data.AvatarData.organizationIndex==AvatarData.TECH){
-            cooldown-=this.player.data.currentDream;
+        cooldown-=this.player.data.currentDream;
             if(cooldown>1){
                 cooldown-=this.player.data.currentDream;
                 if(cooldown<1){
@@ -114,7 +113,6 @@ export default class TalentSkills extends Talent {
                     cooldown = 0.1;
                 }
             }
-        }
         if(this.player.data.currentDream>0){
             this.talentSkill.next(() => {
                 this.talentSkill.IsExcuting = true;
