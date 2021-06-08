@@ -685,6 +685,34 @@
             <key type="filename">monster/monster030anim012.png</key>
             <key type="filename">monster/monster030anim013.png</key>
             <key type="filename">monster/monster030anim014.png</key>
+            <key type="filename">monster/monster033anim000.png</key>
+            <key type="filename">monster/monster033anim001.png</key>
+            <key type="filename">monster/monster033anim002.png</key>
+            <key type="filename">monster/monster033anim003.png</key>
+            <key type="filename">monster/monster033anim004.png</key>
+            <key type="filename">monster/monster033anim005.png</key>
+            <key type="filename">monster/monster033anim006.png</key>
+            <key type="filename">monster/monster033anim007.png</key>
+            <key type="filename">monster/monster033anim008.png</key>
+            <key type="filename">monster/monster033anim009.png</key>
+            <key type="filename">monster/monster033anim010.png</key>
+            <key type="filename">monster/monster033anim011.png</key>
+            <key type="filename">monster/monster033anim012.png</key>
+            <key type="filename">monster/monster033anim013.png</key>
+            <key type="filename">monster/monster033anim014.png</key>
+            <key type="filename">monster/monster033anim015.png</key>
+            <key type="filename">monster/monster033anim016.png</key>
+            <key type="filename">monster/monster033anim017.png</key>
+            <key type="filename">monster/monster033anim018.png</key>
+            <key type="filename">monster/monster033anim019.png</key>
+            <key type="filename">monster/monster033anim020.png</key>
+            <key type="filename">monster/monster033anim021.png</key>
+            <key type="filename">monster/monster033anim022.png</key>
+            <key type="filename">monster/monster033anim023.png</key>
+            <key type="filename">monster/monster033anim024.png</key>
+            <key type="filename">monster/monster033anim025.png</key>
+            <key type="filename">monster/monster033anim026.png</key>
+            <key type="filename">monster/monster033anim027.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

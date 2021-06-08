@@ -59,12 +59,13 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_CYCLOPS = 'monster030';
     public static readonly MONSTER_ICEDEMON = 'monster031';
     public static readonly MONSTER_BITE_ZOMBIE = 'monster032';
+    public static readonly MONSTER_BANANA = 'monster033';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE,MonsterManager.MONSTER_ICEDEMON,MonsterManager.MONSTER_BITE_ZOMBIE];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
         , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
     public static readonly MONSTERS_FOREST = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
-        , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO];
+        , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO,MonsterManager.MONSTER_BANANA];
     public static readonly MONSTERS_PYRAMID = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
         , MonsterManager.MONSTER_SANDSTATUE];
     public static readonly MONSTERS_DUNGEON = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_CYCLOPS

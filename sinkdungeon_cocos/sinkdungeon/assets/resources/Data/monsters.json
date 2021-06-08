@@ -16,8 +16,8 @@
         "remote": 0,
         "melee": 15,
         "boxType":0,
-        "attackFrame":3,
-        "attackFrame1":3,
+        "attackFrames":3,
+        "specialFrames":3,
         "dash": 5
     },
     "monster001": {
@@ -665,8 +665,8 @@
         "remote": 0,
         "melee": 4,
         "sizeType":1,
-        "attackFrame":3,
-        "attackFrame1":3,
+        "attackFrames":3,
+        "specialFrames":3,
         "boxType":5,
         "dash": 0
     },
@@ -691,8 +691,8 @@
         "melee": 3,
         "sizeType":1,
         "boxType":3,
-        "attackFrame":3,
-        "attackFrame1":4,
+        "attackFrames":3,
+        "specialFrames":4,
         "dash": 0
     },
     "monster032": {
@@ -717,8 +717,33 @@
         "melee": 2,
         "sizeType":1,
         "boxType":1,
-        "attackFrame":2,
-        "attackFrame1":5,
+        "attackFrames":2,
+        "specialFrames":5,
+        "dash": 0
+    },
+    "monster033": {
+        "nameCn": "香蕉武士",
+        "nameEn": "Banana",
+        "resName": "monster033",
+        "chapter": 0,
+        "specialDistance":32,
+        "stageLevel": 0,
+        "isLineAim":0,
+        "specialType":"special033",
+        "specialAttack":15,
+        "common": {
+            "moveSpeed": 200,
+            "maxHealth": 50,
+            "damageMin": 5
+        },
+        "currentHealth": 50,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 5,
+        "sizeType":0.5,
+        "attackFrames":11,
+        "specialFrames":8,
+        "boxType":5,
         "dash": 0
     }
 }

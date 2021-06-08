@@ -33,6 +33,7 @@ export default class SpecialManager extends cc.Component {
     static readonly AFTER_ASH = 'special030';
     static readonly AFTER_ICE = 'special031';
     static readonly AFTER_DOWN = 'special032';
+    static readonly AFTER_SWORD = 'special033';
     @property(cc.Prefab)
     aoe: cc.Prefab = null;
     @property(cc.Prefab)
@@ -67,7 +68,7 @@ export default class SpecialManager extends cc.Component {
                 this.addAoe(pos, new AreaOfEffectData()
                     .init(0.3, 0.3, 0.1, 3, IndexZ.getActorZIndex(this.node.parent.position)
                         , true, true, true, false, false, new DamageData(2), from, [StatusManager.DIZZ])
-                    , ['ash001', 'ash002', 'ash003', 'ash004'], false);
+                    , ['ash001', 'ash002', 'ash003', 'ash004'], false,isFaceRight);
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
                 break;
             case SpecialManager.AFTER_ICE:
@@ -75,15 +76,22 @@ export default class SpecialManager extends cc.Component {
                 this.addAoe(pos, new AreaOfEffectData()
                     .init(0.8, 1, 0.2, 2, IndexZ.getActorZIndex(this.node.parent.position)
                         , true, true, true, false, false, new DamageData(3), from, [StatusManager.FROZEN])
-                    , ['ice001', 'ice002', 'ice002', 'ice003', 'ice004'], false);
+                    , ['ice001', 'ice002', 'ice002', 'ice003', 'ice004'], false,isFaceRight);
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
                 break;
             case SpecialManager.AFTER_DOWN:
                 this.addAoe(pos, new AreaOfEffectData()
                 .init(0.3, 1, 0.1, 1, IndexZ.getActorZIndex(this.node.parent.position)
                     , true, true, true, false, false, new DamageData(1), from, [StatusManager.FALLEN_DOWN])
-                , ['ash001', 'ash002', 'ash003', 'ash004'], false);
-            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });    
+                , ['ash001', 'ash002', 'ash003', 'ash004'], false,isFaceRight);
+            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
+            break;
+            case SpecialManager.AFTER_SWORD:
+                pos.y += 32;
+                this.addAoe(pos, new AreaOfEffectData()
+                .init(0.4, 0.1, 0, 2, IndexZ.getActorZIndex(this.node.parent.position)
+                    , true, true, true, false, false, new DamageData(4), from, [StatusManager.BLEEDING])
+                , ['specialswordlight001', 'specialswordlight002', 'specialswordlight003', 'specialswordlight004'], false,isFaceRight);
             break;
         }
     }
@@ -130,7 +138,7 @@ export default class SpecialManager extends cc.Component {
             .init(0, 0.15, 0.1, 1, IndexZ.getActorZIndex(claw.position), true, false, true, false, false, new DamageData(2), from, [StatusManager.BLEEDING]));
     }
 
-    private addAoe(pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean) {
+    private addAoe(pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean,isFaceRight:boolean) {
         let aoe = cc.instantiate(this.aoe);
         pos.y += 32;
         let sprite = aoe.getChildByName('sprite').getComponent(cc.Sprite);
@@ -140,6 +148,7 @@ export default class SpecialManager extends cc.Component {
             sprite.node.width = spriteframe.getRect().width;
             sprite.node.height = spriteframe.getRect().height;
             sprite.node.scale = 4;
+            sprite.node.scaleX = isFaceRight ? 4 : -4;
             collider.size.width = sprite.node.width * 3;
             collider.size.height = sprite.node.height * 3;
         }

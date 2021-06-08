@@ -381,11 +381,11 @@ export default class NonPlayer extends Actor {
         let arrspecial: string[] = [];
         let frameIndex = 0;
 
-        while (frameIndex < this.data.attackFrame - 1) {
-            arr.push(`anim01${frameIndex++}`);
+        while (frameIndex < this.data.attackFrames - 1) {
+            arr.push(`anim0${10+frameIndex++}`);
         }
-        for (let i = 0; i < this.data.attackFrame1; i++) {
-            arrspecial.push(`anim01${frameIndex++}`);
+        for (let i = 0; i < this.data.specialFrames; i++) {
+            arrspecial.push(`anim0${10+frameIndex++}`);
         }
         //退后
         let backofftween = cc.tween().by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
@@ -432,17 +432,21 @@ export default class NonPlayer extends Actor {
             }
 
         });
-        let attackback = cc.tween();
+        let attackback = cc.tween().call(()=>{
+            this.dangerBox.finish();
+        });
         for (let i = 2; i < arr.length; i++) {
             attackback.then(cc.tween().delay(0.2).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
         }
-        let attackbackspecial = cc.tween();
+        let attackbackspecial = cc.tween().call(()=>{
+            this.dangerBox.finish();
+        });
         for (let i = 2; i < arrspecial.length; i++) {
             attackbackspecial.then(cc.tween().delay(0.2).call(() => { this.changeBodyRes(this.data.resName, arrspecial[i]); }));
         }
         let attackfinish = cc.tween().delay(0.2).call(() => {
-            this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
             this.dangerBox.finish();
+            this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
             this.setLinearVelocity(cc.Vec2.ZERO);
         });
         let aftertween = cc.tween().to(0.2, { position: cc.v3(0, 0) }).delay(0.2).call(() => {

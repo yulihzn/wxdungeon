@@ -881,6 +881,10 @@
             <key type="filename">building/car.png</key>
             <key type="filename">building/car0.png</key>
             <key type="filename">building/car1.png</key>
+            <key type="filename">special/specialswordlight001.png</key>
+            <key type="filename">special/specialswordlight002.png</key>
+            <key type="filename">special/specialswordlight003.png</key>
+            <key type="filename">special/specialswordlight004.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

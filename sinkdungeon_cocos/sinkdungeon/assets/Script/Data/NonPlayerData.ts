@@ -58,8 +58,8 @@ export default class NonPlayerData{
     lifeTime = 0;//存活时间
     isTest = 0;//是否是测试单位
     reborn = 0;//是否是房间重生的数字代表重生等级
-    attackFrame = 2;//攻击帧数
-    attackFrame1 = 2;//特殊攻击帧数
+    attackFrames = 2;//攻击帧数
+    specialFrames = 2;//特殊攻击帧数
     remoteAudio = '';//远程音效
     private statusTotalData: StatusData;
     private common:CommonData;
@@ -124,8 +124,8 @@ export default class NonPlayerData{
         this.lifeTime = data.lifeTime?data.lifeTime:0;
         this.isTest = data.isTest?data.isTest:0;
         this.reborn = data.reborn?data.reborn:0;
-        this.attackFrame = data.attackFrame?data.attackFrame:2;
-        this.attackFrame1 = data.attackFrame1?data.attackFrame1:2;
+        this.attackFrames = data.attackFrames?data.attackFrames:2;
+        this.specialFrames = data.specialFrames?data.specialFrames:2;
         this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff';
         this.remoteAudio = data.remoteAudio?data.remoteAudio:'';
     }
