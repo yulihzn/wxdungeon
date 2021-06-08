@@ -239,15 +239,16 @@ export default class Dungeon extends cc.Component {
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 let needAdd = false;
+                let length = 3;
                 switch (offset.z) {
-                    case 0:needAdd = j>Dungeon.HEIGHT_SIZE/2;break;
-                    case 1:needAdd = j<Dungeon.HEIGHT_SIZE/2;break;
-                    case 2:needAdd = i>Dungeon.WIDTH_SIZE/2;break;
-                    case 3:needAdd = i<Dungeon.WIDTH_SIZE/2;break;
-                    case 4:needAdd = i>Dungeon.WIDTH_SIZE/2&&j>Dungeon.HEIGHT_SIZE/2;break;
-                    case 5:needAdd = i<Dungeon.WIDTH_SIZE/2&&j>Dungeon.HEIGHT_SIZE/2;break;
-                    case 6:needAdd = i>Dungeon.WIDTH_SIZE/2&&j<Dungeon.HEIGHT_SIZE/2;break;
-                    case 7:needAdd = i<Dungeon.WIDTH_SIZE/2&&j<Dungeon.HEIGHT_SIZE/2;break;
+                    case 0:needAdd = j>Dungeon.HEIGHT_SIZE-length;break;
+                    case 1:needAdd = j<length;break;
+                    case 2:needAdd = i>Dungeon.WIDTH_SIZE-length;break;
+                    case 3:needAdd = i<length;break;
+                    case 4:needAdd = i>Dungeon.WIDTH_SIZE-length&&j>Dungeon.HEIGHT_SIZE-length;break;
+                    case 5:needAdd = i<length&&j>Dungeon.HEIGHT_SIZE-length;break;
+                    case 6:needAdd = i>Dungeon.WIDTH_SIZE-3&&j<length;break;
+                    case 7:needAdd = i<length&&j<length;break;
                 }
                 if(needAdd){
                     this.buildingManager.addBuildingsFromSideMap(mapData[i][j], cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y), leveldata);

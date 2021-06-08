@@ -87,9 +87,26 @@ export default class DungeonStyleManager extends BaseManager {
     }
     private addFloor() {
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
-        this.floor.width = Dungeon.TILE_SIZE / 4 * (Dungeon.WIDTH_SIZE*3 + 0);
-        this.floor.height = Dungeon.TILE_SIZE / 4 * (Dungeon.HEIGHT_SIZE*3 + 0);
-        let pos = Dungeon.getPosInMap(cc.v3(-Dungeon.WIDTH_SIZE, -Dungeon.HEIGHT_SIZE));
+        let room = Logic.mapManager.getCurrentRoom();
+        let offset = 3;
+        let pos = Dungeon.getPosInMap(cc.v3(-offset, -offset));
+        if(room.x == 0){
+            pos = Dungeon.getPosInMap(cc.v3(0, -offset));
+            if(room.y == 0){
+                pos = Dungeon.getPosInMap(cc.v3(0, 0));
+            }else if(room.y == leveldata.height-1){
+                pos = Dungeon.getPosInMap(cc.v3(0, -offset*2));
+            }
+        }else if(room.x == leveldata.width-1){
+            pos = Dungeon.getPosInMap(cc.v3(-offset*2, -offset));
+            if(room.y == 0){
+                pos = Dungeon.getPosInMap(cc.v3(-offset*2,-offset*2));
+            }else if(room.y == leveldata.height-1){
+                pos = Dungeon.getPosInMap(cc.v3(-offset*2, 0));
+            }
+        }
+        this.floor.width = Dungeon.TILE_SIZE / 4 * (Dungeon.WIDTH_SIZE + offset*2);
+        this.floor.height = Dungeon.TILE_SIZE / 4 * (Dungeon.HEIGHT_SIZE + offset*2);
         this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2);
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR;
         this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`${leveldata.floorRes}001`);
