@@ -123,14 +123,14 @@ export default class DungeonStyleManager extends BaseManager {
         }
 
         if(room.y == 0){
-            pos = Dungeon.getPosInMap(cc.v3(-offset, -offset*2));
+            pos = Dungeon.getPosInMap(cc.v3(-offset, 0));
             if(room.x == 0){
                 pos = Dungeon.getPosInMap(cc.v3(0, 0));
             }else if(room.x == leveldata.width-1){
                 pos = Dungeon.getPosInMap(cc.v3(-offset*2,-offset*2));
             }
         }else if(room.y == leveldata.height-1){
-            pos = Dungeon.getPosInMap(cc.v3(-offset, 0));
+            pos = Dungeon.getPosInMap(cc.v3(-offset, -offset*2));
             if(room.x == 0){
                 pos = Dungeon.getPosInMap(cc.v3(0, -offset*2));
             }else if(room.x == leveldata.width-1){
