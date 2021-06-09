@@ -3,14 +3,12 @@ import DamageData from "../Data/DamageData";
 import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
-import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import NextStep from "../Utils/NextStep";
 import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
-import Actor from "../Base/Actor";
 import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:

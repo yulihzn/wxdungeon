@@ -128,15 +128,15 @@ export default class Tile extends cc.Component {
         this.isAnimPlaying = true;
     }
 
-    update (dt) {
-        this.timeDelay+=dt;
-        if(this.timeDelay>1){
-            this.timeDelay = 0;
-        }
-        if(this.label){
-            this.label.string = ""+this.node.zIndex;
-        }
-    }
+    // update (dt) {
+    //     this.timeDelay+=dt;
+    //     if(this.timeDelay>1){
+    //         this.timeDelay = 0;
+    //     }
+    //     if(this.label){
+    //         this.label.string = ""+this.node.zIndex;
+    //     }
+    // }
     changeRes(resName:string){
         this.floor.spriteFrame = Logic.spriteFrameRes(resName);
         if(this.floor.spriteFrame == null){

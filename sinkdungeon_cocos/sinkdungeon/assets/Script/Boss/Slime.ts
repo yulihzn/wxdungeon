@@ -142,7 +142,7 @@ export default class Slime extends Boss {
         }
         return false;
     }
-    update(dt) {
+    updateLogic(dt) {
         this.healthBar.node.active = !this.sc.isDied;
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {

@@ -1,7 +1,4 @@
 import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
-import Player from "../Player";
-import Box from "./Box";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
 import { ColliderTag } from "../Actor/ColliderTag";

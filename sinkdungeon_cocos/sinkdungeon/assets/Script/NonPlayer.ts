@@ -38,7 +38,6 @@ import NonPlayerData from './Data/NonPlayerData';
 import { ColliderTag } from './Actor/ColliderTag';
 import StatusData from './Data/StatusData';
 import ActorUtils from './Utils/ActorUtils';
-import MeleeWeapon from './MeleeWeapon';
 import MonsterManager from './Manager/MonsterManager';
 
 @ccclass

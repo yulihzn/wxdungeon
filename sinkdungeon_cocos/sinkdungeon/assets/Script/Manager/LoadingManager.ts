@@ -1,12 +1,5 @@
-import EquipmentData from "../Data/EquipmentData";
-import InventoryData from "../Data/InventoryData";
-import ItemData from "../Data/ItemData";
 import ProfessionData from "../Data/ProfessionData";
-import SuitData from "../Data/SuitData";
-import Loading from "../Loading";
 import Logic from "../Logic";
-import NextStep from "../Utils/NextStep";
-import BaseManager from "./BaseManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

@@ -1,7 +1,6 @@
 import DamageData from "../Data/DamageData";
 import FromData from "../Data/FromData";
 import Kraken from "./Kraken";
-import Actor from "../Base/Actor";
 import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:

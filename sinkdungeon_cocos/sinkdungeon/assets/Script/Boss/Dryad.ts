@@ -3,7 +3,6 @@ import DamageData from "../Data/DamageData";
 import Shooter from "../Shooter";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
-import Player from "../Player";
 import StatusManager from "../Manager/StatusManager";
 import NextStep from "../Utils/NextStep";
 import BossAttackCollider from "./BossAttackCollider";

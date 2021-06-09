@@ -4,7 +4,6 @@ import StatusManager from "../Manager/StatusManager";
 import FromData from "../Data/FromData";
 import Logic from "../Logic";
 import IndexZ from "../Utils/IndexZ";
-import Actor from "../Base/Actor";
 import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:

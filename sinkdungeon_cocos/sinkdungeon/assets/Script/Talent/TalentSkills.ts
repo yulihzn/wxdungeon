@@ -14,7 +14,6 @@ import NonPlayer from "../NonPlayer";
 import Boss from "../Boss/Boss";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import NonPlayerManager from "../Manager/NonPlayerManager";
-import AvatarData from "../Data/AvatarData";
 import ActorUtils from "../Utils/ActorUtils";
 
 /**

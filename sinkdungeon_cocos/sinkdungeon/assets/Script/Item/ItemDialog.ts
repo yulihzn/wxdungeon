@@ -1,5 +1,3 @@
-import Logic from "../Logic";
-import EquipmentData from "../Data/EquipmentData";
 import ItemData from "../Data/ItemData";
 
 // Learn TypeScript:
