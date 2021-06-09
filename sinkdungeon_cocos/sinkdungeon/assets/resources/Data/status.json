@@ -106,7 +106,7 @@
         "spriteFrameName": "icondefence",
         "statusType": 10,
         "desc": "",
-        "duration": 10,
+        "duration": 30,
         "common": {
             "defence": 9999,
             "dodge": 100

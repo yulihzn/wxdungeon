@@ -505,6 +505,8 @@ export default class BuildingManager extends BaseManager {
                 let dn = this.addBuilding(Logic.getBuildings(mapDataStr == '~#'?BuildingManager.WATERCOLLIDER:BuildingManager.WATER), indexPos);
                 dn.zIndex = IndexZ.WATER;
             }
+        } else if (mapDataStr == '+3') {
+            this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
         }
     }
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {

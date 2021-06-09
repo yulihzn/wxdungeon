@@ -34,10 +34,13 @@ export default class Kraken extends Boss {
     shooter: Shooter;
     remoteSkill = new NextStep();
     handSkill = new NextStep();
+    nearHandSkill = new NextStep();
     anim: cc.Animation;
     hand01:KrakenSwingHand;
     hand02:KrakenSwingHand;
-
+    hand03:KrakenSwingHand;
+    hand04:KrakenSwingHand;
+    hands:KrakenSwingHand[] = [];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -52,22 +55,27 @@ export default class Kraken extends Boss {
     ShowFinish() {
         this.anim.play('KrakenHeadIdle');
         this.sc.isShow = true;
-        let pos1 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE+2, -8));
-        let pos2 = Dungeon.getPosInMap(cc.v3(-2, -8));
-        this.hand01 = this.addHand(pos1,true);
-        this.hand02 = this.addHand(pos2,false);
+        let pos1 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, -4));
+        let pos2 = Dungeon.getPosInMap(cc.v3(-2, -4));
+        let pos3 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, Dungeon.HEIGHT_SIZE));
+        let pos4 = Dungeon.getPosInMap(cc.v3(-2, Dungeon.HEIGHT_SIZE));
+        this.hand01 = this.addHand(pos1,true,true);
+        this.hand02 = this.addHand(pos2,false,true);
+        this.hand03 = this.addHand(pos3,true,false);
+        this.hand04 = this.addHand(pos4,false,false);
     }
-    addHand(pos:cc.Vec3,isReverse:boolean){
+    addHand(pos:cc.Vec3,isReverse:boolean,isUp:boolean){
         let hand = cc.instantiate(this.swingHand);
         this.dungeon.node.addChild(hand);
         hand.setPosition(pos);
-        hand.scaleX = isReverse?-50:50;
-        hand.scaleY = -50;
+        hand.scaleX = isReverse?-60:60;
+        hand.scaleY = isUp?-60:60;
         hand.zIndex = IndexZ.OVERHEAD;
         let h = hand.getComponentInChildren(KrakenSwingHand);
         this.scheduleOnce(()=>{
             h.isShow = true;
         },2)
+        this.hands.push(h);
         return h;
     }
     updatePlayerPos() {
@@ -94,6 +102,17 @@ export default class Kraken extends Boss {
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        this.nearHandSkill.next(()=>{
+            if(this.dungeon.player.pos.x>Dungeon.WIDTH_SIZE/2){
+                if(this.hand03){
+                    this.hand03.swing();
+                }
+            }else{
+                if(this.hand04){
+                    this.hand04.swing();
+                }
+            }
+        },10)
         return true;
     }
     
@@ -104,9 +123,9 @@ export default class Kraken extends Boss {
         Achievements.addMonsterKillAchievement(this.data.resName);
         this.sc.isDied = true;
         this.changeZIndex();
-        let hands = this.getComponentsInChildren(KrakenSwingHand);
-        for (let hand of hands) {
+        for (let hand of this.hands) {
             hand.isShow = false;
+            hand.node.active = false;
         }
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
@@ -145,7 +164,7 @@ export default class Kraken extends Boss {
         }
         return false;
     }
-    update(dt) {
+    updateLogic(dt) {
         if(this.isActionTimeDelay(dt)){
             this.bossAction();
         }
@@ -190,7 +209,7 @@ export default class Kraken extends Boss {
                     this.shooter.fireBullet(15);
                     this.shooter.fireBullet(-15);
                 }
-            },2);
+            },3);
             
         }
         this.handSkill.next(()=>{
