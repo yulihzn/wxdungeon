@@ -246,7 +246,7 @@ export default class NewClass extends cc.Component {
     }
 
     sendMoveMessageToPlayer(dt:number){
-        if(Logic.isDialogShow){
+        if(Logic.isGamePause){
             return;
         }
         let v = this.getInputQuadrantDir();

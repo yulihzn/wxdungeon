@@ -115,8 +115,4 @@ export default class Chest extends Building {
             }
         }
     }
-
-    update(dt) {
-
-    }
 }

@@ -427,6 +427,11 @@ export default class MonsterManager extends BaseManager {
                 monster.updateLogic(dt);
             }
         }
+        for (let boss of this.bosses) {
+            if (boss && boss.node.active) {
+                boss.updateLogic(dt);
+            }
+        }
     }
 
 }

@@ -521,7 +521,7 @@ export default class Dungeon extends cc.Component {
     }
 
     update(dt) {
-        if (this.isInitFinish) {
+        if (this.isInitFinish&&!Logic.isGamePause) {
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt);
                 this.monsterManager.updateLogic(dt);

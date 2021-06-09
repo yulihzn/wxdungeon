@@ -234,7 +234,7 @@ export default class WarMachine extends Boss {
         }
         return false;
     }
-    update(dt) {
+    updateLogic(dt:number) {
         this.timeDelay += dt;
         if (this.timeDelay > 1) {
             this.timeDelay = 0;

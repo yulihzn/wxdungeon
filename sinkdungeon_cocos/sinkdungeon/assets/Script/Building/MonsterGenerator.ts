@@ -51,6 +51,9 @@ export default abstract class MonsterGenerator extends Building {
         return false;
     }
     update(dt: number) {
+        if(Logic.isGamePause){
+            return;
+        }
         if (this.isTimeDelay(dt)) {
             this.addMonster();
         }

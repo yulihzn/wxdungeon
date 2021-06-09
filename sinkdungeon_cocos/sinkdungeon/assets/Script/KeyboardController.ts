@@ -57,7 +57,7 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.a: this.isLeft = true; break;
             case cc.macro.KEY.d: this.isRight = true; break;
 
-            case cc.macro.KEY.i: EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW);break;
+            case cc.macro.KEY.i: this.openInventory(); break;
             case cc.macro.KEY.j: this.isA = true; break;
             case cc.macro.KEY.space: this.isB = true; break;
             case cc.macro.KEY.e: this.isC = true; this.touchStart = true; this.scheduleOnce(() => {
@@ -65,7 +65,7 @@ export default class KeyboardController extends cc.Component {
                     return;
                 }
                 this.isLongPress = true;
-                EventHelper.emit(EventHelper.PLAYER_TRIGGER, { isLongPress: true });
+                this.trigger(true);
             }, 0.3); break;
             case cc.macro.KEY.shift: this.isD = true; break;
             case cc.macro.KEY.num1: this.useItem(0); break;
@@ -74,10 +74,17 @@ export default class KeyboardController extends cc.Component {
             case 49: this.useItem(0); break;
             case 50: this.useItem(1); break;
             case 51: this.useItem(2); break;
+            case cc.macro.KEY.escape: EventHelper.emit(EventHelper.HUD_CANCEL_OR_PAUSE);; break;
         }
     }
+    private trigger(isLongPress?: boolean) {
+        if (!Logic.isGamePause) EventHelper.emit(EventHelper.PLAYER_TRIGGER, { isLongPress: isLongPress });
+    }
+    private openInventory() {
+        if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW);
+    }
     useItem(index: number) {
-        EventHelper.emit(EventHelper.USEITEM_KEYBOARD, { index: index });
+        if (!Logic.isGamePause) EventHelper.emit(EventHelper.USEITEM_KEYBOARD, { index: index });
     }
     onKeyUp(event: cc.Event.EventKeyboard) {
         switch (event.keyCode) {
@@ -87,9 +94,9 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.d: this.isRight = false; break;
 
             case cc.macro.KEY.j: this.isA = false; break;
-            case cc.macro.KEY.space: this.isB = false; cc.director.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
+            case cc.macro.KEY.space: this.isB = false; EventHelper.emit(EventHelper.PLAYER_REMOTEATTACK_CANCEL); break;
             case cc.macro.KEY.e: this.isC = false;
-                if (!this.isLongPress) { EventHelper.emit(EventHelper.PLAYER_TRIGGER); }
+                if (!this.isLongPress) { this.trigger(); }
                 this.touchStart = false; this.isLongPress = false;
                 break;
             case cc.macro.KEY.shift: this.isD = false; break;
@@ -99,10 +106,9 @@ export default class KeyboardController extends cc.Component {
         if (this.isTimeDelay(dt)) {
             this.sendMoveMessageToPlayer(dt);
         }
-
     }
     sendMoveMessageToPlayer(dt: number) {
-        if (Logic.isDialogShow) {
+        if (Logic.isGamePause) {
             return;
         }
         let pos = cc.v3(0, 0);
@@ -145,7 +151,7 @@ export default class KeyboardController extends cc.Component {
         if (this.isB) {
             cc.director.emit(EventHelper.PLAYER_REMOTEATTACK);
         }
-        
+
         if (this.isD) {
             cc.director.emit(EventHelper.PLAYER_SKILL);
         }

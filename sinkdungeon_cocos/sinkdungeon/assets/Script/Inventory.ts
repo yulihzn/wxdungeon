@@ -434,11 +434,14 @@ export default class Inventory extends cc.Component {
         return timeDelay == 0;
     }
     update(dt) {
-        for (let key in this.inventoryManager.equips) {
-            if (this.isTimeDelay(dt, this.inventoryManager.equips[key])) {
-                this.addPlayerStatus(this.inventoryManager.equips[key]);
+        if(!Logic.isGamePause){
+            for (let key in this.inventoryManager.equips) {
+                if (this.isTimeDelay(dt, this.inventoryManager.equips[key])) {
+                    this.addPlayerStatus(this.inventoryManager.equips[key]);
+                }
             }
         }
+        
     }
 
     userItem(node: cc.Node, itemIndex: number) {

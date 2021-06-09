@@ -259,6 +259,9 @@ export default class TalentMagic extends Talent {
         return false;
     }
     update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
         if (this.isCheckTimeDelay(dt)) {
             this.init();
         }

@@ -72,6 +72,9 @@ export default class SlimeVenom extends Actor {
         return false;
     }
     update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
         if (this.isCheckTimeDelay(dt)) {
             this.damagePlayer(this.from);
         }

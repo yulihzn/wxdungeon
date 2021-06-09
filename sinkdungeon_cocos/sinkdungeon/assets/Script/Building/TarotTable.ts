@@ -51,8 +51,5 @@ export default class TarotTable extends Building {
         this.node.position = Dungeon.getPosInMap(pos);
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
-    update(dt) {
-
-    }
 
 }

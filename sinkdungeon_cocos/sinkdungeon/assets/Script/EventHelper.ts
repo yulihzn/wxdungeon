@@ -1,7 +1,7 @@
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 @ccclass
-export class EventHelper extends cc.Component{
+export class EventHelper extends cc.Component {
     public static readonly PLAYER_MOVE = 'PLAYER_MOVE';
     public static readonly PLAYER_ROTATE = 'PLAYER_ROTATE';
     public static readonly PLAYER_TRIGGER = 'PLAYER_TRIGGER';
@@ -13,13 +13,13 @@ export class EventHelper extends cc.Component{
     public static readonly PLAYER_REMOTEATTACK_CANCEL = 'PLAYER_REMOTEATTACK_CANCEL';
     public static readonly PLAYER_GETITEM = 'PLAYER_GETITEM';
     public static readonly PLAYER_TAPTIPS = 'PLAYER_TAPTIPS';
-    public static readonly PLAYER_USEDREAM= 'PLAYER_USEDREAM';
-    public static readonly PLAYER_CHANGEITEM= 'PLAYER_CHANGEITEM';
-    public static readonly PLAYER_CHANGEEQUIPMENT= 'PLAYER_CHANGEEQUIPMENT';
+    public static readonly PLAYER_USEDREAM = 'PLAYER_USEDREAM';
+    public static readonly PLAYER_CHANGEITEM = 'PLAYER_CHANGEITEM';
+    public static readonly PLAYER_CHANGEEQUIPMENT = 'PLAYER_CHANGEEQUIPMENT';
     public static readonly PLAYER_STATUSUPDATE = 'PLAYER_STATUSUPDATE';
     public static readonly PLAYER_EXIT_FROM_SETTINGS = 'PLAYER_EXIT_FROM_SETTINGS';
     public static readonly INVENTORY_CHANGEITEM = 'INVENTORY_CHANGEITEM';
-    public static readonly CHANGE_MINIMAP= 'CHANGE_MINIMAP';
+    public static readonly CHANGE_MINIMAP = 'CHANGE_MINIMAP';
     public static readonly HUD_ADD_COIN = 'HUD_ADD_COIN';
     public static readonly HUD_ADD_OILGOLD = 'HUD_ADD_OILGOLD';
     public static readonly HUD_STOP_COUNTTIME = 'HUD_STOP_COUNTTIME';
@@ -39,6 +39,7 @@ export class EventHelper extends cc.Component{
     public static readonly HUD_MART_SHELVES_DIALOG_PAY = 'HUD_MART_SHELVES_DIALOG_BUY';
     public static readonly HUD_CAMERA_ZOOM_IN = 'HUD_CAMERA_ZOOM_IN';
     public static readonly HUD_CAMERA_ZOOM_OUT = 'HUD_CAMERA_ZOOM_OUT';
+    public static readonly HUD_CANCEL_OR_PAUSE = 'HUD_CANCEL_OR_PAUSE';
     public static readonly DUNGEON_SETEQUIPMENT = 'DUNGEON_SETEQUIPMENT';
     public static readonly DUNGEON_ADD_ITEM = 'DUNGEON_ADD_ITEM';
     public static readonly DUNGEON_SHAKEONCE = 'DUNGEON_SHAKEONCE';
@@ -64,27 +65,27 @@ export class EventHelper extends cc.Component{
     public static readonly CHUNK_LOAD = 'CHUNK_LOAD';
     public static readonly POOL_DESTORY_WALKSMOKE = 'destorysmoke';
     public static readonly POOL_DESTORY_BLOCKLIGHT = 'destoryblocklight';
-    public static eventHandler:cc.Node = new cc.Node();
-    
+    public static eventHandler: cc.Node = new cc.Node();
+
     /**
      * 自定义事件发送
      * @param key 
      * @param customDetail 
      */
-    public static emit(key:string,customDetail?:any){
-        if(customDetail){
+    public static emit(key: string, customDetail?: any) {
+        if (customDetail) {
             cc.director.emit(key, { detail: customDetail });
-        }else{
+        } else {
             cc.director.emit(key);
         }
     }
-  
+
     /**
      * 自定义事件接收
      * @param key 
      * @param callback 
      */
-    public static on(key:string,callback:Function){
+    public static on(key: string, callback: Function) {
         cc.director.on(key, (event) => { callback(event.detail); });
     }
 }

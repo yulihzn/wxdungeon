@@ -22,6 +22,7 @@ export default class Game extends cc.Component {
     onLoad(){
         Logic.settings.showShadow = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW);
         Logic.settings.showGamepad = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD);
+        cc.director.getScheduler().setTimeScale(1);
     }
     get Dungeon(){
         if(!this.dungeonBase){
@@ -35,5 +36,4 @@ export default class Game extends cc.Component {
         }
         return this.hudBase;
     }
-    
 }

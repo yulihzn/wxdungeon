@@ -91,7 +91,7 @@ export default class Logic extends cc.Component {
     static isCheatMode = false;//作弊
     static isDebug = false;//调试
     static isTour = false;//游览
-    static isDialogShow = false;
+    static isGamePause = false;
     static dieFrom: FromData = new FromData();
     static isMapReset = false;
     static lastBgmIndex = 0;

@@ -249,7 +249,7 @@ export default class Controller extends cc.Component {
         return false;
     }
     update(dt) {
-        if (this.isTimeDelay(dt)&&!Logic.isDialogShow) {
+        if (this.isTimeDelay(dt)&&!Logic.isGamePause) {
             if (this.attackActionTouched) {
                 cc.director.emit(EventHelper.PLAYER_ATTACK);
             }

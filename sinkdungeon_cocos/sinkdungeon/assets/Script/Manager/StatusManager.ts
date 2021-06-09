@@ -139,6 +139,9 @@ export default class StatusManager extends cc.Component {
     }
 
     update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
         if (this.node.parent) {
             this.node.scaleX = this.node.parent.scaleX > 0 ? 1 : -1;
         }

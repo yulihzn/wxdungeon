@@ -6,6 +6,7 @@ import Logic from "../Logic";
 import SettingsDialog from "./dialog/SettingsDialog";
 import MartShelvesDialog from "./dialog/MartShelvesDialog";
 import InventoryDialog from "./dialog/InventoryDialog";
+import Dungeon from "../Dungeon";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,7 +25,7 @@ export default class GameHud extends cc.Component {
     @property(HealthBar)
     healthBar: HealthBar = null;
     @property(HealthBar)
-    dreamBar:HealthBar = null;
+    dreamBar: HealthBar = null;
     @property(HealthBar)
     bossHealthBar: HealthBar = null;
     @property(PlayerInfoDialog)
@@ -34,19 +35,19 @@ export default class GameHud extends cc.Component {
     @property(cc.Label)
     clock: cc.Label = null;
     @property(cc.Node)
-    damageCorner:cc.Node = null;
+    damageCorner: cc.Node = null;
     @property(cc.Node)
-    pasueButton:cc.Node = null;
+    pasueButton: cc.Node = null;
     @property(cc.Node)
-    zoomButton:cc.Node = null;
+    zoomButton: cc.Node = null;
     @property(SettingsDialog)
-    settingsDialog:SettingsDialog=null;
+    settingsDialog: SettingsDialog = null;
     @property(MartShelvesDialog)
-    martShelvesDialog:MartShelvesDialog = null;
+    martShelvesDialog: MartShelvesDialog = null;
     @property(cc.Label)
-    completeLabel:cc.Label=null;
+    completeLabel: cc.Label = null;
     @property(InventoryDialog)
-    inventoryDialog:InventoryDialog=null;
+    inventoryDialog: InventoryDialog = null;
     private isCompleteShowed = false;
     private checkTimeDelay = 0;
     private startCountTime = true;
@@ -55,7 +56,7 @@ export default class GameHud extends cc.Component {
     private minute = 0;
     private second = 0;
 
-    onLoad(){
+    onLoad() {
         cc.director.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, (event) => {
             let data = new PlayerData();
             data.valueCopy(event.detail.data);
@@ -68,18 +69,18 @@ export default class GameHud extends cc.Component {
             this.dreamBarUpdate(event.detail.x, event.detail.y);
         })
         cc.director.on(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR, (event) => {
-            if(this.dreamBar){
+            if (this.dreamBar) {
                 this.dreamBar.shake();
             }
         })
         cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
             this.showDamageCorner();
-            if(this.healthBar){
+            if (this.healthBar) {
                 this.healthBar.shake();
             }
         })
         cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG, (event) => {
-            this.showMartShelvesDialog(event.detail.type,event.detail.goodsNameList);
+            this.showMartShelvesDialog(event.detail.type, event.detail.goodsNameList);
         })
         cc.director.on(EventHelper.HUD_COMPLETE_SHOW, (event) => {
             this.showComplete();
@@ -87,67 +88,70 @@ export default class GameHud extends cc.Component {
         cc.director.on(EventHelper.HUD_INVENTORY_SHOW, (event) => {
             this.showInventoryDialog();
         })
+        cc.director.on(EventHelper.HUD_CANCEL_OR_PAUSE, (event) => {
+            this.cancelOrPause();
+        })
         cc.director.on(EventHelper.HUD_STOP_COUNTTIME
             , (event) => { this.startCountTime = false; });
-            cc.director.on(EventHelper.HUD_FADE_IN, (event) => {
-                this.fadeIn();
-            })
-            cc.director.on(EventHelper.HUD_FADE_OUT, (event) => {
-                this.fadeOut();
-            })
+        cc.director.on(EventHelper.HUD_FADE_IN, (event) => {
+            this.fadeIn();
+        })
+        cc.director.on(EventHelper.HUD_FADE_OUT, (event) => {
+            this.fadeOut();
+        })
         if (this.clock) {
             this.clock.string = `${Logic.time}`;
         }
         if (this.level) {
             this.level.string = `${Logic.worldLoader.getCurrentLevelData().name}`;
         }
-        if(this.damageCorner){
+        if (this.damageCorner) {
             this.damageCorner.opacity = 0;
         }
-        this.pasueButton.on(cc.Node.EventType.TOUCH_START, (event:cc.Event.EventTouch)=>{
+        this.pasueButton.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.pauseGame();
         });
-        this.zoomButton.on(cc.Node.EventType.TOUCH_START, (event:cc.Event.EventTouch)=>{
-            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN,{});
+        this.zoomButton.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});
         });
-        this.zoomButton.on(cc.Node.EventType.TOUCH_END, (event:cc.Event.EventTouch)=>{
-            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT,{});
+        this.zoomButton.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {});
         });
-        this.zoomButton.on(cc.Node.EventType.TOUCH_CANCEL, (event:cc.Event.EventTouch)=>{
-            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT,{});
+        this.zoomButton.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
+            EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {});
         });
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
         this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream().y);
         this.fadeIn();
     }
-    private showComplete(){
-        if(!this.completeLabel||this.isCompleteShowed){
+    private showComplete() {
+        if (!this.completeLabel || this.isCompleteShowed) {
             return;
         }
-        let arr = ['清','清理','清理完','清理完成','清理完成','清理完成','清理完成','清理完成','清理完成','清理完成','清理完','清理','清',''];
+        let arr = ['清', '清理', '清理完', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完', '清理', '清', ''];
         let i = 0;
         this.completeLabel.string = '';
         this.completeLabel.unscheduleAllCallbacks();
         this.isCompleteShowed = true;
-        this.completeLabel.schedule(()=>{
-            if(i<arr.length){
+        this.completeLabel.schedule(() => {
+            if (i < arr.length) {
                 this.completeLabel.string = arr[i++];
             }
-        },0.1,arr.length,0.5);
+        }, 0.1, arr.length, 0.5);
     }
-    private fadeOut(){
-        if(!this.node){
+    private fadeOut() {
+        if (!this.node) {
             return;
         }
         this.node.opacity = 255;
-        cc.tween(this.node).to(0.5,{opacity:0}).start();
+        cc.tween(this.node).to(0.5, { opacity: 0 }).start();
     }
-    private fadeIn(){
-        if(!this.node){
+    private fadeIn() {
+        if (!this.node) {
             return;
         }
         this.node.opacity = 0;
-        cc.tween(this.node).to(3,{opacity:255}).start();
+        cc.tween(this.node).to(3, { opacity: 255 }).start();
     }
     private statusUpdate(data: PlayerData) {
         if (!this.playerInfoDialog) {
@@ -156,14 +160,14 @@ export default class GameHud extends cc.Component {
         this.playerInfoDialog.refreshDialog(data, data.EquipmentTotalData, data.StatusTotalData);
     }
 
-    private showDamageCorner(){
-        if(!this.damageCorner){
+    private showDamageCorner() {
+        if (!this.damageCorner) {
             return;
         }
         this.damageCorner.stopAllActions();
         this.damageCorner.opacity = 255;
         this.damageCorner.scale = 1;
-        cc.tween(this.damageCorner).parallel(cc.tween(this.damageCorner).to(0.5,{scale:1.05}),cc.tween(this.damageCorner).to(1,{opacity:0})).start();
+        cc.tween(this.damageCorner).parallel(cc.tween(this.damageCorner).to(0.5, { scale: 1.05 }), cc.tween(this.damageCorner).to(1, { opacity: 0 })).start();
     }
     private healthBarUpdate(currentHealth, maxHealth): void {
         if (this.healthBar) {
@@ -191,23 +195,26 @@ export default class GameHud extends cc.Component {
         return false;
     }
 
-    update(dt:number) {
+    update(dt: number) {
         if (this.isCheckTimeDelay(dt)) {
             if (this.clock && this.startCountTime) {
                 this.changeTime();
                 this.clock.string = `${Logic.time}`;
             }
         }
-        if(this.settingsDialog.node.active||this.martShelvesDialog.node.active){
-            Logic.isDialogShow = true;
-        }else{
-            Logic.isDialogShow = false;
+        if (this.settingsDialog.node.active || this.martShelvesDialog.node.active) {
+            Logic.isGamePause = true;
+        } else {
+            Logic.isGamePause = false;
         }
     }
-    useItem(){
+    useItem() {
 
     }
     changeTime() {
+        if (Logic.isGamePause) {
+            return;
+        }
         this.second = this.second + 1;
         if (this.second >= 60) {
             this.second = 0;
@@ -226,33 +233,62 @@ export default class GameHud extends cc.Component {
         Logic.time = strHour + ':' + strMinute + ':' + strSecond;
 
     }
-    pauseGame():void{
-        // if(cc.director.isPaused()){
-        //     cc.director.resume();
-        //     this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause');
-        // }else{
-        //     this.pasueButton.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes('hud_pause_pressed');
-        //     this.scheduleOnce(()=>{cc.director.pause();},0.1)
-        // }
+    private cancelOrPause() {
+        if (!this.node) {
+            return;
+        }
+        if (this.inventoryDialog.isShow) {
+            this.inventoryDialog.dismiss();
+            return;
+        }
+        if (this.martShelvesDialog.isShow) {
+            this.martShelvesDialog.dismiss();
+            return;
+        }
         this.showSettingsDialog();
     }
-    showInventoryDialog(){
-        if(!this.node){
-            return;
-        }
-        this.inventoryDialog.show();
+    //button
+    pauseGame(): void {
+        this.showSettingsDialog();
     }
-    showSettingsDialog(){
-        if(!this.node){
+    showInventoryDialog() {
+        if (!this.node) {
             return;
         }
-        this.settingsDialog.show();
+        if (this.inventoryDialog.isShow) {
+            this.inventoryDialog.dismiss();
+        } else {
+            this.inventoryDialog.show();
+        }
     }
-    showMartShelvesDialog(type:string,goodsList:string[]){
-        if(!this.martShelvesDialog){
+    showSettingsDialog() {
+        if (!this.node) {
             return;
         }
-        this.martShelvesDialog.updateUI(type,goodsList);
-        this.martShelvesDialog.show();
+        if (this.settingsDialog.isShow) {
+            this.settingsDialog.dismiss();
+            cc.director.getScheduler().setTimeScale(1);
+        } else {
+            this.scheduleOnce(()=>{
+                if(this.settingsDialog.isShow&&!this.settingsDialog.isAniming){
+                    cc.director.getScheduler().setTimeScale(0);
+                }else{
+                    cc.director.getScheduler().setTimeScale(1);
+                }
+            },1)
+            
+            this.settingsDialog.show();
+        }
+    }
+    showMartShelvesDialog(type: string, goodsList: string[]) {
+        if (!this.martShelvesDialog) {
+            return;
+        }
+        if (this.martShelvesDialog.isShow) {
+            this.martShelvesDialog.dismiss();
+        } else {
+            this.martShelvesDialog.updateUI(type, goodsList);
+            this.martShelvesDialog.show();
+        }
     }
 }

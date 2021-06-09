@@ -849,6 +849,9 @@ export default class Player extends Actor {
         return false;
     }
     update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
         if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }

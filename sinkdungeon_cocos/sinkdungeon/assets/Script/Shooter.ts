@@ -415,6 +415,9 @@ export default class Shooter extends cc.Component {
     }
 
     update(dt:number) {
+        if(Logic.isGamePause){
+            return;
+        }
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));

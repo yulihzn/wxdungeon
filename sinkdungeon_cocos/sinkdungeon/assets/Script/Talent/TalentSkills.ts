@@ -421,6 +421,9 @@ export default class TalentSkills extends Talent {
         return false;
     }
     update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
         if (this.isCheckTimeDelay(dt)) {
             this.init();
         }

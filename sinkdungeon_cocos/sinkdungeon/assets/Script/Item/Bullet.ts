@@ -72,7 +72,7 @@ export default class Bullet extends cc.Component {
     aoePrefab: cc.Prefab;
     aoeData = new AreaOfEffectData();
     shooter:Shooter;
-
+    private currentLinearVelocity = cc.v2(0,0);
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -96,6 +96,7 @@ export default class Bullet extends cc.Component {
     onEnable() {
         this.tagetPos = cc.v3(0, 0);
         this.rigidBody.linearVelocity = cc.v2(0, 0);
+        this.currentLinearVelocity = cc.v2(0,0);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
         this.sprite.angle = 0;
@@ -113,6 +114,10 @@ export default class Bullet extends cc.Component {
     timeDelay = 0;
     checkTimeDelay = 0;
     update(dt) {
+        if(Logic.isGamePause){
+            this.rigidBody.linearVelocity = cc.v2(0,0);
+            return;
+        }
         this.checkTimeDelay += dt;
         if (this.checkTimeDelay > 0.5) {
             this.checkTraking();
@@ -126,9 +131,10 @@ export default class Bullet extends cc.Component {
             if (this.timeDelay > 0.016) {
                 this.timeDelay = 0;
                 let d = this.data.decelerateDelta > 0 ? this.data.decelerateDelta : 1;
-                this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.lerp(cc.v2(0, 0), d * dt);
+                this.currentLinearVelocity = this.currentLinearVelocity.lerp(cc.v2(0, 0), d * dt);
             }
         }
+        this.rigidBody.linearVelocity = this.currentLinearVelocity;
     }
 
     private checkTraking(): void {
@@ -137,7 +143,7 @@ export default class Bullet extends cc.Component {
             if (!pos.equals(cc.Vec3.ZERO)) {
                 this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
                 this.hv = pos;
-                this.rigidBody.linearVelocity = cc.v2(this.data.speed * this.hv.x, this.data.speed * this.hv.y);
+                this.currentLinearVelocity = cc.v2(this.data.speed * this.hv.x, this.data.speed * this.hv.y);
             }
         }
     }
@@ -263,7 +269,8 @@ export default class Bullet extends cc.Component {
         if (!this.rigidBody) {
             this.rigidBody = this.getComponent(cc.RigidBody);
         }
-        this.rigidBody.linearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
+        this.currentLinearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
+        this.rigidBody.linearVelocity = this.currentLinearVelocity;
         //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));
         this.sprite.stopAllActions();
@@ -440,7 +447,7 @@ export default class Bullet extends cc.Component {
             // this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(cc.Vec2.angle(pos,reflect));
             let angle = -180 + Logic.getRandomNum(0, 10) - 20;
             this.node.angle += angle;
-            this.rigidBody.linearVelocity = this.rigidBody.linearVelocity.rotate(angle * Math.PI / 180);
+            this.currentLinearVelocity = this.currentLinearVelocity.rotate(angle * Math.PI / 180);
             this.isFromPlayer = true;
             this.data.isTracking = 0;
             return true;
@@ -453,6 +460,7 @@ export default class Bullet extends cc.Component {
         }
         this.isHit = true;
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
+            this.currentLinearVelocity = cc.v2(0,0);
             this.rigidBody.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }

@@ -34,6 +34,7 @@ export default abstract class Boss extends Actor {
     data: NonPlayerData = new NonPlayerData();
     abstract killed();
     abstract bossAction(): void;
+    abstract updateLogic(dt: number):void ;
     /**添加状态 */
     addStatus(statusType: string,from:FromData) {
         if (!this.node||this.sc.isDied) {
@@ -121,4 +122,5 @@ export default abstract class Boss extends Actor {
     updateDream(offset: number): number {
         return 0;
     }
+    
 }

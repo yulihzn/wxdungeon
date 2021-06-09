@@ -168,6 +168,9 @@ export default class Emplacement extends Building {
         shooter.setHv(hv);
     }
     update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
         this.timeDelay += dt;
         if (this.timeDelay > 3) {
             this.timeDelay = 0;

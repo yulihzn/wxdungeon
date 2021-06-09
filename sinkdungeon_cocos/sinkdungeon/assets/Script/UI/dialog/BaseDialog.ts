@@ -15,6 +15,13 @@ export default class BaseDialog extends cc.Component {
     dialogBg:cc.Node=null;
     dismissCallBack:Function;
     private cancelOutSide = true;
+    _isAniming = false;
+    get isAniming(){
+        return this._isAniming;
+    }
+    get isShow(){
+        return this.node.active == true;
+    }
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -34,14 +41,25 @@ export default class BaseDialog extends cc.Component {
         this.cancelOutSide = flag;
     }
     show(){
+        if(this._isAniming){
+            return;
+        }
+        this._isAniming = true;
         this.node.active = true;
         this.node.opacity = 255;
         this.node.scale = 0;
-        cc.tween(this.node).to(0.1,{scale:0.1}).to(0.1,{scaleX:1}).to(0.1,{scaleY:1}).start();
+        cc.tween(this.node).to(0.1,{scale:0.1}).to(0.1,{scaleX:1}).to(0.1,{scaleY:1}).call(()=>{
+            this._isAniming = false;
+        }).start();
     }
     dismiss(){
+        if(this._isAniming){
+            return;
+        }
+        this._isAniming = true;
         cc.tween(this.node).to(0.1,{scaleY:0.1}).to(0.1,{scaleX:0}).to(0.1,{opacity:0}).call(()=>{
             this.node.active = false;
+            this._isAniming = false;
             if(this.dismissCallBack){
                 this.dismissCallBack();
             }

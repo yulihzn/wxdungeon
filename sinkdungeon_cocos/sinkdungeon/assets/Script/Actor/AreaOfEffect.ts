@@ -7,6 +7,7 @@ import AreaOfEffectData from "../Data/AreaOfEffectData";
 import { ColliderTag } from "./ColliderTag";
 import ActorUtils from "../Utils/ActorUtils";
 import InteractBuilding from "../Building/InteractBuilding";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

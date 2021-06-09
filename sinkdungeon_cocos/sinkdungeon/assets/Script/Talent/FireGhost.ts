@@ -89,6 +89,9 @@ export default class FireGhost extends cc.Component {
         return false;
     }
     update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
         if (this.isCheckTimeDelay(dt)) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec3.ZERO)) {

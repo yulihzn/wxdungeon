@@ -51,6 +51,7 @@ export default class SettingsDialog extends BaseDialog {
         cc.director.emit(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD);
     }
     close(){
+        cc.director.getScheduler().setTimeScale(1);
         this.dismiss();
     }
     home(){

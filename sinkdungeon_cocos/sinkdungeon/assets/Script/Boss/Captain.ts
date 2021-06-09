@@ -11,6 +11,7 @@ import FromData from "../Data/FromData";
 import Achievements from "../Achievement";
 import { ColliderTag } from "../Actor/ColliderTag";
 import ActorUtils from "../Utils/ActorUtils";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -155,7 +156,10 @@ export default class Captain extends Boss {
         }
     }
 
-    update(dt) {
+    updateLogic(dt:number) {
+        if(Logic.isGamePause){
+            return;
+        }
         this.healthBar.node.active = !this.sc.isDied;
         this.timeDelay += dt;
         if (this.timeDelay > 0.016) {
