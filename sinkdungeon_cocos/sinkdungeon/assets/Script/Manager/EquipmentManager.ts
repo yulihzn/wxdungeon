@@ -428,7 +428,6 @@ export default class EquipmentManager extends BaseManager {
                 equipment.shopTable = shopTable;
                 equipData.price = 30 * (equipData.level + 1);
                 shopTable.data.equipdata = equipData.clone();
-                shopTable.data.price = equipData.price;
             }
             equipment.refresh(equipData);
         } else {
@@ -436,7 +435,6 @@ export default class EquipmentManager extends BaseManager {
             let data = EquipmentManager.getNewEquipData(equipType, chestQuality);
             if (shopTable) {
                 equipment.shopTable = shopTable;
-                data.price = 30 * (data.level + 1);
                 shopTable.data.equipdata = data.clone();
                 shopTable.data.price = data.price;
             }
@@ -447,7 +445,7 @@ export default class EquipmentManager extends BaseManager {
 
     }
     static getNewEquipData(equipType, chestQuality?: number): EquipmentData {
-        if(equipType.length==0){
+        if (equipType.length == 0) {
             return;
         }
         let data = new EquipmentData();
@@ -467,7 +465,6 @@ export default class EquipmentManager extends BaseManager {
         data.suitcolor2 = '#32CD32';//酸橙绿
         data.suitcolor3 = '#00FF00';//酸橙色
         data.Common.add(desc.common);
-
         data.prefix = desc.prefix;
         data.titlecolor = desc.titlecolor;
         if (desc.color != "#ffffff") {
@@ -479,6 +476,7 @@ export default class EquipmentManager extends BaseManager {
             }
         }
         data.level = desc.level;
+        data.price += EquipmentManager.getPrice(data);
         return data;
     }
     static getEquipmentInfoBase(common: CommonData): string {
@@ -568,15 +566,57 @@ export default class EquipmentManager extends BaseManager {
         return false;
     }
 
+    static getPrice(data: EquipmentData): number {
+        let price = 0;
+        price += data.Common.maxHealth * 5;//最大生命25
+        price += data.Common.maxDream * 10;//最大梦境值25
+        price += data.Common.damageMin * 10;//最小攻击50
+        price += data.Common.damageMax * 5;//最大攻击25
+        price += data.Common.damageBack * 5;//背面额外攻击伤害
+        price += data.Common.criticalStrikeRate * 3;//暴击
+        price += data.Common.defence * 5;//物理防御
+        price += data.Common.blockPhysical / 2;//物理格百分比
+        price += data.Common.blockMagic / 2;//魔法格挡百分比
+        price += data.Common.blockDamage * 5;//弹反伤害
+        price += data.Common.lifeDrain;//吸血
+        if (data.Common.moveSpeed < 0) {
+            price += -20;
+        } else {
+            price += data.Common.moveSpeed;//移速
+        }
+        if (data.Common.attackSpeed < 0) {
+            price += -10;
+        } else {
+            price += data.Common.attackSpeed;//攻速
+        }
+        price += data.Common.dodge * 2;//闪避%
+        if (data.Common.remoteCooldown > 0) {
+            price += Math.floor(1000 / data.Common.remoteCooldown * 20);//远程冷却
+        } else {
+            price += Math.floor(data.Common.remoteCooldown / 20);
+        }
+        price += data.Common.remoteDamage * 30;//远程攻击
+        price += data.Common.remoteCritRate;//远程暴击
+        price += data.Common.realDamage * 20;//真实伤害
+        price += data.Common.realRate * 2//真实伤害几率%
+        price += data.Common.magicDamage * 10;//魔法伤害
+        price += data.Common.magicDefence;//魔法抗性%
+        price += data.Common.iceRate;//冰元素几率%
+        price += data.Common.fireRate * 2;//火元素几率%
+        price += data.Common.lighteningRate;//雷元素几率%
+        price += data.Common.toxicRate * 2;//毒元素几率%
+        price += data.Common.curseRate * 2;//诅咒元素几率%
+        return price > 0 ? price : 0;
+    }
     updateLogic(dt: number, player: Player) {
         if (this.isCheckTimeDelay(dt)) {
             let distance = 200;
             let equip: Equipment = null;
-            for (let i=this.groundList.length-1;i>=0;i--) {
+            for (let i = this.groundList.length - 1; i >= 0; i--) {
                 let e = this.groundList[i];
                 e.highLight(false);
-                if(e.isTaken||!e.isValid){
-                    this.groundList.splice(i,1);
+                if (e.isTaken || !e.isValid) {
+                    this.groundList.splice(i, 1);
                     continue;
                 }
                 let d = Logic.getDistance(e.node.position, player.node.position);
@@ -585,14 +625,14 @@ export default class EquipmentManager extends BaseManager {
                     equip = e;
                 }
             }
-            
+
             if (distance < 64 && equip) {
                 equip.highLight(true);
                 if (!equip.taketips) {
                     equip.taketips = this.node.getChildByName('sprite').getChildByName('taketips');
                 }
-                if (!this.lastGroundEquip||this.lastGroundEquip.uuid != equip.uuid) {
-                    cc.tween(equip.taketips).to(0.2,{opacity:255}).delay(1).to(0.2,{opacity:0}).start();
+                if (!this.lastGroundEquip || this.lastGroundEquip.uuid != equip.uuid) {
+                    cc.tween(equip.taketips).to(0.2, { opacity: 255 }).delay(1).to(0.2, { opacity: 0 }).start();
                     cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { equipData: equip.data } });
                 }
                 this.lastGroundEquip = equip;

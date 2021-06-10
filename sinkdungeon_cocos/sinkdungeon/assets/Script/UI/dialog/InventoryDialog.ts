@@ -202,6 +202,29 @@ export default class InventoryDialog extends BaseDialog {
         this.list[this.currentSelectIndex].setEmpty();
         this.clearSelect();
     }
+    //button 出售
+    sale() {
+        //未选中或者为空直接返回
+        if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+            return;
+        }
+        let current = this.list[this.currentSelectIndex];
+        if (current.data.type == InventoryItem.TYPE_EQUIP) {
+            let equipData = current.data.equipmentData;
+            if (equipData.equipmetType != InventoryManager.EMPTY) {
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: equipData.price });
+            }
+        } else {
+            let itemData = current.data.itemData;
+            if (itemData.resName != Item.EMPTY) {
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: itemData.price });
+            }
+        }
+        //置空当前放下的数据，清除选中
+        Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
+        this.list[this.currentSelectIndex].setEmpty();
+        this.clearSelect();
+    }
     // update (dt) {}
 
     close() {

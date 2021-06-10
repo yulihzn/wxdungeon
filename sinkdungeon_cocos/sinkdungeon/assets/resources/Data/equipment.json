@@ -7,6 +7,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "emptyequipment",
+        "price": 0,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -32,6 +33,7 @@
         "lightcolor": "#ffffff",
         "img": "weapon000",
         "stab": 1,
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 5,
@@ -56,6 +58,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon001",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -80,6 +83,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon002",
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 1,
@@ -104,6 +108,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon003",
+        "price": 30,
         "common": {
             "damageMin": 3,
             "damageMax": 2,
@@ -129,6 +134,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon004",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -141,7 +147,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "stab!!!",
         "far": 1
     },
@@ -155,6 +161,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon005",
+        "price": 30,
         "common": {
             "damageMin": 4,
             "damageMax": 1,
@@ -180,6 +187,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon006",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 3,
@@ -191,8 +199,8 @@
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0,
-            "realDamage":1,
-            "realRate":30
+            "realDamage": 1,
+            "realRate": 30
         },
         "desc": "物理学圣剑!!!"
     },
@@ -206,7 +214,8 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon007",
-        "isReflect":1,
+        "isReflect": 1,
+        "price": 40,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -231,6 +240,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon008",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -243,7 +253,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "十分轻巧的水果刀"
     },
     "weapon009": {
@@ -256,6 +266,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ff5800",
         "img": "weapon009",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 2,
@@ -266,7 +277,7 @@
             "moveSpeed": 0,
             "attackSpeed": 10,
             "magicDamage": 2,
-            "fireRate":80,
+            "fireRate": 80,
             "maxHealth": 0
         },
         "desc": "很高兴很开心"
@@ -281,6 +292,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#e0f0ec",
         "img": "weapon010",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 2,
@@ -291,7 +303,7 @@
             "moveSpeed": 0,
             "attackSpeed": 10,
             "magicDamage": 2,
-            "iceRate":20,
+            "iceRate": 20,
             "maxHealth": 0
         },
         "desc": "这个肯定是山寨货"
@@ -306,6 +318,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#fdcc00",
         "img": "weapon011",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -314,13 +327,13 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
-            "magicDamage":1,
-            "curseRate":20,
+            "magicDamage": 1,
+            "curseRate": 20,
             "attackSpeed": -100,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "Immortal!!!",
         "far": 1
     },
@@ -334,6 +347,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#7f7963",
         "img": "weapon012",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 5,
@@ -343,12 +357,12 @@
             "damageBack": 2,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "toxicRate":20,
-            "magicDamage":1,
+            "toxicRate": 20,
+            "magicDamage": 1,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "toxic!!!",
         "far": 0
     },
@@ -362,6 +376,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#86726d",
         "img": "weapon013",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 5,
@@ -374,7 +389,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "old tree root",
         "far": 0
     },
@@ -388,6 +403,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon014",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 5,
@@ -398,11 +414,11 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "realDamage":1,
-            "realRate":5,
+            "realDamage": 1,
+            "realRate": 5,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "Cook Chopper",
         "far": 0
     },
@@ -416,6 +432,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#cbdbfc",
         "img": "weapon015",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -426,7 +443,7 @@
             "moveSpeed": 0,
             "attackSpeed": -100,
             "magicDamage": 1,
-            "lighteningRate":20,
+            "lighteningRate": 20,
             "maxHealth": 0
         },
         "desc": "雷刀"
@@ -441,13 +458,14 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#6d492e",
         "img": "weapon016",
-        "bulletArcExNum":2,
-        "exBulletTypeAttack":"bullet029",
-        "exBulletRate":100,
-        "exBulletCombo1":0,
-        "exBulletCombo2":1,
-        "exBulletCombo3":0,
-        "exBulletOffsetX":32,
+        "bulletArcExNum": 2,
+        "exBulletTypeAttack": "bullet029",
+        "exBulletRate": 100,
+        "exBulletCombo1": 0,
+        "exBulletCombo2": 1,
+        "exBulletCombo3": 0,
+        "exBulletOffsetX": 32,
+        "price": 60,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -460,8 +478,8 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
-        "extraInfo":"丛林种子",
+        "stab": 1,
+        "extraInfo": "丛林种子",
         "desc": "树!!!",
         "far": 1
     },
@@ -475,10 +493,11 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon017",
-        "exBulletCombo3":1,
-        "exBulletTypeAttack":"bullet030",
-        "exBulletRate":100,
-        "bulletArcExNum":80,
+        "exBulletCombo3": 1,
+        "exBulletTypeAttack": "bullet030",
+        "exBulletRate": 100,
+        "bulletArcExNum": 80,
+        "price": 60,
         "common": {
             "damageMin": 1,
             "damageMax": 1,
@@ -491,8 +510,8 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
-        "extraInfo":"四面八方千本针",
+        "stab": 1,
+        "extraInfo": "四面八方千本针",
         "desc": "nininininja",
         "far": 0
     },
@@ -506,10 +525,11 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon018",
-        "exBulletCombo2":1,
-        "exBulletTypeAttack":"bullet032",
-        "exBulletOffsetX":48,
-        "exBulletRate":100,
+        "exBulletCombo2": 1,
+        "exBulletTypeAttack": "bullet032",
+        "exBulletOffsetX": 48,
+        "exBulletRate": 100,
+        "price": 60,
         "common": {
             "damageMin": 3,
             "damageMax": 3,
@@ -522,8 +542,8 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":0,
-        "extraInfo":"死亡的气息",
+        "stab": 0,
+        "extraInfo": "死亡的气息",
         "desc": "死亡",
         "far": 1
     },
@@ -537,10 +557,11 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#333333",
         "img": "weapon019",
-        "exBulletCombo1":1,
-        "exBulletTypeAttack":"bullet034",
-        "exBulletOffsetX":16,
-        "exBulletRate":100,
+        "exBulletCombo1": 1,
+        "exBulletTypeAttack": "bullet034",
+        "exBulletOffsetX": 16,
+        "exBulletRate": 100,
+        "price": 60,
         "common": {
             "damageMin": 1,
             "damageMax": 0,
@@ -553,8 +574,8 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":0,
-        "extraInfo":"剑影",
+        "stab": 0,
+        "extraInfo": "剑影",
         "desc": "影子",
         "far": 0
     },
@@ -568,6 +589,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#991212",
         "img": "weapon020",
+        "price": 30,
         "common": {
             "damageMin": 3,
             "damageMax": 0,
@@ -580,8 +602,8 @@
             "dodge": 0,
             "maxHealth": 5
         },
-        "stab":0,
-        "desc": "死亡",
+        "stab": 0,
+        "desc": "看起来很钝",
         "far": 0
     },
     "weapon021": {
@@ -594,9 +616,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#cad1c8",
         "img": "weapon021",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 3,
             "damageMax": 0,
@@ -609,7 +632,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "被水泥冻住了",
         "far": 1
     },
@@ -623,9 +646,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#fe931f",
         "img": "weapon022",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 5,
             "damageMax": 0,
@@ -638,7 +662,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "真正的火鸡腿",
         "far": 1
     },
@@ -652,9 +676,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#303311",
         "img": "weapon023",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 0,
@@ -666,10 +691,10 @@
             "attackSpeed": -100,
             "dodge": 0,
             "magicDamage": 2,
-            "lighteningRate":30,
+            "lighteningRate": 30,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "砸西瓜",
         "far": 1
     },
@@ -683,9 +708,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#cbdbfc",
         "img": "weapon024",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 0,
@@ -697,10 +723,10 @@
             "attackSpeed": 0,
             "dodge": 0,
             "magicDamage": 2,
-            "iceRate":30,
+            "iceRate": 30,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "寒冷",
         "far": 1
     },
@@ -714,9 +740,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#cbda2c",
         "img": "weapon025",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 0,
@@ -728,10 +755,10 @@
             "attackSpeed": 0,
             "dodge": 0,
             "realDamage": 2,
-            "realRate":30,
+            "realRate": 30,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "镰刀一样的武器",
         "far": 0
     },
@@ -745,9 +772,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#cbda2c",
         "img": "weapon026",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 2,
@@ -760,7 +788,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "几乎都生锈了,但是很轻巧",
         "far": 0
     },
@@ -774,22 +802,23 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#5b2800",
         "img": "weapon027",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 3,
             "damageMax": 0,
             "criticalStrikeRate": 0,
             "defence": 0,
             "lifeDrain": 0,
-            "realDamage":1,
-            "realRate":20,
+            "realDamage": 1,
+            "realRate": 20,
             "attackSpeed": -100,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "看起来很厉害",
         "far": 1
     },
@@ -803,6 +832,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon028",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -815,7 +845,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "十分轻巧的手术刀"
     },
     "weapon029": {
@@ -828,6 +858,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon029",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -838,10 +869,10 @@
             "moveSpeed": 0,
             "attackSpeed": -100,
             "magicDamage": 1,
-            "lighteningRate":30,
+            "lighteningRate": 30,
             "maxHealth": 0
         },
-        "blunt":1,
+        "blunt": 1,
         "desc": "平底锅"
     },
     "weapon030": {
@@ -854,6 +885,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon030",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 2,
@@ -865,7 +897,7 @@
             "attackSpeed": 30,
             "maxHealth": 0
         },
-        "blunt":1,
+        "blunt": 1,
         "desc": "厨师的汤勺"
     },
     "weapon031": {
@@ -878,6 +910,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon031",
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 1,
@@ -889,7 +922,7 @@
             "attackSpeed": 0,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "真正的海盗"
     },
     "weapon032": {
@@ -902,6 +935,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon032",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 0,
@@ -909,14 +943,14 @@
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 1,
-            "realDamage":1,
-            "realRate":10,
+            "realDamage": 1,
+            "realRate": 10,
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "简直是酒吧凶器"
     },
     "weapon033": {
@@ -929,9 +963,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon033",
-        "exBulletCombo2":1,
-        "exBulletTypeAttack":"bullet030",
-        "exBulletRate":100,
+        "exBulletCombo2": 1,
+        "exBulletTypeAttack": "bullet030",
+        "exBulletRate": 100,
+        "price": 60,
         "common": {
             "damageMin": 1,
             "damageMax": 1,
@@ -944,8 +979,8 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
-        "extraInfo":"可以发射",
+        "stab": 1,
+        "extraInfo": "可以发射",
         "desc": "nininininja",
         "far": 0
     },
@@ -959,9 +994,10 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#a48700",
         "img": "weapon034",
-        "exBulletCombo2":0,
-        "exBulletOffsetX":0,
-        "exBulletRate":0,
+        "exBulletCombo2": 0,
+        "exBulletOffsetX": 0,
+        "exBulletRate": 0,
+        "price": 30,
         "common": {
             "damageMin": 3,
             "damageMax": 0,
@@ -972,7 +1008,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":0,
+        "stab": 0,
         "desc": "金黄色龙头看起来很生猛",
         "far": 1
     },
@@ -986,6 +1022,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon035",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 1,
@@ -996,7 +1033,7 @@
             "moveSpeed": 0,
             "attackSpeed": 10,
             "magicDamage": 1,
-            "iceRate":20,
+            "iceRate": 20,
             "maxHealth": 0
         },
         "desc": "锋利冰冷的刺"
@@ -1011,6 +1048,7 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ffffff",
         "img": "weapon036",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 1,
@@ -1019,10 +1057,10 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
-            "lighteningRate":30,
+            "lighteningRate": 30,
             "maxHealth": 0
         },
-        "blunt":1,
+        "blunt": 1,
         "desc": "经典键盘"
     },
     "weapon037": {
@@ -1035,8 +1073,9 @@
         "titlecolor": "#ffffff",
         "lightcolor": "#ebd086",
         "img": "weapon037",
-        "exBeatBack":100,
-        "isReflect":1,
+        "exBeatBack": 100,
+        "isReflect": 1,
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 1,
@@ -1045,10 +1084,10 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
-            "lighteningRate":30,
+            "lighteningRate": 30,
             "maxHealth": 0
         },
-        "blunt":1,
+        "blunt": 1,
         "desc": "来一记全垒打吧"
     },
     "remote001": {
@@ -1060,9 +1099,10 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote001",
-        "bulletType":"bullet003",
+        "bulletType": "bullet003",
+        "price": 30,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1071,11 +1111,11 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":500,
+            "remoteCooldown": 500,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "猎魔人必备"
     },
     "remote002": {
@@ -1087,24 +1127,25 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote002",
-        "bulletType":"bullet103",
+        "bulletType": "bullet103",
+        "price": 30,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
-            "remoteCritRate":30,
+            "remoteCritRate": 30,
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":800,
+            "remoteCooldown": 800,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
-        "far":1,
+        "stab": 1,
+        "far": 1,
         "desc": "普通的长弓"
     },
     "remote003": {
@@ -1116,9 +1157,10 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote003",
-        "bulletType":"bullet006",
+        "bulletType": "bullet006",
+        "price": 30,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1127,11 +1169,11 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":500,
+            "remoteCooldown": 500,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "far": 1,
         "desc": "普通的法杖"
     },
@@ -1144,11 +1186,12 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote004",
-        "bulletType":"laser001",
-        "bulletArcExNum":0,
-        "isHeavy":1,
+        "bulletType": "laser001",
+        "bulletArcExNum": 0,
+        "isHeavy": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1157,11 +1200,11 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":1000,
+            "remoteCooldown": 1000,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "激光枪"
     },
     "remote005": {
@@ -1173,12 +1216,13 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote005",
-        "bulletType":"bullet011",
-        "bulletArcExNum":2,
-        "remoteAudio":"SHOOT003",
-        "isHeavy":0,
+        "bulletType": "bullet011",
+        "bulletArcExNum": 2,
+        "remoteAudio": "SHOOT003",
+        "isHeavy": 0,
+        "price": 30,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1187,12 +1231,12 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":1200,
+            "remoteCooldown": 1200,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
-        "far":1,
+        "stab": 1,
+        "far": 1,
         "desc": "Saving people,Hunting things,Family business"
     },
     "remote006": {
@@ -1204,10 +1248,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote006",
-        "bulletType":"bullet012",
-        "isHeavy":1,
+        "bulletType": "bullet012",
+        "isHeavy": 1,
+        "price": 60,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1216,12 +1261,12 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":2000,
+            "remoteCooldown": 2000,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
-        "far":1,
+        "stab": 1,
+        "far": 1,
         "desc": "R P G"
     },
     "remote007": {
@@ -1233,11 +1278,12 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote007",
-        "bulletType":"bullet027",
-        "bulletLineExNum":1,
-        "isHeavy":0,
+        "bulletType": "bullet027",
+        "bulletLineExNum": 1,
+        "isHeavy": 0,
+        "price": 60,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1246,11 +1292,11 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":3000,
+            "remoteCooldown": 3000,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "手里剑"
     },
     "remote008": {
@@ -1262,10 +1308,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote008",
-        "bulletType":"bullet020",
-        "isHeavy":0,
+        "bulletType": "bullet020",
+        "isHeavy": 0,
+        "price": 60,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1274,12 +1321,12 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":1000,
+            "remoteCooldown": 1000,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
-        "far":1,
+        "stab": 1,
+        "far": 1,
         "desc": "这好像是一只母鸡"
     },
     "remote009": {
@@ -1291,11 +1338,12 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote009",
-        "bulletType":"bullet211",
-        "bulletArcExNum":0,
-        "isHeavy":0,
+        "bulletType": "bullet211",
+        "bulletArcExNum": 0,
+        "isHeavy": 0,
+        "price": 30,
         "common": {
-            "remoteDamage":2,
+            "remoteDamage": 2,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1304,11 +1352,11 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":600,
+            "remoteCooldown": 600,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "老式的无膛手枪，但是威力不错"
     },
     "remote010": {
@@ -1320,11 +1368,12 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote010",
-        "bulletType":"bullet211",
-        "bulletArcExNum":0,
-        "isHeavy":0,
+        "bulletType": "bullet211",
+        "bulletArcExNum": 0,
+        "isHeavy": 0,
+        "price": 30,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1333,11 +1382,11 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":500,
+            "remoteCooldown": 500,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "经典92"
     },
     "remote011": {
@@ -1349,13 +1398,14 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "remote011",
-        "bulletType":"bullet042",
-        "bulletArcExNum":0,
-        "isHeavy":0,
-        "suitType":"suit001",
-        "suit1":"套装：远程攻击+5",
+        "bulletType": "bullet042",
+        "bulletArcExNum": 0,
+        "isHeavy": 60,
+        "suitType": "suit001",
+        "suit1": "套装：远程攻击+5",
+        "price": 0,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1364,11 +1414,11 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":1000,
+            "remoteCooldown": 1000,
             "dodge": 0,
             "maxHealth": 0
         },
-        "stab":1,
+        "stab": 1,
         "desc": "一个篮球"
     },
     "helmet002": {
@@ -1379,6 +1429,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet002",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1401,6 +1452,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet003",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1423,7 +1475,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet004",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1446,7 +1499,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet005",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1469,9 +1523,10 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet006",
-        "hideHair":0,
-        "exBulletTypeHurt":"bullet014",
-        "exBulletRate":50,
+        "hideHair": 60,
+        "exBulletTypeHurt": "bullet014",
+        "exBulletRate": 50,
+        "price": 0,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1482,11 +1537,11 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "curseRate":20,
-            "magicDefence":20,
+            "curseRate": 20,
+            "magicDefence": 20,
             "maxHealth": 0
         },
-        "extraInfo":"反击毒蛇",
+        "extraInfo": "反击毒蛇",
         "desc": "啊..不朽"
     },
     "helmet007": {
@@ -1497,7 +1552,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet007",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1520,7 +1576,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet008",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1543,7 +1600,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet009",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 2,
@@ -1566,7 +1624,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet010",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1589,7 +1648,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet011",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 0,
@@ -1612,7 +1672,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet012",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
             "damageMin": 2,
             "damageMax": 0,
@@ -1635,7 +1696,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet013",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
             "damageMin": 3,
             "damageMax": 0,
@@ -1658,7 +1720,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet014",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1668,7 +1731,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1682,9 +1745,10 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet015",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
-            "remoteDamage":1,
+            "remoteDamage": 1,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1706,7 +1770,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet016",
-        "hideHair":0,
+        "hideHair": 30,
+        "price": 0,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1729,7 +1794,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet017",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1739,7 +1805,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -1753,7 +1819,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet018",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -1776,10 +1843,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet019",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":1,
-            "remoteCritRate":20,
+            "remoteDamage": 1,
+            "remoteCritRate": 20,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1801,10 +1869,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet020",
-        "hideHair":0,
+        "hideHair": 30,
+        "price": 0,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":0,
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1826,10 +1895,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet021",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":0,
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
             "damageMin": 1,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1851,10 +1921,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet022",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":1,
-            "remoteCritRate":0,
+            "remoteDamage": 1,
+            "remoteCritRate": 0,
             "damageMin": 1,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1876,10 +1947,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet023",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":0,
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
             "damageMin": 1,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1901,10 +1973,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet024",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":20,
+            "remoteDamage": 0,
+            "remoteCritRate": 20,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 10,
@@ -1926,10 +1999,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet025",
-        "hideHair":0,
+        "hideHair": 0,
+        "price": 30,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":0,
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1951,10 +2025,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet026",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":0,
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -1976,10 +2051,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet027",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":0,
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -2001,10 +2077,11 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "helmet028",
-        "hideHair":1,
+        "hideHair": 1,
+        "price": 30,
         "common": {
-            "remoteDamage":0,
-            "remoteCritRate":0,
+            "remoteDamage": 0,
+            "remoteCritRate": 0,
             "damageMin": 0,
             "damageMax": 0,
             "criticalStrikeRate": 0,
@@ -2026,6 +2103,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes001",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2048,6 +2126,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes002",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2070,6 +2149,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes003",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2092,6 +2172,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes004",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2114,6 +2195,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes005",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2136,6 +2218,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes006",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2158,6 +2241,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes007",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2180,6 +2264,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes008",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2202,6 +2287,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes009",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2211,7 +2297,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -2225,8 +2311,9 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes010",
-        "statusName":"status020",
-        "statusInterval":999,
+        "statusName": "status020",
+        "statusInterval": 999,
+        "price": 90,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2239,7 +2326,7 @@
             "dodge": 0,
             "maxHealth": 2
         },
-        "extraInfo":"生命缓慢的回复",
+        "extraInfo": "生命缓慢的回复",
         "desc": "绿色的丛林衣服"
     },
     "clothes011": {
@@ -2250,6 +2337,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes011",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2260,7 +2348,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 10,
-            "curseRate":20,
+            "curseRate": 20,
             "maxHealth": 0
         },
         "desc": "吟唱不朽"
@@ -2273,6 +2361,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes012",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2283,7 +2372,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "maxHealth": 1
         },
         "desc": "骑士精神"
@@ -2296,6 +2385,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes013",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 5,
@@ -2318,6 +2408,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes014",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2340,6 +2431,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes015",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2362,6 +2454,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes016",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2384,6 +2477,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes017",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2406,6 +2500,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes018",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2428,6 +2523,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes019",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2442,7 +2538,6 @@
         },
         "desc": "看起来很拉风"
     },
-    
     "clothes020": {
         "nameCn": "白大褂",
         "nameEn": "Doctor Clothes",
@@ -2451,6 +2546,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes020",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2473,6 +2569,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes021",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2495,6 +2592,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes022",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2517,6 +2615,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes023",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2539,6 +2638,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes024",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2561,8 +2661,9 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes025",
-        "statusRateHurt":30,
-        "statusNameHurtOther":"status003",
+        "statusRateHurt": 30,
+        "statusNameHurtOther": "status003",
+        "price": 60,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2575,7 +2676,7 @@
             "maxDream": 0,
             "maxHealth": 3
         },
-        "extraInfo":"受伤时概率震晕敌人",
+        "extraInfo": "受伤时概率震晕敌人",
         "desc": "大威天龙大罗法咒袈裟"
     },
     "clothes026": {
@@ -2586,8 +2687,9 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes026",
-        "suitType":"suit001",
-        "suit1":"套装：远程攻击+5",
+        "suitType": "suit001",
+        "suit1": "套装：远程攻击+5",
+        "price": 60,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2610,7 +2712,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes027",
-        "suitType":"suit001",
+        "suitType": "suit001",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2633,6 +2736,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "cloak001",
+        "price": 60,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2655,6 +2759,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "cloak002",
+        "price": 60,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2677,6 +2782,7 @@
         "color": "#323c39",
         "titlecolor": "#ffffff",
         "img": "trousers001",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2700,6 +2806,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "trousers002",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2723,6 +2830,7 @@
         "color": "#dbd12f",
         "titlecolor": "#ffffff",
         "img": "trousers003",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2733,7 +2841,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "maxHealth": 0
         },
         "desc": "十分笨重",
@@ -2747,6 +2855,7 @@
         "color": "#25e85e",
         "titlecolor": "#ffffff",
         "img": "trousers004",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2770,6 +2879,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "trousers005",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2779,7 +2889,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "curseRate":20,
+            "curseRate": 20,
             "dodge": 10,
             "maxHealth": 0
         },
@@ -2794,6 +2904,7 @@
         "color": "#66737a",
         "titlecolor": "#ffffff",
         "img": "trousers006",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2803,7 +2914,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "dodge": 0,
             "maxHealth": 1
         },
@@ -2818,6 +2929,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "trousers007",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2841,6 +2953,7 @@
         "color": "#6e9284",
         "titlecolor": "#ffffff",
         "img": "trousers008",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2864,6 +2977,7 @@
         "color": "#bf4017",
         "titlecolor": "#ffffff",
         "img": "trousers009",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2887,6 +3001,7 @@
         "color": "#5c0808",
         "titlecolor": "#ffffff",
         "img": "trousers010",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2910,6 +3025,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "trousers011",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2933,6 +3049,7 @@
         "color": "#303466",
         "titlecolor": "#ffffff",
         "img": "trousers012",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -2956,6 +3073,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves001",
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 0,
@@ -2979,6 +3097,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves002",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 1,
@@ -3002,6 +3121,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves002",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 1,
@@ -3025,6 +3145,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves004",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3034,7 +3155,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -3048,6 +3169,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves005",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3070,6 +3192,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves006",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3078,7 +3201,7 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 20,
-            "curseRate":20,
+            "curseRate": 20,
             "attackSpeed": 0,
             "dodge": 10,
             "maxHealth": 0
@@ -3093,6 +3216,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves007",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3103,7 +3227,7 @@
             "moveSpeed": 0,
             "attackSpeed": 20,
             "dodge": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "maxHealth": 0
         },
         "desc": "骑士精神"
@@ -3116,6 +3240,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves008",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 3,
@@ -3138,6 +3263,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves009",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3147,7 +3273,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 0,
-            "remoteCooldown":-100,
+            "remoteCooldown": -100,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -3161,6 +3287,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "gloves010",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3170,7 +3297,7 @@
             "damageBack": 0,
             "moveSpeed": 0,
             "attackSpeed": 20,
-            "remoteCooldown":0,
+            "remoteCooldown": 0,
             "dodge": 0,
             "maxHealth": 0
         },
@@ -3184,6 +3311,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes001",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3206,6 +3334,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes002",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3228,8 +3357,9 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes003",
-        "statusInterval":5,
-        "statusName":"status019",
+        "statusInterval": 5,
+        "statusName": "status019",
+        "price": 90,
         "common": {
             "damageMin": 0,
             "damageMax": 1,
@@ -3242,7 +3372,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "extraInfo":"短暂加速",
+        "extraInfo": "短暂加速",
         "desc": "恶魔靴子..."
     },
     "shoes004": {
@@ -3253,6 +3383,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes004",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3263,7 +3394,7 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "maxHealth": 0
         },
         "desc": "十分笨重"
@@ -3276,6 +3407,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes005",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3298,6 +3430,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes006",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3308,7 +3441,7 @@
             "moveSpeed": 10,
             "attackSpeed": 0,
             "dodge": 10,
-            "curseRate":20,
+            "curseRate": 20,
             "maxHealth": 0
         },
         "desc": "嗯...不朽"
@@ -3321,7 +3454,8 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes007",
-        "ignoreTrap":1,
+        "ignoreTrap": 1,
+        "price": 60,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3331,11 +3465,11 @@
             "damageBack": 0,
             "moveSpeed": 10,
             "attackSpeed": 0,
-            "magicDefence":20,
+            "magicDefence": 20,
             "dodge": 0,
             "maxHealth": 0
         },
-        "extraInfo":"无视尖刺伤害",
+        "extraInfo": "无视尖刺伤害",
         "desc": "骑士精神"
     },
     "shoes008": {
@@ -3346,6 +3480,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes008",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 2,
@@ -3368,6 +3503,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes009",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3390,6 +3526,7 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shoes010",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
@@ -3412,14 +3549,15 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield000",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":3,
+            "blockDamage": 3,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":50,
-            "blockMagic":30,
+            "blockPhysical": 50,
+            "blockMagic": 30,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3437,14 +3575,15 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield001",
-        "isHeavy":1,
+        "isHeavy": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":5,
+            "blockDamage": 5,
             "criticalStrikeRate": 0,
-            "blockPhysical":80,
-            "blockMagic":30,
+            "blockPhysical": 80,
+            "blockMagic": 30,
             "defence": 0,
             "lifeDrain": 0,
             "damageBack": 0,
@@ -3463,15 +3602,16 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield002",
-        "isHeavy":1,
+        "isHeavy": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":10,
+            "blockDamage": 10,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":80,
-            "blockMagic":80,
+            "blockPhysical": 80,
+            "blockMagic": 80,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3489,15 +3629,16 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield003",
-        "isHeavy":0,
+        "isHeavy": 0,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":5,
+            "blockDamage": 5,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":40,
-            "blockMagic":80,
+            "blockPhysical": 40,
+            "blockMagic": 80,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3515,19 +3656,20 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield004",
-        "isHeavy":0,
-        "statusNameBlockOther":"status001",
-        "statusNameParryOther":"status001",
-        "statusRateBlock":100,
-        "statusRateParry":100,
+        "isHeavy": 0,
+        "statusNameBlockOther": "status001",
+        "statusNameParryOther": "status001",
+        "statusRateBlock": 100,
+        "statusRateParry": 100,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":5,
+            "blockDamage": 5,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":40,
-            "blockMagic":40,
+            "blockPhysical": 40,
+            "blockMagic": 40,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3545,15 +3687,16 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield005",
-        "isHeavy":0,
+        "isHeavy": 0,
+        "price": 30,
         "common": {
             "damageMin": 1,
             "damageMax": 0,
-            "blockDamage":10,
+            "blockDamage": 10,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":40,
-            "blockMagic":40,
+            "blockPhysical": 40,
+            "blockMagic": 40,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3571,15 +3714,16 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield006",
-        "isHeavy":0,
+        "isHeavy": 0,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":5,
+            "blockDamage": 5,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":90,
-            "blockMagic":10,
+            "blockPhysical": 90,
+            "blockMagic": 10,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3597,17 +3741,18 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield007",
-        "isHeavy":0,
-        "statusNameParrySelf":"status011",
-        "statusRateParry":100,
+        "isHeavy": 90,
+        "statusNameParrySelf": "status011",
+        "statusRateParry": 100,
+        "price": 0,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":5,
+            "blockDamage": 5,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":30,
-            "blockMagic":30,
+            "blockPhysical": 30,
+            "blockMagic": 30,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3615,7 +3760,7 @@
             "dodge": 0,
             "maxHealth": 2
         },
-        "extraInfo":"完美弹反回复生命",
+        "extraInfo": "完美弹反回复生命",
         "desc": "招架利器"
     },
     "shield008": {
@@ -3626,14 +3771,15 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield008",
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":12,
+            "blockDamage": 12,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":50,
-            "blockMagic":50,
+            "blockPhysical": 50,
+            "blockMagic": 50,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
@@ -3651,15 +3797,16 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "shield009",
-        "isReflect":1,
+        "isReflect": 1,
+        "price": 30,
         "common": {
             "damageMin": 0,
             "damageMax": 0,
-            "blockDamage":3,
+            "blockDamage": 3,
             "criticalStrikeRate": 0,
             "defence": 0,
-            "blockPhysical":50,
-            "blockMagic":90,
+            "blockPhysical": 50,
+            "blockMagic": 90,
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
