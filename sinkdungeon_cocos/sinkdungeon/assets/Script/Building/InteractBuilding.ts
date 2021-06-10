@@ -50,9 +50,11 @@ export default class InteractBuilding extends Building {
     isLift = false;
     isAniming = false;
     private hasTargetMap: { [key: string]: number } = {};
+    private rigidBody:cc.RigidBody
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.shadow = this.node.getChildByName('shadow');
+        this.rigidBody = this.getComponent(cc.RigidBody);
     }
     start() {
 
@@ -316,6 +318,11 @@ export default class InteractBuilding extends Building {
     }
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
         if (other.tag != ColliderTag.PLAYER && this.player && this.isTaken && this.isAttacking) {
+            if(other.tag == ColliderTag.BUILDING||other.tag == ColliderTag.WALL||other.tag == ColliderTag.WALL_TOP){
+                if(this.isThrowing){
+                    this.rigidBody.linearVelocity = cc.Vec2.ZERO;
+                }
+            }
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
                 this.hasTargetMap[other.node.uuid]++;
                 return false;
@@ -323,6 +330,7 @@ export default class InteractBuilding extends Building {
                 this.hasTargetMap[other.node.uuid] = 1;
                 return this.attacking(other);
             }
+            
         }
     }
     private updatePosition() {

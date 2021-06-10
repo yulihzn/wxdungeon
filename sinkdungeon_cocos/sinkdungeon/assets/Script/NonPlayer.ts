@@ -587,6 +587,7 @@ export default class NonPlayer extends Actor {
         if (this.sc.isHurting) {
             this.sc.isDisguising = false;
             this.sc.isAttacking = false;
+            this.setLinearVelocity(cc.Vec2.ZERO);
             if (damageData.isCriticalStrike) {
                 this.fall();
             }
@@ -605,7 +606,6 @@ export default class NonPlayer extends Actor {
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }
-            this.setLinearVelocity(cc.Vec2.ZERO);
             //100ms后修改受伤
             this.scheduleOnce(() => {
                 if (this.node) {

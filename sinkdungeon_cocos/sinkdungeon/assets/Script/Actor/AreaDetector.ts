@@ -1,5 +1,6 @@
 import Bullet from "../Item/Bullet";
 import NonPlayer from "../NonPlayer";
+import NextStep from "../Utils/NextStep";
 import Random from "../Utils/Random";
 
 // Learn TypeScript:
@@ -15,25 +16,29 @@ import Random from "../Utils/Random";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class MonsterDetector extends cc.Component {
+export default class AreaDetector extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
+    step:NextStep = new NextStep();
     start () {
 
     }
 
     // update (dt) {}
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        let bullet = other.getComponent(Bullet);
-        let monster = this.node.parent.getComponent(NonPlayer);
-        if(bullet&&(bullet.isFromPlayer && monster.data.isEnemy>0||!bullet.isFromPlayer && monster.data.isEnemy<1)){
-            let pos = this.getRoate90Point(bullet.node.position,monster.node.position,Random.getHalfChance());
-            pos = pos.sub(monster.node.position);
-            monster.dodge(pos);
-        }
+        this.step.next(()=>{
+            let bullet = other.getComponent(Bullet);
+            let monster = this.node.parent.getComponent(NonPlayer);
+            if(bullet&&(bullet.isFromPlayer && monster.data.isEnemy>0||!bullet.isFromPlayer && monster.data.isEnemy<1)){
+                let pos = this.getRoate90Point(bullet.node.position,monster.node.position,Random.getHalfChance());
+                pos = pos.sub(monster.node.position);
+                monster.dodge(pos);
+            }
+        },3);
+        
     }
     /**
      * A绕B旋转90度的坐标 
