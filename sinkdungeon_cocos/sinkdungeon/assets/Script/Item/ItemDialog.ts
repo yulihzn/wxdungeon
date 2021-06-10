@@ -32,7 +32,7 @@ export default class ItemDialog extends cc.Component {
     }
     private refreshDialog(item: ItemData) {
         this.labelTitle.string = `${item.nameCn}`;
-        this.infoBase.string = item.info;
+        this.infoBase.string = `价格：${item.price}\n${item.info}`;
         this.infoDesc.string = item.desc;
         this.count.string = `${item.count>0?'×'+item.count:'∞'}`
     }

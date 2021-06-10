@@ -57,7 +57,7 @@ export default class EquipmentDialog extends cc.Component {
         this.infoSuit3.node.active = true;
         this.labelTile.string = equipment.prefix + equipment.nameCn;
         this.labelTile.node.color = this.labelTile.node.color.fromHEX(equipment.titlecolor);
-        this.infoBase.string = equipment.infobase;
+        this.infoBase.string = `价格：${equipment.price}\n${equipment.infobase}`;
         this.infoBase.node.color = this.infoBase.node.color.fromHEX(equipment.infobasecolor);
         this.info1.string = equipment.info1;
         this.info1.node.color = this.info1.node.color.fromHEX(equipment.infocolor1);

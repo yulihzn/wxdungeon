@@ -33,6 +33,8 @@ export default class InventoryDialog extends BaseDialog {
     useButton: cc.Node = null;
     @property(cc.Node)
     dropButton: cc.Node = null;
+    @property(cc.Node)
+    saleButton: cc.Node = null;
     list: InventoryItem[] = [];
     @property(cc.Node)
     select: cc.Node = null;
@@ -86,6 +88,7 @@ export default class InventoryDialog extends BaseDialog {
         this.equipmentDialog.hideDialog();
         this.useButton.active = false;
         this.dropButton.active = false;
+        this.saleButton.active = false;
         this.select.opacity = 0;
     }
     showSelect(item: InventoryItem) {
@@ -95,11 +98,13 @@ export default class InventoryDialog extends BaseDialog {
         if (item.data.type == InventoryItem.TYPE_EQUIP) {
             this.useButton.active = true;
             this.dropButton.active = true;
+            this.saleButton.active = true;
             this.itemDialog.hideDialog();
             this.equipmentDialog.showDialog(item.data.equipmentData);
         } else {
             this.useButton.active = true;
             this.dropButton.active = true;
+            this.saleButton.active = true;
             this.equipmentDialog.hideDialog();
             this.itemDialog.showDialog(item.data.itemData);
         }

@@ -36693,6 +36693,9 @@
     "dropButton": {
       "__id__": 745
     },
+    "saleButton": {
+      "__id__": 756
+    },
     "select": {
       "__id__": 863
     },
