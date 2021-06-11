@@ -693,31 +693,26 @@
             <key type="filename">avatar/avatareyes006anim002.png</key>
             <key type="filename">avatar/avatarface000anim000.png</key>
             <key type="filename">avatar/avatarface000anim001.png</key>
-            <key type="filename">avatar/avatarface000anim002.png</key>
             <key type="filename">avatar/avatarface001anim000.png</key>
             <key type="filename">avatar/avatarface001anim001.png</key>
-            <key type="filename">avatar/avatarface001anim002.png</key>
             <key type="filename">avatar/avatarface002anim000.png</key>
             <key type="filename">avatar/avatarface002anim001.png</key>
-            <key type="filename">avatar/avatarface002anim002.png</key>
             <key type="filename">avatar/avatarface003anim000.png</key>
             <key type="filename">avatar/avatarface003anim001.png</key>
-            <key type="filename">avatar/avatarface003anim002.png</key>
             <key type="filename">avatar/avatarface004anim000.png</key>
             <key type="filename">avatar/avatarface004anim001.png</key>
-            <key type="filename">avatar/avatarface004anim002.png</key>
             <key type="filename">avatar/avatarface005anim000.png</key>
             <key type="filename">avatar/avatarface005anim001.png</key>
-            <key type="filename">avatar/avatarface005anim002.png</key>
             <key type="filename">avatar/avatarface006anim000.png</key>
             <key type="filename">avatar/avatarface006anim001.png</key>
-            <key type="filename">avatar/avatarface006anim002.png</key>
             <key type="filename">avatar/avatarface007anim000.png</key>
             <key type="filename">avatar/avatarface007anim001.png</key>
-            <key type="filename">avatar/avatarface007anim002.png</key>
             <key type="filename">avatar/avatarface008anim000.png</key>
             <key type="filename">avatar/avatarface008anim001.png</key>
-            <key type="filename">avatar/avatarface008anim002.png</key>
+            <key type="filename">avatar/avatarface009anim000.png</key>
+            <key type="filename">avatar/avatarface009anim001.png</key>
+            <key type="filename">avatar/avatarface010anim000.png</key>
+            <key type="filename">avatar/avatarface010anim001.png</key>
             <key type="filename">avatar/avatarunderwear000.png</key>
             <key type="filename">ui/bling.png</key>
             <struct type="IndividualSpriteSettings">
@@ -1410,6 +1405,7 @@
             <key type="filename">equipment/weapon035.png</key>
             <key type="filename">equipment/weapon036.png</key>
             <key type="filename">equipment/weapon037.png</key>
+            <key type="filename">equipment/weapon038.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

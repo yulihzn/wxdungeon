@@ -230,7 +230,7 @@ export default class PickAvatar extends cc.Component {
         })
         //面颊
         let faceList = [];
-        for (let i = 0; i < 9; i++) {
+        for (let i = 0; i < 10; i++) {
             faceList.push(new AttributeData(i, `样式${i}`, `avatarface0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
         }
         this.faceSelector = this.addAttributeSelector('面颊：', faceList)

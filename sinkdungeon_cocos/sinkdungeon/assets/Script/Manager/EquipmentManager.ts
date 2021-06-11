@@ -606,7 +606,7 @@ export default class EquipmentManager extends BaseManager {
         price += data.Common.lighteningRate;//雷元素几率%
         price += data.Common.toxicRate * 2;//毒元素几率%
         price += data.Common.curseRate * 2;//诅咒元素几率%
-        return price > 0 ? price : 0;
+        return price > 0 ? Math.floor(price) : 0;
     }
     updateLogic(dt: number, player: Player) {
         if (this.isCheckTimeDelay(dt)) {
