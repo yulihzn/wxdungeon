@@ -214,12 +214,12 @@ export default class PickAvatar extends cc.Component {
         })
         //眼睛
         let eyesList = [];
-        for (let i = 0; i < 7; i++) {
-            eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
+        for (let i = 0; i < 22; i++) {
+            eyesList.push(new AttributeData(i, `样式${i}`, `avatareyes0${i > 9 ? '' : '0'}${i}`, '', '', ''));
         }
         this.eyesSelector = this.addAttributeSelector('眼睛：', eyesList)
         this.eyesSelector.selectorCallback = (data: AttributeData) => {
-            this.eyesSprite.spriteFrame = Logic.spriteFrameRes(data.resName + '0');
+            this.eyesSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
             this.data.eyesResName = data.resName;
         };
         //眼睛颜色
@@ -230,12 +230,12 @@ export default class PickAvatar extends cc.Component {
         })
         //面颊
         let faceList = [];
-        for (let i = 0; i < 10; i++) {
-            faceList.push(new AttributeData(i, `样式${i}`, `avatarface0${i > 9 ? '' : '0'}${i}anim00`, '', '', ''));
+        for (let i = 0; i < 15; i++) {
+            faceList.push(new AttributeData(i, `样式${i}`, `avatarface0${i > 9 ? '' : '0'}${i}`, '', '', ''));
         }
         this.faceSelector = this.addAttributeSelector('面颊：', faceList)
         this.faceSelector.selectorCallback = (data: AttributeData) => {
-            this.faceSprite.spriteFrame = Logic.spriteFrameRes(data.resName + '0');
+            this.faceSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
             this.data.faceResName = data.resName;
         };
         //脸部颜色

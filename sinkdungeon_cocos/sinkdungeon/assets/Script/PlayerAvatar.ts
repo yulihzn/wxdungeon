@@ -240,18 +240,18 @@ export default class PlayerAvatar extends cc.Component {
                 break;
             case PlayerAvatar.DIR_DOWN:
                 this.idlehair = [0, 1];
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix + 0);
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix + 0);
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix);
                 break;
             case PlayerAvatar.DIR_LEFT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix + 1);
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix + 1);
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes('side'+eyesprefix);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes('side'+faceprefix);
                 break;
             case PlayerAvatar.DIR_RIGHT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix + 1);
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix + 1);
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes('side'+eyesprefix);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes('side'+faceprefix);
                 break;
         }
         this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[0]);

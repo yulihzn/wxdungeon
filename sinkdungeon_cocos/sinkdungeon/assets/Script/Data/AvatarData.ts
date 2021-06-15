@@ -11,9 +11,9 @@ export default class AvatarData {
     skinColor:string = '#ffe1c5';
     hairResName: string = 'avatarhair000anim00';
     hairColor: string = '#000000';
-    eyesResName: string = 'avatareyes000anim00';
+    eyesResName: string = 'avatareyes000';
     eyesColor: string = '#000000';
-    faceResName: string = 'avatarface000anim00';
+    faceResName: string = 'avatarface000';
     faceColor: string = '#FBA1DE';
 
     public valueCopy(data: AvatarData): void {

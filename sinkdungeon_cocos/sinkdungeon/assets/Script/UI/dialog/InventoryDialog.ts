@@ -12,6 +12,7 @@ import Item from "../../Item/Item";
 import ItemDialog from "../../Item/ItemDialog";
 import Logic from "../../Logic";
 import InventoryManager from "../../Manager/InventoryManager";
+import AudioPlayer from "../../Utils/AudioPlayer";
 import InventoryItem from "../InventoryItem";
 import BaseDialog from "./BaseDialog";
 
@@ -95,6 +96,7 @@ export default class InventoryDialog extends BaseDialog {
         this.currentSelectIndex = item.index;
         this.select.position = this.node.convertToNodeSpaceAR(item.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
         this.select.opacity = 200;
+        AudioPlayer.play(AudioPlayer.SELECT);
         if (item.data.type == InventoryItem.TYPE_EQUIP) {
             this.useButton.active = true;
             this.dropButton.active = true;
@@ -162,6 +164,7 @@ export default class InventoryDialog extends BaseDialog {
         if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
+        AudioPlayer.play(AudioPlayer.SELECT);
         let current = this.list[this.currentSelectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData.clone();
@@ -189,6 +192,7 @@ export default class InventoryDialog extends BaseDialog {
         if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
+        AudioPlayer.play(AudioPlayer.SELECT);
         let current = this.list[this.currentSelectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData;
@@ -218,11 +222,13 @@ export default class InventoryDialog extends BaseDialog {
             let equipData = current.data.equipmentData;
             if (equipData.equipmetType != InventoryManager.EMPTY) {
                 EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: equipData.price });
+                AudioPlayer.play(AudioPlayer.COIN);
             }
         } else {
             let itemData = current.data.itemData;
             if (itemData.resName != Item.EMPTY) {
                 EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: itemData.price });
+                AudioPlayer.play(AudioPlayer.COIN);
             }
         }
         //置空当前放下的数据，清除选中
@@ -233,6 +239,7 @@ export default class InventoryDialog extends BaseDialog {
     // update (dt) {}
 
     close() {
+        AudioPlayer.play(AudioPlayer.SELECT);
         this.dismiss();
     }
 
