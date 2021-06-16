@@ -20,6 +20,8 @@ export default class Tips extends cc.Component {
     static readonly TAROT_TABLE = "Tips.TAROT_TABLE";
     static readonly MART_SHELVES = "Tips.MART_SHELVES";
     static readonly ROOM_STOOL = "Tips.ROOM_STOOL";
+    static readonly SAVE_POINT = "Tips.SAVE_POINT";
+    static readonly ROOM_BED = "Tips.ROOM_BED";
     isUse = false;
     tipsType = '';
 
@@ -32,12 +34,12 @@ export default class Tips extends cc.Component {
     start () {
 
     }
-    next(isLongPress:boolean):void{
+    next(isLongPress:boolean,player:Player):void{
         if(this.isUse){
             return;
         }
         this.isUse = true;
-        cc.director.emit(EventHelper.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType,isLongPress:isLongPress}});
+        cc.director.emit(EventHelper.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType,isLongPress:isLongPress,player:player}});
         setTimeout(()=>{this.isUse = false;},0.1);
     }
     onDestroy(){

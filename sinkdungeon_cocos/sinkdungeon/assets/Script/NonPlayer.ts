@@ -1016,7 +1016,7 @@ export default class NonPlayer extends Actor {
     public enterShow() {
         this.sprite.stopAllActions();
         this.bodySprite.node.color = cc.Color.BLACK;
-        cc.tween(this.bodySprite.node).to(2, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) }).call(() => { this.sc.isShow = true; }).start();
+        cc.tween(this.bodySprite.node).to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) }).call(() => { this.sc.isShow = true; }).start();
     }
     /**伪装 */
     public enterDisguise() {

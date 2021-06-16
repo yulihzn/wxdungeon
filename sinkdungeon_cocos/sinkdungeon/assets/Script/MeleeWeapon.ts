@@ -203,12 +203,10 @@ export default class MeleeWeapon extends cc.Component {
         let audiodelay = 0;
         //匕首
         if (this.isStab && !this.isFar) {
-            audiodelay = 0;
             audioName = AudioPlayer.FIST;
         }
         //长剑
         if (!this.isStab && !this.isFar) {
-            audiodelay = 0;
             audioName = AudioPlayer.SWORD_ATTACK;
         }
         //长枪

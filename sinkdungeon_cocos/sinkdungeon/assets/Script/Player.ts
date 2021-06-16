@@ -918,7 +918,7 @@ export default class Player extends Actor {
         }
         if (this.touchedTips) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
-            this.touchedTips.next(isLongPress);
+            this.touchedTips.next(isLongPress,this);
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {

@@ -13,6 +13,7 @@ import StatusManager from "../Manager/StatusManager";
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import Player from "../Player";
+import Tips from "../UI/Tips";
 import AudioPlayer from "../Utils/AudioPlayer";
 import Building from "./Building";
 
@@ -25,15 +26,25 @@ export default class RoomBed extends Building {
     dungeon:Dungeon;
     isFirst = true;
     isDecorate = false;
+    tips: Tips;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
         this.lights = this.getComponentsInChildren(ShadowOfSight);
+        this.tips = this.getComponentInChildren(Tips);
+        this.tips.tipsType = Tips.ROOM_BED;
+        cc.director.on(EventHelper.PLAYER_TAPTIPS
+            , (event) => {
+                if (this.node && event.detail.tipsType == Tips.ROOM_BED) {
+                    this.enterDream(event.detail.player);
+                }
+            });
     }
 
     init(dungeon:Dungeon,isDecorate:boolean){
         this.dungeon = dungeon;
         this.isDecorate = isDecorate;
+        this.tips.node.active = !isDecorate;
     }
     start () {
         this.node.getChildByName('sprite').getChildByName('bed').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`avatarbed00${Logic.playerData.AvatarData.organizationIndex}`);
@@ -44,6 +55,9 @@ export default class RoomBed extends Building {
             return;
         }
         let player = other.node.getComponent(Player);
+        this.enterDream(player);
+    }
+    enterDream(player:Player){
         if (player&&!this.isWakeUp&&this.isFirst) {
             this.isFirst = false;
             if(this.dungeon){
@@ -55,9 +69,9 @@ export default class RoomBed extends Building {
                 if(Logic.playerData.pos.equals(this.data.defaultPos)){
                     Logic.playerData.pos.y=this.data.defaultPos.y-1;
                 }
-                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
+                AudioPlayer.play(AudioPlayer.EXIT);
                 Logic.loadingNextLevel(ExitData.getDreamExitDataFromReal());
-            },1)
+            },0.5)
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
