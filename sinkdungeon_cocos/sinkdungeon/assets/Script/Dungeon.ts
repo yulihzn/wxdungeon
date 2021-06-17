@@ -95,8 +95,7 @@ export default class Dungeon extends cc.Component {
             this.addCoin(detail.pos, detail.count);
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_OILGOLD, (detail) => {
-            //暂时屏蔽
-            // this.addOilGold(detail.pos, detail.count);
+            this.addOilGold(detail.pos, detail.count);
         })
         EventHelper.on(EventHelper.DUNGEON_ADD_ITEM, (detail) => {
             if (this.node) this.addItem(detail.pos, detail.res, detail.count);
@@ -228,6 +227,7 @@ export default class Dungeon extends cc.Component {
                 log += `${key}(${names[key]})\n`;
             }
             cc.log(log);
+            this.addOilGoldOnGround();
         }, 0.5)
     }
     private addBuildingsFromSideMap(offset: cc.Vec3) {
@@ -241,16 +241,16 @@ export default class Dungeon extends cc.Component {
                 let needAdd = false;
                 let length = 3;
                 switch (offset.z) {
-                    case 0:needAdd = j>Dungeon.HEIGHT_SIZE-length;break;
-                    case 1:needAdd = j<length;break;
-                    case 2:needAdd = i>Dungeon.WIDTH_SIZE-length;break;
-                    case 3:needAdd = i<length;break;
-                    case 4:needAdd = i>Dungeon.WIDTH_SIZE-length&&j>Dungeon.HEIGHT_SIZE-length;break;
-                    case 5:needAdd = i<length&&j>Dungeon.HEIGHT_SIZE-length;break;
-                    case 6:needAdd = i>Dungeon.WIDTH_SIZE-3&&j<length;break;
-                    case 7:needAdd = i<length&&j<length;break;
+                    case 0: needAdd = j > Dungeon.HEIGHT_SIZE - length; break;
+                    case 1: needAdd = j < length; break;
+                    case 2: needAdd = i > Dungeon.WIDTH_SIZE - length; break;
+                    case 3: needAdd = i < length; break;
+                    case 4: needAdd = i > Dungeon.WIDTH_SIZE - length && j > Dungeon.HEIGHT_SIZE - length; break;
+                    case 5: needAdd = i < length && j > Dungeon.HEIGHT_SIZE - length; break;
+                    case 6: needAdd = i > Dungeon.WIDTH_SIZE - 3 && j < length; break;
+                    case 7: needAdd = i < length && j < length; break;
                 }
-                if(needAdd){
+                if (needAdd) {
                     this.buildingManager.addBuildingsFromSideMap(mapData[i][j], cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y), leveldata);
                 }
             }
@@ -324,6 +324,20 @@ export default class Dungeon extends cc.Component {
                 }
             }
         }
+
+    }
+    /**回复掉落的翠金 */
+    private addOilGoldOnGround() {
+        this.scheduleOnce(() => {
+            let data = Logic.groundOilGoldData.clone();
+            if (data.chapter == Logic.chapterIndex && data.level == Logic.level
+                && data.x == Logic.mapManager.rectDungeon.currentPos.x
+                && data.y == Logic.mapManager.rectDungeon.currentPos.y && data.value > 0) {
+                EventHelper.emit(EventHelper.HUD_ADD_OILGOLD, { count: data.value });
+                Logic.saveGroundOilGold(0);
+                cc.director.emit(EventHelper.HUD_OILGOLD_RECOVERY_SHOW);
+            }
+        }, 1)
 
     }
     /**添加装备 */
@@ -521,7 +535,7 @@ export default class Dungeon extends cc.Component {
     }
 
     update(dt) {
-        if (this.isInitFinish&&!Logic.isGamePause) {
+        if (this.isInitFinish && !Logic.isGamePause) {
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt);
                 this.monsterManager.updateLogic(dt);

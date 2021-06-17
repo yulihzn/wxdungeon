@@ -180,18 +180,18 @@ export default class NonPlayer extends Actor {
                 resName = Logic.getHalfChance() ? 'hitlight7' : 'hitlight8';
                 scale = damage.isFar ? 10 : 8;
             }
-        }else{
+        } else {
             show = false;
         }
-        if(show){
+        if (show) {
             this.hitLightSprite.node.stopAllActions();
             this.hitLightSprite.spriteFrame = Logic.spriteFrameRes(resName);
             this.hitLightSprite.node.opacity = 220;
             this.hitLightSprite.node.color = cc.Color.WHITE;
             this.hitLightSprite.node.scale = damage.isCriticalStrike ? scale : scale + 3;
-            cc.tween(this.hitLightSprite.node).delay(0.2).to(0.3, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0}).start();
+            cc.tween(this.hitLightSprite.node).delay(0.2).to(0.3, { opacity: 0, color: cc.Color.BLACK }).to(0.3, { opacity: 0 }).start();
         }
-        
+
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {
@@ -381,10 +381,10 @@ export default class NonPlayer extends Actor {
         let frameIndex = 0;
 
         while (frameIndex < this.data.attackFrames - 1) {
-            arr.push(`anim0${10+frameIndex++}`);
+            arr.push(`anim0${10 + frameIndex++}`);
         }
         for (let i = 0; i < this.data.specialFrames; i++) {
-            arrspecial.push(`anim0${10+frameIndex++}`);
+            arrspecial.push(`anim0${10 + frameIndex++}`);
         }
         //退后
         let backofftween = cc.tween().by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
@@ -431,13 +431,13 @@ export default class NonPlayer extends Actor {
             }
 
         });
-        let attackback = cc.tween().call(()=>{
+        let attackback = cc.tween().call(() => {
             this.dangerBox.finish();
         });
         for (let i = 2; i < arr.length; i++) {
             attackback.then(cc.tween().delay(0.2).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
         }
-        let attackbackspecial = cc.tween().call(()=>{
+        let attackbackspecial = cc.tween().call(() => {
             this.dangerBox.finish();
         });
         for (let i = 2; i < arrspecial.length; i++) {
@@ -470,12 +470,12 @@ export default class NonPlayer extends Actor {
         }
         if (isSpecial) {
             this.showDangerTips();
-            if(this.data.resName == MonsterManager.MONSTER_CHICKEN){
+            if (this.data.resName == MonsterManager.MONSTER_CHICKEN) {
                 AudioPlayer.play(AudioPlayer.CHICKEN);
             }
-            if(this.data.specialType == SpecialManager.AFTER_VENOM){
+            if (this.data.specialType == SpecialManager.AFTER_VENOM) {
                 AudioPlayer.play(AudioPlayer.ZOMBIE_SPITTING);
-            }else if(this.data.specialType == SpecialManager.AFTER_DOWN){
+            } else if (this.data.specialType == SpecialManager.AFTER_DOWN) {
                 AudioPlayer.play(AudioPlayer.ZOMBIE_ATTACK);
             }
             allAction = cc.tween().then(beforetween).then(specialRemote).then(aftertween);
@@ -729,10 +729,16 @@ export default class NonPlayer extends Actor {
         }
 
         if (this.dungeon) {
-
+            let count = 1;
+            if(this.isVariation){
+                count = 2;
+            }
+            if(this.killPlayerCount>0){
+                count = 5;
+            }
+            EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count });
             if (rand < percent) {
-                cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 10) } });
-                cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 29) } });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.node.position, count: rand4save.getRandomNum(1, 10) });
             } else if (rand >= percent && rand < percent + offset) {
                 this.addLootSaveItem(Item.HEART, true);
             } else if (rand >= percent + offset && rand < percent + offset * 2) {
@@ -793,7 +799,7 @@ export default class NonPlayer extends Actor {
         }
         let canMelee = this.data.melee > 0;
         let canRemote = this.data.remote > 0;
-        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.isInCooling&&target&&!target.invisible) {
+        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.isInCooling && target && !target.invisible) {
             this.meleeStep.next(() => {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
@@ -809,7 +815,7 @@ export default class NonPlayer extends Actor {
                 }, target, this.specialStep.IsExcuting, true, isMiss)
 
             }, this.data.melee);
-        } else if (canRemote && targetDis < 600 * this.node.scaleY&&target&&!target.invisible) {
+        } else if (canRemote && targetDis < 600 * this.node.scaleY && target && !target.invisible) {
             this.remoteStep.next(() => {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;

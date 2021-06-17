@@ -136,7 +136,9 @@ export default class Kraken extends Boss {
             let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
             let pos = Dungeon.getPosInMap(p);
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } });
-            cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: pos, count: rand4save.getRandomNum(1, 29) } });
+            if(!isSteal){
+                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: 100 });
+            }
             let chance = Logic.getHalfChance()&&isSteal||!isSteal;
             if(chance){
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });

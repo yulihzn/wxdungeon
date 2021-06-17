@@ -60,6 +60,7 @@ export default class MiniMap extends cc.Component {
 		if (!this.map) {
 			return;
 		}
+		let groundOilGoldData = Logic.groundOilGoldData.clone();
 		for (let j = 0; j < this.height; j++) {
 			for (let i = 0; i < this.width; i++) {
 				let isFound = true;
@@ -76,6 +77,11 @@ export default class MiniMap extends cc.Component {
 					this.map[i][j].getChildByName('lock').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`minimaplock${levelData.minimaplock[i][j]}`)
 				}else{
 					this.map[i][j].getChildByName('lock').getComponent(cc.Sprite).spriteFrame = null;
+				}
+            if (groundOilGoldData.chapter == Logic.chapterIndex && groundOilGoldData.level == Logic.level
+                && groundOilGoldData.x == rectroom.x
+                && groundOilGoldData.y == rectroom.y && groundOilGoldData.value > 0) {
+					this.map[i][j].getChildByName('label').active = true;
 				}
 				this.map[i][j].color = this.getColor(MiniMap.ColorLevel.HIDE);
 				if (isFound) {

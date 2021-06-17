@@ -22,6 +22,9 @@ export class EventHelper extends cc.Component {
     public static readonly CHANGE_MINIMAP = 'CHANGE_MINIMAP';
     public static readonly HUD_ADD_COIN = 'HUD_ADD_COIN';
     public static readonly HUD_ADD_OILGOLD = 'HUD_ADD_OILGOLD';
+    public static readonly HUD_LOSE_OILGOLD = 'HUD_LOSE_OILGOLD';
+    public static readonly HUD_OILGOLD_LOSE_SHOW = 'HUD_OILGOLD_LOSE_SHOW';
+    public static readonly HUD_OILGOLD_RECOVERY_SHOW = 'HUD_OILGOLD_RECOVERY_SHOW';
     public static readonly HUD_STOP_COUNTTIME = 'HUD_STOP_COUNTTIME';
     public static readonly HUD_LIGHT_CONTROLLER = 'HUD_LIGHT_CONTROLLER';
     public static readonly HUD_CHANGE_CONTROLLER_SHIELD = 'HUD_CHANGE_CONTROLLER_SHIELD';

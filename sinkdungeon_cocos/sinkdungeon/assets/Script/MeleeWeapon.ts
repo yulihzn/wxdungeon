@@ -423,7 +423,7 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
     updateLogic(dt: number) {
-        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 10);
+        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5);
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
             if (!this.isAttacking) {

@@ -772,9 +772,13 @@ export default class Player extends Actor {
         }
         this.sc.isDied = true;
         this.avatar.playAnim(PlayerAvatar.STATE_DIE, this.currentDir);
-        cc.director.emit(EventHelper.HUD_STOP_COUNTTIME);
-        cc.director.emit(EventHelper.HUD_FADE_OUT);
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.DIE } });
+        EventHelper.emit(EventHelper.HUD_STOP_COUNTTIME);
+        this.scheduleOnce(()=>{
+            EventHelper.emit(EventHelper.HUD_FADE_OUT);
+        },1.5)
+        AudioPlayer.play(AudioPlayer.DIE);
+        EventHelper.emit(EventHelper.HUD_LOSE_OILGOLD);
+        EventHelper.emit(EventHelper.HUD_OILGOLD_LOSE_SHOW);
         Achievements.addPlayerDiedLifesAchievement();
         this.weaponLeft.node.opacity = 0;
         this.weaponRight.node.opacity = 0;
@@ -784,7 +788,7 @@ export default class Player extends Actor {
         this.scheduleOnce(() => {
             cc.audioEngine.stopMusic();
             cc.director.loadScene('gameover');
-        }, 1.5);
+        }, 3);
         this.weaponLeft.meleeWeapon.dungeon.darkAfterKill();
     }
     //玩家行动

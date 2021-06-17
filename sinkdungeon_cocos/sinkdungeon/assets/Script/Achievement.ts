@@ -59,10 +59,6 @@ export default class Achievements extends cc.Component {
         if (this.lifesLabel && data.playerLifes) {
             this.lifesLabel.string = `DIE ${data.playerLifes}`;
         }
-        if(this.goldLabel){
-            let o = LocalStorage.getValueFromData(LocalStorage.KEY_OIL_GOLD);
-            this.goldLabel.string = `${o ? parseInt(o) : 0}`;
-        }
         if(this.coinLabel){
             let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN);
             this.coinLabel.string = `${c ? parseInt(c) : 0}`;

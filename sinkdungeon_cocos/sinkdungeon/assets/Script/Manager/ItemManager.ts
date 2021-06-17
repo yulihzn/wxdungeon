@@ -212,7 +212,7 @@ export default class ItemManager extends BaseManager {
                     item = e;
                 }
             }
-            let min = item&&item.data.canSave?64:32;
+            let min = item&&item.data.canSave?64:48;
             if (distance < min && item) {
                 item.highLight(true);
                 if (!item.taketips) {

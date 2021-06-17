@@ -21,6 +21,7 @@ import SavePointData from "./Data/SavePointData";
 import NonPlayerData from "./Data/NonPlayerData";
 import SuitData from "./Data/SuitData";
 import InventoryData from "./Data/InventoryData";
+import GroundOilGoldData from "./Data/GroundOilGoldData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -96,6 +97,7 @@ export default class Logic extends cc.Component {
     static isMapReset = false;
     static lastBgmIndex = 0;
     static savePoinitData: SavePointData = new SavePointData();
+    static groundOilGoldData: GroundOilGoldData = new GroundOilGoldData();
     static killPlayerCounts: { [key: number]: number } = {};//玩家怪物击杀表
     static profileManager: ProfileManager = new ProfileManager();
     static bagSortIndex = 0;//0时间,1类别,2品质
@@ -130,11 +132,12 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.data.time = Logic.time;
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone();
+        Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone();
         Logic.profileManager.data.killPlayerCounts = Logic.killPlayerCounts;
+        Logic.profileManager.data.oilGolds = Logic.oilGolds;
         Logic.profileManager.saveData();
         LocalStorage.saveData(LocalStorage.KEY_COIN, Logic.coins);
         LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT, Logic.coinDreamCount);
-        LocalStorage.saveData(LocalStorage.KEY_OIL_GOLD, Logic.oilGolds);
     }
     static resetData(chapter?: number) {
         //重置时间
@@ -146,6 +149,9 @@ export default class Logic extends cc.Component {
         Logic.level = Logic.profileManager.data.level;
         //加载最近使用的存档点
         Logic.savePoinitData = Logic.profileManager.data.savePointData.clone();
+        //加载翠金点
+        Logic.groundOilGoldData = Logic.profileManager.data.groundOilGoldData.clone();
+        Logic.oilGolds = Logic.profileManager.data.oilGolds;
         //加载玩家数据
         Logic.playerData = Logic.profileManager.data.playerData.clone();
         //加载装备
@@ -173,8 +179,6 @@ export default class Logic extends cc.Component {
         Logic.coins = c ? parseInt(c) : 0;
         let c1 = LocalStorage.getValueFromData(LocalStorage.KEY_COIN_DREAM_COUNT);
         Logic.coinDreamCount = c1 ? parseInt(c1) : 0;
-        let o = LocalStorage.getValueFromData(LocalStorage.KEY_OIL_GOLD);
-        Logic.oilGolds = o ? parseInt(o) : 0;
         //重置bgm
         Logic.lastBgmIndex = 0;
         //加载怪物击杀玩家数据
@@ -213,23 +217,41 @@ export default class Logic extends cc.Component {
             Dungeon.HEIGHT_SIZE = size.y;
         }
     }
-    static savePonit(pos: cc.Vec3) {
-        //99chapter存档点无效
-        if (Logic.chapterIndex == Logic.CHAPTER099) {
-            return;
-        }
-        let savePointData = new SavePointData();
+    static posToMapPos(pos: cc.Vec3) :cc.Vec3{
         //转换当前坐标为地图坐标
         let levelData = Logic.worldLoader.getCurrentLevelData();
         let roomPos = Logic.mapManager.rectDungeon.currentPos;
         let mapPos = cc.v3(0, 0);
         mapPos.x = levelData.roomWidth * roomPos.x + pos.x;
         mapPos.y = levelData.height * levelData.roomHeight - 1 - levelData.roomWidth * roomPos.y - pos.y;
+        return mapPos;
+    }
+    static savePonit(pos: cc.Vec3) {
+        //99chapter存档点无效
+        if (Logic.chapterIndex == Logic.CHAPTER099) {
+            return;
+        }
+        let savePointData = new SavePointData();
+        let mapPos = Logic.posToMapPos(pos);
         savePointData.x = mapPos.x;
         savePointData.y = mapPos.y;
         savePointData.level = Logic.level;
         savePointData.chapter = Logic.chapterIndex;
         Logic.savePoinitData.valueCopy(savePointData);
+        //保存数据
+        Logic.saveData();
+    }
+    static saveGroundOilGold(value:number) {
+        let groundOilGoldData = new GroundOilGoldData();
+        if(value>0){
+            let roomPos = Logic.mapManager.rectDungeon.currentPos;
+            groundOilGoldData.x = roomPos.x;
+            groundOilGoldData.y = roomPos.y;
+            groundOilGoldData.level = Logic.level;
+            groundOilGoldData.chapter = Logic.chapterIndex;
+            groundOilGoldData.value = value;
+        }
+        Logic.groundOilGoldData.valueCopy(groundOilGoldData);
         //保存数据
         Logic.saveData();
     }

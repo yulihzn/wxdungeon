@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import AvatarData from "../../Data/AvatarData";
 import InventoryData from "../../Data/InventoryData";
 import EquipmentDialog from "../../Equipment/EquipmentDialog";
 import { EventHelper } from "../../EventHelper";
@@ -39,7 +40,10 @@ export default class InventoryDialog extends BaseDialog {
     list: InventoryItem[] = [];
     @property(cc.Node)
     select: cc.Node = null;
+    @property(cc.Label)
+    discountLabel:cc.Label = null;
     currentSelectIndex: number;
+    discount = 0.6;
     onLoad() {
         this.select.opacity = 0;
         this.layout.removeAllChildren();
@@ -62,6 +66,9 @@ export default class InventoryDialog extends BaseDialog {
                 }
             });
         this.toggleContainer.toggleItems[Logic.bagSortIndex].isChecked = true;
+        if(Logic.playerData.AvatarData.organizationIndex == AvatarData.HUNTER){
+            this.discount = 0.8;
+        }
     }
     private getItem(index: number, data: InventoryData) {
         let prefab = cc.instantiate(this.item);
@@ -98,12 +105,14 @@ export default class InventoryDialog extends BaseDialog {
         this.select.opacity = 200;
         AudioPlayer.play(AudioPlayer.SELECT);
         if (item.data.type == InventoryItem.TYPE_EQUIP) {
+            this.discountLabel.string = `-${this.discount}%(${Math.floor(item.data.equipmentData.price*this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
             this.itemDialog.hideDialog();
             this.equipmentDialog.showDialog(item.data.equipmentData);
         } else {
+            this.discountLabel.string = `-${this.discount}%(${Math.floor(item.data.itemData.count>1?item.data.itemData.price*item.data.itemData.count*this.discount:item.data.itemData.price*this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
@@ -217,17 +226,18 @@ export default class InventoryDialog extends BaseDialog {
         if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
+        let discount = 0.6;
         let current = this.list[this.currentSelectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData;
             if (equipData.equipmetType != InventoryManager.EMPTY) {
-                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: equipData.price });
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price*this.discount) });
                 AudioPlayer.play(AudioPlayer.COIN);
             }
         } else {
             let itemData = current.data.itemData;
             if (itemData.resName != Item.EMPTY) {
-                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: itemData.price });
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count>1?itemData.price*itemData.count*this.discount:itemData.price*this.discount) });
                 AudioPlayer.play(AudioPlayer.COIN);
             }
         }

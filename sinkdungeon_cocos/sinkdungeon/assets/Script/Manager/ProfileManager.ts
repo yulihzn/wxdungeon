@@ -69,6 +69,9 @@ export default class ProfileManager{
         this.data.level = data.level;
         //存档点
         this.data.savePointData.valueCopy(data.savePointData);
+        //掉落翠金
+        this.data.oilGolds = data.oilGolds?data.oilGolds:0;
+        this.data.groundOilGoldData.valueCopy(data.groundOilGoldData);
         //玩家装备列表
         for(let key in data.playerEquips){
             this.data.playerEquips[key]=data.playerEquips[key];

@@ -230,7 +230,7 @@ export default class Slime extends Boss {
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {
                 cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 5 } });
-                cc.director.emit(EventHelper.DUNGEON_ADD_OILGOLD, { detail: { pos: this.node.position, count: 10 } });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: 100 });
                 
                 cc.director.emit(EventHelper.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 } });
                 cc.director.emit(EventHelper.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 } });

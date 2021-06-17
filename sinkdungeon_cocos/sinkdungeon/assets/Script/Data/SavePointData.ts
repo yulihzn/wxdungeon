@@ -1,5 +1,5 @@
 /**
- * 地图块
+ * 保存点
  * 
  */
 export default class SavePointData{
@@ -8,6 +8,9 @@ export default class SavePointData{
     chapter:number=0;//章节
     level:number=0;//关卡
     public valueCopy(data: SavePointData): void {
+        if(!data){
+            return;
+        }
         this.x = data.x ? data.x : 16;
         this.y =data.y?data.y:16;
         this.chapter = data.chapter?data.chapter:0;

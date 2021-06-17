@@ -74,6 +74,9 @@ export default class AudioPlayer extends cc.Component {
     public static readonly TVWHITE = 'TVWHITE';
     public static readonly WELCOME = 'WELCOME';
     public static readonly ICEBOOM = 'ICEBOOM';
+    public static readonly LEVELUP = 'LEVELUP';
+    public static readonly COMPLETE = 'COMPLETE';
+    public static readonly OILGOLD = 'OILGOLD';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -182,6 +185,12 @@ export default class AudioPlayer extends cc.Component {
     welcome: cc.AudioClip = null;
     @property(cc.AudioClip)
     iceboom: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    levelup: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    complete: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    oilgold: cc.AudioClip = null;
     @property(cc.AudioClip )
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip )
@@ -251,6 +260,9 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.TVWHITE] = this.tvwhite;
         this.audioList[AudioPlayer.WELCOME] = this.welcome;
         this.audioList[AudioPlayer.ICEBOOM] = this.iceboom;
+        this.audioList[AudioPlayer.LEVELUP] = this.levelup;
+        this.audioList[AudioPlayer.COMPLETE] = this.complete;
+        this.audioList[AudioPlayer.OILGOLD] = this.oilgold;
 
     }
     playbg() {

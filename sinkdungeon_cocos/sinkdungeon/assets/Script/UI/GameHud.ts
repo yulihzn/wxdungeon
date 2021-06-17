@@ -6,6 +6,7 @@ import Logic from "../Logic";
 import SettingsDialog from "./dialog/SettingsDialog";
 import MartShelvesDialog from "./dialog/MartShelvesDialog";
 import InventoryDialog from "./dialog/InventoryDialog";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -45,6 +46,8 @@ export default class GameHud extends cc.Component {
     martShelvesDialog: MartShelvesDialog = null;
     @property(cc.Label)
     completeLabel: cc.Label = null;
+    @property(cc.Label)
+    oilGoldLabel: cc.Label = null;
     @property(InventoryDialog)
     inventoryDialog: InventoryDialog = null;
     private isCompleteShowed = false;
@@ -83,6 +86,12 @@ export default class GameHud extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_COMPLETE_SHOW, (event) => {
             this.showComplete();
+        })
+        cc.director.on(EventHelper.HUD_OILGOLD_LOSE_SHOW, (event) => {
+            this.showOilGoldInfo(true);
+        })
+        cc.director.on(EventHelper.HUD_OILGOLD_RECOVERY_SHOW, (event) => {
+            this.showOilGoldInfo(false);
         })
         cc.director.on(EventHelper.HUD_INVENTORY_SHOW, (event) => {
             this.showInventoryDialog();
@@ -123,10 +132,28 @@ export default class GameHud extends cc.Component {
         this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream().y);
         this.fadeIn();
     }
+    private showOilGoldInfo(isLose:boolean){
+        if (!this.oilGoldLabel) {
+            return;
+        }
+        let arr0 = ['碎', '碎片', '碎片丢', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢', '碎片', '碎', ''];
+        let arr1 = ['碎', '碎片', '碎片找', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找', '碎片', '碎', ''];
+        if(!isLose)AudioPlayer.play(AudioPlayer.COMPLETE);
+        let arr = isLose?arr0:arr1;
+        let i = 0;
+        this.oilGoldLabel.string = '';
+        this.oilGoldLabel.unscheduleAllCallbacks();
+        this.oilGoldLabel.schedule(() => {
+            if (i < arr.length) {
+                this.oilGoldLabel.string = arr[i++];
+            }
+        }, 0.1, arr.length, 0.5);
+    }
     private showComplete() {
         if (!this.completeLabel || this.isCompleteShowed) {
             return;
         }
+        AudioPlayer.play(AudioPlayer.COMPLETE);
         let arr = ['清', '清理', '清理完', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完成', '清理完', '清理', '清', ''];
         let i = 0;
         this.completeLabel.string = '';
