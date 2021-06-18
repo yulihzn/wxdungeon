@@ -8,6 +8,7 @@ export class EventHelper extends cc.Component {
     public static readonly PLAYER_USEITEM = 'PLAYER_USEITEM';
     public static readonly USEITEM_KEYBOARD = 'USEITEM_KEYBOARD';
     public static readonly PLAYER_SKILL = 'PLAYER_SKILL';
+    public static readonly PLAYER_SKILL1 = 'PLAYER_SKILL1';
     public static readonly PLAYER_ATTACK = 'PLAYER_ATTACK';
     public static readonly PLAYER_REMOTEATTACK = 'PLAYER_REMOTEATTACK';
     public static readonly PLAYER_REMOTEATTACK_CANCEL = 'PLAYER_REMOTEATTACK_CANCEL';
@@ -29,6 +30,7 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_LIGHT_CONTROLLER = 'HUD_LIGHT_CONTROLLER';
     public static readonly HUD_CHANGE_CONTROLLER_SHIELD = 'HUD_CHANGE_CONTROLLER_SHIELD';
     public static readonly HUD_CONTROLLER_COOLDOWN = 'HUD_CONTROLLER_COOLDOWN';
+    public static readonly HUD_CONTROLLER_COOLDOWN1 = 'HUD_CONTROLLER_COOLDOWN1';
     public static readonly HUD_CONTROLLER_UPDATE_GAMEPAD = 'HUD_CONTROLLER_UPDATE_GAMEPAD';
     public static readonly HUD_DAMAGE_CORNER_SHOW = 'HUD_DAMAGE_CORNER_SHOW';
     public static readonly HUD_GROUND_EQUIPMENT_INFO_SHOW = 'HUD_GROUND_EQUIPMENT_INFO_SHOW';

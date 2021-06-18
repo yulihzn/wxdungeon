@@ -105,14 +105,14 @@ export default class InventoryDialog extends BaseDialog {
         this.select.opacity = 200;
         AudioPlayer.play(AudioPlayer.SELECT);
         if (item.data.type == InventoryItem.TYPE_EQUIP) {
-            this.discountLabel.string = `-${this.discount}%(${Math.floor(item.data.equipmentData.price*this.discount)})`;
+            this.discountLabel.string = `-${this.discount*100}%(${Math.floor(item.data.equipmentData.price*this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
             this.itemDialog.hideDialog();
             this.equipmentDialog.showDialog(item.data.equipmentData);
         } else {
-            this.discountLabel.string = `-${this.discount}%(${Math.floor(item.data.itemData.count>1?item.data.itemData.price*item.data.itemData.count*this.discount:item.data.itemData.price*this.discount)})`;
+            this.discountLabel.string = `-${this.discount*100}%(${Math.floor(item.data.itemData.count>1?item.data.itemData.price*item.data.itemData.count*this.discount:item.data.itemData.price*this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;

@@ -45,6 +45,14 @@ export default class Logic extends cc.Component {
     static readonly CHAPTER04: number = 4;
     static readonly CHAPTER05: number = 5;
     static readonly CHAPTER099: number = 99;
+
+    static readonly OIL_GOLD_LIST = [
+        100, 150, 200, 300, 500,
+        1000, 1500, 2000, 3000, 5000,
+        10000, 15000, 20000, 30000, 50000,
+        100000, 150000, 200000, 300000, 500000,
+        1000000, 1500000, 2000000, 3000000, 5000000];
+
     static equipments: { [key: string]: EquipmentData } = null;
     static equipmentNameList: string[] = [];
     static itemNameList: string[] = [];
@@ -102,6 +110,9 @@ export default class Logic extends cc.Component {
     static profileManager: ProfileManager = new ProfileManager();
     static bagSortIndex = 0;//0时间,1类别,2品质
     static settings: Settings = new Settings();
+    static fragmentCount = 0;
+    static gemCount = 0;
+    static gemIndex = 0;
 
     onLoad() {
         //关闭调试
@@ -183,6 +194,23 @@ export default class Logic extends cc.Component {
         Logic.lastBgmIndex = 0;
         //加载怪物击杀玩家数据
         Logic.killPlayerCounts = Logic.profileManager.data.killPlayerCounts;
+        Logic.updateCount();
+    }
+    static updateCount() {
+        let value = Logic.oilGolds;
+        Logic.gemCount = 0;
+        Logic.gemIndex = 0;
+        for (let i = 0; i < Logic.OIL_GOLD_LIST.length; i++) {
+            let offset = value - Logic.OIL_GOLD_LIST[i];
+            if (offset >= 0) {
+                value = offset;
+                Logic.gemCount++;
+            } else {
+                Logic.gemIndex = i;
+                break;
+            }
+        }
+        Logic.fragmentCount = value;
     }
     private static initTalentMap() {
         Logic.hasTalentMap = {};

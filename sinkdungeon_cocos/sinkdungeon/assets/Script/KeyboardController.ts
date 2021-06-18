@@ -27,6 +27,7 @@ export default class KeyboardController extends cc.Component {
     isB = false;
     isC = false;
     isD = false;
+    isE = false;
 
     isLongPress = false;
     touchStart = false;
@@ -35,16 +36,16 @@ export default class KeyboardController extends cc.Component {
     onLoad() {
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_DOWN, this.onKeyDown, this);
         cc.systemEvent.on(cc.SystemEvent.EventType.KEY_UP, this.onKeyUp, this);
-        this.mouseArea.on(cc.Node.EventType.MOUSE_DOWN, (event: cc.Event.EventMouse) => {
-            if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
-                this.isA = true;
-            }
-        }, this);
-        this.mouseArea.on(cc.Node.EventType.MOUSE_UP, (event: cc.Event.EventMouse) => {
-            if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
-                this.isA = false;
-            }
-        }, this);
+        // this.mouseArea.on(cc.Node.EventType.MOUSE_DOWN, (event: cc.Event.EventMouse) => {
+        //     if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
+        //         this.isA = true;
+        //     }
+        // }, this);
+        // this.mouseArea.on(cc.Node.EventType.MOUSE_UP, (event: cc.Event.EventMouse) => {
+        //     if (event.getButton() == cc.Event.EventMouse.BUTTON_LEFT) {
+        //         this.isA = false;
+        //     }
+        // }, this);
     }
 
     start() {
@@ -67,7 +68,8 @@ export default class KeyboardController extends cc.Component {
                 this.isLongPress = true;
                 this.trigger(true);
             }, 0.3); break;
-            case cc.macro.KEY.shift: this.isD = true; break;
+            case cc.macro.KEY.r: this.isD = true; break;
+            case cc.macro.KEY.f: this.isE = true; break;
             case cc.macro.KEY.num1: this.useItem(0); break;
             case cc.macro.KEY.num2: this.useItem(1); break;
             case cc.macro.KEY.num3: this.useItem(2); break;
@@ -99,8 +101,9 @@ export default class KeyboardController extends cc.Component {
                 if (!this.isLongPress) { this.trigger(); }
                 this.touchStart = false; this.isLongPress = false;
                 break;
-            case cc.macro.KEY.shift: this.isD = false; break;
-        }
+                case cc.macro.KEY.r: this.isD = false; break;
+                case cc.macro.KEY.f: this.isE = false; break;
+            }
     }
     update(dt) {
         if (this.isTimeDelay(dt)) {
@@ -154,6 +157,9 @@ export default class KeyboardController extends cc.Component {
 
         if (this.isD) {
             cc.director.emit(EventHelper.PLAYER_SKILL);
+        }
+        if (this.isE) {
+            cc.director.emit(EventHelper.PLAYER_SKILL1);
         }
 
     }

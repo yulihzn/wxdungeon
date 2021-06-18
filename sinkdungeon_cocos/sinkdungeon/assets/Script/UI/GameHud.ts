@@ -147,7 +147,7 @@ export default class GameHud extends cc.Component {
             if (i < arr.length) {
                 this.oilGoldLabel.string = arr[i++];
             }
-        }, 0.1, arr.length, 0.5);
+        }, 0.15, arr.length);
     }
     private showComplete() {
         if (!this.completeLabel || this.isCompleteShowed) {
