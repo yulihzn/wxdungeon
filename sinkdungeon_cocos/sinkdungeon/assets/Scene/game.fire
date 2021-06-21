@@ -14183,7 +14183,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "skillButton",
+    "_name": "talentButton",
     "_objFlags": 0,
     "_parent": {
       "__id__": 332
@@ -23570,8 +23570,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -130,
-        -60,
+        -48,
+        16,
         0,
         0,
         0,
@@ -23765,8 +23765,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -48,
-        16,
+        -130,
+        -60,
         0,
         0,
         0,
@@ -23949,8 +23949,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 100,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -23961,8 +23961,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -180,
-        -96,
+        0,
+        180,
         0,
         0,
         0,
@@ -24181,7 +24181,7 @@
         "__uuid__": "a153945d-2511-4c14-be7b-05d242f47d57"
       }
     ],
-    "_lineWidth": 2,
+    "_lineWidth": 10,
     "_strokeColor": {
       "__type__": "cc.Color",
       "r": 94,
@@ -24230,8 +24230,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 100,
+      "height": 100
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -24243,7 +24243,7 @@
       "ctor": "Float64Array",
       "array": [
         -96,
-        0,
+        180,
         0,
         0,
         0,
@@ -24462,7 +24462,7 @@
         "__uuid__": "a153945d-2511-4c14-be7b-05d242f47d57"
       }
     ],
-    "_lineWidth": 2,
+    "_lineWidth": 10,
     "_strokeColor": {
       "__type__": "cc.Color",
       "r": 94,

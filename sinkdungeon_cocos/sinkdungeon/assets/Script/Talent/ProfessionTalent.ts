@@ -15,6 +15,7 @@ import Boss from "../Boss/Boss";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import NonPlayerManager from "../Manager/NonPlayerManager";
 import ActorUtils from "../Utils/ActorUtils";
+import Player from "../Player";
 
 /**
  * 技能管理器
@@ -38,18 +39,12 @@ import ActorUtils from "../Utils/ActorUtils";
  * 程序员
  * 醉酒乌云：调酒师扔出多个酒瓶制造一片酒云，范围内所有怪物60%miss持续3s 提高miss几率和酒云持续时间附带冰火雷状态
  * 分身之术：忍者分出两个分身杀敌，分身有1点攻击，被攻击就消失 可以提高分身伤害和数量，附带冰火雷爆炸
- * 武僧
+ * 武僧:如来神掌
  * 
- * 组织技能
- * 幽光守护：幽光屏障
- * 生成一个魔法能量罩阻挡远程伤害
- * 翠金科技：狂化试剂
- * 注射翠金提炼的试剂变狂化，短时间提高速度攻击防御血量但是只能空手近战，时间结束会进入短暂虚弱状态
- * 宝藏猎人：
  */
 const { ccclass, property } = cc._decorator;
 @ccclass
-export default class TalentSkills extends Talent {
+export default class ProfessionTalent extends Talent {
 
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
@@ -93,47 +88,9 @@ export default class TalentSkills extends Talent {
             cc.log('destroyGhost');
         }
     }
-    init() {
-        super.init();
-        this.scheduleOnce(() => {
-            //被动技能加载
-        }, 0.2)
-    }
 
-    useSKill() {
-        if (!this.talentSkill) {
-            return;
-        }
-        if (this.talentSkill.IsExcuting) {
-            return;
-        }
-        let cooldown = this.activeTalentData.cooldown;
-        cooldown-=this.player.data.currentDream;
-            if(cooldown>1){
-                cooldown-=this.player.data.currentDream;
-                if(cooldown<1){
-                    cooldown = 1;
-                }
-            }else{
-                cooldown-=this.player.data.currentDream*0.1;
-                if(cooldown<0.1){
-                    cooldown = 0.1;
-                }
-            }
-        if(this.player.data.currentDream>0){
-            this.talentSkill.next(() => {
-                this.talentSkill.IsExcuting = true;
-                cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
-                this.player.updateDream(1);
-                    this.doSkill();
-            }, cooldown, true);
-        }else{
-            cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
-        }
-        
-    }
 
-    private doSkill() {
+    protected doSkill() {
         switch (this.activeTalentData.resName) {
             case Talent.TALENT_000:break;
             case Talent.TALENT_001:
@@ -323,12 +280,7 @@ export default class TalentSkills extends Talent {
         .init(0, 2, 0, 3, IndexZ.OVERHEAD, false, true, true, false,true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i],null,true);
         }
     }
-    private shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string,prefab:cc.Prefab,data:AreaOfEffectData) {
-        shooter.data.bulletType = bulletType;
-        shooter.data.bulletArcExNum = bulletArcExNum;
-        shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(0,null,0,0,prefab,data);
-    }
+    
 
     changePerformance() {
 
@@ -373,7 +325,7 @@ export default class TalentSkills extends Talent {
             scale = 6;
         }
         let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()
-            .init(0, 0.2, 0, scale, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.FROZEN]));
+            .init(0, 0.35, 0, scale, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.FROZEN]));
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             swordlight.node.getChildByName('sprite').color = cc.Color.RED;
         }
@@ -401,23 +353,7 @@ export default class TalentSkills extends Talent {
         }
     }
 
-    private addStatus2NearEnemy(statusName: string, range: number) {
-        if (!this.player) {
-            return cc.Vec3.ZERO;
-        }
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
-            let dis = Logic.getDistance(this.node.position, monster.node.position);
-            if (dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
-                monster.addStatus(statusName, new FromData());
-            }
-        }
-        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
-            let dis = Logic.getDistance(this.node.position, boss.node.position);
-            if (dis < range && !boss.sc.isDied) {
-                boss.addStatus(statusName, new FromData());
-            }
-        }
-    }
+    
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
@@ -427,12 +363,5 @@ export default class TalentSkills extends Talent {
         }
         return false;
     }
-    update(dt) {
-        if(Logic.isGamePause){
-            return;
-        }
-        if (this.isCheckTimeDelay(dt)) {
-            this.init();
-        }
-    }
+    
 }

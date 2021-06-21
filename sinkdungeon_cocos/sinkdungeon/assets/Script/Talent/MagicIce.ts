@@ -1,4 +1,3 @@
-import TalentMagic from "./TalentMagic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

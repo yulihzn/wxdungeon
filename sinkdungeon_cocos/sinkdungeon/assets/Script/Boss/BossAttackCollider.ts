@@ -42,7 +42,7 @@ export default class BossAttackCollider extends cc.Component {
     }
     onCollisionEnter(other:cc.Collider,self:cc.Collider){
         let target = ActorUtils.getEnemyCollisionTarget(other);
-        if(target && this.isShow && this.node.active){
+        if(target && this.isShow && this.node.active&&this.parentNode){
             this.isShow = false;
             let dd = new DamageData();
             dd.physicalDamage = this.damage;

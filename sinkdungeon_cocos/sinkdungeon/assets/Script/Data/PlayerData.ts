@@ -5,6 +5,7 @@ import CommonData from "./CommonData";
 import Random from "../Utils/Random";
 import AvatarData from "./AvatarData";
 import Shield from "../Shield";
+import OilGoldData from "./OilGoldData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -33,11 +34,13 @@ export default class PlayerData {
     private equipmentTotalData: EquipmentData;
     private statusTotalData: StatusData;
     private avatarData:AvatarData;
+    private oilGoldData:OilGoldData;
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
         this.statusTotalData = new StatusData();
         this.avatarData = new AvatarData();
+        this.oilGoldData = new OilGoldData();
         this.common = new CommonData();
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = PlayerData.DEFAULT_SPEED;
@@ -54,6 +57,9 @@ export default class PlayerData {
     get AvatarData(){
         return this.avatarData;
     }
+    get OilGoldData(){
+        return this.oilGoldData;
+    }
     set AvatarData(data:AvatarData){
         this.avatarData = data;
     }
@@ -62,7 +68,7 @@ export default class PlayerData {
     }
     get FinalCommon(){
         let data = new CommonData().add(this.common).add(this.statusTotalData.Common)
-        .add(this.equipmentTotalData.Common).add(this.avatarData.professionData.Common);
+        .add(this.equipmentTotalData.Common).add(this.avatarData.professionData.Common).add(this.oilGoldData.Common);
         return data;
     }
 
@@ -73,6 +79,7 @@ export default class PlayerData {
         this.equipmentTotalData.valueCopy(data.equipmentTotalData);
         this.statusTotalData.valueCopy(data.statusTotalData);
         this.avatarData.valueCopy(data.avatarData);
+        this.oilGoldData.valueCopy(data.oilGoldData);
         this.currentHealth = data.currentHealth ? data.currentHealth : 0;
         this.currentDream = data.currentDream ? data.currentDream : 0;
         this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : 0;
@@ -89,6 +96,7 @@ export default class PlayerData {
         e.equipmentTotalData = this.equipmentTotalData;
         e.statusTotalData = this.statusTotalData;
         e.avatarData = this.avatarData;
+        e.oilGoldData = this.oilGoldData;
         return e;
     }
 

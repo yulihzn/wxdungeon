@@ -52,28 +52,34 @@
       },
       {
         "__id__": 197
+      },
+      {
+        "__id__": 200
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 201
-      },
-      {
-        "__id__": 202
-      },
-      {
-        "__id__": 203
-      },
-      {
         "__id__": 204
       },
       {
         "__id__": 205
+      },
+      {
+        "__id__": 206
+      },
+      {
+        "__id__": 207
+      },
+      {
+        "__id__": 208
+      },
+      {
+        "__id__": 209
       }
     ],
     "_prefab": {
-      "__id__": 206
+      "__id__": 210
     },
     "_opacity": 255,
     "_color": {
@@ -6788,7 +6794,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "skillsprite",
+    "_name": "professiontalentsprite",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -6893,7 +6899,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ShadowSight",
+    "_name": "organizationtalentsprite",
     "_objFlags": 0,
     "_parent": {
       "__id__": 1
@@ -6903,13 +6909,118 @@
     "_components": [
       {
         "__id__": 198
-      },
-      {
-        "__id__": 199
       }
     ],
     "_prefab": {
-      "__id__": 200
+      "__id__": 199
+    },
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 40,
+      "height": 36
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_trs": {
+      "__type__": "TypedArray",
+      "ctor": "Float64Array",
+      "array": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "_eulerAngles": {
+      "__type__": "cc.Vec3",
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_is3DNode": false,
+    "_groupIndex": 5,
+    "groupIndex": 5,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 197
+    },
+    "_enabled": true,
+    "_materials": [
+      {
+        "__uuid__": "eca5d2f2-8ef6-41c2-bbe6-f9c79d09c432"
+      }
+    ],
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_spriteFrame": null,
+    "_type": 0,
+    "_sizeMode": 1,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "58cadd35-a65d-4992-953b-791418fb7bde"
+    },
+    "fileId": "11tp35KI5EtbopBycrvZsn",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "ShadowSight",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 1
+    },
+    "_children": [],
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 201
+      },
+      {
+        "__id__": 202
+      }
+    ],
+    "_prefab": {
+      "__id__": 203
     },
     "_opacity": 255,
     "_color": {
@@ -6963,11 +7074,11 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 197
+      "__id__": 200
     },
     "_enabled": true,
     "ray": {
-      "__id__": 199
+      "__id__": 202
     },
     "rayRadius": 600,
     "renderColor": {
@@ -6989,7 +7100,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 197
+      "__id__": 200
     },
     "_enabled": true,
     "_materials": [
@@ -7020,7 +7131,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 197
+      "__id__": 200
     },
     "asset": {
       "__uuid__": "aa0313f0-8db4-440e-a81f-e4122bb3a9bc"
@@ -7183,6 +7294,19 @@
     },
     "skyhandPrefab": {
       "__uuid__": "f9272aa1-5fd9-4ae1-8a03-1aa192b0dcea"
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "05cb5HVifxPKYxNiXzzrtHe",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "sprite": {
+      "__id__": 198
     },
     "_id": ""
   },

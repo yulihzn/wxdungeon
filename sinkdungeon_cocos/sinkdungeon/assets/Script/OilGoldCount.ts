@@ -36,7 +36,7 @@ export default class OilGoldCount extends cc.Component {
         })
         cc.director.on(EventHelper.HUD_LOSE_OILGOLD, (event) => {
             if(this.node){
-                let count = Logic.fragmentCount;
+                let count = Logic.playerData.OilGoldData.fragments;
                 this.addCount(`${-count}`);
                 Logic.saveGroundOilGold(count);
             }
@@ -50,25 +50,25 @@ export default class OilGoldCount extends cc.Component {
             return;
         }
         Logic.oilGolds += parseInt(value);
-        let gemIndex = Logic.gemIndex;
-        Logic.updateCount();
-        if(gemIndex<Logic.gemIndex){
+        let gemIndex = Logic.playerData.OilGoldData.index;
+        if(gemIndex<Logic.playerData.OilGoldData.index){
             AudioPlayer.play(AudioPlayer.LEVELUP);
         }
+        EventHelper.emit(EventHelper.PLAYER_UPDATE_OILGOLD_DATA);
     }
     
 
     update(dt) {
-        this.gemCountLerp = Logic.lerp(this.gemCountLerp, Logic.gemCount,dt * 5);
-        this.fragmentCountLerp = Logic.lerp(this.fragmentCountLerp, Logic.fragmentCount,dt * 5);
+        this.gemCountLerp = Logic.lerp(this.gemCountLerp, Logic.playerData.OilGoldData.level,dt * 5);
+        this.fragmentCountLerp = Logic.lerp(this.fragmentCountLerp, Logic.playerData.OilGoldData.fragments,dt * 5);
         if (this.gemLabel) {
             this.gemLabel.string = `${this.gemCountLerp.toFixed(0)}`;
         }
         if (this.fragmentLabel) {
-            this.fragmentLabel.string = `${this.fragmentCountLerp.toFixed(0)}/${Logic.OIL_GOLD_LIST[Logic.gemIndex]}`;
+            this.fragmentLabel.string = `${this.fragmentCountLerp.toFixed(0)}/${Logic.OIL_GOLD_LIST[Logic.playerData.OilGoldData.index]}`;
         }
         if(this.progreesBar){
-            this.progreesBar.progress = Logic.lerp(this.progreesBar.progress, Logic.fragmentCount/Logic.OIL_GOLD_LIST[Logic.gemIndex], dt * 5);
+            this.progreesBar.progress = Logic.lerp(this.progreesBar.progress, Logic.playerData.OilGoldData.fragments/Logic.OIL_GOLD_LIST[Logic.playerData.OilGoldData.index], dt * 5);
         }
 
     }

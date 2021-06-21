@@ -66,9 +66,9 @@ export default class TalentMagic extends Talent {
     }
 
     useSKill() {
-        this.useMagic();
+        this.doSkill();
     }
-    useMagic() {
+    protected doSkill() {
         if (!this.talentSkill) {
             return;
         }
@@ -106,7 +106,7 @@ export default class TalentMagic extends Talent {
             },0.2,this.hashTalent(Talent.MAGIC_02)?1:0);
         } else if (this.hashTalent(Talent.MAGIC_01)) {
             AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
-            this.shoot(this.player.shooterEx,80, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
+            this.fire(this.player.shooterEx,80, this.hashTalent(Talent.MAGIC_06) ? 'bullet135' : 'bullet035');
         }
     }
    
@@ -151,7 +151,7 @@ export default class TalentMagic extends Talent {
             index++;
         },0.5,a.length-1);
     }
-    private shoot(shooter: Shooter,bulletArcExNum:number, bulletType: string) {
+    fire(shooter: Shooter,bulletArcExNum:number, bulletType: string) {
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         if (this.hashTalent(Talent.MAGIC_02)) {

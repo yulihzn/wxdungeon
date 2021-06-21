@@ -28,9 +28,9 @@ export default class TalentDash extends Talent {
         this.dashShadow.init(this);
     }
     useSKill() {
-        this.useDash();
+        this.doSkill();
     }
-    useDash() {
+    protected doSkill() {
         if (!this.talentSkill) {
             return;
         }

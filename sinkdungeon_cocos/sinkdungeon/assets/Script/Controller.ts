@@ -149,7 +149,7 @@ export default class Controller extends cc.Component {
             this.attackAction.active = true;
             this.shootAction.active = true;
             this.skillAction.active = true;
-            this.skillAction1.active = true;
+            this.skillAction1.active = false;
             this.coolDown.position = this.skillAction.position.clone();
             this.coolDown1.position = this.skillAction1.position.clone();
         }

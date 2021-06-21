@@ -4,11 +4,16 @@ import TalentData from "../Data/TalentData";
 import DamageData from "../Data/DamageData";
 import Actor from "../Base/Actor";
 import Logic from "../Logic";
+import Shooter from "../Shooter";
+import AreaOfEffectData from "../Data/AreaOfEffectData";
+import FromData from "../Data/FromData";
+import { EventHelper } from "../EventHelper";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default abstract class Talent extends cc.Component {
+    
     public static readonly DASH = '1000000';
     public static readonly SHIELD = '2000000';
     public static readonly MAGIC = '3000000';
@@ -100,6 +105,40 @@ export default abstract class Talent extends cc.Component {
         this.activeTalentData = new TalentData();
         this.activeTalentData.valueCopy(Logic.talents[this.player.data.AvatarData.professionData.talent]);
     }
+
+    useSKill() {
+        if (!this.talentSkill) {
+            return;
+        }
+        if (this.talentSkill.IsExcuting) {
+            return;
+        }
+        let cooldown = this.activeTalentData.cooldown;
+        cooldown-=this.player.data.currentDream;
+            if(cooldown>1){
+                cooldown-=this.player.data.currentDream;
+                if(cooldown<1){
+                    cooldown = 1;
+                }
+            }else{
+                cooldown-=this.player.data.currentDream*0.1;
+                if(cooldown<0.1){
+                    cooldown = 0.1;
+                }
+            }
+        if(this.player.data.currentDream>0){
+            this.talentSkill.next(() => {
+                this.talentSkill.IsExcuting = true;
+                cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
+                this.player.updateDream(1);
+                    this.doSkill();
+            }, cooldown, true);
+        }else{
+            cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
+        }
+        
+    }
+    protected abstract doSkill();
     /**加载被动技能列表 */
     loadPassiveList(passiveTalentList: TalentData[]) {
         this.passiveTalentList = new Array();
@@ -133,8 +172,6 @@ export default abstract class Talent extends cc.Component {
         }
     }
     abstract changePerformance(): void
-    abstract useSKill(): void
-
 
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
         let node = this.node;
@@ -148,4 +185,29 @@ export default abstract class Talent extends cc.Component {
     }
 
     abstract takeDamage(damageData: DamageData, actor?: Actor): void
+
+    shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string,prefab:cc.Prefab,data:AreaOfEffectData) {
+        shooter.data.bulletType = bulletType;
+        shooter.data.bulletArcExNum = bulletArcExNum;
+        shooter.data.bulletLineExNum = bulletLineExNum;
+        shooter.fireBullet(0,null,0,0,prefab,data);
+    }
+
+    addStatus2NearEnemy(statusName: string, range: number) {
+        if (!this.player) {
+            return cc.Vec3.ZERO;
+        }
+        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
+            let dis = Logic.getDistance(this.node.position, monster.node.position);
+            if (dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
+                monster.addStatus(statusName, new FromData());
+            }
+        }
+        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
+            let dis = Logic.getDistance(this.node.position, boss.node.position);
+            if (dis < range && !boss.sc.isDied) {
+                boss.addStatus(statusName, new FromData());
+            }
+        }
+    }
 }

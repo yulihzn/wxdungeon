@@ -19,6 +19,7 @@ export class EventHelper extends cc.Component {
     public static readonly PLAYER_CHANGEEQUIPMENT = 'PLAYER_CHANGEEQUIPMENT';
     public static readonly PLAYER_STATUSUPDATE = 'PLAYER_STATUSUPDATE';
     public static readonly PLAYER_EXIT_FROM_SETTINGS = 'PLAYER_EXIT_FROM_SETTINGS';
+    public static readonly PLAYER_UPDATE_OILGOLD_DATA = 'PLAYER_UPDATE_OILGOLD_DATA';
     public static readonly INVENTORY_CHANGEITEM = 'INVENTORY_CHANGEITEM';
     public static readonly CHANGE_MINIMAP = 'CHANGE_MINIMAP';
     public static readonly HUD_ADD_COIN = 'HUD_ADD_COIN';

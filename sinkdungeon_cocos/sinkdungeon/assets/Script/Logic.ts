@@ -22,6 +22,7 @@ import NonPlayerData from "./Data/NonPlayerData";
 import SuitData from "./Data/SuitData";
 import InventoryData from "./Data/InventoryData";
 import GroundOilGoldData from "./Data/GroundOilGoldData";
+import OilGoldData from "./Data/OilGoldData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -110,9 +111,6 @@ export default class Logic extends cc.Component {
     static profileManager: ProfileManager = new ProfileManager();
     static bagSortIndex = 0;//0时间,1类别,2品质
     static settings: Settings = new Settings();
-    static fragmentCount = 0;
-    static gemCount = 0;
-    static gemIndex = 0;
 
     onLoad() {
         //关闭调试
@@ -194,23 +192,26 @@ export default class Logic extends cc.Component {
         Logic.lastBgmIndex = 0;
         //加载怪物击杀玩家数据
         Logic.killPlayerCounts = Logic.profileManager.data.killPlayerCounts;
-        Logic.updateCount();
+        Logic.updateOilGoldCount();
     }
-    static updateCount() {
+    static updateOilGoldCount() {
         let value = Logic.oilGolds;
-        Logic.gemCount = 0;
-        Logic.gemIndex = 0;
+        let data = new OilGoldData();
         for (let i = 0; i < Logic.OIL_GOLD_LIST.length; i++) {
             let offset = value - Logic.OIL_GOLD_LIST[i];
             if (offset >= 0) {
                 value = offset;
-                Logic.gemCount++;
+                data.level++;
             } else {
-                Logic.gemIndex = i;
+                data.index = i;
                 break;
             }
         }
-        Logic.fragmentCount = value;
+        data.fragments = value;
+        data.Common.damageMin=data.level;
+        data.Common.maxHealth=data.level;
+        data.Common.maxDream=data.level;
+        Logic.playerData.OilGoldData.valueCopy(data);
     }
     private static initTalentMap() {
         Logic.hasTalentMap = {};

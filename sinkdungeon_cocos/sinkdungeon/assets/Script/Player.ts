@@ -34,13 +34,15 @@ import IndexZ from './Utils/IndexZ';
 import PlayerAvatar from './PlayerAvatar';
 import PlayerWeapon from './PlayerWeapon';
 import { EventHelper } from './EventHelper';
-import TalentSkills from './Talent/TalentSkills';
 import ShadowOfSight from './Effect/ShadowOfSight';
 import LightManager from './Manager/LightManager';
 import AvatarData from './Data/AvatarData';
 import StatusData from './Data/StatusData';
 import InteractBuilding from './Building/InteractBuilding';
 import { ColliderTag } from './Actor/ColliderTag';
+import ProfessionTalent from './Talent/ProfessionTalent';
+import OrganizationTalent from './Talent/OrganizationTalent';
+import TalentManager from './Manager/TalentManager';
 @ccclass
 export default class Player extends Actor {
 
@@ -66,6 +68,10 @@ export default class Player extends Actor {
     @property(cc.Node)
     remoteCooldown: cc.Node = null;
 
+    private professionTalent: ProfessionTalent;
+    private organizationTalent:OrganizationTalent;
+
+
     isStone = false;//是否石化
 
     baseAttackPoint: number = 1;
@@ -84,7 +90,6 @@ export default class Player extends Actor {
 
     defaultPos = cc.v3(0, 0);
 
-    talentSkills: TalentSkills;
     isWeaponDashing = false;
     fistCombo = 0;
     dungeon: Dungeon;
@@ -116,9 +121,17 @@ export default class Player extends Actor {
             , (event) => { if (this.node) this.useItem(event.detail.itemData) });
         cc.director.on(EventHelper.PLAYER_SKILL
             , (event) => { if (this.node) this.useSkill() });
+        cc.director.on(EventHelper.PLAYER_SKILL1
+            , (event) => { if (this.node) this.useSkill1() });
+        cc.director.on(EventHelper.PLAYER_UPDATE_OILGOLD_DATA
+            , (event) => {
+                if (this.node) {
+                    this.data.OilGoldData.valueCopy(Logic.playerData.OilGoldData);
+                }
+            });
         cc.director.on(EventHelper.PLAYER_ATTACK
-            , (event) => { 
-                if(this.useInteractBuilding(true)){
+            , (event) => {
+                if (this.useInteractBuilding(true)) {
                     return;
                 }
                 if (this.node) this.meleeAttack();
@@ -131,7 +144,7 @@ export default class Player extends Actor {
             });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK
             , (event) => {
-                if(this.useInteractBuilding(false)){
+                if (this.useInteractBuilding(false)) {
                     return;
                 }
                 if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
@@ -156,16 +169,12 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.POOL_DESTORY_WALKSMOKE, (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
-        this.talentSkills = this.getComponent(TalentSkills);
-        this.talentSkills.init();
-        this.talentSkills.loadPassiveList(Logic.talentList);
+        this.initTalent();
         this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
                 this.addStatus(StatusManager.PERFECTDEFENCE, new FromData());
-                // this.data.currentHealth = 1;
-                // this.data.Common.maxHealth = 1;
-                this.data.Common.damageMin = 33;
+                this.data.Common.damageMin = 99;
                 this.data.Common.moveSpeed = 999;
             }, 0.2);
         }
@@ -176,6 +185,15 @@ export default class Player extends Actor {
             this.lights[0].rayRadius = 0;
         }
     }
+    initTalent(){
+        this.professionTalent = this.getComponent(ProfessionTalent);
+        this.professionTalent.init();
+        this.professionTalent.loadPassiveList(Logic.talentList);
+        this.organizationTalent = this.getComponent(OrganizationTalent);
+        this.organizationTalent.init();
+        this.organizationTalent.loadPassiveList(Logic.talentList);
+    }
+
     actorName(): string {
         return 'Player';
     }
@@ -367,9 +385,9 @@ export default class Player extends Actor {
         }
         this.statusManager.stopAllStatus();
     }
-    get isInteractBuildingAniming(){
-        return this.interactBuilding 
-        &&this.interactBuilding.isTaken && this.interactBuilding.isAniming;
+    get isInteractBuildingAniming() {
+        return this.interactBuilding
+            && this.interactBuilding.isTaken && this.interactBuilding.isAniming;
     }
     meleeAttack() {
         if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
@@ -418,7 +436,7 @@ export default class Player extends Actor {
             return;
         }
     }
-    useInteractBuilding(isMelee:boolean) {
+    useInteractBuilding(isMelee: boolean) {
         if (!this.interactBuilding) {
             return false;
         }
@@ -439,7 +457,7 @@ export default class Player extends Actor {
         }
         let arcEx = 0;
         let lineEx = 0;
-        if (this.talentSkills.hashTalent(Talent.TALENT_005) && this.talentSkills.IsExcuting) {
+        if (this.professionTalent.hashTalent(Talent.TALENT_005) && this.professionTalent.IsExcuting) {
             arcEx = 2;
             lineEx = 1;
         }
@@ -496,7 +514,7 @@ export default class Player extends Actor {
                 this.shooterEx.data.bulletSize = data.bulletSize;
                 this.shooterEx.fireBullet(0);
             }
-            if (actor&&data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+            if (actor && data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
                 actor.addStatus(data.statusNameHurtOther, new FromData());
             }
             if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
@@ -523,10 +541,10 @@ export default class Player extends Actor {
         if (this.shield.data.isHeavy == 1 && this.shield.Status > Shield.STATUS_IDLE) {
             pos = pos.mul(0.5);
         }
-        if (this.interactBuilding&&this.interactBuilding.isTaken) {
+        if (this.interactBuilding && this.interactBuilding.isTaken) {
             pos = pos.mul(0.5);
         }
-        if (this.talentSkills.IsExcuting && this.talentSkills.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
+        if (this.professionTalent.IsExcuting && this.professionTalent.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.01);
         }
 
@@ -685,7 +703,7 @@ export default class Player extends Actor {
         let dodge = this.data.FinalCommon.dodge / 100;
         let isDodge = Random.rand() <= dodge && dd.getTotalDamage() > 0;
         //无敌冲刺
-        if (this.talentSkills.hashTalent(Talent.TALENT_015) && this.talentSkills.IsExcuting && dd.getTotalDamage() > 0) {
+        if (this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting && dd.getTotalDamage() > 0) {
             isDodge = true;
         }
         // let isIceTaken = false;
@@ -773,9 +791,9 @@ export default class Player extends Actor {
         this.sc.isDied = true;
         this.avatar.playAnim(PlayerAvatar.STATE_DIE, this.currentDir);
         EventHelper.emit(EventHelper.HUD_STOP_COUNTTIME);
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             EventHelper.emit(EventHelper.HUD_FADE_OUT);
-        },1.5)
+        }, 1.5)
         AudioPlayer.play(AudioPlayer.DIE);
         EventHelper.emit(EventHelper.HUD_LOSE_OILGOLD);
         EventHelper.emit(EventHelper.HUD_OILGOLD_LOSE_SHOW);
@@ -809,9 +827,9 @@ export default class Player extends Actor {
         if (this.shooterEx && !this.shooterEx.dungeon) {
             this.shooterEx.dungeon = dungeon;
         }
-        let isDashing = this.talentSkills.hashTalent(Talent.TALENT_015) && this.talentSkills.IsExcuting;
+        let isDashing = this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting;
 
-        if (this.talentSkills && !isDashing && !this.isWeaponDashing) {
+        if (this.professionTalent && !isDashing && !this.isWeaponDashing) {
             this.move(dir, pos, dt);
         }
     }
@@ -853,7 +871,7 @@ export default class Player extends Actor {
         return false;
     }
     update(dt) {
-        if(Logic.isGamePause){
+        if (Logic.isGamePause) {
             return;
         }
         if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
@@ -883,8 +901,8 @@ export default class Player extends Actor {
         this.node.scaleX = this.isFaceRight ? 1 : -1;
         this.node.opacity = this.invisible ? 80 : 255;
 
-        let showHands = this.interactBuilding&&this.interactBuilding.isTaken;
-        let isLift = this.interactBuilding&&this.interactBuilding.isTaken&&this.interactBuilding.isLift;
+        let showHands = this.interactBuilding && this.interactBuilding.isTaken;
+        let isLift = this.interactBuilding && this.interactBuilding.isTaken && this.interactBuilding.isLift;
         if (this.weaponLeft) {
             this.weaponLeft.updateLogic(dt);
             this.weaponLeft.meleeWeapon.setHandAndWeaponInVisible(showHands);
@@ -893,15 +911,19 @@ export default class Player extends Actor {
             this.weaponRight.updateLogic(dt);
             this.weaponRight.meleeWeapon.setHandAndWeaponInVisible(showHands);
         }
-        if(this.avatar){
-            this.avatar.showHandsWithInteract(showHands,isLift);
+        if (this.avatar) {
+            this.avatar.showHandsWithInteract(showHands, isLift);
         }
     }
     private useSkill(): void {
-        if (this.talentSkills && !this.sc.isJumping && !this.sc.isAttacking) {
-            this.talentSkills.useSKill();
+        if (this.professionTalent && !this.sc.isJumping && !this.sc.isAttacking) {
+            this.professionTalent.useSKill();
         }
-
+    }
+    private useSkill1(): void {
+        if (this.organizationTalent && !this.sc.isJumping && !this.sc.isAttacking) {
+            // this.organizationTalent.useSKill();
+        }
     }
 
     triggerThings(isLongPress: boolean) {
@@ -914,7 +936,7 @@ export default class Player extends Actor {
         if (this.dungeon.itemManager.lastGroundItem && this.dungeon.itemManager.lastGroundItem.taken(this, isLongPress)) {
             this.dungeon.itemManager.lastGroundItem = null;
         }
-        if (this.interactBuilding&&this.interactBuilding.isTaken) {
+        if (this.interactBuilding && this.interactBuilding.isTaken) {
             this.interactBuilding.interact(this, isLongPress, false, false);
         } else if (this.dungeon.buildingManager.lastInteractBuilding && this.dungeon.buildingManager.lastInteractBuilding.taken(this, isLongPress)) {
             this.interactBuilding = this.dungeon.buildingManager.lastInteractBuilding;
@@ -922,11 +944,11 @@ export default class Player extends Actor {
         }
         if (this.touchedTips) {
             // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
-            this.touchedTips.next(isLongPress,this);
+            this.touchedTips.next(isLongPress, this);
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if(otherCollider.tag == ColliderTag.NONPLAYER){
+        if (otherCollider.tag == ColliderTag.NONPLAYER) {
             contact.disabledOnce = true;
         }
     }
@@ -972,7 +994,7 @@ export default class Player extends Actor {
         }
 
     }
-    get Hv():cc.Vec3{
+    get Hv(): cc.Vec3 {
         return this.weaponRight.meleeWeapon.Hv;
     }
     useItem(data: ItemData) {
