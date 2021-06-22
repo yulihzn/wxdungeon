@@ -66,6 +66,7 @@ export default class ProfileManager{
         this.data.playerData.valueCopy(data.playerData);
         //章节名称
         this.data.chapterIndex = data.chapterIndex;
+        this.data.chapterMaxIndex = data. chapterMaxIndex;
         this.data.level = data.level;
         //存档点
         this.data.savePointData.valueCopy(data.savePointData);

@@ -114,7 +114,6 @@ export default abstract class Talent extends cc.Component {
             return;
         }
         let cooldown = this.activeTalentData.cooldown;
-        cooldown-=this.player.data.currentDream;
             if(cooldown>1){
                 cooldown-=this.player.data.currentDream;
                 if(cooldown<1){

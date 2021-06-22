@@ -218,7 +218,7 @@ export default class ProfessionTalent extends Talent {
             AudioPlayer.play(AudioPlayer.BOOM);
         let d = this.player.data.getFinalAttackPoint();
         this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
-            .init(0, 0.15, 0, 2, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.DIZZ]));
+            .init(0, 0.15, 0, 2+Logic.chapterMaxIndex, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.DIZZ]));
             this.talentSkill.IsExcuting = false;
         },0.8)
     }
@@ -253,7 +253,7 @@ export default class ProfessionTalent extends Talent {
     showSmoke() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData();
-        d.magicDamage = 3;
+        d.magicDamage = 3+Logic.chapterMaxIndex;
         this.shoot(this.player.shooterEx, 0, 0, 'bullet041',this.smokePrefab,new AreaOfEffectData().init(
             7,0.1,0,1,IndexZ.OVERHEAD,false,false,false,false,false,new DamageData(),new FromData(),[StatusManager.WINE_CLOUD]
         ));
@@ -261,7 +261,7 @@ export default class ProfessionTalent extends Talent {
     showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
-        d.magicDamage = 3;
+        d.magicDamage = 3+Logic.chapterMaxIndex;
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
             .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.BURNING]));
     }
@@ -273,7 +273,7 @@ export default class ProfessionTalent extends Talent {
         let a1 = [angles1];
         let a = a1;
         let d = new DamageData();
-        d.magicDamage = 3;
+        d.magicDamage = 3+Logic.chapterMaxIndex;
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
@@ -319,7 +319,7 @@ export default class ProfessionTalent extends Talent {
         AudioPlayer.play(AudioPlayer.SWORD_SHOW);
         let d = new DamageData();
         let scale = 5;
-        d.physicalDamage = 2;
+        d.physicalDamage = 2+Logic.chapterMaxIndex;
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             d = this.player.data.getFinalAttackPoint();
             scale = 6;

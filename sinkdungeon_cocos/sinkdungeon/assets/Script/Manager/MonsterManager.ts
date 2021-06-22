@@ -100,14 +100,14 @@ export default class MonsterManager extends BaseManager {
     dragon = null;
     readonly maxHealth00 = 200;
     readonly maxHealth01 = 300;
-    readonly maxHealth02 = 300;
-    readonly maxHealth03 = 400;
-    readonly maxHealth04 = 400;
-    readonly maxHealth05 = 500;
-    readonly maxHealth06 = 500;
-    readonly maxHealth07 = 600;
-    readonly maxHealth08 = 600;
-    readonly maxHealth09 = 800;
+    readonly maxHealth02 = 400;
+    readonly maxHealth03 = 500;
+    readonly maxHealth04 = 600;
+    readonly maxHealth05 = 700;
+    readonly maxHealth06 = 800;
+    readonly maxHealth07 = 900;
+    readonly maxHealth08 = 1000;
+    readonly maxHealth09 = 1200;
 
     private monsters: NonPlayer[] = new Array();//房间怪物列表
     private bosses: Boss[] = new Array();
@@ -252,10 +252,11 @@ export default class MonsterManager extends BaseManager {
 
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100 + 10 * monster.killPlayerCount) : 0;
         }
-        data.Common.maxDream += monster.killPlayerCount;
-        data.Common.damageMin += monster.killPlayerCount;
-        data.Common.maxHealth += monster.killPlayerCount;
-        data.Common.defence += monster.killPlayerCount;
+        data.Common.maxDream += data.Common.maxDream*0.25*monster.killPlayerCount;
+        data.Common.damageMin += data.Common.damageMin*0.25*monster.killPlayerCount;
+        data.Common.maxHealth += data.Common.maxHealth*0.25*monster.killPlayerCount;
+        data.Common.defence += monster.killPlayerCount*3;
+        data.currentHealth = data.Common.maxHealth;
         if (data.melee - monster.killPlayerCount > 1) {
             data.melee -= monster.killPlayerCount;
         }
@@ -269,7 +270,7 @@ export default class MonsterManager extends BaseManager {
         let rand = rand4save.getRandomNum(0, 100);
         let df = rand4save.getRandomNum(80, 100);
         let er = rand4save.getRandomNum(80, 100);
-        let isAddElement = rand <= 5 + monster.killPlayerCount;
+        let isAddElement = rand <= 5 + monster.killPlayerCount*3;
         rand = rand4save.getRandomNum(0, 4);
         if (isAddElement) {
             data.Common.magicDamage += 1;

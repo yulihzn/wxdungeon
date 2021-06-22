@@ -21,6 +21,7 @@ export default class ProfileData {
     //地图数据管理类
     rectDungeons: { [key: string]: RectDungeon }  = {};
     chapterIndex:number = 0;//当前章节
+    chapterMaxIndex:number = 0;//到达过的最大章节
     playerData:PlayerData = new PlayerData();
     //玩家装备列表
     playerEquips: { [key: string]: EquipmentData } = {};

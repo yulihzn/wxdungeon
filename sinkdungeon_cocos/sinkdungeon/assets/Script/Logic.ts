@@ -81,6 +81,7 @@ export default class Logic extends cc.Component {
 
     static level = 0;
     static chapterIndex = 0;
+    static chapterMaxIndex = 0;
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
 
@@ -139,6 +140,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
+        Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex;
         Logic.profileManager.data.time = Logic.time;
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone();
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone();
@@ -153,8 +155,13 @@ export default class Logic extends cc.Component {
         Logic.time = Logic.profileManager.data.time;
         //加载章节名
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex;
+        if(Logic.profileManager.data.chapterIndex>Logic.profileManager.data.chapterMaxIndex
+            &&Logic.profileManager.data.chapterIndex < this.CHAPTER05){
+                Logic.profileManager.data.chapterMaxIndex = Logic.profileManager.data.chapterIndex;
+            }
         //加载关卡等级
         Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
+        Logic.chapterMaxIndex = Logic.profileManager.data.chapterMaxIndex;
         Logic.level = Logic.profileManager.data.level;
         //加载最近使用的存档点
         Logic.savePoinitData = Logic.profileManager.data.savePointData.clone();
@@ -323,6 +330,9 @@ export default class Logic extends cc.Component {
         /**************加载exitData关卡数据***************** */
         Logic.chapterIndex = exitData.toChapter;
         Logic.level = exitData.toLevel;
+        if(Logic.chapterMaxIndex<Logic.chapterIndex&&Logic.chapterIndex<Logic.CHAPTER05){
+            Logic.chapterMaxIndex = Logic.chapterIndex;
+        }
         //地图数据的y轴向下的
         let ty = levelData.height * levelData.roomHeight - 1 - exitData.toPos.y;
         let roomX = Math.floor(exitData.toPos.x / levelData.roomWidth);

@@ -3,18 +3,18 @@
         "nameCn": "史莱姆",
         "nameEn": "slime",
         "resName": "monster000",
-        "chapter": 0,
+        "chapter": 2,
         "stageLevel": 0,
         "specialAttack":15,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 30,
-            "damageMin": 1
+            "maxHealth": 100,
+            "damageMin": 9
         },
-        "currentHealth": 30,
+        "currentHealth": 100,
         "invisible": 0,
         "remote": 0,
-        "melee": 15,
+        "melee": 10,
         "boxType":0,
         "attackFrames":3,
         "specialFrames":3,
@@ -24,15 +24,15 @@
         "nameCn": "哥布林",
         "nameEn": "goblin",
         "resName": "monster001",
-        "chapter": 0,
+        "chapter": 2,
         "stageLevel": 0,
         "specialAttack":15,
         "common": {
             "moveSpeed": 500,
-            "maxHealth": 20,
-            "damageMin": 2
+            "maxHealth": 100,
+            "damageMin": 9
         },
-        "currentHealth": 20,
+        "currentHealth": 100,
         "isBoom":0,
         "invisible": 0,
         "remote": 0,
@@ -44,17 +44,17 @@
         "nameCn": "木乃伊",
         "nameEn": "mummy",
         "resName": "monster002",
-        "chapter": 0,
+        "chapter": 3,
         "stageLevel": 0,
         "bulletType":"bullet017",
         "bulletArcExNum":1,
         "specialAttack":15,
         "common": {
             "moveSpeed": 100,
-            "maxHealth": 80,
+            "maxHealth": 200,
             "curseRate":100,
-            "magicDamage":1,
-            "damageMin": 2
+            "magicDamage":6,
+            "damageMin": 9
         },
         "currentHealth": 80,
         "invisible": 0,
@@ -72,10 +72,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 45,
-            "damageMin": 3
+            "maxHealth": 150,
+            "damageMin": 12
         },
-        "currentHealth": 45,
+        "currentHealth": 150,
         "invisible": 1,
         "remote": 0,
         "melee": 3,
@@ -91,10 +91,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 25,
-            "damageMin": 1
+            "maxHealth": 50,
+            "damageMin": 6
         },
-        "currentHealth": 25,
+        "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
         "melee": 0.5,
@@ -110,10 +110,10 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 25,
-            "damageMin": 1
+            "maxHealth": 50,
+            "damageMin": 6
         },
-        "currentHealth": 25,
+        "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -130,10 +130,10 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 30,
-            "damageMin": 1
+            "maxHealth": 60,
+            "damageMin": 6
         },
-        "currentHealth": 30,
+        "currentHealth": 60,
         "invisible": 0,
         "remote": 3,
         "melee": 0,
@@ -151,7 +151,7 @@
         "common": {
             "moveSpeed": 300,
             "maxHealth": 15,
-            "damageMin": 1
+            "damageMin": 3
         },
         "currentHealth": 15,
         "invisible": 0,
@@ -171,10 +171,10 @@
         "specialDistance":64,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 30,
-            "damageMin": 1
+            "maxHealth": 60,
+            "damageMin": 7
         },
-        "currentHealth": 30,
+        "currentHealth": 60,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -191,10 +191,10 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 30,
-            "damageMin": 1
+            "maxHealth": 50,
+            "damageMin": 10
         },
-        "currentHealth": 30,
+        "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
         "remoterate": 0,
@@ -212,10 +212,10 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 450,
-            "maxHealth": 60,
-            "damageMin": 1
+            "maxHealth": 200,
+            "damageMin": 15
         },
-        "currentHealth": 60,
+        "currentHealth": 200,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -235,10 +235,10 @@
         "bulletType":"bullet020",
         "common": {
             "moveSpeed": 50,
-            "maxHealth": 30,
-            "damageMin": 1
+            "maxHealth": 100,
+            "damageMin": 9
         },
-        "currentHealth": 30,
+        "currentHealth": 100,
         "invisible": 0,
         "remote": 3,
         "melee": 0,
@@ -256,11 +256,11 @@
         "sizeType":0.5,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 10,
-            "damageMin": 0.1,
+            "maxHealth": 100,
+            "damageMin": 3,
             "curseRate":10
         },
-        "currentHealth": 10,
+        "currentHealth": 100,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -278,10 +278,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 30,
-            "damageMin": 1
+            "maxHealth": 100,
+            "damageMin": 9
         },
-        "currentHealth": 30,
+        "currentHealth": 100,
         "invisible": 0,
         "remote": 5,
         "melee": 0,
@@ -300,7 +300,7 @@
         "common": {
             "moveSpeed": 500,
             "maxHealth": 10,
-            "damageMin": 1
+            "damageMin": 3
         },
         "currentHealth": 10,
         "isLineAim":1,
@@ -320,12 +320,12 @@
         "specialType":"special015",
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 40,
+            "maxHealth": 120,
             "realRate":50,
             "magicDamage":1,
-            "damageMin": 2
+            "damageMin": 10
         },
-        "currentHealth": 40,
+        "currentHealth": 120,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -344,11 +344,11 @@
         "isTest":1,
         "common": {
             "moveSpeed": 0,
-            "maxHealth": 9999,
+            "maxHealth": 99999,
             "defence":0,
             "damageMin": 1
         },
-        "currentHealth": 9999,
+        "currentHealth": 99999,
         "invisible": 0,
         "remote": 0,
         "melee": 0,
@@ -368,7 +368,7 @@
         "common": {
             "moveSpeed": 300,
             "maxHealth": 15,
-            "damageMin": 1
+            "damageMin": 3
         },
         "currentHealth": 15,
         "invisible": 0,
@@ -386,7 +386,7 @@
         "common": {
             "moveSpeed": 300,
             "maxHealth": 20,
-            "damageMin": 1
+            "damageMin": 3
         },
         "bulletType":"bullet039",
         "specialAttack":15,
@@ -411,7 +411,7 @@
             "moveSpeed": 200,
             "maxHealth": 15,
             "toxicRate":5,
-            "damageMin": 2
+            "damageMin": 3
         },
         "currentHealth": 15,
         "invisible": 0,
@@ -431,7 +431,7 @@
             "maxHealth": 20,
             "lighteningRate":100,
             "magicDamage":1,
-            "damageMin": 1
+            "damageMin": 3
         },
         "bulletArcExNum":2,
         "bulletLineExNum":0,
@@ -455,10 +455,10 @@
         "stageLevel": 0,
         "common": {
             "moveSpeed": 400,
-            "maxHealth": 25,
-            "damageMin": 1
+            "maxHealth": 50,
+            "damageMin": 6
         },
-        "currentHealth": 25,
+        "currentHealth": 50,
         "invisible": 0,
         "remote": 0,
         "melee": 4,
@@ -477,10 +477,10 @@
         "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 50,
-            "damageMin": 2
+            "maxHealth": 170,
+            "damageMin": 13
         },
-        "currentHealth": 50,
+        "currentHealth": 170,
         "invisible": 0,
         "remote": 4,
         "melee": 4,
@@ -498,12 +498,12 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 35,
+            "maxHealth": 120,
             "toxicRate":100,
             "magicDamage":1,
-            "damageMin": 2
+            "damageMin": 9
         },
-        "currentHealth": 35,
+        "currentHealth": 120,
         "invisible": 0,
         "remote": 0,
         "melee": 4,
@@ -522,10 +522,10 @@
         "specialType":"special024",
         "common": {
             "moveSpeed": 100,
-            "maxHealth": 60,
-            "damageMin": 5
+            "maxHealth": 200,
+            "damageMin": 15
         },
-        "currentHealth": 60,
+        "currentHealth": 200,
         "invisible": 0,
         "remote": 0,
         "melee": 4,
@@ -545,10 +545,10 @@
         "bulletType":"bullet100",
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 55,
-            "damageMin": 2
+            "maxHealth": 200,
+            "damageMin": 15
         },
-        "currentHealth": 55,
+        "currentHealth": 200,
         "invisible": 0,
         "remote": 4,
         "melee": 0,
@@ -566,12 +566,12 @@
         "bulletType":"bullet024",
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 55,
+            "maxHealth": 200,
             "toxicRate":100,
-            "magicDamage":1,
-            "damageMin": 1
+            "magicDamage":9,
+            "damageMin": 9
         },
-        "currentHealth": 55,
+        "currentHealth": 200,
         "invisible": 0,
         "remote": 3,
         "melee": 4,
@@ -591,11 +591,11 @@
         "specialBulletArcExNum":2,
         "common": {
             "moveSpeed": 500,
-            "maxHealth": 20,
-            "damageMin": 1
+            "maxHealth": 50,
+            "damageMin": 6
         },
         "isBoom":1,
-        "currentHealth": 20,
+        "currentHealth": 50,
         "invisible": 0,
         "remote": 3,
         "melee": 0,
@@ -612,12 +612,12 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 50,
-            "damageMin": 1,
+            "maxHealth": 160,
+            "damageMin": 6,
             "curseRate":100,
-            "magicDamage":1
+            "magicDamage":6
         },
-        "currentHealth": 50,
+        "currentHealth": 160,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -634,10 +634,10 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 300,
-            "maxHealth": 40,
-            "damageMin": 2
+            "maxHealth": 130,
+            "damageMin": 11
         },
-        "currentHealth": 40,
+        "currentHealth": 130,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -657,10 +657,10 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 100,
-            "damageMin": 10
+            "maxHealth": 250,
+            "damageMin": 18
         },
-        "currentHealth": 100,
+        "currentHealth": 250,
         "invisible": 0,
         "remote": 0,
         "melee": 4,
@@ -709,7 +709,7 @@
             "maxHealth": 20,
             "toxicRate":5,
             "magicDamage":0,
-            "damageMin": 2
+            "damageMin": 3
         },
         "currentHealth": 20,
         "invisible": 0,
@@ -733,10 +733,10 @@
         "specialAttack":15,
         "common": {
             "moveSpeed": 200,
-            "maxHealth": 50,
-            "damageMin": 5
+            "maxHealth": 100,
+            "damageMin": 12
         },
-        "currentHealth": 50,
+        "currentHealth": 100,
         "invisible": 0,
         "remote": 0,
         "melee": 5,
