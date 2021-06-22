@@ -68,15 +68,6 @@ export default class Inventory extends cc.Component {
     inventoryManager: InventoryManager;
     graphics: cc.Graphics = null;
 
-    weaponTimeDelay = 0;
-    remoteTimeDelay = 0;
-    shieldTimeDelay = 0;
-    helmetTimeDelay = 0;
-    clothesTimeDelay = 0;
-    trousersTimeDelay = 0;
-    glovesTimeDelay = 0;
-    shoesTimeDelay = 0;
-    cloakTimeDelay = 0;
     suitTimeDelay = 0;
 
     equipTimeDelays: { [key: string]: number } = {};
@@ -313,6 +304,8 @@ export default class Inventory extends cc.Component {
     }
     refreshSuits() {
         this.inventoryManager.suitMap = {};
+        this.inventoryManager.suitEquipMap = {};
+        //遍历列表计算相应套装集齐数
         for (let key in this.inventoryManager.equips) {
             let equip = this.inventoryManager.equips[key];
             if (equip.suitType.length < 1) {
@@ -325,6 +318,22 @@ export default class Inventory extends cc.Component {
                 this.inventoryManager.suitMap[equip.suitType] = data;
             } else {
                 this.inventoryManager.suitMap[equip.suitType].count++;
+            }
+        }
+        //遍历套装列表 添加玩家状态 生成对应装备的套装属性表
+        for(let key in this.inventoryManager.suitMap){
+            let suit = this.inventoryManager.suitMap[key];
+            let e = new EquipmentData();
+            if(suit){
+                for(let i = 0;i<suit.count-1;i++){
+                    if(i<suit.EquipList.length){
+                        e.add(suit.EquipList[i]);//叠加套装各种几率
+                        if(this.dungeon&&this.dungeon.player){
+                            this.dungeon.player.addStatus(suit.EquipList[i].statusName, new FromData());
+                        }
+                    }
+                }
+                this.inventoryManager.suitEquipMap[key]=e;
             }
         }
 
@@ -402,7 +411,7 @@ export default class Inventory extends cc.Component {
                 break;
         }
         //更新玩家装备贴图和状态
-        if (this.dungeon.player) {
+        if (this.dungeon&&this.dungeon.player) {
             this.dungeon.player.inventoryManager = this.inventoryManager;
             this.dungeon.player.changeEquipment(equipDataNew, spriteFrame);
             if (equipDataNew.statusInterval > 0 && equipDataNew.statusName.length > 0) {
@@ -418,7 +427,6 @@ export default class Inventory extends cc.Component {
             this.dungeon.player.addStatus(equipmentData.statusName, FromData.getClone(equipmentData.nameCn, equipmentData.img));
         }
     }
-    secondTimeDelay = 0;
     getTimeDelay(timeDelay: number, interval: number, dt: number): number {
         timeDelay += dt;
         if (timeDelay > interval) {
@@ -440,10 +448,24 @@ export default class Inventory extends cc.Component {
                     this.addPlayerStatus(this.inventoryManager.equips[key]);
                 }
             }
+            for(let key in this.inventoryManager.suitMap){
+                let suit = this.inventoryManager.suitMap[key];
+                if(suit){
+                    for(let i = 0;i<suit.count-1;i++){
+                        if(i<suit.EquipList.length){
+                            suit.EquipList[i].equipmetType = suit.suitType;
+                            if (this.isTimeDelay(dt, suit.EquipList[i])) {
+                                this.addPlayerStatus(suit.EquipList[i]);
+                            }
+                        }
+                    }
+                }
+            }
+
         }
         
     }
-
+    
     userItem(node: cc.Node, itemIndex: number) {
         if (!this.inventoryManager || !this.inventoryManager.itemList || itemIndex > this.inventoryManager.itemList.length - 1) {
             return;

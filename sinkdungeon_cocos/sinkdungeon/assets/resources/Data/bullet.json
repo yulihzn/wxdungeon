@@ -24,6 +24,19 @@
             "physicalDamage": 1
         }
     },
+    "bullet101": {
+        "name":"强力红色圆形",
+        "resName": "bullet001",
+        "lightName": "bulletlight001",
+        "lightColor": "#C72C2C",
+        "speed": 200,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 1,
+        "damage": {
+            "physicalDamage": 6
+        }
+    },
     "bullet002": {
         "name":"金色长条子弹",
         "resName": "bullet002",
@@ -34,7 +47,7 @@
         "isRotate": 0,
         "size": 1,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 2
         }
     },
     "bullet003": {
@@ -51,7 +64,7 @@
         }
     },
     "bullet103": {
-        "name":"普通箭矢",
+        "name":"长箭矢",
         "resName": "bullet003",
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
@@ -74,7 +87,7 @@
         "isRotate": 0,
         "size": 3,
         "damage": {
-            "physicalDamage": 2
+            "physicalDamage": 5
         }
     },
     "bullet005": {
@@ -154,7 +167,7 @@
         "isBoom":1,
         "size": 1.5,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 6
         }
     },
     "bullet011": {
@@ -170,7 +183,7 @@
         "lightName": "bulletlight001",
         "lightColor": "#FFFF00",
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 2
         }
     },
     "bullet111": {
@@ -236,7 +249,7 @@
         "lightName": "bulletlight001",
         "lightColor": "#3EAF4C",
         "damage": {
-            "physicalDamage": 1,
+            "physicalDamage": 5,
             "toxicRate":100
         }
     },
@@ -271,7 +284,7 @@
         "lightName": "bulletlight001",
         "lightColor": "#C72C2C",
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 2
         }
     },
     "bullet016": {
@@ -288,7 +301,7 @@
         "lightName": "bulletlight001",
         "lightColor": "#FFFFE0",
         "damage": {
-            "physicalDamage": 0
+            "physicalDamage": 5
         }
     },
     "bullet017": {
@@ -306,7 +319,7 @@
         "lightName": "bulletlight001",
         "lightColor": "#2F4F4F",
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 5
         }
     },
     "bullet018": {
@@ -324,7 +337,7 @@
         "lightName": "bulletlight003",
         "lightColor": "#ffffff",
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 5
         }
     },
     "bullet019": {
@@ -360,7 +373,7 @@
         "size": 0.8,
         "isBoom":1,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 3
         }
     },
     "bullet021": {
@@ -379,7 +392,7 @@
         "size": 1,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 5
         }
     },
     "bullet022": {
@@ -399,7 +412,7 @@
         "size": 7,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 5
+            "physicalDamage": 8
         }
     },
     "bullet023": {
@@ -420,7 +433,7 @@
         "size": 5,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 5
+            "physicalDamage": 12
         }
     },
     "bullet123": {
@@ -440,7 +453,7 @@
         "size": 4,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 5
+            "physicalDamage": 12
         }
     },
     "bullet223": {
@@ -461,7 +474,7 @@
         "size": 6,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 5
+            "physicalDamage": 12
         }
     },
     "bullet100": {
@@ -476,7 +489,7 @@
         "fixedRotation":1,
         "damage": {
             "fireRate": 100,
-            "magicDamage":1
+            "magicDamage":8
         }
     },
     "bullet200": {
@@ -492,7 +505,7 @@
         "fixedRotation":1,
         "damage": {
             "fireRate": 100,
-            "magicDamage":1
+            "magicDamage":10
         }
     },
     "bullet024": {
@@ -507,7 +520,7 @@
         "statusType":"status014",
         "statusRate":100,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 5
         }
     },
     "bullet025": {
@@ -584,7 +597,7 @@
         "size": 1,
         "isBoom":1,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 3
         }
     },
     "bullet029": {
@@ -625,7 +638,7 @@
         "isRotate": 0,
         "size": 2,
         "damage": {
-            "physicalDamage": 2
+            "physicalDamage": 3
         }
     },
     "bullet032": {
@@ -660,7 +673,7 @@
         "statusType":"status001",
         "statusRate":100,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 5
         }
     },
     "bullet034": {
@@ -870,7 +883,7 @@
         "size": 2,
         "isBoom":0,
         "damage": {
-            "physicalDamage": 1
+            "physicalDamage": 4
         }
     },
     "bullet042": {
@@ -902,7 +915,7 @@
         "canBreakBuilding":1,
         "size": 7,
         "damage": {
-            "physicalDamage": 3
+            "physicalDamage": 5
         }
     },
     "laser001": {
@@ -923,7 +936,7 @@
         "size": 2,
         "resNameLaser":"laser002",
         "damage": {
-            "physicalDamage": 1,
+            "physicalDamage": 3,
             "fireRate":100
         }
     },
@@ -935,7 +948,7 @@
         "size": 2,
         "resNameLaser":"laser003",
         "damage": {
-            "physicalDamage": 1,
+            "physicalDamage": 8,
             "stoneRate":100
         }
     },

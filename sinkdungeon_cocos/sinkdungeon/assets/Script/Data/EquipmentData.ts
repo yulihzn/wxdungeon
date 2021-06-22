@@ -247,5 +247,11 @@ export default class EquipmentData extends BaseData{
         e.exBeatBack = this.exBeatBack;
         return e;
     }
+    public add(data: EquipmentData): EquipmentData {
+        this.common = this.common.clone().add(data.Common);
+        this.ignoreTrap = this.ignoreTrap+data.ignoreTrap;
+        this.exBeatBack = this.exBeatBack+data.exBeatBack;
+        return this;
+    }
     
 }

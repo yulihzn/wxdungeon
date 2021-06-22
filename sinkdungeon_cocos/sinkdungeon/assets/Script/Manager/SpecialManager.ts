@@ -47,7 +47,7 @@ export default class SpecialManager extends cc.Component {
     dungeon: Dungeon;
     clear(): void {
     }
-    addPlacement(placeType: string, distance: number, isFaceRight: boolean, from: FromData) {
+    addPlacement(placeType: string, distance: number, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         if (!this.dungeon) {
             return;
         }
@@ -56,17 +56,17 @@ export default class SpecialManager extends cc.Component {
 
         switch (placeType) {
             case SpecialManager.AFTER_VENOM:
-                this.addVenom(pos, isFaceRight, from);
+                this.addVenom(pos, isFaceRight, from,isVariation);
                 break;
             case SpecialManager.AFTER_CLAW:
-                this.addClaw(pos, isFaceRight, from);
+                this.addClaw(pos, isFaceRight, from,isVariation);
                 break;
             case SpecialManager.AFTER_BLADE:
-                this.addBlade(pos, isFaceRight, from);
+                this.addBlade(pos, isFaceRight, from,isVariation);
                 break;
             case SpecialManager.AFTER_ASH:
                 this.addAoe(pos, new AreaOfEffectData()
-                    .init(0.3, 0.3, 0.1, 3, IndexZ.getActorZIndex(this.node.parent.position)
+                    .init(0.3, 0.3, 0.1, isVariation?4:3, IndexZ.getActorZIndex(this.node.parent.position)
                         , true, true, true, false, false, new DamageData(2), from, [StatusManager.DIZZ])
                     , ['ash001', 'ash002', 'ash003', 'ash004'], false,isFaceRight);
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
@@ -74,14 +74,14 @@ export default class SpecialManager extends cc.Component {
             case SpecialManager.AFTER_ICE:
                 AudioPlayer.play(AudioPlayer.ICEBOOM);
                 this.addAoe(pos, new AreaOfEffectData()
-                    .init(0.8, 1, 0.2, 2, IndexZ.getActorZIndex(this.node.parent.position)
+                    .init(0.8, 1, 0.2, isVariation?3:2, IndexZ.getActorZIndex(this.node.parent.position)
                         , true, true, true, false, false, new DamageData(3), from, [StatusManager.FROZEN])
                     , ['ice001', 'ice002', 'ice002', 'ice003', 'ice004'], false,isFaceRight);
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
                 break;
             case SpecialManager.AFTER_DOWN:
                 this.addAoe(pos, new AreaOfEffectData()
-                .init(0.3, 1, 0.1, 1, IndexZ.getActorZIndex(this.node.parent.position)
+                .init(0.3, 1, 0.1, isVariation?2:1, IndexZ.getActorZIndex(this.node.parent.position)
                     , true, true, true, false, false, new DamageData(1), from, [StatusManager.FALLEN_DOWN])
                 , ['ash001', 'ash002', 'ash003', 'ash004'], false,isFaceRight);
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
@@ -89,13 +89,13 @@ export default class SpecialManager extends cc.Component {
             case SpecialManager.AFTER_SWORD:
                 pos.y += 32;
                 this.addAoe(pos, new AreaOfEffectData()
-                .init(0.4, 0.1, 0, 2, IndexZ.getActorZIndex(this.node.parent.position)
+                .init(0.4, 0.1, 0, isVariation?3:2, IndexZ.getActorZIndex(this.node.parent.position)
                     , true, true, true, false, false, new DamageData(4), from, [StatusManager.BLEEDING])
                 , ['specialswordlight001', 'specialswordlight002', 'specialswordlight003', 'specialswordlight004'], false,isFaceRight);
             break;
         }
     }
-    addEffect(placeType: string, distance: number, isFaceRight: boolean, from: FromData) {
+    addEffect(placeType: string, distance: number, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         if (!this.dungeon) {
             return;
         }
@@ -104,12 +104,12 @@ export default class SpecialManager extends cc.Component {
 
         switch (placeType) {
             case SpecialManager.BEFORE_HOWL:
-                this.addHowl(pos, isFaceRight, from);
+                this.addHowl(pos, isFaceRight, from,isVariation);
                 break;
         }
     }
 
-    private addVenom(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
+    private addVenom(pos: cc.Vec3, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         let venom = cc.instantiate(this.venom);
         venom.getComponent(SlimeVenom).target = this.dungeon.player;
         venom.getComponent(SlimeVenom).isForever = false;
@@ -118,9 +118,9 @@ export default class SpecialManager extends cc.Component {
         venom.position = pos;
         venom.zIndex = IndexZ.ACTOR;
         venom.scale = 0;
-        cc.tween(venom).to(0.5,{scale:2}).start();
+        cc.tween(venom).to(0.5,{scale:isVariation?3:2}).start();
     }
-    private addHowl(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
+    private addHowl(pos: cc.Vec3, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         let monster = this.node.parent.getComponent(NonPlayer);
         if (monster) {
             monster.addStatus(StatusManager.WEREWOLFDEFENCE, from);
@@ -128,14 +128,14 @@ export default class SpecialManager extends cc.Component {
         let howl = cc.instantiate(this.howl);
         let howlScript = howl.getComponent(AreaOfEffect);
         howlScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
-            .init(0, 2, 1.5, 2, IndexZ.getActorZIndex(howl.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.DIZZ]));
+            .init(0, 2, 1.5, isVariation?3:2, IndexZ.getActorZIndex(howl.position), true, false, true, false, false, new DamageData(1), from, [StatusManager.DIZZ]));
     }
-    private addClaw(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
+    private addClaw(pos: cc.Vec3, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         let claw = cc.instantiate(this.claw);
         pos.y += 32;
         let areaScript = claw.getComponent(AreaOfEffect);
         areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
-            .init(0, 0.15, 0.1, 1, IndexZ.getActorZIndex(claw.position), true, false, true, false, false, new DamageData(2), from, [StatusManager.BLEEDING]));
+            .init(0, 0.15, 0.1, isVariation?2:1, IndexZ.getActorZIndex(claw.position), true, false, true, false, false, new DamageData(2), from, [StatusManager.BLEEDING]));
     }
 
     private addAoe(pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean,isFaceRight:boolean) {
@@ -168,12 +168,12 @@ export default class SpecialManager extends cc.Component {
         let areaScript = aoe.getComponent(AreaOfEffect);
         areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, aoeData);
     }
-    private addBlade(pos: cc.Vec3, isFaceRight: boolean, from: FromData) {
+    private addBlade(pos: cc.Vec3, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         let prefab = cc.instantiate(this.blade);
         pos.y += 64;
         prefab.scaleX = isFaceRight ? 1 : -1;
         let areaScript = prefab.getComponent(AreaOfEffect);
         areaScript.show(this.dungeon.node, pos, cc.v3(1, 0), 0, new AreaOfEffectData()
-            .init(0, 0.2, 0.1, 1, IndexZ.getActorZIndex(prefab.position), true, false, true, false, false, new DamageData(2), from, []));
+            .init(0, 0.2, 0.1, isVariation?2:1, IndexZ.getActorZIndex(prefab.position), true, false, true, false, false, new DamageData(2), from, []));
     }
 }

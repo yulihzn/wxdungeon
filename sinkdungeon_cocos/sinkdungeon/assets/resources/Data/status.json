@@ -395,5 +395,15 @@
         "missRate": 80,
         "common": {
         }
+    },
+    "status036": {
+        "nameCn": "强力回复(丛林上衣)",
+        "nameEn": "recovery",
+        "spriteFrameName": "iconhealthrecovery",
+        "statusType": 36,
+        "desc": "",
+        "duration": 999,
+        "realDamageOvertime": -0.03,
+        "common": {}
     }
 }

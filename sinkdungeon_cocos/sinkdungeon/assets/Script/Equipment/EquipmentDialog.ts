@@ -82,6 +82,7 @@ export default class EquipmentDialog extends cc.Component {
         this.infoSuit2.node.active = this.infoSuit2.string.length > 0;
         this.infoSuit3.node.active = this.infoSuit3.string.length > 0;
     }
+    
     showDialog(equipment: EquipmentData, inventoryManager?: InventoryManager) {
         this.refreshDialog(equipment);
         this.node.opacity = 255;
@@ -90,9 +91,9 @@ export default class EquipmentDialog extends cc.Component {
             if(equipment.suitType.length>0&&inventoryManager.suitMap[equipment.suitType]){
                 count = inventoryManager.suitMap[equipment.suitType].count;
             }
-            this.infoSuit1.node.opacity = count>1?255:80;
-            this.infoSuit2.node.opacity = count>2?255:80;
-            this.infoSuit2.node.opacity = count>3?255:80;
+            this.infoSuit1.node.opacity = count>1?255:50;
+            this.infoSuit2.node.opacity = count>2?255:50;
+            this.infoSuit3.node.opacity = count>3?255:50;
         }
     }
     hideDialog() {

@@ -18,7 +18,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class CaptainSword extends cc.Component {
     @property
-    damage = 2;
+    damage = 3;
     @property(cc.Node)
     parentNode:cc.Node = null;
     // LIFE-CYCLE CALLBACKS:

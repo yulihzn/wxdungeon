@@ -99,15 +99,15 @@ export default class MonsterManager extends BaseManager {
     @property(cc.Prefab)
     dragon = null;
     readonly maxHealth00 = 200;
-    readonly maxHealth01 = 300;
-    readonly maxHealth02 = 400;
-    readonly maxHealth03 = 500;
-    readonly maxHealth04 = 600;
-    readonly maxHealth05 = 700;
-    readonly maxHealth06 = 800;
-    readonly maxHealth07 = 900;
-    readonly maxHealth08 = 1000;
-    readonly maxHealth09 = 1200;
+    readonly maxHealth01 = 400;
+    readonly maxHealth02 = 600;
+    readonly maxHealth03 = 800;
+    readonly maxHealth04 = 1000;
+    readonly maxHealth05 = 1200;
+    readonly maxHealth06 = 1400;
+    readonly maxHealth07 = 1600;
+    readonly maxHealth08 = 1800;
+    readonly maxHealth09 = 2000;
 
     private monsters: NonPlayer[] = new Array();//房间怪物列表
     private bosses: Boss[] = new Array();
@@ -357,12 +357,12 @@ export default class MonsterManager extends BaseManager {
         data.resName = "iconboss004";
         data.Common.moveSpeed = 200;
         switch (type) {
-            case 0: data.updateHA(this.maxHealth04, this.maxHealth04, 2); slime.scaleSize = 2; break;
-            case 1: data.updateHA(200, 200, 2); slime.scaleSize = 1.5; break;
-            case 2: data.updateHA(100, 100, 2); slime.scaleSize = 1; break;
-            case 3: data.updateHA(50, 50, 2); slime.scaleSize = 0.5; break;
-            case 4: data.updateHA(25, 25, 2); slime.scaleSize = 0.3; break;
-            case 5: data.updateHA(10, 10, 1); slime.scaleSize = 0.2; break;
+            case 0: data.updateHA(this.maxHealth04, this.maxHealth04, 9); slime.scaleSize = 2; break;
+            case 1: data.updateHA(200, 200, 7); slime.scaleSize = 1.5; break;
+            case 2: data.updateHA(100, 100, 7); slime.scaleSize = 1; break;
+            case 3: data.updateHA(50, 50, 5); slime.scaleSize = 0.5; break;
+            case 4: data.updateHA(25, 25, 3); slime.scaleSize = 0.3; break;
+            case 5: data.updateHA(10, 10, 2); slime.scaleSize = 0.2; break;
             default: data.updateHA(5, 5, 1); slime.scaleSize = 0.2; break;
         }
         slime.slimeType = type;

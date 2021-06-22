@@ -172,7 +172,7 @@ export default class EvilEye extends Boss {
             if (!hv.equals(cc.Vec3.ZERO)) {
                 hv = hv.normalizeSelf();
                 this.viceShooters[i].setHv(hv);
-                this.fireShooter(this.viceShooters[i], 'bullet001', 0, 0, 0, cc.v3(0, 0));
+                this.fireShooter(this.viceShooters[i], 'bullet101', 0, 0, 0, cc.v3(0, 0));
                 
             }
         }
@@ -282,7 +282,7 @@ export default class EvilEye extends Boss {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && (this.dashSkill.IsExcuting)) {
             let d = new DamageData();
-            d.physicalDamage = 5;
+            d.physicalDamage = 15;
             let from = FromData.getClone(this.actorName(),'evileyeeye');
             if(target.takeDamage(d,from,this)){
                 target.addStatus(StatusManager.BLEEDING,from);

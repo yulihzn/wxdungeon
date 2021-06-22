@@ -11,6 +11,7 @@ import BaseManager from "./BaseManager";
 import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 import InventoryManager from "./InventoryManager";
+import SuitData from "../Data/SuitData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -153,7 +154,7 @@ export default class EquipmentManager extends BaseManager {
     clear(): void {
         this.groundList = [];
     }
-    
+
     /*灰色（粗糙）→白色（普通）→绿色（精良）→蓝色（优秀）→紫色（史诗）→橙色（传说）
     箱子的等级1,2,3越来越高*/
     //criticalstrike strong stable drain recovery fast quick agile healthy 
@@ -184,14 +185,14 @@ export default class EquipmentManager extends BaseManager {
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
             , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageMin > 0) {
-            damageMin = EquipmentManager.getRandomQuality(0, 5+Logic.chapterMaxIndex, chestQuality, rand4save);
+            damageMin = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
             level = damageMin.y > level ? damageMin.y : level;
         }
         //远程攻击0-5 +chapter
         let remoteDamage = cc.v3(0, 0);
-        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES,InventoryManager.REMOTE])
+        if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE])
             && data.Common.remoteDamage > 0) {
-                remoteDamage = rand4save.rand()<0.2?EquipmentManager.getRandomQuality(0, 5+Logic.chapterMaxIndex, chestQuality, rand4save):cc.v3(0, 0);
+            remoteDamage = rand4save.rand() < 0.2 ? EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save) : cc.v3(0, 0);
             level = remoteDamage.y > level ? remoteDamage.y : level;
         }
         //最大攻击0-5 +chapter
@@ -199,7 +200,7 @@ export default class EquipmentManager extends BaseManager {
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
             , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageMax > 0) {
-            damageMax = EquipmentManager.getRandomQuality(damageMin.x, damageMin.x + 5+Logic.chapterMaxIndex, chestQuality, rand4save);
+            damageMax = EquipmentManager.getRandomQuality(damageMin.x, damageMin.x + 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
             level = damageMax.y > level ? damageMax.y : level;
             desc.prefix += damageMax.y > 2 ? '强力' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -211,7 +212,7 @@ export default class EquipmentManager extends BaseManager {
             , InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHOES, InventoryManager.SHIELD
             , InventoryManager.CLOTHES])
             && data.Common.defence > 0) {
-            defence = EquipmentManager.getRandomQuality(0, 5+Logic.chapterMaxIndex, chestQuality, rand4save);
+            defence = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
             level = defence.y > level ? defence.y : level;
             desc.prefix += defence.y > 2 ? '坚固' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -235,7 +236,7 @@ export default class EquipmentManager extends BaseManager {
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
             , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageBack > 0) {
-            damageBack = EquipmentManager.getRandomQuality(0, 5+Logic.chapterMaxIndex, chestQuality, rand4save);
+            damageBack = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
             level = damageBack.y > level ? damageBack.y : level;
             desc.prefix += damageBack.y > 2 ? '阴冷' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -288,7 +289,7 @@ export default class EquipmentManager extends BaseManager {
             , InventoryManager.GLOVES, InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHIELD
             , InventoryManager.SHOES, InventoryManager.CLOTHES])
             && data.Common.maxHealth > 0) {
-            health = EquipmentManager.getRandomQuality(0, 5+Logic.chapterMaxIndex, chestQuality, rand4save);
+            health = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
             level = health.y > level ? health.y : level;
             desc.prefix += health.y > 2 ? '健康' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -297,14 +298,14 @@ export default class EquipmentManager extends BaseManager {
         //梦境0-5 +chapter
         let dream = cc.v3(0, 0);
         if (data.Common.maxDream > 0) {
-            dream = EquipmentManager.getRandomQuality(0, 5+Logic.chapterMaxIndex, chestQuality, rand4save);
+            dream = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
             level = dream.y > level ? dream.y : level;
             desc.prefix += dream.y > 2 ? '梦幻' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
                 , dream.y > 2 ? EquipmentManager.COLOR_DREAM : '#000000');
         }
         let damageRate = 0.1;
-        let damage = 5+Logic.chapterMaxIndex;
+        let damage = 5 + Logic.chapterMaxIndex;
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE, InventoryManager.WEAPON])) {
             //流血伤害0-5 +chapter
             let realDamage = rand4save.rand() < damageRate ? EquipmentManager.getRandomQuality(0, damage, chestQuality, rand4save) : cc.v3(0, 0);
@@ -466,13 +467,16 @@ export default class EquipmentManager extends BaseManager {
         data.info1 = EquipmentManager.getEquipmentInfo1(common);
         data.info2 = EquipmentManager.getEquipmentInfo2(common, data);
         data.info3 = EquipmentManager.getEquipmentInfo3(common);
+        data.suit1 = EquipmentManager.getSuitDesc(data.suitType,0);
+        data.suit2 = EquipmentManager.getSuitDesc(data.suitType,1);
+        data.suit3 = EquipmentManager.getSuitDesc(data.suitType,2);
         data.infobasecolor = '#fffff0';//象牙
         data.infocolor1 = '#9370DB';//适中的紫色
         data.infocolor2 = '#87CEFA';//淡蓝色
         data.infocolor3 = '#BC8F8F';//玫瑰棕色
-        data.suitcolor1 = '#98FB98';//苍白的绿色
-        data.suitcolor2 = '#32CD32';//酸橙绿
-        data.suitcolor3 = '#00FF00';//酸橙色
+        data.suitcolor1 = '#FFD700';//金
+        data.suitcolor2 = '#FFD700';//金
+        data.suitcolor3 = '#FFD700';//金
         data.Common.add(desc.common);
         data.prefix = desc.prefix;
         data.titlecolor = desc.titlecolor;
@@ -487,6 +491,30 @@ export default class EquipmentManager extends BaseManager {
         data.level = desc.level;
         data.price += EquipmentManager.getPrice(data);
         return data;
+    }
+    static getSuitDesc(suitType: string, suitIndex: number) {
+        let suit = Logic.suits[suitType];
+        if (!suit) {
+            return '';
+        }
+        let data = new SuitData();
+        data.valueCopy(Logic.suits[suitType]);
+        if (suitIndex >= data.EquipList.length) {
+            return '';
+        }
+        let info = ``;
+        let title = suitIndex == 0 ? `${data.nameCn}\n` : ``;
+        let base = EquipmentManager.getEquipmentInfoBase(data.EquipList[suitIndex].Common);
+        let info1 = EquipmentManager.getEquipmentInfo1(data.EquipList[suitIndex].Common);
+        let info2 = EquipmentManager.getEquipmentInfo2(data.EquipList[suitIndex].Common, data.EquipList[suitIndex]);
+        let info3 = EquipmentManager.getEquipmentInfo3(data.EquipList[suitIndex].Common);
+        info += base+` `;
+        info += info1+` `;
+        info += info2+` `;
+        info += info3+` `;
+        info += data.EquipList[suitIndex].extraInfo;
+        return title+info.replace('\n', '');
+
     }
     static getEquipmentInfoBase(common: CommonData): string {
         let info = ``;
@@ -523,7 +551,7 @@ export default class EquipmentManager extends BaseManager {
     }
     static getEquipmentInfo2(common: CommonData, data: EquipmentData): string {
         let info = ``;
-        info += data.isReflect == 0 ? `` : `反弹子弹\n`;
+        info += data && data.isReflect == 0 ? `` : `反弹子弹\n`;
         info += common.realDamage == 0 ? `` : `攻击附加${common.realDamage}点流血伤害\n`;
         info += common.realRate == 0 ? `` : `攻击有${common.realRate}%几率释放流血\n`;
         info += common.magicDamage == 0 ? `` : `攻击附加${common.magicDamage}点元素伤害\n`;

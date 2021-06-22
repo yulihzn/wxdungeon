@@ -1,5 +1,6 @@
 import CommonData from "./CommonData";
 import BaseData from "./BaseData";
+import EquipmentData from "./EquipmentData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,52 +16,50 @@ import BaseData from "./BaseData";
 export default class SuitData extends BaseData{
     nameCn: string = '';
     nameEn: string = '';
-    suitNames: string = '';//装备列表，逗号隔开
+    suitType: string = '';
+    suitNames:string = '';
     desc: string = '';
     count:number = 0;
-    private commonList:CommonData[] = [];
-    private statusList:string[] = [];//状态列表，每组状态按逗号隔开
+    private equipList:EquipmentData[] = [];//叠加装备列表,不指定类型，只读取属性
+
     constructor(){
         super();
     }
-
-    get CommonList(){
-        return this.commonList;
+    get EquipList(){
+        return this.equipList;
     }
-    get StatusList(){
-        return this.statusList;
-    }
+    
     public valueCopy(data:SuitData):void{
         if(!data){
             return;
         }
-        this.statusList=data.statusList;
-        for(let common of data.commonList){
-            let c = new CommonData();
-            c.valueCopy(common);
-            this.commonList.push(c);
+        for(let equip of data.equipList){
+            let e = new EquipmentData();
+            e.valueCopy(equip);
+            this.equipList.push(e);
         }
         this.count = data.count?data.count:0;
         this.nameCn = data.nameCn?data.nameCn:'';
         this.nameEn = data.nameEn?data.nameEn:'';
-        this.suitNames = data.suitNames?data.suitNames:'';
+        this.suitType = data.suitType?data.suitType:'';
         this.desc = data.desc?data.desc:'';
+        this.suitNames = data.suitNames?data.suitNames:'';
     }
     public clone():SuitData{
         let e = new SuitData();
         let list = [];
-        for(let common of this.commonList){
-            let c = new CommonData();
-            c.valueCopy(common);
-            list.push(c);
+        for(let equip of this.equipList){
+            let eq = new EquipmentData();
+            eq.valueCopy(equip);
+            list.push(eq);
         }
-        e.commonList = list;
-        e.statusList = this.statusList;
+        e.equipList = list;
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
         e.count = this.count;
-        e.suitNames = this.suitNames;
+        e.suitType = this.suitType;
         e.desc = this.desc;
+        e.suitNames = this.suitNames;
         return e;
     }
     

@@ -82,7 +82,7 @@ export default class SlimeVenom extends Actor {
     private damagePlayer(from: FromData) {
         if (this.target && this.getNearPlayerDistance(this.target.node) < 60 * this.node.scale && this.node.active && !this.isHide) {
             let dd = new DamageData();
-            dd.magicDamage = 1;
+            dd.magicDamage = 3;
             this.target.takeDamage(dd, from);
         }
     }

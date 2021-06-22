@@ -75,7 +75,7 @@ export default class Trap extends Building {
             if(this.isOpen && this.isPlayerIn){
                 this.isOpen = false;
                 let player = other.getComponent(Player);
-                if(player&&player.inventoryManager.equips[InventoryManager.SHOES].ignoreTrap<1){
+                if(player&&player.inventoryManager.getEquipBySuit(player.inventoryManager.equips[InventoryManager.SHOES]).ignoreTrap<1){
                     player.takeDamage(new DamageData(1),FromData.getClone(this.actorName(),'trap001'),this);
                 }
             }

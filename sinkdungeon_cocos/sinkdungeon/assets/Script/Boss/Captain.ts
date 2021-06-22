@@ -169,7 +169,7 @@ export default class Captain extends Boss {
         }
         if (this.dungeon) {
             let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-            if (playerDis < 64) {
+            if (playerDis < 96) {
                 this.rigidbody.linearVelocity = cc.Vec2.ZERO;
             }
         }

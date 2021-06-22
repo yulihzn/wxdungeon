@@ -68,8 +68,8 @@ export default class Kraken extends Boss {
         let hand = cc.instantiate(this.swingHand);
         this.dungeon.node.addChild(hand);
         hand.setPosition(pos);
-        hand.scaleX = isReverse?-60:60;
-        hand.scaleY = isUp?-60:60;
+        hand.scaleX = isReverse?-80:80;
+        hand.scaleY = isUp?-80:80;
         hand.zIndex = IndexZ.OVERHEAD;
         let h = hand.getComponentInChildren(KrakenSwingHand);
         this.scheduleOnce(()=>{
@@ -112,7 +112,7 @@ export default class Kraken extends Boss {
                     this.hand04.swing();
                 }
             }
-        },10)
+        },5)
         return true;
     }
     

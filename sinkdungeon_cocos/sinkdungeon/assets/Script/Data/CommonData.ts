@@ -105,10 +105,10 @@ export default class CommonData {
         this.damageMin += data.damageMin ? data.damageMin : 0;
         this.damageMax += data.damageMax ? data.damageMax : 0;
         this.remoteDamage += data.remoteDamage ? data.remoteDamage : 0;
-        this.criticalStrikeRate = data.criticalStrikeRate ? this.addPercent(this.criticalStrikeRate, data.criticalStrikeRate) : this.criticalStrikeRate;
-        this.remoteCritRate = data.remoteCritRate ? this.addPercent(this.remoteCritRate, data.remoteCritRate) : this.remoteCritRate;
-        this.lifeDrain = data.lifeDrain ? this.addPercent(this.lifeDrain, data.lifeDrain) : this.lifeDrain;
-        this.dodge = data.dodge ? this.addPercent(this.dodge, data.dodge) : this.dodge;
+        this.criticalStrikeRate = data.criticalStrikeRate ? CommonData.addPercent(this.criticalStrikeRate, data.criticalStrikeRate) : this.criticalStrikeRate;
+        this.remoteCritRate = data.remoteCritRate ? CommonData.addPercent(this.remoteCritRate, data.remoteCritRate) : this.remoteCritRate;
+        this.lifeDrain = data.lifeDrain ? CommonData.addPercent(this.lifeDrain, data.lifeDrain) : this.lifeDrain;
+        this.dodge = data.dodge ? CommonData.addPercent(this.dodge, data.dodge) : this.dodge;
         this.defence += data.defence ? data.defence : 0;
         this.damageBack += data.damageBack ? data.damageBack : 0;
         this.moveSpeed += data.moveSpeed ? data.moveSpeed : 0;
@@ -127,32 +127,32 @@ export default class CommonData {
         this.blockMagic += data.blockMagic ? data.blockMagic : 0;
         this.blockDamage += data.blockDamage ? data.blockDamage : 0;
 
-        this.iceRate = this.fixRateRange(this.iceRate);
-        this.fireRate = this.fixRateRange(this.fireRate);
-        this.lighteningRate = this.fixRateRange(this.lighteningRate);
-        this.toxicRate = this.fixRateRange(this.toxicRate);
-        this.curseRate = this.fixRateRange(this.curseRate);
-        this.blockPhysical = this.fixRateRange(this.blockPhysical);
-        this.blockMagic = this.fixRateRange(this.blockMagic);
-        this.magicDefence = this.fixRateRange(this.magicDefence);
-        this.realRate = this.fixRateRange(this.realRate);
-        this.lifeDrain = this.fixRateRange(this.lifeDrain);
-        this.dodge = this.fixRateRange(this.dodge);
-        this.remoteCritRate = this.fixRateRange(this.remoteCritRate);
-        this.criticalStrikeRate = this.fixRateRange(this.criticalStrikeRate);
-        this.iceRate = this.fixRateRange(this.iceRate);
+        this.iceRate = CommonData.fixRateRange(this.iceRate);
+        this.fireRate = CommonData.fixRateRange(this.fireRate);
+        this.lighteningRate = CommonData.fixRateRange(this.lighteningRate);
+        this.toxicRate = CommonData.fixRateRange(this.toxicRate);
+        this.curseRate = CommonData.fixRateRange(this.curseRate);
+        this.blockPhysical = CommonData.fixRateRange(this.blockPhysical);
+        this.blockMagic = CommonData.fixRateRange(this.blockMagic);
+        this.magicDefence = CommonData.fixRateRange(this.magicDefence);
+        this.realRate = CommonData.fixRateRange(this.realRate);
+        this.lifeDrain = CommonData.fixRateRange(this.lifeDrain);
+        this.dodge = CommonData.fixRateRange(this.dodge);
+        this.remoteCritRate = CommonData.fixRateRange(this.remoteCritRate);
+        this.criticalStrikeRate = CommonData.fixRateRange(this.criticalStrikeRate);
+        this.iceRate = CommonData.fixRateRange(this.iceRate);
         return this;
     }
-    private addPercent(rate1: number, rate2: number): number {
+    public static addPercent(rate1: number, rate2: number): number {
         let rate = 1;
         rate *= (1 - rate1 / 100);
         rate *= (1 - rate2 / 100);
         return (1 - rate)*100;
     }
-    public getPercentRate(rate: number): number {
+    public static  getPercentRate(rate: number): number {
         return rate/100;
     }
-    private fixRateRange(rate:number){
+    public static fixRateRange(rate:number){
         rate = rate < 0 ? 0 : rate;
         rate = rate > 100 ? 100 : rate;
         return rate;

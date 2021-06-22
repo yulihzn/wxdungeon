@@ -404,7 +404,7 @@ export default class NonPlayer extends Actor {
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
-                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
+                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),this.isVariation);
                 }, this.data.specialDelay);
             }
         });
@@ -423,7 +423,7 @@ export default class NonPlayer extends Actor {
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
-                    this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
+                    this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),this.isVariation);
                 }, this.data.specialDelay);
             }
             if (attacking) {

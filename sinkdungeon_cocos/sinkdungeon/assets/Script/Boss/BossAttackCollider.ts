@@ -18,7 +18,7 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class BossAttackCollider extends cc.Component {
     @property
-    damage = 2;
+    damage = 9;
     @property(cc.Node)
     parentNode:cc.Node = null;
     from:FromData = new FromData();

@@ -69,7 +69,7 @@ export default class Player extends Actor {
     remoteCooldown: cc.Node = null;
 
     private professionTalent: ProfessionTalent;
-    private organizationTalent:OrganizationTalent;
+    private organizationTalent: OrganizationTalent;
 
 
     isStone = false;//是否石化
@@ -185,7 +185,7 @@ export default class Player extends Actor {
             this.lights[0].rayRadius = 0;
         }
     }
-    initTalent(){
+    initTalent() {
         this.professionTalent = this.getComponent(ProfessionTalent);
         this.professionTalent.init();
         this.professionTalent.loadPassiveList(Logic.talentList);
@@ -250,7 +250,7 @@ export default class Player extends Actor {
             return;
         }
         Logic.playerData.StatusTotalData.valueCopy(statusData);
-        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
+        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
     getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3) {
@@ -334,7 +334,7 @@ export default class Player extends Actor {
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
         this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir);
-        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipmentData());
+        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
         let health = this.data.getHealth();
         let dream = this.data.getDream();
@@ -470,56 +470,82 @@ export default class Player extends Actor {
     remoteExAttack(comboType: number): void {
         for (let key in this.inventoryManager.equips) {
             let data = this.inventoryManager.equips[key];
-            let canShoot = false;
-            if (comboType == MeleeWeapon.COMBO1 && data.exBulletCombo1 > 0) {
-                canShoot = true;
-            }
-            if (comboType == MeleeWeapon.COMBO2 && data.exBulletCombo2 > 0) {
-                canShoot = true;
-            }
-            if (comboType == MeleeWeapon.COMBO3 && data.exBulletCombo3 > 0) {
-                canShoot = true;
-            }
-            if (canShoot && data.exBulletTypeAttack.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
-                this.shooterEx.data.bulletType = data.exBulletTypeAttack;
-                this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
-                this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
-                this.shooterEx.data.bulletSize = data.bulletSize;
-                this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
+            this.remoteExAttackDo(data,comboType);
+        }
+        for (let key in this.inventoryManager.suitMap) {
+            let suit = this.inventoryManager.suitMap[key];
+            if (suit) {
+                for (let i = 0; i < suit.count - 1; i++) {
+                    if (i < suit.EquipList.length) {
+                        this.remoteExAttackDo(suit.EquipList[i], comboType);
+                    }
+                }
             }
         }
     }
+    private remoteExAttackDo(data: EquipmentData, comboType: number) {
+        let canShoot = false;
+        if (comboType == MeleeWeapon.COMBO1 && data.exBulletCombo1 > 0) {
+            canShoot = true;
+        }
+        if (comboType == MeleeWeapon.COMBO2 && data.exBulletCombo2 > 0) {
+            canShoot = true;
+        }
+        if (comboType == MeleeWeapon.COMBO3 && data.exBulletCombo3 > 0) {
+            canShoot = true;
+        }
+        if (canShoot && data.exBulletTypeAttack.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
+            this.shooterEx.data.bulletType = data.exBulletTypeAttack;
+            this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
+            this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
+            this.shooterEx.data.bulletSize = data.bulletSize;
+            this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
+        }
+    }
     //特效受击
-    remoteOrStatusExHurt(blockLevel: number, from: FromData, actor: Actor): void {
+    private remoteOrStatusExHurt(blockLevel: number, from: FromData, actor: Actor): void {
         for (let key in this.inventoryManager.equips) {
             let data = this.inventoryManager.equips[key];
-            let needFire = false;
-            if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
-                needFire = true;
-                this.shooterEx.data.bulletType = data.exBulletTypeHurt;
+            this.remoteOrStatusExHurtDo(data, blockLevel, from, actor);
+        }
+        for (let key in this.inventoryManager.suitMap) {
+            let suit = this.inventoryManager.suitMap[key];
+            if (suit) {
+                for (let i = 0; i < suit.count - 1; i++) {
+                    if (i < suit.EquipList.length) {
+                        this.remoteOrStatusExHurtDo(suit.EquipList[i], blockLevel, from, actor);
+                    }
+                }
             }
-            if (blockLevel == Shield.BLOCK_PARRY && data.exBulletTypeParry.length > 0
-                && Random.getRandomNum(0, 100) < data.exBulletRate) {
-                needFire = true;
-                this.shooterEx.data.bulletType = data.exBulletTypeParry;
-            }
-            if (blockLevel == Shield.BLOCK_NORMAL && data.exBulletTypeBlock.length > 0
-                && Random.getRandomNum(0, 100) < data.exBulletRate) {
-                needFire = true;
-                this.shooterEx.data.bulletType = data.exBulletTypeBlock;
-            }
-            if (needFire) {
-                this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
-                this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
-                this.shooterEx.data.bulletSize = data.bulletSize;
-                this.shooterEx.fireBullet(0);
-            }
-            if (actor && data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
-                actor.addStatus(data.statusNameHurtOther, new FromData());
-            }
-            if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
-                this.addStatus(data.statusNameHurtSelf, new FromData());
-            }
+        }
+    }
+    private remoteOrStatusExHurtDo(data: EquipmentData, blockLevel: number, from: FromData, actor: Actor) {
+        let needFire = false;
+        if (data.exBulletTypeHurt.length > 0 && Random.getRandomNum(0, 100) < data.exBulletRate) {
+            needFire = true;
+            this.shooterEx.data.bulletType = data.exBulletTypeHurt;
+        }
+        if (blockLevel == Shield.BLOCK_PARRY && data.exBulletTypeParry.length > 0
+            && Random.getRandomNum(0, 100) < data.exBulletRate) {
+            needFire = true;
+            this.shooterEx.data.bulletType = data.exBulletTypeParry;
+        }
+        if (blockLevel == Shield.BLOCK_NORMAL && data.exBulletTypeBlock.length > 0
+            && Random.getRandomNum(0, 100) < data.exBulletRate) {
+            needFire = true;
+            this.shooterEx.data.bulletType = data.exBulletTypeBlock;
+        }
+        if (needFire) {
+            this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
+            this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
+            this.shooterEx.data.bulletSize = data.bulletSize;
+            this.shooterEx.fireBullet(0);
+        }
+        if (actor && data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+            actor.addStatus(data.statusNameHurtOther, new FromData());
+        }
+        if (data.statusNameHurtSelf.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
+            this.addStatus(data.statusNameHurtSelf, new FromData());
         }
     }
 

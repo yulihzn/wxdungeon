@@ -162,7 +162,7 @@ export default class MeleeWeapon extends cc.Component {
         this.isReflect = equipData.isReflect == 1;
         this.isFist = false;
         this.isBlunt = equipData.blunt == 1;
-        this.exBeatBack = equipData.exBeatBack;
+        this.exBeatBack = inventoryManager.getEquipBySuit(equipData).exBeatBack;
         if (equipData.stab == 1) {
             this.weaponSprite.spriteFrame = null;
             this.weaponStabSprite.spriteFrame = spriteFrame;

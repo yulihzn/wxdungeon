@@ -36,7 +36,8 @@ export default class InventoryManager {
     itemCoolDownList:NextStep[]=[];
     equips:{[key:string]:EquipmentData}={};
     suitMap: { [key: string]: SuitData } = {};
-    
+    suitEquipMap: { [key: string]: EquipmentData } = {};
+    emptyEquipData = new EquipmentData();
     clear(): void {
     }
     constructor(){
@@ -50,19 +51,24 @@ export default class InventoryManager {
             this.itemCoolDownList.push(new NextStep());
         }
         this.suitMap = {};
+        this.suitEquipMap = {};
     }
-    getTotalEquipmentData():EquipmentData{
+    getEquipBySuit(e:EquipmentData):EquipmentData{
+        if(e&&this.suitEquipMap[e.suitType]){
+            return this.suitEquipMap[e.suitType];
+        }
+        return this.emptyEquipData;
+    }
+    getTotalEquipData():EquipmentData{
         let e = new EquipmentData();
         for(let key in this.equips){
             e.Common.add(this.equips[key].Common);
         }
         e.Common.add(this.buffer.Common);
-        for(let key in this.suitMap){
-            let suit = this.suitMap[key];
-            if(suit){
-                for(let i = 0;i<suit.count-1;i++){
-                    e.Common.add(suit.CommonList[i]);
-                }
+        for(let key in this.suitEquipMap){
+            let equip = this.suitEquipMap[key];
+            if(equip){
+                e.Common.add(equip.Common);
             }
         }
         return e;
