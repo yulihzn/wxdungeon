@@ -117,6 +117,7 @@ export default class ActorAttackBox extends cc.Component {
                 if (dd.isBackAttack) {
                     dd.realDamage += m.data.FinalCommon.damageBack;
                 }
+                dd.isMelee = true;
                 if(this.isSpecial){
                     dd.physicalDamage = dd.physicalDamage*2;
                 }

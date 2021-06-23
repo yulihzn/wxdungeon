@@ -444,7 +444,7 @@ export default class InteractBuilding extends Building {
         if (damageSuccess || attackSuccess) {
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
         }
-        if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
+        if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
             this.player.updateDream(-1);
         }
         return damageSuccess || attackSuccess;

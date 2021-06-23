@@ -141,7 +141,7 @@ export default class NonPlayer extends Actor {
         this.attrNode = this.node.getChildByName('attr');
         this.updatePlayerPos();
         this.resetBodyColor();
-        if (this.data.isHeavy > 0) {
+        if (this.data.isStatic > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
         }
         this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
@@ -548,6 +548,9 @@ export default class NonPlayer extends Actor {
         return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
     }
     fall() {
+        if(this.data.isStatic>0||this.data.isHeavy>0||this.isVariation){
+            return;
+        }
         this.sc.isFalling = true;
         this.bodySprite.node.angle = this.isPlayerBehindAttack() ? -75 : 105;
         this.anim.play('MonsterFall');
@@ -582,8 +585,8 @@ export default class NonPlayer extends Actor {
             return false;
         }
         let isHurting = dd.getTotalDamage() > 0;
-        //特殊攻击和远程伤害情况下不改变状态
-        this.sc.isHurting = isHurting && !this.specialStep.IsExcuting && !damageData.isRemote;
+        //处于特殊攻击状态和非近战伤害情况下不改变状态
+        this.sc.isHurting = isHurting && !this.specialStep.IsExcuting && damageData.isMelee;
         if (this.sc.isHurting) {
             this.sc.isDisguising = false;
             this.sc.isAttacking = false;
@@ -602,17 +605,18 @@ export default class NonPlayer extends Actor {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
             this.hitLight(true);
             this.hitLightS(damageData);
-            this.dangerBox.finish();
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }
-            //100ms后修改受伤
+            //100ms后恢复状态
             this.scheduleOnce(() => {
                 if (this.node) {
-                    this.sc.isHurting = false;
                     this.hitLight(false);
                     this.resetBodyColor();
-                    this.anim.resume();
+                    if(this.sc.isHurting){
+                        this.sc.isHurting = false;
+                        this.anim.resume();
+                    }
                 }
             }, 0.1);
         }
@@ -700,7 +704,7 @@ export default class NonPlayer extends Actor {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
                         boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
-                            , true, true, false, false, new DamageData(1), FromData.getClone('爆炸', 'boom000anim004'), []));
+                            , true, true, false, false, new DamageData(2), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
                         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
                     }
@@ -972,7 +976,7 @@ export default class NonPlayer extends Actor {
             target = this.dungeon.player;
         }
         pos = pos.sub(this.node.position);
-        if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isHeavy < 1) {
+        if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isStatic < 1) {
             this.changeFaceRight(target);
         }
         return pos;

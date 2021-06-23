@@ -56,11 +56,11 @@ export default class MonsterRandomAttr {
             data.Common.defence+=50;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_02)){
-            data.Common.damageMin +=5;
+            data.Common.damageMin +=10;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_03)){
-            data.Common.maxHealth += 5;
-            data.currentHealth += 5;
+            data.Common.maxHealth += 50;
+            data.currentHealth += 50;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_04)){
             data.Common.damageMin =1;
@@ -116,7 +116,7 @@ export default class MonsterRandomAttr {
             }
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_15)){
-            data.Common.damageBack = 5;
+            data.Common.damageBack = 15;
         }
         if(this.hasAttr(MonsterRandomAttr.ATTR_16)){
             if(data.blink>0){

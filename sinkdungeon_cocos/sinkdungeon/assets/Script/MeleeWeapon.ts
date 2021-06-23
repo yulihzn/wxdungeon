@@ -603,7 +603,7 @@ export default class MeleeWeapon extends cc.Component {
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 } });
             this.scheduleOnce(() => { this.anim.resume() }, 0.1);
         }
-        if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
+        if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
             this.player.updateDream(-1);
         }
         return damageSuccess || attackSuccess;

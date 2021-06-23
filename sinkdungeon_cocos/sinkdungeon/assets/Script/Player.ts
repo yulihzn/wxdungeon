@@ -909,12 +909,12 @@ export default class Player extends Actor {
             }
         }
         if (this.isDreamTimeDelay(dt)) {
-            if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
+            if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
                 this.updateDream(-1);
             }
         }
         if (this.isDreamShortTimeDelay(dt)) {
-            if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
+            if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
                 this.updateDream(1);
             }
         }

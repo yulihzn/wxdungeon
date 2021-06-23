@@ -36,6 +36,7 @@ export default class NonPlayerData{
     blink = 0;//是否闪烁大于0 数字代表cd
     isBoom = 0;//是否死亡爆炸
     isHeavy = 0;//是否很重 如果很重是转向的
+    isStatic = 0;//是否是静态，静态物理属性固定无法移动
     isRecovery = 0;//是否生命回复
     shooterOffsetX =0;//远程位置x
     shooterOffsetY =0;//远程位置y
@@ -108,6 +109,7 @@ export default class NonPlayerData{
         this.isBoom = data.isBoom?data.isBoom:0;
         this.bulletExSpeed = data.bulletExSpeed?data.bulletExSpeed:0;
         this.isHeavy = data.isHeavy?data.isHeavy:0;
+        this.isStatic = data.isStatic?data.isStatic:0;
         this.shooterOffsetX = data.shooterOffsetX?data.shooterOffsetX:0;
         this.shooterOffsetY = data.shooterOffsetY?data.shooterOffsetY:0;
         this.specialAttack = data.specialAttack?data.specialAttack:0;
@@ -155,6 +157,7 @@ export default class NonPlayerData{
         e.isBoom = this.isBoom;
         e.bulletExSpeed = this.bulletExSpeed;
         e.isHeavy = this.isHeavy;
+        e.isStatic = this.isStatic;
         e.shooterOffsetX = this.shooterOffsetX;
         e.shooterOffsetY = this.shooterOffsetY;
         e.specialAttack = this.specialAttack;

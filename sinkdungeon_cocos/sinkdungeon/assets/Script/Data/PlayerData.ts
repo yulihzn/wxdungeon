@@ -117,7 +117,7 @@ export default class PlayerData {
         dd.physicalDamage = attack;
         dd.realDamage = data.realDamage;
         dd.magicDamage = data.magicDamage;
-        if(this.avatarData.organizationIndex == AvatarData.FOLLOWER){
+        if(this.avatarData.organizationIndex == AvatarData.TECH){
             dd.physicalDamage+=this.currentDream*0.5;
         }
         return dd;

@@ -217,6 +217,7 @@ export default class ProfessionTalent extends Talent {
         this.scheduleOnce(()=>{
             AudioPlayer.play(AudioPlayer.BOOM);
         let d = this.player.data.getFinalAttackPoint();
+        d.isMelee = true;
         this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
             .init(0, 0.15, 0, 2+Logic.chapterMaxIndex, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.DIZZ]));
             this.talentSkill.IsExcuting = false;
@@ -262,6 +263,7 @@ export default class ProfessionTalent extends Talent {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
         d.magicDamage = 3+Logic.chapterMaxIndex;
+        d.isMelee = true;
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
             .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.BURNING]));
     }
@@ -274,6 +276,7 @@ export default class ProfessionTalent extends Talent {
         let a = a1;
         let d = new DamageData();
         d.magicDamage = 3+Logic.chapterMaxIndex;
+        d.isMelee = true;
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
@@ -295,6 +298,7 @@ export default class ProfessionTalent extends Talent {
     private addBroom() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = this.player.data.getFinalAttackPoint();
+        d.isMelee = true;
         this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
             .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, false, true, true, true,true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
     }
@@ -302,6 +306,7 @@ export default class ProfessionTalent extends Talent {
     private cooking() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = this.player.data.getFinalAttackPoint();
+        d.isMelee = true;
         this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
             .init(0, 2, 0, 1, IndexZ.OVERHEAD, false, false, false, false,false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
                 let monster = actor.node.getComponent(NonPlayer);
@@ -318,6 +323,7 @@ export default class ProfessionTalent extends Talent {
         AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
         AudioPlayer.play(AudioPlayer.SWORD_SHOW);
         let d = new DamageData();
+        d.isMelee = true;
         let scale = 5;
         d.physicalDamage = 2+Logic.chapterMaxIndex;
         if (this.player.weaponRight.meleeWeapon.IsSword) {

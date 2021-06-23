@@ -218,6 +218,7 @@ export default class Logic extends cc.Component {
         data.Common.damageMin=data.level;
         data.Common.maxHealth=data.level;
         data.Common.maxDream=data.level;
+        data.Common.remoteDamage=data.level*0.5;
         Logic.playerData.OilGoldData.valueCopy(data);
     }
     private static initTalentMap() {

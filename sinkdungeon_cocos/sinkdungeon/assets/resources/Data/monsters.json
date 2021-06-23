@@ -216,6 +216,7 @@
             "damageMin": 15
         },
         "currentHealth": 200,
+        "isHeavy":1,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -326,6 +327,7 @@
             "damageMin": 10
         },
         "currentHealth": 120,
+        "isHeavy":1,
         "invisible": 0,
         "remote": 0,
         "melee": 3,
@@ -340,7 +342,7 @@
         "resName": "monster016",
         "chapter": 0,
         "stageLevel": 0,
-        "isHeavy":1,
+        "isStatic":1,
         "isTest":1,
         "common": {
             "moveSpeed": 0,
@@ -389,6 +391,7 @@
             "damageMin": 3
         },
         "bulletType":"bullet039",
+        "isHeavy":1,
         "specialAttack":15,
         "specialBulletArcExNum":2,
         "currentHealth": 20,
@@ -480,6 +483,7 @@
             "maxHealth": 170,
             "damageMin": 13
         },
+        "isHeavy":1,
         "currentHealth": 170,
         "invisible": 0,
         "remote": 4,
@@ -503,6 +507,7 @@
             "magicDamage":1,
             "damageMin": 9
         },
+        "isHeavy":1,
         "currentHealth": 120,
         "invisible": 0,
         "remote": 0,
@@ -639,6 +644,7 @@
         },
         "currentHealth": 130,
         "invisible": 0,
+        "isHeavy":1,
         "remote": 0,
         "melee": 3,
         "sizeType":1.5,
@@ -663,6 +669,7 @@
         "currentHealth": 250,
         "invisible": 0,
         "remote": 0,
+        "isHeavy":1,
         "melee": 4,
         "sizeType":1,
         "attackFrames":3,
@@ -737,10 +744,11 @@
             "damageMin": 12
         },
         "currentHealth": 100,
+        "isHeavy":1,
         "invisible": 0,
         "remote": 0,
         "melee": 5,
-        "sizeType":0.5,
+        "sizeType":1,
         "attackFrames":11,
         "specialFrames":8,
         "boxType":5,
