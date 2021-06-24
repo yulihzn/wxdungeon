@@ -39,7 +39,7 @@ export default class EnergyShield extends Building {
         this.data.maxHealth = maxHealth;
         this.node.scale = scale;
         this.anim = this.getComponent(cc.Animation);
-        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x,this.node.position.y-24*scale));
+        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x,this.node.position.y-8*scale));
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {

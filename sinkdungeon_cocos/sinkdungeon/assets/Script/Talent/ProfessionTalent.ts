@@ -96,6 +96,7 @@ export default class ProfessionTalent extends Talent {
     }
 
     protected doSkill() {
+        cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
         switch (this.activeTalentData.resName) {
             case Talent.TALENT_000:break;
             case Talent.TALENT_001:

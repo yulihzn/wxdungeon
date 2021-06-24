@@ -14,7 +14,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default abstract class Talent extends cc.Component {
-    
+
     public static readonly DASH = '1000000';
     public static readonly SHIELD = '2000000';
     public static readonly MAGIC = '3000000';
@@ -94,7 +94,7 @@ export default abstract class Talent extends cc.Component {
     talentSkill = new NextStep();
     player: Player;
     passiveTalentList: TalentData[];
-    activeTalentData:TalentData;
+    activeTalentData: TalentData;
     hasTalentMap: { [key: string]: boolean } = {};
     get IsExcuting() {
         return this.talentSkill.IsExcuting;
@@ -118,30 +118,29 @@ export default abstract class Talent extends cc.Component {
             return;
         }
         let cooldown = this.activeTalentData.cooldown;
-            if(cooldown>1){
-                cooldown-=this.player.data.currentDream;
-                if(cooldown<1){
-                    cooldown = 1;
-                }
-            }else{
-                cooldown-=this.player.data.currentDream*0.1;
-                if(cooldown<0.1){
-                    cooldown = 0.1;
-                }
+        if (cooldown > 1) {
+            cooldown -= this.player.data.currentDream;
+            if (cooldown < 1) {
+                cooldown = 1;
             }
-        if(this.player.data.currentDream>0){
+        } else {
+            cooldown -= this.player.data.currentDream * 0.1;
+            if (cooldown < 0.1) {
+                cooldown = 0.1;
+            }
+        }
+        if (this.player.data.currentDream > 0) {
             this.talentSkill.next(() => {
                 this.talentSkill.IsExcuting = true;
-                cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
                 this.player.updateDream(1);
-                    this.doSkill();
+                this.doSkill(cooldown);
             }, cooldown, true);
-        }else{
+        } else {
             cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
         }
-        
+
     }
-    protected abstract doSkill();
+    protected abstract doSkill(cooldown?:number);
     /**加载被动技能列表 */
     loadPassiveList(passiveTalentList: TalentData[]) {
         this.passiveTalentList = new Array();
@@ -184,16 +183,16 @@ export default abstract class Talent extends cc.Component {
         return node.getComponent(cc.Sprite);
     }
     hashTalent(resName: string): boolean {
-        return this.hasTalentMap[resName] && this.hasTalentMap[resName] == true||this.activeTalentData.resName==resName;
+        return this.hasTalentMap[resName] && this.hasTalentMap[resName] == true || this.activeTalentData.resName == resName;
     }
 
     abstract takeDamage(damageData: DamageData, actor?: Actor): boolean
 
-    shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string,prefab:cc.Prefab,data:AreaOfEffectData) {
+    shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string, prefab: cc.Prefab, data: AreaOfEffectData) {
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(0,null,0,0,prefab,data);
+        shooter.fireBullet(0, null, 0, 0, prefab, data);
     }
 
     addStatus2NearEnemy(statusName: string, range: number) {
@@ -214,7 +213,7 @@ export default abstract class Talent extends cc.Component {
         }
     }
 
-    addAoe(aoePreab:cc.Prefab,pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean,isFaceRight:boolean) {
+    addAoe(aoePreab: cc.Prefab, pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean, isFaceRight: boolean) {
         let aoe = cc.instantiate(aoePreab);
         pos.y += 32;
         let sprite = aoe.getChildByName('sprite').getComponent(cc.Sprite);

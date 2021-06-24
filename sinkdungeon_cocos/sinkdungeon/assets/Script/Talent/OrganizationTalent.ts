@@ -2,6 +2,7 @@ import Actor from "../Base/Actor";
 import EnergyShield from "../Building/EnergyShield";
 import AvatarData from "../Data/AvatarData";
 import DamageData from "../Data/DamageData";
+import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import Talent from "./Talent";
 
@@ -56,7 +57,8 @@ export default class OrganizationTalent extends Talent {
         super.init();
         this.activeTalentData.valueCopy(Logic.talents[`talent10${this.player.data.AvatarData.organizationIndex}`]);
     }
-    protected doSkill() {
+    protected doSkill(cooldown?:number) {
+        cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN1, { detail: { cooldown: cooldown } });
         if(this.player.data.AvatarData.organizationIndex == AvatarData.GURAD){
             if(this.energyShieldList.length>3){
                 let s = this.energyShieldList.pop();
