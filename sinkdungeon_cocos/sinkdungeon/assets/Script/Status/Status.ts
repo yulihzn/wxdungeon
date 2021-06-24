@@ -18,6 +18,8 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Status extends cc.Component {
+    static readonly BUFF = 0;
+    static readonly DEBUFF = 1;
     anim: cc.Animation;
     label: cc.Label;
     private stateRunning: boolean = false;
@@ -47,6 +49,9 @@ export default class Status extends cc.Component {
         this.label.node.opacity = this.data.duration < 0 || this.data.duration > 500 ? 0 : 255;
     }
     stopStatus() {
+        if(!this.node){
+            return;
+        }
         this.data.duration = 0;
         if (this.stateRunning) {
             this.node.destroy();

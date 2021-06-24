@@ -65,7 +65,7 @@ export default class Logic extends cc.Component {
     //图片资源
     static spriteFrames: { [key: string]: cc.SpriteFrame } = null;
     //状态json
-    static debuffs: { [key: string]: StatusData } = null;
+    static status: { [key: string]: StatusData } = null;
     //套装json
     static suits: { [key: string]: SuitData } = null;
     //子弹json

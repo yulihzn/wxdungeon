@@ -379,7 +379,7 @@ export default class Player extends Actor {
         }
         this.statusManager.addStatus(statusType, from);
     }
-    stopAllStatus() {
+    stopAllDebuffs() {
         if (!this.node) {
             return;
         }

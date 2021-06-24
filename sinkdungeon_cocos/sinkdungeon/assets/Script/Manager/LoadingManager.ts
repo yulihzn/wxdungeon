@@ -25,7 +25,7 @@ export default class LoadingManager {
     public isMonsterLoaded = false;
     public isNonplayerLoaded = false;
     public isWorldLoaded = false;
-    public isDebuffsLoaded = false;
+    public isBuffsLoaded = false;
     public isSuitsLoaded = false;
     public isBulletsLoaded = false;
     public isProfessionLoaded = false;
@@ -45,7 +45,7 @@ export default class LoadingManager {
         this.isWorldLoaded = false;
         this.isEquipmentLoaded = false;
         this.isMonsterLoaded = false;
-        this.isDebuffsLoaded = false;
+        this.isBuffsLoaded = false;
         this.isNonplayerLoaded = false;
         this.isBuildingLoaded = false;
     }
@@ -53,7 +53,7 @@ export default class LoadingManager {
         this.isWorldLoaded = false;
         this.isEquipmentLoaded = false;
         this.setAllSpriteFramesUnload();
-        this.isDebuffsLoaded = false;
+        this.isBuffsLoaded = false;
         this.isProfessionLoaded = false;
         this.isBulletsLoaded = false;
         this.isMonsterLoaded = false;
@@ -156,17 +156,17 @@ export default class LoadingManager {
             }
         })
     }
-    loadDebuffs() {
-        if (Logic.debuffs) {
-            this.isDebuffsLoaded = true;
+    loadStatus() {
+        if (Logic.status) {
+            this.isBuffsLoaded = true;
             return;
         }
         cc.resources.load('Data/status', (err: Error, resource: cc.JsonAsset) => {
             if (err) {
                 cc.error(err);
             } else {
-                Logic.debuffs = resource.json;
-                this.isDebuffsLoaded = true;
+                Logic.status = resource.json;
+                this.isBuffsLoaded = true;
                 cc.log('debuffs loaded');
             }
         })

@@ -642,13 +642,13 @@ export default class BuildingManager extends BaseManager {
         let hideShadow = false;
         switch (mapDataStr) {
             case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; break;
-            case 'Z2': resName = 'roomdesk'; equipmentNames = []; itemNames = ['goldfinger']; maxhealth = 100; break;
+            case 'Z2': resName = 'roomdesk'; break;
             case 'Z3': resName = 'roomtv'; scale = 6; break;
             case 'Z4': resName = 'roomsofa'; scale = 10; hideShadow = true; break;
             case 'Z5': resName = 'roomtable'; scale = 10; hideShadow = true; break;
             case 'Z6': resName = 'roomfridge'; scale = 6; break;
             case 'Z7': resName = 'roomwash'; break;
-            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 100; scale = 6; break;
+            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 50; scale = 6; break;
             case 'Z9': resName = 'roomstool'; break;
             case 'Za': resName = 'roomkitchentable'; scale = 6; break;
             case 'Zb': resName = 'roomkitchentable1'; break;

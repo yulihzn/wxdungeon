@@ -3,9 +3,10 @@
         "nameCn": "冰冻",
         "nameEn": "frozen",
         "spriteFrameName": "status001",
-        "statusType": 1,
+        "id": 1,
         "desc": "",
         "duration": 5,
+        "type":1,
         "common": {
             "moveSpeed": -150,
             "attackSpeed": -150
@@ -15,10 +16,11 @@
         "nameCn": "燃烧",
         "nameEn": "burning",
         "spriteFrameName": "status002",
-        "statusType": 2,
+        "id": 2,
         "desc": "",
         "magicDamageOvertime": 0.4,
         "duration": 5,
+        "type":1,
         "common": {
             "damgeMin": -3
         }
@@ -27,9 +29,10 @@
         "nameCn": "眩晕",
         "nameEn": "dizz",
         "spriteFrameName": "status003",
-        "statusType": 3,
+        "id": 3,
         "desc": "",
         "duration": 5,
+        "type":1,
         "dizzDurationDirect":1,
         "missRate": 80,
         "common": {
@@ -39,10 +42,11 @@
         "nameCn": "中毒",
         "nameEn": "toxicosis",
         "spriteFrameName": "status004",
-        "statusType": 4,
+        "id": 4,
         "desc": "",
         "magicDamageOvertime": 1,
         "duration": 5,
+        "type":1,
         "common": {
         }
     },
@@ -50,9 +54,10 @@
         "nameCn": "诅咒",
         "nameEn": "cursing",
         "spriteFrameName": "status005",
-        "statusType": 5,
+        "id": 5,
         "desc": "",
         "duration": 5,
+        "type":1,
         "common": {
             "defence": -50
         }
@@ -61,9 +66,10 @@
         "nameCn": "流血",
         "nameEn": "bleeding",
         "spriteFrameName": "status006",
-        "statusType": 6,
+        "id": 6,
         "desc": "",
         "duration": 3,
+        "type":1,
         "realDamageOvertime": 1,
         "common": {}
     },
@@ -71,7 +77,7 @@
         "nameCn": "攻击增加",
         "nameEn": "attack more",
         "spriteFrameName": "iconattack",
-        "statusType": 7,
+        "id": 7,
         "desc": "",
         "duration": 60,
         "common": {
@@ -82,7 +88,7 @@
         "nameCn": "移动加速",
         "nameEn": "moving faster",
         "spriteFrameName": "iconmovespeed",
-        "statusType": 8,
+        "id": 8,
         "desc": "",
         "duration": 30,
         "common": {
@@ -93,7 +99,7 @@
         "nameCn": "攻击加速",
         "nameEn": "attacking faster",
         "spriteFrameName": "iconattackspeed",
-        "statusType": 9,
+        "id": 9,
         "desc": "",
         "duration": 60,
         "common": {
@@ -104,7 +110,7 @@
         "nameCn": "完美防御",
         "nameEn": "defence perfect",
         "spriteFrameName": "icondefence",
-        "statusType": 10,
+        "id": 10,
         "desc": "",
         "duration": 30,
         "common": {
@@ -116,7 +122,7 @@
         "nameCn": "恢复",
         "nameEn": "healing",
         "spriteFrameName": "iconhealthrecovery",
-        "statusType": 11,
+        "id": 11,
         "desc": "",
         "duration": 0,
         "realDamageDirect": -1,
@@ -126,19 +132,20 @@
         "nameCn": "回复(狼人)",
         "nameEn": "recovery",
         "spriteFrameName": "iconhealthrecovery",
-        "statusType": 12,
+        "id": 12,
         "desc": "",
         "duration": 15,
-        "realDamageOvertime": -2,
+        "realDamageOvertime": -10,
         "common": {}
     },
     "status013": {
         "nameCn": "石化",
         "nameEn": "stone",
         "spriteFrameName": "stone",
-        "statusType": 13,
+        "id": 13,
         "desc": "",
         "duration": 5,
+        "type":1,
         "common": {
             "moveSpeed": -9999
         }
@@ -147,9 +154,10 @@
         "nameCn": "缠绕",
         "nameEn": "twine",
         "spriteFrameName": "status014",
-        "statusType": 14,
+        "id": 14,
         "desc": "",
         "duration": 3,
+        "type":1,
         "common": {
             "moveSpeed": -9999
         }
@@ -158,7 +166,7 @@
         "nameCn": "普通盾牌防御",
         "nameEn": "defence perfect",
         "spriteFrameName": "icondefence",
-        "statusType": 15,
+        "id": 15,
         "desc": "",
         "duration": 2,
         "common": {
@@ -170,7 +178,7 @@
         "nameCn": "加长盾牌防御",
         "nameEn": "defence perfect",
         "spriteFrameName": "icondefence",
-        "statusType": 16,
+        "id": 16,
         "desc": "",
         "duration": 4,
         "common": {
@@ -182,7 +190,7 @@
         "nameCn": "药瓶恢复",
         "nameEn": "healing",
         "spriteFrameName": "iconhealthrecovery",
-        "statusType": 17,
+        "id": 17,
         "desc": "",
         "duration": 3,
         "realDamageOvertime": -1,
@@ -192,7 +200,7 @@
         "nameCn": "技能瞄准",
         "nameEn": "aim target",
         "spriteFrameName": "talentshoot",
-        "statusType": 18,
+        "id": 18,
         "desc": "",
         "duration": 10,
         "common": {
@@ -204,7 +212,7 @@
         "nameCn": "1s加速移动",
         "nameEn": "moving faster",
         "spriteFrameName": "iconmovespeed",
-        "statusType": 19,
+        "id": 19,
         "desc": "",
         "duration": 1,
         "common": {
@@ -215,7 +223,7 @@
         "nameCn": "回复(丛林上衣)",
         "nameEn": "recovery",
         "spriteFrameName": "iconhealthrecovery",
-        "statusType": 20,
+        "id": 20,
         "desc": "",
         "duration": 999,
         "realDamageOvertime": -0.01,
@@ -225,7 +233,7 @@
         "nameCn": "防御(狼人)",
         "nameEn": "defence perfect",
         "spriteFrameName": "icondefence",
-        "statusType": 21,
+        "id": 21,
         "desc": "",
         "duration": 1,
         "common": {
@@ -237,7 +245,7 @@
         "nameCn": "金苹果完全恢复",
         "nameEn": "healing",
         "spriteFrameName": "iconhealthrecovery",
-        "statusType": 22,
+        "id": 22,
         "desc": "",
         "duration": 0,
         "realDamageDirect": -100,
@@ -247,7 +255,7 @@
         "nameCn": "武器附魔",
         "nameEn": "weapon magic",
         "spriteFrameName": "status024",
-        "statusType": 23,
+        "id": 23,
         "desc": "",
         "duration": 999,
         "common": {
@@ -258,7 +266,7 @@
         "nameCn": "强力武器附魔",
         "nameEn": "weapon magic",
         "spriteFrameName": "status024",
-        "statusType": 24,
+        "id": 24,
         "desc": "",
         "duration": 999,
         "common": {
@@ -270,7 +278,7 @@
         "nameCn": "冻结",
         "nameEn": "frozen",
         "spriteFrameName": "status001",
-        "statusType": 25,
+        "id": 25,
         "desc": "",
         "duration": 15,
         "common": {
@@ -281,7 +289,7 @@
         "nameCn": "破隐一击",
         "nameEn": "hide",
         "spriteFrameName": "status026",
-        "statusType": 26,
+        "id": 26,
         "desc": "",
         "duration": 10,
         "invisibleDuratonDirect":10,
@@ -295,7 +303,7 @@
         "nameCn": "盾反",
         "nameEn": "shield parry",
         "spriteFrameName": "status027",
-        "statusType": 27,
+        "id": 27,
         "desc": "",
         "duration": 2,
         "dizzDurationDirect":2,
@@ -311,10 +319,11 @@
         "nameCn": "闪光眩晕",
         "nameEn": "dizz",
         "spriteFrameName": "status003",
-        "statusType": 28,
+        "id": 28,
         "desc": "",
         "duration": 3,
         "dizzDurationDirect":3,
+        "type":1,
         "common": {
             "attackSpeed": -200
         }
@@ -323,7 +332,7 @@
         "nameCn": "闪光移动加速",
         "nameEn": "moving faster",
         "spriteFrameName": "iconmovespeed",
-        "statusType": 29,
+        "id": 29,
         "desc": "",
         "duration": 10,
         "common": {
@@ -334,7 +343,7 @@
         "nameCn": "远程攻击增强",
         "nameEn": "remote attack",
         "spriteFrameName": "bottle004",
-        "statusType": 30,
+        "id": 30,
         "desc": "",
         "duration": 10,
         "common": {
@@ -345,7 +354,7 @@
         "nameCn": "梦境恢复",
         "nameEn": "dreaming",
         "spriteFrameName": "icondream",
-        "statusType": 31,
+        "id": 31,
         "desc": "",
         "duration": 0,
         "dreamDirect": -1,
@@ -355,7 +364,7 @@
         "nameCn": "药瓶梦境恢复",
         "nameEn": "dreaming",
         "spriteFrameName": "icondream",
-        "statusType": 32,
+        "id": 32,
         "desc": "",
         "duration": 3,
         "dreamOvertime": -1,
@@ -365,10 +374,11 @@
         "nameCn": "醉酒乌云",
         "nameEn": "wine cloud",
         "spriteFrameName": "status003",
-        "statusType": 33,
+        "id": 33,
         "desc": "",
         "duration": 3,
         "missRate":80,
+        "type":1,
         "common": {
         }
     },
@@ -376,9 +386,10 @@
         "nameCn": "扑倒",
         "nameEn": "frozen",
         "spriteFrameName": "status014",
-        "statusType": 1,
+        "id": 1,
         "desc": "",
         "duration": 5,
+        "type":1,
         "common": {
             "moveSpeed": -290,
             "attackSpeed": -150
@@ -388,11 +399,12 @@
         "nameCn": "长眩晕",
         "nameEn": "dizz",
         "spriteFrameName": "status014",
-        "statusType": 3,
+        "id": 3,
         "desc": "",
         "duration": 5,
         "dizzDurationDirect":5,
         "missRate": 80,
+        "type":1,
         "common": {
         }
     },
@@ -400,7 +412,7 @@
         "nameCn": "强力回复(丛林上衣)",
         "nameEn": "recovery",
         "spriteFrameName": "iconhealthrecovery",
-        "statusType": 36,
+        "id": 36,
         "desc": "",
         "duration": 999,
         "realDamageOvertime": -0.03,

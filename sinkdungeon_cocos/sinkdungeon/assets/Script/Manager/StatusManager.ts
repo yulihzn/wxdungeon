@@ -73,17 +73,17 @@ export default class StatusManager extends cc.Component {
             return;
         }
         let sd = new StatusData();
-        sd.valueCopy(Logic.debuffs[resName])
+        sd.valueCopy(Logic.status[resName])
         sd.From.valueCopy(from);
         this.showStatus(sd);
     }
     hasStatus(resName: string): boolean {
         let hasStatus = false;
         let sd = new StatusData();
-        sd.valueCopy(Logic.debuffs[resName]);
+        sd.valueCopy(Logic.status[resName]);
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == sd.statusType) {
+            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == sd.id) {
                 hasStatus = true;
                 break;
             }
@@ -92,10 +92,10 @@ export default class StatusManager extends cc.Component {
     }
     stopStatus(resName: string): void {
         let sd = new StatusData();
-        sd.valueCopy(Logic.debuffs[resName]);
+        sd.valueCopy(Logic.status[resName]);
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == sd.statusType) {
+            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == sd.id) {
                 s.stopStatus();
             }
         }
@@ -105,6 +105,22 @@ export default class StatusManager extends cc.Component {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             s.stopStatus();
+        }
+    }
+    stopAllBuffs(): void {
+        for (let i = this.statusList.length - 1; i >= 0; i--) {
+            let s = this.statusList[i];
+            if(s&&s.data.type==Status.BUFF){
+                s.stopStatus();
+            }
+        }
+    }
+    stopAllDebuffs(): void {
+        for (let i = this.statusList.length - 1; i >= 0; i--) {
+            let s = this.statusList[i];
+            if(s.data.type==Status.DEBUFF){
+                s.stopStatus();
+            }
         }
     }
     private showStatus(data: StatusData) {
@@ -119,7 +135,7 @@ export default class StatusManager extends cc.Component {
         let hasStatus = false;
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.statusType == data.statusType) {
+            if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == data.id) {
                 s.data.duration = data.duration;
                 s.showStatus(data,this.actor);
                 hasStatus = true;

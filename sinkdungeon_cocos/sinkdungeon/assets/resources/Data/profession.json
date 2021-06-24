@@ -150,7 +150,7 @@
         "desc": "为了研究出翠金的奥秘而入眠"
     },
     {
-        "nameCn": "海盗",
+        "nameCn": "海盗后裔",
         "nameEn": "",
         "equips": {
             "weapon": "",
@@ -177,17 +177,17 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "喝着小酒听着浪花入梦"
+        "desc": "喝着小酒，幻想着自己是海盗"
     },
     {
-        "nameCn": "记者",
+        "nameCn": "私家侦探",
         "nameEn": "",
         "equips": {
             "weapon": "",
             "remote": "",
             "shield": "",
             "helmet": "helmet002",
-            "clothes": "",
+            "clothes": "clothes022",
             "cloak": "",
             "trousers": "trousers002",
             "shoes": "",
@@ -207,7 +207,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "想要深入“采访”翠金科技却不慎被抓住关在小屋睡着了"
+        "desc": "调查完翠金科技，整理好内容才睡觉"
     },
     {
         "nameCn": "剑术大师",
@@ -237,10 +237,10 @@
             "dodge": 10,
             "maxHealth": 0
         },
-        "desc": "精通剑类武器，在道场的休息室打盹了"
+        "desc": "精通剑类武器，在一天的训练后回来打盹了"
     },
     {
-        "nameCn": "杀手",
+        "nameCn": "职业杀手",
         "nameEn": "",
         "equips": {
             "weapon": "",
@@ -267,10 +267,10 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "为了钱可以杀任何人，哪怕在梦中"
+        "desc": "只要钱给足了，哪怕在梦中也能完成目标"
     },
     {
-        "nameCn": "盗贼",
+        "nameCn": "空空大盗",
         "nameEn": "",
         "equips": {
             "weapon": "",
@@ -297,7 +297,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "这家主人不在家，索性睡个觉"
+        "desc": "才从局里放出来，心情不好回来睡觉"
     },
     {
         "nameCn": "商人",
@@ -357,17 +357,17 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "上级交代下来得盯着这个研究所，太无聊居然在车里睡着了"
+        "desc": "在一次和劫匪生死搏斗后受伤了在家养病"
     },
     {
-        "nameCn": "清洁工",
+        "nameCn": "喷火大师",
         "nameEn": "",
         "equips": {
             "weapon": "",
             "remote": "",
             "shield": "",
             "helmet": "",
-            "clothes": "clothes005",
+            "clothes": "",
             "cloak": "",
             "trousers": "trousers002",
             "shoes": "",
@@ -387,17 +387,17 @@
             "dodge": 0,
             "maxHealth": 1
         },
-        "desc": "明天准点睡觉，早上还要早起"
+        "desc": "又表演了一天节目，回来睡觉"
     },
     {
-        "nameCn": "消防员",
+        "nameCn": "马路天使",
         "nameEn": "",
         "equips": {
             "weapon": "",
             "remote": "",
             "shield": "",
             "helmet": "",
-            "clothes": "clothes009",
+            "clothes": "",
             "cloak": "",
             "trousers": "trousers002",
             "shoes": "",
@@ -417,7 +417,7 @@
             "dodge": 0,
             "maxHealth": 2
         },
-        "desc": "这次的森林大火好几天都没灭，可累坏了"
+        "desc": "今天又是辛苦的一天"
     },
     {
         "nameCn": "魔术师",
@@ -476,7 +476,7 @@
             "dodge": 0,
             "maxHealth": 1
         },
-        "desc": "今天跑完马拉松需要好好休息"
+        "desc": "跑完马拉松后决定休息几天"
     },
     {
         "nameCn": "程序员",
@@ -506,7 +506,7 @@
             "dodge": 0,
             "maxHealth": 0
         },
-        "desc": "ICU病房静静躺着"
+        "desc": "通宵加班打车回家睡觉"
     },
     {
         "nameCn": "调酒师",

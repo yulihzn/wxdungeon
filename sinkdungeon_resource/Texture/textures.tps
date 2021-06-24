@@ -2005,6 +2005,10 @@
             <key type="filename">special/ice002.png</key>
             <key type="filename">special/ice003.png</key>
             <key type="filename">special/ice004.png</key>
+            <key type="filename">talents/clearcircle1.png</key>
+            <key type="filename">talents/clearcircle2.png</key>
+            <key type="filename">talents/clearcircle3.png</key>
+            <key type="filename">talents/clearcircle4.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

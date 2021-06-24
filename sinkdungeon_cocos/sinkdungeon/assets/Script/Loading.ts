@@ -43,7 +43,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'monster000anim000');
         this.loadingManager.loadMonsters();
-        this.loadingManager.loadDebuffs();
+        this.loadingManager.loadStatus();
         this.loadingManager.loadBullets();
         this.loadingManager.loadItems();
         this.loadingManager.loadTalents();
@@ -94,7 +94,7 @@ export default class Loading extends cc.Component {
             && this.loadingManager.isAllSpriteFramesLoaded()
             && this.loadingManager.isMonsterLoaded
             && this.loadingManager.isNonplayerLoaded
-            && this.loadingManager.isDebuffsLoaded
+            && this.loadingManager.isBuffsLoaded
             && this.loadingManager.isProfessionLoaded
             && this.loadingManager.isBulletsLoaded
             && this.loadingManager.isItemsLoaded

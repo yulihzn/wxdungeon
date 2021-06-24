@@ -49,6 +49,8 @@ export default class ProfessionTalent extends Talent {
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
     @property(cc.Prefab)
+    aoe:cc.Prefab = null;
+    @property(cc.Prefab)
     fireball: cc.Prefab = null;
     @property(cc.Prefab)
     icethron: cc.Prefab = null;
@@ -106,18 +108,25 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_009: this.steal(); break;
             case Talent.TALENT_010: break;
             case Talent.TALENT_011: this.aimedShoot(); break;
-            case Talent.TALENT_012: this.addBroom(); break;
-            case Talent.TALENT_013: this.showFireBall(); break;
+            case Talent.TALENT_012: this.showFireBall();break;
+            case Talent.TALENT_013: this.addBroom();break;
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL1);
                 this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035',null,null);
                 break;
             case Talent.TALENT_015: this.dash(); break;
-            case Talent.TALENT_016: break;
+            case Talent.TALENT_016: this.addClearCircle();break;
             case Talent.TALENT_017: this.showSmoke();break;
             case Talent.TALENT_018: this.addShadowFighter();break;
             case Talent.TALENT_019: this.jump();break;
         }
+    }
+    private addClearCircle(){
+        this.player.stopAllDebuffs();
+        this.addAoe(this.aoe,this.player.getCenterPosition(), new AreaOfEffectData()
+                    .init(2, 0.2, 0, 2, IndexZ.getActorZIndex(this.player.getCenterPosition())
+                        , false, false, true, false, false, new DamageData(0), new FromData(), [])
+                    , ['clearcircle1', 'clearcircle2', 'clearcircle3', 'clearcircle4'], false,true);
     }
     private addShadowFighter(){
         for(let i=0;i<3;i++){
@@ -259,7 +268,7 @@ export default class ProfessionTalent extends Talent {
             7,0.1,0,1,IndexZ.OVERHEAD,false,false,false,false,false,new DamageData(),new FromData(),[StatusManager.WINE_CLOUD]
         ));
     }
-    showFireBall() {
+    private showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
         d.magicDamage = 3+Logic.chapterMaxIndex;
@@ -267,7 +276,7 @@ export default class ProfessionTalent extends Talent {
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
             .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.BURNING]));
     }
-    showIceThron() {
+    private showIceThron() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
         const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
         const posRight = [cc.v3(0,100),cc.v3(-60,60),cc.v3(-100,0),cc.v3(-60,-60),cc.v3(0,-100),cc.v3(60,-60),cc.v3(100,0),cc.v3(60,60)];
@@ -292,7 +301,7 @@ export default class ProfessionTalent extends Talent {
     takeDamage(damageData: DamageData, actor?: Actor) {
 
     }
-    addLighteningFall(isArea: boolean, damagePoint: number) {
+    private addLighteningFall(isArea: boolean, damagePoint: number) {
         EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: ActorUtils.getNearestEnemyPosition(this.player,false,this.player.weaponRight.meleeWeapon.dungeon,true), showArea: isArea, damage: damagePoint })
     }
     private addBroom() {
@@ -340,7 +349,7 @@ export default class ProfessionTalent extends Talent {
         }, 1)
     }
 
-    initFireGhosts() {
+    private initFireGhosts() {
         let length = 5;
         let count = this.fireGhostNum;
         for (let i = 0; i < length - count; i++) {

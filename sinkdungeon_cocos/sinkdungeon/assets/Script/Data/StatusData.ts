@@ -24,7 +24,8 @@ import FromData from "./FromData";
  */
 export default class StatusData {
     private common:CommonData;
-    statusType: number = 0;//状态类型
+    id: number = 0;//状态id
+    type: number = 0;//状态类型 0为正面效果1为负面效果
     nameCn: string = '';
     nameEn: string = '';
     duration: number = 0;//持续时间
@@ -64,7 +65,8 @@ export default class StatusData {
         this.from.valueCopy(data.from);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
-        this.statusType = data.statusType?data.statusType:0;
+        this.id = data.id?data.id:0;
+        this.type = data.type?data.type:0;
         this.duration = data.duration?data.duration:0;
         this.spriteFrameName = data.spriteFrameName;
         this.desc = data.desc;
@@ -87,7 +89,7 @@ export default class StatusData {
         e.from = this.from.clone();
         e.nameCn = this.nameCn;
         e.nameEn = this.nameEn;
-        e.statusType = this.statusType;
+        e.id = this.id;
         e.duration = this.duration;
         e.desc = this.desc;
         e.physicalDamageDirect = this.physicalDamageDirect;
@@ -103,6 +105,7 @@ export default class StatusData {
         e.invisibleDuratonDirect = this.invisibleDuratonDirect;
         e.dreamDirect = this.dreamDirect;
         e.dreamOvertime = this.dreamOvertime;
+        e.type = this.type;
         return e;
     }
 }

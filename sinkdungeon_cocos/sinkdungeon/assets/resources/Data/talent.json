@@ -129,12 +129,12 @@
         "desc": "快速冲刺一段距离躲避伤害"
     },
     "talent016": {
-        "nameCn": "？？？",
+        "nameCn": "金手指",
         "nameEn": "",
         "resName": "talent016",
         "passive": 0,
         "cooldown":10,
-        "desc": "？？？"
+        "desc": "清除所有负面效果，清除附近子弹"
     },
     "talent017": {
         "nameCn": "醉酒乌云",

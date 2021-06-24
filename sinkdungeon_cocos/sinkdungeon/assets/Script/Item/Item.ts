@@ -140,7 +140,7 @@ export default class Item extends cc.Component {
             AudioPlayer.play(AudioPlayer.PICK_ITEM);
         }
         switch (data.resName) {
-            case Item.GOLDFINGER: player.stopAllStatus(); break;
+            case Item.GOLDFINGER: player.stopAllDebuffs(); break;
         }
         if(data.statusList.length>0){
             let arr = data.statusList.split(',');

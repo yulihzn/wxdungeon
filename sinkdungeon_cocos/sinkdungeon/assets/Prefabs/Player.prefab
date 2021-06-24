@@ -7265,6 +7265,9 @@
     "sprite": {
       "__id__": 195
     },
+    "aoe": {
+      "__uuid__": "7075d6ca-605c-4436-a1e6-80b1de78ca75"
+    },
     "fireball": {
       "__uuid__": "585ebc6a-2d8e-4ecd-98a3-72f8f21c54b4"
     },

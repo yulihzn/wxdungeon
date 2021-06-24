@@ -8,6 +8,7 @@ import Shooter from "../Shooter";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import FromData from "../Data/FromData";
 import { EventHelper } from "../EventHelper";
+import AreaOfEffect from "../Actor/AreaOfEffect";
 
 const { ccclass, property } = cc._decorator;
 
@@ -208,5 +209,36 @@ export default abstract class Talent extends cc.Component {
                 boss.addStatus(statusName, new FromData());
             }
         }
+    }
+
+    addAoe(aoePreab:cc.Prefab,pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean,isFaceRight:boolean) {
+        let aoe = cc.instantiate(aoePreab);
+        pos.y += 32;
+        let sprite = aoe.getChildByName('sprite').getComponent(cc.Sprite);
+        let collider = aoe.getComponent(cc.BoxCollider);
+        if (spriteFrameNames.length > 0) {
+            let spriteframe = Logic.spriteFrameRes(spriteFrameNames[0]);
+            sprite.node.width = spriteframe.getRect().width;
+            sprite.node.height = spriteframe.getRect().height;
+            sprite.node.scale = 4;
+            sprite.node.scaleX = isFaceRight ? 4 : -4;
+            collider.size.width = sprite.node.width * 3;
+            collider.size.height = sprite.node.height * 3;
+        }
+        let tween = cc.tween();
+        for (let name of spriteFrameNames) {
+            tween.then(cc.tween().delay(0.2).call(() => {
+                sprite.spriteFrame = Logic.spriteFrameRes(name);
+            }));
+        }
+        if (repeatForever) {
+            cc.tween(aoe).repeatForever(tween).start();
+        } else {
+            cc.tween(aoe).then(tween).delay(0.2).call(() => {
+                sprite.spriteFrame = null;
+            }).start();
+        }
+        let areaScript = aoe.getComponent(AreaOfEffect);
+        areaScript.show(this.player.dungeon.node, pos, cc.v3(1, 0), 0, aoeData);
     }
 }
