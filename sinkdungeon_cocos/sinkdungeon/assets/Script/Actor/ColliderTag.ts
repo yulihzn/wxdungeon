@@ -18,5 +18,6 @@ export enum ColliderTag{
     TIPS=13,//提示
     MELEE=14,//近战武器
     GOODNONPLAYER=15,//好的npc
-    WARTER=16//水墙
+    WARTER=16,//水墙
+    ENERGY_SHIELD=17//能量罩
 }

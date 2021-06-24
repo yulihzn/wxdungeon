@@ -42,7 +42,6 @@ import InteractBuilding from './Building/InteractBuilding';
 import { ColliderTag } from './Actor/ColliderTag';
 import ProfessionTalent from './Talent/ProfessionTalent';
 import OrganizationTalent from './Talent/OrganizationTalent';
-import TalentManager from './Manager/TalentManager';
 @ccclass
 export default class Player extends Actor {
 
@@ -732,6 +731,10 @@ export default class Player extends Actor {
         if (this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting && dd.getTotalDamage() > 0) {
             isDodge = true;
         }
+        //幽光护盾
+        if(this.organizationTalent.takeDamage(dd,actor)){
+            dd = new DamageData();
+        }
         // let isIceTaken = false;
         // if (dd.getTotalDamage() > 0) {
         //     isIceTaken = this.talentMagic.takeIce();
@@ -948,7 +951,7 @@ export default class Player extends Actor {
     }
     private useSkill1(): void {
         if (this.organizationTalent && !this.sc.isJumping && !this.sc.isAttacking) {
-            // this.organizationTalent.useSKill();
+            this.organizationTalent.useSKill();
         }
     }
 

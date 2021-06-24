@@ -22,6 +22,7 @@ import ExitDoor from "../Building/ExitDoor";
 import ActorUtils from "../Utils/ActorUtils";
 import Shooter from "../Shooter";
 import InteractBuilding from "../Building/InteractBuilding";
+import EnergyShield from "../Building/EnergyShield";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -424,6 +425,12 @@ export default class Bullet extends cc.Component {
                 }
             }
 
+        }else if(tag == ColliderTag.ENERGY_SHIELD){
+            let shield = attackTarget.getComponent(EnergyShield);
+            damageSuccess = shield.takeDamage(damage);
+            if(damageSuccess){
+                isDestory = true;
+            }
         }
 
         if (isDestory) {

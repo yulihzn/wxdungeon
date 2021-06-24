@@ -35,6 +35,7 @@ import RoomStool from "../Building/RoomStool";
 import MgCrack from "../Building/MgCrack";
 import InteractBuilding from "../Building/InteractBuilding";
 import Player from "../Player";
+import EnergyShield from "../Building/EnergyShield";
 
 
 // Learn TypeScript:
@@ -110,6 +111,7 @@ export default class BuildingManager extends BaseManager {
     static readonly WENTLINE = 'WentLine';
     static readonly CRACK = 'Crack';
     static readonly WATERCOLLIDER = 'WaterCollider';
+    static readonly ENERGYSHIELD = 'EnergyShield';
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
@@ -715,6 +717,17 @@ export default class BuildingManager extends BaseManager {
         if (dryadGrassScript.isAuto) {
             dryadGrassScript.fall();
         }
+    }
+    /**幽光护盾 */
+    public addEnergyShield(player:Player):EnergyShield {
+        if (!this.node) {
+            return null;
+        }
+        let shield = this.addBuilding(Logic.getBuildings(BuildingManager.ENERGYSHIELD), player.pos);
+        shield.position = player.node.position.clone();
+        let script = shield.getComponent(EnergyShield);
+        script.init(player,10,8);
+        return script;
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

@@ -90,7 +90,10 @@ export default class ProfessionTalent extends Talent {
             cc.log('destroyGhost');
         }
     }
-
+    init() {
+        super.init();
+        this.activeTalentData.valueCopy(Logic.talents[this.player.data.AvatarData.professionData.talent]);
+    }
 
     protected doSkill() {
         switch (this.activeTalentData.resName) {
@@ -299,7 +302,7 @@ export default class ProfessionTalent extends Talent {
     }
 
     takeDamage(damageData: DamageData, actor?: Actor) {
-
+        return false;
     }
     private addLighteningFall(isArea: boolean, damagePoint: number) {
         EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: ActorUtils.getNearestEnemyPosition(this.player,false,this.player.weaponRight.meleeWeapon.dungeon,true), showArea: isArea, damage: damagePoint })

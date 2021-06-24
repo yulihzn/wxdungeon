@@ -130,6 +130,6 @@ export default class TalentDash extends Talent {
     }
    
     takeDamage() {
-
+        return false;
     }
 }

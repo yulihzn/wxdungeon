@@ -86,6 +86,10 @@ export default abstract class Talent extends cc.Component {
     public static readonly TALENT_017 = 'talent017';
     public static readonly TALENT_018 = 'talent018';
     public static readonly TALENT_019 = 'talent019';
+    public static readonly TALENT_100 = 'talent100';
+    public static readonly TALENT_101 = 'talent101';
+    public static readonly TALENT_102 = 'talent102';
+    public static readonly TALENT_103 = 'talent103';
 
     talentSkill = new NextStep();
     player: Player;
@@ -104,7 +108,6 @@ export default abstract class Talent extends cc.Component {
     init() {
         this.player = this.getComponent(Player);
         this.activeTalentData = new TalentData();
-        this.activeTalentData.valueCopy(Logic.talents[this.player.data.AvatarData.professionData.talent]);
     }
 
     useSKill() {
@@ -184,7 +187,7 @@ export default abstract class Talent extends cc.Component {
         return this.hasTalentMap[resName] && this.hasTalentMap[resName] == true||this.activeTalentData.resName==resName;
     }
 
-    abstract takeDamage(damageData: DamageData, actor?: Actor): void
+    abstract takeDamage(damageData: DamageData, actor?: Actor): boolean
 
     shoot(shooter: Shooter, bulletArcExNum: number, bulletLineExNum: number, bulletType: string,prefab:cc.Prefab,data:AreaOfEffectData) {
         shooter.data.bulletType = bulletType;

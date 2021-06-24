@@ -173,7 +173,7 @@ export default class TalentMagic extends Talent {
         return false;
     }
     takeDamage(damageData: DamageData, actor?: Actor) {
-
+        return false;
     }
     addLighteningFall(isArea:boolean,damagePoint:number){
         EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL,{pos:this.getNearestEnemyPosition(),showArea:isArea,damage:damagePoint})
