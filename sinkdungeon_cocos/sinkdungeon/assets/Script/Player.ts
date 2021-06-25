@@ -67,8 +67,8 @@ export default class Player extends Actor {
     @property(cc.Node)
     remoteCooldown: cc.Node = null;
 
-    private professionTalent: ProfessionTalent;
-    private organizationTalent: OrganizationTalent;
+    professionTalent: ProfessionTalent;
+    organizationTalent: OrganizationTalent;
 
 
     isStone = false;//是否石化
@@ -185,12 +185,12 @@ export default class Player extends Actor {
         }
     }
     initTalent() {
+        this.data.OrganizationTalentData.valueCopy(Logic.talents[`talent10${this.data.AvatarData.organizationIndex}`]);
+        this.data.ProfessionTalentData.valueCopy(Logic.talents[this.data.AvatarData.professionData.talent]);
         this.professionTalent = this.getComponent(ProfessionTalent);
-        this.professionTalent.init();
-        this.professionTalent.loadPassiveList(Logic.talentList);
+        this.professionTalent.init(this.data.ProfessionTalentData);
         this.organizationTalent = this.getComponent(OrganizationTalent);
-        this.organizationTalent.init();
-        this.organizationTalent.loadPassiveList(Logic.talentList);
+        this.organizationTalent.init(this.data.OrganizationTalentData);
     }
 
     actorName(): string {
@@ -942,6 +942,12 @@ export default class Player extends Actor {
         }
         if (this.avatar) {
             this.avatar.showHandsWithInteract(showHands, isLift);
+        }
+        if(this.professionTalent){
+            this.professionTalent.checkCooldownCount();
+        }
+        if(this.organizationTalent){
+            this.organizationTalent.checkCooldownCount();
         }
     }
     private useSkill(): void {

@@ -84,10 +84,6 @@ export default class Logic extends cc.Component {
     static chapterMaxIndex = 0;
     static playerData: PlayerData = new PlayerData();
     static inventoryManager: InventoryManager = new InventoryManager();
-
-    static talentList: TalentData[] = new Array();
-    static hasTalentMap: { [key: string]: boolean } = {};
-
     static mapManager: MapManager = new MapManager();
     static worldLoader: WorldLoader = new WorldLoader();
     static coins = 0;//金币
@@ -182,9 +178,6 @@ export default class Logic extends cc.Component {
             let data = new InventoryData(); data.valueCopy(Logic.profileManager.data.playerInventoryList[i]);
             Logic.inventoryManager.inventoryList.push(data);
         }
-        //加载技能列表
-        Logic.talentList = Logic.profileManager.data.talentList;
-        Logic.initTalentMap();
         //设置地图重置状态在loading完成处理地图
         Logic.isMapReset = true;
         //重置地牢宽高
@@ -220,31 +213,6 @@ export default class Logic extends cc.Component {
         data.Common.maxDream=data.level;
         data.Common.remoteDamage=data.level*0.5;
         Logic.playerData.OilGoldData.valueCopy(data);
-    }
-    private static initTalentMap() {
-        Logic.hasTalentMap = {};
-        for (let t of Logic.talentList) {
-            Logic.hasTalentMap[t.resName] = true;
-        }
-    }
-    static addTalent(resName: string): boolean {
-        let data = new TalentData();
-        data.resName = resName;
-        let hasit = false;
-        for (let t of Logic.talentList) {
-            if (resName == t.resName) {
-                hasit = true;
-            }
-        }
-        if (!hasit) {
-            Logic.talentList.push(data);
-            Logic.hasTalentMap[data.resName] = true;
-            return true;
-        }
-        return false;
-    }
-    static hashTalent(resName: string): boolean {
-        return Logic.hasTalentMap[resName] && Logic.hasTalentMap[resName] == true;
     }
 
     static changeDungeonSize() {

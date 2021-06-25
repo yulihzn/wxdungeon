@@ -2,8 +2,10 @@ import Actor from "../Base/Actor";
 import EnergyShield from "../Building/EnergyShield";
 import AvatarData from "../Data/AvatarData";
 import DamageData from "../Data/DamageData";
+import TalentData from "../Data/TalentData";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
+import CoolDownView from "../UI/CoolDownView";
 import Talent from "./Talent";
 
 /**
@@ -42,28 +44,30 @@ import Talent from "./Talent";
 const { ccclass, property } = cc._decorator;
 @ccclass
 export default class OrganizationTalent extends Talent {
-    
-
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
     hv: cc.Vec3;
     energyShieldList:EnergyShield[] = [];
+    
     onLoad() {
     }
 
     changePerformance(): void {
     }
-    init() {
-        super.init();
-        this.activeTalentData.valueCopy(Logic.talents[`talent10${this.player.data.AvatarData.organizationIndex}`]);
-    }
-    protected doSkill(cooldown?:number) {
-        cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN1, { detail: { cooldown: cooldown } });
+    init(data:TalentData) {
+        super.init(data);
+        this.coolDownId = CoolDownView.ORGANIZATION;
         if(this.player.data.AvatarData.organizationIndex == AvatarData.GURAD){
-            if(this.energyShieldList.length>3){
+            this.maxCount = 1+Math.floor(Logic.playerData.OilGoldData.level/5);
+        }
+        this.maxCount = 3;
+    }
+    protected doSkill() {
+        if(this.player.data.AvatarData.organizationIndex == AvatarData.GURAD){
+            if(this.energyShieldList.length>this.maxCount){
                 let s = this.energyShieldList.pop();
                 s.isShow = false;
-                if(s.isValid){
+                if(s&&s.isValid){
                     s.destroy();
                 }
             }
@@ -82,7 +86,7 @@ export default class OrganizationTalent extends Talent {
     energyShieldBlock(damageData: DamageData){
         for(let i = this.energyShieldList.length-1;i>=0;i--){
             let shield = this.energyShieldList[i];
-            if(shield.node.isValid){
+            if(shield.node&&shield.node.isValid){
                 return shield.isShow&&shield.checkTargetIn(this.player.node)&&shield.takeDamage(damageData);
             }else{
                 this.energyShieldList.splice(i, 1);
@@ -94,7 +98,7 @@ export default class OrganizationTalent extends Talent {
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 10) {
+        if (this.checkTimeDelay > 1) {
             this.checkTimeDelay = 0;
             return true;
         }

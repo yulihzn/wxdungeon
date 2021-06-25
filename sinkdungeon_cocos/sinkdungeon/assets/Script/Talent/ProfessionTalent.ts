@@ -16,6 +16,8 @@ import AreaOfEffectData from "../Data/AreaOfEffectData";
 import NonPlayerManager from "../Manager/NonPlayerManager";
 import ActorUtils from "../Utils/ActorUtils";
 import Player from "../Player";
+import CoolDownView from "../UI/CoolDownView";
+import TalentData from "../Data/TalentData";
 
 /**
  * 技能管理器
@@ -90,14 +92,13 @@ export default class ProfessionTalent extends Talent {
             cc.log('destroyGhost');
         }
     }
-    init() {
-        super.init();
-        this.activeTalentData.valueCopy(Logic.talents[this.player.data.AvatarData.professionData.talent]);
+    init(data:TalentData) {
+        super.init(data);
+        this.coolDownId = CoolDownView.PROFESSION;
     }
 
     protected doSkill() {
-        cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown } });
-        switch (this.activeTalentData.resName) {
+        switch (this.data.resName) {
             case Talent.TALENT_000:break;
             case Talent.TALENT_001:
                 AudioPlayer.play(AudioPlayer.MELEE_PARRY);
@@ -225,7 +226,7 @@ export default class ProfessionTalent extends Talent {
         if(!this.player.jump()){
             this.talentSkill.IsExcuting = false;
             this.talentSkill.refreshCoolDown();
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: 0 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: 0,currentCooldown:0 } });
         }
         this.scheduleOnce(()=>{
             AudioPlayer.play(AudioPlayer.BOOM);
@@ -373,14 +374,6 @@ export default class ProfessionTalent extends Talent {
     }
 
     
-    checkTimeDelay = 0;
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 10) {
-            this.checkTimeDelay = 0;
-            return true;
-        }
-        return false;
-    }
+    
     
 }

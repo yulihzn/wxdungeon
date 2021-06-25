@@ -803,7 +803,7 @@ export default class NonPlayer extends Actor {
         }
         let canMelee = this.data.melee > 0;
         let canRemote = this.data.remote > 0;
-        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.isInCooling && target && !target.invisible) {
+        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.IsInCooling && target && !target.invisible) {
             this.meleeStep.next(() => {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;

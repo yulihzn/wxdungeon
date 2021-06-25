@@ -22,6 +22,7 @@ export default class EnergyShield extends Building {
     anim:cc.Animation;
     isShow = false;
     private cover:cc.Node;
+    private element:cc.Node;
     private player:Player;
     private collider:cc.BoxCollider;
     private mat: cc.MaterialVariant;
@@ -30,6 +31,7 @@ export default class EnergyShield extends Building {
 
     onLoad () {
         this.cover = this.node.getChildByName('sprite').getChildByName('cover');
+        this.element = this.node.getChildByName('sprite').getChildByName('cover').getChildByName('element');
         this.anim = this.getComponent(cc.Animation);
         this.collider = this.getComponent(cc.BoxCollider);
     }
@@ -76,7 +78,7 @@ export default class EnergyShield extends Building {
     }
 
     takeDamage(damage: DamageData): boolean {
-        if (this.isShow||this.data.currentHealth <= 0) {
+        if (!this.isShow||this.data.currentHealth <= 0) {
             return false;
         }
         AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DEFEND);
@@ -89,13 +91,21 @@ export default class EnergyShield extends Building {
         if (this.data.currentHealth <= 0) {
             this.data.currentHealth = 0;
             this.isShow = false;
-            this.scheduleOnce(()=>{this.destroy()},1);
+            this.node.active = false;
+            this.scheduleOnce(()=>{this.node.destroy()},1);
         }
         return true;
     }
     
     private changeColor(){
-        this.cover.color = cc.color(255,255,255);
+        let progress = Math.floor(255*this.data.currentHealth/this.data.maxHealth);
+        if(progress<0){
+            progress = 0;
+        }else if(progress>255){
+            progress = 255;
+        }
+        this.cover.color = cc.color(255,progress,progress);
+        this.element.color = cc.color(255,progress,progress);
     }
     timeDelay = 0;
     private isTimeDelay(dt: number): boolean {

@@ -6,7 +6,6 @@ import Actor from "../Base/Actor";
 import Talent from "./Talent";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import TalentData from "../Data/TalentData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,8 +18,8 @@ export default class TalentShield extends Talent {
     onLoad() {
 
     }
-    init(data:TalentData) {
-        super.init(data);
+    init() {
+        super.init();
         this.shieldBackSprite = this.getSpriteChildSprite(['shieldback']);
         this.shieldFrontSprite = this.getSpriteChildSprite(['shieldfront']);
         this.shieldBackSprite.node.opacity = 0;
@@ -104,10 +103,12 @@ export default class TalentShield extends Talent {
             this.scheduleOnce(() => {
                 this.shieldBackSprite.node.opacity = 255;
             }, 1)
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 2,currentCooldown:0 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 2 } });
         }, cooldown, true);
     }
-    
+    hashTalent(id: string): boolean {
+        return this.hasTalentMap[id] && this.hasTalentMap[id] == true;
+    }
     canAddStatus(statusType: string): boolean {
         if (!this.hashTalent(TalentShield.SHIELD_04)) {
             return true;

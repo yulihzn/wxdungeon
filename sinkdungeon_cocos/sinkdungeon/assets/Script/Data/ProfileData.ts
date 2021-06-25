@@ -29,7 +29,6 @@ export default class ProfileData {
     playerItemList:ItemData[] = new Array();
     //玩家背包列表
     playerInventoryList:InventoryData[] = new Array();
-    talentList:TalentData[] = new Array();
     level = 0;//当前层级
     time = '00:00:00';
     savePointData:SavePointData = new SavePointData();

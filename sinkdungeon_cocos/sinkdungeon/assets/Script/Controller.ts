@@ -11,6 +11,7 @@
 const { ccclass, property } = cc._decorator;
 import { EventHelper } from './EventHelper';
 import Logic from './Logic';
+import CoolDownView from './UI/CoolDownView';
 
 @ccclass
 export default class Controller extends cc.Component {
@@ -28,27 +29,18 @@ export default class Controller extends cc.Component {
     skillAction: cc.Node = null;
     @property(cc.Node)
     skillAction1: cc.Node = null;
-    @property(cc.Node)
-    coolDown: cc.Node = null;
-    @property(cc.Node)
-    coolDown1: cc.Node = null;
-    skillIcon: cc.Sprite = null;
-    skillIcon1: cc.Sprite = null;
+    @property(CoolDownView)
+    coolDown: CoolDownView = null;
+    @property(CoolDownView)
+    coolDown1: CoolDownView = null;
     skillActionTouched = false;
     skillActionTouched1 = false;
-    graphics: cc.Graphics = null;
-    graphics1: cc.Graphics = null;
-    coolDownFuc: Function = null;
-    coolDownFuc1: Function = null;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.graphics = this.coolDown.getComponent(cc.Graphics);
-        this.graphics1 = this.coolDown1.getComponent(cc.Graphics);
-        this.skillIcon = this.coolDown.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
-        this.skillIcon1 = this.coolDown1.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
-        this.skillIcon.spriteFrame = Logic.spriteFrameRes(Logic.playerData.AvatarData.professionData.talent);
+        this.coolDown.init(CoolDownView.PROFESSION);
+        this.coolDown1.init(CoolDownView.ORGANIZATION);
         this.attackAction.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
             this.attackActionTouched = true;
         }, this)
@@ -127,10 +119,6 @@ export default class Controller extends cc.Component {
 
         cc.director.on(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD
             , (event) => { if (this.node) this.changeRes(event.detail.isShield) });
-        cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN
-            , (event) => { if (this.node) this.drawSkillCoolDown(event.detail.cooldown, this.graphics, this.coolDownFuc, this.coolDown, this.skillIcon); });
-        cc.director.on(EventHelper.HUD_CONTROLLER_COOLDOWN1
-            , (event) => { if (this.node) this.drawSkillCoolDown(event.detail.cooldown1, this.graphics1, this.coolDownFuc1, this.coolDown1, this.skillIcon1); });
         cc.director.on(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD
             , (event) => { if (this.node) this.updateGamepad(); });
         this.updateGamepad();
@@ -142,16 +130,16 @@ export default class Controller extends cc.Component {
             this.shootAction.active = false;
             this.skillAction.active = false;
             this.skillAction1.active = false;
-            this.coolDown.position = cc.v3(0, 180);
-            this.coolDown1.position = cc.v3(-96, 180);
+            this.coolDown.node.position = cc.v3(0, 180);
+            this.coolDown1.node.position = cc.v3(-96, 180);
         } else {
             this.interactAction.active = true;
             this.attackAction.active = true;
             this.shootAction.active = true;
             this.skillAction.active = true;
             this.skillAction1.active = true;
-            this.coolDown.position = this.skillAction.position.clone();
-            this.coolDown1.position = this.skillAction1.position.clone();
+            this.coolDown.node.position = this.skillAction.position.clone();
+            this.coolDown1.node.position = this.skillAction1.position.clone();
         }
     }
 
@@ -207,7 +195,10 @@ export default class Controller extends cc.Component {
     //     }
     //     this.schedule(this.coolDownFuc, delta, cc.macro.REPEAT_FOREVER);
     // }
-    private drawSkillCoolDown(coolDown: number, graphics: cc.Graphics, coolDownFuc: Function, coolDownNode: cc.Node, skillIcon: cc.Sprite) {
+    private drawSkillCoolDown(coolDown: number, count:number, graphics: cc.Graphics, coolDownFuc: Function, coolDownNode: cc.Node, skillIcon: cc.Sprite,label:cc.Label) {
+        if(label){
+            label.string = count>0?`${count}`:``;
+        }
         if (coolDown < 0) {
             return;
         }

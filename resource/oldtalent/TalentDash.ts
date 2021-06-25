@@ -8,7 +8,6 @@ import FromData from "../Data/FromData";
 import PlayerAvatar from "../PlayerAvatar";
 import Actor from "../Base/Actor";
 import ActorUtils from "../Utils/ActorUtils";
-import TalentData from "../Data/TalentData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -22,8 +21,8 @@ export default class TalentDash extends Talent {
 
     onLoad() {
     }
-    init(data:TalentData) {
-        super.init(data);
+    init() {
+        super.init();
         this.dashShadow.node.active = false;
         this.node.parent = this.player.node.parent;
         this.dashShadow.init(this);
@@ -72,7 +71,7 @@ export default class TalentDash extends Talent {
                 this.player.playerAnim(PlayerAvatar.STATE_IDLE,this.player.currentDir);
                 this.IsExcuting = false;
             }, 0.5)
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1,currentCooldown:0 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1 } });
         }, cooldown, true);
     }
 

@@ -1300,6 +1300,10 @@
             <key type="filename">talents/talent018.png</key>
             <key type="filename">talents/talent019.png</key>
             <key type="filename">talents/talent03.png</key>
+            <key type="filename">talents/talent100.png</key>
+            <key type="filename">talents/talent101.png</key>
+            <key type="filename">talents/talent102.png</key>
+            <key type="filename">talents/talent103.png</key>
             <key type="filename">talents/talentempty.png</key>
             <key type="filename">talents/talentmagic07.png</key>
             <key type="filename">talents/talentmagic08.png</key>

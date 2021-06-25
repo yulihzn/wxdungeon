@@ -9,6 +9,9 @@ export default class TalentData{
     cooldown:number = 0;
     passive:number = 0;//是否被动，0是主动
 
+    currentCooldown:number = 0;//当前cd剩余秒数
+    currentCount:number = 0;//当前技能拥有点数
+
     constructor(){
         this.common = new CommonData();
     }
@@ -25,6 +28,8 @@ export default class TalentData{
         this.resName = data.resName?data.resName:'';
         this.cooldown = data.cooldown?data.cooldown:0;
         this.passive = data.passive?data.passive:0;
+        this.currentCooldown = data.currentCooldown?data.currentCooldown:0;
+        this.currentCount = data.currentCount?data.currentCount:1;
     }
     public clone(): TalentData {
         let e = new TalentData();
@@ -35,6 +40,8 @@ export default class TalentData{
         e.resName = this.resName;
         e.cooldown =this.cooldown;
         e.passive = this.passive;
+        e.currentCooldown = this.currentCooldown;
+        e.currentCount = this.currentCount;
         return e;
     }
 }

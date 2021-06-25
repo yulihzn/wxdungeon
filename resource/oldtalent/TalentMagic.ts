@@ -11,7 +11,6 @@ import FireGhost from "./FireGhost";
 import Logic from "../Logic";
 import IceThron from "./IceThron";
 import AudioPlayer from "../Utils/AudioPlayer";
-import TalentData from "../Data/TalentData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -47,9 +46,9 @@ export default class TalentMagic extends Talent {
             cc.log('destroyGhost');
         }
     }
-    init(data:TalentData) {
+    init() {
         this.magicLighteningCircle.opacity = 0;
-        super.init(data);
+        super.init();
         this.scheduleOnce(() => {
             if (this.hashTalent(Talent.MAGIC_07)) {
                 this.player.addStatus(this.hashTalent(TalentMagic.MAGIC_06) ? StatusManager.MAGIC_WEAPON_STRONG : StatusManager.MAGIC_WEAPON, new FromData());
@@ -86,7 +85,7 @@ export default class TalentMagic extends Talent {
             this.magiccircle.talentMaigc = this;
             this.magiccircle.playMagic(this.hashTalent(Talent.MAGIC_03));
             // cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3,currentCooldown:0 } });
+            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3 } });
         }, cooldown, true);
     }
     //anim
@@ -258,5 +257,13 @@ export default class TalentMagic extends Talent {
             return true;
         }
         return false;
+    }
+    update(dt) {
+        if(Logic.isGamePause){
+            return;
+        }
+        if (this.isCheckTimeDelay(dt)) {
+            this.init();
+        }
     }
 }

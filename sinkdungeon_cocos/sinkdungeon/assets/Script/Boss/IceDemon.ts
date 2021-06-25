@@ -105,7 +105,7 @@ export default class IceDemon extends Boss {
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        if(isHalf&&!this.magicice.isShow&&!this.defenceSkill.isInCooling){
+        if(isHalf&&!this.magicice.isShow&&!this.defenceSkill.IsInCooling){
             this.magicice.showIce();
         }
         if (playerDis < 200 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting && !this.dashSkill.IsExcuting) {

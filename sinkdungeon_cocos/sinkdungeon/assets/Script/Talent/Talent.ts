@@ -9,6 +9,7 @@ import AreaOfEffectData from "../Data/AreaOfEffectData";
 import FromData from "../Data/FromData";
 import { EventHelper } from "../EventHelper";
 import AreaOfEffect from "../Actor/AreaOfEffect";
+import CoolDownView from "../UI/CoolDownView";
 
 const { ccclass, property } = cc._decorator;
 
@@ -93,9 +94,10 @@ export default abstract class Talent extends cc.Component {
 
     talentSkill = new NextStep();
     player: Player;
-    passiveTalentList: TalentData[];
-    activeTalentData: TalentData;
-    hasTalentMap: { [key: string]: boolean } = {};
+    data: TalentData;
+    maxCount = 1;
+    currentCount = 0;
+    coolDownId = CoolDownView.PROFESSION;
     get IsExcuting() {
         return this.talentSkill.IsExcuting;
     }
@@ -105,74 +107,74 @@ export default abstract class Talent extends cc.Component {
     onLoad() {
 
     }
-    init() {
+    init(data:TalentData) {
         this.player = this.getComponent(Player);
-        this.activeTalentData = new TalentData();
+        this.data = data;
     }
 
     useSKill() {
         if (!this.talentSkill) {
             return;
         }
-        if (this.talentSkill.IsExcuting) {
+        if (this.talentSkill.IsExcuting&& this.currentCount <= 0) {
             return;
         }
-        let cooldown = this.activeTalentData.cooldown;
-        if (cooldown > 1) {
-            cooldown -= this.player.data.currentDream;
-            if (cooldown < 1) {
-                cooldown = 1;
-            }
-        } else {
-            cooldown -= this.player.data.currentDream * 0.1;
-            if (cooldown < 0.1) {
-                cooldown = 0.1;
-            }
-        }
+        let cooldown = this.data.cooldown;
+        
         if (this.player.data.currentDream > 0) {
+            if (this.talentSkill.IsExcuting && this.currentCount > 0) {
+                this._doSkill();
+                return;
+            }
             this.talentSkill.next(() => {
+                this.data.currentCooldown = cooldown;
                 this.talentSkill.IsExcuting = true;
-                this.player.updateDream(1);
-                this.doSkill(cooldown);
-            }, cooldown, true);
+                this._doSkill();
+            }, cooldown, true, () => {
+                this.currentCount++;
+                if (this.currentCount > this.maxCount) {
+                    this.currentCount = this.maxCount;
+                }
+                EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN_LABEL, { id: this.coolDownId, count: this.currentCount });
+                this.data.currentCooldown = 0;
+                this.data.currentCount = this.currentCount;
+            });
         } else {
             cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
         }
 
     }
-    protected abstract doSkill(cooldown?:number);
-    /**加载被动技能列表 */
-    loadPassiveList(passiveTalentList: TalentData[]) {
-        this.passiveTalentList = new Array();
-        this.hasTalentMap = {};
-        for (let t of passiveTalentList) {
-            let temp = new TalentData();
-            temp.valueCopy(t);
-            this.passiveTalentList.push(temp);
-            this.hasTalentMap[temp.resName] = true;
+    private _doSkill() {
+        this.player.updateDream(1);
+        this.currentCount--;
+        if (this.currentCount < 0) {
+            this.currentCount = 0;
         }
-        this.changePerformance();
+        this.data.currentCount = this.currentCount;
+        EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN_LABEL, { id: this.coolDownId, count: this.currentCount });
+        this.doSkill();
     }
-    /**
-     * 添加被动技能
-     * @param resName 技能资源名
-     */
-    addPassiveTalent(resName: string) {
-        let data = new TalentData();
-        data.resName = resName;
-        let hasit = false;
-        for (let t of this.passiveTalentList) {
-            if (resName == t.resName) {
-                hasit = true;
-            }
+    protected abstract doSkill():void;
+
+    public updateCooldown(dt:number){
+        if(this.isCheckTimeDelay(dt)){
+            
         }
-        if (!hasit) {
-            this.passiveTalentList.push(data);
-            this.hasTalentMap[data.resName] = true;
-            this.changePerformance();
-            Logic.addTalent(data.resName);
+        if(!this.talentSkill.IsExcuting&&this.maxCount!=this.currentCount){
+            let cooldown = this.data.cooldown;
+            this.talentSkill.next(() => {
+                this.talentSkill.IsExcuting = true;
+                EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { id: this.coolDownId, cooldown: cooldown ,currentCooldown:this.data.currentCooldown});
+            }, cooldown, true, () => {
+                this.currentCount++;
+                if (this.currentCount > this.maxCount) {
+                    this.currentCount = this.maxCount;
+                }
+                EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN_LABEL, { id: this.coolDownId, count: this.currentCount });
+            });
         }
     }
+   
     abstract changePerformance(): void
 
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
@@ -183,7 +185,7 @@ export default abstract class Talent extends cc.Component {
         return node.getComponent(cc.Sprite);
     }
     hashTalent(resName: string): boolean {
-        return this.hasTalentMap[resName] && this.hasTalentMap[resName] == true || this.activeTalentData.resName == resName;
+        return this.data.resName == resName;
     }
 
     abstract takeDamage(damageData: DamageData, actor?: Actor): boolean
@@ -242,5 +244,14 @@ export default abstract class Talent extends cc.Component {
         }
         let areaScript = aoe.getComponent(AreaOfEffect);
         areaScript.show(this.player.dungeon.node, pos, cc.v3(1, 0), 0, aoeData);
+    }
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 1) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
     }
 }

@@ -6,6 +6,7 @@ import Random from "../Utils/Random";
 import AvatarData from "./AvatarData";
 import Shield from "../Shield";
 import OilGoldData from "./OilGoldData";
+import TalentData from "./TalentData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,12 +36,16 @@ export default class PlayerData {
     private statusTotalData: StatusData;
     private avatarData:AvatarData;
     private oilGoldData:OilGoldData;
+    private organizationTalentData:TalentData;
+    private professionTalentData:TalentData;
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
         this.statusTotalData = new StatusData();
         this.avatarData = new AvatarData();
         this.oilGoldData = new OilGoldData();
+        this.organizationTalentData = new TalentData();
+        this.professionTalentData = new TalentData();
         this.common = new CommonData();
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = PlayerData.DEFAULT_SPEED;
@@ -59,6 +64,12 @@ export default class PlayerData {
     }
     get OilGoldData(){
         return this.oilGoldData;
+    }
+    get OrganizationTalentData(){
+        return this.organizationTalentData;
+    }
+    get ProfessionTalentData(){
+        return this.professionTalentData;
     }
     set AvatarData(data:AvatarData){
         this.avatarData = data;

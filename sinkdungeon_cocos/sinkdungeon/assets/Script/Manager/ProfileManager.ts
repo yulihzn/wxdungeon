@@ -54,8 +54,7 @@ export default class ProfileManager{
             this.hasSaveData = false;
             return false;
         }
-        if(!data.savePointData||!data.playerData||!data.playerEquips||!data.playerItemList||!data.rectDungeons
-        ||!data.talentList){
+        if(!data.savePointData||!data.playerData||!data.playerEquips||!data.playerItemList||!data.rectDungeons){
             this.hasSaveData = false;
             return false;
         }
@@ -89,12 +88,7 @@ export default class ProfileManager{
                 this.data.playerInventoryList[i]=data.playerInventoryList[i];
             }
         }
-        //加载技能
-        for(let i =0;i<data.talentList.length;i++){
-            let td = new TalentData();
-            td.valueCopy(data.talentList[i]);
-            this.data.talentList.push(td);
-        }
+       
         //加载地图数据
         for(let key in data.rectDungeons){
             let rect = new RectDungeon();
