@@ -72,7 +72,7 @@ export default class TalentDash extends Talent {
                 this.player.playerAnim(PlayerAvatar.STATE_IDLE,this.player.currentDir);
                 this.IsExcuting = false;
             }, 0.5)
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1,currentCooldown:0 } });
+            // cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 1,currentCooldown:0 } });
         }, cooldown, true);
     }
 

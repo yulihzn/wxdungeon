@@ -86,7 +86,7 @@ export default class TalentMagic extends Talent {
             this.magiccircle.talentMaigc = this;
             this.magiccircle.playMagic(this.hashTalent(Talent.MAGIC_03));
             // cc.director.emit(EventConstant.PLAY_AUDIO, { detail: { name: AudioPlayer.DASH } });
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3,currentCooldown:0 } });
+            // cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 3,currentCooldown:0 } });
         }, cooldown, true);
     }
     //anim

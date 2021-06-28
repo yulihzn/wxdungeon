@@ -25,10 +25,13 @@ export default class SavePoint extends Building {
         this.lights = this.getComponentsInChildren(ShadowOfSight);
         this.tips = this.getComponentInChildren(Tips);
         this.tips.tipsType = Tips.SAVE_POINT;
-        cc.director.on(EventHelper.PLAYER_TAPTIPS
-            , (event) => {
-                if (this.node && event.detail.tipsType == Tips.SAVE_POINT) {
+        EventHelper.on(EventHelper.PLAYER_TAPTIPS
+            , (detail) => {
+                if (this.node && detail.tipsType == Tips.SAVE_POINT) {
                     if (this.isOpen && this.tips.node.active) {
+                        if(detail.player){
+                            Logic.playerData = detail.player.data.clone();
+                        }
                         Logic.savePonit(this.data.defaultPos);
                         Logic.resetData();
                         EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});

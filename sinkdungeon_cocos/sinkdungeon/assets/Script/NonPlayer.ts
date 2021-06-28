@@ -146,7 +146,7 @@ export default class NonPlayer extends Actor {
         }
         this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
         this.dangerTips.opacity = 0;
-        this.specialStep.delay(5);
+        this.specialStep.init(true);
         this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL);
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
@@ -404,7 +404,7 @@ export default class NonPlayer extends Actor {
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
-                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),this.isVariation);
+                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.isVariation);
                 }, this.data.specialDelay);
             }
         });
@@ -423,7 +423,7 @@ export default class NonPlayer extends Actor {
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
-                    this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed),this.isVariation);
+                    this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.isVariation);
                 }, this.data.specialDelay);
             }
             if (attacking) {
@@ -548,7 +548,7 @@ export default class NonPlayer extends Actor {
         return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
     }
     fall() {
-        if(this.data.isStatic>0||this.data.isHeavy>0||this.isVariation){
+        if (this.data.isStatic > 0 || this.data.isHeavy > 0 || this.isVariation) {
             return;
         }
         this.sc.isFalling = true;
@@ -613,7 +613,7 @@ export default class NonPlayer extends Actor {
                 if (this.node) {
                     this.hitLight(false);
                     this.resetBodyColor();
-                    if(this.sc.isHurting){
+                    if (this.sc.isHurting) {
                         this.sc.isHurting = false;
                         this.anim.resume();
                     }
@@ -734,10 +734,10 @@ export default class NonPlayer extends Actor {
 
         if (this.dungeon) {
             let count = 1;
-            if(this.isVariation){
+            if (this.isVariation) {
                 count = 2;
             }
-            if(this.killPlayerCount>0){
+            if (this.killPlayerCount > 0) {
                 count = 5;
             }
             EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count });

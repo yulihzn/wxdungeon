@@ -51,7 +51,7 @@ export default class ProfessionTalent extends Talent {
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
     @property(cc.Prefab)
-    aoe:cc.Prefab = null;
+    aoe: cc.Prefab = null;
     @property(cc.Prefab)
     fireball: cc.Prefab = null;
     @property(cc.Prefab)
@@ -92,20 +92,22 @@ export default class ProfessionTalent extends Talent {
             cc.log('destroyGhost');
         }
     }
-    init(data:TalentData) {
+    init(data: TalentData) {
         super.init(data);
         this.coolDownId = CoolDownView.PROFESSION;
+        this.initCoolDown(data,1);
+        
     }
 
     protected doSkill() {
         switch (this.data.resName) {
-            case Talent.TALENT_000:break;
+            case Talent.TALENT_000: break;
             case Talent.TALENT_001:
                 AudioPlayer.play(AudioPlayer.MELEE_PARRY);
-                this.shoot(this.player.shooterEx, 0, 0, 'bullet040',null,null); break;
+                this.shoot(this.player.shooterEx, 0, 0, 'bullet040', null, null); break;
             case Talent.TALENT_002: this.healing(); break;
             case Talent.TALENT_003: this.cooking(); break;
-            case Talent.TALENT_004: this.showIceThron();break;
+            case Talent.TALENT_004: this.showIceThron(); break;
             case Talent.TALENT_005: this.rageShoot(); break;
             case Talent.TALENT_006: this.flash(); break;
             case Talent.TALENT_007: this.addSwordLight(); break;
@@ -113,30 +115,30 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_009: this.steal(); break;
             case Talent.TALENT_010: break;
             case Talent.TALENT_011: this.aimedShoot(); break;
-            case Talent.TALENT_012: this.showFireBall();break;
-            case Talent.TALENT_013: this.addBroom();break;
+            case Talent.TALENT_012: this.showFireBall(); break;
+            case Talent.TALENT_013: this.addBroom(); break;
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL1);
-                this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035',null,null);
+                this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035', null, null);
                 break;
             case Talent.TALENT_015: this.dash(); break;
-            case Talent.TALENT_016: this.addClearCircle();break;
-            case Talent.TALENT_017: this.showSmoke();break;
-            case Talent.TALENT_018: this.addShadowFighter();break;
-            case Talent.TALENT_019: this.jump();break;
+            case Talent.TALENT_016: this.addClearCircle(); break;
+            case Talent.TALENT_017: this.showSmoke(); break;
+            case Talent.TALENT_018: this.addShadowFighter(); break;
+            case Talent.TALENT_019: this.jump(); break;
         }
     }
-    private addClearCircle(){
+    private addClearCircle() {
         this.player.stopAllDebuffs();
-        this.addAoe(this.aoe,this.player.getCenterPosition(), new AreaOfEffectData()
-                    .init(2, 0.2, 0, 2, IndexZ.getActorZIndex(this.player.getCenterPosition())
-                        , false, false, true, false, false, new DamageData(0), new FromData(), [])
-                    , ['clearcircle1', 'clearcircle2', 'clearcircle3', 'clearcircle4'], false,true);
+        this.addAoe(this.aoe, this.player.getCenterPosition(), new AreaOfEffectData()
+            .init(2, 0.2, 0, 2, IndexZ.getActorZIndex(this.player.getCenterPosition())
+                , false, false, true, false, false, new DamageData(0), new FromData(), [])
+            , ['clearcircle1', 'clearcircle2', 'clearcircle3', 'clearcircle4'], false, true);
     }
-    private addShadowFighter(){
-        for(let i=0;i<3;i++){
+    private addShadowFighter() {
+        for (let i = 0; i < 3; i++) {
             this.player.weaponRight.meleeWeapon.dungeon.nonPlayerManager
-            .addNonPlayerFromData(NonPlayerManager.NON_SHADOW,this.player.node.position,this.player.weaponRight.meleeWeapon.dungeon);
+                .addNonPlayerFromData(NonPlayerManager.NON_SHADOW, this.player.node.position, this.player.weaponRight.meleeWeapon.dungeon);
         }
     }
     private healing() {
@@ -221,21 +223,20 @@ export default class ProfessionTalent extends Talent {
             this.IsExcuting = false;
         }, 0.5)
     }
-    private jump(){
+    private jump() {
         AudioPlayer.play(AudioPlayer.DASH);
-        if(!this.player.jump()){
+        if (!this.player.jump()) {
             this.talentSkill.IsExcuting = false;
-            this.talentSkill.refreshCoolDown();
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: 0,currentCooldown:0 } });
+            this.refreshCooldown();
         }
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             AudioPlayer.play(AudioPlayer.BOOM);
-        let d = this.player.data.getFinalAttackPoint();
-        d.isMelee = true;
-        this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
-            .init(0, 0.15, 0, 2+Logic.chapterMaxIndex, IndexZ.OVERHEAD, false, true, true, false,false, d, new FromData(), [StatusManager.DIZZ]));
+            let d = this.player.data.getFinalAttackPoint();
+            d.isMelee = true;
+            this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
+                .init(0, 0.15, 0, 2 + Logic.chapterMaxIndex, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.DIZZ]));
             this.talentSkill.IsExcuting = false;
-        },0.8)
+        }, 0.8)
     }
     private steal() {
         AudioPlayer.play(AudioPlayer.FIREBALL);
@@ -244,13 +245,13 @@ export default class ProfessionTalent extends Talent {
         this.sprite.node.opacity = 255;
         this.sprite.node.scale = 1;
         this.sprite.node.position = cc.v3(0, 128);
-        let node = ActorUtils.getNearestEnemyActor(this.player,false,this.player.weaponRight.meleeWeapon.dungeon);
+        let node = ActorUtils.getNearestEnemyActor(this.player, false, this.player.weaponRight.meleeWeapon.dungeon);
         if (!node) {
             return;
         }
         let monster = node.getComponent(NonPlayer);
         let boss = node.getComponent(Boss);
-        if (monster&&monster.data.isTest<1) {
+        if (monster && monster.data.isTest < 1) {
             monster.getLoot();
         }
         if (boss) {
@@ -268,36 +269,36 @@ export default class ProfessionTalent extends Talent {
     showSmoke() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData();
-        d.magicDamage = 3+Logic.chapterMaxIndex;
-        this.shoot(this.player.shooterEx, 0, 0, 'bullet041',this.smokePrefab,new AreaOfEffectData().init(
-            7,0.1,0,1,IndexZ.OVERHEAD,false,false,false,false,false,new DamageData(),new FromData(),[StatusManager.WINE_CLOUD]
+        d.magicDamage = 3 + Logic.chapterMaxIndex;
+        this.shoot(this.player.shooterEx, 0, 0, 'bullet041', this.smokePrefab, new AreaOfEffectData().init(
+            7, 0.1, 0, 1, IndexZ.OVERHEAD, false, false, false, false, false, new DamageData(), new FromData(), [StatusManager.WINE_CLOUD]
         ));
     }
     private showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
-        d.magicDamage = 3+Logic.chapterMaxIndex;
+        d.magicDamage = 3 + Logic.chapterMaxIndex;
         d.isMelee = true;
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
-            .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.BURNING]));
+            .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.BURNING]));
     }
     private showIceThron() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
         const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
-        const posRight = [cc.v3(0,100),cc.v3(-60,60),cc.v3(-100,0),cc.v3(-60,-60),cc.v3(0,-100),cc.v3(60,-60),cc.v3(100,0),cc.v3(60,60)];
-        const posLeft = [cc.v3(0,-100),cc.v3(-60,-60),cc.v3(-100,0),cc.v3(-60,60),cc.v3(0,100),cc.v3(60,60),cc.v3(100,0),cc.v3(60,-60)];
+        const posRight = [cc.v3(0, 100), cc.v3(-60, 60), cc.v3(-100, 0), cc.v3(-60, -60), cc.v3(0, -100), cc.v3(60, -60), cc.v3(100, 0), cc.v3(60, 60)];
+        const posLeft = [cc.v3(0, -100), cc.v3(-60, -60), cc.v3(-100, 0), cc.v3(-60, 60), cc.v3(0, 100), cc.v3(60, 60), cc.v3(100, 0), cc.v3(60, -60)];
         let a1 = [angles1];
         let a = a1;
         let d = new DamageData();
-        d.magicDamage = 3+Logic.chapterMaxIndex;
+        d.magicDamage = 3 + Logic.chapterMaxIndex;
         d.isMelee = true;
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
-        .init(0, 2, 0, 3, IndexZ.OVERHEAD, false, true, true, false,true, d, new FromData(), [StatusManager.FROZEN]),cc.v3(this.player.isFaceRight?posRight[i]:posLeft[i]),angles1[i],null,true);
+                .init(0, 2, 0, 3, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(this.player.isFaceRight ? posRight[i] : posLeft[i]), angles1[i], null, true);
         }
     }
-    
+
 
     changePerformance() {
 
@@ -307,22 +308,22 @@ export default class ProfessionTalent extends Talent {
         return false;
     }
     private addLighteningFall(isArea: boolean, damagePoint: number) {
-        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: ActorUtils.getNearestEnemyPosition(this.player,false,this.player.weaponRight.meleeWeapon.dungeon,true), showArea: isArea, damage: damagePoint })
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: ActorUtils.getNearestEnemyPosition(this.player, false, this.player.weaponRight.meleeWeapon.dungeon, true), showArea: isArea, damage: damagePoint })
     }
     private addBroom() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = this.player.data.getFinalAttackPoint();
         d.isMelee = true;
         this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
-            .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, false, true, true, true,true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
+            .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, false, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
     }
-    
+
     private cooking() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = this.player.data.getFinalAttackPoint();
         d.isMelee = true;
         this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
-            .init(0, 2, 0, 1, IndexZ.OVERHEAD, false, false, false, false,false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
+            .init(0, 2, 0, 1, IndexZ.OVERHEAD, false, false, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
                 let monster = actor.node.getComponent(NonPlayer);
                 if (monster) {
                     monster.dungeon.addItem(monster.node.position.clone(), `food${monster.data.resName.replace('monster', '')}`);
@@ -339,13 +340,13 @@ export default class ProfessionTalent extends Talent {
         let d = new DamageData();
         d.isMelee = true;
         let scale = 5;
-        d.physicalDamage = 2+Logic.chapterMaxIndex;
+        d.physicalDamage = 2 + Logic.chapterMaxIndex;
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             d = this.player.data.getFinalAttackPoint();
             scale = 6;
         }
         let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()
-            .init(0, 0.35, 0, scale, IndexZ.OVERHEAD, false, true, true,false, true, d, new FromData(), [StatusManager.FROZEN]));
+            .init(0, 0.35, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]));
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             swordlight.node.getChildByName('sprite').color = cc.Color.RED;
         }
@@ -373,7 +374,7 @@ export default class ProfessionTalent extends Talent {
         }
     }
 
-    
-    
-    
+
+
+
 }

@@ -104,10 +104,12 @@ export default class PlayerData {
         e.name = this.name;
         e.currentHealth = this.currentHealth;
         e.currentDream = this.currentDream;
-        e.equipmentTotalData = this.equipmentTotalData;
-        e.statusTotalData = this.statusTotalData;
-        e.avatarData = this.avatarData;
-        e.oilGoldData = this.oilGoldData;
+        e.equipmentTotalData = this.equipmentTotalData.clone();
+        e.statusTotalData = this.statusTotalData.clone();
+        e.avatarData = this.avatarData.clone();
+        e.oilGoldData = this.oilGoldData.clone();
+        e.organizationTalentData = this.organizationTalentData.clone();
+        e.professionTalentData = this.professionTalentData.clone();
         return e;
     }
 

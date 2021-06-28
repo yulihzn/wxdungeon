@@ -19,6 +19,11 @@ export default class CoolDownView extends cc.Component {
     graphics: cc.Graphics = null;
     coolDownFuc: Function = null;
     label: cc.Label = null;
+    private secondCount = 0;
+    private secondCountLerp = 0;
+    private duration = 0;
+    private storePoint = 1;
+    private storePointMax = 1;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -26,16 +31,14 @@ export default class CoolDownView extends cc.Component {
         this.label = this.getComponentInChildren(cc.Label);
         this.skillIcon = this.node.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
         EventHelper.on(EventHelper.HUD_CONTROLLER_COOLDOWN, (detail) => {
-            if (this.node && detail.id == this.id) { this.drawSkillCoolDown(detail.cooldown, detail.currentCooldown, this.graphics, this.coolDownFuc, this.node, this.skillIcon, this.label) };
-        })
-        EventHelper.on(EventHelper.HUD_CONTROLLER_COOLDOWN_LABEL, (detail) => {
-            if (this.node && detail.id == this.id) {
-                this.label.string = detail.count > 0 ? `${detail.count}` : ``;
-            }
+            if (this.node && detail.id == this.id) { this.setData(detail.duration, detail.secondCount, detail.storePoint, detail.storePointMax) };
         })
     }
     init(id: number) {
         this.id = id;
+        if (!this.skillIcon) {
+            this.skillIcon = this.node.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
+        }
         if (id == CoolDownView.PROFESSION) {
             this.setSkillIcon(Logic.playerData.AvatarData.professionData.talent);
         } else if (id == CoolDownView.ORGANIZATION) {
@@ -46,43 +49,43 @@ export default class CoolDownView extends cc.Component {
         this.skillIcon.spriteFrame = Logic.spriteFrameRes(resName);
     }
 
-    private drawSkillCoolDown(coolDown: number, currentCooldown: number, graphics: cc.Graphics, coolDownFuc: Function, coolDownNode: cc.Node, skillIcon: cc.Sprite, label: cc.Label) {
-        if (!coolDownNode) {
+    private setData(duration: number, secondCount: number, storePoint: number, storePointMax: number) {
+        if (!this.node) {
             return;
         }
-        if (coolDown - currentCooldown < 0) {
+        if (secondCount > duration) {
+            secondCount = duration;
+        }
+        if (duration <= 0) {
+            duration = 0;
+        }
+        this.storePointMax = storePointMax;
+        this.duration = duration;
+        this.secondCountLerp = secondCount;
+        this.secondCount = secondCount;
+        this.storePoint = storePoint;
+        this.drawSkillCoolDown();
+    }
+    private drawSkillCoolDown() {
+        if (this.duration <= 0) {
             return;
+        }
+        this.label.string = this.storePoint > 0 && this.storePointMax > 1 ? `${this.storePoint}` : ``;
+        if (this.graphics) {
+            this.graphics.clear();
+        }
+        if (this.secondCountLerp >1) {
+            this.secondCount = Logic.lerp(this.secondCount, this.secondCountLerp-1, 0.1);
+        }
+        if (this.secondCount <= 0) {
+            this.skillIcon.node.opacity = 0;
+        } else {
+            this.skillIcon.node.opacity = 200;
+            let p = cc.Vec3.ZERO;
+            let percent = this.secondCount / this.duration;//当前百分比
+            this.drawArc(360 * percent, p, this.graphics);
         }
 
-        if (coolDownFuc) {
-            this.unschedule(coolDownFuc);
-        }
-        if (coolDown - currentCooldown == 0) {
-            if (graphics) {
-                graphics.clear();
-            }
-        }
-        let p = cc.Vec3.ZERO;
-        let percent = 100;
-        let delta = 0.1;
-        //0.5为误差补偿
-        let offset = 100 / (coolDown - currentCooldown) * delta;
-        coolDownFuc = () => {
-            percent -= offset;
-            if (graphics) {
-                graphics.clear();
-            }
-            this.drawArc(360 * percent / 100, p, graphics);
-            skillIcon.node.opacity = 200;
-            if (percent < 0) {
-                skillIcon.node.opacity = 0;
-                if (graphics) {
-                    graphics.clear();
-                }
-                this.unschedule(coolDownFuc);
-            }
-        }
-        this.schedule(coolDownFuc, delta, cc.macro.REPEAT_FOREVER);
     }
     private drawArc(angle: number, center: cc.Vec3, graphics: cc.Graphics) {
         if (!graphics) {
@@ -100,7 +103,7 @@ export default class CoolDownView extends cc.Component {
     timeDelay = 0;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
-        if (this.timeDelay > 0.016) {
+        if (this.timeDelay > 0.1) {
             this.timeDelay = 0;
             return true;
         }
@@ -110,5 +113,9 @@ export default class CoolDownView extends cc.Component {
 
     }
 
-    // update (dt) {}
+    update(dt) {
+        if (this.isTimeDelay(dt)) {
+            this.drawSkillCoolDown();
+        }
+    }
 }

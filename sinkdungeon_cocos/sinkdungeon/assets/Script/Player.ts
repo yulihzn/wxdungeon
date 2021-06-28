@@ -42,6 +42,7 @@ import InteractBuilding from './Building/InteractBuilding';
 import { ColliderTag } from './Actor/ColliderTag';
 import ProfessionTalent from './Talent/ProfessionTalent';
 import OrganizationTalent from './Talent/OrganizationTalent';
+import TalentData from './Data/TalentData';
 @ccclass
 export default class Player extends Actor {
 
@@ -106,6 +107,7 @@ export default class Player extends Actor {
         this.sc.isShow = false;
         this.scheduleOnce(() => { this.sc.isShow = true; }, 0.5)
         this.rigidbody = this.getComponent(cc.RigidBody);
+        this.initTalent();
         this.weaponLeft.init(this, true);
         this.weaponRight.init(this, false);
         this.remoteCooldown.width = 0;
@@ -168,7 +170,6 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.POOL_DESTORY_WALKSMOKE, (event) => {
             this.destroySmoke(event.detail.coinNode);
         })
-        this.initTalent();
         this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
         if (Logic.isCheatMode) {
             this.scheduleOnce(() => {
@@ -185,8 +186,18 @@ export default class Player extends Actor {
         }
     }
     initTalent() {
-        this.data.OrganizationTalentData.valueCopy(Logic.talents[`talent10${this.data.AvatarData.organizationIndex}`]);
-        this.data.ProfessionTalentData.valueCopy(Logic.talents[this.data.AvatarData.professionData.talent]);
+        let o = new TalentData();
+        let p = new TalentData();
+        o.valueCopy(Logic.talents[`talent10${this.data.AvatarData.organizationIndex}`]);
+        p.valueCopy(Logic.talents[this.data.AvatarData.professionData.talent]);
+        if(o.resName == this.data.OrganizationTalentData.resName){
+            o.valueCopy(this.data.OrganizationTalentData);
+        }
+        if(p.resName == this.data.ProfessionTalentData.resName){
+            p.valueCopy(this.data.ProfessionTalentData);
+        }
+        this.data.OrganizationTalentData.valueCopy(o);
+        this.data.ProfessionTalentData.valueCopy(p);
         this.professionTalent = this.getComponent(ProfessionTalent);
         this.professionTalent.init(this.data.ProfessionTalentData);
         this.organizationTalent = this.getComponent(OrganizationTalent);
@@ -469,7 +480,7 @@ export default class Player extends Actor {
     remoteExAttack(comboType: number): void {
         for (let key in this.inventoryManager.equips) {
             let data = this.inventoryManager.equips[key];
-            this.remoteExAttackDo(data,comboType);
+            this.remoteExAttackDo(data, comboType);
         }
         for (let key in this.inventoryManager.suitMap) {
             let suit = this.inventoryManager.suitMap[key];
@@ -732,7 +743,7 @@ export default class Player extends Actor {
             isDodge = true;
         }
         //幽光护盾
-        if(this.organizationTalent.takeDamage(dd,actor)){
+        if (this.organizationTalent.takeDamage(dd, actor)) {
             dd = new DamageData();
         }
         // let isIceTaken = false;
@@ -856,6 +867,9 @@ export default class Player extends Actor {
         if (this.shooterEx && !this.shooterEx.dungeon) {
             this.shooterEx.dungeon = dungeon;
         }
+        if(!this.sc.isShow){
+            return;
+        }
         let isDashing = this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting;
 
         if (this.professionTalent && !isDashing && !this.isWeaponDashing) {
@@ -942,12 +956,6 @@ export default class Player extends Actor {
         }
         if (this.avatar) {
             this.avatar.showHandsWithInteract(showHands, isLift);
-        }
-        if(this.professionTalent){
-            this.professionTalent.checkCooldownCount();
-        }
-        if(this.organizationTalent){
-            this.organizationTalent.checkCooldownCount();
         }
     }
     private useSkill(): void {

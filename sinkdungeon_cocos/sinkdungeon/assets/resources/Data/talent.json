@@ -181,7 +181,7 @@
         "nameEn": "",
         "resName": "talent102",
         "passive": 0,
-        "cooldown": 3,
+        "cooldown": 8,
         "desc": "原地生成一个魔法能量罩阻挡伤害"
     },
     "talent103": {

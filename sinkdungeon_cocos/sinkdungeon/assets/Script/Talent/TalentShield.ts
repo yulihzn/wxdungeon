@@ -104,7 +104,7 @@ export default class TalentShield extends Talent {
             this.scheduleOnce(() => {
                 this.shieldBackSprite.node.opacity = 255;
             }, 1)
-            cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 2,currentCooldown:0 } });
+            // cc.director.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { detail: { cooldown: cooldown, talentType: 2,currentCooldown:0 } });
         }, cooldown, true);
     }
     

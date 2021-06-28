@@ -47,34 +47,39 @@ export default class OrganizationTalent extends Talent {
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
     hv: cc.Vec3;
-    energyShieldList:EnergyShield[] = [];
-    
+    energyShieldList: EnergyShield[] = [];
+
     onLoad() {
     }
 
     changePerformance(): void {
     }
-    init(data:TalentData) {
+    init(data: TalentData) {
         super.init(data);
         this.coolDownId = CoolDownView.ORGANIZATION;
-        if(this.player.data.AvatarData.organizationIndex == AvatarData.GURAD){
-            this.maxCount = 1+Math.floor(Logic.playerData.OilGoldData.level/5);
+        let storePointMax = 1;
+        if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
+            storePointMax = 1 + Math.floor(Logic.playerData.OilGoldData.level / 5);
         }
-        this.maxCount = 3;
+        storePointMax = 3;
+        this.initCoolDown(data,storePointMax);
     }
     protected doSkill() {
-        if(this.player.data.AvatarData.organizationIndex == AvatarData.GURAD){
-            if(this.energyShieldList.length>this.maxCount){
+        if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
+            if (this.energyShieldList.length > this.talentSkill.StorePointMax) {
                 let s = this.energyShieldList.pop();
                 s.isShow = false;
-                if(s&&s.isValid){
+                if (s && s.isValid) {
                     s.destroy();
                 }
             }
             let shield = this.player.dungeon.buildingManager.addEnergyShield(this.player);
-            if(shield){
+            if (shield) {
                 this.energyShieldList.push(shield);
-            } 
+                this.scheduleOnce(()=>{
+                    this.talentSkill.IsExcuting = false;
+                },1)
+            }
         }
     }
 
@@ -83,18 +88,18 @@ export default class OrganizationTalent extends Talent {
         return success;
     }
 
-    energyShieldBlock(damageData: DamageData){
-        for(let i = this.energyShieldList.length-1;i>=0;i--){
+    energyShieldBlock(damageData: DamageData) {
+        for (let i = this.energyShieldList.length - 1; i >= 0; i--) {
             let shield = this.energyShieldList[i];
-            if(shield.node&&shield.node.isValid){
-                return shield.isShow&&shield.checkTargetIn(this.player.node)&&shield.takeDamage(damageData);
-            }else{
+            if (shield.node && shield.node.isValid) {
+                return shield.isShow && shield.checkTargetIn(this.player.node) && shield.takeDamage(damageData);
+            } else {
                 this.energyShieldList.splice(i, 1);
             }
         }
         return false;
     }
-    
+
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
@@ -104,5 +109,5 @@ export default class OrganizationTalent extends Talent {
         }
         return false;
     }
-  
+
 }

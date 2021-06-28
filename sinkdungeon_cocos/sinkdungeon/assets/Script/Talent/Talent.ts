@@ -95,8 +95,6 @@ export default abstract class Talent extends cc.Component {
     talentSkill = new NextStep();
     player: Player;
     data: TalentData;
-    maxCount = 1;
-    currentCount = 0;
     coolDownId = CoolDownView.PROFESSION;
     get IsExcuting() {
         return this.talentSkill.IsExcuting;
@@ -105,76 +103,64 @@ export default abstract class Talent extends cc.Component {
         this.talentSkill.IsExcuting = flag;
     }
     onLoad() {
-
     }
-    init(data:TalentData) {
+    init(data: TalentData) {
         this.player = this.getComponent(Player);
         this.data = data;
+    }
+    initCoolDown(data: TalentData,storePointMax:number){
+        this.talentSkill.init(false, storePointMax, data.storePoint,data.cooldown, data.secondCount,(secondCount:number)=>{
+            this.updateCooldownAndHud(data.cooldown,secondCount);
+        });
     }
 
     useSKill() {
         if (!this.talentSkill) {
             return;
         }
-        if (this.talentSkill.IsExcuting&& this.currentCount <= 0) {
+        if (this.talentSkill.IsExcuting) {
             return;
         }
         let cooldown = this.data.cooldown;
-        
+
         if (this.player.data.currentDream > 0) {
-            if (this.talentSkill.IsExcuting && this.currentCount > 0) {
-                this._doSkill();
-                return;
-            }
             this.talentSkill.next(() => {
-                this.data.currentCooldown = cooldown;
                 this.talentSkill.IsExcuting = true;
-                this._doSkill();
-            }, cooldown, true, () => {
-                this.currentCount++;
-                if (this.currentCount > this.maxCount) {
-                    this.currentCount = this.maxCount;
-                }
-                EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN_LABEL, { id: this.coolDownId, count: this.currentCount });
-                this.data.currentCooldown = 0;
-                this.data.currentCount = this.currentCount;
+                this.player.updateDream(1);
+                this.doSkill();
+                this.updateCooldownAndHud(cooldown, cooldown);
+            }, cooldown, true, (secondCount: number) => {
+                this.updateCooldownAndHud(cooldown, secondCount);
             });
         } else {
             cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
         }
+    }
+    /**
+     * 立即刷新冷却
+     */
+    protected refreshCooldown() {
+        this.talentSkill.refreshCoolDown();
+        this.updateCooldownAndHud(this.data.cooldown, 0);
+    }
+    /**
+     * 缩短冷却
+     */
+    protected cutCooldown(cutSecond: number) {
+        let second = this.talentSkill.cutCoolDown(cutSecond);
+        this.updateCooldownAndHud(this.data.cooldown, this.talentSkill.cutCoolDown(second));
+    }
+    protected updateCooldownAndHud(duration: number, secondCount: number) {
+        if(!this.node){
+            return;
+        }
+        this.data.secondCount = secondCount;
+        this.data.storePoint = this.talentSkill.StorePoint;
+        EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { id: this.coolDownId, duration: duration, secondCount: secondCount
+            , storePoint: this.talentSkill.StorePoint,storePointMax:this.talentSkill.StorePointMax});
+    }
+    protected abstract doSkill(): void;
 
-    }
-    private _doSkill() {
-        this.player.updateDream(1);
-        this.currentCount--;
-        if (this.currentCount < 0) {
-            this.currentCount = 0;
-        }
-        this.data.currentCount = this.currentCount;
-        EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN_LABEL, { id: this.coolDownId, count: this.currentCount });
-        this.doSkill();
-    }
-    protected abstract doSkill():void;
-
-    public updateCooldown(dt:number){
-        if(this.isCheckTimeDelay(dt)){
-            
-        }
-        if(!this.talentSkill.IsExcuting&&this.maxCount!=this.currentCount){
-            let cooldown = this.data.cooldown;
-            this.talentSkill.next(() => {
-                this.talentSkill.IsExcuting = true;
-                EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN, { id: this.coolDownId, cooldown: cooldown ,currentCooldown:this.data.currentCooldown});
-            }, cooldown, true, () => {
-                this.currentCount++;
-                if (this.currentCount > this.maxCount) {
-                    this.currentCount = this.maxCount;
-                }
-                EventHelper.emit(EventHelper.HUD_CONTROLLER_COOLDOWN_LABEL, { id: this.coolDownId, count: this.currentCount });
-            });
-        }
-    }
-   
     abstract changePerformance(): void
 
     getSpriteChildSprite(childNames: string[]): cc.Sprite {
