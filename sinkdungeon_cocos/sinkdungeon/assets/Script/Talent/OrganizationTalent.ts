@@ -61,7 +61,6 @@ export default class OrganizationTalent extends Talent {
         if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             storePointMax = 1 + Math.floor(Logic.playerData.OilGoldData.level / 5);
         }
-        storePointMax = 3;
         this.initCoolDown(data,storePointMax);
     }
     protected doSkill() {

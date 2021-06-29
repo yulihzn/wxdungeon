@@ -95,7 +95,11 @@ export default class ProfessionTalent extends Talent {
     init(data: TalentData) {
         super.init(data);
         this.coolDownId = CoolDownView.PROFESSION;
-        this.initCoolDown(data,1);
+        let storePointMax = 1;
+        if(this.data.resName == Talent.TALENT_014){
+            storePointMax = 3;
+        }
+        this.initCoolDown(data,storePointMax);
         
     }
 

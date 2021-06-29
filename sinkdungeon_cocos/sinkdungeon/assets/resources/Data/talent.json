@@ -182,6 +182,7 @@
         "resName": "talent102",
         "passive": 0,
         "cooldown": 8,
+        "cost":3,
         "desc": "原地生成一个魔法能量罩阻挡伤害"
     },
     "talent103": {
@@ -190,6 +191,7 @@
         "resName": "talent103",
         "passive": 0,
         "cooldown": 10,
+        "cost":3,
         "desc": "注射翠金提炼的试剂变狂化"
     }
 }

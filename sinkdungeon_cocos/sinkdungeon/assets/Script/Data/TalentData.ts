@@ -8,6 +8,7 @@ export default class TalentData {
     resName: string = '';//资源名
     cooldown: number = 0;
     passive: number = 0;//是否被动，0是主动
+    cost:number = 1;//消耗
 
     secondCount: number = 0;//当前cd剩余秒数
     storePoint: number = 0;//当前技能拥有点数
@@ -30,6 +31,7 @@ export default class TalentData {
         this.passive = data.passive ? data.passive : 0;
         this.secondCount = data.secondCount ? data.secondCount : 0;
         this.storePoint = data.storePoint ? data.storePoint : 1;
+        this.cost = data.cost?data.cost:1;
     }
     public clone(): TalentData {
         let e = new TalentData();
@@ -42,6 +44,7 @@ export default class TalentData {
         e.passive = this.passive;
         e.secondCount = this.secondCount;
         e.storePoint = this.storePoint;
+        e.cost = this.cost;
         return e;
     }
 }
