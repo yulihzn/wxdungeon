@@ -100,12 +100,15 @@ export default class Player extends Actor {
     onLoad() {
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData.clone();
-        this.updateStatus(null);
+        this.updateStatus(this.data.StatusList, this.data.StatusTotalData);
         this.pos = cc.v3(0, 0);
         this.sc.isDied = false;
         this.isStone = false;
         this.sc.isShow = false;
-        this.scheduleOnce(() => { this.sc.isShow = true; }, 0.5)
+        this.scheduleOnce(() => {
+            this.sc.isShow = true;
+            this.addSaveStatusList();
+        }, 0.5)
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.initTalent();
         this.weaponLeft.init(this, true);
@@ -185,23 +188,30 @@ export default class Player extends Actor {
             this.lights[0].rayRadius = 0;
         }
     }
-    initTalent() {
+    private addSaveStatusList() {
+        if(this.statusManager){
+            this.statusManager.addStatusListFromSave(this.data.StatusList);
+        }
+    }
+    private initTalent() {
         let o = new TalentData();
         let p = new TalentData();
         o.valueCopy(Logic.talents[`talent10${this.data.AvatarData.organizationIndex}`]);
         p.valueCopy(Logic.talents[this.data.AvatarData.professionData.talent]);
-        if(o.resName == this.data.OrganizationTalentData.resName){
+        if (o.resName == this.data.OrganizationTalentData.resName) {
             o.valueCopy(this.data.OrganizationTalentData);
         }
-        if(p.resName == this.data.ProfessionTalentData.resName){
+        if (p.resName == this.data.ProfessionTalentData.resName) {
             p.valueCopy(this.data.ProfessionTalentData);
         }
         this.data.OrganizationTalentData.valueCopy(o);
         this.data.ProfessionTalentData.valueCopy(p);
         this.professionTalent = this.getComponent(ProfessionTalent);
-        this.professionTalent.init(this.data.ProfessionTalentData);
         this.organizationTalent = this.getComponent(OrganizationTalent);
-        this.organizationTalent.init(this.data.OrganizationTalentData);
+        this.scheduleOnce(() => {
+            this.professionTalent.init(this.data.ProfessionTalentData);
+            this.organizationTalent.init(this.data.OrganizationTalentData);
+        }, 0.1)
     }
 
     actorName(): string {
@@ -255,11 +265,12 @@ export default class Player extends Actor {
         this.invisible = false;
         this.statusManager.stopStatus(StatusManager.TALENT_INVISIBLE);
     }
-    public updateStatus(statusData: StatusData) {
+    public updateStatus(statusList: StatusData[], totalStatusData: StatusData) {
         if (!this.inventoryManager) {
             return;
         }
-        Logic.playerData.StatusTotalData.valueCopy(statusData);
+        this.data.StatusTotalData.valueCopy(totalStatusData);
+        this.data.StatusList = statusList;
         this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
         cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
@@ -383,7 +394,7 @@ export default class Player extends Actor {
     changeZIndex(pos: cc.Vec3) {
         this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
-    addStatus(statusType: string, from: FromData) {
+    addStatus(statusType: string, from: FromData, isFromSave?: boolean) {
         if (!this.node || this.sc.isDied) {
             return;
         }
@@ -867,7 +878,7 @@ export default class Player extends Actor {
         if (this.shooterEx && !this.shooterEx.dungeon) {
             this.shooterEx.dungeon = dungeon;
         }
-        if(!this.sc.isShow){
+        if (!this.sc.isShow) {
             return;
         }
         let isDashing = this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting;

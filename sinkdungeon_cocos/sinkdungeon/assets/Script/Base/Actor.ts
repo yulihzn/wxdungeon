@@ -28,7 +28,7 @@ export default abstract class Actor extends cc.Component {
     abstract addStatus(statusType: string, from: FromData):void;
     abstract getCenterPosition(): cc.Vec3;
     abstract takeDizz(dizzDuration: number):void;
-    abstract updateStatus(statusData:StatusData):void;
+    abstract updateStatus(statusList:StatusData[],totalStatusData:StatusData):void;
     abstract hideSelf(hideDuration: number):void;
     abstract updateDream(offset: number): number;
     invisible = false;//是否隐身

@@ -56,8 +56,9 @@ export default class StatusManager extends cc.Component {
     @property(cc.Prefab)
     statusPrefab: cc.Prefab = null;
     private statusList: Status[];
+    private totalStatusData: StatusData = new StatusData();
 
-    private actor:Actor;
+    private actor: Actor;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -68,14 +69,24 @@ export default class StatusManager extends cc.Component {
     start() {
 
     }
-    addStatus(resName: string, from: FromData) {
+    addStatus(resName: string, from: FromData, isFromSave?: boolean) {
         if (resName.length < 1) {
             return;
         }
         let sd = new StatusData();
         sd.valueCopy(Logic.status[resName])
         sd.From.valueCopy(from);
-        this.showStatus(sd);
+        this.showStatus(sd, isFromSave);
+    }
+    addStatusListFromSave(statusList: StatusData[]) {
+        if (statusList && statusList.length > 0) {
+            for (let s of statusList) {
+                let sd = new StatusData();
+                sd.valueCopy(s)
+                sd.From.valueCopy(new FromData());
+                this.showStatus(sd, true);
+            }
+        }
     }
     hasStatus(resName: string): boolean {
         let hasStatus = false;
@@ -110,7 +121,7 @@ export default class StatusManager extends cc.Component {
     stopAllBuffs(): void {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if(s&&s.data.type==Status.BUFF){
+            if (s && s.data.type == Status.BUFF) {
                 s.stopStatus();
             }
         }
@@ -118,12 +129,12 @@ export default class StatusManager extends cc.Component {
     stopAllDebuffs(): void {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if(s.data.type==Status.DEBUFF){
+            if (s.data.type == Status.DEBUFF) {
                 s.stopStatus();
             }
         }
     }
-    private showStatus(data: StatusData) {
+    private showStatus(data: StatusData, isFromSave: boolean) {
         //去除已经失效的状态
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
@@ -137,7 +148,7 @@ export default class StatusManager extends cc.Component {
             let s = this.statusList[i];
             if (s && s.node && s.isValid && s.isStatusRunning() && s.data.id == data.id) {
                 s.data.duration = data.duration;
-                s.showStatus(data,this.actor);
+                s.showStatus(data, this.actor, isFromSave);
                 hasStatus = true;
                 break;
             }
@@ -151,11 +162,11 @@ export default class StatusManager extends cc.Component {
         statusNode.active = true;
         let status = statusNode.getComponent(Status);
         this.statusList.push(status);
-        status.showStatus(data,this.actor);
+        status.showStatus(data, this.actor, isFromSave);
     }
 
     update(dt) {
-        if(Logic.isGamePause){
+        if (Logic.isGamePause) {
             return;
         }
         if (this.node.parent) {
@@ -163,8 +174,8 @@ export default class StatusManager extends cc.Component {
         }
         if (this.isTimeDelay(dt)) {
             if (this.actor) {
-                let statusData = this.updateStatus();
-                this.actor.updateStatus(statusData);
+                let dataList = this.updateStatus();
+                this.actor.updateStatus(dataList, this.totalStatusData);
             }
         }
     }
@@ -177,17 +188,19 @@ export default class StatusManager extends cc.Component {
         }
         return false;
     }
-    private updateStatus(): StatusData {
-        let e = new StatusData();
+    private updateStatus(): StatusData[] {
+        this.totalStatusData = new StatusData();
+        let dataList: StatusData[] = new Array();
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
             if (!s || !s.node || !s.isValid) {
                 continue;
             }
             s.updateLogic();
-            e.missRate += s.data.missRate ? s.data.missRate : 0;
-            e.Common.add(s.data.Common);
+            this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0;
+            this.totalStatusData.Common.add(s.data.Common);
+            dataList.push(s.data.clone());
         }
-        return e;
+        return dataList;
     }
 }

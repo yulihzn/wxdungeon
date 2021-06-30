@@ -6,6 +6,7 @@ import TalentData from "./TalentData";
 import SavePointData from "./SavePointData";
 import InventoryData from "./InventoryData";
 import GroundOilGoldData from "./GroundOilGoldData";
+import NonPlayerData from "./NonPlayerData";
 
 /**存档保存数据
  * 玩家的属性 目前血量 攻防抗性等 位置
@@ -29,6 +30,8 @@ export default class ProfileData {
     playerItemList:ItemData[] = new Array();
     //玩家背包列表
     playerInventoryList:InventoryData[] = new Array();
+    //跟随的npc列表
+    nonPlayerList:NonPlayerData[] = new Array();
     level = 0;//当前层级
     time = '00:00:00';
     savePointData:SavePointData = new SavePointData();

@@ -62,6 +62,7 @@ export default class NonPlayerData{
     attackFrames = 2;//攻击帧数
     specialFrames = 2;//特殊攻击帧数
     remoteAudio = '';//远程音效
+    isPet = 0;//是否是宠物
     private statusTotalData: StatusData;
     private common:CommonData;
     constructor(){
@@ -130,6 +131,7 @@ export default class NonPlayerData{
         this.specialFrames = data.specialFrames?data.specialFrames:2;
         this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff';
         this.remoteAudio = data.remoteAudio?data.remoteAudio:'';
+        this.isPet = data.isPet?data.isPet:0;
     }
     public clone():NonPlayerData{
         let e = new NonPlayerData();
@@ -176,6 +178,7 @@ export default class NonPlayerData{
         e.isTest = this.isTest;
         e.reborn = this.reborn;
         e.remoteAudio = this.remoteAudio;
+        e.isPet = this.isPet;
         return e;
     }
     

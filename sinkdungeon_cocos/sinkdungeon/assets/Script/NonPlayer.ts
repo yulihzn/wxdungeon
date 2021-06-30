@@ -113,6 +113,7 @@ export default class NonPlayer extends Actor {
     mat: cc.MaterialVariant;
     animStatus = NonPlayer.ANIM_NONE;
     data: NonPlayerData = new NonPlayerData();
+    leftLifeTime = 0;
 
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>;
 
@@ -154,8 +155,18 @@ export default class NonPlayer extends Actor {
         // this.graphics.strokeColor = cc.Color.RED;
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
+        
         if (this.data.lifeTime > 0) {
-            this.scheduleOnce(() => { this.data.currentHealth = 0; }, this.data.lifeTime)
+            this.scheduleOnce(()=>{
+                let lifeTimeStep = new NextStep();
+                this.leftLifeTime = this.data.lifeTime;
+                lifeTimeStep.next(()=>{},this.data.lifeTime,true,()=>{
+                    this.leftLifeTime--;
+                    if(this.leftLifeTime<=0&&this.data){
+                        this.data.currentHealth = 0;
+                    }
+                })
+            },1)
         }
     }
     private hitLightS(damage: DamageData) {
@@ -1101,8 +1112,8 @@ export default class NonPlayer extends Actor {
     }
 
 
-    updateStatus(statusData: StatusData): void {
-        this.data.StatusTotalData.valueCopy(statusData);
+    updateStatus(statusList:StatusData[],totalStatusData:StatusData): void {
+        this.data.StatusTotalData.valueCopy(totalStatusData);
     }
     hideSelf(hideDuration: number): void {
     }

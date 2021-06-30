@@ -38,6 +38,7 @@ export default class PlayerData {
     private oilGoldData:OilGoldData;
     private organizationTalentData:TalentData;
     private professionTalentData:TalentData;
+    private statusList:StatusData[];
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
@@ -46,12 +47,27 @@ export default class PlayerData {
         this.oilGoldData = new OilGoldData();
         this.organizationTalentData = new TalentData();
         this.professionTalentData = new TalentData();
+        this.statusList = new Array();
         this.common = new CommonData();
         this.common.maxHealth = PlayerData.DEFAULT_HEALTH;
         this.common.moveSpeed = PlayerData.DEFAULT_SPEED;
         this.common.damageMin = PlayerData.DEFAULT_ATTACK;
         this.common.damageBack = PlayerData.DEFAULT_BACK_ATTACK;
         this.common.maxDream = PlayerData.DEFAULT_DREAM;
+    }
+    get StatusList(){
+        return this.statusList;
+    }
+    set StatusList(list:StatusData[]){
+        if(!list){
+            return;
+        }
+        this.statusList = new Array();
+        for(let s of list){
+            let data = new StatusData();
+            data.valueCopy(s);
+            this.statusList.push(data);
+        }
     }
     get EquipmentTotalData() {
         return this.equipmentTotalData;
@@ -91,6 +107,7 @@ export default class PlayerData {
         this.statusTotalData.valueCopy(data.statusTotalData);
         this.avatarData.valueCopy(data.avatarData);
         this.oilGoldData.valueCopy(data.oilGoldData);
+        this.StatusList = data.statusList;
         this.currentHealth = data.currentHealth ? data.currentHealth : 0;
         this.currentDream = data.currentDream ? data.currentDream : 0;
         this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : 0;
@@ -110,6 +127,7 @@ export default class PlayerData {
         e.oilGoldData = this.oilGoldData.clone();
         e.organizationTalentData = this.organizationTalentData.clone();
         e.professionTalentData = this.professionTalentData.clone();
+        e.StatusList = this.statusList;
         return e;
     }
 

@@ -30,6 +30,7 @@ export default class CoolDownView extends cc.Component {
         this.graphics = this.getComponent(cc.Graphics);
         this.label = this.getComponentInChildren(cc.Label);
         this.skillIcon = this.node.getChildByName('mask').getChildByName('sprite').getComponent(cc.Sprite);
+        this.skillIcon.node.opacity = 255;
         EventHelper.on(EventHelper.HUD_CONTROLLER_COOLDOWN, (detail) => {
             if (this.node && detail.id == this.id) { this.setData(detail.duration, detail.secondCount, detail.storePoint, detail.storePointMax) };
         })
@@ -74,18 +75,14 @@ export default class CoolDownView extends cc.Component {
         if (this.graphics) {
             this.graphics.clear();
         }
-        if (this.secondCountLerp >1) {
-            this.secondCount = Logic.lerp(this.secondCount, this.secondCountLerp-1, 0.1);
+        if (this.secondCountLerp > 1) {
+            this.secondCount = Logic.lerp(this.secondCount, this.secondCountLerp - 1, 0.1);
         }
-        if (this.secondCount <= 0) {
-            this.skillIcon.node.opacity = 0;
-        } else {
-            this.skillIcon.node.opacity = 200;
+        if (this.secondCount > 0) {
             let p = cc.Vec3.ZERO;
             let percent = this.secondCount / this.duration;//当前百分比
             this.drawArc(360 * percent, p, this.graphics);
         }
-
     }
     private drawArc(angle: number, center: cc.Vec3, graphics: cc.Graphics) {
         if (!graphics) {

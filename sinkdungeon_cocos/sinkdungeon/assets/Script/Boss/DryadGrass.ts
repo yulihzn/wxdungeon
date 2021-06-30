@@ -83,7 +83,7 @@ export default class DryadGrass extends Actor {
 
     }
 
-    updateStatus(statusData: StatusData): void {
+    updateStatus(statusList:StatusData[],totalStatusData:StatusData): void {
     }
     hideSelf(hideDuration: number): void {
     }

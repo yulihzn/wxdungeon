@@ -108,6 +108,7 @@ export default class Logic extends cc.Component {
     static profileManager: ProfileManager = new ProfileManager();
     static bagSortIndex = 0;//0时间,1类别,2品质
     static settings: Settings = new Settings();
+    static nonPlayerList:NonPlayerData[] = [];
 
     onLoad() {
         //关闭调试
@@ -132,6 +133,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.playerData = Logic.playerData.clone();
         Logic.profileManager.data.playerEquips = Logic.inventoryManager.equips;
         Logic.profileManager.data.playerItemList = Logic.inventoryManager.itemList;
+        Logic.profileManager.data.nonPlayerList = Logic.nonPlayerList;
         Logic.profileManager.data.playerInventoryList = Logic.inventoryManager.inventoryList;
         Logic.profileManager.data.rectDungeons[Logic.mapManager.rectDungeon.id] = Logic.mapManager.rectDungeon;
         Logic.profileManager.data.level = Logic.level;
@@ -175,8 +177,16 @@ export default class Logic extends cc.Component {
             Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i]);
         }
         for (let i = 0; i < Logic.profileManager.data.playerInventoryList.length; i++) {
-            let data = new InventoryData(); data.valueCopy(Logic.profileManager.data.playerInventoryList[i]);
+            let data = new InventoryData(); 
+            data.valueCopy(Logic.profileManager.data.playerInventoryList[i]);
             Logic.inventoryManager.inventoryList.push(data);
+        }
+        //加载保存的npc
+        Logic.nonPlayerList = [];
+        for (let i = 0; i < Logic.profileManager.data.nonPlayerList.length; i++) {
+            let data = new NonPlayerData(); 
+            data.valueCopy(Logic.profileManager.data.nonPlayerList[i]);
+            Logic.nonPlayerList.push(data);
         }
         //设置地图重置状态在loading完成处理地图
         Logic.isMapReset = true;

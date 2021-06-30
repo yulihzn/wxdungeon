@@ -37,13 +37,15 @@ export default class Status extends cc.Component {
 
     start() {
     }
-    showStatus(data: StatusData, actor: Actor) {
+    showStatus(data: StatusData, actor: Actor,isFromSave:boolean) {
         if (!this.anim) { return; }
         this.data = data;
         this.actor = actor;
         this.sprite.spriteFrame = Logic.spriteFrameRes(data.spriteFrameName);
         this.anim.playAdditive('StatusShow');
-        this.doStatusDamage(true);
+        if(!isFromSave){
+            this.doStatusDamage(true);//非数据保存状态执行瞬时效果
+        }
         this.stateRunning = true;
         this.label.string = `${this.data.duration > 0 ? this.data.duration : ''}`;
         this.label.node.opacity = this.data.duration < 0 || this.data.duration > 500 ? 0 : 255;

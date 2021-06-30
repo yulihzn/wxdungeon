@@ -43,7 +43,7 @@ export default class NextStep extends cc.Component {
         this.secondCount = lastSecond&&lastSecond>0 ? lastSecond : this.duration;
         this.isLooping = true;
         if (this.storePointMax == this.storePoint) {
-            this.isLooping = false;
+            this._refreshCoolDown();
             //读秒回调
             if (this.secondCallback) {
                 this.secondCallback(this.secondCount);

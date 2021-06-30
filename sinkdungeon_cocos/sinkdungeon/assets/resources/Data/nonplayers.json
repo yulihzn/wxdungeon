@@ -40,5 +40,26 @@
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0
+    },
+    "nonplayer003": {
+        "nameCn": "柯基",
+        "nameEn": "dog",
+        "resName": "nonplayer003",
+        "chapter": 0,
+        "stageLevel": 0,
+        "common": {
+            "moveSpeed": 600,
+            "maxHealth": 50,
+            "damageMin": 5
+        },
+        "currentHealth": 50,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 2,
+        "boxType":1,
+        "sizeType":1,
+        "isEnemy":0,
+        "isFollow":1,
+        "lifeTime": 0
     }
 }

@@ -99,7 +99,7 @@ export default class SlimeVenom extends Actor {
     takeDizz(dizzDuration: number): void {
     }
 
-    updateStatus(statusData: StatusData): void {
+    updateStatus(statusList:StatusData[],totalStatusData:StatusData): void {
     }
     hideSelf(hideDuration: number): void {
     }

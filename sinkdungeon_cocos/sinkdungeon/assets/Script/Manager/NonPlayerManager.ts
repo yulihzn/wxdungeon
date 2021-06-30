@@ -21,6 +21,7 @@ const { ccclass, property } = cc._decorator;
 export default class NonPlayerManager extends BaseManager {
     public static readonly NON_SHADOW = 'nonplayer001';
     public static readonly SHOP_KEEPER = 'nonplayer002';
+    public static readonly DOG = 'nonplayer003';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -36,8 +37,26 @@ export default class NonPlayerManager extends BaseManager {
     clear(): void {
         Utils.clearComponentArray(this.nonplayers);
     }
+    public addNonPlayerListFromSave(dungeon:Dungeon,list:NonPlayerData[], position:cc.Vec3){
+        for(let data of list){
+            this.addNonPlayer(this.getNonPlayer(data.resName, dungeon,data), position);
+        }
+    }
     /**添加npc */
     public addNonPlayerFromData(resName: string, pos: cc.Vec3, dungeon: Dungeon) {
+        this.addNonPlayer(this.getNonPlayer(resName, dungeon), pos);
+    }
+
+    addPetFromData(resName: string, pos: cc.Vec3, dungeon: Dungeon){
+        let hasPetCount = 0;
+        for(let p of this.nonPlayerList){
+            if(p.data.isPet>0){
+                hasPetCount++;
+            }
+        }
+        if(hasPetCount>0){
+            return;
+        }
         this.addNonPlayer(this.getNonPlayer(resName, dungeon), pos);
     }
 
@@ -46,7 +65,7 @@ export default class NonPlayerManager extends BaseManager {
             this.addNonPlayerFromData(NonPlayerManager.NON_SHADOW, Dungeon.getPosInMap(indexPos), dungeon);
         }
     }
-    private getNonPlayer(resName: string, dungeon: Dungeon): NonPlayer {
+    private getNonPlayer(resName: string, dungeon: Dungeon,saveData?:NonPlayerData): NonPlayer {
         let nonPlayerPrefab: cc.Node = null;
         nonPlayerPrefab = cc.instantiate(this.nonplayer);
         nonPlayerPrefab.active = false;
@@ -55,13 +74,16 @@ export default class NonPlayerManager extends BaseManager {
         let data = new NonPlayerData();
         nonPlayer.dungeon = dungeon;
         data.valueCopy(Logic.nonplayers[resName]);
+        if(saveData){
+            data.valueCopy(saveData);
+        }
         data.isEnemy = 0;
         nonPlayer.data = data;
         nonPlayer.sc.isDisguising = data.disguise > 0;
         if (nonPlayer.sc.isDisguising) {
             nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE);
         } else {
-            nonPlayer.changeBodyRes(resName, NonPlayer.RES_IDLE000);
+            nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_IDLE000);
         }
         return nonPlayer;
     }
@@ -75,9 +97,17 @@ export default class NonPlayerManager extends BaseManager {
 
     timeDelay = 0;
     updateLogic(dt: number) {
+        Logic.nonPlayerList = [];
         for (let monster of this.nonPlayerList) {
             if (monster && monster.node.active) {
                 monster.updateLogic(dt);
+                let data = monster.data.clone();
+                if(monster.leftLifeTime>0){
+                    data.lifeTime = monster.leftLifeTime;
+                }
+                if(data.currentHealth>0){
+                    Logic.nonPlayerList.push(data);
+                }
             }
         }
     }

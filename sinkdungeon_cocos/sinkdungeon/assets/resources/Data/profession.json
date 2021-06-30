@@ -360,7 +360,7 @@
         "desc": "在一次和劫匪生死搏斗后受伤了在家养病"
     },
     {
-        "nameCn": "喷火大师",
+        "nameCn": "马路天使",
         "nameEn": "",
         "equips": {
             "weapon": "",
@@ -385,12 +385,12 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 1
+            "maxHealth": 2
         },
-        "desc": "又表演了一天节目，回来睡觉"
+        "desc": "今天又是辛苦的一天"
     },
     {
-        "nameCn": "马路天使",
+        "nameCn": "喷火大师",
         "nameEn": "",
         "equips": {
             "weapon": "",
@@ -415,9 +415,9 @@
             "moveSpeed": 0,
             "attackSpeed": 0,
             "dodge": 0,
-            "maxHealth": 2
+            "maxHealth": 1
         },
-        "desc": "今天又是辛苦的一天"
+        "desc": "又表演了一天节目，回来睡觉"
     },
     {
         "nameCn": "魔术师",

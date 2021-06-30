@@ -116,8 +116,8 @@ export default abstract class Boss extends Actor {
     takeDizz(dizzDuration: number): void {
 
     }
-    updateStatus(statusData: StatusData): void {
-        this.data.StatusTotalData.valueCopy(statusData);
+    updateStatus(statusList:StatusData[],totalStatusData:StatusData): void {
+        this.data.StatusTotalData.valueCopy(totalStatusData);
     }
     hideSelf(hideDuration: number): void {
     }

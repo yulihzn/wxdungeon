@@ -96,11 +96,11 @@ export default class ProfessionTalent extends Talent {
         super.init(data);
         this.coolDownId = CoolDownView.PROFESSION;
         let storePointMax = 1;
-        if(this.data.resName == Talent.TALENT_014){
+        if (this.data.resName == Talent.TALENT_014) {
             storePointMax = 3;
         }
-        this.initCoolDown(data,storePointMax);
-        
+        this.initCoolDown(data, storePointMax);
+
     }
 
     protected doSkill() {
@@ -119,8 +119,8 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_009: this.steal(); break;
             case Talent.TALENT_010: break;
             case Talent.TALENT_011: this.aimedShoot(); break;
-            case Talent.TALENT_012: this.showFireBall(); break;
-            case Talent.TALENT_013: this.addBroom(); break;
+            case Talent.TALENT_012: this.addBroom(); break;
+            case Talent.TALENT_013: this.showFireBall(); break;
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL1);
                 this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035', null, null);

@@ -46,6 +46,7 @@ export default class StatusData {
     invisibleDuratonDirect = 0;//隐身持续时长
     
     private from:FromData;//来源
+
     constructor(){
         this.common = new CommonData();
         this.from = new FromData();

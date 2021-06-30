@@ -89,6 +89,12 @@ export default class ProfileManager{
             }
         }
        
+        //npc列表
+        if(data.nonPlayerList){
+            for(let i=0;i<data.nonPlayerList.length;i++){
+                this.data.nonPlayerList[i]=data.nonPlayerList[i];
+            }
+        }
         //加载地图数据
         for(let key in data.rectDungeons){
             let rect = new RectDungeon();
