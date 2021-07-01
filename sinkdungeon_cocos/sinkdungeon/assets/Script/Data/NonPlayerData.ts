@@ -62,12 +62,15 @@ export default class NonPlayerData{
     attackFrames = 2;//攻击帧数
     specialFrames = 2;//特殊攻击帧数
     remoteAudio = '';//远程音效
+    specialAudio = "";//特殊攻击音效 
     isPet = 0;//是否是宠物
     private statusTotalData: StatusData;
     private common:CommonData;
+    private statusList:StatusData[];
     constructor(){
         this.statusTotalData = new StatusData();
         this.common = new CommonData();
+        this.statusList = new Array();
     }
     
     get StatusTotalData() {
@@ -80,6 +83,20 @@ export default class NonPlayerData{
         let data = new CommonData().add(this.common).add(this.statusTotalData.Common);
         return data;
     }
+    get StatusList(){
+        return this.statusList;
+    }
+    set StatusList(list:StatusData[]){
+        if(!list){
+            return;
+        }
+        this.statusList = new Array();
+        for(let s of list){
+            let data = new StatusData();
+            data.valueCopy(s);
+            this.statusList.push(data);
+        }
+    }
     public updateHA(currentHealth:number,maxHealth:number,attackPoint:number){
         this.currentHealth = currentHealth;
         this.common.maxHealth = maxHealth;
@@ -87,6 +104,7 @@ export default class NonPlayerData{
     }
     public valueCopy(data:NonPlayerData):void{
         this.common.valueCopy(data.common);
+        this.StatusList = data.statusList;
         this.nameCn = data.nameCn;
         this.nameEn = data.nameEn;
         this.resName = data.resName;
@@ -131,6 +149,7 @@ export default class NonPlayerData{
         this.specialFrames = data.specialFrames?data.specialFrames:2;
         this.bodyColor = data.bodyColor?data.bodyColor:'#ffffff';
         this.remoteAudio = data.remoteAudio?data.remoteAudio:'';
+        this.specialAudio = data.specialAudio?data.specialAudio:'';
         this.isPet = data.isPet?data.isPet:0;
     }
     public clone():NonPlayerData{
@@ -178,7 +197,9 @@ export default class NonPlayerData{
         e.isTest = this.isTest;
         e.reborn = this.reborn;
         e.remoteAudio = this.remoteAudio;
+        e.specialAudio = this.specialAudio;
         e.isPet = this.isPet;
+        e.StatusList = this.statusList;
         return e;
     }
     

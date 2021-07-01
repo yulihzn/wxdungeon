@@ -417,5 +417,48 @@
         "duration": 999,
         "realDamageOvertime": -0.03,
         "common": {}
+    },
+    "status037": {
+        "nameCn": "柯基爆发",
+        "nameEn": "dog",
+        "spriteFrameName": "status037",
+        "id": 37,
+        "desc": "",
+        "duration": 20,
+        "realDamageOvertime": -2,
+        "variation":1,
+        "common": {
+            "moveSpeed": 100,
+            "realDamage":5,
+            "realRate":20
+        }
+    },
+    "status038": {
+        "nameCn": "狂化试剂",
+        "nameEn": "reagent",
+        "spriteFrameName": "status038",
+        "id": 38,
+        "desc": "",
+        "duration": 15,
+        "variation":1,
+        "finishStatus":"status039",
+        "common": {
+            "moveSpeed": 100,
+            "attackSpeed":100
+        }
+    },
+    "status039": {
+        "nameCn": "狂化试剂副作用",
+        "nameEn": "reagent",
+        "spriteFrameName": "status039",
+        "id": 39,
+        "desc": "",
+        "duration": 15,
+        "variation":0,
+        "common": {
+            "moveSpeed": -150,
+            "attackSpeed":-150,
+            "defence": -100
+        }
     }
 }

@@ -2,10 +2,16 @@ import Actor from "../Base/Actor";
 import EnergyShield from "../Building/EnergyShield";
 import AvatarData from "../Data/AvatarData";
 import DamageData from "../Data/DamageData";
+import FromData from "../Data/FromData";
+import NonPlayerData from "../Data/NonPlayerData";
+import StatusData from "../Data/StatusData";
 import TalentData from "../Data/TalentData";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
+import NonPlayerManager from "../Manager/NonPlayerManager";
+import StatusManager from "../Manager/StatusManager";
 import CoolDownView from "../UI/CoolDownView";
+import AudioPlayer from "../Utils/AudioPlayer";
 import Talent from "./Talent";
 
 /**
@@ -25,16 +31,16 @@ import Talent from "./Talent";
  * 
  * 能量罩是永久的，但是承受一定攻击会被打破
  * 翠金科技：狂化试剂 cd 120s
- * 注射翠金提炼的试剂变狂化，15s提高移动速度100攻击速度100，防御血量攻击为当前的1.5倍但是只能空手近战，
+ * 注射翠金提炼的试剂变狂化，15s提高移动速度100攻击速度100，防御血量攻击为当前的1.5倍,体型变大，
  * 时间结束会进入一个同等时间的虚弱状态移动速度攻击速度下降100且被诅咒
  * 狂化的时候释放职业技能会有对应的效果
  * perk点：
  * 延长狂化时间 30  60 90 
  * 延长狂化强度 200% 250% 300%
  * 攻击附带debuff冰冻减速、诅咒 、中毒、燃烧、短暂眩晕中选一个
- * 宝藏猎人：
- * 弥世逐流: 召唤宠物，如果宠物存在会激活对应宠物的技能
- *  弥世逐流在选择角色的时候会多一个选择宠物的选项，
+ * 弥世逐流：
+ * 宝藏猎人: 召唤宠物，如果宠物存在会激活对应宠物的技能
+ * 宝藏猎人在选择角色的时候会多一个选择宠物的选项，
  * 考虑有家猫，柯基，鹦鹉，橘子鱼，天竺鼠，巴西龟，变色龙，刺猬，火玫瑰蜘蛛，安哥拉兔，科尔鸭，巴马香猪
  * 在现实里，宠物都是在睡觉的
  * 对应家具，猫舍，狗屋，鸟笼，浴缸，宠物笼，可以投食，对应宠物会发叫声和对应动画
@@ -61,7 +67,7 @@ export default class OrganizationTalent extends Talent {
         if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             storePointMax = 1 + Math.floor(Logic.playerData.OilGoldData.level / 5);
         }
-        this.initCoolDown(data,storePointMax);
+        this.initCoolDown(data, storePointMax);
     }
     protected doSkill() {
         if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
@@ -75,10 +81,38 @@ export default class OrganizationTalent extends Talent {
             let shield = this.player.dungeon.buildingManager.addEnergyShield(this.player);
             if (shield) {
                 this.energyShieldList.push(shield);
-                this.scheduleOnce(()=>{
+                this.scheduleOnce(() => {
                     this.talentSkill.IsExcuting = false;
-                },1)
+                }, 1)
             }
+        } else if (this.player.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
+            AudioPlayer.play(AudioPlayer.DOG);
+            if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
+                let data = new StatusData();
+                data.valueCopy(Logic.status[StatusManager.PET_DOG]);
+                data.Common.realRate += Logic.playerData.OilGoldData.level * 1;
+                data.Common.realDamage += Logic.playerData.OilGoldData.level;
+                data.realDamageOvertime -= Logic.playerData.OilGoldData.level / 5;
+                this.player.dungeon.nonPlayerManager.pet.addCustomStatus(data, new FromData());
+            } else {
+                let data = new NonPlayerData();
+                data.valueCopy(Logic.nonplayers[NonPlayerManager.DOG]);
+                data.Common.maxHealth += Logic.playerData.OilGoldData.level * 3;
+                data.currentHealth = data.Common.maxHealth;
+                data.Common.damageMin += Logic.playerData.OilGoldData.level;
+                data.Common.defence += Logic.playerData.OilGoldData.level;
+                this.player.dungeon.nonPlayerManager.addPetFromData(data, this.player.node.position, this.player.dungeon);
+            }
+        } else if (this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
+            let data = new StatusData();
+            data.valueCopy(Logic.status[StatusManager.REAGENT]);
+            data.duration+=Logic.playerData.OilGoldData.level*3;
+            data.Common.maxHealth = this.player.data.FinalCommon.maxHealth*(0.5+Logic.playerData.OilGoldData.level * 0.1) ;
+            data.Common.damageMin = this.player.data.FinalCommon.damageMin*(0.5+Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.defence = this.player.data.FinalCommon.defence*(0.5+Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.remoteDamage = this.player.data.FinalCommon.remoteDamage*(0.5+Logic.playerData.OilGoldData.level * 0.05);
+            data.realDamageDirect -= data.Common.maxHealth;
+            this.player.addCustomStatus(data, new FromData());
         }
     }
 

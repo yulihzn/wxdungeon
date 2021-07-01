@@ -51,6 +51,9 @@ export default class StatusManager extends cc.Component {
     public static readonly WINE_CLOUD = "status033";
     public static readonly FALLEN_DOWN = "status034";
     public static readonly DIZZ_LONG = "status035";
+    public static readonly PET_DOG = "status037";
+    public static readonly REAGENT = "status038";
+    public static readonly REAGENT_SIDE_EFFECT = "status039";
 
 
     @property(cc.Prefab)
@@ -68,6 +71,15 @@ export default class StatusManager extends cc.Component {
 
     start() {
 
+    }
+    addCustomStatus(data:StatusData,from:FromData){
+        if (!data) {
+            return;
+        }
+        let sd = new StatusData();
+        sd.valueCopy(data)
+        sd.From.valueCopy(from);
+        this.showStatus(sd,false);
     }
     addStatus(resName: string, from: FromData, isFromSave?: boolean) {
         if (resName.length < 1) {
@@ -197,7 +209,12 @@ export default class StatusManager extends cc.Component {
                 continue;
             }
             s.updateLogic();
+            if(s.data.duration==0){
+                this.addStatus(s.data.finishStatus,s.data.From);
+                continue;
+            }
             this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0;
+            this.totalStatusData.variation+=s.data.variation?s.data.variation:0;
             this.totalStatusData.Common.add(s.data.Common);
             dataList.push(s.data.clone());
         }

@@ -400,6 +400,15 @@ export default class Player extends Actor {
         }
         this.statusManager.addStatus(statusType, from);
     }
+    addCustomStatus(data: StatusData, from: FromData) {
+        if (!this.node || this.sc.isDied) {
+            return;
+        }
+        this.statusManager.addCustomStatus(data, from);
+    }
+    get IsVariation() {
+        return this.data.StatusTotalData.variation > 0;
+    }
     stopAllDebuffs() {
         if (!this.node) {
             return;
@@ -482,6 +491,7 @@ export default class Player extends Actor {
             arcEx = 2;
             lineEx = 1;
         }
+        this.weaponLeft.shooter.data.bulletSize = this.IsVariation? 0.5:0;
         let fireSuccess = this.weaponLeft.remoteAttack(this.data, this.remoteCooldown, arcEx, lineEx);
         if (fireSuccess) {
             this.stopHiding();
@@ -952,7 +962,8 @@ export default class Player extends Actor {
         if (stone == !this.isStone) {
             this.turnStone(this.isStone);
         }
-        this.node.scaleX = this.isFaceRight ? 1 : -1;
+        this.node.scaleX = this.isFaceRight ? this.getScaleSize() : -this.getScaleSize();
+        this.node.scaleY = this.getScaleSize();
         this.node.opacity = this.invisible ? 80 : 255;
 
         let showHands = this.interactBuilding && this.interactBuilding.isTaken;
@@ -968,6 +979,10 @@ export default class Player extends Actor {
         if (this.avatar) {
             this.avatar.showHandsWithInteract(showHands, isLift);
         }
+    }
+    getScaleSize(): number {
+        let sn = this.IsVariation ? 1.5 : 1;
+        return sn;
     }
     private useSkill(): void {
         if (this.professionTalent && !this.sc.isJumping && !this.sc.isAttacking) {

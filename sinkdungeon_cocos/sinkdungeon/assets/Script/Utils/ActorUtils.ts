@@ -150,4 +150,16 @@ export default class ActorUtils {
         let dis = Logic.getDistance(actor.node.position, target.node.position);
         return dis;
     }
+
+    /**
+     * 目标是否存活
+     * @param target 目标
+     * @returns 
+     */
+    static isTargetAlive(target:Actor):boolean{
+        if(!target|| target.invisible||target.sc.isDied||!target.sc.isShow){
+            return false;
+        }
+        return true;
+    }
 }

@@ -77,6 +77,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly LEVELUP = 'LEVELUP';
     public static readonly COMPLETE = 'COMPLETE';
     public static readonly OILGOLD = 'OILGOLD';
+    public static readonly DOG = 'DOG';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -191,9 +192,11 @@ export default class AudioPlayer extends cc.Component {
     complete: cc.AudioClip = null;
     @property(cc.AudioClip)
     oilgold: cc.AudioClip = null;
-    @property(cc.AudioClip )
+    @property(cc.AudioClip)
+    dog: cc.AudioClip = null;
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
-    @property(cc.AudioClip )
+    @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
     lastName = '';
     isSoundNeedPause = false;
@@ -202,7 +205,7 @@ export default class AudioPlayer extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name, detail.bgm,detail.loop); });
+        EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name, detail.bgm, detail.loop); });
         EventHelper.on(EventHelper.STOP_ALL_AUDIO_EFFECT, (detail) => { this.stopAllEffect(); });
         cc.audioEngine.setMusicVolume(0.2);
         cc.audioEngine.setEffectsVolume(0.3);
@@ -263,22 +266,23 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.LEVELUP] = this.levelup;
         this.audioList[AudioPlayer.COMPLETE] = this.complete;
         this.audioList[AudioPlayer.OILGOLD] = this.oilgold;
+        this.audioList[AudioPlayer.DOG] = this.dog;
 
     }
     playbg() {
-        let bgms = [this.bg01,this.bg02];
+        let bgms = [this.bg01, this.bg02];
         let clip = bgms[Logic.lastBgmIndex];
-        if (clip && (!cc.audioEngine.isMusicPlaying()||this.lastBgmIndex != Logic.lastBgmIndex)) {
+        if (clip && (!cc.audioEngine.isMusicPlaying() || this.lastBgmIndex != Logic.lastBgmIndex)) {
             cc.audioEngine.stopMusic();
             cc.audioEngine.playMusic(clip, true);
             this.lastBgmIndex = Logic.lastBgmIndex;
         }
 
     }
-    private stopAllEffect(){
+    private stopAllEffect() {
         cc.audioEngine.stopAllEffects();
     }
-    private playSound(name: string, isBgm: boolean,loop:boolean) {
+    private playSound(name: string, isBgm: boolean, loop: boolean) {
         if (name == this.lastName && this.isSoundNeedPause) {
             return;
         }
@@ -292,8 +296,8 @@ export default class AudioPlayer extends cc.Component {
                     break;
             }
         } else if (this.audioList[name]) {
-            cc.audioEngine.playEffect(this.audioList[name],loop);
-            
+            cc.audioEngine.playEffect(this.audioList[name], loop);
+
         }
         this.lastName = name;
         this.isSoundNeedPause = true;
@@ -302,10 +306,10 @@ export default class AudioPlayer extends cc.Component {
         }, 0.1)
     }
 
-    static play(audioName: string, bgm?: boolean,loop?:boolean) {
-        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: audioName, bgm: bgm,loop:loop });
+    static play(audioName: string, bgm?: boolean, loop?: boolean) {
+        EventHelper.emit(EventHelper.PLAY_AUDIO, { name: audioName, bgm: bgm, loop: loop });
     }
     static stopAllEffect() {
-        EventHelper.emit(EventHelper.STOP_ALL_AUDIO_EFFECT,{});
+        EventHelper.emit(EventHelper.STOP_ALL_AUDIO_EFFECT, {});
     }
 }

@@ -234,6 +234,7 @@
         "specialAttack":15,
         "sizeType":0.5,
         "bulletType":"bullet020",
+        "specialAudio":"CHICKEN",
         "common": {
             "moveSpeed": 50,
             "maxHealth": 100,
@@ -410,6 +411,7 @@
         "specialAttack":30,
         "specialType":"special019",
         "specialDistance":64,
+        "specialAudio":"ZOMBIE_SPITTING",
         "common": {
             "moveSpeed": 200,
             "maxHealth": 15,
@@ -711,6 +713,7 @@
         "specialAttack":10,
         "specialType":"special032",
         "specialDelay":0.4,
+        "specialAudio":"ZOMBIE_ATTACK",
         "common": {
             "moveSpeed": 300,
             "maxHealth": 20,

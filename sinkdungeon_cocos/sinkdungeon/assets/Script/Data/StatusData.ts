@@ -44,6 +44,8 @@ export default class StatusData {
     dizzDurationDirect = 0;//瞬间眩晕时长
     dizzDurationOvertime = 0;//持续眩晕时长
     invisibleDuratonDirect = 0;//隐身持续时长
+    variation = 0;//变异
+    finishStatus = '';//状态结束附加新的状态
     
     private from:FromData;//来源
 
@@ -83,6 +85,8 @@ export default class StatusData {
         this.invisibleDuratonDirect = data.invisibleDuratonDirect?data.invisibleDuratonDirect:0;
         this.dreamDirect = data.dreamDirect?data.dreamDirect:0;
         this.dreamOvertime = data.dreamOvertime?data.dreamOvertime:0;
+        this.variation = data.variation?data.variation:0;
+        this.finishStatus = data.finishStatus?data.finishStatus:'';
     }
     public clone(): StatusData {
         let e = new StatusData();
@@ -107,6 +111,8 @@ export default class StatusData {
         e.dreamDirect = this.dreamDirect;
         e.dreamOvertime = this.dreamOvertime;
         e.type = this.type;
+        e.variation = this.variation;
+        e.finishStatus = this.finishStatus;
         return e;
     }
 }

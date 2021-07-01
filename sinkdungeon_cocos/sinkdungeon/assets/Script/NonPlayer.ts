@@ -116,7 +116,9 @@ export default class NonPlayer extends Actor {
     leftLifeTime = 0;
 
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>;
-
+    get IsVariation() {
+        return this.isVariation || this.data.StatusTotalData.variation > 0;
+    }
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
         this.sc.isAttacking = false;
@@ -125,10 +127,7 @@ export default class NonPlayer extends Actor {
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         this.mat = this.bodySprite.getComponent(cc.Sprite).getMaterial(0);
         this.boxCollider = this.getComponent(cc.BoxCollider);
-        if (this.isVariation) {
-            let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-            this.node.scale = NonPlayer.SCALE_NUM * scaleNum;
-        }
+        this.node.scale = this.getScaleSize();
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
         this.shadow = this.sprite.getChildByName('shadow');
@@ -155,20 +154,23 @@ export default class NonPlayer extends Actor {
         // this.graphics.strokeColor = cc.Color.RED;
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
-        
-        if (this.data.lifeTime > 0) {
-            this.scheduleOnce(()=>{
-                let lifeTimeStep = new NextStep();
-                this.leftLifeTime = this.data.lifeTime;
-                lifeTimeStep.next(()=>{},this.data.lifeTime,true,()=>{
-                    this.leftLifeTime--;
-                    if(this.leftLifeTime<=0&&this.data){
-                        this.data.currentHealth = 0;
-                    }
-                })
-            },1)
-        }
     }
+    start() {
+        this.changeZIndex();
+        this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
+        if (this.data.lifeTime > 0) {
+            let lifeTimeStep = new NextStep();
+            this.leftLifeTime = this.data.lifeTime;
+            lifeTimeStep.next(() => { }, this.data.lifeTime, true, () => {
+                this.leftLifeTime--;
+                if (this.leftLifeTime <= 0 && this.data) {
+                    this.data.currentHealth = 0;
+                }
+            })
+        }
+        this.addSaveStatusList();
+    }
+    /**挨打光效 */
     private hitLightS(damage: DamageData) {
         let show = true;
         let resName = 'hitlight1';
@@ -204,6 +206,13 @@ export default class NonPlayer extends Actor {
         }
 
     }
+    /**加载保存的状态 */
+    private addSaveStatusList() {
+        if (this.statusManager) {
+            this.statusManager.addStatusListFromSave(this.data.StatusList);
+        }
+    }
+    /**高亮 */
     private hitLight(isHit: boolean) {
         if (!this.mat) {
             this.mat = this.node.getChildByName('sprite').getChildByName('body')
@@ -211,6 +220,7 @@ export default class NonPlayer extends Actor {
         }
         this.mat.setProperty('addColor', isHit ? cc.color(200, 200, 200, 100) : cc.Color.TRANSPARENT);
     }
+    /**添加随机属性图标 */
     public addAttrIcon() {
         if (!this.attrNode) {
             this.attrNode = this.node.getChildByName('attr');
@@ -222,6 +232,9 @@ export default class NonPlayer extends Actor {
             this.attrNode.addChild(attr);
         }
     }
+    /**
+     * 显示攻击叹号
+     */
     private showDangerTips() {
         this.dangerTips.opacity = 255;
         this.scheduleOnce(() => { this.dangerTips.opacity = 0; }, 1)
@@ -339,7 +352,7 @@ export default class NonPlayer extends Actor {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.from.valueCopy(FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed));
-            if (this.isVariation) {
+            if (this.IsVariation) {
                 this.shooter.data.bulletSize = 0.5;
             }
             this.shooter.dungeon = this.dungeon;
@@ -359,8 +372,6 @@ export default class NonPlayer extends Actor {
         }
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
-
-
         let pos = target.node.position.clone().sub(this.node.position);
 
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -410,12 +421,13 @@ export default class NonPlayer extends Actor {
                 this.dangerBox.show(this.data.attackType, isSpecial, this.data.boxType == 5, pos);
             }
             if (isSpecial) {
+
                 if (this.data.specialType == SpecialManager.AFTER_DOWN) {
                     this.dangerBox.show(ActorAttackBox.ATTACK_STAB, false, false, pos);
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
-                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.isVariation);
+                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.IsVariation);
                 }, this.data.specialDelay);
             }
         });
@@ -434,7 +446,7 @@ export default class NonPlayer extends Actor {
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
-                    this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.isVariation);
+                    this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.IsVariation);
                 }, this.data.specialDelay);
             }
             if (attacking) {
@@ -481,14 +493,7 @@ export default class NonPlayer extends Actor {
         }
         if (isSpecial) {
             this.showDangerTips();
-            if (this.data.resName == MonsterManager.MONSTER_CHICKEN) {
-                AudioPlayer.play(AudioPlayer.CHICKEN);
-            }
-            if (this.data.specialType == SpecialManager.AFTER_VENOM) {
-                AudioPlayer.play(AudioPlayer.ZOMBIE_SPITTING);
-            } else if (this.data.specialType == SpecialManager.AFTER_DOWN) {
-                AudioPlayer.play(AudioPlayer.ZOMBIE_ATTACK);
-            }
+            AudioPlayer.play(this.data.specialAudio);
             allAction = cc.tween().then(beforetween).then(specialRemote).then(aftertween);
             if (isMelee && specialTypeCanMelee) {
                 allAction = cc.tween().then(beforetween).then(specialMelee).then(aftertween);
@@ -496,14 +501,6 @@ export default class NonPlayer extends Actor {
         }
         cc.tween(this.sprite).then(allAction).start();
     }
-
-    private playDied() {
-        this.sprite.stopAllActions();
-        this.bodySprite.node.angle = 0;
-        this.anim.play('MonsterDie');
-        this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003);
-    }
-
 
     //移动，返回速度
     private move(pos: cc.Vec3, speed: number) {
@@ -538,10 +535,7 @@ export default class NonPlayer extends Actor {
         this.rigidbody.linearVelocity = this.currentlinearVelocitySpeed.clone();
     }
 
-    start() {
-        this.changeZIndex();
-        this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
-    }
+
     /**
      * 是否玩家背后攻击
      */
@@ -559,7 +553,7 @@ export default class NonPlayer extends Actor {
         return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
     }
     fall() {
-        if (this.data.isStatic > 0 || this.data.isHeavy > 0 || this.isVariation) {
+        if (this.data.isStatic > 0 || this.data.isHeavy > 0 || this.IsVariation) {
             return;
         }
         this.sc.isFalling = true;
@@ -669,6 +663,12 @@ export default class NonPlayer extends Actor {
         }
         this.statusManager.addStatus(statusType, from);
     }
+    addCustomStatus(data: StatusData, from: FromData) {
+        if (!this.node || this.sc.isDied) {
+            return;
+        }
+        this.statusManager.addCustomStatus(data, from);
+    }
     private showAttackEffect(isDashing: boolean) {
         this.effectNode.setPosition(cc.v3(0, 32));
         if (!isDashing) {
@@ -720,7 +720,7 @@ export default class NonPlayer extends Actor {
                         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
                     }
                 }
-                this.scheduleOnce(() => { this.node.active = false; }, 5);
+                this.scheduleOnce(() => { this.node.active = false; }, this.data.isPet ? 0 : 5);
             }
         }, 2);
     }
@@ -728,7 +728,7 @@ export default class NonPlayer extends Actor {
         let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
         let rand = rand4save.rand();
         let percent = 0.75;
-        if (this.isVariation) {
+        if (this.IsVariation) {
             percent = 0.6;
         }
         percent = percent - this.killPlayerCount / 10;
@@ -745,7 +745,7 @@ export default class NonPlayer extends Actor {
 
         if (this.dungeon) {
             let count = 1;
-            if (this.isVariation) {
+            if (this.IsVariation) {
                 count = 2;
             }
             if (this.killPlayerCount > 0) {
@@ -790,12 +790,14 @@ export default class NonPlayer extends Actor {
             || !this.sc.isShow || this.sc.isDizzing || this.sc.isDisguising || this.sc.isDodging || this.sc.isDashing;
     }
 
-    updateAttack() {
+    updateAttack(target: Actor, targetDis: number) {
         if (this.isPassive) {
             return;
         }
-        let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
-        let targetDis = ActorUtils.getNearestTargetDistance(this, target);
+        //目标不存在、死亡或者隐身直接返回
+        if (!ActorUtils.isTargetAlive(target)) {
+            return;
+        }
         //特殊攻击
         if (this.data.specialAttack > 0) {
             this.specialStep.next(() => {
@@ -812,9 +814,9 @@ export default class NonPlayer extends Actor {
                 range = 600;
             }
         }
-        let canMelee = this.data.melee > 0;
-        let canRemote = this.data.remote > 0;
-        if (canMelee && targetDis < range * this.node.scaleY && !this.meleeStep.IsInCooling && target && !target.invisible) {
+        let canMelee = this.data.melee > 0 && targetDis < range * this.node.scaleY;
+        let canRemote = this.data.remote > 0 && targetDis < 600 * this.node.scaleY;
+        if (canMelee && !this.meleeStep.IsInCooling) {
             this.meleeStep.next(() => {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
@@ -830,7 +832,7 @@ export default class NonPlayer extends Actor {
                 }, target, this.specialStep.IsExcuting, true, isMiss)
 
             }, this.data.melee);
-        } else if (canRemote && targetDis < 600 * this.node.scaleY && target && !target.invisible) {
+        } else if (canRemote) {
             this.remoteStep.next(() => {
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
@@ -873,9 +875,9 @@ export default class NonPlayer extends Actor {
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
 
-        this.updateAttack();
         let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
         let targetDis = ActorUtils.getNearestTargetDistance(this, target);
+        this.updateAttack(target, targetDis);
         //靠近取消伪装
         if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
             this.sc.isDisguising = false;
@@ -886,11 +888,9 @@ export default class NonPlayer extends Actor {
                 this.sc.isBlinking = true;
             }, this.data.blink, true)
         }
-
-        //冲刺
         let speed = this.data.FinalCommon.moveSpeed;
-        if (target && targetDis < 600 && targetDis > 100 && !target.sc.isDied && !target.invisible && this.data.dash > 0
-            && !this.isPassive) {
+        //冲刺
+        if (this.data.dash > 0 && !this.isPassive && ActorUtils.isTargetAlive(target) && targetDis < 600 && targetDis > 100) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true;
                 this.enterWalk();
@@ -900,32 +900,38 @@ export default class NonPlayer extends Actor {
                 this.scheduleOnce(() => { if (this.node) { this.sc.isDashing = false; } }, 2);
             }, this.data.dash);
         }
-        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
+        //npc移动在没有敌对目标的时候转变目标为玩家
+        if (!ActorUtils.isTargetAlive(target) && this.data.isFollow > 0 && this.data.isEnemy < 1) {
+            target = this.dungeon.player;
             targetDis = ActorUtils.getNearestTargetDistance(this, this.dungeon.player);
         }
-        let isTracking = targetDis < 500 && targetDis > 64 && this.data.melee > 0;
+        //是否追踪目标
+        let isTracking = targetDis < 500 && targetDis > 48 && this.data.melee > 0;
         if (targetDis < 500 && targetDis > 300 && this.data.remote > 0) {
             isTracking = true;
         }
-        if (target && target.invisible) {
+        if (!ActorUtils.isTargetAlive(target)) {
             isTracking = false;
         }
+        //随机选取位置，如果在追踪选择目标位置
+        let pos = cc.v3(0, 0);
+        pos.x += Logic.getRandomNum(0, 400) - 200;
+        pos.y += Logic.getRandomNum(0, 400) - 200;
+        if (isTracking) {
+            pos = this.getMovePosFromTarget(target);
+        }
 
-        let needStop = (this.data.melee > 0 && targetDis < 60) || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300);
-        if (!this.shooter.isAiming && targetDis > 64 * this.node.scaleY && !this.isPassive && !needStop) {
-            if (this.sc.isMoving && isTracking || !this.sc.isMoving) {
-                this.moveStep.next(() => {
-                    this.sc.isMoving = true;
-                    let pos = cc.v3(0, 0);
-                    pos.x += Logic.getRandomNum(0, 400) - 200;
-                    pos.y += Logic.getRandomNum(0, 400) - 200;
-                    if (isTracking) {
-                        pos = this.getMovePosFromTarget(target);
-                    }
-                    this.move(pos, isTracking ? speed * 0.5 : speed);
-                }, isTracking ? 0 : 2, true);
-            }
-
+        //相隔指定长度的时候需要停下来，否则执行移动操作
+        let needStop = (this.data.melee > 0 && targetDis < 48)
+            || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300)
+            || this.shooter.isAiming || this.isPassive;
+        if (needStop) {
+            this.sc.isMoving = false;
+        } else {
+            this.moveStep.next(() => {
+                this.sc.isMoving = true;
+                this.move(pos, isTracking ? speed * 0.5 : speed);
+            }, isTracking ? 0 : 0.5, true);
         }
 
         //隐匿
@@ -936,11 +942,9 @@ export default class NonPlayer extends Actor {
         if (this.dungeon && this.sc.isDashing) {
             this.dashlight.opacity = 128;
         }
-        if (this.sc.isDashing) {
-            this.setLinearVelocity(this.currentlinearVelocitySpeed);
-        }
-        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)) {
-            this.sc.isMoving = false;
+        this.setLinearVelocity(this.currentlinearVelocitySpeed);
+        if (this.sc.isMoving && this.data.isHeavy < 1 && this.data.isStatic < 1 && this.currentlinearVelocitySpeed.x != 0) {
+            this.isFaceRight = this.currentlinearVelocitySpeed.x > 0;
         }
 
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
@@ -961,10 +965,10 @@ export default class NonPlayer extends Actor {
         this.healthBar.node.x = -30 * this.node.scaleX;
         this.healthBar.node.y = this.data.boxType == 3 || this.data.boxType == 5 ? 150 : 120;
         //变异为紫色
-        this.healthBar.progressBar.barSprite.node.color = this.isVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
+        this.healthBar.progressBar.barSprite.node.color = this.IsVariation ? cc.color(128, 0, 128) : cc.color(194, 0, 0);
         this.healthBar.progressBar.barSprite.node.color = this.killPlayerCount > 0 ? cc.color(255, 215, 0) : this.healthBar.progressBar.barSprite.node.color;
 
-        this.dashlight.color = this.isVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);
+        this.dashlight.color = this.IsVariation ? cc.color(0, 0, 0) : cc.color(255, 255, 255);
         if (this.attrNode) {
             this.attrNode.opacity = this.healthBar.node.opacity;
         }
@@ -982,10 +986,6 @@ export default class NonPlayer extends Actor {
             newPos = newPos.addSelf(cc.v3(-1, 0));
         }
         let pos = Dungeon.getPosInMap(newPos);
-        if (this.data.isFollow > 0 && this.data.isEnemy < 1 && this.dungeon.isClear) {
-            pos = ActorUtils.getPlayerPosition(this, this.dungeon);
-            target = this.dungeon.player;
-        }
         pos = pos.sub(this.node.position);
         if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isStatic < 1) {
             this.changeFaceRight(target);
@@ -1024,7 +1024,7 @@ export default class NonPlayer extends Actor {
 
     getScaleSize(): number {
         let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
-        let sn = this.isVariation ? NonPlayer.SCALE_NUM * scaleNum : scaleNum;
+        let sn = this.IsVariation ? NonPlayer.SCALE_NUM * scaleNum : scaleNum;
         return sn;
     }
 
@@ -1037,7 +1037,10 @@ export default class NonPlayer extends Actor {
     public enterShow() {
         this.sprite.stopAllActions();
         this.bodySprite.node.color = cc.Color.BLACK;
-        cc.tween(this.bodySprite.node).to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) }).call(() => { this.sc.isShow = true; }).start();
+        cc.tween(this.bodySprite.node).to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) }).call(() => {
+            this.sc.isShow = true;
+
+        }).start();
     }
     /**伪装 */
     public enterDisguise() {
@@ -1112,8 +1115,9 @@ export default class NonPlayer extends Actor {
     }
 
 
-    updateStatus(statusList:StatusData[],totalStatusData:StatusData): void {
+    updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {
         this.data.StatusTotalData.valueCopy(totalStatusData);
+        this.data.StatusList = statusList;
     }
     hideSelf(hideDuration: number): void {
     }

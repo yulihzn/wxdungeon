@@ -727,7 +727,7 @@ export default class BuildingManager extends BaseManager {
         shield.position = player.node.position.clone();
         let script = shield.getComponent(EnergyShield);
         let scale = 8+Math.floor(Logic.playerData.OilGoldData.level/5);
-        script.init(player,10+Logic.playerData.OilGoldData.level*5,scale);
+        script.init(player,10+Logic.playerData.OilGoldData.level*3,scale);
         return script;
     }
     checkTimeDelay = 0;

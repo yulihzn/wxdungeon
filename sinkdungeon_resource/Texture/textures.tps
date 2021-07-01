@@ -542,6 +542,9 @@
             <key type="filename">status/status024.png</key>
             <key type="filename">status/status026.png</key>
             <key type="filename">status/status027.png</key>
+            <key type="filename">status/status037.png</key>
+            <key type="filename">status/status038.png</key>
+            <key type="filename">status/status039.png</key>
             <key type="filename">tile/tile.png</key>
             <key type="filename">tile/tile_deck001.png</key>
             <key type="filename">tile/tile_deck002.png</key>
