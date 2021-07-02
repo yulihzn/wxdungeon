@@ -461,4 +461,5 @@ export default class InteractBuilding extends Building {
     private addTargetStatus(rate: number, target: Actor, statusType) {
         if (Logic.getRandomNum(0, 100) < rate) { target.addStatus(statusType, new FromData()); }
     }
+    
 }

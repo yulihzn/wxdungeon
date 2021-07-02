@@ -185,14 +185,14 @@ export default class EquipmentManager extends BaseManager {
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
             , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageMin > 0) {
-            damageMin = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
+            damageMin = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save);
             level = damageMin.y > level ? damageMin.y : level;
         }
         //远程攻击0-5 +chapter
         let remoteDamage = cc.v3(0, 0);
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE])
             && data.Common.remoteDamage > 0) {
-            remoteDamage = rand4save.rand() < 0.2 ? EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save) : cc.v3(0, 0);
+            remoteDamage = rand4save.rand() < 0.2 ? EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save) : cc.v3(0, 0);
             level = remoteDamage.y > level ? remoteDamage.y : level;
         }
         //最大攻击0-5 +chapter
@@ -200,7 +200,7 @@ export default class EquipmentManager extends BaseManager {
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
             , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageMax > 0) {
-            damageMax = EquipmentManager.getRandomQuality(damageMin.x, damageMin.x + 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
+            damageMax = EquipmentManager.getRandomQuality(damageMin.x, damageMin.x + EquipmentManager.getRandomRange(), chestQuality, rand4save);
             level = damageMax.y > level ? damageMax.y : level;
             desc.prefix += damageMax.y > 2 ? '强力' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -212,7 +212,7 @@ export default class EquipmentManager extends BaseManager {
             , InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHOES, InventoryManager.SHIELD
             , InventoryManager.CLOTHES])
             && data.Common.defence > 0) {
-            defence = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
+            defence = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save);
             level = defence.y > level ? defence.y : level;
             desc.prefix += defence.y > 2 ? '坚固' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -236,7 +236,7 @@ export default class EquipmentManager extends BaseManager {
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.WEAPON, InventoryManager.GLOVES
             , InventoryManager.CLOTHES, InventoryManager.REMOTE])
             && data.Common.damageBack > 0) {
-            damageBack = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
+            damageBack = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save);
             level = damageBack.y > level ? damageBack.y : level;
             desc.prefix += damageBack.y > 2 ? '阴冷' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -289,7 +289,7 @@ export default class EquipmentManager extends BaseManager {
             , InventoryManager.GLOVES, InventoryManager.CLOAK, InventoryManager.TROUSERS, InventoryManager.SHIELD
             , InventoryManager.SHOES, InventoryManager.CLOTHES])
             && data.Common.maxHealth > 0) {
-            health = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
+            health = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save);
             level = health.y > level ? health.y : level;
             desc.prefix += health.y > 2 ? '健康' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
@@ -298,14 +298,14 @@ export default class EquipmentManager extends BaseManager {
         //梦境0-5 +chapter
         let dream = cc.v3(0, 0);
         if (data.Common.maxDream > 0) {
-            dream = EquipmentManager.getRandomQuality(0, 5 + Logic.chapterMaxIndex, chestQuality, rand4save);
+            dream = EquipmentManager.getRandomQuality(0, EquipmentManager.getRandomRange(), chestQuality, rand4save);
             level = dream.y > level ? dream.y : level;
             desc.prefix += dream.y > 2 ? '梦幻' : '';
             desc.color = EquipmentManager.getMixColor(desc.color
                 , dream.y > 2 ? EquipmentManager.COLOR_DREAM : '#000000');
         }
         let damageRate = 0.1;
-        let damage = 5 + Logic.chapterMaxIndex;
+        let damage = EquipmentManager.getRandomRange();
         if (EquipmentManager.isTheEquipType(data.equipmetType, [InventoryManager.GLOVES, InventoryManager.REMOTE, InventoryManager.WEAPON])) {
             //流血伤害0-5 +chapter
             let realDamage = rand4save.rand() < damageRate ? EquipmentManager.getRandomQuality(0, damage, chestQuality, rand4save) : cc.v3(0, 0);
@@ -377,6 +377,9 @@ export default class EquipmentManager extends BaseManager {
         desc.common.curseRate = curseRate.x;
         desc.common.maxDream = dream.x;
         return desc;
+    }
+    static getRandomRange(){
+        return 5 + Logic.chapterMaxIndex + Math.floor(Logic.playerData.OilGoldData.level/5);
     }
     static isTheEquipType(theType: string, types: string[]): boolean {
         let isTheType = false;

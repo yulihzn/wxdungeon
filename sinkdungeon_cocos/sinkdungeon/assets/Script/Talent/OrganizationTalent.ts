@@ -104,6 +104,7 @@ export default class OrganizationTalent extends Talent {
                 this.player.dungeon.nonPlayerManager.addPetFromData(data, this.player.node.position, this.player.dungeon);
             }
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
+            AudioPlayer.play(AudioPlayer.PICK_ITEM);
             let data = new StatusData();
             data.valueCopy(Logic.status[StatusManager.REAGENT]);
             data.duration+=Logic.playerData.OilGoldData.level*3;

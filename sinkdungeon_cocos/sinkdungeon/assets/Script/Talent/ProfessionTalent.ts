@@ -124,6 +124,7 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL1);
                 this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035', null, null);
+                this.scheduleOnce(()=>{this.IsExcuting = false;},0.1)
                 break;
             case Talent.TALENT_015: this.dash(); break;
             case Talent.TALENT_016: this.addClearCircle(); break;
@@ -134,8 +135,11 @@ export default class ProfessionTalent extends Talent {
     }
     private addClearCircle() {
         this.player.stopAllDebuffs();
+            if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
+                this.player.dungeon.nonPlayerManager.pet.stopAllDebuffs();
+            }
         this.addAoe(this.aoe, this.player.getCenterPosition(), new AreaOfEffectData()
-            .init(2, 0.2, 0, 2, IndexZ.getActorZIndex(this.player.getCenterPosition())
+            .init(2, 0.2, 0, this.player.IsVariation?3:2, IndexZ.getActorZIndex(this.player.getCenterPosition())
                 , false, false, true, false, false, new DamageData(0), new FromData(), [])
             , ['clearcircle1', 'clearcircle2', 'clearcircle3', 'clearcircle4'], false, true);
     }
@@ -152,6 +156,9 @@ export default class ProfessionTalent extends Talent {
         light.position = cc.v3(0, 64);
         light.zIndex = IndexZ.OVERHEAD;
         this.player.addStatus(StatusManager.HEALING, new FromData());
+        if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
+            this.player.dungeon.nonPlayerManager.pet.addStatus(StatusManager.HEALING, new FromData());
+        }
     }
 
     private rageShoot() {
@@ -171,6 +178,9 @@ export default class ProfessionTalent extends Talent {
         AudioPlayer.play(AudioPlayer.TAKEPHOTO);
         cc.tween(this.sprite.node).call(() => {
             this.player.addStatus(StatusManager.TALENT_FLASH_SPEED, new FromData());
+            if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
+                this.player.dungeon.nonPlayerManager.pet.addStatus(StatusManager.TALENT_FLASH_SPEED, new FromData());
+            }
             this.sprite.spriteFrame = Logic.spriteFrameRes('flash');
             this.sprite.node.width = 128;
             this.sprite.node.height = 128;
@@ -182,7 +192,7 @@ export default class ProfessionTalent extends Talent {
             this.sprite.node.height = 2000;
             this.sprite.node.opacity = 255;
         }).to(0.1, { opacity: 0 }).call(() => {
-            this.addStatus2NearEnemy(StatusManager.TALENT_FLASH_DIZZ, 400);
+            this.addStatus2NearEnemy(StatusManager.TALENT_FLASH_DIZZ, this.player.IsVariation?500:400);
             this.sprite.spriteFrame = null;
         }).start();
 
@@ -191,6 +201,9 @@ export default class ProfessionTalent extends Talent {
         AudioPlayer.play(AudioPlayer.RELOAD);
         cc.tween(this.sprite.node).call(() => {
             this.player.addStatus(StatusManager.TALENT_AIMED, new FromData());
+            if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
+                this.player.dungeon.nonPlayerManager.pet.addStatus(StatusManager.TALENT_AIMED, new FromData());
+            }
             this.sprite.spriteFrame = Logic.spriteFrameRes('talentshoot');
             this.sprite.node.width = 64;
             this.sprite.node.height = 64;
@@ -205,6 +218,9 @@ export default class ProfessionTalent extends Talent {
     }
     private dash() {
         let speed = 1500;
+        if(this.player.IsVariation){
+            speed = 2000;
+        }
         AudioPlayer.play(AudioPlayer.DASH);
         this.schedule(() => {
             this.player.getWalkSmoke(this.node.parent, this.node.position);
@@ -237,8 +253,12 @@ export default class ProfessionTalent extends Talent {
             AudioPlayer.play(AudioPlayer.BOOM);
             let d = this.player.data.getFinalAttackPoint();
             d.isMelee = true;
+            let scale = 2;
+            if (this.player.IsVariation) {
+                scale += 1;
+            }
             this.player.shooterEx.fireAoe(this.skyhandPrefab, new AreaOfEffectData()
-                .init(0, 0.15, 0, 2 + Logic.chapterMaxIndex, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.DIZZ]));
+                .init(0, 0.15, 0, scale, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.DIZZ]));
             this.talentSkill.IsExcuting = false;
         }, 0.8)
     }
@@ -273,33 +293,50 @@ export default class ProfessionTalent extends Talent {
     showSmoke() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = new DamageData();
-        d.magicDamage = 3 + Logic.chapterMaxIndex;
+        d.magicDamage = 3 + Logic.playerData.OilGoldData.level;
+        let scale = 1;
+        if (this.player.IsVariation) {
+            scale += 1;
+        }
         this.shoot(this.player.shooterEx, 0, 0, 'bullet041', this.smokePrefab, new AreaOfEffectData().init(
-            7, 0.1, 0, 1, IndexZ.OVERHEAD, false, false, false, false, false, new DamageData(), new FromData(), [StatusManager.WINE_CLOUD]
+            7, 0.1, 0, scale, IndexZ.OVERHEAD, false, false, false, false, false, new DamageData(), new FromData(), [StatusManager.WINE_CLOUD]
         ));
     }
     private showFireBall() {
         AudioPlayer.play(AudioPlayer.SKILL_FIREBALL);
         let d = new DamageData();
-        d.magicDamage = 3 + Logic.chapterMaxIndex;
+        d.magicDamage = 3 + Logic.playerData.OilGoldData.level;
         d.isMelee = true;
+        let scale = 4;
+        if (this.player.IsVariation) {
+            scale += 1;
+        }
         this.player.shooterEx.fireAoe(this.fireball, new AreaOfEffectData()
-            .init(0, 0.1, 0, 4, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.BURNING]));
+            .init(0, 0.1, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.BURNING]));
     }
     private showIceThron() {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
+
+        let d = new DamageData();
+        d.magicDamage = 3 + Logic.playerData.OilGoldData.level;
+        d.isMelee = true;
+        let offset1 = 100;
+        let offset2 = 60;
+        let scale = 3;
+        if (this.player.IsVariation) {
+            scale += 1;
+            offset1 = 150;
+            offset2 = 90;
+        }
         const angles1 = [0, 45, 90, 135, 180, 225, 270, 315];
-        const posRight = [cc.v3(0, 100), cc.v3(-60, 60), cc.v3(-100, 0), cc.v3(-60, -60), cc.v3(0, -100), cc.v3(60, -60), cc.v3(100, 0), cc.v3(60, 60)];
-        const posLeft = [cc.v3(0, -100), cc.v3(-60, -60), cc.v3(-100, 0), cc.v3(-60, 60), cc.v3(0, 100), cc.v3(60, 60), cc.v3(100, 0), cc.v3(60, -60)];
+        const posRight = [cc.v3(0, offset1), cc.v3(-offset2, offset2), cc.v3(-offset1, 0), cc.v3(-offset2, -offset2), cc.v3(0, -offset1), cc.v3(offset2, -offset2), cc.v3(offset1, 0), cc.v3(offset2, offset2)];
+        const posLeft = [cc.v3(0, -offset1), cc.v3(-offset2, -offset2), cc.v3(-offset1, 0), cc.v3(-offset2, offset2), cc.v3(0, offset1), cc.v3(offset2, offset2), cc.v3(offset1, 0), cc.v3(offset2, -offset2)];
         let a1 = [angles1];
         let a = a1;
-        let d = new DamageData();
-        d.magicDamage = 3 + Logic.chapterMaxIndex;
-        d.isMelee = true;
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             this.player.shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
-                .init(0, 2, 0, 3, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(this.player.isFaceRight ? posRight[i] : posLeft[i]), angles1[i], null, true);
+                .init(0, 2, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(this.player.isFaceRight ? posRight[i] : posLeft[i]), angles1[i], null, true);
         }
     }
 
@@ -318,16 +355,24 @@ export default class ProfessionTalent extends Talent {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = this.player.data.getFinalAttackPoint();
         d.isMelee = true;
+        let scale = 1.5;
+        if (this.player.IsVariation) {
+            scale += 1;
+        }
         this.player.shooterEx.fireAoe(this.broomPrefab, new AreaOfEffectData()
-            .init(0, 0.5, 0.2, 1.5, IndexZ.OVERHEAD, false, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32));
+            .init(0, 0.5, 0.2, scale, IndexZ.OVERHEAD, false, true, true, true, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(0, 32 * this.player.node.scaleY));
     }
 
     private cooking() {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);
         let d = this.player.data.getFinalAttackPoint();
         d.isMelee = true;
+        let scale = 1;
+        if (this.player.IsVariation) {
+            scale += 1;
+        }
         this.player.shooterEx.fireAoe(this.cookingPrefab, new AreaOfEffectData()
-            .init(0, 2, 0, 1, IndexZ.OVERHEAD, false, false, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
+            .init(0, 2, 0, scale, IndexZ.OVERHEAD, false, false, false, false, false, d, new FromData(), []), cc.v3(0, 32), 0, (actor: Actor) => {
                 let monster = actor.node.getComponent(NonPlayer);
                 if (monster) {
                     monster.dungeon.addItem(monster.node.position.clone(), `food${monster.data.resName.replace('monster', '')}`);
@@ -344,10 +389,13 @@ export default class ProfessionTalent extends Talent {
         let d = new DamageData();
         d.isMelee = true;
         let scale = 5;
-        d.physicalDamage = 2 + Logic.chapterMaxIndex;
+        d.physicalDamage = 2 + Logic.playerData.OilGoldData.level;
         if (this.player.weaponRight.meleeWeapon.IsSword) {
             d = this.player.data.getFinalAttackPoint();
             scale = 6;
+        }
+        if (this.player.IsVariation) {
+            scale += 1;
         }
         let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()
             .init(0, 0.35, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]));

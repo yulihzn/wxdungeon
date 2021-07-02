@@ -271,8 +271,7 @@ export default class Player extends Actor {
         }
         this.data.StatusTotalData.valueCopy(totalStatusData);
         this.data.StatusList = statusList;
-        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
-        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
+        this.updateInfoUi();
     }
     getWalkSmoke(parentNode: cc.Node, pos: cc.Vec3) {
         let smokePrefab: cc.Node = null;
@@ -355,12 +354,7 @@ export default class Player extends Actor {
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
         this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir);
-        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
-        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
-        let health = this.data.getHealth();
-        let dream = this.data.getDream();
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
+        this.updateInfoUi();
     }
     private updateEquipment(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
         sprite.spriteFrame = spriteFrame;
@@ -370,6 +364,14 @@ export default class Player extends Actor {
         }
         let c = cc.color(255, 255, 255).fromHEX(color);
         sprite.node.color = c;
+    }
+    private updateInfoUi(){
+        let health = this.data.getHealth();
+        let dream = this.data.getDream();
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
+        this.data.EquipmentTotalData.valueCopy(this.inventoryManager.getTotalEquipData());
+        cc.director.emit(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, { detail: { data: this.data } });
     }
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
@@ -413,7 +415,7 @@ export default class Player extends Actor {
         if (!this.node) {
             return;
         }
-        this.statusManager.stopAllStatus();
+        this.statusManager.stopAllDebuffs();
     }
     get isInteractBuildingAniming() {
         return this.interactBuilding
@@ -530,6 +532,7 @@ export default class Player extends Actor {
             this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
             this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
             this.shooterEx.data.bulletSize = data.bulletSize;
+            this.shooterEx.data.bulletSize +=this.IsVariation? 0.5:0;
             this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
         }
     }
@@ -702,10 +705,7 @@ export default class Player extends Actor {
             return;
         }
         this.changeZIndex(this.pos);
-        let health = this.data.getHealth();
-        let dream = this.data.getDream();
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, { x: dream.x, y: dream.y });
+        this.updateInfoUi();
     }
     fall() {
         if (this.sc.isFalling || this.sc.isJumping) {
@@ -920,7 +920,7 @@ export default class Player extends Actor {
     }
     isDreamShortTimeDelay(dt: number): boolean {
         this.dreamShortTimeDelay += dt;
-        if (this.dreamShortTimeDelay > 3) {
+        if (this.dreamShortTimeDelay > 5) {
             this.dreamShortTimeDelay = 0;
             return true;
         }
@@ -966,7 +966,7 @@ export default class Player extends Actor {
         this.node.scaleY = this.getScaleSize();
         this.node.opacity = this.invisible ? 80 : 255;
 
-        let showHands = this.interactBuilding && this.interactBuilding.isTaken;
+        let showHands = this.interactBuilding && this.interactBuilding.isTaken && !this.interactBuilding.isThrowing;
         let isLift = this.interactBuilding && this.interactBuilding.isTaken && this.interactBuilding.isLift;
         if (this.weaponLeft) {
             this.weaponLeft.updateLogic(dt);
@@ -1017,7 +1017,7 @@ export default class Player extends Actor {
         }
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.tag == ColliderTag.NONPLAYER) {
+        if (otherCollider.tag == ColliderTag.NONPLAYER||otherCollider.tag == ColliderTag.GOODNONPLAYER) {
             contact.disabledOnce = true;
         }
     }
@@ -1068,6 +1068,10 @@ export default class Player extends Actor {
     }
     useItem(data: ItemData) {
         Item.userIt(data, this);
+    }
+
+    setLinearVelocity(movement: cc.Vec2){
+
     }
 
 }

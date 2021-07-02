@@ -30,8 +30,8 @@ export default class TalentData {
         this.cooldown = data.cooldown ? data.cooldown : 0;
         this.passive = data.passive ? data.passive : 0;
         this.secondCount = data.secondCount ? data.secondCount : 0;
-        this.storePoint = data.storePoint ? data.storePoint : 1;
-        this.cost = data.cost?data.cost:1;
+        this.storePoint = data.storePoint||data.storePoint==0 ? data.storePoint : 1;
+        this.cost = data.cost||data.cost==0?data.cost:1;
     }
     public clone(): TalentData {
         let e = new TalentData();

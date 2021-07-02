@@ -72,14 +72,14 @@ export default class StatusManager extends cc.Component {
     start() {
 
     }
-    addCustomStatus(data:StatusData,from:FromData){
+    addCustomStatus(data: StatusData, from: FromData) {
         if (!data) {
             return;
         }
         let sd = new StatusData();
         sd.valueCopy(data)
         sd.From.valueCopy(from);
-        this.showStatus(sd,false);
+        this.showStatus(sd, false);
     }
     addStatus(resName: string, from: FromData, isFromSave?: boolean) {
         if (resName.length < 1) {
@@ -133,7 +133,7 @@ export default class StatusManager extends cc.Component {
     stopAllBuffs(): void {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if (s && s.data.type == Status.BUFF) {
+            if (s && s.data && s.data.type == Status.BUFF) {
                 s.stopStatus();
             }
         }
@@ -141,7 +141,7 @@ export default class StatusManager extends cc.Component {
     stopAllDebuffs(): void {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
             let s = this.statusList[i];
-            if (s.data.type == Status.DEBUFF) {
+            if (s && s.data && s.data.type == Status.DEBUFF) {
                 s.stopStatus();
             }
         }
@@ -209,12 +209,12 @@ export default class StatusManager extends cc.Component {
                 continue;
             }
             s.updateLogic();
-            if(s.data.duration==0){
-                this.addStatus(s.data.finishStatus,s.data.From);
+            if (s.data.duration == 0) {
+                this.addStatus(s.data.finishStatus, s.data.From);
                 continue;
             }
             this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0;
-            this.totalStatusData.variation+=s.data.variation?s.data.variation:0;
+            this.totalStatusData.variation += s.data.variation ? s.data.variation : 0;
             this.totalStatusData.Common.add(s.data.Common);
             dataList.push(s.data.clone());
         }

@@ -56,6 +56,18 @@
             ]
           }
         }
+      },
+      "sprite/light": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": null
+              }
+            ]
+          }
+        }
       }
     }
   },

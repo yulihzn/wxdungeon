@@ -38,7 +38,6 @@ import NonPlayerData from './Data/NonPlayerData';
 import { ColliderTag } from './Actor/ColliderTag';
 import StatusData from './Data/StatusData';
 import ActorUtils from './Utils/ActorUtils';
-import MonsterManager from './Manager/MonsterManager';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -147,6 +146,7 @@ export default class NonPlayer extends Actor {
         this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
         this.dangerTips.opacity = 0;
         this.specialStep.init(true);
+        this.specialStep.cutCoolDown(this.data.specialAttack / 2);
         this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL);
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
@@ -372,6 +372,13 @@ export default class NonPlayer extends Actor {
         }
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
+        let speedScale=1 - this.data.FinalCommon.attackSpeed / 500;
+        if(speedScale<0.2){
+            speedScale = 0.2;
+        }
+        if(speedScale>2){
+            speedScale = 2;
+        }
         let pos = target.node.position.clone().sub(this.node.position);
 
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -388,9 +395,9 @@ export default class NonPlayer extends Actor {
         this.sprite.stopAllActions();
         let stabDelay = 0;
         if (this.data.attackType == ActorAttackBox.ATTACK_STAB && isMelee) {
-            stabDelay = 0.8;
+            stabDelay = 0.8*speedScale;
         }
-        let beforetween = cc.tween().delay(0.5).call(() => { if (before) { before(isSpecial); } })
+        let beforetween = cc.tween().delay(0.5*speedScale).call(() => { if (before) { before(isSpecial); } })
 
         //摇晃
         let shaketween = cc.tween().by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
@@ -409,9 +416,9 @@ export default class NonPlayer extends Actor {
             arrspecial.push(`anim0${10 + frameIndex++}`);
         }
         //退后
-        let backofftween = cc.tween().by(0.5, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
+        let backofftween = cc.tween().by(0.5*speedScale, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
         //前进
-        let forwardtween = cc.tween().by(0.2, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
+        let forwardtween = cc.tween().by(0.2*speedScale, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
         let specialTypeCanMelee = this.data.specialType.length <= 0
             || this.data.specialType == SpecialManager.AFTER_ASH;
 
@@ -458,34 +465,34 @@ export default class NonPlayer extends Actor {
             this.dangerBox.finish();
         });
         for (let i = 2; i < arr.length; i++) {
-            attackback.then(cc.tween().delay(0.2).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
+            attackback.then(cc.tween().delay(0.2*speedScale).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
         }
         let attackbackspecial = cc.tween().call(() => {
             this.dangerBox.finish();
         });
         for (let i = 2; i < arrspecial.length; i++) {
-            attackbackspecial.then(cc.tween().delay(0.2).call(() => { this.changeBodyRes(this.data.resName, arrspecial[i]); }));
+            attackbackspecial.then(cc.tween().delay(0.2*speedScale).call(() => { this.changeBodyRes(this.data.resName, arrspecial[i]); }));
         }
-        let attackfinish = cc.tween().delay(0.2).call(() => {
+        let attackfinish = cc.tween().delay(0.2*speedScale).call(() => {
             this.dangerBox.finish();
             this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
             this.setLinearVelocity(cc.Vec2.ZERO);
         });
-        let aftertween = cc.tween().to(0.2, { position: cc.v3(0, 0) }).delay(0.2).call(() => {
+        let aftertween = cc.tween().to(0.2*speedScale, { position: cc.v3(0, 0) }).delay(0.2*speedScale).call(() => {
             if (finish) { finish(isSpecial); }
         })
         //普通近战 准备 退后 出击 前进 回招 结束
         let normalMelee = cc.tween().then(attackpreparetween).then(backofftween)
             .then(attackingtween).then(forwardtween).then(attackback).then(attackfinish);
         //普通远程 准备 出击 回招 结束
-        let normalRemote = cc.tween().then(attackpreparetween).delay(0.5)
-            .then(attackingtween).delay(0.2).then(attackback).then(attackfinish);
+        let normalRemote = cc.tween().then(attackpreparetween).delay(0.5*speedScale)
+            .then(attackingtween).delay(0.2*speedScale).then(attackback).then(attackfinish);
         //特殊近战 准备 退后 摇晃 出击 前进 回招 结束
         let specialMelee = cc.tween().then(attackpreparetween).then(backofftween)
             .then(shaketween).then(attackingtween).then(forwardtween).then(attackbackspecial).then(attackfinish);
         //特殊远程 准备 摇晃 出击 回招 结束
         let specialRemote = cc.tween().then(attackpreparetween).then(shaketween)
-            .then(attackingtween).delay(0.5).then(attackbackspecial).then(attackfinish);
+            .then(attackingtween).delay(0.5*speedScale).then(attackbackspecial).then(attackfinish);
 
         let allAction = cc.tween().then(beforetween).then(normalRemote).then(aftertween);
         if (isMelee) {
@@ -669,6 +676,12 @@ export default class NonPlayer extends Actor {
         }
         this.statusManager.addCustomStatus(data, from);
     }
+    stopAllDebuffs() {
+        if (!this.node) {
+            return;
+        }
+        this.statusManager.stopAllDebuffs();
+    }
     private showAttackEffect(isDashing: boolean) {
         this.effectNode.setPosition(cc.v3(0, 32));
         if (!isDashing) {
@@ -789,11 +802,17 @@ export default class NonPlayer extends Actor {
         return !this.dungeon || this.sc.isDied || this.sc.isHurting || this.sc.isFalling || this.sc.isAttacking
             || !this.sc.isShow || this.sc.isDizzing || this.sc.isDisguising || this.sc.isDodging || this.sc.isDashing;
     }
+    get isImmovable() {
+        return !this.dungeon || this.sc.isDied || this.sc.isFalling
+            || !this.sc.isShow || this.sc.isDizzing || this.sc.isDisguising;
+    }
 
-    updateAttack(target: Actor, targetDis: number) {
+    updateAttack() {
         if (this.isPassive) {
             return;
         }
+        let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
+        let targetDis = ActorUtils.getNearestTargetDistance(this, target);
         //目标不存在、死亡或者隐身直接返回
         if (!ActorUtils.isTargetAlive(target)) {
             return;
@@ -818,6 +837,8 @@ export default class NonPlayer extends Actor {
         let canRemote = this.data.remote > 0 && targetDis < 600 * this.node.scaleY;
         if (canMelee && !this.meleeStep.IsInCooling) {
             this.meleeStep.next(() => {
+                this.changeFaceRight(target);
+                this.setLinearVelocity(cc.Vec2.ZERO);
                 this.sc.isAttacking = true;
                 this.sprite.opacity = 255;
                 this.showAttackEffect(false);
@@ -874,10 +895,9 @@ export default class NonPlayer extends Actor {
         this.node.position = Dungeon.fixOuterMap(this.node.position);
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
-
+        this.updateAttack();
         let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
         let targetDis = ActorUtils.getNearestTargetDistance(this, target);
-        this.updateAttack(target, targetDis);
         //靠近取消伪装
         if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
             this.sc.isDisguising = false;
@@ -888,8 +908,8 @@ export default class NonPlayer extends Actor {
                 this.sc.isBlinking = true;
             }, this.data.blink, true)
         }
-        let speed = this.data.FinalCommon.moveSpeed;
         //冲刺
+        let speed = this.data.FinalCommon.moveSpeed;
         if (this.data.dash > 0 && !this.isPassive && ActorUtils.isTargetAlive(target) && targetDis < 600 && targetDis > 100) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true;
@@ -906,7 +926,7 @@ export default class NonPlayer extends Actor {
             targetDis = ActorUtils.getNearestTargetDistance(this, this.dungeon.player);
         }
         //是否追踪目标
-        let isTracking = targetDis < 500 && targetDis > 48 && this.data.melee > 0;
+        let isTracking = targetDis < 500 && this.data.melee > 0;
         if (targetDis < 500 && targetDis > 300 && this.data.remote > 0) {
             isTracking = true;
         }
@@ -914,26 +934,26 @@ export default class NonPlayer extends Actor {
             isTracking = false;
         }
         //随机选取位置，如果在追踪选择目标位置
-        let pos = cc.v3(0, 0);
-        pos.x += Logic.getRandomNum(0, 400) - 200;
-        pos.y += Logic.getRandomNum(0, 400) - 200;
-        if (isTracking) {
-            pos = this.getMovePosFromTarget(target);
-        }
+
 
         //相隔指定长度的时候需要停下来，否则执行移动操作
-        let needStop = (this.data.melee > 0 && targetDis < 48)
+        let needStop = (this.data.melee > 0 && targetDis < 64)
             || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300)
-            || this.shooter.isAiming || this.isPassive;
+            || this.shooter.isAiming || this.isImmovable;
         if (needStop) {
             this.sc.isMoving = false;
         } else {
             this.moveStep.next(() => {
                 this.sc.isMoving = true;
+                let pos = cc.v3(0, 0);
+                pos.x += Logic.getRandomNum(0, 400) - 200;
+                pos.y += Logic.getRandomNum(0, 400) - 200;
+                if (isTracking) {
+                    pos = this.getMovePosFromTarget(target);
+                }
                 this.move(pos, isTracking ? speed * 0.5 : speed);
-            }, isTracking ? 0 : 0.5, true);
+            }, isTracking ? 0 : 2, true);
         }
-
         //隐匿
         if (this.data.invisible > 0 && this.sprite.opacity > 20) {
             this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3);
@@ -942,11 +962,12 @@ export default class NonPlayer extends Actor {
         if (this.dungeon && this.sc.isDashing) {
             this.dashlight.opacity = 128;
         }
-        this.setLinearVelocity(this.currentlinearVelocitySpeed);
-        if (this.sc.isMoving && this.data.isHeavy < 1 && this.data.isStatic < 1 && this.currentlinearVelocitySpeed.x != 0) {
-            this.isFaceRight = this.currentlinearVelocitySpeed.x > 0;
+        if (this.sc.isDashing) {
+            this.setLinearVelocity(this.currentlinearVelocitySpeed);
         }
-
+        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)) {
+            this.sc.isMoving = false;
+        }
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
         if (this.shadow) {
             this.shadow.opacity = this.sc.isDisguising ? 0 : 128;

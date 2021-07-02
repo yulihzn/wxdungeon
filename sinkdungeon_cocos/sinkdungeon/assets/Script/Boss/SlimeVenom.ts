@@ -106,4 +106,7 @@ export default class SlimeVenom extends Actor {
     updateDream(offset: number): number {
         return 0;
     }
+    setLinearVelocity(movement: cc.Vec2){
+
+    }
 }

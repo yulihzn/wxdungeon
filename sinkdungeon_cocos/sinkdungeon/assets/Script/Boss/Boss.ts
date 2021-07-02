@@ -124,5 +124,8 @@ export default abstract class Boss extends Actor {
     updateDream(offset: number): number {
         return 0;
     }
+    setLinearVelocity(movement: cc.Vec2){
+
+    }
 
 }

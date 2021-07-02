@@ -464,7 +464,8 @@ export default class MeleeWeapon extends cc.Component {
         let Rad2Deg = 360 / (Math.PI * 2);
         let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
         let offsetAngle = 90;
-        this.node.scaleX = this.player.node.scaleX;
+        let sx = Math.abs(this.node.scaleX);
+        this.node.scaleX = this.player.node.scaleX>0?sx:-sx;
         let sy = Math.abs(this.node.scaleY);
         this.node.scaleY = this.node.scaleX < 0 ? -sy : sy;
         angle += offsetAngle;
@@ -495,8 +496,8 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
   
-    private beatBack(node: cc.Node) {
-        let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
+    private beatBack(actor: Actor) {
+        let rigidBody: cc.RigidBody = actor.getComponent(cc.RigidBody);
         let pos = this.Hv.clone();
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
@@ -552,7 +553,7 @@ export default class MeleeWeapon extends cc.Component {
                 }
                 damageSuccess = monster.takeDamage(damage);
                 if (damageSuccess) {
-                    this.beatBack(monster.node);
+                    this.beatBack(monster);
                     this.addTargetAllStatus(common, monster);
                 }
             }
@@ -620,6 +621,7 @@ export default class MeleeWeapon extends cc.Component {
     private addTargetStatus(rate: number, target: Actor, statusType) {
         if (Logic.getRandomNum(0, 100) < rate) { target.addStatus(statusType, new FromData()); }
     }
+    
 
 
 }

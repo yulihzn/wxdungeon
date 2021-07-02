@@ -425,7 +425,7 @@ export default class Bullet extends cc.Component {
                 }
             }
 
-        }else if(tag == ColliderTag.ENERGY_SHIELD){
+        }else if(!this.isFromPlayer&&tag == ColliderTag.ENERGY_SHIELD){
             let shield = attackTarget.getComponent(EnergyShield);
             if(shield&&shield.isValid){
                 damageSuccess = shield.takeDamage(damage);

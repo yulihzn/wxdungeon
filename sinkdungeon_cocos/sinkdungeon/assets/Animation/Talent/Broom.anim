@@ -39,7 +39,9 @@
               "value": 0
             }
           ]
-        },
+        }
+      },
+      "sprite/sprite copy": {
         "comps": {
           "cc.Sprite": {
             "spriteFrame": [

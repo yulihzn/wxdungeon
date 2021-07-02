@@ -42,6 +42,11 @@ export default class EnergyShield extends Building {
         this.node.scale = scale;
         this.anim = this.getComponent(cc.Animation);
         this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x,this.node.position.y-8*scale));
+        let base = this.node.getChildByName('base');
+        base.parent = this.node.parent;
+        base.position = this.node.position;
+        cc.tween(base).to(1,{scale:scale,opacity:255}).start();
+        base.zIndex = IndexZ.FLOOR;
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {
@@ -81,7 +86,7 @@ export default class EnergyShield extends Building {
         if (!this.isShow||this.data.currentHealth <= 0) {
             return false;
         }
-        AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_DEFEND);
+        AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
         this.hitLight(true);
         this.scheduleOnce(() => {
             this.hitLight(false);

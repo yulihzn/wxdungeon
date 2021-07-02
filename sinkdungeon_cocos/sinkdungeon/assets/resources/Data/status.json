@@ -209,12 +209,12 @@
         }
     },
     "status019": {
-        "nameCn": "1s加速移动",
+        "nameCn": "2s加速移动",
         "nameEn": "moving faster",
         "spriteFrameName": "iconmovespeed",
         "id": 19,
         "desc": "",
-        "duration": 1,
+        "duration": 2,
         "common": {
             "moveSpeed": 100
         }
@@ -281,6 +281,7 @@
         "id": 25,
         "desc": "",
         "duration": 15,
+        "type":1,
         "common": {
             "moveSpeed": -500
         }
@@ -307,6 +308,7 @@
         "desc": "",
         "duration": 2,
         "dizzDurationDirect":2,
+        "type":1,
         "common": {
             "moveSpeed": -300,
             "defence":-100,
@@ -429,6 +431,7 @@
         "variation":1,
         "common": {
             "moveSpeed": 100,
+            "attackSpeed":100,
             "realDamage":5,
             "realRate":20
         }
@@ -455,6 +458,7 @@
         "desc": "",
         "duration": 15,
         "variation":0,
+        "type":1,
         "common": {
             "moveSpeed": -150,
             "attackSpeed":-150,

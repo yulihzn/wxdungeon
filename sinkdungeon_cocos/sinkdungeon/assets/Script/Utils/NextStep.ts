@@ -22,7 +22,7 @@ export default class NextStep extends cc.Component {
         if (this.storePointMax < 1) {
             this.storePointMax = 1;
         }
-        this.storePoint = storePoint ? storePoint : 1;
+        this.storePoint = storePoint||storePoint==0 ? storePoint : 1;
         if (this.storePoint <= 0) {
             this.storePoint = 0;
         }
@@ -65,7 +65,7 @@ export default class NextStep extends cc.Component {
                 this.secondCallback(this.secondCount);
             }
 
-        }, 1, cc.macro.REPEAT_FOREVER);
+        }, this.duration<1?this.duration:1, cc.macro.REPEAT_FOREVER);
     }
     /**
      * 带cd的步骤

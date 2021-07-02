@@ -2614,7 +2614,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 47.78,
+      "width": 23.33,
       "height": 20
     },
     "_anchorPoint": {
@@ -2980,7 +2980,7 @@
     "_type": 2,
     "_allowSleep": true,
     "_gravityScale": 0,
-    "_linearDamping": 5,
+    "_linearDamping": 1,
     "_angularDamping": 0,
     "_linearVelocity": {
       "__type__": "cc.Vec2",

@@ -7,6 +7,7 @@ import AreaOfEffectData from "../Data/AreaOfEffectData";
 import { ColliderTag } from "./ColliderTag";
 import ActorUtils from "../Utils/ActorUtils";
 import InteractBuilding from "../Building/InteractBuilding";
+import Actor from "../Base/Actor";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -130,7 +131,7 @@ export default class AreaOfEffect extends cc.Component {
                         this.killCallBack(target);
                     }
                     if (this.data.canBeatBack && !target.getComponent(Boss)) {
-                        this.beatBack(attackTarget, normal);
+                        this.beatBack(target, normal);
                     }
                 }
                 for (let status of this.data.statusList) {
@@ -149,8 +150,8 @@ export default class AreaOfEffect extends cc.Component {
             }
         }
     }
-    private beatBack(node: cc.Node, hv: cc.Vec3) {
-        let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
+    private beatBack(actor: Actor, hv: cc.Vec3) {
+        let rigidBody: cc.RigidBody = actor.getComponent(cc.RigidBody);
         let pos = hv.clone();
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
