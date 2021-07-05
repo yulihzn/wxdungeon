@@ -31,16 +31,18 @@ export default class NonPlayerManager extends BaseManager {
     nonplayer: cc.Prefab = null;
 
     private nonplayers: NonPlayer[] = new Array();//房间npc列表
-    pet:NonPlayer;
+    pet: NonPlayer;
     get nonPlayerList() {
         return this.nonplayers;
     }
     clear(): void {
         Utils.clearComponentArray(this.nonplayers);
     }
-    public addNonPlayerListFromSave(dungeon:Dungeon,list:NonPlayerData[], position:cc.Vec3){
-        for(let data of list){
-            this.addNonPlayer(this.getNonPlayer(data, dungeon), position);
+    public addNonPlayerListFromSave(dungeon: Dungeon, list: NonPlayerData[], position: cc.Vec3) {
+        for (let data of list) {
+            if (data.isPet || data.lifeTime > 0) { 
+                this.addNonPlayer(this.getNonPlayer(data, dungeon), position);
+            }
         }
     }
     /**添加npc */
@@ -48,20 +50,20 @@ export default class NonPlayerManager extends BaseManager {
         this.addNonPlayer(this.getNonPlayer(Logic.nonplayers[resName], dungeon), pos);
     }
 
-    isPetAlive(){
-        if(this.pet&&this.pet.isValid&&this.pet.node.active&&this.pet.data.currentHealth>0){
+    isPetAlive() {
+        if (this.pet && this.pet.isValid && this.pet.node.active && this.pet.data.currentHealth > 0) {
             return true;
         }
         return false;
     }
-    addPetFromData(data: NonPlayerData, pos: cc.Vec3, dungeon: Dungeon){
+    addPetFromData(data: NonPlayerData, pos: cc.Vec3, dungeon: Dungeon) {
         let hasPetCount = 0;
-        for(let p of this.nonPlayerList){
-            if(p.data.isPet>0){
+        for (let p of this.nonPlayerList) {
+            if (p.data.isPet > 0) {
                 hasPetCount++;
             }
         }
-        if(this.isPetAlive()){
+        if (this.isPetAlive()) {
             return;
         }
         this.addNonPlayer(this.getNonPlayer(data, dungeon), pos);
@@ -72,7 +74,7 @@ export default class NonPlayerManager extends BaseManager {
             this.addNonPlayerFromData(NonPlayerManager.NON_SHADOW, Dungeon.getPosInMap(indexPos), dungeon);
         }
     }
-    private getNonPlayer(nonPlayerData:NonPlayerData, dungeon: Dungeon): NonPlayer {
+    private getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon): NonPlayer {
         let nonPlayerPrefab: cc.Node = null;
         nonPlayerPrefab = cc.instantiate(this.nonplayer);
         nonPlayerPrefab.active = false;
@@ -97,7 +99,7 @@ export default class NonPlayerManager extends BaseManager {
         nonPlayer.pos = Dungeon.getIndexInMap(pos);
         nonPlayer.node.position = pos;
         this.nonPlayerList.push(nonPlayer);
-        if(nonPlayer.data.isPet>0){
+        if (nonPlayer.data.isPet > 0) {
             this.pet = nonPlayer;
         }
     }
@@ -109,10 +111,10 @@ export default class NonPlayerManager extends BaseManager {
             if (monster && monster.node.active) {
                 monster.updateLogic(dt);
                 let data = monster.data.clone();
-                if(monster.leftLifeTime>0){
+                if (monster.leftLifeTime > 0) {
                     data.lifeTime = monster.leftLifeTime;
                 }
-                if(data.currentHealth>0){
+                if (data.currentHealth > 0) {
                     Logic.nonPlayerList.push(data);
                 }
             }
