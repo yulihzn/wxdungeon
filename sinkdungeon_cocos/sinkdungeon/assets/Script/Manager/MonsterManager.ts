@@ -255,6 +255,7 @@ export default class MonsterManager extends BaseManager {
         data.Common.maxDream += data.Common.maxDream*0.25*monster.killPlayerCount;
         data.Common.damageMin += data.Common.damageMin*0.25*monster.killPlayerCount;
         data.Common.maxHealth += data.Common.maxHealth*0.25*monster.killPlayerCount;
+        data.Common.attackSpeed += monster.killPlayerCount*20;
         data.Common.defence += monster.killPlayerCount*3;
         data.currentHealth = data.Common.maxHealth;
         if (data.melee - monster.killPlayerCount > 1) {

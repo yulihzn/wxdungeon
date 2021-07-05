@@ -445,7 +445,7 @@ export default class Dungeon extends cc.Component {
         //检查怪物是否清理
         let count = this.getMonsterAliveNum();
         this.isClear = count <= 0;
-        if (count <= 0 && this.monsterManager.bossList.length > 0) {
+        if (this.isClear && this.monsterManager.bossList.length > 0) {
             for (let boss of this.monsterManager.bossList) {
                 if (boss.sc.isDied) {
                     count++;
@@ -469,6 +469,7 @@ export default class Dungeon extends cc.Component {
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
             this.isClear = true;
         }
+        
         this.setDoors(this.isClear);
         if (this.isClear) {
             if (this.monsterManager.isRoomInitWithEnemy && Logic.mapManager.getCurrentRoomType().isNotEqual(RoomType.TEST_ROOM)) {

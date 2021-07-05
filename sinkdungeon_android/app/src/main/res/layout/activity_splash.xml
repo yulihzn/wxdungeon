@@ -2,9 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@mipmap/startbg00"
     android:theme="@style/ThemeOverlay.TestSdk.FullscreenContainer"
     tools:context="com.banditcat.dream.SplashActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_half" />
 
     <RadioGroup
         android:id="@+id/rg_group"
@@ -12,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:checkedButton="@id/rb_default"
-        android:gravity="right"
+        android:gravity="end"
         android:orientation="horizontal">
 
         <RadioButton
@@ -20,24 +25,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radio_button_default"
-            android:textColor="@color/white" />
+            android:textColor="@color/black_300" />
 
         <RadioButton
             android:id="@+id/rb_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/radio_button_new"
-            android:textColor="@color/white" />
+            android:textColor="@color/black_300" />
     </RadioGroup>
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/app_name"
-        android:textColor="@color/purple_200"
-        android:textSize="60sp"
-        android:textStyle="italic" />
+        android:text="@string/app_title"
+        android:textColor="@color/black_300"
+        android:textSize="30sp"
+        android:textStyle="italic"
+        android:typeface="serif" />
 
     <Button
         android:id="@+id/btn_next"
@@ -51,6 +58,8 @@
         android:paddingEnd="60dp"
         android:paddingBottom="10dp"
         android:text="@string/dummy_button"
-        android:textSize="40sp" />
+        android:textColor="@color/black_300"
+        android:textSize="20sp"
+        android:typeface="serif" />
 
 </RelativeLayout>

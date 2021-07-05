@@ -502,18 +502,18 @@ export default class MeleeWeapon extends cc.Component {
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
         }
-        let power = 50+this.exBeatBack;
+        let power = 20+this.exBeatBack;
         if (!this.isFar && this.isStab) {
-            power = 50;
+            power = 20;
         } else if (this.isFar && this.isStab) {
-            power = 250;
-        } else if (!this.isFar && !this.isStab) {
             power = 150;
+        } else if (!this.isFar && !this.isStab) {
+            power = 80;
         } else {
-            power = 50;
+            power = 20;
         }
         if (this.comboType == MeleeWeapon.COMBO3) {
-            power += 50;
+            power += 20;
         }
         
         pos = pos.normalizeSelf().mul(power);

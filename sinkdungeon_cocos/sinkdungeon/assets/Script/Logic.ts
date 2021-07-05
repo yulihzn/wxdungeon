@@ -108,7 +108,7 @@ export default class Logic extends cc.Component {
     static profileManager: ProfileManager = new ProfileManager();
     static bagSortIndex = 0;//0时间,1类别,2品质
     static settings: Settings = new Settings();
-    static nonPlayerList:NonPlayerData[] = [];
+    static nonPlayerList: NonPlayerData[] = [];
 
     onLoad() {
         //关闭调试
@@ -117,9 +117,14 @@ export default class Logic extends cc.Component {
         cc.game.addPersistRootNode(this.node);
         // cc.view.enableAntiAlias(false);
         // cc.macro.DOWNLOAD_MAX_CONCURRENT = 10;
-        let manager = cc.director.getCollisionManager();
-        manager.enabled = true;
-        cc.director.getPhysicsManager().enabled = true;
+        cc.director.getCollisionManager().enabled = true;
+        cc.director.getPhysicsManager().enabled = true;;
+        // 物理步长，默认 FIXED_TIME_STEP 是 1/60
+        cc.PhysicsManager.FIXED_TIME_STEP = 1 / 30;
+        // 每次更新物理系统处理速度的迭代次数，默认为 10
+        cc.PhysicsManager.VELOCITY_ITERATIONS = 8;
+        // 每次更新物理系统处理位置的迭代次数，默认为 10
+        cc.PhysicsManager.POSITION_ITERATIONS = 8;
         // manager.enabledDebugDraw = true;
         // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
         // cc.PhysicsManager.DrawBits.e_jointBit |
@@ -153,10 +158,10 @@ export default class Logic extends cc.Component {
         Logic.time = Logic.profileManager.data.time;
         //加载章节名
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex;
-        if(Logic.profileManager.data.chapterIndex>Logic.profileManager.data.chapterMaxIndex
-            &&Logic.profileManager.data.chapterIndex < this.CHAPTER05){
-                Logic.profileManager.data.chapterMaxIndex = Logic.profileManager.data.chapterIndex;
-            }
+        if (Logic.profileManager.data.chapterIndex > Logic.profileManager.data.chapterMaxIndex
+            && Logic.profileManager.data.chapterIndex < this.CHAPTER05) {
+            Logic.profileManager.data.chapterMaxIndex = Logic.profileManager.data.chapterIndex;
+        }
         //加载关卡等级
         Logic.chapterIndex = Logic.profileManager.data.chapterIndex;
         Logic.chapterMaxIndex = Logic.profileManager.data.chapterMaxIndex;
@@ -177,14 +182,14 @@ export default class Logic extends cc.Component {
             Logic.inventoryManager.itemList[i].valueCopy(Logic.profileManager.data.playerItemList[i]);
         }
         for (let i = 0; i < Logic.profileManager.data.playerInventoryList.length; i++) {
-            let data = new InventoryData(); 
+            let data = new InventoryData();
             data.valueCopy(Logic.profileManager.data.playerInventoryList[i]);
             Logic.inventoryManager.inventoryList.push(data);
         }
         //加载保存的npc
         Logic.nonPlayerList = [];
         for (let i = 0; i < Logic.profileManager.data.nonPlayerList.length; i++) {
-            let data = new NonPlayerData(); 
+            let data = new NonPlayerData();
             data.valueCopy(Logic.profileManager.data.nonPlayerList[i]);
             Logic.nonPlayerList.push(data);
         }
@@ -218,10 +223,10 @@ export default class Logic extends cc.Component {
             }
         }
         data.fragments = value;
-        data.Common.damageMin=data.level;
-        data.Common.maxHealth=data.level;
-        data.Common.maxDream=data.level;
-        data.Common.remoteDamage=data.level*0.5;
+        data.Common.damageMin = data.level;
+        data.Common.maxHealth = data.level;
+        data.Common.maxDream = data.level;
+        data.Common.remoteDamage = data.level * 0.5;
         Logic.playerData.OilGoldData.valueCopy(data);
     }
 
@@ -232,7 +237,7 @@ export default class Logic extends cc.Component {
             Dungeon.HEIGHT_SIZE = size.y;
         }
     }
-    static posToMapPos(pos: cc.Vec3) :cc.Vec3{
+    static posToMapPos(pos: cc.Vec3): cc.Vec3 {
         //转换当前坐标为地图坐标
         let levelData = Logic.worldLoader.getCurrentLevelData();
         let roomPos = Logic.mapManager.rectDungeon.currentPos;
@@ -256,9 +261,9 @@ export default class Logic extends cc.Component {
         //保存数据
         Logic.saveData();
     }
-    static saveGroundOilGold(value:number) {
+    static saveGroundOilGold(value: number) {
         let groundOilGoldData = new GroundOilGoldData();
-        if(value>0){
+        if (value > 0) {
             let roomPos = Logic.mapManager.rectDungeon.currentPos;
             groundOilGoldData.x = roomPos.x;
             groundOilGoldData.y = roomPos.y;
@@ -309,7 +314,7 @@ export default class Logic extends cc.Component {
         /**************加载exitData关卡数据***************** */
         Logic.chapterIndex = exitData.toChapter;
         Logic.level = exitData.toLevel;
-        if(Logic.chapterMaxIndex<Logic.chapterIndex&&Logic.chapterIndex<Logic.CHAPTER05){
+        if (Logic.chapterMaxIndex < Logic.chapterIndex && Logic.chapterIndex < Logic.CHAPTER05) {
             Logic.chapterMaxIndex = Logic.chapterIndex;
         }
         //地图数据的y轴向下的

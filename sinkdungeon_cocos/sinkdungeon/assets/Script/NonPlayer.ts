@@ -145,8 +145,7 @@ export default class NonPlayer extends Actor {
         }
         this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
         this.dangerTips.opacity = 0;
-        this.specialStep.init(true);
-        this.specialStep.cutCoolDown(this.data.specialAttack / 2);
+        this.specialStep.init();
         this.stateMachine = new DefaultStateMachine(this, NonPlayerActorState.PRPARE, NonPlayerActorState.GLOBAL);
         // this.graphics.strokeColor = cc.Color.ORANGE;
         // this.graphics.circle(0,0,100);
@@ -372,11 +371,11 @@ export default class NonPlayer extends Actor {
         }
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
-        let speedScale=1 - this.data.FinalCommon.attackSpeed / 500;
-        if(speedScale<0.2){
+        let speedScale = 1 - this.data.FinalCommon.attackSpeed / 500;
+        if (speedScale < 0.2) {
             speedScale = 0.2;
         }
-        if(speedScale>2){
+        if (speedScale > 2) {
             speedScale = 2;
         }
         let pos = target.node.position.clone().sub(this.node.position);
@@ -395,9 +394,9 @@ export default class NonPlayer extends Actor {
         this.sprite.stopAllActions();
         let stabDelay = 0;
         if (this.data.attackType == ActorAttackBox.ATTACK_STAB && isMelee) {
-            stabDelay = 0.8*speedScale;
+            stabDelay = 0.8 * speedScale;
         }
-        let beforetween = cc.tween().delay(0.5*speedScale).call(() => { if (before) { before(isSpecial); } })
+        let beforetween = cc.tween().delay(0.5 * speedScale).call(() => { if (before) { before(isSpecial); } })
 
         //摇晃
         let shaketween = cc.tween().by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
@@ -416,9 +415,9 @@ export default class NonPlayer extends Actor {
             arrspecial.push(`anim0${10 + frameIndex++}`);
         }
         //退后
-        let backofftween = cc.tween().by(0.5*speedScale, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
+        let backofftween = cc.tween().by(0.5 * speedScale, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
         //前进
-        let forwardtween = cc.tween().by(0.2*speedScale, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
+        let forwardtween = cc.tween().by(0.2 * speedScale, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
         let specialTypeCanMelee = this.data.specialType.length <= 0
             || this.data.specialType == SpecialManager.AFTER_ASH;
 
@@ -465,34 +464,34 @@ export default class NonPlayer extends Actor {
             this.dangerBox.finish();
         });
         for (let i = 2; i < arr.length; i++) {
-            attackback.then(cc.tween().delay(0.2*speedScale).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
+            attackback.then(cc.tween().delay(0.2 * speedScale).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
         }
         let attackbackspecial = cc.tween().call(() => {
             this.dangerBox.finish();
         });
         for (let i = 2; i < arrspecial.length; i++) {
-            attackbackspecial.then(cc.tween().delay(0.2*speedScale).call(() => { this.changeBodyRes(this.data.resName, arrspecial[i]); }));
+            attackbackspecial.then(cc.tween().delay(0.2 * speedScale).call(() => { this.changeBodyRes(this.data.resName, arrspecial[i]); }));
         }
-        let attackfinish = cc.tween().delay(0.2*speedScale).call(() => {
+        let attackfinish = cc.tween().delay(0.2 * speedScale).call(() => {
             this.dangerBox.finish();
             this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
             this.setLinearVelocity(cc.Vec2.ZERO);
         });
-        let aftertween = cc.tween().to(0.2*speedScale, { position: cc.v3(0, 0) }).delay(0.2*speedScale).call(() => {
+        let aftertween = cc.tween().to(0.2 * speedScale, { position: cc.v3(0, 0) }).delay(0.2 * speedScale).call(() => {
             if (finish) { finish(isSpecial); }
         })
         //普通近战 准备 退后 出击 前进 回招 结束
         let normalMelee = cc.tween().then(attackpreparetween).then(backofftween)
             .then(attackingtween).then(forwardtween).then(attackback).then(attackfinish);
         //普通远程 准备 出击 回招 结束
-        let normalRemote = cc.tween().then(attackpreparetween).delay(0.5*speedScale)
-            .then(attackingtween).delay(0.2*speedScale).then(attackback).then(attackfinish);
+        let normalRemote = cc.tween().then(attackpreparetween).delay(0.5 * speedScale)
+            .then(attackingtween).delay(0.2 * speedScale).then(attackback).then(attackfinish);
         //特殊近战 准备 退后 摇晃 出击 前进 回招 结束
         let specialMelee = cc.tween().then(attackpreparetween).then(backofftween)
             .then(shaketween).then(attackingtween).then(forwardtween).then(attackbackspecial).then(attackfinish);
         //特殊远程 准备 摇晃 出击 回招 结束
         let specialRemote = cc.tween().then(attackpreparetween).then(shaketween)
-            .then(attackingtween).delay(0.5*speedScale).then(attackbackspecial).then(attackfinish);
+            .then(attackingtween).delay(0.5 * speedScale).then(attackbackspecial).then(attackfinish);
 
         let allAction = cc.tween().then(beforetween).then(normalRemote).then(aftertween);
         if (isMelee) {
@@ -802,10 +801,6 @@ export default class NonPlayer extends Actor {
         return !this.dungeon || this.sc.isDied || this.sc.isHurting || this.sc.isFalling || this.sc.isAttacking
             || !this.sc.isShow || this.sc.isDizzing || this.sc.isDisguising || this.sc.isDodging || this.sc.isDashing;
     }
-    get isImmovable() {
-        return !this.dungeon || this.sc.isDied || this.sc.isFalling
-            || !this.sc.isShow || this.sc.isDizzing || this.sc.isDisguising;
-    }
 
     updateAttack() {
         if (this.isPassive) {
@@ -920,11 +915,7 @@ export default class NonPlayer extends Actor {
                 this.scheduleOnce(() => { if (this.node) { this.sc.isDashing = false; } }, 2);
             }, this.data.dash);
         }
-        //npc移动在没有敌对目标的时候转变目标为玩家
-        if (!ActorUtils.isTargetAlive(target) && this.data.isFollow > 0 && this.data.isEnemy < 1) {
-            target = this.dungeon.player;
-            targetDis = ActorUtils.getNearestTargetDistance(this, this.dungeon.player);
-        }
+
         //是否追踪目标
         let isTracking = targetDis < 500 && this.data.melee > 0;
         if (targetDis < 500 && targetDis > 300 && this.data.remote > 0) {
@@ -933,18 +924,24 @@ export default class NonPlayer extends Actor {
         if (!ActorUtils.isTargetAlive(target)) {
             isTracking = false;
         }
-        //随机选取位置，如果在追踪选择目标位置
 
+        //npc移动在没有敌对目标的时候转变目标为玩家
+        if (!isTracking && this.data.isFollow > 0 && this.data.isEnemy < 1) {
+            target = this.dungeon.player;
+            targetDis = ActorUtils.getNearestTargetDistance(this, this.dungeon.player);
+            isTracking = true;
+        }
 
         //相隔指定长度的时候需要停下来，否则执行移动操作
         let needStop = (this.data.melee > 0 && targetDis < 64)
             || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300)
-            || this.shooter.isAiming || this.isImmovable;
+            || this.shooter.isAiming || this.isPassive;
         if (needStop) {
             this.sc.isMoving = false;
         } else {
             this.moveStep.next(() => {
                 this.sc.isMoving = true;
+                //随机选取位置，如果在追踪选择目标位置
                 let pos = cc.v3(0, 0);
                 pos.x += Logic.getRandomNum(0, 400) - 200;
                 pos.y += Logic.getRandomNum(0, 400) - 200;
@@ -952,7 +949,7 @@ export default class NonPlayer extends Actor {
                     pos = this.getMovePosFromTarget(target);
                 }
                 this.move(pos, isTracking ? speed * 0.5 : speed);
-            }, isTracking ? 0 : 2, true);
+            }, isTracking ? 0.5 : 2, true);
         }
         //隐匿
         if (this.data.invisible > 0 && this.sprite.opacity > 20) {
@@ -996,18 +993,19 @@ export default class NonPlayer extends Actor {
 
     }
     getMovePosFromTarget(target: Actor): cc.Vec3 {
-        let newPos = cc.v3(1, 0);
-        if (target) {
-            newPos = target.node.position.clone();
+        let newPos = cc.v3(0, 0);
+        newPos.x += Logic.getRandomNum(0, 400) - 200;
+        newPos.y += Logic.getRandomNum(0, 400) - 200;
+        if(!ActorUtils.isTargetAlive(target)){
+            return newPos;
         }
-        newPos = Dungeon.getIndexInMap(newPos);
-        if (newPos.x > this.pos.x) {
-            newPos = newPos.addSelf(cc.v3(1, 0));
+        newPos = target.node.position.clone();
+        if (newPos.x > this.node.position.x) {
+            newPos = newPos.addSelf(cc.v3(32, 0));
         } else {
-            newPos = newPos.addSelf(cc.v3(-1, 0));
+            newPos = newPos.addSelf(cc.v3(-32, 0));
         }
-        let pos = Dungeon.getPosInMap(newPos);
-        pos = pos.sub(this.node.position);
+        let pos = newPos.sub(this.node.position);
         if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isStatic < 1) {
             this.changeFaceRight(target);
         }

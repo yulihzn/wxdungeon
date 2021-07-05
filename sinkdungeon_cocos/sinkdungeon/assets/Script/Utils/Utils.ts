@@ -13,15 +13,16 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Utils {
-    static showLog = false;
-    static log(msg:String):void{
-        if(this.showLog){
+    static showLog = true;
+    static log(msg: String): void {
+        if (this.showLog) {
             cc.log(msg);
+            
         }
     }
-    static clearComponentArray(arr:cc.Component[]):void{
-        for(let n of arr){
-            if(n&&n.isValid){n.destroy();}
+    static clearComponentArray(arr: cc.Component[]): void {
+        for (let n of arr) {
+            if (n && n.isValid) { n.destroy(); }
         }
     }
 }
