@@ -16,6 +16,7 @@ import NonPlayerManager from "./Manager/NonPlayerManager";
 import ItemManager from "./Manager/ItemManager";
 import Utils from "./Utils/Utils";
 import LightManager from "./Manager/LightManager";
+import DamageData from "./Data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -61,6 +62,7 @@ export default class Dungeon extends cc.Component {
     needZoomIn = false;
     isInitFinish = false;
     isClear = false;
+    isComplete = false;
     currentPos = cc.v3(0, 0);
 
     /**
@@ -205,9 +207,9 @@ export default class Dungeon extends cc.Component {
         }
         //加载跟随npc
         let list = new Array().concat(Logic.nonPlayerList);
-        this.scheduleOnce(()=>{
-            this.nonPlayerManager.addNonPlayerListFromSave(this,list,this.player.node.position);
-        },1)
+        this.scheduleOnce(() => {
+            this.nonPlayerManager.addNonPlayerListFromSave(this, list, this.player.node.position);
+        }, 1)
         //设置门开关
         this.setDoors(true, true);
         cc.log('load finished');
@@ -469,11 +471,15 @@ export default class Dungeon extends cc.Component {
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
             this.isClear = true;
         }
-        
+
         this.setDoors(this.isClear);
         if (this.isClear) {
             if (this.monsterManager.isRoomInitWithEnemy && Logic.mapManager.getCurrentRoomType().isNotEqual(RoomType.TEST_ROOM)) {
                 cc.director.emit(EventHelper.HUD_COMPLETE_SHOW);
+                if (!this.isComplete && this.player && this.player.data && this.player.data.StatusTotalData.clearHealth > 0) {
+                    this.isComplete = true;
+                    this.player.takeDamage(new DamageData(-this.player.data.StatusTotalData.clearHealth));
+                }
             }
             if (this.buildingManager.savePointS) {
                 this.buildingManager.savePointS.open();

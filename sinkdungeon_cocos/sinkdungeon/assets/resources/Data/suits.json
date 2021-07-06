@@ -55,7 +55,7 @@
         "equipList": [
             {
                 "statusName": "status036",
-                "statusInterval": 999,
+                "statusInterval": 8,
                 "extraInfo": "生命回复",
                 "common": {
                     "maxHealth": 2
@@ -63,7 +63,7 @@
             },
             {
                 "statusName": "status036",
-                "statusInterval": 999,
+                "statusInterval": 8,
                 "extraInfo": "生命回复",
                 "common": {
                     "maxHealth": 2
@@ -71,7 +71,7 @@
             },
             {
                 "statusName": "status036",
-                "statusInterval": 999,
+                "statusInterval": 8,
                 "extraInfo": "生命回复",
                 "common": {
                     "maxHealth": 2

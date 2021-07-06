@@ -221,6 +221,7 @@ export default class Inventory extends cc.Component {
                 idata.itemData = new ItemData();
                 idata.itemData.valueCopy(itemData);
                 idata.itemData.count = count;
+                idata.price = idata.itemData.price;
                 if (isFromBag) {
                     EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
                 }
@@ -277,6 +278,7 @@ export default class Inventory extends cc.Component {
         newdata.equipmentData = new EquipmentData();
         newdata.equipmentData.valueCopy(equipmentData);
         newdata.type = InventoryItem.TYPE_EQUIP;
+        newdata.price = newdata.equipmentData.price;
         newdata.createTime = new Date().getTime();
         //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
         if (isFromBag) {

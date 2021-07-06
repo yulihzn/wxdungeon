@@ -208,7 +208,7 @@ export default class AudioPlayer extends cc.Component {
         EventHelper.on(EventHelper.PLAY_AUDIO, (detail) => { this.playSound(detail.name, detail.bgm, detail.loop); });
         EventHelper.on(EventHelper.STOP_ALL_AUDIO_EFFECT, (detail) => { this.stopAllEffect(); });
         cc.audioEngine.setMusicVolume(0.2);
-        cc.audioEngine.setEffectsVolume(0.3);
+        cc.audioEngine.setEffectsVolume(0.4);
         this.audioList[AudioPlayer.MONSTER_HIT] = this.monsterHit;
         this.audioList[AudioPlayer.PICK_UP] = this.pickUp;
         this.audioList[AudioPlayer.PLAYER_HIT] = this.playerHit;

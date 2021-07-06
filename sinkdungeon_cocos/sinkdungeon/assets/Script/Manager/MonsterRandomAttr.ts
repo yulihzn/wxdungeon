@@ -50,6 +50,9 @@ export default class MonsterRandomAttr {
     }
 
     updateMonsterData(data:NonPlayerData):NonPlayerData{
+        if(data.isTest>0){
+            return;
+        }
         if(this.hasAttr(MonsterRandomAttr.ATTR_01)){
             data.Common.maxHealth = 1;
             data.currentHealth = 1;

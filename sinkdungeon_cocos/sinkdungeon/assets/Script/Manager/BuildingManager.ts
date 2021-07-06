@@ -124,6 +124,7 @@ export default class BuildingManager extends BaseManager {
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
 
     private shelvesFoodIndex = 0;
+    private shelvesDrinkIndex = 0;
     private drinkList: string[] = [];
     private foodList: string[] = [];
     private interactBuildings:InteractBuilding[] = [];
@@ -145,6 +146,7 @@ export default class BuildingManager extends BaseManager {
         this.foodList = new Array();
         this.interactBuildings = new Array();
         this.shelvesFoodIndex = 0;
+        this.shelvesDrinkIndex = 0;
     }
 
     private isThe(mapStr: string, typeStr: string): boolean {
@@ -546,10 +548,16 @@ export default class BuildingManager extends BaseManager {
             }
         }
         if (type == MartShelves.TYPE_FRIDGE) {
-            return this.drinkList;
+            let tempdrinks: string[] = [];
+            for (let i = this.shelvesDrinkIndex%MartShelves.SIZE_FRIDGE; i < MartShelves.SIZE_FRIDGE; i++) {
+                if (this.shelvesDrinkIndex < this.drinkList.length) {
+                    tempdrinks.push(this.drinkList[this.shelvesDrinkIndex++]);
+                }
+            }
+            return tempdrinks;
         } else {
             let tempfoods: string[] = [];
-            for (let i = this.shelvesFoodIndex; i < MartShelves.SIZE_NORMAL; i++) {
+            for (let i = this.shelvesFoodIndex%MartShelves.SIZE_NORMAL; i < MartShelves.SIZE_NORMAL; i++) {
                 if (this.shelvesFoodIndex < this.foodList.length) {
                     tempfoods.push(this.foodList[this.shelvesFoodIndex++]);
                 }

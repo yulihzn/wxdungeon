@@ -156,6 +156,10 @@ export default class InventoryDialog extends BaseDialog {
                 return b.equipmentData.level - a.equipmentData.level;
             });
             list = equiplist.concat(itemlist);
+        } else if (sortIndex == 3) {
+            list.sort((a, b) => {
+                return a.price - b.price;
+            });
         }
         for (let i = 0; i < InventoryManager.INVENTORY_MAX; i++) {
             if (i < list.length && list[i].type != InventoryItem.TYPE_EMPTY) {

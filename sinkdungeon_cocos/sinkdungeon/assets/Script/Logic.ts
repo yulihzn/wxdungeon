@@ -226,7 +226,7 @@ export default class Logic extends cc.Component {
         data.Common.damageMin = data.level;
         data.Common.maxHealth = data.level;
         data.Common.maxDream = data.level;
-        data.Common.remoteDamage = data.level * 0.5;
+        data.Common.remoteDamage = data.level * 0.25;
         Logic.playerData.OilGoldData.valueCopy(data);
     }
 

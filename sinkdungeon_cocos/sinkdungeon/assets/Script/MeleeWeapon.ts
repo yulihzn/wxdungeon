@@ -506,9 +506,9 @@ export default class MeleeWeapon extends cc.Component {
         if (!this.isFar && this.isStab) {
             power = 20;
         } else if (this.isFar && this.isStab) {
-            power = 150;
+            power = 100;
         } else if (!this.isFar && !this.isStab) {
-            power = 80;
+            power = 60;
         } else {
             power = 20;
         }

@@ -65,7 +65,7 @@ export default class NextStep extends cc.Component {
                 this.secondCallback(this.secondCount);
             }
 
-        }, this.duration<1?this.duration:1, cc.macro.REPEAT_FOREVER);
+        }, this.duration<1?this.duration:1, cc.macro.REPEAT_FOREVER,this.duration<1?this.duration:1);
     }
     /**
      * 带cd的步骤

@@ -2727,7 +2727,6 @@
         "color": "#ffffff",
         "titlecolor": "#ffffff",
         "img": "clothes027",
-        "suitType": "suit001",
         "price": 30,
         "common": {
             "damageMin": 0,

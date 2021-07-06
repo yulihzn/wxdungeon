@@ -416,7 +416,7 @@
         "spriteFrameName": "iconhealthrecovery",
         "id": 36,
         "desc": "",
-        "duration": 999,
+        "duration": 10,
         "realDamageOvertime": -0.03,
         "common": {}
     },
@@ -460,9 +460,321 @@
         "variation":0,
         "type":1,
         "common": {
-            "moveSpeed": -150,
-            "attackSpeed":-150,
+            "moveSpeed": -200,
+            "attackSpeed":-200,
             "defence": -100
+        }
+    },
+    "status040": {
+        "nameCn": "攻击增加(商品)",
+        "nameEn": "attack more",
+        "spriteFrameName": "iconattack",
+        "id": 40,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "damageMin": 4
+        }
+    },
+    "status041": {
+        "nameCn": "防御增加(商品)",
+        "nameEn": "defence",
+        "spriteFrameName": "icondefence",
+        "id": 41,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "defence": 10
+        }
+    },
+    "status042": {
+        "nameCn": "移动加速(商品)",
+        "nameEn": "moving faster",
+        "spriteFrameName": "iconmovespeed",
+        "id": 42,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "moveSpeed": 60
+        }
+    },
+    "status043": {
+        "nameCn": "攻击加速(商品)",
+        "nameEn": "attacking faster",
+        "spriteFrameName": "iconattackspeed",
+        "id": 43,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "attackSpeed": 60
+        }
+    },
+    "status044": {
+        "nameCn": "武器附魔(商品)",
+        "nameEn": "weapon magic",
+        "spriteFrameName": "status024",
+        "id": 44,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "realDamage": 3
+        }
+    },
+    "status045": {
+        "nameCn": "最大攻击增加(商品)",
+        "nameEn": "attack max",
+        "spriteFrameName": "iconattack",
+        "id": 45,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "damageMax": 6
+        }
+    },
+    "status046": {
+        "nameCn": "生命增加(商品)",
+        "nameEn": "maxHealth",
+        "spriteFrameName": "iconhealth",
+        "id": 46,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "maxHealth": 5
+        }
+    },
+    "status047": {
+        "nameCn": "梦境增加(商品)",
+        "nameEn": "maxDream",
+        "spriteFrameName": "icondream",
+        "id": 47,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "maxDream": 5
+        }
+    },
+    "status048": {
+        "nameCn": "背刺伤害(商品)",
+        "nameEn": "damageBack",
+        "spriteFrameName": "icondamageback",
+        "id": 48,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "damageBack": 5
+        }
+    },
+    "status049": {
+        "nameCn": "暴击(商品)",
+        "nameEn": "criticalStrikeRate",
+        "spriteFrameName": "iconcriticalstrike",
+        "id": 49,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "criticalStrikeRate": 10
+        }
+    },
+    "status050": {
+        "nameCn": "吸血(商品)",
+        "nameEn": "lifeDrain",
+        "spriteFrameName": "icondrain",
+        "id": 50,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "lifeDrain": 5
+        }
+    },
+    "status051": {
+        "nameCn": "闪避(商品)",
+        "nameEn": "dodge",
+        "spriteFrameName": "icondodge",
+        "id": 51,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "dodge": 10
+        }
+    },
+    "status052": {
+        "nameCn": "远程冷却(商品)",
+        "nameEn": "remoteCooldown",
+        "spriteFrameName": "iconremotecooldown",
+        "id": 52,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "remoteCooldown": -200
+        }
+    },
+    "status053": {
+        "nameCn": "远程伤害(商品)",
+        "nameEn": "remoteDamage",
+        "spriteFrameName": "iconremotedamage",
+        "id": 53,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "remoteDamage": 2
+        }
+    },
+    "status054": {
+        "nameCn": "远程暴击(商品)",
+        "nameEn": "remoteCritRate",
+        "spriteFrameName": "iconremotecritrate",
+        "id": 54,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "remoteCritRate": 20
+        }
+    },
+    "status055": {
+        "nameCn": "流血几率(商品)",
+        "nameEn": "realRate",
+        "spriteFrameName": "iconratestatus006",
+        "id": 55,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "realRate": 10
+        }
+    },
+    "status056": {
+        "nameCn": "魔法伤害(商品)",
+        "nameEn": "magicDamage",
+        "spriteFrameName": "iconattackstatus000",
+        "id": 56,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "magicDamage": 4
+        }
+    },
+    "status057": {
+        "nameCn": "魔法抗性(商品)",
+        "nameEn": "magicDefence",
+        "spriteFrameName": "icondamageback",
+        "id": 57,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "magicDefence": 30
+        }
+    },
+    "status058": {
+        "nameCn": "冰冻几率(商品)",
+        "nameEn": "iceRate",
+        "spriteFrameName": "iconratestatus001",
+        "id": 58,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "iceRate": 10
+        }
+    },
+    "status059": {
+        "nameCn": "着火几率(商品)",
+        "nameEn": "fireRate",
+        "spriteFrameName": "iconratestatus002",
+        "id": 59,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "fireRate": 10
+        }
+    },
+    "status060": {
+        "nameCn": "眩晕几率(商品)",
+        "nameEn": "lighteningRate",
+        "spriteFrameName": "iconratestatus003",
+        "id": 60,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "lighteningRate": 10
+        }
+    },
+    "status061": {
+        "nameCn": "中毒几率(商品)",
+        "nameEn": "toxicRate",
+        "spriteFrameName": "iconratestatus004",
+        "id": 61,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "toxicRate": 10
+        }
+    },
+    "status062": {
+        "nameCn": "诅咒几率(商品)",
+        "nameEn": "curseRate",
+        "spriteFrameName": "iconratestatus005",
+        "id": 62,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "common": {
+            "curseRate": 10
+        }
+    },
+    "status063": {
+        "nameCn": "额外经验(商品)",
+        "nameEn": "exOilGold",
+        "spriteFrameName": "oilgold",
+        "id": 63,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "exOilGold": 1,
+        "common": {
+        }
+    },
+    "status064": {
+        "nameCn": "房间清理(商品)",
+        "nameEn": "clearHealth",
+        "spriteFrameName": "heart",
+        "id": 64,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "clearHealth": 1,
+        "common": {
+        }
+    },
+    "status065": {
+        "nameCn": "抵挡死亡(商品)",
+        "nameEn": "goldapple",
+        "spriteFrameName": "goldapple",
+        "id": 65,
+        "desc": "",
+        "duration": -1,
+        "unique":1,
+        "avoidDeath": 1,
+        "common": {
         }
     }
 }

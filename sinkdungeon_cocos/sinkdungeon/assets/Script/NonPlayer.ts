@@ -443,12 +443,12 @@ export default class NonPlayer extends Actor {
             this.dangerBox.hide(isMiss);
             if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
                 if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
-                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), isSpecial ? 2000 : 1000);
+                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), isSpecial ? 600 : 300);
                 }
             }
             if (isSpecial) {
                 if (this.data.specialType == SpecialManager.AFTER_DOWN) {
-                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), 1000);
+                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), 300);
                 }
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
@@ -763,6 +763,9 @@ export default class NonPlayer extends Actor {
             if (this.killPlayerCount > 0) {
                 count = 5;
             }
+            if(this.dungeon.player.data.StatusTotalData.exOilGold>0){
+                count+=this.dungeon.player.data.StatusTotalData.exOilGold;
+            }
             EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count });
             if (rand < percent) {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.node.position, count: rand4save.getRandomNum(1, 10) });
@@ -933,24 +936,28 @@ export default class NonPlayer extends Actor {
         }
 
         //相隔指定长度的时候需要停下来，否则执行移动操作
-        let needStop = (this.data.melee > 0 && targetDis < 64)
+        
+        if(!this.isPassive){
+            let needStop = (this.data.melee > 0 && targetDis < 64)
             || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300)
-            || this.shooter.isAiming || this.isPassive;
-        if (needStop) {
-            this.sc.isMoving = false;
-        } else {
-            this.moveStep.next(() => {
-                this.sc.isMoving = true;
-                //随机选取位置，如果在追踪选择目标位置
-                let pos = cc.v3(0, 0);
-                pos.x += Logic.getRandomNum(0, 400) - 200;
-                pos.y += Logic.getRandomNum(0, 400) - 200;
-                if (isTracking) {
-                    pos = this.getMovePosFromTarget(target);
-                }
-                this.move(pos, isTracking ? speed * 0.5 : speed);
-            }, isTracking ? 0.5 : 2, true);
+            || this.shooter.isAiming;
+            if (needStop) {
+                this.sc.isMoving = false;
+            } else {
+                this.moveStep.next(() => {
+                    this.sc.isMoving = true;
+                    //随机选取位置，如果在追踪选择目标位置
+                    let pos = cc.v3(0, 0);
+                    pos.x += Logic.getRandomNum(0, 400) - 200;
+                    pos.y += Logic.getRandomNum(0, 400) - 200;
+                    if (isTracking) {
+                        pos = this.getMovePosFromTarget(target);
+                    }
+                    this.move(pos, isTracking ? speed * 0.5 : speed);
+                }, isTracking ? 0.5 : 2, true);
+            }
         }
+        
         //隐匿
         if (this.data.invisible > 0 && this.sprite.opacity > 20) {
             this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3);
@@ -962,7 +969,7 @@ export default class NonPlayer extends Actor {
         if (this.sc.isDashing) {
             this.setLinearVelocity(this.currentlinearVelocitySpeed);
         }
-        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)) {
+        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)&&!this.isPassive) {
             this.sc.isMoving = false;
         }
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;

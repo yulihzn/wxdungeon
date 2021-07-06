@@ -436,7 +436,7 @@ export default class Player extends Actor {
         this.isFaceUp = pos.y > 0;
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
         if (isMiss) {
-            this.showFloatFont(this.node.parent, 0, false, true, false);
+            this.showFloatFont(this.node.parent, 0, false, true, false,false,false);
         }
         this.updateCombo();
         if (this.fistCombo == MeleeWeapon.COMBO1) {
@@ -764,8 +764,10 @@ export default class Player extends Actor {
             isDodge = true;
         }
         //幽光护盾
+        let isBlock = false;
         if (this.organizationTalent.takeDamage(dd, actor)) {
             dd = new DamageData();
+            isBlock = true;
         }
         // let isIceTaken = false;
         // if (dd.getTotalDamage() > 0) {
@@ -792,10 +794,16 @@ export default class Player extends Actor {
         }
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         this.data.currentHealth = health.x;
-        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false);
+        let isAvoidDeath = false;
         if (this.data.currentHealth <= 0) {
-            this.killed(from);
+            if(this.data.StatusTotalData.avoidDeath>0){
+                this.statusManager.stopStatus(StatusManager.AVOID_DEATH);
+                isAvoidDeath = true;
+            }else{
+                this.killed(from);
+            }
         }
+        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false,isBlock,isAvoidDeath);
         let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_PARRY;
         if (valid || blockLevel == Shield.BLOCK_PARRY) {
             this.showDamageEffect(blockLevel, from, actor);
@@ -830,7 +838,7 @@ export default class Player extends Actor {
         }
     }
 
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean) {
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean,isBlock:boolean,isAvoidDeath:boolean) {
         if (!this.floatinglabelManager) {
             return;
         }
@@ -839,6 +847,10 @@ export default class Player extends Actor {
             flabel.showDoge();
         } else if (isMiss) {
             flabel.showMiss();
+        } else if (isBlock) {
+            flabel.showBlock();
+        } else if (isAvoidDeath) {
+            flabel.showAvoidDeath();
         } else if (d != 0 && d) {
             flabel.showDamage(-d, isCritical);
         } else {

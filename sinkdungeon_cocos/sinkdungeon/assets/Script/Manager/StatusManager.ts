@@ -54,6 +54,7 @@ export default class StatusManager extends cc.Component {
     public static readonly PET_DOG = "status037";
     public static readonly REAGENT = "status038";
     public static readonly REAGENT_SIDE_EFFECT = "status039";
+    public static readonly AVOID_DEATH = "status065";
 
 
     @property(cc.Prefab)
@@ -79,6 +80,7 @@ export default class StatusManager extends cc.Component {
         let sd = new StatusData();
         sd.valueCopy(data)
         sd.From.valueCopy(from);
+        this.stopOtherUniqueStatus(sd.unique);
         this.showStatus(sd, false);
     }
     addStatus(resName: string, from: FromData, isFromSave?: boolean) {
@@ -88,6 +90,7 @@ export default class StatusManager extends cc.Component {
         let sd = new StatusData();
         sd.valueCopy(Logic.status[resName])
         sd.From.valueCopy(from);
+        this.stopOtherUniqueStatus(sd.unique);
         this.showStatus(sd, isFromSave);
     }
     addStatusListFromSave(statusList: StatusData[]) {
@@ -123,6 +126,17 @@ export default class StatusManager extends cc.Component {
             }
         }
         return undefined;
+    }
+    stopOtherUniqueStatus(unique:number){
+        if(unique<1){
+            return;
+        }
+        for (let i = this.statusList.length - 1; i >= 0; i--) {
+            let s = this.statusList[i];
+            if (s && s.data && s.data.unique == unique) {
+                s.stopStatus();
+            }
+        }
     }
     stopAllStatus(): void {
         for (let i = this.statusList.length - 1; i >= 0; i--) {
@@ -215,6 +229,9 @@ export default class StatusManager extends cc.Component {
             }
             this.totalStatusData.missRate += s.data.missRate ? s.data.missRate : 0;
             this.totalStatusData.variation += s.data.variation ? s.data.variation : 0;
+            this.totalStatusData.exOilGold += s.data.exOilGold ? s.data.exOilGold : 0;
+            this.totalStatusData.clearHealth += s.data.clearHealth ? s.data.clearHealth : 0;
+            this.totalStatusData.avoidDeath += s.data.avoidDeath ? s.data.avoidDeath : 0;
             this.totalStatusData.Common.add(s.data.Common);
             dataList.push(s.data.clone());
         }

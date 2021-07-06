@@ -17,6 +17,7 @@ export default class InventoryData extends BaseData{
     createTime: number = 0;
     equipmentData:EquipmentData;
     itemData:ItemData;
+    price:number;
     type:number = 0;
 
     public valueCopy(data:InventoryData):void{
@@ -24,9 +25,11 @@ export default class InventoryData extends BaseData{
             return;
         }
         this.type = data.type?data.type:0;
+        this.price = data.price?data.price:0;
         if(data.equipmentData){
             this.equipmentData = new EquipmentData();
             this.equipmentData.valueCopy(data.equipmentData);
+            this.price = this.equipmentData.price;
         }
         if(data.itemData){
             this.itemData = new ItemData();
@@ -41,6 +44,7 @@ export default class InventoryData extends BaseData{
         e.itemData = this.itemData;
         e.createTime = this.createTime;
         e.type = this.type;
+        e.price = this.price;
         return e;
     }
     public setEmpty(){
@@ -48,6 +52,7 @@ export default class InventoryData extends BaseData{
         this.equipmentData = null;
         this.itemData = null;
         this.createTime = 0;
+        this.price = 0;
     }
     
 }

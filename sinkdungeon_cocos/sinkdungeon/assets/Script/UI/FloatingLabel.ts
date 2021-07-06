@@ -49,6 +49,13 @@ export default class FloatingLabel extends cc.Component {
     showDoge(){
         this.showLabel('闪避',cc.color(255, 255, 255),1);
     }
+    showBlock(){
+        this.showLabel('格挡',cc.color(211, 211, 211),1);
+    }
+    showAvoidDeath(){
+        this.showLabel('格挡致命伤',cc.color(255, 0, 0),5);
+    }
+
     showDamage(damage:number,isCritical:boolean,isBackStab?:boolean){
         let color = damage < 0 ? cc.color(255, 0, 0) : cc.color(0, 255, 0);
         

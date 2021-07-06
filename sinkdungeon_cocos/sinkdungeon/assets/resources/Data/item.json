@@ -716,11 +716,11 @@
         "resName": "goods001",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命短暂+5攻击力",
+        "info":"恢复生命+1,提供+4攻击力状态",
         "desc":"最美妙的饮料，感觉更有劲了",
-        "statusList":"status011,status007",
+        "statusList":"status011,status040",
         "cooldown":10,
-        "price": 30
+        "price": 420
     },
     "goods002": {
         "nameCn":"冰红茶",
@@ -728,11 +728,11 @@
         "resName": "goods002",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1，手速变快了60",
+        "desc":"喝完反而更口渴了",
+        "statusList":"status011,status043",
         "cooldown":10,
-        "price": 30
+        "price": 220
     },
     "goods003": {
         "nameCn":"超冰雪碧",
@@ -740,11 +740,11 @@
         "resName": "goods003",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命，短暂减速",
-        "desc":"透心凉",
-        "statusList":"status011,status001",
+        "info":"恢复生命+1，移动速度+60",
+        "desc":"透心凉，感受飞一般的感觉",
+        "statusList":"status011,status042",
         "cooldown":10,
-        "price": 30
+        "price": 320
     },
     "goods004": {
         "nameCn":"超苦乌龙茶",
@@ -752,11 +752,11 @@
         "resName": "goods004",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1，防御+10",
+        "desc":"你的受苦能力提高了",
+        "statusList":"status011,status041",
         "cooldown":10,
-        "price": 30
+        "price": 320
     },
     "goods005": {
         "nameCn":"苏打水",
@@ -764,11 +764,11 @@
         "resName": "goods005",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
+        "info":"恢复生命+1",
         "desc":"",
         "statusList":"status011",
         "cooldown":10,
-        "price": 30
+        "price": 20
     },
     "goods006": {
         "nameCn":"气泡水",
@@ -776,11 +776,11 @@
         "resName": "goods006",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1，吸血5%",
+        "desc":"元气满满",
+        "statusList":"status011,status050",
         "cooldown":10,
-        "price": 30
+        "price": 420
     },
     "goods007": {
         "nameCn":"橙子味汽水",
@@ -788,11 +788,11 @@
         "resName": "goods007",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1，暴击10%",
+        "desc":"游戏一刻来口橙子味汽水",
+        "statusList":"status011,status049",
         "cooldown":10,
-        "price": 30
+        "price": 320
     },
     "goods008": {
         "nameCn":"无糖可乐",
@@ -800,11 +800,11 @@
         "resName": "goods008",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"失去灵魂的版本",
-        "statusList":"status011",
+        "info":"恢复生命+1，额外提供3点真实伤害",
+        "desc":"失去灵魂的版本，但是能有心理安慰",
+        "statusList":"status011,status044",
         "cooldown":10,
-        "price": 30
+        "price": 420
     },
     "goods009": {
         "nameCn":"红蓝可乐",
@@ -812,11 +812,11 @@
         "resName": "goods009",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
+        "info":"恢复生命+1，最大攻击+6",
         "desc":"有一股中药味",
-        "statusList":"status011",
+        "statusList":"status011,status045",
         "cooldown":10,
-        "price": 30
+        "price": 420
     },
     "goods010": {
         "nameCn":"加糖凉茶",
@@ -824,11 +824,11 @@
         "resName": "goods010",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1，元素伤害+4",
+        "desc":"这茶喝完让你冷静下来了",
+        "statusList":"status011,status056",
         "cooldown":10,
-        "price": 30
+        "price": 420
     },
     "goods011": {
         "nameCn":"清新绿茶",
@@ -836,11 +836,11 @@
         "resName": "goods011",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1，元素抗性30%",
+        "desc":"很清新但是也很甜",
+        "statusList":"status011,status057",
         "cooldown":10,
-        "price": 30
+        "price": 220
     },
     "goods012": {
         "nameCn":"纯净水",
@@ -848,7 +848,7 @@
         "resName": "goods012",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
+        "info":"恢复生命+1",
         "desc":"",
         "statusList":"status011",
         "cooldown":10,
@@ -860,11 +860,11 @@
         "resName": "goods013",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1,翠金获取+1",
+        "desc":"这是一瓶神奇的矿泉水，但是喝下去好像没什么感觉",
+        "statusList":"status011,status063",
         "cooldown":10,
-        "price": 20
+        "price": 1020
     },
     "goods014": {
         "nameCn":"椰汁",
@@ -872,11 +872,11 @@
         "resName": "goods014",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+1，释放冰冻几率10%",
+        "desc":"冰冰凉凉的椰汁很好喝",
+        "statusList":"status011,status058",
         "cooldown":10,
-        "price": 30
+        "price": 220
     },
     "goods015": {
         "nameCn":"啤酒",
@@ -884,11 +884,11 @@
         "resName": "goods015",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"喝完感觉很晕",
-        "statusList":"status005",
+        "info":"恢复生命+1,短暂眩晕,抵挡一次致命伤害",
+        "desc":"昂贵的啤酒，不知道为什么这么贵，喝完感觉很晕，睡得更香了",
+        "statusList":"status005,status011,status065",
         "cooldown":10,
-        "price": 30
+        "price": 1020
     },
     "goods100": {
         "nameCn":"牛肉泡面",
@@ -896,11 +896,11 @@
         "resName": "goods100",
         "canSave":1,
         "count":1,
-        "info":"恢复生命",
-        "desc":"",
-        "statusList":"status017",
+        "info":"恢复生命+3，释放眩晕10%",
+        "desc":"吃完力气变大了",
+        "statusList":"status017,status060",
         "cooldown":10,
-        "price": 60
+        "price": 260
     },
     "goods101": {
         "nameCn":"麻辣泡面",
@@ -908,11 +908,11 @@
         "resName": "goods101",
         "canSave":1,
         "count":1,
-        "info":"恢复生命",
-        "desc":"",
-        "statusList":"status017",
+        "info":"恢复生命+3,释放着火10%",
+        "desc":"很辣感觉要着火了",
+        "statusList":"status017,status059",
         "cooldown":10,
-        "price": 60
+        "price": 260
     },
     "goods102": {
         "nameCn":"香菇泡面",
@@ -920,11 +920,11 @@
         "resName": "goods102",
         "canSave":1,
         "count":1,
-        "info":"恢复生命",
-        "desc":"",
-        "statusList":"status017",
+        "info":"恢复生命+3，释放诅咒10%",
+        "desc":"平平无奇的一碗香菇味泡面",
+        "statusList":"status017,status062",
         "cooldown":10,
-        "price": 60
+        "price": 260
     },
     "goods103": {
         "nameCn":"酸菜泡面",
@@ -932,11 +932,11 @@
         "resName": "goods103",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011",
+        "info":"恢复生命+3,施毒几率10%",
+        "desc":"这是谁在放毒，好香啊",
+        "statusList":"status017,status061",
         "cooldown":10,
-        "price": 60
+        "price": 260
     },
     "goods104": {
         "nameCn":"黄瓜味薯片",
@@ -944,11 +944,11 @@
         "resName": "goods104",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
+        "info":"恢复生命+1,远程冷却-0.2s",
         "desc":"黄瓜口味有一股清香",
-        "statusList":"status011,status011",
+        "statusList":"status011,status052",
         "cooldown":10,
-        "price": 40
+        "price": 320
     },
     "goods105": {
         "nameCn":"原味薯片",
@@ -956,11 +956,11 @@
         "resName": "goods105",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011,status011",
+        "info":"恢复生命+1，远程伤害+2",
+        "desc":"最经典款的薯片",
+        "statusList":"status011,status053",
         "cooldown":10,
-        "price": 40
+        "price": 320
     },
     "goods106": {
         "nameCn":"牛肉味薯片",
@@ -968,11 +968,11 @@
         "resName": "goods106",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011,status011",
+        "info":"恢复生命+1，远程暴击20%",
+        "desc":"有股牛肉烧烤的感觉",
+        "statusList":"status011,status054",
         "cooldown":10,
-        "price": 40
+        "price": 320
     },
     "goods107": {
         "nameCn":"饭团",
@@ -980,11 +980,11 @@
         "resName": "goods107",
         "canSave":1,
         "count":1,
-        "info":"恢复生命",
+        "info":"恢复生命+3，每次清理房间恢复生命+1",
         "desc":"",
-        "statusList":"status017",
+        "statusList":"status017,status064",
         "cooldown":10,
-        "price": 60
+        "price": 600
     },
     "goods108": {
         "nameCn":"三明治",
@@ -992,9 +992,9 @@
         "resName": "goods108",
         "canSave":1,
         "count":1,
-        "info":"恢复生命",
-        "desc":"",
-        "statusList":"status017",
+        "info":"恢复生命+3，流血几率10%",
+        "desc":"吃完三明治变得更有攻击倾向了",
+        "statusList":"status017,status055",
         "cooldown":10,
         "price": 60
     },
@@ -1004,11 +1004,11 @@
         "resName": "goods109",
         "canSave":1,
         "count":1,
-        "info":"恢复生命",
-        "desc":"",
-        "statusList":"status017",
+        "info":"恢复生命+3，背刺+5",
+        "desc":"吃完日料一下想起了忍者，不自觉的猫着步子",
+        "statusList":"status017,status048",
         "cooldown":10,
-        "price": 60
+        "price": 460
     },
     "goods110": {
         "nameCn":"牛肉拌面",
@@ -1016,11 +1016,11 @@
         "resName": "goods110",
         "canSave":1,
         "count":1,
-        "info":"恢复生命",
-        "desc":"",
-        "statusList":"status017",
+        "info":"恢复生命+3，，梦境+5",
+        "desc":"吃得很饱睡得更香",
+        "statusList":"status017,status047",
         "cooldown":10,
-        "price": 60
+        "price": 360
     },
     "goods111": {
         "nameCn":"夹心饼干",
@@ -1028,11 +1028,11 @@
         "resName": "goods111",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status011,status011",
+        "info":"恢复生命+1，闪避10%",
+        "desc":"灵活地扭一扭",
+        "statusList":"status011,status051",
         "cooldown":10,
-        "price": 40
+        "price": 320
     },
     "goods112": {
         "nameCn":"巧克力棒",
@@ -1040,10 +1040,10 @@
         "resName": "goods112",
         "canSave":1,
         "count":1,
-        "info":"恢复少许生命",
-        "desc":"",
-        "statusList":"status017",
+        "info":"恢复生命+3，最大生命+5",
+        "desc":"横扫饥饿",
+        "statusList":"status017,status046",
         "cooldown":10,
-        "price": 60
+        "price": 460
     }
 }

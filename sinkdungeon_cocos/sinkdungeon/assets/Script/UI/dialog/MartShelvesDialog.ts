@@ -124,7 +124,7 @@ export default class MartShelvesDialog extends BaseDialog {
         let size = isFridge?MartShelvesDialog.SIZE_FRIDGE:MartShelvesDialog.SIZE;
         for (let i = 0; i < size; i++) {
             if(i>goodsNameList.length-1){
-                return;
+                continue;
             }
             let goods = cc.instantiate(this.goods).getComponent(Goods);
             let data = new GoodsData();

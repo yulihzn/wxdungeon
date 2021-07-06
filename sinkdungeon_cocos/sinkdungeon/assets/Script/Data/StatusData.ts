@@ -46,6 +46,10 @@ export default class StatusData {
     invisibleDuratonDirect = 0;//隐身持续时长
     variation = 0;//变异
     finishStatus = '';//状态结束附加新的状态
+    unique:number = 0;//唯一的，同样标记的只能有一个，需要移除其它含有相同数字的 1：商品 2：食物 3：塔罗牌或者其它什么
+    exOilGold:number = 0;//额外经验获取
+    clearHealth = 0;//清理完房间回复生命
+    avoidDeath = 0;//抵挡一次致命伤
     
     private from:FromData;//来源
 
@@ -86,6 +90,10 @@ export default class StatusData {
         this.dreamDirect = data.dreamDirect?data.dreamDirect:0;
         this.dreamOvertime = data.dreamOvertime?data.dreamOvertime:0;
         this.variation = data.variation?data.variation:0;
+        this.unique = data.unique?data.unique:0;
+        this.exOilGold = data.exOilGold?data.exOilGold:0;
+        this.clearHealth = data.clearHealth?data.clearHealth:0;
+        this.avoidDeath = data.avoidDeath?data.avoidDeath:0;
         this.finishStatus = data.finishStatus?data.finishStatus:'';
     }
     public clone(): StatusData {
@@ -113,6 +121,10 @@ export default class StatusData {
         e.type = this.type;
         e.variation = this.variation;
         e.finishStatus = this.finishStatus;
+        e.unique = this.unique;
+        e.exOilGold = this.exOilGold;
+        e.clearHealth = this.clearHealth;
+        e.avoidDeath = this.avoidDeath;
         return e;
     }
 }
