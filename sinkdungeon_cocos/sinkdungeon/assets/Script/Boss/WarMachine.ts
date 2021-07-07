@@ -7,7 +7,7 @@ import StatusManager from "../Manager/StatusManager";
 import AudioPlayer from "../Utils/AudioPlayer";
 import { EventHelper } from "../EventHelper";
 import FromData from "../Data/FromData";
-import Achievements from "../Achievement";
+import Achievement from "../Achievement";
 import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
@@ -88,7 +88,7 @@ export default class WarMachine extends Boss {
         if(this.anim){
             this.anim.pause();
         }
-        Achievements.addMonsterKillAchievement(this.data.resName);
+        Achievement.addMonsterKillAchievement(this.data.resName);
         this.sc.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();

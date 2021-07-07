@@ -21,7 +21,7 @@ import Random from './Utils/Random';
 import NextStep from './Utils/NextStep';
 import Item from './Item/Item';
 import Actor from './Base/Actor';
-import Achievements from './Achievement';
+import Achievement from './Achievement';
 import AudioPlayer from './Utils/AudioPlayer';
 import SpecialManager from './Manager/SpecialManager';
 import FromData from './Data/FromData';
@@ -719,7 +719,7 @@ export default class NonPlayer extends Actor {
         if (this.data.isEnemy > 0) {
             this.getLoot();
         }
-        Achievements.addMonsterKillAchievement(this.data.resName);
+        Achievement.addMonsterKillAchievement(this.data.resName);
         Logic.setKillPlayerCounts(FromData.getClone(this.actorName(), this.data.resName + 'anim000', this.seed), false);
         this.scheduleOnce(() => {
             if (this.node) {

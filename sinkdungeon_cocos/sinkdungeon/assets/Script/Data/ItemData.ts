@@ -15,47 +15,50 @@ import CommonData from "./CommonData";
  * 物品
  */
 export default class ItemData extends BaseData {
-    uuid:string = '';//唯一标识，用来存档
-    pos:cc.Vec3 = cc.v3(0,0);//下标
+    uuid: string = '';//唯一标识，用来存档
+    pos: cc.Vec3 = cc.v3(0, 0);//下标
     nameCn: string = '';
     nameEn: string = '';
     duration: number = 0;//持续时间
     desc: string = '';//描述
-    info:string='';//功能介绍
-    resName:string = 'emptyitem';
-    price:number = 0;
+    info: string = '';//功能介绍
+    resName: string = 'emptyitem';
+    price: number = 0;
     isTaken = false;
     count = 1;//使用次数，-1为不限使用次数,1为一次性
     cooldown = 1;//冷却时间
-    statusList:string = '';
+    statusList: string = '';
     canSave = 0;
-    private common:CommonData;
-    constructor(){
+    private common: CommonData;
+    constructor() {
         super();
         this.common = new CommonData();
     }
 
-    get Common(){
+    get Common() {
         return this.common;
     }
     public valueCopy(data: ItemData): void {
-        this.uuid = data.uuid?data.uuid:'';
+        if (!data) {
+            return;
+        }
+        this.uuid = data.uuid ? data.uuid : '';
         this.common.valueCopy(data.common);
-        this.pos = data.pos?cc.v3(data.pos.x,data.pos.y):cc.v3(0,0);
+        this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(0, 0);
         this.nameCn = data.nameCn ? data.nameCn : this.nameCn;
         this.nameEn = data.nameEn;
         this.duration = data.duration;
-        this.resName = data.resName?data.resName:'emptyitem';
-        this.info = data.info?data.info:'';
-        this.desc = data.desc?data.desc:'';
-        this.isTaken = data.isTaken?data.isTaken:false;
-        this.canSave = data.canSave?data.canSave:0;
-        this.count = data.count?data.count:1;
-        this.cooldown = data.cooldown?data.cooldown:1;
-        this.price = data.price?data.price:0;
-        this.statusList = data.statusList?data.statusList:'';
+        this.resName = data.resName ? data.resName : 'emptyitem';
+        this.info = data.info ? data.info : '';
+        this.desc = data.desc ? data.desc : '';
+        this.isTaken = data.isTaken ? data.isTaken : false;
+        this.canSave = data.canSave ? data.canSave : 0;
+        this.count = data.count ? data.count : 1;
+        this.cooldown = data.cooldown ? data.cooldown : 1;
+        this.price = data.price ? data.price : 0;
+        this.statusList = data.statusList ? data.statusList : '';
 
-      
+
     }
     public clone(): ItemData {
         let e = new ItemData();
@@ -76,5 +79,5 @@ export default class ItemData extends BaseData {
         e.statusList = this.statusList;
         return e;
     }
-    
+
 }

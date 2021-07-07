@@ -6,6 +6,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import ShopTable from "../Building/ShopTable";
 import { ColliderTag } from "../Actor/ColliderTag";
+import Achievement from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -109,6 +110,7 @@ export default class Item extends cc.Component {
     private _taken(player: Player,isReplace:boolean){
         if (!this.data.isTaken && this.anim) {
             this.anim.play('ItemTaken');
+            Achievement.addEquipsAchievement(this.data.resName);
             this.data.isTaken = true;
             AudioPlayer.play(AudioPlayer.PICK_ITEM);
             if (this.data.canSave < 1) {

@@ -269,6 +269,7 @@ export default class LoadingManager {
             }
         })
     }
+    
     loadAutoSpriteFrames() {
         if (Logic.spriteFrames && Logic.spriteFrameRes('auto')) {
             this.spriteFrameNames[LoadingManager.KEY_AUTO] = true;

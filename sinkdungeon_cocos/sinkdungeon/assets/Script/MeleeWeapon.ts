@@ -573,14 +573,14 @@ export default class MeleeWeapon extends cc.Component {
             }
             if(!attackSuccess){
                 let interactBuilding = attackTarget.node.getComponent(InteractBuilding);
-                if (interactBuilding) {
+                if (interactBuilding&&interactBuilding.data.currentHealth>0) {
                     attackSuccess = true;
                     interactBuilding.takeDamage(damage)
                 }
             }
             if(!attackSuccess){
                 let hitBuilding = attackTarget.node.getComponent(HitBuilding);
-                if (hitBuilding) {
+                if (hitBuilding&&hitBuilding.data.currentHealth>0) {
                     attackSuccess = true;
                     hitBuilding.takeDamage(damage);
                 }

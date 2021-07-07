@@ -9,7 +9,7 @@ import MonsterManager from "../Manager/MonsterManager";
 import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Achievements from "../Achievement";
+import Achievement from "../Achievement";
 import Item from "../Item/Item";
 import IndexZ from "../Utils/IndexZ";
 import ActorUtils from "../Utils/ActorUtils";
@@ -223,7 +223,7 @@ export default class Slime extends Boss {
         if (this.dungeon) {
             if (this.slimeType == 0) {
                 let rand4save = Logic.mapManager.getRandom4Save(this.seed);
-                Achievements.addMonsterKillAchievement(this.data.resName);
+                Achievement.addMonsterKillAchievement(this.data.resName);
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
                 cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.DREAM } });
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, 3);

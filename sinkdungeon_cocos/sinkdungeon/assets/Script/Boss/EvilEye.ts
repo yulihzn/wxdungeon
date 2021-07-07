@@ -7,7 +7,7 @@ import Boss from "./Boss";
 import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Achievements from "../Achievement";
+import Achievement from "../Achievement";
 import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
@@ -104,7 +104,7 @@ export default class EvilEye extends Boss {
         if (this.sc.isDied) {
             return;
         }
-        Achievements.addMonsterKillAchievement(this.data.resName);
+        Achievement.addMonsterKillAchievement(this.data.resName);
         cc.tween(this.node).to(3,{opacity:0}).start();
         this.sc.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);

@@ -27,7 +27,7 @@ import Actor from './Base/Actor';
 import Talent from './Talent/Talent';
 import AudioPlayer from './Utils/AudioPlayer';
 import FromData from './Data/FromData';
-import Achievements from './Achievement';
+import Achievement from './Achievement';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
 import IndexZ from './Utils/IndexZ';
@@ -870,7 +870,7 @@ export default class Player extends Actor {
         AudioPlayer.play(AudioPlayer.DIE);
         EventHelper.emit(EventHelper.HUD_LOSE_OILGOLD);
         EventHelper.emit(EventHelper.HUD_OILGOLD_LOSE_SHOW);
-        Achievements.addPlayerDiedLifesAchievement();
+        Achievement.addPlayerDiedLifesAchievement();
         this.weaponLeft.node.opacity = 0;
         this.weaponRight.node.opacity = 0;
         Logic.dieFrom.valueCopy(from);

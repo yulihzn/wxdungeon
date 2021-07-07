@@ -56,10 +56,8 @@ export default class LocalStorage {
     }
 
     static getAchievementData(): AchievementData {
-        let data: AchievementData = LocalStorage.getData()[LocalStorage.KEY_ACHIEVEMENT];
-        if (!data || !data.monsters) {
-            data = new AchievementData();
-        }
+        let data = new AchievementData();
+        data.valueCopy(LocalStorage.getData()[LocalStorage.KEY_ACHIEVEMENT]);
         return data;
     }
     static saveAchievementData(data: AchievementData): void {

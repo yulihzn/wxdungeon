@@ -8,7 +8,7 @@ import Boss from "./Boss";
 import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Achievements from "../Achievement";
+import Achievement from "../Achievement";
 import { ColliderTag } from "../Actor/ColliderTag";
 import ActorUtils from "../Utils/ActorUtils";
 import Logic from "../Logic";
@@ -202,7 +202,7 @@ export default class Captain extends Boss {
         if (this.sc.isDied) {
             return;
         }
-        Achievements.addMonsterKillAchievement(this.data.resName);
+        Achievement.addMonsterKillAchievement(this.data.resName);
         this.sc.isDied = true;
         this.anim.play('CaptainDie');
         let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');

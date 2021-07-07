@@ -4,6 +4,7 @@ import BaseManager from "./BaseManager";
 import Utils from "../Utils/Utils";
 import NonPlayer from "../NonPlayer";
 import NonPlayerData from "../Data/NonPlayerData";
+import Achievement from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -47,7 +48,10 @@ export default class NonPlayerManager extends BaseManager {
     }
     /**添加npc */
     public addNonPlayerFromData(resName: string, pos: cc.Vec3, dungeon: Dungeon) {
-        this.addNonPlayer(this.getNonPlayer(Logic.nonplayers[resName], dungeon), pos);
+        let data = new NonPlayerData();
+        data.valueCopy(Logic.nonplayers[resName]);
+        Achievement.addNpcsAchievement(data.resName);
+        this.addNonPlayer(this.getNonPlayer(data, dungeon), pos);
     }
 
     isPetAlive() {
@@ -66,6 +70,7 @@ export default class NonPlayerManager extends BaseManager {
         if (this.isPetAlive()) {
             return;
         }
+        Achievement.addNpcsAchievement(data.resName);
         this.addNonPlayer(this.getNonPlayer(data, dungeon), pos);
     }
 

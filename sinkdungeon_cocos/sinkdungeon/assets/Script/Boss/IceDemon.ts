@@ -7,7 +7,7 @@ import Boss from "./Boss";
 import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Achievements from "../Achievement";
+import Achievement from "../Achievement";
 import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
 import ActorUtils from "../Utils/ActorUtils";
@@ -85,7 +85,7 @@ export default class IceDemon extends Boss {
         if (this.sc.isDied) {
             return;
         }
-        Achievements.addMonsterKillAchievement(this.data.resName);
+        Achievement.addMonsterKillAchievement(this.data.resName);
         cc.tween(this.node).to(3,{opacity:0}).start();
         this.sc.isDied = true;
         this.anim.play('IceDemonDefence');

@@ -8,7 +8,7 @@ import Boss from "./Boss";
 import NextStep from "../Utils/NextStep";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Achievements from "../Achievement";
+import Achievement from "../Achievement";
 import IndexZ from "../Utils/IndexZ";
 import Item from "../Item/Item";
 
@@ -120,7 +120,7 @@ export default class Kraken extends Boss {
         if (this.sc.isDied) {
             return;
         }
-        Achievements.addMonsterKillAchievement(this.data.resName);
+        Achievement.addMonsterKillAchievement(this.data.resName);
         this.sc.isDied = true;
         this.changeZIndex();
         for (let hand of this.hands) {

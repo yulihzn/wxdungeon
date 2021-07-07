@@ -1,0 +1,30 @@
+{
+  "__type__": "cc.Material",
+  "_name": "OutlineBlackBgEffect",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "21366bf1-c8f5-4174-9256-ac9e836d4048"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "outlineColor": {
+          "__type__": "cc.Color",
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "a": 255
+        },
+        "openOutline": 0,
+        "outlineSize": 2,
+        "textureSizeWidth": 1,
+        "textureSizeHeight": 1
+      }
+    }
+  }
+}

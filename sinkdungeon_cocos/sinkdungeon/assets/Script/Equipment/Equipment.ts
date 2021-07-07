@@ -4,6 +4,7 @@ import { EventHelper } from "../EventHelper";
 import ShopTable from "../Building/ShopTable";
 import Dungeon from "../Dungeon";
 import AudioPlayer from "../Utils/AudioPlayer";
+import Achievement from "../Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -101,6 +102,7 @@ export default class Equipment extends cc.Component {
     private _taken(isReplace:boolean) {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
+        Achievement.addEquipsAchievement(this.data.img);
         cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data ,isReplace:isReplace} })
         this.node.getChildByName('shadow').active = false;
         cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE);

@@ -8,7 +8,7 @@ import NextStep from "../Utils/NextStep";
 import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
-import Achievements from "../Achievement";
+import Achievement from "../Achievement";
 import ActorUtils from "../Utils/ActorUtils";
 
 // Learn TypeScript:
@@ -70,7 +70,7 @@ export default class Rah extends Boss {
         if (this.sc.isDied) {
             return;
         }
-        Achievements.addMonsterKillAchievement(this.data.resName);
+        Achievement.addMonsterKillAchievement(this.data.resName);
         cc.tween(this.node).to(3,{opacity:0}).start();
         this.sc.isDied = true;
         cc.tween(this.dungeon.fog).to(1,{scale:3}).start();
