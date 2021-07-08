@@ -75,16 +75,25 @@ export default class AchievementItem extends cc.Component {
         this.sprite.spriteFrame = null;
         if (this.spriteFrame) {
             this.sprite.spriteFrame = this.spriteFrame;
-            this.sprite.node.height = 96;
-            this.sprite.node.width = 96 / this.spriteFrame.getRect().height * this.spriteFrame.getRect().width;
+            let w = this.spriteFrame.getRect().width;
+            let h = this.spriteFrame.getRect().height;
+            this.sprite.node.width = w * 4;
+            this.sprite.node.height = h * 4;
+            if (this.sprite.node.height > 96) {
+                this.sprite.node.height = 96;
+                this.sprite.node.width = 96 / this.spriteFrame.getRect().height * this.spriteFrame.getRect().width;
+            }
+            let scale = 4;
+            if (h > 96) {
+                scale = 0.5;
+            }
             if (!this.mat) {
                 this.mat = this.sprite.getMaterial(0);
             }
-            let w = this.spriteFrame.getTexture().width;
-            let h = this.spriteFrame.getTexture().height;
-            this.mat.setProperty('textureSizeWidth', w * 4);
-            this.mat.setProperty('textureSizeHeight', h * 4);
-            this.mat.setProperty('outlineColor', cc.Color.WHITE);
+
+            this.mat.setProperty('textureSizeWidth', this.spriteFrame.getTexture().width * scale);
+            this.mat.setProperty('textureSizeHeight', this.spriteFrame.getTexture().height * scale);
+            this.mat.setProperty('outlineColor', cc.color(200,200,200));
             this.mat.setProperty('blackBg', this.count > 0 ? 0 : 1);
             this.mat.setProperty('openOutline', this.count > 0 ? 0 : 1);
         }

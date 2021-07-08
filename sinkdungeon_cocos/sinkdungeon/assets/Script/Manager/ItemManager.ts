@@ -221,7 +221,7 @@ export default class ItemManager extends BaseManager {
                 if (item.data.canSave) {
                     if (!this.lastGroundItem||this.lastGroundItem.uuid != item.uuid) {
                         cc.tween(item.taketips).to(0.2,{opacity:255}).delay(1).to(0.2,{opacity:0}).start();
-                        cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{itemData:item.data}});
+                        cc.director.emit(EventHelper.HUD_GROUND_ITEM_INFO_SHOW,{detail:{worldPos:item.node.convertToWorldSpaceAR(cc.v3(0,32)),itemData:item.data}});
                     }
                     this.lastGroundItem = item;
                 }else{

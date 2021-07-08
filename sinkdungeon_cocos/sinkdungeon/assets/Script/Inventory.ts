@@ -12,16 +12,15 @@ const { ccclass, property } = cc._decorator;
 import { EventHelper } from './EventHelper';
 import Logic from './Logic';
 import EquipmentData from './Data/EquipmentData';
-import EquipmentDialog from './Equipment/EquipmentDialog';
 import InventoryManager from './Manager/InventoryManager';
 import Dungeon from './Dungeon';
 import FromData from './Data/FromData';
 import ItemData from './Data/ItemData';
 import Item from './Item/Item';
-import ItemDialog from './Item/ItemDialog';
 import SuitData from './Data/SuitData';
 import InventoryData from './Data/InventoryData';
 import InventoryItem from './UI/InventoryItem';
+import EquipmentAndItemDialog from './UI/dialog/EquipmentAndItemDialog';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -56,14 +55,14 @@ export default class Inventory extends cc.Component {
     @property(cc.Sprite)
     item5: cc.Sprite = null;
 
-    @property(EquipmentDialog)
-    equipmentDialog: EquipmentDialog = null;
-    @property(ItemDialog)
-    itemDialog: ItemDialog = null;
-    @property(EquipmentDialog)
-    equipmentGroundDialog: EquipmentDialog = null;
-    @property(ItemDialog)
-    itemGroundDialog: ItemDialog = null;
+    @property(cc.Prefab)
+    equipmentAndItemDialogPrefab:cc.Prefab = null;
+    @property(cc.Camera)
+    mainCamera:cc.Camera = null;
+    equipmentDialog: EquipmentAndItemDialog = null;
+    itemDialog: EquipmentAndItemDialog = null;
+    equipmentGroundDialog: EquipmentAndItemDialog = null;
+    itemGroundDialog: EquipmentAndItemDialog = null;
 
     inventoryManager: InventoryManager;
     graphics: cc.Graphics = null;
@@ -76,7 +75,10 @@ export default class Inventory extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.equipmentDialog.isInventory = true;
+        this.equipmentDialog=this.initDialog(false);
+        this.equipmentGroundDialog=this.initDialog(true);
+        this.itemDialog=this.initDialog(false);
+        this.itemGroundDialog=this.initDialog(true);
         this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
@@ -88,38 +90,42 @@ export default class Inventory extends cc.Component {
             });
         if (this.equipmentGroundDialog) { this.equipmentGroundDialog.hideDialog(); }
         if (this.itemGroundDialog) { this.itemGroundDialog.hideDialog(); }
-        cc.director.on(EventHelper.PLAYER_CHANGEITEM
-            , (event) => {
+        EventHelper.on(EventHelper.PLAYER_CHANGEITEM
+            , (detail) => {
                 if (this.node) {
-                    this.refreshItem(event.detail.itemData, event.detail.isReplace, event.detail.index);
+                    this.refreshItem(detail.itemData, detail.isReplace, detail.index);
                 }
             });
-        cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
-            , (event) => {
+        EventHelper.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
+            , (detail) => {
                 if (this.equipmentGroundDialog) {
-                    this.equipmentGroundDialog.showDialog(event.detail.equipData);
+                    let worldPos = detail.worldPos;
+                    let pos = this.node.convertToNodeSpaceAR(worldPos);
+                    this.equipmentGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,null,detail.equipData);
                 }
             });
-        cc.director.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE
-            , (event) => {
+        EventHelper.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE
+            , (detail) => {
                 if (this.equipmentGroundDialog) {
                     this.equipmentGroundDialog.hideDialog();
                 }
             });
-        cc.director.on(EventHelper.HUD_GROUND_ITEM_INFO_SHOW
-            , (event) => {
+        EventHelper.on(EventHelper.HUD_GROUND_ITEM_INFO_SHOW
+            , (detail) => {
                 if (this.itemGroundDialog) {
-                    this.itemGroundDialog.showDialog(event.detail.itemData);
+                    let worldPos:cc.Vec3 = detail.worldPos;
+                    let pos = this.node.convertToNodeSpaceAR(worldPos);
+                    this.itemGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,detail.itemData,null);
                 }
             });
-        cc.director.on(EventHelper.HUD_GROUND_ITEM_INFO_HIDE
-            , (event) => {
+        EventHelper.on(EventHelper.HUD_GROUND_ITEM_INFO_HIDE
+            , (detail) => {
                 if (this.itemGroundDialog) {
                     this.itemGroundDialog.hideDialog();
                 }
             });
-        cc.director.on(EventHelper.USEITEM_KEYBOARD, (event) => {
-            this.userItem(null, event.detail.index);
+        EventHelper.on(EventHelper.USEITEM_KEYBOARD, (detail) => {
+            this.userItem(null, detail.index);
         });
         this.remote.node.parent.active = true;
         this.shield.node.parent.active = false;
@@ -135,6 +141,14 @@ export default class Inventory extends cc.Component {
         this.equipSprites[InventoryManager.GLOVES] = this.gloves;
         this.equipSprites[InventoryManager.SHOES] = this.shoes;
         this.equipSprites[InventoryManager.CLOAK] = this.cloak;
+    }
+    private initDialog(isGround:boolean){
+        let node = cc.instantiate(this.equipmentAndItemDialogPrefab);
+        node.parent = this.node;
+        let dialog = node.getComponent(EquipmentAndItemDialog);
+        dialog.changeBgAndAnchor(isGround?EquipmentAndItemDialog.BG_TYPE_ARROW_DOWN:EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT);
+        dialog.hideDialog();
+        return dialog;
     }
 
     start() {
@@ -162,7 +176,8 @@ export default class Inventory extends cc.Component {
             if (this.inventoryManager.equips[equipmetType]) {
                 equipData = this.inventoryManager.equips[equipmetType].clone();
             }
-            this.equipmentDialog.showDialog(equipData, this.inventoryManager);
+            let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
+            this.equipmentDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData, this.inventoryManager);
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentDialog.hideDialog();
@@ -188,7 +203,8 @@ export default class Inventory extends cc.Component {
                 if (item.resName == Item.EMPTY) {
                     return;
                 }
-                this.itemDialog.showDialog(item);
+                let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
+                this.itemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null);
             }, 0.3)
 
         })

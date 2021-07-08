@@ -91,6 +91,6 @@ export class EventHelper extends cc.Component {
      * @param callback 
      */
     public static on(key: string, callback: Function) {
-        cc.director.on(key, (event) => { callback(event.detail); });
+        cc.director.on(key, (event) => { callback(event?event.detail:{}); });
     }
 }

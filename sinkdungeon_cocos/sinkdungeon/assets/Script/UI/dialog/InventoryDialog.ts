@@ -7,15 +7,14 @@
 
 import AvatarData from "../../Data/AvatarData";
 import InventoryData from "../../Data/InventoryData";
-import EquipmentDialog from "../../Equipment/EquipmentDialog";
 import { EventHelper } from "../../EventHelper";
 import Item from "../../Item/Item";
-import ItemDialog from "../../Item/ItemDialog";
 import Logic from "../../Logic";
 import InventoryManager from "../../Manager/InventoryManager";
 import AudioPlayer from "../../Utils/AudioPlayer";
 import InventoryItem from "../InventoryItem";
 import BaseDialog from "./BaseDialog";
+import EquipmentAndItemDialog from "./EquipmentAndItemDialog";
 
 const { ccclass, property } = cc._decorator;
 
@@ -27,10 +26,8 @@ export default class InventoryDialog extends BaseDialog {
     layout: cc.Node = null;
     @property(cc.ToggleContainer)
     toggleContainer: cc.ToggleContainer = null;
-    @property(EquipmentDialog)
-    equipmentDialog: EquipmentDialog = null;
-    @property(ItemDialog)
-    itemDialog: ItemDialog = null;
+    @property(cc.Prefab)
+    equipmentAndItemDialogPrefab:cc.Prefab = null;
     @property(cc.Node)
     useButton: cc.Node = null;
     @property(cc.Node)
@@ -44,8 +41,10 @@ export default class InventoryDialog extends BaseDialog {
     discountLabel:cc.Label = null;
     currentSelectIndex: number;
     discount = 0.6;
+    equipmentAndItemDialog: EquipmentAndItemDialog= null;
     onLoad() {
         this.select.opacity = 0;
+        this.equipmentAndItemDialog = this.initDialog();
         this.layout.removeAllChildren();
         for (let i = 0; i < InventoryManager.INVENTORY_MAX; i++) {
             let data = new InventoryData();
@@ -70,6 +69,14 @@ export default class InventoryDialog extends BaseDialog {
             this.discount = 0.8;
         }
     }
+    private initDialog(){
+        let node = cc.instantiate(this.equipmentAndItemDialogPrefab);
+        node.parent = this.node.getChildByName('layer');
+        let dialog = node.getComponent(EquipmentAndItemDialog);
+        dialog.changeBgAndAnchor(EquipmentAndItemDialog.BG_TYPE_ARROW_NONE);
+        dialog.hideDialog();
+        return dialog;
+    }
     private getItem(index: number, data: InventoryData) {
         let prefab = cc.instantiate(this.item);
         prefab.parent = this.layout;
@@ -92,8 +99,7 @@ export default class InventoryDialog extends BaseDialog {
     }
     clearSelect() {
         this.currentSelectIndex = -1;
-        this.itemDialog.hideDialog();
-        this.equipmentDialog.hideDialog();
+        this.equipmentAndItemDialog.hideDialog();
         this.useButton.active = false;
         this.dropButton.active = false;
         this.saleButton.active = false;
@@ -109,15 +115,13 @@ export default class InventoryDialog extends BaseDialog {
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
-            this.itemDialog.hideDialog();
-            this.equipmentDialog.showDialog(item.data.equipmentData);
+            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,null,item.data.equipmentData);
         } else {
             this.discountLabel.string = `-${this.discount*100}%(${Math.floor(item.data.itemData.count>1?item.data.itemData.price*item.data.itemData.count*this.discount:item.data.itemData.price*this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
-            this.equipmentDialog.hideDialog();
-            this.itemDialog.showDialog(item.data.itemData);
+            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,item.data.itemData,null);
         }
     }
     updateList(sortIndex: number) {

@@ -17,6 +17,7 @@ import ItemManager from "./Manager/ItemManager";
 import Utils from "./Utils/Utils";
 import LightManager from "./Manager/LightManager";
 import DamageData from "./Data/DamageData";
+import EquipmentAndItemDialog from "./UI/dialog/EquipmentAndItemDialog";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -260,6 +261,7 @@ export default class Dungeon extends cc.Component {
             }
         }
     }
+   
     public darkAfterKill() {
         cc.tween(this.fog).to(1, { scale: 0.6 }).start();
         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');

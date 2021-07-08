@@ -93,7 +93,7 @@ CCProgram fs %{
   }
   void main () {
     vec4 curr_color = texture2D(texture, v_uv0); // 正在处理的这个像素点的颜色
-    if (curr_color.a < 0.5||openOutline < 0.9) // 关闭或者透明，不管，直接返回
+    if (curr_color.a < 0.5) // 关闭或者透明，不管，直接返回
     {
         gl_FragColor = v_color*curr_color;
         return;
@@ -102,6 +102,12 @@ CCProgram fs %{
     {
         gl_FragColor = v_color*curr_color;
         return;
+    }
+    if(v_uv0.x == 0.0||v_uv0.x==1.0||v_uv0.y==0.0||v_uv0.y==1.0)//边界非透明直接改变
+    {
+      curr_color = outlineColor;
+      gl_FragColor = v_color*curr_color;
+      return;
     }
     // OpenGL es并不是很支持循环，while和for都不要用
     float strokeCount = 0.0;
