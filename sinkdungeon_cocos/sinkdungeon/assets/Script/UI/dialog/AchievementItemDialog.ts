@@ -8,7 +8,7 @@
 import EquipmentData from "../../Data/EquipmentData";
 import ItemData from "../../Data/ItemData";
 import NonPlayerData from "../../Data/NonPlayerData";
-import Logic from "../../Logic";
+import EquipmentManager from "../../Manager/EquipmentManager";
 import AudioPlayer from "../../Utils/AudioPlayer";
 import BaseDialog from "./BaseDialog";
 import EquipmentAndItemDialog from "./EquipmentAndItemDialog";
@@ -41,8 +41,14 @@ export default class AchievementItemDialog extends BaseDialog {
         super.show();
         if(spriteFrame){
             this.icon.spriteFrame = spriteFrame;
+            this.icon.node.width = 160;
+            this.icon.node.height = 160/spriteFrame.getRect().width*spriteFrame.getRect().height;
         }
-        this.equipmentAndItemDialog.showDialog(cc.v3(80,230),nonPlayerData,itemData,equipData);
+        
+        if(equipData){
+            equipData = EquipmentManager.getOriginEquipData(equipData.img);
+        }
+        this.equipmentAndItemDialog.showDialog(cc.v3(80,150),nonPlayerData,itemData,equipData);
     }
 
     close() {

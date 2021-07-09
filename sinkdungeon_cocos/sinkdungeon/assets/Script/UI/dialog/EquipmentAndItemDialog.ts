@@ -63,7 +63,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.layout.anchorX = 1;
         this.layout.anchorY = 1;
         switch (this.bgType) {
-            case EquipmentAndItemDialog.BG_TYPE_ARROW_NONE: sprite.spriteFrame = this.arrowNoneBg; break;
+            case EquipmentAndItemDialog.BG_TYPE_ARROW_NONE: sprite.spriteFrame = this.arrowNoneBg;break;
             case EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT: sprite.spriteFrame = this.arrowRightBg; break;
             case EquipmentAndItemDialog.BG_TYPE_ARROW_DOWN: sprite.spriteFrame = this.arrowDownBg;
                 this.layout.anchorX = 0;
@@ -147,7 +147,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.node.opacity = 255;
         this.refreshItemInfo(item);
     }
-    showDialogNonPlayerInfo(data:NonPlayerData){
+    showDialogNonPlayerInfo(data: NonPlayerData) {
         this.node.opacity = 255;
         this.refreshNonPlayerInfo(data);
     }
@@ -167,18 +167,18 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021');
 
     }
-    showDialog(position: cc.Vec3,nonPlayerData:NonPlayerData, item: ItemData, equipment: EquipmentData, inventoryManager?: InventoryManager) {
+    showDialog(position: cc.Vec3, nonPlayerData: NonPlayerData, item: ItemData, equipment: EquipmentData, inventoryManager?: InventoryManager) {
         this.node.position = position.clone();
         // let size = cc.view.getVisibleSize();
         // if(this.isArrowDownBg){
         //     let offsetX = this.node.position.x+this.layout.width-size.width;
         //     let offsetY = this.node.position.x+this.layout.width-size.height;
         // }
-        if(nonPlayerData){
+        if (nonPlayerData) {
             this.showDialogNonPlayerInfo(nonPlayerData);
-        }else if (item) {
+        } else if (item) {
             this.showDialogItemInfo(item);
-        } else {
+        } else if (equipment) {
             this.showDialogEquipInfo(equipment, inventoryManager);
         }
     }

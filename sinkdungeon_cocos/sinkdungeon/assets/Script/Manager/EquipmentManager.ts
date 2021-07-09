@@ -457,7 +457,7 @@ export default class EquipmentManager extends BaseManager {
         return equipment;
 
     }
-    static getNewEquipData(equipType, chestQuality?: number): EquipmentData {
+    static getNewEquipData(equipType:string, chestQuality?: number): EquipmentData {
         if (equipType.length == 0) {
             return;
         }
@@ -492,6 +492,32 @@ export default class EquipmentManager extends BaseManager {
             }
         }
         data.level = desc.level;
+        data.price += EquipmentManager.getPrice(data);
+        return data;
+    }
+    static getOriginEquipData(equipType:string){
+        if (equipType.length == 0) {
+            return;
+        }
+        let data = new EquipmentData();
+        data.valueCopy(Logic.equipments[equipType]);
+        data.uuid = data.genNonDuplicateID();
+        let common = data.Common.clone();
+        data.infobase = EquipmentManager.getEquipmentInfoBase(common);
+        data.info1 = EquipmentManager.getEquipmentInfo1(common);
+        data.info2 = EquipmentManager.getEquipmentInfo2(common, data);
+        data.info3 = EquipmentManager.getEquipmentInfo3(common);
+        data.suit1 = EquipmentManager.getSuitDesc(data.suitType,0);
+        data.suit2 = EquipmentManager.getSuitDesc(data.suitType,1);
+        data.suit3 = EquipmentManager.getSuitDesc(data.suitType,2);
+        data.infobasecolor = '#fffff0';//象牙
+        data.infocolor1 = '#9370DB';//适中的紫色
+        data.infocolor2 = '#87CEFA';//淡蓝色
+        data.infocolor3 = '#BC8F8F';//玫瑰棕色
+        data.suitcolor1 = '#FFD700';//金
+        data.suitcolor2 = '#FFD700';//金
+        data.suitcolor3 = '#FFD700';//金
+        data.titlecolor = "#FFFFFF";
         data.price += EquipmentManager.getPrice(data);
         return data;
     }

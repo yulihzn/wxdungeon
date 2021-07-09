@@ -1,4 +1,7 @@
 import Achievement from "../Achievement";
+import EquipmentData from "../Data/EquipmentData";
+import ItemData from "../Data/ItemData";
+import NonPlayerData from "../Data/NonPlayerData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,11 +34,14 @@ export default class AchievementItem extends cc.Component {
     @property(cc.Label)
     label: cc.Label = null;
     index = 0;//列表里的下标
-    parentIndex = 0; 父下标
+    parentIndex = 0; //父下标
     achievements: Achievement;
     count = 0;//数量
     spriteFrame: cc.SpriteFrame = null;
     mat: cc.MaterialVariant;
+    nonPlayerData: NonPlayerData;
+    itemData: ItemData;
+    equipData: EquipmentData;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -44,12 +50,15 @@ export default class AchievementItem extends cc.Component {
         }, this)
 
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
-            if (this.isSelect && this.index == this.achievements.currentItemIndex
-                && this.parentIndex == this.achievements.currentListIndex) {
-                this.isSelect = false;
-            } else {
-                this.isSelect = this.parentIndex != AchievementItem.TYPE_EMPTY;
+            if (this.node&&this.count > 0) {
+                this.achievements.achievementItemDialog.show(this.nonPlayerData, this.itemData, this.equipData, this.sprite.spriteFrame);
             }
+            // if (this.isSelect && this.index == this.achievements.currentItemIndex
+            //     && this.parentIndex == this.achievements.currentListIndex) {
+            //     this.isSelect = false;
+            // } else {
+            //     this.isSelect = this.parentIndex != AchievementItem.TYPE_EMPTY;
+            // }
             // this.dialog.clearSelect();
             // if (this.isSelect) {
             //     this.dialog.showSelect(this);
@@ -60,7 +69,10 @@ export default class AchievementItem extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
         }, this)
     }
-    init(achievements: Achievement, parentIndex: number, index: number, count: number, spriteFrame: cc.SpriteFrame) {
+    init(achievements: Achievement, parentIndex: number, index: number, count: number, spriteFrame: cc.SpriteFrame, nonPlayerData: NonPlayerData, itemData: ItemData, equipData: EquipmentData) {
+        this.nonPlayerData = nonPlayerData;
+        this.itemData = itemData;
+        this.equipData = equipData;
         this.achievements = achievements;
         this.parentIndex = parentIndex;
         this.index = index;
@@ -93,7 +105,7 @@ export default class AchievementItem extends cc.Component {
 
             this.mat.setProperty('textureSizeWidth', this.spriteFrame.getTexture().width * scale);
             this.mat.setProperty('textureSizeHeight', this.spriteFrame.getTexture().height * scale);
-            this.mat.setProperty('outlineColor', cc.color(200,200,200));
+            this.mat.setProperty('outlineColor', cc.color(200, 200, 200));
             this.mat.setProperty('blackBg', this.count > 0 ? 0 : 1);
             this.mat.setProperty('openOutline', this.count > 0 ? 0 : 1);
         }

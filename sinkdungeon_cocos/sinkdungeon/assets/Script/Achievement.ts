@@ -6,6 +6,7 @@ import Logic from "./Logic";
 import InventoryManager from "./Manager/InventoryManager";
 import LoadingManager from "./Manager/LoadingManager";
 import AchievementItem from "./UI/AchievementItem";
+import AchievementItemDialog from "./UI/dialog/AchievementItemDialog";
 import AudioPlayer from "./Utils/AudioPlayer";
 import LocalStorage from "./Utils/LocalStorage";
 
@@ -47,6 +48,8 @@ export default class Achievement extends cc.Component {
     goldLabel: cc.Label = null;
     @property(cc.Node)
     loadingBackground: cc.Node = null;
+    @property(AchievementItemDialog)
+    achievementItemDialog:AchievementItemDialog = null;
     //图片资源
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null;
     // LIFE-CYCLE CALLBACKS:
@@ -102,7 +105,8 @@ export default class Achievement extends cc.Component {
             let data = new NonPlayerData();
             data.valueCopy(Logic.monsters[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,index++,this.data.monsters[data.resName],Logic.spriteFrameRes(data.resName+'anim000'));
+            icon.init(this,this.currentListIndex,index++,this.data.monsters[data.resName]
+                ,Logic.spriteFrameRes(data.resName+'anim000'),data,null,null);
             this.content.addChild(icon.node);
         }
     }
@@ -110,7 +114,8 @@ export default class Achievement extends cc.Component {
         this.content.removeAllChildren();
         for(let i=0;i<Achievement.BOSS_SIZE;i++){
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,i,this.data.monsters[`iconboss00${i}`],this.bossSpriteFrames[`iconboss00${i}`]);
+            icon.init(this,this.currentListIndex,i,this.data.monsters[`iconboss00${i}`]
+            ,this.bossSpriteFrames[`iconboss00${i}`],null,null,null);
             this.content.addChild(icon.node);
         }
     }
@@ -121,7 +126,8 @@ export default class Achievement extends cc.Component {
             let data = new NonPlayerData();
             data.valueCopy(Logic.nonplayers[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,index++,this.data.npcs[data.resName],Logic.spriteFrameRes(data.resName+'anim000'));
+            icon.init(this,this.currentListIndex,index++,this.data.npcs[data.resName]
+                ,Logic.spriteFrameRes(data.resName+'anim000'),data,null,null);
             this.content.addChild(icon.node);
         }
     }
@@ -132,7 +138,8 @@ export default class Achievement extends cc.Component {
             let data = new ItemData();
             data.valueCopy(Logic.items[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,index++,this.data.items[data.resName],Logic.spriteFrameRes(data.resName));
+            icon.init(this,this.currentListIndex,index++,this.data.items[data.resName]
+                ,Logic.spriteFrameRes(data.resName),null,data,null);
             if(index>5){
                 this.content.addChild(icon.node)
             };
@@ -153,7 +160,8 @@ export default class Achievement extends cc.Component {
             } else if (data.equipmetType == InventoryManager.REMOTE) {
                 spriteFrame = Logic.spriteFrameRes(data.img + 'anim0');
             }
-            icon.init(this,this.currentListIndex,index++,this.data.equips[data.img],spriteFrame);
+            icon.init(this,this.currentListIndex,index++,this.data.equips[data.img]
+                ,spriteFrame,null,null,data);
             if(index>1){
                 this.content.addChild(icon.node)
             };
