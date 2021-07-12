@@ -29,7 +29,7 @@ export default class AchievementItemDialog extends BaseDialog {
         let node = cc.instantiate(this.equipmentAndItemDialogPrefab);
         node.parent = this.node;
         let dialog = node.getComponent(EquipmentAndItemDialog);
-        dialog.changeBgAndAnchor(EquipmentAndItemDialog.BG_TYPE_ARROW_NONE);
+        dialog.changeBgAndAnchor(EquipmentAndItemDialog.BG_TYPE_NONE);
         dialog.hideDialog();
         return dialog;
     }

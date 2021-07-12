@@ -43,6 +43,7 @@ import { ColliderTag } from './Actor/ColliderTag';
 import ProfessionTalent from './Talent/ProfessionTalent';
 import OrganizationTalent from './Talent/OrganizationTalent';
 import TalentData from './Data/TalentData';
+import EquipmentManager from './Manager/EquipmentManager';
 @ccclass
 export default class Player extends Actor {
 
@@ -94,6 +95,8 @@ export default class Player extends Actor {
     fistCombo = 0;
     dungeon: Dungeon;
     interactBuilding: InteractBuilding;
+
+    isAvoidDeathed = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -189,7 +192,7 @@ export default class Player extends Actor {
         }
     }
     private addSaveStatusList() {
-        if(this.statusManager){
+        if (this.statusManager) {
             this.statusManager.addStatusListFromSave(this.data.StatusList);
         }
     }
@@ -365,7 +368,7 @@ export default class Player extends Actor {
         let c = cc.color(255, 255, 255).fromHEX(color);
         sprite.node.color = c;
     }
-    private updateInfoUi(){
+    private updateInfoUi() {
         let health = this.data.getHealth();
         let dream = this.data.getDream();
         EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
@@ -436,7 +439,7 @@ export default class Player extends Actor {
         this.isFaceUp = pos.y > 0;
         let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
         if (isMiss) {
-            this.showFloatFont(this.node.parent, 0, false, true, false,false,false);
+            this.showFloatFont(this.node.parent, 0, false, true, false, false, false);
         }
         this.updateCombo();
         if (this.fistCombo == MeleeWeapon.COMBO1) {
@@ -493,7 +496,7 @@ export default class Player extends Actor {
             arcEx = 2;
             lineEx = 1;
         }
-        this.weaponLeft.shooter.data.bulletSize = this.IsVariation? 0.5:0;
+        this.weaponLeft.shooter.data.bulletSize = this.IsVariation ? 0.5 : 0;
         let fireSuccess = this.weaponLeft.remoteAttack(this.data, this.remoteCooldown, arcEx, lineEx);
         if (fireSuccess) {
             this.stopHiding();
@@ -532,7 +535,7 @@ export default class Player extends Actor {
             this.shooterEx.data.bulletArcExNum = data.bulletArcExNum;
             this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
             this.shooterEx.data.bulletSize = data.bulletSize;
-            this.shooterEx.data.bulletSize +=this.IsVariation? 0.5:0;
+            this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0;
             this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
         }
     }
@@ -792,18 +795,19 @@ export default class Player extends Actor {
         if (health.x > health.y) {
             health.x = health.y;
         }
-        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
         this.data.currentHealth = health.x;
         let isAvoidDeath = false;
         if (this.data.currentHealth <= 0) {
-            if(this.data.StatusTotalData.avoidDeath>0){
-                this.statusManager.stopStatus(StatusManager.AVOID_DEATH);
+            if (!this.isAvoidDeathed && this.data.StatusTotalData.avoidDeath > 0) {
+                this.isAvoidDeathed = true;
                 isAvoidDeath = true;
-            }else{
+                this.data.currentHealth = 0;
+            } else {
                 this.killed(from);
             }
         }
-        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false,isBlock,isAvoidDeath);
+        EventHelper.emit(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, { x: health.x, y: health.y });
+        this.showFloatFont(this.node.parent, dd.getTotalDamage(), isDodge, false, false, isBlock, isAvoidDeath);
         let valid = !isDodge && dd.getTotalDamage() > 0 && blockLevel != Shield.BLOCK_PARRY;
         if (valid || blockLevel == Shield.BLOCK_PARRY) {
             this.showDamageEffect(blockLevel, from, actor);
@@ -838,7 +842,7 @@ export default class Player extends Actor {
         }
     }
 
-    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean,isBlock:boolean,isAvoidDeath:boolean) {
+    showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBlock: boolean, isAvoidDeath: boolean) {
         if (!this.floatinglabelManager) {
             return;
         }
@@ -991,6 +995,7 @@ export default class Player extends Actor {
         if (this.avatar) {
             this.avatar.showHandsWithInteract(showHands, isLift);
         }
+        this.showUiButton();
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1;
@@ -1028,8 +1033,24 @@ export default class Player extends Actor {
             this.touchedTips.next(isLongPress, this);
         }
     }
+    private showUiButton() {
+        if (this.dungeon.equipmentManager.lastGroundEquip || this.dungeon.itemManager.lastGroundItem
+            || this.dungeon.buildingManager.lastInteractBuilding
+            || (this.interactBuilding && this.interactBuilding.isTaken)) {
+            EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW, { isShow: true });
+        } else {
+            EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW, { isShow: false });
+        }
+        if((this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD)
+            ||(this.interactBuilding && this.interactBuilding.isTaken)
+            ||this.weaponLeft.shooter.data.equipmetType == InventoryManager.REMOTE ){
+            EventHelper.emit(EventHelper.HUD_CONTROLLER_REMOTE_SHOW, { isShow: true });
+        }else{
+            EventHelper.emit(EventHelper.HUD_CONTROLLER_REMOTE_SHOW, { isShow: false });
+        }
+    }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.tag == ColliderTag.NONPLAYER||otherCollider.tag == ColliderTag.GOODNONPLAYER) {
+        if (otherCollider.tag == ColliderTag.NONPLAYER || otherCollider.tag == ColliderTag.GOODNONPLAYER) {
             contact.disabledOnce = true;
         }
     }
@@ -1082,7 +1103,7 @@ export default class Player extends Actor {
         Item.userIt(data, this);
     }
 
-    setLinearVelocity(movement: cc.Vec2){
+    setLinearVelocity(movement: cc.Vec2) {
 
     }
 

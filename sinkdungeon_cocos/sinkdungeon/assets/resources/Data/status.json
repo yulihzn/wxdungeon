@@ -225,7 +225,7 @@
         "spriteFrameName": "iconhealthrecovery",
         "id": 20,
         "desc": "",
-        "duration": 999,
+        "duration": 10,
         "realDamageOvertime": -0.01,
         "common": {}
     },

@@ -2320,7 +2320,7 @@
         "titlecolor": "#ffffff",
         "img": "clothes010",
         "statusName": "status020",
-        "statusInterval": 999,
+        "statusInterval": 8,
         "price": 90,
         "suitType": "suit003",
         "common": {

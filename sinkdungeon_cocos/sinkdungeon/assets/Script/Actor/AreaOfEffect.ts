@@ -73,6 +73,8 @@ export default class AreaOfEffect extends cc.Component {
         this.node.setPosition(postion);
         if (this.data.scale > 0) {
             this.node.scale = this.data.scale;
+            this.node.scaleX = this.node.scaleX>0?this.data.scale:-this.data.scale;
+            this.node.scaleY = this.node.scaleY>0?this.data.scale:-this.data.scale;
         }
         if (this.data.isRotate) {
             let direction = this.getHv(hv, angleOffset);

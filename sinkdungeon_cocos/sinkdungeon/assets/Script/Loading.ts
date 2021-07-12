@@ -24,8 +24,11 @@ export default class Loading extends cc.Component {
     cutScene: CutScene = null;
     @property(cc.Node)
     shipTransportScene: cc.Node = null;
+    @property(cc.Node)
+    elevatorScene:cc.Node = null;
     private timeDelay = 0;
     private isTransportAnimFinished = true;
+    private isElevatorAnimFinished = true;
     private loadingManager: LoadingManager = new LoadingManager();
     // LIFE-CYCLE CALLBACKS:
 
@@ -72,6 +75,20 @@ export default class Loading extends cc.Component {
             this.cutScene.playShow();
         }
     }
+    showElevator() {
+        if (this.loadingManager.isAllSpriteFramesLoaded() && Logic.elevatorScene > 0) {
+            this.isElevatorAnimFinished = false;
+            this.elevatorScene.active = true;
+            if (Logic.elevatorScene == 1) {
+                this.elevatorScene.getComponent(cc.Animation).play('ElevatorSceneUp');
+            }else if (Logic.elevatorScene == 2) {
+                this.elevatorScene.getComponent(cc.Animation).play('ElevatorSceneDown');
+
+            }
+            Logic.elevatorScene = 0;
+            this.scheduleOnce(() => { this.isElevatorAnimFinished = true; }, 1)
+        }
+    }
     showTransport() {
         if (this.loadingManager.isAllSpriteFramesLoaded() && Logic.shipTransportScene > 0) {
             this.isTransportAnimFinished = false;
@@ -89,6 +106,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.isWorldLoaded = Logic.worldLoader.isloaded;
         this.showCut();
         this.showTransport();
+        this.showElevator();
         if (this.timeDelay > 0.02
             && this.loadingManager.isEquipmentLoaded
             && this.loadingManager.isAllSpriteFramesLoaded()
@@ -103,10 +121,12 @@ export default class Loading extends cc.Component {
             && this.loadingManager.isBuildingLoaded
             && this.loadingManager.isSuitsLoaded
             && this.cutScene.isSkip
-            && this.isTransportAnimFinished) {
+            && this.isTransportAnimFinished
+            && this.isElevatorAnimFinished) {
             this.timeDelay = 0;
             this.cutScene.unregisterClick();
             this.isTransportAnimFinished = false;
+            this.isElevatorAnimFinished = false;
             this.loadingManager.reset();
             Logic.mapManager.loadMap();
             cc.director.loadScene('game');

@@ -47,6 +47,9 @@ export default class Dungeon extends cc.Component {
     static readonly MAPX: number = 64;
     static readonly MAPY: number = 64;
     static readonly TILE_SIZE: number = 128;
+    static readonly DEFAULT_ZOOM_MAX =2;
+    static readonly DEFAULT_ZOOM_MIN =0.6;
+    static readonly DEFAULT_ZOOM =0.8;
     private timeDelay = 0;
     private checkTimeDelay = 0;
 
@@ -59,7 +62,7 @@ export default class Dungeon extends cc.Component {
     buildingManager: BuildingManager = null;//建筑管理
     lightManager: LightManager = null;//光线管理
     anim: cc.Animation;
-    CameraZoom = 1;
+    CameraZoom = Dungeon.DEFAULT_ZOOM;
     needZoomIn = false;
     isInitFinish = false;
     isClear = false;
@@ -374,7 +377,7 @@ export default class Dungeon extends cc.Component {
     }
 
     public shakeForKraken() {
-        this.CameraZoom = 0.7;
+        this.CameraZoom = Dungeon.DEFAULT_ZOOM_MIN;
         this.needZoomIn = true;
         this.anim.playAdditive('DungeonShakeOnce');
         this.scheduleOnce(() => { this.anim.playAdditive('DungeonShakeOnce'); }, 1);

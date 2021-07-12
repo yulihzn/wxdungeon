@@ -108,7 +108,7 @@ export default class InteractBuilding extends Building {
         }
         this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.node.scaleX);
         this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY);
-        this.mat.setProperty('outlineColor', cc.Color.WHITE);
+        this.mat.setProperty('outlineColor', cc.color(200,200,200));
         this.sprite.node.angle = this.data.rollover > 0 ? 90 : 0;
     }
 
@@ -201,7 +201,7 @@ export default class InteractBuilding extends Building {
         if (this.isTaken) {
             return false;
         }
-        if (isLongPress) {
+        if (!isLongPress) {
             this._taken();
             return true;
         } else {

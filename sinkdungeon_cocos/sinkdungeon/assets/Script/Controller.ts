@@ -117,27 +117,29 @@ export default class Controller extends cc.Component {
             isLongPress = false;
         }, this)
 
-        cc.director.on(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD
-            , (event) => { if (this.node) this.changeRes(event.detail.isShield) });
-        cc.director.on(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD
-            , (event) => { if (this.node) this.updateGamepad(); });
+        EventHelper.on(EventHelper.HUD_CHANGE_CONTROLLER_SHIELD
+            , (detail) => { if (this.node) this.changeRes(detail.isShield) });
+            EventHelper.on(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD
+            , (detail) => { if (this.node) this.updateGamepad(); });
+        EventHelper.on(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,(detail)=>{
+            if(this.node){
+                this.interactAction.active = detail.isShow;
+            }
+        })
+        EventHelper.on(EventHelper.HUD_CONTROLLER_REMOTE_SHOW,(detail)=>{
+            if(this.node){
+                this.shootAction.active = detail.isShow;
+            }
+        })
         this.updateGamepad();
     }
     private updateGamepad() {
         if (!cc.sys.isMobile && !Logic.settings.showGamepad) {
-            this.interactAction.active = false;
-            this.attackAction.active = false;
-            this.shootAction.active = false;
-            this.skillAction.active = false;
-            this.skillAction1.active = false;
+            this.node.getChildByName('actions').active = false;
             this.coolDown.node.position = cc.v3(0, 180);
             this.coolDown1.node.position = cc.v3(-96, 180);
         } else {
-            this.interactAction.active = true;
-            this.attackAction.active = true;
-            this.shootAction.active = true;
-            this.skillAction.active = true;
-            this.skillAction1.active = true;
+            this.node.getChildByName('actions').active = true;
             this.coolDown.node.position = this.skillAction.position.clone();
             this.coolDown1.node.position = this.skillAction1.position.clone();
         }

@@ -59,8 +59,7 @@ export default class Inventory extends cc.Component {
     equipmentAndItemDialogPrefab:cc.Prefab = null;
     @property(cc.Camera)
     mainCamera:cc.Camera = null;
-    equipmentDialog: EquipmentAndItemDialog = null;
-    itemDialog: EquipmentAndItemDialog = null;
+    equipmentAndItemDialog: EquipmentAndItemDialog = null;
     equipmentGroundDialog: EquipmentAndItemDialog = null;
     itemGroundDialog: EquipmentAndItemDialog = null;
 
@@ -75,9 +74,8 @@ export default class Inventory extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.equipmentDialog=this.initDialog(false);
+        this.equipmentAndItemDialog=this.initDialog(false);
         this.equipmentGroundDialog=this.initDialog(true);
-        this.itemDialog=this.initDialog(false);
         this.itemGroundDialog=this.initDialog(true);
         this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
@@ -101,7 +99,7 @@ export default class Inventory extends cc.Component {
                 if (this.equipmentGroundDialog) {
                     let worldPos = detail.worldPos;
                     let pos = this.node.convertToNodeSpaceAR(worldPos);
-                    this.equipmentGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,null,detail.equipData);
+                    this.equipmentGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,detail.itemData,detail.equipData);
                 }
             });
         EventHelper.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE
@@ -177,13 +175,13 @@ export default class Inventory extends cc.Component {
                 equipData = this.inventoryManager.equips[equipmetType].clone();
             }
             let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-            this.equipmentDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData, this.inventoryManager);
+            this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData, this.inventoryManager);
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
-            this.equipmentDialog.hideDialog();
+            this.equipmentAndItemDialog.hideDialog();
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_CANCEL, () => {
-            this.equipmentDialog.hideDialog();
+            this.equipmentAndItemDialog.hideDialog();
         })
     }
     private addItemSpriteTouchEvent(sprite: cc.Sprite, itemIndex: number) {
@@ -204,12 +202,12 @@ export default class Inventory extends cc.Component {
                     return;
                 }
                 let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-                this.itemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null);
+                this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null);
             }, 0.3)
 
         })
         sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_END, () => {
-            this.itemDialog.hideDialog();
+            this.equipmentAndItemDialog.hideDialog();
             if (!isLongPress) {
                 this.userItem(sprite.node, itemIndex);
             }
@@ -217,7 +215,7 @@ export default class Inventory extends cc.Component {
             isLongPress = false;
         })
         sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_CANCEL, () => {
-            this.itemDialog.hideDialog();
+            this.equipmentAndItemDialog.hideDialog();
             touchStart = false;
             isLongPress = false;
         })

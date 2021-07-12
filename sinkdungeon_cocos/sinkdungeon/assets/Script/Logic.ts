@@ -95,6 +95,7 @@ export default class Logic extends cc.Component {
     static isFirst = 1;
     static jumpChapter = 0;
     static shipTransportScene = 0;
+    static elevatorScene = 0;
     static isCheatMode = false;//作弊
     static isDebug = false;//调试
     static isTour = false;//游览
@@ -332,6 +333,11 @@ export default class Logic extends cc.Component {
             Logic.shipTransportScene = 2;
         } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER02) {
             Logic.shipTransportScene = 1;
+        }
+        if(exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER00){
+            if(!(exitData.fromLevel == 0 && exitData.toLevel == 0)){
+                Logic.elevatorScene = exitData.fromLevel>Logic.level?1:2;
+            }
         }
         cc.director.loadScene('loading');
     }

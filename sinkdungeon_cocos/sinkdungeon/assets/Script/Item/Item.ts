@@ -72,7 +72,7 @@ export default class Item extends cc.Component {
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
             this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.node.scaleX);
             this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.node.scaleY);
-            this.mat.setProperty('outlineColor',cc.Color.WHITE);
+            this.mat.setProperty('outlineColor',cc.color(200,200,200));
             this.highLight(false);
         }
     }

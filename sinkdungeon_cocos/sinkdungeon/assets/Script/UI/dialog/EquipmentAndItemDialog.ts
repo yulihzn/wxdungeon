@@ -18,9 +18,10 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class EquipmentAndItemDialog extends cc.Component {
-    static readonly BG_TYPE_ARROW_NONE = 0;
-    static readonly BG_TYPE_ARROW_RIGHT = 1;
-    static readonly BG_TYPE_ARROW_DOWN = 2;
+    static readonly BG_TYPE_NONE = 0;
+    static readonly BG_TYPE_ARROW_NONE = 1;
+    static readonly BG_TYPE_ARROW_RIGHT = 2;
+    static readonly BG_TYPE_ARROW_DOWN = 3;
     @property(cc.Node)
     layout: cc.Node = null;
     @property(cc.Label)
@@ -63,6 +64,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.layout.anchorX = 1;
         this.layout.anchorY = 1;
         switch (this.bgType) {
+            case EquipmentAndItemDialog.BG_TYPE_NONE: sprite.spriteFrame = null;break;
             case EquipmentAndItemDialog.BG_TYPE_ARROW_NONE: sprite.spriteFrame = this.arrowNoneBg;break;
             case EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT: sprite.spriteFrame = this.arrowRightBg; break;
             case EquipmentAndItemDialog.BG_TYPE_ARROW_DOWN: sprite.spriteFrame = this.arrowDownBg;
@@ -72,10 +74,6 @@ export default class EquipmentAndItemDialog extends cc.Component {
 
     }
 
-    start() {
-        // Logic.setAlias(this.node);
-        this.node.opacity = 0;
-    }
     private refreshEquipInfo(equipment: EquipmentData) {
         this.infoBase.node.active = true;
         this.info1.node.active = true;
@@ -116,7 +114,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
 
     showDialogEquipInfo(equipment: EquipmentData, inventoryManager?: InventoryManager) {
         this.refreshEquipInfo(equipment);
-        this.node.opacity = 255;
+        this.node.active = true;
         if (inventoryManager) {
             let count = 0;
             if (equipment.suitType.length > 0 && inventoryManager.suitMap[equipment.suitType]) {
@@ -144,11 +142,11 @@ export default class EquipmentAndItemDialog extends cc.Component {
 
     }
     showDialogItemInfo(item: ItemData) {
-        this.node.opacity = 255;
+        this.node.active = true;
         this.refreshItemInfo(item);
     }
     showDialogNonPlayerInfo(data: NonPlayerData) {
-        this.node.opacity = 255;
+        this.node.active = true;
         this.refreshNonPlayerInfo(data);
     }
     private refreshNonPlayerInfo(data: NonPlayerData) {
@@ -183,7 +181,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         }
     }
     hideDialog() {
-        this.node.opacity = 0;
+        this.node.active = false;
     }
 
 }
