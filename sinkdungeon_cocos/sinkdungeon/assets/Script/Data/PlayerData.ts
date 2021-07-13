@@ -21,7 +21,7 @@ import TalentData from "./TalentData";
 
 export default class PlayerData {
     static DEFAULT_HEALTH = 10;
-    static DEFAULT_SPEED = 300;
+    static DEFAULT_SPEED = 350;
     static DEFAULT_ATTACK = 1;
     static DEFAULT_BACK_ATTACK = 0;
     static DEFAULT_DREAM = 5;

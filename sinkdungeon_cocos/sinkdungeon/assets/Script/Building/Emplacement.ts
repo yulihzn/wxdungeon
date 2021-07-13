@@ -62,18 +62,24 @@ export default class Emplacement extends Building {
     }
     setDirType(mapStr:string){
         switch(mapStr){
-            case 'G0':this.dirType =Emplacement.ALL;break;
-            case 'G1':this.dirType =Emplacement.TOP;break;
-            case 'G2':this.dirType =Emplacement.BOTTOM;break;
-            case 'G3':this.dirType =Emplacement.LEFT;break;
-            case 'G4':this.dirType =Emplacement.RIGHT;break;
-            case 'G5':this.dirType =Emplacement.TOPBOTTOM;break;
-            case 'G6':this.dirType =Emplacement.TOPLEFT;break;
-            case 'G7':this.dirType =Emplacement.TOPRIGHT;break;
-            case 'G8':this.dirType =Emplacement.BOTTOMLEFT;break;
-            case 'G9':this.dirType =Emplacement.BOTTOMRIGHT;break;
-            case 'Ga':this.dirType =Emplacement.LEFTRIGHT;break;
+            case 'G0':this.dirType =Emplacement.ALL;this.hideOrShowShooter(1,1,1,1);break;
+            case 'G1':this.dirType =Emplacement.TOP;this.hideOrShowShooter(1,0,0,0);break;
+            case 'G2':this.dirType =Emplacement.BOTTOM;this.hideOrShowShooter(0,1,0,0);break;
+            case 'G3':this.dirType =Emplacement.LEFT;this.hideOrShowShooter(0,0,1,0);break;
+            case 'G4':this.dirType =Emplacement.RIGHT;this.hideOrShowShooter(0,0,0,1);break;
+            case 'G5':this.dirType =Emplacement.TOPBOTTOM;this.hideOrShowShooter(1,1,0,0);break;
+            case 'G6':this.dirType =Emplacement.TOPLEFT;this.hideOrShowShooter(1,0,1,0);break;
+            case 'G7':this.dirType =Emplacement.TOPRIGHT;this.hideOrShowShooter(1,0,0,1);break;
+            case 'G8':this.dirType =Emplacement.BOTTOMLEFT;this.hideOrShowShooter(0,1,1,0);break;
+            case 'G9':this.dirType =Emplacement.BOTTOMRIGHT;this.hideOrShowShooter(0,1,0,1);break;
+            case 'Ga':this.dirType =Emplacement.LEFTRIGHT;this.hideOrShowShooter(0,0,1,1);break;
         }
+    }
+    hideOrShowShooter(top:number,bottom:number,left:number,right:number){
+        this.shooterTop.node.active = top>0;
+        this.shooterBottom.node.active = bottom>0;
+        this.shooterLeft.node.active = left>0;
+        this.shooterRight.node.active = right>0;
     }
     start() {
         this.anim = this.getComponent(cc.Animation);
@@ -151,6 +157,7 @@ export default class Emplacement extends Building {
             shooter.dungeon = this.dungeon;
             shooter.data.bulletType = "bullet010";
             shooter.data.bulletLineExNum = 0;
+            shooter.data.img = 'emplacement';
 
             switch (Logic.chapterIndex) {
                 case Logic.CHAPTER00: shooter.data.bulletLineExNum = 3; shooter.data.bulletType = "laser001"; break;

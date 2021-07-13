@@ -1444,6 +1444,7 @@
             <key type="filename">equipment/weapon036.png</key>
             <key type="filename">equipment/weapon037.png</key>
             <key type="filename">equipment/weapon038.png</key>
+            <key type="filename">equipment/weapon039.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -1460,7 +1461,9 @@
             </struct>
             <key type="filename">building/emplacement.png</key>
             <key type="filename">building/emplacement1.png</key>
-            <key type="filename">building/emplacement2.png</key>
+            <key type="filename">building/emplacementanim0.png</key>
+            <key type="filename">building/emplacementanim1.png</key>
+            <key type="filename">building/emplacementanim2.png</key>
             <key type="filename">building/portal.png</key>
             <key type="filename">item/shield.png</key>
             <struct type="IndividualSpriteSettings">

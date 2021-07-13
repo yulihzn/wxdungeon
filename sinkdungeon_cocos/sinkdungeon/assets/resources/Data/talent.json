@@ -13,7 +13,7 @@
         "nameEn": "",
         "resName": "talent001",
         "passive": 0,
-        "cooldown": 10,
+        "cooldown": 5,
         "desc": "扔出一颗手雷，造成5点爆炸伤害"
     },
     "talent002": {

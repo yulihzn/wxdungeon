@@ -894,7 +894,7 @@
             "lifeDrain": 0,
             "damageBack": 0,
             "moveSpeed": 0,
-            "attackSpeed": 30,
+            "attackSpeed": 10,
             "maxHealth": 0
         },
         "blunt": 1,
@@ -1089,6 +1089,59 @@
         },
         "blunt": 1,
         "desc": "来一记全垒打吧"
+    },
+    "weapon038": {
+        "nameCn": "扫帚",
+        "nameEn": "Broom",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#b8924f",
+        "img": "weapon038",
+        "exBeatBack": 0,
+        "isReflect": 0,
+        "price": 30,
+        "common": {
+            "damageMin": 1,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "attackSpeed": 10,
+            "lighteningRate": 0,
+            "maxHealth": 0
+        },
+        "blunt": 1,
+        "desc": "普通扫帚"
+    },
+    "weapon039": {
+        "nameCn": "练习木剑",
+        "nameEn": "Wood Sword",
+        "equipmetType": "weapon",
+        "equipmetTypeCn": "",
+        "prefix": "",
+        "color": "#ffffff",
+        "titlecolor": "#ffffff",
+        "lightcolor": "#ebd086",
+        "img": "weapon039",
+        "price": 30,
+        "common": {
+            "damageMin": 1,
+            "damageMax": 0,
+            "criticalStrikeRate": 0,
+            "defence": 0,
+            "lifeDrain": 0,
+            "damageBack": 0,
+            "moveSpeed": 0,
+            "attackSpeed": 10,
+            "magicDamage": 0,
+            "iceRate": 0,
+            "maxHealth": 0
+        },
+        "desc": "普通的木剑"
     },
     "remote001": {
         "nameCn": "十字弩",

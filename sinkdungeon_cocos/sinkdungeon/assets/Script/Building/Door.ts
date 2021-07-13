@@ -57,6 +57,7 @@ export default class Door extends Building {
         let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}${subfix}`);
         if (this.dir > 1) {
             spriteframe = null;
+            this.node.zIndex -= 120;
         }
         this.roof.spriteFrame = spriteframe;
         this.roof.node.parent = this.node.parent;

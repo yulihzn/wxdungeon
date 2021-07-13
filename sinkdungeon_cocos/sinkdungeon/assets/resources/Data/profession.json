@@ -93,7 +93,7 @@
         "nameCn": "厨师",
         "nameEn": "",
         "equips": {
-            "weapon": "",
+            "weapon": "weapon030",
             "remote": "",
             "shield": "",
             "helmet": "helmet008",
@@ -213,7 +213,7 @@
         "nameCn": "剑术大师",
         "nameEn": "",
         "equips": {
-            "weapon": "",
+            "weapon": "weapon039",
             "remote": "",
             "shield": "",
             "helmet": "",
@@ -363,7 +363,7 @@
         "nameCn": "马路天使",
         "nameEn": "",
         "equips": {
-            "weapon": "",
+            "weapon": "weapon038",
             "remote": "",
             "shield": "",
             "helmet": "",

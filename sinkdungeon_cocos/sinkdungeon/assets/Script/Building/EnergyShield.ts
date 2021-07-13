@@ -23,6 +23,7 @@ export default class EnergyShield extends Building {
     isShow = false;
     private cover:cc.Node;
     private element:cc.Node;
+    private base:cc.Node;
     private player:Player;
     private collider:cc.BoxCollider;
     private mat: cc.MaterialVariant;
@@ -42,11 +43,11 @@ export default class EnergyShield extends Building {
         this.node.scale = scale;
         this.anim = this.getComponent(cc.Animation);
         this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x,this.node.position.y-8*scale));
-        let base = this.node.getChildByName('base');
-        base.parent = this.node.parent;
-        base.position = this.node.position;
-        cc.tween(base).to(1,{scale:scale,opacity:255}).start();
-        base.zIndex = IndexZ.FLOOR;
+        this.base = this.node.getChildByName('base');
+        this.base.parent = this.node.parent;
+        this.base.position = this.node.position;
+        cc.tween(this.base).to(1,{scale:scale,opacity:255}).start();
+        this.base.zIndex = IndexZ.FLOOR;
     }
     private hitLight(isHit: boolean) {
         if (!this.mat) {
@@ -97,7 +98,8 @@ export default class EnergyShield extends Building {
             this.data.currentHealth = 0;
             this.isShow = false;
             this.node.active = false;
-            this.scheduleOnce(()=>{this.node.destroy()},1);
+            this.base.active = false;
+            this.scheduleOnce(()=>{this.node.destroy();this.base.destroy();},1);
         }
         return true;
     }
@@ -111,6 +113,7 @@ export default class EnergyShield extends Building {
         }
         this.cover.color = cc.color(255,progress,progress);
         this.element.color = cc.color(255,progress,progress);
+        this.base.color = cc.color(255,progress,progress);
     }
     timeDelay = 0;
     private isTimeDelay(dt: number): boolean {

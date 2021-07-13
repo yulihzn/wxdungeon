@@ -1036,7 +1036,8 @@ export default class Player extends Actor {
     private showUiButton() {
         if (this.dungeon.equipmentManager.lastGroundEquip || this.dungeon.itemManager.lastGroundItem
             || this.dungeon.buildingManager.lastInteractBuilding
-            || (this.interactBuilding && this.interactBuilding.isTaken)) {
+            || (this.interactBuilding && this.interactBuilding.isTaken)
+            || this.touchedTips) {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW, { isShow: true });
         } else {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW, { isShow: false });

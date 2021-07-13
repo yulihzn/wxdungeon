@@ -172,8 +172,10 @@ export default class Shooter extends cc.Component {
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec3.ZERO;
-            cc.tween(this.sprite).by(0.1,{position:cc.v3(10,0)}).call(()=>{
+            cc.tween(this.sprite).call(()=>{
                 this.changeRes(this.data.img, 'anim1');
+            }).by(0.1,{position:cc.v3(10,0)}).call(()=>{
+                this.changeRes(this.data.img, 'anim2');
             }).by(0.05,{position:cc.v3(-5,0)}).by(0.05,{position:cc.v3(0,0)}).call(()=>{
                 this.changeRes(this.data.img, 'anim0');
             }).start();

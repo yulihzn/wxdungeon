@@ -18,6 +18,7 @@ import ActorUtils from "../Utils/ActorUtils";
 import Player from "../Player";
 import CoolDownView from "../UI/CoolDownView";
 import TalentData from "../Data/TalentData";
+import InventoryManager from "../Manager/InventoryManager";
 
 /**
  * 技能管理器
@@ -124,7 +125,7 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_014:
                 AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL1);
                 this.shoot(this.player.shooterEx, Shooter.ARC_EX_NUM_8, 0, 'bullet035', null, null);
-                this.scheduleOnce(()=>{this.IsExcuting = false;},0.1)
+                this.scheduleOnce(() => { this.IsExcuting = false; }, 0.1)
                 break;
             case Talent.TALENT_015: this.dash(); break;
             case Talent.TALENT_016: this.addClearCircle(); break;
@@ -135,11 +136,11 @@ export default class ProfessionTalent extends Talent {
     }
     private addClearCircle() {
         this.player.stopAllDebuffs();
-            if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
-                this.player.dungeon.nonPlayerManager.pet.stopAllDebuffs();
-            }
+        if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
+            this.player.dungeon.nonPlayerManager.pet.stopAllDebuffs();
+        }
         this.addAoe(this.aoe, this.player.getCenterPosition(), new AreaOfEffectData()
-            .init(2, 0.2, 0, this.player.IsVariation?3:2, IndexZ.getActorZIndex(this.player.getCenterPosition())
+            .init(2, 0.2, 0, this.player.IsVariation ? 3 : 2, IndexZ.getActorZIndex(this.player.getCenterPosition())
                 , false, false, true, false, false, new DamageData(0), new FromData(), [])
             , ['clearcircle1', 'clearcircle2', 'clearcircle3', 'clearcircle4'], false, true);
     }
@@ -192,7 +193,7 @@ export default class ProfessionTalent extends Talent {
             this.sprite.node.height = 2000;
             this.sprite.node.opacity = 255;
         }).to(0.1, { opacity: 0 }).call(() => {
-            this.addStatus2NearEnemy(StatusManager.TALENT_FLASH_DIZZ, this.player.IsVariation?500:400);
+            this.addStatus2NearEnemy(StatusManager.TALENT_FLASH_DIZZ, this.player.IsVariation ? 500 : 400);
             this.sprite.spriteFrame = null;
         }).start();
 
@@ -218,7 +219,7 @@ export default class ProfessionTalent extends Talent {
     }
     private dash() {
         let speed = 1500;
-        if(this.player.IsVariation){
+        if (this.player.IsVariation) {
             speed = 2000;
         }
         AudioPlayer.play(AudioPlayer.DASH);
@@ -399,9 +400,8 @@ export default class ProfessionTalent extends Talent {
         }
         let swordlight = this.player.shooterEx.fireAoe(this.swordLightPrefab, new AreaOfEffectData()
             .init(0, 0.35, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]));
-        if (this.player.weaponRight.meleeWeapon.IsSword) {
-            swordlight.node.getChildByName('sprite').color = cc.Color.RED;
-        }
+        let color = cc.color(255, 255, 255).fromHEX(this.player.inventoryManager.equips[InventoryManager.WEAPON].lightcolor);
+        swordlight.node.getChildByName('sprite').color = color;
         this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false;
         }, 1)
