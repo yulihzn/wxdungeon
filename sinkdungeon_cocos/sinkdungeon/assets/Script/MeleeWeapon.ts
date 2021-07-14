@@ -67,6 +67,7 @@ export default class MeleeWeapon extends cc.Component {
     @property(cc.Prefab)
     curseLight: cc.Prefab = null;
 
+
     private meleeLightLeftPos = cc.v3(8, 0);
     private meleeLightRightPos = cc.v3(-8, 0);
 
@@ -95,6 +96,8 @@ export default class MeleeWeapon extends cc.Component {
     private currentAngle = 0;
     private fistCombo = 0;
     private exBeatBack:number = 0;
+
+    private weaponLight:cc.Sprite;
     
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
@@ -409,6 +412,88 @@ export default class MeleeWeapon extends cc.Component {
             this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir);
         }, 0.2)
+    }
+    playAttackAnim(){
+        let prefix = 'weaponlight';
+        let  DEFAULT_TIME = 0.2;
+        let scale = 1;
+        let swordArr = [4,5,3];
+        let frameArr = swordArr;
+        let frameIndex = 0;
+        let length = frameArr[0];
+        let canCombo = false;
+        let prepare = cc.tween();
+        let isPressed = false;
+        for(let i = frameIndex;i<length;i++){
+            frameIndex++;
+            prepare.then(cc.tween().call(()=>{
+                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
+            }).delay(DEFAULT_TIME*scale));
+        }
+        
+        length = frameArr[1];
+        let attacking0 = cc.tween();
+        for(let i = frameIndex;i<length;i++){
+            frameIndex++;
+            attacking0.then(cc.tween().call(()=>{
+                canCombo = true;
+                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
+            }).delay(i==length-1?0:DEFAULT_TIME*scale));
+        }
+        length = frameArr[2];
+        let reset0 = cc.tween();
+        for(let i = frameIndex;i<length;i++){
+            frameIndex++;
+            canCombo = false;
+            reset0.then(cc.tween().call(()=>{
+                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
+            }).delay(i==length-1?0:DEFAULT_TIME*scale));
+        }
+        length = frameArr[1];
+        let attacking1 = cc.tween();
+        for(let i = frameIndex;i<length;i++){
+            canCombo = true;
+            frameIndex++;
+            attacking1.then(cc.tween().call(()=>{
+                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
+            }).delay(i==length-1?0:DEFAULT_TIME*scale));
+        }
+        
+        length = frameArr[2];
+        let reset1 = cc.tween();
+        for(let i = frameIndex;i<length;i++){
+            frameIndex++;
+            reset1.then(cc.tween().call(()=>{
+                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
+            }).delay(i==length-1?0:DEFAULT_TIME*scale));
+        }
+        length = frameArr[1];
+        let attacking2 = cc.tween();
+        for(let i = frameIndex;i<length;i++){
+            frameIndex++;
+            attacking2.then(cc.tween().call(()=>{
+                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
+            }).delay(i==length-1?0:DEFAULT_TIME*scale));
+        }
+        length = frameArr[2];
+        let reset2 = cc.tween();
+        for(let i = frameIndex;i<length;i++){
+            frameIndex++;
+            reset2.then(cc.tween().call(()=>{
+                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
+            }).delay(i==length-1?0:DEFAULT_TIME*scale));
+        }
+        prepare.then(cc.tween().call(()=>{
+            attacking0.start();
+        }))
+        attacking0.then(cc.tween().call(()=>{
+            if(isPressed){
+                attacking1.start();
+            }else{
+                reset0.start();
+            }
+        }))
+        prepare.start();
     }
 
     setHandAndWeaponInVisible(flag:boolean){

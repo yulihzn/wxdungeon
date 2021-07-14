@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "e502b283-57eb-4290-a44e-57266ab87a30",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 48,
+  "height": 48,
+  "platformSettings": {},
+  "subMetas": {
+    "weaponlightanim002": {
+      "ver": "1.0.4",
+      "uuid": "36831ecc-6b00-4b44-a4af-b54f5b6229cd",
+      "rawTextureUuid": "e502b283-57eb-4290-a44e-57266ab87a30",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 48,
+      "height": 48,
+      "rawWidth": 48,
+      "rawHeight": 48,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
