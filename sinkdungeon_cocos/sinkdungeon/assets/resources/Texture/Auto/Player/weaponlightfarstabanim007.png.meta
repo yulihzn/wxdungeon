@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "bdbaf4f6-5b90-4753-8afe-4e9e9f314692",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "point",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 48,
+  "height": 48,
+  "platformSettings": {},
+  "subMetas": {
+    "weaponlightfarstabanim007": {
+      "ver": "1.0.4",
+      "uuid": "4446e988-3975-499f-a7d0-22323ba48521",
+      "rawTextureUuid": "bdbaf4f6-5b90-4753-8afe-4e9e9f314692",
+      "trimType": "custom",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 48,
+      "height": 48,
+      "rawWidth": 48,
+      "rawHeight": 48,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
