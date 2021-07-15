@@ -148,6 +148,9 @@ export default class Item extends cc.Component {
             let arr = data.statusList.split(',');
             for(let status of arr){
                 player.addStatus(status, from);
+                if(player.dungeon.nonPlayerManager.isPetAlive()){
+                    player.dungeon.nonPlayerManager.pet.addStatus(status,from);
+                }
             }
         }
         

@@ -52,8 +52,6 @@ export default class MeleeWeapon extends cc.Component {
     player: Player = null;
 
     @property(MeleeWeaponChild)
-    stabWeapon: MeleeWeaponChild = null;
-    @property(MeleeWeaponChild)
     waveWeapon: MeleeWeaponChild = null;
 
     @property(cc.Prefab)
@@ -84,8 +82,6 @@ export default class MeleeWeapon extends cc.Component {
     private drainSkill = new NextStep();
     private isReflect = false;//子弹偏转
     private weaponSprite: cc.Sprite = null;
-    private weaponStabSprite: cc.Sprite = null;
-    private weaponStabLightSprite: cc.Sprite = null;
     private weaponLightSprite: cc.Sprite = null;
     private handSprite: cc.Sprite = null;
     private glovesSprite: cc.Sprite = null;
@@ -96,8 +92,8 @@ export default class MeleeWeapon extends cc.Component {
     private currentAngle = 0;
     private fistCombo = 0;
     private exBeatBack:number = 0;
-
-    private weaponLight:cc.Sprite;
+    private isAttackPressed = false;
+    private canCombo = false;
     
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
@@ -128,8 +124,6 @@ export default class MeleeWeapon extends cc.Component {
         this.meleeLightLeftPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightLeftPos));
         this.meleeLightRightPos = this.player.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(this.meleeLightRightPos));
         this.weaponSprite = this.getSpriteChildSprite(['sprite', InventoryManager.WEAPON]);
-        this.weaponStabSprite = this.getSpriteChildSprite(['sprite', 'stabweapon']);
-        this.weaponStabLightSprite = this.getSpriteChildSprite(['sprite', 'stablight']);
         this.weaponLightSprite = this.getSpriteChildSprite(['sprite', 'meleelight']);
         this.handSprite = this.getSpriteChildSprite(['sprite', 'hand']);
         this.glovesSprite = this.getSpriteChildSprite(['sprite', 'hand', 'gloves']);
@@ -166,20 +160,16 @@ export default class MeleeWeapon extends cc.Component {
         this.isFist = false;
         this.isBlunt = equipData.blunt == 1;
         this.exBeatBack = inventoryManager.getEquipBySuit(equipData).exBeatBack;
-        if (equipData.stab == 1) {
-            this.weaponSprite.spriteFrame = null;
-            this.weaponStabSprite.spriteFrame = spriteFrame;
-            this.weaponStabLightSprite.spriteFrame = this.isFar ? Logic.spriteFrameRes('stablight') : Logic.spriteFrameRes('stablight1');
-        } else {
-            this.weaponSprite.spriteFrame = spriteFrame;
-            this.weaponStabSprite.spriteFrame = null;
-        }
+        this.weaponSprite.spriteFrame = spriteFrame;
         let color1 = cc.color(255, 255, 255).fromHEX(inventoryManager.equips[InventoryManager.WEAPON].color);
         let color2 = cc.color(255, 255, 255).fromHEX(inventoryManager.equips[InventoryManager.WEAPON].lightcolor);
         this.weaponSprite.node.color = color1;
-        this.weaponStabSprite.node.color = color1;
-        this.weaponStabLightSprite.node.color = color2;
         this.weaponLightSprite.node.color = color2;
+        if(this.isStab){
+            this.weaponSprite.node.angle = 15;
+        }else{
+            this.weaponSprite.node.angle = -235;
+        }
     }
     private updateCombo() {
         if (this.comboType == MeleeWeapon.COMBO1) {
@@ -197,6 +187,15 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
     attack(data: PlayerData, isMiss: boolean,fistCombo:number): boolean {
+        if (this.isAttacking) {
+            if(this.canCombo){
+                this.isAttackPressed = true;
+            }
+            return false;
+        }
+        return this.attackDo(data,isMiss,fistCombo);
+    }
+    attackDo(data: PlayerData, isMiss: boolean,fistCombo:number): boolean {
         if (this.isAttacking) {
             return false;
         }
@@ -285,7 +284,7 @@ export default class MeleeWeapon extends cc.Component {
         } else if (this.isFar && this.isStab) {
             name = "MeleeAttackStabFar";
         } else if (this.isFar && !this.isStab) {
-            name = "MeleeAttackFar";
+            name = this.isBlunt?"MeleeAttackBluntFar":"MeleeAttackFar";
         } else {
             name = this.isBlunt ? "MeleeAttackBlunt" : "MeleeAttack";
         }
@@ -358,6 +357,20 @@ export default class MeleeWeapon extends cc.Component {
         }, 0.3);
     }
     //Anim
+    ComboStart(){
+
+    }
+    //Anim
+    ComboTime(comboType:number){
+        if(this.isAttackPressed){
+            this.isAttackPressed = false;
+            this.comboType = comboType;
+            this.anim.pause();
+            this.updateCombo();
+            this.anim.play(this.getAttackAnimName());
+        }
+    }
+    //Anim
     ExAttackTime() {
         this.player.remoteExAttack(this.comboType);
     }
@@ -413,97 +426,13 @@ export default class MeleeWeapon extends cc.Component {
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir);
         }, 0.2)
     }
-    playAttackAnim(){
-        let prefix = 'weaponlight';
-        let  DEFAULT_TIME = 0.2;
-        let scale = 1;
-        let swordArr = [4,5,3];
-        let frameArr = swordArr;
-        let frameIndex = 0;
-        let length = frameArr[0];
-        let canCombo = false;
-        let prepare = cc.tween();
-        let isPressed = false;
-        for(let i = frameIndex;i<length;i++){
-            frameIndex++;
-            prepare.then(cc.tween().call(()=>{
-                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
-            }).delay(DEFAULT_TIME*scale));
-        }
-        
-        length = frameArr[1];
-        let attacking0 = cc.tween();
-        for(let i = frameIndex;i<length;i++){
-            frameIndex++;
-            attacking0.then(cc.tween().call(()=>{
-                canCombo = true;
-                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
-            }).delay(i==length-1?0:DEFAULT_TIME*scale));
-        }
-        length = frameArr[2];
-        let reset0 = cc.tween();
-        for(let i = frameIndex;i<length;i++){
-            frameIndex++;
-            canCombo = false;
-            reset0.then(cc.tween().call(()=>{
-                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
-            }).delay(i==length-1?0:DEFAULT_TIME*scale));
-        }
-        length = frameArr[1];
-        let attacking1 = cc.tween();
-        for(let i = frameIndex;i<length;i++){
-            canCombo = true;
-            frameIndex++;
-            attacking1.then(cc.tween().call(()=>{
-                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
-            }).delay(i==length-1?0:DEFAULT_TIME*scale));
-        }
-        
-        length = frameArr[2];
-        let reset1 = cc.tween();
-        for(let i = frameIndex;i<length;i++){
-            frameIndex++;
-            reset1.then(cc.tween().call(()=>{
-                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
-            }).delay(i==length-1?0:DEFAULT_TIME*scale));
-        }
-        length = frameArr[1];
-        let attacking2 = cc.tween();
-        for(let i = frameIndex;i<length;i++){
-            frameIndex++;
-            attacking2.then(cc.tween().call(()=>{
-                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
-            }).delay(i==length-1?0:DEFAULT_TIME*scale));
-        }
-        length = frameArr[2];
-        let reset2 = cc.tween();
-        for(let i = frameIndex;i<length;i++){
-            frameIndex++;
-            reset2.then(cc.tween().call(()=>{
-                this.weaponLight.spriteFrame = Logic.spriteFrameRes(prefix+'anim'+i);
-            }).delay(i==length-1?0:DEFAULT_TIME*scale));
-        }
-        prepare.then(cc.tween().call(()=>{
-            attacking0.start();
-        }))
-        attacking0.then(cc.tween().call(()=>{
-            if(isPressed){
-                attacking1.start();
-            }else{
-                reset0.start();
-            }
-        }))
-        prepare.start();
-    }
 
     setHandAndWeaponInVisible(flag:boolean){
         if(flag){
             this.weaponSprite.node.opacity = 0;
-            this.weaponStabSprite.node.opacity = 0;
             this.handSprite.node.opacity = 0;
         }else{
             this.weaponSprite.node.opacity = 255;
-            this.weaponStabSprite.node.opacity = 255;
             this.handSprite.node.opacity = 255;
         }
     }

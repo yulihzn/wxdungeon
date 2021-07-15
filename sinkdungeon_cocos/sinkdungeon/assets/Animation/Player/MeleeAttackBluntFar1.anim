@@ -1,9 +1,9 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "MeleeAttackBlunt1",
+  "_name": "MeleeAttackBluntFar1",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.5,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -14,19 +14,19 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.08333333333333333,
-              "value": 60
+              "value": -235
             },
             {
               "frame": 0.16666666666666666,
-              "value": -210
+              "value": 45
             },
             {
-              "frame": 0.5,
-              "value": 0
+              "frame": 0.8333333333333334,
+              "value": 45
+            },
+            {
+              "frame": 1,
+              "value": 125
             }
           ],
           "position": [
@@ -39,23 +39,23 @@
               ]
             },
             {
-              "frame": 0.08333333333333333,
-              "value": [
-                -16,
-                0,
-                0
-              ]
-            },
-            {
               "frame": 0.16666666666666666,
               "value": [
-                16,
+                32,
                 0,
                 0
               ]
             },
             {
-              "frame": 0.5,
+              "frame": 0.8333333333333334,
+              "value": [
+                32,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 1,
               "value": [
                 0,
                 0,
@@ -71,21 +71,35 @@
             "spriteFrame": [
               {
                 "frame": 0,
-                "value": {
-                  "__uuid__": "faed7daf-f241-49d2-958f-afaa57982289"
-                }
+                "value": null
               },
               {
                 "frame": 0.16666666666666666,
                 "value": {
-                  "__uuid__": "91c11f10-9ed4-4a1e-84d6-3031ad373610"
+                  "__uuid__": "17bc7d0b-f735-4dfd-a4bd-6ea9742ed020"
                 }
               },
               {
                 "frame": 0.3333333333333333,
                 "value": {
-                  "__uuid__": "f51004e6-d472-4233-9276-636d368bf389"
+                  "__uuid__": "0e14b4d2-29a1-4d00-94fd-74e5d06cc3f6"
                 }
+              },
+              {
+                "frame": 0.5,
+                "value": {
+                  "__uuid__": "06e616ae-c181-4021-a50e-d5653088a8a8"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "ea627a78-4535-427e-84f7-c4f13be779c2"
+                }
+              },
+              {
+                "frame": 0.8333333333333334,
+                "value": null
               }
             ]
           }
@@ -94,43 +108,36 @@
           "opacity": [
             {
               "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.08333333333333333,
-              "value": 0
+              "value": 0,
+              "curve": "constant"
             },
             {
               "frame": 0.16666666666666666,
-              "value": 255
-            },
-            {
-              "frame": 0.5,
-              "value": 0
+              "value": 200
             }
           ],
           "scaleY": [
             {
               "frame": 0,
-              "value": 6
+              "value": 8
             }
           ],
           "x": [
             {
               "frame": 0,
-              "value": -20
+              "value": 80
             }
           ],
           "scaleX": [
             {
               "frame": 0,
-              "value": 5
+              "value": 8
             }
           ],
           "y": [
             {
               "frame": 0,
-              "value": 0
+              "value": -40
             }
           ]
         }
@@ -147,25 +154,9 @@
               ]
             },
             {
-              "frame": 0.08333333333333333,
-              "value": [
-                -16,
-                0,
-                0
-              ]
-            },
-            {
               "frame": 0.16666666666666666,
               "value": [
-                16,
-                0,
-                0
-              ]
-            },
-            {
-              "frame": 0.5,
-              "value": [
-                0,
+                32,
                 0,
                 0
               ]
@@ -182,15 +173,19 @@
             "value": 0
           },
           {
-            "frame": 0.08333333333333333,
-            "value": 0
+            "frame": 0.16666666666666666,
+            "value": 150
           },
           {
-            "frame": 0.16666666666666666,
-            "value": 70
+            "frame": 0.3333333333333333,
+            "value": 120
           },
           {
             "frame": 0.5,
+            "value": 80
+          },
+          {
+            "frame": 0.6666666666666666,
             "value": 0
           }
         ],
@@ -201,6 +196,38 @@
               "__type__": "cc.Vec2",
               "x": 80,
               "y": 0
+            }
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 80,
+              "y": -32
+            }
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 90,
+              "y": 0
+            }
+          },
+          {
+            "frame": 0.5,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 80,
+              "y": 40
+            }
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": {
+              "__type__": "cc.Vec2",
+              "x": 0,
+              "y": 40
             }
           }
         ]
@@ -214,14 +241,19 @@
       "params": []
     },
     {
-      "frame": 0.16666666666666666,
+      "frame": 0.5,
+      "func": "ComboStart",
+      "params": []
+    },
+    {
+      "frame": 0.8333333333333334,
       "func": "ComboTime",
       "params": [
-        100
+        1
       ]
     },
     {
-      "frame": 0.5,
+      "frame": 1,
       "func": "MeleeAttackFinish",
       "params": [
         false

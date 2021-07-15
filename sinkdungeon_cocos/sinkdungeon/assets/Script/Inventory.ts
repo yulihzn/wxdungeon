@@ -74,9 +74,9 @@ export default class Inventory extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.equipmentAndItemDialog=this.initDialog(false);
         this.equipmentGroundDialog=this.initDialog(true);
         this.itemGroundDialog=this.initDialog(true);
+        this.equipmentAndItemDialog=this.initDialog(false);
         this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
         cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT

@@ -228,7 +228,7 @@ export default class Player extends Actor {
     private turnStone(isStone: boolean, stoneLevel?: number) {
         this.avatar.hitLight(isStone);
     }
-    private updateCombo() {
+    private updateFistCombo() {
         if (!this.weaponRight.meleeWeapon.IsFist) {
             this.fistCombo = MeleeWeapon.COMBO1;
             return;
@@ -441,7 +441,7 @@ export default class Player extends Actor {
         if (isMiss) {
             this.showFloatFont(this.node.parent, 0, false, true, false, false, false);
         }
-        this.updateCombo();
+        this.updateFistCombo();
         if (this.fistCombo == MeleeWeapon.COMBO1) {
             this.weaponRight.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
             this.weaponLeft.meleeWeapon.attackIdle(false);

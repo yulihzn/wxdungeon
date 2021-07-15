@@ -93,6 +93,7 @@ export default class OrganizationTalent extends Talent {
                 data.Common.realRate += Logic.playerData.OilGoldData.level * 1;
                 data.Common.realDamage += Logic.playerData.OilGoldData.level;
                 data.realDamageOvertime -= Logic.playerData.OilGoldData.level / 5;
+                this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth+=1;
                 this.player.dungeon.nonPlayerManager.pet.addCustomStatus(data, new FromData());
             } else {
                 let data = new NonPlayerData();
