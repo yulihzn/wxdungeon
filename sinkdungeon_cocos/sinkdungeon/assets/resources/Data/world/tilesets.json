@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":325,
+ "tilecount":326,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3350,6 +3350,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"~#"
+        }, 
+        {
+         "id":714,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/equipitemtable.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Z5"
         }],
  "tilewidth":16,
  "type":"tileset",

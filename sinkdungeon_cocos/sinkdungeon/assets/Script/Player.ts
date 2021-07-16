@@ -426,38 +426,36 @@ export default class Player extends Actor {
     }
     meleeAttack() {
         if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
-            || this.weaponRight.meleeWeapon.IsAttacking
-            || this.weaponLeft.meleeWeapon.IsAttacking
             || this.isInteractBuildingAniming
+            || (this.weaponLeft.meleeWeapon.IsAttacking && this.weaponLeft.meleeWeapon.IsFist)
+            || (this.weaponRight.meleeWeapon.IsAttacking && this.weaponRight.meleeWeapon.IsFist)
             || this.shield.isDefendOrParrying) {
             return;
         }
-        let pos = this.weaponRight.meleeWeapon.Hv.clone();
-        if (!this.shield.isAniming) {
-            this.isFaceRight = pos.x > 0;
-        }
-        this.isFaceUp = pos.y > 0;
-        let isMiss = Logic.getRandomNum(0, 100) < this.data.StatusTotalData.missRate;
-        if (isMiss) {
-            this.showFloatFont(this.node.parent, 0, false, true, false, false, false);
-        }
         this.updateFistCombo();
+        let isAttackDo = false;
         if (this.fistCombo == MeleeWeapon.COMBO1) {
-            this.weaponRight.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
+            isAttackDo = this.weaponRight.meleeWeapon.attack(this.data, this.fistCombo);
             this.weaponLeft.meleeWeapon.attackIdle(false);
         } else if (this.fistCombo == MeleeWeapon.COMBO2) {
             this.weaponRight.meleeWeapon.attackIdle(true);
-            this.weaponLeft.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
+            isAttackDo = this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
         } else if (this.fistCombo == MeleeWeapon.COMBO3) {
-            this.weaponRight.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
+            isAttackDo = this.weaponRight.meleeWeapon.attack(this.data, this.fistCombo);
             this.weaponRight.meleeWeapon.DashTime(400);
             this.scheduleOnce(() => {
-                this.weaponLeft.meleeWeapon.attack(this.data, isMiss, this.fistCombo);
+                this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
             }, 0.15);
         }
-        this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
-
-        this.stopHiding();
+        if (isAttackDo) {
+            let pos = this.weaponRight.meleeWeapon.Hv.clone();
+            if (!this.shield.isAniming) {
+                this.isFaceRight = pos.x > 0;
+            }
+            this.isFaceUp = pos.y > 0;
+            this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
+            this.stopHiding();
+        }
 
     }
     useShield() {
@@ -1042,11 +1040,11 @@ export default class Player extends Actor {
         } else {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW, { isShow: false });
         }
-        if((this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD)
-            ||(this.interactBuilding && this.interactBuilding.isTaken)
-            ||this.weaponLeft.shooter.data.equipmetType == InventoryManager.REMOTE ){
+        if ((this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD)
+            || (this.interactBuilding && this.interactBuilding.isTaken)
+            || this.weaponLeft.shooter.data.equipmetType == InventoryManager.REMOTE) {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_REMOTE_SHOW, { isShow: true });
-        }else{
+        } else {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_REMOTE_SHOW, { isShow: false });
         }
     }

@@ -277,6 +277,7 @@
             <key type="filename">building/doorside099anim004.png</key>
             <key type="filename">building/dreamsave1.png</key>
             <key type="filename">building/dreamsave2.png</key>
+            <key type="filename">building/equipitemtable.png</key>
             <key type="filename">building/exitarrow.png</key>
             <key type="filename">building/floor000center.png</key>
             <key type="filename">building/floor000corner.png</key>
@@ -473,6 +474,7 @@
             <key type="filename">equipment/weapon028.png</key>
             <key type="filename">equipment/weapon032.png</key>
             <key type="filename">equipment/weapon033.png</key>
+            <key type="filename">equipment/weapon041.png</key>
             <key type="filename">hud/dialogbg.png</key>
             <key type="filename">hud/hud_pause.png</key>
             <key type="filename">hud/hud_pause_pressed.png</key>
@@ -658,6 +660,9 @@
             <key type="filename">equipment/weapon026.png</key>
             <key type="filename">equipment/weapon027.png</key>
             <key type="filename">equipment/weapon034.png</key>
+            <key type="filename">equipment/weapon042.png</key>
+            <key type="filename">equipment/weapon043.png</key>
+            <key type="filename">equipment/weapon044.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -1445,6 +1450,7 @@
             <key type="filename">equipment/weapon037.png</key>
             <key type="filename">equipment/weapon038.png</key>
             <key type="filename">equipment/weapon039.png</key>
+            <key type="filename">equipment/weapon040.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

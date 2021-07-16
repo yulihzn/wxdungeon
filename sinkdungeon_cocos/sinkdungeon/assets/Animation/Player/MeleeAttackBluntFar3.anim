@@ -39,11 +39,11 @@
             },
             {
               "frame": 0.3333333333333333,
-              "value": -80
+              "value": -90
             },
             {
               "frame": 0.8333333333333334,
-              "value": -80
+              "value": -90
             },
             {
               "frame": 1,
@@ -177,7 +177,7 @@
           "y": [
             {
               "frame": 0,
-              "value": 36
+              "value": 0
             }
           ]
         }
@@ -227,6 +227,76 @@
             }
           ]
         }
+      },
+      "firepoint": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -79.05,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point0": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                54.337,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point1": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                142.634,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point2": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                156.218,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point3": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                230.931,
+                0,
+                0
+              ]
+            }
+          ]
+        }
       }
     },
     "comps": {
@@ -267,6 +337,16 @@
     }
   },
   "events": [
+    {
+      "frame": 0,
+      "func": "EffectTime",
+      "params": []
+    },
+    {
+      "frame": 0.16666666666666666,
+      "func": "AudioTime",
+      "params": []
+    },
     {
       "frame": 0.3333333333333333,
       "func": "ExAttackTime",

@@ -260,6 +260,76 @@
             ]
           }
         }
+      },
+      "firepoint": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                202.05,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point0": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                16.493,
+                123.704,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point1": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                53.605,
+                53.605,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point2": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                57.728,
+                -78.346,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point3": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                28.864,
+                -127.827,
+                0
+              ]
+            }
+          ]
+        }
       }
     },
     "comps": {
@@ -325,8 +395,33 @@
   },
   "events": [
     {
+      "frame": 0.16666666666666666,
+      "func": "AudioTime",
+      "params": []
+    },
+    {
+      "frame": 0.3333333333333333,
+      "func": "ExAttackTime",
+      "params": []
+    },
+    {
+      "frame": 0.3333333333333333,
+      "func": "AudioTime",
+      "params": []
+    },
+    {
+      "frame": 0.3333333333333333,
+      "func": "EffectTime",
+      "params": []
+    },
+    {
       "frame": 0.5,
       "func": "RefreshTime",
+      "params": []
+    },
+    {
+      "frame": 0.5,
+      "func": "AudioTime",
       "params": []
     },
     {

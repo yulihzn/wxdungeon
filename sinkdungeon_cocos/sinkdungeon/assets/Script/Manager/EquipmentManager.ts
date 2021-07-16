@@ -51,6 +51,12 @@ export default class EquipmentManager extends BaseManager {
     public static readonly WEAPON_DEATH = "weapon018";
     public static readonly WEAPON_SHADOW = "weapon019";
     public static readonly WEAPON_BLOOD = "weapon020";
+    public static readonly WEAPON_WOOD_SWORD = "weapon039";
+    public static readonly WEAPON_WOOD_HAMMER = "weapon040";
+    public static readonly WEAPON_WOOD_DAGGER = "weapon041";
+    public static readonly WEAPON_WOOD_SPEAR = "weapon042";
+    public static readonly WEAPON_WOOD_LONG_STICK = "weapon043";
+    public static readonly WEAPON_WOOD_LONG_CROSS = "weapon044";
     public static readonly REMOTE_CROSSBOW = "remote001";
     public static readonly REMOTE_LONGBOW = "remote002";
     public static readonly REMOTE_WAND = "remote003";
@@ -634,6 +640,9 @@ export default class EquipmentManager extends BaseManager {
 
     static getPrice(data: EquipmentData): number {
         let price = 0;
+        if(data.test>1){
+            return 0;
+        }
         price += data.Common.maxHealth * 5;//最大生命25
         price += data.Common.maxDream * 10;//最大梦境值25
         price += data.Common.damageMin * 10;//最小攻击50

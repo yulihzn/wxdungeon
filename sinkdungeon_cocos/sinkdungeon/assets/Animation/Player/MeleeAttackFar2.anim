@@ -191,6 +191,76 @@
             }
           ]
         }
+      },
+      "firepoint": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                17.914,
+                184.492,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point0": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                136.364,
+                -16.043,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point1": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                208.557,
+                -160.428,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point2": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                96.257,
+                -264.707,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point3": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -48.128,
+                -272.728,
+                0
+              ]
+            }
+          ]
+        }
       }
     },
     "comps": {
@@ -206,11 +276,11 @@
           },
           {
             "frame": 0.3333333333333333,
-            "value": 120
+            "value": 171
           },
           {
             "frame": 0.5,
-            "value": 80
+            "value": 155
           },
           {
             "frame": 0.6666666666666666,
@@ -238,16 +308,16 @@
             "frame": 0.3333333333333333,
             "value": {
               "__type__": "cc.Vec2",
-              "x": 106,
-              "y": 0
+              "x": 90,
+              "y": 34
             }
           },
           {
             "frame": 0.5,
             "value": {
               "__type__": "cc.Vec2",
-              "x": 49,
-              "y": -38
+              "x": 74,
+              "y": 21
             }
           }
         ]
@@ -255,6 +325,16 @@
     }
   },
   "events": [
+    {
+      "frame": 0,
+      "func": "AudioTime",
+      "params": []
+    },
+    {
+      "frame": 0,
+      "func": "EffectTime",
+      "params": []
+    },
     {
       "frame": 0.5,
       "func": "ExAttackTime",
@@ -268,9 +348,7 @@
     {
       "frame": 0.8333333333333334,
       "func": "ComboTime",
-      "params": [
-        2
-      ]
+      "params": []
     },
     {
       "frame": 1,

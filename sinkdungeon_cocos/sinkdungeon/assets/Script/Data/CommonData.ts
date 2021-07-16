@@ -86,6 +86,7 @@ export default class CommonData {
         e.realDamage = this.realDamage;
         e.realRate = this.realRate;
         e.magicDefence = this.magicDefence;
+        e.magicDamage = this.magicDamage;
         e.iceRate = this.iceRate;
         e.fireRate = this.fireRate;
         e.lighteningRate = this.lighteningRate;
@@ -116,7 +117,7 @@ export default class CommonData {
         this.remoteCooldown += data.remoteCooldown ? data.remoteCooldown : 0;
         this.realDamage += data.realDamage ? data.realDamage : 0;
         this.realRate += data.realRate ? data.realRate : 0;
-        this.magicDefence = data.magicDefence ? data.magicDefence : 0;
+        this.magicDefence += data.magicDefence ? data.magicDefence : 0;
         this.magicDamage += data.magicDamage ? data.magicDamage : 0;
         this.iceRate += data.iceRate ? data.iceRate : 0;
         this.fireRate += data.fireRate ? data.fireRate : 0;

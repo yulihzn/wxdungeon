@@ -3,7 +3,7 @@
   "_name": "MeleeAttackFist2",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.5,
+  "_duration": 0.8333333333333334,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -80,6 +80,76 @@
             }
           ]
         }
+      },
+      "firepoint": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -63.263,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point0": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                23.005,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point1": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                46.009,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point2": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                51.761,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point3": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                80.516,
+                0,
+                0
+              ]
+            }
+          ]
+        }
       }
     },
     "comps": {
@@ -117,6 +187,16 @@
   },
   "events": [
     {
+      "frame": 0,
+      "func": "AudioTime",
+      "params": []
+    },
+    {
+      "frame": 0,
+      "func": "EffectTime",
+      "params": []
+    },
+    {
       "frame": 0.08333333333333333,
       "func": "ExAttackTime",
       "params": []
@@ -131,9 +211,17 @@
     {
       "frame": 0.5,
       "func": "MeleeAttackFinish",
-      "params": [
-        false
-      ]
+      "params": []
+    },
+    {
+      "frame": 0.5,
+      "func": "ComboStart",
+      "params": []
+    },
+    {
+      "frame": 0.8333333333333334,
+      "func": "ComboFinish",
+      "params": []
     }
   ]
 }

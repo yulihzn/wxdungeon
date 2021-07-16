@@ -185,6 +185,76 @@
             ]
           }
         }
+      },
+      "firepoint": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                4.642,
+                57.728,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point0": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                57.728,
+                -4.123,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point1": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                86.593,
+                -41.235,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point2": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                53.605,
+                -98.963,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "firepoint/point3": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                4.123,
+                -94.84,
+                0
+              ]
+            }
+          ]
+        }
       }
     },
     "comps": {
@@ -250,6 +320,16 @@
   },
   "events": [
     {
+      "frame": 0,
+      "func": "AudioTime",
+      "params": []
+    },
+    {
+      "frame": 0,
+      "func": "EffectTime",
+      "params": []
+    },
+    {
       "frame": 0.16666666666666666,
       "func": "ExAttackTime",
       "params": []
@@ -262,9 +342,7 @@
     {
       "frame": 0.8333333333333334,
       "func": "ComboTime",
-      "params": [
-        1
-      ]
+      "params": []
     },
     {
       "frame": 1,

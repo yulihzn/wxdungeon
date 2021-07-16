@@ -36,6 +36,7 @@ import MgCrack from "../Building/MgCrack";
 import InteractBuilding from "../Building/InteractBuilding";
 import Player from "../Player";
 import EnergyShield from "../Building/EnergyShield";
+import EquipmentManager from "./EquipmentManager";
 
 
 // Learn TypeScript:
@@ -440,7 +441,9 @@ export default class BuildingManager extends BaseManager {
                 let p = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMBED), indexPos);
                 let rb = p.getComponent(RoomBed);
                 rb.init(dungeon, parseInt(mapDataStr[1]) == 1);
-            } else {
+            } else if(parseInt(mapDataStr[1]) == 5){
+                this.addPracticeEquipItem(dungeon,indexPos);
+            }else {
                 //生成可打击建筑
                 this.addHitBuilding(dungeon, mapDataStr, indexPos);
             }
@@ -737,6 +740,16 @@ export default class BuildingManager extends BaseManager {
         let scale = 8+Math.floor(Logic.playerData.OilGoldData.level/5);
         script.init(player,10+Logic.playerData.OilGoldData.level*3,scale);
         return script;
+    }
+    private addPracticeEquipItem(dungeon:Dungeon,indexPos:cc.Vec3){
+        if (dungeon) {
+            dungeon.addEquipment(EquipmentManager.WEAPON_WOOD_SWORD, Dungeon.getPosInMap(indexPos.add(cc.v3(-2,0))));
+            dungeon.addEquipment(EquipmentManager.WEAPON_WOOD_SPEAR, Dungeon.getPosInMap(indexPos.add(cc.v3(-1,0))));
+            dungeon.addEquipment(EquipmentManager.WEAPON_WOOD_DAGGER, Dungeon.getPosInMap(indexPos));
+            dungeon.addEquipment(EquipmentManager.WEAPON_WOOD_HAMMER, Dungeon.getPosInMap(indexPos.add(cc.v3(1,0))));
+            dungeon.addEquipment(EquipmentManager.WEAPON_WOOD_LONG_CROSS, Dungeon.getPosInMap(indexPos.add(cc.v3(2,0))));
+            dungeon.addEquipment(EquipmentManager.WEAPON_WOOD_LONG_STICK, Dungeon.getPosInMap(indexPos.add(cc.v3(-3,0))));
+        }
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

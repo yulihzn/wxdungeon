@@ -66,6 +66,7 @@ export default class EquipmentData extends BaseData{
     ignoreTrap = 0;//无视尖刺伤害
     remoteAudio = '';//远程音效
     exBeatBack = 0;//额外击退
+    test = 0;//测试用武器，测试用武器在有刷新点的情况下不保存
 
     price:number = 0;
 
@@ -170,6 +171,7 @@ export default class EquipmentData extends BaseData{
         this.infobasecolor = data.infobasecolor?data.infobasecolor:'#ffffff';
         this.remoteAudio = data.remoteAudio?data.remoteAudio:'';
         this.exBeatBack = data.exBeatBack?data.exBeatBack:0;
+        this.test = data.test?data.test:0;
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -245,6 +247,7 @@ export default class EquipmentData extends BaseData{
         e.infobasecolor = this.infobasecolor;
         e.remoteAudio = this.remoteAudio;
         e.exBeatBack = this.exBeatBack;
+        e.test = this.test;
         return e;
     }
     public add(data: EquipmentData): EquipmentData {
