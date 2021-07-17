@@ -247,8 +247,8 @@ export default class ProfessionTalent extends Talent {
     private jump() {
         AudioPlayer.play(AudioPlayer.DASH);
         if (!this.player.jump()) {
-            this.talentSkill.IsExcuting = false;
-            this.refreshCooldown();
+            // this.talentSkill.IsExcuting = false;
+            // this.refreshCooldown();
         }
         this.scheduleOnce(() => {
             AudioPlayer.play(AudioPlayer.BOOM);

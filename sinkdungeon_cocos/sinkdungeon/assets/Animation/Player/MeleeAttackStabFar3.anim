@@ -348,6 +348,10 @@
             "value": 106
           },
           {
+            "frame": 0.5,
+            "value": 93
+          },
+          {
             "frame": 0.6666666666666666,
             "value": 80
           },
@@ -435,7 +439,7 @@
       "params": []
     },
     {
-      "frame": 1.3333333333333333,
+      "frame": 1.1833333333333333,
       "func": "MeleeAttackFinish",
       "params": []
     }
