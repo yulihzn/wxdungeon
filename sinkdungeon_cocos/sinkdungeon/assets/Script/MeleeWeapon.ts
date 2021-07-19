@@ -214,19 +214,19 @@ export default class MeleeWeapon extends cc.Component {
         let speedScaleFix = 1;
         //匕首
         if (this.isStab && !this.isFar) {
-            speedScaleFix = 1.2;
+            speedScaleFix = 1.3;
         }
         //长剑
         if (!this.isStab && !this.isFar) {
-            speedScaleFix = 1;
+            speedScaleFix = 1.2;
         }
         //长枪
         if (this.isStab && this.isFar) {
-            speedScaleFix = 1;
+            speedScaleFix = 1.1;
         }
         //大剑
         if (!this.isStab && this.isFar) {
-            speedScaleFix = 0.8;
+            speedScaleFix = 1;
         }
         let finalCommon = data.FinalCommon;
         let animSpeed = 1 + finalCommon.attackSpeed / 500;

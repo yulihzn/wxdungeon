@@ -9,6 +9,9 @@ export default class AchievementData{
     furnitures:{[key:string]:number}={};
     playerLifes = 0;
     valueCopy(data:AchievementData){
+        if(!data){
+            return;
+        }
         this.index = data.index?data.index:0;
         this.monsters = data.monsters?data.monsters:{};
         this.items = data.monsters?data.monsters:{};

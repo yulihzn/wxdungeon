@@ -65,7 +65,7 @@ export default class LocalStorage {
     }
     static isSwitchOpen(key: string) {
         let v = LocalStorage.getValueFromData(key);
-        let num = v ? parseInt(v) : LocalStorage.DEFAULT_MAP[key];
+        let num = v||v==0 ? parseInt(v) : LocalStorage.DEFAULT_MAP[key];
         return num == 1;
 
     }
