@@ -214,15 +214,15 @@ export default class MeleeWeapon extends cc.Component {
         let speedScaleFix = 1;
         //匕首
         if (this.isStab && !this.isFar) {
-            speedScaleFix = 1.3;
+            speedScaleFix = 1.8;
         }
         //长剑
         if (!this.isStab && !this.isFar) {
-            speedScaleFix = 1.2;
+            speedScaleFix = 1.5;
         }
         //长枪
         if (this.isStab && this.isFar) {
-            speedScaleFix = 1.1;
+            speedScaleFix = 1.2;
         }
         //大剑
         if (!this.isStab && this.isFar) {
@@ -485,7 +485,7 @@ export default class MeleeWeapon extends cc.Component {
             let enemy = ActorUtils.getNearestEnemyActor(this.player, false, this.dungeon);
             if (enemy) {
                 let dis = Logic.getDistance(this.player.node.position, enemy.node.position);
-                if (dis < 200 && dis < olddis && !enemy.sc.isDied) {
+                if (dis < 300 && dis < olddis && !enemy.sc.isDied) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
