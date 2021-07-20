@@ -65,7 +65,9 @@ export default class TalentMagic extends Talent {
             }
         }, 0.2)
     }
-
+    protected skillCanUse(){
+        return true;
+    }
     useSKill() {
         this.doSkill();
     }

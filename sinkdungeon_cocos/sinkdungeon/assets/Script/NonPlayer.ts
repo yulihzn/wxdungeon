@@ -372,8 +372,8 @@ export default class NonPlayer extends Actor {
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
         let speedScale = 1 - this.data.FinalCommon.attackSpeed / 500;
-        if (speedScale < 0.2) {
-            speedScale = 0.2;
+        if (speedScale < 0.3) {
+            speedScale = 0.3;
         }
         if (speedScale > 2) {
             speedScale = 2;
@@ -559,6 +559,7 @@ export default class NonPlayer extends Actor {
         return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
     }
     fall() {
+        AudioPlayer.play(AudioPlayer.BLEEDING);
         if (this.data.isStatic > 0 || this.data.isHeavy > 0 || this.IsVariation) {
             return;
         }

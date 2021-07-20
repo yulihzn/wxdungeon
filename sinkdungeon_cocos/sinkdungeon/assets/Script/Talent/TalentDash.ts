@@ -28,6 +28,9 @@ export default class TalentDash extends Talent {
         this.node.parent = this.player.node.parent;
         this.dashShadow.init(this);
     }
+    protected skillCanUse(){
+        return true;
+    }
     useSKill() {
         this.doSkill();
     }

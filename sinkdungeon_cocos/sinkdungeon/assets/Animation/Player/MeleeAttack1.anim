@@ -316,9 +316,7 @@
     {
       "frame": 0.8333333333333334,
       "func": "ComboTime",
-      "params": [
-        1
-      ]
+      "params": []
     },
     {
       "frame": 0.85,

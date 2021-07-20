@@ -103,7 +103,13 @@ export default class ProfessionTalent extends Talent {
         this.initCoolDown(data, storePointMax);
 
     }
-
+    protected skillCanUse(){
+        switch (this.data.resName) {
+            case Talent.TALENT_009: return this.canSteal();
+            case Talent.TALENT_019: return this.player.CanJump;
+        }
+        return true;
+    }
     protected doSkill() {
         switch (this.data.resName) {
             case Talent.TALENT_000: break;
@@ -246,10 +252,7 @@ export default class ProfessionTalent extends Talent {
     }
     private jump() {
         AudioPlayer.play(AudioPlayer.DASH);
-        if (!this.player.jump()) {
-            // this.talentSkill.IsExcuting = false;
-            // this.refreshCooldown();
-        }
+        this.player.jump();
         this.scheduleOnce(() => {
             AudioPlayer.play(AudioPlayer.BOOM);
             let d = this.player.data.getFinalAttackPoint();
@@ -262,6 +265,21 @@ export default class ProfessionTalent extends Talent {
                 .init(0, 0.15, 0, scale, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.DIZZ]));
             this.talentSkill.IsExcuting = false;
         }, 0.8)
+    }
+    private canSteal(){
+        let actor = ActorUtils.getNearestEnemyActor(this.player, false, this.player.weaponRight.meleeWeapon.dungeon);
+        if (!actor) {
+            return false;
+        }
+        let monster = actor.getComponent(NonPlayer);
+        let boss = actor.getComponent(Boss);
+        if (monster && monster.data.isTest < 1) {
+            return true;
+        }
+        if (boss) {
+            return true;
+        }
+        return false;
     }
     private steal() {
         AudioPlayer.play(AudioPlayer.FIREBALL);

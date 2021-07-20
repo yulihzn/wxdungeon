@@ -267,6 +267,8 @@ export default class BuildingManager extends BaseManager {
                 arrow.getComponent(DecorationFloor).changeRes('exitarrow');
             } else if (mapDataStr == '+3') {
                 this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
+            } else if (mapDataStr == '+4') {
+                this.addPracticeEquipItem(dungeon, indexPos);
             } else if (mapDataStr == '+a') {
                 this.addBuilding(Logic.getBuildings(BuildingManager.GRASS01), indexPos);
             } else if (mapDataStr == '+b') {
@@ -441,8 +443,6 @@ export default class BuildingManager extends BaseManager {
                 let p = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMBED), indexPos);
                 let rb = p.getComponent(RoomBed);
                 rb.init(dungeon, parseInt(mapDataStr[1]) == 1);
-            } else if(parseInt(mapDataStr[1]) == 5){
-                this.addPracticeEquipItem(dungeon,indexPos);
             }else {
                 //生成可打击建筑
                 this.addHitBuilding(dungeon, mapDataStr, indexPos);
@@ -661,7 +661,7 @@ export default class BuildingManager extends BaseManager {
             case 'Z5': resName = 'roomtable'; scale = 10; hideShadow = true; break;
             case 'Z6': resName = 'roomfridge'; scale = 6; break;
             case 'Z7': resName = 'roomwash'; break;
-            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 50; scale = 6; break;
+            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 20; scale = 6; break;
             case 'Z9': resName = 'roomstool'; break;
             case 'Za': resName = 'roomkitchentable'; scale = 6; break;
             case 'Zb': resName = 'roomkitchentable1'; break;
@@ -738,7 +738,7 @@ export default class BuildingManager extends BaseManager {
         shield.position = player.node.position.clone();
         let script = shield.getComponent(EnergyShield);
         let scale = 8+Math.floor(Logic.playerData.OilGoldData.level/5);
-        script.init(player,10+Logic.playerData.OilGoldData.level*3,scale);
+        script.init(player,20+Logic.playerData.OilGoldData.level*5,scale);
         return script;
     }
     private addPracticeEquipItem(dungeon:Dungeon,indexPos:cc.Vec3){

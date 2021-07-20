@@ -158,6 +158,7 @@ export default class Emplacement extends Building {
             shooter.data.bulletType = "bullet010";
             shooter.data.bulletLineExNum = 0;
             shooter.data.img = 'emplacement';
+            shooter.isBuilding = true;
 
             switch (Logic.chapterIndex) {
                 case Logic.CHAPTER00: shooter.data.bulletLineExNum = 3; shooter.data.bulletType = "laser001"; break;
@@ -169,7 +170,7 @@ export default class Emplacement extends Building {
                 case Logic.CHAPTER099: shooter.data.bulletType = "bullet010"; break;
             }
         }
-        shooter.fireBullet();
+        shooter.fireBullet(0,cc.v3(64,0));
     }
     setShooterHv(shooter: Shooter, hv: cc.Vec3) {
         shooter.setHv(hv);

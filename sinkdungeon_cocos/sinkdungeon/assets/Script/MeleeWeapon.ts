@@ -78,7 +78,7 @@ export default class MeleeWeapon extends cc.Component {
     private isBlunt = false;//钝器
     dungeon: Dungeon;
     private weaponFirePoint: cc.Node;//剑尖
-    private weaponFirePoints:cc.Node[] = [];
+    private weaponFirePoints: cc.Node[] = [];
     private isMiss = false;
     private drainSkill = new NextStep();
     private isReflect = false;//子弹偏转
@@ -96,6 +96,7 @@ export default class MeleeWeapon extends cc.Component {
     private isAttackPressed = false;
     private comboMiss = false;
     private playerData: PlayerData = new PlayerData();
+    private isComboDo = false;
 
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
@@ -130,7 +131,7 @@ export default class MeleeWeapon extends cc.Component {
         this.handSprite = this.getSpriteChildSprite(['sprite', 'hand']);
         this.glovesSprite = this.getSpriteChildSprite(['sprite', 'hand', 'gloves']);
         this.handSprite.node.color = cc.Color.WHITE.fromHEX(this.player.avatar.data.skinColor);
-        for(let i = 0;i < 4;i++){
+        for (let i = 0; i < 4; i++) {
             this.weaponFirePoints.push(this.weaponFirePoint.getChildByName(`point${i}`));
         }
 
@@ -200,6 +201,7 @@ export default class MeleeWeapon extends cc.Component {
             }
             return false;
         }
+        
         if (isMiss) {
             this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false);
         }
@@ -242,13 +244,13 @@ export default class MeleeWeapon extends cc.Component {
         if (this.anim) {
             let animname = this.getAttackAnimName();
             this.anim.play(animname);
-            this.anim.getAnimationState(animname).speed = animSpeed*speedScaleFix;
+            this.anim.getAnimationState(animname).speed = animSpeed * speedScaleFix;
         }
-        
+
         return true;
 
     }
-    
+
     attackIdle(isReverse: boolean) {
         if (this.anim) {
             this.anim.play(isReverse ? 'MeleeAttackIdleReverse' : 'MeleeAttackIdle');
@@ -322,7 +324,7 @@ export default class MeleeWeapon extends cc.Component {
         // }
         let timeScale = this.anim.getAnimationState(this.getAttackAnimName()).speed;
         let ps = [p];
-        for(let node of this.weaponFirePoints){
+        for (let node of this.weaponFirePoints) {
             ps.push(p.add(node.position));
         }
         for (let i = 0; i < ps.length; i++) {
@@ -337,16 +339,18 @@ export default class MeleeWeapon extends cc.Component {
         firePrefab.opacity = 255;
         firePrefab.setScale(0.2);
         firePrefab.active = true;
-        cc.tween(firePrefab).to(0.1/timeScale, { position: ps[1] }).to(0.1/timeScale, { position: ps[2] }).to(0.1/timeScale, { position: ps[3] }).to(0.1/timeScale, { position: ps[4] }).start();
+        cc.tween(firePrefab).to(0.1 / timeScale, { position: ps[1] }).to(0.1 / timeScale, { position: ps[2] }).to(0.1 / timeScale, { position: ps[3] }).to(0.1 / timeScale, { position: ps[4] }).start();
     }
     //Anim
     MeleeAttackFinish() {
-        this.scheduleOnce(() => {
+        if(this.isComboDo){
+            this.isComboDo = false;
+        }else{
             this.isAttacking = false;
-            if(!this.isFist){
-                this.isComboing = false;
-            }
-        }, 0.05);
+        }
+        if (!this.isFist) {
+            this.isComboing = false;
+        }
     }
     //Anim
     ComboStart() {
@@ -363,6 +367,7 @@ export default class MeleeWeapon extends cc.Component {
             if (this.comboMiss) {
                 this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false);
             }
+            this.isComboDo = true;
             this.attackDo(this.playerData, this.comboMiss, this.fistCombo);
             this.player.playerAnim(PlayerAvatar.STATE_ATTACK, this.player.currentDir);
             this.player.stopHiding();
@@ -379,14 +384,14 @@ export default class MeleeWeapon extends cc.Component {
         //匕首
         if (this.isStab && !this.isFar) {
             audioName = AudioPlayer.FIST;
-            if(this.comboType == MeleeWeapon.COMBO3){
+            if (this.comboType == MeleeWeapon.COMBO3) {
                 audioName = AudioPlayer.SWORD_ATTACK;
             }
         }
         //长剑
         if (!this.isStab && !this.isFar) {
             audioName = AudioPlayer.SWORD_ATTACK;
-            if(this.comboType == MeleeWeapon.COMBO3){
+            if (this.comboType == MeleeWeapon.COMBO3) {
                 audioName = AudioPlayer.MELEE;
             }
         }
@@ -397,11 +402,11 @@ export default class MeleeWeapon extends cc.Component {
         //大剑
         if (!this.isStab && this.isFar) {
             audioName = AudioPlayer.SWORD_ATTACK;
-            if(this.comboType == MeleeWeapon.COMBO3){
+            if (this.comboType == MeleeWeapon.COMBO3) {
                 audioName = AudioPlayer.MELEE;
             }
         }
-        if(this.isFist){
+        if (this.isFist) {
             audioName = AudioPlayer.FIST;
         }
         AudioPlayer.play(audioName);
@@ -438,7 +443,7 @@ export default class MeleeWeapon extends cc.Component {
         }, 0.2)
     }
     //Anim
-    EffectTime(){
+    EffectTime() {
         let p = this.weaponFirePoint.position.clone();
         let ran = Logic.getRandomNum(0, 100);
         let finalCommon = this.playerData.FinalCommon;

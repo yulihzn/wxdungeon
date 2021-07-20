@@ -123,10 +123,11 @@ export default abstract class Talent extends cc.Component {
         }
         let cooldown = this.data.cooldown;
 
-        if (this.player.data.currentDream >= this.data.cost) {
+        if (this.player.data.currentDream >= this.data.cost&&this.skillCanUse()) {
             this.talentSkill.next(() => {
                 this.talentSkill.IsExcuting = true;
                 this.player.updateDream(this.data.cost);
+                this.data.useCount++;
                 this.doSkill();
                 this.updateCooldownAndHud(cooldown, cooldown);
             }, cooldown, true, (secondCount: number) => {
@@ -160,6 +161,8 @@ export default abstract class Talent extends cc.Component {
             , storePoint: this.talentSkill.StorePoint,storePointMax:this.talentSkill.StorePointMax});
     }
     protected abstract doSkill(): void;
+
+    protected abstract skillCanUse():boolean;
 
     abstract changePerformance(): void
 

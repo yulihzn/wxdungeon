@@ -723,12 +723,18 @@ export default class Player extends Actor {
             this.sc.isFalling = false;
         }, 2);
     }
-    jump() {
+    get CanJump(){
         if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow || this.sc.isJumping
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking
             || this.isInteractBuildingAniming) {
             return false;
+        }
+        return true;
+    }
+    jump() {
+        if (!this.CanJump) {
+            return;
         }
         this.sc.isJumping = true;
         this.scheduleOnce(() => {
@@ -743,7 +749,6 @@ export default class Player extends Actor {
             this.shield.node.opacity = 255;
 
         }, 1.3);
-        return true;
     }
     /**
      * 挨打
@@ -991,7 +996,7 @@ export default class Player extends Actor {
             this.weaponRight.meleeWeapon.setHandAndWeaponInVisible(showHands);
         }
         if (this.avatar) {
-            this.avatar.showHandsWithInteract(showHands, isLift);
+            this.avatar.showHandsWithInteract(showHands, isLift&&!this.interactBuilding.isAttacking);
         }
         this.showUiButton();
     }

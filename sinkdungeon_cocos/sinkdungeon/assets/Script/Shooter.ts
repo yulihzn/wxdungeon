@@ -55,6 +55,7 @@ export default class Shooter extends cc.Component {
     remoteDamagePlayer = new DamageData();
     from: FromData = new FromData();
     skipTopwall = false;
+    isBuilding = false;
     anim: cc.Animation;
     private aoePools: { [key: string]: cc.NodePool } = {};
 
@@ -85,14 +86,17 @@ export default class Shooter extends cc.Component {
         }
         let spriteFrame = this.getSpriteFrameByName(resName, subfix);
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-        this.sprite.width = spriteFrame.getRect().width * 1.5;
-        this.sprite.height = spriteFrame.getRect().height * 1.5;
-        this.sprite.anchorX = 0.2;
-        if (this.data.far == 1) {
-            this.sprite.width = this.sprite.width * 2;
-            this.sprite.height = this.sprite.height * 2;
-            this.sprite.anchorX = 0.5
+        if(!this.isBuilding){
+            this.sprite.width = spriteFrame.getRect().width * 1.5;
+            this.sprite.height = spriteFrame.getRect().height * 1.5;
+            this.sprite.anchorX = 0.2;
+            if (this.data.far == 1) {
+                this.sprite.width = this.sprite.width * 2;
+                this.sprite.height = this.sprite.height * 2;
+                this.sprite.anchorX = 0.5
+            }
         }
+        
     }
     changeResColor(color: cc.Color) {
         this.sprite.color = color;

@@ -3356,7 +3356,7 @@
          "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/equipitemtable.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"Z5"
+         "type":"+4"
         }],
  "tilewidth":16,
  "type":"tileset",

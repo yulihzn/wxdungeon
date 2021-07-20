@@ -69,6 +69,9 @@ export default class OrganizationTalent extends Talent {
         }
         this.initCoolDown(data, storePointMax);
     }
+    protected skillCanUse() {
+        return true;
+    }
     protected doSkill() {
         if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             if (this.energyShieldList.length > this.talentSkill.StorePointMax) {
@@ -88,17 +91,25 @@ export default class OrganizationTalent extends Talent {
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
             AudioPlayer.play(AudioPlayer.DOG);
             if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
+                let d = new NonPlayerData();
+                d.valueCopy(Logic.nonplayers[NonPlayerManager.DOG]);
                 let data = new StatusData();
                 data.valueCopy(Logic.status[StatusManager.PET_DOG]);
                 data.Common.realRate += Logic.playerData.OilGoldData.level * 1;
                 data.Common.realDamage += Logic.playerData.OilGoldData.level;
                 data.realDamageOvertime -= Logic.playerData.OilGoldData.level / 5;
-                this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth+=1;
+                this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth = d.Common.maxHealth + Logic.playerData.OilGoldData.level * 5 + this.data.useCount;
                 this.player.dungeon.nonPlayerManager.pet.addCustomStatus(data, new FromData());
             } else {
+                if (this.data.useCount > 1) {
+                    this.data.useCount = this.data.useCount / 2;
+                    if (this.data.useCount < 1) {
+                        this.data.useCount = 1;
+                    }
+                }
                 let data = new NonPlayerData();
                 data.valueCopy(Logic.nonplayers[NonPlayerManager.DOG]);
-                data.Common.maxHealth += Logic.playerData.OilGoldData.level * 3;
+                data.Common.maxHealth += Logic.playerData.OilGoldData.level * 5;
                 data.currentHealth = data.Common.maxHealth;
                 data.Common.damageMin += Logic.playerData.OilGoldData.level;
                 data.Common.defence += Logic.playerData.OilGoldData.level;
@@ -108,11 +119,11 @@ export default class OrganizationTalent extends Talent {
             AudioPlayer.play(AudioPlayer.PICK_ITEM);
             let data = new StatusData();
             data.valueCopy(Logic.status[StatusManager.REAGENT]);
-            data.duration+=Logic.playerData.OilGoldData.level*3;
-            data.Common.maxHealth = this.player.data.FinalCommon.maxHealth*(0.5+Logic.playerData.OilGoldData.level * 0.1) ;
-            data.Common.damageMin = this.player.data.FinalCommon.damageMin*(0.5+Logic.playerData.OilGoldData.level * 0.1);
-            data.Common.defence = this.player.data.FinalCommon.defence*(0.5+Logic.playerData.OilGoldData.level * 0.1);
-            data.Common.remoteDamage = this.player.data.FinalCommon.remoteDamage*(0.5+Logic.playerData.OilGoldData.level * 0.05);
+            data.duration += Logic.playerData.OilGoldData.level * 3;
+            data.Common.maxHealth = this.player.data.FinalCommon.maxHealth * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.damageMin = this.player.data.FinalCommon.damageMin * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.defence = this.player.data.FinalCommon.defence * (0.5 + Logic.playerData.OilGoldData.level * 0.1);
+            data.Common.remoteDamage = this.player.data.FinalCommon.remoteDamage * (0.5 + Logic.playerData.OilGoldData.level * 0.05);
             data.realDamageDirect -= data.Common.maxHealth;
             this.player.addCustomStatus(data, new FromData());
         }

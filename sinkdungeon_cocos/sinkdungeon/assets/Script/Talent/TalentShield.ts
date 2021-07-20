@@ -51,6 +51,9 @@ export default class TalentShield extends Talent {
         this.shieldBackSprite.spriteFrame = Logic.spriteFrameRes(resName);
         this.shieldFrontSprite.spriteFrame = Logic.spriteFrameRes(resName);
     }
+    protected skillCanUse(){
+        return true;
+    }
     useSKill() {
         this.doSkill();
     }

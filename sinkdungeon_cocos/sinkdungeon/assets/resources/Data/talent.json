@@ -166,7 +166,7 @@
         "resName": "talent100",
         "passive": 0,
         "cooldown": 10,
-        "cost": 3,
+        "cost": 2,
         "desc": "？？？"
     },
     "talent101": {
@@ -174,8 +174,8 @@
         "nameEn": "",
         "resName": "talent101",
         "passive": 0,
-        "cooldown": 60,
-        "cost": 3,
+        "cooldown": 30,
+        "cost": 2,
         "desc": "召唤宠物，如果宠物存在会激活对应宠物的技能"
     },
     "talent102": {
@@ -184,7 +184,7 @@
         "resName": "talent102",
         "passive": 0,
         "cooldown": 20,
-        "cost": 3,
+        "cost": 2,
         "desc": "原地生成一个魔法能量罩阻挡伤害"
     },
     "talent103": {
@@ -193,7 +193,7 @@
         "resName": "talent103",
         "passive": 0,
         "cooldown": 60,
-        "cost": 3,
+        "cost": 2,
         "desc": "注射翠金提炼的试剂变狂化"
     }
 }

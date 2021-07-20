@@ -13,6 +13,8 @@ export default class TalentData {
     secondCount: number = 0;//当前cd剩余秒数
     storePoint: number = 0;//当前技能拥有点数
 
+    useCount = 0;//使用次数
+
     constructor() {
         this.common = new CommonData();
     }
@@ -32,6 +34,7 @@ export default class TalentData {
         this.secondCount = data.secondCount ? data.secondCount : 0;
         this.storePoint = data.storePoint||data.storePoint==0 ? data.storePoint : 1;
         this.cost = data.cost||data.cost==0?data.cost:1;
+        this.useCount = data.useCount?data.useCount:0;
     }
     public clone(): TalentData {
         let e = new TalentData();
@@ -45,6 +48,7 @@ export default class TalentData {
         e.secondCount = this.secondCount;
         e.storePoint = this.storePoint;
         e.cost = this.cost;
+        e.useCount = this.useCount;
         return e;
     }
 }
