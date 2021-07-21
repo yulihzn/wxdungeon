@@ -260,7 +260,7 @@ export default class Controller extends cc.Component {
     timeDelay = 0;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
-        if (this.timeDelay > 0.016) {
+        if (this.timeDelay > 0.03) {
             this.timeDelay = 0;
             return true;
         }
