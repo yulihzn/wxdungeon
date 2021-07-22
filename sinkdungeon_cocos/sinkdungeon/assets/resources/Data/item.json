@@ -884,7 +884,7 @@
         "resName": "goods015",
         "canSave":1,
         "count":1,
-        "info":"恢复生命+1,短暂眩晕,抵挡一次致命伤害",
+        "info":"恢复生命+1,短暂眩晕,抵挡致命伤害",
         "desc":"昂贵的啤酒，不知道为什么这么贵，喝完感觉很晕，睡得更香了",
         "statusList":"status005,status011,status065",
         "cooldown":10,

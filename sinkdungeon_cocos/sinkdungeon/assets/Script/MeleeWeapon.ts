@@ -200,12 +200,12 @@ export default class MeleeWeapon extends cc.Component {
             }
             return false;
         }
-        let s1 = this.anim.getAnimationState(this.getAttackAnimName(MeleeWeapon.COMBO1));
-        let s2 = this.anim.getAnimationState(this.getAttackAnimName(MeleeWeapon.COMBO2));
-        let s3 = this.anim.getAnimationState(this.getAttackAnimName(MeleeWeapon.COMBO3));
-        if ((s1&&s1.isPlaying&&!s1.isPaused)|| (s2&&s2.isPlaying)|| (s3&&s3.isPlaying)) {
-            return false;
-        }
+        // let s1 = this.anim.getAnimationState(this.getAttackAnimName(MeleeWeapon.COMBO1));
+        // let s2 = this.anim.getAnimationState(this.getAttackAnimName(MeleeWeapon.COMBO2));
+        // let s3 = this.anim.getAnimationState(this.getAttackAnimName(MeleeWeapon.COMBO3));
+        // if ((s1&&s1.isPlaying&&!s1.isPaused)|| (s2&&s2.isPlaying)|| (s3&&s3.isPlaying)) {
+        //     return false;
+        // }
         if (isMiss) {
             this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false);
         }
