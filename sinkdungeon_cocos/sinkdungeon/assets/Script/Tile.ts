@@ -27,6 +27,11 @@ export default class Tile extends cc.Component {
     floor:cc.Sprite;
     tileType = '**';
     coverPrefix = '';
+    cover1 = '';
+    cover2 = '';
+    cover3 = '';
+    cover4 = '';
+    cover5 = '';
     floorPrefix = '';
     onLoad () {
         this.isAutoShow = true;
@@ -57,6 +62,11 @@ export default class Tile extends cc.Component {
             case '*2':s = this.floorPrefix+'001';break;
             case '*3':s = this.floorPrefix+'002';break;
             case '*4':s = this.coverPrefix+'004';break;
+            case '*5':s = this.cover1;break;
+            case '*6':s = this.cover2;break;
+            case '*7':s = this.cover3;break;
+            case '*8':s = this.cover4;break;
+            case '*9':s = this.cover5;break;
         }
         return s;
      }

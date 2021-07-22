@@ -11,6 +11,11 @@ export default class LevelData {
     roomHeight: number = 0;//房间高
     floorRes = '';//地板资源名
     floorCoverRes = '';//地板覆盖物
+    floorCoverRes1 = '';//地板覆盖物1
+    floorCoverRes2 = '';//地板覆盖物2
+    floorCoverRes3 = '';//地板覆盖物3
+    floorCoverRes4 = '';//地板覆盖物4
+    floorCoverRes5 = '';//地板覆盖物5
     wallRes1 = '';//墙壁资源名1（#0,1,2,3, 外角4,5,6,7, 内角8,9,10,11）
     wallRes2 = '';//墙壁资源名2 (#墙12,13,14,15, 外角16,17,18,19, 内角20,21,22,23)
     wallRes3 = '';//墙壁资源名3（独立矮墙体a)
@@ -79,6 +84,11 @@ export default class LevelData {
         this.minimaplock = data.minimaplock;
         this.floorRes = data.floorRes;
         this.floorCoverRes = data.floorCoverRes;
+        this.floorCoverRes1 = data.floorCoverRes1;
+        this.floorCoverRes2 = data.floorCoverRes2;
+        this.floorCoverRes3 = data.floorCoverRes3;
+        this.floorCoverRes4 = data.floorCoverRes4;
+        this.floorCoverRes5 = data.floorCoverRes5;
         this.wallRes1 = data.wallRes1;
         this.wallRes2 = data.wallRes2;
         this.wallRes3 = data.wallRes3;

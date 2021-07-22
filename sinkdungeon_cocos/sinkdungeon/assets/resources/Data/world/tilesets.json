@@ -436,7 +436,7 @@
         }, 
         {
          "id":300,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wall0.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/tilecover1.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -450,11 +450,11 @@
              "x":0,
              "y":0
             },
-         "type":"#0"
+         "type":"*5"
         }, 
         {
          "id":301,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wall1.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/tilecover2.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -468,11 +468,11 @@
              "x":0,
              "y":0
             },
-         "type":"#1"
+         "type":"*6"
         }, 
         {
          "id":302,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wall2.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/tilecover3.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -486,11 +486,11 @@
              "x":0,
              "y":0
             },
-         "type":"#2"
+         "type":"*7"
         }, 
         {
          "id":303,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wall3.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/tilecover4.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -504,11 +504,11 @@
              "x":0,
              "y":0
             },
-         "type":"#3"
+         "type":"*8"
         }, 
         {
          "id":304,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallcorner0.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/tilecover5.png",
          "imageheight":16,
          "imagewidth":16,
          "objectgroup":
@@ -522,7 +522,7 @@
              "x":0,
              "y":0
             },
-         "type":"#4"
+         "type":"*9"
         }, 
         {
          "id":305,

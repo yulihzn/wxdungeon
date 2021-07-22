@@ -174,6 +174,11 @@ export default class Dungeon extends cc.Component {
                     this.map[i][j].isAutoShow = false;
                     this.map[i][j].tileType = mapData[i][j];
                     this.map[i][j].coverPrefix = leveldata.floorCoverRes;
+                    this.map[i][j].cover1 = leveldata.floorCoverRes1;
+                    this.map[i][j].cover2 = leveldata.floorCoverRes2;
+                    this.map[i][j].cover3 = leveldata.floorCoverRes3;
+                    this.map[i][j].cover4 = leveldata.floorCoverRes4;
+                    this.map[i][j].cover5 = leveldata.floorCoverRes5;
                     this.map[i][j].floorPrefix = leveldata.floorRes;
                 }
                 if (Dungeon.isFirstEqual(mapData[i][j], "*")) {
