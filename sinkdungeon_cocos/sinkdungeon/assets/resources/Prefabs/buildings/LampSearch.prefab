@@ -27,11 +27,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 9
+        "__id__": 11
       }
     ],
     "_prefab": {
-      "__id__": 10
+      "__id__": 12
     },
     "_opacity": 255,
     "_color": {
@@ -204,10 +204,16 @@
       },
       {
         "__id__": 7
+      },
+      {
+        "__id__": 8
+      },
+      {
+        "__id__": 9
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 10
     },
     "_opacity": 255,
     "_color": {
@@ -252,8 +258,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 1,
+    "groupIndex": 1,
     "_id": ""
   },
   {
@@ -276,10 +282,11 @@
       "a": 86
     },
     "showLight": true,
-    "showShadow": true,
     "showRayCast": false,
     "isCircle": true,
     "isSector": true,
+    "isCustom": false,
+    "fromSky": false,
     "_id": ""
   },
   {
@@ -313,6 +320,76 @@
       "a": 255
     },
     "_miterLimit": 10,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.CircleCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
+    "tag": 20,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": -150
+    },
+    "_radius": 100,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PolygonCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 5
+    },
+    "_enabled": true,
+    "tag": 20,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "points": [
+      {
+        "__type__": "cc.Vec2",
+        "x": -84,
+        "y": -93
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": -47,
+        "y": -56
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 1,
+        "y": -46
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 43,
+        "y": -58
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 79,
+        "y": -86
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 23,
+        "y": 1
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": -23,
+        "y": 3
+      }
+    ],
     "_id": ""
   },
   {

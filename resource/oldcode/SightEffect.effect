@@ -83,7 +83,7 @@ CCProgram fs %{
     float radius = length(vec2(rx * whRatio, ry / scaleWH * whRatio));      // 算半径
     if(isCustom){
     }else if(isCircle){
-      o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
+      // o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
     }else{
       float radiusX = length(vec2(rx * whRatio, 0.0));
       float radiusY = length(vec2(0.0, ry / scaleWH * whRatio));

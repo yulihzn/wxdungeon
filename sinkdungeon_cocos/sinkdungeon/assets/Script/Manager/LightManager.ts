@@ -39,7 +39,7 @@ export default class LightManager extends BaseManager {
         for (let i = 0; i < LightManager.lightList.length; i++) {
             let light = LightManager.lightList[i];
             if (light) {
-                light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y),this.camera.zoomRatio);
+                light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
                 this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow,light.isCircle,light.isSector);
             }
         }

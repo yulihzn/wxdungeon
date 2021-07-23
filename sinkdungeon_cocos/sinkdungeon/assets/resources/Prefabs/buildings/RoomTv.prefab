@@ -27,9 +27,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 17
-      },
-      {
         "__id__": 18
       },
       {
@@ -43,10 +40,13 @@
       },
       {
         "__id__": 22
+      },
+      {
+        "__id__": 23
       }
     ],
     "_prefab": {
-      "__id__": 23
+      "__id__": 24
     },
     "_opacity": 255,
     "_color": {
@@ -516,10 +516,13 @@
       },
       {
         "__id__": 15
+      },
+      {
+        "__id__": 16
       }
     ],
     "_prefab": {
-      "__id__": 16
+      "__id__": 17
     },
     "_opacity": 255,
     "_color": {
@@ -564,8 +567,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 0,
-    "groupIndex": 0,
+    "_groupIndex": 1,
+    "groupIndex": 1,
     "_id": ""
   },
   {
@@ -588,10 +591,11 @@
       "a": 125
     },
     "showLight": true,
-    "showShadow": true,
     "showRayCast": false,
-    "isCircle": true,
-    "isSector": true,
+    "isCircle": false,
+    "isSector": false,
+    "isCustom": true,
+    "fromSky": false,
     "_id": ""
   },
   {
@@ -625,6 +629,79 @@
       "a": 255
     },
     "_miterLimit": 10,
+    "_id": ""
+  },
+  {
+    "__type__": "cc.PolygonCollider",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 13
+    },
+    "_enabled": true,
+    "tag": 20,
+    "_offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "points": [
+      {
+        "__type__": "cc.Vec2",
+        "x": -139,
+        "y": -266
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": -95,
+        "y": -294
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 8,
+        "y": -303
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 97,
+        "y": -294
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 144,
+        "y": -260
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 151,
+        "y": -199
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 127,
+        "y": -104
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": 81,
+        "y": 20
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": -85,
+        "y": 21
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": -129,
+        "y": -110
+      },
+      {
+        "__type__": "cc.Vec2",
+        "x": -148,
+        "y": -206
+      }
+    ],
     "_id": ""
   },
   {

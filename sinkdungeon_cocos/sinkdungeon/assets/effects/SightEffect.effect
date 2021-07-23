@@ -20,8 +20,7 @@ CCEffect %{
         lightPos: {value: [0.5,0.5]}
         maxRadius: {value: 0.75}
         whRatio: {value: 1.0}
-        isCircle: {value: true}
-        isCustom: {value: false}
+        isRayCast: {value: true}
 }%
 
 
@@ -67,31 +66,21 @@ CCProgram fs %{
     vec2 lightPos;
     float maxRadius;
     float whRatio;
-    bool isCircle;
-    bool isCustom;
+    bool isRayCast;
   };
   
   void main () {
     vec4 o = v_color;
-    vec2 st = gl_FragCoord.xy / screen.xy;
-    float scaleWH = screen.x/screen.y;//考虑到即使横屏情况下，screen高度也可能比宽度大，需要换算一下
     ALPHA_TEST(o);
-    vec2 uv = st - lightPos;
-    float rx = abs(uv.x);
-    float ry = abs(uv.y);
     float fade = o.a;
-    float radius = length(vec2(rx * whRatio, ry / scaleWH * whRatio));      // 算半径
-    if(isCustom){
-    }else if(isCircle){
+    if(isRayCast){
+      vec2 st = gl_FragCoord.xy / screen.xy;
+      float scaleWH = screen.x/screen.y;//考虑到即使横屏情况下，screen高度也可能比宽度大，需要换算一下
+      vec2 uv = st - lightPos;
+      float rx = abs(uv.x);
+      float ry = abs(uv.y);
+      float radius = length(vec2(rx * whRatio, ry / scaleWH * whRatio));      // 算半径
       o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
-    }else{
-      float radiusX = length(vec2(rx * whRatio, 0.0));
-      float radiusY = length(vec2(0.0, ry / scaleWH * whRatio));
-      float radiusXy = radiusX;
-      if(radiusX<radiusY){
-        radiusXy = radiusY;
-      }
-      o.a = 1.0 - smoothstep(0.05, maxRadius, radiusXy);      // 渐变
     }
     o.a *= fade;
     
