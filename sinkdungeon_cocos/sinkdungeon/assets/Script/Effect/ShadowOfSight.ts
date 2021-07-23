@@ -30,30 +30,36 @@ export default class ShadowOfSight extends cc.Component {
     @property
     showLight = true;
     @property
-    showShadow = true;
-    @property
     showRayCast = false;//是否射线
     @property
     isCircle = true;//是否圆形
     @property
     isSector = false;//是否扇形
+    @property
+    isCustom = false;//是否自定义
+    @property
+    fromSky = false;
+    showShadow = true;
     /** 视野顶点数组 */
     lightVertsArray = new Array();
-    /** 本光线打亮区域 */
+    /** 本光线打亮区域 比如篝火照亮玩家 */
     lightRects: { [key: string]: cc.Rect } = {};
     circle = cc.v3(0, 0, 0);
     private mat: cc.MaterialVariant;
     offset = 0;
     offsetPlus = false;
     private isRendered = false;
+    private collider:cc.PolygonCollider;
+
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.mat = this.ray.getMaterial(0);
+        this.collider = this.getComponent(cc.PolygonCollider);
     }
     /** 绘制视野区域 */
-    renderSightArea(cameraOffset: cc.Vec2): void {
+    renderSightArea(cameraOffset: cc.Vec2, zoomRatio: number): void {
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         let size = 20;
         let delta = 0.1;
@@ -68,22 +74,54 @@ export default class ShadowOfSight extends cc.Component {
             this.lightRects = {};
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);
-            if (this.showRayCast) {
-                this.drawRayByNum(pos, cameraOffset, this.showLight);
+            if(this.isCustom){
+                this.drawCustom(pos, cameraOffset, zoomRatio, this.showLight);
+            }else if (this.showRayCast) {
+                this.drawRayByNum(pos, cameraOffset, zoomRatio, this.showLight);
             } else {
-                this.drawCircle(pos, cameraOffset, this.showLight);
+                this.drawCircle(pos, cameraOffset, zoomRatio, this.showLight);
             }
         }
         this.isRendered = true;
     }
-    updateRender(showShadow:boolean){
+    updateRender(showShadow: boolean) {
         this.isRendered = false;
         this.showShadow = showShadow;
     }
-    /** 通过射线数量绘制辐射线 */
-    drawRayByNum(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean): void {
+    /**自定义形状 读取collider来绘制，主要用于环境光线不具备交互 */
+    drawCustom(pos: cc.Vec2, cameraOffset: cc.Vec2, zoomRatio: number, renderLight: boolean) {
+        if (!this.collider||this.collider.points.length<3) {
+            return;
+        }
+        if (zoomRatio == 0) {
+            zoomRatio = 1;
+        }
+        this.ray.lineWidth = 10;
+        this.ray.fillColor = this.renderColor;
+            for(let i =0;i< this.collider.points.length;i++){
+                let p = this.node.convertToWorldSpaceAR(this.collider.points[i]);
+                this.lightVertsArray.push(p);
+                if(renderLight){
+                    if(i==0){
+                        this.ray.moveTo(this.collider.points[i].x,this.collider.points[i].y);
+                    }else{
+                        this.ray.lineTo(this.collider.points[i].x,this.collider.points[i].y);
+                    }
+                }
+            }
+        if (renderLight) {
+            this.ray.close();
+            this.ray.fill();
+            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y),zoomRatio);
+        }
+    }
+    /** 圆形辐射线 主要用于篝火 通过射线数量绘制辐射线 */
+    drawRayByNum(pos: cc.Vec2, cameraOffset: cc.Vec2, zoomRatio: number, renderLight: boolean): void {
         if (this.rayRadius <= 0) {
             return;
+        }
+        if (zoomRatio == 0) {
+            zoomRatio = 1;
         }
         this.ray.lineWidth = 10;
         this.ray.fillColor = this.renderColor;
@@ -95,7 +133,7 @@ export default class ShadowOfSight extends cc.Component {
             let physicsManager = cc.director.getPhysicsManager();
             let result = physicsManager.rayCast(pos, p3, cc.RayCastType.Closest);
             if (result.length > 0 && !result[0].collider.sensor && result[0].collider.node != this.node.parent && (result[0].collider.tag == ColliderTag.WALL
-                || result[0].collider.tag == ColliderTag.BUILDING || result[0].collider.tag == ColliderTag.PLAYER|| result[0].collider.tag == ColliderTag.WALL_TOP
+                || result[0].collider.tag == ColliderTag.BUILDING || result[0].collider.tag == ColliderTag.PLAYER || result[0].collider.tag == ColliderTag.WALL_TOP
                 || result[0].collider.tag == ColliderTag.NONPLAYER)) {
                 p3 = result[0].point;
                 let node = result[0].collider.node;
@@ -131,12 +169,15 @@ export default class ShadowOfSight extends cc.Component {
                 this.ray.fill();
 
             }
-            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
+            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y),zoomRatio);
         }
     }
-    drawCircle(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean) {
+    drawCircle(pos: cc.Vec2, cameraOffset: cc.Vec2, zoomRatio: number, renderLight: boolean) {
         if (this.rayRadius <= 0) {
             return;
+        }
+        if (zoomRatio == 0) {
+            zoomRatio = 1;
         }
         this.circle = cc.v3(pos.x, pos.y, this.getRadius());
         this.lightVertsArray = new Array();
@@ -148,20 +189,20 @@ export default class ShadowOfSight extends cc.Component {
             // this.ray.circle(center.x, center.y, this.getRadius());
             if (this.isSector) {
                 this.ray.moveTo(center.x - this.getRadius() / 8, center.y);
-                this.ray.lineTo(center.x - this.getRadius()/2, center.y - this.getRadius()/3);
-                this.ray.lineTo(center.x - this.getRadius()/1.5, center.y - this.getRadius()/2);
-                this.ray.lineTo(center.x - this.getRadius()/2, center.y - this.getRadius());
-                this.ray.lineTo(center.x, center.y - this.getRadius()*1.2);
-                this.ray.lineTo(center.x + this.getRadius()/2, center.y - this.getRadius());
-                this.ray.lineTo(center.x + this.getRadius()/1.5, center.y - this.getRadius()/2);
-                this.ray.lineTo(center.x + this.getRadius()/2, center.y - this.getRadius()/3);
+                this.ray.lineTo(center.x - this.getRadius() / 2, center.y - this.getRadius() / 3);
+                this.ray.lineTo(center.x - this.getRadius() / 1.5, center.y - this.getRadius() / 2);
+                this.ray.lineTo(center.x - this.getRadius() / 2, center.y - this.getRadius());
+                this.ray.lineTo(center.x, center.y - this.getRadius() * 1.2);
+                this.ray.lineTo(center.x + this.getRadius() / 2, center.y - this.getRadius());
+                this.ray.lineTo(center.x + this.getRadius() / 1.5, center.y - this.getRadius() / 2);
+                this.ray.lineTo(center.x + this.getRadius() / 2, center.y - this.getRadius() / 3);
                 this.ray.lineTo(center.x + this.getRadius() / 8, center.y);
                 this.ray.close();
             } else {
                 this.ray.rect(center.x - this.getRadius(), center.y - this.getRadius(), this.getRadius() * 2, this.getRadius() * 2);
             }
             this.ray.fill();
-            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
+            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y),zoomRatio);
         }
     }
     private getRadius(): number {
@@ -186,7 +227,7 @@ export default class ShadowOfSight extends cc.Component {
     //     this.updateMat(this.mat, c1);
 
     // }
-    private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2) {
+    private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2, zoomRatio: number) {
         let canvasSize = cc.view.getCanvasSize();
         let visibleSize = cc.view.getVisibleSize();
         let visibleRatio = visibleSize.width / visibleSize.height;
@@ -196,6 +237,7 @@ export default class ShadowOfSight extends cc.Component {
         mat.setProperty("maxRadius", r);
         mat.setProperty("whRatio", visibleRatio);
         mat.setProperty('isCircle', this.isCircle);
+        mat.setProperty('isCustom', this.isCustom);
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);
         let y = Math.abs(lightPos.y - 0.5) * visibleSize.height * scale / canvasSize.height;
         this.mat.setProperty("lightPos", cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y));

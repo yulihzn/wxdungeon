@@ -224,7 +224,7 @@ export default class Dungeon extends cc.Component {
         cc.log('load finished');
         this.scheduleOnce(() => {
             this.isInitFinish = true;
-            cc.tween(this.fog).to(0.5, { scale: 3 }).start();
+            cc.tween(this.fog).to(3, { scale: 10 }).start();
             let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
             cc.tween(blackcenter).delay(0.1).to(0.5, { opacity: 0 }).start();
             let names: { [key: string]: number } = {};
@@ -252,7 +252,7 @@ export default class Dungeon extends cc.Component {
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 let needAdd = false;
-                let length = 3;
+                let length = 4;
                 switch (offset.z) {
                     case 0: needAdd = j > Dungeon.HEIGHT_SIZE - length; break;
                     case 1: needAdd = j < length; break;

@@ -19,5 +19,6 @@ export enum ColliderTag{
     MELEE=14,//近战武器
     GOODNONPLAYER=15,//好的npc
     WARTER=16,//水墙
-    ENERGY_SHIELD=17//能量罩
+    ENERGY_SHIELD=17,//能量罩
+    LIGHT=20//光线
 }

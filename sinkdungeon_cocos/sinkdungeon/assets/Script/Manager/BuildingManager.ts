@@ -169,7 +169,7 @@ export default class BuildingManager extends BaseManager {
             b.data.defaultPos = indexPos.clone();
             b.lights = b.getComponentsInChildren(ShadowOfSight);
             if (b.lights) {
-                LightManager.registerLight(b.lights);
+                LightManager.registerLight(b.lights,b.node);
             }
         }
         return building;
@@ -207,7 +207,7 @@ export default class BuildingManager extends BaseManager {
             this.addChest(indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             //生成门
-            this.addDoor(mapDataStr, indexPos);
+            this.addDoor(mapDataStr, indexPos,false);
         } else if (this.isFirstEqual(mapDataStr, 'E')) {
             //生成出口
             this.addExitDoor(mapDataStr, indexPos, exits);
@@ -332,6 +332,9 @@ export default class BuildingManager extends BaseManager {
         } else if (mapDataStr == '+3') {
             //生成汽艇
             this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
+        } else if (this.isFirstEqual(mapDataStr, 'D')) {
+            //生成门
+            this.addDoor(mapDataStr, indexPos,true);
         }
     }
     private addInteractBuilding(mapDataStr: string, indexPos: cc.Vec3) {
@@ -583,7 +586,7 @@ export default class BuildingManager extends BaseManager {
             this.airExits[i].init(i, i < 2 ? mapData.length + 2 : mapData[0].length + 2);
         }
     }
-    private addDoor(mapDataStr: string, indexPos: cc.Vec3) {
+    private addDoor(mapDataStr: string, indexPos: cc.Vec3,isDecorate:boolean) {
         let dir = parseInt(mapDataStr[1]);
         if (isNaN(dir)) {
             if (mapDataStr == 'Da') {
@@ -601,6 +604,7 @@ export default class BuildingManager extends BaseManager {
         door.dir = dir % 4;
         door.isEmpty = dir > 3 && dir < 8;
         door.isLock = dir > 7;
+        door.isDecorate = isDecorate;
         this.doors.push(door);
     }
     public setDoors(isOpen: boolean, immediately?: boolean) {

@@ -21,6 +21,7 @@ CCEffect %{
         maxRadius: {value: 0.75}
         whRatio: {value: 1.0}
         isCircle: {value: true}
+        isCustom: {value: false}
 }%
 
 
@@ -67,7 +68,9 @@ CCProgram fs %{
     float maxRadius;
     float whRatio;
     bool isCircle;
+    bool isCustom;
   };
+  
   void main () {
     vec4 o = v_color;
     vec2 st = gl_FragCoord.xy / screen.xy;
@@ -78,8 +81,8 @@ CCProgram fs %{
     float ry = abs(uv.y);
     float fade = o.a;
     float radius = length(vec2(rx * whRatio, ry / scaleWH * whRatio));      // 算半径
-    
-    if(isCircle){
+    if(isCustom){
+    }else if(isCircle){
       o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
     }else{
       float radiusX = length(vec2(rx * whRatio, 0.0));

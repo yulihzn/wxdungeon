@@ -185,7 +185,7 @@ export default class Player extends Actor {
             }, 0.2);
         }
         this.lights = this.getComponentsInChildren(ShadowOfSight);
-        LightManager.registerLight(this.lights);
+        LightManager.registerLight(this.lights,this.node);
         this.lights[0].rayRadius = 0;
         if (Logic.chapterIndex == Logic.CHAPTER099) {
             this.lights[0].rayRadius = 0;

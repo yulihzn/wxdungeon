@@ -20,22 +20,27 @@ export default class Door extends Building {
 
     isOpen: boolean = false;
     isDoor: boolean = true;
-    isHidden: boolean = false;
-    isEmpty: boolean = false;
-    isLock: boolean = false;
+    isHidden: boolean = false;//是否隐藏门，隐藏门有幻影
+    isEmpty: boolean = false;//是否空门，空门始终打开
+    isLock: boolean = false;//是否上锁
+    isDecorate: boolean = false;//是否是装饰，装饰不展示门
     //0top1bottom2left3right
     dir = 0;
     sprite: cc.Sprite = null;
     roof: cc.Sprite = null;
+    leftside: cc.Sprite = null;
+    rightside: cc.Sprite = null;
     lockInfo: cc.Node = null;
     boxCollider: cc.PhysicsBoxCollider;
-    arrow:cc.Node;
+    arrow: cc.Node;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
+        this.leftside = this.node.getChildByName('leftside').getComponent(cc.Sprite);
+        this.rightside = this.node.getChildByName('rightside').getComponent(cc.Sprite);
         this.lockInfo = this.node.getChildByName('info');
         this.arrow = this.node.getChildByName('doorarrow');
         this.arrow.opacity = 0;
@@ -48,18 +53,26 @@ export default class Door extends Building {
         if (this.sprite) {
             this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim000`);
             this.sprite.node.width = 128;
-            this.sprite.node.height = this.dir>1?256:128;
+            this.sprite.node.height = this.dir > 1 ? 256 : 128;
+            if (this.isDecorate) {
+                this.sprite.node.opacity = 0;
+            }
         }
         if (!this.roof) {
             this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         }
-        let subfix = 'anim000';
-        let spriteframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}${subfix}`);
+        let roofframe = Logic.spriteFrameRes(`roof${Logic.worldLoader.getCurrentLevelData().wallRes1}anim000`);
+        let sideframe = Logic.spriteFrameRes(`wall${Logic.worldLoader.getCurrentLevelData().wallRes1}anim002`);
         if (this.dir > 1) {
-            spriteframe = null;
+            roofframe = null;
+            sideframe = null;
             this.node.zIndex -= 120;
+        } else {
+            this.node.zIndex += 4;
         }
-        this.roof.spriteFrame = spriteframe;
+        this.leftside.spriteFrame = sideframe;
+        this.rightside.spriteFrame = sideframe;
+        this.roof.spriteFrame = roofframe;
         this.roof.node.parent = this.node.parent;
         let p = this.node.convertToWorldSpaceAR(cc.v3(0, 128));
         this.roof.node.position = this.roof.node.parent.convertToNodeSpaceAR(p);
@@ -134,17 +147,17 @@ export default class Door extends Building {
 
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (this.dir == 1 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+        if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
             this.roof.node.opacity = 180;
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (this.dir == 1 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+        if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
             this.roof.node.opacity = 180;
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (this.dir == 1 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+        if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
             this.roof.node.opacity = 255;
         }
     }

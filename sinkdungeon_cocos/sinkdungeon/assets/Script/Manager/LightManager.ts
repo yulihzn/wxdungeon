@@ -1,6 +1,7 @@
 import BaseManager from "./BaseManager";
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
+import IndexZ from "../Utils/IndexZ";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,10 +39,11 @@ export default class LightManager extends BaseManager {
         for (let i = 0; i < LightManager.lightList.length; i++) {
             let light = LightManager.lightList[i];
             if (light) {
-                light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
+                light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y),this.camera.zoomRatio);
                 this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow,light.isCircle,light.isSector);
             }
         }
+        //将阴影镜头下的图片赋值到主镜头结点图片
         if (!this.shadowTexture&&Logic.settings.showShadow) {
             this.shadowTexture = new cc.RenderTexture();
             this.shadowTexture.initWithSize(cc.visibleRect.width / 8, cc.visibleRect.height / 8);
@@ -50,8 +52,15 @@ export default class LightManager extends BaseManager {
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
         }
     }
-    public static registerLight(lights: ShadowOfSight[]) {
+    public static registerLight(lights: ShadowOfSight[],actorNode:cc.Node) {
         for(let light of lights){
+            light.showShadow = light.node.active;
+            if(light.fromSky){
+                let p = light.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
+                light.node.parent = actorNode.parent;
+                light.node.position = light.node.parent.convertToNodeSpaceAR(p);
+                light.node.zIndex = IndexZ.OVERHEAD;
+            }
             LightManager.lightList.push(light);
         }
     }
@@ -102,6 +111,7 @@ export default class LightManager extends BaseManager {
     //     //@ts-ignore
     //     this.mask._updateGraphics();
     // }
+    /**把多个对应光源的绘制的形状用graphics再绘制一遍到一个处于阴影镜头下的结点上，然后创建对应贴图赋值当前主镜头上 */
     renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean,isCirlce:boolean,isSector:boolean) {
         let graphics: cc.Graphics = this.ray;
         if (isFirst) {
