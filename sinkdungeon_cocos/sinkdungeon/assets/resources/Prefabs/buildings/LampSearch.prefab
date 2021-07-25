@@ -273,7 +273,6 @@
     "ray": {
       "__id__": 7
     },
-    "rayRadius": 200,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -283,9 +282,6 @@
     },
     "showLight": true,
     "showRayCast": false,
-    "isCircle": true,
-    "isSector": true,
-    "isCustom": false,
     "fromSky": false,
     "_id": ""
   },
@@ -361,13 +357,13 @@
       },
       {
         "__type__": "cc.Vec2",
-        "x": -47,
-        "y": -56
+        "x": -44.9,
+        "y": -59.1
       },
       {
         "__type__": "cc.Vec2",
         "x": 1,
-        "y": -46
+        "y": -48.6
       },
       {
         "__type__": "cc.Vec2",

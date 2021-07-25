@@ -813,7 +813,6 @@
     "ray": {
       "__id__": 26
     },
-    "rayRadius": 300,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 249,
@@ -823,9 +822,6 @@
     },
     "showLight": true,
     "showRayCast": false,
-    "isCircle": true,
-    "isSector": false,
-    "isCustom": false,
     "fromSky": false,
     "_id": ""
   },

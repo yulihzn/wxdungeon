@@ -497,7 +497,6 @@
     "ray": {
       "__id__": 13
     },
-    "rayRadius": 100,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -507,9 +506,6 @@
     },
     "showLight": true,
     "showRayCast": false,
-    "isCircle": false,
-    "isSector": false,
-    "isCustom": false,
     "fromSky": false,
     "_id": ""
   },
@@ -655,7 +651,6 @@
     "ray": {
       "__id__": 18
     },
-    "rayRadius": 400,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -663,11 +658,8 @@
       "b": 21,
       "a": 80
     },
-    "showLight": true,
+    "showLight": false,
     "showRayCast": false,
-    "isCircle": false,
-    "isSector": false,
-    "isCustom": false,
     "fromSky": false,
     "_id": ""
   },
