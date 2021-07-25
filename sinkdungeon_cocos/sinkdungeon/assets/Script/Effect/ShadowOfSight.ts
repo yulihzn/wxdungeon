@@ -69,7 +69,7 @@ export default class ShadowOfSight extends cc.Component {
             if (this.showRayCast) {
                 this.drawRayByNum(pos, cameraOffset, this.showLight);
             }else{
-                this.drawCustom(this.showLight);
+                this.drawCustom(pos, cameraOffset,this.showLight);
             }
         }
         this.isRendered = true;
@@ -79,7 +79,7 @@ export default class ShadowOfSight extends cc.Component {
         this.showShadow = showShadow;
     }
     /**自定义形状 读取collider来绘制，主要用于环境光线不具备交互 */
-    drawCustom(renderLight: boolean) {
+    drawCustom(pos: cc.Vec2, cameraOffset: cc.Vec2,renderLight: boolean) {
         this.ray.lineWidth = 10;
         this.ray.fillColor = this.renderColor;
         let onlyCircle = true;
@@ -99,6 +99,7 @@ export default class ShadowOfSight extends cc.Component {
             if (renderLight) {
                 this.ray.close();
                 this.ray.fill();
+                this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
             }
         }
         if (this.circleCollider && this.circleCollider.radius > 0) {
@@ -125,6 +126,7 @@ export default class ShadowOfSight extends cc.Component {
                     this.ray.circle(center.x, center.y, this.getRadius());
                 }
                 this.ray.fill();
+                this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
             }
         }
 

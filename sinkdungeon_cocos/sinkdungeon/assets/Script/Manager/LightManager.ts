@@ -40,7 +40,7 @@ export default class LightManager extends BaseManager {
             let light = LightManager.lightList[i];
             if (light) {
                 light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
-                this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow,light.isCircle,light.isSector);
+                this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
             }
         }
         //将阴影镜头下的图片赋值到主镜头结点图片
@@ -112,7 +112,7 @@ export default class LightManager extends BaseManager {
     //     this.mask._updateGraphics();
     // }
     /**把多个对应光源的绘制的形状用graphics再绘制一遍到一个处于阴影镜头下的结点上，然后创建对应贴图赋值当前主镜头上 */
-    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean,isCirlce:boolean,isSector:boolean) {
+    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean) {
         let graphics: cc.Graphics = this.ray;
         if (isFirst) {
             graphics.clear(false);
@@ -140,22 +140,23 @@ export default class LightManager extends BaseManager {
         }
         if(circle&&circle.z>0){
             const center = this.ray.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
-            if (isSector) {
-                this.ray.moveTo(center.x - circle.z / 8, center.y);
-                this.ray.lineTo(center.x - circle.z/2, center.y - circle.z/3);
-                this.ray.lineTo(center.x - circle.z/1.5, center.y - circle.z/2);
-                this.ray.lineTo(center.x - circle.z/2, center.y - circle.z);
-                this.ray.lineTo(center.x, center.y - circle.z*1.2);
-                this.ray.lineTo(center.x + circle.z/2, center.y - circle.z);
-                this.ray.lineTo(center.x + circle.z/1.5, center.y - circle.z/2);
-                this.ray.lineTo(center.x + circle.z/2, center.y - circle.z/3);
-                this.ray.lineTo(center.x + circle.z / 8, center.y);
-                this.ray.close();
-            }else if(isCirlce){
-                graphics.circle(center.x, center.y, circle.z);
-            }else{
-                this.ray.rect(center.x - circle.z, center.y - circle.z, circle.z * 2, circle.z * 2);
-            }
+            graphics.circle(center.x, center.y, circle.z);
+            // if (isSector) {
+            //     this.ray.moveTo(center.x - circle.z / 8, center.y);
+            //     this.ray.lineTo(center.x - circle.z/2, center.y - circle.z/3);
+            //     this.ray.lineTo(center.x - circle.z/1.5, center.y - circle.z/2);
+            //     this.ray.lineTo(center.x - circle.z/2, center.y - circle.z);
+            //     this.ray.lineTo(center.x, center.y - circle.z*1.2);
+            //     this.ray.lineTo(center.x + circle.z/2, center.y - circle.z);
+            //     this.ray.lineTo(center.x + circle.z/1.5, center.y - circle.z/2);
+            //     this.ray.lineTo(center.x + circle.z/2, center.y - circle.z/3);
+            //     this.ray.lineTo(center.x + circle.z / 8, center.y);
+            //     this.ray.close();
+            // }else if(isCirlce){
+            //     graphics.circle(center.x, center.y, circle.z);
+            // }else{
+            //     this.ray.rect(center.x - circle.z, center.y - circle.z, circle.z * 2, circle.z * 2);
+            // }
             graphics.fill();
         }
         

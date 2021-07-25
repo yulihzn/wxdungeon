@@ -14,7 +14,7 @@ CCEffect %{
         texture: { value: white }
         alphaThreshold: { value: 0.7 }
         size: { value: [320.0, 180.0], editor: { tooltip: '节点尺寸' } }
-        lightColor: { value: [0.0, 0.0, 0.1, 0.4], inspector: { type: color } }
+        lightColor: { value: [0.0, 0.0, 0.1, 0.6], inspector: { type: color } }
 }%
 
 
