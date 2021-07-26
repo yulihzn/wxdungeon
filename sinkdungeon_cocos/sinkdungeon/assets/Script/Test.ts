@@ -84,7 +84,7 @@ export default class Test extends cc.Component {
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
         mat.setProperty("maxRadius", r);
         mat.setProperty("whRatio", visibleRatio);
-        mat.setProperty("isCircle",false);
+        mat.setProperty("isRayCast",false);
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);
         let y = Math.abs(lightPos.y - 0.5) * visibleSize.height * scale / canvasSize.height;
         mat.setProperty("lightPos", cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y));

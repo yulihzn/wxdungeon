@@ -371,9 +371,9 @@ export default class NonPlayer extends Actor {
         }
     }
     private showAttackAnim(before: Function, attacking: Function, finish: Function, target: Actor, isSpecial: boolean, isMelee: boolean, isMiss: boolean) {
-        let speedScale = 1 - this.data.FinalCommon.attackSpeed / 500;
-        if (speedScale < 0.3) {
-            speedScale = 0.3;
+        let speedScale = 1 - this.data.FinalCommon.attackSpeed / 1000;
+        if (speedScale < 0.5) {
+            speedScale = 0.5;
         }
         if (speedScale > 2) {
             speedScale = 2;

@@ -81,7 +81,7 @@ CCProgram fs %{
       float ry = abs(uv.y);
       float radius = length(vec2(rx * whRatio, ry / scaleWH * whRatio));      // 算半径
       o.a = 1.0 - smoothstep(0.0, maxRadius, radius);      // 渐变
-    o.a *= fade;
+      o.a *= fade;
     }
     
     #if CC_SUPPORT_standard_derivatives

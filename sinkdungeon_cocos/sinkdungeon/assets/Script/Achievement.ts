@@ -70,6 +70,9 @@ export default class Achievement extends cc.Component {
             let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN);
             this.coinLabel.string = `${c ? parseInt(c) : 0}`;
         }
+        if(this.achievementItemDialog){
+            this.achievementItemDialog.node.active = false;
+        }
     }
     start(){
         this.loadingManager.loadEquipment();
