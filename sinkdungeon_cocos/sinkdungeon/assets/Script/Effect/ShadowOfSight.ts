@@ -35,11 +35,11 @@ export default class ShadowOfSight extends cc.Component {
     lightVertsArray = new Array();
     /** 本光线打亮区域 比如篝火照亮玩家 */
     lightRects: { [key: string]: cc.Rect } = {};
+    /**圆 */
     circle = cc.v3(0, 0, 0);
     private mat: cc.MaterialVariant;
     offset = 0;
     offsetPlus = false;
-    private isRendered = false;
     private polygonCollider: cc.PolygonCollider;
     private circleCollider: cc.CircleCollider;
 
@@ -72,10 +72,8 @@ export default class ShadowOfSight extends cc.Component {
                 this.drawCustom(pos, cameraOffset,this.showLight);
             }
         }
-        this.isRendered = true;
     }
     updateRender(showShadow: boolean) {
-        this.isRendered = false;
         this.showShadow = showShadow;
     }
     /**自定义形状 读取collider来绘制，主要用于环境光线不具备交互 */

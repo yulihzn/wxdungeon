@@ -25,7 +25,7 @@ export default class LightManager extends BaseManager {
     @property(cc.Sprite)
     shadow: cc.Sprite = null;
     @property(cc.Graphics)
-    ray: cc.Graphics = null;
+    shadowRay: cc.Graphics = null;
 
     private shadowTexture: cc.RenderTexture;
 
@@ -40,11 +40,11 @@ export default class LightManager extends BaseManager {
             let light = LightManager.lightList[i];
             if (light) {
                 light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
-                this.renderRay(light.lightVertsArray, light.lightRects, light.circle, i == 0, Logic.settings.showShadow && light.showShadow);
+                this.renderRay(light, i == 0, this.shadowRay);
             }
         }
         //将阴影镜头下的图片赋值到主镜头结点图片
-        if (!this.shadowTexture&&Logic.settings.showShadow) {
+        if (!this.shadowTexture && Logic.settings.showShadow) {
             this.shadowTexture = new cc.RenderTexture();
             this.shadowTexture.initWithSize(cc.visibleRect.width / 8, cc.visibleRect.height / 8);
             this.shadowTexture.setFilters(cc.Texture2D.Filter.NEAREST, cc.Texture2D.Filter.NEAREST);
@@ -52,10 +52,10 @@ export default class LightManager extends BaseManager {
             this.shadow.spriteFrame = new cc.SpriteFrame(this.shadowTexture);
         }
     }
-    public static registerLight(lights: ShadowOfSight[],actorNode:cc.Node) {
-        for(let light of lights){
+    public static registerLight(lights: ShadowOfSight[], actorNode: cc.Node) {
+        for (let light of lights) {
             light.showShadow = light.node.active;
-            if(light.fromSky){
+            if (light.fromSky) {
                 let p = light.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
                 light.node.parent = actorNode.parent;
                 light.node.position = light.node.parent.convertToNodeSpaceAR(p);
@@ -112,21 +112,23 @@ export default class LightManager extends BaseManager {
     //     this.mask._updateGraphics();
     // }
     /**把多个对应光源的绘制的形状用graphics再绘制一遍到一个处于阴影镜头下的结点上，然后创建对应贴图赋值当前主镜头上 */
-    renderRay(potArr: cc.Vec2[], lightRects: { [key: string]: cc.Rect }, circle: cc.Vec3, isFirst: boolean, showShadow: boolean) {
-        let graphics: cc.Graphics = this.ray;
+    renderRay(light: ShadowOfSight,isFirst: boolean,graphics:cc.Graphics) {
+        let potArr = light.lightVertsArray;
+        let lightRects = light.lightRects;
+        let circle = light.circle;
         if (isFirst) {
             graphics.clear(false);
         }
-        if(!showShadow){
+        if(!Logic.settings.showShadow || !light.showShadow){
             return;
         }
         graphics.lineWidth = 10;
-        graphics.fillColor.fromHEX('#ffffff');
+        graphics.fillColor.fromHEX('ffffff');
         if (potArr && potArr.length > 0) {
-            let p0 = this.ray.node.convertToNodeSpaceAR(potArr[0]);
+            let p0 = graphics.node.convertToNodeSpaceAR(potArr[0]);
             graphics.moveTo(p0.x, p0.y);
             for (let i = 1; i < potArr.length; i++) {
-                const p = this.ray.node.convertToNodeSpaceAR(potArr[i]);
+                const p = graphics.node.convertToNodeSpaceAR(potArr[i]);
                 graphics.lineTo(p.x, p.y);
             }
             graphics.close();
@@ -134,39 +136,26 @@ export default class LightManager extends BaseManager {
         }
         for (let key in lightRects) {
             let lightRect = lightRects[key];
-            let c = this.ray.node.convertToNodeSpaceAR(cc.v2(lightRect.x, lightRect.y));
+            let c = graphics.node.convertToNodeSpaceAR(cc.v2(lightRect.x, lightRect.y));
             graphics.rect(c.x, c.y, lightRect.width, lightRect.height);
             graphics.fill();
         }
-        if(circle&&circle.z>0){
-            const center = this.ray.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
+        if (circle && circle.z > 0) {
+            const center = graphics.node.convertToNodeSpaceAR(cc.v3(circle.x, circle.y));
             graphics.circle(center.x, center.y, circle.z);
-            // if (isSector) {
-            //     this.ray.moveTo(center.x - circle.z / 8, center.y);
-            //     this.ray.lineTo(center.x - circle.z/2, center.y - circle.z/3);
-            //     this.ray.lineTo(center.x - circle.z/1.5, center.y - circle.z/2);
-            //     this.ray.lineTo(center.x - circle.z/2, center.y - circle.z);
-            //     this.ray.lineTo(center.x, center.y - circle.z*1.2);
-            //     this.ray.lineTo(center.x + circle.z/2, center.y - circle.z);
-            //     this.ray.lineTo(center.x + circle.z/1.5, center.y - circle.z/2);
-            //     this.ray.lineTo(center.x + circle.z/2, center.y - circle.z/3);
-            //     this.ray.lineTo(center.x + circle.z / 8, center.y);
-            //     this.ray.close();
-            // }else if(isCirlce){
-            //     graphics.circle(center.x, center.y, circle.z);
-            // }else{
-            //     this.ray.rect(center.x - circle.z, center.y - circle.z, circle.z * 2, circle.z * 2);
-            // }
             graphics.fill();
         }
-        
+
     }
-    fixShadowPos(){
-        if (this.shadow && this.camera) {
+    fixShadowPos() {
+        if(this.camera){
             let p1 = this.camera.node.convertToWorldSpaceAR(cc.v2(0, 0));
-            let c1 = this.ray.node.convertToNodeSpaceAR(p1);
-            this.shadow.node.position = cc.v3(c1);
+            if (this.shadow) {
+                let c1 = this.shadowRay.node.convertToNodeSpaceAR(p1);
+                this.shadow.node.position = cc.v3(c1);
+            }
         }
+        
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {

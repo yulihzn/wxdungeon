@@ -144,8 +144,7 @@ export default class Dungeon extends cc.Component {
         this.fog.scale = 0.6;
         this.fog.opacity = 255;
         this.lightManager.shadow.node.zIndex = IndexZ.SHADOW;
-        this.lightManager.ray.node.zIndex = IndexZ.SHADOW + 10;
-
+        this.lightManager.shadowRay.node.zIndex = IndexZ.SHADOW + 10;
         this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y);
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();

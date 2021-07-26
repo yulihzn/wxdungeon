@@ -98,7 +98,7 @@ export default class OrganizationTalent extends Talent {
                 data.Common.realRate += Logic.playerData.OilGoldData.level * 1;
                 data.Common.realDamage += Logic.playerData.OilGoldData.level;
                 data.realDamageOvertime -= Logic.playerData.OilGoldData.level / 5;
-                this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth = d.Common.maxHealth + Logic.playerData.OilGoldData.level * 5 + this.data.useCount;
+                this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth = d.Common.maxHealth + Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3;
                 this.player.dungeon.nonPlayerManager.pet.addCustomStatus(data, new FromData());
             } else {
                 if (this.data.useCount > 1) {
@@ -109,7 +109,7 @@ export default class OrganizationTalent extends Talent {
                 }
                 let data = new NonPlayerData();
                 data.valueCopy(Logic.nonplayers[NonPlayerManager.DOG]);
-                data.Common.maxHealth += Logic.playerData.OilGoldData.level * 5;
+                data.Common.maxHealth += Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3;
                 data.currentHealth = data.Common.maxHealth;
                 data.Common.damageMin += Logic.playerData.OilGoldData.level;
                 data.Common.defence += Logic.playerData.OilGoldData.level;

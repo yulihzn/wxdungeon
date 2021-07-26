@@ -337,7 +337,7 @@
       "__id__": 3
     },
     "_enabled": true,
-    "_cullingMask": -81,
+    "_cullingMask": -337,
     "_clearFlags": 7,
     "_backgroundColor": {
       "__type__": "cc.Color",
@@ -1472,7 +1472,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ray",
+    "_name": "shadowray",
     "_objFlags": 0,
     "_parent": {
       "__id__": 9
@@ -1811,7 +1811,7 @@
     "shadow": {
       "__id__": 33
     },
-    "ray": {
+    "shadowRay": {
       "__id__": 31
     },
     "_id": "0byv/AAkxFoKrStbCP6XyO"

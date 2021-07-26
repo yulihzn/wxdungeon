@@ -49,6 +49,9 @@ export default class RoomBed extends Building {
     start () {
         this.node.getChildByName('sprite').getChildByName('bed').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`avatarbed00${Logic.playerData.AvatarData.organizationIndex}`);
         this.node.getChildByName('sprite').getChildByName('cover').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`avatarcover00${Logic.playerData.AvatarData.organizationIndex}`);
+        for (let light of this.lights) {
+            light.updateRender(!this.isDecorate);
+        }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         if(this.isDecorate){
