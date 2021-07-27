@@ -163,6 +163,9 @@ export default class MapManager {
     }
     public isNeighborRoomStateClear(dir:number){
         let room = this.rectDungeon.getNeighborRoom(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y, dir);
+        if(!room){
+            return false;
+        }
         return room.state == RectRoom.STATE_CLEAR;
     }
     public getCurrentRoomRandom4Save(): Random4Save {

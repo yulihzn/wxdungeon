@@ -50,7 +50,6 @@ export default class FloatinglabelManager extends cc.Component {
     }
     destroyLabel(labelNode: cc.Node) {
         labelNode.active = false;
-        let label = labelNode.getComponent(cc.Label);
         if (this.labelPool) {
             this.labelPool.put(labelNode); 
         }

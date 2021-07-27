@@ -47,9 +47,9 @@ export default class Dungeon extends cc.Component {
     static readonly MAPX: number = 64;
     static readonly MAPY: number = 64;
     static readonly TILE_SIZE: number = 128;
-    static readonly DEFAULT_ZOOM_MAX =2;
-    static readonly DEFAULT_ZOOM_MIN =0.6;
-    static readonly DEFAULT_ZOOM =0.8;
+    static readonly DEFAULT_ZOOM_MAX = 2;
+    static readonly DEFAULT_ZOOM_MIN = 0.6;
+    static readonly DEFAULT_ZOOM = 0.8;
     private timeDelay = 0;
     private checkTimeDelay = 0;
 
@@ -120,6 +120,9 @@ export default class Dungeon extends cc.Component {
         EventHelper.on(EventHelper.BOSS_ADDSLIME, (detail) => {
             this.addBossSlime(detail.slimeType, detail.posIndex);
         })
+        EventHelper.on(EventHelper.TEST_SHOW_NODE_COUNT, (detail) => {
+            this.logNodeCount();
+        });
         this.monsterManager = this.getComponent(MonsterManager);
         this.nonPlayerManager = this.getComponent(NonPlayerManager);
         this.equipmentManager = this.getComponent(EquipmentManager);
@@ -226,21 +229,27 @@ export default class Dungeon extends cc.Component {
             cc.tween(this.fog).to(3, { scale: 10 }).start();
             let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
             cc.tween(blackcenter).delay(0.1).to(0.5, { opacity: 0 }).start();
-            let names: { [key: string]: number } = {};
-            let log = `childrenCount:${this.node.childrenCount} children:\n`;
-            for (let child of this.node.children) {
-                if (names[child.name]) {
-                    names[child.name]++;
-                } else {
-                    names[child.name] = 1;
-                }
-            }
-            for (let key in names) {
-                log += `${key}(${names[key]})\n`;
-            }
-            cc.log(log);
+            this.logNodeCount();
             this.addOilGoldOnGround();
         }, 0.5)
+    }
+    private logNodeCount() {
+        if(!this.node){
+            return;
+        }
+        let names: { [key: string]: number } = {};
+        let log = `childrenCount:${this.node.childrenCount} children:\n`;
+        for (let child of this.node.children) {
+            if (names[child.name]) {
+                names[child.name]++;
+            } else {
+                names[child.name] = 1;
+            }
+        }
+        for (let key in names) {
+            log += `${key}(${names[key]})\n`;
+        }
+        console.log(log);
     }
     private addBuildingsFromSideMap(offset: cc.Vec3) {
         let mapData: string[][] = Logic.mapManager.getCurrentSideMapStringArray(offset);
@@ -268,7 +277,7 @@ export default class Dungeon extends cc.Component {
             }
         }
     }
-   
+
     public darkAfterKill() {
         cc.tween(this.fog).to(1, { scale: 0.6 }).start();
         let blackcenter = this.fog.getChildByName('sprite').getChildByName('blackcenter');
@@ -319,7 +328,7 @@ export default class Dungeon extends cc.Component {
         let currequipments = Logic.mapManager.getCurrentMapEquipments();
         if (currequipments) {
             for (let tempequip of currequipments) {
-                if(tempequip.test>0&&Logic.chapterIndex == Logic.CHAPTER099){
+                if (tempequip.test > 0 && Logic.chapterIndex == Logic.CHAPTER099) {
                     continue;
                 }
                 if (this.equipmentManager) {

@@ -56,7 +56,7 @@ export default class Wall extends Building {
         if (this.type == Wall.TYPE_EMPTY) {
             return this.node.opacity = 0;
         }
-        if (this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2) {
+        if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2) {
             this.roofsprite.node.opacity = 0;
             this.wallsprite.node.height = 256;
         }
@@ -81,18 +81,18 @@ export default class Wall extends Building {
         this.roofsprite.node.scaleX = flipRoof.x;
         this.roofsprite.node.scaleY = flipRoof.y;
     }
-    public isTop():boolean{
-       return this.type == Wall.TYPE_NORMAL&&this.dir == 0
-       ||this.type == Wall.TYPE_CORNER&&this.dir < 2
-       ||this.type == Wall.TYPE_INNER&&this.dir < 2
-       ||this.type == Wall.TYPE_INNER_CORNER&&this.dir < 2
-       ||this.type == Wall.TYPE_CONVEX&&this.dir ==0
-       ||this.type == Wall.TYPE_CONCAVE&&this.dir ==0;
+    public isTop(): boolean {
+        return this.type == Wall.TYPE_NORMAL && this.dir == 0
+            || this.type == Wall.TYPE_CORNER && this.dir < 2
+            || this.type == Wall.TYPE_INNER && this.dir < 2
+            || this.type == Wall.TYPE_INNER_CORNER && this.dir < 2
+            || this.type == Wall.TYPE_CONVEX && this.dir == 0
+            || this.type == Wall.TYPE_CONCAVE && this.dir == 0;
     }
-    public isSide():boolean{
-        return this.type == Wall.TYPE_NORMAL&&this.dir > 1;
+    public isSide(): boolean {
+        return this.type == Wall.TYPE_NORMAL && this.dir > 1;
     }
-    init(mapStr: string, leveldata: LevelData,onlyShow:boolean) {
+    init(mapStr: string, leveldata: LevelData, onlyShow: boolean) {
         this.mapStr = mapStr;
         let dir = parseInt(mapStr[2]);
         this.dir = dir;
@@ -124,18 +124,18 @@ export default class Wall extends Building {
         let res = isSencod ? leveldata.wallRes2 : leveldata.wallRes1;
         let roofdarkness = `roof${res}anim008`;
         switch (this.type) {
-            case Wall.TYPE_EMPTY:break;
-            case Wall.TYPE_OTHER1:this.wallName = leveldata.wallRes3;break;
-            case Wall.TYPE_OTHER2: this.wallName = leveldata.wallRes4;break;
-            case Wall.TYPE_NORMAL:this.roofName = `roof${res}anim000`;this.wallName = `wall${res}anim001`;break;
-            case Wall.TYPE_CORNER: this.roofName = `roof${res}anim001`;this.wallName = roofdarkness;break;
-            case Wall.TYPE_INNER: this.roofName = `roof${res}anim002`;this.wallName = `wall${res}anim002`;break;
-            case Wall.TYPE_CONVEX: this.roofName = `roof${res}anim003`;this.wallName = `wall${res}anim000`;break;
-            case Wall.TYPE_CONCAVE: this.roofName = `roof${res}anim004`;this.wallName = roofdarkness;break;
-            case Wall.TYPE_INNER_CORNER: this.roofName = `roof${res}anim005`;this.wallName = `wall${res}anim002`;break;
-            case Wall.TYPE_TWO_SIDES: this.roofName = `roof${res}anim006`;this.wallName = `wall${res}anim001`;break;
-            case Wall.TYPE_ALONE: this.roofName = `roof${res}anim007`;this.wallName = `wall${res}anim000`;break;
-            case Wall.TYPE_ROOF: this.roofName = roofdarkness;this.wallName = roofdarkness;break;
+            case Wall.TYPE_EMPTY: break;
+            case Wall.TYPE_OTHER1: this.wallName = leveldata.wallRes3; break;
+            case Wall.TYPE_OTHER2: this.wallName = leveldata.wallRes4; break;
+            case Wall.TYPE_NORMAL: this.roofName = `roof${res}anim000`; this.wallName = `wall${res}anim001`; break;
+            case Wall.TYPE_CORNER: this.roofName = `roof${res}anim001`; this.wallName = roofdarkness; break;
+            case Wall.TYPE_INNER: this.roofName = `roof${res}anim002`; this.wallName = `wall${res}anim002`; break;
+            case Wall.TYPE_CONVEX: this.roofName = `roof${res}anim003`; this.wallName = `wall${res}anim000`; break;
+            case Wall.TYPE_CONCAVE: this.roofName = `roof${res}anim004`; this.wallName = roofdarkness; break;
+            case Wall.TYPE_INNER_CORNER: this.roofName = `roof${res}anim005`; this.wallName = `wall${res}anim002`; break;
+            case Wall.TYPE_TWO_SIDES: this.roofName = `roof${res}anim006`; this.wallName = `wall${res}anim001`; break;
+            case Wall.TYPE_ALONE: this.roofName = `roof${res}anim007`; this.wallName = `wall${res}anim000`; break;
+            case Wall.TYPE_ROOF: this.roofName = roofdarkness; this.wallName = roofdarkness; break;
         }
         let isWallFlip = false;
         let roofAngle = 0;
@@ -149,9 +149,9 @@ export default class Wall extends Building {
                     isWallFlip = true;
                     roofFlip = cc.v3(-1, 1);
                     showShadow = true;
-                }else if(this.type == Wall.TYPE_TWO_SIDES){
+                } else if (this.type == Wall.TYPE_TWO_SIDES) {
                     roofAngle = 90;
-                }else{
+                } else {
                     this.wallName = roofdarkness;
                     roofFlip = cc.v3(1, -1);
                 }
@@ -160,7 +160,7 @@ export default class Wall extends Building {
                 if (this.isInnerOrCorner(this.type)) {
                     roofFlip = cc.v3(1, -1);
                     this.wallName = roofdarkness;
-                }else{
+                } else {
                     if (this.type == Wall.TYPE_CONVEX) {
                         this.wallName = `wall${res}anim002`;
                     }
@@ -172,7 +172,7 @@ export default class Wall extends Building {
                 if (this.isInnerOrCorner(this.type)) {
                     roofFlip = cc.v3(-1, -1);
                     this.wallName = roofdarkness;
-                }else{
+                } else {
                     if (this.type == Wall.TYPE_CONVEX) {
                         this.wallName = `wall${res}anim002`;
                         isWallFlip = true;
@@ -182,43 +182,44 @@ export default class Wall extends Building {
                 this.ajustSpriteShow(false, roofAngle, isWallFlip, roofFlip);
                 break;
         }
-        if(this.isTop()){
+        if (this.isTop()) {
             let collider = this.getComponent(cc.PhysicsBoxCollider);
             collider.tag = ColliderTag.WALL_TOP;
         }
-        if(onlyShow){
-            this.node.removeComponent(cc.PhysicsBoxCollider);
-            this.node.removeComponent(cc.RigidBody);
-            this.node.removeComponent(cc.BoxCollider);
+        if (onlyShow) {
+            let pcollider = this.getComponent(cc.PhysicsBoxCollider);
+            let rigidbody = this.getComponent(cc.RigidBody);
+            if (pcollider) { pcollider.enabled = false; }
+            if (rigidbody) { rigidbody.active = false; }
         }
     }
-    private isInnerOrCorner(type:number):boolean{
-        return type == Wall.TYPE_INNER||type == Wall.TYPE_CORNER||type == Wall.TYPE_INNER_CORNER;
+    private isInnerOrCorner(type: number): boolean {
+        return type == Wall.TYPE_INNER || type == Wall.TYPE_CORNER || type == Wall.TYPE_INNER_CORNER;
     }
 
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
-            if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
+            if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2) {
                 this.wallsprite.node.opacity = 180;
-            }else{
+            } else {
                 this.roofsprite.node.opacity = 180;
             }
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
-            if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
+            if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2) {
                 this.wallsprite.node.opacity = 180;
-            }else{
+            } else {
                 this.roofsprite.node.opacity = 180;
             }
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (this.type != Wall.TYPE_EMPTY&& (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
-            if(this.type == Wall.TYPE_OTHER1||this.type == Wall.TYPE_OTHER2){
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+            if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2) {
                 this.wallsprite.node.opacity = 255;
-            }else{
+            } else {
                 this.roofsprite.node.opacity = 255;
             }
         }

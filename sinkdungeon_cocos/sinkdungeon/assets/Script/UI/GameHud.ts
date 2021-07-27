@@ -127,19 +127,20 @@ export default class GameHud extends cc.Component {
         });
         this.zoomButton.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
             EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_OUT, {});
+            EventHelper.emit(EventHelper.TEST_SHOW_NODE_COUNT);
         });
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
         this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream().y);
         this.fadeIn();
     }
-    private showOilGoldInfo(isLose:boolean){
+    private showOilGoldInfo(isLose: boolean) {
         if (!this.oilGoldLabel) {
             return;
         }
         let arr0 = ['碎', '碎片', '碎片丢', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢失', '碎片丢', '碎片', '碎', ''];
         let arr1 = ['碎', '碎片', '碎片找', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找回', '碎片找', '碎片', '碎', ''];
-        if(!isLose)AudioPlayer.play(AudioPlayer.COMPLETE);
-        let arr = isLose?arr0:arr1;
+        if (!isLose) AudioPlayer.play(AudioPlayer.COMPLETE);
+        let arr = isLose ? arr0 : arr1;
         let i = 0;
         this.oilGoldLabel.string = '';
         this.oilGoldLabel.unscheduleAllCallbacks();
@@ -295,14 +296,14 @@ export default class GameHud extends cc.Component {
             this.settingsDialog.dismiss();
             cc.director.getScheduler().setTimeScale(1);
         } else {
-            this.scheduleOnce(()=>{
-                if(this.settingsDialog.isShow&&!this.settingsDialog.isAniming){
+            this.scheduleOnce(() => {
+                if (this.settingsDialog.isShow && !this.settingsDialog.isAniming) {
                     cc.director.getScheduler().setTimeScale(0);
-                }else{
+                } else {
                     cc.director.getScheduler().setTimeScale(1);
                 }
-            },1)
-            
+            }, 1)
+
             this.settingsDialog.show();
         }
     }

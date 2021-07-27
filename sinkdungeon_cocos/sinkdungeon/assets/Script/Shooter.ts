@@ -308,8 +308,7 @@ export default class Shooter extends cc.Component {
     public destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
         bulletNode.active = false;
-        let bullet = bulletNode.getComponent(Bullet);
-        if (this.bulletPool && bullet.name == this.bulletName) {
+        if (this.bulletPool ) {
             this.bulletPool.put(bulletNode);
         }
     }
