@@ -5,7 +5,6 @@ import ItemData from "../Data/ItemData";
 import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import ShopTable from "../Building/ShopTable";
-import { ColliderTag } from "../Actor/ColliderTag";
 import Achievement from "../Achievement";
 
 // Learn TypeScript:

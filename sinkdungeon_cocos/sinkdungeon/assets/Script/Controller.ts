@@ -26,6 +26,8 @@ export default class Controller extends cc.Component {
     interactAction: cc.Node = null;
     interactActionTouched = false;
     @property(cc.Node)
+    interactEmpty:cc.Node = null;
+    @property(cc.Node)
     skillAction: cc.Node = null;
     @property(cc.Node)
     skillAction1: cc.Node = null;
@@ -124,6 +126,7 @@ export default class Controller extends cc.Component {
         EventHelper.on(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,(detail)=>{
             if(this.node){
                 this.interactAction.active = detail.isShow;
+                this.interactEmpty.active = !detail.iiShow;
             }
         })
         EventHelper.on(EventHelper.HUD_CONTROLLER_REMOTE_SHOW,(detail)=>{

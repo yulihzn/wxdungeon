@@ -1178,6 +1178,7 @@
             <key type="filename">hud/uiskilllight.png</key>
             <key type="filename">hud/uiskillpress.png</key>
             <key type="filename">hud/uiswitch.png</key>
+            <key type="filename">hud/uiswitchempty.png</key>
             <key type="filename">hud/uiswitchlight.png</key>
             <key type="filename">hud/uiswitchpress.png</key>
             <key type="filename">item/food000.png</key>

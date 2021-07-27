@@ -1032,11 +1032,13 @@ export default class Player extends Actor {
             this.dungeon.buildingManager.lastInteractBuilding = null;
         }
         if (this.touchedTips) {
-            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
             this.touchedTips.next(isLongPress, this);
         }
     }
     private showUiButton() {
+        if(!this.dungeon){
+            return;
+        }
         if (this.dungeon.equipmentManager.lastGroundEquip || this.dungeon.itemManager.lastGroundItem
             || this.dungeon.buildingManager.lastInteractBuilding
             || (this.interactBuilding && this.interactBuilding.isTaken)
@@ -1059,21 +1061,15 @@ export default class Player extends Actor {
         }
     }
     // onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-    //     let equipment = otherCollider.body.node.getComponent(Equipment);
-    //     if (equipment) {
-    //         this.touchedEquipment = equipment;
     //     }
     // }
     // onEndContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-    //     this.touchedEquipment = null;
     // }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         this.touchedTips = null;
-        // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         this.touchedTips = null;
-        // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,false);
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         if (this.touchDelay) {
@@ -1094,7 +1090,6 @@ export default class Player extends Actor {
             this.touchedTips = tips;
         }
         if (isInteract) {
-            // EventHelper.emit(EventHelper.HUD_CONTROLLER_INTERACT_SHOW,true);
             this.touchDelay = true;
             this.scheduleOnce(() => { this.touchDelay = false; }, 0.1);
         }
