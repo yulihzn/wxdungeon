@@ -250,12 +250,12 @@ export default class MonsterManager extends BaseManager {
                 data.dash = data.dash > 1 ? data.dash - 1 : 1;
             }
 
-            data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 100 + 10 * monster.killPlayerCount) : 0;
+            data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 50 + 10 * monster.killPlayerCount) : 0;
         }
         data.Common.maxDream += data.Common.maxDream*0.25*monster.killPlayerCount;
         data.Common.damageMin += data.Common.damageMin*0.25*monster.killPlayerCount;
         data.Common.maxHealth += data.Common.maxHealth*0.25*monster.killPlayerCount;
-        data.Common.attackSpeed += monster.killPlayerCount*20;
+        data.Common.attackSpeed += monster.killPlayerCount*10;
         data.Common.defence += monster.killPlayerCount;
         data.currentHealth = data.Common.maxHealth;
         if (data.melee - monster.killPlayerCount > 1) {

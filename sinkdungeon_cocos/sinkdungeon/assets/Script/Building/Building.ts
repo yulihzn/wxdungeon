@@ -15,7 +15,12 @@ import StatusData from "../Data/StatusData";
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const {ccclass, property} = cc._decorator;
-
+/**
+ * 建筑规格设定
+ * 建筑由默认128x128的一个或者多个格子组成，统一按第一格的中心点(64,64)为原点的自然坐标系摆放
+ * 例如墙是16x32
+ * 建筑的贴图由实际图片换算为128x128规格来设置，碰撞大小保持和贴图一致
+ */
 @ccclass
 export abstract default class Building extends Actor {
     data:BuildingData = new BuildingData();

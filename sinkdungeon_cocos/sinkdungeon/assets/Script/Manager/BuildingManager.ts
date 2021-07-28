@@ -440,11 +440,7 @@ export default class BuildingManager extends BaseManager {
             fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
             fallentree.setScale(6, 4);
         } else if (mapDataStr == '+1') {
-            if (Logic.level == 0) {
-                let bed = this.addBuilding(Logic.getBuildings(BuildingManager.BED), indexPos);
-                bed.scale = 6;
-                bed.zIndex = IndexZ.OVERHEAD;
-            }
+            
         } else if (mapDataStr == '+2') {
             let arrow = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
             arrow.zIndex = IndexZ.FLOOR;
