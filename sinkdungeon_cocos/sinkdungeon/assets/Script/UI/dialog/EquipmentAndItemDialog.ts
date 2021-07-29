@@ -10,6 +10,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import EquipmentData from "../../Data/EquipmentData";
+import FurnitureData from "../../Data/FurnitureData";
 import ItemData from "../../Data/ItemData";
 import NonPlayerData from "../../Data/NonPlayerData";
 import InventoryManager from "../../Manager/InventoryManager";
@@ -163,9 +164,27 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.infoDesc.string = ``;
         this.count.string = ``
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021');
-
     }
-    showDialog(position: cc.Vec3, nonPlayerData: NonPlayerData, item: ItemData, equipment: EquipmentData, inventoryManager?: InventoryManager) {
+    showDialogFurnitureInfo(data: FurnitureData) {
+        this.node.active = true;
+        this.refreshFurnitureInfo(data);
+    }
+    private refreshFurnitureInfo(data: FurnitureData) {
+        this.infoBase.node.active = true;
+        this.info1.node.active = false;
+        this.info2.node.active = false;
+        this.info3.node.active = false;
+        this.extraInfo.node.active = false;
+        this.infoSuit1.node.active = false;
+        this.infoSuit2.node.active = false;
+        this.infoSuit3.node.active = false;
+        this.labelTitle.string = `${data.nameCn}`;
+        this.infoBase.string = `价格：${data.price}\n${data.info}`;
+        this.infoDesc.string = `${data.desc}`;
+        this.count.string = ``
+        this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021');
+    }
+    public showDialog(position: cc.Vec3, nonPlayerData: NonPlayerData, item: ItemData, equipment: EquipmentData,furniture:FurnitureData, inventoryManager?: InventoryManager) {
         this.node.position = position.clone();
         // let size = cc.view.getVisibleSize();
         // if(this.isArrowDownBg){
@@ -178,6 +197,8 @@ export default class EquipmentAndItemDialog extends cc.Component {
             this.showDialogItemInfo(item);
         } else if (equipment) {
             this.showDialogEquipInfo(equipment, inventoryManager);
+        }else if(furniture){
+            this.showDialogFurnitureInfo(furniture);
         }
     }
     hideDialog() {

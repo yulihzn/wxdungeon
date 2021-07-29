@@ -28,26 +28,6 @@
             }
           ]
         }
-      },
-      "sprite/light": {
-        "props": {
-          "opacity": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ],
-          "scale": [
-            {
-              "frame": 0,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": -1
-              }
-            }
-          ]
-        }
       }
     }
   },

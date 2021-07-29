@@ -43,7 +43,6 @@ import { ColliderTag } from './Actor/ColliderTag';
 import ProfessionTalent from './Talent/ProfessionTalent';
 import OrganizationTalent from './Talent/OrganizationTalent';
 import TalentData from './Data/TalentData';
-import EquipmentManager from './Manager/EquipmentManager';
 @ccclass
 export default class Player extends Actor {
 

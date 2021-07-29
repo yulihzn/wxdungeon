@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "RoomTvClosed",
+  "_name": "RoomTvClose",
   "_objFlags": 0,
   "_native": "",
   "_duration": 0.16666666666666666,
@@ -41,20 +41,6 @@
                 "x": 0,
                 "y": 0
               }
-            }
-          ]
-        }
-      },
-      "sprite/light": {
-        "props": {
-          "opacity": [
-            {
-              "frame": 0,
-              "value": 255
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 0
             }
           ]
         }

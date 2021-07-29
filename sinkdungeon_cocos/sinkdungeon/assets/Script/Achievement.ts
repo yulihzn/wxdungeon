@@ -1,5 +1,6 @@
 import AchievementData from "./Data/AchievementData";
 import EquipmentData from "./Data/EquipmentData";
+import FurnitureData from "./Data/FurnitureData";
 import ItemData from "./Data/ItemData";
 import NonPlayerData from "./Data/NonPlayerData";
 import Logic from "./Logic";
@@ -49,7 +50,7 @@ export default class Achievement extends cc.Component {
     @property(cc.Node)
     loadingBackground: cc.Node = null;
     @property(AchievementItemDialog)
-    achievementItemDialog:AchievementItemDialog = null;
+    achievementItemDialog: AchievementItemDialog = null;
     //图片资源
     bossSpriteFrames: { [key: string]: cc.SpriteFrame } = null;
     // LIFE-CYCLE CALLBACKS:
@@ -57,7 +58,7 @@ export default class Achievement extends cc.Component {
     currentListIndex = 0;
     currentItemIndex = -1;
     private loadingManager: LoadingManager = new LoadingManager();
-    data:AchievementData;
+    data: AchievementData;
 
     onLoad() {
         this.loadingManager.init();
@@ -66,15 +67,15 @@ export default class Achievement extends cc.Component {
         if (this.lifesLabel && this.data.playerLifes) {
             this.lifesLabel.string = `DIED ${this.data.playerLifes}`;
         }
-        if(this.coinLabel){
+        if (this.coinLabel) {
             let c = LocalStorage.getValueFromData(LocalStorage.KEY_COIN);
             this.coinLabel.string = `${c ? parseInt(c) : 0}`;
         }
-        if(this.achievementItemDialog){
+        if (this.achievementItemDialog) {
             this.achievementItemDialog.node.active = false;
         }
     }
-    start(){
+    start() {
         this.loadingManager.loadEquipment();
         this.loadingManager.loadAutoSpriteFrames();
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
@@ -88,70 +89,70 @@ export default class Achievement extends cc.Component {
     }
 
     //toggle
-    changeList(toggle: cc.Toggle, index: string){
+    changeList(toggle: cc.Toggle, index: string) {
         this.currentListIndex = parseInt(index);
         switch (this.currentListIndex) {
-            case Achievement.TYPE_CHALLENGE: this.content.removeAllChildren();break;
-            case Achievement.TYPE_MAP: this.content.removeAllChildren();break;
-            case Achievement.TYPE_FURNITURE: this.content.removeAllChildren();break;
-            case Achievement.TYPE_NPC:this.showNpcList();break;
-            case Achievement.TYPE_BOSS: this.showBossList();break;
-            case Achievement.TYPE_MONSTER: this.showMonsterList();break;
-            case Achievement.TYPE_EQUIP: this.showEquipList();break;
-            case Achievement.TYPE_ITEM: this.showItemList();break;
+            case Achievement.TYPE_CHALLENGE: this.content.removeAllChildren(); break;
+            case Achievement.TYPE_MAP: this.content.removeAllChildren(); break;
+            case Achievement.TYPE_FURNITURE: this.showFurnitureList(); break;
+            case Achievement.TYPE_NPC: this.showNpcList(); break;
+            case Achievement.TYPE_BOSS: this.showBossList(); break;
+            case Achievement.TYPE_MONSTER: this.showMonsterList(); break;
+            case Achievement.TYPE_EQUIP: this.showEquipList(); break;
+            case Achievement.TYPE_ITEM: this.showItemList(); break;
         }
     }
-    private showMonsterList(){
+    private showMonsterList() {
         this.content.removeAllChildren();
         let index = 0;
-        for(let key in Logic.monsters){
+        for (let key in Logic.monsters) {
             let data = new NonPlayerData();
             data.valueCopy(Logic.monsters[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,index++,this.data.monsters[data.resName]
-                ,Logic.spriteFrameRes(data.resName+'anim000'),data,null,null);
+            icon.init(this, this.currentListIndex, index++, this.data.monsters[data.resName]
+                , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
             this.content.addChild(icon.node);
         }
     }
-    private showBossList(){
+    private showBossList() {
         this.content.removeAllChildren();
-        for(let i=0;i<Achievement.BOSS_SIZE;i++){
+        for (let i = 0; i < Achievement.BOSS_SIZE; i++) {
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,i,this.data.monsters[`iconboss00${i}`]
-            ,this.bossSpriteFrames[`iconboss00${i}`],null,null,null);
+            icon.init(this, this.currentListIndex, i, this.data.monsters[`iconboss00${i}`]
+                , this.bossSpriteFrames[`iconboss00${i}`], null, null, null, null);
             this.content.addChild(icon.node);
         }
     }
-    private showNpcList(){
+    private showNpcList() {
         this.content.removeAllChildren();
         let index = 0;
-        for(let key in Logic.nonplayers){
+        for (let key in Logic.nonplayers) {
             let data = new NonPlayerData();
             data.valueCopy(Logic.nonplayers[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,index++,this.data.npcs[data.resName]
-                ,Logic.spriteFrameRes(data.resName+'anim000'),data,null,null);
+            icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName]
+                , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
             this.content.addChild(icon.node);
         }
     }
-    private showItemList(){
+    private showItemList() {
         this.content.removeAllChildren();
         let index = 0;
-        for(let key in Logic.items){
+        for (let key in Logic.items) {
             let data = new ItemData();
             data.valueCopy(Logic.items[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this,this.currentListIndex,index++,this.data.items[data.resName]
-                ,Logic.spriteFrameRes(data.resName),null,data,null);
-            if(index>5){
+            icon.init(this, this.currentListIndex, index++, this.data.items[data.resName]
+                , Logic.spriteFrameRes(data.resName), null, data, null, null);
+            if (index > 5) {
                 this.content.addChild(icon.node)
             };
         }
     }
-    private showEquipList(){
+    private showEquipList() {
         this.content.removeAllChildren();
         let index = 0;
-        for(let key in Logic.equipments){
+        for (let key in Logic.equipments) {
             let data = new EquipmentData();
             data.valueCopy(Logic.equipments[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
@@ -163,15 +164,28 @@ export default class Achievement extends cc.Component {
             } else if (data.equipmetType == InventoryManager.REMOTE) {
                 spriteFrame = Logic.spriteFrameRes(data.img + 'anim0');
             }
-            icon.init(this,this.currentListIndex,index++,this.data.equips[data.img]
-                ,spriteFrame,null,null,data);
-            if(index>1){
+            icon.init(this, this.currentListIndex, index++, this.data.equips[data.img]
+                , spriteFrame, null, null, data, null);
+            if (index > 1) {
                 this.content.addChild(icon.node)
             };
         }
     }
-    show(){
-        this.changeList(null,'0');
+    private showFurnitureList() {
+        this.content.removeAllChildren();
+        let index = 0;
+        for (let key in Logic.furnitures) {
+            let data = new FurnitureData();
+            data.valueCopy(Logic.furnitures[key]);
+            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
+            icon.init(this, this.currentListIndex, index++, this.data.furnitures[data.resName]
+                , Logic.spriteFrameRes(data.resName), null, null, null, data);
+            this.content.addChild(icon.node)
+
+        }
+    }
+    show() {
+        this.changeList(null, '0');
     }
     // show() {
     //     if (!this.itemList) {
@@ -244,19 +258,19 @@ export default class Achievement extends cc.Component {
             cc.log('bossicons spriteatlas loaded');
         })
     }
-    
-    
+
+
     backToHome() {
         cc.director.loadScene('start');
         AudioPlayer.play(AudioPlayer.SELECT);
     }
-  
+
     static addMonsterKillAchievement(name: string) {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.monsters[name]) {
             data.monsters[name] = data.monsters[name] + 1;
-            if(data.monsters[name]>9999){
-                data.monsters[name]=9999;
+            if (data.monsters[name] > 9999) {
+                data.monsters[name] = 9999;
             }
         } else {
             data.monsters[name] = 1;
@@ -267,8 +281,8 @@ export default class Achievement extends cc.Component {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.playerLifes) {
             data.playerLifes = data.playerLifes + 1;
-            if(data.playerLifes>9999){
-                data.playerLifes=9999;
+            if (data.playerLifes > 9999) {
+                data.playerLifes = 9999;
             }
         } else {
             data.playerLifes = 1;
@@ -279,8 +293,8 @@ export default class Achievement extends cc.Component {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.items[name]) {
             data.items[name] = data.items[name] + 1;
-            if(data.items[name]>9999){
-                data.items[name]=9999;
+            if (data.items[name] > 9999) {
+                data.items[name] = 9999;
             }
         } else {
             data.items[name] = 1;
@@ -291,8 +305,8 @@ export default class Achievement extends cc.Component {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.equips[name]) {
             data.equips[name] = data.equips[name] + 1;
-            if(data.equips[name]>9999){
-                data.equips[name]=9999;
+            if (data.equips[name] > 9999) {
+                data.equips[name] = 9999;
             }
         } else {
             data.equips[name] = 1;
@@ -303,8 +317,8 @@ export default class Achievement extends cc.Component {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.npcs[name]) {
             data.npcs[name] = data.npcs[name] + 1;
-            if(data.npcs[name]>9999){
-                data.npcs[name]=9999;
+            if (data.npcs[name] > 9999) {
+                data.npcs[name] = 9999;
             }
         } else {
             data.npcs[name] = 1;
@@ -315,8 +329,8 @@ export default class Achievement extends cc.Component {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.maps[name]) {
             data.maps[name] = data.maps[name] + 1;
-            if(data.maps[name]>9999){
-                data.maps[name]=9999;
+            if (data.maps[name] > 9999) {
+                data.maps[name] = 9999;
             }
         } else {
             data.maps[name] = 1;
@@ -327,8 +341,8 @@ export default class Achievement extends cc.Component {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.challenges[name]) {
             data.challenges[name] = data.challenges[name] + 1;
-            if(data.challenges[name]>9999){
-                data.challenges[name]=9999;
+            if (data.challenges[name] > 9999) {
+                data.challenges[name] = 9999;
             }
         } else {
             data.challenges[name] = 1;
@@ -339,8 +353,8 @@ export default class Achievement extends cc.Component {
         let data: AchievementData = LocalStorage.getAchievementData();
         if (data.furnitures[name]) {
             data.furnitures[name] = data.furnitures[name] + 1;
-            if(data.furnitures[name]>9999){
-                data.furnitures[name]=9999;
+            if (data.furnitures[name] > 9999) {
+                data.furnitures[name] = 9999;
             }
         } else {
             data.furnitures[name] = 1;
@@ -348,12 +362,13 @@ export default class Achievement extends cc.Component {
         LocalStorage.saveAchievementData(data);
     }
     update(dt) {
-        if (this.isBossLoaded 
+        if (this.isBossLoaded
             && this.loadingManager.isEquipmentLoaded
             && this.loadingManager.isAllSpriteFramesLoaded()
             && this.loadingManager.isMonsterLoaded
             && this.loadingManager.isNonplayerLoaded
             && this.loadingManager.isItemsLoaded
+            && this.loadingManager.isFurnituresLoaded
             && this.loadingManager.isSuitsLoaded) {
             this.isBossLoaded = true;
             this.loadingBackground.active = false;

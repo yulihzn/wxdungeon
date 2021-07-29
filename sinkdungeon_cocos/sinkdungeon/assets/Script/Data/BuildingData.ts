@@ -30,7 +30,15 @@ export default class BuildingData {
     interact = 0;//是否可以互动拾取
     rollover = 0;//是否翻倒
 
+    package = 0;//是否打包状态
+    bought = 0;//是否购买
+    name = '';
+    
+
     valueCopy(data:BuildingData){
+        if(!data){
+            return;
+        }
         this.defaultPos = data.defaultPos?cc.v3(data.defaultPos.x,data.defaultPos.y):cc.v3(0,0);
         this.position = data.position?cc.v3(data.position.x,data.position.y):cc.v3(0,0);
         if(data.equipdata){

@@ -113,6 +113,7 @@ export default class BuildingManager extends BaseManager {
     static readonly CRACK = 'Crack';
     static readonly WATERCOLLIDER = 'WaterCollider';
     static readonly ENERGYSHIELD = 'EnergyShield';
+
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
     exitdoors: ExitDoor[] = new Array();
@@ -169,7 +170,7 @@ export default class BuildingManager extends BaseManager {
             b.data.defaultPos = indexPos.clone();
             b.lights = b.getComponentsInChildren(ShadowOfSight);
             if (b.lights) {
-                LightManager.registerLight(b.lights,b.node);
+                LightManager.registerLight(b.lights, b.node);
             }
         }
         return building;
@@ -207,7 +208,7 @@ export default class BuildingManager extends BaseManager {
             this.addChest(indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             //生成门
-            this.addDoor(mapDataStr, indexPos,false);
+            this.addDoor(mapDataStr, indexPos, false);
         } else if (this.isFirstEqual(mapDataStr, 'E')) {
             //生成出口
             this.addExitDoor(mapDataStr, indexPos, exits);
@@ -334,7 +335,7 @@ export default class BuildingManager extends BaseManager {
             this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             //生成门
-            this.addDoor(mapDataStr, indexPos,true);
+            this.addDoor(mapDataStr, indexPos, true);
         }
     }
     private addInteractBuilding(mapDataStr: string, indexPos: cc.Vec3) {
@@ -440,7 +441,7 @@ export default class BuildingManager extends BaseManager {
             fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
             fallentree.setScale(6, 4);
         } else if (mapDataStr == '+1') {
-            
+
         } else if (mapDataStr == '+2') {
             let arrow = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
             arrow.zIndex = IndexZ.FLOOR;
@@ -582,7 +583,7 @@ export default class BuildingManager extends BaseManager {
             this.airExits[i].init(i, i < 2 ? mapData.length + 2 : mapData[0].length + 2);
         }
     }
-    private addDoor(mapDataStr: string, indexPos: cc.Vec3,isDecorate:boolean) {
+    private addDoor(mapDataStr: string, indexPos: cc.Vec3, isDecorate: boolean) {
         let dir = parseInt(mapDataStr[1]);
         if (isNaN(dir)) {
             if (mapDataStr == 'Da') {
@@ -629,11 +630,14 @@ export default class BuildingManager extends BaseManager {
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let hitBuilding: cc.Node;
+        let isCustom = false;
         if (mapDataStr == 'Z3') {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
+            isCustom = true;
         } else if (mapDataStr == 'Z9') {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
             hitBuilding.getComponent(RoomStool).init(indexPos, dungeon);
+            isCustom = true;
         } else {
             hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.HITBUILDING), indexPos);
         }
@@ -644,32 +648,32 @@ export default class BuildingManager extends BaseManager {
         let itemNames = [];
         let maxhealth = 9999;
         let scale = 4;
-        let hideShadow = false;
+        let colliderExtrude = 0;
         switch (mapDataStr) {
-            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; break;
-            case 'Z2': resName = 'roomdesk'; break;
+            case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; colliderExtrude = 3; break;
+            case 'Z2': resName = 'roomdesk'; scale = 6; break;
             case 'Z3': resName = 'roomtv'; scale = 6; break;
-            case 'Z4': resName = 'roomsofa'; scale = 10; hideShadow = true; break;
-            case 'Z5': resName = 'roomtable'; scale = 10; hideShadow = true; break;
-            case 'Z6': resName = 'roomfridge'; scale = 6; break;
-            case 'Z7': resName = 'roomwash'; break;
-            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 20; scale = 6; break;
+            case 'Z4': resName = 'roomsofa'; scale = 10; colliderExtrude = 2; break;
+            case 'Z5': resName = 'roomtable'; scale = 10; colliderExtrude = 4; break;
+            case 'Z6': resName = 'roomfridge'; scale = 6; colliderExtrude = 7; break;
+            case 'Z7': resName = 'roomwash'; colliderExtrude = 1; break;
+            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 20; scale = 6; colliderExtrude = 2; break;
             case 'Z9': resName = 'roomstool'; break;
-            case 'Za': resName = 'roomkitchentable'; scale = 6; break;
-            case 'Zb': resName = 'roomkitchentable1'; break;
-            case 'Zc': resName = 'roomkitchentable2'; break;
-            case 'Zd': resName = 'roomkitchentable3'; break;
-            case 'Ze': resName = 'roombath'; break;
-            case 'Zf': resName = 'roomlittletable'; break;
-            case 'Zg': resName = 'roomlittletable1'; break;
-            case 'Zh': resName = 'roomlittletable2'; break;
+            case 'Za': resName = 'roomkitchentable'; scale = 6; colliderExtrude = 2; break;
+            case 'Zb': resName = 'roomkitchentable1'; colliderExtrude = 2; break;
+            case 'Zc': resName = 'roomkitchentable2'; colliderExtrude = 2; break;
+            case 'Zd': resName = 'roomkitchentable3'; colliderExtrude = 2; break;
+            case 'Ze': resName = 'roombath'; colliderExtrude = 2; break;
+            case 'Zf': resName = 'roomlittletable'; colliderExtrude = 6; break;
+            case 'Zg': resName = 'roomlittletable1'; colliderExtrude = 6; break;
+            case 'Zh': resName = 'roomlittletable2'; colliderExtrude = 6; break;
 
             default: break;
         }
-        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale, hideShadow);
+        h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale, isCustom, colliderExtrude);
         let saveHit = Logic.mapManager.getCurrentMapBuilding(h.data.defaultPos);
         if (saveHit) {
-            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale, hideShadow);
+            h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, saveHit.currentHealth, scale, isCustom, colliderExtrude);
         } else {
             Logic.mapManager.setCurrentBuildingData(h.data.clone());
         }

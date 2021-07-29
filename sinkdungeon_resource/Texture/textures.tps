@@ -1013,14 +1013,7 @@
             <key type="filename">building/decorate0402anim003.png</key>
             <key type="filename">building/decorate0402anim004.png</key>
             <key type="filename">building/roomcupboard.png</key>
-            <key type="filename">building/roomcupboard0.png</key>
-            <key type="filename">building/roomcupboard1.png</key>
-            <key type="filename">building/roomcupboard2.png</key>
-            <key type="filename">building/roomcupboard3.png</key>
             <key type="filename">building/roomdesk.png</key>
-            <key type="filename">building/roomdesk0.png</key>
-            <key type="filename">building/roomdesk1.png</key>
-            <key type="filename">building/roomdesk2.png</key>
             <key type="filename">building/roomfridge.png</key>
             <key type="filename">building/roomkitchentable1.png</key>
             <key type="filename">building/roomkitchentable2.png</key>
@@ -1244,6 +1237,7 @@
             <key type="filename">item/foodboss007.png</key>
             <key type="filename">item/foodboss008.png</key>
             <key type="filename">item/foodboss009.png</key>
+            <key type="filename">item/item001.png</key>
             <key type="filename">meleelight/meleelight.png</key>
             <key type="filename">meleelight/meleelight1.png</key>
             <key type="filename">meleelight/meleelight2.png</key>

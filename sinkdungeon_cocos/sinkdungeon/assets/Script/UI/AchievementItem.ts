@@ -1,5 +1,6 @@
 import Achievement from "../Achievement";
 import EquipmentData from "../Data/EquipmentData";
+import FurnitureData from "../Data/FurnitureData";
 import ItemData from "../Data/ItemData";
 import NonPlayerData from "../Data/NonPlayerData";
 
@@ -42,6 +43,7 @@ export default class AchievementItem extends cc.Component {
     nonPlayerData: NonPlayerData;
     itemData: ItemData;
     equipData: EquipmentData;
+    furnitureData:FurnitureData;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -51,7 +53,7 @@ export default class AchievementItem extends cc.Component {
 
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             if (this.node&&this.count > 0) {
-                this.achievements.achievementItemDialog.show(this.nonPlayerData, this.itemData, this.equipData, this.sprite.spriteFrame);
+                this.achievements.achievementItemDialog.show(this.nonPlayerData, this.itemData, this.equipData,this.furnitureData, this.sprite.spriteFrame);
             }
             // if (this.isSelect && this.index == this.achievements.currentItemIndex
             //     && this.parentIndex == this.achievements.currentListIndex) {
@@ -69,10 +71,11 @@ export default class AchievementItem extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
         }, this)
     }
-    init(achievements: Achievement, parentIndex: number, index: number, count: number, spriteFrame: cc.SpriteFrame, nonPlayerData: NonPlayerData, itemData: ItemData, equipData: EquipmentData) {
+    init(achievements: Achievement, parentIndex: number, index: number, count: number, spriteFrame: cc.SpriteFrame, nonPlayerData: NonPlayerData, itemData: ItemData, equipData: EquipmentData,furnitureData:FurnitureData) {
         this.nonPlayerData = nonPlayerData;
         this.itemData = itemData;
         this.equipData = equipData;
+        this.furnitureData = furnitureData;
         this.achievements = achievements;
         this.parentIndex = parentIndex;
         this.index = index;

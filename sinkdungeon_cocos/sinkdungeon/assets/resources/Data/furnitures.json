@@ -1,0 +1,162 @@
+{
+    "furniture001": {
+        "nameCn": "沙发",
+        "nameEn": "sofa",
+        "resName": "roomsofa",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "240,114,232,90",
+        "price": 1000
+    },
+    "furniture002": {
+        "nameCn": "浴缸",
+        "nameEn": "bath",
+        "resName": "roombath",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "0,64,128,256",
+        "price": 1000
+    },
+    "furniture003": {
+        "nameCn": "餐桌",
+        "nameEn": "dinner table",
+        "resName": "roomtable",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "185,64,330,155",
+        "price": 1000
+    },
+    "furniture004": {
+        "nameCn": "洗衣机",
+        "nameEn": "washing machine",
+        "resName": "roomwash",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,0,128,128",
+        "price": 1000
+    },
+    "furniture005": {
+        "nameCn": "灶台",
+        "nameEn": "cooking bench",
+        "resName": "roomkitchentable",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,0,128,128",
+        "price": 1000
+    },
+    "furniture006": {
+        "nameCn": "灶台（一）",
+        "nameEn": "cooking bench 1",
+        "resName": "roomkitchentable1",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,0,128,128",
+        "price": 1000
+    },
+    "furniture007": {
+        "nameCn": "灶台（二）",
+        "nameEn": "cooking bench 2",
+        "resName": "roomkitchentable2",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,0,128,128",
+        "price": 1000
+    },
+    "furniture008": {
+        "nameCn": "灶台（三）",
+        "nameEn": "cooking bench 3",
+        "resName": "roomkitchentable3",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,0,128,128",
+        "price": 1000
+    },
+    "furniture009": {
+        "nameCn": "冰箱",
+        "nameEn": "fridge",
+        "resName": "roomfridge",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "0,0,128,128",
+        "price": 1000
+    },
+    "furniture010": {
+        "nameCn": "电脑桌",
+        "nameEn": "desk",
+        "resName": "roomdesk",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,0,128,128",
+        "price": 1000
+    },
+    "furniture011": {
+        "nameCn": "衣柜",
+        "nameEn": "cupboard",
+        "resName": "roomcupboard",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "64,0,256,128",
+        "price": 1000
+    },
+    "furniture012": {
+        "nameCn": "小桌台",
+        "nameEn": "little table",
+        "resName": "roomlittletable",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,-20,80,40",
+        "price": 1000
+    },
+    "furniture013": {
+        "nameCn": "小桌台（一）",
+        "nameEn": "little table 1",
+        "resName": "roomlittletable1",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,-20,80,40",
+        "price": 1000
+    },
+    "furniture014": {
+        "nameCn": "小桌台（二）",
+        "nameEn": "little table 2",
+        "resName": "roomlittletable2",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,-20,80,40",
+        "price": 1000
+    },
+    "furniture015": {
+        "nameCn": "马桶",
+        "nameEn": "stool",
+        "resName": "roomstool",
+        "info": "",
+        "desc": "",
+        "scale": 4,
+        "collider": "0,32,128,64",
+        "price": 1000
+    },
+    "furniture016": {
+        "nameCn": "电视机",
+        "nameEn": "TV",
+        "resName": "roomtv",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "64,36,256,128",
+        "price": 1000
+    }
+}

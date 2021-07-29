@@ -11,7 +11,6 @@ import Logic from "../Logic";
 import Dungeon from "../Dungeon";
 import IndexZ from "../Utils/IndexZ";
 import AudioPlayer from "../Utils/AudioPlayer";
-import { ColliderTag } from "../Actor/ColliderTag";
 
 const { ccclass, property } = cc._decorator;
 
@@ -24,19 +23,25 @@ export default class HitBuilding extends Building {
     private itemNames:string[] = [];
     private equipmentNames:string[] = [];
     private dungeon: Dungeon;
+    private isCustom = false;
+    private colliderExtrude = 0;
     // LIFE-CYCLE CALLBACKS:
 
-    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number,scale:number,hideShadow:boolean) {
+    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number,scale:number,isCustom:boolean,colliderExtrude:number) {
         this.dungeon = dungeon;
         this.resName = resName;
         this.itemNames = itemNames;
         this.equipmentNames = equipmentNames;
         this.data.maxHealth = maxHealth;
         this.data.currentHealth = currentHealth;
-        this.changeRes(resName, `${this.data.currentHealth}`);
+        this.colliderExtrude = colliderExtrude;
+        this.isCustom = isCustom;
+        if (!this.sprite) {
+            this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
+        }
         this.sprite.node.scale = scale;
+        this.changeRes(resName, `${this.data.currentHealth}`);
         if(this.data.currentHealth<=0){
-            this.getComponent(cc.PhysicsBoxCollider).tag = hideShadow?ColliderTag.DEFAULT:ColliderTag.BUILDING;
             this.getComponent(cc.PhysicsBoxCollider).sensor = true;
             this.getComponent(cc.PhysicsBoxCollider).apply();
         }
@@ -85,11 +90,13 @@ export default class HitBuilding extends Building {
         return true;
     }
     /**贴图后缀数字表示血量，例如car car0 car1 */
-    changeRes(resName: string, suffix?: string) {
+    private changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
         let spriteFrame = Logic.spriteFrameRes(resName);
+        let width = (spriteFrame.getRect().width-this.colliderExtrude)*this.sprite.node.scale;
+        let height = (spriteFrame.getRect().height-this.colliderExtrude)*this.sprite.node.scale;
         if (suffix && Logic.spriteFrameRes(resName + suffix)) {
             spriteFrame = Logic.spriteFrameRes(resName + suffix);
         }
@@ -99,12 +106,15 @@ export default class HitBuilding extends Building {
         this.sprite.node.opacity = 255;
         this.sprite.node.width = spriteFrame.getRect().width;
         this.sprite.node.height = spriteFrame.getRect().height;
-        let size = cc.size((this.sprite.node.width-4)*this.sprite.node.scale,(this.sprite.node.height-4)*this.sprite.node.scale);
-        this.node.width = size.width;
-        this.node.height = size.height;
-        this.getComponent(cc.BoxCollider).size = size.clone();
-        this.getComponent(cc.PhysicsBoxCollider).size = size.clone();
-        this.getComponent(cc.PhysicsBoxCollider).apply();
+        if(this.isCustom){
+            return;
+        }
+        let size = cc.size(width,height);
+        let collider = this.getComponent(cc.BoxCollider);
+        let pcollider = this.getComponent(cc.PhysicsBoxCollider);
+        collider.size = size.clone();
+        pcollider.size = size.clone();
+        pcollider.apply();
         this.sprite.spriteFrame = spriteFrame;
     }
     // update (dt) {}

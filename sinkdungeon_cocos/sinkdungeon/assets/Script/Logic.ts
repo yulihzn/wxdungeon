@@ -23,6 +23,7 @@ import SuitData from "./Data/SuitData";
 import InventoryData from "./Data/InventoryData";
 import GroundOilGoldData from "./Data/GroundOilGoldData";
 import OilGoldData from "./Data/OilGoldData";
+import FurnitureData from "./Data/FurnitureData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -74,6 +75,8 @@ export default class Logic extends cc.Component {
     static items: { [key: string]: ItemData } = null;
     //技能json
     static talents: { [key: string]: TalentData } = null;
+    //家具json
+    static furnitures:{[key:string]: FurnitureData} = null;
     //职业json
     static professionList: ProfessionData[] = [];
     //建筑资源

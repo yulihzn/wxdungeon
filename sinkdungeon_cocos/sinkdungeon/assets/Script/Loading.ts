@@ -120,6 +120,7 @@ export default class Loading extends cc.Component {
             && this.loadingManager.isWorldLoaded
             && this.loadingManager.isBuildingLoaded
             && this.loadingManager.isSuitsLoaded
+            && this.loadingManager.isFurnituresLoaded
             && this.cutScene.isSkip
             && this.isTransportAnimFinished
             && this.isElevatorAnimFinished) {

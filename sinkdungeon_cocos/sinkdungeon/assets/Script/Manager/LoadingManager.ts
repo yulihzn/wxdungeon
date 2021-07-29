@@ -32,6 +32,7 @@ export default class LoadingManager {
     public isItemsLoaded = false;
     public isSkillsLoaded = false;
     public isBuildingLoaded = false;
+    public isFurnituresLoaded = false;
     public isTransportAnimFinished = true;
     // LIFE-CYCLE CALLBACKS:
     init() {
@@ -183,6 +184,21 @@ export default class LoadingManager {
                 Logic.suits = resource.json;
                 this.isSuitsLoaded = true;
                 cc.log('suits loaded');
+            }
+        })
+    }
+    loadFurnitures() {
+        if (Logic.furnitures) {
+            this.isFurnituresLoaded = true;
+            return;
+        }
+        cc.resources.load('Data/furnitures', (err: Error, resource: cc.JsonAsset) => {
+            if (err) {
+                cc.error(err);
+            } else {
+                Logic.furnitures = resource.json;
+                this.isFurnituresLoaded = true;
+                cc.log('furnitures loaded');
             }
         })
     }

@@ -99,7 +99,7 @@ export default class Inventory extends cc.Component {
                 if (this.equipmentGroundDialog) {
                     let worldPos = detail.worldPos;
                     let pos = this.node.convertToNodeSpaceAR(worldPos);
-                    this.equipmentGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,detail.itemData,detail.equipData);
+                    this.equipmentGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,detail.itemData,detail.equipData,null);
                 }
             });
         EventHelper.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE
@@ -113,7 +113,7 @@ export default class Inventory extends cc.Component {
                 if (this.itemGroundDialog) {
                     let worldPos:cc.Vec3 = detail.worldPos;
                     let pos = this.node.convertToNodeSpaceAR(worldPos);
-                    this.itemGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,detail.itemData,null);
+                    this.itemGroundDialog.showDialog(pos.sub(this.mainCamera.node.position),null,detail.itemData,null,null);
                 }
             });
         EventHelper.on(EventHelper.HUD_GROUND_ITEM_INFO_HIDE
@@ -175,7 +175,7 @@ export default class Inventory extends cc.Component {
                 equipData = this.inventoryManager.equips[equipmetType].clone();
             }
             let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-            this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData, this.inventoryManager);
+            this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData,null, this.inventoryManager);
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentAndItemDialog.hideDialog();
@@ -202,7 +202,7 @@ export default class Inventory extends cc.Component {
                     return;
                 }
                 let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-                this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null);
+                this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null,null);
             }, 0.3)
 
         })

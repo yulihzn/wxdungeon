@@ -3,7 +3,7 @@
   "_name": "RoomTvOpenIdle",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.3333333333333333,
+  "_duration": 0.016666666666666666,
   "sample": 60,
   "speed": 0.5,
   "wrapMode": 2,
@@ -39,50 +39,6 @@
               }
             ]
           }
-        }
-      },
-      "sprite/light": {
-        "props": {
-          "opacity": [
-            {
-              "frame": 0,
-              "value": 255
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 229.0086499881
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 255
-            }
-          ],
-          "scale": [
-            {
-              "frame": 0,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": -1
-              }
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 0.9,
-                "y": -0.9
-              }
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": {
-                "__type__": "cc.Vec2",
-                "x": 1,
-                "y": -1
-              }
-            }
-          ]
         }
       }
     }

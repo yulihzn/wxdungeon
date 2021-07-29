@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import EquipmentData from "../../Data/EquipmentData";
+import FurnitureData from "../../Data/FurnitureData";
 import ItemData from "../../Data/ItemData";
 import NonPlayerData from "../../Data/NonPlayerData";
 import EquipmentManager from "../../Manager/EquipmentManager";
@@ -37,7 +38,7 @@ export default class AchievementItemDialog extends BaseDialog {
     start() {
 
     }
-    show(nonPlayerData?:NonPlayerData,itemData?:ItemData,equipData?:EquipmentData,spriteFrame?:cc.SpriteFrame) {
+    show(nonPlayerData?:NonPlayerData,itemData?:ItemData,equipData?:EquipmentData,furnitureData?:FurnitureData,spriteFrame?:cc.SpriteFrame) {
         super.show();
         if(spriteFrame){
             this.icon.spriteFrame = spriteFrame;
@@ -48,7 +49,7 @@ export default class AchievementItemDialog extends BaseDialog {
         if(equipData){
             equipData = EquipmentManager.getOriginEquipData(equipData.img);
         }
-        this.equipmentAndItemDialog.showDialog(cc.v3(80,150),nonPlayerData,itemData,equipData);
+        this.equipmentAndItemDialog.showDialog(cc.v3(80,150),nonPlayerData,itemData,equipData,null);
     }
 
     close() {

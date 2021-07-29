@@ -115,13 +115,13 @@ export default class InventoryDialog extends BaseDialog {
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
-            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,null,item.data.equipmentData);
+            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,null,item.data.equipmentData,null);
         } else {
             this.discountLabel.string = `-${this.discount*100}%(${Math.floor(item.data.itemData.count>1?item.data.itemData.price*item.data.itemData.count*this.discount:item.data.itemData.price*this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
-            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,item.data.itemData,null);
+            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,item.data.itemData,null,null);
         }
     }
     updateList(sortIndex: number) {

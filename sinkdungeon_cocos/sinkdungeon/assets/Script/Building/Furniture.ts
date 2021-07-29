@@ -18,6 +18,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Furniture extends Building {
 
+    static readonly BATH = 'furniture002';
     sprite:cc.Sprite;
     box:cc.Sprite;
 
