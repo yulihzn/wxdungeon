@@ -7,9 +7,7 @@
 
 import FromData from "../Data/FromData";
 import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
 import StatusManager from "../Manager/StatusManager";
-import Tips from "../UI/Tips";
 import AudioPlayer from "../Utils/AudioPlayer";
 import IndexZ from "../Utils/IndexZ";
 import Building from "./Building";
@@ -20,24 +18,14 @@ const { ccclass, property } = cc._decorator;
 export default class RoomStool extends Building {
     @property(cc.Node)
     mosaic: cc.Node = null;
-    tips: Tips;
     isOpen = false;
     dungeon:Dungeon;
 
     onLoad() {
-        this.tips = this.getComponentInChildren(Tips);
-        cc.director.on(EventHelper.PLAYER_TAPTIPS
-            , (event) => {
-                if (this.node && event.detail.tipsType == Tips.ROOM_STOOL + `x=${this.data.defaultPos.x}y=${this.data.defaultPos.y}`) {
-                    this.open();
-                }
-            });
+      
     }
     init(indexPos:cc.Vec3,dungeon:Dungeon) {
         this.dungeon = dungeon;
-        if(this.tips){
-            this.tips.tipsType = Tips.ROOM_STOOL+`x=${indexPos.x}y=${indexPos.y}`;
-        }
         this.data.defaultPos = indexPos;
         let p = this.mosaic.convertToWorldSpaceAR(cc.v3(0, 0));
         this.mosaic.parent = this.node.parent;

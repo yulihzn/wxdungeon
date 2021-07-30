@@ -32,13 +32,11 @@ export default class RoomBed extends Building {
     onLoad () {
         this.lights = this.getComponentsInChildren(ShadowOfSight);
         this.tips = this.getComponentInChildren(Tips);
-        this.tips.tipsType = Tips.ROOM_BED;
-        cc.director.on(EventHelper.PLAYER_TAPTIPS
-            , (event) => {
-                if (this.node && event.detail.tipsType == Tips.ROOM_BED) {
-                    this.enterDream(event.detail.player);
-                }
-            });
+        this.tips.onInteract((isLongPress:boolean,player:Player)=>{
+            if (this.node) {
+                this.enterDream(player);
+            }
+        });
     }
 
     init(dungeon:Dungeon,isDecorate:boolean){

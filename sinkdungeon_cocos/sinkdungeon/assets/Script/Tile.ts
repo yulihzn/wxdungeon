@@ -33,6 +33,7 @@ export default class Tile extends cc.Component {
     cover4 = '';
     cover5 = '';
     floorPrefix = '';
+    private isSmall = false;
     onLoad () {
         this.isAutoShow = true;
         this.anim = this.getComponent(cc.Animation);
@@ -57,10 +58,10 @@ export default class Tile extends cc.Component {
         let s = this.floorPrefix+'001';
         switch(this.tileType){
             case '**':s = this.floorPrefix+'001';break;
-            case '*0':s = this.floorPrefix+'002';break;
-            case '*1':s = this.floorPrefix+'003';break;
-            case '*2':s = this.floorPrefix+'001';break;
-            case '*3':s = this.floorPrefix+'002';break;
+            case '*0':s = this.floorPrefix+'002';this.isSmall = true;break;
+            case '*1':s = this.floorPrefix+'003';this.isSmall = true;break;
+            case '*2':s = this.floorPrefix+'001';this.isSmall = true;break;
+            case '*3':s = this.floorPrefix+'002';this.isSmall = true;break;
             case '*4':s = this.coverPrefix+'004';break;
             case '*5':s = this.cover1;break;
             case '*6':s = this.cover2;break;
@@ -152,5 +153,7 @@ export default class Tile extends cc.Component {
         if(this.floor.spriteFrame == null){
             this.floor.spriteFrame = Logic.spriteFrameRes(this.floorPrefix+'001');
         }
+        this.floor.node.width = this.isSmall?17:33;
+        this.floor.node.height = this.isSmall?17:33;
     }
 }

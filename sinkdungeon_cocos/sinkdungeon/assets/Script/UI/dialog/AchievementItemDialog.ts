@@ -49,7 +49,7 @@ export default class AchievementItemDialog extends BaseDialog {
         if(equipData){
             equipData = EquipmentManager.getOriginEquipData(equipData.img);
         }
-        this.equipmentAndItemDialog.showDialog(cc.v3(80,150),nonPlayerData,itemData,equipData,null);
+        this.equipmentAndItemDialog.showDialog(cc.v3(80,150),nonPlayerData,itemData,equipData,furnitureData);
     }
 
     close() {

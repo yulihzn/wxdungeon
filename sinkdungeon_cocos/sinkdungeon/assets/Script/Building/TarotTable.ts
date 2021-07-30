@@ -1,5 +1,4 @@
 import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
 import Tips from "../UI/Tips";
 import Building from "./Building";
 import IndexZ from "../Utils/IndexZ";
@@ -28,14 +27,11 @@ export default class TarotTable extends Building {
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.tips = this.node.getChildByName("Tips").getComponent(Tips);
-        this.tips.tipsType = Tips.TAROT_TABLE;
-        cc.director.on(EventHelper.PLAYER_TAPTIPS
-            , (event) => {
-                if (event.detail.tipsType == Tips.TAROT_TABLE) {
-                    this.showCards();
-                }
-            });
-
+        this.tips.onInteract(()=>{
+            if (this.node) {
+                this.showCards();
+            }
+        });
     }
 
     start() {

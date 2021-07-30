@@ -36,21 +36,17 @@ export default class MartShelves extends Building {
     martshelvesside3:cc.Node;
     onLoad() {
         this.tips = this.getComponentInChildren(Tips);
-        cc.director.on(EventHelper.PLAYER_TAPTIPS
-            , (event) => {
-                if (this.node&&event.detail.tipsType == Tips.MART_SHELVES+`x=${this.data.defaultPos.x}y=${this.data.defaultPos.y}`) {
-                    EventHelper.emit(EventHelper.HUD_MART_SHELVES_DIALOG,{type:this.type,goodsNameList:this.goodsNameList})
-                }
-            });
+        this.tips.onInteract(()=>{
+            if (this.node) {
+                EventHelper.emit(EventHelper.HUD_MART_SHELVES_DIALOG,{type:this.type,goodsNameList:this.goodsNameList});
+            }
+        });
     }
     // update (dt) {}
 
     init(type: string,goodsNameList:string[]) {
         this.goodsNameList = goodsNameList;
         this.type = type;
-        if(this.tips){
-            this.tips.tipsType = Tips.MART_SHELVES+`x=${this.data.defaultPos.x}y=${this.data.defaultPos.y}`;
-        }
         this.changeBg(type);
         this.addGoods(goodsNameList);
     }

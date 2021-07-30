@@ -13,45 +13,36 @@ import Player from "../Player";
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 //交互作用的提示,依托于父组件不能独立放置
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Tips extends cc.Component {
-    static readonly TAROT_TABLE = "Tips.TAROT_TABLE";
-    static readonly MART_SHELVES = "Tips.MART_SHELVES";
-    static readonly ROOM_STOOL = "Tips.ROOM_STOOL";
-    static readonly SAVE_POINT = "Tips.SAVE_POINT";
-    static readonly ROOM_BED = "Tips.ROOM_BED";
-    isUse = false;
-    tipsType = '';
-
+    private interactCallback: Function;
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.node.opacity = 0;
     }
 
-    start () {
+    start() {
 
     }
-    next(isLongPress:boolean,player:Player):void{
-        if(this.isUse){
-            return;
+    next(isLongPress: boolean, player: Player): void {
+        if (this.node && this.node.active && this.interactCallback) {
+            this.interactCallback(isLongPress, player);
         }
-        this.isUse = true;
-        cc.director.emit(EventHelper.PLAYER_TAPTIPS,{detail:{tipsType:this.tipsType,isLongPress:isLongPress,player:player}});
-        setTimeout(()=>{this.isUse = false;},0.1);
     }
-    onDestroy(){
-        this.isUse = false;
+    onInteract(callback: Function) {
+        this.interactCallback = callback;
     }
+
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if(other.tag == ColliderTag.PLAYER){
+        if (other.tag == ColliderTag.PLAYER) {
             this.node.opacity = 255;
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if(other.tag == ColliderTag.PLAYER){
+        if (other.tag == ColliderTag.PLAYER) {
             this.node.opacity = 0;
         }
     }

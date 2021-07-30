@@ -49,6 +49,7 @@ export default class LoadingManager {
         this.isBuffsLoaded = false;
         this.isNonplayerLoaded = false;
         this.isBuildingLoaded = false;
+        this.isFurnituresLoaded = false;
     }
     reset() {
         this.isWorldLoaded = false;
@@ -64,6 +65,7 @@ export default class LoadingManager {
         this.isBuildingLoaded = false;
         this.isTransportAnimFinished = false;
         this.isSuitsLoaded = false;
+        this.isFurnituresLoaded = false;
     }
     isSpriteFramesLoaded(loadedName: string) {
         if (!this.spriteFrameNames[loadedName]) {

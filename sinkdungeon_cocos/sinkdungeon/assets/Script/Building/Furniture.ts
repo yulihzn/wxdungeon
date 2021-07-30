@@ -1,5 +1,12 @@
+import Achievement from "../Achievement";
+import FurnitureData from "../Data/FurnitureData";
+import Dungeon from "../Dungeon";
 import Logic from "../Logic";
+import Tips from "../UI/Tips";
+import LocalStorage from "../Utils/LocalStorage";
 import Building from "./Building";
+import RoomStool from "./RoomStool";
+import RoomTv from "./RoomTv";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,20 +25,127 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Furniture extends Building {
 
+    static readonly SOFA = 'furniture001';
     static readonly BATH = 'furniture002';
-    sprite:cc.Sprite;
-    box:cc.Sprite;
+    static readonly DINNER_TABLE = 'furniture003';
+    static readonly WASHING_MACHINE = 'furniture004';
+    static readonly COOKING_BENCH = 'furniture005';
+    static readonly COOKING_BENCH_1 = 'furniture006';
+    static readonly COOKING_BENCH_2 = 'furniture007';
+    static readonly COOKING_BENCH_3 = 'furniture008';
+    static readonly FRIDGE = 'furniture009';
+    static readonly DESK = 'furniture010';
+    static readonly CUPBOARD = 'furniture011';
+    static readonly LITTLE_TABLE = 'furniture012';
+    static readonly LITTLE_TABLE_1 = 'furniture013';
+    static readonly LITTLE_TABLE_2 = 'furniture014';
+    static readonly STOOL = 'furniture015';
+    static readonly TV = 'furniture016';
+    sprite: cc.Sprite;
+    boxcover: cc.Sprite;
+    boxback: cc.Sprite;
+    tips: Tips;
+    isOpening = false;
+    anim: cc.Animation;
+    furnitureData: FurnitureData;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.anim = this.getComponent(cc.Animation);
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
-        this.box = this.node.getChildByName('box').getComponent(cc.Sprite);
+        this.boxcover = this.node.getChildByName('boxcover').getComponent(cc.Sprite);
+        this.boxback = this.node.getChildByName('boxback').getComponent(cc.Sprite);
+        this.tips = this.getComponentInChildren(Tips);
+        this.tips.onInteract(()=>{
+            if(this.furnitureData){
+                if (this.furnitureData.isOpen) {
+                    this.interact();
+                } else {
+                    this.openBox();
+                }
+            }
+        });
+    }
+    interact(){
+        switch(this.furnitureData.id){
+            case Furniture.TV:
+                let tv = this.getComponent(RoomTv);
+                if(tv){
+                    tv.interact();
+                }    
+            break;
+            case Furniture.STOOL:
+                let stool = this.getComponent(RoomStool);
+                if(stool){
+                    stool.open();
+                }break;
+        }
+    }
+    init(furnitureData: FurnitureData) {
+        this.furnitureData = new FurnitureData();
+        this.furnitureData.valueCopy(furnitureData);
+        if (this.furnitureData.isOpen) {
+            this.boxcover.node.active = false;
+            this.boxback.node.active = false;
+        } else {
+            this.boxcover.node.active = true;
+            this.boxback.node.active = true;
+        }
+        this.changeRes(this.furnitureData.resName);
+        if (this.furnitureData.collider.length > 0) {
+            let arr = this.furnitureData.collider.split(',');
+            let pcollider = this.getComponent(cc.PhysicsBoxCollider);
+            pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]));
+            pcollider.size = cc.size(parseInt(arr[2]), parseInt(arr[3]));
+            pcollider.apply();
+        }
+        LocalStorage.saveFurnitureData(this.furnitureData);
+        Achievement.addFurnituresAchievement(this.furnitureData.id);
+
     }
     changeRes(resName: string) {
-        this.sprite.spriteFrame = Logic.spriteFrameRes(resName);
+        let spriteFrame = Logic.spriteFrameRes(resName);
+        if (spriteFrame) {
+            this.sprite.spriteFrame = spriteFrame;
+            this.sprite.node.width = spriteFrame.getRect().width;
+            this.sprite.node.height = spriteFrame.getRect().height;
+            this.boxback.node.width = spriteFrame.getRect().width;
+            this.boxback.node.height = spriteFrame.getRect().height;
+            this.boxcover.node.width = spriteFrame.getRect().width;
+            this.boxcover.node.height = spriteFrame.getRect().height;
+            this.sprite.node.scale = this.furnitureData.scale;
+            this.tips.node.scale = 2;
+            this.boxback.node.scale = this.furnitureData.scale;
+            this.boxcover.node.scale = this.furnitureData.scale;
+            let width = this.sprite.node.width*this.sprite.node.scale;
+            let height = this.sprite.node.height*this.sprite.node.scale;
+            if (this.furnitureData.id != Furniture.STOOL
+                &&this.furnitureData.id != Furniture.TV
+                &&this.furnitureData.id != Furniture.SOFA) {
+                this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2,height - Dungeon.TILE_SIZE / 2)
+                let collider = this.tips.node.getComponent(cc.CircleCollider);
+                collider.radius = width>height?height/2:width/2;
+                if(width>height){
+                    collider.radius = height/2;
+                    collider.offset = cc.v2(0,-height/2);
+                }else{
+                    collider.radius = width/2;
+                    collider.offset = cc.v2(0,-height+width);
+                }
+            }
+
+        }
     }
-    
+    openBox() {
+        if (this.furnitureData.isOpen) {
+            return;
+        }
+        this.furnitureData.isOpen = true;
+        LocalStorage.saveFurnitureData(this.furnitureData);
+        this.anim.play('FurnitureOpen');
+    }
+
     start() {
     }
 

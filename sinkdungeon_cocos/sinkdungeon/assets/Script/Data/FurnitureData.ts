@@ -1,5 +1,3 @@
-import EquipmentData from "./EquipmentData";
-import ItemData from "./ItemData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -13,43 +11,46 @@ import ItemData from "./ItemData";
 
 
 export default class FurnitureData {
+    id = '';
     price = 60;//价格
     nameCn: string = '';
     nameEn: string = '';
-    resName:string = '';
+    resName: string = '';
     info = '';
     desc = '';
     scale = 1;
     collider = '';
-    package = 0;//是否打包状态
-    bought = 0;//是否购买
+    isOpen = false;//是否已经打开
+    purchased = false;//是否购买
 
-    valueCopy(data:FurnitureData){
-        if(!data){
+    valueCopy(data: FurnitureData) {
+        if (!data) {
             return;
         }
-        this.bought = data.bought?data.bought:0;
+        this.id = data.id?data.id:'';
+        this.purchased = data.purchased;
         this.price = data.price;
-        this.nameCn = data.nameCn?data.nameCn:'';
-        this.nameEn = data.nameEn?data.nameEn:'';
-        this.resName = data.resName?data.resName:'';
-        this.info = data.info?data.info:'';
-        this.scale = data.scale?data.scale:1;
-        this.collider = data.collider?data.collider:'';
-        this.package = data.package?data.package:0;
+        this.nameCn = data.nameCn ? data.nameCn : '';
+        this.nameEn = data.nameEn ? data.nameEn : '';
+        this.resName = data.resName ? data.resName : '';
+        this.info = data.info ? data.info : '';
+        this.scale = data.scale ? data.scale : 1;
+        this.collider = data.collider ? data.collider : '';
+        this.isOpen = data.isOpen;
     }
-    clone():FurnitureData{
+    clone(): FurnitureData {
         let data = new FurnitureData();
-        data.bought=this.bought;
-        data.price=this.price;
+        data.purchased = this.purchased;
+        data.scale = this.scale;
         data.price = this.price;
         data.nameCn = this.nameCn;
         data.nameEn = this.nameEn;
         data.info = this.info;
         data.scale = this.scale;
         data.collider = this.collider;
-        data.package = this.package;
+        data.isOpen = this.isOpen;
         data.resName = this.resName;
+        data.id = this.id;
         return data;
     }
 }

@@ -84,6 +84,7 @@ export default class Achievement extends cc.Component {
         this.loadingManager.loadItems();
         this.loadingManager.loadNonplayer();
         this.loadingManager.loadSuits();
+        this.loadingManager.loadFurnitures();
         this.loadBossSpriteFrames();
         this.loadingBackground.active = true;
     }
@@ -178,7 +179,7 @@ export default class Achievement extends cc.Component {
             let data = new FurnitureData();
             data.valueCopy(Logic.furnitures[key]);
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this, this.currentListIndex, index++, this.data.furnitures[data.resName]
+            icon.init(this, this.currentListIndex, index++, this.data.furnitures[data.id]
                 , Logic.spriteFrameRes(data.resName), null, null, null, data);
             this.content.addChild(icon.node)
 

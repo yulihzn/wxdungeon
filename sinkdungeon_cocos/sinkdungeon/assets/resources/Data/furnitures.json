@@ -1,5 +1,6 @@
 {
     "furniture001": {
+        "id": "furniture001",
         "nameCn": "沙发",
         "nameEn": "sofa",
         "resName": "roomsofa",
@@ -10,6 +11,7 @@
         "price": 1000
     },
     "furniture002": {
+        "id": "furniture002",
         "nameCn": "浴缸",
         "nameEn": "bath",
         "resName": "roombath",
@@ -20,6 +22,7 @@
         "price": 1000
     },
     "furniture003": {
+        "id": "furniture003",
         "nameCn": "餐桌",
         "nameEn": "dinner table",
         "resName": "roomtable",
@@ -30,6 +33,7 @@
         "price": 1000
     },
     "furniture004": {
+        "id": "furniture004",
         "nameCn": "洗衣机",
         "nameEn": "washing machine",
         "resName": "roomwash",
@@ -40,6 +44,7 @@
         "price": 1000
     },
     "furniture005": {
+        "id": "furniture005",
         "nameCn": "灶台",
         "nameEn": "cooking bench",
         "resName": "roomkitchentable",
@@ -50,6 +55,7 @@
         "price": 1000
     },
     "furniture006": {
+        "id": "furniture006",
         "nameCn": "灶台（一）",
         "nameEn": "cooking bench 1",
         "resName": "roomkitchentable1",
@@ -60,6 +66,7 @@
         "price": 1000
     },
     "furniture007": {
+        "id": "furniture007",
         "nameCn": "灶台（二）",
         "nameEn": "cooking bench 2",
         "resName": "roomkitchentable2",
@@ -70,6 +77,7 @@
         "price": 1000
     },
     "furniture008": {
+        "id": "furniture008",
         "nameCn": "灶台（三）",
         "nameEn": "cooking bench 3",
         "resName": "roomkitchentable3",
@@ -80,6 +88,7 @@
         "price": 1000
     },
     "furniture009": {
+        "id": "furniture009",
         "nameCn": "冰箱",
         "nameEn": "fridge",
         "resName": "roomfridge",
@@ -90,6 +99,7 @@
         "price": 1000
     },
     "furniture010": {
+        "id": "furniture010",
         "nameCn": "电脑桌",
         "nameEn": "desk",
         "resName": "roomdesk",
@@ -100,6 +110,7 @@
         "price": 1000
     },
     "furniture011": {
+        "id": "furniture011",
         "nameCn": "衣柜",
         "nameEn": "cupboard",
         "resName": "roomcupboard",
@@ -110,6 +121,7 @@
         "price": 1000
     },
     "furniture012": {
+        "id": "furniture012",
         "nameCn": "小桌台",
         "nameEn": "little table",
         "resName": "roomlittletable",
@@ -120,6 +132,7 @@
         "price": 1000
     },
     "furniture013": {
+        "id": "furniture013",
         "nameCn": "小桌台（一）",
         "nameEn": "little table 1",
         "resName": "roomlittletable1",
@@ -130,6 +143,7 @@
         "price": 1000
     },
     "furniture014": {
+        "id": "furniture014",
         "nameCn": "小桌台（二）",
         "nameEn": "little table 2",
         "resName": "roomlittletable2",
@@ -140,6 +154,7 @@
         "price": 1000
     },
     "furniture015": {
+        "id": "furniture015",
         "nameCn": "马桶",
         "nameEn": "stool",
         "resName": "roomstool",
@@ -150,6 +165,7 @@
         "price": 1000
     },
     "furniture016": {
+        "id": "furniture016",
         "nameCn": "电视机",
         "nameEn": "TV",
         "resName": "roomtv",

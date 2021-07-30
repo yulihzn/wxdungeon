@@ -37,6 +37,9 @@ import InteractBuilding from "../Building/InteractBuilding";
 import Player from "../Player";
 import EnergyShield from "../Building/EnergyShield";
 import EquipmentManager from "./EquipmentManager";
+import Furniture from "../Building/Furniture";
+import FurnitureData from "../Data/FurnitureData";
+import LocalStorage from "../Utils/LocalStorage";
 
 
 // Learn TypeScript:
@@ -83,6 +86,7 @@ export default class BuildingManager extends BaseManager {
     static readonly ROOMBED = 'RoomBed';
     static readonly ROOMTV = 'RoomTv';
     static readonly ROOMSTOOL = 'RoomStool';
+    static readonly ROOMSOFA = 'RoomSofa';
     static readonly SAVEPOINT = 'SavePoint';
     static readonly SAW = 'Saw';
     static readonly SHIPSTAIRS = 'Shipstairs';
@@ -113,6 +117,7 @@ export default class BuildingManager extends BaseManager {
     static readonly CRACK = 'Crack';
     static readonly WATERCOLLIDER = 'WaterCollider';
     static readonly ENERGYSHIELD = 'EnergyShield';
+    static readonly FURNITURE = 'Furniture';
 
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
@@ -310,8 +315,8 @@ export default class BuildingManager extends BaseManager {
                 let rb = p.getComponent(RoomBed);
                 rb.init(dungeon, parseInt(mapDataStr[1]) == 1);
             } else {
-                //生成可打击建筑
-                this.addHitBuilding(dungeon, mapDataStr, indexPos);
+                //生成家具
+                this.addFurnitures(dungeon, mapDataStr, indexPos);
             }
 
         }
@@ -627,6 +632,47 @@ export default class BuildingManager extends BaseManager {
         let wall = node.getComponent(Wall);
         wall.init(mapDataStr, levelData, onlyShow);
     }
+    private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3){
+        let data = new FurnitureData();
+        data.valueCopy(Logic.furnitures[Furniture.STOOL])
+        switch (mapDataStr) {
+            case 'Z2': data.valueCopy(Logic.furnitures[Furniture.DESK]); break;
+            case 'Z3': data.valueCopy(Logic.furnitures[Furniture.TV]); break;
+            case 'Z4': data.valueCopy(Logic.furnitures[Furniture.SOFA]); break;
+            case 'Z5': data.valueCopy(Logic.furnitures[Furniture.DINNER_TABLE]); break;
+            case 'Z6': data.valueCopy(Logic.furnitures[Furniture.FRIDGE]); break;
+            case 'Z7': data.valueCopy(Logic.furnitures[Furniture.WASHING_MACHINE]); break;
+            case 'Z8': data.valueCopy(Logic.furnitures[Furniture.CUPBOARD]); break;
+            case 'Z9': data.valueCopy(Logic.furnitures[Furniture.STOOL]); break;
+            case 'Za': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH]); break;
+            case 'Zb': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_1]); break;
+            case 'Zc': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_2]); break;
+            case 'Zd': data.valueCopy(Logic.furnitures[Furniture.COOKING_BENCH_3]); break;
+            case 'Ze': data.valueCopy(Logic.furnitures[Furniture.BATH]); break;
+            case 'Zf': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE]); break;
+            case 'Zg': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_1]); break;
+            case 'Zh': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_2]); break;
+            default: break;
+        }
+        let save = LocalStorage.getFurnitureData(data.id);
+        data.valueCopy(save);
+        if(!data.purchased){
+            return;
+        }
+        let building:cc.Node;
+        if (mapDataStr == 'Z3') {
+            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
+        }else if (mapDataStr == 'Z4') {
+            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSOFA), indexPos);
+        } else if (mapDataStr == 'Z9') {
+            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
+            building.getComponent(RoomStool).init(indexPos, dungeon);
+        } else {
+            building = this.addBuilding(Logic.getBuildings(BuildingManager.FURNITURE), indexPos);
+        }
+        let script = building.getComponent(Furniture);
+        script.init(data);
+    }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let hitBuilding: cc.Node;
@@ -651,23 +697,6 @@ export default class BuildingManager extends BaseManager {
         let colliderExtrude = 0;
         switch (mapDataStr) {
             case 'H0': resName = 'car'; equipmentNames = ['shield001']; itemNames = []; maxhealth = 5; scale = 8; colliderExtrude = 3; break;
-            case 'Z2': resName = 'roomdesk'; scale = 6; break;
-            case 'Z3': resName = 'roomtv'; scale = 6; break;
-            case 'Z4': resName = 'roomsofa'; scale = 10; colliderExtrude = 2; break;
-            case 'Z5': resName = 'roomtable'; scale = 10; colliderExtrude = 4; break;
-            case 'Z6': resName = 'roomfridge'; scale = 6; colliderExtrude = 7; break;
-            case 'Z7': resName = 'roomwash'; colliderExtrude = 1; break;
-            case 'Z8': resName = 'roomcupboard'; equipmentNames = ['weapon007']; itemNames = []; maxhealth = 20; scale = 6; colliderExtrude = 2; break;
-            case 'Z9': resName = 'roomstool'; break;
-            case 'Za': resName = 'roomkitchentable'; scale = 6; colliderExtrude = 2; break;
-            case 'Zb': resName = 'roomkitchentable1'; colliderExtrude = 2; break;
-            case 'Zc': resName = 'roomkitchentable2'; colliderExtrude = 2; break;
-            case 'Zd': resName = 'roomkitchentable3'; colliderExtrude = 2; break;
-            case 'Ze': resName = 'roombath'; colliderExtrude = 2; break;
-            case 'Zf': resName = 'roomlittletable'; colliderExtrude = 6; break;
-            case 'Zg': resName = 'roomlittletable1'; colliderExtrude = 6; break;
-            case 'Zh': resName = 'roomlittletable2'; colliderExtrude = 6; break;
-
             default: break;
         }
         h.init(dungeon, resName, itemNames, equipmentNames, maxhealth, maxhealth, scale, isCustom, colliderExtrude);

@@ -15,7 +15,7 @@ import ItemData from "./ItemData";
 export default class BuildingData {
     defaultPos:cc.Vec3;//默认下标
     position:cc.Vec3;//当前位置
-    isOpen = false;//宝箱是否打开或者建筑物是否触发
+    isOpen = false;//宝箱是否打开或者建筑物是否触发或者家具已经打开
     quality = 1;//宝箱品质
     equipdata:EquipmentData;//携带装备数据
     itemdata:ItemData;//携带物品数据
@@ -29,11 +29,6 @@ export default class BuildingData {
     generatorInterval = 0;
     interact = 0;//是否可以互动拾取
     rollover = 0;//是否翻倒
-
-    package = 0;//是否打包状态
-    bought = 0;//是否购买
-    name = '';
-    
 
     valueCopy(data:BuildingData){
         if(!data){

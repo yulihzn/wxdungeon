@@ -9,6 +9,7 @@ import ExitData from "../Data/ExitData";
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
+import Player from "../Player";
 import Tips from "../UI/Tips";
 import AudioPlayer from "../Utils/AudioPlayer";
 import Building from "./Building";
@@ -24,22 +25,19 @@ export default class SavePoint extends Building {
         this.anim = this.getComponent(cc.Animation);
         this.lights = this.getComponentsInChildren(ShadowOfSight);
         this.tips = this.getComponentInChildren(Tips);
-        this.tips.tipsType = Tips.SAVE_POINT;
-        EventHelper.on(EventHelper.PLAYER_TAPTIPS
-            , (detail) => {
-                if (this.node && detail.tipsType == Tips.SAVE_POINT) {
-                    if (this.isOpen && this.tips.node.active) {
-                        if(detail.player){
-                            Logic.playerData = detail.player.data.clone();
-                        }
-                        Logic.savePonit(this.data.defaultPos);
-                        Logic.resetData();
-                        EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});
-                        AudioPlayer.play(AudioPlayer.EXIT);
-                        Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level));
-                    }
+        this.tips.onInteract((isLongPress:boolean,player:Player)=>{
+            if (this.node) {
+                if(player){
+                    Logic.playerData = player.data.clone();
                 }
-            });
+                Logic.savePonit(this.data.defaultPos);
+                Logic.resetData();
+                EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});
+                AudioPlayer.play(AudioPlayer.EXIT);
+                Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level));
+            
+            }
+        });
 
     }
     start() {

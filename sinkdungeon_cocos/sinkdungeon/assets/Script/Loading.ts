@@ -54,6 +54,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.loadNonplayer();
         this.loadingManager.loadBuildings();
         this.loadingManager.loadSuits();
+        this.loadingManager.loadFurnitures();
         this.showLoadingLabel();
         //显示过场
         if (Logic.isFirst == 1) {

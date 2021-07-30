@@ -7,7 +7,6 @@
 
 import ShadowOfSight from "../Effect/ShadowOfSight";
 import Logic from "../Logic";
-import Player from "../Player";
 import AudioPlayer from "../Utils/AudioPlayer";
 import Building from "./Building";
 
@@ -31,7 +30,7 @@ export default class RoomTv extends Building {
     }
     // update (dt) {}
 
-    open() {
+    private open() {
         this.isOpen = true;
         if (this.lights) {
             for (let light of this.lights) {
@@ -52,7 +51,7 @@ export default class RoomTv extends Building {
             }
         }, 0.5)
     }
-    close() {
+    private close() {
         this.isOpen = false;
         if (this.lights) {
             for (let light of this.lights) {
@@ -67,19 +66,11 @@ export default class RoomTv extends Building {
             this.anim.play('RoomTvClosedIdle');
         }, 0.5)
     }
-
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-
-        let player = other.node.getComponent(Player);
-        if (player) {
-            this.open();
-        }
-    }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-
-        let player = other.node.getComponent(Player);
-        if (player) {
+    public interact(){
+        if(this.isOpen){
             this.close();
+        }else{
+            this.open();
         }
     }
 }
