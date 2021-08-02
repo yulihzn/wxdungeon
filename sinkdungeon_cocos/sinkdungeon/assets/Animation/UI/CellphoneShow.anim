@@ -1,0 +1,165 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "CellphoneShow",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.1666666666666667,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "cellphoneicon": {
+        "props": {
+          "scale": [
+            {
+              "frame": 0,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.2,
+                "y": 0.2
+              }
+            },
+            {
+              "frame": 1,
+              "value": {
+                "__type__": "cc.Vec2",
+                "x": 0.5,
+                "y": 0.5
+              }
+            }
+          ],
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                -4,
+                8,
+                0
+              ]
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": [
+                -4,
+                8,
+                0
+              ]
+            },
+            {
+              "frame": 1,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 255
+            },
+            {
+              "frame": 1,
+              "value": 255
+            },
+            {
+              "frame": 1.1666666666666667,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "bg": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 255
+            }
+          ]
+        }
+      }
+    },
+    "props": {
+      "scale": [
+        {
+          "frame": 0,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 2,
+            "y": 2
+          }
+        },
+        {
+          "frame": 0.5,
+          "value": {
+            "__type__": "cc.Vec2",
+            "x": 30,
+            "y": 30
+          }
+        }
+      ],
+      "position": [
+        {
+          "frame": 0,
+          "value": [
+            -610,
+            180,
+            0
+          ]
+        },
+        {
+          "frame": 0.5,
+          "value": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    "comps": {
+      "cc.Sprite": {
+        "spriteFrame": [
+          {
+            "frame": 0,
+            "value": {
+              "__uuid__": "af5ddea0-cdbf-4924-93da-288ee19cf691"
+            }
+          },
+          {
+            "frame": 0.5166666666666667,
+            "value": {
+              "__uuid__": "0065ab52-b838-4d2b-b5f8-7e52f5bfdb3f"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 1,
+      "func": "ShowItem",
+      "params": []
+    }
+  ]
+}

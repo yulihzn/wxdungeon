@@ -108,13 +108,7 @@ export default class ShadowOfSight extends cc.Component {
                 this.ray.lineWidth = 10;
                 this.ray.fillColor = this.renderColor;
                 let center = this.circleCollider.offset;
-                //只有圆的话绘制多级
-                if (onlyCircle) {
-                    this.ray.circle(center.x, center.y, this.getRadius());
-                    this.ray.circle(center.x, center.y, this.getRadius() * 0.4);
-                } else {
-                    this.ray.circle(center.x, center.y, this.getRadius());
-                }
+                this.ray.circle(center.x, center.y, this.getRadius());
                 this.ray.fill();
                 let sp = camera.getWorldToScreenPoint(pos);
                 this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
