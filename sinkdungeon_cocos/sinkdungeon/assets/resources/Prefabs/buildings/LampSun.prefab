@@ -275,7 +275,7 @@
       "r": 155,
       "g": 243,
       "b": 255,
-      "a": 82
+      "a": 255
     },
     "showLight": true,
     "showRayCast": false,

@@ -51,7 +51,7 @@ export default class ShadowOfSight extends cc.Component {
         this.circleCollider = this.getComponent(cc.CircleCollider);
     }
     /** 绘制视野区域 */
-    renderSightArea(cameraOffset: cc.Vec2): void {
+    renderSightArea(camera: cc.Camera): void {
         let pos = this.node.convertToWorldSpaceAR(cc.v2(0, 0));
         let size = 20;
         let delta = 0.1;
@@ -67,9 +67,9 @@ export default class ShadowOfSight extends cc.Component {
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);
             if (this.showRayCast) {
-                this.drawRayByNum(pos, cameraOffset, this.showLight);
-            }else{
-                this.drawCustom(pos, cameraOffset,this.showLight);
+                this.drawRayByNum(pos, camera, this.showLight);
+            } else {
+                this.drawCustom(pos, camera, this.showLight);
             }
         }
     }
@@ -77,7 +77,7 @@ export default class ShadowOfSight extends cc.Component {
         this.showShadow = showShadow;
     }
     /**自定义形状 读取collider来绘制，主要用于环境光线不具备交互 */
-    drawCustom(pos: cc.Vec2, cameraOffset: cc.Vec2,renderLight: boolean) {
+    drawCustom(pos: cc.Vec2, camera: cc.Camera, renderLight: boolean) {
         this.ray.lineWidth = 10;
         this.ray.fillColor = this.renderColor;
         let onlyCircle = true;
@@ -97,7 +97,8 @@ export default class ShadowOfSight extends cc.Component {
             if (renderLight) {
                 this.ray.close();
                 this.ray.fill();
-                this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
+                let sp = camera.getWorldToScreenPoint(pos);
+                this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
             }
         }
         if (this.circleCollider && this.circleCollider.radius > 0) {
@@ -109,29 +110,21 @@ export default class ShadowOfSight extends cc.Component {
                 let center = this.circleCollider.offset;
                 //只有圆的话绘制多级
                 if (onlyCircle) {
-                    this.ray.fillColor = this.renderColor.clone().setA(this.renderColor.a * 0.1);
                     this.ray.circle(center.x, center.y, this.getRadius());
-                    this.ray.fillColor = this.renderColor.clone().setA(this.renderColor.a * 0.2);
-                    this.ray.circle(center.x, center.y, this.getRadius() * 0.8);
-                    this.ray.fillColor = this.renderColor.clone().setA(this.renderColor.a * 0.3);
-                    this.ray.circle(center.x, center.y, this.getRadius() * 0.6);
-                    this.ray.fillColor = this.renderColor.clone().setA(this.renderColor.a * 0.4);
                     this.ray.circle(center.x, center.y, this.getRadius() * 0.4);
-                    this.ray.fillColor = this.renderColor.clone().setA(this.renderColor.a * 0.5);
-                    this.ray.circle(center.x, center.y, this.getRadius() * 0.2);
-
                 } else {
                     this.ray.circle(center.x, center.y, this.getRadius());
                 }
                 this.ray.fill();
-                this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
+                let sp = camera.getWorldToScreenPoint(pos);
+                this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
             }
         }
 
 
     }
     /** 圆形辐射线 主要用于篝火 通过射线数量绘制辐射线 */
-    drawRayByNum(pos: cc.Vec2, cameraOffset: cc.Vec2, renderLight: boolean): void {
+    drawRayByNum(pos: cc.Vec2, camera: cc.Camera, renderLight: boolean): void {
         if (!this.circleCollider || this.circleCollider.radius <= 0) {
             return;
         }
@@ -181,33 +174,35 @@ export default class ShadowOfSight extends cc.Component {
                 this.ray.fill();
 
             }
-            this.updateMat(this.mat, cc.v2(pos.x - cameraOffset.x, pos.y - cameraOffset.y));
-        }
-    }
-   
-    private getRadius(): number {
-        return this.radius + this.offset;
-    }
-    get radius(){
-        if(this.circleCollider){
-            return this.circleCollider.radius;
-        }
-        return 0;
-    }
-    set radius(r:number){
-        if(this.circleCollider){
-            this.circleCollider.radius=r;
+            let sp = camera.getWorldToScreenPoint(pos);
+            this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
         }
     }
 
-    private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2) {
+    private getRadius(): number {
+        return this.radius + this.offset;
+    }
+    get radius() {
+        if (this.circleCollider&&!this.polygonCollider) {
+            return this.circleCollider.radius;
+        }else{
+            return this.node.width/2;
+        }
+    }
+    set radius(r: number) {
+        if (this.circleCollider) {
+            this.circleCollider.radius = r;
+        }
+    }
+
+    private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2,zoomRatio:number) {
         let canvasSize = cc.view.getCanvasSize();
         let visibleSize = cc.view.getVisibleSize();
         let visibleRatio = visibleSize.width / visibleSize.height;
         let r = this.getRadius() / visibleSize.height;
         let scale = canvasSize.width / visibleSize.width;
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
-        mat.setProperty("maxRadius", r);
+        mat.setProperty("maxRadius", r*zoomRatio);
         mat.setProperty("whRatio", visibleRatio);
         mat.setProperty('isRayCast', this.showRayCast);
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);

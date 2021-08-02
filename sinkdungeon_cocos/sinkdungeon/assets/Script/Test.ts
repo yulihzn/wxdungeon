@@ -24,6 +24,9 @@ export default class Test extends cc.Component {
     private mat1: cc.MaterialVariant;
     radius = 200;
     playerPos: cc.Vec2 = cc.v2(640, 360);
+    private zoomArr = [1,0.5];
+    private index = 0;
+    private isRayCast = true;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -39,14 +42,25 @@ export default class Test extends cc.Component {
         }, this)
         
         
-        this.ray.fillColor = cc.color(0,255,0,255);
-        this.ray.rect(-500,-500,1000,1000);
-        this.ray.fill();
-        this.ray.fillColor = cc.color(255,255,255,255);
-        this.ray.rect(200,0,100,100);
-        this.ray.fill();
-        this.ray.circle(0,0,200);
-        this.ray.fill();
+        // this.ray.fillColor = cc.color(0,255,0,255);
+        // this.ray.rect(-500,-500,1000,1000);
+        // this.ray.fill();
+        // this.ray.fillColor = cc.color(255,255,255,255);
+        // this.ray.rect(200,0,100,100);
+        // this.ray.fill();
+        // this.ray.circle(0,0,200);
+        // this.ray.fill();
+    }
+    changeZoom(){
+        if(this.camera){
+            this.camera.zoomRatio = this.zoomArr[this.index++];
+            if(this.index>this.zoomArr.length-1){
+                this.index = 0;
+            }
+        }
+    }
+    changeRayCast(){
+        this.isRayCast = !this.isRayCast;
     }
 
     start() {
@@ -64,35 +78,47 @@ export default class Test extends cc.Component {
         let p = this.graphics.node.convertToNodeSpaceAR(pos);
         this.graphics.clear();
         this.graphics.fillColor = cc.color(0, 255, 0);
-        // this.graphics.circle(p.x, p.y, this.radius);
+        this.graphics.circle(p.x, p.y, this.radius);
         // this.graphics.rect(p.x-this.radius,p.y-this.radius,this.radius*2,this.radius*2);
-        this.graphics.moveTo(p.x-this.radius/4,p.y);
-        this.graphics.lineTo(p.x-this.radius,p.y-this.radius);
-        this.graphics.lineTo(p.x+this.radius,p.y-this.radius);
-        this.graphics.lineTo(p.x+this.radius/4,p.y);
-        this.graphics.close();
+        // this.graphics.moveTo(p.x-this.radius/4,p.y);
+        // this.graphics.lineTo(p.x-this.radius,p.y-this.radius);
+        // this.graphics.lineTo(p.x+this.radius,p.y-this.radius);
+        // this.graphics.lineTo(p.x+this.radius/4,p.y);
+        // this.graphics.close();
         this.graphics.fill();
-        this.graphics.node.width = this.radius * 2;
-        this.graphics.node.height = this.radius * 2;
+        // this.graphics.node.width = this.radius * 2;
+        // this.graphics.node.height = this.radius * 2;
     }
     private updateMat(mat: cc.MaterialVariant, pos: cc.Vec2,rayRadius:number) {
+        //画布宽高
         let canvasSize = cc.view.getCanvasSize();
+        //视图宽高
         let visibleSize = cc.view.getVisibleSize();
+        //视图比例
         let visibleRatio = visibleSize.width /visibleSize.height;
+        //半径归一化
         let r = rayRadius / visibleSize.height;
+        //实际缩放比例
         let scale = canvasSize.width / visibleSize.width;
+        //传入画布宽高和视图比例计算对应的半径透明度，比例是为了画布防止宽高变形
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
-        mat.setProperty("maxRadius", r);
+        mat.setProperty("maxRadius", r*this.camera.zoomRatio);
         mat.setProperty("whRatio", visibleRatio);
-        mat.setProperty("isRayCast",false);
+        mat.setProperty("isRayCast",this.isRayCast);
+        //相机为原地的坐标归一化
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);
+        //因为shader取值是-1到1，而这里换算成比例是0到1，也就是0.5,0.5对应坐标中点(0,0) ，又因为考虑到即使横屏情况下，screen高度也可能比宽度大，
+        //y轴超过0.5的部分要先换算为画布下的比例，
+        //再根据y是否大于0.5判断点的位置是否要减去或加上这个新的长度
         let y = Math.abs(lightPos.y - 0.5) * visibleSize.height * scale / canvasSize.height;
         mat.setProperty("lightPos", cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y));
     }
 
     lateUpdate(dt) {
         this.render(this.playerPos);
-        this.updateMat(this.mat, cc.v2(this.playerPos.x - this.camera.node.x, this.playerPos.y - this.camera.node.y),this.radius);
-        // this.updateMat(this.mat1, cc.v2(this.playerPos.x - this.camera.node.x, this.playerPos.y - this.camera.node.y),250);
+        //传入的世界坐标减去相机的坐标得到对于相机为原点的坐标
+        let pos = this.camera.getWorldToScreenPoint(this.playerPos)
+        // this.updateMat(this.mat, cc.v2(this.playerPos.x - this.camera.node.x, this.playerPos.y - this.camera.node.y),this.radius);
+        this.updateMat(this.mat, cc.v2(pos.x,pos.y),this.radius);
     }
 }

@@ -39,7 +39,7 @@ export default class LightManager extends BaseManager {
         for (let i = 0; i < LightManager.lightList.length; i++) {
             let light = LightManager.lightList[i];
             if (light) {
-                light.renderSightArea(cc.v2(this.camera.node.x, this.camera.node.y));
+                light.renderSightArea(this.camera);
                 this.renderRay(light, i == 0, this.shadowRay);
             }
         }

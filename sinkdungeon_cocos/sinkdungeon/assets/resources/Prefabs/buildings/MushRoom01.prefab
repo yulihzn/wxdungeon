@@ -910,8 +910,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 500,
-      "height": 500
+      "width": 800,
+      "height": 800
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -963,7 +963,7 @@
       "r": 86,
       "g": 161,
       "b": 249,
-      "a": 80
+      "a": 105
     },
     "showLight": true,
     "showRayCast": false,

@@ -776,5 +776,15 @@
         "avoidDeath": 1,
         "common": {
         }
+    },
+    "status066": {
+        "nameCn": "篝火回复",
+        "nameEn": "recovery",
+        "spriteFrameName": "iconhealthrecovery",
+        "id": 66,
+        "desc": "",
+        "duration": 5,
+        "realDamageOvertime": -1,
+        "common": {}
     }
 }

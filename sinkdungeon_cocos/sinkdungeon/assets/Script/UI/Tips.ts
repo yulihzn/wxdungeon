@@ -18,6 +18,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Tips extends cc.Component {
     private interactCallback: Function;
+    private enterCallback:Function;
+    private exitCallback:Function;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -35,15 +37,26 @@ export default class Tips extends cc.Component {
     onInteract(callback: Function) {
         this.interactCallback = callback;
     }
-
+    onEnter(callback:Function){
+        this.enterCallback = callback;
+    }
+    onExit(callback:Function){
+        this.exitCallback = callback;
+    }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         if (other.tag == ColliderTag.PLAYER) {
             this.node.opacity = 255;
+            if(this.enterCallback){
+                this.enterCallback(other.node);
+            }
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         if (other.tag == ColliderTag.PLAYER) {
             this.node.opacity = 0;
+            if(this.exitCallback){
+                this.exitCallback(other.node);
+            }
         }
     }
     // update (dt) {}

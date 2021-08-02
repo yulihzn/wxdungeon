@@ -668,19 +668,15 @@
     "ray": {
       "__id__": 21
     },
-    "rayRadius": 300,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 249,
       "g": 216,
       "b": 86,
-      "a": 40
+      "a": 103
     },
     "showLight": true,
     "showRayCast": false,
-    "isCircle": true,
-    "isSector": false,
-    "isCustom": false,
     "fromSky": false,
     "_id": ""
   },
