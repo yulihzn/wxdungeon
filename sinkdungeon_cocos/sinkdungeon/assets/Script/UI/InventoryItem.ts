@@ -15,7 +15,6 @@ import InventoryDialog from "./dialog/InventoryDialog";
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-//交互作用的提示,依托于父组件不能独立放置
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -35,9 +34,6 @@ export default class InventoryItem extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.node.on(cc.Node.EventType.TOUCH_START, (event: cc.Event.EventTouch) => {
-        }, this)
-
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             if (this.isSelect && this.index == this.dialog.currentSelectIndex) {
                 this.isSelect = false;
@@ -51,8 +47,6 @@ export default class InventoryItem extends cc.Component {
 
         }, this)
 
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {
-        }, this)
     }
     init(inventoryDialog: InventoryDialog, index: number, data: InventoryData) {
         this.dialog = inventoryDialog;
