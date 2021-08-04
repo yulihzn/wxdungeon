@@ -50,7 +50,7 @@ export default class InteractBuilding extends Building {
     isLift = false;
     isAniming = false;
     private hasTargetMap: { [key: string]: number } = {};
-    private rigidBody:cc.RigidBody
+    private rigidBody: cc.RigidBody
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.shadow = this.node.getChildByName('shadow');
@@ -108,7 +108,7 @@ export default class InteractBuilding extends Building {
         }
         this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.node.scaleX);
         this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.node.scaleY);
-        this.mat.setProperty('outlineColor', cc.color(200,200,200));
+        this.mat.setProperty('outlineColor', cc.color(200, 200, 200));
         this.sprite.node.angle = this.data.rollover > 0 ? 90 : 0;
     }
 
@@ -133,7 +133,8 @@ export default class InteractBuilding extends Building {
             return;
         }
         this.data.currentHealth -= damage.getTotalDamage();
-        AudioPlayer.play(AudioPlayer.MONSTER_HIT);
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         if (this.data.currentHealth > 0) {
             this.hitLight(true);
             this.scheduleOnce(() => {
@@ -246,9 +247,9 @@ export default class InteractBuilding extends Building {
         AudioPlayer.play(AudioPlayer.MELEE);
         this.updateCollider();
         this.beatBack(this.node, this.player.Hv.clone(), this.isLift ? 2000 : 3000);
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
-        },this.isLift?0.5:0)
+        }, this.isLift ? 0.5 : 0)
         if (this.isLift) {
             cc.tween(this.sprite.node)
                 .to(0.2, { position: cc.v3(0, 128) })
@@ -276,8 +277,8 @@ export default class InteractBuilding extends Building {
         let o = 64;
         if (this.isLift) {
             let p1 = this.node.parent.convertToNodeSpaceAR(this.player.weaponLeft.meleeWeapon.node.convertToWorldSpaceAR(cc.v3(-o / 2, 0)));
-            let p2 = this.node.parent.convertToNodeSpaceAR(this.player.weaponLeft.meleeWeapon.node.convertToWorldSpaceAR(cc.v3(o,0)));
-            cc.tween(this.sprite.node).to(0.2, { position: cc.v3(0, 64)}).call(() => {
+            let p2 = this.node.parent.convertToNodeSpaceAR(this.player.weaponLeft.meleeWeapon.node.convertToWorldSpaceAR(cc.v3(o, 0)));
+            cc.tween(this.sprite.node).to(0.2, { position: cc.v3(0, 64) }).call(() => {
                 this.isAttacking = true;
             }).to(0.1, { position: cc.v3(0, 96) }).to(0.1, { position: cc.v3(0, 0) })
                 .call(() => {
@@ -315,8 +316,8 @@ export default class InteractBuilding extends Building {
     }
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
         if (other.tag != ColliderTag.PLAYER && this.player && this.isTaken && this.isAttacking) {
-            if(other.tag == ColliderTag.BUILDING||other.tag == ColliderTag.WALL||other.tag == ColliderTag.WALL_TOP){
-                if(this.isThrowing){
+            if (other.tag == ColliderTag.BUILDING || other.tag == ColliderTag.WALL || other.tag == ColliderTag.WALL_TOP) {
+                if (this.isThrowing) {
                     this.rigidBody.linearVelocity = cc.Vec2.ZERO;
                 }
             }
@@ -327,7 +328,7 @@ export default class InteractBuilding extends Building {
                 this.hasTargetMap[other.node.uuid] = 1;
                 return this.attacking(other);
             }
-            
+
         }
     }
     private updatePosition() {
@@ -402,7 +403,7 @@ export default class InteractBuilding extends Building {
             common = this.player.data.FinalCommon;
         }
         damage.isMelee = true;
-        damage.physicalDamage += this.isThrowing?5:3;
+        damage.physicalDamage += this.isThrowing ? 5 : 3;
         let damageSuccess = false;
         let attackSuccess = false;
         if (attackTarget.tag == ColliderTag.NONPLAYER) {
@@ -461,5 +462,5 @@ export default class InteractBuilding extends Building {
     private addTargetStatus(rate: number, target: Actor, statusType) {
         if (Logic.getRandomNum(0, 100) < rate) { target.addStatus(statusType, new FromData()); }
     }
-    
+
 }

@@ -276,6 +276,7 @@ export default class GameHud extends cc.Component {
     }
     //button
     pauseGame(): void {
+        AudioPlayer.play(AudioPlayer.SELECT);
         this.showSettingsDialog();
     }
     showInventoryDialog() {

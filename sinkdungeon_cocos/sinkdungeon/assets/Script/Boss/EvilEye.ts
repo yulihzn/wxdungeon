@@ -9,6 +9,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import FromData from "../Data/FromData";
 import Achievement from "../Achievement";
 import ActorUtils from "../Utils/ActorUtils";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -69,9 +70,9 @@ export default class EvilEye extends Boss {
         this.viceShooters.push(this.node.getChildByName('Shooter4').getComponent(Shooter));
         this.viceShooters.push(this.node.getChildByName('Shooter5').getComponent(Shooter));
         this.viceShooters.push(this.node.getChildByName('Shooter6').getComponent(Shooter));
-        let from = FromData.getClone(this.actorName(),'evileyeeye');
+        let from = FromData.getClone(this.actorName(), 'evileyeeye');
         this.shooter.from.valueCopy(from);
-        for(let vice of this.viceShooters){
+        for (let vice of this.viceShooters) {
             vice.from.valueCopy(from);
         }
     }
@@ -84,7 +85,7 @@ export default class EvilEye extends Boss {
         if (this.sc.isDied || !this.sc.isShow || this.anim.getAnimationState('EvilEyeHurt').isPlaying) {
             return false;
         }
-        
+
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
@@ -96,7 +97,8 @@ export default class EvilEye extends Boss {
             this.anim.play("EvilEyeHurt");
             this.scheduleOnce(() => { this.anim.play('EvilEyeBite') }, 2.5)
         }
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
     }
 
@@ -105,7 +107,7 @@ export default class EvilEye extends Boss {
             return;
         }
         Achievement.addMonsterKillAchievement(this.data.resName);
-        cc.tween(this.node).to(3,{opacity:0}).start();
+        cc.tween(this.node).to(3, { opacity: 0 }).start();
         this.sc.isDied = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
@@ -151,18 +153,18 @@ export default class EvilEye extends Boss {
         return pos;
     }
 
-    fireWithViceEyes(isHalf:boolean) {
+    fireWithViceEyes(isHalf: boolean) {
         this.viceEyesFireSkill.next(() => {
             this.viceEyesFireSkill.IsExcuting = true;
-            this.scheduleOnce(()=>{this.viceEyesFireSkill.IsExcuting = false;},2);
-            if(isHalf){
-                this.schedule(()=>{this.fireViceBullet();},0.5,2,0);
-            }else{
+            this.scheduleOnce(() => { this.viceEyesFireSkill.IsExcuting = false; }, 2);
+            if (isHalf) {
+                this.schedule(() => { this.fireViceBullet(); }, 0.5, 2, 0);
+            } else {
                 this.fireViceBullet();
             }
         }, 3);
     }
-    fireViceBullet(){
+    fireViceBullet() {
         for (let i = 0; i < this.viceShooters.length; i++) {
             let p = this.viceEyes[i].convertToWorldSpaceAR(cc.v3(0, 0));
             p = this.node.convertToNodeSpaceAR(p);
@@ -173,14 +175,14 @@ export default class EvilEye extends Boss {
                 hv = hv.normalizeSelf();
                 this.viceShooters[i].setHv(hv);
                 this.fireShooter(this.viceShooters[i], 'bullet101', 0, 0, 0, cc.v3(0, 0));
-                
+
             }
         }
     }
     fireWithMainEye() {
         this.mainEyesFireSkill.next(() => {
             this.mainEyesFireSkill.IsExcuting = true;
-            this.scheduleOnce(()=>{this.mainEyesFireSkill.IsExcuting = false;},3);
+            this.scheduleOnce(() => { this.mainEyesFireSkill.IsExcuting = false; }, 3);
             let p = this.shooter.node.convertToWorldSpaceAR(cc.v3(0, 0));
             p = this.node.convertToNodeSpaceAR(p);
             this.shooter.node.setPosition(p);
@@ -198,7 +200,7 @@ export default class EvilEye extends Boss {
     }
     dash() {
         this.dashSkill.next(() => {
-            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             this.dashSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
@@ -242,7 +244,7 @@ export default class EvilEye extends Boss {
         }
         return false;
     }
-    updateLogic(dt:number) {
+    updateLogic(dt: number) {
         this.timeDelay += dt;
         if (this.timeDelay > 1) {
             this.timeDelay = 0;
@@ -283,13 +285,13 @@ export default class EvilEye extends Boss {
         if (target && (this.dashSkill.IsExcuting)) {
             let d = new DamageData();
             d.physicalDamage = 15;
-            let from = FromData.getClone(this.actorName(),'evileyeeye');
-            if(target.takeDamage(d,from,this)){
-                target.addStatus(StatusManager.BLEEDING,from);
+            let from = FromData.getClone(this.actorName(), 'evileyeeye');
+            if (target.takeDamage(d, from, this)) {
+                target.addStatus(StatusManager.BLEEDING, from);
             }
         }
     }
-    actorName(){
+    actorName() {
         return '邪眼';
     }
 }

@@ -55,13 +55,13 @@ export default class WarMachine extends Boss {
         this.shooter05 = this.node.getChildByName('Shooter05').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
-        let from = FromData.getClone(this.actorName(),'bossmachinehead');
+        let from = FromData.getClone(this.actorName(), 'bossmachinehead');
         this.shooter01.from.valueCopy(from);
         this.shooter02.from.valueCopy(from);
         this.shooter03.from.valueCopy(from);
         this.shooter04.from.valueCopy(from);
         this.shooter05.from.valueCopy(from);
-        
+
     }
 
     start() {
@@ -71,13 +71,14 @@ export default class WarMachine extends Boss {
         if (this.sc.isDied || !this.sc.isShow) {
             return false;
         }
-       
+
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
     }
 
@@ -85,7 +86,7 @@ export default class WarMachine extends Boss {
         if (this.sc.isDied) {
             return;
         }
-        if(this.anim){
+        if (this.anim) {
             this.anim.pause();
         }
         Achievement.addMonsterKillAchievement(this.data.resName);
@@ -115,11 +116,11 @@ export default class WarMachine extends Boss {
             this.actionCount++;
             let pos = cc.v3(1, 0);
             if (this.actionCount > 10) {
-                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 pos = cc.v3(-1, 0);
             }
             if (this.actionCount > 20) {
-                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.actionCount = 0;
             }
             if (!pos.equals(cc.Vec3.ZERO)) {
@@ -136,7 +137,7 @@ export default class WarMachine extends Boss {
         }
 
     }
-    initGuns(){
+    initGuns() {
         this.isMainGunCoolDown = false;
         this.isGatlingCoolDown = false;
         this.isMissileCoolDown = false;
@@ -161,14 +162,14 @@ export default class WarMachine extends Boss {
         this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 10);
     }
     //Anim
-    MainGunShootFinish(){
+    MainGunShootFinish() {
         this.shooter01.setHv(cc.v3(0, -1));
         let pos = this.node.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter01.setHv(hv);
-            this.fireShooter(this.shooter01, "bullet016", 0, 0,0,cc.v3(48,0));
+            this.fireShooter(this.shooter01, "bullet016", 0, 0, 0, cc.v3(48, 0));
         }
         this.anim.play('WarMachineIdle');
     }
@@ -182,8 +183,8 @@ export default class WarMachine extends Boss {
         this.shooter02.data.bulletLineInterval = 0.5;
         this.shooter03.data.bulletLineInterval = 0.5;
         let cooldown = 6;
-        let angle = Logic.getRandomNum(0,15);
-        angle = Logic.getHalfChance()?angle:-angle;
+        let angle = Logic.getRandomNum(0, 15);
+        angle = Logic.getHalfChance() ? angle : -angle;
         if (isHalf) {
             this.fireShooter(this.shooter02, "bullet111", 0, 4);
             this.fireShooter(this.shooter03, "bullet111", 0, 4);
@@ -201,19 +202,19 @@ export default class WarMachine extends Boss {
         this.isMissileCoolDown = true;
         this.shooter04.setHv(cc.v3(0, -1));
         this.shooter05.setHv(cc.v3(0, -1));
-        this.shooter04.data.bulletLineInterval=0.5;
-        this.shooter05.data.bulletLineInterval=0.5;
-        this.fireShooter(this.shooter04, "bullet015", 2, isHalf?1:0);
-        this.fireShooter(this.shooter05, "bullet015", 2, isHalf?1:0);
-        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, isHalf?8:16);
+        this.shooter04.data.bulletLineInterval = 0.5;
+        this.shooter05.data.bulletLineInterval = 0.5;
+        this.fireShooter(this.shooter04, "bullet015", 2, isHalf ? 1 : 0);
+        this.fireShooter(this.shooter05, "bullet015", 2, isHalf ? 1 : 0);
+        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, isHalf ? 8 : 16);
     }
-    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number,angle?:number,defaultPos?: cc.Vec3): void {
+    fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number, defaultPos?: cc.Vec3): void {
         shooter.dungeon = this.dungeon;
         // shooter.setHv(cc.v3(0, -1))
         shooter.data.bulletType = bulletType;
         shooter.data.bulletArcExNum = bulletArcExNum;
         shooter.data.bulletLineExNum = bulletLineExNum;
-        shooter.fireBullet(angle,defaultPos);
+        shooter.fireBullet(angle, defaultPos);
     }
     showBoss() {
         this.initGuns();
@@ -232,7 +233,7 @@ export default class WarMachine extends Boss {
         }
         return false;
     }
-    updateLogic(dt:number) {
+    updateLogic(dt: number) {
         this.timeDelay += dt;
         if (this.timeDelay > 1) {
             this.timeDelay = 0;
@@ -264,15 +265,15 @@ export default class WarMachine extends Boss {
         this.isMoving = h != 0 || v != 0;
         this.changeZIndex();
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
-        if(target&&!this.sc.isDied){
+        if (target && !this.sc.isDied) {
             let d = new DamageData();
             d.physicalDamage = 5;
-            target.takeDamage(d,FromData.getClone(this.actorName(),'bossmachinehead'),this);
+            target.takeDamage(d, FromData.getClone(this.actorName(), 'bossmachinehead'), this);
         }
     }
-    actorName(){
+    actorName() {
         return '战争机器';
     }
 }

@@ -12,6 +12,7 @@ import AreaOfEffectData from "../Data/AreaOfEffectData";
 import IndexZ from "../Utils/IndexZ";
 import ActorUtils from "../Utils/ActorUtils";
 import MagicIce from "../Talent/MagicIce";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -42,7 +43,7 @@ export default class IceDemon extends Boss {
     groundThron: cc.Prefab = null;
     @property(cc.Prefab)
     selfThron: cc.Prefab = null;
-    thronPool:cc.NodePool;
+    thronPool: cc.NodePool;
     @property(MagicIce)
     magicice: MagicIce = null;
     // LIFE-CYCLE CALLBACKS:
@@ -60,7 +61,7 @@ export default class IceDemon extends Boss {
     start() {
         super.start();
     }
-  
+
     takeDamage(damage: DamageData): boolean {
         if (this.sc.isDied || !this.sc.isShow) {
             return false;
@@ -76,7 +77,8 @@ export default class IceDemon extends Boss {
         if (this.defenceSkill.IsExcuting) {
             AudioPlayer.play(AudioPlayer.BOSS_ICEDEMON_HIT);
         } else {
-            AudioPlayer.play(AudioPlayer.MONSTER_HIT);
+            let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+            AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         }
         return true;
     }
@@ -86,7 +88,7 @@ export default class IceDemon extends Boss {
             return;
         }
         Achievement.addMonsterKillAchievement(this.data.resName);
-        cc.tween(this.node).to(3,{opacity:0}).start();
+        cc.tween(this.node).to(3, { opacity: 0 }).start();
         this.sc.isDied = true;
         this.anim.play('IceDemonDefence');
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
@@ -105,7 +107,7 @@ export default class IceDemon extends Boss {
         if (playerDis < 100) {
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
         }
-        if(isHalf&&!this.magicice.isShow&&!this.defenceSkill.IsInCooling){
+        if (isHalf && !this.magicice.isShow && !this.defenceSkill.IsInCooling) {
             this.magicice.showIce();
         }
         if (playerDis < 200 && !this.defenceSkill.IsExcuting && !this.meleeSkill.IsExcuting && !this.thronSkill.IsExcuting && !this.dashSkill.IsExcuting) {
@@ -161,7 +163,7 @@ export default class IceDemon extends Boss {
                     d.physicalDamage = 3;
                     this.shooter.dungeon = this.dungeon;
                     this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
-                        .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), true, true, true,false, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
+                        .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), true, true, true, false, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0, null, true);
 
                 }
                 count++;
@@ -185,7 +187,7 @@ export default class IceDemon extends Boss {
                         d.physicalDamage = 3;
                         this.shooter.dungeon = this.dungeon;
                         this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
-                            .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), true, true, true,false, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0,null,true);
+                            .init(0, 2, 0.4, 4, IndexZ.getActorZIndex(Dungeon.getPosInMap(ps[i])), true, true, true, false, true, d, FromData.getClone('冰刺', 'bossicethron02'), [StatusManager.FROZEN]), Dungeon.getPosInMap(ps[i]).subSelf(this.getCenterPosition()), 0, null, true);
 
 
                     }
@@ -200,14 +202,14 @@ export default class IceDemon extends Boss {
         this.scheduleOnce(() => { AudioPlayer.play(AudioPlayer.SKILL_ICETHRON); }, 1);
         const angles = [0, 45, 90, 135, 180, 225, 270, 315];
         const disdance = 40;
-        const posRight = [cc.v3(0,disdance),cc.v3(-disdance/2,disdance/2),cc.v3(-disdance,0),cc.v3(-disdance/2,-disdance/2),cc.v3(0,-disdance),cc.v3(disdance/2,-disdance/2),cc.v3(disdance,0),cc.v3(disdance/2,disdance/2)];
-        const posLeft = [cc.v3(0,-disdance),cc.v3(-disdance/2,-disdance/2),cc.v3(-disdance,0),cc.v3(-disdance/2,disdance/2),cc.v3(0,disdance),cc.v3(disdance/2,disdance/2),cc.v3(disdance,0),cc.v3(disdance/2,-disdance/2)];
+        const posRight = [cc.v3(0, disdance), cc.v3(-disdance / 2, disdance / 2), cc.v3(-disdance, 0), cc.v3(-disdance / 2, -disdance / 2), cc.v3(0, -disdance), cc.v3(disdance / 2, -disdance / 2), cc.v3(disdance, 0), cc.v3(disdance / 2, disdance / 2)];
+        const posLeft = [cc.v3(0, -disdance), cc.v3(-disdance / 2, -disdance / 2), cc.v3(-disdance, 0), cc.v3(-disdance / 2, disdance / 2), cc.v3(0, disdance), cc.v3(disdance / 2, disdance / 2), cc.v3(disdance, 0), cc.v3(disdance / 2, -disdance / 2)];
         let d = new DamageData();
         d.magicDamage = 1;
         for (let i = 0; i < angles.length; i++) {
             this.shooter.dungeon = this.dungeon;
             this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
-        .init(0, 2, 0.4, 3, IndexZ.OVERHEAD, true, true, true,false, true, d, FromData.getClone(this.actorName(), 'bossicepart01'), [StatusManager.FROZEN]),cc.v3(this.isFaceRight?posRight[i]:posLeft[i]),angles[i],null,true);
+                .init(0, 2, 0.4, 3, IndexZ.OVERHEAD, true, true, true, false, true, d, FromData.getClone(this.actorName(), 'bossicepart01'), [StatusManager.FROZEN]), cc.v3(this.isFaceRight ? posRight[i] : posLeft[i]), angles[i], null, true);
         }
     }
     attack() {
@@ -257,7 +259,7 @@ export default class IceDemon extends Boss {
         }, 8, true);
 
     }
-    defence(isHalf:boolean) {
+    defence(isHalf: boolean) {
         this.defenceSkill.next(() => {
             this.defenceSkill.IsExcuting = true;
             if (!this.anim) {
@@ -272,8 +274,8 @@ export default class IceDemon extends Boss {
                 this.data.Common.defence = 0;
                 this.data.Common.magicDefence = 0;
             }, 3);
-            if(isHalf){
-                if(this.magicice.isShow){
+            if (isHalf) {
+                if (this.magicice.isShow) {
                     this.magicice.breakIce();
                 }
                 this.thronSelf();
@@ -306,7 +308,7 @@ export default class IceDemon extends Boss {
         }
         return false;
     }
-    updateLogic(dt:number) {
+    updateLogic(dt: number) {
         this.timeDelay += dt;
         if (this.timeDelay > 1) {
             this.timeDelay = 0;

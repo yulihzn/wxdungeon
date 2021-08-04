@@ -3,6 +3,7 @@ import EquipmentData from "../Data/EquipmentData";
 import FurnitureData from "../Data/FurnitureData";
 import ItemData from "../Data/ItemData";
 import NonPlayerData from "../Data/NonPlayerData";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,19 +54,11 @@ export default class AchievementItem extends cc.Component {
 
         this.node.on(cc.Node.EventType.TOUCH_END, (event: cc.Event.EventTouch) => {
             if (this.node&&this.count > 0) {
+                AudioPlayer.play(AudioPlayer.SELECT);
                 this.achievements.achievementItemDialog.show(this.nonPlayerData, this.itemData, this.equipData,this.furnitureData, this.sprite.spriteFrame);
+            }else{
+                AudioPlayer.play(AudioPlayer.SELECT_FAIL);
             }
-            // if (this.isSelect && this.index == this.achievements.currentItemIndex
-            //     && this.parentIndex == this.achievements.currentListIndex) {
-            //     this.isSelect = false;
-            // } else {
-            //     this.isSelect = this.parentIndex != AchievementItem.TYPE_EMPTY;
-            // }
-            // this.dialog.clearSelect();
-            // if (this.isSelect) {
-            //     this.dialog.showSelect(this);
-            // }
-
         }, this)
 
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, (event: cc.Event.EventTouch) => {

@@ -174,17 +174,19 @@ export default class NonPlayer extends Actor {
         let show = true;
         let resName = 'hitlight1';
         let scale = 8;
+        let punchNames = [AudioPlayer.PUNCH,AudioPlayer.PUNCH1,AudioPlayer.PUNCH2];
+        let swordhitNames = [AudioPlayer.SWORD_HIT,AudioPlayer.SWORD_HIT1,AudioPlayer.SWORD_HIT2];
         if (damage.isFist) {
             resName = Logic.getHalfChance() ? 'hitlight1' : 'hitlight2';
-            AudioPlayer.play(AudioPlayer.PUNCH);
+            AudioPlayer.play(punchNames[Logic.getRandomNum(0,2)]);
         } else if (damage.isRemote) {
             resName = Logic.getHalfChance() ? 'hitlight9' : 'hitlight10';
         } else if (damage.isBlunt) {
             resName = Logic.getHalfChance() ? 'hitlight3' : 'hitlight4';
             scale = damage.isFar ? 10 : 8;
-            AudioPlayer.play(AudioPlayer.SWORD_HIT);
+            AudioPlayer.play(swordhitNames[Logic.getRandomNum(0,2)]);
         } else if (damage.isMelee) {
-            AudioPlayer.play(AudioPlayer.SWORD_HIT);
+            AudioPlayer.play(swordhitNames[Logic.getRandomNum(0,2)]);
             if (damage.isStab) {
                 resName = Logic.getHalfChance() ? 'hitlight5' : 'hitlight6';
                 scale = damage.isFar ? 10 : 8;
@@ -614,7 +616,8 @@ export default class NonPlayer extends Actor {
             this.dangerBox.finish();
         }
         if (isHurting) {
-            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+            let hitNames = [AudioPlayer.MONSTER_HIT,AudioPlayer.MONSTER_HIT1,AudioPlayer.MONSTER_HIT2];
+            AudioPlayer.play(hitNames[Logic.getRandomNum(0,2)]);
             this.hitLight(true);
             this.hitLightS(damageData);
             if (damageData.isBackAttack) {

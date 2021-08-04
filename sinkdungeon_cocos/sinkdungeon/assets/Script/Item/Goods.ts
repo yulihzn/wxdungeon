@@ -1,6 +1,7 @@
 import GoodsData from "../Data/GoodsData";
 import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
+import AudioPlayer from "../Utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,6 +32,7 @@ export default class Goods extends cc.Component {
         this.sprite3 = this.node.getChildByName('sprite3').getComponent(cc.Sprite);
         this.node.on(cc.Node.EventType.TOUCH_END, (event:cc.Event.EventTouch)=>{
             EventHelper.emit(EventHelper.HUD_MART_SHELVES_DIALOG_PAY,{data:this.data});
+            AudioPlayer.play(AudioPlayer.SELECT);
         });
         
     }

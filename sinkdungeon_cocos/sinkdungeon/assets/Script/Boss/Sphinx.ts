@@ -9,6 +9,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import { EventHelper } from "../EventHelper";
 import FromData from "../Data/FromData";
 import Achievement from "../Achievement";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,7 +42,7 @@ export default class Sphinx extends Boss {
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
-        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(),'sphinxhead'));
+        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'sphinxhead'));
     }
 
     start() {
@@ -50,14 +51,15 @@ export default class Sphinx extends Boss {
         if (this.sc.isDied || !this.sc.isShow) {
             return false;
         }
-        
+
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
         this.playHit(this.node.getChildByName('sprite'));
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
     }
 
@@ -80,18 +82,18 @@ export default class Sphinx extends Boss {
 
     }
     summonMonster() {
-        if(this.dungeon.getMonsterAliveNum()>1){
+        if (this.dungeon.getMonsterAliveNum() > 1) {
             return;
         }
         this.summonSkill.next(() => {
-            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             this.summonSkill.IsExcuting = true;
             let pos = Dungeon.getIndexInMap(this.node.position.clone());
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x, pos.y - 1),this.dungeon,true);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x+1, pos.y - 1),this.dungeon,true);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x-1, pos.y - 1),this.dungeon,true);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x-1, pos.y - 2),this.dungeon,true);
-            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x+1, pos.y - 2),this.dungeon,true);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x, pos.y - 1), this.dungeon, true);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x + 1, pos.y - 1), this.dungeon, true);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x - 1, pos.y - 1), this.dungeon, true);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x - 1, pos.y - 2), this.dungeon, true);
+            this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_ANUBIS, cc.v3(pos.x + 1, pos.y - 2), this.dungeon, true);
         }, 15, true);
     }
     fireStorm() {
@@ -135,7 +137,7 @@ export default class Sphinx extends Boss {
         }
         return false;
     }
-    updateLogic(dt:number) {
+    updateLogic(dt: number) {
         this.timeDelay += dt;
         if (this.timeDelay > 1) {
             this.timeDelay = 0;
@@ -149,7 +151,7 @@ export default class Sphinx extends Boss {
         this.healthBar.node.active = !this.sc.isDied;
         this.rigidbody.linearVelocity = cc.Vec2.ZERO;
     }
-    actorName(){
+    actorName() {
         return '斯芬克斯';
     }
 }

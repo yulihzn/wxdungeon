@@ -11,6 +11,7 @@ import FromData from "../Data/FromData";
 import Achievement from "../Achievement";
 import IndexZ from "../Utils/IndexZ";
 import ActorUtils from "../Utils/ActorUtils";
+import Logic from "../Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -35,7 +36,7 @@ export default class Dragon extends Boss {
     fireSkill = new NextStep();
     rainSkill = new NextStep();
     isRainReady = false;
-    physicBox:cc.PhysicsBoxCollider;
+    physicBox: cc.PhysicsBoxCollider;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -43,7 +44,7 @@ export default class Dragon extends Boss {
         this.sc.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
-        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(),'dragonhead'));
+        this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'dragonhead'));
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         this.physicBox = this.getComponent(cc.PhysicsBoxCollider);
@@ -55,13 +56,14 @@ export default class Dragon extends Boss {
         if (this.sc.isDied || !this.sc.isShow || this.rainSkill.IsExcuting) {
             return false;
         }
-        
+
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
     }
 
@@ -109,10 +111,10 @@ export default class Dragon extends Boss {
                 this.rainSkill.IsExcuting = false;
             }, 15);
             this.schedule(() => {
-                this.dungeon.addFallStone(this.dungeon.player.node.position, true,true);
-                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
-                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
-                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true,true);
+                this.dungeon.addFallStone(this.dungeon.player.node.position, true, true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true, true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true, true);
+                this.dungeon.addFallStone(Dungeon.getPosInMap(cc.v3(Random.getRandomNum(0, Dungeon.WIDTH_SIZE - 1), Random.getRandomNum(0, Dungeon.HEIGHT_SIZE - 1))), true, true);
             }, 0.5, 20, 2);
         }, 30)
     }
@@ -186,7 +188,7 @@ export default class Dragon extends Boss {
         }
         return false;
     }
-    updateLogic(dt:number) {
+    updateLogic(dt: number) {
         this.timeDelay += dt;
         if (this.timeDelay > 1) {
             this.timeDelay = 0;
@@ -199,15 +201,15 @@ export default class Dragon extends Boss {
         }
         this.healthBar.node.active = !this.sc.isDied;
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
-        if(target&&!this.sc.isDied && !this.physicBox.sensor){
+        if (target && !this.sc.isDied && !this.physicBox.sensor) {
             let d = new DamageData();
             d.physicalDamage = 3;
-            target.takeDamage(d,FromData.getClone(this.actorName(),'dragonhead'),this);
+            target.takeDamage(d, FromData.getClone(this.actorName(), 'dragonhead'), this);
         }
     }
-    actorName(){
+    actorName() {
         return '末日黑龙';
     }
 }

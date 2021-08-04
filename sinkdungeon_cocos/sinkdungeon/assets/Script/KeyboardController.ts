@@ -59,6 +59,7 @@ export default class KeyboardController extends cc.Component {
             case cc.macro.KEY.d: this.isRight = true; break;
 
             case cc.macro.KEY.i: this.openInventory(); break;
+            case cc.macro.KEY.u: this.openCellphone(); break;
             case cc.macro.KEY.j: this.isA = true; break;
             case cc.macro.KEY.space: this.isB = true; break;
             case cc.macro.KEY.e: this.isC = true; this.touchStart = true; this.scheduleOnce(() => {
@@ -83,6 +84,9 @@ export default class KeyboardController extends cc.Component {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.PLAYER_TRIGGER, { isLongPress: isLongPress });
     }
     private openInventory() {
+        if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW);
+    }
+    private openCellphone() {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW);
     }
     useItem(index: number) {

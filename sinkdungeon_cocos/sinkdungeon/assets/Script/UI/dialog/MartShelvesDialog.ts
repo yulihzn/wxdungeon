@@ -77,10 +77,13 @@ export default class MartShelvesDialog extends BaseDialog {
             AudioPlayer.play(AudioPlayer.CASHIERING);
             cc.director.emit(EventHelper.PLAYER_CHANGEITEM, { detail: { itemData: this.goodsData.item } });
             this.close();
+        }else{
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
         }
     }
     //button
     Cancel(){
+        AudioPlayer.play(AudioPlayer.SELECT);
         this.payNode.active = false;
     }
     // update (dt) {}
@@ -145,6 +148,7 @@ export default class MartShelvesDialog extends BaseDialog {
         }
     }
     close(){
+        AudioPlayer.play(AudioPlayer.SELECT);
         this.fridgeNode.active =false;
         this.spriteNode.active = false;
         this.payNode.active = false;

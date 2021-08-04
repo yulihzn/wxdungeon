@@ -9,6 +9,8 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventHelper } from "../EventHelper";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -24,5 +26,9 @@ export default class Utils {
         for (let n of arr) {
             if (n && n.isValid) { n.destroy(); }
         }
+    }
+    
+    public static toast(msg:string,isCenter?:boolean){
+        EventHelper.emit(EventHelper.HUD_TOAST,{msg:msg,isCenter:isCenter});
     }
 }

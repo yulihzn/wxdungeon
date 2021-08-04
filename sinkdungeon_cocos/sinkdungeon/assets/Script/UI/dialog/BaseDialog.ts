@@ -13,7 +13,7 @@ export default class BaseDialog extends cc.Component {
 
     bg:cc.Node = null;
     dialogBg:cc.Node=null;
-    dismissCallBack:Function;
+    private dismissCallBack:Function;
     private cancelOutSide = true;
     _isAniming = false;
     get isAniming(){
@@ -64,6 +64,9 @@ export default class BaseDialog extends cc.Component {
                 this.dismissCallBack();
             }
         }).start();
+    }
+    onDismissListener(callback:Function){
+        this.dismissCallBack = callback;
     }
 
     // update (dt) {}

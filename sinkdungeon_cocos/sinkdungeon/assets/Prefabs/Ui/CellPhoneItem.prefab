@@ -28,10 +28,13 @@
     "_components": [
       {
         "__id__": 14
+      },
+      {
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 16
     },
     "_opacity": 255,
     "_color": {
@@ -342,10 +345,8 @@
     "_fontSize": 30,
     "_lineHeight": 30,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "850ec44c-81fd-45f3-b6ed-4cf410575571"
-    },
-    "_isSystemFontUsed": false,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
@@ -548,6 +549,25 @@
     "_fillRange": 0,
     "_isTrimmedMode": true,
     "_atlas": null,
+    "_id": ""
+  },
+  {
+    "__type__": "998cfMDHbFCeYkBTaoitXnc",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "sprite": {
+      "__id__": 9
+    },
+    "label": {
+      "__id__": 7
+    },
+    "disableCover": {
+      "__id__": 11
+    },
     "_id": ""
   },
   {

@@ -13,6 +13,7 @@ import { EventHelper } from "../../EventHelper";
 import Logic from "../../Logic";
 import AudioPlayer from "../../Utils/AudioPlayer";
 import LocalStorage from "../../Utils/LocalStorage";
+import Utils from "../../Utils/Utils";
 import CellphoneItem from "../CellphoneItem";
 import BaseDialog from "./BaseDialog";
 import EquipmentAndItemDialog from "./EquipmentAndItemDialog";
@@ -20,7 +21,7 @@ import EquipmentAndItemDialog from "./EquipmentAndItemDialog";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class CellPhoneDialog extends BaseDialog {
+export default class CellphoneDialog extends BaseDialog {
     @property(cc.Prefab)
     item: cc.Prefab = null;
     @property(cc.Node)
@@ -38,25 +39,23 @@ export default class CellPhoneDialog extends BaseDialog {
     priceLabel: cc.Label = null;
     currentSelectIndex: number;
     equipmentAndItemDialog: EquipmentAndItemDialog = null;
-    furnitureList: FurnitureData[] = [];
     itemList: ItemData[] = [];
     tabIndex = 0;
     onLoad() {
         this.itemSelect.opacity = 0;
-        this.tabSelect.opacity = 0;
         this.equipmentAndItemDialog = this.initDialog();
-        
+
         this.updateList(this.tabIndex);
     }
     private initDialog() {
         let node = cc.instantiate(this.equipmentAndItemDialogPrefab);
-        node.parent = this.node.getChildByName('layer');
+        node.parent = this.node;
         let dialog = node.getComponent(EquipmentAndItemDialog);
         dialog.changeBgAndAnchor(EquipmentAndItemDialog.BG_TYPE_ARROW_NONE);
         dialog.hideDialog();
         return dialog;
     }
-    private getItem(index: number, data: CellphoneData):CellphoneItem {
+    private getItem(index: number, data: CellphoneData): CellphoneItem {
         let prefab = cc.instantiate(this.item);
         prefab.parent = this.content;
         let item = prefab.getComponent(CellphoneItem);
@@ -74,10 +73,12 @@ export default class CellPhoneDialog extends BaseDialog {
     }
     //button
     changeTab(event: cc.Event, index: number) {
-        if(index == 0){
-            this.tabSelect.position = cc.v3(0,0);
-        }else{
-            this.tabSelect.position = cc.v3(0,0);
+        if (index == 0) {
+            this.tabSelect.position = cc.v3(-96, 320);
+            AudioPlayer.play(AudioPlayer.SELECT);
+        } else {
+            this.tabSelect.position = cc.v3(96, 320);
+            AudioPlayer.play(AudioPlayer.SELECT_FAIL);
         }
         this.updateList(index);
     }
@@ -90,44 +91,50 @@ export default class CellPhoneDialog extends BaseDialog {
     }
     showSelect(item: CellphoneItem) {
         this.currentSelectIndex = item.index;
-        this.itemSelect.position = this.itemSelect.parent.convertToNodeSpaceAR(item.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+        this.itemSelect.parent = item.node;
+        this.itemSelect.position = cc.Vec3.ZERO;
         this.itemSelect.opacity = 200;
         AudioPlayer.play(AudioPlayer.SELECT);
         this.priceLabel.string = `${Math.floor(item.data.price)}`;
         this.buyButton.active = true;
-        this.equipmentAndItemDialog.showDialog(cc.v3(420, 160), null, item.data.itemData, null, item.data.furnitureData);
+        this.equipmentAndItemDialog.showDialog(cc.v3(-240, 160), null, item.data.itemData, null, item.data.furnitureData);
     }
     updateList(tabIndex: number) {
         this.clearSelect();
         this.list = [];
-        let normallist: CellphoneItem[] = [];
-        let purchasedlist: CellphoneItem[] = [];
         this.content.removeAllChildren();
         this.tabIndex = tabIndex;
-        let index = 0;
-        for (let key in Logic.furnitures) {
-            let fd = new FurnitureData();
-            fd.valueCopy(Logic.furnitures[key]);
-            let save = LocalStorage.getFurnitureData(fd.id);
-            fd.valueCopy(save);
-            this.furnitureList.push(fd);
-            let data = new CellphoneData();
-            data.createTime = new Date().getTime();
-            data.type = CellphoneItem.TYPE_FURNITURE;
-            let item = this.getItem(index++, data);
-            if (item.data.furnitureData) {
-                if (item.data.furnitureData.purchased) {
-                    purchasedlist.push(item);
-                } else{
-                    normallist.push(item);
-                }
-            }
-        }
+        let dataList: CellphoneData[] = [];
         if (tabIndex == 0) {
-            this.list = normallist.concat(purchasedlist);
+            let normallist: CellphoneData[] = [];
+            let purchasedlist: CellphoneData[] = [];
+            let index = 0;
+            for (let key in Logic.furnitures) {
+                let fd = new FurnitureData();
+                fd.valueCopy(Logic.furnitures[key]);
+                let save = LocalStorage.getFurnitureData(fd.id);
+                fd.valueCopy(save);
+                let data = new CellphoneData();
+                data.createTime = new Date().getTime();
+                data.type = CellphoneItem.TYPE_FURNITURE;
+                data.furnitureData = fd;
+                if (fd.purchased) {
+                    purchasedlist.push(data);
+                } else {
+                    normallist.push(data);
+                }
+                this.list.push(this.getItem(index++, data));
+            }
+            dataList = normallist.concat(purchasedlist);
+            for (let i = 0; i < this.list.length; i++) {
+                this.list[i].updateData(dataList[i]);
+            }
+        }else{
+            Utils.toast('这里空空如也',true);
         }
+        
     }
-   
+
     //button 购买
     sale() {
         //未选中或者为空直接返回
@@ -136,22 +143,29 @@ export default class CellPhoneDialog extends BaseDialog {
         }
         let current = this.list[this.currentSelectIndex];
         if (current.data.type == CellphoneItem.TYPE_FURNITURE) {
-            let data = current.data.furnitureData;
-            if (!data.purchased&&Logic.coins >= data.price) {
-                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -data.price });
+            let fd = current.data.furnitureData;
+            if (!fd.purchased && Logic.coins >= fd.price) {
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: -fd.price });
                 AudioPlayer.play(AudioPlayer.COIN);
                 current.data.furnitureData.purchased = true;
-                current.updateData(current.data);
-                Achievement.addFurnituresAchievement(data.id);
+                current.updateData();
+                Achievement.addFurnituresAchievement(fd.id);
+                LocalStorage.saveFurnitureData(fd);
+                this.clearSelect();
+                Utils.toast('购买成功',true);
+                AudioPlayer.play(AudioPlayer.CASHIERING);
+            }else{
+                Utils.toast('购买失败，余额不足',true);
+                AudioPlayer.play(AudioPlayer.SELECT_FAIL);
             }
         }
-        this.clearSelect();
     }
     // update (dt) {}
 
     close() {
         AudioPlayer.play(AudioPlayer.SELECT);
         this.dismiss();
+        this.content.removeAllChildren();
     }
 
 }

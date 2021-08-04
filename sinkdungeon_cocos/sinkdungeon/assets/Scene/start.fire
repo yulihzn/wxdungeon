@@ -60,7 +60,7 @@
     "_is3DNode": true,
     "_groupIndex": 0,
     "groupIndex": 0,
-    "autoReleaseAssets": false,
+    "autoReleaseAssets": true,
     "_id": "2d2f792f-a40c-49bb-a189-ed176a246e49"
   },
   {
@@ -4561,6 +4561,12 @@
     "monsterHit": {
       "__uuid__": "4a830729-028b-430d-a986-2c396127ce81"
     },
+    "monsterHit1": {
+      "__uuid__": "0433f3cc-fc8a-4afa-b198-56cbf6d0e4e3"
+    },
+    "monsterHit2": {
+      "__uuid__": "09d92ac1-317b-4c27-b85e-edc5a87f75cb"
+    },
     "pickUp": {
       "__uuid__": "86b97b0d-8b27-44b6-9d48-cab70ab74862"
     },
@@ -4602,6 +4608,9 @@
     },
     "select": {
       "__uuid__": "a4072bfc-8965-4709-ad48-ce845d454957"
+    },
+    "selectfail": {
+      "__uuid__": "3dc4b299-db5f-4b32-a7bd-7e234ac8677f"
     },
     "bossicedemonattack": {
       "__uuid__": "b61bd677-fed3-4a96-af22-6cf204292500"
@@ -4657,14 +4666,38 @@
     "punch": {
       "__uuid__": "4b9b2ed2-f708-4f8e-8136-1254a1a76208"
     },
+    "punch1": {
+      "__uuid__": "2f53a86f-d2bd-45ea-a5ea-4776267d62e6"
+    },
+    "punch2": {
+      "__uuid__": "6fbbb2f3-dad2-438a-82b5-64ee80a3a6ac"
+    },
     "fist": {
       "__uuid__": "413e1640-797e-49c1-9ee6-bb65cd196f19"
+    },
+    "fist1": {
+      "__uuid__": "8a0c0180-40fd-4f45-844b-4c2de4a82e6f"
+    },
+    "fist2": {
+      "__uuid__": "6db9dcdc-9589-46be-999d-af062651ec57"
     },
     "swordattack": {
       "__uuid__": "728531eb-eb45-480a-9407-ee2ea4e21720"
     },
+    "swordattack1": {
+      "__uuid__": "a65d25b0-988d-4bac-aa21-54b6705c9685"
+    },
+    "swordattack2": {
+      "__uuid__": "6dd79ebc-851d-410b-9f0c-93e12dc16895"
+    },
     "swordhit": {
       "__uuid__": "5c620cb0-3846-4586-9e0b-f8cfb2ec9e44"
+    },
+    "swordhit1": {
+      "__uuid__": "363199f1-76ef-422e-817f-e82028b695b0"
+    },
+    "swordhit2": {
+      "__uuid__": "c2b5629b-f1aa-49c2-9d42-c946f05064d3"
     },
     "bleeding": {
       "__uuid__": "a4bbca9e-9662-4617-94a8-09407b6d73dd"

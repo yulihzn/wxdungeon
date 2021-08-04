@@ -35,19 +35,19 @@ export default class Box extends Building {
 
     start() {
         let resName = 'box';
-        switch(this.boxType){
-            case Box.BOX:resName = 'box';break;
-            case Box.PLANT:resName = 'plant';break;
-            case Box.BOXBREAKABLE:resName = 'box';break;
+        switch (this.boxType) {
+            case Box.BOX: resName = 'box'; break;
+            case Box.PLANT: resName = 'plant'; break;
+            case Box.BOXBREAKABLE: resName = 'box'; break;
         }
-        switch(Logic.chapterIndex){
-            case Logic.CHAPTER00:this.changeRes(`${resName}000`);break;
-            case Logic.CHAPTER01:this.changeRes(`${resName}001`);break;
-            case Logic.CHAPTER02:this.changeRes(`${resName}002`);break;
-            case Logic.CHAPTER03:this.changeRes(`${resName}003`);break;
-            case Logic.CHAPTER04:this.changeRes(`${resName}004`);break;
-            case Logic.CHAPTER05:this.changeRes(`${resName}004`);break;
-            case Logic.CHAPTER099:this.changeRes(`${resName}000`);break;
+        switch (Logic.chapterIndex) {
+            case Logic.CHAPTER00: this.changeRes(`${resName}000`); break;
+            case Logic.CHAPTER01: this.changeRes(`${resName}001`); break;
+            case Logic.CHAPTER02: this.changeRes(`${resName}002`); break;
+            case Logic.CHAPTER03: this.changeRes(`${resName}003`); break;
+            case Logic.CHAPTER04: this.changeRes(`${resName}004`); break;
+            case Logic.CHAPTER05: this.changeRes(`${resName}004`); break;
+            case Logic.CHAPTER099: this.changeRes(`${resName}000`); break;
         }
     }
     changeRes(resName: string) {
@@ -64,12 +64,13 @@ export default class Box extends Building {
     BreakingFinish() {
         this.reset();
     }
-   
+
     breakBox() {
-        if(this.isBreaking){
+        if (this.isBreaking) {
             return;
         }
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         if (!this.anim) {
             this.anim = this.getComponent(cc.Animation);
         }

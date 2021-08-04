@@ -46,7 +46,7 @@ export default class Rah extends Boss {
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
-        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'bossrahhead'));
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'bossrahhead'));
     }
 
     start() {
@@ -56,13 +56,14 @@ export default class Rah extends Boss {
         if (this.sc.isDied || !this.sc.isShow || this.blinkSkill.IsExcuting) {
             return false;
         }
-    
+
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
     }
 
@@ -71,9 +72,9 @@ export default class Rah extends Boss {
             return;
         }
         Achievement.addMonsterKillAchievement(this.data.resName);
-        cc.tween(this.node).to(3,{opacity:0}).start();
+        cc.tween(this.node).to(3, { opacity: 0 }).start();
         this.sc.isDied = true;
-        cc.tween(this.dungeon.fog).to(3,{scale:10}).start();
+        cc.tween(this.dungeon.fog).to(3, { scale: 10 }).start();
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
@@ -116,21 +117,21 @@ export default class Rah extends Boss {
             this.move(pos, 100);
         }
     }
- 
+
     blink(): void {
         this.blinkSkill.next(() => {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
             this.blinkSkill.IsExcuting = true;
             this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            cc.tween(this.node).to(1,{opacity:0}).call(()=>{
+            cc.tween(this.node).to(1, { opacity: 0 }).call(() => {
                 let p = this.dungeon.player.pos.clone();
-                    if (p.y > Dungeon.HEIGHT_SIZE - 1) {
-                        p.y -= 1;
-                    } else {
-                        p.y += 1;
-                    }
-                    this.transportBoss(p.x, p.y);
-            }).to(1,{opacity:255}).call(()=>{
+                if (p.y > Dungeon.HEIGHT_SIZE - 1) {
+                    p.y -= 1;
+                } else {
+                    p.y += 1;
+                }
+                this.transportBoss(p.x, p.y);
+            }).to(1, { opacity: 255 }).call(() => {
                 this.attack();
             }).start();
             this.scheduleOnce(() => {
@@ -141,7 +142,7 @@ export default class Rah extends Boss {
     }
     attack() {
         this.meleeSkill.next(() => {
-            cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
+            cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             this.meleeSkill.IsExcuting = true;
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
@@ -152,7 +153,7 @@ export default class Rah extends Boss {
     }
     dark() {
         this.darkSkill.next(() => {
-            cc.tween(this.dungeon.fog).to(2,{scale:1.75}).to(6,{angle:0}).to(2,{scale:0.6}).start();
+            cc.tween(this.dungeon.fog).to(2, { scale: 1.75 }).to(6, { angle: 0 }).to(2, { scale: 0.6 }).start();
             if (!this.anim) {
                 this.anim = this.getComponent(cc.Animation);
             }
@@ -220,7 +221,7 @@ export default class Rah extends Boss {
         }
         return false;
     }
-    updateLogic(dt:number) {
+    updateLogic(dt: number) {
         this.timeDelay += dt;
         if (this.timeDelay > 1) {
             this.timeDelay = 0;
@@ -267,13 +268,13 @@ export default class Rah extends Boss {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && this.meleeSkill.IsExcuting&&!this.sc.isDied) {
+        if (target && this.meleeSkill.IsExcuting && !this.sc.isDied) {
             let d = new DamageData();
             d.physicalDamage = 15;
-            target.takeDamage(d,FromData.getClone(this.actorName(),'bossrahhead'),this);
+            target.takeDamage(d, FromData.getClone(this.actorName(), 'bossrahhead'), this);
         }
     }
-    actorName(){
+    actorName() {
         return '机械拉神';
     }
 }

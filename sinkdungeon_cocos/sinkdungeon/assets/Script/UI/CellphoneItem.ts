@@ -1,6 +1,7 @@
 import CellphoneData from "../Data/CellphoneData";
 import Logic from "../Logic";
-import CellPhoneDialog from "./dialog/CellPhoneDialog";
+import AudioPlayer from "../Utils/AudioPlayer";
+import CellphoneDialog from "./dialog/CellphoneDialog";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -28,7 +29,7 @@ export default class CellphoneItem extends cc.Component {
     disableCover: cc.Node = null;
     index = 0;//列表里的下标
     data: CellphoneData = new CellphoneData();
-    dialog: CellPhoneDialog;
+    dialog: CellphoneDialog;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -45,17 +46,19 @@ export default class CellphoneItem extends cc.Component {
             this.dialog.clearSelect();
             if (this.isSelect) {
                 this.dialog.showSelect(this);
+            }else{
+                AudioPlayer.play(AudioPlayer.SELECT_FAIL);
             }
 
         }, this)
     }
-    init(cellphoneDialog: CellPhoneDialog, index: number, data: CellphoneData) {
+    init(cellphoneDialog: CellphoneDialog, index: number, data: CellphoneData) {
         this.dialog = cellphoneDialog;
         this.index = index;
         this.isSelect = false;
         this.updateData(data);
     }
-    updateData(data:CellphoneData) {
+    updateData(data?:CellphoneData) {
         this.isSelect = false;
         this.data.valueCopy(data);
         this.label.string = ``;
@@ -65,7 +68,7 @@ export default class CellphoneItem extends cc.Component {
         if (this.data.type == CellphoneItem.TYPE_ITEM&&this.data.itemData) {
             this.label.string = `${this.data.itemData.nameCn}\n${this.data.itemData.price}`;
             spriteFrame = Logic.spriteFrameRes(this.data.itemData.resName);
-        } else if (this.data.type == CellphoneItem.TYPE_ITEM&&this.data.furnitureData) {
+        } else if (this.data.type == CellphoneItem.TYPE_FURNITURE&&this.data.furnitureData) {
             spriteFrame = Logic.spriteFrameRes(this.data.furnitureData.resName);
             this.label.string = `${this.data.furnitureData.nameCn}\n${this.data.furnitureData.price}`;
             this.disableCover.active = this.data.furnitureData.purchased;

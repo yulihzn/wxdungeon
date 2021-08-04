@@ -60,8 +60,10 @@ export class EventHelper extends cc.Component {
     public static readonly HUD_UPDATE_PLAYER_DREAMBAR = 'HUD_UPDATE_PLAYER_DREAMBAR';
     public static readonly HUD_SHAKE_PLAYER_DREAMBAR = 'HUD_SHAKE_PLAYER_DREAMBAR';
     public static readonly HUD_INVENTORY_SHOW = 'HUD_INVENTORY_SHOW';
+    public static readonly HUD_CELLPHONE_SHOW = 'HUD_CELLPHONE_SHOW';
     public static readonly HUD_INVENTORY_ITEM_UPDATE = 'HUD_INVENTORY_ITEM_UPDATE';
     public static readonly HUD_INVENTORY_ALL_UPDATE = 'HUD_INVENTORY_ALL_UPDATE';
+    public static readonly HUD_TOAST = 'HUD_TOAST';
     public static readonly TALENT_TREE_UPDATE = 'TALENT_TREE_UPDATE';
     public static readonly TALENT_TREE_SELECT = 'TALENT_TREE_SELECT';
     public static readonly PLAY_AUDIO = 'PLAY_AUDIO';
@@ -95,4 +97,5 @@ export class EventHelper extends cc.Component {
     public static on(key: string, callback: Function) {
         cc.director.on(key, (event) => { callback(event ? event.detail : {}); });
     }
+
 }

@@ -7,6 +7,7 @@
 
 import { EventHelper } from "../../EventHelper";
 import Logic from "../../Logic";
+import AudioPlayer from "../../Utils/AudioPlayer";
 import LocalStorage from "../../Utils/LocalStorage";
 import BaseDialog from "./BaseDialog";
 
@@ -42,19 +43,23 @@ export default class SettingsDialog extends BaseDialog {
     // update (dt) {}
 
     toggleShadow(toggle:cc.Toggle, customEventData:string){
+        AudioPlayer.play(AudioPlayer.SELECT);
         Logic.settings.showShadow = toggle.isChecked;
         LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_SHADOW,Logic.settings.showShadow);
     }
     toggleGamepad(toggle:cc.Toggle, customEventData:string){
+        AudioPlayer.play(AudioPlayer.SELECT);
         Logic.settings.showGamepad = toggle.isChecked;
         LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD,Logic.settings.showGamepad);
         cc.director.emit(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD);
     }
     close(){
+        AudioPlayer.play(AudioPlayer.SELECT);
         cc.director.getScheduler().setTimeScale(1);
         this.dismiss();
     }
     home(){
+        AudioPlayer.play(AudioPlayer.SELECT);
         Logic.saveData();
         cc.director.loadScene('start');
     }

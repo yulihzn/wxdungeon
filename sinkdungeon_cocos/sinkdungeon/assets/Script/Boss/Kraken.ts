@@ -29,27 +29,27 @@ export default class Kraken extends Boss {
     @property(cc.Label)
     label: cc.Label = null;
     @property(cc.Prefab)
-    swingHand:cc.Prefab = null;
+    swingHand: cc.Prefab = null;
     private timeDelay = 0;
     shooter: Shooter;
     remoteSkill = new NextStep();
     handSkill = new NextStep();
     nearHandSkill = new NextStep();
     anim: cc.Animation;
-    hand01:KrakenSwingHand;
-    hand02:KrakenSwingHand;
-    hand03:KrakenSwingHand;
-    hand04:KrakenSwingHand;
-    hands:KrakenSwingHand[] = [];
+    hand01: KrakenSwingHand;
+    hand02: KrakenSwingHand;
+    hand03: KrakenSwingHand;
+    hand04: KrakenSwingHand;
+    hands: KrakenSwingHand[] = [];
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.sc.isDied = false;
         this.sc.isShow = false;
         this.shooter = this.getComponentInChildren(Shooter);
-        this.shooter.from.valueCopy(FromData.getClone(this.actorName(),'boss001'));
+        this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'boss001'));
         this.anim = this.getComponent(cc.Animation);
-        
+
     }
     //anim
     ShowFinish() {
@@ -59,30 +59,30 @@ export default class Kraken extends Boss {
         let pos2 = Dungeon.getPosInMap(cc.v3(-2, -4));
         let pos3 = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE, Dungeon.HEIGHT_SIZE));
         let pos4 = Dungeon.getPosInMap(cc.v3(-2, Dungeon.HEIGHT_SIZE));
-        this.hand01 = this.addHand(pos1,true,true);
-        this.hand02 = this.addHand(pos2,false,true);
-        this.hand03 = this.addHand(pos3,true,false);
-        this.hand04 = this.addHand(pos4,false,false);
+        this.hand01 = this.addHand(pos1, true, true);
+        this.hand02 = this.addHand(pos2, false, true);
+        this.hand03 = this.addHand(pos3, true, false);
+        this.hand04 = this.addHand(pos4, false, false);
     }
-    addHand(pos:cc.Vec3,isReverse:boolean,isUp:boolean){
+    addHand(pos: cc.Vec3, isReverse: boolean, isUp: boolean) {
         let hand = cc.instantiate(this.swingHand);
         this.dungeon.node.addChild(hand);
         hand.setPosition(pos);
-        hand.scaleX = isReverse?-80:80;
-        hand.scaleY = isUp?-80:80;
+        hand.scaleX = isReverse ? -80 : 80;
+        hand.scaleY = isUp ? -80 : 80;
         hand.zIndex = IndexZ.OVERHEAD;
         let h = hand.getComponentInChildren(KrakenSwingHand);
-        this.scheduleOnce(()=>{
+        this.scheduleOnce(() => {
             h.isShow = true;
-        },2)
+        }, 2)
         this.hands.push(h);
         return h;
     }
     updatePlayerPos() {
-        let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE/2, Dungeon.HEIGHT_SIZE+2));
+        let pos = Dungeon.getPosInMap(cc.v3(Dungeon.WIDTH_SIZE / 2, Dungeon.HEIGHT_SIZE + 2));
         this.node.setPosition(pos);
     }
-    
+
     changeZIndex() {
         this.node.zIndex = IndexZ.KRAKENBODY;
     }
@@ -91,31 +91,32 @@ export default class Kraken extends Boss {
         super.start();
     }
 
-    takeDamage(damage: DamageData):boolean {
-        if(this.sc.isDied||!this.sc.isShow){
+    takeDamage(damage: DamageData): boolean {
+        if (this.sc.isDied || !this.sc.isShow) {
             return false;
         }
-        
+
         this.data.currentHealth -= this.data.getDamage(damage).getTotalDamage();
         if (this.data.currentHealth > this.data.Common.maxHealth) {
             this.data.currentHealth = this.data.Common.maxHealth;
         }
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.MONSTER_HIT}});
-        this.nearHandSkill.next(()=>{
-            if(this.dungeon.player.pos.x>Dungeon.WIDTH_SIZE/2){
-                if(this.hand03){
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
+        this.nearHandSkill.next(() => {
+            if (this.dungeon.player.pos.x > Dungeon.WIDTH_SIZE / 2) {
+                if (this.hand03) {
                     this.hand03.swing();
                 }
-            }else{
-                if(this.hand04){
+            } else {
+                if (this.hand04) {
                     this.hand04.swing();
                 }
             }
-        },5)
+        }, 5)
         return true;
     }
-    
+
     killed() {
         if (this.sc.isDied) {
             return;
@@ -130,25 +131,25 @@ export default class Kraken extends Boss {
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }
-    getLoot(isSteal?:boolean){
-        if(this.dungeon){
+    getLoot(isSteal?: boolean) {
+        if (this.dungeon) {
             let rand4save = Logic.mapManager.getRandom4Save(this.seed);
-            let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE/2),Math.floor(Dungeon.HEIGHT_SIZE/2));
+            let p = cc.v3(Math.floor(Dungeon.WIDTH_SIZE / 2), Math.floor(Dungeon.HEIGHT_SIZE / 2));
             let pos = Dungeon.getPosInMap(p);
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } });
-            if(!isSteal){
+            if (!isSteal) {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: 100 });
             }
-            let chance = Logic.getHalfChance()&&isSteal||!isSteal;
-            if(chance){
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.HEART } });
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res:Item.DREAM } });
+            let chance = Logic.getHalfChance() && isSteal || !isSteal;
+            if (chance) {
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.DREAM } });
             }
-            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(p),null,3);
+            this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(p), null, 3);
         }
     }
     showBoss() {
-        if(this.healthBar){
+        if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             this.healthBar.node.active = !this.sc.isDied;
         }
@@ -167,35 +168,35 @@ export default class Kraken extends Boss {
         return false;
     }
     updateLogic(dt) {
-        if(this.isActionTimeDelay(dt)){
+        if (this.isActionTimeDelay(dt)) {
             this.bossAction();
         }
         if (this.data.currentHealth < 1) {
             this.killed();
         }
-       
+
         if (this.label) {
             this.label.string = "" + this.node.zIndex;
         }
         this.healthBar.node.active = !this.sc.isDied;
     }
     bossAction() {
-        if (this.sc.isDied||!this.sc.isShow||!this.dungeon) {
+        if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
             return;
         }
-        
-        if(this.hand01){
-            this.hand01.node.parent.y = Logic.lerp(this.hand01.node.y,this.dungeon.player.node.y,0.1);
+
+        if (this.hand01) {
+            this.hand01.node.parent.y = Logic.lerp(this.hand01.node.y, this.dungeon.player.node.y, 0.1);
         }
-        if(this.hand02){
-            this.hand02.node.parent.y = Logic.lerp(this.hand02.node.y,this.dungeon.player.node.y,0.1);
+        if (this.hand02) {
+            this.hand02.node.parent.y = Logic.lerp(this.hand02.node.y, this.dungeon.player.node.y, 0.1);
         }
-        if(this.shooter){
-            this.remoteSkill.next(()=>{
+        if (this.shooter) {
+            this.remoteSkill.next(() => {
                 this.shooter.skipTopwall = true;
-                let pos  = this.node.position.clone().add(this.shooter.node.position);
+                let pos = this.node.position.clone().add(this.shooter.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
-                if(!hv.equals(cc.Vec3.ZERO)){
+                if (!hv.equals(cc.Vec3.ZERO)) {
                     hv = hv.normalizeSelf();
                     this.shooter.setHv(hv);
                     this.shooter.dungeon = this.dungeon;
@@ -204,31 +205,31 @@ export default class Kraken extends Boss {
                     this.shooter.fireBullet(30);
                     this.shooter.fireBullet(-30);
                 }
-                if(this.data.currentHealth<this.data.Common.maxHealth/2){
-                    this.dungeon.addFallStone(this.dungeon.player.node.position,true);
+                if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
+                    this.dungeon.addFallStone(this.dungeon.player.node.position, true);
                     this.shooter.fireBullet(30);
                     this.shooter.fireBullet(-30);
                     this.shooter.fireBullet(15);
                     this.shooter.fireBullet(-15);
                 }
-            },3);
-            
+            }, 3);
+
         }
-        this.handSkill.next(()=>{
-            if(this.dungeon.player.pos.x>Dungeon.WIDTH_SIZE/2){
-                if(this.hand01){
+        this.handSkill.next(() => {
+            if (this.dungeon.player.pos.x > Dungeon.WIDTH_SIZE / 2) {
+                if (this.hand01) {
                     this.hand01.swing();
                 }
-            }else{
-                if(this.hand02){
+            } else {
+                if (this.hand02) {
                     this.hand02.swing();
                 }
             }
-        },10)
-        
+        }, 10)
+
 
     }
-    actorName(){
+    actorName() {
         return '海妖';
     }
 }

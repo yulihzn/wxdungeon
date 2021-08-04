@@ -234,7 +234,7 @@ export default class InventoryDialog extends BaseDialog {
         if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
-        let discount = 0.6;
+        AudioPlayer.play(AudioPlayer.SELECT);
         let current = this.list[this.currentSelectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData;

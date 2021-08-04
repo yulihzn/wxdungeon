@@ -365,33 +365,37 @@ export default class MeleeWeapon extends cc.Component {
     //Anim
     AudioTime() {
         let audioName = AudioPlayer.MELEE;
+        let swordNames = [AudioPlayer.SWORD_ATTACK,AudioPlayer.SWORD_ATTACK1,AudioPlayer.SWORD_ATTACK2];
+        let swordName = swordNames[Logic.getRandomNum(0,2)];
+        let fistNames = [AudioPlayer.FIST,AudioPlayer.FIST1,AudioPlayer.FIST2];
+        let fistName = fistNames[Logic.getRandomNum(0,2)];
         //匕首
         if (this.isStab && !this.isFar) {
-            audioName = AudioPlayer.FIST;
+            audioName = fistName;
             if (this.comboType == MeleeWeapon.COMBO3) {
-                audioName = AudioPlayer.SWORD_ATTACK;
+                audioName = swordName;
             }
         }
         //长剑
         if (!this.isStab && !this.isFar) {
-            audioName = AudioPlayer.SWORD_ATTACK;
+            audioName = swordName;
             if (this.comboType == MeleeWeapon.COMBO3) {
                 audioName = AudioPlayer.MELEE;
             }
         }
         //长枪
         if (this.isStab && this.isFar) {
-            audioName = AudioPlayer.SWORD_ATTACK;
+            audioName = swordName;
         }
         //大剑
         if (!this.isStab && this.isFar) {
-            audioName = AudioPlayer.SWORD_ATTACK;
+            audioName = swordName;
             if (this.comboType == MeleeWeapon.COMBO3) {
                 audioName = AudioPlayer.MELEE;
             }
         }
         if (this.isFist) {
-            audioName = AudioPlayer.FIST;
+            audioName = fistName;
         }
         AudioPlayer.play(audioName);
     }

@@ -20,14 +20,14 @@ export default class HitBuilding extends Building {
     private mat: cc.MaterialVariant;
     private sprite: cc.Sprite;
     private resName = '';
-    private itemNames:string[] = [];
-    private equipmentNames:string[] = [];
+    private itemNames: string[] = [];
+    private equipmentNames: string[] = [];
     private dungeon: Dungeon;
     private isCustom = false;
     private colliderExtrude = 0;
     // LIFE-CYCLE CALLBACKS:
 
-    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number,scale:number,isCustom:boolean,colliderExtrude:number) {
+    init(dungeon: Dungeon, resName: string, itemNames: string[], equipmentNames: string[], maxHealth: number, currentHealth: number, scale: number, isCustom: boolean, colliderExtrude: number) {
         this.dungeon = dungeon;
         this.resName = resName;
         this.itemNames = itemNames;
@@ -41,7 +41,7 @@ export default class HitBuilding extends Building {
         }
         this.sprite.node.scale = scale;
         this.changeRes(resName, `${this.data.currentHealth}`);
-        if(this.data.currentHealth<=0){
+        if (this.data.currentHealth <= 0) {
             this.getComponent(cc.PhysicsBoxCollider).sensor = true;
             this.getComponent(cc.PhysicsBoxCollider).apply();
         }
@@ -61,7 +61,8 @@ export default class HitBuilding extends Building {
         if (this.data.currentHealth <= 0 || this.data.currentHealth >= 9999) {
             return false;
         }
-        AudioPlayer.play(AudioPlayer.MONSTER_HIT);
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         this.data.currentHealth -= 1;
         this.changeRes(this.resName, `${this.data.currentHealth}`)
         this.hitLight(true);
@@ -69,17 +70,17 @@ export default class HitBuilding extends Building {
             this.hitLight(false);
         }, 0.15);
         if (this.data.currentHealth <= 0) {
-            for(let name of this.itemNames){
+            for (let name of this.itemNames) {
                 if (name && name.length > 0) {
                     this.dungeon.addItem(this.node.position.clone(), name);
                 }
             }
-            for(let name of this.equipmentNames){
+            for (let name of this.equipmentNames) {
                 if (name && name.length > 0) {
                     this.dungeon.addEquipment(name, Dungeon.getPosInMap(this.data.defaultPos), null, 1);
                 }
             }
-            
+
             this.getComponent(cc.PhysicsBoxCollider).sensor = true;
             this.getComponent(cc.PhysicsBoxCollider).apply();
         }
@@ -95,21 +96,21 @@ export default class HitBuilding extends Building {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
         let spriteFrame = Logic.spriteFrameRes(resName);
-        let width = (spriteFrame.getRect().width-this.colliderExtrude)*this.sprite.node.scale;
-        let height = (spriteFrame.getRect().height-this.colliderExtrude)*this.sprite.node.scale;
+        let width = (spriteFrame.getRect().width - this.colliderExtrude) * this.sprite.node.scale;
+        let height = (spriteFrame.getRect().height - this.colliderExtrude) * this.sprite.node.scale;
         if (suffix && Logic.spriteFrameRes(resName + suffix)) {
             spriteFrame = Logic.spriteFrameRes(resName + suffix);
         }
-        if(!spriteFrame){
+        if (!spriteFrame) {
             return;
         }
         this.sprite.node.opacity = 255;
         this.sprite.node.width = spriteFrame.getRect().width;
         this.sprite.node.height = spriteFrame.getRect().height;
-        if(this.isCustom){
+        if (this.isCustom) {
             return;
         }
-        let size = cc.size(width,height);
+        let size = cc.size(width, height);
         let collider = this.getComponent(cc.BoxCollider);
         let pcollider = this.getComponent(cc.PhysicsBoxCollider);
         collider.size = size.clone();

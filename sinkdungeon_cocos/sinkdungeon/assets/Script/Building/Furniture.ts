@@ -3,7 +3,9 @@ import FurnitureData from "../Data/FurnitureData";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
 import Tips from "../UI/Tips";
+import AudioPlayer from "../Utils/AudioPlayer";
 import LocalStorage from "../Utils/LocalStorage";
+import Utils from "../Utils/Utils";
 import Building from "./Building";
 import RoomStool from "./RoomStool";
 import RoomTv from "./RoomTv";
@@ -57,8 +59,8 @@ export default class Furniture extends Building {
         this.boxcover = this.node.getChildByName('boxcover').getComponent(cc.Sprite);
         this.boxback = this.node.getChildByName('boxback').getComponent(cc.Sprite);
         this.tips = this.getComponentInChildren(Tips);
-        this.tips.onInteract(()=>{
-            if(this.furnitureData){
+        this.tips.onInteract(() => {
+            if (this.furnitureData) {
                 if (this.furnitureData.isOpen) {
                     this.interact();
                 } else {
@@ -67,19 +69,23 @@ export default class Furniture extends Building {
             }
         });
     }
-    interact(){
-        switch(this.furnitureData.id){
+    interact() {
+        switch (this.furnitureData.id) {
             case Furniture.TV:
                 let tv = this.getComponent(RoomTv);
-                if(tv){
+                if (tv) {
                     tv.interact();
-                }    
-            break;
+                }
+                break;
             case Furniture.STOOL:
                 let stool = this.getComponent(RoomStool);
-                if(stool){
+                if (stool) {
                     stool.open();
-                }break;
+                } break;
+            default:
+                AudioPlayer.play(AudioPlayer.SELECT_FAIL);
+                Utils.toast('无法使用，功能还在摸索中');
+                break;
         }
     }
     init(furnitureData: FurnitureData) {
@@ -118,20 +124,20 @@ export default class Furniture extends Building {
             this.tips.node.scale = 2;
             this.boxback.node.scale = this.furnitureData.scale;
             this.boxcover.node.scale = this.furnitureData.scale;
-            let width = this.sprite.node.width*this.sprite.node.scale;
-            let height = this.sprite.node.height*this.sprite.node.scale;
+            let width = this.sprite.node.width * this.sprite.node.scale;
+            let height = this.sprite.node.height * this.sprite.node.scale;
             if (this.furnitureData.id != Furniture.STOOL
-                &&this.furnitureData.id != Furniture.TV
-                &&this.furnitureData.id != Furniture.SOFA) {
-                this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2,height - Dungeon.TILE_SIZE / 2)
+                && this.furnitureData.id != Furniture.TV
+                && this.furnitureData.id != Furniture.SOFA) {
+                this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2)
                 let collider = this.tips.node.getComponent(cc.CircleCollider);
-                collider.radius = width>height?height/2:width/2;
-                if(width>height){
-                    collider.radius = height/2;
-                    collider.offset = cc.v2(0,-height/2);
-                }else{
-                    collider.radius = width/2;
-                    collider.offset = cc.v2(0,-height+width);
+                collider.radius = width > height ? height / 2 : width / 2;
+                if (width > height) {
+                    collider.radius = height / 2;
+                    collider.offset = cc.v2(0, -height / 2);
+                } else {
+                    collider.radius = width / 2;
+                    collider.offset = cc.v2(0, -height + width);
                 }
             }
 

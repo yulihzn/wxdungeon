@@ -19,6 +19,8 @@ const { ccclass, property } = cc._decorator;
 export default class AudioPlayer extends cc.Component {
 
     public static readonly MONSTER_HIT = 'MONSTER_HIT';
+    public static readonly MONSTER_HIT1 = 'MONSTER_HIT1';
+    public static readonly MONSTER_HIT2 = 'MONSTER_HIT2';
     public static readonly PICK_UP = 'PICK_UP';
     public static readonly PLAYER_HIT = 'PLAYER_HIT';
     public static readonly REMOTE_LASER = 'REMOTE_LASER';
@@ -34,6 +36,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly STOP_BG = 'STOP_BG';
     public static readonly PLAY_BG = 'PLAY_BG';
     public static readonly SELECT = 'SELECT';
+    public static readonly SELECT_FAIL = 'SELECT_FAIL';
     public static readonly BLINK = 'BLINK';
     public static readonly BOSS_ICEDEMON_DASH = 'BOSS_ICEDEMON_DASH';
     public static readonly BOSS_ICEDEMON_DEFEND = 'BOSS_ICEDEMON_DEFEND';
@@ -53,9 +56,17 @@ export default class AudioPlayer extends cc.Component {
     public static readonly SWORD_SHOW = 'SWORD_SHOW';
     public static readonly ELECTRIC_ATTACK = 'ELECTRIC_ATTACK';
     public static readonly PUNCH = 'PUNCH';
+    public static readonly PUNCH1 = 'PUNCH1';
+    public static readonly PUNCH2 = 'PUNCH2';
     public static readonly FIST = 'FIST';
+    public static readonly FIST1 = 'FIST1';
+    public static readonly FIST2 = 'FIST2';
     public static readonly SWORD_ATTACK = 'SWORD_ATTACK';
+    public static readonly SWORD_ATTACK1 = 'SWORD_ATTACK1';
+    public static readonly SWORD_ATTACK2 = 'SWORD_ATTACK2';
     public static readonly SWORD_HIT = 'SWORD_HIT';
+    public static readonly SWORD_HIT1 = 'SWORD_HIT1';
+    public static readonly SWORD_HIT2 = 'SWORD_HIT2';
     public static readonly BLEEDING = 'BLEEDING';
     public static readonly CASHIERING = 'CASHIERING';
     public static readonly CHICKEN = 'CHICKEN';
@@ -80,6 +91,10 @@ export default class AudioPlayer extends cc.Component {
     public static readonly DOG = 'DOG';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    monsterHit1: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    monsterHit2: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     pickUp: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -108,6 +123,8 @@ export default class AudioPlayer extends cc.Component {
     blink: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     select: cc.AudioClip = null;
+    @property({ type: cc.AudioClip })
+    selectfail: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
     bossicedemonattack: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -145,11 +162,27 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     punch: cc.AudioClip = null;
     @property(cc.AudioClip)
+    punch1: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    punch2: cc.AudioClip = null;
+    @property(cc.AudioClip)
     fist: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    fist1: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    fist2: cc.AudioClip = null;
     @property(cc.AudioClip)
     swordattack: cc.AudioClip = null;
     @property(cc.AudioClip)
+    swordattack1: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    swordattack2: cc.AudioClip = null;
+    @property(cc.AudioClip)
     swordhit: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    swordhit1: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    swordhit2: cc.AudioClip = null;
     @property(cc.AudioClip)
     bleeding: cc.AudioClip = null;
     @property(cc.AudioClip)
@@ -210,6 +243,8 @@ export default class AudioPlayer extends cc.Component {
         cc.audioEngine.setMusicVolume(0.2);
         cc.audioEngine.setEffectsVolume(0.4);
         this.audioList[AudioPlayer.MONSTER_HIT] = this.monsterHit;
+        this.audioList[AudioPlayer.MONSTER_HIT1] = this.monsterHit1;
+        this.audioList[AudioPlayer.MONSTER_HIT2] = this.monsterHit2;
         this.audioList[AudioPlayer.PICK_UP] = this.pickUp;
         this.audioList[AudioPlayer.PLAYER_HIT] = this.playerHit;
         this.audioList[AudioPlayer.REMOTE_LASER] = this.remoteLaser;
@@ -223,6 +258,7 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.DIE] = this.die;
         this.audioList[AudioPlayer.PICK_ITEM] = this.pickItem;
         this.audioList[AudioPlayer.SELECT] = this.select;
+        this.audioList[AudioPlayer.SELECT_FAIL] = this.selectfail;
         this.audioList[AudioPlayer.BLINK] = this.blink;
         this.audioList[AudioPlayer.BOSS_ICEDEMON_DASH] = this.bossicedemondash;
         this.audioList[AudioPlayer.BOSS_ICEDEMON_DEFEND] = this.bossicedemondefend;
@@ -242,9 +278,17 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.SWORD_SHOW] = this.swordshow;
         this.audioList[AudioPlayer.ELECTRIC_ATTACK] = this.electricattack;
         this.audioList[AudioPlayer.PUNCH] = this.punch;
+        this.audioList[AudioPlayer.PUNCH1] = this.punch1;
+        this.audioList[AudioPlayer.PUNCH2] = this.punch2;
         this.audioList[AudioPlayer.SWORD_ATTACK] = this.swordattack;
+        this.audioList[AudioPlayer.SWORD_ATTACK1] = this.swordattack1;
+        this.audioList[AudioPlayer.SWORD_ATTACK2] = this.swordattack2;
         this.audioList[AudioPlayer.SWORD_HIT] = this.swordhit;
+        this.audioList[AudioPlayer.SWORD_HIT1] = this.swordhit1;
+        this.audioList[AudioPlayer.SWORD_HIT2] = this.swordhit2;
         this.audioList[AudioPlayer.FIST] = this.fist;
+        this.audioList[AudioPlayer.FIST1] = this.fist1;
+        this.audioList[AudioPlayer.FIST2] = this.fist2;
         this.audioList[AudioPlayer.BLEEDING] = this.bleeding;
         this.audioList[AudioPlayer.CASHIERING] = this.cashiering;
         this.audioList[AudioPlayer.CHICKEN] = this.chicken;
@@ -303,7 +347,7 @@ export default class AudioPlayer extends cc.Component {
         this.isSoundNeedPause = true;
         this.scheduleOnce(() => {
             this.isSoundNeedPause = false;
-        }, 0.1)
+        }, 0.05)
     }
 
     static play(audioName: string, bgm?: boolean, loop?: boolean) {

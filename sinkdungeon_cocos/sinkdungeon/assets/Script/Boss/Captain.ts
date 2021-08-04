@@ -194,7 +194,8 @@ export default class Captain extends Boss {
 
         // this.anim.playAdditive('CaptainHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MONSTER_HIT } });
+        let hitNames = [AudioPlayer.MONSTER_HIT,AudioPlayer.MONSTER_HIT1,AudioPlayer.MONSTER_HIT2];
+            AudioPlayer.play(hitNames[Logic.getRandomNum(0,2)]);
         return true;
     }
 
