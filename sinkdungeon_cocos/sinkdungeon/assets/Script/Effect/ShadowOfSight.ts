@@ -30,6 +30,7 @@ export default class ShadowOfSight extends cc.Component {
     showRayCast = false;//是否射线
     @property
     fromSky = false;
+    @property
     showShadow = true;
     /** 视野顶点数组 */
     lightVertsArray = new Array();
@@ -62,7 +63,7 @@ export default class ShadowOfSight extends cc.Component {
         }
         this.offset = this.offsetPlus ? this.offset + delta : this.offset - delta;
         this.ray.clear();
-        if (Logic.settings.showShadow && this.showShadow) {
+        if (Logic.settings.showShadow && (this.showShadow||this.showLight)) {
             this.lightRects = {};
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);
@@ -198,7 +199,6 @@ export default class ShadowOfSight extends cc.Component {
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
         mat.setProperty("maxRadius", r*zoomRatio);
         mat.setProperty("whRatio", visibleRatio);
-        mat.setProperty('isRayCast', this.showRayCast);
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);
         let y = Math.abs(lightPos.y - 0.5) * visibleSize.height * scale / canvasSize.height;
         this.mat.setProperty("lightPos", cc.v2(lightPos.x, lightPos.y > 0.5 ? 0.5 + y : 0.5 - y));

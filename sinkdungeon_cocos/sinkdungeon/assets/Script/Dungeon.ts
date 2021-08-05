@@ -17,7 +17,6 @@ import ItemManager from "./Manager/ItemManager";
 import Utils from "./Utils/Utils";
 import LightManager from "./Manager/LightManager";
 import DamageData from "./Data/DamageData";
-import EquipmentAndItemDialog from "./UI/dialog/EquipmentAndItemDialog";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

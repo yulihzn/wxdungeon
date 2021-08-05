@@ -105,6 +105,7 @@ export default class BuildingManager extends BaseManager {
     static readonly LAMPTORCH = 'LampTorch';
     static readonly LAMPROAD = 'LampRoad';
     static readonly LAMPFIREFLY = 'LampFireFly';
+    static readonly LAMPDIRECT = 'LampDirectLight';
     static readonly MUSHROOM01 = 'MushRoom01';
     static readonly MUSHROOM02 = 'MushRoom02';
     static readonly MUSHROOM03 = 'MushRoom03';
@@ -512,6 +513,7 @@ export default class BuildingManager extends BaseManager {
             case 'L9': prefabName = BuildingManager.LAMPFIREPAN; break;
             case 'La': prefabName = BuildingManager.LAMPROAD; break;
             case 'Lb': prefabName = BuildingManager.LAMPFIREFLY; break;
+            case 'Lc': prefabName = BuildingManager.LAMPDIRECT; break;
         }
         let node = this.addBuilding(Logic.getBuildings(prefabName), indexPos);
         if (isOverHead) {

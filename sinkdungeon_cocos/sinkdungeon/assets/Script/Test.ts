@@ -26,7 +26,6 @@ export default class Test extends cc.Component {
     playerPos: cc.Vec2 = cc.v2(640, 360);
     private zoomArr = [1,0.5];
     private index = 0;
-    private isRayCast = true;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -60,7 +59,6 @@ export default class Test extends cc.Component {
         }
     }
     changeRayCast(){
-        this.isRayCast = !this.isRayCast;
     }
 
     start() {
@@ -104,7 +102,6 @@ export default class Test extends cc.Component {
         mat.setProperty("screen", cc.v2(canvasSize.width, canvasSize.height));
         mat.setProperty("maxRadius", r*this.camera.zoomRatio);
         mat.setProperty("whRatio", visibleRatio);
-        mat.setProperty("isRayCast",this.isRayCast);
         //相机为原地的坐标归一化
         let lightPos = cc.v2(pos.x / visibleSize.width, pos.y / visibleSize.height);
         //因为shader取值是-1到1，而这里换算成比例是0到1，也就是0.5,0.5对应坐标中点(0,0) ，又因为考虑到即使横屏情况下，screen高度也可能比宽度大，
