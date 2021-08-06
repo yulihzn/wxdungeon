@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "bf4ae894-300d-408d-a10e-51bcbecb288a",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "weaponlightfaranim001": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "c5173b17-4c19-4ebe-ad98-6490b86b16e4",
+      "importer": "sprite-frame",
       "rawTextureUuid": "bf4ae894-300d-408d-a10e-51bcbecb288a",
       "trimType": "custom",
       "trimThreshold": 1,

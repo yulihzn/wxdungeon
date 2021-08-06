@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "c608d9e4-5f6f-457a-867f-6c87ef431f17",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "evileyemouth": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "e6637dac-746f-45d7-90aa-a24665762de5",
+      "importer": "sprite-frame",
       "rawTextureUuid": "c608d9e4-5f6f-457a-867f-6c87ef431f17",
       "trimType": "custom",
       "trimThreshold": 1,

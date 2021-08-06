@@ -71,36 +71,7 @@ export default class Tile extends cc.Component {
         }
         return s;
      }
-    getLabRes():string{
-        let s = 'tile_lab001';
-        switch(this.tileType){
-            case '**':s = 'tile_lab001';break;
-            case '*0':s = 'tile_lab002';break;
-            case '*1':s = 'tile_lab003';break;
-            case '*2':s = 'tile_lab003';break;
-        }
-        return s;
-     }
-    getDirtRes():string{
-        let s = 'tile_dirt001';
-        switch(this.tileType){
-            case '**':s = 'tile_dirt001';break;
-            case '*0':s = 'tile_dirt002';break;
-            case '*1':s = 'tile_dirt003';break;
-            case '*2':s = 'tile_dirt004';break;
-        }
-        return s;
-     }
-     getDeckRes():string{
-        let s = 'tile_deck001';
-        switch(this.tileType){
-            case '**':s = 'tile_deck001';break;
-            case '*0':s = 'tile_deck002';break;
-            case '*1':s = 'tile_deck003';break;
-            case '*2':s = 'tile_deck004';break;
-        }
-        return s;
-     }
+    
     //animation
     TileBreak(){
         // this.isBroken = true;

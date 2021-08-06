@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "8de73371-f7fc-43c1-a0ed-91b87126461f",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "bossrahpants": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "d08fce41-fb3a-459c-b214-b4ab9af599f5",
+      "importer": "sprite-frame",
       "rawTextureUuid": "8de73371-f7fc-43c1-a0ed-91b87126461f",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "a32ed7d3-3e3f-408f-95da-c1aee4c8852f",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "progressbar": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "0c8da991-4fac-45f7-9e33-d866688d843b",
+      "importer": "sprite-frame",
       "rawTextureUuid": "a32ed7d3-3e3f-408f-95da-c1aee4c8852f",
       "trimType": "auto",
       "trimThreshold": 1,

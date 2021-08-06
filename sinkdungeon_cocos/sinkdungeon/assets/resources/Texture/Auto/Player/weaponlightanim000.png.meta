@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "8f3910df-11b6-41b0-9841-07ea69420a31",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "weaponlightanim000": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "f02794fd-44e4-481f-98e0-9bc1dbe4e134",
+      "importer": "sprite-frame",
       "rawTextureUuid": "8f3910df-11b6-41b0-9841-07ea69420a31",
       "trimType": "custom",
       "trimThreshold": 1,

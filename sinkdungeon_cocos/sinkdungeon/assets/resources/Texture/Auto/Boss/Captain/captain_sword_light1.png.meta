@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "6a54cff1-e714-4be2-a512-33fbbed5369d",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "captain_sword_light1": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "a1de03f6-5204-4a35-9333-7dd057c7286d",
+      "importer": "sprite-frame",
       "rawTextureUuid": "6a54cff1-e714-4be2-a512-33fbbed5369d",
       "trimType": "custom",
       "trimThreshold": 1,

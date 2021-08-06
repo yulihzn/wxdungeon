@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "3431514c-e976-48c3-89c0-a8e6ac678754",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dragonfoot": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "8e30222e-184d-4eb0-a8de-17416d4fb377",
+      "importer": "sprite-frame",
       "rawTextureUuid": "3431514c-e976-48c3-89c0-a8e6ac678754",
       "trimType": "custom",
       "trimThreshold": 1,

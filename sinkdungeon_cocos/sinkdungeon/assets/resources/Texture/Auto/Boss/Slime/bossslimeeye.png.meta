@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "ccf51fd2-fe39-4a8d-a679-a31b1898382f",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "bossslimeeye": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "77a43f5f-a6b7-4feb-89f7-9103876382d3",
+      "importer": "sprite-frame",
       "rawTextureUuid": "ccf51fd2-fe39-4a8d-a679-a31b1898382f",
       "trimType": "auto",
       "trimThreshold": 1,

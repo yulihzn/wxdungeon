@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "d524a7fb-a934-4943-aa19-27cd1def6530",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "mainbutton": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "22d10b4d-8eb4-4463-8d41-d9157cc15a58",
+      "importer": "sprite-frame",
       "rawTextureUuid": "d524a7fb-a934-4943-aa19-27cd1def6530",
       "trimType": "custom",
       "trimThreshold": 1,

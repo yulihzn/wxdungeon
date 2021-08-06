@@ -30,7 +30,6 @@ export default class ShadowOfSight extends cc.Component {
     showRayCast = false;//是否射线
     @property
     fromSky = false;
-    @property
     showShadow = true;
     /** 视野顶点数组 */
     lightVertsArray = new Array();
@@ -63,7 +62,7 @@ export default class ShadowOfSight extends cc.Component {
         }
         this.offset = this.offsetPlus ? this.offset + delta : this.offset - delta;
         this.ray.clear();
-        if (Logic.settings.showShadow && (this.showShadow||this.showLight)) {
+        if (Logic.settings.showShadow && this.showShadow) {
             this.lightRects = {};
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);

@@ -1,6 +1,7 @@
 {
-  "ver": "2.1.0",
+  "ver": "2.1.2",
   "uuid": "850ec44c-81fd-45f3-b6ed-4cf410575571",
+  "importer": "bitmap-font",
   "textureUuid": "6017a10c-2da6-481a-b4ad-64763dce0594",
   "fontSize": 24,
   "subMetas": {}

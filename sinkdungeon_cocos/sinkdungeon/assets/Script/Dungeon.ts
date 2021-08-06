@@ -166,25 +166,7 @@ export default class Dungeon extends cc.Component {
             this.map[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 //越往下层级越高，j是行，i是列
-                if (Dungeon.isFirstEqual(mapData[i][j], "*") && mapData[i][j] != '**') {
-                    let t = cc.instantiate(this.tile);
-                    t.parent = this.node;
-                    t.position = Dungeon.getPosInMap(cc.v3(i, j));
-                    t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - j) * 10;
-                    this.map[i][j] = t.getComponent(Tile);
-                    this.map[i][j].isAutoShow = false;
-                    this.map[i][j].tileType = mapData[i][j];
-                    this.map[i][j].coverPrefix = leveldata.floorCoverRes;
-                    this.map[i][j].cover1 = leveldata.floorCoverRes1;
-                    this.map[i][j].cover2 = leveldata.floorCoverRes2;
-                    this.map[i][j].cover3 = leveldata.floorCoverRes3;
-                    this.map[i][j].cover4 = leveldata.floorCoverRes4;
-                    this.map[i][j].cover5 = leveldata.floorCoverRes5;
-                    this.map[i][j].floorPrefix = leveldata.floorRes;
-                }
-                if (Dungeon.isFirstEqual(mapData[i][j], "*")) {
-                    this.floorIndexmap.push(cc.v3(i, j));
-                }
+                this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false);
                 //加载建筑
                 this.buildingManager.addBuildingsFromMap(this, mapData[i][j], cc.v3(i, j), leveldata, exits);
                 //房间未清理时加载物品
@@ -232,8 +214,32 @@ export default class Dungeon extends cc.Component {
             this.addOilGoldOnGround();
         }, 0.5)
     }
+    private addTiles(mapDataStr: string, indexPos: cc.Vec3, leveldata: LevelData, onlyShow: boolean) {
+        if (Dungeon.isFirstEqual(mapDataStr, "*") && mapDataStr != '**') {
+            let t = cc.instantiate(this.tile);
+            t.parent = this.node;
+            t.position = Dungeon.getPosInMap(indexPos.clone());
+            t.zIndex = IndexZ.BASE + (Dungeon.HEIGHT_SIZE - indexPos.y) * 10;
+            let tile = t.getComponent(Tile);
+            tile.isAutoShow = false;
+            tile.tileType = mapDataStr;
+            tile.coverPrefix = leveldata.floorCoverRes;
+            tile.cover1 = leveldata.floorCoverRes1;
+            tile.cover2 = leveldata.floorCoverRes2;
+            tile.cover3 = leveldata.floorCoverRes3;
+            tile.cover4 = leveldata.floorCoverRes4;
+            tile.cover5 = leveldata.floorCoverRes5;
+            tile.floorPrefix = leveldata.floorRes;
+            if (!onlyShow) {
+                this.map[indexPos.x][indexPos.y] = tile;
+            }
+        }
+        if (!onlyShow && Dungeon.isFirstEqual(mapDataStr, "*")) {
+            this.floorIndexmap.push(indexPos.clone());
+        }
+    }
     private logNodeCount() {
-        if(!this.node){
+        if (!this.node) {
             return;
         }
         let names: { [key: string]: number } = {};
@@ -267,11 +273,13 @@ export default class Dungeon extends cc.Component {
                     case 3: needAdd = i < length; break;
                     case 4: needAdd = i > Dungeon.WIDTH_SIZE - length && j > Dungeon.HEIGHT_SIZE - length; break;
                     case 5: needAdd = i < length && j > Dungeon.HEIGHT_SIZE - length; break;
-                    case 6: needAdd = i > Dungeon.WIDTH_SIZE - 3 && j < length; break;
+                    case 6: needAdd = i > Dungeon.WIDTH_SIZE - length && j < length; break;
                     case 7: needAdd = i < length && j < length; break;
                 }
                 if (needAdd) {
-                    this.buildingManager.addBuildingsFromSideMap(mapData[i][j], cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y), leveldata);
+                    let indexPos = cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y);
+                    this.addTiles(mapData[i][j], indexPos.clone(), leveldata, true);
+                    this.buildingManager.addBuildingsFromSideMap(mapData[i][j], indexPos.clone(), leveldata);
                 }
             }
         }

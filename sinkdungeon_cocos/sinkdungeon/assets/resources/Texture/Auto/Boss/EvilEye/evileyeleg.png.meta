@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "a2a3737c-e079-43b9-ba77-676dc28b9caa",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "evileyeleg": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "df134d50-eab4-4185-8f68-6842985e0b22",
+      "importer": "sprite-frame",
       "rawTextureUuid": "a2a3737c-e079-43b9-ba77-676dc28b9caa",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "324be4e7-9918-4d39-b95e-825e67f416be",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "boss001eye": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "7e74f4b2-ba25-434f-af21-718e1f91bf20",
+      "importer": "sprite-frame",
       "rawTextureUuid": "324be4e7-9918-4d39-b95e-825e67f416be",
       "trimType": "custom",
       "trimThreshold": 1,

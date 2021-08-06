@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "8cc81071-252d-4c26-a3ae-33ab60f47966",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "hitlight6": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "9567cc19-3e9c-48b0-af16-7d2160a2fbcf",
+      "importer": "sprite-frame",
       "rawTextureUuid": "8cc81071-252d-4c26-a3ae-33ab60f47966",
       "trimType": "custom",
       "trimThreshold": 1,

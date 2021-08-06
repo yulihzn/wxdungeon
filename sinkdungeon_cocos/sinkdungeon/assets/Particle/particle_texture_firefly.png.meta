@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "520d77a4-b624-41ae-b7df-2a3d4884a3df",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "particle_texture_firefly": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "b2c8bad8-d163-4d1c-8967-e45039d6ba6a",
+      "importer": "sprite-frame",
       "rawTextureUuid": "520d77a4-b624-41ae-b7df-2a3d4884a3df",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "3b999b2c-ad3c-4c89-8263-c942587cbc5a",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "tvlight": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "e9df5f27-3267-4d15-8e0e-aa5518d05e5e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "3b999b2c-ad3c-4c89-8263-c942587cbc5a",
       "trimType": "auto",
       "trimThreshold": 1,

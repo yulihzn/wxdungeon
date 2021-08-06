@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "92560c53-db88-4f53-a8ce-7a996a77d485",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "bossrahleg": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "cd52edd6-464b-4f36-ad1f-35ece2ab955d",
+      "importer": "sprite-frame",
       "rawTextureUuid": "92560c53-db88-4f53-a8ce-7a996a77d485",
       "trimType": "custom",
       "trimThreshold": 1,

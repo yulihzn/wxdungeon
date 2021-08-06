@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "5d75de04-d1b0-4b54-893f-ed09509842be",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "talenthand04": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "876cd0a5-3941-465c-b886-28d7a736c7c4",
+      "importer": "sprite-frame",
       "rawTextureUuid": "5d75de04-d1b0-4b54-893f-ed09509842be",
       "trimType": "custom",
       "trimThreshold": 1,

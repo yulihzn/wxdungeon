@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "6ed5cce5-c8ab-47fe-8d05-8e460f81890f",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "startbg_water003": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "91f4fd4b-82c2-48f8-9f30-8cb56dab7602",
+      "importer": "sprite-frame",
       "rawTextureUuid": "6ed5cce5-c8ab-47fe-8d05-8e460f81890f",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "40f78155-2c40-4f42-82c1-1547e320623f",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "talentbroom1": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "bf8e2923-28f9-4516-9c92-09e26f2df11d",
+      "importer": "sprite-frame",
       "rawTextureUuid": "40f78155-2c40-4f42-82c1-1547e320623f",
       "trimType": "custom",
       "trimThreshold": 1,

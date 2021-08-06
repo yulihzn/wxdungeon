@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "8ea9f5fa-251f-4ee2-81ae-1f526ee7c09a",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "weaponlightfarbluntanim010": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "c801c0cb-20e3-43a0-afdc-1d2853c543fe",
+      "importer": "sprite-frame",
       "rawTextureUuid": "8ea9f5fa-251f-4ee2-81ae-1f526ee7c09a",
       "trimType": "custom",
       "trimThreshold": 1,

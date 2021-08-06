@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "e5196c10-bb53-461f-85af-1fb52f482660",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "talentfireball2": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "dcf55324-ebe8-43da-a7bb-36a1e971e02f",
+      "importer": "sprite-frame",
       "rawTextureUuid": "e5196c10-bb53-461f-85af-1fb52f482660",
       "trimType": "custom",
       "trimThreshold": 1,

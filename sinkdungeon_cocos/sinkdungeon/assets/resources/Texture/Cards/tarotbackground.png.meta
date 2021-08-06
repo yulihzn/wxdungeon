@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "d11a6110-864e-4efd-9afd-ae810624cc5c",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "tarotbackground": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "6bf03eb1-9821-4dff-a84b-2da496f7c9cc",
+      "importer": "sprite-frame",
       "rawTextureUuid": "d11a6110-864e-4efd-9afd-ae810624cc5c",
       "trimType": "custom",
       "trimThreshold": 1,

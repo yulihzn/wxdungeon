@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "a56a1c2b-422c-4cd4-ba34-9c1bdf0a8a56",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "sphinxswing": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "e8996fe1-e5b7-4d7a-8cfd-c78f7213fd8d",
+      "importer": "sprite-frame",
       "rawTextureUuid": "a56a1c2b-422c-4cd4-ba34-9c1bdf0a8a56",
       "trimType": "custom",
       "trimThreshold": 1,

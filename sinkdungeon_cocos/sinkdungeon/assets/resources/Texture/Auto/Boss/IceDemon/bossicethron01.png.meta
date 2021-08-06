@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "0798ad84-da0a-4bf2-997d-1a9574c54eee",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "bossicethron01": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "d0e523ee-cd02-4164-8418-40a44fe6bbd2",
+      "importer": "sprite-frame",
       "rawTextureUuid": "0798ad84-da0a-4bf2-997d-1a9574c54eee",
       "trimType": "auto",
       "trimThreshold": 1,

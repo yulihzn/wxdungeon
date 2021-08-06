@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "f60c6bc7-5178-4e4c-983d-e57856d8ea79",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dryadtwine02": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "d511cd65-70a3-4f5d-bdbd-e551b9b651b6",
+      "importer": "sprite-frame",
       "rawTextureUuid": "f60c6bc7-5178-4e4c-983d-e57856d8ea79",
       "trimType": "custom",
       "trimThreshold": 1,

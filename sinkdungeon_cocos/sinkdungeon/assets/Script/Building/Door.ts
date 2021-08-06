@@ -53,7 +53,7 @@ export default class Door extends Building {
         if (this.sprite) {
             this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim000`);
             this.sprite.node.width = 128;
-            this.sprite.node.height = this.dir > 1 ? 256 : 128;
+            this.sprite.node.height = this.dir > 1 ? 384 : 128;
             if (this.isDecorate) {
                 this.sprite.node.opacity = 0;
             }
@@ -90,8 +90,8 @@ export default class Door extends Building {
         collider.offset = cc.v2(0, 7);
         collider.size = cc.size(128, 114);
         if (this.dir > 1) {
-            collider.offset = cc.v2(0, 8);
-            collider.size = cc.size(64, 128);
+            collider.offset = cc.v2(0, -64);
+            collider.size = cc.size(64, 256);
         }
         collider.apply();
     }

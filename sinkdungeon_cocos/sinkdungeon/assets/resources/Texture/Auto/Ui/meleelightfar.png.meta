@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "58c893b7-8e3b-423d-b52d-8158582ea604",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "meleelightfar": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "d1cc8d7c-779c-4d02-b36e-6a527a0da16e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "58c893b7-8e3b-423d-b52d-8158582ea604",
       "trimType": "custom",
       "trimThreshold": 1,

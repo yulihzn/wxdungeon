@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "07ac5a2a-2516-491e-9290-6371abe7ad65",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "talentskyhand4": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "ecd59226-0877-4aea-a580-d5bea836a108",
+      "importer": "sprite-frame",
       "rawTextureUuid": "07ac5a2a-2516-491e-9290-6371abe7ad65",
       "trimType": "custom",
       "trimThreshold": 1,

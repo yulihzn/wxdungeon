@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "c3e76ead-c716-434a-886b-a8b81ceb1966",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "particle_texture_fire": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "433781b6-ff2f-48a0-a917-84d64c0ef498",
+      "importer": "sprite-frame",
       "rawTextureUuid": "c3e76ead-c716-434a-886b-a8b81ceb1966",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "5d70b333-f33c-4c19-910e-6244e5f9b5b6",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "weaponlightfarstabanim013": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "ee38ab87-3a38-455d-8708-f4342b466a8e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "5d70b333-f33c-4c19-910e-6244e5f9b5b6",
       "trimType": "custom",
       "trimThreshold": 1,

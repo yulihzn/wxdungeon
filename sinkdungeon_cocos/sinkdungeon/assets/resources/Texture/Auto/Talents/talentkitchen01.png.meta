@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "6a5ea72a-e2e6-47fd-baf7-aa564b6b6647",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "talentkitchen01": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "3477cdde-ae53-4456-a7b0-1b57148b05a2",
+      "importer": "sprite-frame",
       "rawTextureUuid": "6a5ea72a-e2e6-47fd-baf7-aa564b6b6647",
       "trimType": "custom",
       "trimThreshold": 1,

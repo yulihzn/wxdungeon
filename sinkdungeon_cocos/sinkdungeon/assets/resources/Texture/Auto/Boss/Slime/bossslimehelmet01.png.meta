@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "f2732993-72fb-4ca8-b14c-17ad679039ea",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "bossslimehelmet01": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "16f63745-3ee4-4809-a7e9-e3add081323f",
+      "importer": "sprite-frame",
       "rawTextureUuid": "f2732993-72fb-4ca8-b14c-17ad679039ea",
       "trimType": "custom",
       "trimThreshold": 1,

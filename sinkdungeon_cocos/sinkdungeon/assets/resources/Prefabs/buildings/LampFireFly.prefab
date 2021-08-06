@@ -211,7 +211,7 @@
     "_prefab": {
       "__id__": 9
     },
-    "_opacity": 255,
+    "_opacity": 128,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -221,8 +221,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 300,
-      "height": 300
+      "width": 200,
+      "height": 200
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -269,19 +269,15 @@
     "ray": {
       "__id__": 7
     },
-    "rayRadius": 200,
     "renderColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 199,
+      "r": 232,
+      "g": 255,
       "b": 21,
       "a": 80
     },
-    "showLight": false,
+    "showLight": true,
     "showRayCast": false,
-    "isCircle": true,
-    "isSector": false,
-    "isCustom": false,
     "fromSky": false,
     "_id": ""
   },

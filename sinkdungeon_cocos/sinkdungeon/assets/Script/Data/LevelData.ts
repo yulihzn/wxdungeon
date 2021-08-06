@@ -18,8 +18,10 @@ export default class LevelData {
     floorCoverRes5 = '';//地板覆盖物5
     wallRes1 = '';//墙壁资源名1（#0,1,2,3, 外角4,5,6,7, 内角8,9,10,11）
     wallRes2 = '';//墙壁资源名2 (#墙12,13,14,15, 外角16,17,18,19, 内角20,21,22,23)
-    wallRes3 = '';//墙壁资源名3（独立矮墙体a)
-    wallRes4 = '';//墙壁资源名4(独立矮墙体b)
+    wallRes3 = '';//墙壁资源名3（独立矮墙体#00)
+    wallRes4 = '';//墙壁资源名4(独立矮墙体#10)
+    wallRes5 = '';//墙壁资源名5（独立矮墙体#20)
+    wallRes6 = '';//墙壁资源名6(独立矮墙体#30)
     doorRes = '';//门资源名
     exitRes = '';//出入口资源名
     needRadomDecorate = false;
@@ -93,6 +95,8 @@ export default class LevelData {
         this.wallRes2 = data.wallRes2;
         this.wallRes3 = data.wallRes3;
         this.wallRes4 = data.wallRes4;
+        this.wallRes5 = data.wallRes5;
+        this.wallRes6 = data.wallRes6;
         this.doorRes = data.doorRes;
         this.exitRes = data.exitRes;
         this.exits = data.exits;

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "bcb7af1f-4aa3-4a28-a76a-09f615099623",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "talenteneryshield5": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "f91dbdfa-5943-45f8-925a-077fc36108f7",
+      "importer": "sprite-frame",
       "rawTextureUuid": "bcb7af1f-4aa3-4a28-a76a-09f615099623",
       "trimType": "custom",
       "trimThreshold": 1,

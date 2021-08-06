@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "9a05349d-c472-4865-9903-e6cbe4e4de03",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "bossmachinehead": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "d85e1dda-90c0-409e-ab47-bc13e693d155",
+      "importer": "sprite-frame",
       "rawTextureUuid": "9a05349d-c472-4865-9903-e6cbe4e4de03",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "008ae836-6640-46f8-9e2f-874e2d73292c",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "martshelves": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "f93541ff-fc52-4c1a-80ae-75c2c574fa8e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "008ae836-6640-46f8-9e2f-874e2d73292c",
       "trimType": "custom",
       "trimThreshold": 1,

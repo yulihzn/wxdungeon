@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "068d24a5-1076-4120-b1ab-1f8ad4effa59",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dragonswing": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "71c6f367-36ab-407e-9a84-041495d36c82",
+      "importer": "sprite-frame",
       "rawTextureUuid": "068d24a5-1076-4120-b1ab-1f8ad4effa59",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "acf424c2-d3fa-4d06-b6a4-27c7c8a24a57",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dryadleaf": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "87065772-2e40-4772-b61e-723809b3be79",
+      "importer": "sprite-frame",
       "rawTextureUuid": "acf424c2-d3fa-4d06-b6a4-27c7c8a24a57",
       "trimType": "custom",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "7ed2d7fb-4468-4c57-868f-e7066a82889d",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "magicicethron2": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "7f45468b-80c9-45a7-aa96-ae9a18f96b9b",
+      "importer": "sprite-frame",
       "rawTextureUuid": "7ed2d7fb-4468-4c57-868f-e7066a82889d",
       "trimType": "custom",
       "trimThreshold": 1,

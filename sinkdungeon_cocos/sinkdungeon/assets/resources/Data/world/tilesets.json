@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":327,
+ "tilecount":329,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3364,6 +3364,20 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"Lc"
+        }, 
+        {
+         "id":716,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallshort2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"#20"
+        }, 
+        {
+         "id":717,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallshort3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"#30"
         }],
  "tilewidth":16,
  "type":"tileset",

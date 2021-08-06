@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "2ed7db63-9ecc-421a-87d9-69237d95c94d",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "cellphone1": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "0065ab52-b838-4d2b-b5f8-7e52f5bfdb3f",
+      "importer": "sprite-frame",
       "rawTextureUuid": "2ed7db63-9ecc-421a-87d9-69237d95c94d",
       "trimType": "custom",
       "trimThreshold": 1,

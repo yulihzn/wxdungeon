@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "122a87ae-cac4-4887-8441-9bcfa999dca3",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "martbaozishelves": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "35ce0718-6412-4a71-affc-a085498e2d5e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "122a87ae-cac4-4887-8441-9bcfa999dca3",
       "trimType": "custom",
       "trimThreshold": 1,

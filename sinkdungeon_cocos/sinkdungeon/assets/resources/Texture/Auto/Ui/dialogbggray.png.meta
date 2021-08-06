@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "8968de62-2c4d-4cda-ae44-10bfbcc30912",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dialogbggray": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "ee34f377-2ba3-4358-92f3-b044c1fea51f",
+      "importer": "sprite-frame",
       "rawTextureUuid": "8968de62-2c4d-4cda-ae44-10bfbcc30912",
       "trimType": "custom",
       "trimThreshold": 1,

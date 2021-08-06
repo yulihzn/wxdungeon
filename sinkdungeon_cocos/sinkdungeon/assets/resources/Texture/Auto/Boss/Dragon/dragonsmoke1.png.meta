@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "ccf08f60-79c0-435a-9b3e-990e267f270d",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dragonsmoke1": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "d2535b7e-5f5a-4923-9617-a861f2cf3a57",
+      "importer": "sprite-frame",
       "rawTextureUuid": "ccf08f60-79c0-435a-9b3e-990e267f270d",
       "trimType": "custom",
       "trimThreshold": 1,

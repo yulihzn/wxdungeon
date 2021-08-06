@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "6e34a44a-858a-4e04-be0e-35037e8fbc34",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "ranklistbook": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "2d91eead-6283-4850-ac27-dbae70ccbf85",
+      "importer": "sprite-frame",
       "rawTextureUuid": "6e34a44a-858a-4e04-be0e-35037e8fbc34",
       "trimType": "custom",
       "trimThreshold": 1,

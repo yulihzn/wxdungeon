@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "76033493-8b2a-4d54-ad2e-9dcfb251ab50",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "trilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "huaji": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "1a8795a2-1c8c-404c-ab7a-14aff01766f3",
+      "importer": "sprite-frame",
       "rawTextureUuid": "76033493-8b2a-4d54-ad2e-9dcfb251ab50",
       "trimType": "custom",
       "trimThreshold": 1,

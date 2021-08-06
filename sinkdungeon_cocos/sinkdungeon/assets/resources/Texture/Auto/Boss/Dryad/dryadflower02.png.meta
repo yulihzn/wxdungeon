@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "e79f39ff-a0fe-4c61-9e82-27debe00a66b",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dryadflower02": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "efe3ef0f-7693-48cf-80fb-d9cf240a0970",
+      "importer": "sprite-frame",
       "rawTextureUuid": "e79f39ff-a0fe-4c61-9e82-27debe00a66b",
       "trimType": "custom",
       "trimThreshold": 1,

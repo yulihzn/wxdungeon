@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "06f65744-6fe1-4155-97ec-02fd6ba0ad6c",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "point",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "dragonleg": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "dec28b1a-b17e-44c4-b145-d1586ad74baa",
+      "importer": "sprite-frame",
       "rawTextureUuid": "06f65744-6fe1-4155-97ec-02fd6ba0ad6c",
       "trimType": "custom",
       "trimThreshold": 1,
