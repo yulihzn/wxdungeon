@@ -80,9 +80,7 @@ export default class ShadowOfSight extends cc.Component {
     drawCustom(pos: cc.Vec2, camera: cc.Camera, renderLight: boolean) {
         this.ray.lineWidth = 10;
         this.ray.fillColor = this.renderColor;
-        let onlyCircle = true;
         if (this.polygonCollider && this.polygonCollider.points.length > 2) {
-            onlyCircle = false;
             for (let i = 0; i < this.polygonCollider.points.length; i++) {
                 let p = this.node.convertToWorldSpaceAR(this.polygonCollider.points[i]);
                 this.lightVertsArray.push(p);

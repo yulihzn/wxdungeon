@@ -343,7 +343,7 @@
         "resName": "monster016",
         "chapter": 0,
         "stageLevel": 0,
-        "isStatic":1,
+        "isStatic":0,
         "isTest":1,
         "common": {
             "moveSpeed": 0,

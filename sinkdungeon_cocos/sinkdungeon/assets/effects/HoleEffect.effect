@@ -14,7 +14,7 @@ CCEffect %{
         texture: { value: white }
         alphaThreshold: { value: 0.7 }
         size: { value: [320.0, 180.0], editor: { tooltip: '节点尺寸' } }
-        lightColor: { value: [0.0, 0.0, 0.1, 0.6], inspector: { type: color } }
+        lightColor: { value: [0.0, 0.0, 0.1, 0.3], inspector: { type: color } }
 }%
 
 
@@ -97,13 +97,13 @@ CCProgram fs %{
   
   float getA(vec2 pos){
     vec4 color = texture2D(texture, pos);
-    float a = 0.0;
-    if(color.r == 1.0&&color.g == 1.0&&color.b == 1.0){
-      a = 0.0;
-    }else{
-      a = 1.0;
-    }
-    return a;
+    // float a = 0.0;
+    // if(color.r == 1.0&&color.g == 1.0&&color.b == 1.0){
+    //   a = 0.0;
+    // }else{
+    //   a = 1.0;
+    // }
+    return 1.0 - step(1.0, color.r * color.g * color.b);
   }
   float blur13(vec2 pos){
     float alpha = 0.0;

@@ -1,0 +1,30 @@
+{
+  "__type__": "cc.Material",
+  "_name": "OutlineBlackShadowMat",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "3a5df126-e02c-4eac-848c-4f809d6ec57a"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true,
+        "USE_ALPHA_TEST": false
+      },
+      "props": {
+        "outlineColor": {
+          "__type__": "cc.Color",
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 255
+        },
+        "textureSizeWidth": 84,
+        "textureSizeHeight": 84,
+        "outlineSize": 4
+      }
+    }
+  }
+}

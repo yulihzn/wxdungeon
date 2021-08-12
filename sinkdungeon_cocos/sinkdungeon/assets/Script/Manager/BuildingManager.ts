@@ -446,13 +446,7 @@ export default class BuildingManager extends BaseManager {
             fallentree.parent = this.node;
             fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
             fallentree.setScale(6, 4);
-        } else if (mapDataStr == '+1') {
-
-        } else if (mapDataStr == '+2') {
-            let arrow = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
-            arrow.zIndex = IndexZ.FLOOR;
-            arrow.getComponent(DecorationFloor).changeRes('exitarrow');
-        } else if (mapDataStr == '+3') {
+        }else if (mapDataStr == '+3') {
             this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
         } else if (mapDataStr == '+4') {
             this.addPracticeEquipItem(dungeon, indexPos);
@@ -466,12 +460,19 @@ export default class BuildingManager extends BaseManager {
             this.addBuilding(Logic.getBuildings(BuildingManager.GRASS04), indexPos);
         } else {
             let fd = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
-            fd.zIndex = IndexZ.FLOOR;
             let df = fd.getComponent(DecorationFloor);
             if (mapDataStr == '++') {
-                df.changeRes('exitarrow');
-            } else {
-                df.changeRes('dev');
+                df.init(dungeon,'exitarrow',4,0);
+            } else if (mapDataStr == '+2') {
+                df.init(dungeon,'exitarrow',4,0);
+            }else if(mapDataStr == '+5'){
+                df.init(dungeon,'roomoutside0',32,1,cc.v3(0.95,0.5),255,IndexZ.BASE);
+            }else if(mapDataStr == '+6'){
+                df.init(dungeon,'roomoutside1',32,1,cc.v3(0.95,0.5),255,IndexZ.BASE);
+            } else if(mapDataStr == '+7'){
+                df.init(dungeon,'roomoutside2',32,1,cc.v3(0,0.5),255,IndexZ.BASE);
+            }  else {
+                df.init(dungeon,'dev',4,0);
             }
         }
     }

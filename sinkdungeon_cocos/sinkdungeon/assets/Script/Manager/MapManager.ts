@@ -104,9 +104,9 @@ export default class MapManager {
     /** 获取当前房间*/
     public getCurrentRoom(): RectRoom {
         if (this.rectDungeon && this.rectDungeon.map) {
-            return this.rectDungeon.map[this.rectDungeon.currentPos.x][this.rectDungeon.currentPos.y];
+            let room = this.rectDungeon.map[this.rectDungeon.currentPos.x][this.rectDungeon.currentPos.y];
+            return room?room:new RectRoom(1,1,RoomType.Z_ROOM);
         }
-        return null;
     }
    
     /** 获取当前房间指定建筑*/

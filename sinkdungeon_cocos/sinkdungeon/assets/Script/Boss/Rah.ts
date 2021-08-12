@@ -74,7 +74,7 @@ export default class Rah extends Boss {
         Achievement.addMonsterKillAchievement(this.data.resName);
         cc.tween(this.node).to(3, { opacity: 0 }).start();
         this.sc.isDied = true;
-        cc.tween(this.dungeon.fog).to(3, { scale: 10 }).start();
+        cc.tween(this.dungeon.fog).to(3, { scale: 5 }).start();
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();
     }

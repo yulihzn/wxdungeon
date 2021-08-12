@@ -23,7 +23,7 @@ export default class RectDungeon {
     public map: RectRoom[][];
     //当前房间下标 默认1-1
     currentPos: cc.Vec3 = cc.v3(1, 1);
-    
+
     public buildings: { [key: string]: { [key: string]: BuildingData } } = {};//根据下标保存建筑信息
     //根据下标+uuid保存地上的装备
     equipments: { [key: string]: EquipmentData[] } = {};
@@ -32,7 +32,7 @@ export default class RectDungeon {
     public startIndex: cc.Vec2 = cc.Vec2.ZERO;
     public endIndex: cc.Vec2 = cc.v2(-1, -1);
 
-    buildMapFromSave(dungeon: RectDungeon,levelData?: LevelData): RectDungeon {
+    buildMapFromSave(dungeon: RectDungeon, levelData?: LevelData): RectDungeon {
         this.id = dungeon.id;
         this.width = dungeon.width;
         this.height = dungeon.height;
@@ -73,7 +73,7 @@ export default class RectDungeon {
             this.map[i] = new Array();
             for (let j = 0; j < this.height; j++) {
                 this.map[i][j] = new RectRoom(i, j, RoomType.EMPTY_ROOM).initFromSave(dungeon.map[i][j]);
-                if(levelData){
+                if (levelData) {
                     this.map[i][j].roomType = RoomType.getTypeByName(levelData.roomTypes[i][j]);
                 }
                 if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
@@ -187,10 +187,10 @@ export default class RectDungeon {
     static isRoomEqual(room1: RectRoom, room2: RectRoom): boolean {
         return room1.x == room2.x && room1.y == room2.y;
     }
-    public changeAllClearRoomsReborn(){
+    public changeAllClearRoomsReborn() {
         for (let i = 0; i < this.width; i++) {
             for (let j = 0; j < this.height; j++) {
-                if(this.map[i][j].isClear()){
+                if (this.map[i][j].isClear()) {
                     this.map[i][j].reborn++;
                     this.map[i][j].isReborn = true;
                 }

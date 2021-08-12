@@ -257,6 +257,7 @@ export default class ProfessionTalent extends Talent {
             AudioPlayer.play(AudioPlayer.BOOM);
             let d = this.player.data.getFinalAttackPoint();
             d.isMelee = true;
+            d.isCriticalStrike = true;
             let scale = 2;
             if (this.player.IsVariation) {
                 scale += 1;

@@ -83,6 +83,18 @@
       false,
       false,
       false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1280,
@@ -125,9 +137,10 @@
     "player",
     "shadow",
     "bullet",
-    "light"
+    "light",
+    "hide"
   ],
-  "last-module-event-record-time": 1627631573735,
+  "last-module-event-record-time": 1628676623908,
   "simulator-orientation": false,
   "simulator-resolution": {
     "width": 960,

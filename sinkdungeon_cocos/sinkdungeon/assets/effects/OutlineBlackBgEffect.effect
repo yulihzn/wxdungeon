@@ -96,11 +96,13 @@ CCProgram fs %{
   }
   void main () {
     vec4 curr_color = texture2D(texture, v_uv0); // 正在处理的这个像素点的颜色
+    
     if (curr_color.a < 0.5) // 透明直接返回
     {
         gl_FragColor = v_color*curr_color;
         return;
     }
+    
     if (openOutline < 0.9) // 描边 关闭直接返回
     {
         gl_FragColor = v_color*curr_color;
@@ -131,7 +133,7 @@ CCProgram fs %{
     {
         curr_color = outlineColor;
     }else if(blackBg>0.9){
-      curr_color = vec4(0,0,0,0);
+      curr_color = vec4(0.1,0.1,0.1,0.1);
     }
     gl_FragColor = v_color * curr_color;
   }

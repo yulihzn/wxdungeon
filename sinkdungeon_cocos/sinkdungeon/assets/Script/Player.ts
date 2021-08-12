@@ -67,7 +67,8 @@ export default class Player extends Actor {
     shield: Shield = null;
     @property(cc.Node)
     remoteCooldown: cc.Node = null;
-
+    @property(cc.Camera)
+    shadowCamera:cc.Camera = null;
     professionTalent: ProfessionTalent;
     organizationTalent: OrganizationTalent;
 

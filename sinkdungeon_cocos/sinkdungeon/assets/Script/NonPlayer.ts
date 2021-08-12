@@ -64,6 +64,7 @@ export default class NonPlayer extends Actor {
     static readonly ANIM_DIED = 4;
     @property(cc.Vec3)
     pos: cc.Vec3 = cc.v3(0, 0);
+    defautPos:cc.Vec3 = cc.v3(0,0);
 
     @property(HealthBar)
     healthBar: HealthBar = null;
@@ -623,7 +624,7 @@ export default class NonPlayer extends Actor {
             if (damageData.isBackAttack) {
                 this.showBloodEffect();
             }
-            //100ms后恢复状态
+            //150ms后恢复状态
             this.scheduleOnce(() => {
                 if (this.node) {
                     this.hitLight(false);
@@ -633,7 +634,7 @@ export default class NonPlayer extends Actor {
                         this.anim.resume();
                     }
                 }
-            }, 0.1);
+            }, 0.15);
         }
 
         this.sprite.opacity = 255;
@@ -1001,6 +1002,10 @@ export default class NonPlayer extends Actor {
         if (this.attrNode) {
             this.attrNode.opacity = this.healthBar.node.opacity;
         }
+        if(this.data.isTest>0&&this.isTestResetTimeDelay(dt)&&!this.isPassive){
+            this.pos = this.defautPos.clone();
+            this.updatePlayerPos();
+        }
 
     }
     getMovePosFromTarget(target: Actor): cc.Vec3 {
@@ -1129,9 +1134,9 @@ export default class NonPlayer extends Actor {
         }).to(0.2, { opacity: 255 }).call(() => { this.sc.isBlinking = false; }).start();
     }
     moveTimeDelay = 0;
-    isMoveTimeDelay(dt: number, delta: number): boolean {
+    isTestResetTimeDelay(dt: number): boolean {
         this.moveTimeDelay += dt;
-        if (this.moveTimeDelay > delta) {
+        if (this.moveTimeDelay > 10) {
             this.moveTimeDelay = 0;
             return true;
         }

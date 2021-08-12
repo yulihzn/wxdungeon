@@ -340,7 +340,7 @@
       "__id__": 3
     },
     "_enabled": true,
-    "_cullingMask": -337,
+    "_cullingMask": -849,
     "_clearFlags": 7,
     "_backgroundColor": {
       "__type__": "cc.Color",
@@ -394,6 +394,9 @@
     },
     "playerPrefab": {
       "__uuid__": "58cadd35-a65d-4992-953b-791418fb7bde"
+    },
+    "playerShadowPrefab": {
+      "__uuid__": "66bbd236-0f07-47d5-bb06-a732aa45c3f7"
     },
     "fog": {
       "__id__": 15

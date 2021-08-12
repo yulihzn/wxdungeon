@@ -379,9 +379,9 @@ export default class MeleeWeapon extends cc.Component {
         //长剑
         if (!this.isStab && !this.isFar) {
             audioName = swordName;
-            if (this.comboType == MeleeWeapon.COMBO3) {
-                audioName = AudioPlayer.MELEE;
-            }
+            // if (this.comboType == MeleeWeapon.COMBO3) {
+            //     audioName = AudioPlayer.MELEE;
+            // }
         }
         //长枪
         if (this.isStab && this.isFar) {
@@ -390,9 +390,9 @@ export default class MeleeWeapon extends cc.Component {
         //大剑
         if (!this.isStab && this.isFar) {
             audioName = swordName;
-            if (this.comboType == MeleeWeapon.COMBO3) {
-                audioName = AudioPlayer.MELEE;
-            }
+            // if (this.comboType == MeleeWeapon.COMBO3) {
+            //     audioName = AudioPlayer.MELEE;
+            // }
         }
         if (this.isFist) {
             audioName = fistName;
@@ -478,7 +478,7 @@ export default class MeleeWeapon extends cc.Component {
             let enemy = ActorUtils.getNearestEnemyActor(this.player, false, this.dungeon);
             if (enemy) {
                 let dis = Logic.getDistance(this.player.node.position, enemy.node.position);
-                if (dis < 300 && dis < olddis && !enemy.sc.isDied) {
+                if (dis < 400 && dis < olddis && !enemy.sc.isDied) {
                     olddis = dis;
                     let p = this.node.position.clone();
                     p.x = this.node.scaleX > 0 ? p.x : -p.x;
@@ -537,24 +537,24 @@ export default class MeleeWeapon extends cc.Component {
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
         }
-        let power = 20 + this.exBeatBack;
+        let power = 50 + this.exBeatBack;
         if (!this.isFar && this.isStab) {
-            power = 20;
+            power = 50;
         } else if (this.isFar && this.isStab) {
-            power = 100;
+            power = 200;
         } else if (!this.isFar && !this.isStab) {
-            power = 60;
+            power = 120;
         } else {
-            power = 20;
+            power = 50;
         }
         if (this.comboType == MeleeWeapon.COMBO3) {
-            power += 20;
+            power += 50;
         }
 
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
-        }, 0.1);
+        }, 0.05);
     }
     private attacking(attackTarget: cc.Collider): boolean {
         if (!attackTarget || !this.isAttacking) {

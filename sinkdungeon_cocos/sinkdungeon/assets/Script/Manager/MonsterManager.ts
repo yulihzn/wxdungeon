@@ -315,6 +315,7 @@ export default class MonsterManager extends BaseManager {
         //激活
         monster.node.active = true;
         monster.pos = pos;
+        monster.defautPos = pos;
         monster.node.position = Dungeon.getPosInMap(pos);
         this.isRoomInitWithEnemy = monster.data.isTest<1;
         this.monsterList.push(monster);

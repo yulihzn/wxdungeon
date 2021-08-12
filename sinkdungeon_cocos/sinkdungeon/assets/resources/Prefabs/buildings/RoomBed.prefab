@@ -474,7 +474,7 @@
       "r": 255,
       "g": 231,
       "b": 12,
-      "a": 149
+      "a": 75
     },
     "showLight": true,
     "showRayCast": false,
@@ -704,9 +704,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 252,
-      "g": 255,
-      "b": 129,
+      "r": 254,
+      "g": 254,
+      "b": 254,
       "a": 255
     },
     "_contentSize": {
