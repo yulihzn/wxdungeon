@@ -23,6 +23,7 @@ import ActorUtils from "../Utils/ActorUtils";
 import Shooter from "../Shooter";
 import InteractBuilding from "../Building/InteractBuilding";
 import EnergyShield from "../Building/EnergyShield";
+import MeleeShadowWeapon from "../MeleeShadowWeapon";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -389,11 +390,19 @@ export default class Bullet extends cc.Component {
             }
         } else if (tag == ColliderTag.MELEE) {
             let meleeWeapon: MeleeWeapon = attackTarget.getComponent(MeleeWeapon);
+            let shadowWeapon:MeleeShadowWeapon;
+            if(!meleeWeapon){
+                shadowWeapon = attackTarget.getComponent(MeleeShadowWeapon);
+                if(shadowWeapon){
+                    meleeWeapon = shadowWeapon.meleeWeapon;
+                }
+            }
             if (meleeWeapon && meleeWeapon.IsAttacking && !this.isFromPlayer) {
                 //子弹偏转
                 let isReverse = false;
                 if (meleeWeapon.IsReflect) {
-                    isReverse = this.revserseBullet(meleeWeapon.node.convertToWorldSpaceAR(cc.Vec2.ZERO));
+                    let n = shadowWeapon?shadowWeapon.meleeWeapon.node:meleeWeapon.node;
+                    isReverse = this.revserseBullet(n.convertToWorldSpaceAR(cc.Vec2.ZERO));
                 }
                 if (!isReverse) {
                     isDestory = true;

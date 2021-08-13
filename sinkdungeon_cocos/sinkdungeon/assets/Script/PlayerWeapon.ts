@@ -12,6 +12,7 @@ import EquipmentData from "./Data/EquipmentData";
 import InventoryManager from "./Manager/InventoryManager";
 import PlayerData from "./Data/PlayerData";
 import PlayerAvatar from "./PlayerAvatar";
+import MeleeShadowWeapon from "./MeleeShadowWeapon";
 
 const { ccclass, property } = cc._decorator;
 /**
@@ -22,22 +23,30 @@ export default class PlayerWeapon extends cc.Component {
 
     player: Player = null;
     meleeWeapon: MeleeWeapon = null;
+    shadowWeapon:MeleeShadowWeapon = null;
     shooter: Shooter = null;
     isLeftHand:boolean = false;//是否左手
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
+    isShadow = false;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
 
-    init(player: Player,isLeftHand:boolean) {
+    init(player: Player,isLeftHand:boolean,isShadow:boolean) {
+        this.isShadow = isShadow;
         this.isLeftHand = isLeftHand;
         this.player = player;
         this.initMelee();
         this.initShooter();
     }
     private initMelee() {
-        this.meleeWeapon = this.getComponentInChildren(MeleeWeapon);
-        this.meleeWeapon.IsSecond = this.isLeftHand;
+        if(this.isShadow){
+            this.shadowWeapon = this.getComponentInChildren(MeleeShadowWeapon);
+            this.shadowWeapon.init(this.player,this.isLeftHand?this.player.weaponLeft.meleeWeapon:this.player.weaponRight.meleeWeapon);
+        }else{
+            this.meleeWeapon = this.getComponentInChildren(MeleeWeapon);
+            this.meleeWeapon.IsSecond = this.isLeftHand;
+        }
     }
     private initShooter() {
         this.shooter = this.getComponentInChildren(Shooter);

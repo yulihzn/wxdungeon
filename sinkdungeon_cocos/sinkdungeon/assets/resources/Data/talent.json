@@ -145,7 +145,7 @@
         "desc": "扔出多个酒瓶制造一片酒云，范围内所有敌人攻击变慢且近战大概率打空，远程射偏"
     },
     "talent018": {
-        "nameCn": "分身之术",
+        "nameCn": "影子武士",
         "nameEn": "",
         "resName": "talent018",
         "passive": 0,
@@ -161,13 +161,13 @@
         "desc": "跳起从天而降的掌法"
     },
     "talent100": {
-        "nameCn": "？？？",
+        "nameCn": "影子分身",
         "nameEn": "",
         "resName": "talent100",
         "passive": 0,
-        "cooldown": 10,
+        "cooldown": 30,
         "cost": 2,
-        "desc": "？？？"
+        "desc": "影子分身，分身可以同步攻击"
     },
     "talent101": {
         "nameCn": "宠物召唤",

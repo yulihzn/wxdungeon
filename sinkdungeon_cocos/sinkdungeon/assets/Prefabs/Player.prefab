@@ -7385,6 +7385,9 @@
     "shadowCamera": {
       "__id__": 205
     },
+    "shadowPrefab": {
+      "__uuid__": "50720887-e6e1-4e88-b947-709f7964caf5"
+    },
     "_id": ""
   },
   {

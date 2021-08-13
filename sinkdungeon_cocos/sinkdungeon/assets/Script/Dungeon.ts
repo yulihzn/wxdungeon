@@ -37,8 +37,6 @@ export default class Dungeon extends cc.Component {
     tile: cc.Prefab = null;
     @property(cc.Prefab)
     playerPrefab: cc.Prefab = null;
-    @property(cc.Prefab)
-    playerShadowPrefab: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
 
@@ -195,12 +193,6 @@ export default class Dungeon extends cc.Component {
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
-        this.scheduleOnce(()=>{
-            let playershadow = cc.instantiate(this.playerShadowPrefab).getComponent(PlayerShadow);
-            playershadow.node.parent = this.node;
-            playershadow.player = this.player;
-        },1)
-        
 
         //加载随机怪物
         if ((!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn)

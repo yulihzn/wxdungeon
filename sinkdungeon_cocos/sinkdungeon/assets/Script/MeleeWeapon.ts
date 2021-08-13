@@ -118,6 +118,9 @@ export default class MeleeWeapon extends cc.Component {
     get GlovesSprite() {
         return this.glovesSprite;
     }
+    get ComboType(){
+        return this.comboType;
+    }
 
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
@@ -218,6 +221,12 @@ export default class MeleeWeapon extends cc.Component {
         this.isMiss = isMiss;
         this.isAttacking = true;
         this.updateCombo();
+        let animname = this.getAttackAnimName();
+        this.anim.play(animname);
+        this.anim.getAnimationState(animname).speed = this.getAnimSpeed(data.FinalCommon);
+        return true;
+    }
+    getAnimSpeed(finalCommon:CommonData):number{
         let speedScaleFix = 1;
         //匕首
         if (this.isStab && !this.isFar) {
@@ -238,7 +247,6 @@ export default class MeleeWeapon extends cc.Component {
         if (this.isFist) {
             speedScaleFix = 1;
         }
-        let finalCommon = data.FinalCommon;
         let animSpeed = 1 + finalCommon.attackSpeed / 500;
         //最慢
         if (animSpeed < 0.2) {
@@ -248,13 +256,7 @@ export default class MeleeWeapon extends cc.Component {
         if (animSpeed > 3) {
             animSpeed = 3;
         }
-
-        let animname = this.getAttackAnimName();
-        this.anim.play(animname);
-        this.anim.getAnimationState(animname).speed = animSpeed * speedScaleFix;
-
-        return true;
-
+        return animSpeed * speedScaleFix;
     }
 
     attackIdle(isReverse: boolean) {
@@ -274,7 +276,7 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
 
-    private getAttackAnimName(comboType?:number): string {
+    public getAttackAnimName(comboType?:number): string {
         let name = "MeleeAttackStab";
         if (!this.isFar && this.isStab) {
             name = this.isFist ? "MeleeAttackFist" : "MeleeAttackStab";
@@ -526,7 +528,7 @@ export default class MeleeWeapon extends cc.Component {
                 return false;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
-                return this.attacking(other);
+                return this.attacking(other,this.anim,false);
             }
         }
     }
@@ -556,12 +558,10 @@ export default class MeleeWeapon extends cc.Component {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
         }, 0.05);
     }
-    private attacking(attackTarget: cc.Collider): boolean {
+    public attacking(attackTarget: cc.Collider,anim:cc.Animation,isShadow:boolean): boolean {
         if (!attackTarget || !this.isAttacking) {
             return false;
         }
-        // this.waveWeapon.isAttacking = true;
-        // this.stabWeapon.isAttacking = true;
         let damage = new DamageData();
         let common = new CommonData();
         if (this.player) {
@@ -635,9 +635,11 @@ export default class MeleeWeapon extends cc.Component {
         this.isMiss = false;
         //停顿
         if (damageSuccess || attackSuccess) {
-            this.anim.pause();
-            cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 } });
-            this.scheduleOnce(() => { this.anim.resume() }, 0.1);
+            anim.pause();
+            if(!isShadow){
+                EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 });
+            }
+            this.scheduleOnce(() => { anim.resume() }, 0.1);
         }
         if (damageSuccess && this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
             this.player.updateDream(-1);

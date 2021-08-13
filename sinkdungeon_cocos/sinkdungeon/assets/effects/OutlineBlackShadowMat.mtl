@@ -21,8 +21,8 @@
           "b": 255,
           "a": 255
         },
-        "textureSizeWidth": 84,
-        "textureSizeHeight": 84,
+        "textureSizeWidth": 96,
+        "textureSizeHeight": 96,
         "outlineSize": 4
       }
     }

@@ -38,7 +38,11 @@ import Talent from "./Talent";
  * 延长狂化时间 30  60 90 
  * 延长狂化强度 200% 250% 300%
  * 攻击附带debuff冰冻减速、诅咒 、中毒、燃烧、短暂眩晕中选一个
- * 弥世逐流：
+ * 弥世逐流：影子分身,召唤分身进行攻击
+ * 召唤和实体一样攻击力的分身跟随在身后
+ * perk点：
+ * 延长分身持续时间 30 加人物等级x2
+ * 
  * 宝藏猎人: 召唤宠物，如果宠物存在会激活对应宠物的技能
  * 宝藏猎人在选择角色的时候会多一个选择宠物的选项，
  * 考虑有家猫，柯基，鹦鹉，橘子鱼，天竺鼠，巴西龟，变色龙，刺猬，火玫瑰蜘蛛，安哥拉兔，科尔鸭，巴马香猪
@@ -66,6 +70,8 @@ export default class OrganizationTalent extends Talent {
         let storePointMax = 1;
         if (this.player.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             storePointMax = 1 + Math.floor(Logic.playerData.OilGoldData.level / 5);
+        }else if(this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER){
+            this.player.initShadowList(true,Math.floor(Logic.playerData.OilGoldData.level/5+1),30+Logic.playerData.OilGoldData.level*2);
         }
         this.initCoolDown(data, storePointMax);
     }
@@ -126,6 +132,9 @@ export default class OrganizationTalent extends Talent {
             data.Common.remoteDamage = this.player.data.FinalCommon.remoteDamage * (0.5 + Logic.playerData.OilGoldData.level * 0.05);
             data.realDamageDirect -= data.Common.maxHealth;
             this.player.addCustomStatus(data, new FromData());
+        } else if (this.player.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
+            AudioPlayer.play(AudioPlayer.BLINK);
+            this.player.initShadowList(false,Math.floor(Logic.playerData.OilGoldData.level/5+1),30+Logic.playerData.OilGoldData.level*2);
         }
     }
 

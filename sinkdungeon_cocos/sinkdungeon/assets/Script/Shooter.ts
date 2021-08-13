@@ -111,6 +111,9 @@ export default class Shooter extends cc.Component {
         }
         return spriteFrame;
     }
+    get Hv(){
+        return this.hv;
+    }
     setHv(hv: cc.Vec3) {
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {

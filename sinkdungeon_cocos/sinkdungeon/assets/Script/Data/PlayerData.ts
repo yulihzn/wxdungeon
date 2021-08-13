@@ -39,6 +39,7 @@ export default class PlayerData {
     private organizationTalentData:TalentData;
     private professionTalentData:TalentData;
     private statusList:StatusData[];
+    private shadowList:number[];
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
@@ -54,6 +55,10 @@ export default class PlayerData {
         this.common.damageMin = PlayerData.DEFAULT_ATTACK;
         this.common.damageBack = PlayerData.DEFAULT_BACK_ATTACK;
         this.common.maxDream = PlayerData.DEFAULT_DREAM;
+        this.shadowList = [];
+    }
+    get ShadowList(){
+        return this.shadowList;
     }
     get StatusList(){
         return this.statusList;
@@ -112,6 +117,7 @@ export default class PlayerData {
         this.currentDream = data.currentDream ? data.currentDream : 0;
         this.common.maxHealth = data.common.maxHealth ? data.common.maxHealth : 0;
         this.common.moveSpeed = data.common.moveSpeed ? data.common.moveSpeed : 0;
+        this.shadowList = data.shadowList;
     }
 
     public clone(): PlayerData {
@@ -128,6 +134,7 @@ export default class PlayerData {
         e.organizationTalentData = this.organizationTalentData.clone();
         e.professionTalentData = this.professionTalentData.clone();
         e.StatusList = this.statusList;
+        e.shadowList = this.shadowList;
         return e;
     }
 
