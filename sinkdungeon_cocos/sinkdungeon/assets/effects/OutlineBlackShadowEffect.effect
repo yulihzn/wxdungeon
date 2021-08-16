@@ -130,7 +130,7 @@ CCProgram fs %{
     {
         curr_color = outlineColor;
     }else {
-      curr_color = vec4(0,0,0,1);
+      curr_color = vec4(0,0,0,0.6);
     }
     gl_FragColor = v_color * curr_color;
   }

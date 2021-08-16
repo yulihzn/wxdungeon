@@ -186,24 +186,32 @@ export default abstract class Talent extends cc.Component {
         shooter.fireBullet(0, null, 0, 0, prefab, data);
     }
 
-    addStatus2NearEnemy(statusName: string, range: number) {
+    addStatus2NearEnemy(targetNode:cc.Node,statusName: string, range: number) {
         if (!this.player) {
             return cc.Vec3.ZERO;
         }
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
-            let dis = Logic.getDistance(this.node.position, monster.node.position);
+            let dis = Logic.getDistance(targetNode.position, monster.node.position);
             if (dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
                 monster.addStatus(statusName, new FromData());
             }
         }
         for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
-            let dis = Logic.getDistance(this.node.position, boss.node.position);
+            let dis = Logic.getDistance(targetNode.position, boss.node.position);
             if (dis < range && !boss.sc.isDied) {
                 boss.addStatus(statusName, new FromData());
             }
         }
     }
-
+    /**
+     * 添加通用技能aoe
+     * @param aoePreab 
+     * @param pos 
+     * @param aoeData 
+     * @param spriteFrameNames 
+     * @param repeatForever 
+     * @param isFaceRight 
+     */
     addAoe(aoePreab: cc.Prefab, pos: cc.Vec3, aoeData: AreaOfEffectData, spriteFrameNames: string[], repeatForever: boolean, isFaceRight: boolean) {
         let aoe = cc.instantiate(aoePreab);
         pos.y += 32;

@@ -101,7 +101,7 @@ export default class Player extends Actor {
 
     isAvoidDeathed = false;
 
-    private shadowList: ShadowPlayer[] = [];
+    public shadowList: ShadowPlayer[] = [];
     private shadowTexture: cc.RenderTexture;
     private shadowSpriteframe: cc.SpriteFrame;
 
@@ -198,11 +198,11 @@ export default class Player extends Actor {
             this.lights[0].radius = 0;
         }
     }
-    public initShadowList(isFromSave:boolean,count: number,lifeTime:number) {
+    public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
         if (count > 5) {
             count = 5;
         }
-        
+
         if (!this.shadowTexture) {
             this.shadowTexture = new cc.RenderTexture();
             this.shadowTexture.initWithSize(this.shadowCamera.node.width, this.shadowCamera.node.height);
@@ -210,24 +210,24 @@ export default class Player extends Actor {
             this.shadowCamera.targetTexture = this.shadowTexture;
             this.shadowSpriteframe = new cc.SpriteFrame(this.shadowTexture);
         }
-        for(let s of this.shadowList){
-            if(!s.isValid){
+        for (let s of this.shadowList) {
+            if (!s.isValid || !s.enabled || !s.node.active) {
                 s.stop();
             }
         }
         this.shadowList = [];
-        if(isFromSave){
+        if (isFromSave) {
             for (let i = 0; i < count; i++) {
-                if(this.data.ShadowList[i]&&this.data.ShadowList[i]>0){
+                if (this.data.ShadowList[i] && this.data.ShadowList[i] > 0) {
                     let shadow = cc.instantiate(this.shadowPrefab).getComponent(ShadowPlayer);
-                    shadow.init(this, this.shadowSpriteframe, i,this.data.ShadowList[i]);
+                    shadow.init(this, this.shadowSpriteframe, i, this.data.ShadowList[i]);
                     this.shadowList.push(shadow);
                 }
             }
-        }else{
+        } else {
             for (let i = 0; i < count; i++) {
                 let shadow = cc.instantiate(this.shadowPrefab).getComponent(ShadowPlayer);
-                shadow.init(this, this.shadowSpriteframe, i,lifeTime);
+                shadow.init(this, this.shadowSpriteframe, i, lifeTime);
                 this.shadowList.push(shadow);
             }
         }
@@ -354,7 +354,6 @@ export default class Player extends Actor {
                 this.weaponLeft.shooter.changeRes(this.weaponLeft.shooter.data.img);
                 let c = cc.color(255, 255, 255).fromHEX(this.weaponLeft.shooter.data.color);
                 this.weaponLeft.shooter.changeResColor(c);
-
                 this.shield.data = new EquipmentData();
                 this.updateEquipment(this.shield.sprite, this.inventoryManager.equips[InventoryManager.SHIELD].color
                     , Logic.spriteFrameRes(InventoryManager.EMPTY), this.shield.data.isHeavy == 1 ? 80 : 64);
@@ -479,24 +478,24 @@ export default class Player extends Actor {
             isAttackDo = this.weaponRight.meleeWeapon.attack(this.data, this.fistCombo);
             this.weaponLeft.meleeWeapon.attackIdle(false);
             for (let s of this.shadowList) {
-                s.weaponRight.shadowWeapon.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv);
+                s.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv, false);
             }
         } else if (this.fistCombo == MeleeWeapon.COMBO2) {
             this.weaponRight.meleeWeapon.attackIdle(true);
             isAttackDo = this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
             for (let s of this.shadowList) {
-                s.weaponLeft.shadowWeapon.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv);
+                s.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv, true);
             }
         } else if (this.fistCombo == MeleeWeapon.COMBO3) {
             isAttackDo = this.weaponRight.meleeWeapon.attack(this.data, this.fistCombo);
             this.weaponRight.meleeWeapon.DashTime(400);
             for (let s of this.shadowList) {
-                s.weaponRight.shadowWeapon.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv);
+                s.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv, false);
             }
             this.scheduleOnce(() => {
                 this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
                 for (let s of this.shadowList) {
-                    s.weaponLeft.shadowWeapon.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv);
+                    s.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv, true);
                 }
             }, 0.15);
         }
@@ -551,8 +550,7 @@ export default class Player extends Actor {
         let fireSuccess = this.weaponLeft.remoteAttack(this.data, this.remoteCooldown, arcEx, lineEx);
         if (fireSuccess) {
             for (let s of this.shadowList) {
-                s.weaponLeft.shooter.setHv(this.weaponLeft.shooter.Hv);
-                s.weaponLeft.remoteAttack(this.data, this.remoteCooldown, arcEx, lineEx);
+                s.remoteAttack(true,this.weaponLeft.shooter.data,this.weaponLeft.shooter.Hv,this.data.getFinalRemoteDamage(),arcEx, lineEx);
             }
             this.stopHiding();
         }
@@ -592,6 +590,13 @@ export default class Player extends Actor {
             this.shooterEx.data.bulletSize = data.bulletSize;
             this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0;
             this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
+            for(let s of this.shadowList){
+                if(s.node){
+                    s.shooterEx.setHv(this.shooterEx.Hv);
+                    s.shooterEx.data = this.shooterEx.data.clone();
+                    s.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
+                }
+            }
         }
     }
     //特效受击
@@ -632,6 +637,13 @@ export default class Player extends Actor {
             this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
             this.shooterEx.data.bulletSize = data.bulletSize;
             this.shooterEx.fireBullet(0);
+            for(let s of this.shadowList){
+                if(s.node){
+                    s.shooterEx.setHv(this.shooterEx.Hv);
+                    s.shooterEx.data = this.shooterEx.data.clone();
+                    s.shooterEx.fireBullet(0);
+                }
+            }
         }
         if (actor && data.statusNameHurtOther.length > 0 && data.statusRateHurt > Logic.getRandomNum(0, 100)) {
             actor.addStatus(data.statusNameHurtOther, new FromData());
@@ -955,7 +967,9 @@ export default class Player extends Actor {
             this.weaponRight.meleeWeapon.dungeon = dungeon;
             this.weaponRight.shooter.dungeon = dungeon;
             this.shooterEx.dungeon = dungeon;
-            for (let s of this.shadowList) {
+        }
+        for (let s of this.shadowList) {
+            if (s.node && !s.weaponLeft.shadowWeapon.dungeon) {
                 s.weaponLeft.shadowWeapon.dungeon = dungeon;
                 s.weaponLeft.shooter.dungeon = dungeon;
                 s.weaponRight.shadowWeapon.dungeon = dungeon;
@@ -1056,7 +1070,9 @@ export default class Player extends Actor {
         }
         this.showUiButton();
         for (let s of this.shadowList) {
-            s.updateLogic(dt);
+            if (s.node) {
+                s.updateLogic(dt);
+            }
         }
     }
     getScaleSize(): number {

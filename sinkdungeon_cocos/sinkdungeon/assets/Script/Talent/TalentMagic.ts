@@ -169,7 +169,7 @@ export default class TalentMagic extends Talent {
     }
     takeIce(): boolean {
         if (this.hashTalent(Talent.MAGIC_13) && this.magicice.isShow) {
-            this.addStatus2NearEnemy(StatusManager.FROZEN, 300);
+            this.addStatus2NearEnemy(this.player.node,StatusManager.FROZEN, 300);
             this.magicice.breakIce();
             return true;
         }
@@ -211,7 +211,7 @@ export default class TalentMagic extends Talent {
         this.magicLighteningCircle.opacity = 128;
         this.magicLighteningCircle.scale = 1;
         cc.tween(this.magicLighteningCircle).to(1,{scale:10}).call(()=>{
-            this.addStatus2NearEnemy(StatusManager.DIZZ, 300);
+            this.addStatus2NearEnemy(this.player.node,StatusManager.DIZZ, 300);
             this.magicLighteningCircle.opacity = 0;
             this.magicLighteningCircle.scale = 1;
         }).start();
@@ -235,23 +235,6 @@ export default class TalentMagic extends Talent {
         }
     }
 
-    addStatus2NearEnemy(statusName: string, range: number) {
-        if (!this.player) {
-            return cc.Vec3.ZERO;
-        }
-        for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
-            let dis = Logic.getDistance(this.node.position, monster.node.position);
-            if (dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
-                monster.addStatus(statusName, new FromData());
-            }
-        }
-        for (let boss of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.bossList) {
-            let dis = Logic.getDistance(this.node.position, boss.node.position);
-            if (dis < range && !boss.sc.isDied) {
-                boss.addStatus(statusName, new FromData());
-            }
-        }
-    }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;

@@ -6,7 +6,6 @@ import FromData from "../Data/FromData";
 import NonPlayerData from "../Data/NonPlayerData";
 import StatusData from "../Data/StatusData";
 import TalentData from "../Data/TalentData";
-import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
 import NonPlayerManager from "../Manager/NonPlayerManager";
 import StatusManager from "../Manager/StatusManager";

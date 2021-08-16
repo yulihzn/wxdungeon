@@ -84,7 +84,7 @@ export default class Furniture extends Building {
                 } break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
-                Utils.toast('无法使用，功能还在摸索中');
+                Utils.toast('梦境开发中,无法使用');
                 break;
         }
     }
