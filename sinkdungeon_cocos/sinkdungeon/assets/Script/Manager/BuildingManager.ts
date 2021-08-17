@@ -117,6 +117,7 @@ export default class BuildingManager extends BaseManager {
     static readonly WENTLINE = 'WentLine';
     static readonly CRACK = 'Crack';
     static readonly WATERCOLLIDER = 'WaterCollider';
+    static readonly WATERFALL = 'WaterFall';
     static readonly ENERGYSHIELD = 'EnergyShield';
     static readonly FURNITURE = 'Furniture';
 
@@ -258,12 +259,21 @@ export default class BuildingManager extends BaseManager {
             head.opacity = 80;
             head.zIndex = IndexZ.ROOF;
         } else if (this.isFirstEqual(mapDataStr, 'P')) {
-            //生成传送门
-            let p = this.addBuilding(Logic.getBuildings(BuildingManager.PORTAL), indexPos);
-            let i = parseInt(mapDataStr[1]);
-            let portal = p.getComponent(Portal);
-            portal.isBackDream = i > 0;
-            this.portals.push(portal);
+            if(Logic.isCheatMode){
+                let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
+                for (let e of exits) {
+                    if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
+                        d.valueCopy(e);
+                        break;
+                    }
+                }
+                //生成传送门
+                let p = this.addBuilding(Logic.getBuildings(BuildingManager.PORTAL), indexPos);
+                let portal = p.getComponent(Portal);
+                portal.exitData.valueCopy(d);
+                this.portals.push(portal);
+            }
+            
         } else if (mapDataStr == 'Q0') {
             //生成塔罗
             this.addBuilding(Logic.getBuildings(BuildingManager.TAROTTABLE), indexPos);
@@ -446,7 +456,7 @@ export default class BuildingManager extends BaseManager {
             fallentree.parent = this.node;
             fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
             fallentree.setScale(6, 4);
-        }else if (mapDataStr == '+3') {
+        } else if (mapDataStr == '+3') {
             this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
         } else if (mapDataStr == '+4') {
             this.addPracticeEquipItem(dungeon, indexPos);
@@ -462,17 +472,17 @@ export default class BuildingManager extends BaseManager {
             let fd = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
             let df = fd.getComponent(DecorationFloor);
             if (mapDataStr == '++') {
-                df.init(dungeon,'exitarrow',4,0);
+                df.init(dungeon, 'exitarrow', 4, 0);
             } else if (mapDataStr == '+2') {
-                df.init(dungeon,'exitarrow',4,0);
-            }else if(mapDataStr == '+5'){
-                df.init(dungeon,'roomoutside0',32,1,cc.v3(0.95,0.5),255,IndexZ.BASE);
-            }else if(mapDataStr == '+6'){
-                df.init(dungeon,'roomoutside1',32,1,cc.v3(0.95,0.5),255,IndexZ.BASE);
-            } else if(mapDataStr == '+7'){
-                df.init(dungeon,'roomoutside2',32,1,cc.v3(0,0.5),255,IndexZ.BASE);
-            }  else {
-                df.init(dungeon,'dev',4,0);
+                df.init(dungeon, 'exitarrow', 4, 0);
+            } else if (mapDataStr == '+5') {
+                df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE);
+            } else if (mapDataStr == '+6') {
+                df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE);
+            } else if (mapDataStr == '+7') {
+                df.init(dungeon, 'roomoutside2', 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE);
+            } else {
+                df.init(dungeon, 'dev', 4, 0);
             }
         }
     }
@@ -493,6 +503,8 @@ export default class BuildingManager extends BaseManager {
             pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
             pbc.apply();
             co.zIndex = IndexZ.WATER;
+        }else if(mapDataStr == '~f'){
+            let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATERFALL), indexPos);
         } else {
             let dn = this.addBuilding(Logic.getBuildings(mapDataStr == '~#' ? BuildingManager.WATERCOLLIDER : BuildingManager.WATER), indexPos);
             dn.zIndex = IndexZ.WATER;
@@ -635,7 +647,7 @@ export default class BuildingManager extends BaseManager {
         let wall = node.getComponent(Wall);
         wall.init(mapDataStr, levelData, onlyShow);
     }
-    private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3){
+    private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let data = new FurnitureData();
         data.valueCopy(Logic.furnitures[Furniture.STOOL]);
         switch (mapDataStr) {
@@ -659,13 +671,13 @@ export default class BuildingManager extends BaseManager {
         }
         let save = LocalStorage.getFurnitureData(data.id);
         data.valueCopy(save);
-        if(!data.purchased){
+        if (!data.purchased) {
             return;
         }
-        let building:cc.Node;
+        let building: cc.Node;
         if (mapDataStr == 'Z3') {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
-        }else if (mapDataStr == 'Z4') {
+        } else if (mapDataStr == 'Z4') {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSOFA), indexPos);
         } else if (mapDataStr == 'Z9') {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
@@ -678,18 +690,8 @@ export default class BuildingManager extends BaseManager {
     }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        let hitBuilding: cc.Node;
         let isCustom = false;
-        if (mapDataStr == 'Z3') {
-            hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
-            isCustom = true;
-        } else if (mapDataStr == 'Z9') {
-            hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
-            hitBuilding.getComponent(RoomStool).init(indexPos, dungeon);
-            isCustom = true;
-        } else {
-            hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.HITBUILDING), indexPos);
-        }
+        let hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.HITBUILDING), indexPos);
         let h = hitBuilding.getComponent(HitBuilding);
         h.setDefaultPos(indexPos);
         let resName = 'car';

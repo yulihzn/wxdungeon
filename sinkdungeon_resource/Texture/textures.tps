@@ -637,6 +637,10 @@
             <key type="filename">building/ship01anim005.png</key>
             <key type="filename">building/ship01anim006.png</key>
             <key type="filename">building/ship01anim007.png</key>
+            <key type="filename">building/waterfallanim000.png</key>
+            <key type="filename">building/waterfallanim001.png</key>
+            <key type="filename">building/waterfallanim002.png</key>
+            <key type="filename">building/waterfallanim003.png</key>
             <key type="filename">equipment/weapon000.png</key>
             <key type="filename">equipment/weapon001.png</key>
             <key type="filename">equipment/weapon002.png</key>

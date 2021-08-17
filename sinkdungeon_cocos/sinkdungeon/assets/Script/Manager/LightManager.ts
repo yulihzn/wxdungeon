@@ -26,6 +26,7 @@ export default class LightManager extends BaseManager {
     shadow: cc.Sprite = null;
     @property(cc.Graphics)
     shadowRay: cc.Graphics = null;
+    mat:cc.MaterialVariant;
 
     private shadowTexture: cc.RenderTexture;
 
@@ -33,7 +34,7 @@ export default class LightManager extends BaseManager {
         LightManager.lightList = [];
     }
     onLoad() {
-
+        this.mat = this.shadow.getMaterial(0);
     }
     private render() {
         for (let i = 0; i < LightManager.lightList.length; i++) {

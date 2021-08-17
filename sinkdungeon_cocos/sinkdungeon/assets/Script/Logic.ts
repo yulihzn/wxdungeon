@@ -54,7 +54,7 @@ export default class Logic extends cc.Component {
         10000, 15000, 20000, 30000, 50000,
         100000, 150000, 200000, 300000, 500000,
         1000000, 1500000, 2000000, 3000000, 5000000];
-
+    
     static equipments: { [key: string]: EquipmentData } = null;
     static equipmentNameList: string[] = [];
     static itemNameList: string[] = [];

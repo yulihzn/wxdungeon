@@ -161,6 +161,7 @@ export default class AreaOfEffect extends cc.Component {
         let power = 100;
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
+            rigidBody.linearVelocity = cc.Vec2.ZERO;
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
         }, 0.1);
     }

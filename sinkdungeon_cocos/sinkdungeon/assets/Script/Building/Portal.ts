@@ -26,7 +26,7 @@ export default class Portal extends Building {
 
     anim: cc.Animation;
     isOpen: boolean = false;
-    isBackDream = false;
+    exitData: ExitData = new ExitData();
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -74,10 +74,9 @@ export default class Portal extends Building {
         if (player) {
             if (this.isOpen) {
                 this.closeGate();
-                let p = Dungeon.getIndexInMap(this.node.position);
                 Logic.playerData = player.data.clone();
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.EXIT } });
-                Logic.loadingNextLevel(this.isBackDream?ExitData.getDreamExitDataFromReal():ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex,Logic.level));
+                Logic.loadingNextLevel(this.exitData);
             }
         }
     }

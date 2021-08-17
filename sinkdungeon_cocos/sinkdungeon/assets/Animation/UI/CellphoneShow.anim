@@ -3,7 +3,7 @@
   "_name": "CellphoneShow",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1,
+  "_duration": 0.5,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -44,7 +44,7 @@
           "opacity": [
             {
               "frame": 0,
-              "value": 0
+              "value": 255
             }
           ]
         }
@@ -109,7 +109,7 @@
   },
   "events": [
     {
-      "frame": 1,
+      "frame": 0.3333333333333333,
       "func": "Show",
       "params": []
     }

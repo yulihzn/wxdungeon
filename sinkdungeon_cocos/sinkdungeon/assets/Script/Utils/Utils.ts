@@ -28,7 +28,7 @@ export default class Utils {
         }
     }
     
-    public static toast(msg:string,isCenter?:boolean){
-        EventHelper.emit(EventHelper.HUD_TOAST,{msg:msg,isCenter:isCenter});
+    public static toast(msg:string,isCenter?:boolean,isTap?:boolean){
+        EventHelper.emit(EventHelper.HUD_TOAST,{msg:msg,isCenter:isCenter,isTap:isTap});
     }
 }

@@ -477,26 +477,35 @@ export default class Player extends Actor {
         if (this.fistCombo == MeleeWeapon.COMBO1) {
             isAttackDo = this.weaponRight.meleeWeapon.attack(this.data, this.fistCombo);
             this.weaponLeft.meleeWeapon.attackIdle(false);
-            for (let s of this.shadowList) {
-                s.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv, false);
+            if (isAttackDo) {
+                for (let s of this.shadowList) {
+                    s.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv, false);
+                }
             }
         } else if (this.fistCombo == MeleeWeapon.COMBO2) {
             this.weaponRight.meleeWeapon.attackIdle(true);
             isAttackDo = this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
-            for (let s of this.shadowList) {
-                s.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv, true);
+            if (isAttackDo) {
+                for (let s of this.shadowList) {
+                    s.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv, true);
+                }
             }
         } else if (this.fistCombo == MeleeWeapon.COMBO3) {
             isAttackDo = this.weaponRight.meleeWeapon.attack(this.data, this.fistCombo);
             this.weaponRight.meleeWeapon.DashTime(400);
-            for (let s of this.shadowList) {
-                s.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv, false);
+            if (isAttackDo) {
+                for (let s of this.shadowList) {
+                    s.attack(this.data, this.fistCombo, this.weaponRight.meleeWeapon.Hv, false);
+                }
             }
             this.scheduleOnce(() => {
-                this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
-                for (let s of this.shadowList) {
-                    s.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv, true);
+                let isDo = this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
+                if(isDo){
+                    for (let s of this.shadowList) {
+                        s.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv, true);
+                    }
                 }
+                
             }, 0.15);
         }
         if (isAttackDo) {
@@ -550,7 +559,7 @@ export default class Player extends Actor {
         let fireSuccess = this.weaponLeft.remoteAttack(this.data, this.remoteCooldown, arcEx, lineEx);
         if (fireSuccess) {
             for (let s of this.shadowList) {
-                s.remoteAttack(true,this.weaponLeft.shooter.data,this.weaponLeft.shooter.Hv,this.data.getFinalRemoteDamage(),arcEx, lineEx);
+                s.remoteAttack(true, this.weaponLeft.shooter.data, this.weaponLeft.shooter.Hv, this.data.getFinalRemoteDamage(), arcEx, lineEx);
             }
             this.stopHiding();
         }
@@ -590,8 +599,8 @@ export default class Player extends Actor {
             this.shooterEx.data.bulletSize = data.bulletSize;
             this.shooterEx.data.bulletSize += this.IsVariation ? 0.5 : 0;
             this.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
-            for(let s of this.shadowList){
-                if(s.node){
+            for (let s of this.shadowList) {
+                if (s.node) {
                     s.shooterEx.setHv(this.shooterEx.Hv);
                     s.shooterEx.data = this.shooterEx.data.clone();
                     s.shooterEx.fireBullet(0, cc.v3(data.exBulletOffsetX, 24));
@@ -637,8 +646,8 @@ export default class Player extends Actor {
             this.shooterEx.data.bulletLineExNum = data.bulletLineExNum;
             this.shooterEx.data.bulletSize = data.bulletSize;
             this.shooterEx.fireBullet(0);
-            for(let s of this.shadowList){
-                if(s.node){
+            for (let s of this.shadowList) {
+                if (s.node) {
                     s.shooterEx.setHv(this.shooterEx.Hv);
                     s.shooterEx.data = this.shooterEx.data.clone();
                     s.shooterEx.fireBullet(0);
@@ -1001,7 +1010,7 @@ export default class Player extends Actor {
     dreamShortTimeDelay = 0;
     isDreamTimeDelay(dt: number): boolean {
         this.dreamTimeDelay += dt;
-        if (this.dreamTimeDelay > 8) {
+        if (this.dreamTimeDelay > 5) {
             this.dreamTimeDelay = 0;
             return true;
         }
@@ -1009,7 +1018,7 @@ export default class Player extends Actor {
     }
     isDreamShortTimeDelay(dt: number): boolean {
         this.dreamShortTimeDelay += dt;
-        if (this.dreamShortTimeDelay > 5) {
+        if (this.dreamShortTimeDelay > 3) {
             this.dreamShortTimeDelay = 0;
             return true;
         }
@@ -1035,12 +1044,12 @@ export default class Player extends Actor {
                 this.updateDream(-1);
             }
         }
-        if (this.isDreamTimeDelay(dt)) {
+        if (this.dungeon&&this.dungeon.isClear&&this.isDreamShortTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
                 this.updateDream(-1);
             }
         }
-        if (this.isDreamShortTimeDelay(dt)) {
+        if (this.isDreamTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.TECH) {
                 this.updateDream(1);
             }

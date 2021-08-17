@@ -23,24 +23,42 @@ export default class Toast extends cc.Component {
         EventHelper.on(EventHelper.HUD_TOAST
             , (detail) => {
                 if (this.node) {
-                    this.showToast(detail.msg,detail.isCenter);
+                    this.showToast(detail.msg,detail.isCenter,detail.isTap);
                 }
             });
         this.node.active = false;
     }
-    showToast(msg: string,isCenter:boolean) {
-        this.label.string = `${msg}`;
+    showToast(msg: string,isCenter:boolean,isTap:boolean) {
+        if(msg.length<1){
+            return;
+        }
         this.label.node.width = isCenter?300:600;
         let node = this.node;
         node.stopAllActions();
         node.active = true;
         node.opacity = 255;
-        node.width = this.label.node.width + 10;
-        node.height = this.label.node.height + 10;
+        let delay = 1.5;
+        if(isTap){
+            delay = 0.05*msg.length;
+            if(delay<1.5){
+                delay = 1.5;
+            }
+            let count = 0;
+            this.schedule(()=>{
+                this.label.string = `${msg.substr(0,count++)}`;
+                node.width = this.label.node.width + 10;
+                node.height = this.label.node.height + 10;
+            },0.05,msg.length,0.3)
+        }else{
+            this.label.string = `${msg}`;
+            node.width = this.label.node.width + 10;
+            node.height = this.label.node.height + 10;
+        }
+        
         let y = isCenter?360:100;
         node.y = y-100;
         node.scale = 0;
-        cc.tween(node).to(0.1, { scaleX: 1 }).to(0.1, { scaleY: 1 }).to(0.2, { y: y }).delay(1.5).call(() => {
+        cc.tween(node).to(0.1, { scaleX: 1 }).to(0.1, { scaleY: 1 }).to(0.2, { y: y }).delay(delay).call(() => {
             cc.tween(node).to(0.1, { scaleY: 0.1 }).to(0.1, { scaleX: 0 }).to(0.1, { opacity: 0 }).call(() => {
                 node.active = false;
             }).start();

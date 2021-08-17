@@ -389,6 +389,7 @@ export default class InteractBuilding extends Building {
         }
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
+            rigidBody.linearVelocity = cc.Vec2.ZERO;
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
         }, 0.1);
     }

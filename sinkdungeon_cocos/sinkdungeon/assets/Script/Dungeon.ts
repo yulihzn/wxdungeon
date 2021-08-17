@@ -17,7 +17,6 @@ import ItemManager from "./Manager/ItemManager";
 import Utils from "./Utils/Utils";
 import LightManager from "./Manager/LightManager";
 import DamageData from "./Data/DamageData";
-import PlayerShadow from "./Actor/PlayerShadow";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,7 +48,7 @@ export default class Dungeon extends cc.Component {
     static readonly TILE_SIZE: number = 128;
     static readonly DEFAULT_ZOOM_MAX = 2;
     static readonly DEFAULT_ZOOM_MIN = 0.6;
-    static readonly DEFAULT_ZOOM = 1;
+    static readonly DEFAULT_ZOOM = 0.9;
     private timeDelay = 0;
     private checkTimeDelay = 0;
 
