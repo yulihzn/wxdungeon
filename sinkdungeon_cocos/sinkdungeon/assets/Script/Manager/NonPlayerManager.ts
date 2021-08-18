@@ -22,7 +22,7 @@ const { ccclass, property } = cc._decorator;
 export default class NonPlayerManager extends BaseManager {
     public static readonly NON_SHADOW = 'nonplayer001';
     public static readonly SHOP_KEEPER = 'nonplayer002';
-    public static readonly DOG = 'nonplayer003';
+    public static readonly DOG = 'nonplayer100';
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}

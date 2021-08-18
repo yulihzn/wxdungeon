@@ -85,6 +85,7 @@ export default class PickAvatar extends cc.Component {
     private weaponSprite: cc.Sprite = null;
     private remoteSprite: cc.Sprite = null;
     private shieldSprite: cc.Sprite = null;
+    private petSprite: cc.Sprite = null;
 
     private organizationSelector: AttributeSelector;
     private professionSelector: AttributeSelector;
@@ -95,6 +96,7 @@ export default class PickAvatar extends cc.Component {
     private eyesColorSelector: PaletteSelector;
     private faceSelector: AttributeSelector;
     private faceColorSelector: PaletteSelector;
+    private petSelector: AttributeSelector;
     private data: AvatarData;
 
     private randomTouched = false;
@@ -106,6 +108,7 @@ export default class PickAvatar extends cc.Component {
         this.data = new AvatarData();
         this.bedSprite = this.getSpriteChildSprite(this.avatarTable, ['bed']);
         this.coverSprite = this.getSpriteChildSprite(this.avatarTable, ['cover']);
+        this.petSprite = this.getSpriteChildSprite(this.avatarTable, ['pet']);
         this.bodySprite = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body']);
         this.handSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand1']);
         this.handSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'hand2']);
@@ -128,6 +131,7 @@ export default class PickAvatar extends cc.Component {
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg2', 'shoes']);
         this.loadingBackground.active = true;
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'monster000anim000');
         this.loadingManager.loadProfession();
         this.loadingManager.loadEquipment();
         this.loadingManager.loadTalents();
@@ -167,6 +171,10 @@ export default class PickAvatar extends cc.Component {
             this.bedSprite.spriteFrame = Logic.spriteFrameRes(`avatarbed00${data.id}`);
             this.coverSprite.spriteFrame = Logic.spriteFrameRes(`avatarcover00${data.id}`);
             this.randomLabelTitle.string = data.name;
+            if (this.petSelector) {
+                this.petSelector.node.active = data.id == AvatarData.HUNTER;
+            }
+            this.petSprite.node.active = data.id == AvatarData.HUNTER;
         };
         //职业
         let professionList = new Array();
@@ -244,6 +252,21 @@ export default class PickAvatar extends cc.Component {
             this.faceSprite.node.color = color;
             this.data.faceColor = color.toHEX('#rrggbb');
         })
+        //宠物
+        // let petNames = ['柯基', '鹦鹉', '橘子鱼', '天竺鼠', '巴西龟', '变色龙', '刺猬', '火玫瑰蜘蛛', '安哥拉兔', '科尔鸭', '巴马香猪'];
+        let petNames = ['柯基'];
+        let petList = [];
+        for (let i = 0; i < petNames.length; i++) {
+            petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${i > 9 ? '' : '0'}${i}anim000`, '', '', ''));
+        }
+        this.petSelector = this.addAttributeSelector('宠物：', petList);
+        this.petSelector.selectorCallback = (data: AttributeData) => {
+            this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
+            this.data.petName = `nonplayer1${data.id > 9 ? '' : '0'}${data.id}`;
+        };
+        this.petSelector.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER;
+        this.petSprite.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER;
+
         this.ButtonRandom();
     }
     private changeEquipment(data: ProfessionData) {
@@ -328,6 +351,7 @@ export default class PickAvatar extends cc.Component {
     }
     update(dt) {
         if (this.loadingManager.isSpriteFramesLoaded(LoadingManager.KEY_TEXTURES)
+            && this.loadingManager.isSpriteFramesLoaded(LoadingManager.KEY_NPC)
             && this.loadingManager.isProfessionLoaded
             && this.loadingManager.isEquipmentLoaded
             && this.loadingManager.isSkillsLoaded
@@ -338,6 +362,8 @@ export default class PickAvatar extends cc.Component {
         }
         if (this.isShow) {
             if (this.isTimeDelay(dt) && this.randomTouched) {
+                this.randomButton.angle = 0;
+                cc.tween(this.randomButton).to(0.2,{angle:360}).start();
                 this.ButtonRandom();
             }
         }
@@ -345,7 +371,7 @@ export default class PickAvatar extends cc.Component {
     private delayTime = 0;
     private isTimeDelay(dt: number): boolean {
         this.delayTime += dt;
-        if (this.delayTime > 0.1) {
+        if (this.delayTime > 0.2) {
             this.delayTime = 0;
             return true;
         }
@@ -372,6 +398,7 @@ export default class PickAvatar extends cc.Component {
         this.eyesColorSelector.selectRandom();
         this.faceSelector.selectRandom();
         this.faceColorSelector.selectRandom();
+        this.petSelector.selectRandom();
         AudioPlayer.play(AudioPlayer.SELECT);
     }
     ButtonSelect(event: cc.Event, isLeft: number) {

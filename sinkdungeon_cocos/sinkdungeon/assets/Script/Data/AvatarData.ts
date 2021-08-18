@@ -6,18 +6,19 @@ export default class AvatarData {
     static readonly GURAD = 2;
     static readonly TECH = 3;
     static readonly ORGANIZATION = ['弥世逐流', '宝藏猎人', '幽光守护', '翠金科技'];
-    organizationIndex:number = 0;//['弥世逐流','宝藏猎人','幽光守护','翠金科技']
-    professionData:ProfessionData = new ProfessionData();
-    skinColor:string = '#ffe1c5';
+    organizationIndex: number = 0;//['弥世逐流','宝藏猎人','幽光守护','翠金科技']
+    professionData: ProfessionData = new ProfessionData();
+    skinColor: string = '#ffe1c5';
     hairResName: string = 'avatarhair000anim00';
     hairColor: string = '#000000';
     eyesResName: string = 'avatareyes000';
     eyesColor: string = '#000000';
     faceResName: string = 'avatarface000';
     faceColor: string = '#FBA1DE';
+    petName: string = 'nonplayer100';
 
     public valueCopy(data: AvatarData): void {
-        if(!data){
+        if (!data) {
             return;
         }
         this.organizationIndex = data.organizationIndex ? data.organizationIndex : this.organizationIndex;
@@ -29,6 +30,7 @@ export default class AvatarData {
         this.eyesColor = data.eyesColor ? data.eyesColor : this.eyesColor;
         this.faceResName = data.faceResName ? data.faceResName : this.faceResName;
         this.faceColor = data.faceColor ? data.faceColor : this.faceColor;
+        this.petName = data.petName&&data.petName ? data.petName : this.petName;
 
     }
     public clone(): AvatarData {
@@ -42,6 +44,7 @@ export default class AvatarData {
         e.eyesColor = this.eyesColor;
         e.faceResName = this.faceResName;
         e.faceColor = this.faceColor;
+        e.petName = this.petName;
         return e;
     }
 }

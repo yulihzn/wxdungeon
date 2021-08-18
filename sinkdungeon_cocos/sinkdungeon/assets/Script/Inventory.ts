@@ -59,6 +59,8 @@ export default class Inventory extends cc.Component {
     equipmentAndItemDialogPrefab:cc.Prefab = null;
     @property(cc.Camera)
     mainCamera:cc.Camera = null;
+    @property(cc.Node)
+    equipmentNode:cc.Node = null;
     equipmentAndItemDialog: EquipmentAndItemDialog = null;
     equipmentGroundDialog: EquipmentAndItemDialog = null;
     itemGroundDialog: EquipmentAndItemDialog = null;
@@ -74,6 +76,7 @@ export default class Inventory extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.equipmentNode.active = false;
         this.equipmentGroundDialog=this.initDialog(true);
         this.itemGroundDialog=this.initDialog(true);
         this.equipmentAndItemDialog=this.initDialog(false);
@@ -149,6 +152,10 @@ export default class Inventory extends cc.Component {
         return dialog;
     }
 
+    //button
+    showEquipment(){
+        this.equipmentNode.active = !this.equipmentNode.active;
+    }
     start() {
         for (let key in this.equipSprites) {
             this.equipSprites[key].spriteFrame = null;

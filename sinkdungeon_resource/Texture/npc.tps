@@ -727,19 +727,19 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">nonplayer/nonplayer003anim000.png</key>
-            <key type="filename">nonplayer/nonplayer003anim001.png</key>
-            <key type="filename">nonplayer/nonplayer003anim002.png</key>
-            <key type="filename">nonplayer/nonplayer003anim003.png</key>
-            <key type="filename">nonplayer/nonplayer003anim004.png</key>
-            <key type="filename">nonplayer/nonplayer003anim005.png</key>
-            <key type="filename">nonplayer/nonplayer003anim006.png</key>
-            <key type="filename">nonplayer/nonplayer003anim007.png</key>
-            <key type="filename">nonplayer/nonplayer003anim008.png</key>
-            <key type="filename">nonplayer/nonplayer003anim009.png</key>
-            <key type="filename">nonplayer/nonplayer003anim010.png</key>
-            <key type="filename">nonplayer/nonplayer003anim011.png</key>
-            <key type="filename">nonplayer/nonplayer003anim012.png</key>
+            <key type="filename">nonplayer/nonplayer100anim000.png</key>
+            <key type="filename">nonplayer/nonplayer100anim001.png</key>
+            <key type="filename">nonplayer/nonplayer100anim002.png</key>
+            <key type="filename">nonplayer/nonplayer100anim003.png</key>
+            <key type="filename">nonplayer/nonplayer100anim004.png</key>
+            <key type="filename">nonplayer/nonplayer100anim005.png</key>
+            <key type="filename">nonplayer/nonplayer100anim006.png</key>
+            <key type="filename">nonplayer/nonplayer100anim007.png</key>
+            <key type="filename">nonplayer/nonplayer100anim008.png</key>
+            <key type="filename">nonplayer/nonplayer100anim009.png</key>
+            <key type="filename">nonplayer/nonplayer100anim010.png</key>
+            <key type="filename">nonplayer/nonplayer100anim011.png</key>
+            <key type="filename">nonplayer/nonplayer100anim012.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

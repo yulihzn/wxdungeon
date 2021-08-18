@@ -7,7 +7,6 @@ import NonPlayerData from "../Data/NonPlayerData";
 import StatusData from "../Data/StatusData";
 import TalentData from "../Data/TalentData";
 import Logic from "../Logic";
-import NonPlayerManager from "../Manager/NonPlayerManager";
 import StatusManager from "../Manager/StatusManager";
 import CoolDownView from "../UI/CoolDownView";
 import AudioPlayer from "../Utils/AudioPlayer";
@@ -44,7 +43,17 @@ import Talent from "./Talent";
  * 
  * 宝藏猎人: 召唤宠物，如果宠物存在会激活对应宠物的技能
  * 宝藏猎人在选择角色的时候会多一个选择宠物的选项，
- * 考虑有家猫，柯基，鹦鹉，橘子鱼，天竺鼠，巴西龟，变色龙，刺猬，火玫瑰蜘蛛，安哥拉兔，科尔鸭，巴马香猪
+ * 考虑有家猫，近战爪子流血，技能 闪避变高，闪避成功回血
+ * 柯基，近战啃咬，技能 变大属性翻倍持续回血
+ * 鹦鹉，空中冲刺攻击
+ * 橘子鱼，远程吐泡泡
+ * 天竺鼠，
+ * 巴西龟，近战攻击，防御极高
+ * 变色龙，
+ * 刺猬，喷射尖刺，反弹伤害
+ * 火玫瑰蜘蛛，远程吐丝，近战中毒
+ * 安哥拉兔，撞击
+ * 科尔鸭，巴马香猪
  * 在现实里，宠物都是在睡觉的
  * 对应家具，猫舍，狗屋，鸟笼，浴缸，宠物笼，可以投食，对应宠物会发叫声和对应动画
  * 宠物属性随玩家等级增强，拥有一个主动技能和一个被动技能
@@ -97,7 +106,7 @@ export default class OrganizationTalent extends Talent {
             AudioPlayer.play(AudioPlayer.DOG);
             if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
                 let d = new NonPlayerData();
-                d.valueCopy(Logic.nonplayers[NonPlayerManager.DOG]);
+                d.valueCopy(Logic.nonplayers[this.player.data.AvatarData.petName]);
                 let data = new StatusData();
                 data.valueCopy(Logic.status[StatusManager.PET_DOG]);
                 data.Common.realRate += Logic.playerData.OilGoldData.level * 1;
@@ -113,7 +122,7 @@ export default class OrganizationTalent extends Talent {
                     }
                 }
                 let data = new NonPlayerData();
-                data.valueCopy(Logic.nonplayers[NonPlayerManager.DOG]);
+                data.valueCopy(Logic.nonplayers[this.player.data.AvatarData.petName]);
                 data.Common.maxHealth += Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3;
                 data.currentHealth = data.Common.maxHealth;
                 data.Common.damageMin += Logic.playerData.OilGoldData.level;

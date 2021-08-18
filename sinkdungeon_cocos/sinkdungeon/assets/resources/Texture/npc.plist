@@ -7474,7 +7474,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim000.png</key>
+            <key>nonplayer100anim000.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7489,7 +7489,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim001.png</key>
+            <key>nonplayer100anim001.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7504,7 +7504,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim002.png</key>
+            <key>nonplayer100anim002.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7519,7 +7519,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim003.png</key>
+            <key>nonplayer100anim003.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7534,7 +7534,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim004.png</key>
+            <key>nonplayer100anim004.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7549,7 +7549,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim005.png</key>
+            <key>nonplayer100anim005.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7564,7 +7564,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim006.png</key>
+            <key>nonplayer100anim006.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7579,7 +7579,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim007.png</key>
+            <key>nonplayer100anim007.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7594,7 +7594,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim008.png</key>
+            <key>nonplayer100anim008.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7609,7 +7609,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim009.png</key>
+            <key>nonplayer100anim009.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7624,7 +7624,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim010.png</key>
+            <key>nonplayer100anim010.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7639,7 +7639,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim011.png</key>
+            <key>nonplayer100anim011.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7654,7 +7654,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>nonplayer003anim012.png</key>
+            <key>nonplayer100anim012.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -7683,7 +7683,7 @@
             <key>size</key>
             <string>{1024,1024}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:23a96e847be0f1c1be2faa375435791a:bbbf3b9f310db79f7de2ddd1a04f98cc:0b760b9359d5dddae5dab0980cb73d8a$</string>
+            <string>$TexturePacker:SmartUpdate:571ca68716148c9fe890a789f09fa141:bbbf3b9f310db79f7de2ddd1a04f98cc:0b760b9359d5dddae5dab0980cb73d8a$</string>
             <key>textureFileName</key>
             <string>npc.png</string>
         </dict>

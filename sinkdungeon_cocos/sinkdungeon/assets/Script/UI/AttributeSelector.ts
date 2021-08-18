@@ -66,5 +66,8 @@ export default class AttributeSelector extends cc.Component {
             this.selectorCallback(this.nameList[this.currentIndex]);
         }
     }
+    get CurrentData(){
+        return this.nameList[this.currentIndex];
+    }
     
 }
