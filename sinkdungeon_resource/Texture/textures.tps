@@ -1020,6 +1020,7 @@
             <key type="filename">building/decorate0402anim004.png</key>
             <key type="filename">building/roomcupboard.png</key>
             <key type="filename">building/roomdesk.png</key>
+            <key type="filename">building/roomfishtank.png</key>
             <key type="filename">building/roomfridge.png</key>
             <key type="filename">building/roomkitchentable1.png</key>
             <key type="filename">building/roomkitchentable2.png</key>
@@ -1496,6 +1497,7 @@
             <key type="filename">building/expressbox1.png</key>
             <key type="filename">building/expressbox2.png</key>
             <key type="filename">building/expressbox3.png</key>
+            <key type="filename">building/roompethouse.png</key>
             <key type="filename">special/ice001.png</key>
             <key type="filename">special/ice002.png</key>
             <key type="filename">special/ice003.png</key>
@@ -1601,6 +1603,27 @@
                 <rect>6,8,12,16</rect>
                 <key>scale9Paddings</key>
                 <rect>6,8,12,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">building/roomfishtankwater0.png</key>
+            <key type="filename">building/roomfishtankwater1.png</key>
+            <key type="filename">building/roomfishtankwater2.png</key>
+            <key type="filename">building/roomfishtankwater3.png</key>
+            <key type="filename">building/roomfishtankwater4.png</key>
+            <key type="filename">building/roomfishtankwater5.png</key>
+            <key type="filename">building/roomfishtankwater6.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>7,3,14,7</rect>
+                <key>scale9Paddings</key>
+                <rect>7,3,14,7</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

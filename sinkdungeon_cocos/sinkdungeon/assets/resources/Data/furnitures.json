@@ -174,5 +174,16 @@
         "scale": 8,
         "collider": "64,36,256,128",
         "price": 1000
+    },
+    "furniture017": {
+        "id": "furniture017",
+        "nameCn": "鱼缸",
+        "nameEn": "fishtank",
+        "resName": "roomfishtank",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "0,0,128,128",
+        "price": 1000
     }
 }

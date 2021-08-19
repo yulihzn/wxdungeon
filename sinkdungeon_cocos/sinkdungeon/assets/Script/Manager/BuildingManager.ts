@@ -40,6 +40,7 @@ import EquipmentManager from "./EquipmentManager";
 import Furniture from "../Building/Furniture";
 import FurnitureData from "../Data/FurnitureData";
 import LocalStorage from "../Utils/LocalStorage";
+import RoomFishtank from "../Building/RoomFishtank";
 
 
 // Learn TypeScript:
@@ -87,6 +88,7 @@ export default class BuildingManager extends BaseManager {
     static readonly ROOMTV = 'RoomTv';
     static readonly ROOMSTOOL = 'RoomStool';
     static readonly ROOMSOFA = 'RoomSofa';
+    static readonly ROOMFISHTANK = 'RoomFishtank';
     static readonly SAVEPOINT = 'SavePoint';
     static readonly SAW = 'Saw';
     static readonly SHIPSTAIRS = 'Shipstairs';
@@ -667,6 +669,7 @@ export default class BuildingManager extends BaseManager {
             case 'Zf': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE]); break;
             case 'Zg': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_1]); break;
             case 'Zh': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_2]); break;
+            case 'Zi': data.valueCopy(Logic.furnitures[Furniture.FISHTANK]); break;
             default: break;
         }
         let save = LocalStorage.getFurnitureData(data.id);
@@ -682,6 +685,9 @@ export default class BuildingManager extends BaseManager {
         } else if (mapDataStr == 'Z9') {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
             building.getComponent(RoomStool).init(indexPos, dungeon);
+        } else if (mapDataStr == 'Zi') {
+            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMFISHTANK), indexPos);
+            building.getComponent(RoomFishtank).init(indexPos);
         } else {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.FURNITURE), indexPos);
         }

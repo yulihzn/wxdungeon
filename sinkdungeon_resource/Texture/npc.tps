@@ -643,6 +643,19 @@
             <key type="filename">monster/monster031anim014.png</key>
             <key type="filename">monster/monster031anim015.png</key>
             <key type="filename">monster/monster032.png</key>
+            <key type="filename">nonplayer/nonplayer102anim000.png</key>
+            <key type="filename">nonplayer/nonplayer102anim001.png</key>
+            <key type="filename">nonplayer/nonplayer102anim002.png</key>
+            <key type="filename">nonplayer/nonplayer102anim003.png</key>
+            <key type="filename">nonplayer/nonplayer102anim004.png</key>
+            <key type="filename">nonplayer/nonplayer102anim005.png</key>
+            <key type="filename">nonplayer/nonplayer102anim006.png</key>
+            <key type="filename">nonplayer/nonplayer102anim007.png</key>
+            <key type="filename">nonplayer/nonplayer102anim008.png</key>
+            <key type="filename">nonplayer/nonplayer102anim009.png</key>
+            <key type="filename">nonplayer/nonplayer102anim010.png</key>
+            <key type="filename">nonplayer/nonplayer102anim011.png</key>
+            <key type="filename">nonplayer/nonplayer102anim012.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>

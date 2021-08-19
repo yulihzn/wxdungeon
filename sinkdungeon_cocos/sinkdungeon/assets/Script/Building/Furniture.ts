@@ -7,6 +7,7 @@ import AudioPlayer from "../Utils/AudioPlayer";
 import LocalStorage from "../Utils/LocalStorage";
 import Utils from "../Utils/Utils";
 import Building from "./Building";
+import RoomFishtank from "./RoomFishtank";
 import RoomStool from "./RoomStool";
 import RoomTv from "./RoomTv";
 
@@ -43,6 +44,7 @@ export default class Furniture extends Building {
     static readonly LITTLE_TABLE_2 = 'furniture014';
     static readonly STOOL = 'furniture015';
     static readonly TV = 'furniture016';
+    static readonly FISHTANK = 'furniture017';
     sprite: cc.Sprite;
     boxcover: cc.Sprite;
     boxback: cc.Sprite;
@@ -82,6 +84,11 @@ export default class Furniture extends Building {
                 if (stool) {
                     stool.open();
                 } break;
+                case Furniture.FISHTANK:
+                    let fishtank = this.getComponent(RoomFishtank);
+                    if (fishtank) {
+                        fishtank.feed();
+                    } break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
                 Utils.toast('梦境开发中,无法使用');
