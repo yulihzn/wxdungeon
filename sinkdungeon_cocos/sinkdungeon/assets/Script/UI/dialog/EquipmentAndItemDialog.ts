@@ -23,6 +23,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
     static readonly BG_TYPE_ARROW_NONE = 1;
     static readonly BG_TYPE_ARROW_RIGHT = 2;
     static readonly BG_TYPE_ARROW_DOWN = 3;
+    static readonly BG_TYPE_ARROW_LEFT = 4;
     @property(cc.Node)
     layout: cc.Node = null;
     @property(cc.Label)
@@ -53,6 +54,8 @@ export default class EquipmentAndItemDialog extends cc.Component {
     arrowRightBg: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
     arrowDownBg: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    arrowLeftBg: cc.SpriteFrame =null;
     bgType = 0;
     // LIFE-CYCLE CALLBACKS:
 
@@ -71,6 +74,9 @@ export default class EquipmentAndItemDialog extends cc.Component {
             case EquipmentAndItemDialog.BG_TYPE_ARROW_DOWN: sprite.spriteFrame = this.arrowDownBg;
                 this.layout.anchorX = 0;
                 this.layout.anchorY = 0; break;
+                case EquipmentAndItemDialog.BG_TYPE_ARROW_LEFT: sprite.spriteFrame = this.arrowLeftBg;
+                this.layout.anchorX = 0;
+                this.layout.anchorY = 1; break;
         }
 
     }
@@ -184,7 +190,10 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.count.string = ``
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX('#F4C021');
     }
-    public showDialog(position: cc.Vec3, nonPlayerData: NonPlayerData, item: ItemData, equipment: EquipmentData,furniture:FurnitureData, inventoryManager?: InventoryManager) {
+    public showDialog(position: cc.Vec3, nonPlayerData: NonPlayerData, item: ItemData, equipment: EquipmentData,furniture:FurnitureData, inventoryManager?: InventoryManager,bgType?:number) {
+        if(bgType||bgType==0){
+            this.changeBgAndAnchor(bgType);
+        }
         this.node.position = position.clone();
         // let size = cc.view.getVisibleSize();
         // if(this.isArrowDownBg){

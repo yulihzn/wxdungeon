@@ -182,7 +182,7 @@ export default class Inventory extends cc.Component {
                 equipData = this.inventoryManager.equips[equipmetType].clone();
             }
             let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-            this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData,null, this.inventoryManager);
+            this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData,null, this.inventoryManager,EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT);
         })
         sprite.node.parent.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentAndItemDialog.hideDialog();
@@ -209,7 +209,7 @@ export default class Inventory extends cc.Component {
                     return;
                 }
                 let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
-                this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null,null);
+                this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null,null,null,EquipmentAndItemDialog.BG_TYPE_ARROW_LEFT);
             }, 0.3)
 
         })

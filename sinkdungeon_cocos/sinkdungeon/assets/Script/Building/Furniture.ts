@@ -70,6 +70,20 @@ export default class Furniture extends Building {
                 }
             }
         });
+        this.tips.onEnter(() => {
+            if (this.furnitureData) {
+                if (this.furnitureData.isOpen) {
+                    this.onEnter();
+                }
+            }
+        });
+        this.tips.onExit(() => {
+            if (this.furnitureData) {
+                if (this.furnitureData.isOpen) {
+                    this.onExit();
+                }
+            }
+        });
     }
     interact() {
         switch (this.furnitureData.id) {
@@ -84,14 +98,34 @@ export default class Furniture extends Building {
                 if (stool) {
                     stool.open();
                 } break;
-                case Furniture.FISHTANK:
-                    let fishtank = this.getComponent(RoomFishtank);
-                    if (fishtank) {
-                        fishtank.feed();
-                    } break;
+            case Furniture.FISHTANK:
+                let fishtank = this.getComponent(RoomFishtank);
+                if (fishtank) {
+                    fishtank.feed();
+                } break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
                 Utils.toast('梦境开发中,无法使用');
+                break;
+        }
+    }
+    onEnter() {
+        switch (this.furnitureData.id) {
+            case Furniture.FISHTANK:
+                let fishtank = this.getComponent(RoomFishtank);
+                if (fishtank) {
+                    fishtank.zoomCamera(true);
+                }
+                break;
+        }
+    }
+    onExit() {
+        switch (this.furnitureData.id) {
+            case Furniture.FISHTANK:
+                let fishtank = this.getComponent(RoomFishtank);
+                if (fishtank) {
+                    fishtank.zoomCamera(false);
+                }
                 break;
         }
     }
@@ -135,7 +169,8 @@ export default class Furniture extends Building {
             let height = this.sprite.node.height * this.sprite.node.scale;
             if (this.furnitureData.id != Furniture.STOOL
                 && this.furnitureData.id != Furniture.TV
-                && this.furnitureData.id != Furniture.SOFA) {
+                && this.furnitureData.id != Furniture.SOFA
+                && this.furnitureData.id != Furniture.FISHTANK) {
                 this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2)
                 let collider = this.tips.node.getComponent(cc.CircleCollider);
                 collider.radius = width > height ? height / 2 : width / 2;

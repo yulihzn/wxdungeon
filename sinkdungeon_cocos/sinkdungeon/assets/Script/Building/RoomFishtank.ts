@@ -5,7 +5,9 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import { EventHelper } from "../EventHelper";
 import Logic from "../Logic";
+import AudioPlayer from "../Utils/AudioPlayer";
 import Utils from "../Utils/Utils";
 import Building from "./Building";
 
@@ -22,6 +24,8 @@ export default class RoomFishtank extends Building {
     isFeeding = false;
     foodList: cc.Node[] = [];
     fishSprite: cc.Sprite;
+    isFirst = true;
+    showAudio = false;
 
     onLoad() {
         this.fishSprite = this.fish.getChildByName('sprite').getComponent(cc.Sprite);
@@ -30,6 +34,17 @@ export default class RoomFishtank extends Building {
     }
     init(indexPos: cc.Vec3) {
         this.data.defaultPos = indexPos;
+    }
+    zoomCamera(zoomIn: boolean) {
+        if(this.isFirst){
+            return;
+        }
+        if(zoomIn){
+            this.showAudio = true;
+        }else{
+            this.showAudio = false;
+        }
+        EventHelper.emit(zoomIn ? EventHelper.HUD_CAMERA_ZOOM_IN : EventHelper.HUD_CAMERA_ZOOM_OUT);
     }
 
     feed() {
@@ -40,11 +55,14 @@ export default class RoomFishtank extends Building {
             Utils.toast('喂得太多了啊');
             return;
         }
+        this.isFirst = false;
+        this.zoomCamera(true);
         for (let i = 0; i < 5; i++) {
             this.initFood();
         }
         this.isFeeding = true;
         this.unscheduleAllCallbacks();
+        AudioPlayer.play(AudioPlayer.FEED_FISH);
         this.scheduleOnce(() => { this.isFeeding = false; }, 2)
     }
     private initFood() {
@@ -52,14 +70,14 @@ export default class RoomFishtank extends Building {
         food.parent = this.layout;
         let width = this.layout.width;
         let height = this.layout.height;
-        let startPos = cc.v3(Logic.getRandomNum(food.width / 2, width - food.width / 2), Logic.getRandomNum(height, height * 1.5));
-        let endPos = cc.v3(startPos.x, Logic.getRandomNum(food.height / 2, height / 2));
+        let startPos = cc.v3(Logic.getRandomNum(food.width / 2, width - food.width / 2 - this.fish.width * this.fish.anchorX), Logic.getRandomNum(height, height * 1.5));
+        let endPos = cc.v3(startPos.x, Logic.getRandomNum(food.height / 2 + this.fish.height * this.fish.anchorY, height / 2));
         food.position = startPos;
         let duration = Logic.getRandomNum(700, 1000) / 1000;
-        cc.tween(food).call(()=>{
-            this.scheduleOnce(()=>{
+        cc.tween(food).call(() => {
+            this.scheduleOnce(() => {
                 this.foodList.push(food);
-            },duration/2)
+            }, duration / 2)
         }).to(duration, { position: endPos }).start();
     }
     private changeFishRes(resName: string, suffix?: string): void {
@@ -103,12 +121,12 @@ export default class RoomFishtank extends Building {
             .start();
     }
     private fishSearch() {
-        let index = Logic.getRandomNum(0, this.foodList.length - 1);
-        let targetPos = this.foodList[index].position.clone();
-        this.fish.scaleX = targetPos.x>this.fish.position.x?1:-1;
+        this.bubbleSort();
+        let targetPos = this.foodList[0].position.clone();
+        let scaleX = targetPos.x > this.fish.position.x ? 1 : -1;
         let distance = Logic.getDistance(this.fish.position, targetPos);
-        cc.tween(this.fish).to(distance / 10, { position: targetPos }).call(() => {
-            this.fishEat(index);
+        cc.tween(this.fish).to(0.2, { scaleX: scaleX }).to(distance / 10, { position: targetPos }).call(() => {
+            this.fishEat(0);
         }).start();
     }
     private fishMove() {
@@ -116,15 +134,42 @@ export default class RoomFishtank extends Building {
         let height = this.layout.height;
         let randomPos = cc.v3(Logic.getRandomNum(this.fish.width / 2, width - this.fish.width / 2)
             , Logic.getRandomNum(this.fish.height / 2, height - this.fish.height / 2));
-        this.fish.scaleX = randomPos.x>this.fish.position.x?1:-1;
+        let scaleX = randomPos.x > this.fish.position.x ? 1 : -1;
         let distance = Logic.getDistance(this.fish.position, randomPos);
-        cc.tween(this.fish).to(distance / 5, { position: randomPos }).delay(0.5).call(() => {
+        cc.tween(this.fish).to(0.2, { scaleX: scaleX }).to(distance / 5, { position: randomPos }).delay(0.5).call(() => {
             if (this.foodList.length > 0) {
                 this.fishSearch();
             } else {
                 this.fishMove();
             }
         }).start();
+    }
+
+    bubbleSort() {
+        var len = this.foodList.length;
+        for (var i = 0; i < len - 1; i++) {
+            for (var j = 0; j < len - 1 - i; j++) {
+                if (Math.abs(this.foodList[j].x - this.fish.x) > Math.abs(this.foodList[j + 1].x - this.fish.x)) {
+                    var temp = this.foodList[j + 1];
+                    this.foodList[j + 1] = this.foodList[j];
+                    this.foodList[j] = temp;
+                }
+            }
+        }
+    }
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 5) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    update(dt:number){
+        if(this.showAudio&&this.isCheckTimeDelay(dt)){
+            AudioPlayer.play(AudioPlayer.FISHTANK);
+        }
     }
 
 }

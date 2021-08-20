@@ -1,5 +1,4 @@
 import { ColliderTag } from "../Actor/ColliderTag";
-import { EventHelper } from "../EventHelper";
 import Player from "../Player";
 
 // Learn TypeScript:

@@ -89,6 +89,8 @@ export default class AudioPlayer extends cc.Component {
     public static readonly COMPLETE = 'COMPLETE';
     public static readonly OILGOLD = 'OILGOLD';
     public static readonly DOG = 'DOG';
+    public static readonly FEED_FISH = 'FEED_FISH';
+    public static readonly FISHTANK = 'FISHTANK';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -228,6 +230,10 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     dog: cc.AudioClip = null;
     @property(cc.AudioClip)
+    feedfish: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    fishtank:cc.AudioClip = null;
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
@@ -311,6 +317,8 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.COMPLETE] = this.complete;
         this.audioList[AudioPlayer.OILGOLD] = this.oilgold;
         this.audioList[AudioPlayer.DOG] = this.dog;
+        this.audioList[AudioPlayer.FEED_FISH] = this.feedfish;
+        this.audioList[AudioPlayer.FISHTANK] = this.fishtank;
 
     }
     playbg() {
