@@ -56,6 +56,7 @@ export default class StatusManager extends cc.Component {
     public static readonly REAGENT_SIDE_EFFECT = "status039";
     public static readonly AVOID_DEATH = "status065";
     public static readonly CAMP_FIRE = "status066";
+    public static readonly HOLOGRAPHIC_DODGE = "status067";
 
 
     @property(cc.Prefab)

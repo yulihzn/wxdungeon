@@ -114,6 +114,8 @@ export default class NonPlayer extends Actor {
     animStatus = NonPlayer.ANIM_NONE;
     data: NonPlayerData = new NonPlayerData();
     leftLifeTime = 0;
+    parentNonPlayer:NonPlayer;//父类npc
+    childNonPlayerList:NonPlayer[] = [];//子类
 
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>;
     get IsVariation() {
@@ -958,6 +960,10 @@ export default class NonPlayer extends Actor {
                     if (isTracking) {
                         pos = this.getMovePosFromTarget(target);
                     }
+                    if(this.data.flee>0){
+                        pos = this.getMovePosFromTarget(target,true);
+                        pos = cc.v3(-pos.x,-pos.y);
+                    }
                     this.move(pos, isTracking ? speed * 0.5 : speed);
                 }, isTracking ? 0.5 : 2, true);
             }
@@ -1006,9 +1012,33 @@ export default class NonPlayer extends Actor {
             this.pos = this.defautPos.clone();
             this.updatePlayerPos();
         }
+        if(this.parentNonPlayer){
+            this.graphics.clear();
+            this.graphics.strokeColor = cc.Color.GREEN;
+            this.graphics.lineWidth = 5;
+            if(this.parentNonPlayer.data.childMode==0&&this.parentNonPlayer.sc.isDied){
+                this.data.currentHealth = 0;
+            }else{
+                this.graphics.moveTo(0,0);
+                let pos = cc.v3(this.parentNonPlayer.node.position.x-this.node.position.x,this.parentNonPlayer.node.position.y-this.node.position.y);
+                this.graphics.lineTo(this.node.scaleX>0?pos.x:-pos.x,pos.y);
+                this.graphics.stroke();
+            }
+        }
+        if(this.data.childMode == 1&&this.childNonPlayerList.length>0){
+            let count = 0;
+            for(let n of this.childNonPlayerList){
+                if(n.sc.isDied){
+                    count++;
+                }
+            }
+            if(count == this.childNonPlayerList.length){
+                this.data.currentHealth = 0;
+            }
+        }
 
     }
-    getMovePosFromTarget(target: Actor): cc.Vec3 {
+    getMovePosFromTarget(target: Actor,isFlee?:boolean): cc.Vec3 {
         let newPos = cc.v3(0, 0);
         newPos.x += Logic.getRandomNum(0, 400) - 200;
         newPos.y += Logic.getRandomNum(0, 400) - 200;
@@ -1016,11 +1046,24 @@ export default class NonPlayer extends Actor {
             return newPos;
         }
         newPos = target.node.position.clone();
+        if(isFlee){//保证逃跑的时候不碰到死角
+            if (newPos.y > this.node.position.y) {
+                newPos = newPos.addSelf(cc.v3(0, -128));
+            } else {
+                newPos = newPos.addSelf(cc.v3(0, 128));
+            }
+            if (newPos.x > this.node.position.x) {
+                newPos = newPos.addSelf(cc.v3(-64, 0));
+            } else {
+                newPos = newPos.addSelf(cc.v3(64, 0));
+            }
+        }
         if (newPos.x > this.node.position.x) {
             newPos = newPos.addSelf(cc.v3(32, 0));
         } else {
             newPos = newPos.addSelf(cc.v3(-32, 0));
         }
+        
         let pos = newPos.sub(this.node.position);
         if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isStatic < 1) {
             this.changeFaceRight(target);

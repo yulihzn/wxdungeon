@@ -60,16 +60,19 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_ICEDEMON = 'monster031';
     public static readonly MONSTER_BITE_ZOMBIE = 'monster032';
     public static readonly MONSTER_BANANA = 'monster033';
+    public static readonly MONSTER_HOLO_DEVICE = 'monster034';
+    public static readonly MONSTER_HOLO = 'monster035';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
-    MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE,MonsterManager.MONSTER_ICEDEMON,MonsterManager.MONSTER_BITE_ZOMBIE];
+    MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE, MonsterManager.MONSTER_ICEDEMON, MonsterManager.MONSTER_BITE_ZOMBIE
+        , MonsterManager.MONSTER_HOLO_DEVICE];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
         , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
     public static readonly MONSTERS_FOREST = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
-        , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO,MonsterManager.MONSTER_BANANA];
+        , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO, MonsterManager.MONSTER_BANANA];
     public static readonly MONSTERS_PYRAMID = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
         , MonsterManager.MONSTER_SANDSTATUE];
     public static readonly MONSTERS_DUNGEON = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_CYCLOPS
-        , MonsterManager.MONSTER_SPIDER,MonsterManager.MONSTER_CYCLOPS];
+        , MonsterManager.MONSTER_SPIDER, MonsterManager.MONSTER_CYCLOPS];
     public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST];
     // LIFE-CYCLE CALLBACKS:
 
@@ -131,8 +134,14 @@ export default class MonsterManager extends BaseManager {
         this.bosses = new Array();
     }
     /**添加怪物 */
-    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean) {
-        this.addMonster(this.getMonster(resName, dungeon, isSummon), indexPos);
+    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean): NonPlayer {
+        let nonplayer = this.addMonster(this.getMonster(resName, dungeon, isSummon), indexPos,null);
+        if(nonplayer.data.childCount>0&&nonplayer.data.childResName.length>0){
+            for(let i = 0;i < nonplayer.data.childCount;i++){
+                nonplayer.childNonPlayerList.push(this.addMonster(this.getMonster(nonplayer.data.childResName, dungeon, isSummon), indexPos,nonplayer));
+            }
+        }
+        return nonplayer;
     }
 
     public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
@@ -217,13 +226,13 @@ export default class MonsterManager extends BaseManager {
         data.reborn = reborn ? reborn : 0;
         monster.isSummon = isSummon;
         //10%几率随机属性
-        if (rand4save.rand() < 0.1+monster.killPlayerCount/10) {
+        if (rand4save.rand() < 0.1 + monster.killPlayerCount / 10) {
             this.monsterRandomAttr.addRandomAttrs(2, rand4save);
             data = this.monsterRandomAttr.updateMonsterData(data);
             monster.attrmap = this.monsterRandomAttr.attrmap;
         }
         //5%加击杀次数的几率变异
-        let variationRate = 5 + monster.killPlayerCount*2;
+        let variationRate = 5 + monster.killPlayerCount * 2;
         let up = 0;
         if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.DANGER_ROOM)) {
             up = 10;
@@ -233,7 +242,7 @@ export default class MonsterManager extends BaseManager {
         }
 
         variationRate = variationRate + Logic.chapterIndex * 2 + Logic.level * 2 + up;
-        monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate&&data.isTest<1;
+        monster.isVariation = rand4save.getRandomNum(0, 100) < variationRate && data.isTest < 1;
         if (monster.isVariation) {
             data.Common.maxHealth = data.Common.maxHealth * 2;
             data.Common.maxDream = data.Common.maxDream * 2;
@@ -252,10 +261,10 @@ export default class MonsterManager extends BaseManager {
 
             data.Common.moveSpeed = data.Common.moveSpeed > 0 ? (data.Common.moveSpeed + 50 + 10 * monster.killPlayerCount) : 0;
         }
-        data.Common.maxDream += data.Common.maxDream*0.25*monster.killPlayerCount;
-        data.Common.damageMin += data.Common.damageMin*0.25*monster.killPlayerCount;
-        data.Common.maxHealth += data.Common.maxHealth*0.25*monster.killPlayerCount;
-        data.Common.attackSpeed += monster.killPlayerCount*10;
+        data.Common.maxDream += data.Common.maxDream * 0.25 * monster.killPlayerCount;
+        data.Common.damageMin += data.Common.damageMin * 0.25 * monster.killPlayerCount;
+        data.Common.maxHealth += data.Common.maxHealth * 0.25 * monster.killPlayerCount;
+        data.Common.attackSpeed += monster.killPlayerCount * 10;
         data.Common.defence += monster.killPlayerCount;
         data.currentHealth = data.Common.maxHealth;
         if (data.melee - monster.killPlayerCount > 1) {
@@ -271,7 +280,7 @@ export default class MonsterManager extends BaseManager {
         let rand = rand4save.getRandomNum(0, 100);
         let df = rand4save.getRandomNum(80, 100);
         let er = rand4save.getRandomNum(80, 100);
-        let isAddElement = rand <= 5 + monster.killPlayerCount*3;
+        let isAddElement = rand <= 5 + monster.killPlayerCount * 3;
         rand = rand4save.getRandomNum(0, 4);
         if (isAddElement) {
             data.Common.magicDamage += 1;
@@ -311,14 +320,16 @@ export default class MonsterManager extends BaseManager {
 
         return monster;
     }
-    private addMonster(monster: NonPlayer, pos: cc.Vec3) {
+    private addMonster(monster: NonPlayer, pos: cc.Vec3,parent:NonPlayer): NonPlayer {
         //激活
         monster.node.active = true;
         monster.pos = pos;
         monster.defautPos = pos;
         monster.node.position = Dungeon.getPosInMap(pos);
-        this.isRoomInitWithEnemy = monster.data.isTest<1;
+        monster.parentNonPlayer = parent;
+        this.isRoomInitWithEnemy = monster.data.isTest < 1;
         this.monsterList.push(monster);
+        return monster;
     }
     public addBossSlime(type: number, index: cc.Vec3, dungeon: Dungeon) {
         if (!this.bosses) {
@@ -406,9 +417,9 @@ export default class MonsterManager extends BaseManager {
                 num = rand4save.getRandomNum(1, 3);
                 break;
         }
-        if(Logic.mapManager.getCurrentRoomType().isEqual(RoomType.VERTICAL_ROOM)||
-        Logic.mapManager.getCurrentRoomType().isEqual(RoomType.HORIZONTAL_ROOM)){
-            num = Math.floor(num/2);
+        if (Logic.mapManager.getCurrentRoomType().isEqual(RoomType.VERTICAL_ROOM) ||
+            Logic.mapManager.getCurrentRoomType().isEqual(RoomType.HORIZONTAL_ROOM)) {
+            num = Math.floor(num / 2);
         }
         let indexmap = [];
         for (let i = 0; i < dungeon.floorIndexmap.length; i++) {

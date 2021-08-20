@@ -8,6 +8,7 @@
 import { ColliderTag } from "../Actor/ColliderTag";
 import Dungeon from "../Dungeon";
 import Logic from "../Logic";
+import NonPlayer from "../NonPlayer";
 import IndexZ from "../Utils/IndexZ";
 import Building from "./Building";
 
@@ -21,6 +22,7 @@ export default abstract class MonsterGenerator extends Building {
     addFinish = false;
     count = 0;
     addDelay = 2;
+    nonplayerlist:NonPlayer[] = []
     init(dungeon:Dungeon,generatorInterval:number,generatorCount:number,generatorList:string[]){
         this.dungeon = dungeon;
         this.data.generatorCount = generatorCount;
@@ -41,11 +43,11 @@ export default abstract class MonsterGenerator extends Building {
         this.addFinish = this.data.isOpen;
     }
 
-    timeDelay = 0;
+    checkTimeDelay = 0;
     isTimeDelay(dt: number): boolean {
-        this.timeDelay += dt;
-        if (this.timeDelay > this.data.generatorInterval) {
-            this.timeDelay = 0;
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > this.data.generatorInterval) {
+            this.checkTimeDelay = 0;
             return true;
         }
         return false;
@@ -56,6 +58,7 @@ export default abstract class MonsterGenerator extends Building {
         }
         if (this.isTimeDelay(dt)) {
             this.addMonster();
+            
         }
     }
     addMonster():boolean {
@@ -70,7 +73,7 @@ export default abstract class MonsterGenerator extends Building {
     }
     showMonster() {
         let pos = Dungeon.getIndexInMap(this.node.position.clone());
-        this.dungeon.monsterManager.addMonsterFromData(this.data.generatorList[Logic.getRandomNum(0, this.data.generatorList.length - 1)], pos, this.dungeon, true);
+        this.nonplayerlist.push(this.dungeon.monsterManager.addMonsterFromData(this.data.generatorList[Logic.getRandomNum(0, this.data.generatorList.length - 1)], pos, this.dungeon, true));
         this.count++;
     }
     open() {
@@ -79,12 +82,11 @@ export default abstract class MonsterGenerator extends Building {
         }
         this.data.isOpen = true;
         this.scheduleOnce(()=>{this.canAdd = true;},this.addDelay);
-        let saveWentLine = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
-        if (saveWentLine) {
-            saveWentLine.isOpen = this.data.isOpen;
+        let savedata = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
+        if (savedata) {
+            savedata.isOpen = this.data.isOpen;
         } else {
             Logic.mapManager.setCurrentBuildingData(this.data.clone());
-
         }
         return true;
 

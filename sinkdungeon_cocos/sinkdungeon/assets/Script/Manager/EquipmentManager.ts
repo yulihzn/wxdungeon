@@ -640,7 +640,7 @@ export default class EquipmentManager extends BaseManager {
 
     static getPrice(data: EquipmentData): number {
         let price = 0;
-        if(data.test>1){
+        if(data.test>0){
             return 0;
         }
         price += data.Common.maxHealth * 5;//最大生命25

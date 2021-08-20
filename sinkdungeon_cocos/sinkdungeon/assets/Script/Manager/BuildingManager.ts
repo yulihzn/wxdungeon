@@ -240,6 +240,11 @@ export default class BuildingManager extends BaseManager {
             let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
             p.init(dungeon, 5, 3, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
             this.monsterGeneratorList.push(p);
+        } else if (mapDataStr == 'I0') {
+            //生成通风管
+            let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
+            p.init(dungeon, 5, 3, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
+            this.monsterGeneratorList.push(p);
         } else if (mapDataStr == 'I6') {
             //生成墙缝
             let p = this.addBuilding(Logic.getBuildings(BuildingManager.CRACK), indexPos).getComponent(MgCrack);

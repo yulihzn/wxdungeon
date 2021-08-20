@@ -786,5 +786,16 @@
         "duration": 5,
         "realDamageOvertime": -1,
         "common": {}
+    },
+    "status067": {
+        "nameCn": "全息闪避",
+        "nameEn": "dodge",
+        "spriteFrameName": "icondodge",
+        "id": 67,
+        "desc": "",
+        "duration": 2,
+        "common": {
+            "dodge": 100
+        }
     }
 }

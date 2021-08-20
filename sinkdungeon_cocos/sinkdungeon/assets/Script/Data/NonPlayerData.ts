@@ -64,6 +64,10 @@ export default class NonPlayerData {
     remoteAudio = '';//远程音效
     specialAudio = "";//特殊攻击音效 
     isPet = 0;//是否是宠物
+    childResName = '';//共生子类资源名
+    childMode = 0;//0当前单位死亡会导致其子类一起死亡 1子类全部死亡当前单位才会死亡
+    childCount = 0;//子类个数
+    flee = 0;//是否逃跑类型 逃跑类型优先远离玩家
     private statusTotalData: StatusData;
     private common: CommonData;
     private statusList: StatusData[];
@@ -154,6 +158,10 @@ export default class NonPlayerData {
         this.remoteAudio = data.remoteAudio ? data.remoteAudio : '';
         this.specialAudio = data.specialAudio ? data.specialAudio : '';
         this.isPet = data.isPet ? data.isPet : 0;
+        this.childResName = data.childResName ? data.childResName : '';
+        this.childMode = data.childMode ? data.childMode : 0;
+        this.childCount = data.childCount ? data.childCount : 0;
+        this.flee = data.flee ? data.flee : 0;
     }
     public clone(): NonPlayerData {
         let e = new NonPlayerData();
@@ -203,6 +211,10 @@ export default class NonPlayerData {
         e.specialAudio = this.specialAudio;
         e.isPet = this.isPet;
         e.StatusList = this.statusList;
+        e.childMode = this.childMode;
+        e.childResName = this.childResName;
+        e.childCount = this.childCount;
+        e.flee = this.flee;
         return e;
     }
 
