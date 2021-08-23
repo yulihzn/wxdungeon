@@ -1014,14 +1014,14 @@ export default class NonPlayer extends Actor {
         }
         if(this.parentNonPlayer){
             this.graphics.clear();
-            this.graphics.strokeColor = cc.Color.GREEN;
+            this.graphics.strokeColor = cc.color(0,255,0,128);
             this.graphics.lineWidth = 5;
             if(this.parentNonPlayer.data.childMode==0&&this.parentNonPlayer.sc.isDied){
                 this.data.currentHealth = 0;
             }else{
-                this.graphics.moveTo(0,0);
+                this.graphics.moveTo(0,32);
                 let pos = cc.v3(this.parentNonPlayer.node.position.x-this.node.position.x,this.parentNonPlayer.node.position.y-this.node.position.y);
-                this.graphics.lineTo(this.node.scaleX>0?pos.x:-pos.x,pos.y);
+                this.graphics.lineTo(this.node.scaleX>0?pos.x:-pos.x,pos.y+32);
                 this.graphics.stroke();
             }
         }
