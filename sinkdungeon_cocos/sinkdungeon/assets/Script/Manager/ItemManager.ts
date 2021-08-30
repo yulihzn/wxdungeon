@@ -206,7 +206,7 @@ export default class ItemManager extends BaseManager {
                     this.groundList.splice(i,1);
                     continue;
                 }
-                let d = Logic.getDistance(e.node.position, player.node.position);
+                let d = Logic.getDistanceNoSqrt(e.node.position, player.node.position);
                 if (d < distance) {
                     distance = d;
                     item = e;

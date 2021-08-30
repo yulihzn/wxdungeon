@@ -812,7 +812,7 @@ export default class BuildingManager extends BaseManager {
                 if (b.isTaken || !b.isValid || b.data.currentHealth <= 0) {
                     continue;
                 }
-                let d = Logic.getDistance(b.node.position, player.node.position);
+                let d = Logic.getDistanceNoSqrt(b.node.position, player.node.position);
                 if (d < distance) {
                     distance = d;
                     building = b;

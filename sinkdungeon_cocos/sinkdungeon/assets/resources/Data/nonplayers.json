@@ -88,5 +88,56 @@
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0
+    },
+    "nonplayer101": {
+        "nameCn": "家猫",
+        "nameEn": "cat",
+        "resName": "nonplayer101",
+        "chapter": 0,
+        "stageLevel": 0,
+        "specialAttack":10,
+        "specialAudio":"CAT",
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 50,
+            "damageMin": 5
+        },
+        "currentHealth": 50,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 1,
+        "isPet":1,
+        "boxType":1,
+        "sizeType":0.75,
+        "isEnemy":0,
+        "isFollow":1,
+        "lifeTime": 0
+    },
+    "nonplayer102": {
+        "nameCn": "橙子鱼",
+        "nameEn": "Orange Fish",
+        "resName": "nonplayer102",
+        "chapter": 0,
+        "stageLevel": 0,
+        "specialAttack":10,
+        "bulletType": "bullet004",
+        "specialBulletArcExNum": 2,
+        "specialAudio":"FISHTANK",
+        "common": {
+            "moveSpeed": 300,
+            "maxHealth": 50,
+            "remoteDamage":5,
+            "damageMin": 5
+        },
+        "currentHealth": 50,
+        "invisible": 0,
+        "remote": 2,
+        "melee": 0,
+        "isPet":1,
+        "boxType":1,
+        "sizeType":0.75,
+        "isEnemy":0,
+        "isFollow":1,
+        "lifeTime": 0
     }
 }

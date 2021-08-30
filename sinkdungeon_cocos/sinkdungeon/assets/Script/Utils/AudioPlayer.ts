@@ -91,6 +91,7 @@ export default class AudioPlayer extends cc.Component {
     public static readonly DOG = 'DOG';
     public static readonly FEED_FISH = 'FEED_FISH';
     public static readonly FISHTANK = 'FISHTANK';
+    public static readonly CAT = 'CAT';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -234,6 +235,8 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     fishtank:cc.AudioClip = null;
     @property(cc.AudioClip)
+    cat:cc.AudioClip = null;
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
@@ -319,6 +322,7 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.DOG] = this.dog;
         this.audioList[AudioPlayer.FEED_FISH] = this.feedfish;
         this.audioList[AudioPlayer.FISHTANK] = this.fishtank;
+        this.audioList[AudioPlayer.CAT] = this.cat;
 
     }
     playbg() {
@@ -335,7 +339,7 @@ export default class AudioPlayer extends cc.Component {
         cc.audioEngine.stopAllEffects();
     }
     private playSound(name: string, isBgm: boolean, loop: boolean) {
-        if (name == this.lastName && this.isSoundNeedPause) {
+        if (name == this.lastName && name == AudioPlayer.COIN && this.isSoundNeedPause) {
             return;
         }
         if (isBgm) {
@@ -352,10 +356,13 @@ export default class AudioPlayer extends cc.Component {
 
         }
         this.lastName = name;
-        this.isSoundNeedPause = true;
-        this.scheduleOnce(() => {
-            this.isSoundNeedPause = false;
-        }, 0.05)
+        this.isSoundNeedPause = false;
+        if(name == AudioPlayer.COIN){
+            this.isSoundNeedPause = true;
+            this.scheduleOnce(() => {
+                this.isSoundNeedPause = false;
+            }, 0.05)
+        }
     }
 
     static play(audioName: string, bgm?: boolean, loop?: boolean) {

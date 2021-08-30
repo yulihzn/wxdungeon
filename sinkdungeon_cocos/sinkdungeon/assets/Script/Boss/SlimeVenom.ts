@@ -59,7 +59,7 @@ export default class SlimeVenom extends Actor {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistance(this.node.position, playerNode.position);
+        let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position);
         return dis;
     }
     checkTimeDelay = 0;

@@ -254,7 +254,7 @@ export default class PickAvatar extends cc.Component {
         })
         //宠物
         // let petNames = ['柯基', '鹦鹉', '橘子鱼', '天竺鼠', '巴西龟', '变色龙', '刺猬', '火玫瑰蜘蛛', '安哥拉兔', '科尔鸭', '巴马香猪'];
-        let petNames = ['柯基'];
+        let petNames = ['柯基','家猫','橙子鱼'];
         let petList = [];
         for (let i = 0; i < petNames.length; i++) {
             petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${i > 9 ? '' : '0'}${i}anim000`, '', '', ''));

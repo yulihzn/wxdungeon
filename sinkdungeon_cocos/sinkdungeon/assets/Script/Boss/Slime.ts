@@ -112,8 +112,9 @@ export default class Slime extends Boss {
     AnimAttacking() {
         this.meleeSkill.IsExcuting = false;
         let attackRange = 64 + 50 * this.scaleSize;
+        attackRange=attackRange*attackRange;
         let target = ActorUtils.getNearestEnemyActor(this, true, this.dungeon);
-        let newdis = ActorUtils.getNearestTargetDistance(this, target);
+        let newdis = ActorUtils.getNearestTargetDistanceNoSqrt(this, target);
         if (newdis < attackRange && target) { target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this); }
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {

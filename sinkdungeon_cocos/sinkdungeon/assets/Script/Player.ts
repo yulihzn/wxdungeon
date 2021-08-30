@@ -866,12 +866,12 @@ export default class Player extends Actor {
         if (totalD > 0 && this.data.AvatarData.organizationIndex == AvatarData.GURAD) {
             totalD = this.updateDream(totalD);
         }
-        if (totalD > 0 &&
-            (this.data.AvatarData.organizationIndex == AvatarData.HUNTER
-                || this.data.AvatarData.organizationIndex == AvatarData.TECH)
-            || this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
-            this.updateDream(1);
-        }
+        // if (totalD > 0 &&
+        //     (this.data.AvatarData.organizationIndex == AvatarData.HUNTER
+        //         || this.data.AvatarData.organizationIndex == AvatarData.TECH)
+        //     || this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
+        //     this.updateDream(1);
+        // }
         health.x -= totalD;
         if (health.x > health.y) {
             health.x = health.y;
@@ -1018,7 +1018,7 @@ export default class Player extends Actor {
     }
     isDreamShortTimeDelay(dt: number): boolean {
         this.dreamShortTimeDelay += dt;
-        if (this.dreamShortTimeDelay > 3) {
+        if (this.dreamShortTimeDelay > 1) {
             this.dreamShortTimeDelay = 0;
             return true;
         }
@@ -1040,9 +1040,7 @@ export default class Player extends Actor {
             this.getWalkSmoke(this.node.parent, this.node.position);
         }
         if (this.isDreamLongTimeDelay(dt)) {
-            if (this.data.AvatarData.organizationIndex == AvatarData.GURAD || this.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
-                this.updateDream(-1);
-            }
+            this.updateDream(-1);
         }
         if (this.dungeon&&this.dungeon.isClear&&this.isDreamShortTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {

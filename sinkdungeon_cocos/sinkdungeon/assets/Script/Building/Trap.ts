@@ -33,7 +33,6 @@ export default class Trap extends Building {
     pos:cc.Vec3 = cc.v3(0,0);
     private sprite: cc.Node;
     private timeDelay = 0;
-    isPlayerIn = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
@@ -72,23 +71,13 @@ export default class Trap extends Building {
     
     onCollisionStay(other:cc.Collider,self:cc.Collider){
         if(other.tag == ColliderTag.PLAYER){
-            if(this.isOpen && this.isPlayerIn){
+            if(this.isOpen){
                 this.isOpen = false;
                 let player = other.getComponent(Player);
                 if(player&&player.inventoryManager.getEquipBySuit(player.inventoryManager.equips[InventoryManager.SHOES]).ignoreTrap<1){
                     player.takeDamage(new DamageData(1),FromData.getClone(this.actorName(),'trap001'),this);
                 }
             }
-        }
-    }
-    onBeginContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
-        if(otherCollider.tag == ColliderTag.PLAYER){
-            this.isPlayerIn = true;
-        }
-    }
-    onEndContact(contact, selfCollider:cc.PhysicsCollider, otherCollider:cc.PhysicsCollider){
-        if(otherCollider.tag == ColliderTag.PLAYER){
-            this.isPlayerIn = false;
         }
     }
 

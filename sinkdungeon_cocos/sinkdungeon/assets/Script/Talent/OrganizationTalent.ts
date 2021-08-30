@@ -103,17 +103,18 @@ export default class OrganizationTalent extends Talent {
                 }, 1)
             }
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.HUNTER) {
-            AudioPlayer.play(AudioPlayer.DOG);
             if (this.player.dungeon.nonPlayerManager.isPetAlive()) {
                 let d = new NonPlayerData();
                 d.valueCopy(Logic.nonplayers[this.player.data.AvatarData.petName]);
                 let data = new StatusData();
                 data.valueCopy(Logic.status[StatusManager.PET_DOG]);
                 data.Common.realRate += Logic.playerData.OilGoldData.level * 1;
+                data.Common.remoteCritRate = 100;
                 data.Common.realDamage += Logic.playerData.OilGoldData.level;
                 data.realDamageOvertime -= Logic.playerData.OilGoldData.level / 5;
                 this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth = d.Common.maxHealth + Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3;
                 this.player.dungeon.nonPlayerManager.pet.addCustomStatus(data, new FromData());
+                AudioPlayer.play(d.specialAudio);
             } else {
                 if (this.data.useCount > 1) {
                     this.data.useCount = this.data.useCount / 2;
@@ -126,8 +127,10 @@ export default class OrganizationTalent extends Talent {
                 data.Common.maxHealth += Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3;
                 data.currentHealth = data.Common.maxHealth;
                 data.Common.damageMin += Logic.playerData.OilGoldData.level;
+                data.Common.remoteDamage += Logic.playerData.OilGoldData.level;
                 data.Common.defence += Logic.playerData.OilGoldData.level;
                 this.player.dungeon.nonPlayerManager.addPetFromData(data, this.player.node.position, this.player.dungeon);
+                AudioPlayer.play(data.specialAudio);
             }
         } else if (this.player.data.AvatarData.organizationIndex == AvatarData.TECH) {
             AudioPlayer.play(AudioPlayer.PICK_ITEM);

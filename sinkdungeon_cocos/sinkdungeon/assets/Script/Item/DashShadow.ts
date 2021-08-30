@@ -57,7 +57,7 @@ export default class DashShadow extends cc.Component {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistance(this.node.position, this.getPlayerPosition());
+        let dis = Logic.getDistanceNoSqrt(this.node.position, this.getPlayerPosition());
         return dis;
     }
     show() {

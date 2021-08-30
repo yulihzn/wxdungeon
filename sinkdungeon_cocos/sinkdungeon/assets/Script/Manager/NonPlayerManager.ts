@@ -36,6 +36,7 @@ export default class NonPlayerManager extends BaseManager {
     get nonPlayerList() {
         return this.nonplayers;
     }
+   
     clear(): void {
         Utils.clearComponentArray(this.nonplayers);
     }

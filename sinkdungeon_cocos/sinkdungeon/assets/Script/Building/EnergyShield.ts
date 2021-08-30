@@ -124,9 +124,25 @@ export default class EnergyShield extends Building {
         }
         return false;
     }
+
+    recoveryTimeDelay = 0;
+    private isRecoveryTimeDelay(dt: number): boolean {
+        this.recoveryTimeDelay += dt;
+        if (this.recoveryTimeDelay > 2) {
+            this.recoveryTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+
     update (dt) {
         if(this.isTimeDelay(dt)){
             this.changeIdle();
+        }
+        if(this.isRecoveryTimeDelay(dt)){
+            if(this.checkTargetIn(this.player.node)){
+                this.player.updateDream(-1);
+            }
         }
     }
 }

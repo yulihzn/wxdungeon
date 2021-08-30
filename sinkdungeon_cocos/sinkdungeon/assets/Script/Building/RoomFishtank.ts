@@ -124,7 +124,7 @@ export default class RoomFishtank extends Building {
         this.bubbleSort();
         let targetPos = this.foodList[0].position.clone();
         let scaleX = targetPos.x > this.fish.position.x ? 1 : -1;
-        let distance = Logic.getDistance(this.fish.position, targetPos);
+        let distance = Logic.getDistanceNoSqrt(this.fish.position, targetPos);
         cc.tween(this.fish).to(0.2, { scaleX: scaleX }).to(distance / 10, { position: targetPos }).call(() => {
             this.fishEat(0);
         }).start();
@@ -135,7 +135,7 @@ export default class RoomFishtank extends Building {
         let randomPos = cc.v3(Logic.getRandomNum(this.fish.width / 2, width - this.fish.width / 2)
             , Logic.getRandomNum(this.fish.height / 2, height - this.fish.height / 2));
         let scaleX = randomPos.x > this.fish.position.x ? 1 : -1;
-        let distance = Logic.getDistance(this.fish.position, randomPos);
+        let distance = Logic.getDistanceNoSqrt(this.fish.position, randomPos);
         cc.tween(this.fish).to(0.2, { scaleX: scaleX }).to(distance / 5, { position: randomPos }).delay(0.5).call(() => {
             if (this.foodList.length > 0) {
                 this.fishSearch();

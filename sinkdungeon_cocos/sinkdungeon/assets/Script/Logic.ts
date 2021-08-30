@@ -54,7 +54,7 @@ export default class Logic extends cc.Component {
         10000, 15000, 20000, 30000, 50000,
         100000, 150000, 200000, 300000, 500000,
         1000000, 1500000, 2000000, 3000000, 5000000];
-    
+
     static equipments: { [key: string]: EquipmentData } = null;
     static equipmentNameList: string[] = [];
     static itemNameList: string[] = [];
@@ -76,7 +76,7 @@ export default class Logic extends cc.Component {
     //技能json
     static talents: { [key: string]: TalentData } = null;
     //家具json
-    static furnitures:{[key:string]: FurnitureData} = null;
+    static furnitures: { [key: string]: FurnitureData } = null;
     //职业json
     static professionList: ProfessionData[] = [];
     //建筑资源
@@ -130,7 +130,7 @@ export default class Logic extends cc.Component {
         cc.PhysicsManager.VELOCITY_ITERATIONS = 8;
         // 每次更新物理系统处理位置的迭代次数，默认为 10
         cc.PhysicsManager.POSITION_ITERATIONS = 8;
-        
+
         // manager.enabledDebugDraw = true;
         // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
         // cc.PhysicsManager.DrawBits.e_jointBit |
@@ -339,9 +339,9 @@ export default class Logic extends cc.Component {
         } else if (exitData.fromChapter == Logic.CHAPTER01 && Logic.chapterIndex == Logic.CHAPTER02) {
             Logic.shipTransportScene = 1;
         }
-        if(exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER00){
-            if(!(exitData.fromLevel == 0 && exitData.toLevel == 0)){
-                Logic.elevatorScene = exitData.fromLevel>Logic.level?1:2;
+        if (exitData.fromChapter == Logic.CHAPTER00 && Logic.chapterIndex == Logic.CHAPTER00) {
+            if (!(exitData.fromLevel == 0 && exitData.toLevel == 0)) {
+                Logic.elevatorScene = exitData.fromLevel > Logic.level ? 1 : 2;
             }
         }
         cc.director.loadScene('loading');
@@ -361,7 +361,12 @@ export default class Logic extends cc.Component {
         let y = v1.y - v2.y;
         return Math.sqrt(x * x + y * y);
     }
-    
+    static getDistanceNoSqrt(v1, v2) {
+        let x = v1.x - v2.x;
+        let y = v1.y - v2.y;
+        return Math.abs(x) + Math.abs(y);
+    }
+
     static lerp(a: number, b: number, r: number): number {
         return a + (b - a) * r;
     }

@@ -347,7 +347,7 @@ export default class Shooter extends cc.Component {
         }
         let distance = r;
         for (let point of arr) {
-            let dtemp = Logic.getDistance(point, s);
+            let dtemp = Logic.getDistanceNoSqrt(point, s);
             if (distance >= dtemp) {
                 distance = dtemp;
                 p = point;
@@ -452,7 +452,7 @@ export default class Shooter extends cc.Component {
         } else if (this.dungeon) {
             let enemy = ActorUtils.getNearestEnemyActor(this.player,false, this.dungeon);
             if(enemy){
-                let dis = Logic.getDistance(this.getParentNode().position, enemy.node.position);
+                let dis = Logic.getDistanceNoSqrt(this.getParentNode().position, enemy.node.position);
                     if (dis < 600 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
                         olddis = dis;
                         let p = this.node.position.clone();

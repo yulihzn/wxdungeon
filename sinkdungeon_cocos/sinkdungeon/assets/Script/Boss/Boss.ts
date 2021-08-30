@@ -50,7 +50,7 @@ export default abstract class Boss extends Actor {
         if (offset) {
             p.addSelf(offset);
         }
-        let dis = Logic.getDistance(this.node.position, playerNode.position);
+        let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position);
         return dis;
     }
     /**获取中心位置 */

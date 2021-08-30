@@ -10,13 +10,13 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class ActorUtils {
-    static getEnemyCollisionTarget(other: cc.Collider, isPlayer?: boolean):Actor {
+    static getEnemyCollisionTarget(other: cc.Collider, isPlayer?: boolean): Actor {
         if (isPlayer) {
-            if (other.tag == ColliderTag.NONPLAYER||other.tag == ColliderTag.BOSS) {
+            if (other.tag == ColliderTag.NONPLAYER || other.tag == ColliderTag.BOSS) {
                 return other.node.getComponent(Actor);
             }
         } else {
-            if (other.tag == ColliderTag.PLAYER||other.tag == ColliderTag.GOODNONPLAYER) {
+            if (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.GOODNONPLAYER) {
                 return other.node.getComponent(Actor);
             }
         }
@@ -25,7 +25,7 @@ export default class ActorUtils {
     static getEnemyActorByNode(other: cc.Node, isPlayer?: boolean) {
         if (isPlayer) {
             let non = other.getComponent(NonPlayer);
-            if (non&&non.data.isEnemy>0) {
+            if (non && non.data.isEnemy > 0) {
                 return non;
             }
             let boss = other.getComponent(Boss);
@@ -38,7 +38,7 @@ export default class ActorUtils {
                 return player;
             }
             let non = other.getComponent(NonPlayer);
-            if (non && non.data.isEnemy<1) {
+            if (non && non.data.isEnemy < 1) {
                 return non;
             }
         }
@@ -49,8 +49,8 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-     static getPlayerPosition(actor:Actor,dungeon: Dungeon, distance?: number) {
-        return ActorUtils.getNearestTargetPosition(actor,[Actor.TARGET_PLAYER], dungeon,true, distance);
+    static getPlayerPosition(actor: Actor, dungeon: Dungeon, distance?: number) {
+        return ActorUtils.getNearestTargetPosition(actor, [Actor.TARGET_PLAYER], dungeon, true, distance);
     }
     /**
      * 获取最近的敌人
@@ -58,9 +58,9 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-     static getNearestEnemyPosition(actor:Actor,selfIsEnemy: boolean, dungeon: Dungeon,needRandom:boolean, distance?: number) {
-        return ActorUtils.getNearestTargetPosition(actor,selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
-            : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon,needRandom, distance);
+    static getNearestEnemyPosition(actor: Actor, selfIsEnemy: boolean, dungeon: Dungeon, needRandom: boolean, distance?: number) {
+        return ActorUtils.getNearestTargetPosition(actor, selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
+            : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon, needRandom, distance);
     }
     /**
      * 获取最近的目标
@@ -68,25 +68,25 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-     static getNearestTargetPosition(actor:Actor,targetTypes: number[], dungeon: Dungeon,needRandom:boolean, distance?: number): cc.Vec3 {
-        let targetActor: Actor = ActorUtils.getNearestTargetActor(actor,targetTypes, dungeon, distance ? distance : 999999);
+    static getNearestTargetPosition(actor: Actor, targetTypes: number[], dungeon: Dungeon, needRandom: boolean, distance?: number): cc.Vec3 {
+        let targetActor: Actor = ActorUtils.getNearestTargetActor(actor, targetTypes, dungeon, distance ? distance : 999999);
         if (targetActor) {
             return targetActor.node.position;
         }
-        if(needRandom){
+        if (needRandom) {
             return actor.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
         }
         return cc.Vec3.ZERO;
     }
- 
+
     /**
      * 获取最近的敌人节点
      * @param selfIsEnemy 
      * @param dungeon 
      * @param distance 
      */
-     static getNearestEnemyActor(actor:Actor,selfIsEnemy: boolean, dungeon: Dungeon) {
-        return ActorUtils.getNearestTargetActor(actor,selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
+    static getNearestEnemyActor(actor: Actor, selfIsEnemy: boolean, dungeon: Dungeon) {
+        return ActorUtils.getNearestTargetActor(actor, selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
             : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon);
     }
 
@@ -96,7 +96,7 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-     static getNearestTargetActor(actor:Actor,targetTypes: number[], dungeon: Dungeon, distance?: number): Actor {
+    static getNearestTargetActor(actor: Actor, targetTypes: number[], dungeon: Dungeon, distance?: number): Actor {
         let shortdis = distance ? distance : 999999;
         let targetActor: Actor;
         let targetList: Actor[] = [];
@@ -104,22 +104,18 @@ export default class ActorUtils {
             if (targetType == Actor.TARGET_PLAYER) {
                 targetList.push(dungeon.player);
             } else if (targetType == Actor.TARGET_MONSTER) {
-                for (let monster of dungeon.monsterManager.monsterList) {
-                    targetList.push(monster);
-                }
+                targetList = targetList.concat(dungeon.monsterManager.monsterList);
             } else if (targetType == Actor.TARGET_BOSS) {
-                for (let boss of dungeon.monsterManager.bossList) {
-                    targetList.push(boss);
-                }
+                targetList = targetList.concat(dungeon.monsterManager.bossList);
             } else if (targetType == Actor.TARGET_NONPLAYER) {
                 for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (non.data.isEnemy<1) {
+                    if (non.data.isEnemy < 1) {
                         targetList.push(non);
                     }
                 }
             } else if (targetType == Actor.TARGET_NONPLAYER_ENEMY) {
                 for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (non.data.isEnemy>0) {
+                    if (non.data.isEnemy > 0) {
                         targetList.push(non);
                     }
                 }
@@ -127,7 +123,7 @@ export default class ActorUtils {
         }
         for (let target of targetList) {
             if (target.isValid && !target.sc.isDied && target.sc.isShow) {
-                let dis = Logic.getDistance(actor.node.position, target.getCenterPosition());
+                let dis = Logic.getDistanceNoSqrt(actor.node.position, target.getCenterPosition());
                 if (dis < shortdis) {
                     shortdis = dis;
                     targetActor = target;
@@ -143,21 +139,31 @@ export default class ActorUtils {
      * 获取最近目标节点距离
      * @param playerNode 
      */
-     static getNearestTargetDistance(actor:Actor,target: Actor): number {
+    static getNearestTargetDistance(actor: Actor, target: Actor): number {
         if (!target) {
             return 999999;
         }
-        let dis = Logic.getDistance(actor.node.position, target.node.position);
+        let dis = Logic.getDistanceNoSqrt(actor.node.position, target.node.position);
         return dis;
     }
-
+    /**
+         * 获取最近目标节点距离
+         * @param playerNode 
+         */
+    static getNearestTargetDistanceNoSqrt(actor: Actor, target: Actor): number {
+        if (!target) {
+            return 999999*999999;
+        }
+        let dis = Logic.getDistanceNoSqrt(actor.node.position, target.node.position);
+        return dis;
+    }
     /**
      * 目标是否存活
      * @param target 目标
      * @returns 
      */
-    static isTargetAlive(target:Actor):boolean{
-        if(!target|| target.invisible||target.sc.isDied||!target.sc.isShow){
+    static isTargetAlive(target: Actor): boolean {
+        if (!target || target.invisible || target.sc.isDied || !target.sc.isShow) {
             return false;
         }
         return true;

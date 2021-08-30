@@ -36,7 +36,7 @@ export default class OilGold extends cc.Component {
         this.rigidBody.linearVelocity = cc.v2(x, y);
         this.rigidBody.linearDamping = 10;
         this.isReady = false;
-        this.scheduleOnce(() => { this.isReady = true; }, 1.5);
+        this.scheduleOnce(() => { this.isReady = true; }, 1);
     }
     changeValue(value: number) {
         //目前只有1和10
@@ -87,7 +87,7 @@ export default class OilGold extends cc.Component {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistance(this.node.position, playerNode.position.clone().addSelf(cc.v3(0, 32)));
+        let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position.clone().addSelf(cc.v3(0, 32)));
         return dis;
     }
     update(dt) {

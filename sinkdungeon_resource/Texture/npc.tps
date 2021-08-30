@@ -779,6 +779,21 @@
             <key type="filename">nonplayer/nonplayer100anim010.png</key>
             <key type="filename">nonplayer/nonplayer100anim011.png</key>
             <key type="filename">nonplayer/nonplayer100anim012.png</key>
+            <key type="filename">nonplayer/nonplayer101anim000.png</key>
+            <key type="filename">nonplayer/nonplayer101anim001.png</key>
+            <key type="filename">nonplayer/nonplayer101anim002.png</key>
+            <key type="filename">nonplayer/nonplayer101anim003.png</key>
+            <key type="filename">nonplayer/nonplayer101anim004.png</key>
+            <key type="filename">nonplayer/nonplayer101anim005.png</key>
+            <key type="filename">nonplayer/nonplayer101anim006.png</key>
+            <key type="filename">nonplayer/nonplayer101anim007.png</key>
+            <key type="filename">nonplayer/nonplayer101anim008.png</key>
+            <key type="filename">nonplayer/nonplayer101anim009.png</key>
+            <key type="filename">nonplayer/nonplayer101anim010.png</key>
+            <key type="filename">nonplayer/nonplayer101anim011.png</key>
+            <key type="filename">nonplayer/nonplayer101anim012.png</key>
+            <key type="filename">nonplayer/nonplayer101anim013.png</key>
+            <key type="filename">nonplayer/nonplayer101anim014.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
