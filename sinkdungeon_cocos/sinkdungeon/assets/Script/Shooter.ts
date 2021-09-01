@@ -13,6 +13,7 @@ import AreaOfEffect from "./Actor/AreaOfEffect";
 import { ColliderTag } from "./Actor/ColliderTag";
 import InventoryManager from "./Manager/InventoryManager";
 import ActorUtils from "./Utils/ActorUtils";
+import Utils from "./Utils/Utils";
 
 
 // Learn TypeScript:
@@ -86,7 +87,7 @@ export default class Shooter extends cc.Component {
         }
         let spriteFrame = this.getSpriteFrameByName(resName, subfix);
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-        if(!this.isBuilding){
+        if (!this.isBuilding) {
             this.sprite.width = spriteFrame.getRect().width * 1.5;
             this.sprite.height = spriteFrame.getRect().height * 1.5;
             this.sprite.anchorX = 0.2;
@@ -96,39 +97,38 @@ export default class Shooter extends cc.Component {
                 this.sprite.anchorX = 0.5
             }
         }
-        
+
     }
     changeResColor(color: cc.Color) {
         this.sprite.color = color;
     }
     private getSpriteFrameByName(resName: string, subfix?: string): cc.SpriteFrame {
-        let spriteFrame = Logic.spriteFrameRes(resName+subfix);
+        let spriteFrame = Logic.spriteFrameRes(resName + subfix);
         if (!spriteFrame) {
-            spriteFrame = Logic.spriteFrameRes(resName+'anim0');
+            spriteFrame = Logic.spriteFrameRes(resName + 'anim0');
         }
         if (!spriteFrame) {
             spriteFrame = Logic.spriteFrameRes(resName);
         }
         return spriteFrame;
     }
-    get Hv(){
+    get Hv() {
         return this.hv;
     }
     setHv(hv: cc.Vec3) {
+        this.hv = hv
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
-        } else {
-            this.hv = hv.normalizeSelf();
         }
+        this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
     }
-    getAoeNode(prefab:cc.Prefab,usePool:boolean) {
+    getAoeNode(prefab: cc.Prefab, usePool: boolean) {
         let temp: cc.Node = null;
-        if(!this.aoePools[prefab.name]){
+        if (!this.aoePools[prefab.name]) {
             this.aoePools[prefab.name] = new cc.NodePool(AreaOfEffect);
         }
-        if (this.aoePools[prefab.name]&&this.aoePools[prefab.name].size() > 0&&usePool) { // 通过 size 接口判断对象池中是否有空闲的对象
+        if (this.aoePools[prefab.name] && this.aoePools[prefab.name].size() > 0 && usePool) { // 通过 size 接口判断对象池中是否有空闲的对象
             temp = this.aoePools[prefab.name].get();
         }
         // 如果没有空闲对象，也就是对象池中备用对象不够时，我们就用 cc.instantiate 重新创建
@@ -140,8 +140,8 @@ export default class Shooter extends cc.Component {
         return temp;
     }
 
-    destroyAoePrefab(prefab:cc.Prefab,node: cc.Node) {
-        if(!this.aoePools[prefab.name]){
+    destroyAoePrefab(prefab: cc.Prefab, node: cc.Node) {
+        if (!this.aoePools[prefab.name]) {
             this.aoePools[prefab.name] = new cc.NodePool(AreaOfEffect);
         }
         node.active = false;
@@ -149,20 +149,20 @@ export default class Shooter extends cc.Component {
             this.aoePools[prefab.name].put(node);
         }
     }
-    public fireAoe(prefab: cc.Prefab, aoeData: AreaOfEffectData, defaultPos?: cc.Vec3, angleOffset?: number,killCallBack?:Function,usePool?:boolean):AreaOfEffect {
+    public fireAoe(prefab: cc.Prefab, aoeData: AreaOfEffectData, defaultPos?: cc.Vec3, angleOffset?: number, killCallBack?: Function, usePool?: boolean): AreaOfEffect {
         if (!this.dungeon) {
             return null;
         }
         if (!angleOffset) {
             angleOffset = 0;
         }
-        let aoe = this.getAoeNode(prefab,usePool).getComponent(AreaOfEffect);
+        let aoe = this.getAoeNode(prefab, usePool).getComponent(AreaOfEffect);
         if (aoe) {
             let pos = this.node.convertToWorldSpaceAR(defaultPos ? defaultPos : cc.v3(30, 0));
             pos = this.dungeon.node.convertToNodeSpaceAR(pos);
-            aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData,killCallBack,usePool,(node:cc.Node)=>{
-                if(usePool){
-                    this.destroyAoePrefab(prefab,node);
+            aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData, killCallBack, usePool, (node: cc.Node) => {
+                if (usePool) {
+                    this.destroyAoePrefab(prefab, node);
                 }
             });
         }
@@ -179,11 +179,11 @@ export default class Shooter extends cc.Component {
         if (this.sprite) {
             this.sprite.stopAllActions();
             this.sprite.position = cc.Vec3.ZERO;
-            cc.tween(this.sprite).call(()=>{
+            cc.tween(this.sprite).call(() => {
                 this.changeRes(this.data.img, 'anim1');
-            }).by(0.1,{position:cc.v3(10,0)}).call(()=>{
+            }).by(0.1, { position: cc.v3(10, 0) }).call(() => {
                 this.changeRes(this.data.img, 'anim2');
-            }).by(0.05,{position:cc.v3(-5,0)}).by(0.05,{position:cc.v3(0,0)}).call(()=>{
+            }).by(0.05, { position: cc.v3(-5, 0) }).by(0.05, { position: cc.v3(0, 0) }).call(() => {
                 this.changeRes(this.data.img, 'anim0');
             }).start();
         }
@@ -197,9 +197,9 @@ export default class Shooter extends cc.Component {
         if (!this.isAI && !this.isEx && this.player.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.REMOTE) {
             return;
         }
-        if(this.data.remoteAudio&&this.data.remoteAudio.length>0){
+        if (this.data.remoteAudio && this.data.remoteAudio.length > 0) {
             AudioPlayer.play(this.data.remoteAudio);
-        }else{
+        } else {
             AudioPlayer.play(AudioPlayer.SHOOT);
         }
         this.fire(this.data.bulletType, this.bullet, this.bulletPool, angleOffset, this.hv.clone(), defaultPos, prefab, aoeData);
@@ -286,7 +286,7 @@ export default class Shooter extends cc.Component {
         // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
         bullet.node.zIndex = IndexZ.OVERHEAD;
-        bullet.isFromPlayer = !this.isAI||this.isFromPlayer;
+        bullet.isFromPlayer = !this.isAI || this.isFromPlayer;
         bullet.dungeon = this.dungeon;
         bullet.skipTopwall = this.skipTopwall;
         let bd = new BulletData();
@@ -311,7 +311,7 @@ export default class Shooter extends cc.Component {
     public destroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
         bulletNode.active = false;
-        if (this.bulletPool ) {
+        if (this.bulletPool) {
             this.bulletPool.put(bulletNode);
         }
     }
@@ -360,11 +360,11 @@ export default class Shooter extends cc.Component {
     private isValidRayCastCollider(collider: cc.PhysicsCollider): boolean {
         let isInvalid = false;
         if (!this.isAI) {
-            if (collider.tag==ColliderTag.PLAYER) { isInvalid = true; }
+            if (collider.tag == ColliderTag.PLAYER) { isInvalid = true; }
         } else {
-            if (collider.tag==ColliderTag.NONPLAYER || collider.tag==ColliderTag.BOSS) { isInvalid = true; }
+            if (collider.tag == ColliderTag.NONPLAYER || collider.tag == ColliderTag.BOSS) { isInvalid = true; }
         }
-        if (collider.tag==ColliderTag.BULLET) { isInvalid = true; }
+        if (collider.tag == ColliderTag.BULLET) { isInvalid = true; }
         if (collider.sensor) { isInvalid = true; }
         return !isInvalid;
     }
@@ -422,18 +422,16 @@ export default class Shooter extends cc.Component {
         this.graphics.fill();
     }
 
-    update(dt:number) {
-        if(Logic.isGamePause){
+    update(dt: number) {
+        if (Logic.isGamePause) {
             return;
         }
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
             this.hv = pos;
-        } else if (this.hv.x != 0 || this.hv.y != 0) {
-            let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
-            this.rotateColliderManager(olderTarget);
         }
+        this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
+
     }
     private getParentNode(): cc.Node {
         if (this.parentNode) {
@@ -446,42 +444,21 @@ export default class Shooter extends cc.Component {
         if (!this.isAutoAim) {
             return cc.Vec3.ZERO;
         }
-        let olddis = 1000;
-        let pos = cc.v3(0, 0);
-        if (this.isAI) {
-        } else if (this.dungeon) {
-            let enemy = ActorUtils.getNearestEnemyActor(this.player,false, this.dungeon);
-            if(enemy){
-                let dis = Logic.getDistanceNoSqrt(this.getParentNode().position, enemy.node.position);
-                    if (dis < 600 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
-                        olddis = dis;
-                        let p = this.node.position.clone();
-                        p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                        let mp = enemy.node.position.clone();
-                        mp.y += 32;
-                        pos = mp.sub(this.getParentNode().position.add(p));
-                    }        
-            }
-            if (olddis != 1000) {
-                pos = pos.normalizeSelf();
-            }
+        if (!this.isAI && this.dungeon) {
+            return ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, this.isAI, this.dungeon, false, 600);
         }
-        return pos;
+        return cc.Vec3.ZERO;
     }
-    private rotateColliderManager(target: cc.Vec3) {
-        // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
-        // 物体坐标默认就是世界坐标
-        // 两者取差得到方向向量
-        let direction = target.sub(this.node.position);
-        // 方向向量转换为角度值
-        let Rad2Deg = 360 / (Math.PI * 2);
-        let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
-        let offsetAngle = 90;
-        this.node.scaleX = this.getParentNode().scaleX > 0 ? 1 : -1;
-        this.node.scaleY = this.getParentNode().scaleX > 0 ? 1 : -1;
-        angle += offsetAngle;
-        // 将当前物体的角度设置为对应角度
-        this.node.angle = this.node.scaleX == -1 ? -angle : angle;
-
+    private rotateCollider(direction: cc.Vec2) {
+        if (direction.equals(cc.Vec2.ZERO)) {
+            return;
+        }
+        //设置缩放方向
+        let sx = Math.abs(this.node.scaleX);
+        this.node.scaleX = this.getParentNode().scaleX > 0 ? sx : -sx;
+        let sy = Math.abs(this.node.scaleY);
+        this.node.scaleY = this.node.scaleX < 0 ? -sy : sy;
+        //设置旋转角度
+        this.node.angle = Utils.getRotateAngle(direction, this.node.scaleX < 0);
     }
 }

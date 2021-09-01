@@ -816,8 +816,8 @@ export default class NonPlayer extends Actor {
         if (this.isPassive) {
             return;
         }
-        let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
-        let targetDis = ActorUtils.getNearestTargetDistance(this, target);
+        let target = ActorUtils.getNearestEnemyActor(this.node.position, this.data.isEnemy > 0, this.dungeon);
+        let targetDis = ActorUtils.getTargetDistance(this, target);
         //目标不存在、死亡或者隐身直接返回
         if (!ActorUtils.isTargetAlive(target)) {
             return;
@@ -901,8 +901,8 @@ export default class NonPlayer extends Actor {
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
         this.updateAttack();
-        let target = ActorUtils.getNearestEnemyActor(this, this.data.isEnemy > 0, this.dungeon);
-        let targetDis = ActorUtils.getNearestTargetDistance(this, target);
+        let target = ActorUtils.getNearestEnemyActor(this.node.position, this.data.isEnemy > 0, this.dungeon);
+        let targetDis = ActorUtils.getTargetDistance(this, target);
         //靠近取消伪装
         if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
             this.sc.isDisguising = false;
@@ -938,7 +938,7 @@ export default class NonPlayer extends Actor {
         //npc移动在没有敌对目标的时候转变目标为玩家
         if (!isTracking && this.data.isFollow > 0 && this.data.isEnemy < 1) {
             target = this.dungeon.player;
-            targetDis = ActorUtils.getNearestTargetDistance(this, this.dungeon.player);
+            targetDis = ActorUtils.getTargetDistance(this, this.dungeon.player);
             isTracking = true;
         }
 
@@ -1165,7 +1165,7 @@ export default class NonPlayer extends Actor {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
         let body = this.bodySprite.node;
         cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
-            let newPos = ActorUtils.getNearestEnemyPosition(this, true, this.dungeon, true);
+            let newPos = ActorUtils.getNearestEnemyPosition(this.node.position, true, this.dungeon, true);
             newPos = Dungeon.getIndexInMap(newPos);
             if (newPos.x > this.pos.x) {
                 newPos = newPos.addSelf(cc.v3(1, 0));

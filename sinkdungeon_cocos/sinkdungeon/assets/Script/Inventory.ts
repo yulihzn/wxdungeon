@@ -21,6 +21,7 @@ import SuitData from './Data/SuitData';
 import InventoryData from './Data/InventoryData';
 import InventoryItem from './UI/InventoryItem';
 import EquipmentAndItemDialog from './UI/dialog/EquipmentAndItemDialog';
+import LocalStorage from './Utils/LocalStorage';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -76,7 +77,7 @@ export default class Inventory extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.equipmentNode.active = false;
+        this.equipmentNode.active = Logic.settings.showEquipDialog;
         this.equipmentGroundDialog=this.initDialog(true);
         this.itemGroundDialog=this.initDialog(true);
         this.equipmentAndItemDialog=this.initDialog(false);
@@ -155,6 +156,8 @@ export default class Inventory extends cc.Component {
     //button
     showEquipment(){
         this.equipmentNode.active = !this.equipmentNode.active;
+        Logic.settings.showEquipDialog = this.equipmentNode.active;
+        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_EQUIPDIALOG,Logic.settings.showEquipDialog);
     }
     start() {
         for (let key in this.equipSprites) {

@@ -5,6 +5,7 @@ import AudioPlayer from "./Utils/AudioPlayer";
 import EquipmentData from "./Data/EquipmentData";
 import InventoryManager from "./Manager/InventoryManager";
 import MeleeWeapon from "./MeleeWeapon";
+import Utils from "./Utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -106,34 +107,21 @@ export default class MeleeShadowWeapon extends cc.Component {
     }
 
     updateHv(hv:cc.Vec3) {
-        this.hv = hv.normalizeSelf();
-        if ((this.hv.x != 0 || this.hv.y != 0)) {
-            let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
-            this.rotateColliderManager(olderTarget);
-        }
+        this.hv = hv;
+        this.rotateCollider(cc.v2(this.hv.x,this.hv.y));
     }
 
-    private rotateColliderManager(target: cc.Vec3) {
-        // 两者取差得到方向向量
-        let direction = target.sub(this.node.position);
-        // 方向向量转换为角度值
-        let Rad2Deg = 360 / (Math.PI * 2);
-        let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
-        let offsetAngle = 90;
+    private rotateCollider(direction: cc.Vec2) {
+        if(direction.equals(cc.Vec2.ZERO)){
+            return;
+        }
+        //设置缩放方向
         let sx = Math.abs(this.node.scaleX);
-        this.node.scaleX = this.player.node.scaleX > 0 ? sx : -sx;
         let sy = Math.abs(this.node.scaleY);
+        this.node.scaleX = this.player.node.scaleX > 0 ? sx : -sx;
         this.node.scaleY = this.node.scaleX < 0 ? -sy : sy;
-        angle += offsetAngle;
-        if (angle >= 360) {
-            angle -= 360;
-        }
-        if (angle <= -360) {
-            angle += 360;
-        }
-        // 将当前物体的角度设置为对应角度
-        this.node.angle = this.node.scaleX < 0 ? -angle : angle;
-
+        //设置旋转角度
+        this.node.angle = Utils.getRotateAngle(direction,this.node.scaleX < 0);
     }
 
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {

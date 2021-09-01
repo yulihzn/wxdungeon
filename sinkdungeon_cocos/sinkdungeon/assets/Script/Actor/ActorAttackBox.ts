@@ -3,6 +3,7 @@ import Actor from "../Base/Actor";
 import Dungeon from "../Dungeon";
 import NonPlayer from "../NonPlayer";
 import ActorUtils from "../Utils/ActorUtils";
+import Utils from "../Utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -131,11 +132,8 @@ export default class ActorAttackBox extends cc.Component {
         }
     }
     setHv(hv: cc.Vec3) {
-        this.hv = hv.normalizeSelf();
-        if (this.hv.x != 0 || this.hv.y != 0) {
-            let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
-            this.rotateColliderManager(olderTarget);
-        }
+        this.hv = hv;
+        this.rotateCollider(cc.v2(this.hv));
     }
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
@@ -146,14 +144,11 @@ export default class ActorAttackBox extends cc.Component {
         }
         return false;
     }
-    rotateColliderManager(target: cc.Vec3) {
-        let direction = target.sub(this.node.position);
-        let Rad2Deg = 360 / (Math.PI * 2);
-        let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
-        let offsetAngle = 90;
-        this.node.scaleX = this.nonPlayer.node.scaleX > 0 ? 1 : -1;
-        angle += offsetAngle;
-        this.node.angle = this.node.scaleX == -1 ? angle-180 : angle;
-
+    rotateCollider(direction: cc.Vec2) {
+        if(direction.equals(cc.Vec2.ZERO)){
+            return;
+        }
+        //设置旋转角度
+        this.node.angle = Utils.getRotateAngle(direction,this.node.scaleX < 0);
     }
 }

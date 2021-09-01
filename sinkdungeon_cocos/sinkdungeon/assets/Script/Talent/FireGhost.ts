@@ -113,21 +113,6 @@ export default class FireGhost extends cc.Component {
         if (!this.player || !this.isRotating) {
             return cc.Vec3.ZERO;
         }
-        let olddis = 1000;
-        let pos = cc.v3(0, 0);
-        let enemy = ActorUtils.getNearestEnemyActor(this.player,false, this.player.weaponRight.meleeWeapon.dungeon);
-        if(enemy){                
-            let dis = Logic.getDistanceNoSqrt(this.node.position, enemy.node.position);
-            if (dis < 400 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising) {
-                olddis = dis;
-                let p = this.node.position.clone();
-                p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                pos = enemy.node.position.sub(p);
-            }
-        }
-        if (olddis != 1000) {
-            pos = pos.normalizeSelf();
-        }
-        return pos;
+        return ActorUtils.getDirectionFromNearestEnemy(this.player.node.position,false,this.player.dungeon,false,400);
     }
 }

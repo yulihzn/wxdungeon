@@ -49,17 +49,32 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-    static getPlayerPosition(actor: Actor, dungeon: Dungeon, distance?: number) {
-        return ActorUtils.getNearestTargetPosition(actor, [Actor.TARGET_PLAYER], dungeon, true, distance);
+    static getPlayerPosition(selfPosition: cc.Vec3, dungeon: Dungeon, distance?: number) {
+        return ActorUtils.getNearestTargetPosition(selfPosition, [Actor.TARGET_PLAYER], dungeon, true, distance);
     }
     /**
-     * 获取最近的敌人
+     * 获取当前位置离最近的敌人的方向
      * @param selfIsEnemy 自身是否的玩家的对立面
      * @param dungeon 
      * @param distance 
      */
-    static getNearestEnemyPosition(actor: Actor, selfIsEnemy: boolean, dungeon: Dungeon, needRandom: boolean, distance?: number) {
-        return ActorUtils.getNearestTargetPosition(actor, selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
+     static getDirectionFromNearestEnemy(selfPosition: cc.Vec3, selfIsEnemy: boolean, dungeon: Dungeon, needRandom: boolean, distance?: number) {
+        let pos = ActorUtils.getNearestTargetPosition(selfPosition, selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
+            : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon, needRandom, distance);
+        if(pos.equals(cc.Vec3.ZERO)){
+            return cc.Vec3.ZERO;
+        }else{
+            return pos.subtract(selfPosition).normalize();
+        }
+    }
+    /**
+     * 获取最近的敌人位置
+     * @param selfIsEnemy 自身是否的玩家的对立面
+     * @param dungeon 
+     * @param distance 
+     */
+    static getNearestEnemyPosition(selfPosition: cc.Vec3, selfIsEnemy: boolean, dungeon: Dungeon, needRandom: boolean, distance?: number) {
+        return ActorUtils.getNearestTargetPosition(selfPosition, selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
             : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon, needRandom, distance);
     }
     /**
@@ -68,13 +83,13 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-    static getNearestTargetPosition(actor: Actor, targetTypes: number[], dungeon: Dungeon, needRandom: boolean, distance?: number): cc.Vec3 {
-        let targetActor: Actor = ActorUtils.getNearestTargetActor(actor, targetTypes, dungeon, distance ? distance : 999999);
+    static getNearestTargetPosition(selfPosition: cc.Vec3, targetTypes: number[], dungeon: Dungeon, needRandom: boolean, distance?: number): cc.Vec3 {
+        let targetActor: Actor = ActorUtils.getNearestTargetActor(selfPosition, targetTypes, dungeon, distance ? distance : 999999);
         if (targetActor) {
-            return targetActor.node.position;
+            return targetActor.getCenterPosition();
         }
         if (needRandom) {
-            return actor.node.position.addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
+            return selfPosition.clone().addSelf(cc.v3(Logic.getRandomNum(0, 600) - 300, Logic.getRandomNum(0, 600) - 300));
         }
         return cc.Vec3.ZERO;
     }
@@ -85,8 +100,8 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-    static getNearestEnemyActor(actor: Actor, selfIsEnemy: boolean, dungeon: Dungeon) {
-        return ActorUtils.getNearestTargetActor(actor, selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
+    static getNearestEnemyActor(selfPosition: cc.Vec3, selfIsEnemy: boolean, dungeon: Dungeon) {
+        return ActorUtils.getNearestTargetActor(selfPosition, selfIsEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER]
             : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], dungeon);
     }
 
@@ -96,7 +111,10 @@ export default class ActorUtils {
      * @param dungeon 
      * @param distance 
      */
-    static getNearestTargetActor(actor: Actor, targetTypes: number[], dungeon: Dungeon, distance?: number): Actor {
+    static getNearestTargetActor(selfPosition: cc.Vec3, targetTypes: number[], dungeon: Dungeon, distance?: number): Actor {
+        if(!dungeon){
+            return null;
+        }
         let shortdis = distance ? distance : 999999;
         let targetActor: Actor;
         let targetList: Actor[] = [];
@@ -122,8 +140,8 @@ export default class ActorUtils {
             }
         }
         for (let target of targetList) {
-            if (target.isValid && !target.sc.isDied && target.sc.isShow) {
-                let dis = Logic.getDistanceNoSqrt(actor.node.position, target.getCenterPosition());
+            if (this.isTargetCanTrack(target)) {
+                let dis = Logic.getDistanceNoSqrt(selfPosition, target.getCenterPosition());
                 if (dis < shortdis) {
                     shortdis = dis;
                     targetActor = target;
@@ -136,27 +154,17 @@ export default class ActorUtils {
         return null;
     }
     /**
-     * 获取最近目标节点距离
+     * 获取目标节点距离
      * @param playerNode 
      */
-    static getNearestTargetDistance(actor: Actor, target: Actor): number {
+    static getTargetDistance(actor: Actor, target: Actor): number {
         if (!target) {
             return 999999;
         }
         let dis = Logic.getDistanceNoSqrt(actor.node.position, target.node.position);
         return dis;
     }
-    /**
-         * 获取最近目标节点距离
-         * @param playerNode 
-         */
-    static getNearestTargetDistanceNoSqrt(actor: Actor, target: Actor): number {
-        if (!target) {
-            return 999999*999999;
-        }
-        let dis = Logic.getDistanceNoSqrt(actor.node.position, target.node.position);
-        return dis;
-    }
+
     /**
      * 目标是否存活
      * @param target 目标
@@ -167,5 +175,18 @@ export default class ActorUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 目标是否能追踪，隐身状态下可以被追踪,未展现，跳跃都不可被追踪
+     * @param target 
+     * @returns 
+     */
+    static isTargetCanTrack(target: Actor): boolean {
+        if (target.isValid && !target.sc.isDied
+            && target.sc.isShow  && !target.sc.isJumping) {
+            return true;
+        }
+        return false;
     }
 }

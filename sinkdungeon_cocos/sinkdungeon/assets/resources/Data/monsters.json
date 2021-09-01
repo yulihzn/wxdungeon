@@ -712,7 +712,7 @@
         "stageLevel": 0,
         "specialAttack": 10,
         "specialType": "special032",
-        "specialDelay": 0.4,
+        "specialDelay": 0.7,
         "specialAudio": "ZOMBIE_ATTACK",
         "common": {
             "moveSpeed": 300,

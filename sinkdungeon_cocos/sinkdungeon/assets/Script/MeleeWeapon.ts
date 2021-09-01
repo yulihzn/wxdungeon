@@ -23,6 +23,7 @@ import AvatarData from "./Data/AvatarData";
 import { ColliderTag } from "./Actor/ColliderTag";
 import ActorUtils from "./Utils/ActorUtils";
 import InteractBuilding from "./Building/InteractBuilding";
+import Utils from "./Utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -118,7 +119,7 @@ export default class MeleeWeapon extends cc.Component {
     get GlovesSprite() {
         return this.glovesSprite;
     }
-    get ComboType(){
+    get ComboType() {
         return this.comboType;
     }
 
@@ -140,7 +141,7 @@ export default class MeleeWeapon extends cc.Component {
     }
 
     set Hv(hv: cc.Vec3) {
-        let pos = this.hasNearEnemy();
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = pos;
         } else {
@@ -196,7 +197,7 @@ export default class MeleeWeapon extends cc.Component {
     attack(data: PlayerData, fistCombo: number): boolean {
         this.playerData = data.clone();
         let isMiss = Logic.getRandomNum(0, 100) < data.StatusTotalData.missRate;
-        if (this.isAttacking||!this.anim) {
+        if (this.isAttacking || !this.anim) {
             if (this.isComboing) {
                 this.isAttackPressed = true;
                 this.comboMiss = isMiss;
@@ -215,7 +216,7 @@ export default class MeleeWeapon extends cc.Component {
         return this.attackDo(data, isMiss, fistCombo);
     }
     attackDo(data: PlayerData, isMiss: boolean, fistCombo: number): boolean {
-        
+
         this.hasTargetMap = {};
         this.fistCombo = fistCombo;
         this.isMiss = isMiss;
@@ -226,7 +227,7 @@ export default class MeleeWeapon extends cc.Component {
         this.anim.getAnimationState(animname).speed = this.getAnimSpeed(data.FinalCommon);
         return true;
     }
-    getAnimSpeed(finalCommon:CommonData):number{
+    getAnimSpeed(finalCommon: CommonData): number {
         let speedScaleFix = 1;
         //匕首
         if (this.isStab && !this.isFar) {
@@ -276,7 +277,7 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
 
-    public getAttackAnimName(comboType?:number): string {
+    public getAttackAnimName(comboType?: number): string {
         let name = "MeleeAttackStab";
         if (!this.isFar && this.isStab) {
             name = this.isFist ? "MeleeAttackFist" : "MeleeAttackStab";
@@ -289,14 +290,14 @@ export default class MeleeWeapon extends cc.Component {
         }
         return name + this.getComboSuffix(comboType);
     }
-    private getComboSuffix(comboType?:number): string {
+    private getComboSuffix(comboType?: number): string {
         if (this.isFist) {
             if (this.isSecond) {
                 return '2';
             }
             return '1';
         }
-        comboType = comboType?comboType:this.comboType;
+        comboType = comboType ? comboType : this.comboType;
         if (comboType == MeleeWeapon.COMBO1) {
             return '1';
         } else if (comboType == MeleeWeapon.COMBO2) {
@@ -367,10 +368,10 @@ export default class MeleeWeapon extends cc.Component {
     //Anim
     AudioTime() {
         let audioName = AudioPlayer.MELEE;
-        let swordNames = [AudioPlayer.SWORD_ATTACK,AudioPlayer.SWORD_ATTACK1,AudioPlayer.SWORD_ATTACK2];
-        let swordName = swordNames[Logic.getRandomNum(0,2)];
-        let fistNames = [AudioPlayer.FIST,AudioPlayer.FIST1,AudioPlayer.FIST2];
-        let fistName = fistNames[Logic.getRandomNum(0,2)];
+        let swordNames = [AudioPlayer.SWORD_ATTACK, AudioPlayer.SWORD_ATTACK1, AudioPlayer.SWORD_ATTACK2];
+        let swordName = swordNames[Logic.getRandomNum(0, 2)];
+        let fistNames = [AudioPlayer.FIST, AudioPlayer.FIST1, AudioPlayer.FIST2];
+        let fistName = fistNames[Logic.getRandomNum(0, 2)];
         //匕首
         if (this.isStab && !this.isFar) {
             audioName = fistName;
@@ -461,64 +462,27 @@ export default class MeleeWeapon extends cc.Component {
     }
     updateLogic(dt: number) {
         this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5);
-        let pos = this.hasNearEnemy();
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
         if (!pos.equals(cc.Vec3.ZERO)) {
-            if (!this.isAttacking) {
-                this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
-            }
             this.hv = pos;
-        } else if ((this.hv.x != 0 || this.hv.y != 0) && !this.isAttacking) {
-            let olderTarget = cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y);
-            this.rotateColliderManager(olderTarget);
+        }
+        if (!this.isAttacking) {
+            this.rotateCollider(cc.v2(pos.x, pos.y));
         }
 
     }
-    private hasNearEnemy() {
-        let olddis = 1000;
-        let pos = cc.v3(0, 0);
-        if (this.dungeon) {
-            let enemy = ActorUtils.getNearestEnemyActor(this.player, false, this.dungeon);
-            if (enemy) {
-                let dis = Logic.getDistanceNoSqrt(this.player.node.position, enemy.node.position);
-                if (dis < 400 && dis < olddis && !enemy.sc.isDied) {
-                    olddis = dis;
-                    let p = this.node.position.clone();
-                    p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                    pos = enemy.getCenterPosition().sub(this.player.node.position.add(p));
-                }
-            }
-            if (olddis != 1000) {
-                pos = pos.normalizeSelf();
-            }
-        }
-        return pos;
-    }
 
-    private rotateColliderManager(target: cc.Vec3) {
-        // 两者取差得到方向向量
-        let direction = target.sub(this.node.position);
-        // 方向向量转换为角度值
-        let Rad2Deg = 360 / (Math.PI * 2);
-        let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
-        let offsetAngle = 90;
+    private rotateCollider(direction: cc.Vec2) {
+        if(direction.equals(cc.Vec2.ZERO)){
+            return;
+        }
+        //设置缩放方向
         let sx = Math.abs(this.node.scaleX);
         this.node.scaleX = this.player.node.scaleX > 0 ? sx : -sx;
         let sy = Math.abs(this.node.scaleY);
         this.node.scaleY = this.node.scaleX < 0 ? -sy : sy;
-        angle += offsetAngle;
-        if (angle >= 360) {
-            angle -= 360;
-        }
-        if (angle <= -360) {
-            angle += 360;
-        }
-        // 将当前物体的角度设置为对应角度
-        let lastAngle = this.currentAngle;
-        this.currentAngle = this.node.scaleX < 0 ? -angle : angle;
-        if (lastAngle >= 0 && this.currentAngle < 0 || lastAngle < 0 && this.currentAngle >= 0) {
-            this.node.angle = this.currentAngle;
-        }
-
+        //设置旋转角度
+        this.currentAngle = Utils.getRotateAngle(direction, this.node.scaleX < 0);
     }
 
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
@@ -528,7 +492,7 @@ export default class MeleeWeapon extends cc.Component {
                 return false;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
-                return this.attacking(other,this.anim,false);
+                return this.attacking(other, this.anim, false);
             }
         }
     }
@@ -559,7 +523,7 @@ export default class MeleeWeapon extends cc.Component {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
         }, 0.05);
     }
-    public attacking(attackTarget: cc.Collider,anim:cc.Animation,isShadow:boolean): boolean {
+    public attacking(attackTarget: cc.Collider, anim: cc.Animation, isShadow: boolean): boolean {
         if (!attackTarget || !this.isAttacking) {
             return false;
         }
@@ -637,7 +601,7 @@ export default class MeleeWeapon extends cc.Component {
         //停顿
         if (damageSuccess || attackSuccess) {
             anim.pause();
-            if(!isShadow){
+            if (!isShadow) {
                 EventHelper.emit(EventHelper.CAMERA_SHAKE, { isHeavyShaking: this.comboType == MeleeWeapon.COMBO3 });
             }
             this.scheduleOnce(() => { anim.resume() }, 0.1);

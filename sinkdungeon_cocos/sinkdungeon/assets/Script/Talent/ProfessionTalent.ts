@@ -285,7 +285,7 @@ export default class ProfessionTalent extends Talent {
         }, 0.8)
     }
     private canSteal() {
-        let actor = ActorUtils.getNearestEnemyActor(this.player, false, this.player.weaponRight.meleeWeapon.dungeon);
+        let actor = ActorUtils.getNearestEnemyActor(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon);
         if (!actor) {
             return false;
         }
@@ -302,7 +302,7 @@ export default class ProfessionTalent extends Talent {
     private steal(shadowPlayer: ShadowPlayer) {
         AudioPlayer.play(AudioPlayer.FIREBALL);
 
-        let node = ActorUtils.getNearestEnemyActor(this.player, false, this.player.weaponRight.meleeWeapon.dungeon);
+        let node = ActorUtils.getNearestEnemyActor(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon);
         if (!node) {
             return;
         }
@@ -389,7 +389,7 @@ export default class ProfessionTalent extends Talent {
         return false;
     }
     private addLighteningFall(isArea: boolean, damagePoint: number) {
-        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: ActorUtils.getNearestEnemyPosition(this.player, false, this.player.weaponRight.meleeWeapon.dungeon, true), showArea: isArea, damage: damagePoint })
+        EventHelper.emit(EventHelper.DUNGEON_ADD_LIGHTENINGFALL, { pos: ActorUtils.getNearestEnemyPosition(this.player.node.position, false, this.player.weaponRight.meleeWeapon.dungeon, true), showArea: isArea, damage: damagePoint })
     }
     private addBroom(shooterEx: Shooter) {
         AudioPlayer.play(AudioPlayer.MELEE_PARRY);

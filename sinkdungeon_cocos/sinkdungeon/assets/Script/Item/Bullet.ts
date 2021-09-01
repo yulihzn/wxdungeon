@@ -24,6 +24,7 @@ import Shooter from "../Shooter";
 import InteractBuilding from "../Building/InteractBuilding";
 import EnergyShield from "../Building/EnergyShield";
 import MeleeShadowWeapon from "../MeleeShadowWeapon";
+import Utils from "../Utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -143,7 +144,7 @@ export default class Bullet extends cc.Component {
         if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay && !this.isHit) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec3.ZERO)) {
-                this.rotateColliderManager(cc.v3(this.node.position.x + pos.x, this.node.position.y + pos.y));
+                this.rotateCollider(cc.v2(pos.x,pos.y));
                 this.hv = pos;
                 this.currentLinearVelocity = cc.v2(this.data.speed * this.hv.x, this.data.speed * this.hv.y);
             }
@@ -261,7 +262,7 @@ export default class Bullet extends cc.Component {
     //animation
     showBullet(hv: cc.Vec3) {
         this.hv = hv;
-        this.rotateColliderManager(cc.v3(this.node.position.x + this.hv.x, this.node.position.y + this.hv.y));
+        this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
         this.fire(this.hv.clone());
     }
     //animation
@@ -504,42 +505,18 @@ export default class Bullet extends cc.Component {
         if (this.data.isTracking != 1 || this.data.isLaser == 1 || !this.dungeon) {
             return cc.Vec3.ZERO;
         }
-        let olddis = 1000;
-        let pos = cc.v3(0, 0);
-        let enemy = ActorUtils.getNearestEnemyActor(this.dungeon.player,!this.isFromPlayer, this.dungeon);
-        if (enemy) {
-            let dis = Logic.getDistanceNoSqrt(this.node.position, enemy.node.position);
-            if (dis < 500 && dis < olddis && !enemy.sc.isDied && !enemy.sc.isDisguising && !enemy.sc.isFalling && !enemy.sc.isJumping) {
-                olddis = dis;
-                let p = this.node.position.clone();
-                p.x = this.node.scaleX > 0 ? p.x : -p.x;
-                pos = enemy.node.position.sub(p);
-            }
-        }
-
-        if (olddis != 1000) {
-            pos = pos.normalizeSelf();
-        }
-        return pos;
+        return ActorUtils.getDirectionFromNearestEnemy(this.node.position,!this.isFromPlayer,this.dungeon,false,500);
     }
 
-    rotateColliderManager(target: cc.Vec3) {
+    rotateCollider(direction: cc.Vec2) {
+        if(direction.equals(cc.Vec2.ZERO)){
+            return;
+        }
         if (this.data.fixedRotation == 1) {
             return;
         }
-
-        // 鼠标坐标默认是屏幕坐标，首先要转换到世界坐标
-        // 物体坐标默认就是世界坐标
-        // 两者取差得到方向向量
-        let direction = target.sub(this.node.position);
-        // 方向向量转换为角度值
-        let Rad2Deg = 360 / (Math.PI * 2);
-        let angle: number = 360 - Math.atan2(direction.x, direction.y) * Rad2Deg;
-        let offsetAngle = 90;
-        angle += offsetAngle;
-        // 将当前物体的角度设置为对应角度
-        this.node.angle = this.node.scaleX < 0 ? -angle : angle;
-
+        //设置旋转角度
+        this.node.angle = Utils.getRotateAngle(direction,this.node.scaleX<0);
     }
 
     addTargetAllStatus(target: Actor, from: FromData) {
