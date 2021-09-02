@@ -285,8 +285,8 @@ export default class NonPlayer extends Actor {
         } else {
             this.bodySprite.spriteFrame = null;
         }
-        this.bodySprite.node.width = spriteFrame.getRect().width;
-        this.bodySprite.node.height = spriteFrame.getRect().height;
+        this.bodySprite.node.width = spriteFrame.getOriginalSize().width;
+        this.bodySprite.node.height = spriteFrame.getOriginalSize().height;
         let y = 48, w = 80, h = 80;
         switch (this.data.boxType) {
             case 0: y = 32; w = 80; h = 64; break;
