@@ -41,7 +41,7 @@ export default class Door extends Building {
         this.roof = this.node.getChildByName('roof').getComponent(cc.Sprite);
         this.leftside = this.node.getChildByName('leftside').getComponent(cc.Sprite);
         this.rightside = this.node.getChildByName('rightside').getComponent(cc.Sprite);
-        this.lockInfo = this.node.getChildByName('info');
+        this.lockInfo = this.node.getChildByName('roof').getChildByName('info');
         this.arrow = this.node.getChildByName('doorarrow');
         this.arrow.opacity = 0;
         this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
@@ -79,12 +79,14 @@ export default class Door extends Building {
         this.roof.node.zIndex = IndexZ.OVERHEAD;
         switch (this.dir) {
             case 0: break;
-            case 1: this.roof.node.angle = 180; break;
+            case 1: this.roof.node.angle = 180; this.lockInfo.angle = -180; break;
             case 2: break;
             case 3: this.sprite.node.scaleX = -1; break;
         }
-        if (this.lockInfo && this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir)) {
+        if (this.lockInfo && this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir) && !this.isDecorate) {
             this.lockInfo.opacity = 255;
+        } else if (this.dir == 1) {
+            this.roof.node.opacity = 128;
         }
         let collider = this.boxCollider;
         collider.offset = cc.v2(0, 7);
@@ -107,10 +109,8 @@ export default class Door extends Building {
         }
     }
     openGate(immediately?: boolean) {
-        if (!this.lockInfo) {
-            this.lockInfo = this.node.getChildByName('info');
-        }
-        if (this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir)) {
+
+        if (this.lockInfo && this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir) && !this.isDecorate) {
             this.lockInfo.opacity = 255;
             return;
         }
@@ -120,7 +120,9 @@ export default class Door extends Building {
         if (!this.sprite) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
-        this.lockInfo.opacity = 0;
+        if (this.lockInfo) {
+            this.lockInfo.opacity = 0;
+        }
         this.isOpen = true;
         let index = 0;
         this.schedule(() => {
@@ -148,17 +150,20 @@ export default class Door extends Building {
     }
     onCollisionEnter(other: cc.Collider, self: cc.Collider) {
         if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
-            this.roof.node.opacity = 180;
+            this.roof.node.opacity = 128;
         }
     }
     onCollisionStay(other: cc.Collider, self: cc.Collider) {
         if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
-            this.roof.node.opacity = 180;
+            this.roof.node.opacity = 128;
         }
     }
     onCollisionExit(other: cc.Collider, self: cc.Collider) {
         if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
             this.roof.node.opacity = 255;
+            if (this.lockInfo && this.lockInfo.opacity < 1||this.isDecorate) {
+                this.roof.node.opacity = 180;
+            }
         }
     }
     checkLock() {

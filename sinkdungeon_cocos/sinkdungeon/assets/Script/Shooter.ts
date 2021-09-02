@@ -116,7 +116,7 @@ export default class Shooter extends cc.Component {
         return this.hv;
     }
     setHv(hv: cc.Vec3) {
-        this.hv = hv
+        this.hv = hv;
         let pos = this.hasNearEnemy();
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = pos;
@@ -422,17 +422,16 @@ export default class Shooter extends cc.Component {
         this.graphics.fill();
     }
 
-    update(dt: number) {
-        if (Logic.isGamePause) {
-            return;
-        }
-        let pos = this.hasNearEnemy();
-        if (!pos.equals(cc.Vec3.ZERO)) {
-            this.hv = pos;
-        }
-        this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
-
-    }
+    // update(dt: number) {
+    //     if (Logic.isGamePause) {
+    //         return;
+    //     }
+    //     let pos = this.hasNearEnemy();
+    //     if (!pos.equals(cc.Vec3.ZERO)) {
+    //         this.hv = pos;
+    //         this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
+    //     }
+    // }
     private getParentNode(): cc.Node {
         if (this.parentNode) {
             return this.parentNode;
@@ -444,6 +443,7 @@ export default class Shooter extends cc.Component {
         if (!this.isAutoAim) {
             return cc.Vec3.ZERO;
         }
+        //ai手动寻找目标不检测转向，这里只针对玩家
         if (!this.isAI && this.dungeon) {
             return ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, this.isAI, this.dungeon, false, 600);
         }

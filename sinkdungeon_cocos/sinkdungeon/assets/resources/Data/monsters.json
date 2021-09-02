@@ -765,7 +765,7 @@
         "stageLevel": 0,
         "isLineAim": 0,
         "common": {
-            "moveSpeed": 400,
+            "moveSpeed": 600,
             "maxHealth": 30,
             "damageMin": 0
         },
@@ -775,7 +775,7 @@
         "remote": 0,
         "melee": 0,
         "flee": 1,
-        "sizeType": 1,
+        "sizeType": 0.5,
         "boxType": 2,
         "childCount": 3,
         "childResName": "monster035",
@@ -790,7 +790,7 @@
         "isLineAim": 0,
         "specialAttack": 20,
         "common": {
-            "moveSpeed": 300,
+            "moveSpeed": 400,
             "maxHealth": 30,
             "dodge": 100,
             "damageMin": 2

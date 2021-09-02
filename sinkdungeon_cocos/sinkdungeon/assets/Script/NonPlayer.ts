@@ -437,8 +437,10 @@ export default class NonPlayer extends Actor {
                     this.dangerBox.show(ActorAttackBox.ATTACK_STAB, false, false, pos);
                 }
                 this.scheduleOnce(() => {
-                    this.specialManager.dungeon = this.dungeon;
-                    this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.IsVariation);
+                    if(!this.sc.isDied){
+                        this.specialManager.dungeon = this.dungeon;
+                        this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.IsVariation);
+                    }
                 }, this.data.specialDelay);
             }
         });

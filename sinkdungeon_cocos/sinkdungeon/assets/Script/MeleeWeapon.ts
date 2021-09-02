@@ -467,7 +467,7 @@ export default class MeleeWeapon extends cc.Component {
             this.hv = pos;
         }
         if (!this.isAttacking) {
-            this.rotateCollider(cc.v2(pos.x, pos.y));
+            this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
         }
 
     }
