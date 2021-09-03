@@ -87,7 +87,7 @@ export default class Loading extends cc.Component {
 
             }
             Logic.elevatorScene = 0;
-            this.scheduleOnce(() => { this.isElevatorAnimFinished = true; }, 2)
+            this.scheduleOnce(() => { this.isElevatorAnimFinished = true; }, 1.5)
         }
     }
     showTransport() {

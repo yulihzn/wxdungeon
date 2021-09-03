@@ -415,7 +415,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "67d11TcjNMIKuBoRLUUgEN"
   },
@@ -509,7 +509,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "86C+DP6lZKC4RvGGcp2Qn1"
   },
@@ -599,7 +599,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "5eliz/+nRKiqyIkudUE1iJ"
   },
@@ -756,7 +756,7 @@
       "__uuid__": "70315432-c3dc-40d8-9f3c-af017b19a907"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -765,7 +765,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "97UDMIu7BDeKCWEgcRwF8N"
   },
@@ -850,7 +850,7 @@
       "__uuid__": "91f4fd4b-82c2-48f8-9f30-8cb56dab7602"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -859,7 +859,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "f0xZKSF8tNTbQRuJ86D59q"
   },
@@ -944,7 +944,7 @@
       "__uuid__": "35588881-eefd-4bdf-ac00-e0b8045a331c"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -953,7 +953,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "a9edjT1gpL/Ifs45RNACMl"
   },
@@ -1129,7 +1129,7 @@
       "__uuid__": "fdba74c9-31f7-4038-9a82-92d454afa385"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1138,7 +1138,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "28wtNsSu1Ospk9p8IewZiQ"
   },
@@ -1747,7 +1747,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "804W2CTupAWIazqYLtqNAq"
   },
@@ -2105,7 +2105,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "a7/qgkAPpKM5pCGwqQAGIH"
   },
@@ -2490,7 +2490,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "b7ffAJIgZHUIViVfZC3nBj"
   },
@@ -2877,7 +2877,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "ce0Tq8mnRIc6vghW70aWvY"
   },
@@ -3341,7 +3341,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "5dsteFhMNHBbHH7MvX7mDW"
   },
@@ -3373,7 +3373,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "80fleP3dtPlo/ApgS2oBZl"
   },
@@ -3754,7 +3754,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "b4Ni8x6nVLtJ/pXXIFJq29"
   },
@@ -3786,7 +3786,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "06ekmI8g1AiICp2P5N2s3B"
   },
@@ -4223,7 +4223,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "8cZqMxoRJCHbSlcDpBswVH"
   },
@@ -4255,7 +4255,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "69IKE5AJ9B36WJj+SSSYk2"
   },

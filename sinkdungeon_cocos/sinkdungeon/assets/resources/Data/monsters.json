@@ -767,6 +767,7 @@
         "common": {
             "moveSpeed": 600,
             "maxHealth": 30,
+            "defence": 15,
             "damageMin": 0
         },
         "currentHealth": 30,
@@ -801,6 +802,7 @@
         "remote": 0,
         "melee": 2,
         "flee": 0,
+        "blink": 3,
         "sizeType": 1,
         "boxType": 2,
         "dash": 0

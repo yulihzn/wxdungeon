@@ -222,7 +222,7 @@ export default class Bullet extends cc.Component {
         this.laserNode.scaleY = 1;
         this.laserLightSprite.node.setPosition(-16 * this.node.scaleY, 0);
         cc.tween(this.laserNode).to(0.1,{scale:1}).to(0.1,{scaleY:0}).delay(0.1).call(()=>{
-            this.shooter.destroyBullet(this.node);
+            this.shooter.addDestroyBullet(this.node);
         }).start();
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.REMOTE_LASER } });
     }
@@ -257,7 +257,7 @@ export default class Bullet extends cc.Component {
 
     //animation
     MeleeFinish() {
-        this.shooter.destroyBullet(this.node);
+        this.shooter.addDestroyBullet(this.node);
     }
     //animation
     showBullet(hv: cc.Vec3) {
@@ -267,7 +267,7 @@ export default class Bullet extends cc.Component {
     }
     //animation
     BulletDestory() {
-        this.shooter.destroyBullet(this.node);
+        this.shooter.addDestroyBullet(this.node);
     }
     fire(hv: cc.Vec3) {
         if (!this.rigidBody) {

@@ -155,12 +155,12 @@ export default class Furniture extends Building {
         let spriteFrame = Logic.spriteFrameRes(resName);
         if (spriteFrame) {
             this.sprite.spriteFrame = spriteFrame;
-            this.sprite.node.width = spriteFrame.getRect().width;
-            this.sprite.node.height = spriteFrame.getRect().height;
-            this.boxback.node.width = spriteFrame.getRect().width;
-            this.boxback.node.height = spriteFrame.getRect().height;
-            this.boxcover.node.width = spriteFrame.getRect().width;
-            this.boxcover.node.height = spriteFrame.getRect().height;
+            this.sprite.node.width = spriteFrame.getOriginalSize().width;
+            this.sprite.node.height = spriteFrame.getOriginalSize().height;
+            this.boxback.node.width = spriteFrame.getOriginalSize().width;
+            this.boxback.node.height = spriteFrame.getOriginalSize().height;
+            this.boxcover.node.width = spriteFrame.getOriginalSize().width;
+            this.boxcover.node.height = spriteFrame.getOriginalSize().height;
             this.sprite.node.scale = this.furnitureData.scale;
             this.tips.node.scale = 2;
             this.boxback.node.scale = this.furnitureData.scale;

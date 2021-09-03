@@ -58,8 +58,8 @@ export default class ShadowPlayer extends cc.Component {
         this.sprite.node.scaleY = -this.SCALE;
         this.sprite.spriteFrame = spriteframe;
         this.node.zIndex = IndexZ.getActorZIndex(Dungeon.getIndexInMap(this.node.position));
-        this.sprite.node.width = this.sprite.spriteFrame.getRect().width;
-        this.sprite.node.height = this.sprite.spriteFrame.getRect().height;
+        this.sprite.node.width = this.sprite.spriteFrame.getOriginalSize().width;
+        this.sprite.node.height = this.sprite.spriteFrame.getOriginalSize().height;
         this.node.position = this.player.node.position.clone();
         this.targetPos = this.player.node.position.clone();
         this.playerLastPos = this.player.node.position.clone();

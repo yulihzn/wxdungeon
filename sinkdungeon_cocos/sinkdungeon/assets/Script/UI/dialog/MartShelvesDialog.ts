@@ -65,8 +65,8 @@ export default class MartShelvesDialog extends BaseDialog {
         this.payDesc.string = `价格：${data.item.price}\n\n说明：${data.item.info}\n${data.item.desc}`
         if(Logic.spriteFrameRes(data.item.resName)){
             this.payIcon.spriteFrame = Logic.spriteFrameRes(data.item.resName);
-            this.payIcon.node.width = this.payIcon.spriteFrame.getRect().width;
-            this.payIcon.node.height = this.payIcon.spriteFrame.getRect().height;
+            this.payIcon.node.width = this.payIcon.spriteFrame.getOriginalSize().width;
+            this.payIcon.node.height = this.payIcon.spriteFrame.getOriginalSize().height;
         }
         this.payNode.active = true;
     }

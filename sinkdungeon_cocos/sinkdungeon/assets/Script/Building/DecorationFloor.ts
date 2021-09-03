@@ -34,8 +34,8 @@ export default class DecorationFloor extends Building {
         }
         let sprite = this.getComponent(cc.Sprite);
         sprite.spriteFrame = Logic.spriteFrameRes(resName);
-        this.node.width = sprite.spriteFrame.getRect().width;
-        this.node.height = sprite.spriteFrame.getRect().height;
+        this.node.width = sprite.spriteFrame.getOriginalSize().width;
+        this.node.height = sprite.spriteFrame.getOriginalSize().height;
         this.node.opacity = opacity?opacity:255;
         this.originPos = this.node.position.clone();
     }

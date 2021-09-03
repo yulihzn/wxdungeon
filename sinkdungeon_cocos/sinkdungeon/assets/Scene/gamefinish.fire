@@ -350,7 +350,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "ackvMtxAhNu5RARLawIO0T"
   },
@@ -546,7 +546,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "2bVwZmMxxAQqXiJQCH4KOK"
   },
@@ -653,7 +653,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "19GGYjkUlJb45k62xdZ94n"
   },
@@ -756,7 +756,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "8c/2+5DFZCS7au08ouzYOG"
   },
@@ -928,7 +928,7 @@
       "__uuid__": "70315432-c3dc-40d8-9f3c-af017b19a907"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -937,7 +937,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "6cRFfgIV1NebJKrVFBXPAl"
   },
@@ -1035,7 +1035,7 @@
       "__uuid__": "91f4fd4b-82c2-48f8-9f30-8cb56dab7602"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1044,7 +1044,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "429e8IcplFPIgJfiWIcTnN"
   },
@@ -1142,7 +1142,7 @@
       "__uuid__": "35588881-eefd-4bdf-ac00-e0b8045a331c"
     },
     "_type": 0,
-    "_sizeMode": 1,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1151,7 +1151,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "cctulOlzVAFZVFwOVYlScB"
   },
@@ -1297,7 +1297,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "42ZPGp1u5DdrVpHlYeN4jV"
   },
@@ -1486,7 +1486,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "66UyF1KP9NhrAbJA3Wwb/2"
   },
@@ -1779,7 +1779,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "91GVO1tUVAB5LtSaYFQoH8"
   },
@@ -2152,7 +2152,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "daYDKtAFBNxb5rhPPqSUOA"
   },
@@ -2283,7 +2283,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_atlas": null,
     "_id": "7dUITHsfdJ+rIDZ7PpMOrM"
   },

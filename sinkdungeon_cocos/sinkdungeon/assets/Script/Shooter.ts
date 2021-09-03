@@ -14,6 +14,7 @@ import { ColliderTag } from "./Actor/ColliderTag";
 import InventoryManager from "./Manager/InventoryManager";
 import ActorUtils from "./Utils/ActorUtils";
 import Utils from "./Utils/Utils";
+import NodeKey from "./Utils/NodeKey";
 
 
 // Learn TypeScript:
@@ -59,6 +60,8 @@ export default class Shooter extends cc.Component {
     isBuilding = false;
     anim: cc.Animation;
     private aoePools: { [key: string]: cc.NodePool } = {};
+    private delayDestoryAoeList: NodeKey[] = [];
+    private delayDestoryBulletList: cc.Node[] = [];
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -88,8 +91,8 @@ export default class Shooter extends cc.Component {
         let spriteFrame = this.getSpriteFrameByName(resName, subfix);
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
         if (!this.isBuilding) {
-            this.sprite.width = spriteFrame.getRect().width * 1.5;
-            this.sprite.height = spriteFrame.getRect().height * 1.5;
+            this.sprite.width = spriteFrame.getOriginalSize().width * 1.5;
+            this.sprite.height = spriteFrame.getOriginalSize().height * 1.5;
             this.sprite.anchorX = 0.2;
             if (this.data.far == 1) {
                 this.sprite.width = this.sprite.width * 2;
@@ -140,13 +143,16 @@ export default class Shooter extends cc.Component {
         return temp;
     }
 
-    destroyAoePrefab(prefab: cc.Prefab, node: cc.Node) {
-        if (!this.aoePools[prefab.name]) {
-            this.aoePools[prefab.name] = new cc.NodePool(AreaOfEffect);
+    destroyAoePrefab(nodeKey:NodeKey) {
+        if(!nodeKey){
+            return;
         }
-        node.active = false;
-        if (this.aoePools[prefab.name]) {
-            this.aoePools[prefab.name].put(node);
+        if (!this.aoePools[nodeKey.key]) {
+            this.aoePools[nodeKey.key] = new cc.NodePool(AreaOfEffect);
+        }
+        nodeKey.node.active = false;
+        if (this.aoePools[nodeKey.key]) {
+            this.aoePools[nodeKey.key].put(nodeKey.node);
         }
     }
     public fireAoe(prefab: cc.Prefab, aoeData: AreaOfEffectData, defaultPos?: cc.Vec3, angleOffset?: number, killCallBack?: Function, usePool?: boolean): AreaOfEffect {
@@ -162,7 +168,8 @@ export default class Shooter extends cc.Component {
             pos = this.dungeon.node.convertToNodeSpaceAR(pos);
             aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData, killCallBack, usePool, (node: cc.Node) => {
                 if (usePool) {
-                    this.destroyAoePrefab(prefab, node);
+                    node.active = false;
+                    this.delayDestoryAoeList.push(new NodeKey(prefab.name, node));
                 }
             });
         }
@@ -308,13 +315,17 @@ export default class Shooter extends cc.Component {
         bullet.aoePrefab = aoePrefab;
         bullet.showBullet(cc.v3(cc.v2(hv).rotateSelf(angleOffset * Math.PI / 180)));
     }
-    public destroyBullet(bulletNode: cc.Node) {
+    public addDestroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
         bulletNode.active = false;
-        if (this.bulletPool) {
+        this.delayDestoryBulletList.push(bulletNode);
+    }
+    private destroyBullet(bulletNode: cc.Node) {
+        if (this.bulletPool&&bulletNode) {
             this.bulletPool.put(bulletNode);
         }
     }
+    
 
     start() {
     }
@@ -421,17 +432,32 @@ export default class Shooter extends cc.Component {
         this.graphics.close();
         this.graphics.fill();
     }
-
-    // update(dt: number) {
-    //     if (Logic.isGamePause) {
-    //         return;
-    //     }
-    //     let pos = this.hasNearEnemy();
-    //     if (!pos.equals(cc.Vec3.ZERO)) {
-    //         this.hv = pos;
-    //         this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
-    //     }
-    // }
+    checkAoeTimeDelay = 0;
+    isCheckAoeTimeDelay(dt: number): boolean {
+        this.checkAoeTimeDelay += dt;
+        if (this.checkAoeTimeDelay > 0.1) {
+            this.checkAoeTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.05) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    update(dt: number) {
+        if(this.isCheckAoeTimeDelay(dt)){
+            this.destroyAoePrefab(this.delayDestoryAoeList.pop());
+        }
+        if(this.isCheckTimeDelay(dt)){
+            this.destroyBullet(this.delayDestoryBulletList.pop());
+        }
+    }
     private getParentNode(): cc.Node {
         if (this.parentNode) {
             return this.parentNode;

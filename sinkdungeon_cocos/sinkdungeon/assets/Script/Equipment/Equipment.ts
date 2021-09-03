@@ -50,8 +50,8 @@ export default class Equipment extends cc.Component {
             spriteFrame = Logic.spriteFrameRes(this.data.img + 'anim0');
         }
         this.sprite.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-        this.sprite.width = spriteFrame.getRect().width;
-        this.sprite.height = spriteFrame.getRect().height;
+        this.sprite.width = spriteFrame.getOriginalSize().width;
+        this.sprite.height = spriteFrame.getOriginalSize().height;
         let color = cc.color(255, 255, 255).fromHEX(this.data.color);
         this.sprite.color = color;
         this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);

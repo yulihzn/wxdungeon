@@ -75,13 +75,13 @@ export default class CellphoneItem extends cc.Component {
         }
         if (spriteFrame) {
             this.sprite.spriteFrame = spriteFrame;
-            let w = spriteFrame.getRect().width;
-            let h = spriteFrame.getRect().height;
+            let w = spriteFrame.getOriginalSize().width;
+            let h = spriteFrame.getOriginalSize().height;
             this.sprite.node.width = w * 4;
             this.sprite.node.height = h * 4;
             if (this.sprite.node.height > 128) {
                 this.sprite.node.height = 128;
-                this.sprite.node.width = 128 / spriteFrame.getRect().height * spriteFrame.getRect().width;
+                this.sprite.node.width = 128 / spriteFrame.getOriginalSize().height * spriteFrame.getOriginalSize().width;
             }
         }
     }

@@ -96,8 +96,8 @@ export default class HitBuilding extends Building {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         }
         let spriteFrame = Logic.spriteFrameRes(resName);
-        let width = (spriteFrame.getRect().width - this.colliderExtrude) * this.sprite.node.scale;
-        let height = (spriteFrame.getRect().height - this.colliderExtrude) * this.sprite.node.scale;
+        let width = (spriteFrame.getOriginalSize().width - this.colliderExtrude) * this.sprite.node.scale;
+        let height = (spriteFrame.getOriginalSize().height - this.colliderExtrude) * this.sprite.node.scale;
         if (suffix && Logic.spriteFrameRes(resName + suffix)) {
             spriteFrame = Logic.spriteFrameRes(resName + suffix);
         }
@@ -105,8 +105,8 @@ export default class HitBuilding extends Building {
             return;
         }
         this.sprite.node.opacity = 255;
-        this.sprite.node.width = spriteFrame.getRect().width;
-        this.sprite.node.height = spriteFrame.getRect().height;
+        this.sprite.node.width = spriteFrame.getOriginalSize().width;
+        this.sprite.node.height = spriteFrame.getOriginalSize().height;
         if (this.isCustom) {
             return;
         }

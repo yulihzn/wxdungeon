@@ -66,8 +66,8 @@ export default class Item extends cc.Component {
         if (spriteFrame) {
             this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
             this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = spriteFrame;
-            this.sprite.node.width = spriteFrame.getRect().width;
-            this.sprite.node.height = spriteFrame.getRect().height;
+            this.sprite.node.width = spriteFrame.getOriginalSize().width;
+            this.sprite.node.height = spriteFrame.getOriginalSize().height;
             this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
             this.mat.setProperty('textureSizeWidth',spriteFrame.getTexture().width*this.sprite.node.scaleX);
             this.mat.setProperty('textureSizeHeight',spriteFrame.getTexture().height*this.sprite.node.scaleY);

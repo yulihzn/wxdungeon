@@ -145,8 +145,8 @@ export default class SpecialManager extends cc.Component {
         let collider = aoe.getComponent(cc.BoxCollider);
         if (spriteFrameNames.length > 0) {
             let spriteframe = Logic.spriteFrameRes(spriteFrameNames[0]);
-            sprite.node.width = spriteframe.getRect().width;
-            sprite.node.height = spriteframe.getRect().height;
+            sprite.node.width = spriteframe.getOriginalSize().width;
+            sprite.node.height = spriteframe.getOriginalSize().height;
             sprite.node.scale = 4;
             sprite.node.scaleX = isFaceRight ? 4 : -4;
             collider.size.width = sprite.node.width * 3;

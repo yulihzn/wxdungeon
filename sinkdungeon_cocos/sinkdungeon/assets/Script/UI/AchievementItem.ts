@@ -83,13 +83,13 @@ export default class AchievementItem extends cc.Component {
         this.sprite.spriteFrame = null;
         if (this.spriteFrame) {
             this.sprite.spriteFrame = this.spriteFrame;
-            let w = this.spriteFrame.getRect().width;
-            let h = this.spriteFrame.getRect().height;
+            let w = this.spriteFrame.getOriginalSize().width;
+            let h = this.spriteFrame.getOriginalSize().height;
             this.sprite.node.width = w * 4;
             this.sprite.node.height = h * 4;
             if (this.sprite.node.height > 96) {
                 this.sprite.node.height = 96;
-                this.sprite.node.width = 96 / this.spriteFrame.getRect().height * this.spriteFrame.getRect().width;
+                this.sprite.node.width = 96 / this.spriteFrame.getOriginalSize().height * this.spriteFrame.getOriginalSize().width;
             }
             let scale = 4;
             if (h > 96) {

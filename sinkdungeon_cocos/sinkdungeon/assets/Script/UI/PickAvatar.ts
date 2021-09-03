@@ -287,8 +287,8 @@ export default class PickAvatar extends cc.Component {
     }
     private resetSpriteSize(sprite: cc.Sprite) {
         if (sprite.spriteFrame) {
-            sprite.node.width = sprite.spriteFrame.getRect().width;
-            sprite.node.height = sprite.spriteFrame.getRect().height;
+            sprite.node.width = sprite.spriteFrame.getOriginalSize().width;
+            sprite.node.height = sprite.spriteFrame.getOriginalSize().height;
         }
     }
     private changeRes(sprite: cc.Sprite, resName: string, subfix?: string) {

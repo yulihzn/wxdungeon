@@ -50,7 +50,7 @@ export default class GameOver extends cc.Component {
         if (this.infoIcon && Logic.dieFrom.res.length > 0) {
             this.infoIcon.spriteFrame = Logic.spriteFrameRes(Logic.dieFrom.res);
             this.infoIcon.node.width = 64;
-            this.infoIcon.node.height = 64/this.infoIcon.spriteFrame.getRect().width*this.infoIcon.spriteFrame.getRect().height;
+            this.infoIcon.node.height = 64/this.infoIcon.spriteFrame.getOriginalSize().width*this.infoIcon.spriteFrame.getOriginalSize().height;
         }
         if (this.info) {
             this.info.string = dieinfo;

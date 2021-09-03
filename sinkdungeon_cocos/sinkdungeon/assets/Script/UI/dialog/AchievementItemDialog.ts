@@ -43,7 +43,7 @@ export default class AchievementItemDialog extends BaseDialog {
         if(spriteFrame){
             this.icon.spriteFrame = spriteFrame;
             this.icon.node.width = 160;
-            this.icon.node.height = 160/spriteFrame.getRect().width*spriteFrame.getRect().height;
+            this.icon.node.height = 160/spriteFrame.getOriginalSize().width*spriteFrame.getOriginalSize().height;
         }
         
         if(equipData){
