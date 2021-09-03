@@ -17,6 +17,7 @@ class ColliderGizmo extends Editor.Gizmo {
         let startOffset;        // 按下鼠标时记录的圆偏移量
         let startRadius;        // 按下鼠标时记录的圆半径
         let pressx, pressy;     // 按下鼠标时记录的鼠标位置
+        let isXmode;            // 按下鼠标时记录缩放按x还是y
 
         return {
             /**
@@ -31,6 +32,7 @@ class ColliderGizmo extends Editor.Gizmo {
                 pressx = x;
                 pressy = y;
                 let p = this.node.convertToNodeSpaceAR(this.pixelToWorld(cc.v2(x,y)));
+                isXmode = p.x>p.y;
                 cc.log(`press x=${x.toFixed(2)},y=${y.toFixed(2)},px=${p.x.toFixed(2)},py=${p.y.toFixed(2)}`);
             },
 
@@ -68,7 +70,7 @@ class ColliderGizmo extends Editor.Gizmo {
                     cc.log(`cx=${position.x},cy=${position.y}`);
                     // 计算 radius
                     let s = position.sub(startOffset);
-                    let r = s.x>s.y?s.y:s.x;
+                    let r = isXmode?s.x:s.y;
                     // target.radius = position.sub(startOffset).mag();
                     target.radius = r>0?r:0;
                     cc.log(`radius${target.radius}`);
