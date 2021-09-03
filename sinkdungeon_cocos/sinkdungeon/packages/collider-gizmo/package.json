@@ -1,0 +1,25 @@
+{
+  "name": "collider-gizmo",
+  "version": "0.0.1",
+  "description": "The package template for getting started.",
+  "author": "Cocos Creator",
+  "main": "main.js",
+  "main-menu": {
+    "i18n:MAIN_MENU.package.title/collider-gizmo/open": {
+      "message": "collider-gizmo:open"
+    },
+    "i18n:MAIN_MENU.package.title/collider-gizmo/hello": {
+      "message": "collider-gizmo:say-hello"
+    }
+  },
+  "panel": {
+    "main": "panel/index.js",
+    "type": "dockable",
+    "title": "collider-gizmo",
+    "width": 400,
+    "height": 300
+  },
+  "gizmos": {
+    "CustomCollider": "packages://collider-gizmo/collider-gizmo.js"
+  }
+}
