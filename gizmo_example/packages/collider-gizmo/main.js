@@ -68,7 +68,7 @@ class ColliderGizmo extends Editor.Gizmo {
                     cc.log(`cx=${position.x},cy=${position.y}`);
                     // 计算 radius
                     let s = position.sub(startOffset);
-                    let r = s.x>s.y?s.x:s.y;
+                    let r = s.x>s.y?s.y:s.x;
                     // target.radius = position.sub(startOffset).mag();
                     target.radius = r>0?r:0;
                     cc.log(`radius${target.radius}`);
