@@ -300,11 +300,11 @@
       "__id__": 5
     },
     "_enabled": true,
-    "radius": 0,
+    "radius": 103,
     "offset": {
       "__type__": "cc.Vec2",
-      "x": 7,
-      "y": 0
+      "x": 2,
+      "y": 1
     },
     "_id": "3fwX+BhwZNKIFv7dRgMRFr"
   },
