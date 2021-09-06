@@ -3,14 +3,18 @@ let ToolType = {
     Side: 1,
     Center: 2
 };
+let TargetType = {
+    CIRCLE: 0,
+    RECT: 1
+}
 
 
 class ColliderGizmo extends Editor.Gizmo {
-    init () {
+    init() {
         // 初始化一些参数
     }
 
-    onCreateMoveCallbacks () {
+    onCreateMoveCallbacks() {
         // 创建 gizmo 操作回调
 
         // 申明一些局部变量
@@ -30,8 +34,6 @@ class ColliderGizmo extends Editor.Gizmo {
                 startOffset = this.target.offset;
                 pressx = x;
                 pressy = y;
-                // let p = this.node.convertToNodeSpaceAR(this.pixelToWorld(cc.v2(x,y)));
-                // cc.log(`press x=${x.toFixed(2)},y=${y.toFixed(2)},px=${p.x.toFixed(2)},py=${p.y.toFixed(2)}`);
             },
 
             /**
@@ -61,17 +63,18 @@ class ColliderGizmo extends Editor.Gizmo {
                     this.adjustValue(target, 'offset');
                 }
                 else {
-                    // 转换坐标点到节点下
-                    let p = this.pixelToWorld(cc.v2(pressx + dx, pressy + dy));
-                    // cc.log(`px=${p.x},py=${p.y}`);
-                    let position = node.convertToNodeSpaceAR(p);
-                    // cc.log(`cx=${position.x},cy=${position.y}`);
-                    // 计算 radius
-                    let s = position.sub(startOffset);
-                    target.radius = position.sub(startOffset).mag();
-                    // cc.log(`radius${target.radius}`);
-                    // 防止 radius 小数点位数过多
-                    this.adjustValue(target, 'radius');
+                    if (this.target.type == TargetType.CIRCLE) {
+                        // 转换坐标点到节点下
+                        let p = this.pixelToWorld(cc.v2(pressx + dx, pressy + dy));
+                        let position = node.convertToNodeSpaceAR(p);
+                        // 计算 radius
+                        target.radius = position.sub(startOffset).mag();
+                        // 防止 radius 小数点位数过多
+                        this.adjustValue(target, 'radius');
+                    } else {
+
+                    }
+
                 }
             },
 
@@ -84,7 +87,10 @@ class ColliderGizmo extends Editor.Gizmo {
         };
     }
 
-    onCreateRoot () {
+    currentTargetType;
+    dragArea;
+    shap;
+    onCreateRoot() {
         // 创建 svg 根节点的回调，可以在这里创建你的 svg 工具
         // this._root 可以获取到 Editor.Gizmo 创建的 svg 根节点
 
@@ -93,43 +99,83 @@ class ColliderGizmo extends Editor.Gizmo {
         // 创建一个 svg 工具
         // group 函数文档：http://documentup.com/wout/svg.js#groups
         this._tool = this._root.group();
+        this.currentTargetType = this.target.type;
+        this.initDragAreaAndShape();
 
+
+
+        // 为 tool 定义一个绘画函数，方便在 onUpdate 中更新 svg 的绘制。
+        this._tool.plot = (radius, width, height, position) => {
+            this._tool.move(position.x, position.y);
+            this.changeDragAreaAndShape();
+            if (this.target.type == TargetType.CIRCLE) {
+                this.dragArea.radius(radius);
+            } else {
+                this.dragArea.radius(0);
+                this.dragArea.width(width);
+                this.dragArea.height(height);
+
+            }
+            this.shap.radius(radius);
+        };
+    }
+    changeDragAreaAndShape() {
+        if (this.currentTargetType == this.target.type) {
+            return;
+        }
+        this.currentTargetType = this.target.type;
+        this.initDragAreaAndShape();
+    }
+    initDragAreaAndShape() {
         // 创建中心拖拽区域，用于操作 offset 属性
-        let dragArea = this._tool.circle()
-            // 设置 fill 样式
-            .fill( { color: 'rgba(0,128,255,0.2)' } )
-            // 设置点击区域，这里设置的是根据 fill 模式点击
-            .style( 'pointer-events', 'fill' )
-            // 设置鼠标样式
-            .style( 'cursor', 'move' )
-            ;
+        this._tool.clear();
+        if (this.currentTargetType == TargetType.CIRCLE) {
+
+            // 创建中心拖拽区域，用于操作 offset 属性
+            this.dragArea = this._tool.circle()
+                // 设置 fill 样式
+                .fill({ color: 'rgba(0,128,255,0.2)' })
+                // 设置点击区域，这里设置的是根据 fill 模式点击
+                .style('pointer-events', 'fill')
+                // 设置鼠标样式
+                .style('cursor', 'move');
+
+            // 创建边缘拖拽区域，用于操作 radius 属性
+            this.shap = this._tool.circle()
+                // 设置stroke 样式
+                .stroke({ color: '#7fc97a', width: 2 })
+                .fill({ color: 'rgba(0,255,128,0.1)' })
+                // 设置点击区域，这里设置的是根据 stroke 模式点击
+                .style('pointer-events', 'stroke')
+                // 设置鼠标样式
+                .style('cursor', 'pointer')
+        } else {
+            this.dragArea = this._tool.rect()
+                // 设置 fill 样式
+                .fill({ color: 'rgba(0,128,255,0.2)' })
+                // 设置点击区域，这里设置的是根据 fill 模式点击
+                .style('pointer-events', 'fill')
+                // 设置鼠标样式
+                .style('cursor', 'move');
+            this.shap = this._tool.rect()
+                // 设置stroke 样式
+                .stroke({ color: '#7fc97a', width: 2 })
+                .fill({ color: 'rgba(0,255,128,0.1)' })
+                // 设置点击区域，这里设置的是根据 stroke 模式点击
+                .style('pointer-events', 'stroke')
+                // 设置鼠标样式
+                .style('cursor', 'pointer')
+        }
 
         // 注册监听鼠标移动事件的 svg 元素
         // ToolType.Center 是自定义的参数，会在移动回调中按照参数的形式传递到移动回调中，方便区别当前回调是哪一个 svg 元素产生的回调。
         // {cursor: 'move'} 指定移动时的鼠标类型
-        this.registerMoveSvg( dragArea, ToolType.Center, {cursor: 'move'} );
+        this.registerMoveSvg(this.dragArea, ToolType.Center, { cursor: 'move' });
 
-        // 创建边缘拖拽区域，用于操作 radius 属性
-        let circle = this._tool.circle()
-            // 设置stroke 样式
-            .stroke( { color: '#7fc97a', width: 2 } )
-            .fill( { color: 'rgba(0,255,128,0.1)' } )
-            // 设置点击区域，这里设置的是根据 stroke 模式点击
-            .style( 'pointer-events', 'stroke' )
-            // 设置鼠标样式
-            .style( 'cursor', 'pointer' )
-
-        this.registerMoveSvg( circle, ToolType.Side, {cursor: 'pointer'} );
-
-        // 为 tool 定义一个绘画函数，方便在 onUpdate 中更新 svg 的绘制。
-        this._tool.plot = (radius, position) => {
-            this._tool.move(position.x, position.y);
-            dragArea.radius(radius);
-            circle.radius(radius);
-        };
+        this.registerMoveSvg(this.shap, ToolType.Side, { cursor: 'pointer' });
     }
 
-    onUpdate () {
+    onUpdate() {
         // 更新 svg 工具
 
         // 获取 gizmo 依附的组件
@@ -146,7 +192,7 @@ class ColliderGizmo extends Editor.Gizmo {
         position = this.worldToPixel(position);
 
         // 对齐坐标，防止 svg 因为精度问题产生抖动
-        position = Editor.GizmosUtils.snapPixelWihVec2( position );
+        position = Editor.GizmosUtils.snapPixelWihVec2(position);
 
         // 获取世界坐标下圆半径
         let p1 = node.convertToWorldSpaceAR(cc.v2(target.radius, 0));
@@ -157,7 +203,7 @@ class ColliderGizmo extends Editor.Gizmo {
         radius = Editor.GizmosUtils.snapPixel(radius);
 
         // 移动 svg 工具到坐标
-        this._tool.plot(radius*this._view.scale, position);
+        this._tool.plot(radius * this._view.scale, target.size.width, target.size.height, position);
     }
 }
 
