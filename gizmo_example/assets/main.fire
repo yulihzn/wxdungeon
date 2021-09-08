@@ -306,14 +306,14 @@
     "tag": 0,
     "offset": {
       "__type__": "cc.Vec2",
-      "x": -3,
-      "y": 8
+      "x": -7,
+      "y": 6
     },
-    "type": 1,
-    "radius": 73,
+    "type": 0,
+    "radius": 90,
     "size": {
       "__type__": "cc.Size",
-      "width": 100,
+      "width": 200,
       "height": 100
     },
     "_id": "3fwX+BhwZNKIFv7dRgMRFr"

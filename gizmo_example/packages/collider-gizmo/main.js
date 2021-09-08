@@ -72,7 +72,7 @@ class ColliderGizmo extends Editor.Gizmo {
                         // 防止 radius 小数点位数过多
                         this.adjustValue(target, 'radius');
                     } else {
-
+                        cc.log('move side')
                     }
 
                 }
@@ -102,21 +102,22 @@ class ColliderGizmo extends Editor.Gizmo {
         this.currentTargetType = this.target.type;
         this.initDragAreaAndShape();
 
-
-
         // 为 tool 定义一个绘画函数，方便在 onUpdate 中更新 svg 的绘制。
         this._tool.plot = (radius, width, height, position) => {
             this._tool.move(position.x, position.y);
             this.changeDragAreaAndShape();
             if (this.target.type == TargetType.CIRCLE) {
                 this.dragArea.radius(radius);
+                this.shap.radius(radius);
             } else {
                 this.dragArea.radius(0);
                 this.dragArea.width(width);
                 this.dragArea.height(height);
+                this.shap.width(width);
+                this.shap.height(height);
 
             }
-            this.shap.radius(radius);
+
         };
     }
     changeDragAreaAndShape() {
@@ -185,7 +186,7 @@ class ColliderGizmo extends Editor.Gizmo {
         let node = this.node;
 
         // 获取节点世界坐标
-        let position = node.convertToWorldSpaceAR(target.offset);
+        let position = node.convertToWorldSpaceAR(target.type == TargetType.CIRCLE ? target.offset : cc.v2(target.offset.x - target.size.width / 2, target.offset.y + target.size.height / 2));
 
         // 转换世界坐标到 svg view 上
         // svg view 的坐标体系和节点坐标体系不太一样，这里使用内置函数来转换坐标
@@ -203,7 +204,7 @@ class ColliderGizmo extends Editor.Gizmo {
         radius = Editor.GizmosUtils.snapPixel(radius);
 
         // 移动 svg 工具到坐标
-        this._tool.plot(radius * this._view.scale, target.size.width, target.size.height, position);
+        this._tool.plot(radius * this._view.scale, target.size.width * this._view.scale, target.size.height * this._view.scale, position);
     }
 }
 
