@@ -1,7 +1,8 @@
 let ToolType = {
     None: 0,
     Side: 1,
-    Center: 2
+    Center: 2,
+    Corner: 3
 };
 let TargetType = {
     CIRCLE: 0,
@@ -19,8 +20,10 @@ class ColliderGizmo extends Editor.Gizmo {
 
         // 申明一些局部变量
         let startOffset;        // 按下鼠标时记录的圆偏移量
+        let startOffsetSub;     //按下鼠标记录鼠标和中心点偏移量
         let startRadius;        // 按下鼠标时记录的圆半径
         let pressx, pressy;     // 按下鼠标时记录的鼠标位置
+        let dir;                // rect缩放方向
 
         return {
             /**
@@ -34,6 +37,19 @@ class ColliderGizmo extends Editor.Gizmo {
                 startOffset = this.target.offset;
                 pressx = x;
                 pressy = y;
+                let position = this.getPointInNode(this.node, cc.v2(x, y));
+                startOffsetSub = position.sub(startOffset);
+                cc.log(`startOffsetSub:(${startOffsetSub.x},${startOffsetSub.y})`);
+                let hd = 0;
+                let vd = 0;
+                if (Math.abs(this.target.size.width / 2 - Math.abs(position.x)) < 8) {
+                    hd = position.x < 0 ? 1 : 2;
+                }
+                if (Math.abs(this.target.size.height / 2 - Math.abs(position.y)) < 8) {
+                    vd = position.y > 0 ? 10 : 20;
+                }
+                dir = hd + vd;
+                cc.log(`x=${position.x.toFixed(2)},y=${position.y.toFixed(2)},dir=${dir}`)
             },
 
             /**
@@ -51,28 +67,52 @@ class ColliderGizmo extends Editor.Gizmo {
 
                 if (type === ToolType.Center) {
                     // 计算新的偏移量
-                    let mat4 = cc.mat4();
-                    node.getWorldMatrix(mat4);
-                    let t = cc.Mat4.invert(mat4, mat4);
-                    t.m12 = t.m13 = 0;
+                    // let mat4 = cc.mat4();
+                    // node.getWorldMatrix(mat4);
+                    // let t = cc.Mat4.invert(mat4, mat4);
+                    // t.m12 = t.m13 = 0;
 
-                    let d = cc.v2(dx, dy);
-                    cc.Vec2.transformMat4(d, d, t);
-                    d.addSelf(startOffset);
-                    target.offset = d;
+                    // let d = cc.v2(dx, dy);
+                    // cc.Vec2.transformMat4(d, d, t);
+                    // d.addSelf(startOffset);
+                    let d = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy));
+                    target.offset = d.sub(startOffsetSub);
                     this.adjustValue(target, 'offset');
                 }
                 else {
-                    if (this.target.type == TargetType.CIRCLE) {
+                    if (target.type == TargetType.CIRCLE) {
                         // 转换坐标点到节点下
                         let p = this.pixelToWorld(cc.v2(pressx + dx, pressy + dy));
                         let position = node.convertToNodeSpaceAR(p);
+                        position = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy));
                         // 计算 radius
                         target.radius = position.sub(startOffset).mag();
                         // 防止 radius 小数点位数过多
                         this.adjustValue(target, 'radius');
                     } else {
-                        cc.log('move side')
+                        let position = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy)).sub(startOffset);
+                        let widthhalf = target.size.width / 2;
+                        let heighthalf = target.size.height / 2;
+                        if (dir == 1) {//左
+                            target.size.width = Math.abs(position.x) + widthhalf;
+                        } else if (dir == 2) {//右
+                            target.size.width = Math.abs(position.x) + widthhalf;
+                        } else if (dir == 10) {//上
+                            target.size.height = Math.abs(position.y) + heighthalf;
+                        } else if (dir == 20) {//下
+                            target.size.height = Math.abs(position.y) + heighthalf;
+                        } else {//角落
+                            target.size.width = Math.abs(position.x) + widthhalf;
+                            target.size.height = Math.abs(position.y) + heighthalf;
+                        }
+                        if (target.size.width < 0) {
+                            target.size.width = 0;
+                        }
+                        if (target.size.height < 0) {
+                            target.size.height = 0;
+                        }
+                        this.adjustValue(target, 'size');
+
                     }
 
                 }
@@ -86,10 +126,16 @@ class ColliderGizmo extends Editor.Gizmo {
             }
         };
     }
-
+    getPointInNode(node, pointInSVG) {
+        pointInSVG.y = this._view.offsetHeight - pointInSVG.y;
+        let pointInWorld = this.pixelToWorld(pointInSVG);
+        let pointInNode = node.convertToNodeSpaceAR(pointInWorld);
+        return Editor.GizmosUtils.snapPixelWihVec2(pointInNode);
+    }
     currentTargetType;
     dragArea;
     shap;
+    points = [];
     onCreateRoot() {
         // 创建 svg 根节点的回调，可以在这里创建你的 svg 工具
         // this._root 可以获取到 Editor.Gizmo 创建的 svg 根节点
@@ -116,6 +162,10 @@ class ColliderGizmo extends Editor.Gizmo {
                 this.shap.width(width);
                 this.shap.height(height);
 
+                this.points[0].center(0, 0);
+                this.points[1].center(0, height);
+                this.points[2].center(width, 0);
+                this.points[3].center(width, height);
             }
 
         };
@@ -144,7 +194,7 @@ class ColliderGizmo extends Editor.Gizmo {
             // 创建边缘拖拽区域，用于操作 radius 属性
             this.shap = this._tool.circle()
                 // 设置stroke 样式
-                .stroke({ color: '#7fc97a', width: 2 })
+                .stroke({ color: '#7fc97a', width: 1 })
                 .fill({ color: 'rgba(0,255,128,0.1)' })
                 // 设置点击区域，这里设置的是根据 stroke 模式点击
                 .style('pointer-events', 'stroke')
@@ -160,12 +210,30 @@ class ColliderGizmo extends Editor.Gizmo {
                 .style('cursor', 'move');
             this.shap = this._tool.rect()
                 // 设置stroke 样式
-                .stroke({ color: '#7fc97a', width: 2 })
+                .stroke({ color: '#7fc97a', width: 1 })
                 .fill({ color: 'rgba(0,255,128,0.1)' })
                 // 设置点击区域，这里设置的是根据 stroke 模式点击
                 .style('pointer-events', 'stroke')
                 // 设置鼠标样式
                 .style('cursor', 'pointer')
+            this.points = [];
+            for (let i = 0; i < 4; i++) {
+                let point = this._tool.circle()
+                    // 设置stroke 样式
+                    .stroke({ color: '#7fc97a', width: 1 })
+                    .fill({ color: '#7fc97a' })
+                    // 设置点击区域，这里设置的是根据 stroke 模式点击
+                    .style('pointer-events', 'stroke')
+                    // 设置鼠标样式
+                    .style('cursor', 'pointer')
+                    .radius(2)
+                this.points.push(point);
+
+            }
+            this.registerMoveSvg(this.points[0], ToolType.Corner, { cursor: 'nw-resize' });
+            this.registerMoveSvg(this.points[1], ToolType.Corner, { cursor: 'sw-resize' });
+            this.registerMoveSvg(this.points[2], ToolType.Corner, { cursor: 'ne-resize' });
+            this.registerMoveSvg(this.points[3], ToolType.Corner, { cursor: 'se-resize' });
         }
 
         // 注册监听鼠标移动事件的 svg 元素
@@ -174,6 +242,7 @@ class ColliderGizmo extends Editor.Gizmo {
         this.registerMoveSvg(this.dragArea, ToolType.Center, { cursor: 'move' });
 
         this.registerMoveSvg(this.shap, ToolType.Side, { cursor: 'pointer' });
+
     }
 
     onUpdate() {
