@@ -2261,11 +2261,18 @@
       "__id__": 46
     },
     "_enabled": true,
-    "radius": 40,
+    "tag": 0,
     "offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 6,
       "y": 0
+    },
+    "type": 1,
+    "radius": 24.9,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 75,
+      "height": 64.2
     },
     "_id": "5d057xztFDw6A3TIxKdah2"
   },
