@@ -13,6 +13,7 @@ import InventoryManager from "./Manager/InventoryManager";
 import PlayerData from "./Data/PlayerData";
 import PlayerAvatar from "./PlayerAvatar";
 import MeleeShadowWeapon from "./MeleeShadowWeapon";
+import Logic from "./Logic";
 
 const { ccclass, property } = cc._decorator;
 /**
@@ -28,6 +29,8 @@ export default class PlayerWeapon extends cc.Component {
     isLeftHand:boolean = false;//是否左手
     isHeavyRemotoAttacking = false;//是否是重型远程武器,比如激光
     isShadow = false;
+    selfDefaultPos = cc.v3(-15,40);
+    otherDefaultPos = cc.v3(20,40);
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -38,6 +41,13 @@ export default class PlayerWeapon extends cc.Component {
         this.player = player;
         this.initMelee();
         this.initShooter();
+        if(isLeftHand){
+            this.selfDefaultPos = cc.v3(-15,40);
+            this.otherDefaultPos = cc.v3(20,40);
+        }else{
+            this.otherDefaultPos = cc.v3(-15,40);
+            this.selfDefaultPos = cc.v3(20,40);
+        }
     }
     private initMelee() {
         if(this.isShadow){
@@ -118,6 +128,7 @@ export default class PlayerWeapon extends cc.Component {
     }
 
     updateLogic(dt:number){
+        this.node.position = Logic.lerpPos(this.node.position, this.player.isFaceRight?this.selfDefaultPos:this.otherDefaultPos, dt * 5);
         if(this.meleeWeapon){
             this.meleeWeapon.updateLogic(dt);
         }

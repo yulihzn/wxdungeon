@@ -1058,7 +1058,8 @@ export default class Player extends Actor {
         if (stone == !this.isStone) {
             this.turnStone(this.isStone);
         }
-        this.node.scaleX = this.isFaceRight ? this.getScaleSize() : -this.getScaleSize();
+        this.node.scaleX = this.getScaleSize();
+        this.avatar.node.scaleX = this.isFaceRight ? 1 : -1;
         this.node.scaleY = this.getScaleSize();
         this.node.opacity = this.invisible ? 80 : 255;
 
