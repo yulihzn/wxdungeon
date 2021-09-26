@@ -30,7 +30,7 @@ export default class Shield extends cc.Component {
     static readonly STATUS_PUTDOWN = 3;
     private static readonly ZOFFSET = 2;
     private static readonly DEFAULT_POS = [cc.v3(0,32),cc.v3(0,48),cc.v3(-8,48),cc.v3(-8,48)];
-    private static readonly TRANSFORM_POS = [cc.v3(32,40),cc.v3(32,40),cc.v3(10,44),cc.v3(10,44)];
+    private static readonly TRANSFORM_POS = [cc.v3(10,40),cc.v3(10,40),cc.v3(32,44),cc.v3(32,44)];
     private static readonly DEFEND_POS = [cc.v3(0,48),cc.v3(0,32),cc.v3(24,40),cc.v3(24,40)];
     data: EquipmentData = new EquipmentData();
     private isBehind = false;
@@ -128,7 +128,7 @@ export default class Shield extends cc.Component {
         let idle = cc.tween().to(duration, { y: 2 }).to(duration, { y: -2 });
         cc.tween(this.sprite.node).repeatForever(idle).start();
     }
-    private playParry() {
+    private playParry(isFaceRight:boolean) {
         if (this.status == Shield.STATUS_PUTDOWN
             || this.status == Shield.STATUS_DEFEND
             || this.status == Shield.STATUS_PARRY) {
@@ -137,15 +137,21 @@ export default class Shield extends cc.Component {
         this.status = Shield.STATUS_PARRY;
         let duration = this.data.isHeavy==1?0.15:0.1;
         let durationdelay = this.data.isHeavy==1?0.1:0.15;
+        let dp = Shield.DEFAULT_POS[this.dir].clone();
+        let tp = Shield.TRANSFORM_POS[this.dir].clone();
+        if(!isFaceRight){
+            dp.x = -dp.x;
+            tp.x = -tp.x;
+        }
         cc.log(`举起 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`);
-        cc.tween(this.node).to(duration,{position:Shield.TRANSFORM_POS[this.dir]}).call(()=>{
+        cc.tween(this.node).to(duration,{position:tp}).call(()=>{
             this.node.zIndex = this.isBehind?this.avatarZindex+Shield.ZOFFSET:this.avatarZindex-Shield.ZOFFSET;
             this.sprite.node.color = this.isBehind?cc.Color.WHITE:cc.color(32,32,32);
-        }).to(duration,{position:Shield.DEFEND_POS[this.dir]}).delay(durationdelay).call(()=>{
+        }).to(duration,{position:dp}).delay(durationdelay).call(()=>{
             if(this.isButtonPressing){
                 this.playDefend();
             }else{
-                this.playPutDown();
+                this.playPutDown(isFaceRight);
             }
         }).start();
     }
@@ -157,7 +163,7 @@ export default class Shield extends cc.Component {
         this.status = Shield.STATUS_DEFEND;
         cc.log(`防御 isBehind:${this.isBehind} zIndex:${this.node.zIndex}`);
     }
-    private playPutDown(){
+    private playPutDown(isFaceRight:boolean){
         if (this.status == Shield.STATUS_PUTDOWN
             || this.status == Shield.STATUS_IDLE) {
             return;
@@ -165,16 +171,22 @@ export default class Shield extends cc.Component {
         let isBehindTemp = this.isBehindChange?!this.isBehind:this.isBehind;
         this.status = Shield.STATUS_PUTDOWN;
         let duration = this.data.isHeavy==1?0.2:0.1;
+        let dp = Shield.DEFAULT_POS[this.dir].clone();
+        let tp = Shield.TRANSFORM_POS[this.dir].clone();
+        if(!isFaceRight){
+            dp.x = -dp.x;
+            tp.x = -tp.x;
+        }
         cc.log(`放下 isBehind:${this.isBehind} isBehindTemp:${isBehindTemp} zIndex:${this.node.zIndex}`);
-        cc.tween(this.node).to(duration,{position:Shield.TRANSFORM_POS[this.dir]}).call(()=>{
+        cc.tween(this.node).to(duration,{position:tp}).call(()=>{
             this.node.zIndex = isBehindTemp?this.avatarZindex-Shield.ZOFFSET:this.avatarZindex+Shield.ZOFFSET;
             this.sprite.node.color = isBehindTemp?cc.color(32,32,32):cc.Color.WHITE;
-        }).to(duration,{position:Shield.DEFAULT_POS[this.dir]}).call(()=>{
+        }).to(duration,{position:dp}).call(()=>{
             this.playIdle();
         }).start();
     }
 
-    public changeZIndexByDir(avatarZindex: number, dir: number) {
+    public changeZIndexByDir(avatarZindex: number, dir: number,isFaceRight:boolean) {
         if(this.isAniming){
             return;
         }
@@ -201,9 +213,14 @@ export default class Shield extends cc.Component {
         this.isBehind = dir != PlayerAvatar.DIR_UP;
         this.isBehindChange = this.isBehind != temp;
         this.node.zIndex = currentIndex;
-        this.node.position = isDefending?Shield.DEFEND_POS[dir]:Shield.DEFAULT_POS[dir];
+        let p = isDefending?Shield.DEFEND_POS[dir]:Shield.DEFAULT_POS[dir].clone();
+        if(!isFaceRight){
+            p.x = -p.x;
+        }
+        this.node.position = p;
+        
     }
-    public use() {
+    public use(isFaceRight:boolean) {
         this.isButtonPressing = true;
         if (this.data.equipmetType != InventoryManager.SHIELD) {
             return;
@@ -214,14 +231,14 @@ export default class Shield extends cc.Component {
         if (this.isDefendOrParrying) {
             return;
         }
-        this.playParry();
+        this.playParry(isFaceRight);
     }
-    public cancel(){
+    public cancel(isFaceRight:boolean){
         this.isButtonPressing = false;
         if (this.status != Shield.STATUS_DEFEND) {
             return;
         }
-        this.playPutDown();
+        this.playPutDown(isFaceRight);
     }
     changeRes(resName: string) {
         if (!resName || resName.length < 1) {
@@ -233,6 +250,19 @@ export default class Shield extends cc.Component {
         if(this.data.equipmetType == InventoryManager.SHIELD){
             this.playIdle();
         }
+    }
+    public faceRightChange(isFaceRight:boolean){
+        if (this.status == Shield.STATUS_PUTDOWN
+            || this.status == Shield.STATUS_DEFEND
+            || this.status == Shield.STATUS_PARRY) {
+            return;
+        }
+        let duration = this.data.isHeavy==1?0.2:0.1;
+        let dp = Shield.DEFAULT_POS[this.dir].clone();
+        if(!isFaceRight){
+            dp.x = -dp.x;
+        }
+        cc.tween(this.node).to(duration,{position:dp}).start();
     }
  
 }

@@ -153,7 +153,7 @@ export default class Player extends Actor {
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK_CANCEL
             , (event) => {
                 if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                    this.shield.cancel();
+                    this.shield.cancel(this.isFaceRight);
                 }
             });
         cc.director.on(EventHelper.PLAYER_REMOTEATTACK
@@ -162,7 +162,7 @@ export default class Player extends Actor {
                     return;
                 }
                 if (this.shield && this.shield.data.equipmetType == InventoryManager.SHIELD) {
-                    this.shield.use();
+                    this.shield.use(this.isFaceRight);
                 } else {
                     if (this.node) this.remoteAttack();
                 }
@@ -396,7 +396,7 @@ export default class Player extends Actor {
                 break;
         }
         this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, this.currentDir);
-        this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir);
+        this.shield.changeZIndexByDir(this.avatar.node.zIndex, this.currentDir, this.isFaceRight);
         this.updateInfoUi();
     }
     private updateEquipment(sprite: cc.Sprite, color: string, spriteFrame: cc.SpriteFrame, size?: number): void {
@@ -500,18 +500,22 @@ export default class Player extends Actor {
             }
             this.scheduleOnce(() => {
                 let isDo = this.weaponLeft.meleeWeapon.attack(this.data, this.fistCombo);
-                if(isDo){
+                if (isDo) {
                     for (let s of this.shadowList) {
                         s.attack(this.data, this.fistCombo, this.weaponLeft.meleeWeapon.Hv, true);
                     }
                 }
-                
+
             }, 0.15);
         }
         if (isAttackDo) {
             let pos = this.weaponRight.meleeWeapon.Hv.clone();
-            if (!this.shield.isAniming) {
+            if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
+                let facetemp = this.isFaceRight;
                 this.isFaceRight = pos.x > 0;
+                if (facetemp != this.isFaceRight) {
+                    this.shield.faceRightChange(this.isFaceRight);
+                }
             }
             this.isFaceUp = pos.y > 0;
             this.playerAnim(PlayerAvatar.STATE_ATTACK, this.currentDir);
@@ -719,8 +723,12 @@ export default class Player extends Actor {
             this.weaponLeft.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
         }
         if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
-            if (!this.shield.isAniming) {
+            if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
                 this.isFaceRight = this.weaponLeft.meleeWeapon.Hv.x > 0;
+                let facetemp = this.isFaceRight;
+                if (facetemp != this.isFaceRight) {
+                    this.shield.faceRightChange(this.isFaceRight);
+                }
             }
             this.isFaceUp = this.weaponLeft.meleeWeapon.Hv.y > 0;
         }
@@ -735,7 +743,7 @@ export default class Player extends Actor {
         if (dir != 4) {
             this.changeZIndex(this.pos);
         }
-        if (dir != 4 && !this.shield.isAniming) {
+        if (dir != 4 && !this.shield.isAniming && !this.shield.isDefendOrParrying) {
             this.currentDir = dir;
             if (dir == PlayerAvatar.DIR_DOWN && this.isFaceUp) {
                 dir = PlayerAvatar.DIR_UP;
@@ -745,7 +753,7 @@ export default class Player extends Actor {
             this.weaponLeft.changeZIndexByDir(this.avatar.node.zIndex, dir);
             this.weaponRight.changeZIndexByDir(this.avatar.node.zIndex, dir);
             this.avatar.changeEquipDirSpriteFrame(this.inventoryManager, dir);
-            this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir);
+            this.shield.changeZIndexByDir(this.avatar.node.zIndex, dir, this.isFaceRight);
             this.avatar.changeAvatarByDir(dir);
         }
     }
@@ -1042,7 +1050,7 @@ export default class Player extends Actor {
         if (this.isDreamLongTimeDelay(dt)) {
             this.updateDream(-1);
         }
-        if (this.dungeon&&this.dungeon.isClear&&this.isDreamShortTimeDelay(dt)) {
+        if (this.dungeon && this.dungeon.isClear && this.isDreamShortTimeDelay(dt)) {
             if (this.data.AvatarData.organizationIndex == AvatarData.FOLLOWER) {
                 this.updateDream(-1);
             }

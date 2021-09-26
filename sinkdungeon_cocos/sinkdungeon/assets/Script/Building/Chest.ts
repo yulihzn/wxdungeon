@@ -81,7 +81,8 @@ export default class Chest extends Building {
                     if (dungeon) {
                         let rand4save = Logic.mapManager.getRandom4Save(this.seed);
                         if(Logic.isCheatMode){
-                            dungeon.addEquipment(EquipmentManager.REMOTE_RPG, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.CLOAK_WARRIOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
+                            dungeon.addEquipment(EquipmentManager.SHIELD_CARDOOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
 
                         }
                         // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.HEART);

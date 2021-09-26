@@ -62,6 +62,8 @@ export default class Inventory extends cc.Component {
     mainCamera:cc.Camera = null;
     @property(cc.Node)
     equipmentNode:cc.Node = null;
+    @property(cc.Node)
+    dialogNode:cc.Node = null;
     equipmentAndItemDialog: EquipmentAndItemDialog = null;
     equipmentGroundDialog: EquipmentAndItemDialog = null;
     itemGroundDialog: EquipmentAndItemDialog = null;
@@ -150,6 +152,9 @@ export default class Inventory extends cc.Component {
         let dialog = node.getComponent(EquipmentAndItemDialog);
         dialog.changeBgAndAnchor(isGround?EquipmentAndItemDialog.BG_TYPE_ARROW_DOWN:EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT);
         dialog.hideDialog();
+        if(!isGround){
+            node.parent = this.dialogNode;
+        }
         return dialog;
     }
 

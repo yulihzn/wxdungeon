@@ -35,8 +35,6 @@ export default class Toast extends cc.Component {
         this.label.node.width = isCenter?300:600;
         let node = this.node;
         node.stopAllActions();
-        node.active = true;
-        node.opacity = 255;
         let delay = 1.5;
         if(isTap){
             delay = 0.05*msg.length;
@@ -48,11 +46,18 @@ export default class Toast extends cc.Component {
                 this.label.string = `${msg.substr(0,count++)}`;
                 node.width = this.label.node.width + 10;
                 node.height = this.label.node.height + 10;
+                node.opacity = 255;
+                node.active = true;
             },0.05,msg.length,0.3)
         }else{
-            this.label.string = `${msg}`;
-            node.width = this.label.node.width + 10;
-            node.height = this.label.node.height + 10;
+            this.scheduleOnce(()=>{
+                this.label.string = `${msg}`;
+                node.width = this.label.node.width + 10;
+                node.height = this.label.node.height + 10;
+                node.opacity = 255;
+                node.active = true;
+            },0.05)
+            
         }
         
         let y = isCenter?360:100;

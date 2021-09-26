@@ -480,6 +480,9 @@ export default class MeleeWeapon extends cc.Component {
         this.node.scaleY = this.node.scaleX < 0 ? -sy : sy;
         //设置旋转角度
         this.currentAngle = Utils.getRotateAngle(direction, this.node.scaleX < 0);
+        if(this.currentAngle<0){
+            this.currentAngle+=360;
+        }
     }
 
     onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {

@@ -10,6 +10,7 @@ import FromData from "../Data/FromData";
 import { EventHelper } from "../EventHelper";
 import AreaOfEffect from "../Actor/AreaOfEffect";
 import CoolDownView from "../UI/CoolDownView";
+import Utils from "../Utils/Utils";
 
 const { ccclass, property } = cc._decorator;
 
@@ -119,11 +120,14 @@ export default abstract class Talent extends cc.Component {
             return;
         }
         if (this.talentSkill.IsExcuting) {
+            Utils.toast(`技能施放或者冷却中`);
             return;
         }
-        let cooldown = this.data.cooldown;
-
         if (this.player.data.currentDream >= this.data.cost&&this.skillCanUse()) {
+            let cooldown = this.data.cooldown;
+            if(this.talentSkill.IsInCooling){
+                Utils.toast(`技能冷却中`)
+            }
             this.talentSkill.next(() => {
                 this.talentSkill.IsExcuting = true;
                 this.player.updateDream(this.data.cost);
@@ -135,6 +139,7 @@ export default abstract class Talent extends cc.Component {
             });
         } else {
             cc.director.emit(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR);
+            Utils.toast(`能量不足`);
         }
     }
     /**
