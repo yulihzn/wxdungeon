@@ -262,6 +262,7 @@ export default class Inventory extends cc.Component {
         newdata.itemData.valueCopy(itemData);
         newdata.type = InventoryItem.TYPE_ITEM;
         newdata.createTime = new Date().getTime();
+        newdata.id = newdata.itemData.id;
         //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
         if (isFromBag) {
             list[indexFromBag] = new InventoryData();
@@ -309,6 +310,7 @@ export default class Inventory extends cc.Component {
         newdata.type = InventoryItem.TYPE_EQUIP;
         newdata.price = newdata.equipmentData.price;
         newdata.createTime = new Date().getTime();
+        newdata.id = newdata.equipmentData.id;
         //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
         if (isFromBag) {
             list[indexFromBag] = new InventoryData();

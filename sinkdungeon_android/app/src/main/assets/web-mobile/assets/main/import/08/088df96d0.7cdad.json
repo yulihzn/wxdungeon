@@ -1,0 +1,580 @@
+[
+  1,
+  [
+    "919P1LgsJI+J8wjLVtq3YC",
+    "d10dVcN/1OJrRX58KWn7Xe",
+    "a2zd3QTYNMDqFTVPm4+77d",
+    "e4jGV2sthNWIgyFHdUVTdB",
+    "48Xc4KGCVCtqQ9bjnJZm58",
+    "a7g14jRvpFV7TmJD5lY7am",
+    "3adLr9+TFNLZRxsDdjia7z",
+    "6e1czlyKtH/o0FjkYPgYkP",
+    "1aX/gRzn5ADbvl3fH9gt6X",
+    "5aARq9l/hMI6LF60SLZgVG",
+    "4b5ZMbJ75G8ak+U1iCwev5",
+    "d9Y5Qf1/dGHKhDcU58abgP",
+    "e2fxcR85JDEKAOAJIpXLL/",
+    "31LDdYy8hB+5BpUNIw3Vok",
+    "0eWafOJ65OGoEifLPcIny5",
+    "63TEsUUhdLGphm0KNKitxL",
+    "91Qkxks3VAC6nSTMRjTfjJ",
+    "8cC3KPxnVMvL2qid8tvo9s"
+  ],
+  [
+    "value",
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame",
+    [
+      "cc.AnimationClip",
+      [
+        "_name",
+        "_duration",
+        "wrapMode",
+        "curveData"
+      ],
+      0,
+      11
+    ]
+  ],
+  [
+    [
+      1,
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  ],
+  [
+    [
+      [
+        {
+          "name": "startbg_water010",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        1
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water004",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water009",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        3
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water006",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        4
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water005",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        5
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water011",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        6
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water003",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        7
+      ]
+    ],
+    [
+      [
+        [
+          0,
+          "StartBgWaterFall",
+          1.5166666666666666,
+          "2",
+          [
+            {},
+            "paths",
+            11,
+            [
+              {},
+              "flow",
+              11,
+              [
+                {},
+                "comps",
+                11,
+                [
+                  {},
+                  "cc.Sprite",
+                  11,
+                  [
+                    {},
+                    "spriteFrame",
+                    12,
+                    [
+                      [
+                        [
+                          {
+                            "frame": 0
+                          },
+                          "value",
+                          6,
+                          0
+                        ],
+                        [
+                          {
+                            "frame": 0.16666666666666666
+                          },
+                          "value",
+                          6,
+                          1
+                        ],
+                        [
+                          {
+                            "frame": 0.3333333333333333
+                          },
+                          "value",
+                          6,
+                          2
+                        ],
+                        [
+                          {
+                            "frame": 0.5
+                          },
+                          "value",
+                          6,
+                          3
+                        ],
+                        [
+                          {
+                            "frame": 0.6666666666666666
+                          },
+                          "value",
+                          6,
+                          4
+                        ],
+                        [
+                          {
+                            "frame": 0.8333333333333334
+                          },
+                          "value",
+                          6,
+                          5
+                        ],
+                        [
+                          {
+                            "frame": 1
+                          },
+                          "value",
+                          6,
+                          6
+                        ],
+                        [
+                          {
+                            "frame": 1.1666666666666667
+                          },
+                          "value",
+                          6,
+                          7
+                        ],
+                        [
+                          {
+                            "frame": 1.3333333333333333
+                          },
+                          "value",
+                          6,
+                          8
+                        ],
+                        [
+                          {
+                            "frame": 1.5
+                          },
+                          "value",
+                          6,
+                          9
+                        ]
+                      ],
+                      11,
+                      11,
+                      11,
+                      11,
+                      11,
+                      11,
+                      11,
+                      11,
+                      11,
+                      11
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      0,
+      0,
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water007",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        16
+      ]
+    ],
+    [
+      [
+        {
+          "name": "startbg_water008",
+          "rect": [
+            0,
+            0,
+            18,
+            9
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            18,
+            9
+          ],
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        1
+      ],
+      [
+        17
+      ]
+    ]
+  ]
+]

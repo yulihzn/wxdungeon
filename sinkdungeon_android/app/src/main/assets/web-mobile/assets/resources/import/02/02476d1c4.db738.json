@@ -1,0 +1,179 @@
+[
+  1,
+  [
+    "23iWbCFZdG/o2IjQfNjR+c"
+  ],
+  [
+    "_textureSetter"
+  ],
+  [
+    "cc.SpriteFrame"
+  ],
+  0,
+  [
+    [
+      [
+        {
+          "name": "waterfallanim003",
+          "rect": [
+            174,
+            101,
+            32,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            32,
+            48
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "waterfallanim002",
+          "rect": [
+            274,
+            94,
+            32,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            32,
+            48
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "waterfallanim001",
+          "rect": [
+            224,
+            67,
+            32,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            32,
+            48
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    [
+      [
+        {
+          "name": "waterfallanim000",
+          "rect": [
+            174,
+            67,
+            32,
+            48
+          ],
+          "offset": [
+            0,
+            0
+          ],
+          "originalSize": [
+            32,
+            48
+          ],
+          "rotated": 1,
+          "capInsets": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      [
+        0
+      ],
+      0,
+      [
+        0
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ]
+  ]
+]

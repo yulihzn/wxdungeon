@@ -384,8 +384,8 @@ export default class EquipmentManager extends BaseManager {
         desc.common.maxDream = dream.x;
         return desc;
     }
-    static getRandomRange(){
-        return 5 + Logic.chapterMaxIndex + Math.floor(Logic.playerData.OilGoldData.level/5);
+    static getRandomRange() {
+        return 5 + Logic.chapterMaxIndex + Math.floor(Logic.playerData.OilGoldData.level / 5);
     }
     static isTheEquipType(theType: string, types: string[]): boolean {
         let isTheType = false;
@@ -463,12 +463,16 @@ export default class EquipmentManager extends BaseManager {
         return equipment;
 
     }
-    static getNewEquipData(equipType:string, chestQuality?: number): EquipmentData {
+    static getNewEquipData(equipType: string, chestQuality?: number): EquipmentData {
         if (equipType.length == 0) {
             return;
         }
         let data = new EquipmentData();
         data.valueCopy(Logic.equipments[equipType]);
+        let tempid = data.img.substr(data.equipmetType.length);
+        if (tempid.length > 0) {
+            data.id = data.id + parseInt(tempid);
+        }
         data.uuid = data.genNonDuplicateID();
         let desc = EquipmentManager.getRandomDesc(data, chestQuality);
         let common = data.Common.clone().add(desc.common);
@@ -476,9 +480,9 @@ export default class EquipmentManager extends BaseManager {
         data.info1 = EquipmentManager.getEquipmentInfo1(common);
         data.info2 = EquipmentManager.getEquipmentInfo2(common, data);
         data.info3 = EquipmentManager.getEquipmentInfo3(common);
-        data.suit1 = EquipmentManager.getSuitDesc(data.suitType,0);
-        data.suit2 = EquipmentManager.getSuitDesc(data.suitType,1);
-        data.suit3 = EquipmentManager.getSuitDesc(data.suitType,2);
+        data.suit1 = EquipmentManager.getSuitDesc(data.suitType, 0);
+        data.suit2 = EquipmentManager.getSuitDesc(data.suitType, 1);
+        data.suit3 = EquipmentManager.getSuitDesc(data.suitType, 2);
         data.infobasecolor = '#fffff0';//象牙
         data.infocolor1 = '#9370DB';//适中的紫色
         data.infocolor2 = '#87CEFA';//淡蓝色
@@ -501,21 +505,25 @@ export default class EquipmentManager extends BaseManager {
         data.price += EquipmentManager.getPrice(data);
         return data;
     }
-    static getOriginEquipData(equipType:string){
+    static getOriginEquipData(equipType: string) {
         if (equipType.length == 0) {
             return;
         }
         let data = new EquipmentData();
         data.valueCopy(Logic.equipments[equipType]);
+        let tempid = data.img.substr(data.equipmetType.length);
+        if (tempid.length > 0) {
+            data.id = data.id + parseInt(tempid);
+        }
         data.uuid = data.genNonDuplicateID();
         let common = data.Common.clone();
         data.infobase = EquipmentManager.getEquipmentInfoBase(common);
         data.info1 = EquipmentManager.getEquipmentInfo1(common);
         data.info2 = EquipmentManager.getEquipmentInfo2(common, data);
         data.info3 = EquipmentManager.getEquipmentInfo3(common);
-        data.suit1 = EquipmentManager.getSuitDesc(data.suitType,0);
-        data.suit2 = EquipmentManager.getSuitDesc(data.suitType,1);
-        data.suit3 = EquipmentManager.getSuitDesc(data.suitType,2);
+        data.suit1 = EquipmentManager.getSuitDesc(data.suitType, 0);
+        data.suit2 = EquipmentManager.getSuitDesc(data.suitType, 1);
+        data.suit3 = EquipmentManager.getSuitDesc(data.suitType, 2);
         data.infobasecolor = '#fffff0';//象牙
         data.infocolor1 = '#9370DB';//适中的紫色
         data.infocolor2 = '#87CEFA';//淡蓝色
@@ -543,12 +551,12 @@ export default class EquipmentManager extends BaseManager {
         let info1 = EquipmentManager.getEquipmentInfo1(data.EquipList[suitIndex].Common);
         let info2 = EquipmentManager.getEquipmentInfo2(data.EquipList[suitIndex].Common, data.EquipList[suitIndex]);
         let info3 = EquipmentManager.getEquipmentInfo3(data.EquipList[suitIndex].Common);
-        info += base+` `;
-        info += info1+` `;
-        info += info2+` `;
-        info += info3+` `;
+        info += base + ` `;
+        info += info1 + ` `;
+        info += info2 + ` `;
+        info += info3 + ` `;
         info += data.EquipList[suitIndex].extraInfo;
-        return title+info.replace('\n', '');
+        return title + info.replace('\n', '');
 
     }
     static getEquipmentInfoBase(common: CommonData): string {
@@ -640,7 +648,7 @@ export default class EquipmentManager extends BaseManager {
 
     static getPrice(data: EquipmentData): number {
         let price = 0;
-        if(data.test>0){
+        if (data.test > 0) {
             return 0;
         }
         price += data.Common.maxHealth * 5;//最大生命25
@@ -708,7 +716,7 @@ export default class EquipmentManager extends BaseManager {
                 }
                 if (!this.lastGroundEquip || this.lastGroundEquip.uuid != equip.uuid) {
                     cc.tween(equip.taketips).to(0.2, { opacity: 255 }).delay(1).to(0.2, { opacity: 0 }).start();
-                    cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { worldPos:equip.node.convertToWorldSpaceAR(cc.v3(0,32)), equipData: equip.data } });
+                    cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW, { detail: { worldPos: equip.node.convertToWorldSpaceAR(cc.v3(0, 32)), equipData: equip.data } });
                 }
                 this.lastGroundEquip = equip;
             } else {

@@ -27,7 +27,7 @@ export default class InventoryDialog extends BaseDialog {
     @property(cc.ToggleContainer)
     toggleContainer: cc.ToggleContainer = null;
     @property(cc.Prefab)
-    equipmentAndItemDialogPrefab:cc.Prefab = null;
+    equipmentAndItemDialogPrefab: cc.Prefab = null;
     @property(cc.Node)
     useButton: cc.Node = null;
     @property(cc.Node)
@@ -38,10 +38,10 @@ export default class InventoryDialog extends BaseDialog {
     @property(cc.Node)
     select: cc.Node = null;
     @property(cc.Label)
-    discountLabel:cc.Label = null;
+    discountLabel: cc.Label = null;
     currentSelectIndex: number;
     discount = 0.6;
-    equipmentAndItemDialog: EquipmentAndItemDialog= null;
+    equipmentAndItemDialog: EquipmentAndItemDialog = null;
     onLoad() {
         this.select.opacity = 0;
         this.equipmentAndItemDialog = this.initDialog();
@@ -65,11 +65,11 @@ export default class InventoryDialog extends BaseDialog {
                 }
             });
         this.toggleContainer.toggleItems[Logic.bagSortIndex].isChecked = true;
-        if(Logic.playerData.AvatarData.organizationIndex == AvatarData.HUNTER){
+        if (Logic.playerData.AvatarData.organizationIndex == AvatarData.HUNTER) {
             this.discount = 0.8;
         }
     }
-    private initDialog(){
+    private initDialog() {
         let node = cc.instantiate(this.equipmentAndItemDialogPrefab);
         node.parent = this.node.getChildByName('layer');
         let dialog = node.getComponent(EquipmentAndItemDialog);
@@ -111,17 +111,17 @@ export default class InventoryDialog extends BaseDialog {
         this.select.opacity = 200;
         AudioPlayer.play(AudioPlayer.SELECT);
         if (item.data.type == InventoryItem.TYPE_EQUIP) {
-            this.discountLabel.string = `-${this.discount*100}%(${Math.floor(item.data.equipmentData.price*this.discount)})`;
+            this.discountLabel.string = `-${this.discount * 100}%(${Math.floor(item.data.equipmentData.price * this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
-            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,null,item.data.equipmentData,null);
+            this.equipmentAndItemDialog.showDialog(cc.v3(420, 160), null, null, item.data.equipmentData, null);
         } else {
-            this.discountLabel.string = `-${this.discount*100}%(${Math.floor(item.data.itemData.count>1?item.data.itemData.price*item.data.itemData.count*this.discount:item.data.itemData.price*this.discount)})`;
+            this.discountLabel.string = `-${this.discount * 100}%(${Math.floor(item.data.itemData.count > 1 ? item.data.itemData.price * item.data.itemData.count * this.discount : item.data.itemData.price * this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
-            this.equipmentAndItemDialog.showDialog(cc.v3(420,160),null,item.data.itemData,null,null);
+            this.equipmentAndItemDialog.showDialog(cc.v3(420, 160), null, item.data.itemData, null, null);
         }
     }
     updateList(sortIndex: number) {
@@ -140,27 +140,24 @@ export default class InventoryDialog extends BaseDialog {
                 }
             }
         }
-        if (sortIndex == 0) {
+
+        if (sortIndex == 0) {//时间排序
             list.sort((a, b) => {
                 return a.createTime - b.createTime;
             });
-        } else if (sortIndex == 1) {
-            itemlist.sort((a, b) => {
-                return a.createTime - b.createTime;
+        } else if (sortIndex == 1) {//类别排序
+            list.sort((a, b) => {
+                return a.id - b.id;
             });
-            equiplist.sort((a, b) => {
-                return a.createTime - b.createTime;
-            });
-            list = equiplist.concat(itemlist);
-        } else if (sortIndex == 2) {
+        } else if (sortIndex == 2) {//品质排序
             itemlist.sort((a, b) => {
-                return a.createTime - b.createTime;
+                return a.id - b.id;
             });
             equiplist.sort((a, b) => {
                 return b.equipmentData.level - a.equipmentData.level;
             });
             list = equiplist.concat(itemlist);
-        } else if (sortIndex == 3) {
+        } else if (sortIndex == 3) {//价格排序
             list.sort((a, b) => {
                 return a.price - b.price;
             });
@@ -239,13 +236,13 @@ export default class InventoryDialog extends BaseDialog {
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData;
             if (equipData.equipmetType != InventoryManager.EMPTY) {
-                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price*this.discount) });
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) });
                 AudioPlayer.play(AudioPlayer.COIN);
             }
         } else {
             let itemData = current.data.itemData;
             if (itemData.resName != Item.EMPTY) {
-                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count>1?itemData.price*itemData.count*this.discount:itemData.price*this.discount) });
+                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count > 1 ? itemData.price * itemData.count * this.discount : itemData.price * this.discount) });
                 AudioPlayer.play(AudioPlayer.COIN);
             }
         }

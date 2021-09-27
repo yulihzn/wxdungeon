@@ -1,5 +1,6 @@
 {
     "emptyitem": {
+        "id": 20000000,
         "nameCn": "空",
         "nameEn": "empty",
         "resName": "emptyitem",
@@ -9,6 +10,7 @@
         "price": 0
     },
     "heart": {
+        "id": 20000001,
         "nameCn": "红心",
         "nameEn": "heart",
         "resName": "heart",
@@ -16,6 +18,7 @@
         "price": 20
     },
     "dream": {
+        "id": 20000002,
         "nameCn": "梦境",
         "nameEn": "dream",
         "resName": "icondream",
@@ -23,6 +26,7 @@
         "price": 20
     },
     "redcapsule": {
+        "id": 20000003,
         "nameCn": "红色攻击药丸",
         "nameEn": "red capsule",
         "resName": "redcapsule",
@@ -31,6 +35,7 @@
         "price": 10
     },
     "bluecapsule": {
+        "id": 20000004,
         "nameCn": "蓝色加速药丸",
         "nameEn": "blue capsule",
         "resName": "bluecapsule",
@@ -39,6 +44,7 @@
         "price": 10
     },
     "bottle001": {
+        "id": 20010001,
         "nameCn": "回复瓶",
         "nameEn": "healing bottle",
         "resName": "bottle001",
@@ -49,6 +55,7 @@
         "price": 30
     },
     "bottle002": {
+        "id": 20010002,
         "nameCn": "移速瓶",
         "nameEn": "move speed bottle",
         "resName": "bottle002",
@@ -59,6 +66,7 @@
         "price": 20
     },
     "bottle003": {
+        "id": 20010003,
         "nameCn": "攻击瓶",
         "nameEn": "attack bottle",
         "resName": "bottle003",
@@ -69,6 +77,7 @@
         "price": 30
     },
     "bottle004": {
+        "id": 20010004,
         "nameCn": "梦境瓶",
         "nameEn": "dream bottle",
         "resName": "bottle004",
@@ -79,6 +88,7 @@
         "price": 30
     },
     "bottle005": {
+        "id": 20010005,
         "nameCn": "远程瓶",
         "nameEn": "remote bottle",
         "resName": "bottle005",
@@ -89,6 +99,7 @@
         "price": 30
     },
     "goldfinger": {
+        "id": 20020000,
         "nameCn": "金手指",
         "nameEn": "goldfinger",
         "resName": "goldfinger",
@@ -100,6 +111,7 @@
         "price": 200
     },
     "food000": {
+        "id": 20030000,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food000",
@@ -111,6 +123,7 @@
         "price": 30
     },
     "food001": {
+        "id": 20030001,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food001",
@@ -123,6 +136,7 @@
         "price": 30
     },
     "food002": {
+        "id": 20030002,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food002",
@@ -135,6 +149,7 @@
         "price": 30
     },
     "food003": {
+        "id": 20030003,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food003",
@@ -147,6 +162,7 @@
         "price": 30
     },
     "food004": {
+        "id": 20030004,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food004",
@@ -159,6 +175,7 @@
         "price": 30
     },
     "food005": {
+        "id": 20030005,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food005",
@@ -171,6 +188,7 @@
         "price": 30
     },
     "food006": {
+        "id": 20030006,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food006",
@@ -183,6 +201,7 @@
         "price": 30
     },
     "food007": {
+        "id": 20030007,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food007",
@@ -195,6 +214,7 @@
         "price": 30
     },
     "food008": {
+        "id": 20030008,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food008",
@@ -207,6 +227,7 @@
         "price": 30
     },
     "food009": {
+        "id": 20030009,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food009",
@@ -219,6 +240,7 @@
         "price": 30
     },
     "food010": {
+        "id": 20030010,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food010",
@@ -231,6 +253,7 @@
         "price": 30
     },
     "food011": {
+        "id": 20030011,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food011",
@@ -243,6 +266,7 @@
         "price": 30
     },
     "food012": {
+        "id": 20030012,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food012",
@@ -255,6 +279,7 @@
         "price": 30
     },
     "food013": {
+        "id": 20030013,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food013",
@@ -267,6 +292,7 @@
         "price": 30
     },
     "food014": {
+        "id": 20030014,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food014",
@@ -279,6 +305,7 @@
         "price": 30
     },
     "food015": {
+        "id": 20030015,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food015",
@@ -291,6 +318,7 @@
         "price": 30
     },
     "food016": {
+        "id": 20030016,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food016",
@@ -303,6 +331,7 @@
         "price": 30
     },
     "food017": {
+        "id": 20030017,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food017",
@@ -315,6 +344,7 @@
         "price": 30
     },
     "food018": {
+        "id": 20030018,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food018",
@@ -327,6 +357,7 @@
         "price": 30
     },
     "food019": {
+        "id": 20030019,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food019",
@@ -339,6 +370,7 @@
         "price": 30
     },
     "food020": {
+        "id": 20030020,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food020",
@@ -351,6 +383,7 @@
         "price": 30
     },
     "food021": {
+        "id": 20030021,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food021",
@@ -363,6 +396,7 @@
         "price": 30
     },
     "food022": {
+        "id": 20030022,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food022",
@@ -375,6 +409,7 @@
         "price": 30
     },
     "food023": {
+        "id": 20030023,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food023",
@@ -387,6 +422,7 @@
         "price": 30
     },
     "food024": {
+        "id": 20030024,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food024",
@@ -399,6 +435,7 @@
         "price": 30
     },
     "food025": {
+        "id": 20030025,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food025",
@@ -411,6 +448,7 @@
         "price": 30
     },
     "food026": {
+        "id": 20030026,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food026",
@@ -423,6 +461,7 @@
         "price": 30
     },
     "food027": {
+        "id": 20030027,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food037",
@@ -435,6 +474,7 @@
         "price": 30
     },
     "food028": {
+        "id": 20030028,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food028",
@@ -447,6 +487,7 @@
         "price": 30
     },
     "food029": {
+        "id": 20030029,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food029",
@@ -459,6 +500,7 @@
         "price": 30
     },
     "food030": {
+        "id": 20030030,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food030",
@@ -471,6 +513,7 @@
         "price": 30
     },
     "food031": {
+        "id": 20030031,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food031",
@@ -483,6 +526,7 @@
         "price": 30
     },
     "food032": {
+        "id": 20030032,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food032",
@@ -495,6 +539,7 @@
         "price": 30
     },
     "food033": {
+        "id": 20030033,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food033",
@@ -507,6 +552,7 @@
         "price": 30
     },
     "food034": {
+        "id": 20030034,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food034",
@@ -519,6 +565,7 @@
         "price": 30
     },
     "food035": {
+        "id": 20030035,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food035",
@@ -531,6 +578,7 @@
         "price": 30
     },
     "food036": {
+        "id": 20030036,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food036",
@@ -543,6 +591,7 @@
         "price": 30
     },
     "food037": {
+        "id": 20030037,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food037",
@@ -555,6 +604,7 @@
         "price": 30
     },
     "food038": {
+        "id": 20030038,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food038",
@@ -567,6 +617,7 @@
         "price": 30
     },
     "food039": {
+        "id": 20030039,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "food039",
@@ -579,6 +630,7 @@
         "price": 30
     },
     "foodboss000": {
+        "id": 20040000,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss000",
@@ -591,6 +643,7 @@
         "price": 30
     },
     "foodboss001": {
+        "id": 20040001,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss001",
@@ -603,6 +656,7 @@
         "price": 30
     },
     "foodboss002": {
+        "id": 20040002,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss002",
@@ -615,6 +669,7 @@
         "price": 30
     },
     "foodboss003": {
+        "id": 20040003,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss003",
@@ -627,6 +682,7 @@
         "price": 30
     },
     "foodboss004": {
+        "id": 20040004,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss004",
@@ -639,6 +695,7 @@
         "price": 30
     },
     "foodboss005": {
+        "id": 20040005,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss005",
@@ -651,6 +708,7 @@
         "price": 30
     },
     "foodboss006": {
+        "id": 20040006,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss006",
@@ -663,6 +721,7 @@
         "price": 30
     },
     "foodboss007": {
+        "id": 20040007,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss007",
@@ -675,6 +734,7 @@
         "price": 30
     },
     "foodboss008": {
+        "id": 20040008,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss008",
@@ -687,6 +747,7 @@
         "price": 30
     },
     "foodboss009": {
+        "id": 20040009,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss009",
@@ -699,6 +760,7 @@
         "price": 30
     },
     "foodboss010": {
+        "id": 20040010,
         "nameCn":"未知食物",
         "nameEn": "",
         "resName": "foodboss010",
@@ -711,6 +773,7 @@
         "price": 30
     },
     "goods001": {
+        "id": 20050001,
         "nameCn":"加糖可乐",
         "nameEn": "",
         "resName": "goods001",
@@ -723,6 +786,7 @@
         "price": 420
     },
     "goods002": {
+        "id": 20050002,
         "nameCn":"冰红茶",
         "nameEn": "",
         "resName": "goods002",
@@ -735,6 +799,7 @@
         "price": 220
     },
     "goods003": {
+        "id": 20050003,
         "nameCn":"超冰雪碧",
         "nameEn": "",
         "resName": "goods003",
@@ -747,6 +812,7 @@
         "price": 320
     },
     "goods004": {
+        "id": 20050004,
         "nameCn":"超苦乌龙茶",
         "nameEn": "",
         "resName": "goods004",
@@ -759,6 +825,7 @@
         "price": 320
     },
     "goods005": {
+        "id": 20050005,
         "nameCn":"苏打水",
         "nameEn": "",
         "resName": "goods005",
@@ -771,6 +838,7 @@
         "price": 20
     },
     "goods006": {
+        "id": 20050006,
         "nameCn":"气泡水",
         "nameEn": "",
         "resName": "goods006",
@@ -783,6 +851,7 @@
         "price": 420
     },
     "goods007": {
+        "id": 20050007,
         "nameCn":"橙子味汽水",
         "nameEn": "",
         "resName": "goods007",
@@ -795,6 +864,7 @@
         "price": 320
     },
     "goods008": {
+        "id": 20050008,
         "nameCn":"无糖可乐",
         "nameEn": "",
         "resName": "goods008",
@@ -807,6 +877,7 @@
         "price": 420
     },
     "goods009": {
+        "id": 20050009,
         "nameCn":"红蓝可乐",
         "nameEn": "",
         "resName": "goods009",
@@ -819,6 +890,7 @@
         "price": 420
     },
     "goods010": {
+        "id": 20050010,
         "nameCn":"加糖凉茶",
         "nameEn": "",
         "resName": "goods010",
@@ -831,6 +903,7 @@
         "price": 420
     },
     "goods011": {
+        "id": 20050011,
         "nameCn":"清新绿茶",
         "nameEn": "",
         "resName": "goods011",
@@ -843,6 +916,7 @@
         "price": 220
     },
     "goods012": {
+        "id": 20050012,
         "nameCn":"纯净水",
         "nameEn": "",
         "resName": "goods012",
@@ -855,6 +929,7 @@
         "price": 20
     },
     "goods013": {
+        "id": 20050013,
         "nameCn":"矿泉水",
         "nameEn": "",
         "resName": "goods013",
@@ -867,6 +942,7 @@
         "price": 1020
     },
     "goods014": {
+        "id": 20050014,
         "nameCn":"椰汁",
         "nameEn": "",
         "resName": "goods014",
@@ -879,6 +955,7 @@
         "price": 220
     },
     "goods015": {
+        "id": 20050015,
         "nameCn":"啤酒",
         "nameEn": "",
         "resName": "goods015",
@@ -891,6 +968,7 @@
         "price": 1020
     },
     "goods100": {
+        "id": 20060000,
         "nameCn":"牛肉泡面",
         "nameEn": "",
         "resName": "goods100",
@@ -903,6 +981,7 @@
         "price": 260
     },
     "goods101": {
+        "id": 20060001,
         "nameCn":"麻辣泡面",
         "nameEn": "",
         "resName": "goods101",
@@ -915,6 +994,7 @@
         "price": 260
     },
     "goods102": {
+        "id": 20060002,
         "nameCn":"香菇泡面",
         "nameEn": "",
         "resName": "goods102",
@@ -927,6 +1007,7 @@
         "price": 260
     },
     "goods103": {
+        "id": 20060003,
         "nameCn":"酸菜泡面",
         "nameEn": "",
         "resName": "goods103",
@@ -939,6 +1020,7 @@
         "price": 260
     },
     "goods104": {
+        "id": 20060004,
         "nameCn":"黄瓜味薯片",
         "nameEn": "",
         "resName": "goods104",
@@ -951,6 +1033,7 @@
         "price": 320
     },
     "goods105": {
+        "id": 20060005,
         "nameCn":"原味薯片",
         "nameEn": "",
         "resName": "goods105",
@@ -963,6 +1046,7 @@
         "price": 320
     },
     "goods106": {
+        "id": 20060006,
         "nameCn":"牛肉味薯片",
         "nameEn": "",
         "resName": "goods106",
@@ -975,6 +1059,7 @@
         "price": 320
     },
     "goods107": {
+        "id": 20060007,
         "nameCn":"饭团",
         "nameEn": "",
         "resName": "goods107",
@@ -987,6 +1072,7 @@
         "price": 600
     },
     "goods108": {
+        "id": 20060008,
         "nameCn":"三明治",
         "nameEn": "",
         "resName": "goods108",
@@ -999,6 +1085,7 @@
         "price": 60
     },
     "goods109": {
+        "id": 20060009,
         "nameCn":"寿司",
         "nameEn": "",
         "resName": "goods109",
@@ -1011,6 +1098,7 @@
         "price": 460
     },
     "goods110": {
+        "id": 20060010,
         "nameCn":"牛肉拌面",
         "nameEn": "",
         "resName": "goods110",
@@ -1023,6 +1111,7 @@
         "price": 360
     },
     "goods111": {
+        "id": 20060011,
         "nameCn":"夹心饼干",
         "nameEn": "",
         "resName": "goods111",
@@ -1035,6 +1124,7 @@
         "price": 320
     },
     "goods112": {
+        "id": 20060012,
         "nameCn":"巧克力棒",
         "nameEn": "",
         "resName": "goods112",

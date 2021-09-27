@@ -14,6 +14,7 @@ import BaseData from "./BaseData";
 
 export default class EquipmentData extends BaseData{
     uuid:string = '';//唯一标识，用来存档
+    id:number = 10000000;//装备类型id，用来排序前四位为大类别后四位为装备贴图id
     pos:cc.Vec3 = cc.v3(0,0);//下标
     nameCn: string = '';
     nameEn: string = '';
@@ -101,6 +102,7 @@ export default class EquipmentData extends BaseData{
             return;
         }
         this.uuid = data.uuid?data.uuid:'';
+        this.id = data.id?data.id:10000000;
         this.pos = data.pos?cc.v3(data.pos.x,data.pos.y):cc.v3(0,0);
         this.common.valueCopy(data.common);
         this.nameCn = data.nameCn?data.nameCn:'';
@@ -176,6 +178,7 @@ export default class EquipmentData extends BaseData{
     public clone():EquipmentData{
         let e = new EquipmentData();
         e.uuid = this.uuid;
+        e.id = this.id;
         e.pos = this.pos;
         e.common = this.common.clone();
         e.nameCn = this.nameCn;
