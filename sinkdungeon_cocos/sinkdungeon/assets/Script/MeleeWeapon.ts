@@ -458,7 +458,6 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
     updateLogic(dt: number) {
-        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5);
         let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = pos;
@@ -466,6 +465,7 @@ export default class MeleeWeapon extends cc.Component {
         if (!this.isAttacking) {
             this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
         }
+        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5);
 
     }
 
@@ -482,6 +482,11 @@ export default class MeleeWeapon extends cc.Component {
         this.currentAngle = Utils.getRotateAngle(direction, this.node.scaleX < 0);
         if(this.currentAngle<0){
             this.currentAngle+=360;
+        }
+        if(this.currentAngle>=0&&this.currentAngle<=90&&this.node.angle>=225&&this.node.angle<=360){
+            this.node.angle-=360;
+        }else if(this.node.angle>=0&&this.node.angle<=90&&this.currentAngle>=225&&this.currentAngle<=360){
+            this.node.angle+=360;
         }
     }
 

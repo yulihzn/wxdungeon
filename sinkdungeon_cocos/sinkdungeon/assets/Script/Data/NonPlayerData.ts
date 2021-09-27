@@ -25,7 +25,7 @@ export default class NonPlayerData {
     melee: number = 0;//是否近战大于0 近战会接近目标 数字代表CD
     dash: number = 0;//是否冲刺大于0 当距离够的时候会发起冲刺，往目标地点冲刺进行撞击 数字代表CD
     disguise: number = 0;//是否伪装大于0,数值为距离 伪装状态下不能移动和攻击，当接近的时候会恢复 
-    sizeType: number = 0;//1正常 怪物大小
+    scale: number = 0;//1正常 怪物大小
     bulletType: string = '';//子弹类型
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
@@ -124,7 +124,7 @@ export default class NonPlayerData {
         this.dash = data.dash ? data.dash : 0;
         this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(0, 0);
         this.disguise = data.disguise ? data.disguise : 0;
-        this.sizeType = data.sizeType ? data.sizeType : 0;
+        this.scale = data.scale ? data.scale : 0;
         this.bulletType = data.bulletType;
         this.bulletArcExNum = data.bulletArcExNum ? data.bulletArcExNum : 0;
         this.bulletLineExNum = data.bulletLineExNum ? data.bulletLineExNum : 0;
@@ -178,7 +178,7 @@ export default class NonPlayerData {
         e.dash = this.dash;
         e.pos = this.pos;
         e.disguise = this.disguise;
-        e.sizeType = this.sizeType;
+        e.scale = this.scale;
         e.bulletType = this.bulletType;
         e.bulletArcExNum = this.bulletArcExNum;
         e.bulletLineExNum = this.bulletLineExNum;

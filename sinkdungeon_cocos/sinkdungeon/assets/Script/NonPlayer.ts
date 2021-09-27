@@ -1103,7 +1103,7 @@ export default class NonPlayer extends Actor {
     }
 
     getScaleSize(): number {
-        let scaleNum = this.data.sizeType && this.data.sizeType > 0 ? this.data.sizeType : 1;
+        let scaleNum = this.data.scale && this.data.scale > 0 ? this.data.scale : 1;
         let sn = this.IsVariation ? NonPlayer.SCALE_NUM * scaleNum : scaleNum;
         return sn;
     }
