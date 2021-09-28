@@ -9,7 +9,7 @@
   "genMipmaps": false,
   "packable": true,
   "width": 1024,
-  "height": 1024,
+  "height": 512,
   "platformSettings": {},
   "subMetas": {}
 }

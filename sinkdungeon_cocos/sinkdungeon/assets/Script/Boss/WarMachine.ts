@@ -159,7 +159,7 @@ export default class WarMachine extends Boss {
         }
         this.isMainGunCoolDown = true;
         this.anim.play('WarMachineMainGunShoot');
-        this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 5);
+        this.scheduleOnce(() => { this.isMainGunCoolDown = false; }, 3);
     }
     //Anim
     MainGunShootFinish() {
@@ -206,7 +206,7 @@ export default class WarMachine extends Boss {
         this.shooter05.data.bulletLineInterval = 0.5;
         this.fireShooter(this.shooter04, "bullet015", 2, isHalf ? 1 : 0);
         this.fireShooter(this.shooter05, "bullet015", 2, isHalf ? 1 : 0);
-        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, isHalf ? 4 : 8);
+        this.scheduleOnce(() => { this.isMissileCoolDown = false; }, isHalf ? 2 : 4);
     }
     fireShooter(shooter: Shooter, bulletType: string, bulletArcExNum: number, bulletLineExNum: number, angle?: number, defaultPos?: cc.Vec3): void {
         shooter.dungeon = this.dungeon;

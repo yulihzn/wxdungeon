@@ -291,7 +291,7 @@ export default class ProfessionTalent extends Talent {
         }
         let monster = actor.getComponent(NonPlayer);
         let boss = actor.getComponent(Boss);
-        if (monster && monster.data.isTest < 1) {
+        if (monster && monster.data.noLoot < 1) {
             return true;
         }
         if (boss) {
@@ -308,7 +308,7 @@ export default class ProfessionTalent extends Talent {
         }
         let monster = node.getComponent(NonPlayer);
         let boss = node.getComponent(Boss);
-        if (monster && monster.data.isTest < 1) {
+        if (monster && monster.data.noLoot < 1) {
             monster.getLoot();
         }
         if (boss) {

@@ -46,15 +46,25 @@ export default class Inventory extends cc.Component {
     @property(cc.Sprite)
     cloak: cc.Sprite = null;
     @property(cc.Sprite)
-    item1: cc.Sprite = null;
+    itemsprite1: cc.Sprite = null;
     @property(cc.Sprite)
-    item2: cc.Sprite = null;
+    itemsprite2: cc.Sprite = null;
     @property(cc.Sprite)
-    item3: cc.Sprite = null;
+    itemsprite3: cc.Sprite = null;
     @property(cc.Sprite)
-    item4: cc.Sprite = null;
+    itemsprite4: cc.Sprite = null;
     @property(cc.Sprite)
-    item5: cc.Sprite = null;
+    itemsprite5: cc.Sprite = null;
+    @property(cc.Label)
+    itemlabel1: cc.Label = null;
+    @property(cc.Label)
+    itemlabel2: cc.Label = null;
+    @property(cc.Label)
+    itemlabel3: cc.Label = null;
+    @property(cc.Label)
+    itemlabel4: cc.Label = null;
+    @property(cc.Label)
+    itemlabel5: cc.Label = null;
 
     @property(cc.Prefab)
     equipmentAndItemDialogPrefab:cc.Prefab = null;
@@ -173,9 +183,10 @@ export default class Inventory extends cc.Component {
             this.refreshEquipment(this.inventoryManager.equips[key], true);
         }
         this.refreshItemRes();
-        let itemSpriteList = [this.item1, this.item2, this.item3, this.item4, this.item5];
-        for (let i = 0; i < itemSpriteList.length; i++) {
-            this.addItemSpriteTouchEvent(itemSpriteList[i], i);
+        let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5];
+        let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5];
+        for (let i = 0; i < itemLabelList.length; i++) {
+            this.addItemSpriteTouchEvent(itemSpriteList[i],itemLabelList[i].node.parent, i);
         }
         this.refreshSuits();
     }
@@ -199,10 +210,10 @@ export default class Inventory extends cc.Component {
             this.equipmentAndItemDialog.hideDialog();
         })
     }
-    private addItemSpriteTouchEvent(sprite: cc.Sprite, itemIndex: number) {
+    private addItemSpriteTouchEvent(sprite: cc.Sprite, node:cc.Node,itemIndex: number) {
         let isLongPress = false;
         let touchStart = false;
-        sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_START, () => {
+        node.on(cc.Node.EventType.TOUCH_START, () => {
             if (sprite.spriteFrame == null) {
                 return;
             }
@@ -216,12 +227,12 @@ export default class Inventory extends cc.Component {
                 if (item.resName == Item.EMPTY) {
                     return;
                 }
-                let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
+                let pos = this.node.convertToNodeSpaceAR(node.convertToWorldSpaceAR(cc.Vec3.ZERO));
                 this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,item,null,null,null,EquipmentAndItemDialog.BG_TYPE_ARROW_LEFT);
             }, 0.3)
 
         })
-        sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_END, () => {
+        node.on(cc.Node.EventType.TOUCH_END, () => {
             this.equipmentAndItemDialog.hideDialog();
             if (!isLongPress) {
                 this.userItem(sprite.node, itemIndex);
@@ -229,7 +240,7 @@ export default class Inventory extends cc.Component {
             touchStart = false;
             isLongPress = false;
         })
-        sprite.node.parent.parent.on(cc.Node.EventType.TOUCH_CANCEL, () => {
+        node.on(cc.Node.EventType.TOUCH_CANCEL, () => {
             this.equipmentAndItemDialog.hideDialog();
             touchStart = false;
             isLongPress = false;
@@ -578,11 +589,12 @@ export default class Inventory extends cc.Component {
         this.refreshItemRes();
     }
     private refreshItemRes() {
-        let itemSpriteList = [this.item1, this.item2, this.item3, this.item4, this.item5];
+        let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5];
+        let itemLabelList = [this.itemlabel1, this.itemlabel2, this.itemlabel3, this.itemlabel4, this.itemlabel5];
         for (let i = 0; i < itemSpriteList.length; i++) {
             let item = this.inventoryManager.itemList[i];
             itemSpriteList[i].spriteFrame = Logic.spriteFrameRes(item.resName);
-            itemSpriteList[i].node.parent.parent.getComponentInChildren(cc.Label).string = `${item.count > 0 ? ('x' + item.count) : ''}`;
+            itemLabelList[i].string = `${item.count > 0 ? ('x' + item.count) : ''}`;
         }
     }
 

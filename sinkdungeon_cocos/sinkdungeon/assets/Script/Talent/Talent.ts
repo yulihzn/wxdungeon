@@ -120,7 +120,6 @@ export default abstract class Talent extends cc.Component {
             return;
         }
         if (this.talentSkill.IsExcuting) {
-            Utils.toast(`技能施放或者冷却中`);
             return;
         }
         if (this.player.data.currentDream >= this.data.cost&&this.skillCanUse()) {

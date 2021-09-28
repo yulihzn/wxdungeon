@@ -5,8 +5,7 @@
   "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
   "images": [],
   "folders": [
-    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/monster",
-    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/nonplayer"
+    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/npc"
   ],
   "packOptions": {
     "textureName": "npc",

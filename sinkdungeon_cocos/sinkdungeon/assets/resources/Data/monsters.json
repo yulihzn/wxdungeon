@@ -296,19 +296,17 @@
         "resName": "monster014",
         "chapter": 0,
         "stageLevel": 0,
-        "bulletType": "laser101",
         "specialAttack": 15,
-        "specialBulletArcExNum": 2,
         "common": {
-            "moveSpeed": 500,
-            "maxHealth": 10,
+            "moveSpeed": 700,
+            "maxHealth": 20,
             "damageMin": 3
         },
-        "currentHealth": 10,
-        "isLineAim": 1,
+        "currentHealth": 20,
+        "isLineAim": 0,
         "invisible": 0,
-        "remote": 3,
-        "melee": 0,
+        "remote": 0,
+        "melee": 3,
         "boxType": 0,
         "dash": 0
     },
@@ -353,6 +351,7 @@
         },
         "currentHealth": 99999,
         "invisible": 0,
+        "noLoot":1,
         "remote": 0,
         "melee": 0,
         "boxType": 1,
@@ -802,9 +801,32 @@
         "remote": 0,
         "melee": 2,
         "flee": 0,
+        "noLoot":1,
         "blink": 3,
         "scale": 1,
         "boxType": 2,
+        "dash": 0
+    },
+    "monster036": {
+        "nameCn": "激光机器人",
+        "nameEn": "Laser Drone",
+        "resName": "monster036",
+        "chapter": 0,
+        "stageLevel": 0,
+        "bulletType": "laser101",
+        "specialAttack": 15,
+        "specialBulletArcExNum": 2,
+        "common": {
+            "moveSpeed": 500,
+            "maxHealth": 10,
+            "damageMin": 3
+        },
+        "currentHealth": 10,
+        "isLineAim": 1,
+        "invisible": 0,
+        "remote": 3,
+        "melee": 0,
+        "boxType": 0,
         "dash": 0
     }
 }

@@ -37,4 +37,7 @@ export default class Game extends cc.Component {
         }
         return this.hudBase;
     }
+    update(dt){
+        this.node;
+    }
 }

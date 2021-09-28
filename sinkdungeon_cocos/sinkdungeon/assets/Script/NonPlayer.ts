@@ -725,7 +725,7 @@ export default class NonPlayer extends Actor {
         this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003);
         let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
         collider.sensor = true;
-        if (this.data.isEnemy > 0) {
+        if (this.data.isEnemy > 0&&this.data.noLoot<1) {
             this.getLoot();
         }
         Achievement.addMonsterKillAchievement(this.data.resName);

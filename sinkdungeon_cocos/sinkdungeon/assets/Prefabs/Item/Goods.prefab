@@ -505,8 +505,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 53.39,
-      "height": 54.24
+      "width": 59.4,
+      "height": 48
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -572,7 +572,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
-    "_N$cacheMode": 0,
+    "_N$cacheMode": 2,
     "_id": ""
   },
   {

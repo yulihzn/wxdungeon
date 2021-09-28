@@ -68,6 +68,7 @@ export default class NonPlayerData {
     childMode = 0;//0当前单位死亡会导致其子类一起死亡 1子类全部死亡当前单位才会死亡
     childCount = 0;//子类个数
     flee = 0;//是否逃跑类型 逃跑类型优先远离玩家
+    noLoot = 0;//是否没有掉落
     private statusTotalData: StatusData;
     private common: CommonData;
     private statusList: StatusData[];
@@ -162,6 +163,7 @@ export default class NonPlayerData {
         this.childMode = data.childMode ? data.childMode : 0;
         this.childCount = data.childCount ? data.childCount : 0;
         this.flee = data.flee ? data.flee : 0;
+        this.noLoot = data.noLoot?data.noLoot:0;
     }
     public clone(): NonPlayerData {
         let e = new NonPlayerData();
@@ -215,6 +217,7 @@ export default class NonPlayerData {
         e.childResName = this.childResName;
         e.childCount = this.childCount;
         e.flee = this.flee;
+        e.noLoot = this.noLoot;
         return e;
     }
 
