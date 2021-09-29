@@ -63,11 +63,12 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_HOLO_DEVICE = 'monster034';
     public static readonly MONSTER_HOLO = 'monster035';
     public static readonly MONSTER_LASRERDRONE = 'monster036';
+    public static readonly MONSTER_GHOST = 'monster037';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE, MonsterManager.MONSTER_ICEDEMON, MonsterManager.MONSTER_BITE_ZOMBIE
         , MonsterManager.MONSTER_HOLO_DEVICE,MonsterManager.MONSTER_LASRERDRONE];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
-        , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER];
+        , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER,MonsterManager.MONSTER_GHOST];
     public static readonly MONSTERS_FOREST = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
         , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO, MonsterManager.MONSTER_BANANA];
     public static readonly MONSTERS_PYRAMID = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE

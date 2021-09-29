@@ -64,7 +64,7 @@ export default class NonPlayer extends Actor {
     static readonly ANIM_DIED = 4;
     @property(cc.Vec3)
     pos: cc.Vec3 = cc.v3(0, 0);
-    defautPos:cc.Vec3 = cc.v3(0,0);
+    defautPos: cc.Vec3 = cc.v3(0, 0);
 
     @property(HealthBar)
     healthBar: HealthBar = null;
@@ -114,8 +114,8 @@ export default class NonPlayer extends Actor {
     animStatus = NonPlayer.ANIM_NONE;
     data: NonPlayerData = new NonPlayerData();
     leftLifeTime = 0;
-    parentNonPlayer:NonPlayer;//父类npc
-    childNonPlayerList:NonPlayer[] = [];//子类
+    parentNonPlayer: NonPlayer;//父类npc
+    childNonPlayerList: NonPlayer[] = [];//子类
 
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>;
     get IsVariation() {
@@ -177,19 +177,19 @@ export default class NonPlayer extends Actor {
         let show = true;
         let resName = 'hitlight1';
         let scale = 8;
-        let punchNames = [AudioPlayer.PUNCH,AudioPlayer.PUNCH1,AudioPlayer.PUNCH2];
-        let swordhitNames = [AudioPlayer.SWORD_HIT,AudioPlayer.SWORD_HIT1,AudioPlayer.SWORD_HIT2];
+        let punchNames = [AudioPlayer.PUNCH, AudioPlayer.PUNCH1, AudioPlayer.PUNCH2];
+        let swordhitNames = [AudioPlayer.SWORD_HIT, AudioPlayer.SWORD_HIT1, AudioPlayer.SWORD_HIT2];
         if (damage.isFist) {
             resName = Logic.getHalfChance() ? 'hitlight1' : 'hitlight2';
-            AudioPlayer.play(punchNames[Logic.getRandomNum(0,2)]);
+            AudioPlayer.play(punchNames[Logic.getRandomNum(0, 2)]);
         } else if (damage.isRemote) {
             resName = Logic.getHalfChance() ? 'hitlight9' : 'hitlight10';
         } else if (damage.isBlunt) {
             resName = Logic.getHalfChance() ? 'hitlight3' : 'hitlight4';
             scale = damage.isFar ? 10 : 8;
-            AudioPlayer.play(swordhitNames[Logic.getRandomNum(0,2)]);
+            AudioPlayer.play(swordhitNames[Logic.getRandomNum(0, 2)]);
         } else if (damage.isMelee) {
-            AudioPlayer.play(swordhitNames[Logic.getRandomNum(0,2)]);
+            AudioPlayer.play(swordhitNames[Logic.getRandomNum(0, 2)]);
             if (damage.isStab) {
                 resName = Logic.getHalfChance() ? 'hitlight5' : 'hitlight6';
                 scale = damage.isFar ? 10 : 8;
@@ -401,62 +401,81 @@ export default class NonPlayer extends Actor {
         if (this.data.attackType == ActorAttackBox.ATTACK_STAB && isMelee) {
             stabDelay = 0.8 * speedScale;
         }
-        let beforetween = cc.tween().delay(0.5 * speedScale).call(() => { if (before) { before(isSpecial); } })
+        const beforetween = cc.tween().delay(0.5 * speedScale).call(() => { if (before) { before(isSpecial); } })
 
         //摇晃
-        let shaketween = cc.tween().by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
+        const shaketween = cc.tween().by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
             .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
             .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) })
             .by(0.1, { position: cc.v3(5, 0) }).by(0.1, { position: cc.v3(-5, 0) });
 
-        let arr: string[] = [`anim009`];
-        let arrspecial: string[] = [];
+        const arrattack: string[] = [`anim009`];
+        const arrspecial: string[] = [];
         let frameIndex = 0;
-
+        const attackKeyStart = isSpecial ? this.data.specialFrameKeyStart : this.data.attackFrameKeyStart;
+        const attackKeyEnd = isSpecial ? this.data.specialFrameKeyEnd : this.data.attackFrameKeyEnd;
         while (frameIndex < this.data.attackFrames - 1) {
-            arr.push(`anim0${10 + frameIndex++}`);
+            arrattack.push(`anim0${10 + frameIndex++}`);
         }
         for (let i = 0; i < this.data.specialFrames; i++) {
             arrspecial.push(`anim0${10 + frameIndex++}`);
         }
+        const arr = isSpecial ? arrspecial : arrattack;
+        //攻击准备动画
+        const _attacktweenprepare = cc.tween().delay(0);
+        for (let i = 0; i < attackKeyStart; i++) {
+            _attacktweenprepare.then(cc.tween().delay(0.2 * speedScale).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
+        }
+        //攻击开始动画
+        const _attacktweenstart = cc.tween().delay(0);
+        for (let i = attackKeyStart; i < attackKeyEnd; i++) {
+            _attacktweenstart.then(cc.tween().delay(0.2 * speedScale).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
+        }
+        //攻击结束动画
+        const _attacktweenend = cc.tween().delay(0);
+        for (let i = attackKeyEnd; i < arr.length; i++) {
+            _attacktweenend.then(cc.tween().delay(0.2 * speedScale).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
+        }
         //退后
-        let backofftween = cc.tween().by(0.5 * speedScale, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
+        const backofftween = cc.tween().by(0.5 * speedScale, { position: cc.v3(-pos.x / 8, -pos.y / 8) }).delay(stabDelay);
         //前进
-        let forwardtween = cc.tween().by(0.2 * speedScale, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
-        let specialTypeCanMelee = this.data.specialType.length <= 0
+        const forwardtween = cc.tween().by(0.2 * speedScale, { position: cc.v3(pos.x, pos.y) }).delay(stabDelay);
+        const specialTypeCanMelee = this.data.specialType.length <= 0
             || this.data.specialType == SpecialManager.AFTER_ASH;
-
-        let attackpreparetween = cc.tween().call(() => {
-            this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[0] : arr[0]);
+        const attackpreparetween = cc.tween().call(() => {
+            //展示近战提示框
             if (isMelee && !isSpecial || (isSpecial && isMelee && specialTypeCanMelee)) {
                 this.dangerBox.show(this.data.attackType, isSpecial, this.data.boxType == 5, pos);
             }
             if (isSpecial) {
-
-                if (this.data.specialType == SpecialManager.AFTER_DOWN) {
+                //展示特殊冲刺提示框
+                if (this.data.specialDash > 0) {
                     this.dangerBox.show(ActorAttackBox.ATTACK_STAB, false, false, pos);
                 }
+                //延迟添加特殊物体
                 this.scheduleOnce(() => {
-                    if(!this.sc.isDied){
+                    if (!this.sc.isDied) {
                         this.specialManager.dungeon = this.dungeon;
                         this.specialManager.addEffect(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.IsVariation);
                     }
                 }, this.data.specialDelay);
             }
         });
-
-        let attackingtween = cc.tween().call(() => {
-            this.changeBodyRes(this.data.resName, isSpecial ? arrspecial[1] : arr[1]);
+        const attackingtween = cc.tween().call(() => {
+            //隐藏近战提示
             this.dangerBox.hide(isMiss);
+            //普通冲刺
             if (isMelee && !isSpecial || isSpecial && this.data.specialType.length <= 0) {
                 if (this.data.attackType == ActorAttackBox.ATTACK_STAB) {
                     this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), isSpecial ? 600 : 300);
                 }
             }
             if (isSpecial) {
-                if (this.data.specialType == SpecialManager.AFTER_DOWN) {
-                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), 300);
+                //特殊冲刺
+                if (this.data.specialDash > 0) {
+                    this.move(cc.v3(this.isFaceRight ? this.dangerBox.hv.x : -this.dangerBox.hv.x, this.dangerBox.hv.y), this.data.specialDash);
                 }
+                //延迟添加特殊物体
                 this.scheduleOnce(() => {
                     this.specialManager.dungeon = this.dungeon;
                     this.specialManager.addPlacement(this.data.specialType, this.data.specialDistance, this.isFaceRight, FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed), this.IsVariation);
@@ -465,45 +484,35 @@ export default class NonPlayer extends Actor {
             if (attacking) {
                 attacking(isSpecial);
             }
-
         });
-        let attackback = cc.tween().call(() => {
+        const attackback = cc.tween().call(() => {
             this.dangerBox.finish();
         });
-        for (let i = 2; i < arr.length; i++) {
-            attackback.then(cc.tween().delay(0.2 * speedScale).call(() => { this.changeBodyRes(this.data.resName, arr[i]); }));
-        }
-        let attackbackspecial = cc.tween().call(() => {
-            this.dangerBox.finish();
-        });
-        for (let i = 2; i < arrspecial.length; i++) {
-            attackbackspecial.then(cc.tween().delay(0.2 * speedScale).call(() => { this.changeBodyRes(this.data.resName, arrspecial[i]); }));
-        }
-        let attackfinish = cc.tween().delay(0.2 * speedScale).call(() => {
+        const attackfinish = cc.tween().delay(0.2 * speedScale).call(() => {
             this.dangerBox.finish();
             this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000);
             this.setLinearVelocity(cc.Vec2.ZERO);
         });
-        let aftertween = cc.tween().to(0.2 * speedScale, { position: cc.v3(0, 0) }).delay(0.2 * speedScale).call(() => {
+        const aftertween = cc.tween().to(0.2 * speedScale, { position: cc.v3(0, 0) }).delay(0.2 * speedScale).call(() => {
             if (finish) { finish(isSpecial); }
         })
-        //普通近战 准备 退后 出击 前进 回招 结束
-        let normalMelee = cc.tween().then(attackpreparetween).then(backofftween)
-            .then(attackingtween).then(forwardtween).then(attackback).then(attackfinish);
-        //普通远程 准备 出击 回招 结束
-        let normalRemote = cc.tween().then(attackpreparetween).delay(0.5 * speedScale)
-            .then(attackingtween).delay(0.2 * speedScale).then(attackback).then(attackfinish);
+        //普通近战 准备 退后且帧动画 出击前进且帧动画 回招且帧动画 结束
+        const normalMelee = cc.tween().then(attackpreparetween).then(_attacktweenprepare).then(backofftween)
+            .parallel(attackingtween, _attacktweenstart, forwardtween)
+            .parallel(attackback, _attacktweenend).then(attackfinish);
+        //普通远程 准备 帧动画 延迟出击 回招且帧动画 结束
+        const normalRemote = cc.tween().then(attackpreparetween).then(_attacktweenprepare)
+            .parallel(attackingtween, _attacktweenstart)
+            .parallel(attackback, _attacktweenend).then(attackfinish);
         //特殊近战 准备 退后 摇晃 出击 前进 回招 结束
-        let specialMelee = cc.tween().then(attackpreparetween).then(backofftween)
-            .then(shaketween).then(attackingtween).then(forwardtween).then(attackbackspecial).then(attackfinish);
+        const specialMelee = cc.tween().then(attackpreparetween).then(_attacktweenprepare).then(backofftween).then(shaketween)
+            .parallel(attackingtween, _attacktweenstart, forwardtween)
+            .parallel(attackback, _attacktweenend).then(attackfinish);
         //特殊远程 准备 摇晃 出击 回招 结束
-        let specialRemote = cc.tween().then(attackpreparetween).then(shaketween)
-            .then(attackingtween).delay(0.5 * speedScale).then(attackbackspecial).then(attackfinish);
+        const specialRemote = cc.tween().then(attackpreparetween).parallel(shaketween, _attacktweenprepare)
+            .parallel(attackingtween, _attacktweenstart).parallel(attackback, _attacktweenend).then(attackfinish);
 
-        let allAction = cc.tween().then(beforetween).then(normalRemote).then(aftertween);
-        if (isMelee) {
-            allAction = cc.tween().then(beforetween).then(normalMelee).then(aftertween);
-        }
+        let allAction = cc.tween().then(beforetween).then(isMelee ? normalMelee : normalRemote).then(aftertween);
         if (isSpecial) {
             this.showDangerTips();
             AudioPlayer.play(this.data.specialAudio);
@@ -621,8 +630,8 @@ export default class NonPlayer extends Actor {
             this.dangerBox.finish();
         }
         if (isHurting) {
-            let hitNames = [AudioPlayer.MONSTER_HIT,AudioPlayer.MONSTER_HIT1,AudioPlayer.MONSTER_HIT2];
-            AudioPlayer.play(hitNames[Logic.getRandomNum(0,2)]);
+            let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+            AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
             this.hitLight(true);
             this.hitLightS(damageData);
             if (damageData.isBackAttack) {
@@ -725,7 +734,7 @@ export default class NonPlayer extends Actor {
         this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003);
         let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
         collider.sensor = true;
-        if (this.data.isEnemy > 0&&this.data.noLoot<1) {
+        if (this.data.isEnemy > 0 && this.data.noLoot < 1) {
             this.getLoot();
         }
         Achievement.addMonsterKillAchievement(this.data.resName);
@@ -772,8 +781,8 @@ export default class NonPlayer extends Actor {
             if (this.killPlayerCount > 0) {
                 count = 5;
             }
-            if(this.dungeon.player.data.StatusTotalData.exOilGold>0){
-                count+=this.dungeon.player.data.StatusTotalData.exOilGold;
+            if (this.dungeon.player.data.StatusTotalData.exOilGold > 0) {
+                count += this.dungeon.player.data.StatusTotalData.exOilGold;
             }
             EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count });
             if (rand < percent) {
@@ -945,11 +954,11 @@ export default class NonPlayer extends Actor {
         }
 
         //相隔指定长度的时候需要停下来，否则执行移动操作
-        
-        if(!this.isPassive){
+
+        if (!this.isPassive) {
             let needStop = (this.data.melee > 0 && targetDis < 64)
-            || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300)
-            || this.shooter.isAiming;
+                || (this.data.remote > 0 && this.data.melee <= 0 && targetDis < 300)
+                || this.shooter.isAiming;
             if (needStop) {
                 this.sc.isMoving = false;
             } else {
@@ -962,15 +971,15 @@ export default class NonPlayer extends Actor {
                     if (isTracking) {
                         pos = this.getMovePosFromTarget(target);
                     }
-                    if(this.data.flee>0){
-                        pos = this.getMovePosFromTarget(target,true);
-                        pos = cc.v3(-pos.x,-pos.y);
+                    if (this.data.flee > 0) {
+                        pos = this.getMovePosFromTarget(target, true);
+                        pos = cc.v3(-pos.x, -pos.y);
                     }
                     this.move(pos, isTracking ? speed * 0.5 : speed);
                 }, isTracking ? 0.5 : 2, true);
             }
         }
-        
+
         //隐匿
         if (this.data.invisible > 0 && this.sprite.opacity > 20) {
             this.sprite.opacity = this.lerp(this.sprite.opacity, 19, dt * 3);
@@ -982,7 +991,7 @@ export default class NonPlayer extends Actor {
         if (this.sc.isDashing) {
             this.setLinearVelocity(this.currentlinearVelocitySpeed);
         }
-        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO)&&!this.isPassive) {
+        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO) && !this.isPassive) {
             this.sc.isMoving = false;
         }
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
@@ -1010,45 +1019,45 @@ export default class NonPlayer extends Actor {
         if (this.attrNode) {
             this.attrNode.opacity = this.healthBar.node.opacity;
         }
-        if(this.data.isTest>0&&this.isTestResetTimeDelay(dt)&&!this.isPassive){
+        if (this.data.isTest > 0 && this.isTestResetTimeDelay(dt) && !this.isPassive) {
             this.pos = this.defautPos.clone();
             this.updatePlayerPos();
         }
-        if(this.parentNonPlayer){
+        if (this.parentNonPlayer) {
             this.graphics.clear();
-            this.graphics.strokeColor = cc.color(0,255,0,128);
+            this.graphics.strokeColor = cc.color(0, 255, 0, 128);
             this.graphics.lineWidth = 5;
-            if(this.parentNonPlayer.data.childMode==0&&this.parentNonPlayer.sc.isDied){
+            if (this.parentNonPlayer.data.childMode == 0 && this.parentNonPlayer.sc.isDied) {
                 this.data.currentHealth = 0;
-            }else{
-                this.graphics.moveTo(0,32);
-                let pos = cc.v3(this.parentNonPlayer.node.position.x-this.node.position.x,this.parentNonPlayer.node.position.y-this.node.position.y);
-                this.graphics.lineTo(this.node.scaleX>0?pos.x:-pos.x,pos.y+32);
+            } else {
+                this.graphics.moveTo(0, 32);
+                let pos = cc.v3(this.parentNonPlayer.node.position.x - this.node.position.x, this.parentNonPlayer.node.position.y - this.node.position.y);
+                this.graphics.lineTo(this.node.scaleX > 0 ? pos.x : -pos.x, pos.y + 32);
                 this.graphics.stroke();
             }
         }
-        if(this.data.childMode == 1&&this.childNonPlayerList.length>0){
+        if (this.data.childMode == 1 && this.childNonPlayerList.length > 0) {
             let count = 0;
-            for(let n of this.childNonPlayerList){
-                if(n.sc.isDied){
+            for (let n of this.childNonPlayerList) {
+                if (n.sc.isDied) {
                     count++;
                 }
             }
-            if(count == this.childNonPlayerList.length){
+            if (count == this.childNonPlayerList.length) {
                 this.data.currentHealth = 0;
             }
         }
 
     }
-    getMovePosFromTarget(target: Actor,isFlee?:boolean): cc.Vec3 {
+    getMovePosFromTarget(target: Actor, isFlee?: boolean): cc.Vec3 {
         let newPos = cc.v3(0, 0);
         newPos.x += Logic.getRandomNum(0, 400) - 200;
         newPos.y += Logic.getRandomNum(0, 400) - 200;
-        if(!ActorUtils.isTargetAlive(target)){
+        if (!ActorUtils.isTargetAlive(target)) {
             return newPos;
         }
         newPos = target.node.position.clone();
-        if(isFlee){//保证逃跑的时候不碰到死角
+        if (isFlee) {//保证逃跑的时候不碰到死角
             if (newPos.y > this.node.position.y) {
                 newPos = newPos.addSelf(cc.v3(0, -128));
             } else {
@@ -1065,7 +1074,7 @@ export default class NonPlayer extends Actor {
         } else {
             newPos = newPos.addSelf(cc.v3(-32, 0));
         }
-        
+
         let pos = newPos.sub(this.node.position);
         if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isStatic < 1) {
             this.changeFaceRight(target);

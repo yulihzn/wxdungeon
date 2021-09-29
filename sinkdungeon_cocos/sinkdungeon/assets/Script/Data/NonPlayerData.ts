@@ -46,6 +46,7 @@ export default class NonPlayerData {
     specialBulletArcExNum = 0;//特殊额外扇形喷射子弹数量,为0的时候不计入,最大18
     specialBulletLineExNum = 0;//特殊额外线性喷射子弹数量，为0的时候不计入
     specialDelay = 0;//特殊攻击延迟放置时间
+    specialDash = 0;//特殊攻击是否冲刺
     bodyColor = '#ffffff';
     pos: cc.Vec3 = cc.v3(0, 0);
     currentHealth: number = 0;
@@ -61,6 +62,10 @@ export default class NonPlayerData {
     reborn = 0;//是否是房间重生的数字代表重生等级
     attackFrames = 2;//攻击帧数
     specialFrames = 2;//特殊攻击帧数
+    attackFrameKeyStart = 1;//攻击关键帧开始下标,默认0是准备帧
+    specialFrameKeyStart = 1;//特殊攻击关键帧开始下标,默认0是准备帧
+    attackFrameKeyEnd = 2;//攻击关键帧结束下标,默认2是结束，常规有些单位没有2
+    specialFrameKeyEnd = 2;//特殊攻击关键帧结束下标
     remoteAudio = '';//远程音效
     specialAudio = "";//特殊攻击音效 
     isPet = 0;//是否是宠物
@@ -145,6 +150,7 @@ export default class NonPlayerData {
         this.specialBulletArcExNum = data.specialBulletArcExNum ? data.specialBulletArcExNum : 0;
         this.specialBulletLineExNum = data.specialBulletLineExNum ? data.specialBulletLineExNum : 0;
         this.specialDelay = data.specialDelay ? data.specialDelay : 0;
+        this.specialDash = data.specialDash ? data.specialDash : 0;
         this.boxType = data.boxType ? data.boxType : 0;
         this.attackType = data.attackType ? data.attackType : 0;
         this.isRecovery = data.isRecovery ? data.isRecovery : 0;
@@ -155,6 +161,10 @@ export default class NonPlayerData {
         this.reborn = data.reborn ? data.reborn : 0;
         this.attackFrames = data.attackFrames ? data.attackFrames : 2;
         this.specialFrames = data.specialFrames ? data.specialFrames : 2;
+        this.attackFrameKeyStart = data.attackFrameKeyStart?data.attackFrameKeyStart:1;
+        this.specialFrameKeyStart = data.specialFrameKeyStart?data.specialFrameKeyStart:1;
+        this.attackFrameKeyEnd = data.attackFrameKeyEnd?data.attackFrameKeyEnd:2;
+        this.specialFrameKeyEnd = data.specialFrameKeyEnd?data.specialFrameKeyEnd:2;
         this.bodyColor = data.bodyColor ? data.bodyColor : '#ffffff';
         this.remoteAudio = data.remoteAudio ? data.remoteAudio : '';
         this.specialAudio = data.specialAudio ? data.specialAudio : '';
@@ -200,6 +210,7 @@ export default class NonPlayerData {
         e.specialBulletArcExNum = this.specialBulletArcExNum;
         e.specialBulletLineExNum = this.specialBulletLineExNum;
         e.specialDelay = this.specialDelay;
+        e.specialDash = this.specialDash;
         e.boxType = this.boxType;
         e.attackType = this.attackType;
         e.isRecovery = this.isRecovery;
@@ -218,6 +229,12 @@ export default class NonPlayerData {
         e.childCount = this.childCount;
         e.flee = this.flee;
         e.noLoot = this.noLoot;
+        e.specialFrameKeyStart = this.specialFrameKeyStart;
+        e.attackFrameKeyStart = this.attackFrameKeyStart;
+        e.specialFrameKeyEnd = this.specialFrameKeyEnd;
+        e.attackFrameKeyEnd = this.attackFrameKeyEnd;
+        e.attackFrames = this.attackFrames;
+        e.specialFrames = this.specialFrames;
         return e;
     }
 

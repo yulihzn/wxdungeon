@@ -124,9 +124,6 @@ export default abstract class Talent extends cc.Component {
         }
         if (this.player.data.currentDream >= this.data.cost&&this.skillCanUse()) {
             let cooldown = this.data.cooldown;
-            if(this.talentSkill.IsInCooling){
-                Utils.toast(`技能冷却中`)
-            }
             this.talentSkill.next(() => {
                 this.talentSkill.IsExcuting = true;
                 this.player.updateDream(this.data.cost);

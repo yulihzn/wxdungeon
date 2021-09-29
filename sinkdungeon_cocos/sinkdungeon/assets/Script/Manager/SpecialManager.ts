@@ -47,6 +47,7 @@ export default class SpecialManager extends cc.Component {
     dungeon: Dungeon;
     clear(): void {
     }
+    
     addPlacement(placeType: string, distance: number, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         if (!this.dungeon) {
             return;

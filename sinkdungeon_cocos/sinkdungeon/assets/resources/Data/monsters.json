@@ -712,6 +712,7 @@
         "specialAttack": 10,
         "specialType": "special032",
         "specialDelay": 0.7,
+        "specialDash":300,
         "specialAudio": "ZOMBIE_ATTACK",
         "common": {
             "moveSpeed": 300,
@@ -827,6 +828,38 @@
         "remote": 3,
         "melee": 0,
         "boxType": 0,
+        "dash": 0
+    },
+    "monster037": {
+        "nameCn": "幽灵",
+        "nameEn": "Ghost",
+        "resName": "monster037",
+        "chapter": 0,
+        "stageLevel": 0,
+        "isLineAim": 0,
+        "specialAttack": 20,
+        "specialDash":300,
+        "common": {
+            "moveSpeed": 400,
+            "maxHealth": 50,
+            "dodge": 60,
+            "curseRate":100,
+            "damageMin": 6
+        },
+        "attackFrames": 3,
+        "specialFrames": 8,
+        "attackFrameKeyStart":4,
+        "attackFrameKeyEnd":5,
+        "currentHealth": 50,
+        "isHeavy": 1,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 2,
+        "flee": 0,
+        "noLoot":1,
+        "blink": 3,
+        "scale": 1,
+        "boxType": 2,
         "dash": 0
     }
 }
