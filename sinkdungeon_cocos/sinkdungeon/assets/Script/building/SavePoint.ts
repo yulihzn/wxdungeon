@@ -7,9 +7,9 @@
 
 import ExitData from "../data/ExitData";
 import ShadowOfSight from "../effect/ShadowOfSight";
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
-import Player from "../Player";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
+import Player from "../logic/Player";
 import Tips from "../ui/Tips";
 import AudioPlayer from "../utils/AudioPlayer";
 import Building from "./Building";

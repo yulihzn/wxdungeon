@@ -1,6 +1,6 @@
-import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
+import Dungeon from "../logic/Dungeon";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
 import Building from "./Building";
 import AudioPlayer from "../utils/AudioPlayer";
 import { ColliderTag } from "../actor/ColliderTag";

@@ -1,15 +1,15 @@
 import Boss from "./Boss";
 import DamageData from "../data/DamageData";
-import Shooter from "../Shooter";
-import Dungeon from "../Dungeon";
+import Shooter from "../logic/Shooter";
+import Dungeon from "../logic/Dungeon";
 import StatusManager from "../manager/StatusManager";
 import NextStep from "../utils/NextStep";
 import MonsterManager from "../manager/MonsterManager";
 import AudioPlayer from "../utils/AudioPlayer";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import FromData from "../data/FromData";
-import Achievement from "../Achievement";
-import Logic from "../Logic";
+import Achievement from "../logic/Achievement";
+import Logic from "../logic/Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,6 +25,9 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Sphinx extends Boss {
+    init(type: number): void {
+        throw new Error("Method not implemented.");
+    }
 
     private anim: cc.Animation;
     shooter01: Shooter;

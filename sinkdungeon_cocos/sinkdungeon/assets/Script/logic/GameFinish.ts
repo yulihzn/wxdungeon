@@ -1,7 +1,7 @@
 import Logic from "./Logic";
 import WxHelper from "./WxHelper";
 import { EventHelper } from "./EventHelper";
-import AudioPlayer from "./utils/AudioPlayer";
+import AudioPlayer from "../utils/AudioPlayer";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html

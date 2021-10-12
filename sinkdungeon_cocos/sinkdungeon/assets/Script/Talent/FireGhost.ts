@@ -1,8 +1,8 @@
-import Player from "../Player";
+import Player from "../logic/Player";
 import DamageData from "../data/DamageData";
 import StatusManager from "../manager/StatusManager";
 import FromData from "../data/FromData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
 

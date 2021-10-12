@@ -6,9 +6,9 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import GoodsData from "../data/GoodsData";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import Goods from "../item/Goods";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import Tips from "../ui/Tips";
 import Building from "./Building";
 

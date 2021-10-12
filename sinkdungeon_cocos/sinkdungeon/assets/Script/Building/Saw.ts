@@ -1,4 +1,4 @@
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import DamageData from "../data/DamageData";
 import Building from "./Building";
 import StatusManager from "../manager/StatusManager";

@@ -1,4 +1,4 @@
-import Player from "../Player";
+import Player from "../logic/Player";
 import DamageData from "../data/DamageData";
 import FromData from "../data/FromData";
 import StatusManager from "../manager/StatusManager";

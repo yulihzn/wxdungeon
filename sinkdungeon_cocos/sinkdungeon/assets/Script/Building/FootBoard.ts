@@ -1,4 +1,4 @@
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
 import { ColliderTag } from "../actor/ColliderTag";

@@ -1,12 +1,12 @@
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import Building from "./Building";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import AudioPlayer from "../utils/AudioPlayer";
 import Item from "../item/Item";
 import IndexZ from "../utils/IndexZ";
 import DamageData from "../data/DamageData";
-import Player from "../Player";
+import Player from "../logic/Player";
 import { ColliderTag } from "../actor/ColliderTag";
 import Actor from "../base/Actor";
 import Boss from "../boss/Boss";
@@ -14,7 +14,7 @@ import AvatarData from "../data/AvatarData";
 import CommonData from "../data/CommonData";
 import FromData from "../data/FromData";
 import StatusManager from "../manager/StatusManager";
-import NonPlayer from "../NonPlayer";
+import NonPlayer from "../logic/NonPlayer";
 import Box from "./Box";
 import HitBuilding from "./HitBuilding";
 

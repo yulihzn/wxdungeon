@@ -1,7 +1,7 @@
 import Boss from "../boss/Boss";
 import DamageData from "../data/DamageData";
 import IndexZ from "../utils/IndexZ";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import HitBuilding from "../building/HitBuilding";
 import AreaOfEffectData from "../data/AreaOfEffectData";
 import { ColliderTag } from "./ColliderTag";

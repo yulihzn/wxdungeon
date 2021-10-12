@@ -1,15 +1,15 @@
 import Boss from "./Boss";
 import DamageData from "../data/DamageData";
-import HealthBar from "../HealthBar";
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
-import Dungeon from "../Dungeon";
+import HealthBar from "../logic/HealthBar";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
+import Dungeon from "../logic/Dungeon";
 import SlimeVenom from "./SlimeVenom";
 import MonsterManager from "../manager/MonsterManager";
 import NextStep from "../utils/NextStep";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 import Item from "../item/Item";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
@@ -28,6 +28,20 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Slime extends Boss {
+    init(type: number): void {
+        switch (type) {
+            case 0: this.scaleSize = 2; break;
+            case 1: this.scaleSize = 1.5; break;
+            case 2: this.scaleSize = 1; break;
+            case 3: this.scaleSize = 0.5; break;
+            case 4: this.scaleSize = 0.3; break;
+            case 5: this.scaleSize = 0.2; break;
+            default: this.scaleSize = 0.2; break;
+        }
+        this.slimeType = type;
+        this.node.scaleY = this.scaleSize;
+        this.node.scaleX = this.scaleSize;
+    }
     static readonly DIVIDE_COUNT = 4;
     @property(cc.Prefab)
     venom: cc.Prefab = null;

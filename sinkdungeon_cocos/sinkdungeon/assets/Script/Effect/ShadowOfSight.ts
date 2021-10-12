@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { ColliderTag } from "../actor/ColliderTag";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 
 
 const { ccclass, property } = cc._decorator;

@@ -1,7 +1,7 @@
 import { ColliderTag } from "../actor/ColliderTag";
 import FromData from "../data/FromData";
+import Player from "../logic/Player";
 import StatusManager from "../manager/StatusManager";
-import Player from "../Player";
 import Building from "./Building";
 
 // Learn TypeScript:

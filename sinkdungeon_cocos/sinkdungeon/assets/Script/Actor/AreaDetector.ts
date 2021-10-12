@@ -1,5 +1,5 @@
 import Bullet from "../item/Bullet";
-import NonPlayer from "../NonPlayer";
+import NonPlayer from "../logic/NonPlayer";
 import NextStep from "../utils/NextStep";
 import Random from "../utils/Random";
 

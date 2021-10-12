@@ -1,8 +1,8 @@
 import Logic from "./Logic";
-import RectDungeon from "./rect/RectDungeon";
-import RectRoom from "./rect/RectRoom";
+import RectDungeon from "../rect/RectDungeon";
+import RectRoom from "../rect/RectRoom";
 import { EventHelper } from "./EventHelper";
-import RoomType from "./rect/RoomType";
+import RoomType from "../rect/RoomType";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

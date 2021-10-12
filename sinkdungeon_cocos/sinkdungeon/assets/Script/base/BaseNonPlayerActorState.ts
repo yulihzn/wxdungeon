@@ -9,7 +9,7 @@
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import NonPlayer from "../NonPlayer";
+import NonPlayer from "../logic/NonPlayer";
 import FsmEvent from "./fsm/FsmEvent";
 import State from "./fsm/State";
 

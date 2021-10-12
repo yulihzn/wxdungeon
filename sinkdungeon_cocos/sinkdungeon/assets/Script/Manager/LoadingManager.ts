@@ -1,5 +1,5 @@
 import ProfessionData from "../data/ProfessionData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

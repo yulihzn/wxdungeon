@@ -1,9 +1,9 @@
 import FromData from "../data/FromData";
 import Actor from "../base/Actor";
-import Dungeon from "../Dungeon";
-import NonPlayer from "../NonPlayer";
 import ActorUtils from "../utils/ActorUtils";
 import Utils from "../utils/Utils";
+import Dungeon from "../logic/Dungeon";
+import NonPlayer from "../logic/NonPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import FromData from "../data/FromData";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import StatusManager from "../manager/StatusManager";
 import AudioPlayer from "../utils/AudioPlayer";
 import IndexZ from "../utils/IndexZ";

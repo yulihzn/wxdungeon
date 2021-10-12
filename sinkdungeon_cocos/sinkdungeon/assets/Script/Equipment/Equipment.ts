@@ -1,10 +1,10 @@
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import EquipmentData from "../data/EquipmentData";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import ShopTable from "../building/ShopTable";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import AudioPlayer from "../utils/AudioPlayer";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

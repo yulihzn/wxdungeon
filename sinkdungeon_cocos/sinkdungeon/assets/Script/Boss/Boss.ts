@@ -1,15 +1,15 @@
-import HealthBar from "../HealthBar";
-import Logic from "../Logic";
-import Dungeon from "../Dungeon";
+import HealthBar from "../logic/HealthBar";
+import Logic from "../logic/Logic";
+import Dungeon from "../logic/Dungeon";
 import StatusManager from "../manager/StatusManager";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import Actor from "../base/Actor";
-import Shooter from "../Shooter";
 import FromData from "../data/FromData";
 import Item from "../item/Item";
 import IndexZ from "../utils/IndexZ";
 import NonPlayerData from "../data/NonPlayerData";
 import StatusData from "../data/StatusData";
+import Shooter from "../logic/Shooter";
 
 
 // Learn TypeScript:
@@ -32,7 +32,8 @@ export default abstract class Boss extends Actor {
     dungeon: Dungeon;
     pos: cc.Vec3 = cc.v3(0, 0);
     data: NonPlayerData = new NonPlayerData();
-    abstract killed();
+    abstract init(type:number):void;
+    abstract killed():void;
     abstract bossAction(): void;
     abstract updateLogic(dt: number): void;
     /**添加状态 */

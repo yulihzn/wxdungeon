@@ -1,5 +1,5 @@
-import Dungeon from "../Dungeon";
-import Player from "../Player";
+import Dungeon from "../logic/Dungeon";
+import Player from "../logic/Player";
 import DamageData from "../data/DamageData";
 import Building from "./Building";
 import FromData from "../data/FromData";

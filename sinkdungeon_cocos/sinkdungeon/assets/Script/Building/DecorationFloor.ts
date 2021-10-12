@@ -1,6 +1,5 @@
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
-import IndexZ from "../utils/IndexZ";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import Building from "./Building";
 
 // Learn TypeScript:

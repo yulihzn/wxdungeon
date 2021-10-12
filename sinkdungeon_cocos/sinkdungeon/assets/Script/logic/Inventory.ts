@@ -11,17 +11,17 @@
 const { ccclass, property } = cc._decorator;
 import { EventHelper } from './EventHelper';
 import Logic from './Logic';
-import EquipmentData from './data/EquipmentData';
-import InventoryManager from './manager/InventoryManager';
+import EquipmentData from '../data/EquipmentData';
+import InventoryManager from '../manager/InventoryManager';
 import Dungeon from './Dungeon';
-import FromData from './data/FromData';
-import ItemData from './data/ItemData';
-import Item from './item/Item';
-import SuitData from './data/SuitData';
-import InventoryData from './data/InventoryData';
-import InventoryItem from './ui/InventoryItem';
-import EquipmentAndItemDialog from './ui/dialog/EquipmentAndItemDialog';
-import LocalStorage from './utils/LocalStorage';
+import FromData from '../data/FromData';
+import ItemData from '../data/ItemData';
+import Item from '../item/Item';
+import SuitData from '../data/SuitData';
+import InventoryData from '../data/InventoryData';
+import InventoryItem from '../ui/InventoryItem';
+import EquipmentAndItemDialog from '../ui/dialog/EquipmentAndItemDialog';
+import LocalStorage from '../utils/LocalStorage';
 @ccclass
 export default class Inventory extends cc.Component {
 

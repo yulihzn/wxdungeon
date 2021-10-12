@@ -7,9 +7,9 @@
 
 import AvatarData from "../../data/AvatarData";
 import InventoryData from "../../data/InventoryData";
-import { EventHelper } from "../../EventHelper";
+import { EventHelper } from "../../logic/EventHelper";
 import Item from "../../item/Item";
-import Logic from "../../Logic";
+import Logic from "../../logic/Logic";
 import InventoryManager from "../../manager/InventoryManager";
 import AudioPlayer from "../../utils/AudioPlayer";
 import InventoryItem from "../InventoryItem";

@@ -1,13 +1,13 @@
 import Coin from "../item/Coin";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import OilGold from "../item/OilGold";
 import IndexZ from "../utils/IndexZ";
 import BaseManager from "./BaseManager";
 import ShopTable from "../building/ShopTable";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import Item from "../item/Item";
-import Player from "../Player";
-import { EventHelper } from "../EventHelper";
+import Player from "../logic/Player";
+import { EventHelper } from "../logic/EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

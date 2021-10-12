@@ -1,4 +1,4 @@
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import Tips from "../ui/Tips";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";

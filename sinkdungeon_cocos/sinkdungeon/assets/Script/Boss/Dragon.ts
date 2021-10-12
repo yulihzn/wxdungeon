@@ -1,17 +1,16 @@
 import Boss from "./Boss";
 import DamageData from "../data/DamageData";
-import Shooter from "../Shooter";
-import Dungeon from "../Dungeon";
+import Shooter from "../logic/Shooter";
+import Dungeon from "../logic/Dungeon";
 import StatusManager from "../manager/StatusManager";
 import NextStep from "../utils/NextStep";
 import Random from "../utils/Random";
-import { EventHelper } from "../EventHelper";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,6 +26,9 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Dragon extends Boss {
+    init(type: number): void {
+        throw new Error("Method not implemented.");
+    }
 
     private anim: cc.Animation;
     shooter01: Shooter;

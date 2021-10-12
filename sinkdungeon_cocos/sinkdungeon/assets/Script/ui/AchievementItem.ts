@@ -1,4 +1,4 @@
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 import EquipmentData from "../data/EquipmentData";
 import FurnitureData from "../data/FurnitureData";
 import ItemData from "../data/ItemData";

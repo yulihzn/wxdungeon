@@ -6,8 +6,8 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import Logic from "./Logic";
-import InventoryManager from "./manager/InventoryManager";
-import AvatarData from "./data/AvatarData";
+import InventoryManager from "../manager/InventoryManager";
+import AvatarData from "../data/AvatarData";
 
 const { ccclass, property } = cc._decorator;
 

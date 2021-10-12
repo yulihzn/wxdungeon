@@ -1,4 +1,4 @@
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 
 export default class ExitData {
     fromRoomPos = cc.v3(0, 0);

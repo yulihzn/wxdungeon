@@ -1,5 +1,5 @@
 import DamageData from "../data/DamageData";
-import Player from "../Player";
+import Player from "../logic/Player";
 import AudioPlayer from "../utils/AudioPlayer";
 import IndexZ from "../utils/IndexZ";
 import Building from "./Building";

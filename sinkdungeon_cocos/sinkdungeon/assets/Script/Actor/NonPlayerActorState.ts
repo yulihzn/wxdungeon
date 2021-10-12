@@ -1,6 +1,6 @@
 import BaseNonPlayerActorState from "../base/BaseNonPlayerActorState";
 import FsmEvent from "../base/fsm/FsmEvent";
-import NonPlayer from "../NonPlayer";
+import NonPlayer from "../logic/NonPlayer";
 import Utils from "../utils/Utils";
 
 /**待机：移动，攻击，特殊攻击，受伤，冲刺，对话，格挡，伪装，闪避 */

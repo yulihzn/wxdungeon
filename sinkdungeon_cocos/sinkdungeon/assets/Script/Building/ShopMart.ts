@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Player from "../Player";
+import Player from "../logic/Player";
 import Building from "./Building";
 
 const { ccclass, property } = cc._decorator;

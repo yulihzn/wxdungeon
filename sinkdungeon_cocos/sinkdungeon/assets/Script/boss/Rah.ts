@@ -1,14 +1,14 @@
 import Boss from "./Boss";
 import DamageData from "../data/DamageData";
-import Shooter from "../Shooter";
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Shooter from "../logic/Shooter";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import StatusManager from "../manager/StatusManager";
 import NextStep from "../utils/NextStep";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 import ActorUtils from "../utils/ActorUtils";
 
 // Learn TypeScript:
@@ -25,6 +25,9 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Rah extends Boss {
+    init(type: number): void {
+        throw new Error("Method not implemented.");
+    }
 
     private anim: cc.Animation;
     shooter: Shooter;

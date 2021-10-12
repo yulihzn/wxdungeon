@@ -1,5 +1,5 @@
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import FootBoard from "../building/FootBoard";
 import IndexZ from "../utils/IndexZ";
 import Saw from "../building/Saw";
@@ -34,7 +34,7 @@ import MgWentLine from "../building/MgWentLine";
 import RoomStool from "../building/RoomStool";
 import MgCrack from "../building/MgCrack";
 import InteractBuilding from "../building/InteractBuilding";
-import Player from "../Player";
+import Player from "../logic/Player";
 import EnergyShield from "../building/EnergyShield";
 import EquipmentManager from "./EquipmentManager";
 import Furniture from "../building/Furniture";

@@ -1,4 +1,4 @@
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import DamageData from "../data/DamageData";
 import Actor from "../base/Actor";
 import FromData from "../data/FromData";

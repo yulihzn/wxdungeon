@@ -1,13 +1,13 @@
 import NextStep from "../utils/NextStep";
-import Player from "../Player";
+import Player from "../logic/Player";
 import TalentData from "../data/TalentData";
 import DamageData from "../data/DamageData";
 import Actor from "../base/Actor";
-import Logic from "../Logic";
-import Shooter from "../Shooter";
+import Logic from "../logic/Logic";
+import Shooter from "../logic/Shooter";
 import AreaOfEffectData from "../data/AreaOfEffectData";
 import FromData from "../data/FromData";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import AreaOfEffect from "../actor/AreaOfEffect";
 import CoolDownView from "../ui/CoolDownView";
 import Utils from "../utils/Utils";

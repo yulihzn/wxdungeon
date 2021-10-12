@@ -1,11 +1,9 @@
 import Dungeon from "./Dungeon";
 import Player from "./Player";
-import PlayerData from "./data/PlayerData";
-import AudioPlayer from "./utils/AudioPlayer";
-import EquipmentData from "./data/EquipmentData";
-import InventoryManager from "./manager/InventoryManager";
+import PlayerData from "../data/PlayerData";
+import AudioPlayer from "../utils/AudioPlayer";
 import MeleeWeapon from "./MeleeWeapon";
-import Utils from "./utils/Utils";
+import Utils from "../utils/Utils";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

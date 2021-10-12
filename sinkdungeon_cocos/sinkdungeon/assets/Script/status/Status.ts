@@ -12,7 +12,7 @@
 import Actor from "../base/Actor";
 import DamageData from "../data/DamageData";
 import StatusData from "../data/StatusData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 
 const { ccclass, property } = cc._decorator;
 

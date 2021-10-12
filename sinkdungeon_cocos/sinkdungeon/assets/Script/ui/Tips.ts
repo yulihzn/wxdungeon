@@ -1,5 +1,5 @@
 import { ColliderTag } from "../actor/ColliderTag";
-import Player from "../Player";
+import Player from "../logic/Player";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

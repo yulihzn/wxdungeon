@@ -1,11 +1,11 @@
-import Dungeon from "../Dungeon";
-import Player from "../Player";
+import Dungeon from "../logic/Dungeon";
+import Player from "../logic/Player";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import ExitData from "../data/ExitData";
 import AudioPlayer from "../utils/AudioPlayer";
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 
 
 // Learn TypeScript:

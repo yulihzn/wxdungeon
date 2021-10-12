@@ -1,10 +1,10 @@
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import BaseManager from "./BaseManager";
 import Utils from "../utils/Utils";
-import NonPlayer from "../NonPlayer";
+import NonPlayer from "../logic/NonPlayer";
 import NonPlayerData from "../data/NonPlayerData";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

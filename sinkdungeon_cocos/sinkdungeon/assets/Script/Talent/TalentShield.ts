@@ -1,6 +1,6 @@
 import StatusManager from "../manager/StatusManager";
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
 import DamageData from "../data/DamageData";
 import Actor from "../base/Actor";
 import Talent from "./Talent";

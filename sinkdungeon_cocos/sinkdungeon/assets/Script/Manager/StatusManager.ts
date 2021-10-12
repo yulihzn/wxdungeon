@@ -1,5 +1,5 @@
 import StatusData from "../data/StatusData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import FromData from "../data/FromData";
 import Status from "../status/Status";
 import Actor from "../base/Actor";

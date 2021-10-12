@@ -1,9 +1,9 @@
-import Logic from "../Logic";
-import Dungeon from "../Dungeon";
+import Logic from "../logic/Logic";
+import Dungeon from "../logic/Dungeon";
 import TalentData from "../data/TalentData";
 import Talent from "../talent/Talent";
 import TalentDash from "../talent/TalentDash";
-import Shooter from "../Shooter";
+import Shooter from "../logic/Shooter";
 import IndexZ from "../utils/IndexZ";
 
 // Learn TypeScript:

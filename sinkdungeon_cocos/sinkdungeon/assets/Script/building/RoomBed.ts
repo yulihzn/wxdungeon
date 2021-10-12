@@ -1,9 +1,9 @@
 import ExitData from "../data/ExitData";
 import FromData from "../data/FromData";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import ShadowOfSight from "../effect/ShadowOfSight";
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
 import StatusManager from "../manager/StatusManager";
 // Learn TypeScript:
 //  - https://docs.cocos.com/creator/manual/en/scripting/typescript.html
@@ -12,7 +12,7 @@ import StatusManager from "../manager/StatusManager";
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Player from "../Player";
+import Player from "../logic/Player";
 import Tips from "../ui/Tips";
 import AudioPlayer from "../utils/AudioPlayer";
 import Building from "./Building";

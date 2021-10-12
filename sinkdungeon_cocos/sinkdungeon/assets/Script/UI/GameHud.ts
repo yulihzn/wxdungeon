@@ -1,8 +1,8 @@
 import PlayerInfoDialog from "./PlayerInfoDialog";
-import HealthBar from "../HealthBar";
-import { EventHelper } from "../EventHelper";
+import HealthBar from "../logic/HealthBar";
+import { EventHelper } from "../logic/EventHelper";
 import PlayerData from "../data/PlayerData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import SettingsDialog from "./dialog/SettingsDialog";
 import MartShelvesDialog from "./dialog/MartShelvesDialog";
 import InventoryDialog from "./dialog/InventoryDialog";

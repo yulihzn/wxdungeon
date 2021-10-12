@@ -12,38 +12,42 @@ const { ccclass, property } = cc._decorator;
 import Shooter from './Shooter';
 import Logic from './Logic';
 import Dungeon from './Dungeon';
-import Equipment from './equipment/Equipment';
-import EquipmentData from './data/EquipmentData';
-import MeleeWeapon from './MeleeWeapon';
-import StatusManager from './manager/StatusManager';
-import DamageData from './data/DamageData';
-import InventoryManager from './manager/InventoryManager';
-import PlayerData from './data/PlayerData';
-import FloatinglabelManager from './manager/FloatingLabelManager';
-import Tips from './ui/Tips';
-import Random from './utils/Random';
-import Shield from './Shield';
-import Actor from './base/Actor';
-import Talent from './talent/Talent';
-import AudioPlayer from './utils/AudioPlayer';
-import FromData from './data/FromData';
+
+
 import Achievement from './Achievement';
-import ItemData from './data/ItemData';
-import Item from './item/Item';
-import IndexZ from './utils/IndexZ';
+
 import PlayerAvatar from './PlayerAvatar';
 import PlayerWeapon from './PlayerWeapon';
 import { EventHelper } from './EventHelper';
-import ShadowOfSight from './effect/ShadowOfSight';
-import LightManager from './manager/LightManager';
-import AvatarData from './data/AvatarData';
-import StatusData from './data/StatusData';
-import InteractBuilding from './building/InteractBuilding';
-import { ColliderTag } from './actor/ColliderTag';
-import ProfessionTalent from './talent/ProfessionTalent';
-import OrganizationTalent from './talent/OrganizationTalent';
-import TalentData from './data/TalentData';
-import ShadowPlayer from './actor/ShadowPlayer';
+
+import ShadowPlayer from '../actor/ShadowPlayer';
+import { ColliderTag } from '../actor/ColliderTag';
+import Actor from '../base/Actor';
+import InteractBuilding from '../building/InteractBuilding';
+import AvatarData from '../data/AvatarData';
+import DamageData from '../data/DamageData';
+import EquipmentData from '../data/EquipmentData';
+import FromData from '../data/FromData';
+import ItemData from '../data/ItemData';
+import PlayerData from '../data/PlayerData';
+import StatusData from '../data/StatusData';
+import TalentData from '../data/TalentData';
+import ShadowOfSight from '../effect/ShadowOfSight';
+import Equipment from '../equipment/Equipment';
+import Item from '../item/Item';
+import FloatinglabelManager from '../manager/FloatingLabelManager';
+import InventoryManager from '../manager/InventoryManager';
+import LightManager from '../manager/LightManager';
+import StatusManager from '../manager/StatusManager';
+import OrganizationTalent from '../talent/OrganizationTalent';
+import ProfessionTalent from '../talent/ProfessionTalent';
+import Talent from '../talent/Talent';
+import Tips from '../ui/Tips';
+import AudioPlayer from '../utils/AudioPlayer';
+import IndexZ from '../utils/IndexZ';
+import Random from '../utils/Random';
+import MeleeWeapon from './MeleeWeapon';
+import Shield from './Shield';
 @ccclass
 export default class Player extends Actor {
 

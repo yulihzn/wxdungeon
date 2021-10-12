@@ -5,8 +5,8 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
 import AudioPlayer from "../utils/AudioPlayer";
 import Utils from "../utils/Utils";
 import Building from "./Building";

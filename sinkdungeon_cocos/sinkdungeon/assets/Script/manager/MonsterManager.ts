@@ -1,7 +1,6 @@
-import NonPlayer from "../NonPlayer";
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
-import Slime from "../boss/Slime";
+import NonPlayer from "../logic/NonPlayer";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import RoomType from "../rect/RoomType";
 import Boss from "../boss/Boss";
 import BaseManager from "./BaseManager";
@@ -66,9 +65,9 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_GHOST = 'monster037';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE, MonsterManager.MONSTER_ICEDEMON, MonsterManager.MONSTER_BITE_ZOMBIE
-        , MonsterManager.MONSTER_HOLO_DEVICE,MonsterManager.MONSTER_LASRERDRONE];
+        , MonsterManager.MONSTER_HOLO_DEVICE, MonsterManager.MONSTER_LASRERDRONE];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
-        , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER,MonsterManager.MONSTER_GHOST];
+        , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER, MonsterManager.MONSTER_GHOST];
     public static readonly MONSTERS_FOREST = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
         , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO, MonsterManager.MONSTER_BANANA];
     public static readonly MONSTERS_PYRAMID = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
@@ -137,10 +136,10 @@ export default class MonsterManager extends BaseManager {
     }
     /**添加怪物 */
     public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean): NonPlayer {
-        let nonplayer = this.addMonster(this.getMonster(resName, dungeon, isSummon), indexPos,null);
-        if(nonplayer.data.childCount>0&&nonplayer.data.childResName.length>0){
-            for(let i = 0;i < nonplayer.data.childCount;i++){
-                nonplayer.childNonPlayerList.push(this.addMonster(this.getMonster(nonplayer.data.childResName, dungeon, isSummon), indexPos,nonplayer));
+        let nonplayer = this.addMonster(this.getMonster(resName, dungeon, isSummon), indexPos, null);
+        if (nonplayer.data.childCount > 0 && nonplayer.data.childResName.length > 0) {
+            for (let i = 0; i < nonplayer.data.childCount; i++) {
+                nonplayer.childNonPlayerList.push(this.addMonster(this.getMonster(nonplayer.data.childResName, dungeon, isSummon), indexPos, nonplayer));
             }
         }
         return nonplayer;
@@ -322,7 +321,7 @@ export default class MonsterManager extends BaseManager {
 
         return monster;
     }
-    private addMonster(monster: NonPlayer, pos: cc.Vec3,parent:NonPlayer): NonPlayer {
+    private addMonster(monster: NonPlayer, pos: cc.Vec3, parent: NonPlayer): NonPlayer {
         //激活
         monster.node.active = true;
         monster.pos = pos;
@@ -361,29 +360,27 @@ export default class MonsterManager extends BaseManager {
         }, delayTime);
     }
 
-    private getSlime(dungeon: Dungeon, posIndex: cc.Vec3, type: number): Slime {
+    private getSlime(dungeon: Dungeon, posIndex: cc.Vec3, type: number): Boss {
         let prefab: cc.Node = null;
         prefab = cc.instantiate(this.slime);
         prefab.active = false;
         prefab.parent = dungeon.node;
-        let slime = prefab.getComponent(Slime);
+        let slime = prefab.getComponent(Boss);
         slime.dungeon = dungeon;
         let data = new NonPlayerData();
         data.resName = "iconboss004";
         data.Common.moveSpeed = 200;
         switch (type) {
-            case 0: data.updateHA(this.maxHealth04, this.maxHealth04, 9); slime.scaleSize = 2; break;
-            case 1: data.updateHA(200, 200, 7); slime.scaleSize = 1.5; break;
-            case 2: data.updateHA(100, 100, 7); slime.scaleSize = 1; break;
-            case 3: data.updateHA(50, 50, 5); slime.scaleSize = 0.5; break;
-            case 4: data.updateHA(25, 25, 3); slime.scaleSize = 0.3; break;
-            case 5: data.updateHA(10, 10, 2); slime.scaleSize = 0.2; break;
-            default: data.updateHA(5, 5, 1); slime.scaleSize = 0.2; break;
+            case 0: data.updateHA(this.maxHealth04, this.maxHealth04, 9); break;
+            case 1: data.updateHA(200, 200, 7); break;
+            case 2: data.updateHA(100, 100, 7); break;
+            case 3: data.updateHA(50, 50, 5); break;
+            case 4: data.updateHA(25, 25, 3); break;
+            case 5: data.updateHA(10, 10, 2); break;
+            default: data.updateHA(5, 5, 1); break;
         }
-        slime.slimeType = type;
-        slime.node.scaleY = slime.scaleSize;
-        slime.node.scaleX = slime.scaleSize;
         slime.data = data;
+        slime.init(type);
         slime.transportBoss(posIndex.x, posIndex.y);
         slime.healthBar = this.node.parent.getComponentInChildren(GameHud).bossHealthBar;
         slime.node.active = true;

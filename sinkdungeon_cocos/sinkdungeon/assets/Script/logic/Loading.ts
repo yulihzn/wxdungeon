@@ -1,7 +1,7 @@
 import Logic from "./Logic";
-import CutScene from "./ui/CutScene";
-import LoadingManager from "./manager/LoadingManager";
-import AudioPlayer from "./utils/AudioPlayer";
+import CutScene from "../ui/CutScene";
+import LoadingManager from "../manager/LoadingManager";
+import AudioPlayer from "../utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

@@ -1,6 +1,6 @@
 import Logic from "./Logic";
-import RectDungeon from "./rect/RectDungeon";
-import AudioPlayer from "./utils/AudioPlayer";
+import RectDungeon from "../rect/RectDungeon";
+import AudioPlayer from "../utils/AudioPlayer";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

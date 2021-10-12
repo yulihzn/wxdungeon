@@ -1,6 +1,6 @@
 import ChapterData from "../data/ChapterData";
 import LevelData from "../data/LevelData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 /**
  * 地图文件加载器
  * 保存大地图数据和房间数据

@@ -1,5 +1,5 @@
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import EquipmentData from "../data/EquipmentData";
 import EquipmentDescData from "../data/EquipmentDescData";
 import Equipment from "../equipment/Equipment";
@@ -8,8 +8,8 @@ import IndexZ from "../utils/IndexZ";
 import CommonData from "../data/CommonData";
 import Random4Save from "../utils/Random4Save";
 import BaseManager from "./BaseManager";
-import { EventHelper } from "../EventHelper";
-import Player from "../Player";
+import { EventHelper } from "../logic/EventHelper";
+import Player from "../logic/Player";
 import InventoryManager from "./InventoryManager";
 import SuitData from "../data/SuitData";
 

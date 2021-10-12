@@ -1,6 +1,6 @@
 import BaseManager from "./BaseManager";
 import ShadowOfSight from "../effect/ShadowOfSight";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import IndexZ from "../utils/IndexZ";
 
 // Learn TypeScript:

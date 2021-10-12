@@ -2,7 +2,7 @@ import DamageData from "../data/DamageData";
 import Building from "./Building";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
-import NonPlayer from "../NonPlayer";
+import NonPlayer from "../logic/NonPlayer";
 import ActorUtils from "../utils/ActorUtils";
 
 // Learn TypeScript:

@@ -1,17 +1,17 @@
 import CaptainSword from "./CaptainSword";
-import HealthBar from "../HealthBar";
-import Dungeon from "../Dungeon";
-import { EventHelper } from "../EventHelper";
-import Shooter from "../Shooter";
+import HealthBar from "../logic/HealthBar";
+import Dungeon from "../logic/Dungeon";
+import { EventHelper } from "../logic/EventHelper";
+import Shooter from "../logic/Shooter";
 import DamageData from "../data/DamageData";
 import Boss from "./Boss";
 import NextStep from "../utils/NextStep";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 import { ColliderTag } from "../actor/ColliderTag";
 import ActorUtils from "../utils/ActorUtils";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -27,6 +27,9 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Captain extends Boss {
+    init(type: number): void {
+        throw new Error("Method not implemented.");
+    }
 
     @property(CaptainSword)
     sword: CaptainSword = null;

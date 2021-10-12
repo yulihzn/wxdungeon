@@ -4,9 +4,9 @@ import StatusData from "./StatusData";
 import CommonData from "./CommonData";
 import Random from "../utils/Random";
 import AvatarData from "./AvatarData";
-import Shield from "../Shield";
 import OilGoldData from "./OilGoldData";
 import TalentData from "./TalentData";
+import Shield from "../logic/Shield";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

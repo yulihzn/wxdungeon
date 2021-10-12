@@ -1,11 +1,11 @@
-import { EventHelper } from "../EventHelper";
-import Player from "../Player";
-import Logic from "../Logic";
+import { EventHelper } from "../logic/EventHelper";
+import Player from "../logic/Player";
+import Logic from "../logic/Logic";
 import ItemData from "../data/ItemData";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
 import ShopTable from "../building/ShopTable";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

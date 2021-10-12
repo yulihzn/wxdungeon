@@ -1,10 +1,10 @@
 import { ColliderTag } from "../actor/ColliderTag";
 import Actor from "../base/Actor";
 import Boss from "../boss/Boss";
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
-import NonPlayer from "../NonPlayer";
-import Player from "../Player";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
+import NonPlayer from "../logic/NonPlayer";
+import Player from "../logic/Player";
 
 const { ccclass, property } = cc._decorator;
 

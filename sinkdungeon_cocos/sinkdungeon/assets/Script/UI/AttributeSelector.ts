@@ -9,7 +9,7 @@
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import AttributeData from "../data/AttributeData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 
 
 const { ccclass, property } = cc._decorator;

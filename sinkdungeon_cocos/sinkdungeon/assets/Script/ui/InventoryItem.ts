@@ -1,8 +1,8 @@
 import InventoryData from "../data/InventoryData";
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
 import InventoryManager from "../manager/InventoryManager";
-import Player from "../Player";
+import Player from "../logic/Player";
 import InventoryDialog from "./dialog/InventoryDialog";
 
 // Learn TypeScript:

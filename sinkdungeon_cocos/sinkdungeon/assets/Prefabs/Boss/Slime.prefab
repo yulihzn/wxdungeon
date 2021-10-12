@@ -1755,22 +1755,6 @@
     "_id": ""
   },
   {
-    "__type__": "263b6VIDCJP+LELMRjXCL3M",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "statusManager": {
-      "__id__": 45
-    },
-    "venom": {
-      "__uuid__": "df8c2697-7818-406f-bc5b-f29236f7a859"
-    },
-    "_id": ""
-  },
-  {
     "__type__": "cc.RigidBody",
     "_name": "",
     "_objFlags": 0,
@@ -1839,6 +1823,22 @@
       "__type__": "cc.Size",
       "width": 75,
       "height": 75
+    },
+    "_id": ""
+  },
+  {
+    "__type__": "68790KdPQVN37qkvHYOgA/X",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "statusManager": {
+      "__id__": 45
+    },
+    "venom": {
+      "__uuid__": "df8c2697-7818-406f-bc5b-f29236f7a859"
     },
     "_id": ""
   },

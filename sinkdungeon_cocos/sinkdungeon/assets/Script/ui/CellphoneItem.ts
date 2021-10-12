@@ -1,5 +1,5 @@
 import CellphoneData from "../data/CellphoneData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import AudioPlayer from "../utils/AudioPlayer";
 import CellphoneDialog from "./dialog/CellphoneDialog";
 

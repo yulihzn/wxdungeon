@@ -1,14 +1,14 @@
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import Talent from "./Talent";
 import DamageData from "../data/DamageData";
 import StatusManager from "../manager/StatusManager";
 import FromData from "../data/FromData";
-import Shooter from "../Shooter";
+import Shooter from "../logic/Shooter";
 import MagicCircle from "./MagicCircle";
 import MagicIce from "./MagicIce";
 import Actor from "../base/Actor";
 import FireGhost from "./FireGhost";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import IceThron from "./IceThron";
 import AudioPlayer from "../utils/AudioPlayer";
 import TalentData from "../data/TalentData";

@@ -1,4 +1,4 @@
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

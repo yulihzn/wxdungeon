@@ -6,9 +6,9 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { ColliderTag } from "../actor/ColliderTag";
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
-import NonPlayer from "../NonPlayer";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
+import NonPlayer from "../logic/NonPlayer";
 import IndexZ from "../utils/IndexZ";
 import Building from "./Building";
 

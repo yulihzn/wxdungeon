@@ -1,6 +1,6 @@
-import Player from "../Player";
-import Logic from "../Logic";
-import { EventHelper } from "../EventHelper";
+import Player from "../logic/Player";
+import Logic from "../logic/Logic";
+import { EventHelper } from "../logic/EventHelper";
 import Random from "../utils/Random";
 import AudioPlayer from "../utils/AudioPlayer";
 

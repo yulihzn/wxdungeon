@@ -7,8 +7,8 @@
 
 import Building from "./Building";
 import DamageData from "../data/DamageData";
-import Logic from "../Logic";
-import Dungeon from "../Dungeon";
+import Logic from "../logic/Logic";
+import Dungeon from "../logic/Dungeon";
 import IndexZ from "../utils/IndexZ";
 import AudioPlayer from "../utils/AudioPlayer";
 

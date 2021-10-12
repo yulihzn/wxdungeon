@@ -1,6 +1,6 @@
-import Player from "../Player";
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Player from "../logic/Player";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

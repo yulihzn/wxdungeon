@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 
 const {ccclass, property} = cc._decorator;
 

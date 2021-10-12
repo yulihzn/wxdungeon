@@ -1,14 +1,14 @@
-import Shooter from "../Shooter";
-import { EventHelper } from "../EventHelper";
+import Shooter from "../logic/Shooter";
+import { EventHelper } from "../logic/EventHelper";
 import KrakenSwingHand from "./KrakenSwingHand";
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import DamageData from "../data/DamageData";
 import Boss from "./Boss";
 import NextStep from "../utils/NextStep";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
-import Achievement from "../Achievement";
+import Achievement from "../logic/Achievement";
 import IndexZ from "../utils/IndexZ";
 import Item from "../item/Item";
 
@@ -26,6 +26,9 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Kraken extends Boss {
+    init(type: number): void {
+        throw new Error("Method not implemented.");
+    }
     @property(cc.Label)
     label: cc.Label = null;
     @property(cc.Prefab)

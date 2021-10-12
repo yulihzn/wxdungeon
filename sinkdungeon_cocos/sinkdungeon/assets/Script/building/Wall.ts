@@ -1,5 +1,5 @@
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
 import Building from "./Building";
 import { ColliderTag } from "../actor/ColliderTag";
 import LevelData from "../data/LevelData";

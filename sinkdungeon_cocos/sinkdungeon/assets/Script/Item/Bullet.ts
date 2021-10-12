@@ -1,17 +1,15 @@
-import { EventHelper } from "../EventHelper";
-import NonPlayer from "../NonPlayer";
-import Player from "../Player";
-import MeleeWeapon from "../MeleeWeapon";
+import { EventHelper } from "../logic/EventHelper";
+import NonPlayer from "../logic/NonPlayer";
+import Player from "../logic/Player";
 import DamageData from "../data/DamageData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import Boss from "../boss/Boss";
 import BulletData from "../data/BulletData";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import StatusManager from "../manager/StatusManager";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
 import HitBuilding from "../building/HitBuilding";
-import Shield from "../Shield";
 import Wall from "../building/Wall";
 import AreaOfEffect from "../actor/AreaOfEffect";
 import AreaOfEffectData from "../data/AreaOfEffectData";
@@ -20,11 +18,13 @@ import Actor from "../base/Actor";
 import { ColliderTag } from "../actor/ColliderTag";
 import ExitDoor from "../building/ExitDoor";
 import ActorUtils from "../utils/ActorUtils";
-import Shooter from "../Shooter";
+import Shooter from "../logic/Shooter";
 import InteractBuilding from "../building/InteractBuilding";
 import EnergyShield from "../building/EnergyShield";
-import MeleeShadowWeapon from "../MeleeShadowWeapon";
 import Utils from "../utils/Utils";
+import MeleeShadowWeapon from "../logic/MeleeShadowWeapon";
+import MeleeWeapon from "../logic/MeleeWeapon";
+import Shield from "../logic/Shield";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

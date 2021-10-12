@@ -6,7 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import ShadowOfSight from "../effect/ShadowOfSight";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import AudioPlayer from "../utils/AudioPlayer";
 import Building from "./Building";
 

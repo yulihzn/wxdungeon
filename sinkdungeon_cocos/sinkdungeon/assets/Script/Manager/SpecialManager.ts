@@ -1,14 +1,14 @@
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import SlimeVenom from "../boss/SlimeVenom";
 import DamageData from "../data/DamageData";
 import StatusManager from "./StatusManager";
-import NonPlayer from "../NonPlayer";
+import NonPlayer from "../logic/NonPlayer";
 import FromData from "../data/FromData";
 import IndexZ from "../utils/IndexZ";
 import AreaOfEffect from "../actor/AreaOfEffect";
 import AreaOfEffectData from "../data/AreaOfEffectData";
-import Logic from "../Logic";
-import { EventHelper } from "../EventHelper";
+import Logic from "../logic/Logic";
+import { EventHelper } from "../logic/EventHelper";
 import AudioPlayer from "../utils/AudioPlayer";
 
 // Learn TypeScript:

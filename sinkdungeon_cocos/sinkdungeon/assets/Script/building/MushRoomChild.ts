@@ -1,4 +1,4 @@
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import Building from "./Building";
 import { ColliderTag } from "../actor/ColliderTag";
 

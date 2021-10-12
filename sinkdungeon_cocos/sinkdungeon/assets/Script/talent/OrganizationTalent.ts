@@ -6,7 +6,7 @@ import FromData from "../data/FromData";
 import NonPlayerData from "../data/NonPlayerData";
 import StatusData from "../data/StatusData";
 import TalentData from "../data/TalentData";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import StatusManager from "../manager/StatusManager";
 import CoolDownView from "../ui/CoolDownView";
 import AudioPlayer from "../utils/AudioPlayer";

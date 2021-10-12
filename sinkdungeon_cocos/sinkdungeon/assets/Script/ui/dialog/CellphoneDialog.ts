@@ -5,12 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Achievement from "../../Achievement";
+import Achievement from "../../logic/Achievement";
 import CellphoneData from "../../data/CellphoneData";
 import FurnitureData from "../../data/FurnitureData";
 import ItemData from "../../data/ItemData";
-import { EventHelper } from "../../EventHelper";
-import Logic from "../../Logic";
+import { EventHelper } from "../../logic/EventHelper";
+import Logic from "../../logic/Logic";
 import AudioPlayer from "../../utils/AudioPlayer";
 import LocalStorage from "../../utils/LocalStorage";
 import Utils from "../../utils/Utils";

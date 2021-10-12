@@ -1,8 +1,8 @@
-import Player from "../Player";
-import Logic from "../Logic";
+import Player from "../logic/Player";
+import Logic from "../logic/Logic";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import { ColliderTag } from "../actor/ColliderTag";
 
 // Learn TypeScript:

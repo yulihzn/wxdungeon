@@ -1,6 +1,6 @@
 import GoodsData from "../data/GoodsData";
-import { EventHelper } from "../EventHelper";
-import Logic from "../Logic";
+import { EventHelper } from "../logic/EventHelper";
+import Logic from "../logic/Logic";
 import AudioPlayer from "../utils/AudioPlayer";
 
 // Learn TypeScript:

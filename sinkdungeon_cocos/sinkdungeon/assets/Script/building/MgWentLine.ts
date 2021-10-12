@@ -5,7 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import AudioPlayer from "../utils/AudioPlayer";
 import MonsterGenerator from "./MonsterGenerator";
 

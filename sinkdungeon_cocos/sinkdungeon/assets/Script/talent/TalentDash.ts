@@ -1,11 +1,11 @@
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import Talent from "./Talent";
 import DashShadow from "../item/DashShadow";
 import DamageData from "../data/DamageData";
 import StatusManager from "../manager/StatusManager";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
-import PlayerAvatar from "../PlayerAvatar";
+import PlayerAvatar from "../logic/PlayerAvatar";
 import Actor from "../base/Actor";
 import ActorUtils from "../utils/ActorUtils";
 import TalentData from "../data/TalentData";

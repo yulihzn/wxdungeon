@@ -1,5 +1,5 @@
-import Logic from "../Logic";
-import Dungeon from "../Dungeon";
+import Logic from "../logic/Logic";
+import Dungeon from "../logic/Dungeon";
 import DungeonStyleData from "../data/DungeonStyleData";
 import ParallexBackground from "../ui/ParallaxBackground";
 import IndexZ from "../utils/IndexZ";

@@ -1,6 +1,6 @@
-import { EventHelper } from "../EventHelper";
+import { EventHelper } from "../logic/EventHelper";
 import Random from "./Random";
-import Logic from "../Logic";
+import Logic from "../logic/Logic";
 import RoomType from "../rect/RoomType";
 
 // Learn TypeScript:

@@ -8,11 +8,11 @@
 import DamageData from "../data/DamageData";
 import EquipmentData from "../data/EquipmentData";
 import PlayerData from "../data/PlayerData";
-import Dungeon from "../Dungeon";
-import Logic from "../Logic";
-import Player from "../Player";
-import PlayerWeapon from "../PlayerWeapon";
-import Shooter from "../Shooter";
+import Dungeon from "../logic/Dungeon";
+import Logic from "../logic/Logic";
+import Player from "../logic/Player";
+import PlayerWeapon from "../logic/PlayerWeapon";
+import Shooter from "../logic/Shooter";
 import IndexZ from "../utils/IndexZ";
 import NextStep from "../utils/NextStep";
 

@@ -1,5 +1,5 @@
 import TarotCard from "../item/TarotCard";
-import Dungeon from "../Dungeon";
+import Dungeon from "../logic/Dungeon";
 import IndexZ from "../utils/IndexZ";
 
 const { ccclass, property } = cc._decorator;
