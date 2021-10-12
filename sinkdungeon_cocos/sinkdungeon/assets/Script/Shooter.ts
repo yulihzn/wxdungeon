@@ -1,20 +1,20 @@
 import Dungeon from "./Dungeon";
 import Player from "./Player";
-import Bullet from "./Item/Bullet";
+import Bullet from "./item/Bullet";
 import Logic from "./Logic";
-import EquipmentData from "./Data/EquipmentData";
-import BulletData from "./Data/BulletData";
-import AudioPlayer from "./Utils/AudioPlayer";
-import FromData from "./Data/FromData";
-import DamageData from "./Data/DamageData";
-import IndexZ from "./Utils/IndexZ";
-import AreaOfEffectData from "./Data/AreaOfEffectData";
-import AreaOfEffect from "./Actor/AreaOfEffect";
-import { ColliderTag } from "./Actor/ColliderTag";
-import InventoryManager from "./Manager/InventoryManager";
-import ActorUtils from "./Utils/ActorUtils";
-import Utils from "./Utils/Utils";
-import NodeKey from "./Utils/NodeKey";
+import EquipmentData from "./data/EquipmentData";
+import BulletData from "./data/BulletData";
+import AudioPlayer from "./utils/AudioPlayer";
+import FromData from "./data/FromData";
+import DamageData from "./data/DamageData";
+import IndexZ from "./utils/IndexZ";
+import AreaOfEffectData from "./data/AreaOfEffectData";
+import AreaOfEffect from "./actor/AreaOfEffect";
+import { ColliderTag } from "./actor/ColliderTag";
+import InventoryManager from "./manager/InventoryManager";
+import ActorUtils from "./utils/ActorUtils";
+import Utils from "./utils/Utils";
+import NodeKey from "./utils/NodeKey";
 
 
 // Learn TypeScript:

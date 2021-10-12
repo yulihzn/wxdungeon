@@ -1,15 +1,15 @@
 import Logic from "./Logic";
 import PlayerAvatar from "./PlayerAvatar";
-import EquipmentData from "./Data/EquipmentData";
+import EquipmentData from "./data/EquipmentData";
 import { EventHelper } from "./EventHelper";
-import IndexZ from "./Utils/IndexZ";
-import Actor from "./Base/Actor";
-import BlockLight from "./Effect/BlockLight";
-import DamageData from "./Data/DamageData";
-import StatusManager from "./Manager/StatusManager";
-import FromData from "./Data/FromData";
+import IndexZ from "./utils/IndexZ";
+import Actor from "./base/Actor";
+import BlockLight from "./effect/BlockLight";
+import DamageData from "./data/DamageData";
+import StatusManager from "./manager/StatusManager";
+import FromData from "./data/FromData";
 import Player from "./Player";
-import InventoryManager from "./Manager/InventoryManager";
+import InventoryManager from "./manager/InventoryManager";
 
 const { ccclass, property } = cc._decorator;
 

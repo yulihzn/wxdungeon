@@ -11,7 +11,7 @@
 const { ccclass, property } = cc._decorator;
 import { EventHelper } from './EventHelper';
 import Logic from './Logic';
-import CoolDownView from './UI/CoolDownView';
+import CoolDownView from './ui/CoolDownView';
 
 @ccclass
 export default class Controller extends cc.Component {

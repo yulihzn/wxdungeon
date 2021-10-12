@@ -1,15 +1,15 @@
-import AchievementData from "./Data/AchievementData";
-import EquipmentData from "./Data/EquipmentData";
-import FurnitureData from "./Data/FurnitureData";
-import ItemData from "./Data/ItemData";
-import NonPlayerData from "./Data/NonPlayerData";
+import AchievementData from "./data/AchievementData";
+import EquipmentData from "./data/EquipmentData";
+import FurnitureData from "./data/FurnitureData";
+import ItemData from "./data/ItemData";
+import NonPlayerData from "./data/NonPlayerData";
 import Logic from "./Logic";
-import InventoryManager from "./Manager/InventoryManager";
-import LoadingManager from "./Manager/LoadingManager";
-import AchievementItem from "./UI/AchievementItem";
-import AchievementItemDialog from "./UI/dialog/AchievementItemDialog";
-import AudioPlayer from "./Utils/AudioPlayer";
-import LocalStorage from "./Utils/LocalStorage";
+import InventoryManager from "./manager/InventoryManager";
+import LoadingManager from "./manager/LoadingManager";
+import AchievementItem from "./ui/AchievementItem";
+import AchievementItemDialog from "./ui/dialog/AchievementItemDialog";
+import AudioPlayer from "./utils/AudioPlayer";
+import LocalStorage from "./utils/LocalStorage";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html

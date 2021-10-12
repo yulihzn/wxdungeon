@@ -1,5 +1,5 @@
 import Logic from "./Logic";
-import AudioPlayer from "./Utils/AudioPlayer";
+import AudioPlayer from "./utils/AudioPlayer";
 
 const {ccclass, property} = cc._decorator;
 

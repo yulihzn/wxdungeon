@@ -2,21 +2,21 @@ import Player from "./Player";
 import Tile from "./Tile";
 import Logic from "./Logic";
 import { EventHelper } from "./EventHelper";
-import MonsterManager from "./Manager/MonsterManager";
-import EquipmentManager from "./Manager/EquipmentManager";
-import EquipmentData from "./Data/EquipmentData";
-import DungeonStyleManager from "./Manager/DungeonStyleManager";
-import ShopTable from "./Building/ShopTable";
-import AudioPlayer from "./Utils/AudioPlayer";
-import RoomType from "./Rect/RoomType";
-import IndexZ from "./Utils/IndexZ";
-import BuildingManager from "./Manager/BuildingManager";
-import LevelData from "./Data/LevelData";
-import NonPlayerManager from "./Manager/NonPlayerManager";
-import ItemManager from "./Manager/ItemManager";
-import Utils from "./Utils/Utils";
-import LightManager from "./Manager/LightManager";
-import DamageData from "./Data/DamageData";
+import MonsterManager from "./manager/MonsterManager";
+import EquipmentManager from "./manager/EquipmentManager";
+import EquipmentData from "./data/EquipmentData";
+import DungeonStyleManager from "./manager/DungeonStyleManager";
+import ShopTable from "./building/ShopTable";
+import AudioPlayer from "./utils/AudioPlayer";
+import RoomType from "./rect/RoomType";
+import IndexZ from "./utils/IndexZ";
+import BuildingManager from "./manager/BuildingManager";
+import LevelData from "./data/LevelData";
+import NonPlayerManager from "./manager/NonPlayerManager";
+import ItemManager from "./manager/ItemManager";
+import Utils from "./utils/Utils";
+import LightManager from "./manager/LightManager";
+import DamageData from "./data/DamageData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

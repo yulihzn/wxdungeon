@@ -1,7 +1,7 @@
 import Dungeon from "./Dungeon";
 import Logic from "./Logic";
-import GameHud from "./UI/GameHud";
-import LocalStorage from "./Utils/LocalStorage";
+import GameHud from "./ui/GameHud";
+import LocalStorage from "./utils/LocalStorage";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

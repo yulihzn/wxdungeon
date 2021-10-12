@@ -1,8 +1,8 @@
 import Logic from "./Logic";
-import AudioPlayer from "./Utils/AudioPlayer";
-import Random from "./Utils/Random";
-import ExitData from "./Data/ExitData";
-import LocalStorage from "./Utils/LocalStorage";
+import AudioPlayer from "./utils/AudioPlayer";
+import Random from "./utils/Random";
+import ExitData from "./data/ExitData";
+import LocalStorage from "./utils/LocalStorage";
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
