@@ -2,6 +2,11 @@ import CCollider from "../collider/CCollider";
 import DamageData from "../data/DamageData";
 import FromData from "../data/FromData";
 import StatusData from "../data/StatusData";
+import { MoveComponent } from "../ecs/component/MoveComponent";
+import { NodeRenderComponent } from "../ecs/component/NodeRenderComponent";
+import { TransformComponent } from "../ecs/component/TransformComponent";
+import { ecs } from "../ecs/ECS";
+import ActorEntity from "../ecs/entity/ActorEntity";
 import ShadowOfSight from "../effect/ShadowOfSight";
 import StateContext from "./StateContext";
 
@@ -39,4 +44,6 @@ export default abstract class Actor extends cc.Component {
     ccollider:CCollider;
     sc:StateContext = new StateContext();
     seed:number = 0;//随机种子，为所在房间分配的随机数生成的种子，决定再次生成该Actor的随机元素一致
+    entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent,MoveComponent,TransformComponent);
+
 }

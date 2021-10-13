@@ -100,7 +100,6 @@ export default class Player extends Actor implements OnContactListener{
     currentDir = 3;
 
     attackTarget: cc.Collider;
-    rigidbody: cc.RigidBody;
 
     defaultPos = cc.v3(0, 0);
 
@@ -118,6 +117,10 @@ export default class Player extends Actor implements OnContactListener{
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.entity.NodeRender.node = this.node;
+        this.entity.Transform.position = this.node.position;
+        this.entity.Move.linearDamping = 5;
+        this.entity.Move.linearVelocity = cc.v2(0,0);
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData.clone();
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData);
@@ -129,7 +132,6 @@ export default class Player extends Actor implements OnContactListener{
             this.sc.isShow = true;
             this.addSaveStatusList();
         }, 0.5)
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.ccollider = this.getComponent(CCollider);
         ColliderManager.registerCollider([this.ccollider]);
         this.ccollider.setOnContactListener(this)
@@ -303,7 +305,7 @@ export default class Player extends Actor implements OnContactListener{
     takeDizz(dizzDuration: number): void {
         if (dizzDuration > 0 && !this.sc.isJumping) {
             this.sc.isDizzing = true;
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO;
             this.playerAnim(PlayerAvatar.STATE_IDLE, this.currentDir);
             this.scheduleOnce(() => {
                 this.sc.isDizzing = false;
@@ -435,6 +437,7 @@ export default class Player extends Actor implements OnContactListener{
     }
     updatePlayerPos() {
         this.node.position = Dungeon.getPosInMap(this.pos);
+        this.entity.Transform.position = this.node.position.clone();
     }
     transportPlayer(pos: cc.Vec3) {
         if (!this.avatar.spriteNode) {
@@ -726,7 +729,7 @@ export default class Player extends Actor implements OnContactListener{
             speed = 0;
         }
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
+        this.entity.Move.linearVelocity = movement;
         this.sc.isMoving = h != 0 || v != 0;
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {

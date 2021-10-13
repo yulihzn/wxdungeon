@@ -249,7 +249,7 @@ export default class ProfessionTalent extends Talent {
         this.schedule(() => {
             this.player.getWalkSmoke(this.node.parent, this.node.position);
         }, 0.05, 4, 0);
-        let pos = this.player.rigidbody.linearVelocity.clone();
+        let pos = this.player.entity.Move.linearVelocity.clone();
         this.player.sc.isMoving = false;
         if (pos.equals(cc.Vec2.ZERO)) {
             // pos = this.player.isFaceRight ? cc.v2(1, 0) : cc.v2(-1, 0);
@@ -260,9 +260,9 @@ export default class ProfessionTalent extends Talent {
         let posv3 = cc.v3(pos.x, pos.y);
         this.hv = posv3.clone();
         pos = pos.mul(speed);
-        this.player.rigidbody.linearVelocity = pos;
+        this.player.entity.Move.linearVelocity = pos;
         this.scheduleOnce(() => {
-            this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.player.entity.Move.linearVelocity = cc.Vec2.ZERO;
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir);
             this.IsExcuting = false;
         }, 0.5)

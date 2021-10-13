@@ -424,10 +424,10 @@ export default class MeleeWeapon extends cc.Component {
         let posv3 = cc.v3(pos.x, pos.y);
         this.hv = posv3.clone();
         pos = pos.mul(speed);
-        this.player.rigidbody.linearVelocity = pos;
+        this.player.entity.Move.linearVelocity = pos;
         this.scheduleOnce(() => {
             this.player.isWeaponDashing = false;
-            this.player.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.player.entity.Move.linearVelocity = cc.Vec2.ZERO;
             this.player.playerAnim(PlayerAvatar.STATE_IDLE, this.player.currentDir);
         }, 0.2)
     }

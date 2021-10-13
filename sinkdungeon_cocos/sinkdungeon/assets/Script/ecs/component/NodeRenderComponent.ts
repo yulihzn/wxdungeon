@@ -1,8 +1,8 @@
 import { ecs } from "../ECS";
 
-@ecs.register('NodeRenderComponent')
+@ecs.register('NodeRender')
 export class NodeRenderComponent extends ecs.IComponent {
-    node:Node;
+    node:cc.Node;
     reset(): void {
         this.node = null;
     }

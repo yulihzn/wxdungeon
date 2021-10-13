@@ -18,6 +18,7 @@ import Utils from "../utils/Utils";
 import LightManager from "../manager/LightManager";
 import DamageData from "../data/DamageData";
 import ColliderManager from "../collider/ColliderManager";
+import GameWorldSystem from "../ecs/system/GameWorldSystem";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -70,6 +71,8 @@ export default class Dungeon extends cc.Component {
     isComplete = false;
     currentPos = cc.v3(0, 0);
 
+    rootSystem:GameWorldSystem = null;
+
     /**
      * 初始化
      * 设置雾气层级和大小
@@ -91,6 +94,8 @@ export default class Dungeon extends cc.Component {
      * 打开门
      */
     onLoad(): void {
+        this.rootSystem = new GameWorldSystem();
+        this.rootSystem.init();
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听
@@ -577,6 +582,7 @@ export default class Dungeon extends cc.Component {
 
     update(dt) {
         if (this.isInitFinish && !Logic.isGamePause) {
+            this.rootSystem.execute(dt);
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt);
                 this.monsterManager.updateLogic(dt);
