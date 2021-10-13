@@ -48,8 +48,12 @@ import IndexZ from '../utils/IndexZ';
 import Random from '../utils/Random';
 import MeleeWeapon from './MeleeWeapon';
 import Shield from './Shield';
+import CCollider from '../collider/CCollider';
+import OnContactListener from '../collider/OnContactListener';
+import ColliderManager from '../collider/ColliderManager';
 @ccclass
-export default class Player extends Actor {
+export default class Player extends Actor implements OnContactListener{
+    
 
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
@@ -76,6 +80,8 @@ export default class Player extends Actor {
     shadowCamera: cc.Camera = null;
     @property(cc.Prefab)
     shadowPrefab: cc.Prefab = null;
+    @property(cc.Node)
+    boxcover:cc.Node = null;
     professionTalent: ProfessionTalent;
     organizationTalent: OrganizationTalent;
 
@@ -124,6 +130,9 @@ export default class Player extends Actor {
             this.addSaveStatusList();
         }, 0.5)
         this.rigidbody = this.getComponent(cc.RigidBody);
+        this.ccollider = this.getComponent(CCollider);
+        ColliderManager.registerCollider([this.ccollider]);
+        this.ccollider.setOnContactListener(this)
         this.initTalent();
         this.weaponLeft.init(this, true, false);
         this.weaponRight.init(this, false, false);
@@ -721,10 +730,10 @@ export default class Player extends Actor {
         this.sc.isMoving = h != 0 || v != 0;
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
-            this.weaponRight.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
+            this.weaponRight.meleeWeapon.Hv = cc.v3(pos.x, 0);
         }
         if (this.weaponLeft.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponLeft.meleeWeapon.IsAttacking) {
-            this.weaponLeft.meleeWeapon.Hv = cc.v3(pos.x, pos.y);
+            this.weaponLeft.meleeWeapon.Hv = cc.v3(pos.x, 0);
         }
         if (this.sc.isMoving && !this.weaponLeft.meleeWeapon.IsAttacking && !this.weaponRight.meleeWeapon.IsAttacking) {
             if (!this.shield.isAniming && !this.shield.isDefendOrParrying) {
@@ -1094,6 +1103,7 @@ export default class Player extends Actor {
                 s.updateLogic(dt);
             }
         }
+        this.ccollider.pos = this.node.position.clone();
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1;
@@ -1149,6 +1159,18 @@ export default class Player extends Actor {
         } else {
             EventHelper.emit(EventHelper.HUD_CONTROLLER_REMOTE_SHOW, { isShow: false });
         }
+    }
+    onColliderEnter(other: CCollider, self: CCollider): void {
+        this.boxcover.color = cc.Color.RED;
+        this.boxcover.opacity = 128;
+    }
+    onColliderStay(other: CCollider, self: CCollider): void {
+        this.boxcover.color = cc.Color.GREEN;
+        this.boxcover.opacity = 128;
+    }
+    onColliderExit(other: CCollider, self: CCollider): void {
+        this.boxcover.color = cc.Color.WHITE;
+        this.boxcover.opacity = 128;
     }
     onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
         if (otherCollider.tag == ColliderTag.NONPLAYER || otherCollider.tag == ColliderTag.GOODNONPLAYER) {

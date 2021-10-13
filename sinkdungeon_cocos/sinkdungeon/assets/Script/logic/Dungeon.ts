@@ -17,6 +17,7 @@ import ItemManager from "../manager/ItemManager";
 import Utils from "../utils/Utils";
 import LightManager from "../manager/LightManager";
 import DamageData from "../data/DamageData";
+import ColliderManager from "../collider/ColliderManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,6 +61,7 @@ export default class Dungeon extends cc.Component {
     itemManager: ItemManager = null;//金币和物品管理
     buildingManager: BuildingManager = null;//建筑管理
     lightManager: LightManager = null;//光线管理
+    colliderManager:ColliderManager = null;//碰撞管理
     anim: cc.Animation;
     CameraZoom = Dungeon.DEFAULT_ZOOM;
     needZoomIn = false;
@@ -129,6 +131,7 @@ export default class Dungeon extends cc.Component {
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.buildingManager = this.getComponent(BuildingManager);
         this.lightManager = this.getComponent(LightManager);
+        this.colliderManager = this.getComponent(ColliderManager);
         this.reset();
     }
     reset() {
@@ -141,6 +144,7 @@ export default class Dungeon extends cc.Component {
         this.dungeonStyleManager.clear();
         this.buildingManager.clear();
         this.lightManager.clear();
+        this.colliderManager.clear();
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
@@ -156,6 +160,7 @@ export default class Dungeon extends cc.Component {
         for (let arr of this.map) {
             Utils.clearComponentArray(arr);
         }
+        this.colliderManager.init(Dungeon.WIDTH_SIZE*Dungeon.TILE_SIZE,Dungeon.HEIGHT_SIZE*Dungeon.TILE_SIZE)
         this.map = new Array();
         this.floorIndexmap = new Array();
         //放置之前留在地上的物品和装备

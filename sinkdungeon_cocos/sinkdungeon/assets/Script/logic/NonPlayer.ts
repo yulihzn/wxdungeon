@@ -38,9 +38,13 @@ import NonPlayerData from '../data/NonPlayerData';
 import { ColliderTag } from '../actor/ColliderTag';
 import StatusData from '../data/StatusData';
 import ActorUtils from '../utils/ActorUtils';
+import CCollider from '../collider/CCollider';
+import OnContactListener from '../collider/OnContactListener';
+import ColliderManager from '../collider/ColliderManager';
 
 @ccclass
-export default class NonPlayer extends Actor {
+export default class NonPlayer extends Actor implements OnContactListener {
+    
     public static readonly RES_DISGUISE = 'disguise';//图片资源 伪装
     public static readonly RES_IDLE000 = 'anim000';//图片资源 等待0
     public static readonly RES_IDLE001 = 'anim001';//图片资源 等待1
@@ -52,8 +56,6 @@ export default class NonPlayer extends Actor {
     public static readonly RES_HIT002 = 'anim007';//图片资源 受击2
     public static readonly RES_HIT003 = 'anim008';//图片资源 受击3
     public static readonly RES_ATTACK01 = 'anim009';//图片资源 准备攻击后续动画由参数配置
-
-
 
     static readonly SCALE_NUM = 1.5;
     static readonly ANIM_NONE = -1;
@@ -82,6 +84,8 @@ export default class NonPlayer extends Actor {
     dangerTips: cc.Node = null;
     @property(cc.Prefab)
     attrPrefab: cc.Prefab = null;
+    @property(cc.Node)
+    boxcover:cc.Node = null;
     private attrNode: cc.Node;
     private sprite: cc.Node;
     private bodySprite: cc.Sprite;
@@ -125,6 +129,9 @@ export default class NonPlayer extends Actor {
         this.graphics = this.getComponent(cc.Graphics);
         this.sc.isAttacking = false;
         this.anim = this.getComponent(cc.Animation);
+        this.ccollider = this.getComponent(CCollider);
+        ColliderManager.registerCollider([this.ccollider]);
+        this.ccollider.setOnContactListener(this);
         this.sprite = this.node.getChildByName('sprite');
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         this.mat = this.bodySprite.getComponent(cc.Sprite).getMaterial(0);
@@ -906,6 +913,7 @@ export default class NonPlayer extends Actor {
         if (!this.dungeon) {
             return;
         }
+        this.ccollider.pos = this.node.position.clone();
         this.stateMachine.update();
         //修正位置
         this.node.position = Dungeon.fixOuterMap(this.node.position);
@@ -1212,5 +1220,18 @@ export default class NonPlayer extends Actor {
     }
     updateDream(offset: number): number {
         return 0;
+    }
+
+    onColliderEnter(other: CCollider, self: CCollider): void {
+        this.boxcover.color = cc.Color.RED;
+        this.boxcover.opacity = 128;
+    }
+    onColliderStay(other: CCollider, self: CCollider): void {
+        this.boxcover.color = cc.Color.GREEN;
+        this.boxcover.opacity = 128;
+    }
+    onColliderExit(other: CCollider, self: CCollider): void {
+        this.boxcover.color = cc.Color.WHITE;
+        this.boxcover.opacity = 128;
     }
 }

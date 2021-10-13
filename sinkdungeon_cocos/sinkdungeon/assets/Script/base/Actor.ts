@@ -1,3 +1,4 @@
+import CCollider from "../collider/CCollider";
 import DamageData from "../data/DamageData";
 import FromData from "../data/FromData";
 import StatusData from "../data/StatusData";
@@ -35,6 +36,7 @@ export default abstract class Actor extends cc.Component {
     isFaceRight = true;
     isFaceUp = true;
     lights:ShadowOfSight[] = [];//光源
+    ccollider:CCollider;
     sc:StateContext = new StateContext();
     seed:number = 0;//随机种子，为所在房间分配的随机数生成的种子，决定再次生成该Actor的随机元素一致
 }
