@@ -17,7 +17,6 @@ import ItemManager from "../manager/ItemManager";
 import Utils from "../utils/Utils";
 import LightManager from "../manager/LightManager";
 import DamageData from "../data/DamageData";
-import ColliderManager from "../collider/ColliderManager";
 import GameWorldSystem from "../ecs/system/GameWorldSystem";
 
 // Learn TypeScript:
@@ -62,7 +61,6 @@ export default class Dungeon extends cc.Component {
     itemManager: ItemManager = null;//金币和物品管理
     buildingManager: BuildingManager = null;//建筑管理
     lightManager: LightManager = null;//光线管理
-    colliderManager:ColliderManager = null;//碰撞管理
     anim: cc.Animation;
     CameraZoom = Dungeon.DEFAULT_ZOOM;
     needZoomIn = false;
@@ -94,8 +92,7 @@ export default class Dungeon extends cc.Component {
      * 打开门
      */
     onLoad(): void {
-        this.rootSystem = new GameWorldSystem();
-        this.rootSystem.init();
+        
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听
@@ -136,7 +133,6 @@ export default class Dungeon extends cc.Component {
         this.dungeonStyleManager = this.getComponent(DungeonStyleManager);
         this.buildingManager = this.getComponent(BuildingManager);
         this.lightManager = this.getComponent(LightManager);
-        this.colliderManager = this.getComponent(ColliderManager);
         this.reset();
     }
     reset() {
@@ -149,7 +145,6 @@ export default class Dungeon extends cc.Component {
         this.dungeonStyleManager.clear();
         this.buildingManager.clear();
         this.lightManager.clear();
-        this.colliderManager.clear();
         //设置雾气层级
         this.fog.zIndex = IndexZ.FOG;
         this.fog.scale = 0.6;
@@ -165,7 +160,8 @@ export default class Dungeon extends cc.Component {
         for (let arr of this.map) {
             Utils.clearComponentArray(arr);
         }
-        this.colliderManager.init(Dungeon.WIDTH_SIZE*Dungeon.TILE_SIZE,Dungeon.HEIGHT_SIZE*Dungeon.TILE_SIZE)
+        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE*Dungeon.TILE_SIZE,Dungeon.HEIGHT_SIZE*Dungeon.TILE_SIZE);
+        this.rootSystem.init();
         this.map = new Array();
         this.floorIndexmap = new Array();
         //放置之前留在地上的物品和装备
@@ -582,7 +578,6 @@ export default class Dungeon extends cc.Component {
 
     update(dt) {
         if (this.isInitFinish && !Logic.isGamePause) {
-            this.rootSystem.execute(dt);
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt);
                 this.monsterManager.updateLogic(dt);
@@ -594,6 +589,7 @@ export default class Dungeon extends cc.Component {
             if (this.isCheckTimeDelay(dt)) {
                 this.checkRoomClear();
             }
+            this.rootSystem.execute(dt);
         }
     }
 }

@@ -39,11 +39,10 @@ import { ColliderTag } from '../actor/ColliderTag';
 import StatusData from '../data/StatusData';
 import ActorUtils from '../utils/ActorUtils';
 import CCollider from '../collider/CCollider';
-import OnContactListener from '../collider/OnContactListener';
-import ColliderManager from '../collider/ColliderManager';
+import { MoveComponent } from '../ecs/component/MoveComponent';
 
 @ccclass
-export default class NonPlayer extends Actor implements OnContactListener {
+export default class NonPlayer extends Actor {
     
     public static readonly RES_DISGUISE = 'disguise';//图片资源 伪装
     public static readonly RES_IDLE000 = 'anim000';//图片资源 等待0
@@ -126,12 +125,11 @@ export default class NonPlayer extends Actor implements OnContactListener {
         return this.isVariation || this.data.StatusTotalData.variation > 0;
     }
     onLoad() {
+        
+        this.initCollider();
         this.graphics = this.getComponent(cc.Graphics);
         this.sc.isAttacking = false;
         this.anim = this.getComponent(cc.Animation);
-        this.ccollider = this.getComponent(CCollider);
-        ColliderManager.registerCollider([this.ccollider]);
-        this.ccollider.setOnContactListener(this);
         this.sprite = this.node.getChildByName('sprite');
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         this.mat = this.bodySprite.getComponent(cc.Sprite).getMaterial(0);
@@ -152,6 +150,7 @@ export default class NonPlayer extends Actor implements OnContactListener {
         this.resetBodyColor();
         if (this.data.isStatic > 0) {
             this.rigidbody.type = cc.RigidBodyType.Static;
+            this.entity.remove(MoveComponent);
         }
         this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
         this.dangerTips.opacity = 0;
@@ -163,7 +162,9 @@ export default class NonPlayer extends Actor implements OnContactListener {
         // this.graphics.strokeColor = cc.Color.RED;
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
+        
     }
+   
     start() {
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
@@ -178,6 +179,10 @@ export default class NonPlayer extends Actor implements OnContactListener {
             })
         }
         this.addSaveStatusList();
+        this.entity.Transform.position = this.node.position;
+        this.entity.NodeRender.node = this.node;
+        this.entity.Move.linearDamping = 2;
+        this.entity.Move.linearVelocity = cc.v2(0,0);
     }
     /**挨打光效 */
     private hitLightS(damage: DamageData) {
@@ -323,6 +328,7 @@ export default class NonPlayer extends Actor implements OnContactListener {
     }
     private updatePlayerPos() {
         this.node.position = Dungeon.getPosInMap(this.pos);
+        this.entity.Transform.position = this.node.position;
     }
     private transportPlayer(x: number, y: number) {
         this.sprite.angle = 0;
@@ -562,6 +568,7 @@ export default class NonPlayer extends Actor implements OnContactListener {
     setLinearVelocity(movement: cc.Vec2) {
         this.currentlinearVelocitySpeed = movement;
         this.rigidbody.linearVelocity = this.currentlinearVelocitySpeed.clone();
+        this.entity.Move.linearVelocity = this.currentlinearVelocitySpeed.clone();
     }
 
 
@@ -913,10 +920,10 @@ export default class NonPlayer extends Actor implements OnContactListener {
         if (!this.dungeon) {
             return;
         }
-        this.ccollider.pos = this.node.position.clone();
         this.stateMachine.update();
         //修正位置
         this.node.position = Dungeon.fixOuterMap(this.node.position);
+        this.entity.Transform.position = this.node.position;
         this.pos = Dungeon.getIndexInMap(this.node.position);
         this.changeZIndex();
         this.updateAttack();
@@ -1225,6 +1232,7 @@ export default class NonPlayer extends Actor implements OnContactListener {
     onColliderEnter(other: CCollider, self: CCollider): void {
         this.boxcover.color = cc.Color.RED;
         this.boxcover.opacity = 128;
+        cc.log(`nonplayer enter`);
     }
     onColliderStay(other: CCollider, self: CCollider): void {
         this.boxcover.color = cc.Color.GREEN;
@@ -1233,5 +1241,6 @@ export default class NonPlayer extends Actor implements OnContactListener {
     onColliderExit(other: CCollider, self: CCollider): void {
         this.boxcover.color = cc.Color.WHITE;
         this.boxcover.opacity = 128;
+        cc.log(`nonplayer exit`);
     }
 }

@@ -408,7 +408,7 @@ export default class MeleeWeapon extends cc.Component {
     DashTime(speed?: number) {
         AudioPlayer.play(AudioPlayer.DASH);
         if (!speed) {
-            speed = 600;
+            speed = 300;
         }
         this.schedule(() => {
             this.player.getWalkSmoke(this.player.node, this.node.position);

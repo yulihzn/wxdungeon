@@ -3,7 +3,7 @@ import { ecs } from "../ECS";
 
 @ecs.register('Collider')
 export class ColliderComponent extends ecs.IComponent {
-    colliders:CCollider[];
+    colliders:CCollider[] = [];
     reset(): void {
         this.colliders = [];
     }

@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import ActorEntity from "../ecs/entity/ActorEntity";
 import Random from "../utils/Random";
 import OnContactListener from "./OnContactListener";
 
@@ -67,10 +68,19 @@ export default class CCollider extends cc.Component {
 
     @property
     sensor: boolean = false;
+    @property
+    isStatic:boolean = false;
 
     pos: cc.Vec3 = cc.Vec3.ZERO;//碰撞体在统一的坐标系下的位置
+    //当前已经碰撞过的物体
     inColliders: { [key: string]: boolean } = {};
-    uuid: string = CCollider.genNonDuplicateID();
+    id: string = CCollider.genNonDuplicateID();
+    //同一个物体下的碰撞需要忽略
+    groupId: string = '';
+    //该碰撞体的实体类，如果有会计算物理部分
+    entity:ActorEntity;
+
+    isPhysicIn = false;
 
     private onContactListener: OnContactListener;
     public setOnContactListener(onContactListener: OnContactListener) {
@@ -78,21 +88,31 @@ export default class CCollider extends cc.Component {
     }
 
     contact(other: CCollider) {
-        if (this.inColliders[other.uuid]) {
+        if (this.inColliders[other.id]) {
             if (this.onContactListener) {
                 this.onContactListener.onColliderStay(other, this);
             }
         } else {
-            this.inColliders[other.uuid] = true;
+            this.inColliders[other.id] = true;
             if (this.onContactListener) {
                 this.onContactListener.onColliderEnter(other, this);
+            }
+        }
+        if(this.entity&&other.entity&&!this.sensor&&!other.sensor){
+            this.isPhysicIn = true;
+            if(!this.isStatic){
+                this.entity.Move.linearVelocity = cc.v2(this.entity.Transform.position.sub(other.entity.Transform.position)).normalize().mul(100);
+            }
+            if(!other.isStatic){
+                other.entity.Move.linearVelocity = cc.v2(other.entity.Transform.position.sub(this.entity.Transform.position)).normalize().mul(100);
             }
         }
 
     }
     exit(other: CCollider) {
-        if (this.inColliders[other.uuid]) {
-            this.inColliders[other.uuid] = false;
+        if (this.inColliders[other.id]) {
+            this.isPhysicIn = false;
+            this.inColliders[other.id] = false;
             if (this.onContactListener) {
                 this.onContactListener.onColliderExit(other, this);
             }
@@ -100,7 +120,7 @@ export default class CCollider extends cc.Component {
 
     }
     get Aabb(): cc.Rect {
-        return cc.rect(this.pos.x + this.offset.x, this.pos.y + this.offset.y, this.size.width * this.node.scale, this.size.height * this.node.scale);
+        return cc.rect(this.pos.x + this.offset.x - this.size.width * this.node.scale / 2, this.pos.y + this.offset.y - this.size.height * this.node.scale / 2, this.size.width * this.node.scale, this.size.height * this.node.scale);
     }
 
     // LIFE-CYCLE CALLBACKS:

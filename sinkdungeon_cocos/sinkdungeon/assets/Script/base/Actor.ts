@@ -1,3 +1,4 @@
+import { ColliderComponent } from './../ecs/component/ColliderComponent';
 import CCollider from "../collider/CCollider";
 import DamageData from "../data/DamageData";
 import FromData from "../data/FromData";
@@ -9,6 +10,7 @@ import { ecs } from "../ecs/ECS";
 import ActorEntity from "../ecs/entity/ActorEntity";
 import ShadowOfSight from "../effect/ShadowOfSight";
 import StateContext from "./StateContext";
+import OnContactListener from '../collider/OnContactListener';
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,7 +25,8 @@ import StateContext from "./StateContext";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default abstract class Actor extends cc.Component {
+export default abstract class Actor extends cc.Component implements OnContactListener{
+    
     static readonly TARGET_PLAYER = 0;
     static readonly TARGET_MONSTER = 1;
     static readonly TARGET_BOSS = 2;
@@ -41,9 +44,30 @@ export default abstract class Actor extends cc.Component {
     isFaceRight = true;
     isFaceUp = true;
     lights:ShadowOfSight[] = [];//光源
-    ccollider:CCollider;
+    ccolliders:CCollider[];
     sc:StateContext = new StateContext();
     seed:number = 0;//随机种子，为所在房间分配的随机数生成的种子，决定再次生成该Actor的随机元素一致
-    entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent,MoveComponent,TransformComponent);
+    entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent,MoveComponent,TransformComponent,ColliderComponent);
+   
+    protected initCollider(){
+        this.ccolliders = this.getComponents(CCollider);
+        if(this.ccolliders&&this.ccolliders.length>0){
+            this.entity.Collider.colliders = this.ccolliders;
+            let groupId = CCollider.genNonDuplicateID();
+            for(let ccolider of this.ccolliders){
+                ccolider.groupId = groupId;
+                ccolider.setOnContactListener(this);
+            }
+        }else{
+            this.entity.remove(ColliderComponent);
+        }
+        
+    }
+    onColliderEnter(other: CCollider, self: CCollider): void {
+    }
+    onColliderStay(other: CCollider, self: CCollider): void {
+    }
+    onColliderExit(other: CCollider, self: CCollider): void {
+    }
 
 }

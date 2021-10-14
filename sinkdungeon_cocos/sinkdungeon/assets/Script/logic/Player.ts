@@ -49,10 +49,8 @@ import Random from '../utils/Random';
 import MeleeWeapon from './MeleeWeapon';
 import Shield from './Shield';
 import CCollider from '../collider/CCollider';
-import OnContactListener from '../collider/OnContactListener';
-import ColliderManager from '../collider/ColliderManager';
 @ccclass
-export default class Player extends Actor implements OnContactListener{
+export default class Player extends Actor{
     
 
     @property(FloatinglabelManager)
@@ -119,7 +117,7 @@ export default class Player extends Actor implements OnContactListener{
     onLoad() {
         this.entity.NodeRender.node = this.node;
         this.entity.Transform.position = this.node.position;
-        this.entity.Move.linearDamping = 5;
+        this.entity.Move.linearDamping = 2;
         this.entity.Move.linearVelocity = cc.v2(0,0);
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData.clone();
@@ -132,10 +130,8 @@ export default class Player extends Actor implements OnContactListener{
             this.sc.isShow = true;
             this.addSaveStatusList();
         }, 0.5)
-        this.ccollider = this.getComponent(CCollider);
-        ColliderManager.registerCollider([this.ccollider]);
-        this.ccollider.setOnContactListener(this)
         this.initTalent();
+        this.initCollider();
         this.weaponLeft.init(this, true, false);
         this.weaponRight.init(this, false, false);
         this.remoteCooldown.width = 0;
@@ -213,6 +209,7 @@ export default class Player extends Actor implements OnContactListener{
             this.lights[0].radius = 0;
         }
     }
+   
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
         if (count > 5) {
             count = 5;
@@ -729,7 +726,15 @@ export default class Player extends Actor implements OnContactListener{
             speed = 0;
         }
         movement = movement.mul(speed);
-        this.entity.Move.linearVelocity = movement;
+        let isPhysicIn = false;
+        for(let c of this.ccolliders){
+            if(c.isPhysicIn){
+                isPhysicIn = true;
+            }
+        }
+        if(!isPhysicIn){
+            this.entity.Move.linearVelocity = movement;
+        }
         this.sc.isMoving = h != 0 || v != 0;
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
@@ -1106,7 +1111,6 @@ export default class Player extends Actor implements OnContactListener{
                 s.updateLogic(dt);
             }
         }
-        this.ccollider.pos = this.node.position.clone();
     }
     getScaleSize(): number {
         let sn = this.IsVariation ? 1.5 : 1;
@@ -1164,6 +1168,7 @@ export default class Player extends Actor implements OnContactListener{
         }
     }
     onColliderEnter(other: CCollider, self: CCollider): void {
+        cc.log(`player enter`);
         this.boxcover.color = cc.Color.RED;
         this.boxcover.opacity = 128;
     }
@@ -1172,6 +1177,7 @@ export default class Player extends Actor implements OnContactListener{
         this.boxcover.opacity = 128;
     }
     onColliderExit(other: CCollider, self: CCollider): void {
+        cc.log(`player exit`);
         this.boxcover.color = cc.Color.WHITE;
         this.boxcover.opacity = 128;
     }

@@ -1,17 +1,127 @@
-import { MoveComponent } from "../component/MoveComponent";
-import { TransformComponent } from "../component/TransformComponent";
+import { ColliderComponent } from './../component/ColliderComponent';
 import { ecs } from "../ECS";
+import Quadtree from '../../collider/Quadtree';
+import CCollider from '../../collider/CCollider';
+import ActorEntity from '../entity/ActorEntity';
 
-export default class  ColliderSystem extends ecs.ComblockSystem{
-    
+export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
+    private quadTree: Quadtree;
+    private tempColliders: { [key: string]: boolean } = {};
+    constructor(width: number, height: number) {
+        super();
+        let bounds = {
+            x: 0,
+            y: 0,
+            width: width,
+            height: height
+        }
+        this.quadTree = new Quadtree(bounds);
+    }
+    init() {
+
+    }
 
     filter(): ecs.IMatcher {
-        return ecs.allOf(MoveComponent, TransformComponent);
+        return ecs.allOf(ColliderComponent);
     }
-    
-    update(entities: ecs.Entity[]): void {
-        for(let e of entities){
-            
+
+    update(entities: ActorEntity[]): void {
+        if (this.isCheckTimeDelay(this.dt)) {
+            this.collisionCheck(entities);
         }
     }
+    private collisionCheck(entities: ActorEntity[]) {
+        let list: CCollider[] = [];
+        for (let e of entities) {
+            let colliders = e.Collider.colliders;
+            for (let collider of colliders) {
+                collider.entity = e;
+                this.quadTree.insert(collider);
+                list.push(collider);
+            }
+        }
+        this.tempColliders = {};
+        for (let collider of list) {
+            let colliders = this.quadTree.retrieve(collider);
+            if (!collider.enabled) {
+                continue;
+            }
+            for (let other of colliders) {
+                if (!other.enabled) {
+                    continue;
+                }
+                if (other === collider) {
+                    continue;
+                }
+                //同一个物体不同的碰撞不校验
+                if (other.groupId == collider.groupId) {
+                    continue;
+                }
+                //如果当前两个物体已经交互过则跳过
+                if (this.tempColliders[`${collider.id},${other.id}`] || this.tempColliders[`${other.id},${collider.id}`]) {
+                    continue;
+                }
+                let isCollision = false;
+                if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
+                    //矩形检测
+                    isCollision = collider.Aabb.intersects(other.Aabb);
+                } else if (collider.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
+                    //圆形检测
+                    isCollision = this.circleHit(collider.pos, other.pos, collider.radius, other.radius);
+                } else if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
+                    //矩形圆形检测
+                    isCollision = this.circleRectHit(other.pos, other.radius, collider.Aabb);
+                } else if (collider.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
+                    //圆形矩形检测
+                    isCollision = this.circleRectHit(collider.pos, collider.radius, other.Aabb);
+                }
+                if (isCollision) {
+                    collider.contact(other);
+                    other.contact(collider);
+                } else {
+                    collider.exit(other);
+                    other.exit(collider);
+                }
+                //标记当前循环已经碰撞过的物体对
+                this.tempColliders[`${collider.id},${other.id}`] = true;
+            }
+        }
+        this.quadTree.clear();
+    }
+
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.05) {
+            this.checkTimeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+
+    private circleHit(v1: cc.Vec3, v2: cc.Vec3, r1: number, r2: number) {
+        if (r1 <= 0 || r2 <= 0) {
+            return false;
+        }
+        let x = v1.x - v2.x;
+        let y = v1.y - v2.y;
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) <= r1 + r2;
+    }
+
+    private circleRectHit(center: cc.Vec3, radius: number, rect: cc.Rect) {
+        let x = center.x - rect.x-rect.width/2;
+        let y = center.y - rect.y-rect.height/2;
+        let minX = Math.min(x, rect.width / 2);
+        let maxX = Math.max(minX, -rect.width / 2);
+        let minY = Math.min(y, rect.height / 2);
+        let maxY = Math.max(minY, -rect.height / 2);
+
+        if ((maxX - x) * (maxX - x) + (maxY - y) * (maxY - y) <= radius * radius) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }
