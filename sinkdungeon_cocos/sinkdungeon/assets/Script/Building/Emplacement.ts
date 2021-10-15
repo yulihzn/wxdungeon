@@ -88,8 +88,9 @@ export default class Emplacement extends Building {
 
     setPos(pos: cc.Vec3) {
         this.pos = pos;
-        this.node.position = Dungeon.getPosInMap(pos);
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+        this.entity.Transform.position = Dungeon.getPosInMap(pos);
+        this.node.position = this.entity.Transform.position.clone();
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
     }
     //Animation
     OpenFire() {

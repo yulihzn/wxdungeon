@@ -107,7 +107,7 @@ export default class Slime extends Boss {
         venomPrefab.position = pos;
         venomPrefab.scale = this.slimeType == 0 ? 1.5 : 1;
         venomPrefab.getComponent(SlimeVenom).target = this.dungeon.player;
-        venomPrefab.zIndex = IndexZ.getActorZIndex(this.node.position);
+        venomPrefab.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
         venomPrefab.opacity = 255;
         venomPrefab.active = true;
     }
@@ -126,7 +126,7 @@ export default class Slime extends Boss {
     AnimAttacking() {
         this.meleeSkill.IsExcuting = false;
         let attackRange = 64 + 50 * this.scaleSize;
-        let target = ActorUtils.getNearestEnemyActor(this.node.position, true, this.dungeon);
+        let target = ActorUtils.getNearestEnemyActor(this.entity.Transform.position, true, this.dungeon);
         let newdis = ActorUtils.getTargetDistance(this, target);
         if (newdis < attackRange && target) { target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this); }
     }
@@ -184,7 +184,7 @@ export default class Slime extends Boss {
         this.node.scaleY = this.scaleSize;
         this.node.scaleX = this.isFaceRight ? this.scaleSize : -this.scaleSize;
         if (this.isVenomTimeDelay(dt) && this.isMoving && !this.meleeSkill.IsExcuting) {
-            this.getVenom(this.node.parent, this.node.position);
+            this.getVenom(this.node.parent, this.entity.Transform.position);
         }
         if (this.isChildSlimeTimeDelay(dt) && !this.sc.isDied && this.slimeType == 0 && this.dungeon) {
             let count = 0;
@@ -194,7 +194,7 @@ export default class Slime extends Boss {
                 }
             }
             if (count < 10 && this.dungeon.monsterManager.monsterList.length < 50) {
-                let pos = Dungeon.getIndexInMap(this.node.position.clone());
+                let pos = Dungeon.getIndexInMap(this.entity.Transform.position.clone());
                 this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SLIME, pos, this.dungeon, true);
             }
         }
@@ -239,13 +239,13 @@ export default class Slime extends Boss {
             if (this.slimeType == 0) {
                 let rand4save = Logic.mapManager.getRandom4Save(this.seed);
                 Achievement.addMonsterKillAchievement(this.data.resName);
-                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: 100 });
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.DREAM } });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.HEART } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.DREAM } });
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, 3);
             }
             if (this.slimeType < Slime.DIVIDE_COUNT) {
-                cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: 5 } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.entity.Transform.position, count: 5 } });
 
                 cc.director.emit(EventHelper.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 } });
                 cc.director.emit(EventHelper.BOSS_ADDSLIME, { detail: { posIndex: this.pos.clone(), slimeType: this.slimeType + 1 } });
@@ -261,8 +261,8 @@ export default class Slime extends Boss {
         newPos.x += Logic.getRandomNum(0, 2000) - 1000;
         newPos.y += Logic.getRandomNum(0, 2000) - 1000;
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
-        this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position);
+        this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         this.changeZIndex();
         let pos = newPos.clone();
 
@@ -270,7 +270,7 @@ export default class Slime extends Boss {
         let attackRange = 64 + 50 * this.scaleSize;
         if (playerDis < attackRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && this.scaleSize >= 1) {
             // cc.director.emit(EventConstant.PLAY_AUDIO,{detail:{name:AudioPlayer.MELEE}});
-            pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
+            pos = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position);
             if (!pos.equals(cc.Vec3.ZERO)) {
                 pos = pos.normalizeSelf();
             }
@@ -286,7 +286,7 @@ export default class Slime extends Boss {
         if (playerDis > dashRange && !this.dungeon.player.sc.isDied && !this.isDashing && this.sc.isShow && Logic.getHalfChance()) {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             if (Logic.getHalfChance()) {
-                pos = this.dungeon.player.getCenterPosition().sub(this.node.position);
+                pos = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position);
             }
             this.move(pos, speed * 1.5);
             this.isDashing = true;
@@ -309,7 +309,7 @@ export default class Slime extends Boss {
             pos = pos.mul(0.5);
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         }
         let h = pos.x;
         let v = pos.y;

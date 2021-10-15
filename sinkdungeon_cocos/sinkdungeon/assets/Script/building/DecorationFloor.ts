@@ -36,11 +36,11 @@ export default class DecorationFloor extends Building {
         this.node.width = sprite.spriteFrame.getOriginalSize().width;
         this.node.height = sprite.spriteFrame.getOriginalSize().height;
         this.node.opacity = opacity?opacity:255;
-        this.originPos = this.node.position.clone();
+        this.originPos = this.entity.Transform.position.clone();
     }
     update(dt:number){
         if(this.dungeon&&this.parallexLevel>0){
-            let pos = this.dungeon.player.node.position.sub(this.node.position);
+            let pos = this.dungeon.player.node.position.sub(this.entity.Transform.position);
             if(pos.x>this.RANGE){
                 pos.x = this.RANGE;
             }
@@ -54,7 +54,7 @@ export default class DecorationFloor extends Building {
                 pos.y = -this.RANGE;
             }
             let p = cc.v3(pos.x/this.RANGE*Dungeon.TILE_SIZE*this.parallexLevel,-pos.y/this.RANGE*Dungeon.TILE_SIZE*this.parallexLevel/2);
-            this.node.position = Logic.lerpPos(this.node.position,this.originPos.add(p),dt*5);
+            this.entity.Transform.position = Logic.lerpPos(this.entity.Transform.position,this.originPos.add(p),dt*5);
         }
     }
 }

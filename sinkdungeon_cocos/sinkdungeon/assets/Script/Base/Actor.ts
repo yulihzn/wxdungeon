@@ -49,7 +49,8 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     seed:number = 0;//随机种子，为所在房间分配的随机数生成的种子，决定再次生成该Actor的随机元素一致
     entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent,MoveComponent,TransformComponent,ColliderComponent);
    
-    protected initCollider(){
+    /**初始化碰撞 */
+    public initCollider(){
         this.ccolliders = this.getComponents(CCollider);
         if(this.ccolliders&&this.ccolliders.length>0){
             this.entity.Collider.colliders = this.ccolliders;
@@ -62,6 +63,22 @@ export default abstract class Actor extends cc.Component implements OnContactLis
             this.entity.remove(ColliderComponent);
         }
         
+    }
+    /**设置碰撞目标tag */
+    public setTargetTags(...tags:number[]){
+        for(let ccolider of this.ccolliders){
+            for(let tag of tags){
+                ccolider.targetTags.set(tag,true);
+            }
+        }
+    }
+    /**设置碰撞忽略tag */
+    public setIgnoreTags(...tags:number[]){
+        for(let ccolider of this.ccolliders){
+            for(let tag of tags){
+                ccolider.ignoreTags.set(tag,true);
+            }
+        }
     }
     onColliderEnter(other: CCollider, self: CCollider): void {
     }

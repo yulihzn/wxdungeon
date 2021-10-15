@@ -42,7 +42,8 @@ export default class FootBoard extends Building {
 
     setPos(pos: cc.Vec3) {
         this.pos = pos;
-        this.node.position = Dungeon.getPosInMap(pos);
+        this.entity.Transform.position = Dungeon.getPosInMap(pos);
+        this.node.position = this.entity.Transform.position.clone();
         this.node.zIndex = IndexZ.FLOOR;
     }
 

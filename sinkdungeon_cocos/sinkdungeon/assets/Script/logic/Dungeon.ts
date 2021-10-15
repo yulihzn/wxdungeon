@@ -69,7 +69,7 @@ export default class Dungeon extends cc.Component {
     isComplete = false;
     currentPos = cc.v3(0, 0);
 
-    rootSystem:GameWorldSystem = null;
+    rootSystem: GameWorldSystem = null;
 
     /**
      * 初始化
@@ -92,7 +92,7 @@ export default class Dungeon extends cc.Component {
      * 打开门
      */
     onLoad(): void {
-        
+
         //初始化动画
         this.anim = this.getComponent(cc.Animation);
         //初始化监听
@@ -160,7 +160,7 @@ export default class Dungeon extends cc.Component {
         for (let arr of this.map) {
             Utils.clearComponentArray(arr);
         }
-        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE*Dungeon.TILE_SIZE,Dungeon.HEIGHT_SIZE*Dungeon.TILE_SIZE);
+        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE);
         this.rootSystem.init();
         this.map = new Array();
         this.floorIndexmap = new Array();
@@ -182,7 +182,7 @@ export default class Dungeon extends cc.Component {
                 //房间未清理时加载怪物
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
                     || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)) {
-                        this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
+                    this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
                 }
                 //加载npc
                 this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j));
@@ -460,11 +460,13 @@ export default class Dungeon extends cc.Component {
             tile.breakTile();
         }
     }
+
     /** 玩家在地牢移动 */
     playerAction(dir: number, pos: cc.Vec3, dt: number) {
         if (this.player) {
             this.player.playerAction(dir, pos, dt, this);
         }
+
     }
     getMonsterAliveNum(): number {
         let count = 0;

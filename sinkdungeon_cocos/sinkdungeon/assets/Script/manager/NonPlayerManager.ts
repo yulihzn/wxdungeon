@@ -103,7 +103,7 @@ export default class NonPlayerManager extends BaseManager {
         //激活
         nonPlayer.node.active = true;
         nonPlayer.pos = Dungeon.getIndexInMap(pos);
-        nonPlayer.node.position = pos;
+        nonPlayer.entity.Transform.position = pos;
         this.nonPlayerList.push(nonPlayer);
         if (nonPlayer.data.isPet > 0) {
             this.pet = nonPlayer;

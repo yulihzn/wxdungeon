@@ -83,8 +83,6 @@ export default class NonPlayer extends Actor {
     dangerTips: cc.Node = null;
     @property(cc.Prefab)
     attrPrefab: cc.Prefab = null;
-    @property(cc.Node)
-    boxcover:cc.Node = null;
     private attrNode: cc.Node;
     private sprite: cc.Node;
     private bodySprite: cc.Sprite;
@@ -92,7 +90,6 @@ export default class NonPlayer extends Actor {
     private dashlight: cc.Node;
     private anim: cc.Animation;
     private boxCollider: cc.BoxCollider;
-    rigidbody: cc.RigidBody;
     graphics: cc.Graphics;
     isFaceRight = true;
     dungeon: Dungeon;
@@ -138,7 +135,6 @@ export default class NonPlayer extends Actor {
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
         this.shadow = this.sprite.getChildByName('shadow');
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.effectNode = this.node.getChildByName('Effect');
         this.hitLightSprite = this.node.getChildByName('Effect').getChildByName('hitlight').getComponent(cc.Sprite);
@@ -149,7 +145,6 @@ export default class NonPlayer extends Actor {
         this.updatePlayerPos();
         this.resetBodyColor();
         if (this.data.isStatic > 0) {
-            this.rigidbody.type = cc.RigidBodyType.Static;
             this.entity.remove(MoveComponent);
         }
         this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
@@ -179,7 +174,7 @@ export default class NonPlayer extends Actor {
             })
         }
         this.addSaveStatusList();
-        this.entity.Transform.position = this.node.position;
+        this.node.position = this.entity.Transform.position.clone();
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearDamping = 2;
         this.entity.Move.linearVelocity = cc.v2(0,0);
@@ -327,8 +322,8 @@ export default class NonPlayer extends Actor {
         return spriteFrame;
     }
     private updatePlayerPos() {
-        this.node.position = Dungeon.getPosInMap(this.pos);
-        this.entity.Transform.position = this.node.position;
+        this.entity.Transform.position = Dungeon.getPosInMap(this.pos);
+        this.node.position = this.entity.Transform.position.clone();
     }
     private transportPlayer(x: number, y: number) {
         this.sprite.angle = 0;
@@ -342,7 +337,7 @@ export default class NonPlayer extends Actor {
         this.updatePlayerPos();
     }
     private changeZIndex() {
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
     }
     private showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBackStab: boolean) {
         if (!this.floatinglabelManager) {
@@ -364,7 +359,7 @@ export default class NonPlayer extends Actor {
         this.remoteStep.IsExcuting = false;
         let p = this.shooter.node.position.clone();
         p.x = this.shooter.node.scaleX > 0 ? p.x + 30 : -p.x - 30;
-        let hv = target.getCenterPosition().sub(this.node.position.add(p));
+        let hv = target.getCenterPosition().sub(this.entity.Transform.position.add(p));
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
@@ -396,7 +391,7 @@ export default class NonPlayer extends Actor {
         if (speedScale > 2) {
             speedScale = 2;
         }
-        let pos = target.node.position.clone().sub(this.node.position);
+        let pos = target.node.position.clone().sub(this.entity.Transform.position);
 
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
@@ -544,7 +539,7 @@ export default class NonPlayer extends Actor {
         }
         pos = pos.normalizeSelf();
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         }
         let h = pos.x;
         let v = pos.y;
@@ -567,7 +562,6 @@ export default class NonPlayer extends Actor {
     }
     setLinearVelocity(movement: cc.Vec2) {
         this.currentlinearVelocitySpeed = movement;
-        this.rigidbody.linearVelocity = this.currentlinearVelocitySpeed.clone();
         this.entity.Move.linearVelocity = this.currentlinearVelocitySpeed.clone();
     }
 
@@ -576,7 +570,7 @@ export default class NonPlayer extends Actor {
      * 是否玩家背后攻击
      */
     isPlayerBehindAttack(): boolean {
-        let isPlayerRight = this.dungeon.player.node.position.x > this.node.position.x;
+        let isPlayerRight = this.dungeon.player.node.position.x > this.entity.Transform.position.x;
         let isSelfFaceRight = this.node.scaleX > 0;
         return (isPlayerRight && !isSelfFaceRight) || (!isPlayerRight && isSelfFaceRight);
     }
@@ -584,7 +578,7 @@ export default class NonPlayer extends Actor {
      * 攻击目标是否背面朝着怪物
      */
     isFaceTargetBehind(target: Actor): boolean {
-        let isTargetRight = target.node.position.x > this.node.position.x;
+        let isTargetRight = target.node.position.x > this.entity.Transform.position.x;
         let isTargetFaceRight = target.isFaceRight;
         return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
     }
@@ -758,7 +752,7 @@ export default class NonPlayer extends Actor {
                 if (this.data.isBoom > 0) {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
-                        boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
+                        boom.show(this.node.parent, this.entity.Transform.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
                             , true, true, false, false, new DamageData(2), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
                         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
@@ -798,9 +792,9 @@ export default class NonPlayer extends Actor {
             if (this.dungeon.player.data.StatusTotalData.exOilGold > 0) {
                 count += this.dungeon.player.data.StatusTotalData.exOilGold;
             }
-            EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count });
+            EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: count });
             if (rand < percent) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.node.position, count: rand4save.getRandomNum(1, 10) });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: rand4save.getRandomNum(1, 10) });
             } else if (rand >= percent && rand < percent + offset) {
                 this.addLootSaveItem(Item.HEART, true);
             } else if (rand >= percent + offset && rand < percent + offset * 2) {
@@ -824,13 +818,13 @@ export default class NonPlayer extends Actor {
     }
     private addLootSaveItem(resName: string, isAuto?: boolean) {
         if (isAuto || !this.isSummon) {
-            this.dungeon.addItem(this.node.position.clone(), resName);
+            this.dungeon.addItem(this.entity.Transform.position.clone(), resName);
         }
     }
 
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
-        return this.node.position.clone();
+        return this.entity.Transform.position.clone();
     }
     get isPassive() {
         return !this.dungeon || this.sc.isDied || this.sc.isHurting || this.sc.isFalling || this.sc.isAttacking
@@ -841,7 +835,7 @@ export default class NonPlayer extends Actor {
         if (this.isPassive) {
             return;
         }
-        let target = ActorUtils.getNearestEnemyActor(this.node.position, this.data.isEnemy > 0, this.dungeon);
+        let target = ActorUtils.getNearestEnemyActor(this.entity.Transform.position, this.data.isEnemy > 0, this.dungeon);
         let targetDis = ActorUtils.getTargetDistance(this, target);
         //目标不存在、死亡或者隐身直接返回
         if (!ActorUtils.isTargetAlive(target)) {
@@ -922,12 +916,11 @@ export default class NonPlayer extends Actor {
         }
         this.stateMachine.update();
         //修正位置
-        this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.entity.Transform.position = this.node.position;
-        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position);
+        this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         this.changeZIndex();
         this.updateAttack();
-        let target = ActorUtils.getNearestEnemyActor(this.node.position, this.data.isEnemy > 0, this.dungeon);
+        let target = ActorUtils.getNearestEnemyActor(this.entity.Transform.position, this.data.isEnemy > 0, this.dungeon);
         let targetDis = ActorUtils.getTargetDistance(this, target);
         //靠近取消伪装
         if (this.data.disguise > 0 && targetDis < this.data.disguise && this.sc.isDisguising) {
@@ -1006,7 +999,7 @@ export default class NonPlayer extends Actor {
         if (this.sc.isDashing) {
             this.setLinearVelocity(this.currentlinearVelocitySpeed);
         }
-        if (this.rigidbody.linearVelocity.equals(cc.Vec2.ZERO) && !this.isPassive) {
+        if (this.entity.Move.linearVelocity.equals(cc.Vec2.ZERO) && !this.isPassive) {
             this.sc.isMoving = false;
         }
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
@@ -1046,7 +1039,7 @@ export default class NonPlayer extends Actor {
                 this.data.currentHealth = 0;
             } else {
                 this.graphics.moveTo(0, 32);
-                let pos = cc.v3(this.parentNonPlayer.node.position.x - this.node.position.x, this.parentNonPlayer.node.position.y - this.node.position.y);
+                let pos = cc.v3(this.parentNonPlayer.node.position.x - this.entity.Transform.position.x, this.parentNonPlayer.node.position.y - this.entity.Transform.position.y);
                 this.graphics.lineTo(this.node.scaleX > 0 ? pos.x : -pos.x, pos.y + 32);
                 this.graphics.stroke();
             }
@@ -1073,24 +1066,24 @@ export default class NonPlayer extends Actor {
         }
         newPos = target.node.position.clone();
         if (isFlee) {//保证逃跑的时候不碰到死角
-            if (newPos.y > this.node.position.y) {
+            if (newPos.y > this.entity.Transform.position.y) {
                 newPos = newPos.addSelf(cc.v3(0, -128));
             } else {
                 newPos = newPos.addSelf(cc.v3(0, 128));
             }
-            if (newPos.x > this.node.position.x) {
+            if (newPos.x > this.entity.Transform.position.x) {
                 newPos = newPos.addSelf(cc.v3(-64, 0));
             } else {
                 newPos = newPos.addSelf(cc.v3(64, 0));
             }
         }
-        if (newPos.x > this.node.position.x) {
+        if (newPos.x > this.entity.Transform.position.x) {
             newPos = newPos.addSelf(cc.v3(32, 0));
         } else {
             newPos = newPos.addSelf(cc.v3(-32, 0));
         }
 
-        let pos = newPos.sub(this.node.position);
+        let pos = newPos.sub(this.entity.Transform.position);
         if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isStatic < 1) {
             this.changeFaceRight(target);
         }
@@ -1098,7 +1091,7 @@ export default class NonPlayer extends Actor {
     }
     changeFaceRight(target: Actor) {
         let pos = target.node.position.clone();
-        pos = pos.sub(this.node.position);
+        pos = pos.sub(this.entity.Transform.position);
         let h = pos.x;
         this.isFaceRight = h >= 0;
     }
@@ -1191,7 +1184,7 @@ export default class NonPlayer extends Actor {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
         let body = this.bodySprite.node;
         cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
-            let newPos = ActorUtils.getNearestEnemyPosition(this.node.position, true, this.dungeon, true);
+            let newPos = ActorUtils.getNearestEnemyPosition(this.entity.Transform.position, true, this.dungeon, true);
             newPos = Dungeon.getIndexInMap(newPos);
             if (newPos.x > this.pos.x) {
                 newPos = newPos.addSelf(cc.v3(1, 0));
@@ -1230,17 +1223,9 @@ export default class NonPlayer extends Actor {
     }
 
     onColliderEnter(other: CCollider, self: CCollider): void {
-        this.boxcover.color = cc.Color.RED;
-        this.boxcover.opacity = 128;
-        cc.log(`nonplayer enter`);
     }
     onColliderStay(other: CCollider, self: CCollider): void {
-        this.boxcover.color = cc.Color.GREEN;
-        this.boxcover.opacity = 128;
     }
     onColliderExit(other: CCollider, self: CCollider): void {
-        this.boxcover.color = cc.Color.WHITE;
-        this.boxcover.opacity = 128;
-        cc.log(`nonplayer exit`);
     }
 }

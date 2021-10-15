@@ -1,8 +1,9 @@
+import { ColliderComponent } from './../ecs/component/ColliderComponent';
 import Dungeon from "../logic/Dungeon";
 import Logic from "../logic/Logic";
 import Building from "./Building";
-import { ColliderTag } from "../actor/ColliderTag";
 import LevelData from "../data/LevelData";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -66,7 +67,8 @@ export default class Wall extends Building {
     }
     setPos(pos: cc.Vec3) {
         this.pos = pos;
-        this.node.position = Dungeon.getPosInMap(pos);
+        this.entity.Transform.position = Dungeon.getPosInMap(pos);
+        this.node.position = this.entity.Transform.position.clone();
     }
     start() {
         this.node.opacity = 255;
@@ -190,22 +192,24 @@ export default class Wall extends Building {
                 break;
         }
         if (this.isTop()) {
-            let collider = this.getComponent(cc.PhysicsBoxCollider);
-            collider.tag = ColliderTag.WALL_TOP;
+            for(let c of this.ccolliders){
+                c.tag = CCollider.TAG.WALL_TOP;
+            }
         }
+        this.setTargetTags(CCollider.TAG.PLAYER,CCollider.TAG.NONPLAYER,CCollider.TAG.GOODNONPLAYER
+            ,CCollider.TAG.BOSS,CCollider.TAG.BUILDING,CCollider.TAG.BULLET);
         if (onlyShow) {
-            let pcollider = this.getComponent(cc.PhysicsBoxCollider);
-            let rigidbody = this.getComponent(cc.RigidBody);
-            if (pcollider) { pcollider.enabled = false; }
-            if (rigidbody) { rigidbody.active = false; }
+            this.entity.remove(ColliderComponent);
         }
     }
     private isInnerOrCorner(type: number): boolean {
         return type == Wall.TYPE_INNER || type == Wall.TYPE_CORNER || type == Wall.TYPE_INNER_CORNER;
     }
-
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+    onColliderEnter(other: CCollider, self: CCollider): void {
+        if(!self.sensor){
+            return;
+        }
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2
                 || this.type == Wall.TYPE_OTHER3|| this.type == Wall.TYPE_OTHER4) {
                 this.wallsprite.node.opacity = 180;
@@ -214,8 +218,11 @@ export default class Wall extends Building {
             }
         }
     }
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+    onColliderStay(other: CCollider, self: CCollider): void {
+        if(!self.sensor){
+            return;
+        }
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2
                 || this.type == Wall.TYPE_OTHER3|| this.type == Wall.TYPE_OTHER4) {
                 this.wallsprite.node.opacity = 180;
@@ -224,8 +231,11 @@ export default class Wall extends Building {
             }
         }
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (this.type != Wall.TYPE_EMPTY && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+    onColliderExit(other: CCollider, self: CCollider): void {
+        if(!self.sensor){
+            return;
+        }
+        if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2
                 || this.type == Wall.TYPE_OTHER3|| this.type == Wall.TYPE_OTHER4) {
                 this.wallsprite.node.opacity = 255;
@@ -234,5 +244,6 @@ export default class Wall extends Building {
             }
         }
     }
+   
     // update (dt) {}
 }

@@ -12,22 +12,24 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
 
     update(entities: ActorEntity[]): void {
         for (let e of entities) {
-            let nodeRender = e.NodeRender;
-            if (nodeRender.node) {
-                let move = e.Move;
-                let transform = e.Transform;
-                if (move.linearDamping < 0) {
-                    move.linearDamping = 0;
-                }
-                transform.position.x += this.dt * move.linearVelocity.x;
-                transform.position.y += this.dt * move.linearVelocity.y;
-                move.linearVelocity.x = this.lerp(move.linearVelocity.x, 0, move.linearDamping * this.dt);
-                move.linearVelocity.y = this.lerp(move.linearVelocity.y, 0, move.linearDamping * this.dt);
-                nodeRender.node.setPosition(transform.position);
-                for(let c of e.Collider.colliders){
+            let move = e.Move;
+            let transform = e.Transform;
+            if (move.linearDamping < 0) {
+                move.linearDamping = 0;
+            }
+            transform.position.x += this.dt * move.linearVelocity.x;
+            transform.position.y += this.dt * move.linearVelocity.y;
+            move.linearVelocity.x = this.lerp(move.linearVelocity.x, 0, move.linearDamping * this.dt);
+            move.linearVelocity.y = this.lerp(move.linearVelocity.y, 0, move.linearDamping * this.dt);
+            if (e.NodeRender.node) {
+                e.NodeRender.node.setPosition(transform.position);
+            }
+            if(e.Collider){
+                for (let c of e.Collider.colliders) {
                     c.pos = transform.position.clone();
                 }
             }
+            
         }
     }
 

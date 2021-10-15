@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 import Logic from "../logic/Logic";
 
 
@@ -41,14 +42,14 @@ export default class ShadowOfSight extends cc.Component {
     offset = 0;
     offsetPlus = false;
     private polygonCollider: cc.PolygonCollider;
-    private circleCollider: cc.CircleCollider;
+    private circleCollider: CCollider;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.mat = this.ray.getMaterial(0);
         this.polygonCollider = this.getComponent(cc.PolygonCollider);
-        this.circleCollider = this.getComponent(cc.CircleCollider);
+        this.circleCollider = this.getComponent(CCollider);
     }
     /** 绘制视野区域 */
     renderSightArea(camera: cc.Camera): void {

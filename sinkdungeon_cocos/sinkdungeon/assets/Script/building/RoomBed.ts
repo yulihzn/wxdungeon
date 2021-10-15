@@ -2,7 +2,6 @@ import ExitData from "../data/ExitData";
 import FromData from "../data/FromData";
 import Dungeon from "../logic/Dungeon";
 import ShadowOfSight from "../effect/ShadowOfSight";
-import { EventHelper } from "../logic/EventHelper";
 import Logic from "../logic/Logic";
 import StatusManager from "../manager/StatusManager";
 // Learn TypeScript:

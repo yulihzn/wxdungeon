@@ -42,10 +42,10 @@ export default class EnergyShield extends Building {
         this.data.maxHealth = maxHealth;
         this.node.scale = scale;
         this.anim = this.getComponent(cc.Animation);
-        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.node.position.x,this.node.position.y-8*scale));
+        this.node.zIndex = IndexZ.getActorZIndex(cc.v3(this.entity.Transform.position.x,this.entity.Transform.position.y-8*scale));
         this.base = this.node.getChildByName('base');
         this.base.parent = this.node.parent;
-        this.base.position = this.node.position;
+        this.base.position = this.entity.Transform.position;
         cc.tween(this.base).to(1,{scale:scale,opacity:255}).start();
         this.base.zIndex = IndexZ.FLOOR;
     }
@@ -75,8 +75,8 @@ export default class EnergyShield extends Building {
         }
     }
     checkTargetIn(targetNode:cc.Node){
-        let x = this.node.position.x-this.collider.size.width/2*this.node.scale;
-        let y = this.node.position.y-(this.collider.size.width/2-this.collider.offset.y)*this.node.scale;
+        let x = this.entity.Transform.position.x-this.collider.size.width/2*this.node.scale;
+        let y = this.entity.Transform.position.y-(this.collider.size.width/2-this.collider.offset.y)*this.node.scale;
         let w = this.collider.size.width*this.node.scale;
         let h = this.collider.size.height*this.node.scale;
         let rect = cc.rect(x,y,w,h);

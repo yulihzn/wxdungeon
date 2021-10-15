@@ -141,12 +141,12 @@ export default class Kraken extends Boss {
             let pos = Dungeon.getPosInMap(p);
             cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: pos, count: 19 } });
             if (!isSteal) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: 100 });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 });
             }
             let chance = Logic.getHalfChance() && isSteal || !isSteal;
             if (chance) {
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
-                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.DREAM } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.HEART } });
+                cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.DREAM } });
             }
             this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(p), null, 3);
         }
@@ -197,7 +197,7 @@ export default class Kraken extends Boss {
         if (this.shooter) {
             this.remoteSkill.next(() => {
                 this.shooter.skipTopwall = true;
-                let pos = this.node.position.clone().add(this.shooter.node.position);
+                let pos = this.entity.Transform.position.clone().add(this.shooter.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec3.ZERO)) {
                     hv = hv.normalizeSelf();

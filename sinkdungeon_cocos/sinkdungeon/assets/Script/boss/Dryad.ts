@@ -163,7 +163,7 @@ export default class Dryad extends Boss {
             this.stoneSkill.IsExcuting = true;
             this.anim.play('DryadStone');
             this.scheduleOnce(() => {
-                let pos = this.node.position.clone().add(this.shooter01.node.position);
+                let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec3.ZERO)) {
                     hv = hv.normalizeSelf();

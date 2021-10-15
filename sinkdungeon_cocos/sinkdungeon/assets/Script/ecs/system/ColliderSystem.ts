@@ -7,6 +7,7 @@ import ActorEntity from '../entity/ActorEntity';
 export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private quadTree: Quadtree;
     private tempColliders: { [key: string]: boolean } = {};
+    private list: CCollider[] = [];
     constructor(width: number, height: number) {
         super();
         let bounds = {
@@ -20,33 +21,63 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     init() {
 
     }
+    initList() {
+
+    }
 
     filter(): ecs.IMatcher {
         return ecs.allOf(ColliderComponent);
     }
-
-    update(entities: ActorEntity[]): void {
-        if (this.isCheckTimeDelay(this.dt)) {
-            this.collisionCheck(entities);
+    checkTimeDelay = 0;
+    isCheckTimeDelay(dt: number): boolean {
+        this.checkTimeDelay += dt;
+        if (this.checkTimeDelay > 0.04) {
+            this.checkTimeDelay = 0;
+            return true;
         }
+        return false;
+    }
+    update(entities: ActorEntity[]): void {
+        if (this.list.length < 1) {
+            for (let e of entities) {
+                let colliders = e.Collider.colliders;
+                for (let collider of colliders) {
+                    collider.entity = e;
+                    this.list.push(collider);
+                }
+            }
+        }
+        this.collisionCheck(entities);
     }
     private collisionCheck(entities: ActorEntity[]) {
-        let list: CCollider[] = [];
         for (let e of entities) {
             let colliders = e.Collider.colliders;
             for (let collider of colliders) {
                 collider.entity = e;
                 this.quadTree.insert(collider);
-                list.push(collider);
             }
         }
         this.tempColliders = {};
-        for (let collider of list) {
-            let colliders = this.quadTree.retrieve(collider);
+        for (let collider of this.list) {
             if (!collider.enabled) {
                 continue;
             }
+            let colliders = this.quadTree.retrieve(collider);
             for (let other of colliders) {
+                if (collider.targetTags.size > 0) {
+                    if (!collider.targetTags.has(other.tag)) {
+                        continue;
+                    }
+                } else if (collider.ignoreTags.has(other.tag)) {
+                    continue;
+                }
+                if(other.targetTags.size>0){
+                    if(!other.targetTags.has(collider.tag)){
+                        continue;
+                    }
+                }else if (other.ignoreTags.has(collider.tag)) {
+                    continue;
+                }
                 if (!other.enabled) {
                     continue;
                 }
@@ -89,16 +120,6 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         this.quadTree.clear();
     }
 
-    checkTimeDelay = 0;
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 0.05) {
-            this.checkTimeDelay = 0;
-            return true;
-        }
-        return false;
-    }
-
     private circleHit(v1: cc.Vec3, v2: cc.Vec3, r1: number, r2: number) {
         if (r1 <= 0 || r2 <= 0) {
             return false;
@@ -109,8 +130,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     }
 
     private circleRectHit(center: cc.Vec3, radius: number, rect: cc.Rect) {
-        let x = center.x - rect.x-rect.width/2;
-        let y = center.y - rect.y-rect.height/2;
+        let x = center.x - rect.x - rect.width / 2;
+        let y = center.y - rect.y - rect.height / 2;
         let minX = Math.min(x, rect.width / 2);
         let maxX = Math.max(minX, -rect.width / 2);
         let minY = Math.min(y, rect.height / 2);

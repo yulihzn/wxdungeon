@@ -119,8 +119,8 @@ export default class EvilEye extends Boss {
         if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
             return;
         }
-        this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position);
+        this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         this.changeZIndex();
         let pos = this.getMovePos();
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
@@ -151,7 +151,7 @@ export default class EvilEye extends Boss {
         // }
         let pos = Dungeon.getPosInMap(newPos);
         pos.y += 32;
-        pos = pos.sub(this.node.position);
+        pos = pos.sub(this.entity.Transform.position);
         let h = pos.x;
         return pos;
     }
@@ -172,7 +172,7 @@ export default class EvilEye extends Boss {
             let p = this.viceEyes[i].convertToWorldSpaceAR(cc.v3(0, 0));
             p = this.node.convertToNodeSpaceAR(p);
             this.viceShooters[i].node.setPosition(p);
-            let pos = this.node.position.clone().add(p);
+            let pos = this.entity.Transform.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
             if (!hv.equals(cc.Vec3.ZERO)) {
                 hv = hv.normalizeSelf();
@@ -189,7 +189,7 @@ export default class EvilEye extends Boss {
             let p = this.shooter.node.convertToWorldSpaceAR(cc.v3(0, 0));
             p = this.node.convertToNodeSpaceAR(p);
             this.shooter.node.setPosition(p);
-            let pos = this.node.position.clone().add(p);
+            let pos = this.entity.Transform.position.clone().add(p);
             let hv = this.dungeon.player.getCenterPosition().sub(pos);
             if (!hv.equals(cc.Vec3.ZERO)) {
                 hv = hv.normalizeSelf();
@@ -269,7 +269,7 @@ export default class EvilEye extends Boss {
             return;
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         }
         let h = pos.x;
         let v = pos.y;

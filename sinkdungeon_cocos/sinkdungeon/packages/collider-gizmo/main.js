@@ -273,7 +273,7 @@ class ColliderGizmo extends Editor.Gizmo {
         radius = Editor.GizmosUtils.snapPixel(radius);
 
         // 移动 svg 工具到坐标
-        this._tool.plot(radius * this._view.scale, target.size.width * this._view.scale, target.size.height * this._view.scale, position);
+        this._tool.plot(radius * this._view.scale, target.size.width * this._view.scale * node.scale, target.size.height * this._view.scale * node.scale, position);
     }
 }
 

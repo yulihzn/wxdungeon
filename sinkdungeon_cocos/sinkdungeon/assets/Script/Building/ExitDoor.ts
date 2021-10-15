@@ -58,7 +58,8 @@ export default class ExitDoor extends Building {
             if (this.dir == 11) {
                 indexPos.x += 1;
             }
-            this.node.position = Dungeon.getPosInMap(indexPos);
+            this.entity.Transform.position = Dungeon.getPosInMap(indexPos);
+            this.node.position = this.entity.Transform.position.clone();
         }
         let label = this.roof.getComponentInChildren(cc.Label);
         label.string = `-${Logic.worldLoader.getLevelData(this.exitData.toChapter, this.exitData.toLevel).name}`

@@ -100,8 +100,8 @@ export default class IceDemon extends Boss {
         if (this.sc.isDied || !this.sc.isShow || !this.dungeon) {
             return;
         }
-        this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position);
+        this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         this.changeZIndex();
         let pos = this.getMovePos();
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
@@ -140,7 +140,7 @@ export default class IceDemon extends Boss {
         // }
         let pos = Dungeon.getPosInMap(newPos);
         pos.y += 32;
-        pos = pos.sub(this.node.position);
+        pos = pos.sub(this.entity.Transform.position);
         let h = pos.x;
         this.isFaceRight = h > 0;
         return pos;
@@ -333,7 +333,7 @@ export default class IceDemon extends Boss {
             return;
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         }
         let h = pos.x;
         let v = pos.y;

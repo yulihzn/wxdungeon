@@ -63,8 +63,9 @@ export default class Chest extends Building {
 
     seDefaultPos(defaultPos: cc.Vec3) {
         this.data.defaultPos = defaultPos;
-        this.node.position = Dungeon.getPosInMap(defaultPos);
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+        this.entity.Transform.position = Dungeon.getPosInMap(defaultPos);
+        this.node.position = this.entity.Transform.position.clone();
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
     }
 
     openChest() {

@@ -56,8 +56,9 @@ export default class Box extends Building {
     }
     setDefaultPos(defaultPos: cc.Vec3) {
         this.data.defaultPos = defaultPos;
-        this.node.position = Dungeon.getPosInMap(defaultPos);
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+        this.entity.Transform.position = Dungeon.getPosInMap(defaultPos);
+        this.node.position = this.entity.Transform.position.clone();
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
     }
     //Animation
     BreakingFinish() {
@@ -77,19 +78,20 @@ export default class Box extends Building {
         this.isBreaking = true;
     }
     reset() {
-        this.node.position = Dungeon.getPosInMap(this.data.defaultPos);
+        this.entity.Transform.position = Dungeon.getPosInMap(this.data.defaultPos);
+        this.node.position = this.entity.Transform.position.clone();
         this.isBreaking = false;
     }
 
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.2) {
-            this.data.position = this.node.position;
+            this.data.position = this.entity.Transform.position;
             let saveBox = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
             if (saveBox) {
                 saveBox.position = this.data.position;
             }
-            this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+            this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
         }
     }
 }

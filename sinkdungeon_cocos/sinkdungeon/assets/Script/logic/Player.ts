@@ -115,8 +115,6 @@ export default class Player extends Actor{
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.entity.NodeRender.node = this.node;
-        this.entity.Transform.position = this.node.position;
         this.entity.Move.linearDamping = 2;
         this.entity.Move.linearVelocity = cc.v2(0,0);
         this.inventoryManager = Logic.inventoryManager;
@@ -187,6 +185,7 @@ export default class Player extends Actor{
         this.defaultPos = Logic.playerData.pos.clone();
         this.baseAttackPoint = Logic.playerData.FinalCommon.damageMin;
         this.updatePlayerPos();
+        this.entity.NodeRender.node = this.node;
         cc.director.emit(EventHelper.CAMERA_LOOK);
         this.shooterEx.player = this;
         this.shooterEx.isEx = true;
@@ -430,11 +429,11 @@ export default class Player extends Actor{
     }
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
-        return this.node.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
+        return this.entity.Transform.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
     }
     updatePlayerPos() {
-        this.node.position = Dungeon.getPosInMap(this.pos);
-        this.entity.Transform.position = this.node.position.clone();
+        this.entity.Transform.position = Dungeon.getPosInMap(this.pos);
+        this.node.position = this.entity.Transform.position.clone();
     }
     transportPlayer(pos: cc.Vec3) {
         if (!this.avatar.spriteNode) {
@@ -450,7 +449,7 @@ export default class Player extends Actor{
         this.updatePlayerPos();
     }
     changeZIndex(pos: cc.Vec3) {
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
     }
     addStatus(statusType: string, from: FromData, isFromSave?: boolean) {
         if (!this.node || this.sc.isDied) {
@@ -705,7 +704,7 @@ export default class Player extends Actor{
         }
 
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
             this.data.pos = this.pos.clone();
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
@@ -726,15 +725,7 @@ export default class Player extends Actor{
             speed = 0;
         }
         movement = movement.mul(speed);
-        let isPhysicIn = false;
-        for(let c of this.ccolliders){
-            if(c.isPhysicIn){
-                isPhysicIn = true;
-            }
-        }
-        if(!isPhysicIn){
-            this.entity.Move.linearVelocity = movement;
-        }
+        this.entity.Move.linearVelocity = movement;
         this.sc.isMoving = h != 0 || v != 0;
         //调整武器方向
         if (this.weaponRight.meleeWeapon && !pos.equals(cc.Vec3.ZERO) && !this.weaponRight.meleeWeapon.IsAttacking) {
@@ -1066,7 +1057,7 @@ export default class Player extends Actor{
             return;
         }
         if (this.isSmokeTimeDelay(dt) && this.sc.isMoving && !this.sc.isJumping) {
-            this.getWalkSmoke(this.node.parent, this.node.position);
+            this.getWalkSmoke(this.node.parent, this.entity.Transform.position);
         }
         if (this.isDreamLongTimeDelay(dt)) {
             this.updateDream(-1);
@@ -1168,7 +1159,6 @@ export default class Player extends Actor{
         }
     }
     onColliderEnter(other: CCollider, self: CCollider): void {
-        cc.log(`player enter`);
         this.boxcover.color = cc.Color.RED;
         this.boxcover.opacity = 128;
     }
@@ -1177,7 +1167,6 @@ export default class Player extends Actor{
         this.boxcover.opacity = 128;
     }
     onColliderExit(other: CCollider, self: CCollider): void {
-        cc.log(`player exit`);
         this.boxcover.color = cc.Color.WHITE;
         this.boxcover.opacity = 128;
     }

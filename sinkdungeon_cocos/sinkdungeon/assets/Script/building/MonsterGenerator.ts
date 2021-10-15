@@ -28,7 +28,7 @@ export default abstract class MonsterGenerator extends Building {
         this.data.generatorCount = generatorCount;
         this.data.generatorInterval = generatorInterval;
         this.data.generatorList = generatorList;
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position.clone().add(cc.v3(0,120)));
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position.clone().add(cc.v3(0,120)));
         let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
         let data = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
         if (data) {
@@ -72,7 +72,7 @@ export default abstract class MonsterGenerator extends Building {
         return true;
     }
     showMonster() {
-        let pos = Dungeon.getIndexInMap(this.node.position.clone());
+        let pos = Dungeon.getIndexInMap(this.entity.Transform.position.clone());
         this.nonplayerlist.push(this.dungeon.monsterManager.addMonsterFromData(this.data.generatorList[Logic.getRandomNum(0, this.data.generatorList.length - 1)], pos, this.dungeon, true));
         this.count++;
     }

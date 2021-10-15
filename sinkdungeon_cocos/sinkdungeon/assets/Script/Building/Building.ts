@@ -30,7 +30,7 @@ export abstract default class Building extends Actor {
     addStatus(statusType: string, from: FromData) {
     }
     getCenterPosition(): cc.Vec3 {
-        return this.node.position.clone();
+        return this.entity.Transform.position.clone();
     }
     actorName(){
         return '';

@@ -91,7 +91,7 @@ export default class Sphinx extends Boss {
         this.summonSkill.next(() => {
             cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
             this.summonSkill.IsExcuting = true;
-            let pos = Dungeon.getIndexInMap(this.node.position.clone());
+            let pos = Dungeon.getIndexInMap(this.entity.Transform.position.clone());
             this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x, pos.y - 1), this.dungeon, true);
             this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x + 1, pos.y - 1), this.dungeon, true);
             this.dungeon.monsterManager.addMonsterFromData(MonsterManager.MONSTER_SANDSTATUE, cc.v3(pos.x - 1, pos.y - 1), this.dungeon, true);
@@ -104,7 +104,7 @@ export default class Sphinx extends Boss {
             this.stormSkill.IsExcuting = true;
             this.anim.play('SphinxStorm');
             this.scheduleOnce(() => {
-                let pos = this.node.position.clone().add(this.shooter01.node.position);
+                let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec3.ZERO)) {
                     hv = hv.normalizeSelf();

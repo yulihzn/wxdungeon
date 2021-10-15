@@ -43,7 +43,8 @@ export default class Saw extends Building {
     setPos(pos:cc.Vec3){
         this.pos = pos;
         let p = Dungeon.getPosInMap(pos);
-        this.node.position = cc.v3(p.x,p.y);
+        this.entity.Transform.position = cc.v3(p.x,p.y);
+        this.node.position = this.entity.Transform.position.clone();
         this.node.zIndex = IndexZ.FLOOR;
     }
     

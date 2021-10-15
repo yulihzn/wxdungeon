@@ -4,6 +4,7 @@ import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
 import Dungeon from "../logic/Dungeon";
 import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,7 +21,6 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class AirExit extends Building {
 
-    isOpen: boolean = false;
     static readonly STATUS_CLOSE = 0;
     static readonly STATUS_WAIT = 1;
     static readonly STATUS_OPEN = 2;
@@ -28,13 +28,11 @@ export default class AirExit extends Building {
     dir = 0;
     status = AirExit.STATUS_CLOSE;
     sprite: cc.Sprite = null;
-    collider:cc.PhysicsBoxCollider;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.sprite = this.getComponent(cc.Sprite);
-        this.collider = this.getComponent(cc.PhysicsBoxCollider);
         this.node.zIndex = IndexZ.FLOOR;
     }
 
@@ -48,12 +46,14 @@ export default class AirExit extends Building {
         }
         this.node.opacity = 60;
         this.node.width = Dungeon.TILE_SIZE / 8 * length;
-        if(!this.collider){
-            this.collider = this.getComponent(cc.PhysicsBoxCollider);
+        this.setTargetTags(CCollider.TAG.PLAYER);
+        for(let c of this.ccolliders){
+            if(dir>1){
+                c.size = cc.size(this.node.height,this.node.width);
+            }else{
+                c.size = cc.size(this.node.width,this.node.height);
+            }
         }
-        this.getComponent(cc.BoxCollider).size = cc.size(this.node.width,this.node.height);
-        this.collider.size = cc.size(this.node.width,this.node.height);
-        this.collider.apply();
         this.node.zIndex = IndexZ.OVERHEAD;
         this.changeStatus(AirExit.STATUS_CLOSE);
 
@@ -66,14 +66,8 @@ export default class AirExit extends Building {
             case AirExit.STATUS_WAIT: resName = 'outertips2'; break;
             case AirExit.STATUS_OPEN: resName = 'outertips1'; break;
         }
-        if(this.status == AirExit.STATUS_OPEN){
-            if(!this.collider.sensor){
-                this.collider.sensor = true;
-                this.collider.apply();
-            }
-        }else if(this.collider.sensor){
-            this.collider.sensor = false;
-            this.collider.apply();
+        for(let c of this.ccolliders){
+            c.sensor = this.status == AirExit.STATUS_OPEN;
         }
         this.sprite.spriteFrame = Logic.spriteFrameRes(resName);
     }
@@ -81,8 +75,8 @@ export default class AirExit extends Building {
 
     }
 
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderEnter(other: CCollider, self:CCollider) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             let player = other.node.getComponent(Player);
             if (player&&this.status == AirExit.STATUS_OPEN) {
                 this.scheduleOnce(()=>{
@@ -92,4 +86,5 @@ export default class AirExit extends Building {
             }
         }
     }
+    
 }

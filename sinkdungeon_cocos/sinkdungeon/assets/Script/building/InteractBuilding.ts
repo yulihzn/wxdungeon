@@ -158,11 +158,11 @@ export default class InteractBuilding extends Building {
                 let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
                 let rand = rand4save.rand();
                 if (rand > 0.6 && rand < 0.8) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.node.position, count: rand4save.getRandomNum(1, 3) } });
+                    cc.director.emit(EventHelper.DUNGEON_ADD_COIN, { detail: { pos: this.entity.Transform.position, count: rand4save.getRandomNum(1, 3) } });
                 } else if (rand >= 0.8 && rand < 0.85) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.HEART } });
+                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.HEART } });
                 } else if (rand >= 0.85 && rand < 0.9) {
-                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.node.position, res: Item.DREAM } });
+                    cc.director.emit(EventHelper.DUNGEON_ADD_ITEM, { detail: { pos: this.entity.Transform.position, res: Item.DREAM } });
                 }
             }).delay(10).call(() => {
                 this.reset();
@@ -171,7 +171,8 @@ export default class InteractBuilding extends Building {
     }
 
     reset() {
-        this.node.position = Dungeon.getPosInMap(cc.v3(-10, -10));
+        this.entity.Transform.position = Dungeon.getPosInMap(cc.v3(-10, -10));
+        this.node.position = this.entity.Transform.position.clone();
         this.data.currentHealth = this.data.maxHealth;
     }
     rollover() {
@@ -338,18 +339,18 @@ export default class InteractBuilding extends Building {
             if (!this.isAniming) {
                 if (this.isLift) {
                     this.sprite.node.position = Logic.lerpPos(this.sprite.node.position, cc.v3(0, 96), 0.1);
-                    this.node.position = Logic.lerpPos(this.node.position, this.player.node.position.clone(), 0.1);
+                    this.entity.Transform.position = Logic.lerpPos(this.entity.Transform.position, this.player.node.position.clone(), 0.1);
                 } else {
                     let p = this.player.Hv.clone().mul(64);
                     let pos = this.player.node.position.add(p);
                     this.sprite.node.position = Logic.lerpPos(this.sprite.node.position, cc.v3(0, 0), 0.1);
-                    this.node.position = Logic.lerpPos(this.node.position, pos, 0.1);
+                    this.entity.Transform.position = Logic.lerpPos(this.entity.Transform.position, pos, 0.1);
                 }
             }
 
 
         }
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
     }
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
@@ -373,7 +374,7 @@ export default class InteractBuilding extends Building {
             this.updatePosition();
         }
         if (this.isSaveTimeDelay(dt)) {
-            this.data.position = this.node.position;
+            this.data.position = this.entity.Transform.position;
             let saveDecorate = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
             if (saveDecorate) {
                 saveDecorate.valueCopy(this.data);

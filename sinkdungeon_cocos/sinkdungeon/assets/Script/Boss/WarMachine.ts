@@ -132,7 +132,7 @@ export default class WarMachine extends Boss {
             }
         }
         this.shooter01.setHv(cc.v3(0, -1));
-        let pos = this.node.position.clone().add(this.shooter01.node.position);
+        let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
@@ -149,7 +149,7 @@ export default class WarMachine extends Boss {
         this.shooter03.setHv(cc.v3(0, -1));
         this.shooter04.setHv(cc.v3(0, -1));
         this.shooter05.setHv(cc.v3(0, -1));
-        let pos = this.node.position.clone().add(this.shooter01.node.position);
+        let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
@@ -167,7 +167,7 @@ export default class WarMachine extends Boss {
     //Anim
     MainGunShootFinish() {
         this.shooter01.setHv(cc.v3(0, -1));
-        let pos = this.node.position.clone().add(this.shooter01.node.position);
+        let pos = this.entity.Transform.position.clone().add(this.shooter01.node.position);
         let hv = this.dungeon.player.getCenterPosition().sub(pos);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
@@ -255,7 +255,7 @@ export default class WarMachine extends Boss {
             return;
         }
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         }
         let h = pos.x;
         let v = pos.y;

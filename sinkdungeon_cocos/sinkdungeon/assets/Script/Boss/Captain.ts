@@ -101,7 +101,7 @@ export default class Captain extends Boss {
         if (!this.dungeon || !this.exshooter) {
             return;
         }
-        let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
+        let hv = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.exshooter.setHv(hv);
@@ -120,7 +120,7 @@ export default class Captain extends Boss {
         if (!this.dungeon || !this.shooter) {
             return;
         }
-        let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
+        let hv = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
@@ -219,11 +219,11 @@ export default class Captain extends Boss {
         if (this.sc.isDied || !this.dungeon) {
             return;
         }
-        this.node.position = Dungeon.fixOuterMap(this.node.position);
-        this.pos = Dungeon.getIndexInMap(this.node.position);
+        this.entity.Transform.position = Dungeon.fixOuterMap(this.entity.Transform.position);
+        this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         this.changeZIndex();
         let newPos = this.dungeon.player.pos.clone();
-        let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
+        let pos = Dungeon.getPosInMap(newPos).sub(this.entity.Transform.position);
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
         let isPlayJump = this.anim.getAnimationState("CaptainJump").isPlaying;
         let isPlayFire = this.anim.getAnimationState("CaptainFire").isPlaying;
@@ -270,9 +270,9 @@ export default class Captain extends Boss {
             return;
         }
         let newPos = this.dungeon.player.pos.clone();
-        let pos = Dungeon.getPosInMap(newPos).sub(this.node.position);
+        let pos = Dungeon.getPosInMap(newPos).sub(this.entity.Transform.position);
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
             pos = pos.normalizeSelf();
 
         }
@@ -299,7 +299,7 @@ export default class Captain extends Boss {
         }
 
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.node.position);
+            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
         }
         let h = pos.x;
         let v = pos.y;

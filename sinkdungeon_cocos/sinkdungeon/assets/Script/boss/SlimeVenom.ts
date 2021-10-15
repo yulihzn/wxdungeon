@@ -59,7 +59,7 @@ export default class SlimeVenom extends Actor {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position);
+        let dis = Logic.getDistanceNoSqrt(this.entity.Transform.position, playerNode.position);
         return dis;
     }
     checkTimeDelay = 0;
@@ -87,7 +87,7 @@ export default class SlimeVenom extends Actor {
         }
     }
     getCenterPosition(): cc.Vec3 {
-        return this.node.position.clone();
+        return this.entity.Transform.position.clone();
     }
     takeDamage(damge: DamageData) {
         return false;

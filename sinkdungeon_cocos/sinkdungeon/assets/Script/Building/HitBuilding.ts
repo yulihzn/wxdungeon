@@ -54,8 +54,9 @@ export default class HitBuilding extends Building {
     }
     setDefaultPos(defaultPos: cc.Vec3) {
         this.data.defaultPos = defaultPos;
-        this.node.position = Dungeon.getPosInMap(defaultPos);
-        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
+        this.entity.Transform.position = Dungeon.getPosInMap(defaultPos);
+        this.node.position = this.entity.Transform.position.clone();
+        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
     }
     takeDamage(damage: DamageData): boolean {
         if (this.data.currentHealth <= 0 || this.data.currentHealth >= 9999) {
@@ -72,7 +73,7 @@ export default class HitBuilding extends Building {
         if (this.data.currentHealth <= 0) {
             for (let name of this.itemNames) {
                 if (name && name.length > 0) {
-                    this.dungeon.addItem(this.node.position.clone(), name);
+                    this.dungeon.addItem(this.entity.Transform.position.clone(), name);
                 }
             }
             for (let name of this.equipmentNames) {

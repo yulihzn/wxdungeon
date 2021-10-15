@@ -1,4 +1,5 @@
 import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 import FromData from "../data/FromData";
 import Player from "../logic/Player";
 import StatusManager from "../manager/StatusManager";
@@ -23,8 +24,8 @@ export default class CampFire extends Building {
 
     isAddTime = true;
 
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderStay(other: CCollider, self: CCollider): void {
+        if (self.sensor && other.tag == CCollider.TAG.PLAYER) {
             if (this.isAddTime) {
                 this.isAddTime = false;
                 let player = other.getComponent(Player);
@@ -34,6 +35,7 @@ export default class CampFire extends Building {
             }
         }
     }
+   
     timeDelay = 0;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;

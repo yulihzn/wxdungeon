@@ -175,6 +175,9 @@ export default class BuildingManager extends BaseManager {
         building.zIndex = IndexZ.getActorZIndex(building.position);
         let b = building.getComponent(Building);
         if (b) {
+            b.initCollider();
+            b.entity.NodeRender.node = building;
+            b.entity.Transform.position = Dungeon.getPosInMap(indexPos);
             b.seed = Logic.mapManager.getSeedFromRoom();
             b.data.defaultPos = indexPos.clone();
             b.lights = b.getComponentsInChildren(ShadowOfSight);

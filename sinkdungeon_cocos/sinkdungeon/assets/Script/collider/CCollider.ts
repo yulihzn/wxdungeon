@@ -69,7 +69,7 @@ export default class CCollider extends cc.Component {
     @property
     sensor: boolean = false;
     @property
-    isStatic:boolean = false;
+    isStatic: boolean = false;
 
     pos: cc.Vec3 = cc.Vec3.ZERO;//碰撞体在统一的坐标系下的位置
     //当前已经碰撞过的物体
@@ -78,9 +78,12 @@ export default class CCollider extends cc.Component {
     //同一个物体下的碰撞需要忽略
     groupId: string = '';
     //该碰撞体的实体类，如果有会计算物理部分
-    entity:ActorEntity;
+    entity: ActorEntity;
+    //指定匹配碰撞类型，如果为空则匹配所有，如果不为空则只匹配map里的tag
+    targetTags:Map<number, boolean> = new Map();
+    //指定忽略的碰撞类型
+    ignoreTags:Map<number, boolean> = new Map();
 
-    isPhysicIn = false;
 
     private onContactListener: OnContactListener;
     public setOnContactListener(onContactListener: OnContactListener) {
@@ -98,20 +101,53 @@ export default class CCollider extends cc.Component {
                 this.onContactListener.onColliderEnter(other, this);
             }
         }
-        if(this.entity&&other.entity&&!this.sensor&&!other.sensor){
-            this.isPhysicIn = true;
-            if(!this.isStatic){
-                this.entity.Move.linearVelocity = cc.v2(this.entity.Transform.position.sub(other.entity.Transform.position)).normalize().mul(100);
-            }
-            if(!other.isStatic){
-                other.entity.Move.linearVelocity = cc.v2(other.entity.Transform.position.sub(this.entity.Transform.position)).normalize().mul(100);
+        if (this.entity && other.entity && !this.sensor && !other.sensor && !this.isStatic) {
+            if (!this.isStatic) {
+                let x = this.entity.Transform.position.x - other.entity.Transform.position.x;
+                let y = this.entity.Transform.position.y - other.entity.Transform.position.y;
+                let w = 0;
+                let h = 0;
+                let offset = 5;
+                if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
+                    //矩形
+                    let aabb1 = this.Aabb;
+                    let aabb2 = other.Aabb;
+                    w = aabb1.width / 2 + aabb2.width / 2+offset;
+                    h = aabb1.height / 2 + aabb2.height / 2+offset;
+                } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
+                    //圆形
+                    w = this.radius + other.radius+offset;
+                    h = this.radius + other.radius+offset;
+                } else if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
+                    //矩形圆形
+                    let aabb1 = this.Aabb;
+                    w = aabb1.width / 2 + other.radius+offset;
+                    h = aabb1.height / 2 + other.radius+offset;
+                } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
+                    //圆形矩形
+                    let aabb2 = other.Aabb;
+                    w = this.radius + aabb2.width / 2+offset;
+                    h = this.radius + aabb2.height / 2+offset;
+                }
+                if (Math.abs(x) > Math.abs(y)) {
+                    if (Math.abs(x) < w) {
+                        this.entity.Transform.position.x = other.entity.Transform.position.x + (x > 0 ? w : -w);
+                        if (this.entity.NodeRender.node) {
+                            this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
+                        }
+                    }
+                } else if (Math.abs(y) < h) {
+                    this.entity.Transform.position.y = other.entity.Transform.position.y + (y > 0 ? h : -h);
+                    if (this.entity.NodeRender.node) {
+                        this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
+                    }
+                }
             }
         }
 
     }
     exit(other: CCollider) {
         if (this.inColliders[other.id]) {
-            this.isPhysicIn = false;
             this.inColliders[other.id] = false;
             if (this.onContactListener) {
                 this.onContactListener.onColliderExit(other, this);
