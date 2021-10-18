@@ -1,7 +1,7 @@
 import Logic from "../logic/Logic";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
-import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -31,7 +31,7 @@ export default class Door extends Building {
     leftside: cc.Sprite = null;
     rightside: cc.Sprite = null;
     lockInfo: cc.Node = null;
-    boxCollider: cc.PhysicsBoxCollider;
+    boxCollider: CCollider;
     arrow: cc.Node;
 
     // LIFE-CYCLE CALLBACKS:
@@ -44,7 +44,7 @@ export default class Door extends Building {
         this.lockInfo = this.node.getChildByName('roof').getChildByName('info');
         this.arrow = this.node.getChildByName('doorarrow');
         this.arrow.opacity = 0;
-        this.boxCollider = this.getComponent(cc.PhysicsBoxCollider);
+        this.boxCollider = this.getComponent(CCollider);
         this.node.zIndex = IndexZ.FLOOR;
 
     }
@@ -95,7 +95,6 @@ export default class Door extends Building {
             collider.offset = cc.v2(0, -64);
             collider.size = cc.size(64, 256);
         }
-        collider.apply();
     }
 
     setOpen(isOpen: boolean, immediately?: boolean) {
@@ -129,7 +128,6 @@ export default class Door extends Building {
             this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim00${index++}`);
             if (index > 4) {
                 this.boxCollider.sensor = true;
-                this.boxCollider.apply();
             }
         }, immediately ? 0 : 0.15, 4);
     }
@@ -143,23 +141,22 @@ export default class Door extends Building {
             this.sprite.spriteFrame = Logic.spriteFrameRes(`door${this.dir > 1 ? 'side' : ''}0${Logic.chapterIndex}anim00${index--}`);
             if (index < 0) {
                 this.boxCollider.sensor = false;
-                this.boxCollider.apply();
             }
         }, immediately ? 0 : 0.1, 4);
 
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+    onColliderEnter(other: CCollider, self: CCollider) {
+        if (this.dir < 2 && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             this.roof.node.opacity = 128;
         }
     }
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+    onColliderStay(other: CCollider, self: CCollider) {
+        if (this.dir < 2 && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             this.roof.node.opacity = 128;
         }
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (this.dir < 2 && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.NONPLAYER)) {
+    onColliderExit(other: CCollider, self: CCollider) {
+        if (this.dir < 2 && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
             this.roof.node.opacity = 255;
             if (this.lockInfo && this.lockInfo.opacity < 1||this.isDecorate) {
                 this.roof.node.opacity = 180;

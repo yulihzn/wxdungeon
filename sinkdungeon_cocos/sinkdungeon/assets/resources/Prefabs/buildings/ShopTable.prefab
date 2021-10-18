@@ -286,7 +286,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 14.75,
+      "width": 10.67,
       "height": 10
     },
     "_anchorPoint": {
@@ -415,27 +415,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
-    },
-    "_id": ""
-  },
-  {
     "__type__": "feb404aValPAJxRKh4uvHLm",
     "_name": "",
     "_objFlags": 0,
@@ -443,6 +422,35 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "type": 1,
+    "radius": 64,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 32,
+      "height": 32
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

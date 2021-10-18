@@ -829,6 +829,8 @@
     },
     "sensor": true,
     "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -872,16 +874,6 @@
     "_id": ""
   },
   {
-    "__type__": "1c424MJYhhGnYiXSF5IIdkC",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_id": ""
-  },
-  {
     "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
@@ -904,6 +896,20 @@
     },
     "sensor": true,
     "isStatic": true,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [],
+    "_id": ""
+  },
+  {
+    "__type__": "1c424MJYhhGnYiXSF5IIdkC",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
     "_id": ""
   },
   {
@@ -928,7 +934,9 @@
       "height": 128
     },
     "sensor": false,
-    "isStatic": false,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

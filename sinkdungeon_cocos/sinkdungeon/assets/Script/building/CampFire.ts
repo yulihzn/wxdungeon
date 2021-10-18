@@ -1,9 +1,8 @@
-import { ColliderTag } from "../actor/ColliderTag";
+import Building from "./Building";
 import CCollider from "../collider/CCollider";
 import FromData from "../data/FromData";
 import Player from "../logic/Player";
 import StatusManager from "../manager/StatusManager";
-import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,18 +23,6 @@ export default class CampFire extends Building {
 
     isAddTime = true;
 
-    onColliderStay(other: CCollider, self: CCollider): void {
-        if (self.sensor && other.tag == CCollider.TAG.PLAYER) {
-            if (this.isAddTime) {
-                this.isAddTime = false;
-                let player = other.getComponent(Player);
-                if (player) {
-                    player.addStatus(StatusManager.CAMP_FIRE, new FromData());
-                }
-            }
-        }
-    }
-   
     timeDelay = 0;
     isTimeDelay(dt: number): boolean {
         this.timeDelay += dt;
@@ -50,4 +37,23 @@ export default class CampFire extends Building {
             this.isAddTime = true;
         }
     }
+    
+    onColliderEnter(other: CCollider, self: CCollider): void {
+       
+    }
+    onColliderStay(other: CCollider, self: CCollider): void {
+        if (self.sensor && other.tag == CCollider.TAG.PLAYER) {
+            if (this.isAddTime) {
+                this.isAddTime = false;
+                let player = other.getComponent(Player);
+                if (player) {
+                    player.addStatus(StatusManager.CAMP_FIRE, new FromData());
+                }
+            }
+        }
+    }
+    onColliderExit(other: CCollider, self: CCollider): void {
+      
+    }
+   
 }

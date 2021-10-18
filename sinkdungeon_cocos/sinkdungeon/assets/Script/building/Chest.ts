@@ -3,9 +3,9 @@ import { EventHelper } from "../logic/EventHelper";
 import Logic from "../logic/Logic";
 import Building from "./Building";
 import AudioPlayer from "../utils/AudioPlayer";
-import { ColliderTag } from "../actor/ColliderTag";
 import IndexZ from "../utils/IndexZ";
 import EquipmentManager from "../manager/EquipmentManager";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -113,8 +113,8 @@ export default class Chest extends Building {
         }
     }
 
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderStay(other: CCollider, self: CCollider) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             if (!this.data.isOpen) {
                 this.openChest();
             }

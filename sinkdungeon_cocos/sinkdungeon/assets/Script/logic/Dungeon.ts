@@ -160,7 +160,7 @@ export default class Dungeon extends cc.Component {
         for (let arr of this.map) {
             Utils.clearComponentArray(arr);
         }
-        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE);
+        this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE,this.getComponent(cc.Graphics));
         this.rootSystem.init();
         this.map = new Array();
         this.floorIndexmap = new Array();

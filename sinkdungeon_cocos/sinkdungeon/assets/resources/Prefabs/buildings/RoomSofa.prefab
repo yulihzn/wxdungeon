@@ -46,10 +46,13 @@
       },
       {
         "__id__": 23
+      },
+      {
+        "__id__": 24
       }
     ],
     "_prefab": {
-      "__id__": 24
+      "__id__": 25
     },
     "_opacity": 255,
     "_color": {
@@ -628,20 +631,32 @@
     "_id": ""
   },
   {
-    "__type__": "cc.CircleCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 11
     },
     "_enabled": true,
-    "tag": 13,
-    "_offset": {
+    "tag": 17,
+    "offset": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": -64
     },
-    "_radius": 96,
+    "type": 0,
+    "radius": 96,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 238,
+      "height": 98
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -717,6 +732,33 @@
     "_id": ""
   },
   {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 12,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 231,
+      "y": 118
+    },
+    "type": 1,
+    "radius": 12,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 238,
+      "height": 98
+    },
+    "sensor": false,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
+    "_id": ""
+  },
+  {
     "__type__": "12170bzXSpDtaz5MoM+l14L",
     "_name": "",
     "_objFlags": 0,
@@ -746,56 +788,30 @@
     "_id": ""
   },
   {
-    "__type__": "cc.PhysicsPolygonCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 8,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
+    "tag": 12,
+    "offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 195,
+      "y": -21
     },
-    "points": [
-      {
-        "__type__": "cc.Vec2",
-        "x": 385,
-        "y": 24
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 355,
-        "y": 24
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 354,
-        "y": 0
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 0,
-        "y": 0
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 0,
-        "y": -40
-      },
-      {
-        "__type__": "cc.Vec2",
-        "x": 385,
-        "y": -40
-      }
-    ],
+    "type": 1,
+    "radius": 12,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 385,
+      "height": 30
+    },
+    "sensor": false,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

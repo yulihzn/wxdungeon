@@ -25,8 +25,8 @@ import OnContactListener from '../collider/OnContactListener';
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default abstract class Actor extends cc.Component implements OnContactListener{
-    
+export default abstract class Actor extends cc.Component implements OnContactListener {
+
     static readonly TARGET_PLAYER = 0;
     static readonly TARGET_MONSTER = 1;
     static readonly TARGET_BOSS = 2;
@@ -34,49 +34,55 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     static readonly TARGET_NONPLAYER_ENEMY = 4;
     abstract takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean;
     abstract actorName(): string;
-    abstract addStatus(statusType: string, from: FromData):void;
+    abstract addStatus(statusType: string, from: FromData): void;
     abstract getCenterPosition(): cc.Vec3;
-    abstract takeDizz(dizzDuration: number):void;
-    abstract updateStatus(statusList:StatusData[],totalStatusData:StatusData):void;
-    abstract hideSelf(hideDuration: number):void;
+    abstract takeDizz(dizzDuration: number): void;
+    abstract updateStatus(statusList: StatusData[], totalStatusData: StatusData): void;
+    abstract hideSelf(hideDuration: number): void;
     abstract updateDream(offset: number): number;
     invisible = false;//是否隐身
     isFaceRight = true;
     isFaceUp = true;
-    lights:ShadowOfSight[] = [];//光源
-    ccolliders:CCollider[];
-    sc:StateContext = new StateContext();
-    seed:number = 0;//随机种子，为所在房间分配的随机数生成的种子，决定再次生成该Actor的随机元素一致
-    entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent,MoveComponent,TransformComponent,ColliderComponent);
-   
+    lights: ShadowOfSight[] = [];//光源
+    ccolliders: CCollider[];
+    sc: StateContext = new StateContext();
+    seed: number = 0;//随机种子，为所在房间分配的随机数生成的种子，决定再次生成该Actor的随机元素一致
+    entity = ecs.createEntityWithComps<ActorEntity>(NodeRenderComponent, MoveComponent, TransformComponent, ColliderComponent);
+
     /**初始化碰撞 */
-    public initCollider(){
+    public initCollider() {
         this.ccolliders = this.getComponents(CCollider);
-        if(this.ccolliders&&this.ccolliders.length>0){
+        let childColliders = this.getComponentsInChildren(CCollider);
+        for (let c of childColliders){
+            if(c.tag != CCollider.TAG.LIGHT){
+                this.ccolliders.push(c);
+            }
+        }
+        if (this.ccolliders && this.ccolliders.length > 0) {
             this.entity.Collider.colliders = this.ccolliders;
             let groupId = CCollider.genNonDuplicateID();
-            for(let ccolider of this.ccolliders){
+            for (let ccolider of this.ccolliders) {
                 ccolider.groupId = groupId;
                 ccolider.setOnContactListener(this);
             }
-        }else{
+        } else {
             this.entity.remove(ColliderComponent);
         }
-        
+
     }
     /**设置碰撞目标tag */
-    public setTargetTags(...tags:number[]){
-        for(let ccolider of this.ccolliders){
-            for(let tag of tags){
-                ccolider.targetTags.set(tag,true);
+    public setTargetTags(...tags: number[]) {
+        for (let ccolider of this.ccolliders) {
+            for (let tag of tags) {
+                ccolider.targetTags.set(tag, true);
             }
         }
     }
     /**设置碰撞忽略tag */
-    public setIgnoreTags(...tags:number[]){
-        for(let ccolider of this.ccolliders){
-            for(let tag of tags){
-                ccolider.ignoreTags.set(tag,true);
+    public setIgnoreTags(...tags: number[]) {
+        for (let ccolider of this.ccolliders) {
+            for (let tag of tags) {
+                ccolider.ignoreTags.set(tag, true);
             }
         }
     }

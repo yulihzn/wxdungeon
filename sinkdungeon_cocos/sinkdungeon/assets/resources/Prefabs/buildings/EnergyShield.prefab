@@ -512,27 +512,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 17,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 2
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 28,
-      "height": 16
-    },
-    "_id": ""
-  },
-  {
     "__type__": "b7ba1woN/lIqoplh/wf+2rX",
     "_name": "",
     "_objFlags": 0,
@@ -540,6 +519,33 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 19,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 2
+    },
+    "type": 1,
+    "radius": 64,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 28,
+      "height": 18
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

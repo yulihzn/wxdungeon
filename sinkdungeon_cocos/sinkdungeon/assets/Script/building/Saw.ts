@@ -62,6 +62,9 @@ export default class Saw extends Building {
     }
 
     update (dt) {
+        for(let c of this.ccolliders){
+            c.updateChildOffset();
+        }
     }
     actorName(){
         return '锯齿轮';

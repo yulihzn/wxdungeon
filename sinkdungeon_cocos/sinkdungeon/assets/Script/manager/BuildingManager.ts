@@ -41,6 +41,7 @@ import Furniture from "../building/Furniture";
 import FurnitureData from "../data/FurnitureData";
 import LocalStorage from "../utils/LocalStorage";
 import RoomFishtank from "../building/RoomFishtank";
+import CCollider from "../collider/CCollider";
 
 
 // Learn TypeScript:
@@ -454,7 +455,6 @@ export default class BuildingManager extends BaseManager {
         if (mapDataStr == '+0') {
             //生成营火
             let camp = this.addBuilding(Logic.getBuildings(BuildingManager.CAMPFIRE), indexPos);
-            camp.parent = this.node;
             let shadow = camp.getChildByName('sprite').getChildByName('shadow');
             shadow.position = Dungeon.getPosInMap(indexPos);
             shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
@@ -500,7 +500,7 @@ export default class BuildingManager extends BaseManager {
         let pint = parseInt(mapDataStr[1]);
         if (pint >= 0 && pint <= 9 || mapDataStr == '~a' || mapDataStr == '~b') {
             let co = this.addBuilding(Logic.getBuildings(BuildingManager.COAST), indexPos);
-            let pbc = co.getComponent(cc.PhysicsBoxCollider);
+            let pbc = co.getComponent(CCollider);
             let fint = pint;
             if (mapDataStr == '~a') {
                 fint = 10;
@@ -511,7 +511,6 @@ export default class BuildingManager extends BaseManager {
             let arr = this.coastColliderList[fint].split(',');
             pbc.size = cc.size(parseInt(arr[0]), parseInt(arr[1]));
             pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
-            pbc.apply();
             co.zIndex = IndexZ.WATER;
         }else if(mapDataStr == '~f'){
             let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATERFALL), indexPos);

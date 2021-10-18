@@ -343,53 +343,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_type": 0,
-    "_allowSleep": true,
-    "_gravityScale": 0,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": false,
-    "enabledContactListener": false,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsCircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 9,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 5,
-    "_id": ""
-  },
-  {
     "__type__": "6a73blWLNVEw7zhXpbo521b",
     "_name": "",
     "_objFlags": 0,
@@ -397,6 +350,60 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 13,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "type": 0,
+    "radius": 5,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 128,
+      "height": 128
+    },
+    "sensor": false,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 13,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "type": 0,
+    "radius": 10,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 128,
+      "height": 128
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

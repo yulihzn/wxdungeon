@@ -517,7 +517,7 @@
     "sync": false
   },
   {
-    "__type__": "cc.CircleCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -525,12 +525,22 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_offset": {
+    "offset": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": 0
     },
-    "_radius": 5,
+    "type": 0,
+    "radius": 5,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 128,
+      "height": 128
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -576,7 +586,7 @@
     "asset": {
       "__uuid__": "601a9328-5d9e-425f-baf1-bbdb708fe181"
     },
-    "fileId": "75fNdGIt5DpJXRX1iPbgzR",
+    "fileId": "",
     "sync": false
   }
 ]

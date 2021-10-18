@@ -190,27 +190,6 @@
     "sync": false
   },
   {
-    "__type__": "cc.BoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 8,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 62,
-      "height": 62
-    },
-    "_id": ""
-  },
-  {
     "__type__": "a20d6iwPAJLg7AtbBgYX0yS",
     "_name": "",
     "_objFlags": 0,
@@ -224,6 +203,33 @@
     "closeSpriteFrame": {
       "__uuid__": "fbd75f27-3e29-4581-9173-6768bfcd6ad5"
     },
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 12,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "type": 1,
+    "radius": 64,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 62,
+      "height": 62
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

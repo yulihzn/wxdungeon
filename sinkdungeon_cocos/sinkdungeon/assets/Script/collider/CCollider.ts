@@ -42,15 +42,15 @@ export default class CCollider extends cc.Component {
         TIPS: 17,//提示
         WARTER: 18,//水墙
         ENERGY_SHIELD: 19,//能量罩
-        LIGHT: 20//光线
+        LIGHT: 20//光线 特殊的一种类型，不做碰撞检测
     })
-    @property({ type: CCollider.TAG, displayName: '碰撞分组' })
+    @property({ type: CCollider.TAG, displayName: 'Collider Tag' })
     tag: number = CCollider.TAG.DEFAULT;
 
     @property(cc.Vec2)
-    offset: cc.Vec2 = cc.Vec2.ZERO;
+    offset: cc.Vec2 = cc.v2(0, 0);
 
-    @property({ type: CCollider.TYPE, displayName: '组件类型' })
+    @property({ type: CCollider.TYPE, displayName: 'Shape Type' })
     type: number = CCollider.TYPE.RECT;
     @property({
         visible: function () {
@@ -71,6 +71,15 @@ export default class CCollider extends cc.Component {
     @property
     isStatic: boolean = false;
 
+    @property({ type: [CCollider.TAG], displayName: 'Target Tag' })
+    targetTagList: number[] = [];
+    @property({
+        type: [CCollider.TAG], displayName: 'Ignore Tag', visible: function () {
+            return this.targetTagList.length < 1;
+        }
+    })
+    ignoreTagList: number[] = [];
+
     pos: cc.Vec3 = cc.Vec3.ZERO;//碰撞体在统一的坐标系下的位置
     //当前已经碰撞过的物体
     inColliders: { [key: string]: boolean } = {};
@@ -80,14 +89,53 @@ export default class CCollider extends cc.Component {
     //该碰撞体的实体类，如果有会计算物理部分
     entity: ActorEntity;
     //指定匹配碰撞类型，如果为空则匹配所有，如果不为空则只匹配map里的tag
-    targetTags:Map<number, boolean> = new Map();
+    targetTags: Map<number, boolean> = new Map();
     //指定忽略的碰撞类型
-    ignoreTags:Map<number, boolean> = new Map();
+    ignoreTags: Map<number, boolean> = new Map();
+
+    finalScale: number = 1;//最终缩放比例,如果碰撞体是地图元素的子节点，那么需要对应的缩放比例
+    childOffset: cc.Vec3 = cc.Vec3.ZERO;//子节点对于父节点的偏移
 
 
+    get Radius() {
+        return this.radius * this.finalScale;
+    }
+    get Center() {
+        return this.pos.add(this.childOffset);
+    }
     private onContactListener: OnContactListener;
     public setOnContactListener(onContactListener: OnContactListener) {
         this.onContactListener = onContactListener;
+    }
+    setEntityNode(node: cc.Node) {
+        this.entity.NodeRender.node = node;
+        this.updateFinalScale();
+    }
+    private updateFinalScale() {
+        this.finalScale = this.node.scale;
+        if (this.entity.NodeRender.node) {
+            let temp = this.node;
+            while (temp && temp != this.entity.NodeRender.node) {
+                temp = temp.parent;
+                this.finalScale *= temp.scale;
+            }
+            this.childOffset = this.entity.NodeRender.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+        }
+        this.updateChildOffset();
+    }
+    updateChildOffset() {
+        if (this.entity.NodeRender.node && this.entity.NodeRender.node != this.node) {
+            this.childOffset = this.entity.NodeRender.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+        }
+    }
+    onLoad() {
+        for (let t of this.targetTagList) {
+            this.targetTags.set(t, true);
+        }
+        for (let i of this.targetTagList) {
+            this.ignoreTags.set(i, true);
+        }
+        this.updateFinalScale();
     }
 
     contact(other: CCollider) {
@@ -112,22 +160,22 @@ export default class CCollider extends cc.Component {
                     //矩形
                     let aabb1 = this.Aabb;
                     let aabb2 = other.Aabb;
-                    w = aabb1.width / 2 + aabb2.width / 2+offset;
-                    h = aabb1.height / 2 + aabb2.height / 2+offset;
+                    w = aabb1.width / 2 + aabb2.width / 2 + offset;
+                    h = aabb1.height / 2 + aabb2.height / 2 + offset;
                 } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
                     //圆形
-                    w = this.radius + other.radius+offset;
-                    h = this.radius + other.radius+offset;
+                    w = this.Radius + other.Radius + offset;
+                    h = this.Radius + other.Radius + offset;
                 } else if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
                     //矩形圆形
                     let aabb1 = this.Aabb;
-                    w = aabb1.width / 2 + other.radius+offset;
-                    h = aabb1.height / 2 + other.radius+offset;
+                    w = aabb1.width / 2 + other.Radius + offset;
+                    h = aabb1.height / 2 + other.Radius + offset;
                 } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
                     //圆形矩形
                     let aabb2 = other.Aabb;
-                    w = this.radius + aabb2.width / 2+offset;
-                    h = this.radius + aabb2.height / 2+offset;
+                    w = this.Radius + aabb2.width / 2 + offset;
+                    h = this.Radius + aabb2.height / 2 + offset;
                 }
                 if (Math.abs(x) > Math.abs(y)) {
                     if (Math.abs(x) < w) {
@@ -156,7 +204,7 @@ export default class CCollider extends cc.Component {
 
     }
     get Aabb(): cc.Rect {
-        return cc.rect(this.pos.x + this.offset.x - this.size.width * this.node.scale / 2, this.pos.y + this.offset.y - this.size.height * this.node.scale / 2, this.size.width * this.node.scale, this.size.height * this.node.scale);
+        return cc.rect(this.pos.x + this.childOffset.x + (this.offset.x - this.size.width) * this.finalScale / 2, this.pos.y + this.childOffset.y + (this.offset.y - this.size.height) * this.finalScale / 2, this.size.width * this.finalScale, this.size.height * this.finalScale);
     }
 
     // LIFE-CYCLE CALLBACKS:
@@ -166,7 +214,6 @@ export default class CCollider extends cc.Component {
 
     }
 
-    // update (dt) {}
     static genNonDuplicateID(): string {
         return Number(Random.rand().toString().substr(3, 16) + Date.now()).toString(36);
     }

@@ -13,6 +13,7 @@ import Achievement from "../logic/Achievement";
 import Item from "../item/Item";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -232,7 +233,7 @@ export default class Slime extends Boss {
         this.sc.isDied = true;
         this.isDashing = false;
         this.anim.play('SlimeDie');
-        let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsBoxCollider);
+        let collider: CCollider = this.getComponent(CCollider);
         collider.sensor = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         if (this.dungeon) {

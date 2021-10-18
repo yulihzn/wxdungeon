@@ -3,9 +3,9 @@ import ColliderSystem from "./ColliderSystem";
 import MoveSystem from "./MoveSystem";
 
 export default class  GameWorldSystem extends ecs.RootSystem{
-    constructor(width: number, height: number){
+    constructor(width: number, height: number,graphics:cc.Graphics){
         super();
         this.add(new MoveSystem());
-        this.add(new ColliderSystem(width,height));
+        this.add(new ColliderSystem(width,height,graphics));
     }
 }

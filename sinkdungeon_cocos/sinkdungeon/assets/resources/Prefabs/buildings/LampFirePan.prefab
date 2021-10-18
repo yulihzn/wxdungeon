@@ -34,13 +34,10 @@
       },
       {
         "__id__": 14
-      },
-      {
-        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 16
+      "__id__": 15
     },
     "_opacity": 255,
     "_color": {
@@ -279,7 +276,6 @@
     "ray": {
       "__id__": 7
     },
-    "rayRadius": 300,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -289,9 +285,6 @@
     },
     "showLight": true,
     "showRayCast": true,
-    "isCircle": true,
-    "isSector": false,
-    "isCustom": false,
     "fromSky": false,
     "_id": ""
   },
@@ -329,7 +322,7 @@
     "_id": ""
   },
   {
-    "__type__": "cc.CircleCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -337,12 +330,22 @@
     },
     "_enabled": true,
     "tag": 20,
-    "_offset": {
+    "offset": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": 0
     },
-    "_radius": 300,
+    "type": 0,
+    "radius": 300,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 128,
+      "height": 128
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -543,54 +546,30 @@
     "_id": ""
   },
   {
-    "__type__": "cc.RigidBody",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 0,
-    "_allowSleep": true,
-    "_gravityScale": 1,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
+    "tag": 12,
+    "offset": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": 0
     },
-    "_angularVelocity": 0,
-    "_fixedRotation": false,
-    "enabledContactListener": false,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsBoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_size": {
+    "type": 1,
+    "radius": 200,
+    "size": {
       "__type__": "cc.Size",
       "width": 100,
       "height": 80
     },
+    "sensor": false,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

@@ -11,6 +11,7 @@ import Achievement from "../logic/Achievement";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
 import Logic from "../logic/Logic";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,7 +39,7 @@ export default class Dragon extends Boss {
     fireSkill = new NextStep();
     rainSkill = new NextStep();
     isRainReady = false;
-    physicBox: cc.PhysicsBoxCollider;
+    physicBox: CCollider;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -49,7 +50,7 @@ export default class Dragon extends Boss {
         this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'dragonhead'));
         this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
-        this.physicBox = this.getComponent(cc.PhysicsBoxCollider);
+        this.physicBox = this.getComponent(CCollider);
     }
 
     start() {
@@ -100,14 +101,12 @@ export default class Dragon extends Boss {
         this.rainSkill.next(() => {
             this.rainSkill.IsExcuting = true;
             this.physicBox.sensor = true;
-            this.physicBox.apply();
             this.rigidbody.linearVelocity = cc.v2(0, 0);
             this.anim.stop();
             this.anim.play('DragonFlyHigh');
             this.scheduleOnce(() => {
                 this.anim.play('DragonFlyLow');
                 this.physicBox.sensor = false;
-                this.physicBox.apply();
             }, 13);
             this.scheduleOnce(() => {
                 this.rainSkill.IsExcuting = false;

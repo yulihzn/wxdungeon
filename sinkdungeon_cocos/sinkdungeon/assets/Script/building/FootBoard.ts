@@ -1,7 +1,7 @@
 import Dungeon from "../logic/Dungeon";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
-import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 
 
 // Learn TypeScript:
@@ -55,37 +55,35 @@ export default class FootBoard extends Building {
         // this.openSpriteFrame.getTexture().setAliasTexParameters();
         this.sprite.spriteFrame = this.isOpen ? this.openSpriteFrame : this.closeSpriteFrame;
     }
-
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.BUILDING) {
-            this.isOpen = true;
-            this.hasActive = true;
-        }
-        if (other.tag == ColliderTag.PLAYER) {
-            this.isOpen = true;
-            this.hasActive = true;
-        }
-    }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.BUILDING) {
+    onColliderEnter(other: CCollider, self: CCollider): void {
+        if (other.tag == CCollider.TAG.BUILDING) {
             this.isOpen = true;
             this.hasActive = true;
 
         }
-        if (other.tag == ColliderTag.PLAYER) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             this.isOpen = true;
             this.hasActive = true;
         }
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.BUILDING) {
+    onColliderStay(other: CCollider, self: CCollider): void {
+        if (other.tag == CCollider.TAG.BUILDING) {
+            this.isOpen = true;
+            this.hasActive = true;
+        }
+        if (other.tag == CCollider.TAG.PLAYER) {
+            this.isOpen = true;
+            this.hasActive = true;
+        }
+    }
+    onColliderExit(other: CCollider, self: CCollider): void {
+        if (other.tag == CCollider.TAG.BUILDING) {
             this.isOpen = false;
         }
-        if (other.tag == ColliderTag.PLAYER) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             this.isOpen = false;
         }
     }
-
     update(dt) {
         this.timeDelay += dt;
         if (this.timeDelay > 0.2) {

@@ -8,7 +8,9 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private quadTree: Quadtree;
     private tempColliders: { [key: string]: boolean } = {};
     private list: CCollider[] = [];
-    constructor(width: number, height: number) {
+    private graphics: cc.Graphics;
+    private isDebug = true;
+    constructor(width: number, height: number, graphics: cc.Graphics) {
         super();
         let bounds = {
             x: 0,
@@ -17,6 +19,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             height: height
         }
         this.quadTree = new Quadtree(bounds);
+        this.graphics = graphics;
     }
     init() {
 
@@ -47,7 +50,26 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 }
             }
         }
+        this.updateDebug();
         this.collisionCheck(entities);
+
+    }
+    private updateDebug() {
+        if (!this.isDebug || !this.graphics) {
+            return;
+        }
+        this.graphics.clear();
+        this.graphics.strokeColor = cc.Color.WHITE;
+        for (let c of this.list) {
+            if (c.type == CCollider.TYPE.CIRCLE) {
+                this.graphics.circle(c.Center.x, c.Center.y, c.Radius);
+            } else {
+                let aabb = c.Aabb;
+                this.graphics.rect(aabb.x, aabb.y, aabb.width, aabb.height);
+            }
+            this.graphics.stroke();
+        }
+
     }
     private collisionCheck(entities: ActorEntity[]) {
         for (let e of entities) {
@@ -71,11 +93,11 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 } else if (collider.ignoreTags.has(other.tag)) {
                     continue;
                 }
-                if(other.targetTags.size>0){
-                    if(!other.targetTags.has(collider.tag)){
+                if (other.targetTags.size > 0) {
+                    if (!other.targetTags.has(collider.tag)) {
                         continue;
                     }
-                }else if (other.ignoreTags.has(collider.tag)) {
+                } else if (other.ignoreTags.has(collider.tag)) {
                     continue;
                 }
                 if (!other.enabled) {
@@ -98,13 +120,13 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                     isCollision = collider.Aabb.intersects(other.Aabb);
                 } else if (collider.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
                     //圆形检测
-                    isCollision = this.circleHit(collider.pos, other.pos, collider.radius, other.radius);
+                    isCollision = this.circleHit(collider.Center, other.Center, collider.Radius, other.Radius);
                 } else if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
                     //矩形圆形检测
-                    isCollision = this.circleRectHit(other.pos, other.radius, collider.Aabb);
+                    isCollision = this.circleRectHit(other.Center, other.Radius, collider.Aabb);
                 } else if (collider.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
                     //圆形矩形检测
-                    isCollision = this.circleRectHit(collider.pos, collider.radius, other.Aabb);
+                    isCollision = this.circleRectHit(collider.Center, collider.Radius, other.Aabb);
                 }
                 if (isCollision) {
                     collider.contact(other);

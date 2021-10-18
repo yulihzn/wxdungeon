@@ -34,10 +34,13 @@
       },
       {
         "__id__": 15
+      },
+      {
+        "__id__": 16
       }
     ],
     "_prefab": {
-      "__id__": 16
+      "__id__": 17
     },
     "_opacity": 255,
     "_color": {
@@ -387,7 +390,6 @@
     "ray": {
       "__id__": 10
     },
-    "rayRadius": 400,
     "renderColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -397,9 +399,6 @@
     },
     "showLight": true,
     "showRayCast": false,
-    "isCircle": false,
-    "isSector": false,
-    "isCustom": true,
     "fromSky": false,
     "_id": ""
   },
@@ -557,6 +556,35 @@
       "__id__": 1
     },
     "_enabled": true,
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 0,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 192
+    },
+    "type": 1,
+    "radius": 64,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 512,
+      "height": 384
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

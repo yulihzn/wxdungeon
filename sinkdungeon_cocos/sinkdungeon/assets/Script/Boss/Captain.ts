@@ -12,6 +12,7 @@ import Achievement from "../logic/Achievement";
 import { ColliderTag } from "../actor/ColliderTag";
 import ActorUtils from "../utils/ActorUtils";
 import Logic from "../logic/Logic";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -81,8 +82,7 @@ export default class Captain extends Boss {
     //Animation
     JumpStart() {
         this.jumpSkill.IsExcuting = true;
-        this.getComponent(cc.PhysicsBoxCollider).sensor = true;
-        this.getComponent(cc.PhysicsBoxCollider).apply();
+        this.getComponent(CCollider).sensor = true;
     }
     //Animation
     FireSwordLight() {
@@ -96,8 +96,7 @@ export default class Captain extends Boss {
         this.jumpSkill.IsExcuting = false;
         this.isFall = true;
         this.scheduleOnce(() => { this.isFall = false; }, 0.1);
-        this.getComponent(cc.PhysicsBoxCollider).sensor = false;
-        this.getComponent(cc.PhysicsBoxCollider).apply();
+        this.getComponent(CCollider).sensor = false;
         if (!this.dungeon || !this.exshooter) {
             return;
         }
@@ -209,7 +208,7 @@ export default class Captain extends Boss {
         Achievement.addMonsterKillAchievement(this.data.resName);
         this.sc.isDied = true;
         this.anim.play('CaptainDie');
-        let collider: cc.PhysicsCollider = this.getComponent('cc.PhysicsCollider');
+        let collider: CCollider = this.getComponent(CCollider);
         collider.sensor = true;
         this.scheduleOnce(() => { if (this.node) { this.node.active = false; } }, 5);
         this.getLoot();

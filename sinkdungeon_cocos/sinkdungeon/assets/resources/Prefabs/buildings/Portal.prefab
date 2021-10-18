@@ -418,7 +418,7 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -426,16 +426,24 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_offset": {
+    "offset": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": 0
     },
-    "_size": {
+    "type": 1,
+    "radius": 64,
+    "size": {
       "__type__": "cc.Size",
       "width": 32,
       "height": 32
     },
+    "sensor": false,
+    "isStatic": true,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

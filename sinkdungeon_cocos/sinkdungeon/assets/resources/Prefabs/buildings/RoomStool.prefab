@@ -46,13 +46,10 @@
       },
       {
         "__id__": 25
-      },
-      {
-        "__id__": 26
       }
     ],
     "_prefab": {
-      "__id__": 27
+      "__id__": 26
     },
     "_opacity": 255,
     "_color": {
@@ -740,20 +737,32 @@
     "_id": ""
   },
   {
-    "__type__": "cc.CircleCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 14
     },
     "_enabled": true,
-    "tag": 13,
-    "_offset": {
+    "tag": 17,
+    "offset": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": -32
     },
-    "_radius": 15,
+    "type": 0,
+    "radius": 15,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 238,
+      "height": 98
+    },
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -776,57 +785,6 @@
     },
     "fileId": "b8BF8DCsFEAonEfE8a8ztQ",
     "sync": false
-  },
-  {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_type": 0,
-    "_allowSleep": true,
-    "_gravityScale": 1,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": true,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsBoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 8,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 32
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 64
-    },
-    "_id": ""
   },
   {
     "__type__": "b3a88wYknRFJqEjNBOhztfv",
@@ -868,6 +826,33 @@
       }
     ],
     "playOnLoad": false,
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 12,
+    "offset": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 32
+    },
+    "type": 1,
+    "radius": 64,
+    "size": {
+      "__type__": "cc.Size",
+      "width": 128,
+      "height": 64
+    },
+    "sensor": false,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
