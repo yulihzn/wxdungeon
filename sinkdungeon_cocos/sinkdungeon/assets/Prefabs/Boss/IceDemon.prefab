@@ -49,13 +49,10 @@
       },
       {
         "__id__": 80
-      },
-      {
-        "__id__": 81
       }
     ],
     "_prefab": {
-      "__id__": 82
+      "__id__": 81
     },
     "_opacity": 255,
     "_color": {
@@ -2907,70 +2904,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_type": 2,
-    "_allowSleep": true,
-    "_gravityScale": 0,
-    "_linearDamping": 5,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": true,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsCircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 6,
-    "_density": 100,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 30,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.CircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 6,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 30,
-    "_id": ""
-  },
-  {
     "__type__": "cc.Animation",
     "_name": "",
     "_objFlags": 0,
@@ -3023,6 +2956,52 @@
       "width": 30,
       "height": 100
     },
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 10,
+    "offsetX": 0,
+    "offsetY": 50,
+    "type": 1,
+    "radius": 64,
+    "w": 30,
+    "h": 100,
+    "sensor": false,
+    "isStatic": false,
+    "targetTagList": [],
+    "ignoreTagList": [
+      10
+    ],
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "tag": 9,
+    "offsetX": 0,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 30,
+    "w": 128,
+    "h": 128,
+    "sensor": false,
+    "isStatic": false,
+    "targetTagList": [],
+    "ignoreTagList": [
+      10
+    ],
     "_id": ""
   },
   {

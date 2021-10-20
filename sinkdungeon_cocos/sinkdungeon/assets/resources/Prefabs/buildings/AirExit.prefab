@@ -139,11 +139,8 @@
     },
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 14,
-      "height": 14
-    },
+    "w": 14,
+    "h": 14,
     "sensor": false,
     "isStatic": true,
     "_id": ""

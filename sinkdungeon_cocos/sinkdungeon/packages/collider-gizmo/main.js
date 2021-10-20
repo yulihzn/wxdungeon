@@ -42,10 +42,10 @@ class ColliderGizmo extends Editor.Gizmo {
                 // cc.log(`startOffsetSub:(${startOffsetSub.x},${startOffsetSub.y})`);
                 let hd = 0;
                 let vd = 0;
-                if (Math.abs(this.target.size.width / 2 - Math.abs(position.x)) < 8) {
+                if (Math.abs(this.target.w / 2 - Math.abs(position.x)) < 8) {
                     hd = position.x < 0 ? 1 : 2;
                 }
-                if (Math.abs(this.target.size.height / 2 - Math.abs(position.y)) < 8) {
+                if (Math.abs(this.target.h / 2 - Math.abs(position.y)) < 8) {
                     vd = position.y > 0 ? 10 : 20;
                 }
                 dir = hd + vd;
@@ -64,7 +64,6 @@ class ColliderGizmo extends Editor.Gizmo {
 
                 // 获取 gizmo 依附的组件
                 let target = this.target;
-
                 if (type === ToolType.Center) {
                     // 计算新的偏移量
                     // let mat4 = cc.mat4();
@@ -93,25 +92,25 @@ class ColliderGizmo extends Editor.Gizmo {
                         this.adjustValue(target, 'radius');
                     } else {
                         let position = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy)).sub(startOffset);
-                        let widthhalf = target.size.width / 2;
-                        let heighthalf = target.size.height / 2;
+                        let widthhalf = target.w / 2;
+                        let heighthalf = target.h / 2;
                         if (dir == 1) {//左
-                            target.size.width = Math.abs(position.x) + widthhalf;
+                            target.w = Math.abs(position.x) + widthhalf;
                         } else if (dir == 2) {//右
-                            target.size.width = Math.abs(position.x) + widthhalf;
+                            target.w = Math.abs(position.x) + widthhalf;
                         } else if (dir == 10) {//上
-                            target.size.height = Math.abs(position.y) + heighthalf;
+                            target.h = Math.abs(position.y) + heighthalf;
                         } else if (dir == 20) {//下
-                            target.size.height = Math.abs(position.y) + heighthalf;
+                            target.h = Math.abs(position.y) + heighthalf;
                         } else {//角落
-                            target.size.width = Math.abs(position.x) + widthhalf;
-                            target.size.height = Math.abs(position.y) + heighthalf;
+                            target.w = Math.abs(position.x) + widthhalf;
+                            target.h = Math.abs(position.y) + heighthalf;
                         }
-                        if (target.size.width < 0) {
-                            target.size.width = 0;
+                        if (target.w < 0) {
+                            target.w = 0;
                         }
-                        if (target.size.height < 0) {
-                            target.size.height = 0;
+                        if (target.h < 0) {
+                            target.h = 0;
                         }
                         this.adjustValue(target, 'size');
 
@@ -252,12 +251,11 @@ class ColliderGizmo extends Editor.Gizmo {
 
         // 获取 gizmo 依附的组件
         let target = this.target;
-
         // 获取 gizmo 依附的节点
         let node = this.node;
 
         // 获取节点世界坐标
-        let position = node.convertToWorldSpaceAR(target.type == TargetType.CIRCLE ? cc.v2(target.offsetX,target.offsetY) : cc.v2(target.offsetX - target.size.width / 2, target.offsetY + target.size.height / 2));
+        let position = node.convertToWorldSpaceAR(target.type == TargetType.CIRCLE ? cc.v2(target.offsetX,target.offsetY) : cc.v2(target.offsetX - target.w / 2, target.offsetY + target.h / 2));
 
         // 转换世界坐标到 svg view 上
         // svg view 的坐标体系和节点坐标体系不太一样，这里使用内置函数来转换坐标
@@ -275,7 +273,7 @@ class ColliderGizmo extends Editor.Gizmo {
         radius = Editor.GizmosUtils.snapPixel(radius);
 
         // 移动 svg 工具到坐标
-        this._tool.plot(radius * this._view.scale, target.size.width * this._view.scale * node.scale, target.size.height * this._view.scale * node.scale, position);
+        this._tool.plot(radius * this._view.scale, target.w * this._view.scale * node.scale, target.h * this._view.scale * node.scale, position);
     }
 }
 

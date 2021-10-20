@@ -1049,11 +1049,8 @@
     "offsetY": -96,
     "type": 0,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [
@@ -1096,6 +1093,8 @@
       "width": 256,
       "height": 256
     },
+    "w": 256,
+    "h": 256,
     "sensor": false,
     "isStatic": true,
     "targetTagList": [],

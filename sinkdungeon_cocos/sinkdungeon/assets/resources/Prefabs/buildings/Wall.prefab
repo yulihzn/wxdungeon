@@ -517,11 +517,8 @@
     },
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": false,
     "isStatic": true,
     "tagIgnore": true,
@@ -545,11 +542,8 @@
     "offsetY": 128,
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "tagIgnore": true,

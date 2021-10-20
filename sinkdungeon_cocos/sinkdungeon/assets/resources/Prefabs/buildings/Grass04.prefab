@@ -288,11 +288,8 @@
     "offsetY": 12,
     "type": 0,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [
@@ -446,14 +443,9 @@
     "offsetY": 12,
     "type": 0,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
-    "sensor": true,
-    "isStatic": true,
-    "targetTagList": [
+    "w": 128,
+    "h": 128,
+    argetTagList": [
       3,
       5,
       7
@@ -604,11 +596,8 @@
     "offsetY": 12,
     "type": 0,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [
@@ -762,11 +751,8 @@
     "offsetY": 12,
     "type": 0,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [
@@ -920,11 +906,8 @@
     "offsetY": 12,
     "type": 0,
     "radius": 8,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [
@@ -1078,11 +1061,8 @@
     "offsetY": 12,
     "type": 0,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [

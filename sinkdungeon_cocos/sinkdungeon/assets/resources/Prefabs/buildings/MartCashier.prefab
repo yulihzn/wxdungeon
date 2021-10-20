@@ -963,11 +963,8 @@
     },
     "type": 0,
     "radius": 2000,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [],
@@ -1028,11 +1025,8 @@
     "offsetY": 72,
     "type": 1,
     "radius": 200,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": false,
     "isStatic": true,
     "targetTagList": [],
@@ -1062,6 +1056,8 @@
       "width": 128,
       "height": 480
     },
+    "w": 128,
+    "h": 480,
     "sensor": false,
     "isStatic": true,
     "targetTagList": [],

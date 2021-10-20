@@ -282,6 +282,8 @@
       "width": 400,
       "height": 96
     },
+    "w": 400,
+    "h": 96,
     "sensor": false,
     "isStatic": true,
     "targetTagList": [],

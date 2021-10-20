@@ -7596,11 +7596,8 @@
     },
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
-    },
+    "w": 32,
+    "h": 32,
     "sensor": false,
     "_id": ""
   },

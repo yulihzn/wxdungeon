@@ -822,11 +822,8 @@
     },
     "type": 0,
     "radius": 400,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [],
@@ -889,11 +886,8 @@
     },
     "type": 0,
     "radius": 400,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [
@@ -928,11 +922,8 @@
     },
     "type": 0,
     "radius": 20,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 128
-    },
+    "w": 128,
+    "h": 128,
     "sensor": false,
     "isStatic": true,
     "targetTagList": [],

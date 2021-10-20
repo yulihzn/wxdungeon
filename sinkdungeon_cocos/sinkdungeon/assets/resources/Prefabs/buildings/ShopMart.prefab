@@ -581,6 +581,8 @@
       "width": 512,
       "height": 384
     },
+    "w": 512,
+    "h": 384,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [

@@ -759,6 +759,8 @@
       "width": 238,
       "height": 98
     },
+    "w": 238,
+    "h": 98,
     "sensor": true,
     "isStatic": true,
     "targetTagList": [
@@ -853,6 +855,8 @@
       "width": 128,
       "height": 64
     },
+    "w": 128,
+    "h": 64,
     "sensor": false,
     "isStatic": true,
     "targetTagList": [],

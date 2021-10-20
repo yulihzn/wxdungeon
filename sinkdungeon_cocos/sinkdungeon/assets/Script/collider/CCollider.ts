@@ -48,9 +48,9 @@ export default class CCollider extends cc.Component {
     tag: number = CCollider.TAG.DEFAULT;
 
     @property
-    offsetX:number = 0;
+    offsetX: number = 0;
     @property
-    offsetY:number = 0;
+    offsetY: number = 0;
 
     @property({ type: CCollider.TYPE, displayName: 'Shape Type' })
     type: number = CCollider.TYPE.RECT;
@@ -60,13 +60,18 @@ export default class CCollider extends cc.Component {
         }
     })
     radius: number = 64;
-
     @property({
         visible: function () {
             return this.type == CCollider.TYPE.RECT
         }
     })
-    size: cc.Size = cc.size(128, 128);
+    w: number = 128;
+    @property({
+        visible: function () {
+            return this.type == CCollider.TYPE.RECT
+        }
+    })
+    h: number = 128;
 
     @property
     sensor: boolean = false;
@@ -82,7 +87,7 @@ export default class CCollider extends cc.Component {
     })
     ignoreTagList: number[] = [];
 
-    
+
     pos: cc.Vec3 = cc.Vec3.ZERO;//碰撞体在统一的坐标系下的位置
     //当前已经碰撞过的物体
     inColliders: { [key: string]: boolean } = {};
@@ -99,13 +104,16 @@ export default class CCollider extends cc.Component {
     finalScale: number = 1;//最终缩放比例,如果碰撞体是地图元素的子节点，那么需要对应的缩放比例
     childOffset: cc.Vec3 = cc.Vec3.ZERO;//子节点对于父节点的偏移
 
-
-    set offset(o:cc.Vec2){
+    set size(s: cc.Size) {
+        this.w = s.width;
+        this.h = s.height;
+    }
+    set offset(o: cc.Vec2) {
         this.offsetX = o.x;
         this.offsetY = o.y;
     }
-    get offset(){
-        return cc.v2(this.offsetX,this.offsetY);
+    get offset() {
+        return cc.v2(this.offsetX, this.offsetY);
     }
     get Radius() {
         return this.radius * this.finalScale;
@@ -214,7 +222,7 @@ export default class CCollider extends cc.Component {
 
     }
     get Aabb(): cc.Rect {
-        return cc.rect(this.pos.x + this.childOffset.x + (this.offsetX - this.size.width) * this.finalScale / 2, this.pos.y + this.childOffset.y + (this.offsetY - this.size.height) * this.finalScale / 2, this.size.width * this.finalScale, this.size.height * this.finalScale);
+        return cc.rect(this.pos.x + this.childOffset.x + (this.offsetX - this.w) * this.finalScale / 2, this.pos.y + this.childOffset.y + (this.offsetY - this.h) * this.finalScale / 2, this.w * this.finalScale, this.h * this.finalScale);
     }
 
     // LIFE-CYCLE CALLBACKS:
