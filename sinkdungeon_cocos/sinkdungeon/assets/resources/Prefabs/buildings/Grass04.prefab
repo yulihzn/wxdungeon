@@ -284,6 +284,8 @@
       "x": 0,
       "y": 12
     },
+    "offsetX": 0,
+    "offsetY": 12,
     "type": 0,
     "radius": 12,
     "size": {
@@ -440,6 +442,8 @@
       "x": 0,
       "y": 12
     },
+    "offsetX": 0,
+    "offsetY": 12,
     "type": 0,
     "radius": 12,
     "size": {
@@ -596,6 +600,8 @@
       "x": 0,
       "y": 12
     },
+    "offsetX": 0,
+    "offsetY": 12,
     "type": 0,
     "radius": 12,
     "size": {
@@ -752,6 +758,8 @@
       "x": 0,
       "y": 12
     },
+    "offsetX": 0,
+    "offsetY": 12,
     "type": 0,
     "radius": 12,
     "size": {
@@ -908,6 +916,8 @@
       "x": 0,
       "y": 12
     },
+    "offsetX": 0,
+    "offsetY": 12,
     "type": 0,
     "radius": 8,
     "size": {
@@ -1064,6 +1074,8 @@
       "x": 0,
       "y": 12
     },
+    "offsetX": 0,
+    "offsetY": 12,
     "type": 0,
     "radius": 12,
     "size": {

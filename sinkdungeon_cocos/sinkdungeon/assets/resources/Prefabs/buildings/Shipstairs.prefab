@@ -124,6 +124,8 @@
       "x": 8,
       "y": 0
     },
+    "offsetX": 8,
+    "offsetY": 0,
     "type": 1,
     "radius": 64,
     "size": {

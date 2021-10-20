@@ -273,6 +273,8 @@
       "x": 0,
       "y": -32
     },
+    "offsetX": 0,
+    "offsetY": -32,
     "type": 1,
     "radius": 64,
     "size": {

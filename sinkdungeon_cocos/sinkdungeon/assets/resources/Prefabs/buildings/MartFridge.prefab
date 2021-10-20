@@ -1285,6 +1285,8 @@
       "x": 0,
       "y": -15
     },
+    "offsetX": 0,
+    "offsetY": -15,
     "type": 1,
     "radius": 200,
     "size": {

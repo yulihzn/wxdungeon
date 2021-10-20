@@ -34,7 +34,7 @@ class ColliderGizmo extends Editor.Gizmo {
              */
             start: (x, y, event) => {
                 startRadius = this.target.radius;
-                startOffset = this.target.offset;
+                startOffset = cc.v2(this.target.offsetX,this.target.offsetY);
                 pressx = x;
                 pressy = y;
                 let position = this.getPointInNode(this.node, cc.v2(x, y));
@@ -75,9 +75,11 @@ class ColliderGizmo extends Editor.Gizmo {
                     // let d = cc.v2(dx, dy);
                     // cc.Vec2.transformMat4(d, d, t);
                     // d.addSelf(startOffset);
-                    let d = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy));
-                    target.offset = d.sub(startOffsetSub);
-                    this.adjustValue(target, 'offset');
+                    let d = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy)).sub(startOffsetSub);
+                    target.offsetX = d.x;
+                    target.offsetY = d.y;
+                    this.adjustValue(target, 'offsetX');
+                    this.adjustValue(target, 'offsetY');
                 }
                 else {
                     if (target.type == TargetType.CIRCLE) {
@@ -255,7 +257,7 @@ class ColliderGizmo extends Editor.Gizmo {
         let node = this.node;
 
         // 获取节点世界坐标
-        let position = node.convertToWorldSpaceAR(target.type == TargetType.CIRCLE ? target.offset : cc.v2(target.offset.x - target.size.width / 2, target.offset.y + target.size.height / 2));
+        let position = node.convertToWorldSpaceAR(target.type == TargetType.CIRCLE ? cc.v2(target.offsetX,target.offsetY) : cc.v2(target.offsetX - target.size.width / 2, target.offsetY + target.size.height / 2));
 
         // 转换世界坐标到 svg view 上
         // svg view 的坐标体系和节点坐标体系不太一样，这里使用内置函数来转换坐标

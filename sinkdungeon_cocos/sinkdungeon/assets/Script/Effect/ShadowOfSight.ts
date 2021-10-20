@@ -101,7 +101,7 @@ export default class ShadowOfSight extends cc.Component {
             }
         }
         if (this.circleCollider && this.circleCollider.Radius > 0) {
-            let p = this.node.convertToWorldSpaceAR(this.circleCollider.offset);
+            let p = this.node.convertToWorldSpaceAR(cc.v2(this.circleCollider.offsetX,this.circleCollider.offsetY));
             this.circle = cc.v3(p.x, p.y, this.getRadius());
             if (renderLight) {
                 this.ray.lineWidth = 10;

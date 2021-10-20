@@ -47,8 +47,10 @@ export default class CCollider extends cc.Component {
     @property({ type: CCollider.TAG, displayName: 'Collider Tag' })
     tag: number = CCollider.TAG.DEFAULT;
 
-    @property(cc.Vec2)
-    offset: cc.Vec2 = cc.v2(0, 0);
+    @property
+    offsetX:number = 0;
+    @property
+    offsetY:number = 0;
 
     @property({ type: CCollider.TYPE, displayName: 'Shape Type' })
     type: number = CCollider.TYPE.RECT;
@@ -80,6 +82,7 @@ export default class CCollider extends cc.Component {
     })
     ignoreTagList: number[] = [];
 
+    
     pos: cc.Vec3 = cc.Vec3.ZERO;//碰撞体在统一的坐标系下的位置
     //当前已经碰撞过的物体
     inColliders: { [key: string]: boolean } = {};
@@ -97,6 +100,13 @@ export default class CCollider extends cc.Component {
     childOffset: cc.Vec3 = cc.Vec3.ZERO;//子节点对于父节点的偏移
 
 
+    set offset(o:cc.Vec2){
+        this.offsetX = o.x;
+        this.offsetY = o.y;
+    }
+    get offset(){
+        return cc.v2(this.offsetX,this.offsetY);
+    }
     get Radius() {
         return this.radius * this.finalScale;
     }
@@ -204,7 +214,7 @@ export default class CCollider extends cc.Component {
 
     }
     get Aabb(): cc.Rect {
-        return cc.rect(this.pos.x + this.childOffset.x + (this.offset.x - this.size.width) * this.finalScale / 2, this.pos.y + this.childOffset.y + (this.offset.y - this.size.height) * this.finalScale / 2, this.size.width * this.finalScale, this.size.height * this.finalScale);
+        return cc.rect(this.pos.x + this.childOffset.x + (this.offsetX - this.size.width) * this.finalScale / 2, this.pos.y + this.childOffset.y + (this.offsetY - this.size.height) * this.finalScale / 2, this.size.width * this.finalScale, this.size.height * this.finalScale);
     }
 
     // LIFE-CYCLE CALLBACKS:

@@ -867,6 +867,8 @@
       "x": 0,
       "y": -120
     },
+    "offsetX": 0,
+    "offsetY": -120,
     "type": 0,
     "radius": 150,
     "size": {
@@ -936,6 +938,8 @@
       "x": 0,
       "y": 105
     },
+    "offsetX": 0,
+    "offsetY": 105,
     "type": 1,
     "radius": 64,
     "size": {

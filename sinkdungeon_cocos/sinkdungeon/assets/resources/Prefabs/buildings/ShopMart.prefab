@@ -572,6 +572,8 @@
       "x": 0,
       "y": 192
     },
+    "offsetX": 0,
+    "offsetY": 192,
     "type": 1,
     "radius": 64,
     "size": {
