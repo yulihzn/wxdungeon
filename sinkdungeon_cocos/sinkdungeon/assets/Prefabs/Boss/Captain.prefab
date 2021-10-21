@@ -1853,7 +1853,10 @@
     "sensor": false,
     "isStatic": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      9,
+      10
+    ],
     "_id": ""
   },
   {
@@ -1874,7 +1877,10 @@
     "sensor": true,
     "isStatic": true,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      9,
+      10
+    ],
     "_id": ""
   },
   {

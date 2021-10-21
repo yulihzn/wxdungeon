@@ -1710,24 +1710,27 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 6,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -110
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 200,
-      "height": 50
-    },
+    "tag": 9,
+    "offsetX": 0,
+    "offsetY": -110,
+    "type": 1,
+    "radius": 64,
+    "w": 200,
+    "h": 50,
+    "sensor": false,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [
+      10,
+      9
+    ],
     "_id": ""
   },
   {

@@ -3519,7 +3519,7 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -3527,16 +3527,19 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 48,
-      "y": 0
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 80,
-      "height": 27
-    },
+    "offsetX": 40,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 20,
+    "w": 310,
+    "h": 160,
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [
+      9,
+      10
+    ],
     "_id": ""
   },
   {
@@ -3996,27 +3999,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 105
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 48,
-      "y": 0
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 80,
-      "height": 27
-    },
-    "_id": ""
-  },
-  {
     "__type__": "955f3FE6OVI9rSVX2x0s/2h",
     "_name": "",
     "_objFlags": 0,
@@ -4026,6 +4008,30 @@
     "_enabled": true,
     "damage": 3,
     "parentNode": null,
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 105
+    },
+    "_enabled": true,
+    "tag": 0,
+    "offsetX": 40,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 20,
+    "w": 310,
+    "h": 160,
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [
+      9,
+      10
+    ],
     "_id": ""
   },
   {
@@ -4869,7 +4875,7 @@
       "__id__": 125
     },
     "hand01": {
-      "__id__": 108
+      "__id__": 107
     },
     "hand02": {
       "__id__": 94
@@ -4901,7 +4907,8 @@
     "isStatic": true,
     "targetTagList": [],
     "ignoreTagList": [
-      10
+      10,
+      9
     ],
     "_id": ""
   },
@@ -4923,7 +4930,10 @@
     "sensor": true,
     "isStatic": true,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      9,
+      10
+    ],
     "_id": ""
   },
   {

@@ -6,7 +6,7 @@
   "_duration": 1,
   "sample": 60,
   "speed": 1,
-  "wrapMode": "1",
+  "wrapMode": 1,
   "curveData": {
     "paths": {
       "sprite": {
@@ -201,7 +201,7 @@
       }
     },
     "comps": {
-      "cc.CircleCollider": {
+      "CCollider": {
         "radius": [
           {
             "frame": 0,
@@ -213,7 +213,7 @@
           },
           {
             "frame": 0.75,
-            "value": 150
+            "value": 80
           },
           {
             "frame": 1,

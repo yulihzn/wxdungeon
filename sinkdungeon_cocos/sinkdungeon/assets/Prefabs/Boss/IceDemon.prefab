@@ -46,13 +46,10 @@
       },
       {
         "__id__": 79
-      },
-      {
-        "__id__": 80
       }
     ],
     "_prefab": {
-      "__id__": 81
+      "__id__": 80
     },
     "_opacity": 255,
     "_color": {
@@ -2938,27 +2935,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 6,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 50
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 30,
-      "height": 100
-    },
-    "_id": ""
-  },
-  {
     "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
@@ -2973,8 +2949,8 @@
     "radius": 64,
     "w": 30,
     "h": 100,
-    "sensor": false,
-    "isStatic": false,
+    "sensor": true,
+    "isStatic": true,
     "targetTagList": [],
     "ignoreTagList": [
       10
@@ -2997,7 +2973,7 @@
     "w": 128,
     "h": 128,
     "sensor": false,
-    "isStatic": false,
+    "isStatic": true,
     "targetTagList": [],
     "ignoreTagList": [
       10

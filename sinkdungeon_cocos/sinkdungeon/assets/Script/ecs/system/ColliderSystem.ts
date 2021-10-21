@@ -117,7 +117,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 let isCollision = false;
                 if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
                     //矩形检测
-                    isCollision = collider.Aabb.intersects(other.Aabb);
+                    isCollision = this.recHit(collider.Aabb,other.Aabb);
                 } else if (collider.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
                     //圆形检测
                     isCollision = this.circleHit(collider.Center, other.Center, collider.Radius, other.Radius);
@@ -142,6 +142,12 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         this.quadTree.clear();
     }
 
+    private recHit(rect1:cc.Rect,rect2:cc.Rect){
+        if(rect1.width<=0||rect1.height<=0||rect2.width<=0||rect2.height<=0){
+            return false;
+        }
+        return rect1.intersects(rect2);
+    }
     private circleHit(v1: cc.Vec3, v2: cc.Vec3, r1: number, r2: number) {
         if (r1 <= 0 || r2 <= 0) {
             return false;
@@ -152,6 +158,9 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     }
 
     private circleRectHit(center: cc.Vec3, radius: number, rect: cc.Rect) {
+        if(rect.width<=0||rect.height<=0||radius<=0){
+            return false;
+        }
         let x = center.x - rect.x - rect.width / 2;
         let y = center.y - rect.y - rect.height / 2;
         let minX = Math.min(x, rect.width / 2);

@@ -3126,7 +3126,8 @@
     "isStatic": true,
     "targetTagList": [],
     "ignoreTagList": [
-      9
+      9,
+      10
     ],
     "_id": ""
   },
@@ -3149,7 +3150,8 @@
     "isStatic": false,
     "targetTagList": [],
     "ignoreTagList": [
-      10
+      10,
+      9
     ],
     "_id": ""
   },

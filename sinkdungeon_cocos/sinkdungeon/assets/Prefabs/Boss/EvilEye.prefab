@@ -4716,10 +4716,11 @@
     "w": 100,
     "h": 120,
     "sensor": false,
-    "isStatic": false,
+    "isStatic": true,
     "targetTagList": [],
     "ignoreTagList": [
-      9
+      9,
+      10
     ],
     "_id": ""
   },
@@ -4739,9 +4740,12 @@
     "w": 128,
     "h": 128,
     "sensor": false,
-    "isStatic": false,
+    "isStatic": true,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      9,
+      10
+    ],
     "_id": ""
   },
   {
