@@ -76,6 +76,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             let colliders = e.Collider.colliders;
             for (let collider of colliders) {
                 collider.entity = e;
+                collider.fixCenterAndScale();
                 this.quadTree.insert(collider);
             }
         }

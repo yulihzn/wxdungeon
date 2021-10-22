@@ -77,6 +77,8 @@ export default class CCollider extends cc.Component {
     sensor: boolean = false;
     @property
     isStatic: boolean = false;
+    @property
+    isChild = false;
 
     @property({ type: [CCollider.TAG], displayName: 'Target Tag' })
     targetTagList: number[] = [];
@@ -101,8 +103,9 @@ export default class CCollider extends cc.Component {
     //指定忽略的碰撞类型
     ignoreTags: Map<number, boolean> = new Map();
 
-    finalScale: number = 1;//最终缩放比例,如果碰撞体是地图元素的子节点，那么需要对应的缩放比例
-    childOffset: cc.Vec3 = cc.Vec3.ZERO;//子节点对于父节点的偏移
+    private _center:cc.Vec3;
+    private _aabb:cc.Rect;
+    private _radius:number;
 
     set size(s: cc.Size) {
         this.w = s.width;
@@ -116,10 +119,10 @@ export default class CCollider extends cc.Component {
         return cc.v2(this.offsetX, this.offsetY);
     }
     get Radius() {
-        return this.radius * this.finalScale;
+        return this._radius;
     }
     get Center() {
-        return cc.v2(this.pos.add(this.childOffset));
+        return cc.v2(this.pos.add(this._center));
     }
     private onContactListener: OnContactListener;
     public setOnContactListener(onContactListener: OnContactListener) {
@@ -127,24 +130,39 @@ export default class CCollider extends cc.Component {
     }
     setEntityNode(node: cc.Node) {
         this.entity.NodeRender.node = node;
-        this.updateFinalScale();
     }
-    private updateFinalScale() {
-        this.finalScale = this.node.scale;
-        if (this.entity.NodeRender.node) {
-            let temp = this.node;
-            while (temp && temp != this.entity.NodeRender.node) {
-                temp = temp.parent;
-                this.finalScale *= temp.scale;
-            }
-            this.childOffset = this.entity.NodeRender.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+    public fixCenterAndScale(){
+        let parent = this.entity.NodeRender.node;
+        if(!parent){
+            cc.log(`${this.id} the entity node is undefined`);
+            return;
         }
-        this.updateChildOffset();
+        let offset = cc.v3(this.offsetX,this.offsetY);
+        this._center = parent.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(this.offsetX,this.offsetY)));
+        let scale = 1;
+        if(offset.equals(cc.Vec3.ZERO)){
+            let l1 = parent.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(100,0))).mag();
+            let l2 = cc.v3(100,0).mag();
+            scale = l1/l2;
+        }else{
+            let l1 = this._center.mag();
+            let l2 = offset.mag();
+            scale = l1/l2;
+        }
+        this._radius = this.radius*scale;
+        let center = cc.v2(this.pos.add(this._center));
+        if(this.isCircle){
+            this._aabb = cc.rect(center.x-this.radius,center.y-this.radius,this.radius*scale*2,this.radius*scale*2);
+        }else{
+            this._aabb = cc.rect(center.x-this.w*scale/2,center.y-this.h*scale/2,this.w*scale,this.h*scale);
+        }
     }
+   
+    /**
+     * 更新子碰撞在根节点的位置
+     */
     updateChildOffset() {
-        if (this.entity.NodeRender.node && this.entity.NodeRender.node != this.node) {
-            this.childOffset = this.entity.NodeRender.node.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
-        }
+       
     }
     onLoad() {
         for (let t of this.targetTagList) {
@@ -153,7 +171,6 @@ export default class CCollider extends cc.Component {
         for (let i of this.targetTagList) {
             this.ignoreTags.set(i, true);
         }
-        this.updateFinalScale();
     }
 
     contact(other: CCollider) {
@@ -222,11 +239,13 @@ export default class CCollider extends cc.Component {
 
     }
     get Aabb(): cc.Rect {
-        return cc.rect(this.pos.x + this.childOffset.x + (this.offsetX - this.w) * this.finalScale / 2, this.pos.y + this.childOffset.y + (this.offsetY - this.h) * this.finalScale / 2, this.w * this.finalScale, this.h * this.finalScale);
+        return this._aabb;
+    }
+    get isCircle(){
+        return this.type == CCollider.TYPE.CIRCLE;
     }
 
     // LIFE-CYCLE CALLBACKS:
-
 
     start() {
 

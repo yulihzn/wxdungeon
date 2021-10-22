@@ -4,6 +4,7 @@ import ActorUtils from "../utils/ActorUtils";
 import Utils from "../utils/Utils";
 import Dungeon from "../logic/Dungeon";
 import NonPlayer from "../logic/NonPlayer";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -25,7 +26,7 @@ export default class ActorAttackBox extends cc.Component {
     static readonly ATTACK_AREA = 2;//范围攻击
     isEnemy = false;
     attackType = 0;
-    collider: cc.BoxCollider
+    collider: CCollider
     isAttacking = false;
     nonPlayer: NonPlayer;
     dungeon: Dungeon;
@@ -36,7 +37,7 @@ export default class ActorAttackBox extends cc.Component {
 
     onLoad() {
         this.node.opacity = 0;
-        this.collider = this.getComponent(cc.BoxCollider);
+        this.collider = this.getComponent(CCollider);
     }
 
     init(nonPlayer: NonPlayer, dungeon: Dungeon,isEnemy:boolean) {
@@ -63,15 +64,15 @@ export default class ActorAttackBox extends cc.Component {
         this.setHv(hv);
     }
     private changeBoxSize(attackType: number) {
-        let length = 80;
-        let offset = cc.v2(length/2, 0);
+        let radius = 40;
+        let offset = cc.v2(radius, 0);
         this.node.anchorX = 0;
-        this.node.width = this.isLarge?length*1.5:length;;
-        this.node.height = length;
+        this.node.width = this.isLarge?radius*1.5:radius;;
+        this.node.height = radius;
         this.node.position = cc.v3(-16, 32);
         this.collider.offset = offset;
-        this.collider.size.width = this.isLarge?length*1.5:length;;
-        this.collider.size.height = length;
+        this.collider.size.width = this.isLarge?radius*1.5:radius;;
+        this.collider.size.height = radius;
         switch (attackType) {
             case ActorAttackBox.ATTACK_NORMAL:
                 break;
@@ -81,15 +82,15 @@ export default class ActorAttackBox extends cc.Component {
                 break;
             case ActorAttackBox.ATTACK_AREA:
                 this.node.anchorX = 0.5;
-                length = 160;
+                radius = 160;
                 if(this.isLarge){
-                    length = 320;
+                    radius = 320;
                 }
-                this.node.width = length;
-                this.node.height = length;
+                this.node.width = radius;
+                this.node.height = radius;
                 this.node.position = cc.v3(0, 32);
-                this.collider.size.width = length;
-                this.collider.size.height = length;
+                this.collider.size.width = radius;
+                this.collider.size.height = radius;
                 this.collider.offset = cc.v2(0, 0);
                 break;
         }
