@@ -210,24 +210,26 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 9,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 8
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 16,
-      "height": 16
-    },
+    "tag": 13,
+    "offsetX": -1,
+    "offsetY": 4,
+    "type": 0,
+    "radius": 8,
+    "w": 128,
+    "h": 128,
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [
+      13
+    ],
     "_id": ""
   },
   {

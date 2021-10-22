@@ -167,7 +167,7 @@
       "__uuid__": "badaa8c4-e4e7-40cc-9438-e7cd4ee76c13"
     },
     "_texture": null,
-    "_stopped": false,
+    "_stopped": true,
     "playOnLoad": true,
     "autoRemoveOnFinish": false,
     "totalParticles": 100,
@@ -259,20 +259,26 @@
     "sync": false
   },
   {
-    "__type__": "cc.CircleCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 9,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 128,
+    "tag": 13,
+    "offsetX": 0,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 128,
+    "w": 128,
+    "h": 128,
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [
+      13
+    ],
     "_id": ""
   },
   {

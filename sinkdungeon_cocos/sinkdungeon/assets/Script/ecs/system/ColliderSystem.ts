@@ -146,18 +146,16 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         if(rect1.width<=0||rect1.height<=0||rect2.width<=0||rect2.height<=0){
             return false;
         }
-        return rect1.intersects(rect2);
+        return cc.Intersection.rectRect(rect1,rect2);
     }
-    private circleHit(v1: cc.Vec3, v2: cc.Vec3, r1: number, r2: number) {
+    private circleHit(v1: cc.Vec2, v2: cc.Vec2, r1: number, r2: number) {
         if (r1 <= 0 || r2 <= 0) {
             return false;
         }
-        let x = v1.x - v2.x;
-        let y = v1.y - v2.y;
-        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) <= r1 + r2;
+        return cc.Intersection.circleCircle({position:v1,radius:r1},{position:v2,radius:r2});
     }
 
-    private circleRectHit(center: cc.Vec3, radius: number, rect: cc.Rect) {
+    private circleRectHit(center: cc.Vec2, radius: number, rect: cc.Rect) {
         if(rect.width<=0||rect.height<=0||radius<=0){
             return false;
         }

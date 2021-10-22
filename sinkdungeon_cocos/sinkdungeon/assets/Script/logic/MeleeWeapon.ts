@@ -141,13 +141,12 @@ export default class MeleeWeapon extends cc.Component {
     }
 
     set Hv(hv: cc.Vec3) {
-        // let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
-        // if (!pos.equals(cc.Vec3.ZERO)) {
-            // this.hv = pos;
-        // } else {
-            // this.hv = hv.normalizeSelf();
-        // }
-        this.hv = hv.normalizeSelf();
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
+        if (!pos.equals(cc.Vec3.ZERO)) {
+            this.hv = pos;
+        } else {
+            this.hv = hv.normalizeSelf();
+        }
     }
     get Hv(): cc.Vec3 {
         return this.hv;
@@ -459,14 +458,14 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
     updateLogic(dt: number) {
-        // let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
-        // if (!pos.equals(cc.Vec3.ZERO)) {
-        //     this.hv = pos;
-        // }
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
+        if (!pos.equals(cc.Vec3.ZERO)) {
+            this.hv = pos;
+        }
         if (!this.isAttacking) {
             this.rotateCollider(cc.v2(this.hv.x, this.hv.y));
         }
-        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 20);
+        this.node.angle = Logic.lerp(this.node.angle, this.currentAngle, dt * 5);
 
     }
 

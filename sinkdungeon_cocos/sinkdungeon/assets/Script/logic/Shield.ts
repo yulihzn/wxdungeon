@@ -197,13 +197,13 @@ export default class Shield extends cc.Component {
         let currentIndex = avatarZindex - Shield.ZOFFSET;
         switch (dir) {
             case PlayerAvatar.DIR_UP:
-                // currentIndex = avatarZindex + (isDefending?-Shield.ZOFFSET:Shield.ZOFFSET);
-                // this.sprite.node.color = isDefending?cc.color(32,32,32):cc.Color.WHITE;
-                // break;
+                currentIndex = avatarZindex + (isDefending?-Shield.ZOFFSET:Shield.ZOFFSET);
+                this.sprite.node.color = isDefending?cc.color(32,32,32):cc.Color.WHITE;
+                break;
             case PlayerAvatar.DIR_DOWN:
-                // currentIndex = avatarZindex + (isDefending?Shield.ZOFFSET:-Shield.ZOFFSET);
-                // this.sprite.node.color =  isDefending?cc.Color.WHITE:cc.color(32,32,32);
-                // break;
+                currentIndex = avatarZindex + (isDefending?Shield.ZOFFSET:-Shield.ZOFFSET);
+                this.sprite.node.color =  isDefending?cc.Color.WHITE:cc.color(32,32,32);
+                break;
             case PlayerAvatar.DIR_LEFT:
             case PlayerAvatar.DIR_RIGHT:
                 currentIndex = avatarZindex + (isDefending?Shield.ZOFFSET:-Shield.ZOFFSET);

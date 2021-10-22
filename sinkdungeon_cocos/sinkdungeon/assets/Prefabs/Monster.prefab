@@ -67,19 +67,10 @@
       },
       {
         "__id__": 84
-      },
-      {
-        "__id__": 85
-      },
-      {
-        "__id__": 86
-      },
-      {
-        "__id__": 87
       }
     ],
     "_prefab": {
-      "__id__": 88
+      "__id__": 85
     },
     "_opacity": 255,
     "_color": {
@@ -2916,27 +2907,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 4,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 48
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 48,
-      "height": 96
-    },
-    "_id": ""
-  },
-  {
     "__type__": "b7513vXKLpHGrSf+utaohLs",
     "_name": "",
     "_objFlags": 0,
@@ -2973,58 +2943,6 @@
     },
     "attrPrefab": {
       "__uuid__": "87b24df8-2ba8-4977-b52f-e070cfbcd66f"
-    },
-    "boxcover": null,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_type": 2,
-    "_allowSleep": true,
-    "_gravityScale": 0,
-    "_linearDamping": 1,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": true,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsBoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 4,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.1,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 32,
-      "height": 32
     },
     "_id": ""
   },
@@ -3070,17 +2988,16 @@
     },
     "_enabled": true,
     "tag": 5,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 1,
     "radius": 128,
     "w": 32,
     "h": 32,
     "sensor": false,
     "isStatic": true,
+    "targetTagList": [],
+    "ignoreTagList": [],
     "_id": ""
   },
   {

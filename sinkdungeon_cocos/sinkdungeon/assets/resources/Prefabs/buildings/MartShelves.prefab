@@ -1059,26 +1059,18 @@
       "__id__": 22
     },
     "_enabled": true,
-    "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -48
-    },
+    "tag": 17,
     "offsetX": 0,
     "offsetY": -48,
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 120,
-      "height": 20
-    },
     "w": 120,
     "h": 20,
     "sensor": true,
     "isStatic": true,
-    "targetTagList": [],
+    "targetTagList": [
+      3
+    ],
     "ignoreTagList": [],
     "_id": ""
   },
@@ -1117,23 +1109,13 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 1,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -24
-    },
+    "tag": 12,
     "offsetX": 0,
     "offsetY": -24,
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 250,
-      "height": 48
-    },
     "w": 250,
-    "h": 480,
+    "h": 48,
     "sensor": false,
     "isStatic": true,
     "targetTagList": [],

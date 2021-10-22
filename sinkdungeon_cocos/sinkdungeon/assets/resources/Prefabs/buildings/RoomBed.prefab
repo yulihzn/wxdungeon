@@ -874,18 +874,10 @@
     },
     "_enabled": true,
     "tag": 17,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 0,
     "radius": 50,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 50,
-      "height": 50
-    },
     "w": 50,
     "h": 50,
     "sensor": true,
@@ -916,20 +908,10 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 32
-    },
     "offsetX": 0,
     "offsetY": 32,
     "type": 1,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 32,
-      "height": 8
-    },
     "w": 32,
     "h": 8,
     "sensor": false,
@@ -956,19 +938,11 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "tag": 12,
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 32,
-      "height": 64
-    },
     "w": 32,
     "h": 64,
     "sensor": false,

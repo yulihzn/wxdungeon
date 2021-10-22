@@ -234,15 +234,15 @@ export default class PlayerAvatar extends cc.Component {
         let faceprefix = this.data.faceResName;
         switch (dir) {
             case PlayerAvatar.DIR_UP:
-                // this.idlehair = [2, 3];
-                // this.eyesSprite.spriteFrame = null;
-                // this.faceSprite.spriteFrame = null;
-                // break;
+                this.idlehair = [2, 3];
+                this.eyesSprite.spriteFrame = null;
+                this.faceSprite.spriteFrame = null;
+                break;
             case PlayerAvatar.DIR_DOWN:
-                // this.idlehair = [0, 1];
-                // this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix);
-                // this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix);
-                // break;
+                this.idlehair = [0, 1];
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes(eyesprefix);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes(faceprefix);
+                break;
             case PlayerAvatar.DIR_LEFT:
                 this.idlehair = [4, 5];
                 this.eyesSprite.spriteFrame = Logic.spriteFrameRes('side'+eyesprefix);

@@ -622,20 +622,28 @@
     "_id": ""
   },
   {
-    "__type__": "cc.CircleCollider",
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 11
     },
     "_enabled": true,
-    "tag": 13,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -32
-    },
-    "_radius": 32,
+    "tag": 17,
+    "offsetX": 0,
+    "offsetY": -32,
+    "type": 0,
+    "radius": 32,
+    "w": 128,
+    "h": 128,
+    "sensor": true,
+    "isStatic": true,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [
+      17
+    ],
     "_id": ""
   },
   {
@@ -697,11 +705,8 @@
     },
     "_enabled": true,
     "tag": 12,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 1,
     "radius": 64,
     "w": 128,

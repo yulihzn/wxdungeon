@@ -43,16 +43,10 @@
       },
       {
         "__id__": 22
-      },
-      {
-        "__id__": 23
-      },
-      {
-        "__id__": 24
       }
     ],
     "_prefab": {
-      "__id__": 25
+      "__id__": 23
     },
     "_opacity": 255,
     "_color": {
@@ -639,20 +633,10 @@
     },
     "_enabled": true,
     "tag": 17,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -64
-    },
     "offsetX": 0,
     "offsetY": -64,
     "type": 0,
     "radius": 96,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 238,
-      "height": 98
-    },
     "w": 238,
     "h": 98,
     "sensor": true,
@@ -685,57 +669,6 @@
     "sync": false
   },
   {
-    "__type__": "cc.RigidBody",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_type": 0,
-    "_allowSleep": true,
-    "_gravityScale": 1,
-    "_linearDamping": 0,
-    "_angularDamping": 0,
-    "_linearVelocity": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_angularVelocity": 0,
-    "_fixedRotation": true,
-    "enabledContactListener": true,
-    "bullet": false,
-    "awakeOnLoad": true,
-    "_id": ""
-  },
-  {
-    "__type__": "cc.PhysicsBoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 8,
-    "_density": 1,
-    "_sensor": false,
-    "_friction": 0.2,
-    "_restitution": 0,
-    "body": null,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 231.4,
-      "y": 118.1
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 238.4,
-      "height": 98.2
-    },
-    "_id": ""
-  },
-  {
     "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
@@ -744,20 +677,10 @@
     },
     "_enabled": true,
     "tag": 12,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 231,
-      "y": 118
-    },
     "offsetX": 231,
     "offsetY": 118,
     "type": 1,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 238,
-      "height": 98
-    },
     "w": 238,
     "h": 98,
     "sensor": false,
@@ -804,20 +727,10 @@
     },
     "_enabled": true,
     "tag": 12,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 195,
-      "y": -21
-    },
     "offsetX": 195,
     "offsetY": -21,
     "type": 1,
     "radius": 12,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 385,
-      "height": 30
-    },
     "w": 385,
     "h": 30,
     "sensor": false,

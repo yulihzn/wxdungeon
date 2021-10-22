@@ -119,7 +119,7 @@ export default class CCollider extends cc.Component {
         return this.radius * this.finalScale;
     }
     get Center() {
-        return this.pos.add(this.childOffset);
+        return cc.v2(this.pos.add(this.childOffset));
     }
     private onContactListener: OnContactListener;
     public setOnContactListener(onContactListener: OnContactListener) {

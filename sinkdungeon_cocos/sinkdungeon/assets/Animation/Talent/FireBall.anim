@@ -81,109 +81,45 @@
       }
     },
     "comps": {
-      "cc.BoxCollider": {
-        "offset": [
+      "CCollider": {
+        "offsetX": [
           {
             "frame": 0,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 10,
-              "y": 0
-            }
+            "value": 0
           },
           {
             "frame": 0.16666666666666666,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 10,
-              "y": 0
-            },
-            "curve": "constant"
+            "value": 12
           },
           {
             "frame": 0.3333333333333333,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 25,
-              "y": 0
-            }
-          },
-          {
-            "frame": 0.6666666666666666,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 30,
-              "y": 0
-            }
-          },
-          {
-            "frame": 1,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 35,
-              "y": 0
-            }
-          },
-          {
-            "frame": 1.5,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 35,
-              "y": 0
-            }
+            "value": 35
           }
         ],
-        "size": [
+        "radius": [
           {
             "frame": 0,
-            "value": {
-              "__type__": "cc.Size",
-              "width": 0,
-              "height": 0
-            },
-            "curve": "constant"
+            "value": 0
           },
           {
             "frame": 0.16666666666666666,
-            "value": {
-              "__type__": "cc.Size",
-              "width": 15,
-              "height": 5
-            },
-            "curve": "constant"
+            "value": 5
           },
           {
             "frame": 0.3333333333333333,
-            "value": {
-              "__type__": "cc.Size",
-              "width": 40,
-              "height": 25
-            }
+            "value": 12
           },
           {
             "frame": 0.6666666666666666,
-            "value": {
-              "__type__": "cc.Size",
-              "width": 30,
-              "height": 25
-            }
+            "value": 14
           },
           {
-            "frame": 1,
-            "value": {
-              "__type__": "cc.Size",
-              "width": 20,
-              "height": 25
-            },
-            "curve": "constant"
+            "frame": 1.3333333333333333,
+            "value": 10
           },
           {
             "frame": 1.5,
-            "value": {
-              "__type__": "cc.Size",
-              "width": 0,
-              "height": 0
-            }
+            "value": 0
           }
         ]
       }
