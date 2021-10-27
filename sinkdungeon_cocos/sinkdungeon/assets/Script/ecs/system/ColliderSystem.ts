@@ -64,8 +64,13 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             if (c.type == CCollider.TYPE.CIRCLE) {
                 this.graphics.circle(c.w_center.x, c.w_center.y, c.w_radius);
             } else {
-                let aabb = c.Aabb;
-                this.graphics.rect(aabb.x, aabb.y, aabb.width, aabb.height);
+                let p0 = this.graphics.node.convertToNodeSpaceAR(c.points[0]);
+                this.graphics.moveTo(p0.x,p0.y);
+                for(let i = 1;i< c.points.length-1;i++){
+                    let p = this.graphics.node.convertToNodeSpaceAR(c.points[i]);
+                    this.graphics.lineTo(p.x,p.y);
+                }
+                this.graphics.close();
             }
             this.graphics.stroke();
         }
