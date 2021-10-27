@@ -24,12 +24,6 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
             if (e.NodeRender.node) {
                 e.NodeRender.node.setPosition(transform.position);
             }
-            if(e.Collider){
-                for (let c of e.Collider.colliders) {
-                    c.pos = transform.position.clone();
-                }
-            }
-            
         }
     }
 

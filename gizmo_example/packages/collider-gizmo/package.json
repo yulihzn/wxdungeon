@@ -4,6 +4,6 @@
   "description": "The package template for getting started.",
   "author": "Yulihzn",
   "gizmos": {
-    "CustomCollider": "packages://collider-gizmo/main.js"
+    "CCollider": "packages://collider-gizmo/main.js"
   }
 }

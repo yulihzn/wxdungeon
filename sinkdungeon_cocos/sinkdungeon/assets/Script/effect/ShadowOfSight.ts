@@ -100,7 +100,7 @@ export default class ShadowOfSight extends cc.Component {
                 this.updateMat(this.mat, cc.v2(sp.x, sp.y),camera.zoomRatio);
             }
         }
-        if (this.circleCollider && this.circleCollider.Radius > 0) {
+        if (this.circleCollider && this.circleCollider.radius > 0) {
             let p = this.node.convertToWorldSpaceAR(cc.v2(this.circleCollider.offsetX,this.circleCollider.offsetY));
             this.circle = cc.v3(p.x, p.y, this.getRadius());
             if (renderLight) {
@@ -118,7 +118,7 @@ export default class ShadowOfSight extends cc.Component {
     }
     /** 圆形辐射线 主要用于篝火 通过射线数量绘制辐射线 */
     drawRayByNum(pos: cc.Vec2, camera: cc.Camera, renderLight: boolean): void {
-        if (!this.circleCollider || this.circleCollider.Radius <= 0) {
+        if (!this.circleCollider || this.circleCollider.radius <= 0) {
             return;
         }
         this.ray.lineWidth = 10;
@@ -177,7 +177,7 @@ export default class ShadowOfSight extends cc.Component {
     }
     get radius() {
         if (this.circleCollider&&!this.polygonCollider) {
-            return this.circleCollider.Radius;
+            return this.circleCollider.w_radius;
         }else{
             return this.node.width/2;
         }

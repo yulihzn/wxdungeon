@@ -112,7 +112,8 @@ class ColliderGizmo extends Editor.Gizmo {
                         if (target.h < 0) {
                             target.h = 0;
                         }
-                        this.adjustValue(target, 'size');
+                        this.adjustValue(target, 'w');
+                        this.adjustValue(target, 'h');
 
                     }
 
@@ -136,7 +137,7 @@ class ColliderGizmo extends Editor.Gizmo {
     currentTargetType;
     dragArea;
     shap;
-    points = [];
+    // points = [];
     onCreateRoot() {
         // 创建 svg 根节点的回调，可以在这里创建你的 svg 工具
         // this._root 可以获取到 Editor.Gizmo 创建的 svg 根节点
@@ -150,23 +151,31 @@ class ColliderGizmo extends Editor.Gizmo {
         this.initDragAreaAndShape();
 
         // 为 tool 定义一个绘画函数，方便在 onUpdate 中更新 svg 的绘制。
-        this._tool.plot = (radius, width, height, position) => {
+        this._tool.plot = (radius, width, height, position,angle,scale) => {
             this._tool.move(position.x, position.y);
             this.changeDragAreaAndShape();
             if (this.target.type == TargetType.CIRCLE) {
                 this.dragArea.radius(radius);
                 this.shap.radius(radius);
             } else {
+                let s = scale|1;
+                // this._tool.move(position.x-width/2/s, position.y-height/2/s);
                 this.dragArea.radius(0);
+                this.dragArea.x(-width/2);
+                this.dragArea.y(-height/2);
                 this.dragArea.width(width);
                 this.dragArea.height(height);
+                this.dragArea.rotate(-angle);
+                this.shap.x(-width/2);
+                this.shap.y(-height/2);
                 this.shap.width(width);
                 this.shap.height(height);
+                this.shap.rotate(-angle);
 
-                this.points[0].center(0, 0);
-                this.points[1].center(0, height);
-                this.points[2].center(width, 0);
-                this.points[3].center(width, height);
+                // this.points[0].center(0, 0);
+                // this.points[1].center(0, height);
+                // this.points[2].center(width, 0);
+                // this.points[3].center(width, height);
             }
 
         };
@@ -217,24 +226,24 @@ class ColliderGizmo extends Editor.Gizmo {
                 .style('pointer-events', 'stroke')
                 // 设置鼠标样式
                 .style('cursor', 'pointer')
-            this.points = [];
-            for (let i = 0; i < 4; i++) {
-                let point = this._tool.circle()
-                    // 设置stroke 样式
-                    .stroke({ color: '#7fc97a', width: 1 })
-                    .fill({ color: '#7fc97a' })
-                    // 设置点击区域，这里设置的是根据 stroke 模式点击
-                    .style('pointer-events', 'stroke')
-                    // 设置鼠标样式
-                    .style('cursor', 'pointer')
-                    .radius(2)
-                this.points.push(point);
+            // this.points = [];
+            // for (let i = 0; i < 4; i++) {
+            //     let point = this._tool.circle()
+            //         // 设置stroke 样式
+            //         .stroke({ color: '#7fc97a', width: 1 })
+            //         .fill({ color: '#7fc97a' })
+            //         // 设置点击区域，这里设置的是根据 stroke 模式点击
+            //         .style('pointer-events', 'stroke')
+            //         // 设置鼠标样式
+            //         .style('cursor', 'pointer')
+            //         .radius(2)
+            //     this.points.push(point);
 
-            }
-            this.registerMoveSvg(this.points[0], ToolType.Corner, { cursor: 'nw-resize' });
-            this.registerMoveSvg(this.points[1], ToolType.Corner, { cursor: 'sw-resize' });
-            this.registerMoveSvg(this.points[2], ToolType.Corner, { cursor: 'ne-resize' });
-            this.registerMoveSvg(this.points[3], ToolType.Corner, { cursor: 'se-resize' });
+            // }
+            // this.registerMoveSvg(this.points[0], ToolType.Corner, { cursor: 'nw-resize' });
+            // this.registerMoveSvg(this.points[1], ToolType.Corner, { cursor: 'sw-resize' });
+            // this.registerMoveSvg(this.points[2], ToolType.Corner, { cursor: 'ne-resize' });
+            // this.registerMoveSvg(this.points[3], ToolType.Corner, { cursor: 'se-resize' });
         }
 
         // 注册监听鼠标移动事件的 svg 元素
@@ -255,7 +264,7 @@ class ColliderGizmo extends Editor.Gizmo {
         let node = this.node;
 
         // 获取节点世界坐标
-        let position = node.convertToWorldSpaceAR(target.type == TargetType.CIRCLE ? cc.v2(target.offsetX,target.offsetY) : cc.v2(target.offsetX - target.w / 2, target.offsetY + target.h / 2));
+        let position = node.convertToWorldSpaceAR(cc.v2(target.offsetX,target.offsetY));
 
         // 转换世界坐标到 svg view 上
         // svg view 的坐标体系和节点坐标体系不太一样，这里使用内置函数来转换坐标
@@ -273,7 +282,7 @@ class ColliderGizmo extends Editor.Gizmo {
         radius = Editor.GizmosUtils.snapPixel(radius);
 
         // 移动 svg 工具到坐标
-        this._tool.plot(radius * this._view.scale, target.w * this._view.scale * node.scale, target.h * this._view.scale * node.scale, position);
+        this._tool.plot(radius * this._view.scale, target.w * this._view.scale * node.scaleX, target.h * this._view.scale * node.scaleY, position,node.angle,this._view.scale);
     }
 }
 

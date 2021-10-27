@@ -34,22 +34,22 @@ class ColliderGizmo extends Editor.Gizmo {
              */
             start: (x, y, event) => {
                 startRadius = this.target.radius;
-                startOffset = this.target.offset;
+                startOffset = cc.v2(this.target.offsetX,this.target.offsetY);
                 pressx = x;
                 pressy = y;
                 let position = this.getPointInNode(this.node, cc.v2(x, y));
                 startOffsetSub = position.sub(startOffset);
-                cc.log(`startOffsetSub:(${startOffsetSub.x},${startOffsetSub.y})`);
+                // cc.log(`startOffsetSub:(${startOffsetSub.x},${startOffsetSub.y})`);
                 let hd = 0;
                 let vd = 0;
-                if (Math.abs(this.target.size.width / 2 - Math.abs(position.x)) < 8) {
+                if (Math.abs(this.target.w / 2 - Math.abs(position.x)) < 8) {
                     hd = position.x < 0 ? 1 : 2;
                 }
-                if (Math.abs(this.target.size.height / 2 - Math.abs(position.y)) < 8) {
+                if (Math.abs(this.target.h / 2 - Math.abs(position.y)) < 8) {
                     vd = position.y > 0 ? 10 : 20;
                 }
                 dir = hd + vd;
-                cc.log(`x=${position.x.toFixed(2)},y=${position.y.toFixed(2)},dir=${dir}`)
+                // cc.log(`x=${position.x.toFixed(2)},y=${position.y.toFixed(2)},dir=${dir}`)
             },
 
             /**
@@ -64,7 +64,6 @@ class ColliderGizmo extends Editor.Gizmo {
 
                 // 获取 gizmo 依附的组件
                 let target = this.target;
-
                 if (type === ToolType.Center) {
                     // 计算新的偏移量
                     // let mat4 = cc.mat4();
@@ -75,9 +74,11 @@ class ColliderGizmo extends Editor.Gizmo {
                     // let d = cc.v2(dx, dy);
                     // cc.Vec2.transformMat4(d, d, t);
                     // d.addSelf(startOffset);
-                    let d = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy));
-                    target.offset = d.sub(startOffsetSub);
-                    this.adjustValue(target, 'offset');
+                    let d = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy)).sub(startOffsetSub);
+                    target.offsetX = d.x;
+                    target.offsetY = d.y;
+                    this.adjustValue(target, 'offsetX');
+                    this.adjustValue(target, 'offsetY');
                 }
                 else {
                     if (target.type == TargetType.CIRCLE) {
@@ -91,27 +92,28 @@ class ColliderGizmo extends Editor.Gizmo {
                         this.adjustValue(target, 'radius');
                     } else {
                         let position = this.getPointInNode(this.node, cc.v2(pressx + dx, pressy + dy)).sub(startOffset);
-                        let widthhalf = target.size.width / 2;
-                        let heighthalf = target.size.height / 2;
+                        let widthhalf = target.w / 2;
+                        let heighthalf = target.h / 2;
                         if (dir == 1) {//左
-                            target.size.width = Math.abs(position.x) + widthhalf;
+                            target.w = Math.abs(position.x) + widthhalf;
                         } else if (dir == 2) {//右
-                            target.size.width = Math.abs(position.x) + widthhalf;
+                            target.w = Math.abs(position.x) + widthhalf;
                         } else if (dir == 10) {//上
-                            target.size.height = Math.abs(position.y) + heighthalf;
+                            target.h = Math.abs(position.y) + heighthalf;
                         } else if (dir == 20) {//下
-                            target.size.height = Math.abs(position.y) + heighthalf;
+                            target.h = Math.abs(position.y) + heighthalf;
                         } else {//角落
-                            target.size.width = Math.abs(position.x) + widthhalf;
-                            target.size.height = Math.abs(position.y) + heighthalf;
+                            target.w = Math.abs(position.x) + widthhalf;
+                            target.h = Math.abs(position.y) + heighthalf;
                         }
-                        if (target.size.width < 0) {
-                            target.size.width = 0;
+                        if (target.w < 0) {
+                            target.w = 0;
                         }
-                        if (target.size.height < 0) {
-                            target.size.height = 0;
+                        if (target.h < 0) {
+                            target.h = 0;
                         }
-                        this.adjustValue(target, 'size');
+                        this.adjustValue(target, 'w');
+                        this.adjustValue(target, 'h');
 
                     }
 
@@ -149,18 +151,21 @@ class ColliderGizmo extends Editor.Gizmo {
         this.initDragAreaAndShape();
 
         // 为 tool 定义一个绘画函数，方便在 onUpdate 中更新 svg 的绘制。
-        this._tool.plot = (radius, width, height, position) => {
+        this._tool.plot = (radius, width, height, position,angle) => {
             this._tool.move(position.x, position.y);
             this.changeDragAreaAndShape();
             if (this.target.type == TargetType.CIRCLE) {
                 this.dragArea.radius(radius);
                 this.shap.radius(radius);
             } else {
+                this._tool.move(position.x-width/2, position.y-height/2);
                 this.dragArea.radius(0);
                 this.dragArea.width(width);
                 this.dragArea.height(height);
+                this.dragArea.rotate(angle);
                 this.shap.width(width);
                 this.shap.height(height);
+                this.shap.rotate(angle);
 
                 this.points[0].center(0, 0);
                 this.points[1].center(0, height);
@@ -250,12 +255,11 @@ class ColliderGizmo extends Editor.Gizmo {
 
         // 获取 gizmo 依附的组件
         let target = this.target;
-
         // 获取 gizmo 依附的节点
         let node = this.node;
 
         // 获取节点世界坐标
-        let position = node.convertToWorldSpaceAR(target.type == TargetType.CIRCLE ? target.offset : cc.v2(target.offset.x - target.size.width / 2, target.offset.y + target.size.height / 2));
+        let position = node.convertToWorldSpaceAR(cc.v2(target.offsetX,target.offsetY));
 
         // 转换世界坐标到 svg view 上
         // svg view 的坐标体系和节点坐标体系不太一样，这里使用内置函数来转换坐标
@@ -273,7 +277,7 @@ class ColliderGizmo extends Editor.Gizmo {
         radius = Editor.GizmosUtils.snapPixel(radius);
 
         // 移动 svg 工具到坐标
-        this._tool.plot(radius * this._view.scale, target.size.width * this._view.scale, target.size.height * this._view.scale, position);
+        this._tool.plot(radius * this._view.scale, target.w * this._view.scale * node.scale, target.h * this._view.scale * node.scale, position,node.angle);
     }
 }
 

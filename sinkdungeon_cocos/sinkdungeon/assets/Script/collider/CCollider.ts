@@ -90,7 +90,6 @@ export default class CCollider extends cc.Component {
     ignoreTagList: number[] = [];
 
 
-    pos: cc.Vec3 = cc.Vec3.ZERO;//碰撞体在统一的坐标系下的位置
     //当前已经碰撞过的物体
     inColliders: { [key: string]: boolean } = {};
     id: string = CCollider.genNonDuplicateID();
@@ -106,6 +105,8 @@ export default class CCollider extends cc.Component {
     private _center:cc.Vec3;
     private _aabb:cc.Rect;
     private _radius:number;
+    private _points:cc.Vec2[] = [];
+    isRotate = false;
 
     set size(s: cc.Size) {
         this.w = s.width;
@@ -118,11 +119,14 @@ export default class CCollider extends cc.Component {
     get offset() {
         return cc.v2(this.offsetX, this.offsetY);
     }
-    get Radius() {
+    get w_radius() {
         return this._radius;
     }
-    get Center() {
-        return cc.v2(this.pos.add(this._center));
+    get w_center() {
+        return cc.v2(this._center);
+    }
+    get points(){
+        return this._points;
     }
     private onContactListener: OnContactListener;
     public setOnContactListener(onContactListener: OnContactListener) {
@@ -139,23 +143,25 @@ export default class CCollider extends cc.Component {
         }
         let offset = cc.v3(this.offsetX,this.offsetY);
         this._center = parent.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(this.offsetX,this.offsetY)));
-        let scale = 1;
-        if(offset.equals(cc.Vec3.ZERO)){
-            let l1 = parent.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(100,0))).mag();
-            let l2 = cc.v3(100,0).mag();
-            scale = l1/l2;
-        }else{
-            let l1 = this._center.mag();
-            let l2 = offset.mag();
-            scale = l1/l2;
-        }
-        this._radius = this.radius*scale;
-        let center = cc.v2(this.pos.add(this._center));
+        
+        let woffset = this.node.convertToWorldSpaceAR(offset);
+        this._radius = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.radius,0))).sub(woffset).mag();
+        let wlen = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w,0))).sub(woffset).mag();
+        let hlen = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.h,0))).sub(woffset).mag();
         if(this.isCircle){
-            this._aabb = cc.rect(center.x-this.radius,center.y-this.radius,this.radius*scale*2,this.radius*scale*2);
+            this.isRotate = false;
+            this._points = [];
+            this._aabb = cc.rect(this._center.x-this._radius,this._center.y-this._radius,this._radius*2,this._radius*2);
         }else{
-            this._aabb = cc.rect(center.x-this.w*scale/2,center.y-this.h*scale/2,this.w*scale,this.h*scale);
+            this._aabb = cc.rect(this._center.x-wlen/2,this._center.y-hlen/2,wlen,hlen);
+            let p0 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w,-this.h)));
+            let p1 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w,this.h)));
+            let p2 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w,this.h)));
+            let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w,-this.h)));
+            this.isRotate = p0.x!=p1.x;
+            this._points = [cc.v2(p0),cc.v2(p1),cc.v2(p2),cc.v2(p3)];
         }
+
     }
    
     /**
@@ -199,18 +205,18 @@ export default class CCollider extends cc.Component {
                     h = aabb1.height / 2 + aabb2.height / 2 + offset;
                 } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
                     //圆形
-                    w = this.Radius + other.Radius + offset;
-                    h = this.Radius + other.Radius + offset;
+                    w = this.w_radius + other.w_radius + offset;
+                    h = this.w_radius + other.w_radius + offset;
                 } else if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
                     //矩形圆形
                     let aabb1 = this.Aabb;
-                    w = aabb1.width / 2 + other.Radius + offset;
-                    h = aabb1.height / 2 + other.Radius + offset;
+                    w = aabb1.width / 2 + other.w_radius + offset;
+                    h = aabb1.height / 2 + other.w_radius + offset;
                 } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
                     //圆形矩形
                     let aabb2 = other.Aabb;
-                    w = this.Radius + aabb2.width / 2 + offset;
-                    h = this.Radius + aabb2.height / 2 + offset;
+                    w = this.w_radius + aabb2.width / 2 + offset;
+                    h = this.w_radius + aabb2.height / 2 + offset;
                 }
                 if (Math.abs(x) > Math.abs(y)) {
                     if (Math.abs(x) < w) {

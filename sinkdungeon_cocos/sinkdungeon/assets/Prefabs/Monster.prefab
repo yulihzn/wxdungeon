@@ -234,12 +234,13 @@
     "tag": 6,
     "offsetX": 40,
     "offsetY": 0,
-    "type": 0,
+    "type": 1,
     "radius": 40,
-    "w": 128,
-    "h": 128,
+    "w": 80,
+    "h": 80,
     "sensor": true,
     "isStatic": true,
+    "isChild": true,
     "targetTagList": [],
     "ignoreTagList": [
       5
@@ -641,7 +642,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "8f6ee646-9fba-46ec-b8e8-b72685041645"
+      "__uuid__": "1ba0d687-5dff-46c6-837f-3d5a2200ae90"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -2998,6 +2999,7 @@
     "h": 32,
     "sensor": false,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""
