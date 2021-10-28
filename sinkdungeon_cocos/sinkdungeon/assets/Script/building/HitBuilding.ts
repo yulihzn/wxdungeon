@@ -11,6 +11,7 @@ import Logic from "../logic/Logic";
 import Dungeon from "../logic/Dungeon";
 import IndexZ from "../utils/IndexZ";
 import AudioPlayer from "../utils/AudioPlayer";
+import CCollider from "../collider/CCollider";
 
 const { ccclass, property } = cc._decorator;
 
@@ -42,8 +43,7 @@ export default class HitBuilding extends Building {
         this.sprite.node.scale = scale;
         this.changeRes(resName, `${this.data.currentHealth}`);
         if (this.data.currentHealth <= 0) {
-            this.getComponent(cc.PhysicsBoxCollider).sensor = true;
-            this.getComponent(cc.PhysicsBoxCollider).apply();
+            this.getComponent(CCollider).sensor = true;
         }
     }
     hitLight(isHit: boolean) {
@@ -82,8 +82,7 @@ export default class HitBuilding extends Building {
                 }
             }
 
-            this.getComponent(cc.PhysicsBoxCollider).sensor = true;
-            this.getComponent(cc.PhysicsBoxCollider).apply();
+            this.getComponent(CCollider).sensor = true;
         }
         let saveHit = Logic.mapManager.getCurrentMapBuilding(this.data.defaultPos);
         if (saveHit) {
@@ -113,10 +112,9 @@ export default class HitBuilding extends Building {
         }
         let size = cc.size(width, height);
         let collider = this.getComponent(cc.BoxCollider);
-        let pcollider = this.getComponent(cc.PhysicsBoxCollider);
+        let pcollider = this.getComponent(CCollider);
         collider.size = size.clone();
         pcollider.size = size.clone();
-        pcollider.apply();
         this.sprite.spriteFrame = spriteFrame;
     }
     // update (dt) {}

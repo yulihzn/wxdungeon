@@ -740,7 +740,7 @@ export default class NonPlayer extends Actor {
         this.anim.play('MonsterDie');
         this.setLinearVelocity(cc.Vec2.ZERO);
         this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003);
-        let collider: cc.PhysicsCollider = this.getComponent(cc.PhysicsCollider);
+        let collider: CCollider = this.getComponent(CCollider);
         collider.sensor = true;
         if (this.data.isEnemy > 0 && this.data.noLoot < 1) {
             this.getLoot();

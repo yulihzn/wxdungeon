@@ -312,12 +312,8 @@
       }
     },
     "comps": {
-      "cc.CircleCollider": {
+      "CCollider": {
         "radius": [
-          {
-            "frame": 0,
-            "value": 0
-          },
           {
             "frame": 0.25,
             "value": 0
@@ -335,22 +331,24 @@
             "value": 0
           }
         ],
-        "offset": [
+        "offsetX": [
           {
             "frame": 0,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 0,
-              "y": 0
-            }
+            "value": 0
           },
           {
             "frame": 0.3333333333333333,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 141,
-              "y": 0
-            }
+            "value": 141
+          }
+        ],
+        "offsetY": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": 0
           }
         ]
       }

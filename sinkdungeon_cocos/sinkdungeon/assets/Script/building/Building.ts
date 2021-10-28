@@ -57,4 +57,6 @@ export default abstract class Building extends Actor{
     }
     onColliderExit(other: CCollider, self: CCollider): void {
     }
+    onColliderPreSolve(other: CCollider, self: CCollider): void {
+    }
 }

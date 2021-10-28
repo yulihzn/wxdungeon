@@ -1,5 +1,6 @@
 import AreaOfEffect from "../actor/AreaOfEffect";
 import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 import AreaOfEffectData from "../data/AreaOfEffectData";
 import BulletData from "../data/BulletData";
 import DamageData from "../data/DamageData";
@@ -369,14 +370,14 @@ export default class Shooter extends cc.Component {
 
     }
     //是否是有效碰撞体
-    private isValidRayCastCollider(collider: cc.PhysicsCollider): boolean {
+    private isValidRayCastCollider(collider: CCollider): boolean {
         let isInvalid = false;
         if (!this.isAI) {
-            if (collider.tag == ColliderTag.PLAYER) { isInvalid = true; }
+            if (collider.tag == CCollider.TAG.PLAYER) { isInvalid = true; }
         } else {
-            if (collider.tag == ColliderTag.NONPLAYER || collider.tag == ColliderTag.BOSS) { isInvalid = true; }
+            if (collider.tag == CCollider.TAG.NONPLAYER || collider.tag == CCollider.TAG.BOSS) { isInvalid = true; }
         }
-        if (collider.tag == ColliderTag.BULLET) { isInvalid = true; }
+        if (collider.tag == CCollider.TAG.BULLET) { isInvalid = true; }
         if (collider.sensor) { isInvalid = true; }
         return !isInvalid;
     }

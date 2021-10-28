@@ -5,6 +5,7 @@ import Talent from "../talent/Talent";
 import TalentDash from "../talent/TalentDash";
 import Shooter from "../logic/Shooter";
 import IndexZ from "../utils/IndexZ";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -86,9 +87,9 @@ export default class DashShadow extends cc.Component {
         this.rigidBody.linearVelocity = cc.Vec2.ZERO;
     }
 
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         if (this.talentDash && this.talentDash.hashTalent(Talent.DASH_02)) {
-            this.talentDash.attacking(otherCollider, this.node);
+            this.talentDash.attacking(other, this.node);
         }
     }
     fire(shooter: Shooter) {

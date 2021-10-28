@@ -17,6 +17,7 @@ import StatusManager from "../manager/StatusManager";
 import NonPlayer from "../logic/NonPlayer";
 import Box from "./Box";
 import HitBuilding from "./HitBuilding";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -50,11 +51,9 @@ export default class InteractBuilding extends Building {
     isLift = false;
     isAniming = false;
     private hasTargetMap: { [key: string]: number } = {};
-    private rigidBody: cc.RigidBody
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.shadow = this.node.getChildByName('shadow');
-        this.rigidBody = this.getComponent(cc.RigidBody);
     }
     start() {
 
@@ -79,7 +78,7 @@ export default class InteractBuilding extends Building {
         let width = spriteFrame.getOriginalSize().width * this.sprite.node.scale;
         let height = spriteFrame.getOriginalSize().height * this.sprite.node.scale / 4;
         let offset = 5;
-        let physicCollider = this.getComponent(cc.PhysicsBoxCollider);
+        let physicCollider = this.getComponent(CCollider);
         let collider = this.getComponent(cc.BoxCollider);
         if (this.sprite.node.angle == 0) {
             physicCollider.size = cc.size(width, height);
@@ -89,9 +88,8 @@ export default class InteractBuilding extends Building {
             collider.size = cc.size(height + offset, width + offset);
 
         }
-        physicCollider.density = this.isThrowing ? 1 : 300;
+        this.entity.Move.linearDamping = this.isThrowing ? 1 : 2;
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false;
-        physicCollider.apply();
     }
     changeRes(resName: string, suffix?: string) {
         if (!this.sprite) {
@@ -308,18 +306,18 @@ export default class InteractBuilding extends Building {
         }
         return true;
     }
-    onPreSolve(contact: cc.PhysicsContact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider): void {
-        if (otherCollider.tag == ColliderTag.NONPLAYER || otherCollider.tag == ColliderTag.PLAYER || otherCollider.tag == ColliderTag.GOODNONPLAYER) {
+    onColliderPreSolve(other:CCollider,self:CCollider): void {
+        if (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.GOODNONPLAYER) {
             if (this.isTaken || this.isAttacking) {
-                contact.disabledOnce = true;
+                self.disabledOnce = true;
             }
         }
     }
-    onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
-        if (other.tag != ColliderTag.PLAYER && this.player && this.isTaken && this.isAttacking) {
-            if (other.tag == ColliderTag.BUILDING || other.tag == ColliderTag.WALL || other.tag == ColliderTag.WALL_TOP) {
+    onColliderStay(other: CCollider, self: CCollider) {
+        if (other.tag != CCollider.TAG.PLAYER && this.player && this.isTaken && this.isAttacking) {
+            if (other.tag == CCollider.TAG.BUILDING || other.tag == CCollider.TAG.WALL || other.tag == CCollider.TAG.WALL_TOP) {
                 if (this.isThrowing) {
-                    this.rigidBody.linearVelocity = cc.Vec2.ZERO;
+                    this.entity.Move.linearVelocity = cc.Vec2.ZERO;
                 }
             }
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {

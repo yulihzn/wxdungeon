@@ -26,6 +26,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default abstract class Actor extends cc.Component implements OnContactListener {
+    
 
     static readonly TARGET_PLAYER = 0;
     static readonly TARGET_MONSTER = 1;
@@ -91,6 +92,8 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     onColliderStay(other: CCollider, self: CCollider): void {
     }
     onColliderExit(other: CCollider, self: CCollider): void {
+    }
+    onColliderPreSolve(other: CCollider, self: CCollider): void {
     }
 
 }

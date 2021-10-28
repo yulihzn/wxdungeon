@@ -9,6 +9,7 @@ import PlayerAvatar from "../logic/PlayerAvatar";
 import Actor from "../base/Actor";
 import ActorUtils from "../utils/ActorUtils";
 import TalentData from "../data/TalentData";
+import CCollider from "../collider/CCollider";
 
 const { ccclass, property } = cc._decorator;
 
@@ -88,12 +89,12 @@ export default class TalentDash extends Talent {
     changePerformance() {
         
     }
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         if (this.hashTalent(Talent.DASH_02) && !this.hashTalent(Talent.DASH_08)) {
-            this.attacking(otherCollider, this.node);
+            this.attacking(other, this.node);
         }
     }
-    attacking(attackTarget: cc.PhysicsCollider, currentNode: cc.Node) {
+    attacking(attackTarget: CCollider, currentNode: cc.Node) {
         if (!attackTarget || !currentNode.active) {
             return;
         }

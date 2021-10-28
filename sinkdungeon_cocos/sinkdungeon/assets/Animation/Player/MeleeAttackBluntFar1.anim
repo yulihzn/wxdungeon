@@ -252,7 +252,7 @@
       }
     },
     "comps": {
-      "cc.CircleCollider": {
+      "CCollider": {
         "radius": [
           {
             "frame": 0,
@@ -275,46 +275,48 @@
             "value": 0
           }
         ],
-        "offset": [
+        "offsetX": [
           {
             "frame": 0,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 80,
-              "y": 0
-            }
+            "value": 80
           },
           {
             "frame": 0.16666666666666666,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 80,
-              "y": -32
-            }
+            "value": 80
           },
           {
             "frame": 0.3333333333333333,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 90,
-              "y": 0
-            }
+            "value": 90
           },
           {
             "frame": 0.5,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 80,
-              "y": 40
-            }
+            "value": 80
           },
           {
             "frame": 0.6666666666666666,
-            "value": {
-              "__type__": "cc.Vec2",
-              "x": 0,
-              "y": 40
-            }
+            "value": 0
+          }
+        ],
+        "offsetY": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": -32
+          },
+          {
+            "frame": 0.3333333333333333,
+            "value": 0
+          },
+          {
+            "frame": 0.5,
+            "value": 40
+          },
+          {
+            "frame": 0.6666666666666666,
+            "value": 40
           }
         ]
       }

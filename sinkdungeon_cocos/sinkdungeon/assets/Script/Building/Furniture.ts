@@ -10,6 +10,7 @@ import Building from "./Building";
 import RoomFishtank from "./RoomFishtank";
 import RoomStool from "./RoomStool";
 import RoomTv from "./RoomTv";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -142,10 +143,9 @@ export default class Furniture extends Building {
         this.changeRes(this.furnitureData.resName);
         if (this.furnitureData.collider.length > 0) {
             let arr = this.furnitureData.collider.split(',');
-            let pcollider = this.getComponent(cc.PhysicsBoxCollider);
+            let pcollider = this.getComponent(CCollider);
             pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]));
             pcollider.size = cc.size(parseInt(arr[2]), parseInt(arr[3]));
-            pcollider.apply();
         }
         LocalStorage.saveFurnitureData(this.furnitureData);
         Achievement.addFurnituresAchievement(this.furnitureData.id);

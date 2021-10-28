@@ -107,6 +107,10 @@ export default class CCollider extends cc.Component {
     private _radius:number;
     private _points:cc.Vec2[] = [];
     isRotate = false;
+    private _disableOnce = false;
+    set disabledOnce(disabledOnce:boolean){
+        this._disableOnce = disabledOnce;
+    }
 
     set size(s: cc.Size) {
         this.w = s.width;
@@ -180,6 +184,13 @@ export default class CCollider extends cc.Component {
     }
 
     contact(other: CCollider) {
+        if (this.onContactListener) {
+            this.onContactListener.onColliderPreSolve(other, this);
+        }
+        if(this._disableOnce){
+            this._disableOnce = false;
+            return;
+        }
         if (this.inColliders[other.id]) {
             if (this.onContactListener) {
                 this.onContactListener.onColliderStay(other, this);

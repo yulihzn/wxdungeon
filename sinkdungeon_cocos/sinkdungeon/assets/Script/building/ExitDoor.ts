@@ -7,6 +7,7 @@ import IndexZ from "../utils/IndexZ";
 import ExitData from "../data/ExitData";
 import Dungeon from "../logic/Dungeon";
 import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -113,8 +114,7 @@ export default class ExitDoor extends Building {
             return;
         }
         this.isOpen = true;
-        this.getComponent(cc.PhysicsBoxCollider).sensor = true;
-        this.getComponent(cc.PhysicsBoxCollider).apply();
+        this.getComponent(CCollider).sensor = true;
         cc.tween(this.closeSprite.node).to(immediately ? 0 : 1, { opacity: 0 }).start();
     }
     closeGate(immediately?: boolean) {
@@ -122,8 +122,7 @@ export default class ExitDoor extends Building {
             return;
         }
         this.isOpen = false;
-        this.getComponent(cc.PhysicsBoxCollider).sensor = false;
-        this.getComponent(cc.PhysicsBoxCollider).apply();
+        this.getComponent(CCollider).sensor = false;
         cc.tween(this.closeSprite.node).to(immediately ? 0 : 1, { opacity: 255 }).start();
     }
 

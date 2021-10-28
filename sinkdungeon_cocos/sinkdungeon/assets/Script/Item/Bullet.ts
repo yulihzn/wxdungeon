@@ -15,7 +15,6 @@ import AreaOfEffect from "../actor/AreaOfEffect";
 import AreaOfEffectData from "../data/AreaOfEffectData";
 import IndexZ from "../utils/IndexZ";
 import Actor from "../base/Actor";
-import { ColliderTag } from "../actor/ColliderTag";
 import ExitDoor from "../building/ExitDoor";
 import ActorUtils from "../utils/ActorUtils";
 import Shooter from "../logic/Shooter";
@@ -25,6 +24,7 @@ import Utils from "../utils/Utils";
 import MeleeShadowWeapon from "../logic/MeleeShadowWeapon";
 import MeleeWeapon from "../logic/MeleeWeapon";
 import Shield from "../logic/Shield";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,10 +54,7 @@ export default class Bullet extends cc.Component {
 
     sprite: cc.Node;
     light: cc.Node;
-    circleCollider: cc.CircleCollider;
-    boxCollider: cc.BoxCollider;
-    circlePCollider: cc.PhysicsCircleCollider;
-    boxPCollider: cc.PhysicsBoxCollider;
+    collider: CCollider;
 
     laserSpriteNode: cc.Node;
     laserLightSprite: cc.Sprite;
@@ -81,10 +78,7 @@ export default class Bullet extends cc.Component {
     onLoad() {
         this.anim = this.getComponent(cc.Animation);
         this.rigidBody = this.getComponent(cc.RigidBody);
-        this.circleCollider = this.getComponent(cc.CircleCollider);
-        this.boxCollider = this.getComponent(cc.BoxCollider);
-        this.circlePCollider = this.getComponent(cc.PhysicsCircleCollider);
-        this.boxPCollider = this.getComponent(cc.PhysicsBoxCollider);
+        this.collider = this.getComponent(CCollider);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
         this.sprite.angle = 0;
@@ -153,25 +147,15 @@ export default class Bullet extends cc.Component {
     changeBullet(data: BulletData) {
         this.data = data;
         this.changeRes(data.resName, data.lightName, data.lightColor);
-        this.circleCollider.enabled = data.isRect != 1;
-        this.boxCollider.enabled = data.isRect == 1;
-        this.circlePCollider.enabled = data.isRect != 1;
-        this.boxPCollider.enabled = data.isRect == 1;
+        this.collider.type = data.isRect != 1?CCollider.TYPE.CIRCLE:CCollider.TYPE.RECT;
         this.light.position = data.isRect == 1 ? cc.v3(8, 0) : cc.v3(0, 0);
         this.node.scale = data.size > 0 ? data.size : 1;
         if (data.size > 1) {
-            this.circlePCollider.radius = this.circlePCollider.radius / this.node.scale;
-            this.boxPCollider.size.width = this.boxPCollider.size.width / this.node.scale;
-            this.boxPCollider.size.height = this.boxPCollider.size.height / this.node.scale;
+            this.collider.radius = this.collider.radius / this.node.scale;
+            this.collider.size.width = this.collider.size.width / this.node.scale;
+            this.collider.size.height = this.collider.size.height / this.node.scale;
         }
-        if (this.circlePCollider.enabled) {
-            this.circlePCollider.sensor = data.isPhysical == 0;
-            this.circlePCollider.apply();
-        }
-        if (this.boxPCollider.enabled) {
-            this.boxPCollider.sensor = data.isPhysical == 0;
-            this.boxPCollider.apply();
-        }
+        this.collider.sensor = data.isPhysical == 0;
         this.initLaser();
 
     }
@@ -311,33 +295,35 @@ export default class Bullet extends cc.Component {
     start() {
 
     }
-    onBeginContact(contact, selfCollider: cc.PhysicsCollider, otherCollider: cc.PhysicsCollider) {
-        let isDestory = true;
-
-        //子弹玩家怪物boss武器墙不销毁
-        if (otherCollider.tag == ColliderTag.PLAYER
-            || otherCollider.tag == ColliderTag.NONPLAYER
-            || otherCollider.tag == ColliderTag.BOSS
-            || otherCollider.tag == ColliderTag.BULLET
-            || otherCollider.tag == ColliderTag.WARTER
-            || otherCollider.sensor
-            || otherCollider.tag == ColliderTag.WALL_TOP
-            || this.data.isInvincible > 0) {
-            isDestory = false;
+  
+    onColliderEnter(other: CCollider, self: CCollider) {
+        if(!other.sensor){
+            let isDestory = true;
+            //子弹玩家怪物boss武器墙不销毁交给后续处理
+            if (other.tag == CCollider.TAG.PLAYER
+                || other.tag == CCollider.TAG.NONPLAYER
+                || other.tag == CCollider.TAG.BOSS
+                || other.tag == CCollider.TAG.BULLET
+                || other.tag == CCollider.TAG.WARTER
+                || other.sensor
+                || other.tag == CCollider.TAG.WALL_TOP
+                || this.data.isInvincible > 0) {
+                isDestory = false;
+            }
+            if (isDestory) {
+                this.bulletHit();
+                return;
+            }
         }
-        if (isDestory) {
-            this.bulletHit();
-        }
-    }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+        
         let isAttack = true;
-        if (!this.isFromPlayer && (other.tag == ColliderTag.NONPLAYER || other.tag == ColliderTag.BOSS)) {
+        if (!this.isFromPlayer && (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS)) {
             isAttack = false;
         }
-        if (this.isFromPlayer && (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.GOODNONPLAYER)) {
+        if (this.isFromPlayer && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.GOODNONPLAYER)) {
             isAttack = false;
         }
-        if (other.tag == ColliderTag.BULLET) {
+        if (other.tag == CCollider.TAG.BULLET) {
             isAttack = false;
         }
 
@@ -356,14 +342,14 @@ export default class Bullet extends cc.Component {
         let isDestory = false;
         if (this.data.isInvincible > 0) {
             isDestory = false;
-        } else if (tag == ColliderTag.NONPLAYER || tag == ColliderTag.GOODNONPLAYER) {
+        } else if (tag == CCollider.TAG.NONPLAYER || tag == CCollider.TAG.GOODNONPLAYER) {
             let monster = attackTarget.getComponent(NonPlayer);
             if (monster && !monster.sc.isDied) {
                 damageSuccess = monster.takeDamage(damage);
                 if (damageSuccess) { this.addTargetAllStatus(monster, new FromData()) }
                 isDestory = true;
             }
-        } else if (tag == ColliderTag.PLAYER) {
+        } else if (tag == CCollider.TAG.PLAYER) {
             let player = attackTarget.getComponent(Player);
             if (player && !player.sc.isDied) {
                 //子弹偏转
@@ -377,19 +363,19 @@ export default class Bullet extends cc.Component {
                     isDestory = true;
                 }
             }
-        } else if (tag == ColliderTag.AOE) {
+        } else if (tag == CCollider.TAG.AOE) {
             let aoe = attackTarget.getComponent(AreaOfEffect);
             if (aoe && aoe.IsAttacking && aoe.data.canBreakBullet) {
                 isDestory = true;
             }
-        } else if (tag == ColliderTag.BOSS) {
+        } else if (tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.getComponent(Boss);
             if (boss && !boss.sc.isDied) {
                 damageSuccess = boss.takeDamage(damage);
                 if (damageSuccess) { this.addTargetAllStatus(boss, new FromData()) }
                 isDestory = true;
             }
-        } else if (tag == ColliderTag.MELEE) {
+        } else if (tag == CCollider.TAG.PLAYER_HIT) {
             let meleeWeapon: MeleeWeapon = attackTarget.getComponent(MeleeWeapon);
             let shadowWeapon:MeleeShadowWeapon;
             if(!meleeWeapon){
@@ -409,7 +395,7 @@ export default class Bullet extends cc.Component {
                     isDestory = true;
                 }
             }
-        } else if (tag == ColliderTag.BUILDING || tag == ColliderTag.WALL) {
+        } else if (tag == CCollider.TAG.BUILDING || tag == CCollider.TAG.WALL) {
             let interactBuilding = attackTarget.getComponent(InteractBuilding);
             if (this.data.canBreakBuilding == 1 && interactBuilding) {
                 damageSuccess = true;
@@ -436,7 +422,7 @@ export default class Bullet extends cc.Component {
                 }
             }
 
-        }else if(!this.isFromPlayer&&tag == ColliderTag.ENERGY_SHIELD){
+        }else if(!this.isFromPlayer&&tag == CCollider.TAG.ENERGY_SHIELD){
             let shield = attackTarget.getComponent(EnergyShield);
             if(shield&&shield.isValid){
                 damageSuccess = shield.takeDamage(damage);
