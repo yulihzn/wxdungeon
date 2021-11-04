@@ -131,7 +131,7 @@ export default class Slime extends Boss {
         let newdis = ActorUtils.getTargetDistance(this, target);
         if (newdis < attackRange && target) { target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this); }
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && this.isDashing && this.dungeon && !this.isHurt && !this.sc.isDied) {
             this.isDashing = false;

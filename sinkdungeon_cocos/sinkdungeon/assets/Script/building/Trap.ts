@@ -3,9 +3,9 @@ import Player from "../logic/Player";
 import DamageData from "../data/DamageData";
 import Building from "./Building";
 import FromData from "../data/FromData";
-import { ColliderTag } from "../actor/ColliderTag";
 import IndexZ from "../utils/IndexZ";
 import InventoryManager from "../manager/InventoryManager";
+import CCollider from "../collider/CCollider";
 
 
 // Learn TypeScript:
@@ -70,8 +70,8 @@ export default class Trap extends Building {
         }, 0.5);
     }
     
-    onCollisionStay(other:cc.Collider,self:cc.Collider){
-        if(other.tag == ColliderTag.PLAYER){
+    onColliderStay(other:CCollider,self:CCollider){
+        if(other.tag == CCollider.TAG.PLAYER){
             if(this.isOpen){
                 this.isOpen = false;
                 let player = other.getComponent(Player);

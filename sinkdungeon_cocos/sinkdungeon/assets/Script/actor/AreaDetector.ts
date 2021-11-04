@@ -1,3 +1,4 @@
+import CCollider from "../collider/CCollider";
 import Bullet from "../item/Bullet";
 import NonPlayer from "../logic/NonPlayer";
 import NextStep from "../utils/NextStep";
@@ -28,7 +29,7 @@ export default class AreaDetector extends cc.Component {
     }
 
     // update (dt) {}
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         this.step.next(()=>{
             let bullet = other.getComponent(Bullet);
             let monster = this.node.parent.getComponent(NonPlayer);

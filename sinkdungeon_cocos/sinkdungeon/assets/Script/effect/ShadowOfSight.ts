@@ -5,7 +5,6 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { ColliderTag } from "../actor/ColliderTag";
 import CCollider from "../collider/CCollider";
 import Logic from "../logic/Logic";
 
@@ -68,7 +67,8 @@ export default class ShadowOfSight extends cc.Component {
             this.lightVertsArray = [];
             this.circle = cc.v3(0, 0, 0);
             if (this.showRayCast) {
-                this.drawRayByNum(pos, camera, this.showLight);
+                // this.drawRayByNum(pos, camera, this.showLight);
+                this.drawCustom(pos, camera, this.showLight);
             } else {
                 this.drawCustom(pos, camera, this.showLight);
             }
@@ -130,9 +130,9 @@ export default class ShadowOfSight extends cc.Component {
             let p3 = cc.v2(Math.cos(i * unitRd) * this.getRadius() + pos.x, Math.sin(i * unitRd) * this.getRadius() + pos.y);
             let physicsManager = cc.director.getPhysicsManager();
             let result = physicsManager.rayCast(pos, p3, cc.RayCastType.Closest);
-            if (result.length > 0 && !result[0].collider.sensor && result[0].collider.node != this.node.parent && (result[0].collider.tag == ColliderTag.WALL
-                || result[0].collider.tag == ColliderTag.BUILDING || result[0].collider.tag == ColliderTag.PLAYER || result[0].collider.tag == ColliderTag.WALL_TOP
-                || result[0].collider.tag == ColliderTag.NONPLAYER)) {
+            if (result.length > 0 && !result[0].collider.sensor && result[0].collider.node != this.node.parent && (result[0].collider.tag == CCollider.TAG.WALL
+                || result[0].collider.tag == CCollider.TAG.BUILDING || result[0].collider.tag == CCollider.TAG.PLAYER || result[0].collider.tag == CCollider.TAG.WALL_TOP
+                || result[0].collider.tag == CCollider.TAG.NONPLAYER)) {
                 p3 = result[0].point;
                 let node = result[0].collider.node;
                 let bottomPos = node.convertToNodeSpaceAR(p3);
@@ -177,7 +177,7 @@ export default class ShadowOfSight extends cc.Component {
     }
     get radius() {
         if (this.circleCollider&&!this.polygonCollider) {
-            return this.circleCollider.w_radius;
+            return this.circleCollider.radius&this.circleCollider.node.scale;
         }else{
             return this.node.width/2;
         }

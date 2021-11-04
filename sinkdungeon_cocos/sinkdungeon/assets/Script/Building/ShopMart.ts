@@ -5,6 +5,7 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
+import CCollider from "../collider/CCollider";
 import Player from "../logic/Player";
 import Building from "./Building";
 
@@ -41,14 +42,14 @@ export default class ShopMart extends Building {
         // },0.5)
     }
 
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
      
         let player = other.node.getComponent(Player);
         if (player) {
             this.open();
         }
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
+    onColliderExit(other: CCollider, self: CCollider) {
  
         let player = other.node.getComponent(Player);
         if (player) {

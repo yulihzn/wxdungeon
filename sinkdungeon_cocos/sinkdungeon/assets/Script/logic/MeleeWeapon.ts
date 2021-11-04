@@ -20,10 +20,10 @@ import HitBuilding from "../building/HitBuilding";
 import CommonData from "../data/CommonData";
 import Actor from "../base/Actor";
 import AvatarData from "../data/AvatarData";
-import { ColliderTag } from "../actor/ColliderTag";
 import ActorUtils from "../utils/ActorUtils";
 import InteractBuilding from "../building/InteractBuilding";
 import Utils from "../utils/Utils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -490,7 +490,7 @@ export default class MeleeWeapon extends cc.Component {
         }
     }
 
-    onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         if (self.radius > 0) {
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
                 this.hasTargetMap[other.node.uuid]++;
@@ -528,7 +528,7 @@ export default class MeleeWeapon extends cc.Component {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
         }, 0.05);
     }
-    public attacking(attackTarget: cc.Collider, anim: cc.Animation, isShadow: boolean): boolean {
+    public attacking(attackTarget: CCollider, anim: cc.Animation, isShadow: boolean): boolean {
         if (!attackTarget || !this.isAttacking) {
             return false;
         }
@@ -549,7 +549,7 @@ export default class MeleeWeapon extends cc.Component {
         }
         let damageSuccess = false;
         let attackSuccess = false;
-        if (attackTarget.tag == ColliderTag.NONPLAYER) {
+        if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
             let monster = attackTarget.node.getComponent(NonPlayer);
             if (monster && !monster.sc.isDied && !this.isMiss && monster.data.isEnemy > 0) {
                 damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
@@ -562,7 +562,7 @@ export default class MeleeWeapon extends cc.Component {
                     this.addTargetAllStatus(common, monster);
                 }
             }
-        } else if (attackTarget.tag == ColliderTag.BOSS) {
+        } else if (attackTarget.tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.node.getComponent(Boss);
             if (boss && !boss.sc.isDied && !this.isMiss) {
                 damageSuccess = boss.takeDamage(damage);
@@ -570,7 +570,7 @@ export default class MeleeWeapon extends cc.Component {
                     this.addTargetAllStatus(common, boss);
                 }
             }
-        } else if (attackTarget.tag == ColliderTag.BUILDING || attackTarget.tag == ColliderTag.WALL) {
+        } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
             let box = attackTarget.node.getComponent(Box);
             if (box) {
                 attackSuccess = true;

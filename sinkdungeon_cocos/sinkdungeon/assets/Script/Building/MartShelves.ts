@@ -11,6 +11,7 @@ import Goods from "../item/Goods";
 import Logic from "../logic/Logic";
 import Tips from "../ui/Tips";
 import Building from "./Building";
+import CCollider from "../collider/CCollider";
 
 const { ccclass, property } = cc._decorator;
 
@@ -84,8 +85,8 @@ export default class MartShelves extends Building {
         }
 
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
+    onColliderExit(other: CCollider, self: CCollider) {
     }
 }

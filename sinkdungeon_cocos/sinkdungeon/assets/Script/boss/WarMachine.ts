@@ -9,6 +9,7 @@ import { EventHelper } from "../logic/EventHelper";
 import FromData from "../data/FromData";
 import Achievement from "../logic/Achievement";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -268,7 +269,7 @@ export default class WarMachine extends Boss {
         this.isMoving = h != 0 || v != 0;
         this.changeZIndex();
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && !this.sc.isDied) {
             let d = new DamageData();

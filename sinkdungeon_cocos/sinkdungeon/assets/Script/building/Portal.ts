@@ -6,6 +6,7 @@ import Logic from "../logic/Logic";
 import ExitData from "../data/ExitData";
 import AudioPlayer from "../utils/AudioPlayer";
 import { EventHelper } from "../logic/EventHelper";
+import CCollider from "../collider/CCollider";
 
 
 // Learn TypeScript:
@@ -70,7 +71,7 @@ export default class Portal extends Building {
         this.anim.play('PortalClose');
     }
 
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let player = other.node.getComponent(Player);
         if (player) {
             if (this.isOpen) {

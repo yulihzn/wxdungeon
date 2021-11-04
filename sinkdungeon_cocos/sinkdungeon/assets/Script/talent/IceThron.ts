@@ -4,6 +4,7 @@ import FromData from "../data/FromData";
 import StatusManager from "../manager/StatusManager";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -54,8 +55,8 @@ export default class IceThron extends cc.Component {
     }
     
    
-    onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
-        if (!self.size.equals(cc.Size.ZERO) && this.isAttacking) {
+    onColliderStay(other: CCollider, self: CCollider) {
+        if (self.radius>0 && this.isAttacking) {
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
                 this.hasTargetMap[other.node.uuid]++;
             } else {

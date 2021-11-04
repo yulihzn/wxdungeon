@@ -6,6 +6,7 @@ import Random from "../utils/Random";
 import FromData from "../data/FromData";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 
 // Learn TypeScript:
@@ -48,7 +49,7 @@ export default class Saw extends Building {
         this.node.zIndex = IndexZ.FLOOR;
     }
     
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target) {
             let from = FromData.getClone(this.actorName(),'saw002');

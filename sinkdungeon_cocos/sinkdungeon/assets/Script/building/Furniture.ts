@@ -145,7 +145,7 @@ export default class Furniture extends Building {
             let arr = this.furnitureData.collider.split(',');
             let pcollider = this.getComponent(CCollider);
             pcollider.offset = cc.v2(parseInt(arr[0]), parseInt(arr[1]));
-            pcollider.size = cc.size(parseInt(arr[2]), parseInt(arr[3]));
+            pcollider.setSize(cc.size(parseInt(arr[2]), parseInt(arr[3])));
         }
         LocalStorage.saveFurnitureData(this.furnitureData);
         Achievement.addFurnituresAchievement(this.furnitureData.id);
@@ -172,7 +172,7 @@ export default class Furniture extends Building {
                 && this.furnitureData.id != Furniture.SOFA
                 && this.furnitureData.id != Furniture.FISHTANK) {
                 this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2)
-                let collider = this.tips.node.getComponent(cc.CircleCollider);
+                let collider = this.tips.node.getComponent(CCollider);
                 collider.radius = width > height ? height / 2 : width / 2;
                 if (width > height) {
                     collider.radius = height / 2;

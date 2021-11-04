@@ -1,6 +1,6 @@
 import Logic from "../logic/Logic";
 import Building from "./Building";
-import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,16 +19,16 @@ export default class MushroomChild extends Building {
     isRotate = false;
     isPlus = false;
    
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderEnter(other: CCollider, self: CCollider) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             this.isRotate = true;
             let ppos = other.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             let mpos = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
             this.isPlus = ppos.x>mpos.x;
         }
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderExit(other: CCollider, self: CCollider) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             this.isRotate = false;
         }
     }

@@ -21,7 +21,6 @@ import PlayerWeapon from './PlayerWeapon';
 import { EventHelper } from './EventHelper';
 
 import ShadowPlayer from '../actor/ShadowPlayer';
-import { ColliderTag } from '../actor/ColliderTag';
 import Actor from '../base/Actor';
 import InteractBuilding from '../building/InteractBuilding';
 import AvatarData from '../data/AvatarData';
@@ -97,7 +96,7 @@ export default class Player extends Actor{
 
     currentDir = 3;
 
-    attackTarget: cc.Collider;
+    attackTarget: CCollider;
 
     defaultPos = cc.v3(0, 0);
 

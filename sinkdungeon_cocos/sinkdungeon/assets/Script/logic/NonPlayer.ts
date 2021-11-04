@@ -35,7 +35,6 @@ import DefaultStateMachine from '../base/fsm/DefaultStateMachine';
 import NonPlayerActorState from '../actor/NonPlayerActorState';
 import StateContext from '../base/StateContext';
 import NonPlayerData from '../data/NonPlayerData';
-import { ColliderTag } from '../actor/ColliderTag';
 import StatusData from '../data/StatusData';
 import ActorUtils from '../utils/ActorUtils';
 import CCollider from '../collider/CCollider';
@@ -89,7 +88,7 @@ export default class NonPlayer extends Actor {
     private shadow: cc.Node;
     private dashlight: cc.Node;
     private anim: cc.Animation;
-    private boxCollider: cc.BoxCollider;
+    private boxCollider: CCollider;
     graphics: cc.Graphics;
     isFaceRight = true;
     dungeon: Dungeon;
@@ -130,7 +129,7 @@ export default class NonPlayer extends Actor {
         this.sprite = this.node.getChildByName('sprite');
         this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         this.mat = this.bodySprite.getComponent(cc.Sprite).getMaterial(0);
-        this.boxCollider = this.getComponent(cc.BoxCollider);
+        this.boxCollider = this.getComponent(CCollider);
         this.node.scale = this.getScaleSize();
         this.dashlight = this.sprite.getChildByName('dashlight');
         this.dashlight.opacity = 0;
@@ -281,7 +280,7 @@ export default class NonPlayer extends Actor {
             this.bodySprite = this.sprite.getChildByName('body').getComponent(cc.Sprite);
         }
         if (!this.boxCollider) {
-            this.boxCollider = this.getComponent(cc.BoxCollider);
+            this.boxCollider = this.getComponent(CCollider);
         }
         if (!this.shadow) {
             this.shadow = this.sprite.getChildByName('shadow');
@@ -305,9 +304,9 @@ export default class NonPlayer extends Actor {
             default: y = 48; w = 80; h = 80; break;
         }
         this.boxCollider.offset = cc.v2(0, y);
-        this.boxCollider.size.width = w;
-        this.boxCollider.size.height = h;
-        this.boxCollider.tag = this.data.isEnemy > 0 ? ColliderTag.NONPLAYER : ColliderTag.GOODNONPLAYER;
+        this.boxCollider.w = w;
+        this.boxCollider.h = h;
+        this.boxCollider.tag = this.data.isEnemy > 0 ? CCollider.TAG.NONPLAYER : CCollider.TAG.GOODNONPLAYER;
         if (this.data.boxType > 2) {
             this.shadow.scale = 3;
         } else {
@@ -1098,7 +1097,7 @@ export default class NonPlayer extends Actor {
     lerp(a, b, r) {
         return a + (b - a) * r;
     };
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other, this.data.isEnemy < 1);
         if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
             this.sc.isDashing = false;
@@ -1222,8 +1221,7 @@ export default class NonPlayer extends Actor {
         return 0;
     }
 
-    onColliderEnter(other: CCollider, self: CCollider): void {
-    }
+    
     onColliderStay(other: CCollider, self: CCollider): void {
     }
     onColliderExit(other: CCollider, self: CCollider): void {

@@ -2,6 +2,7 @@ import DamageData from "../data/DamageData";
 import FromData from "../data/FromData";
 import Actor from "../base/Actor";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -40,7 +41,7 @@ export default class BossAttackCollider extends cc.Component {
         this.scheduleOnce(()=>{this.isShow = true;},delay);
         this.scheduleOnce(()=>{this.isShow = false;},coolingTime);
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onColliderEnter(other: CCollider, self: CCollider){
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && this.isShow && this.node.active&&this.parentNode){
             this.isShow = false;

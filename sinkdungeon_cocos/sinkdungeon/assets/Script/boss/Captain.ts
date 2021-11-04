@@ -9,7 +9,6 @@ import NextStep from "../utils/NextStep";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
 import Achievement from "../logic/Achievement";
-import { ColliderTag } from "../actor/ColliderTag";
 import ActorUtils from "../utils/ActorUtils";
 import Logic from "../logic/Logic";
 import CCollider from "../collider/CCollider";
@@ -146,9 +145,9 @@ export default class Captain extends Boss {
 
         }
     }
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && self.tag == ColliderTag.BOSS_ATTACK) {
+        if (target && self.tag == CCollider.TAG.BOSS_HIT) {
             if (this.isFall && !this.sc.isDied) {
                 this.isFall = false;
                 let dd = new DamageData();

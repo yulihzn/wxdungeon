@@ -11,6 +11,7 @@ import { EventHelper } from "../logic/EventHelper";
 import AreaOfEffect from "../actor/AreaOfEffect";
 import CoolDownView from "../ui/CoolDownView";
 import Utils from "../utils/Utils";
+import CCollider from "../collider/CCollider";
 
 const { ccclass, property } = cc._decorator;
 
@@ -217,15 +218,15 @@ export default abstract class Talent extends cc.Component {
         let aoe = cc.instantiate(aoePreab);
         pos.y += 32;
         let sprite = aoe.getChildByName('sprite').getComponent(cc.Sprite);
-        let collider = aoe.getComponent(cc.BoxCollider);
+        let collider = aoe.getComponent(CCollider);
         if (spriteFrameNames.length > 0) {
             let spriteframe = Logic.spriteFrameRes(spriteFrameNames[0]);
             sprite.node.width = spriteframe.getOriginalSize().width;
             sprite.node.height = spriteframe.getOriginalSize().height;
             sprite.node.scale = 4;
             sprite.node.scaleX = isFaceRight ? 4 : -4;
-            collider.size.width = sprite.node.width * 3;
-            collider.size.height = sprite.node.height * 3;
+            collider.w = sprite.node.width * 3;
+            collider.h = sprite.node.height * 3;
         }
         let tween = cc.tween();
         for (let name of spriteFrameNames) {

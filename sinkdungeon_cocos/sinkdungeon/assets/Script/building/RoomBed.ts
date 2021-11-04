@@ -15,6 +15,7 @@ import Player from "../logic/Player";
 import Tips from "../ui/Tips";
 import AudioPlayer from "../utils/AudioPlayer";
 import Building from "./Building";
+import CCollider from "../collider/CCollider";
 
 const {ccclass, property} = cc._decorator;
 
@@ -50,7 +51,7 @@ export default class RoomBed extends Building {
             light.updateRender(!this.isDecorate);
         }
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         if(this.isDecorate){
             return;
         }
@@ -74,7 +75,7 @@ export default class RoomBed extends Building {
             },0.5)
         }
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
+    onColliderExit(other: CCollider, self: CCollider) {
         if(this.isDecorate){
             return;
         }

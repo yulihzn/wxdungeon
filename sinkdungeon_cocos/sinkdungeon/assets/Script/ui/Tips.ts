@@ -1,4 +1,4 @@
-import { ColliderTag } from "../actor/ColliderTag";
+import CCollider from "../collider/CCollider";
 import Player from "../logic/Player";
 
 // Learn TypeScript:
@@ -42,16 +42,16 @@ export default class Tips extends cc.Component {
     onExit(callback:Function){
         this.exitCallback = callback;
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderEnter(other: CCollider, self: CCollider) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             this.node.opacity = 255;
             if(this.enterCallback){
                 this.enterCallback(other.node);
             }
         }
     }
-    onCollisionExit(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderExit(other: CCollider, self: CCollider) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             this.node.opacity = 0;
             if(this.exitCallback){
                 this.exitCallback(other.node);

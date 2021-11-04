@@ -6,7 +6,6 @@ import AudioPlayer from "../utils/AudioPlayer";
 import IndexZ from "../utils/IndexZ";
 import ExitData from "../data/ExitData";
 import Dungeon from "../logic/Dungeon";
-import { ColliderTag } from "../actor/ColliderTag";
 import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
@@ -44,8 +43,8 @@ export default class ExitDoor extends Building {
             this.node.opacity = 0;
             this.roof.node.opacity = 0;
             let indexPos = this.data.defaultPos.clone();
-            let collider = this.node.getComponent(cc.BoxCollider);
-            collider.size = cc.size(128, 128);
+            let collider = this.node.getComponent(CCollider);
+            collider.setSize(cc.size(128, 128));
             collider.offset = cc.v2(0, 0);
             if (this.dir == 8) {
                 indexPos.y += 1;
@@ -126,8 +125,8 @@ export default class ExitDoor extends Building {
         cc.tween(this.closeSprite.node).to(immediately ? 0 : 1, { opacity: 255 }).start();
     }
 
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-        if (other.tag == ColliderTag.PLAYER) {
+    onColliderEnter(other: CCollider, self: CCollider) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             let player = other.node.getComponent(Player);
             if (player && this.isOpen) {
                 this.isOpen = false;

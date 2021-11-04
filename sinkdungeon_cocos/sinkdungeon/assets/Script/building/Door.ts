@@ -90,10 +90,10 @@ export default class Door extends Building {
         }
         let collider = this.boxCollider;
         collider.offset = cc.v2(0, 7);
-        collider.size = cc.size(128, 114);
+        collider.setSize(cc.size(128, 114));
         if (this.dir > 1) {
             collider.offset = cc.v2(0, -64);
-            collider.size = cc.size(64, 256);
+            collider.setSize(cc.size(64, 256));
         }
     }
 

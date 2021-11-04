@@ -10,6 +10,7 @@ import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
 import Achievement from "../logic/Achievement";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -269,7 +270,7 @@ export default class Rah extends Boss {
         // }
         this.changeZIndex();
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && this.meleeSkill.IsExcuting && !this.sc.isDied) {
             let d = new DamageData();

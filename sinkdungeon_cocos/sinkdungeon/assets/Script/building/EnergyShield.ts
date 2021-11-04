@@ -1,3 +1,4 @@
+import CCollider from "../collider/CCollider";
 import DamageData from "../data/DamageData";
 import Player from "../logic/Player";
 import AudioPlayer from "../utils/AudioPlayer";
@@ -25,7 +26,7 @@ export default class EnergyShield extends Building {
     private element:cc.Node;
     private base:cc.Node;
     private player:Player;
-    private collider:cc.BoxCollider;
+    private collider:CCollider;
     private mat: cc.MaterialVariant;
 
     // LIFE-CYCLE CALLBACKS:
@@ -34,7 +35,7 @@ export default class EnergyShield extends Building {
         this.cover = this.node.getChildByName('sprite').getChildByName('cover');
         this.element = this.node.getChildByName('sprite').getChildByName('cover').getChildByName('element');
         this.anim = this.getComponent(cc.Animation);
-        this.collider = this.getComponent(cc.BoxCollider);
+        this.collider = this.getComponent(CCollider);
     }
     init(player:Player,maxHealth: number,scale:number){
         this.player = player;
@@ -75,10 +76,10 @@ export default class EnergyShield extends Building {
         }
     }
     checkTargetIn(targetNode:cc.Node){
-        let x = this.entity.Transform.position.x-this.collider.size.width/2*this.node.scale;
-        let y = this.entity.Transform.position.y-(this.collider.size.width/2-this.collider.offset.y)*this.node.scale;
-        let w = this.collider.size.width*this.node.scale;
-        let h = this.collider.size.height*this.node.scale;
+        let x = this.entity.Transform.position.x-this.collider.w/2*this.node.scale;
+        let y = this.entity.Transform.position.y-(this.collider.h/2-this.collider.offset.y)*this.node.scale;
+        let w = this.collider.w*this.node.scale;
+        let h = this.collider.h*this.node.scale;
         let rect = cc.rect(x,y,w,h);
         return rect.contains(cc.v2(targetNode.position.x,targetNode.position.y));
     }

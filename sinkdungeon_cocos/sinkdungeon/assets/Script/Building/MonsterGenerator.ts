@@ -5,7 +5,6 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
-import { ColliderTag } from "../actor/ColliderTag";
 import CCollider from "../collider/CCollider";
 import Dungeon from "../logic/Dungeon";
 import Logic from "../logic/Logic";
@@ -93,7 +92,7 @@ export default abstract class MonsterGenerator extends Building {
 
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        if (!this.data.isOpen && other.tag == ColliderTag.PLAYER) {
+        if (!this.data.isOpen && other.tag == CCollider.TAG.PLAYER) {
             this.open();
         }
     }

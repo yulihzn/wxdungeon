@@ -202,7 +202,7 @@ export default class Dragon extends Boss {
         }
         this.healthBar.node.active = !this.sc.isDied;
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && !this.sc.isDied && !this.physicBox.sensor) {
             let d = new DamageData();

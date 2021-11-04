@@ -3,6 +3,7 @@ import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
 import StatusManager from "../manager/StatusManager";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -60,14 +61,14 @@ export default class MagicLightening extends cc.Component {
             }
             }, 2);
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && this.isTrigger){
             this.isTrigger = false;
             this.fall(true,true);
         }
     }
-    onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         if (self.radius > 0&&!this.isAttacked) {
             this.attacking(other.node);
         }

@@ -13,6 +13,7 @@ import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
 import MagicIce from "../talent/MagicIce";
 import Logic from "../logic/Logic";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -355,7 +356,7 @@ export default class IceDemon extends Boss {
         }
         this.changeZIndex();
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.sc.isDied) {
             let d = new DamageData();

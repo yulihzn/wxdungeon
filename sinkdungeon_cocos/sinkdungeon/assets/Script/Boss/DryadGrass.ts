@@ -4,6 +4,7 @@ import StatusManager from "../manager/StatusManager";
 import FromData from "../data/FromData";
 import StatusData from "../data/StatusData";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -52,13 +53,13 @@ export default class DryadGrass extends Actor {
     start() {
 
     }
-    onCollisionEnter(other: cc.Collider, self: cc.Collider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && !this.isAuto && !this.isUping){
             this.fall();
         }
     }
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if (target) {
             if (this.isUp&&this.isValid) {

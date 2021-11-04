@@ -71,14 +71,4 @@ export default class ShopTable extends Building {
         }
     }
 
-    // onCollisionEnter(other: cc.Collider, self: cc.Collider) {
-    //     let player = other.node.getComponent(Player);
-    //     if (player) {
-    //     }
-    // }
-    // onCollisionExit(other: cc.Collider, self: cc.Collider) {
-    //     let player = other.node.getComponent(Player);
-    //     if (player) {
-    //     }
-    // }
 }

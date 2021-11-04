@@ -4,10 +4,10 @@ import IndexZ from "../utils/IndexZ";
 import Dungeon from "../logic/Dungeon";
 import HitBuilding from "../building/HitBuilding";
 import AreaOfEffectData from "../data/AreaOfEffectData";
-import { ColliderTag } from "./ColliderTag";
 import ActorUtils from "../utils/ActorUtils";
 import InteractBuilding from "../building/InteractBuilding";
 import Actor from "../base/Actor";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -97,17 +97,17 @@ export default class AreaOfEffect extends cc.Component {
         return pos.normalizeSelf();
     }
 
-    onCollisionStay(other: cc.Collider, self: cc.Collider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         if (self.isValid && this.isAttacking) {
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
                 this.hasTargetMap[other.node.uuid]++;
             } else {
                 this.hasTargetMap[other.node.uuid] = 1;
                 let isAttack = true;
-                if (!this.data.isFromEnemy && (other.tag == ColliderTag.GOODNONPLAYER || other.tag == ColliderTag.PLAYER)) {
+                if (!this.data.isFromEnemy && (other.tag == CCollider.TAG.GOODNONPLAYER || other.tag == CCollider.TAG.PLAYER)) {
                     isAttack = false;
                 }
-                if (this.data.isFromEnemy && (other.tag == ColliderTag.NONPLAYER || other.tag == ColliderTag.BOSS)) {
+                if (this.data.isFromEnemy && (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS)) {
                     isAttack = false;
                 }
                 if (isAttack) {
@@ -123,7 +123,7 @@ export default class AreaOfEffect extends cc.Component {
         let damage = new DamageData();
         damage.valueCopy(this.data.damage);
         damage.isRemote = true;
-        if (tag == ColliderTag.PLAYER || tag == ColliderTag.NONPLAYER || tag == ColliderTag.GOODNONPLAYER || tag == ColliderTag.BOSS) {
+        if (tag == CCollider.TAG.PLAYER || tag == CCollider.TAG.NONPLAYER || tag == CCollider.TAG.GOODNONPLAYER || tag == CCollider.TAG.BOSS) {
             let normal = attackTarget.convertToWorldSpaceAR(cc.Vec3.ZERO).subSelf(this.node.convertToWorldSpaceAR(cc.Vec3.ZERO)).normalizeSelf();
             let target = ActorUtils.getEnemyActorByNode(attackTarget, !this.data.isFromEnemy);
             if (target && !target.sc.isDied) {
@@ -140,7 +140,7 @@ export default class AreaOfEffect extends cc.Component {
                     target.addStatus(status, this.data.from);
                 }
             }
-        } else if (tag == ColliderTag.BUILDING) {
+        } else if (tag == CCollider.TAG.BUILDING) {
             let interactBuilding = attackTarget.getComponent(InteractBuilding);
             if (this.data.canBreakBuilding && interactBuilding) {
                 interactBuilding.takeDamage(damage);

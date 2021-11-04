@@ -71,8 +71,8 @@ export default class ActorAttackBox extends cc.Component {
         this.node.height = radius;
         this.node.position = cc.v3(-16, 32);
         this.collider.offset = offset;
-        this.collider.size.width = this.isLarge?radius*1.5:radius;;
-        this.collider.size.height = radius;
+        this.collider.w = this.isLarge?radius*1.5:radius;;
+        this.collider.h = radius;
         switch (attackType) {
             case ActorAttackBox.ATTACK_NORMAL:
                 break;
@@ -89,8 +89,8 @@ export default class ActorAttackBox extends cc.Component {
                 this.node.width = radius;
                 this.node.height = radius;
                 this.node.position = cc.v3(0, 32);
-                this.collider.size.width = radius;
-                this.collider.size.height = radius;
+                this.collider.w = radius;
+                this.collider.h = radius;
                 this.collider.offset = cc.v2(0, 0);
                 break;
         }
@@ -106,7 +106,7 @@ export default class ActorAttackBox extends cc.Component {
         this.isAttacking = false;
         this.isSpecial = false;
     }
-    onCollisionStay(other: cc.Collider, self: cc.BoxCollider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         if (this.isAttacking && this.nonPlayer) {
             let a = other.getComponent(Actor);
             let m = this.nonPlayer;

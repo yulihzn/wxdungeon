@@ -7,7 +7,6 @@ import Item from "../item/Item";
 import IndexZ from "../utils/IndexZ";
 import DamageData from "../data/DamageData";
 import Player from "../logic/Player";
-import { ColliderTag } from "../actor/ColliderTag";
 import Actor from "../base/Actor";
 import Boss from "../boss/Boss";
 import AvatarData from "../data/AvatarData";
@@ -79,14 +78,10 @@ export default class InteractBuilding extends Building {
         let height = spriteFrame.getOriginalSize().height * this.sprite.node.scale / 4;
         let offset = 5;
         let physicCollider = this.getComponent(CCollider);
-        let collider = this.getComponent(cc.BoxCollider);
         if (this.sprite.node.angle == 0) {
-            physicCollider.size = cc.size(width, height);
-            collider.size = cc.size(width + offset, height + offset);
+            physicCollider.setSize(cc.size(width, height));
         } else {
-            physicCollider.size = cc.size(height, width);
-            collider.size = cc.size(height + offset, width + offset);
-
+            physicCollider.setSize(cc.size(height, width));
         }
         this.entity.Move.linearDamping = this.isThrowing ? 1 : 2;
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false;
@@ -392,7 +387,7 @@ export default class InteractBuilding extends Building {
             rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
         }, 0.1);
     }
-    private attacking(attackTarget: cc.Collider): boolean {
+    private attacking(attackTarget: CCollider): boolean {
         if (!attackTarget || !this.isAttacking) {
             return false;
         }
@@ -406,7 +401,7 @@ export default class InteractBuilding extends Building {
         damage.physicalDamage += this.isThrowing ? 5 : 3;
         let damageSuccess = false;
         let attackSuccess = false;
-        if (attackTarget.tag == ColliderTag.NONPLAYER) {
+        if (attackTarget.tag == CCollider.TAG.NONPLAYER) {
             let monster = attackTarget.node.getComponent(NonPlayer);
             if (monster && !monster.sc.isDied && monster.data.isEnemy > 0) {
                 damage.isBackAttack = monster.isPlayerBehindAttack() && common.damageBack > 0;
@@ -419,7 +414,7 @@ export default class InteractBuilding extends Building {
                     this.addTargetAllStatus(common, monster);
                 }
             }
-        } else if (attackTarget.tag == ColliderTag.BOSS) {
+        } else if (attackTarget.tag == CCollider.TAG.BOSS) {
             let boss = attackTarget.node.getComponent(Boss);
             if (boss && !boss.sc.isDied) {
                 damageSuccess = boss.takeDamage(damage);
@@ -427,7 +422,7 @@ export default class InteractBuilding extends Building {
                     this.addTargetAllStatus(common, boss);
                 }
             }
-        } else if (attackTarget.tag == ColliderTag.BUILDING || attackTarget.tag == ColliderTag.WALL) {
+        } else if (attackTarget.tag == CCollider.TAG.BUILDING || attackTarget.tag == CCollider.TAG.WALL) {
             let box = attackTarget.node.getComponent(Box);
             if (box) {
                 attackSuccess = true;

@@ -5,6 +5,7 @@ import FromData from "../data/FromData";
 import Logic from "../logic/Logic";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -53,7 +54,7 @@ export default class FireGhost extends cc.Component {
         return player.node.position.clone().addSelf(cc.v3(8, 48).addSelf(pos));
     }
 
-    onCollisionEnter(other: cc.Collider, self: cc.CircleCollider) {
+    onColliderEnter(other: CCollider, self: CCollider) {
         if (self.radius > 0 && this.isAttacking && this.isRotating) {
             let target = ActorUtils.getEnemyCollisionTarget(other, true);
             if (target) {

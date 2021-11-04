@@ -1,5 +1,4 @@
 import AreaOfEffect from "../actor/AreaOfEffect";
-import { ColliderTag } from "../actor/ColliderTag";
 import CCollider from "../collider/CCollider";
 import AreaOfEffectData from "../data/AreaOfEffectData";
 import BulletData from "../data/BulletData";
@@ -348,24 +347,24 @@ export default class Shooter extends cc.Component {
         let p = cc.v3(r, 0);
         let p1 = this.node.convertToWorldSpaceAR(s);
         let p2 = this.node.convertToWorldSpaceAR(p);
-        let results = cc.director.getPhysicsManager().rayCast(cc.v2(p1), cc.v2(p2), cc.RayCastType.All);
-        let arr: cc.Vec3[] = new Array();
-        if (results.length > 0) {
-            for (let result of results) {
-                if (this.isValidRayCastCollider(result.collider)) {
-                    p = this.node.convertToNodeSpaceAR(cc.v3(result.point));
-                    arr.push(p);
-                }
-            }
-        }
-        let distance = r;
-        for (let point of arr) {
-            let dtemp = Logic.getDistanceNoSqrt(point, s);
-            if (distance >= dtemp) {
-                distance = dtemp;
-                p = point;
-            }
-        }
+        // let results = cc.director.getPhysicsManager().rayCast(cc.v2(p1), cc.v2(p2), cc.RayCastType.All);
+        // let arr: cc.Vec3[] = new Array();
+        // if (results.length > 0) {
+        //     for (let result of results) {
+        //         if (this.isValidRayCastCollider(result.collider)) {
+        //             p = this.node.convertToNodeSpaceAR(cc.v3(result.point));
+        //             arr.push(p);
+        //         }
+        //     }
+        // }
+        // let distance = r;
+        // for (let point of arr) {
+        //     let dtemp = Logic.getDistanceNoSqrt(point, s);
+        //     if (distance >= dtemp) {
+        //         distance = dtemp;
+        //         p = point;
+        //     }
+        // }
         return p;
 
     }

@@ -3,6 +3,7 @@ import { ecs } from "../ECS";
 import Quadtree from '../../collider/Quadtree';
 import CCollider from '../../collider/CCollider';
 import ActorEntity from '../entity/ActorEntity';
+import RayCastResult from './RayCastResult';
 
 export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private quadTree: Quadtree;
@@ -10,6 +11,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private list: CCollider[] = [];
     private graphics: cc.Graphics;
     private isDebug = true;
+    private isInit = false;
     constructor(width: number, height: number, graphics: cc.Graphics) {
         super();
         let bounds = {
@@ -20,6 +22,9 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         }
         this.quadTree = new Quadtree(bounds);
         this.graphics = graphics;
+        this.graphics.scheduleOnce(()=>{
+            this.isInit = true;
+        },1)
     }
     init() {
 
@@ -41,49 +46,52 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         return false;
     }
     update(entities: ActorEntity[]): void {
-        if (this.list.length < 1) {
-            for (let e of entities) {
-                let colliders = e.Collider.colliders;
-                for (let collider of colliders) {
-                    collider.entity = e;
-                    this.list.push(collider);
-                }
-            }
-        }
-        this.updateDebug();
+        
         this.collisionCheck(entities);
+        this.updateDebug();
 
     }
     private updateDebug() {
         if (!this.isDebug || !this.graphics) {
             return;
         }
-        this.graphics.clear();
-        this.graphics.strokeColor = cc.Color.WHITE;
         for (let c of this.list) {
-            if (c.type == CCollider.TYPE.CIRCLE) {
-                this.graphics.circle(c.w_center.x, c.w_center.y, c.w_radius);
-            } else {
-                let p0 = this.graphics.node.convertToNodeSpaceAR(c.points[0]);
-                this.graphics.moveTo(p0.x,p0.y);
-                for(let i = 1;i< c.points.length-1;i++){
-                    let p = this.graphics.node.convertToNodeSpaceAR(c.points[i]);
-                    this.graphics.lineTo(p.x,p.y);
-                }
-                this.graphics.close();
-            }
-            this.graphics.stroke();
+            c.drawDebug();
         }
+        // this.graphics.clear();
+        // this.graphics.strokeColor = cc.Color.WHITE;
+        // this.graphics.lineWidth = 10;
+        // for (let c of this.list) {
+        //     if (c.type == CCollider.TYPE.CIRCLE) {
+        //         let p0 = this.graphics.node.convertToNodeSpaceAR(c.w_center);
+        //         this.graphics.circle(p0.x, p0.y, c.w_radius);
+        //         this.graphics.stroke();
+        //     } else {
+        //         let p0 = this.graphics.node.convertToNodeSpaceAR(c.points[0]);
+        //         this.graphics.moveTo(p0.x, p0.y);
+        //         for (let i = 1; i < c.points.length - 1; i++) {
+        //             let p = this.graphics.node.convertToNodeSpaceAR(c.points[i]);
+        //             this.graphics.lineTo(p.x, p.y);
+        //         }
+        //         this.graphics.close();
+        //         this.graphics.stroke();
+        //     }
+        // }
 
     }
     private collisionCheck(entities: ActorEntity[]) {
+        this.list = [];
         for (let e of entities) {
             let colliders = e.Collider.colliders;
             for (let collider of colliders) {
                 collider.entity = e;
                 collider.fixCenterAndScale();
+                this.list.push(collider);
                 this.quadTree.insert(collider);
             }
+        }
+        if(!this.isInit){
+            return;
         }
         this.tempColliders = {};
         for (let collider of this.list) {
@@ -182,6 +190,23 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             return false;
         }
         return cc.Intersection.circleCircle({ position: v1, radius: r1 }, { position: v2, radius: r2 });
+    }
+
+    public rayCast(p1: cc.Vec2, p2: cc.Vec2): RayCastResult[] {
+        if (p1.equals(p2)) {
+            return [];
+        }
+        for (let collider of this.list) {
+            let isCollision = false;
+            if (collider.type == CCollider.TYPE.RECT) {
+                //矩形检测
+                if (collider.isRotate) {
+                } else {
+                }
+            } else if (collider.type == CCollider.TYPE.CIRCLE) {
+                //圆形检测
+            }
+        }
     }
 
 }

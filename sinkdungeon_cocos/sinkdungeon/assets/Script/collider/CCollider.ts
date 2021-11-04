@@ -102,6 +102,8 @@ export default class CCollider extends cc.Component {
     //指定忽略的碰撞类型
     ignoreTags: Map<number, boolean> = new Map();
 
+    private graphics:cc.Graphics;
+    private isStaying = false;
     private _center:cc.Vec3;
     private _aabb:cc.Rect;
     private _radius:number;
@@ -112,7 +114,7 @@ export default class CCollider extends cc.Component {
         this._disableOnce = disabledOnce;
     }
 
-    set size(s: cc.Size) {
+    setSize(s: cc.Size) {
         this.w = s.width;
         this.h = s.height;
     }
@@ -140,13 +142,9 @@ export default class CCollider extends cc.Component {
         this.entity.NodeRender.node = node;
     }
     public fixCenterAndScale(){
-        let parent = this.entity.NodeRender.node;
-        if(!parent){
-            cc.log(`${this.id} the entity node is undefined`);
-            return;
-        }
+        this.isStaying = false;
         let offset = cc.v3(this.offsetX,this.offsetY);
-        this._center = parent.convertToNodeSpaceAR(this.node.convertToWorldSpaceAR(cc.v3(this.offsetX,this.offsetY)));
+        this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX,this.offsetY));
         
         let woffset = this.node.convertToWorldSpaceAR(offset);
         this._radius = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.radius,0))).sub(woffset).mag();
@@ -158,10 +156,10 @@ export default class CCollider extends cc.Component {
             this._aabb = cc.rect(this._center.x-this._radius,this._center.y-this._radius,this._radius*2,this._radius*2);
         }else{
             this._aabb = cc.rect(this._center.x-wlen/2,this._center.y-hlen/2,wlen,hlen);
-            let p0 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w,-this.h)));
-            let p1 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w,this.h)));
-            let p2 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w,this.h)));
-            let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w,-this.h)));
+            let p0 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w/2,-this.h/2)));
+            let p1 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w/2,this.h/2)));
+            let p2 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w/2,this.h/2)));
+            let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w/2,-this.h/2)));
             this.isRotate = p0.x!=p1.x;
             this._points = [cc.v2(p0),cc.v2(p1),cc.v2(p2),cc.v2(p3)];
         }
@@ -192,6 +190,7 @@ export default class CCollider extends cc.Component {
             return;
         }
         if (this.inColliders[other.id]) {
+            this.isStaying = true;
             if (this.onContactListener) {
                 this.onContactListener.onColliderStay(other, this);
             }
@@ -254,6 +253,37 @@ export default class CCollider extends cc.Component {
             }
         }
 
+    }
+    drawDebug(){
+        if(!this.graphics){
+            this.graphics = this.getComponent(cc.Graphics);
+            if(!this.graphics){
+                this.graphics = this.addComponent(cc.Graphics);
+            }
+        }
+        this.graphics.clear();
+        this.graphics.strokeColor = cc.color(255,255,255,200);
+        this.graphics.fillColor = cc.color(255,255,255,128);
+        this.graphics.lineWidth = 10;
+        if (this.type == CCollider.TYPE.CIRCLE) {
+            this.graphics.circle(this.offsetX, this.offsetY, this.radius);
+            if(this.isStaying){
+                this.graphics.fill();
+            }
+            this.graphics.stroke();
+        } else {
+            let p0 = this.graphics.node.convertToNodeSpaceAR(this.points[0]);
+            this.graphics.moveTo(p0.x, p0.y);
+            for (let i = 1; i < this.points.length; i++) {
+                let p = this.graphics.node.convertToNodeSpaceAR(this.points[i]);
+                this.graphics.lineTo(p.x, p.y);
+            }
+            this.graphics.close();
+            if(this.isStaying){
+                this.graphics.fill();
+            }
+            this.graphics.stroke();
+        }
     }
     get Aabb(): cc.Rect {
         return this._aabb;

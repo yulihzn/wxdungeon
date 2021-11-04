@@ -1,6 +1,6 @@
-import { ColliderTag } from "../actor/ColliderTag";
 import Actor from "../base/Actor";
 import Boss from "../boss/Boss";
+import CCollider from "../collider/CCollider";
 import Dungeon from "../logic/Dungeon";
 import Logic from "../logic/Logic";
 import NonPlayer from "../logic/NonPlayer";
@@ -10,13 +10,13 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class ActorUtils {
-    static getEnemyCollisionTarget(other: cc.Collider, isPlayer?: boolean): Actor {
+    static getEnemyCollisionTarget(other: CCollider, isPlayer?: boolean): Actor {
         if (isPlayer) {
-            if (other.tag == ColliderTag.NONPLAYER || other.tag == ColliderTag.BOSS) {
+            if (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS) {
                 return other.node.getComponent(Actor);
             }
         } else {
-            if (other.tag == ColliderTag.PLAYER || other.tag == ColliderTag.GOODNONPLAYER) {
+            if (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.GOODNONPLAYER) {
                 return other.node.getComponent(Actor);
             }
         }

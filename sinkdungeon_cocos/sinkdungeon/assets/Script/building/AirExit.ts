@@ -3,7 +3,6 @@ import Logic from "../logic/Logic";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
 import Dungeon from "../logic/Dungeon";
-import { ColliderTag } from "../actor/ColliderTag";
 import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
@@ -49,9 +48,9 @@ export default class AirExit extends Building {
         this.setTargetTags(CCollider.TAG.PLAYER);
         for(let c of this.ccolliders){
             if(dir>1){
-                c.size = cc.size(this.node.height,this.node.width);
+                c.setSize(cc.size(this.node.height,this.node.width));
             }else{
-                c.size = cc.size(this.node.width,this.node.height);
+                c.setSize(cc.size(this.node.width,this.node.height));
             }
         }
         this.node.zIndex = IndexZ.OVERHEAD;

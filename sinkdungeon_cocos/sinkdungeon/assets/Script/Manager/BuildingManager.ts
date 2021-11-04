@@ -297,8 +297,7 @@ export default class BuildingManager extends BaseManager {
             //生成楼梯
             let node = this.addBuilding(Logic.getBuildings(BuildingManager.SHIPSTAIRS), indexPos);
             node.setScale(-16, 16);
-            node.getComponent(cc.PhysicsBoxCollider).offset = cc.v2(-8, 0);
-            node.getComponent(cc.PhysicsBoxCollider).apply();
+            node.getComponent(CCollider).offset = cc.v2(-8, 0);
             node.zIndex = IndexZ.WALLINTERNAL;
         } else if (mapDataStr == 'S0') {
             //生成商店
@@ -509,7 +508,7 @@ export default class BuildingManager extends BaseManager {
             }
             co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`);
             let arr = this.coastColliderList[fint].split(',');
-            pbc.size = cc.size(parseInt(arr[0]), parseInt(arr[1]));
+            pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])));
             pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
             co.zIndex = IndexZ.WATER;
         }else if(mapDataStr == '~f'){

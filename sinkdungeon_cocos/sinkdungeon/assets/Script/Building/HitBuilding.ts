@@ -111,10 +111,8 @@ export default class HitBuilding extends Building {
             return;
         }
         let size = cc.size(width, height);
-        let collider = this.getComponent(cc.BoxCollider);
         let pcollider = this.getComponent(CCollider);
-        collider.size = size.clone();
-        pcollider.size = size.clone();
+        pcollider.setSize(size.clone());
         this.sprite.spriteFrame = spriteFrame;
     }
     // update (dt) {}

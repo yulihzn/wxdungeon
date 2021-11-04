@@ -152,8 +152,8 @@ export default class Bullet extends cc.Component {
         this.node.scale = data.size > 0 ? data.size : 1;
         if (data.size > 1) {
             this.collider.radius = this.collider.radius / this.node.scale;
-            this.collider.size.width = this.collider.size.width / this.node.scale;
-            this.collider.size.height = this.collider.size.height / this.node.scale;
+            this.collider.w = this.collider.w / this.node.scale;
+            this.collider.h = this.collider.h / this.node.scale;
         }
         this.collider.sensor = data.isPhysical == 0;
         this.initLaser();

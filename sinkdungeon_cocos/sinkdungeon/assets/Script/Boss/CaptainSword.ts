@@ -2,6 +2,7 @@ import DamageData from "../data/DamageData";
 import FromData from "../data/FromData";
 import Captain from "./Captain";
 import ActorUtils from "../utils/ActorUtils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -29,7 +30,7 @@ export default class CaptainSword extends cc.Component {
     start () {
         this.isShow = false;
     }
-    onCollisionEnter(other:cc.Collider,self:cc.Collider){
+    onColliderEnter(other: CCollider, self: CCollider){
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && this.isShow && this.node.active){
             this.isShow = false;

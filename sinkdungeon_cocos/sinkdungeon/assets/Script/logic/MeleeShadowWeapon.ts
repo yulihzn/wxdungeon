@@ -4,6 +4,7 @@ import PlayerData from "../data/PlayerData";
 import AudioPlayer from "../utils/AudioPlayer";
 import MeleeWeapon from "./MeleeWeapon";
 import Utils from "../utils/Utils";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -122,7 +123,7 @@ export default class MeleeShadowWeapon extends cc.Component {
         this.node.angle = Utils.getRotateAngle(direction,this.node.scaleX < 0);
     }
 
-    onCollisionStay(other: cc.Collider, self: cc.CircleCollider) {
+    onColliderStay(other: CCollider, self: CCollider) {
         if (self.radius > 0) {
             if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
                 this.hasTargetMap[other.node.uuid]++;
