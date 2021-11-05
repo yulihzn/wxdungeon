@@ -11,7 +11,6 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private list: CCollider[] = [];
     private graphics: cc.Graphics;
     private isDebug = true;
-    private isInit = false;
     constructor(width: number, height: number, graphics: cc.Graphics) {
         super();
         let bounds = {
@@ -22,9 +21,6 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         }
         this.quadTree = new Quadtree(bounds);
         this.graphics = graphics;
-        this.graphics.scheduleOnce(()=>{
-            this.isInit = true;
-        },1)
     }
     init() {
 
@@ -55,8 +51,9 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         if (!this.isDebug || !this.graphics) {
             return;
         }
+        this.graphics.clear();
         for (let c of this.list) {
-            c.drawDebug();
+            c.drawDebug(this.graphics);
         }
         // this.graphics.clear();
         // this.graphics.strokeColor = cc.Color.WHITE;
@@ -90,9 +87,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 this.quadTree.insert(collider);
             }
         }
-        if(!this.isInit){
-            return;
-        }
+        
         this.tempColliders = {};
         for (let collider of this.list) {
             if (!collider.enabled) {

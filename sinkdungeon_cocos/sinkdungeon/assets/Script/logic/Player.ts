@@ -77,8 +77,6 @@ export default class Player extends Actor{
     shadowCamera: cc.Camera = null;
     @property(cc.Prefab)
     shadowPrefab: cc.Prefab = null;
-    @property(cc.Node)
-    boxcover:cc.Node = null;
     professionTalent: ProfessionTalent;
     organizationTalent: OrganizationTalent;
 
@@ -1158,13 +1156,9 @@ export default class Player extends Actor{
         }
     }
     onColliderEnter(other: CCollider, self: CCollider): void {
-        this.boxcover.color = cc.Color.RED;
-        this.boxcover.opacity = 128;
         this.touchedTips = null;
     }
     onColliderStay(other: CCollider, self: CCollider): void {
-        this.boxcover.color = cc.Color.GREEN;
-        this.boxcover.opacity = 128;
         if (this.touchDelay) {
             return;
         }
@@ -1188,8 +1182,6 @@ export default class Player extends Actor{
         }
     }
     onColliderExit(other: CCollider, self: CCollider): void {
-        this.boxcover.color = cc.Color.WHITE;
-        this.boxcover.opacity = 128;
         this.touchedTips = null;
     }
     onColliderPreSolve(other:CCollider,self:CCollider): void {

@@ -47,11 +47,7 @@ export default class AirExit extends Building {
         this.node.width = Dungeon.TILE_SIZE / 8 * length;
         this.setTargetTags(CCollider.TAG.PLAYER);
         for(let c of this.ccolliders){
-            if(dir>1){
-                c.setSize(cc.size(this.node.height,this.node.width));
-            }else{
-                c.setSize(cc.size(this.node.width,this.node.height));
-            }
+            c.setSize(cc.size(this.node.width,this.node.height));
         }
         this.node.zIndex = IndexZ.OVERHEAD;
         this.changeStatus(AirExit.STATUS_CLOSE);
@@ -75,7 +71,7 @@ export default class AirExit extends Building {
     }
 
     onColliderEnter(other: CCollider, self:CCollider) {
-        if (other.tag == CCollider.TAG.PLAYER) {
+        if (other.tag == CCollider.TAG.PLAYER&&!other.sensor) {
             let player = other.node.getComponent(Player);
             if (player&&this.status == AirExit.STATUS_OPEN) {
                 this.scheduleOnce(()=>{

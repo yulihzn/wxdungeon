@@ -254,35 +254,34 @@ export default class CCollider extends cc.Component {
         }
 
     }
-    drawDebug(){
-        if(!this.graphics){
-            this.graphics = this.getComponent(cc.Graphics);
-            if(!this.graphics){
-                this.graphics = this.addComponent(cc.Graphics);
-            }
+    drawDebug(graphics:cc.Graphics){
+        if(!graphics){
+            return;
         }
-        this.graphics.clear();
-        this.graphics.strokeColor = cc.color(255,255,255,200);
-        this.graphics.fillColor = cc.color(255,255,255,128);
-        this.graphics.lineWidth = 10;
+        graphics.strokeColor = cc.color(255,255,255,200);
+        graphics.fillColor = cc.color(255,255,255,128);
+        graphics.lineWidth = 8;
         if (this.type == CCollider.TYPE.CIRCLE) {
-            this.graphics.circle(this.offsetX, this.offsetY, this.radius);
+            let r1 = graphics.node.convertToNodeSpaceAR(cc.v3(this.w_radius,0));
+            let r2 = graphics.node.convertToNodeSpaceAR(cc.v3(0,0));
+            let center = graphics.node.convertToNodeSpaceAR(this.w_center);
+            graphics.circle(center.x, center.y, r1.sub(r2).mag());
             if(this.isStaying){
-                this.graphics.fill();
+                graphics.fill();
             }
-            this.graphics.stroke();
+            graphics.stroke();
         } else {
-            let p0 = this.graphics.node.convertToNodeSpaceAR(this.points[0]);
-            this.graphics.moveTo(p0.x, p0.y);
+            let p0 = graphics.node.convertToNodeSpaceAR(this.points[0]);
+            graphics.moveTo(p0.x, p0.y);
             for (let i = 1; i < this.points.length; i++) {
-                let p = this.graphics.node.convertToNodeSpaceAR(this.points[i]);
-                this.graphics.lineTo(p.x, p.y);
+                let p = graphics.node.convertToNodeSpaceAR(this.points[i]);
+                graphics.lineTo(p.x, p.y);
             }
-            this.graphics.close();
+            graphics.close();
             if(this.isStaying){
-                this.graphics.fill();
+                graphics.fill();
             }
-            this.graphics.stroke();
+            graphics.stroke();
         }
     }
     get Aabb(): cc.Rect {
