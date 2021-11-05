@@ -230,6 +230,7 @@ export default class TalentMagic extends Talent {
             this.fireGhostNum++;
             ghostNode.active = true;
             let fg = ghostNode.getComponent(FireGhost);
+            fg.initCollider();
             this.player.node.parent.addChild(fg.node);
             fg.init(this.player, i * 72);
         }

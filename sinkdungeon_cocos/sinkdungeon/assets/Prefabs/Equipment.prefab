@@ -690,8 +690,9 @@
     "h": 96,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
-      3
+      21
     ],
     "ignoreTagList": [],
     "_id": ""

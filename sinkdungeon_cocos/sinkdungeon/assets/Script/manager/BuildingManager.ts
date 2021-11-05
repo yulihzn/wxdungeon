@@ -227,10 +227,10 @@ export default class BuildingManager extends BaseManager {
             this.addExitDoor(mapDataStr, indexPos, exits);
         } else if (mapDataStr == 'F0') {
             //生成落石
-            this.addFallStone(Dungeon.getPosInMap(indexPos), false);
+            this.addFallStone(indexPos, false);
         } else if (mapDataStr == 'F1') {
             //生成落雷
-            this.addLighteningFall(Dungeon.getPosInMap(indexPos), true, true, true);
+            this.addLighteningFall(indexPos, true, true, true);
         } else if (this.isFirstEqual(mapDataStr, 'G')) {
             //生成炮台
             let em = this.addBuilding(Logic.getBuildings(BuildingManager.EMPLACEMENT), indexPos).getComponent(Emplacement);
@@ -731,11 +731,9 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let stone = cc.instantiate(Logic.getBuildings(BuildingManager.FALLSTONE));
+        let stone = this.addBuilding(Logic.getBuildings(BuildingManager.FALLSTONE),pos);
         let stoneScript = stone.getComponent(FallStone);
         stoneScript.isAuto = isAuto;
-        stone.parent = this.node;
-        stone.position = pos;
         stone.zIndex = IndexZ.FLOOR;
         if (stoneScript.isAuto) {
             stoneScript.fall(withFire);
@@ -747,10 +745,8 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let fall = cc.instantiate(Logic.getBuildings(BuildingManager.LIGHTENINGFALL));
+        let fall = this.addBuilding(Logic.getBuildings(BuildingManager.LIGHTENINGFALL),pos);
         let fallScript = fall.getComponent(MagicLightening);
-        fall.parent = this.node;
-        fall.position = pos;
         fall.zIndex = IndexZ.FLOOR;
         fallScript.isTrigger = isTrigger;
         if (!fallScript.isTrigger) {
@@ -762,11 +758,9 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let grass = cc.instantiate(Logic.getBuildings(BuildingManager.DRYADTWINE));
+        let grass = this.addBuilding(Logic.getBuildings(BuildingManager.DRYADTWINE),pos);
         let dryadGrassScript = grass.getComponent(DryadGrass);
         dryadGrassScript.isAuto = isAuto;
-        grass.parent = this.node;
-        grass.position = pos;
         grass.zIndex = IndexZ.getActorZIndex(pos);
         if (dryadGrassScript.isAuto) {
             dryadGrassScript.fall();

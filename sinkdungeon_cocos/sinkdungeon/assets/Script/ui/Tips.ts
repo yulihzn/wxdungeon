@@ -1,3 +1,4 @@
+import BaseColliderComponent from "../base/BaseColliderComponent";
 import CCollider from "../collider/CCollider";
 import Player from "../logic/Player";
 
@@ -15,13 +16,14 @@ import Player from "../logic/Player";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Tips extends cc.Component {
+export default class Tips extends BaseColliderComponent {
     private interactCallback: Function;
     private enterCallback:Function;
     private exitCallback:Function;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        super.onLoad();
         this.node.opacity = 0;
     }
 
@@ -43,7 +45,7 @@ export default class Tips extends cc.Component {
         this.exitCallback = callback;
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        if (other.tag == CCollider.TAG.PLAYER) {
+        if (other.tag == CCollider.TAG.PLAYER_INTERACT) {
             this.node.opacity = 255;
             if(this.enterCallback){
                 this.enterCallback(other.node);
@@ -51,7 +53,7 @@ export default class Tips extends cc.Component {
         }
     }
     onColliderExit(other: CCollider, self: CCollider) {
-        if (other.tag == CCollider.TAG.PLAYER) {
+        if (other.tag == CCollider.TAG.PLAYER_INTERACT) {
             this.node.opacity = 0;
             if(this.exitCallback){
                 this.exitCallback(other.node);

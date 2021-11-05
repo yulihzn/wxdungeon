@@ -8,6 +8,7 @@ import ActorUtils from "../utils/ActorUtils";
 import InteractBuilding from "../building/InteractBuilding";
 import Actor from "../base/Actor";
 import CCollider from "../collider/CCollider";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -24,7 +25,8 @@ const { ccclass, property } = cc._decorator;
  * aoe 结点需要Collider 动画事件AnimFinish 
  */
 @ccclass
-export default class AreaOfEffect extends cc.Component {
+export default class AreaOfEffect extends BaseColliderComponent {
+    
     hasTargetMap: { [key: string]: number } = {};
     private isAttacking = false;
     data: AreaOfEffectData = new AreaOfEffectData();
@@ -38,6 +40,7 @@ export default class AreaOfEffect extends cc.Component {
         return this.isAttacking;
     }
     onLoad() {
+        super.onLoad();
     }
 
     onEnable() {
@@ -153,7 +156,6 @@ export default class AreaOfEffect extends cc.Component {
         }
     }
     private beatBack(actor: Actor, hv: cc.Vec3) {
-        let rigidBody: cc.RigidBody = actor.getComponent(cc.RigidBody);
         let pos = hv.clone();
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
@@ -161,8 +163,7 @@ export default class AreaOfEffect extends cc.Component {
         let power = 100;
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
-            rigidBody.linearVelocity = cc.Vec2.ZERO;
-            rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
+            actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y);
         }, 0.1);
     }
     checkTimeDelay = 0;

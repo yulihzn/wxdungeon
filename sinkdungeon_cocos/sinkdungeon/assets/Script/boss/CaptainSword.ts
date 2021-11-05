@@ -3,6 +3,7 @@ import FromData from "../data/FromData";
 import Captain from "./Captain";
 import ActorUtils from "../utils/ActorUtils";
 import CCollider from "../collider/CCollider";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,7 +18,7 @@ import CCollider from "../collider/CCollider";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class CaptainSword extends cc.Component {
+export default class CaptainSword extends BaseColliderComponent {
     @property
     damage = 3;
     @property(cc.Node)
@@ -25,7 +26,9 @@ export default class CaptainSword extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
     isShow = false;
 
-    // onLoad () {}
+    onLoad () {
+        super.onLoad();
+    }
 
     start () {
         this.isShow = false;

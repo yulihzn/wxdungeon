@@ -34,16 +34,10 @@
       },
       {
         "__id__": 10
-      },
-      {
-        "__id__": 11
-      },
-      {
-        "__id__": 12
       }
     ],
     "_prefab": {
-      "__id__": 13
+      "__id__": 11
     },
     "_opacity": 255,
     "_color": {
@@ -326,23 +320,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.CircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 9,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 10,
-    "_id": ""
-  },
-  {
     "__type__": "6a73blWLNVEw7zhXpbo521b",
     "_name": "",
     "_objFlags": 0,
@@ -361,41 +338,15 @@
     },
     "_enabled": true,
     "tag": 13,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "type": 0,
-    "radius": 5,
-    "w": 128,
-    "h": 128,
-    "sensor": false,
-    "isStatic": true,
-    "targetTagList": [],
-    "ignoreTagList": [],
-    "_id": ""
-  },
-  {
-    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 13,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 0,
     "radius": 10,
     "w": 128,
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""

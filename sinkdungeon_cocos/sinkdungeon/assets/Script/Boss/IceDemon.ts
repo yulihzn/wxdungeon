@@ -35,7 +35,6 @@ export default class IceDemon extends Boss {
     private anim: cc.Animation;
     shooter: Shooter;
     private timeDelay = 0;
-    rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
     dashSkill = new NextStep();
@@ -57,7 +56,6 @@ export default class IceDemon extends Boss {
         this.anim = this.getComponent(cc.Animation);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'bossicepart01'));
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
     }
 
@@ -108,7 +106,7 @@ export default class IceDemon extends Boss {
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
         let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
         if (playerDis < 100) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
         if (isHalf && !this.magicice.isShow && !this.defenceSkill.IsInCooling) {
             this.magicice.showIce();
@@ -233,7 +231,7 @@ export default class IceDemon extends Boss {
                 let v = pos.y;
                 let movement = cc.v2(h, v);
                 movement = movement.mul(1500);
-                this.rigidbody.linearVelocity = movement;
+                this.entity.Move.linearVelocity = movement;
             }, 1);
             this.scheduleOnce(() => { this.meleeSkill.IsExcuting = false; }, 2);
         }, 3, true);
@@ -256,7 +254,7 @@ export default class IceDemon extends Boss {
                 let v = pos.y;
                 let movement = cc.v2(h, v);
                 movement = movement.mul(2500);
-                this.rigidbody.linearVelocity = movement;
+                this.entity.Move.linearVelocity = movement;
             }, 2.4);
             this.scheduleOnce(() => { this.dashSkill.IsExcuting = false; }, 3);
         }, 8, true);
@@ -324,7 +322,7 @@ export default class IceDemon extends Boss {
         }
         this.healthBar.node.active = !this.sc.isDied;
         if (this.sc.isDied) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
         this.node.scaleX = this.isFaceRight ? 1 : -1;
     }
@@ -343,7 +341,7 @@ export default class IceDemon extends Boss {
 
         let movement = cc.v2(h, v);
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
+        this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
         if (this.isMoving) {
             if (!this.anim.getAnimationState('IceDemonWalk').isPlaying) {
@@ -357,13 +355,15 @@ export default class IceDemon extends Boss {
         this.changeZIndex();
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.sc.isDied) {
-            let d = new DamageData();
-            d.physicalDamage = 3;
-            let from = FromData.getClone(this.actorName(), 'bossicepart01');
-            if (target.takeDamage(d, from, this)) {
-                target.addStatus(StatusManager.FROZEN, from);
+        if(self.tag == CCollider.TAG.BOSS_HIT){
+            let target = ActorUtils.getEnemyCollisionTarget(other);
+            if (target && (this.meleeSkill.IsExcuting || this.dashSkill.IsExcuting) && !this.sc.isDied) {
+                let d = new DamageData();
+                d.physicalDamage = 3;
+                let from = FromData.getClone(this.actorName(), 'bossicepart01');
+                if (target.takeDamage(d, from, this)) {
+                    target.addStatus(StatusManager.FROZEN, from);
+                }
             }
         }
     }

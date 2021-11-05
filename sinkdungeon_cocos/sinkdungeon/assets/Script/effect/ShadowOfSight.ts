@@ -177,7 +177,7 @@ export default class ShadowOfSight extends cc.Component {
     }
     get radius() {
         if (this.circleCollider&&!this.polygonCollider) {
-            return this.circleCollider.radius&this.circleCollider.node.scale;
+            return this.circleCollider.radius*this.circleCollider.node.scale;
         }else{
             return this.node.width/2;
         }

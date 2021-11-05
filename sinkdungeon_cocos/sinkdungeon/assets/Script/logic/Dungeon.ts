@@ -313,14 +313,14 @@ export default class Dungeon extends cc.Component {
 
     /**掉落石头 */
     public addFallStone(pos: cc.Vec3, isAuto: boolean, withFire?: boolean) {
-        this.buildingManager.addFallStone(pos, isAuto, withFire);
+        this.buildingManager.addFallStone(Dungeon.getIndexInMap(pos), isAuto, withFire);
     }
     /**落雷 */
     private addLighteningFall(pos: cc.Vec3, isTrigger: boolean, needPrepare: boolean, showArea: boolean, damagePoint?: number) {
         if (!this.buildingManager) {
             return;
         }
-        this.buildingManager.addLighteningFall(pos, isTrigger, needPrepare, showArea, damagePoint);
+        this.buildingManager.addLighteningFall(Dungeon.getIndexInMap(pos), isTrigger, needPrepare, showArea, damagePoint);
     }
 
 

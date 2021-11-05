@@ -5,6 +5,7 @@ import FromData from "../data/FromData";
 import StatusData from "../data/StatusData";
 import ActorUtils from "../utils/ActorUtils";
 import CCollider from "../collider/CCollider";
+import Building from "../building/Building";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +20,7 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class DryadGrass extends Actor {
+export default class DryadGrass extends Building {
     
     // LIFE-CYCLE CALLBACKS:
 
@@ -29,6 +30,7 @@ export default class DryadGrass extends Actor {
     isUping = false;//是否上升中
 
     onLoad() {
+        this.initCollider();
         this.isUp = false;
     }
     takeDamage(){
@@ -72,26 +74,9 @@ export default class DryadGrass extends Actor {
             
         }
     }
-    addStatus(statusType: string, from: FromData) {
-    }
-    getCenterPosition(): cc.Vec3 {
-        return this.entity.Transform.position.clone();
-    }
+   
     actorName(){
         return '树根缠绕';
     }
-    takeDizz(dizzDuration: number):void{
-
-    }
-
-    updateStatus(statusList:StatusData[],totalStatusData:StatusData): void {
-    }
-    hideSelf(hideDuration: number): void {
-    }
-    updateDream(offset: number): number {
-        return 0;
-    }
-    setLinearVelocity(movement: cc.Vec2){
-
-    }
+   
 }

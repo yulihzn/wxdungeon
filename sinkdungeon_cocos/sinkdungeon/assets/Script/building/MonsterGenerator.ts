@@ -92,7 +92,7 @@ export default abstract class MonsterGenerator extends Building {
 
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        if (!this.data.isOpen && other.tag == CCollider.TAG.PLAYER) {
+        if (!this.data.isOpen && other.tag == CCollider.TAG.PLAYER_INTERACT) {
             this.open();
         }
     }

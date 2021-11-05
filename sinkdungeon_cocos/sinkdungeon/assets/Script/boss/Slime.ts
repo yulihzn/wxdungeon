@@ -49,7 +49,6 @@ export default class Slime extends Boss {
     private venomPool: cc.NodePool;
     healthBar: HealthBar = null;
     private anim: cc.Animation;
-    rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
     // isAttacking = false;
@@ -69,7 +68,6 @@ export default class Slime extends Boss {
         this.meleeSkill.IsExcuting = false;
         this.sc.isDied = false;
         this.anim = this.getComponent(cc.Animation);
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.updatePlayerPos();
         this.venomPool = new cc.NodePool();
         this.sprite = this.node.getChildByName('sprite');
@@ -132,11 +130,13 @@ export default class Slime extends Boss {
         if (newdis < attackRange && target) { target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this); }
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && this.isDashing && this.dungeon && !this.isHurt && !this.sc.isDied) {
-            this.isDashing = false;
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
-            target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this);
+        if(self.tag == CCollider.TAG.BOSS_HIT){
+            let target = ActorUtils.getEnemyCollisionTarget(other);
+            if (target && this.isDashing && this.dungeon && !this.isHurt && !this.sc.isDied) {
+                this.isDashing = false;
+                this.entity.Move.linearVelocity = cc.Vec2.ZERO;
+                target.takeDamage(this.data.getAttackPoint(), FromData.getClone(this.actorName(), 'bossslimehelmet'), this);
+            }
         }
     }
     venomTimeDelay = 0;
@@ -167,16 +167,16 @@ export default class Slime extends Boss {
         this.dashlight.opacity = 0;
         if (this.dungeon && this.isDashing) {
             this.dashlight.opacity = 128;
-            this.rigidbody.linearVelocity = this.currentlinearVelocitySpeed.clone();
+            this.entity.Move.linearVelocity = this.currentlinearVelocitySpeed.clone();
         }
         if (this.dungeon) {
             let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
             if (playerDis < 64 && !this.isHurt) {
-                this.rigidbody.linearVelocity = cc.v2(0, 0);
+                this.entity.Move.linearVelocity = cc.v2(0, 0);
             }
         }
         if (this.sc.isDied) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
         this.healthBar.node.active = !this.sc.isDied;
         if (this.data.currentHealth < 1) {
@@ -318,7 +318,7 @@ export default class Slime extends Boss {
         let absv = Math.abs(v);
         let movement = cc.v2(h, v);
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement.clone();
+        this.entity.Move.linearVelocity = movement.clone();
         this.currentlinearVelocitySpeed = movement.clone();
         this.isMoving = h != 0 || v != 0;
         if (this.isMoving) {

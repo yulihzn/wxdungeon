@@ -32,7 +32,6 @@ export default class Sphinx extends Boss {
     private anim: cc.Animation;
     shooter01: Shooter;
     private timeDelay = 0;
-    rigidbody: cc.RigidBody;
     isMoving = false;
     stormSkill = new NextStep();
     summonSkill = new NextStep();
@@ -43,7 +42,6 @@ export default class Sphinx extends Boss {
         this.sc.isShow = false;
         this.anim = this.getComponent(cc.Animation);
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'sphinxhead'));
     }
@@ -152,7 +150,7 @@ export default class Sphinx extends Boss {
             this.killed();
         }
         this.healthBar.node.active = !this.sc.isDied;
-        this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        this.entity.Move.linearVelocity = cc.Vec2.ZERO;
     }
     actorName() {
         return '斯芬克斯';

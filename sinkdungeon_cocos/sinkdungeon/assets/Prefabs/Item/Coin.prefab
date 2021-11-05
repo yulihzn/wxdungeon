@@ -351,8 +351,9 @@
     "h": 128,
     "sensor": false,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
-      3
+      21
     ],
     "ignoreTagList": [],
     "_id": ""

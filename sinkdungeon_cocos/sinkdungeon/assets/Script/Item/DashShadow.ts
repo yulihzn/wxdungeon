@@ -6,6 +6,7 @@ import TalentDash from "../talent/TalentDash";
 import Shooter from "../logic/Shooter";
 import IndexZ from "../utils/IndexZ";
 import CCollider from "../collider/CCollider";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,8 +21,8 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class DashShadow extends cc.Component {
-    rigidBody: cc.RigidBody;
+export default class DashShadow extends BaseColliderComponent {
+    
     hv: cc.Vec3 = cc.v3(1, 0);
     private motionStreak: cc.MotionStreak;
     private sprite: cc.Node;
@@ -31,7 +32,7 @@ export default class DashShadow extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.rigidBody = this.getComponent(cc.RigidBody);
+        super.onLoad();
         this.motionStreak = this.getComponent(cc.MotionStreak);
         this.sprite = this.node.getChildByName('sprite');
     }
@@ -68,13 +69,11 @@ export default class DashShadow extends cc.Component {
         this.sprite.scaleX = faceright ? 1 : -1;
         this.node.setPosition(this.getPlayerPosition());
         let speed = 1200;
-        this.rigidBody.linearDamping = 1;
         if (this.talentDash.hashTalent(Talent.DASH_14)) {
             speed = 2000;
-            this.rigidBody.linearDamping = 1;
         }
         let hs = this.hv.mul(speed);
-        this.rigidBody.linearVelocity = cc.v2(hs.x,hs.y);
+        this.entity.Move.linearVelocity = cc.v2(hs.x,hs.y);
         this.node.zIndex = IndexZ.OVERHEAD;
         this.fire(this.shooter);
         this.scheduleOnce(() => {
@@ -84,7 +83,7 @@ export default class DashShadow extends cc.Component {
     hide() {
         this.talentDash.player.node.setPosition(Dungeon.fixOuterMap(this.node.position.clone()));
         this.node.active = false;
-        this.rigidBody.linearVelocity = cc.Vec2.ZERO;
+        this.entity.Move.linearVelocity = cc.Vec2.ZERO;
     }
 
     onColliderEnter(other: CCollider, self: CCollider) {

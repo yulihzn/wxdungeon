@@ -240,7 +240,7 @@ export default class InteractBuilding extends Building {
         this.isAniming = true;
         AudioPlayer.play(AudioPlayer.MELEE);
         this.updateCollider();
-        this.beatBack(this.node, this.player.Hv.clone(), this.isLift ? 2000 : 3000);
+        this.beatBack(this, this.player.Hv.clone(), this.isLift ? 500 : 1000);
         this.scheduleOnce(() => {
             cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
         }, this.isLift ? 0.5 : 0)
@@ -375,16 +375,14 @@ export default class InteractBuilding extends Building {
         }
     }
 
-    private beatBack(node: cc.Node, hv: cc.Vec3, power: number) {
-        let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
+    private beatBack(node: Actor, hv: cc.Vec3, power: number) {
         let pos = hv;
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
         }
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
-            rigidBody.linearVelocity = cc.Vec2.ZERO;
-            rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
+            node.entity.Move.linearVelocity = cc.v2(pos.x, pos.y);
         }, 0.1);
     }
     private attacking(attackTarget: CCollider): boolean {
@@ -410,7 +408,7 @@ export default class InteractBuilding extends Building {
                 }
                 damageSuccess = monster.takeDamage(damage);
                 if (damageSuccess) {
-                    this.beatBack(monster.node, this.player.Hv.clone(), 500);
+                    this.beatBack(monster, this.player.Hv.clone(), 200);
                     this.addTargetAllStatus(common, monster);
                 }
             }

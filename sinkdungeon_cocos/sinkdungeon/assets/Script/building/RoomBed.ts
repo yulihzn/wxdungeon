@@ -52,7 +52,7 @@ export default class RoomBed extends Building {
         }
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        if(this.isDecorate){
+        if(this.isDecorate||self.tag == CCollider.TAG.TIPS){
             return;
         }
         let player = other.node.getComponent(Player);

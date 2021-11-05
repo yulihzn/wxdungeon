@@ -71,7 +71,7 @@ export default class AirExit extends Building {
     }
 
     onColliderEnter(other: CCollider, self:CCollider) {
-        if (other.tag == CCollider.TAG.PLAYER&&!other.sensor) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             let player = other.node.getComponent(Player);
             if (player&&this.status == AirExit.STATUS_OPEN) {
                 this.scheduleOnce(()=>{

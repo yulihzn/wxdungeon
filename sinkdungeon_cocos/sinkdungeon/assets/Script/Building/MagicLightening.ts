@@ -4,6 +4,7 @@ import FromData from "../data/FromData";
 import StatusManager from "../manager/StatusManager";
 import ActorUtils from "../utils/ActorUtils";
 import CCollider from "../collider/CCollider";
+import Building from "./Building";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,7 +19,7 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MagicLightening extends cc.Component {
+export default class MagicLightening extends Building {
     hasTargetMap: { [key: string]: number } = {};
     needPrepare = false;
     showArea = false;

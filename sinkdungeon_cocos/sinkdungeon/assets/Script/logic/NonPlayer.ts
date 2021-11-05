@@ -39,6 +39,7 @@ import StatusData from '../data/StatusData';
 import ActorUtils from '../utils/ActorUtils';
 import CCollider from '../collider/CCollider';
 import { MoveComponent } from '../ecs/component/MoveComponent';
+import AreaDetector from '../actor/AreaDetector';
 
 @ccclass
 export default class NonPlayer extends Actor {
@@ -1098,13 +1099,15 @@ export default class NonPlayer extends Actor {
         return a + (b - a) * r;
     };
     onColliderEnter(other: CCollider, self: CCollider) {
-        let target = ActorUtils.getEnemyCollisionTarget(other, this.data.isEnemy < 1);
-        if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
-            this.sc.isDashing = false;
-            this.setLinearVelocity(cc.Vec2.ZERO);
-            let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed);
-            if (target.takeDamage(this.data.getAttackPoint(), from, this)) {
-                this.addPlayerStatus(target, from);
+        if(self.tag == CCollider.TAG.NONPLAYER_HIT||self.tag == CCollider.TAG.GOODNONPLAYER_HIT){
+            let target = ActorUtils.getEnemyCollisionTarget(other, this.data.isEnemy < 1);
+            if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
+                this.sc.isDashing = false;
+                this.setLinearVelocity(cc.Vec2.ZERO);
+                let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed);
+                if (target.takeDamage(this.data.getAttackPoint(), from, this)) {
+                    this.addPlayerStatus(target, from);
+                }
             }
         }
     }
@@ -1220,10 +1223,7 @@ export default class NonPlayer extends Actor {
     updateDream(offset: number): number {
         return 0;
     }
-
-    
-    onColliderStay(other: CCollider, self: CCollider): void {
-    }
+   
     onColliderExit(other: CCollider, self: CCollider): void {
     }
 }

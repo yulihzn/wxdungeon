@@ -345,6 +345,7 @@ export default class MonsterManager extends BaseManager {
         prefab.active = false;
         prefab.parent = dungeon.node;
         let boss = prefab.getComponent(Boss);
+        boss.initCollider();
         boss.dungeon = dungeon;
         let data = new NonPlayerData();
         data.resName = resName;
@@ -366,6 +367,7 @@ export default class MonsterManager extends BaseManager {
         prefab.active = false;
         prefab.parent = dungeon.node;
         let slime = prefab.getComponent(Boss);
+        slime.initCollider();
         slime.dungeon = dungeon;
         let data = new NonPlayerData();
         data.resName = "iconboss004";

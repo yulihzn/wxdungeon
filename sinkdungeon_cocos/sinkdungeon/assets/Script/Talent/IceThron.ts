@@ -5,6 +5,9 @@ import StatusManager from "../manager/StatusManager";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
 import CCollider from "../collider/CCollider";
+import Actor from "../base/Actor";
+import StatusData from "../data/StatusData";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +22,8 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class IceThron extends cc.Component {
+export default class IceThron extends BaseColliderComponent {
+    
     hasTargetMap: { [key: string]: number } = {};
 
     isAttacking = false;
@@ -27,6 +31,7 @@ export default class IceThron extends cc.Component {
     player:Player;
 
     onLoad () {
+        super.onLoad();
     }
 
     start() {

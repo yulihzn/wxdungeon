@@ -11,6 +11,7 @@ import FromData from "../data/FromData";
 import Achievement from "../logic/Achievement";
 import IndexZ from "../utils/IndexZ";
 import Item from "../item/Item";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -232,6 +233,7 @@ export default class Kraken extends Boss {
 
 
     }
+    
     actorName() {
         return '海妖';
     }

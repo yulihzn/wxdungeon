@@ -20,7 +20,6 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class ShadowPlayer extends cc.Component {
-
     @property(PlayerWeapon)
     weaponLeft: PlayerWeapon = null;
     @property(PlayerWeapon)
@@ -39,8 +38,6 @@ export default class ShadowPlayer extends cc.Component {
     playerLastPos: cc.Vec3 = cc.v3(0, 0);
     moveList: cc.Vec3[] = [];
     readonly SCALE = 3;
-
-    // LIFE-CYCLE CALLBACKS:
 
     init(player: Player, spriteframe: cc.SpriteFrame, index: number, lifeTime: number) {
         this.player = player;
@@ -142,4 +139,5 @@ export default class ShadowPlayer extends cc.Component {
             }
         }
     }
+    
 }

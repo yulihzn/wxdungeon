@@ -10,6 +10,7 @@ import { EventHelper } from "../logic/EventHelper";
 import AudioPlayer from "../utils/AudioPlayer";
 import FromData from "../data/FromData";
 import Achievement from "../logic/Achievement";
+import CCollider from "../collider/CCollider";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,7 +39,6 @@ export default class Dryad extends Boss {
     shooter02: Shooter;//加特林左
     shooter03: Shooter;//加特林右
     private timeDelay = 0;
-    rigidbody: cc.RigidBody;
     isMoving = false;
     @property(cc.Node)
     flower01: cc.Node = null;
@@ -61,7 +61,6 @@ export default class Dryad extends Boss {
         this.shooter01.from.valueCopy(from);
         this.shooter02.from.valueCopy(from);
         this.shooter03.from.valueCopy(from);
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         this.hand01.from.valueCopy(from);
         this.hand02.from.valueCopy(from);
@@ -134,7 +133,7 @@ export default class Dryad extends Boss {
     twineGrass() {
         this.twineGrassSkill.next(() => {
             this.schedule(() => {
-                this.dungeon.buildingManager.addTwineGrass(Dungeon.getPosInMap(this.dungeon.player.pos.clone()), true);
+                this.dungeon.buildingManager.addTwineGrass(this.dungeon.player.pos.clone(), true);
             }, 1, 2);
         }, 8, true);
     }
@@ -210,8 +209,9 @@ export default class Dryad extends Boss {
             this.killed();
         }
         this.healthBar.node.active = !this.sc.isDied;
-        this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+        this.entity.Move.linearVelocity = cc.Vec2.ZERO;
     }
+    
     actorName() {
         return '远古之树';
     }

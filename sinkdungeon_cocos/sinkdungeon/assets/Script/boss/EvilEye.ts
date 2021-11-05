@@ -34,7 +34,6 @@ export default class EvilEye extends Boss {
     private anim: cc.Animation;
     shooter: Shooter;
     private timeDelay = 0;
-    rigidbody: cc.RigidBody;
     isMoving = false;
     viceEyes: cc.Node[];//1-6个副眼
     viceShooters: Shooter[];//1-6个副炮
@@ -52,7 +51,6 @@ export default class EvilEye extends Boss {
         this.graphics = this.getComponent(cc.Graphics);
         this.anim = this.getComponent(cc.Animation);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         this.viceEyes = new Array();
         this.viceEyes.push(this.node.getChildByName('sprite').getChildByName('limb1').getChildByName('tentacle1')
@@ -127,7 +125,7 @@ export default class EvilEye extends Boss {
         let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
         let isHalf = this.data.currentHealth < this.data.Common.maxHealth / 2;
         if (playerDis < 100) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
 
         if (!this.mainEyesFireSkill.IsExcuting && isHalf && !this.anim.getAnimationState('EvilEyeHurt').isPlaying) {
@@ -218,7 +216,7 @@ export default class EvilEye extends Boss {
             let v = pos.y;
             let movement = cc.v2(h, v);
             movement = movement.mul(800);
-            this.rigidbody.linearVelocity = movement;
+            this.entity.Move.linearVelocity = movement;
             this.scheduleOnce(() => {
                 this.dashSkill.IsExcuting = false;
             }, 2);
@@ -261,7 +259,7 @@ export default class EvilEye extends Boss {
         }
         this.healthBar.node.active = !this.sc.isDied;
         if (this.sc.isDied) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
     }
 
@@ -279,21 +277,24 @@ export default class EvilEye extends Boss {
 
         let movement = cc.v2(h, v);
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
+        this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
 
         this.changeZIndex();
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && (this.dashSkill.IsExcuting)) {
-            let d = new DamageData();
-            d.physicalDamage = 15;
-            let from = FromData.getClone(this.actorName(), 'evileyeeye');
-            if (target.takeDamage(d, from, this)) {
-                target.addStatus(StatusManager.BLEEDING, from);
+        if(self.tag == CCollider.TAG.BOSS_HIT){
+            let target = ActorUtils.getEnemyCollisionTarget(other);
+            if (target && (this.dashSkill.IsExcuting)) {
+                let d = new DamageData();
+                d.physicalDamage = 15;
+                let from = FromData.getClone(this.actorName(), 'evileyeeye');
+                if (target.takeDamage(d, from, this)) {
+                    target.addStatus(StatusManager.BLEEDING, from);
+                }
             }
         }
+        
     }
     actorName() {
         return '邪眼';

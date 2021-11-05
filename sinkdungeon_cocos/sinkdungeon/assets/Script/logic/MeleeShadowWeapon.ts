@@ -5,6 +5,7 @@ import AudioPlayer from "../utils/AudioPlayer";
 import MeleeWeapon from "./MeleeWeapon";
 import Utils from "../utils/Utils";
 import CCollider from "../collider/CCollider";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -19,7 +20,7 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MeleeShadowWeapon extends cc.Component {
+export default class MeleeShadowWeapon extends BaseColliderComponent {
 
     player: Player = null;
     meleeWeapon:MeleeWeapon;
@@ -39,6 +40,9 @@ export default class MeleeShadowWeapon extends cc.Component {
             return this.meleeWeapon.IsReflect;
         }
         return false;
+    }
+    onLoad(){
+        super.onLoad();
     }
 
     init(player:Player,meleeWeapon:MeleeWeapon) {

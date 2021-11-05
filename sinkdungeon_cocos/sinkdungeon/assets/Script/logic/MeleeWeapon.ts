@@ -24,6 +24,7 @@ import ActorUtils from "../utils/ActorUtils";
 import InteractBuilding from "../building/InteractBuilding";
 import Utils from "../utils/Utils";
 import CCollider from "../collider/CCollider";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -38,7 +39,7 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MeleeWeapon extends cc.Component {
+export default class MeleeWeapon extends BaseColliderComponent {
     public static readonly ELEMENT_TYPE_ICE = 1;
     public static readonly ELEMENT_TYPE_FIRE = 2;
     public static readonly ELEMENT_TYPE_LIGHTENING = 3;
@@ -124,6 +125,7 @@ export default class MeleeWeapon extends cc.Component {
     }
 
     onLoad() {
+        super.onLoad();
         this.anim = this.getComponent(cc.Animation);
         this.player = this.playerNode.getComponent(Player);
         this.weaponFirePoint = this.node.getChildByName('firepoint');
@@ -503,7 +505,6 @@ export default class MeleeWeapon extends cc.Component {
     }
 
     private beatBack(actor: Actor) {
-        let rigidBody: cc.RigidBody = actor.getComponent(cc.RigidBody);
         let pos = this.Hv.clone();
         if (pos.equals(cc.Vec3.ZERO)) {
             pos = cc.v3(1, 0);
@@ -524,8 +525,7 @@ export default class MeleeWeapon extends cc.Component {
 
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
-            rigidBody.linearVelocity = cc.Vec2.ZERO;
-            rigidBody.applyLinearImpulse(cc.v2(pos.x, pos.y), rigidBody.getLocalCenter(), true);
+            actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y);
         }, 0.05);
     }
     public attacking(attackTarget: CCollider, anim: cc.Animation, isShadow: boolean): boolean {

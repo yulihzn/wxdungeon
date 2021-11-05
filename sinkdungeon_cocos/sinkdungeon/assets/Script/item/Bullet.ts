@@ -25,6 +25,8 @@ import MeleeShadowWeapon from "../logic/MeleeShadowWeapon";
 import MeleeWeapon from "../logic/MeleeWeapon";
 import Shield from "../logic/Shield";
 import CCollider from "../collider/CCollider";
+import StatusData from "../data/StatusData";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -39,7 +41,7 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Bullet extends cc.Component {
+export default class Bullet extends BaseColliderComponent {
 
     @property(cc.Prefab)
     boom: cc.Prefab = null;
@@ -48,7 +50,6 @@ export default class Bullet extends cc.Component {
     anim: cc.Animation;
     dir = 0;
     tagetPos = cc.v3(0, 0);
-    rigidBody: cc.RigidBody;
     hv = cc.v3(0, 0);
     isFromPlayer = false;
 
@@ -74,10 +75,10 @@ export default class Bullet extends cc.Component {
     shooter:Shooter;
     private currentLinearVelocity = cc.v2(0,0);
     // LIFE-CYCLE CALLBACKS:
-
+    
     onLoad() {
+        super.onLoad();
         this.anim = this.getComponent(cc.Animation);
-        this.rigidBody = this.getComponent(cc.RigidBody);
         this.collider = this.getComponent(CCollider);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
@@ -92,7 +93,7 @@ export default class Bullet extends cc.Component {
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0);
-        this.rigidBody.linearVelocity = cc.v2(0, 0);
+        this.entity.Move.linearVelocity = cc.v2(0, 0);
         this.currentLinearVelocity = cc.v2(0,0);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
@@ -112,7 +113,7 @@ export default class Bullet extends cc.Component {
     checkTimeDelay = 0;
     update(dt) {
         if(Logic.isGamePause){
-            this.rigidBody.linearVelocity = cc.v2(0,0);
+            this.entity.Move.linearVelocity = cc.v2(0,0);
             return;
         }
         this.checkTimeDelay += dt;
@@ -131,7 +132,7 @@ export default class Bullet extends cc.Component {
                 this.currentLinearVelocity = this.currentLinearVelocity.lerp(cc.v2(0, 0), d * dt);
             }
         }
-        this.rigidBody.linearVelocity = this.currentLinearVelocity;
+        this.entity.Move.linearVelocity = this.currentLinearVelocity;
     }
 
     private checkTraking(): void {
@@ -254,11 +255,9 @@ export default class Bullet extends cc.Component {
         this.shooter.addDestroyBullet(this.node);
     }
     fire(hv: cc.Vec3) {
-        if (!this.rigidBody) {
-            this.rigidBody = this.getComponent(cc.RigidBody);
-        }
+        
         this.currentLinearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
-        this.rigidBody.linearVelocity = this.currentLinearVelocity;
+        this.entity.Move.linearVelocity = this.currentLinearVelocity;
         //记录发射点
         this.startPos = this.node.convertToWorldSpaceAR(cc.v3(0, 0));
         this.sprite.stopAllActions();
@@ -467,7 +466,7 @@ export default class Bullet extends cc.Component {
         this.isHit = true;
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
             this.currentLinearVelocity = cc.v2(0,0);
-            this.rigidBody.linearVelocity = cc.v2(0, 0);
+            this.entity.Move.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }
         if (this.data.isBoom > 0) {

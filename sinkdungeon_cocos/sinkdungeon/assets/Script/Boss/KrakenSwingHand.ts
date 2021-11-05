@@ -3,6 +3,7 @@ import FromData from "../data/FromData";
 import Kraken from "./Kraken";
 import ActorUtils from "../utils/ActorUtils";
 import CCollider from "../collider/CCollider";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,14 +18,14 @@ import CCollider from "../collider/CCollider";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class KrakenSwingHand extends cc.Component {
+export default class KrakenSwingHand extends BaseColliderComponent {
     @property
     damage = 2;
     // LIFE-CYCLE CALLBACKS:
     isShow = false;
     anim:cc.Animation;
-
     onLoad () {
+        super.onLoad();
         this.anim = this.node.parent.getComponent(cc.Animation);
     }
     swing(){

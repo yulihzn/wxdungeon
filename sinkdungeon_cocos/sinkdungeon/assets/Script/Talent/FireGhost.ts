@@ -6,6 +6,9 @@ import Logic from "../logic/Logic";
 import IndexZ from "../utils/IndexZ";
 import ActorUtils from "../utils/ActorUtils";
 import CCollider from "../collider/CCollider";
+import Actor from '../base/Actor';
+import StatusData from "../data/StatusData";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -20,19 +23,18 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class FireGhost extends cc.Component {
-
+export default class FireGhost extends BaseColliderComponent {
+    
     isRotating = false;
     isAttacking = false;
     player: Player;
     angleOffset = 0;
     angle = 0;
-    rigidBody: cc.RigidBody;
     isDied = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
-        this.rigidBody = this.getComponent(cc.RigidBody);
+        super.onLoad();
     }
 
     start() {
@@ -97,7 +99,7 @@ export default class FireGhost extends cc.Component {
             if (!pos.equals(cc.Vec3.ZERO)) {
                 this.isAttacking = true;
                 let ps = pos.normalizeSelf().mulSelf(400);
-                this.rigidBody.linearVelocity = cc.v2(ps.x, ps.y);
+                this.entity.Move.linearVelocity = cc.v2(ps.x, ps.y);
             } else if (this.isRotating && this.player) {
                 this.angle += 5;
                 if (this.angle > 360) {
@@ -105,7 +107,7 @@ export default class FireGhost extends cc.Component {
                 }
                 pos = this.getPlayerFarPosition(this.player, 50, this.angle + this.angleOffset);
                 let ps = pos.sub(this.node.position).normalizeSelf().mulSelf(200);
-                this.rigidBody.linearVelocity = cc.v2(ps.x, ps.y);
+                this.entity.Move.linearVelocity = cc.v2(ps.x, ps.y);
             }
         }
     }

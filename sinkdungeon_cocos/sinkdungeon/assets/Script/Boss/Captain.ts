@@ -36,7 +36,6 @@ export default class Captain extends Boss {
 
     healthBar: HealthBar = null;
     private anim: cc.Animation;
-    rigidbody: cc.RigidBody;
     isFaceRight = true;
     isMoving = false;
     private timeDelay = 0;
@@ -50,7 +49,6 @@ export default class Captain extends Boss {
         this.attackSkill.IsExcuting = false;
         this.sc.isDied = false;
         this.anim = this.getComponent(cc.Animation);
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.shooter = this.node.getChildByName('Shooter').getComponent(Shooter);
         this.exshooter = this.node.getChildByName('ExShooter').getComponent(Shooter);
         this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'captain_head'));
@@ -145,16 +143,20 @@ export default class Captain extends Boss {
 
         }
     }
+    
     onColliderStay(other: CCollider, self: CCollider) {
-        let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && self.tag == CCollider.TAG.BOSS_HIT) {
-            if (this.isFall && !this.sc.isDied) {
-                this.isFall = false;
-                let dd = new DamageData();
-                dd.physicalDamage = 2;
-                target.takeDamage(dd, FromData.getClone(this.actorName(), 'captain_head'), this);
+        if(self.tag == CCollider.TAG.BOSS_HIT){
+            let target = ActorUtils.getEnemyCollisionTarget(other);
+            if (target) {
+                if (this.isFall && !this.sc.isDied) {
+                    this.isFall = false;
+                    let dd = new DamageData();
+                    dd.physicalDamage = 2;
+                    target.takeDamage(dd, FromData.getClone(this.actorName(), 'captain_head'), this);
+                }
             }
         }
+        
     }
 
     updateLogic(dt:number) {
@@ -171,11 +173,11 @@ export default class Captain extends Boss {
         if (this.dungeon) {
             let playerDis = this.getNearPlayerDistance(this.dungeon.player.node);
             if (playerDis < 96) {
-                this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+                this.entity.Move.linearVelocity = cc.Vec2.ZERO;
             }
         }
         if (this.sc.isDied) {
-            this.rigidbody.linearVelocity = cc.Vec2.ZERO;
+            this.entity.Move.linearVelocity = cc.Vec2.ZERO;
         }
         this.healthBar.node.active = !this.sc.isDied;
         if (this.data.currentHealth < 1) {
@@ -285,7 +287,7 @@ export default class Captain extends Boss {
             speed = 240;
         }
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
+        this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
     }
     move(pos: cc.Vec3, speed: number) {
@@ -306,7 +308,7 @@ export default class Captain extends Boss {
 
         let movement = cc.v2(h, v);
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
+        this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
         if (this.isMoving) {
             this.isFaceRight = h > 0;

@@ -41,7 +41,6 @@ export default class WarMachine extends Boss {
     shooter04: Shooter;//导弹左
     shooter05: Shooter;//导弹右
     private timeDelay = 0;
-    rigidbody: cc.RigidBody;
     isMoving = false;
     isMissileCoolDown = false;
     isGatlingCoolDown = false;
@@ -57,7 +56,6 @@ export default class WarMachine extends Boss {
         this.shooter03 = this.node.getChildByName('Shooter03').getComponent(Shooter);
         this.shooter04 = this.node.getChildByName('Shooter04').getComponent(Shooter);
         this.shooter05 = this.node.getChildByName('Shooter05').getComponent(Shooter);
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         let from = FromData.getClone(this.actorName(), 'bossmachinehead');
         this.shooter01.from.valueCopy(from);
@@ -265,16 +263,18 @@ export default class WarMachine extends Boss {
 
         let movement = cc.v2(h, v);
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
+        this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
         this.changeZIndex();
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && !this.sc.isDied) {
-            let d = new DamageData();
-            d.physicalDamage = 5;
-            target.takeDamage(d, FromData.getClone(this.actorName(), 'bossmachinehead'), this);
+        if(self.tag == CCollider.TAG.BOSS_HIT){
+            let target = ActorUtils.getEnemyCollisionTarget(other);
+            if (target && !this.sc.isDied) {
+                let d = new DamageData();
+                d.physicalDamage = 5;
+                target.takeDamage(d, FromData.getClone(this.actorName(), 'bossmachinehead'), this);
+            }
         }
     }
     actorName() {

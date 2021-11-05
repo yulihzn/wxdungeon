@@ -214,17 +214,15 @@
     },
     "_enabled": true,
     "tag": 12,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 0,
     "radius": 60,
     "w": 128,
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       3
     ],

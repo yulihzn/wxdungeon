@@ -108,20 +108,19 @@ export default class TalentDash extends Talent {
         if (target && !target.sc.isDied) {
             damageSuccess = target.takeDamage(damage);
             if (damageSuccess) {
-                this.beatBack(target.node);
+                this.beatBack(target);
                 this.addTargetAllStatus(target);
             }
         }
     }
-    beatBack(node: cc.Node) {
+    beatBack(node: Actor) {
         if (!this.hashTalent(Talent.DASH_04)) {
             return;
         }
-        let rigidBody: cc.RigidBody = node.getComponent(cc.RigidBody);
         let pos = this.hv.clone();
         let power = 1000;
         pos = pos.normalizeSelf().mul(power);
-        rigidBody.applyLinearImpulse(cc.v2(pos.x,pos.y), rigidBody.getLocalCenter(), true);
+        node.entity.Move.linearVelocity=cc.v2(pos.x,pos.y);
     }
 
     addTargetAllStatus(actor: Actor) {

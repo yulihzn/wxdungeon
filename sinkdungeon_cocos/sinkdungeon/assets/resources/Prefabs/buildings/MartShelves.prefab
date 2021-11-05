@@ -27,14 +27,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 31
+        "__id__": 30
       },
       {
-        "__id__": 32
+        "__id__": 31
       }
     ],
     "_prefab": {
-      "__id__": 33
+      "__id__": 32
     },
     "_opacity": 255,
     "_color": {
@@ -837,13 +837,10 @@
       },
       {
         "__id__": 28
-      },
-      {
-        "__id__": 29
       }
     ],
     "_prefab": {
-      "__id__": 30
+      "__id__": 29
     },
     "_opacity": 255,
     "_color": {
@@ -1031,27 +1028,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.BoxCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 22
-    },
-    "_enabled": true,
-    "tag": 0,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -48
-    },
-    "_size": {
-      "__type__": "cc.Size",
-      "width": 120,
-      "height": 20
-    },
-    "_id": ""
-  },
-  {
     "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
@@ -1068,8 +1044,9 @@
     "h": 20,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
-      3
+      21
     ],
     "ignoreTagList": [],
     "_id": ""
@@ -1118,6 +1095,7 @@
     "h": 48,
     "sensor": false,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""

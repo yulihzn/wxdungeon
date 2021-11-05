@@ -34,7 +34,6 @@ export default class Dragon extends Boss {
     private anim: cc.Animation;
     shooter01: Shooter;
     private timeDelay = 0;
-    rigidbody: cc.RigidBody;
     isMoving = false;
     fireSkill = new NextStep();
     rainSkill = new NextStep();
@@ -48,7 +47,6 @@ export default class Dragon extends Boss {
         this.anim = this.getComponent(cc.Animation);
         this.shooter01 = this.node.getChildByName('Shooter01').getComponent(Shooter);
         this.shooter01.from.valueCopy(FromData.getClone(this.actorName(), 'dragonhead'));
-        this.rigidbody = this.getComponent(cc.RigidBody);
         this.statusManager = this.node.getChildByName("StatusManager").getComponent(StatusManager);
         this.physicBox = this.getComponent(CCollider);
     }
@@ -101,7 +99,7 @@ export default class Dragon extends Boss {
         this.rainSkill.next(() => {
             this.rainSkill.IsExcuting = true;
             this.physicBox.sensor = true;
-            this.rigidbody.linearVelocity = cc.v2(0, 0);
+            this.entity.Move.linearVelocity = cc.v2(0, 0);
             this.anim.stop();
             this.anim.play('DragonFlyHigh');
             this.scheduleOnce(() => {
@@ -159,7 +157,7 @@ export default class Dragon extends Boss {
         let v = pos.y;
         let movement = cc.v2(h, v);
         movement = movement.mul(speed);
-        this.rigidbody.linearVelocity = movement;
+        this.entity.Move.linearVelocity = movement;
         this.isMoving = h != 0 || v != 0;
 
         this.changeZIndex();
@@ -203,12 +201,15 @@ export default class Dragon extends Boss {
         this.healthBar.node.active = !this.sc.isDied;
     }
     onColliderEnter(other: CCollider, self: CCollider) {
-        let target = ActorUtils.getEnemyCollisionTarget(other);
-        if (target && !this.sc.isDied && !this.physicBox.sensor) {
-            let d = new DamageData();
-            d.physicalDamage = 3;
-            target.takeDamage(d, FromData.getClone(this.actorName(), 'dragonhead'), this);
+        if(self.tag == CCollider.TAG.BOSS_HIT){
+            let target = ActorUtils.getEnemyCollisionTarget(other);
+            if (target && !this.sc.isDied && !this.physicBox.sensor) {
+                let d = new DamageData();
+                d.physicalDamage = 3;
+                target.takeDamage(d, FromData.getClone(this.actorName(), 'dragonhead'), this);
+            }
         }
+        
     }
     actorName() {
         return '末日黑龙';

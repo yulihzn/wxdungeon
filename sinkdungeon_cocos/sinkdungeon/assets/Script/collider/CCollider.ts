@@ -42,7 +42,8 @@ export default class CCollider extends cc.Component {
         TIPS: 17,//提示
         WARTER: 18,//水墙
         ENERGY_SHIELD: 19,//能量罩
-        LIGHT: 20//光线 特殊的一种类型，不做碰撞检测
+        LIGHT: 20,//光线 特殊的一种类型，不做碰撞检测
+        PLAYER_INTERACT:21//玩家触碰范围用来触发一些显示内容
     })
     @property({ type: CCollider.TAG, displayName: 'Collider Tag' })
     tag: number = CCollider.TAG.DEFAULT;
@@ -102,7 +103,6 @@ export default class CCollider extends cc.Component {
     //指定忽略的碰撞类型
     ignoreTags: Map<number, boolean> = new Map();
 
-    private graphics:cc.Graphics;
     private isStaying = false;
     private _center:cc.Vec3;
     private _aabb:cc.Rect;
@@ -112,6 +112,9 @@ export default class CCollider extends cc.Component {
     private _disableOnce = false;
     set disabledOnce(disabledOnce:boolean){
         this._disableOnce = disabledOnce;
+    }
+    get disabledOnce(){
+        return this._disableOnce;
     }
 
     setSize(s: cc.Size) {
@@ -185,8 +188,7 @@ export default class CCollider extends cc.Component {
         if (this.onContactListener) {
             this.onContactListener.onColliderPreSolve(other, this);
         }
-        if(this._disableOnce){
-            this._disableOnce = false;
+        if(this._disableOnce||other.disabledOnce){
             return;
         }
         if (this.inColliders[other.id]) {
@@ -248,6 +250,7 @@ export default class CCollider extends cc.Component {
     exit(other: CCollider) {
         if (this.inColliders[other.id]) {
             this.inColliders[other.id] = false;
+            this.disabledOnce = false;
             if (this.onContactListener) {
                 this.onContactListener.onColliderExit(other, this);
             }

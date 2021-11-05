@@ -3,6 +3,10 @@ import Logic from "../logic/Logic";
 import { EventHelper } from "../logic/EventHelper";
 import Random from "../utils/Random";
 import AudioPlayer from "../utils/AudioPlayer";
+import Actor from "../base/Actor";
+import DamageData from "../data/DamageData";
+import FromData from "../data/FromData";
+import StatusData from "../data/StatusData";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -17,10 +21,29 @@ import AudioPlayer from "../utils/AudioPlayer";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class Coin extends cc.Component {
+export default class Coin extends Actor {
+    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
+        return false;
+    }
+    actorName(): string {
+        return '';
+    }
+    addStatus(statusType: string, from: FromData): void {
+    }
+    getCenterPosition(): cc.Vec3 {
+        return this.node.position;
+    }
+    takeDizz(dizzDuration: number): void {
+    }
+    updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {
+    }
+    hideSelf(hideDuration: number): void {
+    }
+    updateDream(offset: number): number {
+        return 0;
+    }
     static readonly FACE_VALUE = 10;
     anim:cc.Animation;
-    rigidBody:cc.RigidBody;
     value:number = 0;
     valueRes=['gem01','gem02','gem03','gem04'];
     isReady = false;
@@ -31,15 +54,15 @@ export default class Coin extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad () {
+        this.initCollider();
     }
     onEnable(){
         this.anim = this.getComponent(cc.Animation);
-        this.rigidBody = this.getComponent(cc.RigidBody);
         let speed = 1200;
         let x = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
         let y = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
-        this.rigidBody.linearVelocity = cc.v2(x,y);
-        this.rigidBody.linearDamping = 10;
+        this.entity.Move.linearVelocity = cc.v2(x,y);
+        this.entity.Move.linearDamping = 10;
         this.isReady = false;
         this.scheduleOnce(()=>{this.isReady = true;},0.5);
     }
@@ -85,8 +108,8 @@ export default class Coin extends cc.Component {
                 if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf();
                     pos = pos.mul(800);
-                    this.rigidBody.linearVelocity = cc.v2(pos);
-                    this.rigidBody.linearDamping = 1;
+                    this.entity.Move.linearVelocity = cc.v2(pos);
+                    this.entity.Move.linearDamping = 1;
                 }
             }
             

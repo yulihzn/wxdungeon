@@ -1,3 +1,4 @@
+import BaseColliderComponent from "../base/BaseColliderComponent";
 import CCollider from "../collider/CCollider";
 import Bullet from "../item/Bullet";
 import NonPlayer from "../logic/NonPlayer";
@@ -17,11 +18,13 @@ import Random from "../utils/Random";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class AreaDetector extends cc.Component {
+export default class AreaDetector extends BaseColliderComponent {
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {}
+    onLoad () {
+        super.onLoad();
+    }
 
     step:NextStep = new NextStep();
     start () {

@@ -10,7 +10,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private tempColliders: { [key: string]: boolean } = {};
     private list: CCollider[] = [];
     private graphics: cc.Graphics;
-    private isDebug = true;
+    private isDebug = false;
     constructor(width: number, height: number, graphics: cc.Graphics) {
         super();
         let bounds = {
@@ -23,10 +23,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         this.graphics = graphics;
     }
     init() {
-
-    }
-    initList() {
-
+        // this.isDebug = Logic.isDebug;
+        this.isDebug = true;
     }
 
     filter(): ecs.IMatcher {
@@ -55,26 +53,6 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         for (let c of this.list) {
             c.drawDebug(this.graphics);
         }
-        // this.graphics.clear();
-        // this.graphics.strokeColor = cc.Color.WHITE;
-        // this.graphics.lineWidth = 10;
-        // for (let c of this.list) {
-        //     if (c.type == CCollider.TYPE.CIRCLE) {
-        //         let p0 = this.graphics.node.convertToNodeSpaceAR(c.w_center);
-        //         this.graphics.circle(p0.x, p0.y, c.w_radius);
-        //         this.graphics.stroke();
-        //     } else {
-        //         let p0 = this.graphics.node.convertToNodeSpaceAR(c.points[0]);
-        //         this.graphics.moveTo(p0.x, p0.y);
-        //         for (let i = 1; i < c.points.length - 1; i++) {
-        //             let p = this.graphics.node.convertToNodeSpaceAR(c.points[i]);
-        //             this.graphics.lineTo(p.x, p.y);
-        //         }
-        //         this.graphics.close();
-        //         this.graphics.stroke();
-        //     }
-        // }
-
     }
     private collisionCheck(entities: ActorEntity[]) {
         this.list = [];
@@ -148,6 +126,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 if (isCollision) {
                     collider.contact(other);
                     other.contact(collider);
+                    collider.disabledOnce = false;
+                    other.disabledOnce = false;
                 } else {
                     collider.exit(other);
                     other.exit(collider);

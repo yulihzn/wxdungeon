@@ -4,6 +4,8 @@ import FromData from "../data/FromData";
 import Actor from "../base/Actor";
 import ActorUtils from "../utils/ActorUtils";
 import CCollider from "../collider/CCollider";
+import StatusData from "../data/StatusData";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 
 // Learn TypeScript:
@@ -19,7 +21,7 @@ import CCollider from "../collider/CCollider";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class IceDemonThron extends cc.Component {
+export default class IceDemonThron extends BaseColliderComponent {
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -29,6 +31,7 @@ export default class IceDemonThron extends cc.Component {
     isUping = false;//是否上升中
 
     onLoad() {
+        super.onLoad();
         this.isUp = false;
         let mat:cc.MaterialVariant = this.node.getChildByName('thron').getComponent(cc.Sprite).getMaterial(0);
         mat.setProperty('addColor',cc.color(194,255,255));

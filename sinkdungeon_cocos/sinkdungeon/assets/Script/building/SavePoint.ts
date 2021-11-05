@@ -57,7 +57,9 @@ export default class SavePoint extends Building {
     update(dt) {
         if (this.lights.length > 0) {
             if (this.lights[0].showShadow && this.isCheckTimeDelay(dt)) {
-                this.lights[0].radius = Logic.lerp(this.lights[0].radius, 300, dt * 5);
+                let r = this.lights[0].radius;
+                r = Logic.lerp(r, 300, dt * 5);
+                this.lights[0].radius = r;
             }
         }
 

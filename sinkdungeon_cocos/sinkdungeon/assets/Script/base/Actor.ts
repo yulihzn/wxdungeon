@@ -52,7 +52,7 @@ export default abstract class Actor extends cc.Component implements OnContactLis
 
     /**初始化碰撞 */
     public initCollider() {
-        this.ccolliders = this.getComponents(CCollider);
+        this.ccolliders = [];
         let childColliders = this.getComponentsInChildren(CCollider);
         for (let c of childColliders){
             if(c.tag != CCollider.TAG.LIGHT){

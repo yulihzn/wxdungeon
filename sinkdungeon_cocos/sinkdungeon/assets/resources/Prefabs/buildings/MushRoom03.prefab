@@ -27,11 +27,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 30
+        "__id__": 29
       }
     ],
     "_prefab": {
-      "__id__": 31
+      "__id__": 30
     },
     "_opacity": 255,
     "_color": {
@@ -276,11 +276,6 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 12
-    },
     "offsetX": 0,
     "offsetY": 12,
     "type": 0,
@@ -289,6 +284,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       3,
       5,
@@ -431,11 +427,6 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 12
-    },
     "offsetX": 0,
     "offsetY": 12,
     "type": 0,
@@ -444,6 +435,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       3,
       5,
@@ -586,11 +578,6 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 12
-    },
     "offsetX": 0,
     "offsetY": 12,
     "type": 0,
@@ -599,6 +586,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       3,
       5,
@@ -741,11 +729,6 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 12
-    },
     "offsetX": 0,
     "offsetY": 12,
     "type": 0,
@@ -754,6 +737,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       3,
       5,
@@ -802,13 +786,10 @@
       },
       {
         "__id__": 27
-      },
-      {
-        "__id__": 28
       }
     ],
     "_prefab": {
-      "__id__": 29
+      "__id__": 28
     },
     "_opacity": 255,
     "_color": {
@@ -914,23 +895,6 @@
     "_id": ""
   },
   {
-    "__type__": "cc.CircleCollider",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 24
-    },
-    "_enabled": true,
-    "tag": 20,
-    "_offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_radius": 300,
-    "_id": ""
-  },
-  {
     "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
     "_name": "",
     "_objFlags": 0,
@@ -939,15 +903,15 @@
     },
     "_enabled": true,
     "tag": 20,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 0,
     "radius": 300,
     "w": 128,
     "h": 128,
+    "sensor": false,
+    "isStatic": false,
+    "isChild": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""

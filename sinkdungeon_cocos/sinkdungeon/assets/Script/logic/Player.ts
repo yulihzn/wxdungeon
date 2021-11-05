@@ -49,8 +49,8 @@ import MeleeWeapon from './MeleeWeapon';
 import Shield from './Shield';
 import CCollider from '../collider/CCollider';
 @ccclass
-export default class Player extends Actor{
-    
+export default class Player extends Actor {
+
 
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
@@ -113,7 +113,7 @@ export default class Player extends Actor{
 
     onLoad() {
         this.entity.Move.linearDamping = 2;
-        this.entity.Move.linearVelocity = cc.v2(0,0);
+        this.entity.Move.linearVelocity = cc.v2(0, 0);
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData.clone();
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData);
@@ -205,7 +205,7 @@ export default class Player extends Actor{
             this.lights[0].radius = 0;
         }
     }
-   
+
     public initShadowList(isFromSave: boolean, count: number, lifeTime: number) {
         if (count > 5) {
             count = 5;
@@ -1156,35 +1156,43 @@ export default class Player extends Actor{
         }
     }
     onColliderEnter(other: CCollider, self: CCollider): void {
-        this.touchedTips = null;
+        if (self.tag == CCollider.TAG.PLAYER_INTERACT) {
+            this.touchedTips = null;
+        }
     }
     onColliderStay(other: CCollider, self: CCollider): void {
-        if (this.touchDelay) {
-            return;
+        if (self.tag == CCollider.TAG.PLAYER_INTERACT) {
+            if (this.touchDelay) {
+                return;
+            }
+            let isInteract = false;
+            let equipment = other.node.getComponent(Equipment);
+            if (equipment) {
+                isInteract = true;
+            }
+            let item = other.node.getComponent(Item);
+            if (item) {
+                isInteract = true;
+            }
+            let tips = other.node.getComponent(Tips);
+            if (tips) {
+                isInteract = true;
+                this.touchedTips = tips;
+            }
+            if (isInteract) {
+                this.touchDelay = true;
+                this.scheduleOnce(() => { this.touchDelay = false; }, 0.1);
+            }
         }
-        let isInteract = false;
-        let equipment = other.node.getComponent(Equipment);
-        if (equipment) {
-            isInteract = true;
-        }
-        let item = other.node.getComponent(Item);
-        if (item) {
-            isInteract = true;
-        }
-        let tips = other.node.getComponent(Tips);
-        if (tips) {
-            isInteract = true;
-            this.touchedTips = tips;
-        }
-        if (isInteract) {
-            this.touchDelay = true;
-            this.scheduleOnce(() => { this.touchDelay = false; }, 0.1);
-        }
+
     }
     onColliderExit(other: CCollider, self: CCollider): void {
-        this.touchedTips = null;
+        if (self.tag == CCollider.TAG.PLAYER_INTERACT) {
+            this.touchedTips = null;
+
+        }
     }
-    onColliderPreSolve(other:CCollider,self:CCollider): void {
+    onColliderPreSolve(other: CCollider, self: CCollider): void {
         if (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.GOODNONPLAYER) {
             self.disabledOnce = true;
         }
