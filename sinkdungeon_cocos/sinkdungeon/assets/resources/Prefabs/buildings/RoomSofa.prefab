@@ -641,6 +641,7 @@
     "h": 98,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       21
     ],
@@ -685,8 +686,13 @@
     "h": 98,
     "sensor": false,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      1,
+      2,
+      12
+    ],
     "_id": ""
   },
   {
@@ -735,8 +741,13 @@
     "h": 30,
     "sensor": false,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      1,
+      2,
+      12
+    ],
     "_id": ""
   },
   {

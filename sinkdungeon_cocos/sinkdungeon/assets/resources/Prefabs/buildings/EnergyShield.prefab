@@ -530,26 +530,21 @@
     },
     "_enabled": true,
     "tag": 19,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 2
-    },
     "offsetX": 0,
     "offsetY": 2,
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 28,
-      "height": 18
-    },
     "w": 28,
     "h": 18,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      1,
+      2,
+      12
+    ],
     "_id": ""
   },
   {

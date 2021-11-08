@@ -11,6 +11,7 @@ import ActorEntity from "../ecs/entity/ActorEntity";
 import ShadowOfSight from "../effect/ShadowOfSight";
 import StateContext from "./StateContext";
 import OnContactListener from '../collider/OnContactListener';
+import BaseColliderComponent from './BaseColliderComponent';
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -55,7 +56,8 @@ export default abstract class Actor extends cc.Component implements OnContactLis
         this.ccolliders = [];
         let childColliders = this.getComponentsInChildren(CCollider);
         for (let c of childColliders){
-            if(c.tag != CCollider.TAG.LIGHT){
+            //BaseColliderComponent碰撞由BaseColliderComponent自身处理，光源只需要形状
+            if(c.tag != CCollider.TAG.LIGHT&&!c.getComponent(BaseColliderComponent)){
                 this.ccolliders.push(c);
             }
         }
@@ -75,7 +77,7 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     public setTargetTags(...tags: number[]) {
         for (let ccolider of this.ccolliders) {
             for (let tag of tags) {
-                ccolider.targetTags.set(tag, true);
+                ccolider.addTargetTags(tag);
             }
         }
     }
@@ -83,9 +85,13 @@ export default abstract class Actor extends cc.Component implements OnContactLis
     public setIgnoreTags(...tags: number[]) {
         for (let ccolider of this.ccolliders) {
             for (let tag of tags) {
-                ccolider.ignoreTags.set(tag, true);
+                ccolider.addIgnoreTags(tag);
             }
         }
+    }
+    destroyEntityNode(){
+        this.entity.destroy();
+        this.node.destroy();
     }
     onColliderEnter(other: CCollider, self: CCollider): void {
     }

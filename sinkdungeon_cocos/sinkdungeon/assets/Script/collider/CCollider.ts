@@ -43,7 +43,7 @@ export default class CCollider extends cc.Component {
         WARTER: 18,//水墙
         ENERGY_SHIELD: 19,//能量罩
         LIGHT: 20,//光线 特殊的一种类型，不做碰撞检测
-        PLAYER_INTERACT:21//玩家触碰范围用来触发一些显示内容
+        PLAYER_INTERACT: 21//玩家触碰范围用来触发一些显示内容
     })
     @property({ type: CCollider.TAG, displayName: 'Collider Tag' })
     tag: number = CCollider.TAG.DEFAULT;
@@ -79,7 +79,7 @@ export default class CCollider extends cc.Component {
     @property
     isStatic: boolean = false;
     @property
-    isChild = false;
+    ignoreSameTag = false;
 
     @property({ type: [CCollider.TAG], displayName: 'Target Tag' })
     targetTagList: number[] = [];
@@ -99,21 +99,21 @@ export default class CCollider extends cc.Component {
     //该碰撞体的实体类，如果有会计算物理部分
     entity: ActorEntity;
     //指定匹配碰撞类型，如果为空则匹配所有，如果不为空则只匹配map里的tag
-    targetTags: Map<number, boolean> = new Map();
+    targetTags: Map<string, boolean> = new Map();
     //指定忽略的碰撞类型
-    ignoreTags: Map<number, boolean> = new Map();
+    ignoreTags: Map<string, boolean> = new Map();
 
     private isStaying = false;
-    private _center:cc.Vec3;
-    private _aabb:cc.Rect;
-    private _radius:number;
-    private _points:cc.Vec2[] = [];
+    private _center: cc.Vec3;
+    private _aabb: cc.Rect;
+    private _radius: number;
+    private _points: cc.Vec2[] = [];
     isRotate = false;
     private _disableOnce = false;
-    set disabledOnce(disabledOnce:boolean){
+    set disabledOnce(disabledOnce: boolean) {
         this._disableOnce = disabledOnce;
     }
-    get disabledOnce(){
+    get disabledOnce() {
         return this._disableOnce;
     }
 
@@ -134,7 +134,7 @@ export default class CCollider extends cc.Component {
     get w_center() {
         return cc.v2(this._center);
     }
-    get points(){
+    get points() {
         return this._points;
     }
     private onContactListener: OnContactListener;
@@ -144,51 +144,60 @@ export default class CCollider extends cc.Component {
     setEntityNode(node: cc.Node) {
         this.entity.NodeRender.node = node;
     }
-    public fixCenterAndScale(){
+    public fixCenterAndScale() {
         this.isStaying = false;
-        let offset = cc.v3(this.offsetX,this.offsetY);
-        this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX,this.offsetY));
-        
+        let offset = cc.v3(this.offsetX, this.offsetY);
+        this._center = this.node.convertToWorldSpaceAR(cc.v3(this.offsetX, this.offsetY));
+
         let woffset = this.node.convertToWorldSpaceAR(offset);
-        this._radius = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.radius,0))).sub(woffset).mag();
-        let wlen = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w,0))).sub(woffset).mag();
-        let hlen = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.h,0))).sub(woffset).mag();
-        if(this.isCircle){
+        this._radius = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.radius, 0))).sub(woffset).mag();
+        let wlen = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w, 0))).sub(woffset).mag();
+        let hlen = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.h, 0))).sub(woffset).mag();
+        if (this.isCircle) {
             this.isRotate = false;
             this._points = [];
-            this._aabb = cc.rect(this._center.x-this._radius,this._center.y-this._radius,this._radius*2,this._radius*2);
-        }else{
-            this._aabb = cc.rect(this._center.x-wlen/2,this._center.y-hlen/2,wlen,hlen);
-            let p0 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w/2,-this.h/2)));
-            let p1 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w/2,this.h/2)));
-            let p2 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w/2,this.h/2)));
-            let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w/2,-this.h/2)));
-            this.isRotate = p0.x!=p1.x;
-            this._points = [cc.v2(p0),cc.v2(p1),cc.v2(p2),cc.v2(p3)];
+            this._aabb = cc.rect(this._center.x - this._radius, this._center.y - this._radius, this._radius * 2, this._radius * 2);
+        } else {
+            this._aabb = cc.rect(this._center.x - wlen / 2, this._center.y - hlen / 2, wlen, hlen);
+            let p0 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w / 2, -this.h / 2)));
+            let p1 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w / 2, this.h / 2)));
+            let p2 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w / 2, this.h / 2)));
+            let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w / 2, -this.h / 2)));
+            this.isRotate = p0.x != p1.x;
+            this._points = [cc.v2(p0), cc.v2(p1), cc.v2(p2), cc.v2(p3)];
         }
 
     }
-   
+
     /**
      * 更新子碰撞在根节点的位置
      */
     updateChildOffset() {
-       
+
     }
     onLoad() {
-        for (let t of this.targetTagList) {
-            this.targetTags.set(t, true);
-        }
-        for (let i of this.targetTagList) {
-            this.ignoreTags.set(i, true);
+        this.setTargetTags(this.targetTagList);
+        this.setIgnoreTags(this.ignoreTagList);
+    }
+    /**添加碰撞目标tag */
+    public setTargetTags(tags: number[],isRemove?:boolean) {
+        for (let tag of tags) {
+            this.targetTags.set(`tag${tag}`, isRemove?false:true);
         }
     }
+    /**添加碰撞忽略tag */
+    public setIgnoreTags(tags: number[],isRemove?:boolean) {
+        for (let tag of tags) {
+            this.ignoreTags.set(`tag${tag}`, isRemove?false:true);
+        }
+    }
+    
 
     contact(other: CCollider) {
         if (this.onContactListener) {
             this.onContactListener.onColliderPreSolve(other, this);
         }
-        if(this._disableOnce||other.disabledOnce){
+        if (this._disableOnce || other.disabledOnce) {
             return;
         }
         if (this.inColliders[other.id]) {
@@ -257,19 +266,19 @@ export default class CCollider extends cc.Component {
         }
 
     }
-    drawDebug(graphics:cc.Graphics){
-        if(!graphics){
+    drawDebug(graphics: cc.Graphics) {
+        if (!graphics) {
             return;
         }
-        graphics.strokeColor = cc.color(255,255,255,200);
-        graphics.fillColor = cc.color(255,255,255,128);
+        graphics.strokeColor = cc.color(255, 255, 255, 160);
+        graphics.fillColor = cc.color(255, 255, 255, 60);
         graphics.lineWidth = 8;
         if (this.type == CCollider.TYPE.CIRCLE) {
-            let r1 = graphics.node.convertToNodeSpaceAR(cc.v3(this.w_radius,0));
-            let r2 = graphics.node.convertToNodeSpaceAR(cc.v3(0,0));
+            let r1 = graphics.node.convertToNodeSpaceAR(cc.v3(this.w_radius, 0));
+            let r2 = graphics.node.convertToNodeSpaceAR(cc.v3(0, 0));
             let center = graphics.node.convertToNodeSpaceAR(this.w_center);
             graphics.circle(center.x, center.y, r1.sub(r2).mag());
-            if(this.isStaying){
+            if (this.isStaying) {
                 graphics.fill();
             }
             graphics.stroke();
@@ -281,7 +290,7 @@ export default class CCollider extends cc.Component {
                 graphics.lineTo(p.x, p.y);
             }
             graphics.close();
-            if(this.isStaying){
+            if (this.isStaying) {
                 graphics.fill();
             }
             graphics.stroke();
@@ -290,7 +299,7 @@ export default class CCollider extends cc.Component {
     get Aabb(): cc.Rect {
         return this._aabb;
     }
-    get isCircle(){
+    get isCircle() {
         return this.type == CCollider.TYPE.CIRCLE;
     }
 

@@ -126,10 +126,10 @@ export default class MonsterManager extends BaseManager {
     private monsterRandomAttr: MonsterRandomAttr = new MonsterRandomAttr();
     clear(): void {
         for (let m of this.monsters) {
-            if (m && m.isValid) { m.destroy(); }
+            if (m && m.isValid) { m.destroyEntityNode(); }
         }
         for (let b of this.bosses) {
-            if (b && b.isValid) { b.destroy(); }
+            if (b && b.isValid) { b.destroyEntityNode(); }
         }
         this.monsters = new Array();
         this.bosses = new Array();
@@ -326,7 +326,7 @@ export default class MonsterManager extends BaseManager {
         monster.node.active = true;
         monster.pos = pos;
         monster.defautPos = pos;
-        monster.node.position = Dungeon.getPosInMap(pos);
+        monster.updatePlayerPos();
         monster.parentNonPlayer = parent;
         this.isRoomInitWithEnemy = monster.data.isTest < 1;
         this.monsterList.push(monster);

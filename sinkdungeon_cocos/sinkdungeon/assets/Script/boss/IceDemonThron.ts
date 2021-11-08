@@ -47,7 +47,7 @@ export default class IceDemonThron extends BaseColliderComponent {
         this.scheduleOnce(() => { this.isUp = false; }, 0.1);
         this.scheduleOnce(() => {
             if(this.node){
-                this.node.destroy();
+                this.destroyEntityNode();
             }
             }, 2);
         

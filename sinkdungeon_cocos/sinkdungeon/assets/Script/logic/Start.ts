@@ -82,15 +82,15 @@ export default class Start extends cc.Component {
             this.debugClickCount = 0;
             Logic.isDebug = true;
             this.debugButton.opacity = Logic.isDebug?255:0;
-            cc.director.getCollisionManager().enabledDebugDraw = true;
-            cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
-            cc.PhysicsManager.DrawBits.e_jointBit |
-            cc.PhysicsManager.DrawBits.e_shapeBit;
+            // cc.director.getCollisionManager().enabledDebugDraw = true;
+            // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
+            // cc.PhysicsManager.DrawBits.e_jointBit |
+            // cc.PhysicsManager.DrawBits.e_shapeBit;
         }else{
             Logic.isDebug = false;
             this.debugButton.opacity = 0;
-            cc.director.getCollisionManager().enabledDebugDraw = false;
-            cc.director.getPhysicsManager().debugDrawFlags = 0;
+            // cc.director.getCollisionManager().enabledDebugDraw = false;
+            // cc.director.getPhysicsManager().debugDrawFlags = 0;
             
         }
     }

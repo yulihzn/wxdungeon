@@ -657,7 +657,6 @@ export default class BuildingManager extends BaseManager {
     }
     private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let data = new FurnitureData();
-        data.valueCopy(Logic.furnitures[Furniture.STOOL]);
         switch (mapDataStr) {
             case 'Z2': data.valueCopy(Logic.furnitures[Furniture.DESK]); break;
             case 'Z3': data.valueCopy(Logic.furnitures[Furniture.TV]); break;

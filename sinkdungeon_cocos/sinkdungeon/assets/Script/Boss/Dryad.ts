@@ -215,4 +215,14 @@ export default class Dryad extends Boss {
     actorName() {
         return '远古之树';
     }
+
+    onColliderEnter(other: CCollider, self: CCollider){
+        if(self.tag == CCollider.TAG.BOSS_HIT){
+            if(self.id == this.hand01.collider.id){
+                this.hand01.onColliderEnter(other,self);
+            }else{
+                this.hand02.onColliderEnter(other,self);
+            }
+        }
+    }
 }

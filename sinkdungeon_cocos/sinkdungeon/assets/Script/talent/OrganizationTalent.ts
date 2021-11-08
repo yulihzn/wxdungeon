@@ -93,7 +93,7 @@ export default class OrganizationTalent extends Talent {
                 let s = this.energyShieldList.pop();
                 s.isShow = false;
                 if (s && s.isValid) {
-                    s.destroy();
+                    s.destroyEntityNode();
                 }
             }
             let shield = this.player.dungeon.buildingManager.addEnergyShield(this.player);

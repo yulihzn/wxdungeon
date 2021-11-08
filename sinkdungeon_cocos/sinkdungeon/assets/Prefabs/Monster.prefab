@@ -1791,8 +1791,8 @@
     "radius": 150,
     "w": 128,
     "h": 128,
-    "sensor": false,
-    "isStatic": false,
+    "sensor": true,
+    "isStatic": true,
     "isChild": false,
     "targetTagList": [
       3,
@@ -3007,10 +3007,14 @@
     "w": 32,
     "h": 32,
     "sensor": false,
-    "isStatic": true,
+    "isStatic": false,
     "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      3,
+      5,
+      7
+    ],
     "_id": ""
   },
   {

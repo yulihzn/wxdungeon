@@ -100,7 +100,7 @@ export default class EnergyShield extends Building {
             this.isShow = false;
             this.node.active = false;
             this.base.active = false;
-            this.scheduleOnce(()=>{this.node.destroy();this.base.destroy();},1);
+            this.scheduleOnce(()=>{this.destroyEntityNode();this.base.destroy();},1);
         }
         return true;
     }

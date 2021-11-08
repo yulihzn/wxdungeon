@@ -39,7 +39,7 @@ export default class IceThron extends BaseColliderComponent {
     //Anim
     AnimFinish(){
         this.isAttacking = false;
-        this.scheduleOnce(() => { if (this.node) this.node.destroy(); }, 1);
+        this.scheduleOnce(() => { if (this.node) this.destroyEntityNode(); }, 1);
     }
     show(player:Player,angle:number,distance:number,scale:number){
         this.player = player;

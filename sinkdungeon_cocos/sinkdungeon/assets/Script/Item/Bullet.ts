@@ -93,6 +93,7 @@ export default class Bullet extends BaseColliderComponent {
     }
     onEnable() {
         this.tagetPos = cc.v3(0, 0);
+        this.entity.NodeRender.node = this.node;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
         this.currentLinearVelocity = cc.v2(0,0);
         this.sprite = this.node.getChildByName('sprite');
@@ -274,7 +275,7 @@ export default class Bullet extends BaseColliderComponent {
         } else {
             cc.tween(this.sprite).repeatForever(idletween).start();
         }
-
+        this.unscheduleAllCallbacks();
         if (this.data.lifeTime > 0) {
             this.scheduleOnce(() => { this.bulletHit(); }, this.data.lifeTime);
         } else {
@@ -305,7 +306,6 @@ export default class Bullet extends BaseColliderComponent {
                 || other.tag == CCollider.TAG.BULLET
                 || other.tag == CCollider.TAG.WARTER
                 || other.sensor
-                || other.tag == CCollider.TAG.WALL_TOP
                 || this.data.isInvincible > 0) {
                 isDestory = false;
             }
@@ -394,7 +394,7 @@ export default class Bullet extends BaseColliderComponent {
                     isDestory = true;
                 }
             }
-        } else if (tag == CCollider.TAG.BUILDING || tag == CCollider.TAG.WALL) {
+        } else if (tag == CCollider.TAG.BUILDING || tag == CCollider.TAG.WALL || tag == CCollider.TAG.WALL_TOP) {
             let interactBuilding = attackTarget.getComponent(InteractBuilding);
             if (this.data.canBreakBuilding == 1 && interactBuilding) {
                 damageSuccess = true;

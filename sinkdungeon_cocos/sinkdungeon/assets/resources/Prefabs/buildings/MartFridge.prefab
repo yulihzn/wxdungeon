@@ -1264,6 +1264,7 @@
     "h": 40,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       21
     ],
@@ -1300,8 +1301,13 @@
     "h": 48,
     "sensor": false,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      1,
+      2,
+      12
+    ],
     "_id": ""
   },
   {

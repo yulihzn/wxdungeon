@@ -924,7 +924,11 @@
     "isStatic": true,
     "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      2,
+      1,
+      12
+    ],
     "_id": ""
   },
   {

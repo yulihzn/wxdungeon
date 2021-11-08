@@ -47,7 +47,7 @@ export default class DryadGrass extends Building {
         this.scheduleOnce(() => { this.isUp = false; }, 0.1);
         this.scheduleOnce(() => {
             if(this.node){
-                this.node.destroy();
+                this.destroyEntityNode();
             }
             }, 6);
         

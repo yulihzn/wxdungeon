@@ -18,7 +18,7 @@ import BaseColliderComponent from "../base/BaseColliderComponent";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class BossAttackCollider extends BaseColliderComponent {
+export default class BossAttackCollider extends cc.Component {
     @property
     damage = 9;
     @property(cc.Node)
@@ -26,9 +26,10 @@ export default class BossAttackCollider extends BaseColliderComponent {
     from:FromData = new FromData();
     // LIFE-CYCLE CALLBACKS:
     private isShow = false;
+    collider:CCollider;
 
     onLoad () {
-        super.onLoad();
+        this.collider = this.getComponent(CCollider);
     }
 
     start () {

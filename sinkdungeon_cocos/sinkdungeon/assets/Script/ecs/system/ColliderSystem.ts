@@ -4,6 +4,7 @@ import Quadtree from '../../collider/Quadtree';
 import CCollider from '../../collider/CCollider';
 import ActorEntity from '../entity/ActorEntity';
 import RayCastResult from './RayCastResult';
+import Logic from '../../logic/Logic';
 
 export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private quadTree: Quadtree;
@@ -11,6 +12,9 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private list: CCollider[] = [];
     private graphics: cc.Graphics;
     private isDebug = false;
+    private allCount = 0;
+    private collisionCount = 0;
+    private activeCount = 0;
     constructor(width: number, height: number, graphics: cc.Graphics) {
         super();
         let bounds = {
@@ -23,8 +27,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         this.graphics = graphics;
     }
     init() {
-        // this.isDebug = Logic.isDebug;
-        this.isDebug = true;
+        this.isDebug = Logic.isDebug;
+        // this.isDebug = true;
     }
 
     filter(): ecs.IMatcher {
@@ -40,8 +44,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         return false;
     }
     update(entities: ActorEntity[]): void {
-        
-        this.collisionCheck(entities);
+        this.initCollider(entities);
+        this.collisionCheck();
         this.updateDebug();
 
     }
@@ -54,39 +58,32 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             c.drawDebug(this.graphics);
         }
     }
-    private collisionCheck(entities: ActorEntity[]) {
+    private initCollider(entities: ActorEntity[]){
         this.list = [];
         for (let e of entities) {
             let colliders = e.Collider.colliders;
             for (let collider of colliders) {
                 collider.entity = e;
-                collider.fixCenterAndScale();
-                this.list.push(collider);
-                this.quadTree.insert(collider);
+                if(collider.enabled&&collider.node.active){
+                    collider.fixCenterAndScale();
+                    this.list.push(collider);
+                    this.quadTree.insert(collider);
+                }
             }
         }
-        
+    }
+    private collisionCheck() {
         this.tempColliders = {};
+        let allCount = 0;
+        let collisionCount = 0;
+        let activeCount = 0;
         for (let collider of this.list) {
             if (!collider.enabled) {
                 continue;
             }
             let colliders = this.quadTree.retrieve(collider);
             for (let other of colliders) {
-                if (collider.targetTags.size > 0) {
-                    if (!collider.targetTags.has(other.tag)) {
-                        continue;
-                    }
-                } else if (collider.ignoreTags.has(other.tag)) {
-                    continue;
-                }
-                if (other.targetTags.size > 0) {
-                    if (!other.targetTags.has(collider.tag)) {
-                        continue;
-                    }
-                } else if (other.ignoreTags.has(collider.tag)) {
-                    continue;
-                }
+                allCount++;
                 if (!other.enabled) {
                     continue;
                 }
@@ -101,6 +98,29 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 if (this.tempColliders[`${collider.id},${other.id}`] || this.tempColliders[`${other.id},${collider.id}`]) {
                     continue;
                 }
+                if(other.tag == CCollider.TAG.PLAYER&&collider.ignoreSameTag){
+                    cc.log('Player Collider');
+                }
+                if(collider.ignoreSameTag){
+                    if(collider.tag == other.tag ){
+                        continue;
+                    }
+                }
+                if (collider.targetTags.size > 0) {
+                    if (!collider.targetTags[other.tag]) {
+                        continue;
+                    }
+                } else if (collider.ignoreTags[other.tag]) {
+                    continue;
+                }
+                if (other.targetTags.size > 0) {
+                    if (!other.targetTags[collider.tag]) {
+                        continue;
+                    }
+                } else if (other.ignoreTags[collider.tag]) {
+                    continue;
+                }
+                
                 let isCollision = false;
                 if (collider.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
                     //矩形检测
@@ -123,11 +143,13 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                     //圆形矩形检测
                     isCollision = this.polygonCircle(other.points, collider.w_center, collider.w_radius);
                 }
+                activeCount++;
                 if (isCollision) {
                     collider.contact(other);
                     other.contact(collider);
                     collider.disabledOnce = false;
                     other.disabledOnce = false;
+                    collisionCount++;
                 } else {
                     collider.exit(other);
                     other.exit(collider);
@@ -137,6 +159,12 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             }
         }
         this.quadTree.clear();
+        if(this.isDebug&&this.allCount+this.collisionCount+this.activeCount != allCount+activeCount+collisionCount){
+            this.allCount = allCount;
+            this.activeCount = activeCount;
+            this.collisionCount = collisionCount;
+            cc.log(`All:${this.allCount},calculate:${this.activeCount},contact:${this.collisionCount},uncontact:${this.activeCount-this.collisionCount}`)
+        }
     }
 
     private recHit(rect1: cc.Rect, rect2: cc.Rect) {

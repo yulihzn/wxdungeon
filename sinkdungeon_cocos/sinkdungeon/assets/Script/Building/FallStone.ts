@@ -48,7 +48,7 @@ export default class FallStone extends Building {
         this.scheduleOnce(() => { this.isFall = false; }, 0.1);
         this.scheduleOnce(() => {
             if(this.node){
-                this.node.destroy();
+                this.destroyEntityNode();
             }
             }, 2);
         

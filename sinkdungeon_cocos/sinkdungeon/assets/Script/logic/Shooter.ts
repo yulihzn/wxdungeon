@@ -61,8 +61,6 @@ export default class Shooter extends cc.Component {
     isBuilding = false;
     anim: cc.Animation;
     private aoePools: { [key: string]: cc.NodePool } = {};
-    private delayDestoryAoeList: NodeKey[] = [];
-    private delayDestoryBulletList: cc.Node[] = [];
 
     onLoad() {
         this.graphics = this.getComponent(cc.Graphics);
@@ -170,7 +168,7 @@ export default class Shooter extends cc.Component {
             aoe.show(this.dungeon.node, pos, this.hv, angleOffset, aoeData, killCallBack, usePool, (node: cc.Node) => {
                 if (usePool) {
                     node.active = false;
-                    this.delayDestoryAoeList.push(new NodeKey(prefab.name, node));
+                    this.destroyAoePrefab(new NodeKey(prefab.name, node));
                 }
             });
         }
@@ -290,6 +288,7 @@ export default class Shooter extends cc.Component {
         bulletPrefab.scaleY = 1;
         bulletPrefab.active = true;
         let bullet = bulletPrefab.getComponent(Bullet);
+        bullet.entity.Transform.position = pos;
         bullet.shooter = this;
         // bullet.node.rotation = this.node.scaleX < 0 ? -this.node.rotation-angleOffset : this.node.rotation-angleOffset;
         bullet.node.scaleY = this.node.scaleX > 0 ? 1 : -1;
@@ -319,7 +318,7 @@ export default class Shooter extends cc.Component {
     public addDestroyBullet(bulletNode: cc.Node) {
         // enemy 应该是一个 cc.Node
         bulletNode.active = false;
-        this.delayDestoryBulletList.push(bulletNode);
+        this.destroyBullet(bulletNode)
     }
     private destroyBullet(bulletNode: cc.Node) {
         if (this.bulletPool&&bulletNode) {
@@ -433,31 +432,9 @@ export default class Shooter extends cc.Component {
         this.graphics.close();
         this.graphics.fill();
     }
-    checkAoeTimeDelay = 0;
-    isCheckAoeTimeDelay(dt: number): boolean {
-        this.checkAoeTimeDelay += dt;
-        if (this.checkAoeTimeDelay > 0.1) {
-            this.checkAoeTimeDelay = 0;
-            return true;
-        }
-        return false;
-    }
-    checkTimeDelay = 0;
-    isCheckTimeDelay(dt: number): boolean {
-        this.checkTimeDelay += dt;
-        if (this.checkTimeDelay > 0.05) {
-            this.checkTimeDelay = 0;
-            return true;
-        }
-        return false;
-    }
+    
     update(dt: number) {
-        if(this.isCheckAoeTimeDelay(dt)){
-            this.destroyAoePrefab(this.delayDestoryAoeList.pop());
-        }
-        if(this.isCheckTimeDelay(dt)){
-            this.destroyBullet(this.delayDestoryBulletList.pop());
-        }
+       
     }
     private getParentNode(): cc.Node {
         if (this.parentNode) {

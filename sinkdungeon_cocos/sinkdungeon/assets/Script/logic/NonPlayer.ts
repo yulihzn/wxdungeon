@@ -38,12 +38,11 @@ import NonPlayerData from '../data/NonPlayerData';
 import StatusData from '../data/StatusData';
 import ActorUtils from '../utils/ActorUtils';
 import CCollider from '../collider/CCollider';
-import { MoveComponent } from '../ecs/component/MoveComponent';
 import AreaDetector from '../actor/AreaDetector';
 
 @ccclass
 export default class NonPlayer extends Actor {
-    
+
     public static readonly RES_DISGUISE = 'disguise';//图片资源 伪装
     public static readonly RES_IDLE000 = 'anim000';//图片资源 等待0
     public static readonly RES_IDLE001 = 'anim001';//图片资源 等待1
@@ -90,6 +89,7 @@ export default class NonPlayer extends Actor {
     private dashlight: cc.Node;
     private anim: cc.Animation;
     private boxCollider: CCollider;
+    private areaDetector: AreaDetector;
     graphics: cc.Graphics;
     isFaceRight = true;
     dungeon: Dungeon;
@@ -122,7 +122,7 @@ export default class NonPlayer extends Actor {
         return this.isVariation || this.data.StatusTotalData.variation > 0;
     }
     onLoad() {
-        
+
         this.initCollider();
         this.graphics = this.getComponent(cc.Graphics);
         this.sc.isAttacking = false;
@@ -142,10 +142,10 @@ export default class NonPlayer extends Actor {
         this.particleBlood = this.node.getChildByName('Effect').getChildByName('blood').getComponent(cc.ParticleSystem);
         this.particleBlood.stopSystem();
         this.attrNode = this.node.getChildByName('attr');
-        this.updatePlayerPos();
+        this.areaDetector = this.getComponentInChildren(AreaDetector);
         this.resetBodyColor();
         if (this.data.isStatic > 0) {
-            this.entity.remove(MoveComponent);
+            this.entity.Collider.colliders[0].isStatic = true;
         }
         this.dangerBox.init(this, this.dungeon, this.data.isEnemy > 0);
         this.dangerTips.opacity = 0;
@@ -157,9 +157,9 @@ export default class NonPlayer extends Actor {
         // this.graphics.strokeColor = cc.Color.RED;
         // this.graphics.circle(0,0,80);
         // this.graphics.stroke();
-        
+
     }
-   
+
     start() {
         this.changeZIndex();
         this.healthBar.refreshHealth(this.data.getHealth().x, this.data.getHealth().y);
@@ -175,9 +175,8 @@ export default class NonPlayer extends Actor {
         }
         this.addSaveStatusList();
         this.node.position = this.entity.Transform.position.clone();
-        this.entity.NodeRender.node = this.node;
         this.entity.Move.linearDamping = 2;
-        this.entity.Move.linearVelocity = cc.v2(0,0);
+        this.entity.Move.linearVelocity = cc.v2(0, 0);
     }
     /**挨打光效 */
     private hitLightS(damage: DamageData) {
@@ -308,6 +307,14 @@ export default class NonPlayer extends Actor {
         this.boxCollider.w = w;
         this.boxCollider.h = h;
         this.boxCollider.tag = this.data.isEnemy > 0 ? CCollider.TAG.NONPLAYER : CCollider.TAG.GOODNONPLAYER;
+        this.boxCollider.setIgnoreTags([CCollider.TAG.NONPLAYER],this.data.isEnemy > 0);
+        this.boxCollider.setIgnoreTags([CCollider.TAG.GOODNONPLAYER],this.data.isEnemy < 1);
+        if(this.data.blink>0){
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL]); 
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL_TOP]); 
+            this.boxCollider.setIgnoreTags([CCollider.TAG.BUILDING]); 
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WARTER]); 
+        }
         if (this.data.boxType > 2) {
             this.shadow.scale = 3;
         } else {
@@ -321,7 +328,7 @@ export default class NonPlayer extends Actor {
         }
         return spriteFrame;
     }
-    private updatePlayerPos() {
+    public updatePlayerPos() {
         this.entity.Transform.position = Dungeon.getPosInMap(this.pos);
         this.node.position = this.entity.Transform.position.clone();
     }
@@ -1099,7 +1106,7 @@ export default class NonPlayer extends Actor {
         return a + (b - a) * r;
     };
     onColliderEnter(other: CCollider, self: CCollider) {
-        if(self.tag == CCollider.TAG.NONPLAYER_HIT||self.tag == CCollider.TAG.GOODNONPLAYER_HIT){
+        if (self.tag == CCollider.TAG.NONPLAYER_HIT || self.tag == CCollider.TAG.GOODNONPLAYER_HIT) {
             let target = ActorUtils.getEnemyCollisionTarget(other, this.data.isEnemy < 1);
             if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
                 this.sc.isDashing = false;
@@ -1109,9 +1116,15 @@ export default class NonPlayer extends Actor {
                     this.addPlayerStatus(target, from);
                 }
             }
+        } else if (self.tag == CCollider.TAG.DEFAULT) {
+            this.areaDetector.onColliderEnter(other, self);
         }
     }
-
+    onColliderStay(other: CCollider, self: CCollider) {
+        if (self.tag == CCollider.TAG.NONPLAYER_HIT || self.tag == CCollider.TAG.GOODNONPLAYER_HIT) {
+            this.dangerBox.onColliderStay(other, self);
+        }
+    }
     takeDizz(dizzDuration: number) {
         if (dizzDuration > 0) {
             this.sc.isDizzing = true;
@@ -1138,6 +1151,9 @@ export default class NonPlayer extends Actor {
         this.bodySprite.node.color = cc.Color.BLACK;
         cc.tween(this.bodySprite.node).to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) }).call(() => {
             this.sc.isShow = true;
+            //ecs关联节点
+            this.entity.NodeRender.node = this.node;
+
 
         }).start();
     }
@@ -1194,6 +1210,7 @@ export default class NonPlayer extends Actor {
                 newPos = newPos.addSelf(cc.v3(-1, 0));
             }
             let pos = Dungeon.getPosInMap(newPos);
+            this.entity.Transform.position = pos;
             this.node.setPosition(pos);
         }).to(0.2, { opacity: 255 }).call(() => { this.sc.isBlinking = false; }).start();
     }
@@ -1223,7 +1240,7 @@ export default class NonPlayer extends Actor {
     updateDream(offset: number): number {
         return 0;
     }
-   
+
     onColliderExit(other: CCollider, self: CCollider): void {
     }
 }

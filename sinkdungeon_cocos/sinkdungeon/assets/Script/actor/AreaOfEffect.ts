@@ -56,7 +56,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
     close() {
         this.scheduleOnce(() => {
             if (this.node && this.node.isValid && !this.usePool) {
-                this.node.destroy();
+                this.destroyEntityNode();
             }
             if (this.destoryCallBack && this.usePool) {
                 this.destoryCallBack(this.node);

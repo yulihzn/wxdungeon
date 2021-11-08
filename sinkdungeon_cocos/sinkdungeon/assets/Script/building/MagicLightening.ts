@@ -58,7 +58,7 @@ export default class MagicLightening extends Building {
     AnimFinish(){
         this.scheduleOnce(() => {
             if(this.node){
-                this.node.destroy();
+                this.destroyEntityNode();
             }
             }, 2);
     }

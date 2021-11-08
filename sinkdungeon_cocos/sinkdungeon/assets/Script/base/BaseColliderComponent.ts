@@ -54,7 +54,7 @@ export default abstract class BaseColliderComponent extends cc.Component impleme
     public setTargetTags(...tags: number[]) {
         for (let ccolider of this.ccolliders) {
             for (let tag of tags) {
-                ccolider.targetTags.set(tag, true);
+                ccolider.addTargetTags(tag);
             }
         }
     }
@@ -62,10 +62,15 @@ export default abstract class BaseColliderComponent extends cc.Component impleme
     public setIgnoreTags(...tags: number[]) {
         for (let ccolider of this.ccolliders) {
             for (let tag of tags) {
-                ccolider.ignoreTags.set(tag, true);
+                ccolider.addIgnoreTags(tag);
             }
         }
     }
+    destroyEntityNode(){
+        this.entity.destroy();
+        this.node.destroy();
+    }
+    
     onColliderEnter(other: CCollider, self: CCollider): void {
     }
     onColliderStay(other: CCollider, self: CCollider): void {

@@ -745,24 +745,15 @@
     },
     "_enabled": true,
     "tag": 17,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -32
-    },
     "offsetX": 0,
     "offsetY": -32,
     "type": 0,
     "radius": 15,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 238,
-      "height": 98
-    },
     "w": 238,
     "h": 98,
     "sensor": true,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [
       21
     ],
@@ -841,26 +832,21 @@
     },
     "_enabled": true,
     "tag": 12,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 32
-    },
     "offsetX": 0,
     "offsetY": 32,
     "type": 1,
     "radius": 64,
-    "size": {
-      "__type__": "cc.Size",
-      "width": 128,
-      "height": 64
-    },
     "w": 128,
     "h": 64,
     "sensor": false,
     "isStatic": true,
+    "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      1,
+      2,
+      12
+    ],
     "_id": ""
   },
   {

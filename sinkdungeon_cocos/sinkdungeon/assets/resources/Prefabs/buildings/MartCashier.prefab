@@ -996,7 +996,11 @@
     "isStatic": true,
     "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      2,
+      12,
+      1
+    ],
     "_id": ""
   },
   {
@@ -1018,7 +1022,11 @@
     "isStatic": true,
     "isChild": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      12,
+      1,
+      2
+    ],
     "_id": ""
   },
   {

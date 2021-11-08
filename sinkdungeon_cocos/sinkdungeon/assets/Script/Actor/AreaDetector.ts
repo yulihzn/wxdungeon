@@ -18,12 +18,12 @@ import Random from "../utils/Random";
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class AreaDetector extends BaseColliderComponent {
+export default class AreaDetector extends cc.Component {
 
     // LIFE-CYCLE CALLBACKS:
-
+    collider:CCollider;
     onLoad () {
-        super.onLoad();
+        this.collider = this.getComponent(CCollider);
     }
 
     step:NextStep = new NextStep();

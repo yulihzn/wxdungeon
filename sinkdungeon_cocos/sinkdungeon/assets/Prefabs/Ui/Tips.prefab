@@ -228,6 +228,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": true,
     "targetTagList": [
       21
     ],
