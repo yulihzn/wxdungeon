@@ -165,8 +165,17 @@ export default class CCollider extends cc.Component {
             let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w / 2, -this.h / 2)));
             this.isRotate = p0.x != p1.x;
             this._points = [cc.v2(p0), cc.v2(p1), cc.v2(p2), cc.v2(p3)];
+            if (this.isRotate) {
+                let w1 = Math.abs(p0.x-p2.x);
+                let w2 = Math.abs(p1.x-p3.x);
+                let h1 = Math.abs(p0.y-p2.y);
+                let h2 = Math.abs(p1.y-p3.y);
+                let w = w1>w2?w1:w2;
+                let h = h1>h2?h1:h2;
+                
+                this._aabb = cc.rect(this._center.x - this._radius, this._center.y - this._radius, this._radius * 2, this._radius * 2);
+            }
         }
-
     }
 
     /**
@@ -180,18 +189,18 @@ export default class CCollider extends cc.Component {
         this.setIgnoreTags(this.ignoreTagList);
     }
     /**添加碰撞目标tag */
-    public setTargetTags(tags: number[],isRemove?:boolean) {
+    public setTargetTags(tags: number[], isRemove?: boolean) {
         for (let tag of tags) {
-            this.targetTags.set(`tag${tag}`, isRemove?false:true);
+            this.targetTags.set(`tag${tag}`, isRemove ? false : true);
         }
     }
     /**添加碰撞忽略tag */
-    public setIgnoreTags(tags: number[],isRemove?:boolean) {
+    public setIgnoreTags(tags: number[], isRemove?: boolean) {
         for (let tag of tags) {
-            this.ignoreTags.set(`tag${tag}`, isRemove?false:true);
+            this.ignoreTags.set(`tag${tag}`, isRemove ? false : true);
         }
     }
-    
+
 
     contact(other: CCollider) {
         if (this.onContactListener) {

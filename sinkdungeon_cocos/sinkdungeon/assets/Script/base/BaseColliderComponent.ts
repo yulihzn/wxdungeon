@@ -53,17 +53,13 @@ export default abstract class BaseColliderComponent extends cc.Component impleme
     /**设置碰撞目标tag */
     public setTargetTags(...tags: number[]) {
         for (let ccolider of this.ccolliders) {
-            for (let tag of tags) {
-                ccolider.addTargetTags(tag);
-            }
+            ccolider.setTargetTags(tags);
         }
     }
     /**设置碰撞忽略tag */
     public setIgnoreTags(...tags: number[]) {
         for (let ccolider of this.ccolliders) {
-            for (let tag of tags) {
-                ccolider.addIgnoreTags(tag);
-            }
+            ccolider.setIgnoreTags(tags);
         }
     }
     destroyEntityNode(){
