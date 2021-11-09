@@ -8,7 +8,7 @@ import Logic from '../../logic/Logic';
 
 export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
     private quadTree: Quadtree;
-    private tempColliders: { [key: string]: boolean } = {};
+    private tempColliders: Map<number, boolean> = new Map();
     private list: CCollider[] = [];
     private graphics: cc.Graphics;
     private isDebug = false;
@@ -73,7 +73,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
         }
     }
     private collisionCheck() {
-        this.tempColliders = {};
+        this.tempColliders.clear();
         let allCount = 0;
         let collisionCount = 0;
         let activeCount = 0;
@@ -90,34 +90,31 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 if (other === collider) {
                     continue;
                 }
-                //同一个物体不同的碰撞不校验
                 if (other.groupId == collider.groupId) {
                     continue;
                 }
-                //如果当前两个物体已经交互过则跳过
-                if (this.tempColliders[`${collider.id},${other.id}`] || this.tempColliders[`${other.id},${collider.id}`]) {
+                
+                if (this.tempColliders.has(collider.id*100000000+other.id) || this.tempColliders.has(other.id*100000000+collider.id)) {
                     continue;
                 }
-                if(other.tag == CCollider.TAG.PLAYER&&collider.ignoreSameTag){
-                    cc.log('Player Collider');
-                }
+                
                 if(collider.ignoreSameTag){
                     if(collider.tag == other.tag ){
                         continue;
                     }
                 }
                 if (collider.targetTags.size > 0) {
-                    if (!collider.targetTags[other.tag]) {
+                    if (!collider.targetTags.has(other.tag)) {
                         continue;
                     }
-                } else if (collider.ignoreTags[other.tag]) {
+                } else if (collider.ignoreTags.has(other.tag)) {
                     continue;
                 }
                 if (other.targetTags.size > 0) {
-                    if (!other.targetTags[collider.tag]) {
+                    if (!other.targetTags.has(collider.tag)) {
                         continue;
                     }
-                } else if (other.ignoreTags[collider.tag]) {
+                } else if (other.ignoreTags.has(collider.tag)) {
                     continue;
                 }
                 
@@ -155,7 +152,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                     other.exit(collider);
                 }
                 //标记当前循环已经碰撞过的物体对
-                this.tempColliders[`${collider.id},${other.id}`] = true;
+                this.tempColliders.set(collider.id*100000000+other.id,true);
             }
         }
         this.quadTree.clear();
@@ -163,7 +160,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             this.allCount = allCount;
             this.activeCount = activeCount;
             this.collisionCount = collisionCount;
-            cc.log(`All:${this.allCount},calculate:${this.activeCount},contact:${this.collisionCount},uncontact:${this.activeCount-this.collisionCount}`)
+            cc.log(`碰撞体数量:${this.list.length},循环次数:${this.allCount},碰撞计算次数:${this.activeCount},已碰撞:${this.collisionCount},未碰撞:${this.activeCount-this.collisionCount}`)
         }
     }
 
