@@ -95,6 +95,7 @@ export default class ItemManager extends BaseManager {
         itemPrefab.parent = parentNode;
         itemPrefab.position = pos;
         let item = isCoin ? itemPrefab.getComponent(Coin) : itemPrefab.getComponent(OilGold);
+        item.entity.Transform.position = pos;
         item.player = player;
         item.changeValue(value);
         item.node.zIndex = IndexZ.OVERHEAD;

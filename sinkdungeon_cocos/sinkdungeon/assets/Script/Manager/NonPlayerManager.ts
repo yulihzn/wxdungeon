@@ -36,13 +36,13 @@ export default class NonPlayerManager extends BaseManager {
     get nonPlayerList() {
         return this.nonplayers;
     }
-   
+
     clear(): void {
         Utils.clearComponentArray(this.nonplayers);
     }
     public addNonPlayerListFromSave(dungeon: Dungeon, list: NonPlayerData[], position: cc.Vec3) {
         for (let data of list) {
-            if (data.isPet || data.lifeTime > 0) { 
+            if (data.isPet || data.lifeTime > 0) {
                 this.addNonPlayer(this.getNonPlayer(data, dungeon), position);
             }
         }
@@ -113,18 +113,24 @@ export default class NonPlayerManager extends BaseManager {
     timeDelay = 0;
     updateLogic(dt: number) {
         Logic.nonPlayerList = [];
-        for (let monster of this.nonPlayerList) {
-            if (monster && monster.node.active) {
-                monster.updateLogic(dt);
-                let data = monster.data.clone();
-                if (monster.leftLifeTime > 0) {
-                    data.lifeTime = monster.leftLifeTime;
+        for (let i = this.nonplayers.length - 1; i >= 0; i--) {
+            let monster = this.nonPlayerList[i];
+            if (monster && monster.node) {
+                if (monster.node.active) {
+                    monster.updateLogic(dt);
+                    let data = monster.data.clone();
+                    if (monster.leftLifeTime > 0) {
+                        data.lifeTime = monster.leftLifeTime;
+                    }
+                    if (data.currentHealth > 0) {
+                        Logic.nonPlayerList.push(data);
+                    }
                 }
-                if (data.currentHealth > 0) {
-                    Logic.nonPlayerList.push(data);
-                }
+            } else {
+                this.nonplayers.splice(i, 1);
             }
         }
+
     }
 
 }

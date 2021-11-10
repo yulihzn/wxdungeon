@@ -3,10 +3,7 @@ import Logic from "../logic/Logic";
 import { EventHelper } from "../logic/EventHelper";
 import Random from "../utils/Random";
 import AudioPlayer from "../utils/AudioPlayer";
-import Actor from "../base/Actor";
-import DamageData from "../data/DamageData";
-import FromData from "../data/FromData";
-import StatusData from "../data/StatusData";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -21,27 +18,8 @@ import StatusData from "../data/StatusData";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class OilGold extends Actor {
-    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
-        return false;
-    }
-    actorName(): string {
-        return '';
-    }
-    addStatus(statusType: string, from: FromData): void {
-    }
-    getCenterPosition(): cc.Vec3 {
-        return this.node.position;
-    }
-    takeDizz(dizzDuration: number): void {
-    }
-    updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {
-    }
-    hideSelf(hideDuration: number): void {
-    }
-    updateDream(offset: number): number {
-        return 0;
-    }
+export default class OilGold extends BaseColliderComponent {
+
     static readonly FACE_VALUE = 100;
     value: number = 0;
     isReady = false;
@@ -50,6 +28,7 @@ export default class OilGold extends Actor {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+
         this.initCollider();
     }
     onEnable() {
@@ -57,9 +36,13 @@ export default class OilGold extends Actor {
         let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed;
         let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed;
         this.entity.Move.linearVelocity = cc.v2(x, y);
-        this.entity.Move.linearDamping = 10;
+        this.entity.Move.linearDamping = 5;
         this.isReady = false;
-        this.scheduleOnce(() => { this.isReady = true; }, 1);
+        this.scheduleOnce(() => {
+            this.isReady = true;
+            this.entity.Transform.position = this.node.position.clone();
+            this.entity.NodeRender.node = this.node;
+        }, 1);
     }
     changeValue(value: number) {
         //目前只有1和10

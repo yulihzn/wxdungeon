@@ -37,13 +37,10 @@
       },
       {
         "__id__": 24
-      },
-      {
-        "__id__": 25
       }
     ],
     "_prefab": {
-      "__id__": 26
+      "__id__": 25
     },
     "_opacity": 255,
     "_color": {
@@ -815,17 +812,15 @@
     },
     "_enabled": true,
     "tag": 20,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 0,
     "radius": 400,
     "w": 128,
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""
@@ -861,42 +856,6 @@
     "_id": ""
   },
   {
-    "__type__": "b2591n42odFIbhfimSigtUE",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_id": ""
-  },
-  {
-    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "type": 0,
-    "radius": 400,
-    "w": 128,
-    "h": 128,
-    "sensor": true,
-    "isStatic": true,
-    "targetTagList": [
-      3
-    ],
-    "ignoreTagList": [],
-    "_id": ""
-  },
-  {
     "__type__": "1c424MJYhhGnYiXSF5IIdkC",
     "_name": "",
     "_objFlags": 0,
@@ -914,18 +873,40 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 12,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+    "tag": 0,
+    "offsetX": 0,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 400,
+    "w": 128,
+    "h": 128,
+    "sensor": true,
+    "isStatic": true,
+    "ignoreSameTag": false,
+    "targetTagList": [
+      3
+    ],
+    "ignoreTagList": [],
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
     },
+    "_enabled": true,
+    "tag": 12,
+    "offsetX": 0,
+    "offsetY": 0,
     "type": 0,
     "radius": 20,
     "w": 128,
     "h": 128,
     "sensor": false,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [],
     "_id": ""

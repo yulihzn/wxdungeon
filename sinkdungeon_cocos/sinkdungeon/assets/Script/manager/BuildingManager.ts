@@ -42,6 +42,7 @@ import FurnitureData from "../data/FurnitureData";
 import LocalStorage from "../utils/LocalStorage";
 import RoomFishtank from "../building/RoomFishtank";
 import CCollider from "../collider/CCollider";
+import CampFire from "../building/CampFire";
 
 
 // Learn TypeScript:
@@ -455,6 +456,7 @@ export default class BuildingManager extends BaseManager {
             //生成营火
             let camp = this.addBuilding(Logic.getBuildings(BuildingManager.CAMPFIRE), indexPos);
             let shadow = camp.getChildByName('sprite').getChildByName('shadow');
+            let c = camp.getComponent(CampFire);
             shadow.position = Dungeon.getPosInMap(indexPos);
             shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
             shadow.parent = this.node;

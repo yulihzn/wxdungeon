@@ -47,16 +47,16 @@ export default abstract class Boss extends Actor {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node, offset?: cc.Vec3): number {
-        let p = this.entity.Transform.position.clone();
+        let p = this.node.position.clone();
         if (offset) {
             p.addSelf(offset);
         }
-        let dis = Logic.getDistanceNoSqrt(this.entity.Transform.position, playerNode.position);
+        let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position);
         return dis;
     }
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
-        return this.entity.Transform.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
+        return this.node.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
     }
     playHit(sprite: cc.Node) {
         if (sprite) {
@@ -80,7 +80,7 @@ export default abstract class Boss extends Actor {
         this.updatePlayerPos();
     }
     changeZIndex() {
-        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
+        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
 
     start() {
@@ -94,14 +94,14 @@ export default abstract class Boss extends Actor {
     getLoot(isSteal?: boolean) {
         if (this.dungeon) {
             let rand4save = Logic.mapManager.getRandom4Save(this.seed);
-            EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: isSteal ? 9 : 19 });
+            EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.node.position, count: isSteal ? 9 : 19 });
             if (!isSteal) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: 100 });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: 100 });
             }
             let chance = Logic.getHalfChance() && isSteal || !isSteal;
             if (chance) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.HEART });
-                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.entity.Transform.position, res: Item.DREAM });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.node.position, res: Item.HEART });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { pos: this.node.position, res: Item.DREAM });
             }
             this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, isSteal ? 0 : 3);
         }

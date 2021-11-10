@@ -3,10 +3,7 @@ import Logic from "../logic/Logic";
 import { EventHelper } from "../logic/EventHelper";
 import Random from "../utils/Random";
 import AudioPlayer from "../utils/AudioPlayer";
-import Actor from "../base/Actor";
-import DamageData from "../data/DamageData";
-import FromData from "../data/FromData";
-import StatusData from "../data/StatusData";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -18,72 +15,58 @@ import StatusData from "../data/StatusData";
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Coin extends Actor {
-    takeDamage(damage: DamageData, from?: FromData, actor?: Actor): boolean {
-        return false;
-    }
-    actorName(): string {
-        return '';
-    }
-    addStatus(statusType: string, from: FromData): void {
-    }
-    getCenterPosition(): cc.Vec3 {
-        return this.node.position;
-    }
-    takeDizz(dizzDuration: number): void {
-    }
-    updateStatus(statusList: StatusData[], totalStatusData: StatusData): void {
-    }
-    hideSelf(hideDuration: number): void {
-    }
-    updateDream(offset: number): number {
-        return 0;
-    }
+export default class Coin extends BaseColliderComponent {
+
     static readonly FACE_VALUE = 10;
-    anim:cc.Animation;
-    value:number = 0;
-    valueRes=['gem01','gem02','gem03','gem04'];
+    anim: cc.Animation;
+    value: number = 0;
+    valueRes = ['gem01', 'gem02', 'gem03', 'gem04'];
     isReady = false;
-    player:Player;
+    player: Player;
     private soundPlaying = false;
 
 
     // LIFE-CYCLE CALLBACKS:
 
-    onLoad () {
+    onLoad() {
         this.initCollider();
     }
-    onEnable(){
+    onEnable() {
         this.anim = this.getComponent(cc.Animation);
         let speed = 1200;
-        let x = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
-        let y = Random.rand()*(Logic.getHalfChance()?1:-1)*speed;
-        this.entity.Move.linearVelocity = cc.v2(x,y);
-        this.entity.Move.linearDamping = 10;
+        let x = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed;
+        let y = Random.rand() * (Logic.getHalfChance() ? 1 : -1) * speed;
+
+        this.entity.Move.linearVelocity = cc.v2(x, y);
+        this.entity.Move.linearDamping = 5;
         this.isReady = false;
-        this.scheduleOnce(()=>{this.isReady = true;},0.5);
+        this.scheduleOnce(() => {
+            this.isReady = true;
+            this.entity.Transform.position = this.node.position.clone();
+            this.entity.NodeRender.node = this.node;
+        }, 0.5);
     }
-    changeValue(value:number){
+    changeValue(value: number) {
         //目前只有1和10
         this.value = value;
         let index = 1;
-        if(this.value == Coin.FACE_VALUE){
+        if (this.value == Coin.FACE_VALUE) {
             index = 3;
             this.node.scale = 1.2;
-        }else{
+        } else {
             index = 1;
             this.node.scale = 1;
         }
         this.node.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(this.valueRes[index]);
     }
 
-    start () {
+    start() {
 
     }
-   
+
     checkTimeDelay = 0;
     isCheckTimeDelay(dt: number): boolean {
         this.checkTimeDelay += dt;
@@ -96,14 +79,14 @@ export default class Coin extends Actor {
     }
     /**获取玩家距离 */
     getNearPlayerDistance(playerNode: cc.Node): number {
-        let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position.clone().addSelf(cc.v3(0,32)));
+        let dis = Logic.getDistanceNoSqrt(this.node.position, playerNode.position.clone().addSelf(cc.v3(0, 32)));
         return dis;
     }
-    update (dt) {
-        if(this.isCheckTimeDelay(dt)){
-            if (this.player&&this.getNearPlayerDistance(this.player.node)<400&&this.node.active && this.isReady) {
+    update(dt) {
+        if (this.isCheckTimeDelay(dt)) {
+            if (this.player && this.getNearPlayerDistance(this.player.node) < 400 && this.node.active && this.isReady) {
                 let p = this.player.node.position.clone();
-                p.y+=10;
+                p.y += 10;
                 let pos = p.sub(this.node.position);
                 if (!pos.equals(cc.Vec3.ZERO)) {
                     pos = pos.normalizeSelf();
@@ -112,16 +95,16 @@ export default class Coin extends Actor {
                     this.entity.Move.linearDamping = 1;
                 }
             }
-            
+
         }
-        if (this.player&&this.getNearPlayerDistance(this.player.node)<64&&this.node.active && this.isReady) {
-            this.isReady =false;
-            if(!this.soundPlaying){
+        if (this.player && this.getNearPlayerDistance(this.player.node) < 64 && this.node.active && this.isReady) {
+            this.isReady = false;
+            if (!this.soundPlaying) {
                 this.soundPlaying = true;
-                cc.director.emit(EventHelper.PLAY_AUDIO,{detail:{name:AudioPlayer.COIN}});
+                cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.COIN } });
             }
-            cc.director.emit(EventHelper.HUD_ADD_COIN,{detail:{count:this.value}});
-            cc.director.emit('destorycoin',{detail:{coinNode:this.node}});
+            cc.director.emit(EventHelper.HUD_ADD_COIN, { detail: { count: this.value } });
+            cc.director.emit('destorycoin', { detail: { coinNode: this.node } });
         }
     }
 }

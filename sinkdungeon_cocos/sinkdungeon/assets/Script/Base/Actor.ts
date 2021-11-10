@@ -71,7 +71,11 @@ export default abstract class Actor extends cc.Component implements OnContactLis
         } else {
             this.entity.remove(ColliderComponent);
         }
-
+    }
+    public registerListener(){
+        for (let ccolider of this.ccolliders) {
+            ccolider.setOnContactListener(this);
+        }
     }
     /**设置碰撞目标tag */
     public setTargetTags(...tags: number[]) {

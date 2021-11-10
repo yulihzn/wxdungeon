@@ -141,6 +141,12 @@ export default class Inventory extends cc.Component {
         EventHelper.on(EventHelper.USEITEM_KEYBOARD, (detail) => {
             this.userItem(null, detail.index);
         });
+        EventHelper.on(EventHelper.HUD_FADE_IN, (detail) => {
+            this.fadeIn();
+        })
+        EventHelper.on(EventHelper.HUD_FADE_OUT, (detail) => {
+            this.fadeOut();
+        })
         this.remote.node.parent.active = true;
         this.shield.node.parent.active = false;
         for (let name of InventoryManager.EQUIP_TAGS) {
@@ -173,6 +179,20 @@ export default class Inventory extends cc.Component {
         this.equipmentNode.active = !this.equipmentNode.active;
         Logic.settings.showEquipDialog = this.equipmentNode.active;
         LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_EQUIPDIALOG,Logic.settings.showEquipDialog);
+    }
+    private fadeOut() {
+        if (!this.equipmentNode) {
+            return;
+        }
+        this.node.opacity = 255;
+        cc.tween(this.equipmentNode).to(0.5, { opacity: 0 }).start();
+    }
+    private fadeIn() {
+        if (!this.equipmentNode) {
+            return;
+        }
+        this.node.opacity = 0;
+        cc.tween(this.equipmentNode).to(3, { opacity: 255 }).start();
     }
     start() {
         for (let key in this.equipSprites) {

@@ -307,8 +307,6 @@ export default class NonPlayer extends Actor {
         this.boxCollider.w = w;
         this.boxCollider.h = h;
         this.boxCollider.tag = this.data.isEnemy > 0 ? CCollider.TAG.NONPLAYER : CCollider.TAG.GOODNONPLAYER;
-        this.boxCollider.setIgnoreTags([CCollider.TAG.NONPLAYER],this.data.isEnemy > 0);
-        this.boxCollider.setIgnoreTags([CCollider.TAG.GOODNONPLAYER],this.data.isEnemy < 1);
         if(this.data.blink>0){
             this.boxCollider.setIgnoreTags([CCollider.TAG.WALL]); 
             this.boxCollider.setIgnoreTags([CCollider.TAG.WALL_TOP]); 
@@ -756,6 +754,7 @@ export default class NonPlayer extends Actor {
         Logic.setKillPlayerCounts(FromData.getClone(this.actorName(), this.data.resName + 'anim000', this.seed), false);
         this.scheduleOnce(() => {
             if (this.node) {
+                this.setLinearVelocity(cc.Vec2.ZERO);
                 if (this.data.isBoom > 0) {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
@@ -765,7 +764,7 @@ export default class NonPlayer extends Actor {
                         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
                     }
                 }
-                this.scheduleOnce(() => { this.node.active = false; }, this.data.isPet ? 0 : 5);
+                this.scheduleOnce(() => { this.destroyEntityNode(); }, this.data.isPet ? 0 : 5);
             }
         }, 2);
     }
@@ -1151,10 +1150,6 @@ export default class NonPlayer extends Actor {
         this.bodySprite.node.color = cc.Color.BLACK;
         cc.tween(this.bodySprite.node).to(1, { color: cc.color(255, 255, 255).fromHEX(this.data.bodyColor) }).call(() => {
             this.sc.isShow = true;
-            //ecs关联节点
-            this.entity.NodeRender.node = this.node;
-
-
         }).start();
     }
     /**伪装 */
@@ -1172,6 +1167,8 @@ export default class NonPlayer extends Actor {
         //重置所有状态
         this.sc = new StateContext();
         this.sc.isShow = true;
+        //ecs关联节点
+        this.entity.NodeRender.node = this.node;
         let action = cc.tween()
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE000) })
             .delay(0.2).call(() => { this.changeBodyRes(this.data.resName, NonPlayer.RES_IDLE001) });

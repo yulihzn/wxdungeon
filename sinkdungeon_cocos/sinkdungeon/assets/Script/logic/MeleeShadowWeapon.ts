@@ -29,7 +29,7 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     private hv: cc.Vec3 = cc.v3(1, 0);
     dungeon: Dungeon;
     private comboType = 0;
-    private hasTargetMap: { [key: string]: number } = {};
+    private hasTargetMap: Map<number, number> = new Map();
 
     get IsAttacking() {
         return this.isAttacking;
@@ -61,7 +61,7 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     attack(data: PlayerData,comboType: number,hv:cc.Vec3): boolean {
         this.updateHv(hv);
         this.comboType = comboType;
-        this.hasTargetMap = {};
+        this.hasTargetMap.clear();
         this.isAttacking = true;
         let animname = this.meleeWeapon.getAttackAnimName(comboType);
         this.anim.play(animname);
@@ -99,7 +99,7 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
     }
     /**Anim 清空攻击列表*/
     RefreshTime() {
-        this.hasTargetMap = {};
+        this.hasTargetMap.clear();
     }
     /**Anim 冲刺*/
     DashTime(speed?: number) {
@@ -129,11 +129,11 @@ export default class MeleeShadowWeapon extends BaseColliderComponent {
 
     onColliderStay(other: CCollider, self: CCollider) {
         if (self.radius > 0) {
-            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
-                this.hasTargetMap[other.node.uuid]++;
+            if (this.hasTargetMap.has(other.id) && this.hasTargetMap.get(other.id) > 0) {
+                this.hasTargetMap.set(other.id, this.hasTargetMap.get(other.id) + 1);
                 return false;
             } else {
-                this.hasTargetMap[other.node.uuid] = 1;
+                this.hasTargetMap.set(other.id, 1);
                 if(this.meleeWeapon){
                     return this.meleeWeapon.attacking(other,this.anim,true);
                 }

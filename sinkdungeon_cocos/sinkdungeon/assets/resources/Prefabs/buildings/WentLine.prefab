@@ -527,12 +527,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 20
-    },
+    "tag": 22,
     "offsetX": 0,
     "offsetY": 20,
     "type": 0,
@@ -541,6 +536,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [
       21
     ],

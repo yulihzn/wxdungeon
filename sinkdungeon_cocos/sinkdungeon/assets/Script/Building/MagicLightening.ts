@@ -20,7 +20,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MagicLightening extends Building {
-    hasTargetMap: { [key: string]: number } = {};
+    hasTargetMap: Map<number, number> = new Map();
     needPrepare = false;
     showArea = false;
     anim:cc.Animation;

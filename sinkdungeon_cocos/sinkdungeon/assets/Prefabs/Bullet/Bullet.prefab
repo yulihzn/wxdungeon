@@ -1000,6 +1000,7 @@
     "h": 14,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       11

@@ -44,6 +44,14 @@ export default class ActorAttackBox extends cc.Component {
         this.isEnemy = isEnemy;
         this.nonPlayer = nonPlayer;
         this.dungeon = dungeon;
+        if(!this.collider){
+            this.collider = this.getComponent(CCollider);
+        }
+        if(isEnemy){
+            this.collider.setTargetTags([CCollider.TAG.GOODNONPLAYER,CCollider.TAG.PLAYER]);
+        }else{
+            this.collider.setTargetTags([CCollider.TAG.NONPLAYER,CCollider.TAG.BOSS]);
+        }
     }
     start() {
 
@@ -58,20 +66,21 @@ export default class ActorAttackBox extends cc.Component {
         this.attackType = attackType;
         this.changeBoxSize(attackType);
         this.node.opacity = 80;
+        this.collider.enabled = true;
         // let p = this.node.position.clone();
         // let hv = this.holderActor.getNearestTargetPosition(
             // this.isEnemy ? [Actor.TARGET_PLAYER, Actor.TARGET_NONPLAYER] : [Actor.TARGET_MONSTER, Actor.TARGET_NONPLAYER_ENEMY, Actor.TARGET_BOSS], this.dungeon).sub(this.holderActor.node.position.add(p));
         this.setHv(hv);
     }
     private changeBoxSize(attackType: number) {
-        let radius = 40;
+        let radius = 64;
         let offset = cc.v2(radius, 0);
         this.node.anchorX = 0;
-        this.node.width = this.isLarge?radius*1.5:radius;;
+        this.node.width = this.isLarge?radius*1.5:radius;
         this.node.height = radius;
         this.node.position = cc.v3(-16, 32);
         this.collider.offset = offset;
-        this.collider.w = this.isLarge?radius*1.5:radius;;
+        this.collider.w = this.isLarge?radius*1.5:radius;
         this.collider.h = radius;
         switch (attackType) {
             case ActorAttackBox.ATTACK_NORMAL:
@@ -105,6 +114,7 @@ export default class ActorAttackBox extends cc.Component {
         this.node.opacity = 0;
         this.isAttacking = false;
         this.isSpecial = false;
+        this.collider.enabled = false;
     }
     onColliderStay(other: CCollider, self: CCollider) {
         if (this.isAttacking && this.nonPlayer) {

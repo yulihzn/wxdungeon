@@ -32,6 +32,7 @@ export default class FallStone extends Building {
     onLoad() {
         this.isFall = false;
     }
+    
     fall(withFire?:boolean) {
         if(withFire){
             this.node.getChildByName('stone').getChildByName('fire').active = true;
@@ -53,9 +54,7 @@ export default class FallStone extends Building {
             }, 2);
         
     }
-    start() {
-
-    }
+    
     onColliderEnter(other: CCollider, self: CCollider) {
         let target = ActorUtils.getEnemyCollisionTarget(other);
         if(target && !this.isAuto && !this.isFalling){

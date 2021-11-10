@@ -238,13 +238,12 @@
     "radius": 40,
     "w": 80,
     "h": 80,
+    "density": 0,
     "sensor": true,
     "isStatic": true,
-    "isChild": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
-    "ignoreTagList": [
-      5
-    ],
+    "ignoreTagList": [],
     "_id": ""
   },
   {
@@ -1791,13 +1790,12 @@
     "radius": 150,
     "w": 128,
     "h": 128,
+    "density": 0,
     "sensor": true,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [
-      3,
-      11,
-      5
+      11
     ],
     "ignoreTagList": [],
     "_id": ""
@@ -3006,9 +3004,10 @@
     "radius": 128,
     "w": 32,
     "h": 32,
+    "density": 0,
     "sensor": false,
     "isStatic": false,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       3,

@@ -78,7 +78,7 @@ export default class Slime extends Boss {
         EventHelper.on('destoryvenom', (detail) => {
             this.destroyVenom(detail.coinNode);
         });
-        this.scheduleOnce(() => { this.sc.isShow = true; }, 1)
+        this.scheduleOnce(() => { this.sc.isShow = true;this.entity.NodeRender.node = this.node;this.entity.Move.linearDamping = 5; }, 1)
     }
 
     start() {

@@ -24,7 +24,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class IceThron extends BaseColliderComponent {
     
-    hasTargetMap: { [key: string]: number } = {};
+    hasTargetMap: Map<number, number> = new Map();
 
     isAttacking = false;
     // LIFE-CYCLE CALLBACKS:
@@ -62,10 +62,10 @@ export default class IceThron extends BaseColliderComponent {
    
     onColliderStay(other: CCollider, self: CCollider) {
         if (self.radius>0 && this.isAttacking) {
-            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
-                this.hasTargetMap[other.node.uuid]++;
+            if (this.hasTargetMap.has(other.id) && this.hasTargetMap.get(other.id) > 0) {
+                this.hasTargetMap.set(other.id, this.hasTargetMap.get(other.id) + 1);
             } else {
-                this.hasTargetMap[other.node.uuid] = 1;
+                this.hasTargetMap.set(other.id, 1);
                 let target = ActorUtils.getEnemyCollisionTarget(other,true);
                 if (target) {
                     this.attacking(other.node);
@@ -99,7 +99,7 @@ export default class IceThron extends BaseColliderComponent {
     }
     update (dt) {
         if(this.isCheckTimeDelay(dt)){
-            this.hasTargetMap = {};
+            this.hasTargetMap.clear();
         }
     }
 }

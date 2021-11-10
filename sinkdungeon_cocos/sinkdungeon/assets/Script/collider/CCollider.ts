@@ -43,7 +43,8 @@ export default class CCollider extends cc.Component {
         WARTER: 18,//水墙
         ENERGY_SHIELD: 19,//能量罩
         LIGHT: 20,//光线 特殊的一种类型，不做碰撞检测
-        PLAYER_INTERACT: 21//玩家触碰范围用来触发一些显示内容
+        PLAYER_INTERACT: 21,//玩家触碰范围用来触发交互
+        INTERACT: 22//触碰范围用来触发
     })
     @property({ type: CCollider.TAG, displayName: 'Collider Tag' })
     tag: number = CCollider.TAG.DEFAULT;
@@ -73,7 +74,8 @@ export default class CCollider extends cc.Component {
         }
     })
     h: number = 128;
-
+    @property
+    density: number = 0;
     @property
     sensor: boolean = false;
     @property
@@ -95,7 +97,7 @@ export default class CCollider extends cc.Component {
     inColliders: Map<number, boolean> = new Map();
     id: number = CCollider.genNonDuplicateID();
     //同一个物体下的碰撞需要忽略
-    groupId: string = '';
+    groupId: number;
     //该碰撞体的实体类，如果有会计算物理部分
     entity: ActorEntity;
     //指定匹配碰撞类型，如果为空则匹配所有，如果不为空则只匹配map里的tag
@@ -169,21 +171,21 @@ export default class CCollider extends cc.Component {
                 let ps = [];
                 let tp0 = this._points[0].clone();
                 let startIndex = 0;
-                for(let i = 1;i<this._points.length;i++){
-                    if(this._points[i].x<tp0.x){
+                for (let i = 1; i < this._points.length; i++) {
+                    if (this._points[i].x < tp0.x) {
                         tp0 = this._points[i].clone();
                         startIndex = i;
                     }
                 }
-                for(let i = startIndex;i<this._points.length;i++){
+                for (let i = startIndex; i < this._points.length; i++) {
                     ps.push(this._points[i].clone());
                 }
-                for(let i = 0;i<startIndex;i++){
+                for (let i = 0; i < startIndex; i++) {
                     ps.push(this._points[i].clone());
                 }
-                let w = Math.abs(ps[0].x-ps[2].x);
-                let h = Math.abs(ps[1].y-ps[3].y);
-                this._aabb = cc.rect(ps[0].x, ps[1].y<ps[3].y?ps[1].y:ps[3].y, w, h);
+                let w = Math.abs(ps[0].x - ps[2].x);
+                let h = Math.abs(ps[1].y - ps[3].y);
+                this._aabb = cc.rect(ps[0].x, ps[1].y < ps[3].y ? ps[1].y : ps[3].y, w, h);
             }
         }
     }
@@ -198,23 +200,24 @@ export default class CCollider extends cc.Component {
         this.setTargetTags(this.targetTagList);
         this.setIgnoreTags(this.ignoreTagList);
     }
+
     /**添加碰撞目标tag */
     public setTargetTags(tags: number[], isRemove?: boolean) {
         for (let tag of tags) {
-            if(isRemove){
+            if (isRemove) {
                 this.targetTags.delete(tag);
-            }else{
-                this.targetTags.set(tag,true);
+            } else {
+                this.targetTags.set(tag, true);
             }
         }
     }
     /**添加碰撞忽略tag */
     public setIgnoreTags(tags: number[], isRemove?: boolean) {
         for (let tag of tags) {
-            if(isRemove){
+            if (isRemove) {
                 this.ignoreTags.delete(tag);
-            }else{
-                this.ignoreTags.set(tag,true);
+            } else {
+                this.ignoreTags.set(tag, true);
             }
         }
     }
@@ -233,51 +236,51 @@ export default class CCollider extends cc.Component {
                 this.onContactListener.onColliderStay(other, this);
             }
         } else {
-            this.inColliders.set(other.id,true);
+            this.inColliders.set(other.id, true);
             if (this.onContactListener) {
                 this.onContactListener.onColliderEnter(other, this);
             }
         }
         if (this.entity && other.entity && !this.sensor && !other.sensor && !this.isStatic) {
-            if (!this.isStatic) {
-                let x = this.entity.Transform.position.x - other.entity.Transform.position.x;
-                let y = this.entity.Transform.position.y - other.entity.Transform.position.y;
-                let w = 0;
-                let h = 0;
-                let offset = 5;
-                if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
-                    //矩形
-                    let aabb1 = this.Aabb;
-                    let aabb2 = other.Aabb;
-                    w = aabb1.width / 2 + aabb2.width / 2 + offset;
-                    h = aabb1.height / 2 + aabb2.height / 2 + offset;
-                } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
-                    //圆形
-                    w = this.w_radius + other.w_radius + offset;
-                    h = this.w_radius + other.w_radius + offset;
-                } else if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
-                    //矩形圆形
-                    let aabb1 = this.Aabb;
-                    w = aabb1.width / 2 + other.w_radius + offset;
-                    h = aabb1.height / 2 + other.w_radius + offset;
-                } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
-                    //圆形矩形
-                    let aabb2 = other.Aabb;
-                    w = this.w_radius + aabb2.width / 2 + offset;
-                    h = this.w_radius + aabb2.height / 2 + offset;
-                }
-                if (Math.abs(x) > Math.abs(y)) {
-                    if (Math.abs(x) < w) {
-                        this.entity.Transform.position.x = other.entity.Transform.position.x + (x > 0 ? w : -w);
-                        if (this.entity.NodeRender.node) {
-                            this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
-                        }
-                    }
-                } else if (Math.abs(y) < h) {
-                    this.entity.Transform.position.y = other.entity.Transform.position.y + (y > 0 ? h : -h);
+            let x = this.entity.Transform.position.x - other.entity.Transform.position.x;
+            let y = this.entity.Transform.position.y - other.entity.Transform.position.y;
+            let offset = 5;
+            let aabb1 = this.Aabb;
+            let aabb2 = other.Aabb;
+            let w = 0;
+            let h = 0;
+            if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
+                //矩形
+                let aabb1 = this.Aabb;
+                let aabb2 = other.Aabb;
+                w = aabb1.width / 2 + aabb2.width / 2 + offset;
+                h = aabb1.height / 2 + aabb2.height / 2 + offset;
+            } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
+                //圆形
+                w = this.w_radius + other.w_radius + offset;
+                h = this.w_radius + other.w_radius + offset;
+            } else if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
+                //矩形圆形
+                let aabb1 = this.Aabb;
+                w = aabb1.width / 2 + other.w_radius + offset;
+                h = aabb1.height / 2 + other.w_radius + offset;
+            } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
+                //圆形矩形
+                let aabb2 = other.Aabb;
+                w = this.w_radius + aabb2.width / 2 + offset;
+                h = this.w_radius + aabb2.height / 2 + offset;
+            }
+            if (Math.abs(x) > Math.abs(y)) {
+                if (Math.abs(x) < w) {
+                    this.entity.Transform.position.x = other.entity.Transform.position.x + (x > 0 ? w : -w);
                     if (this.entity.NodeRender.node) {
                         this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
                     }
+                }
+            } else if (Math.abs(y) < h) {
+                this.entity.Transform.position.y = other.entity.Transform.position.y + (y > 0 ? h : -h);
+                if (this.entity.NodeRender.node) {
+                    this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
                 }
             }
         }
@@ -324,11 +327,11 @@ export default class CCollider extends cc.Component {
         }
         graphics.strokeColor = cc.color(255, 0, 0, 160);
         let aabb = this.Aabb;
-        let p = graphics.node.convertToNodeSpaceAR(cc.v3(aabb.x,aabb.y));
+        let p = graphics.node.convertToNodeSpaceAR(cc.v3(aabb.x, aabb.y));
         let p0 = graphics.node.convertToNodeSpaceAR(cc.v3(0, 0));
         let pw = graphics.node.convertToNodeSpaceAR(cc.v3(aabb.width, 0));
         let ph = graphics.node.convertToNodeSpaceAR(cc.v3(aabb.height, 0));
-        graphics.rect(p.x,p.y,pw.sub(p0).mag(),ph.sub(p0).mag());
+        graphics.rect(p.x, p.y, pw.sub(p0).mag(), ph.sub(p0).mag());
         graphics.stroke();
     }
     get Aabb(): cc.Rect {
@@ -345,6 +348,6 @@ export default class CCollider extends cc.Component {
     }
 
     static genNonDuplicateID(): number {
-        return Number(~~(Random.rand()*1000000) + Date.now());
+        return Number(~~(Random.rand() * 1000000) + Date.now());
     }
 }

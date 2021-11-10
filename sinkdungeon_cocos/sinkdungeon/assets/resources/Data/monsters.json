@@ -767,7 +767,7 @@
         "common": {
             "moveSpeed": 600,
             "maxHealth": 30,
-            "defence": 15,
+            "defence": 5,
             "damageMin": 0
         },
         "currentHealth": 30,

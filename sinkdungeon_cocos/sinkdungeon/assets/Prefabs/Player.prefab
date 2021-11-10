@@ -1881,7 +1881,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
-    "isChild": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       3,
@@ -5944,7 +5944,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
-    "isChild": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       3,
@@ -7392,14 +7392,14 @@
     "_enabled": true,
     "tag": 3,
     "offsetX": 0,
-    "offsetY": 0,
+    "offsetY": 8,
     "type": 1,
     "radius": 64,
     "w": 32,
-    "h": 32,
+    "h": 40,
     "sensor": false,
     "isStatic": false,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       3
@@ -7423,12 +7423,13 @@
     "h": 64,
     "sensor": true,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [
       14,
       15,
       17,
-      16
+      16,
+      22
     ],
     "ignoreTagList": [
       3

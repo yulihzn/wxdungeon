@@ -1,6 +1,7 @@
 import Logic from "../logic/Logic";
 import Building from "./Building";
 import CCollider from "../collider/CCollider";
+import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -15,9 +16,13 @@ import CCollider from "../collider/CCollider";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class MushroomChild extends Building {
+export default class MushroomChild extends BaseColliderComponent {
     isRotate = false;
     isPlus = false;
+    onLoad(): void {
+        super.onLoad();
+    }
+    
    
     onColliderEnter(other: CCollider, self: CCollider) {
         if (other.tag == CCollider.TAG.PLAYER) {

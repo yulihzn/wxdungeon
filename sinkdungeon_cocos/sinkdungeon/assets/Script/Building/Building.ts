@@ -4,7 +4,6 @@ import FromData from "../data/FromData";
 import BuildingData from "../data/BuildingData";
 import StatusData from "../data/StatusData";
 import CCollider from "../collider/CCollider";
-import OnContactListener from "../collider/OnContactListener";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -51,12 +50,12 @@ export default abstract class Building extends Actor{
     setLinearVelocity(movement: cc.Vec2) {
 
     }
-    onColliderEnter(other: CCollider, self: CCollider): void {
-    }
-    onColliderStay(other: CCollider, self: CCollider): void {
-    }
-    onColliderExit(other: CCollider, self: CCollider): void {
-    }
-    onColliderPreSolve(other: CCollider, self: CCollider): void {
-    }
+    // onColliderEnter(other: CCollider, self: CCollider): void {
+    // }
+    // onColliderStay(other: CCollider, self: CCollider): void {
+    // }
+    // onColliderExit(other: CCollider, self: CCollider): void {
+    // }
+    // onColliderPreSolve(other: CCollider, self: CCollider): void {
+    // }
 }

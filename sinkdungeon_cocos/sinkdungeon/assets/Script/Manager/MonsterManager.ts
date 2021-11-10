@@ -437,14 +437,24 @@ export default class MonsterManager extends BaseManager {
         }
     }
     updateLogic(dt: number) {
-        for (let monster of this.monsters) {
-            if (monster && monster.node.active) {
-                monster.updateLogic(dt);
+        for (let i = this.monsters.length - 1; i >= 0; i--) {
+            let monster = this.monsters[i];
+            if (monster && monster.node) {
+                if (monster.node.active) {
+                    monster.updateLogic(dt);
+                }
+            } else {
+                this.monsters.splice(i, 1);
             }
         }
-        for (let boss of this.bosses) {
-            if (boss && boss.node.active) {
-                boss.updateLogic(dt);
+        for (let i = this.bosses.length - 1; i >= 0; i--) {
+            let boss = this.bosses[i];
+            if (boss && boss.node) {
+                if (boss.node.active) {
+                    boss.updateLogic(dt);
+                }
+            } else {
+                this.bosses.splice(i, 1);
             }
         }
     }

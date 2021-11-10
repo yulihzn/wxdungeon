@@ -25,7 +25,6 @@ import MeleeShadowWeapon from "../logic/MeleeShadowWeapon";
 import MeleeWeapon from "../logic/MeleeWeapon";
 import Shield from "../logic/Shield";
 import CCollider from "../collider/CCollider";
-import StatusData from "../data/StatusData";
 import BaseColliderComponent from "../base/BaseColliderComponent";
 
 // Learn TypeScript:
@@ -72,10 +71,10 @@ export default class Bullet extends BaseColliderComponent {
     skipTopwall = false;
     aoePrefab: cc.Prefab;
     aoeData = new AreaOfEffectData();
-    shooter:Shooter;
-    private currentLinearVelocity = cc.v2(0,0);
+    shooter: Shooter;
+    private currentLinearVelocity = cc.v2(0, 0);
     // LIFE-CYCLE CALLBACKS:
-    
+
     onLoad() {
         super.onLoad();
         this.anim = this.getComponent(cc.Animation);
@@ -95,7 +94,7 @@ export default class Bullet extends BaseColliderComponent {
         this.tagetPos = cc.v3(0, 0);
         this.entity.NodeRender.node = this.node;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
-        this.currentLinearVelocity = cc.v2(0,0);
+        this.currentLinearVelocity = cc.v2(0, 0);
         this.sprite = this.node.getChildByName('sprite');
         this.sprite.opacity = 255;
         this.sprite.angle = 0;
@@ -113,8 +112,8 @@ export default class Bullet extends BaseColliderComponent {
     timeDelay = 0;
     checkTimeDelay = 0;
     update(dt) {
-        if(Logic.isGamePause){
-            this.entity.Move.linearVelocity = cc.v2(0,0);
+        if (Logic.isGamePause) {
+            this.entity.Move.linearVelocity = cc.v2(0, 0);
             return;
         }
         this.checkTimeDelay += dt;
@@ -140,7 +139,7 @@ export default class Bullet extends BaseColliderComponent {
         if (this.data.isTracking == 1 && this.data.isLaser != 1 && this.isTrackDelay && !this.isHit) {
             let pos = this.hasNearEnemy();
             if (!pos.equals(cc.Vec3.ZERO)) {
-                this.rotateCollider(cc.v2(pos.x,pos.y));
+                this.rotateCollider(cc.v2(pos.x, pos.y));
                 this.hv = pos;
                 this.currentLinearVelocity = cc.v2(this.data.speed * this.hv.x, this.data.speed * this.hv.y);
             }
@@ -149,14 +148,12 @@ export default class Bullet extends BaseColliderComponent {
     changeBullet(data: BulletData) {
         this.data = data;
         this.changeRes(data.resName, data.lightName, data.lightColor);
-        this.collider.type = data.isRect != 1?CCollider.TYPE.CIRCLE:CCollider.TYPE.RECT;
+        this.collider.type = data.isRect != 1 ? CCollider.TYPE.CIRCLE : CCollider.TYPE.RECT;
         this.light.position = data.isRect == 1 ? cc.v3(8, 0) : cc.v3(0, 0);
         this.node.scale = data.size > 0 ? data.size : 1;
-        if (data.size > 1) {
-            this.collider.radius = this.collider.radius / this.node.scale;
-            this.collider.w = this.collider.w / this.node.scale;
-            this.collider.h = this.collider.h / this.node.scale;
-        }
+        this.collider.radius = 16;
+        this.collider.w = 30;
+        this.collider.h = 14;
         this.collider.sensor = data.isPhysical == 0;
         this.initLaser();
 
@@ -179,9 +176,9 @@ export default class Bullet extends BaseColliderComponent {
 
         cc.tween(this.laserLightSprite.node).repeatForever(
             cc.tween()
-            .delay(0.05).call(()=>{this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light001');})
-            .delay(0.05).call(()=>{this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light002');})
-            .delay(0.05).call(()=>{this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light003');})
+                .delay(0.05).call(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light001'); })
+                .delay(0.05).call(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light002'); })
+                .delay(0.05).call(() => { this.laserLightSprite.spriteFrame = this.getSpriteFrameByName(this.data.resNameLaser, 'light003'); })
         ).start();
     }
     private showLaser(): void {
@@ -207,7 +204,7 @@ export default class Bullet extends BaseColliderComponent {
         this.laserNode.scaleX = 1;
         this.laserNode.scaleY = 1;
         this.laserLightSprite.node.setPosition(-16 * this.node.scaleY, 0);
-        cc.tween(this.laserNode).to(0.1,{scale:1}).to(0.1,{scaleY:0}).delay(0.1).call(()=>{
+        cc.tween(this.laserNode).to(0.1, { scale: 1 }).to(0.1, { scaleY: 0 }).delay(0.1).call(() => {
             this.shooter.addDestroyBullet(this.node);
         }).start();
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.REMOTE_LASER } });
@@ -256,7 +253,6 @@ export default class Bullet extends BaseColliderComponent {
         this.shooter.addDestroyBullet(this.node);
     }
     fire(hv: cc.Vec3) {
-        
         this.currentLinearVelocity = cc.v2(this.data.speed * hv.x, this.data.speed * hv.y);
         this.entity.Move.linearVelocity = this.currentLinearVelocity;
         //记录发射点
@@ -265,11 +261,11 @@ export default class Bullet extends BaseColliderComponent {
         this.node.stopAllActions();
         let ss = this.sprite.getComponent(cc.Sprite);
         let idletween = cc.tween()
-        .delay(0.1).call(()=>{ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim000', true);})
-        .delay(0.1).call(()=>{ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001', true);})
-        .delay(0.1).call(()=>{ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002', true);});
-        let spawntween = cc.tween(this.sprite).parallel(idletween,cc.tween().by(0.3,{angle:this.data.rotateAngle > 0 ? this.data.rotateAngle : 15}))
-        
+            .delay(0.1).call(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim000', true); })
+            .delay(0.1).call(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim001', true); })
+            .delay(0.1).call(() => { ss.spriteFrame = this.getSpriteFrameByName(this.data.resName, 'anim002', true); });
+        let spawntween = cc.tween(this.sprite).parallel(idletween, cc.tween().by(0.3, { angle: this.data.rotateAngle > 0 ? this.data.rotateAngle : 15 }))
+
         if (this.data.isRotate > 0) {
             cc.tween(this.sprite).repeatForever(spawntween).start();
         } else {
@@ -295,9 +291,9 @@ export default class Bullet extends BaseColliderComponent {
     start() {
 
     }
-  
+
     onColliderEnter(other: CCollider, self: CCollider) {
-        if(!other.sensor){
+        if (!other.sensor) {
             let isDestory = true;
             //子弹玩家怪物boss武器墙不销毁交给后续处理
             if (other.tag == CCollider.TAG.PLAYER
@@ -314,7 +310,7 @@ export default class Bullet extends BaseColliderComponent {
                 return;
             }
         }
-        
+
         let isAttack = true;
         if (!this.isFromPlayer && (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS)) {
             isAttack = false;
@@ -376,10 +372,10 @@ export default class Bullet extends BaseColliderComponent {
             }
         } else if (tag == CCollider.TAG.PLAYER_HIT) {
             let meleeWeapon: MeleeWeapon = attackTarget.getComponent(MeleeWeapon);
-            let shadowWeapon:MeleeShadowWeapon;
-            if(!meleeWeapon){
+            let shadowWeapon: MeleeShadowWeapon;
+            if (!meleeWeapon) {
                 shadowWeapon = attackTarget.getComponent(MeleeShadowWeapon);
-                if(shadowWeapon){
+                if (shadowWeapon) {
                     meleeWeapon = shadowWeapon.meleeWeapon;
                 }
             }
@@ -387,7 +383,7 @@ export default class Bullet extends BaseColliderComponent {
                 //子弹偏转
                 let isReverse = false;
                 if (meleeWeapon.IsReflect) {
-                    let n = shadowWeapon?shadowWeapon.meleeWeapon.node:meleeWeapon.node;
+                    let n = shadowWeapon ? shadowWeapon.meleeWeapon.node : meleeWeapon.node;
                     isReverse = this.revserseBullet(n.convertToWorldSpaceAR(cc.Vec2.ZERO));
                 }
                 if (!isReverse) {
@@ -421,12 +417,12 @@ export default class Bullet extends BaseColliderComponent {
                 }
             }
 
-        }else if(!this.isFromPlayer&&tag == CCollider.TAG.ENERGY_SHIELD){
+        } else if (!this.isFromPlayer && tag == CCollider.TAG.ENERGY_SHIELD) {
             let shield = attackTarget.getComponent(EnergyShield);
-            if(shield&&shield.isValid){
+            if (shield && shield.isValid) {
                 damageSuccess = shield.takeDamage(damage);
             }
-            if(damageSuccess){
+            if (damageSuccess) {
                 isDestory = true;
             }
         }
@@ -465,7 +461,7 @@ export default class Bullet extends BaseColliderComponent {
         }
         this.isHit = true;
         if (this.anim && !this.anim.getAnimationState('Bullet001Hit').isPlaying) {
-            this.currentLinearVelocity = cc.v2(0,0);
+            this.currentLinearVelocity = cc.v2(0, 0);
             this.entity.Move.linearVelocity = cc.v2(0, 0);
             this.data.isLaser == 1 ? this.showLaser() : this.anim.play("Bullet001Hit");
         }
@@ -490,18 +486,18 @@ export default class Bullet extends BaseColliderComponent {
         if (this.data.isTracking != 1 || this.data.isLaser == 1 || !this.dungeon) {
             return cc.Vec3.ZERO;
         }
-        return ActorUtils.getDirectionFromNearestEnemy(this.node.position,!this.isFromPlayer,this.dungeon,false,500);
+        return ActorUtils.getDirectionFromNearestEnemy(this.node.position, !this.isFromPlayer, this.dungeon, false, 500);
     }
 
     rotateCollider(direction: cc.Vec2) {
-        if(direction.equals(cc.Vec2.ZERO)){
+        if (direction.equals(cc.Vec2.ZERO)) {
             return;
         }
         if (this.data.fixedRotation == 1) {
             return;
         }
         //设置旋转角度
-        this.node.angle = Utils.getRotateAngle(direction,this.node.scaleX<0);
+        this.node.angle = Utils.getRotateAngle(direction, this.node.scaleX < 0);
     }
 
     addTargetAllStatus(target: Actor, from: FromData) {

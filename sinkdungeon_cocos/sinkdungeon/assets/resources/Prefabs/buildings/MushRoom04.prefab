@@ -263,11 +263,6 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 12
-    },
     "offsetX": 0,
     "offsetY": 12,
     "type": 0,
@@ -276,6 +271,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [
       3,
       5,
@@ -418,11 +414,6 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 12
-    },
     "offsetX": 0,
     "offsetY": 12,
     "type": 0,
@@ -431,6 +422,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [
       3,
       5,
@@ -462,7 +454,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "lamp002 copy",
+    "_name": "lamp",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -573,11 +565,6 @@
     },
     "_enabled": true,
     "tag": 0,
-    "offset": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 12
-    },
     "offsetX": 0,
     "offsetY": 12,
     "type": 0,
@@ -586,6 +573,7 @@
     "h": 128,
     "sensor": true,
     "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [
       3,
       5,

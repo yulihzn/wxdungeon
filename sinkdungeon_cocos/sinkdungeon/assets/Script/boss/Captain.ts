@@ -28,7 +28,6 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Captain extends Boss {
     init(type: number): void {
-        throw new Error("Method not implemented.");
     }
 
     @property(CaptainSword)
@@ -54,6 +53,8 @@ export default class Captain extends Boss {
         this.shooter.from.valueCopy(FromData.getClone(this.actorName(), 'captain_head'));
         this.exshooter.from.valueCopy(FromData.getClone(this.actorName(), 'captain_head'));
         this.updatePlayerPos();
+        this.entity.NodeRender.node = this.node;
+        this.entity.Move.linearDamping = 5;
     }
 
     start() {
@@ -83,7 +84,7 @@ export default class Captain extends Boss {
     }
     //Animation
     FireSwordLight() {
-        this.shooter.setHv(cc.v3(1, 0));
+        this.shooter.setHv(cc.v3(this.isFaceRight?1:-1, 0));
         this.shooter.dungeon = this.dungeon;
         this.shooter.data.bulletType = "bullet043";
         this.shooter.fireBullet(0, cc.v3(16, 0));

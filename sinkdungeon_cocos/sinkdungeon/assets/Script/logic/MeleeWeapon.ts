@@ -90,7 +90,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     private glovesSprite: cc.Sprite = null;
     private comboType = 0;
     private isComboing = false;
-    private hasTargetMap: { [key: string]: number } = {};
+    private hasTargetMap: Map<number, number> = new Map();
     private isSecond = false;//是否是副手
     private currentAngle = 0;
     private fistCombo = 0;
@@ -208,7 +208,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
             }
             return false;
         }
-        
+
         if (isMiss) {
             this.player.showFloatFont(this.node.parent, 0, false, true, false, false, false);
         }
@@ -216,7 +216,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     attackDo(data: PlayerData, isMiss: boolean, fistCombo: number): boolean {
 
-        this.hasTargetMap = {};
+        this.hasTargetMap.clear();
         this.fistCombo = fistCombo;
         this.isMiss = isMiss;
         this.isAttacking = true;
@@ -249,8 +249,8 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
         let animSpeed = 1 + finalCommon.attackSpeed / 500;
         //最慢
-        if (animSpeed < 0.2) {
-            animSpeed = 0.2;
+        if (animSpeed < 0.8) {
+            animSpeed = 0.8;
         }
         //最快
         if (animSpeed > 3) {
@@ -403,7 +403,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
     /**Anim 清空攻击列表*/
     RefreshTime() {
-        this.hasTargetMap = {};
+        this.hasTargetMap.clear();
     }
     /**Anim 冲刺*/
     DashTime(speed?: number) {
@@ -472,7 +472,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     private rotateCollider(direction: cc.Vec2) {
-        if(direction.equals(cc.Vec2.ZERO)){
+        if (direction.equals(cc.Vec2.ZERO)) {
             return;
         }
         //设置缩放方向
@@ -482,23 +482,23 @@ export default class MeleeWeapon extends BaseColliderComponent {
         this.node.scaleY = this.node.scaleX < 0 ? -sy : sy;
         //设置旋转角度
         this.currentAngle = Utils.getRotateAngle(direction, this.node.scaleX < 0);
-        if(this.currentAngle<0){
-            this.currentAngle+=360;
+        if (this.currentAngle < 0) {
+            this.currentAngle += 360;
         }
-        if(this.currentAngle>=0&&this.currentAngle<=90&&this.node.angle>=225&&this.node.angle<=360){
-            this.node.angle-=360;
-        }else if(this.node.angle>=0&&this.node.angle<=90&&this.currentAngle>=225&&this.currentAngle<=360){
-            this.node.angle+=360;
+        if (this.currentAngle >= 0 && this.currentAngle <= 90 && this.node.angle >= 225 && this.node.angle <= 360) {
+            this.node.angle -= 360;
+        } else if (this.node.angle >= 0 && this.node.angle <= 90 && this.currentAngle >= 225 && this.currentAngle <= 360) {
+            this.node.angle += 360;
         }
     }
 
     onColliderStay(other: CCollider, self: CCollider) {
         if (self.radius > 0) {
-            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
-                this.hasTargetMap[other.node.uuid]++;
+            if (this.hasTargetMap.has(other.id) && this.hasTargetMap.get(other.id) > 0) {
+                this.hasTargetMap.set(other.id, this.hasTargetMap.get(other.id) + 1);
                 return false;
             } else {
-                this.hasTargetMap[other.node.uuid] = 1;
+                this.hasTargetMap.set(other.id, 1);
                 return this.attacking(other, this.anim, false);
             }
         }

@@ -28,7 +28,6 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class Dragon extends Boss {
     init(type: number): void {
-        throw new Error("Method not implemented.");
     }
 
     private anim: cc.Animation;
@@ -172,6 +171,8 @@ export default class Dragon extends Boss {
     }
     showBoss() {
         this.sc.isShow = true;
+        this.entity.NodeRender.node = this.node;
+        this.entity.Move.linearDamping = 5;
         if (this.healthBar) {
             this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
             this.healthBar.node.active = !this.sc.isDied;

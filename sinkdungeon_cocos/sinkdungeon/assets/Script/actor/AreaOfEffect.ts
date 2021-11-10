@@ -27,7 +27,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class AreaOfEffect extends BaseColliderComponent {
     
-    hasTargetMap: { [key: string]: number } = {};
+    hasTargetMap: Map<number, number> = new Map();
     private isAttacking = false;
     data: AreaOfEffectData = new AreaOfEffectData();
     // LIFE-CYCLE CALLBACKS:
@@ -44,7 +44,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
     }
 
     onEnable() {
-        this.hasTargetMap = {};
+        this.hasTargetMap.clear();
         this.isAttacking = false;
     }
     start() {
@@ -102,10 +102,10 @@ export default class AreaOfEffect extends BaseColliderComponent {
 
     onColliderStay(other: CCollider, self: CCollider) {
         if (self.isValid && this.isAttacking) {
-            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
-                this.hasTargetMap[other.node.uuid]++;
+            if (this.hasTargetMap.has(other.id) && this.hasTargetMap.get(other.id) > 0) {
+                this.hasTargetMap.set(other.id, this.hasTargetMap.get(other.id) + 1);
             } else {
-                this.hasTargetMap[other.node.uuid] = 1;
+                this.hasTargetMap.set(other.id, 1);
                 let isAttack = true;
                 if (!this.data.isFromEnemy && (other.tag == CCollider.TAG.GOODNONPLAYER || other.tag == CCollider.TAG.PLAYER)) {
                     isAttack = false;

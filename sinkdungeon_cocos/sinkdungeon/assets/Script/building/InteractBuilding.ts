@@ -49,7 +49,7 @@ export default class InteractBuilding extends Building {
     player: Player;
     isLift = false;
     isAniming = false;
-    private hasTargetMap: { [key: string]: number } = {};
+    private hasTargetMap: Map<number, number> = new Map();
     onLoad() {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.shadow = this.node.getChildByName('shadow');
@@ -266,7 +266,7 @@ export default class InteractBuilding extends Building {
             return false;
         }
         this.isAniming = true;
-        this.hasTargetMap = {};
+        this.hasTargetMap.clear();
         AudioPlayer.play(AudioPlayer.MELEE);
         let o = 64;
         if (this.isLift) {
@@ -315,11 +315,11 @@ export default class InteractBuilding extends Building {
                     this.entity.Move.linearVelocity = cc.Vec2.ZERO;
                 }
             }
-            if (this.hasTargetMap[other.node.uuid] && this.hasTargetMap[other.node.uuid] > 0) {
-                this.hasTargetMap[other.node.uuid]++;
+            if (this.hasTargetMap.has(other.id) && this.hasTargetMap.get(other.id) > 0) {
+                this.hasTargetMap.set(other.id, this.hasTargetMap.get(other.id) + 1);
                 return false;
             } else {
-                this.hasTargetMap[other.node.uuid] = 1;
+                this.hasTargetMap.set(other.id, 1);
                 return this.attacking(other);
             }
 

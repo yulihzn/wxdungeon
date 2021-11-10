@@ -18,6 +18,11 @@ export default class Start extends cc.Component {
     cheatClickCount = 0;
     debugClickCount = 0;
     tourClickCount = 0;
+    onLoad(): void {
+        this.cheatButton.opacity = Logic.isCheatMode?255:0;
+        this.debugButton.opacity = Logic.isDebug?255:0;
+    }
+    
     start () {
         // init logic
         if(this.continueButton){
@@ -63,49 +68,54 @@ export default class Start extends cc.Component {
         if(!this.cheatButton){
             return;
         }
+        if(Logic.isCheatMode){
+            Logic.isCheatMode = false;
+            this.cheatClickCount = 0;
+            return;
+        }
         this.cheatClickCount++;
         if(this.cheatClickCount>2){
-            this.cheatClickCount = 0;
             Logic.isCheatMode = true;
-            this.cheatButton.opacity = Logic.isCheatMode?255:0;
-        }else{
-            Logic.isCheatMode = false;
-            this.cheatButton.opacity = 0;
         }
     }
     debugModeChange(){
         if(!this.debugButton){
             return;
         }
+        if(Logic.isDebug){
+            Logic.isDebug = false;
+            this.debugClickCount = 0;
+            // cc.director.getCollisionManager().enabledDebugDraw = false;
+            // cc.director.getPhysicsManager().debugDrawFlags = 0;
+            return;
+        }
         this.debugClickCount++;
         if(this.debugClickCount>2){
-            this.debugClickCount = 0;
             Logic.isDebug = true;
-            this.debugButton.opacity = Logic.isDebug?255:0;
             // cc.director.getCollisionManager().enabledDebugDraw = true;
             // cc.director.getPhysicsManager().debugDrawFlags = cc.PhysicsManager.DrawBits.e_aabbBit |
             // cc.PhysicsManager.DrawBits.e_jointBit |
             // cc.PhysicsManager.DrawBits.e_shapeBit;
-        }else{
-            Logic.isDebug = false;
-            this.debugButton.opacity = 0;
-            // cc.director.getCollisionManager().enabledDebugDraw = false;
-            // cc.director.getPhysicsManager().debugDrawFlags = 0;
-            
         }
     }
+    protected update(dt: number): void {
+        if(this.debugButton)this.debugButton.opacity = Logic.isDebug?255:0;
+        if(this.cheatButton)this.cheatButton.opacity = Logic.isCheatMode?255:0;
+        if(this.tourButton)this.tourButton.opacity = Logic.isTour?255:0;
+    }
+    
     tourChange(){
         if(!this.tourButton){
             return;
         }
-        this.cheatClickCount++;
-        if(this.cheatClickCount>2){
-            this.cheatClickCount = 0;
-            Logic.isTour = true;
-            this.tourButton.opacity = Logic.isTour?255:0;
-        }else{
+        if(Logic.isTour){
             Logic.isTour = false;
-            this.tourButton.opacity = 0;
+            this.tourClickCount = 0;
+            return;
+        }
+        this.tourClickCount++;
+        if(this.tourClickCount>2){
+            Logic.isTour = true;
         }
     }
 

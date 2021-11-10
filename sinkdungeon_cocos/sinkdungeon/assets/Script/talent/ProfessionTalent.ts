@@ -376,7 +376,7 @@ export default class ProfessionTalent extends Talent {
         let index = 0;
         for (let i = 0; i < a[index].length; i++) {
             shooterEx.fireAoe(this.icethron, new AreaOfEffectData()
-                .init(0, 2, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(this.player.isFaceRight ? posRight[i] : posLeft[i]), angles1[i], null, true);
+                .init(0, 2, 0, scale, IndexZ.OVERHEAD, false, true, true, false, true, d, new FromData(), [StatusManager.FROZEN]), cc.v3(posRight[i]), angles1[i], null, true);
         }
     }
 
