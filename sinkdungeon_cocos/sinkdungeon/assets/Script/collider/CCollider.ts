@@ -249,6 +249,7 @@ export default class CCollider extends cc.Component {
             let aabb2 = other.Aabb;
             let w = 0;
             let h = 0;
+            //目前只考虑矩形和矩形之间的碰撞，碰撞时根据双方的位置和碰撞体的宽高抵消当前碰撞面的向量
             if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
                 //矩形
                 let aabb1 = this.Aabb;

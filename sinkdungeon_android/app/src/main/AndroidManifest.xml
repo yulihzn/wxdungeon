@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestSdk"
+        android:usesCleartextTraffic="true"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity
             android:name="com.banditcat.dream.SplashActivity"
