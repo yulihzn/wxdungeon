@@ -93,7 +93,7 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 if (other.groupId == collider.groupId) {
                     continue;
                 }
-                
+
                 if (this.tempColliders.has(collider.id*100000000+other.id) || this.tempColliders.has(other.id*100000000+collider.id)) {
                     continue;
                 }
@@ -142,8 +142,8 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
                 }
                 activeCount++;
                 if (isCollision) {
-                    collider.contact(other);
-                    other.contact(collider);
+                    collider.contact(other,this.dt);
+                    other.contact(collider,this.dt);
                     collider.disabledOnce = false;
                     other.disabledOnce = false;
                     collisionCount++;

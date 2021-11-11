@@ -223,7 +223,7 @@ export default class CCollider extends cc.Component {
     }
 
 
-    contact(other: CCollider) {
+    contact(other: CCollider, dt: number) {
         if (this.onContactListener) {
             this.onContactListener.onColliderPreSolve(other, this);
         }
@@ -242,48 +242,42 @@ export default class CCollider extends cc.Component {
             }
         }
         if (this.entity && other.entity && !this.sensor && !other.sensor && !this.isStatic) {
-            let x = this.entity.Transform.position.x - other.entity.Transform.position.x;
-            let y = this.entity.Transform.position.y - other.entity.Transform.position.y;
-            let offset = 5;
-            let aabb1 = this.Aabb;
-            let aabb2 = other.Aabb;
-            let w = 0;
-            let h = 0;
-            //目前只考虑矩形和矩形之间的碰撞，碰撞时根据双方的位置和碰撞体的宽高抵消当前碰撞面的向量
-            if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.RECT) {
-                //矩形
-                let aabb1 = this.Aabb;
-                let aabb2 = other.Aabb;
-                w = aabb1.width / 2 + aabb2.width / 2 + offset;
-                h = aabb1.height / 2 + aabb2.height / 2 + offset;
-            } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.CIRCLE) {
-                //圆形
-                w = this.w_radius + other.w_radius + offset;
-                h = this.w_radius + other.w_radius + offset;
-            } else if (this.type == CCollider.TYPE.RECT && other.type == CCollider.TYPE.CIRCLE) {
-                //矩形圆形
-                let aabb1 = this.Aabb;
-                w = aabb1.width / 2 + other.w_radius + offset;
-                h = aabb1.height / 2 + other.w_radius + offset;
-            } else if (this.type == CCollider.TYPE.CIRCLE && other.type == CCollider.TYPE.RECT) {
-                //圆形矩形
-                let aabb2 = other.Aabb;
-                w = this.w_radius + aabb2.width / 2 + offset;
-                h = this.w_radius + aabb2.height / 2 + offset;
-            }
-            if (Math.abs(x) > Math.abs(y)) {
-                if (Math.abs(x) < w) {
-                    this.entity.Transform.position.x = other.entity.Transform.position.x + (x > 0 ? w : -w);
-                    if (this.entity.NodeRender.node) {
-                        this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
-                    }
+            //目前只考虑不旋转矩形和矩形之间的碰撞，碰撞时根据双方的位置和碰撞体的宽高抵消当前碰撞面的向量
+            //比较双方同一侧的坐标位置情况来决定方向，然后给对应方向增加斥力
+            //四个点是以左下角开始顺时针
+            let ps1 = this.points;
+            let ps2 = other.points;
+            let isLeft = ps1[0].x < ps2[0].x;
+            let isRight = ps1[2].x > ps2[2].x;
+            let isTop = ps1[1].y > ps2[1].y;
+            let isBottom = ps1[0].y < ps2[0].y;
+            cc.log(`isLeft:${isLeft},isRight:${isRight},isTop:${isTop},isBottom:${isBottom}`);
+            if (isLeft) {
+                let offset = ps1[3].x - ps2[0].x;
+                if (offset > 0) {
+                    this.entity.Transform.position.x -= offset;
                 }
-            } else if (Math.abs(y) < h) {
-                this.entity.Transform.position.y = other.entity.Transform.position.y + (y > 0 ? h : -h);
-                if (this.entity.NodeRender.node) {
-                    this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
+            } else if (isRight) {
+                let offset = ps2[3].x - ps1[0].x;
+                if (offset > 0) {
+                    this.entity.Transform.position.x += offset;
                 }
             }
+            if (isTop) {
+                let offset = ps2[1].y - ps1[0].y;
+                if (offset > 0) {
+                    this.entity.Transform.position.y += offset;
+                }
+            } else if (isBottom) {
+                let offset = ps1[1].y - ps2[0].y;
+                if (offset > 0) {
+                    this.entity.Transform.position.y -= offset;
+                }
+            }
+            if (this.entity.NodeRender.node) {
+                this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
+            }
+
         }
 
     }
