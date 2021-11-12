@@ -72,9 +72,9 @@ export default abstract class Actor extends cc.Component implements OnContactLis
             this.entity.remove(ColliderComponent);
         }
     }
-    public registerListener(){
+    public registerListener(actor:Actor){
         for (let ccolider of this.ccolliders) {
-            ccolider.setOnContactListener(this);
+            ccolider.setOnContactListener(actor);
         }
     }
     /**设置碰撞目标tag */

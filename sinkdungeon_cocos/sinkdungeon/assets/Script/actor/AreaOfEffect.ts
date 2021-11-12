@@ -177,7 +177,7 @@ export default class AreaOfEffect extends BaseColliderComponent {
     }
     update(dt) {
         if (this.isCheckTimeDelay(dt)) {
-            this.hasTargetMap = {};
+            this.hasTargetMap.clear();
         }
     }
 }

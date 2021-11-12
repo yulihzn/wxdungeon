@@ -143,7 +143,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     set Hv(hv: cc.Vec3) {
-        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 400);
+        let pos = ActorUtils.getDirectionFromNearestEnemy(this.player.node.position, false, this.dungeon, false, 300);
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.hv = pos;
         } else {

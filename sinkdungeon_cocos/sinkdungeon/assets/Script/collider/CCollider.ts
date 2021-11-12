@@ -165,8 +165,8 @@ export default class CCollider extends cc.Component {
             let p1 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(-this.w / 2, this.h / 2)));
             let p2 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w / 2, this.h / 2)));
             let p3 = this.node.convertToWorldSpaceAR(offset.add(cc.v3(this.w / 2, -this.h / 2)));
-            this.isRotate = p0.x != p1.x;
             this._points = [cc.v2(p0), cc.v2(p1), cc.v2(p2), cc.v2(p3)];
+            this.isRotate = p0.x != p1.x;
             if (this.isRotate) {
                 let ps = [];
                 let tp0 = this._points[0].clone();
@@ -244,34 +244,58 @@ export default class CCollider extends cc.Component {
         if (this.entity && other.entity && !this.sensor && !other.sensor && !this.isStatic) {
             //目前只考虑不旋转矩形和矩形之间的碰撞，碰撞时根据双方的位置和碰撞体的宽高抵消当前碰撞面的向量
             //比较双方同一侧的坐标位置情况来决定方向，然后给对应方向增加斥力
-            //四个点是以左下角开始顺时针
-            let ps1 = this.points;
-            let ps2 = other.points;
-            let isLeft = ps1[0].x < ps2[0].x;
-            let isRight = ps1[2].x > ps2[2].x;
-            let isTop = ps1[1].y > ps2[1].y;
-            let isBottom = ps1[0].y < ps2[0].y;
-            cc.log(`isLeft:${isLeft},isRight:${isRight},isTop:${isTop},isBottom:${isBottom}`);
+            //四个点是以左下角开始顺时针的最小包围盒
+            let ps1 = this._points;
+            let ps2 = other._points;
+            if (this.isRotate) {
+                ps1 = [cc.v2(this.Aabb.x, this.Aabb.y)
+                    , cc.v2(this.Aabb.x, this.Aabb.y + this.Aabb.height)
+                    , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y + this.Aabb.height)
+                    , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y)];
+            }
+            if (other.isRotate) {
+                ps2 = [cc.v2(other.Aabb.x, other.Aabb.y)
+                    , cc.v2(other.Aabb.x, other.Aabb.y + other.Aabb.height)
+                    , cc.v2(other.Aabb.x + other.Aabb.width, other.Aabb.y + other.Aabb.height)
+                    , cc.v2(other.Aabb.x + other.Aabb.width, other.Aabb.y)];
+            }
+            let isLeft = ps1[0].x < ps2[0].x && ps1[3].x > ps2[0].x;
+            let isRight = ps1[2].x > ps2[2].x && ps1[0].x < ps2[3].x;
+            let isTop = ps1[1].y > ps2[1].y && ps1[0].y < ps2[1].y;
+            let isBottom = ps1[0].y < ps2[0].y && ps1[1].y > ps2[0].y;
+            // cc.log(`isLeft:${isLeft},isRight:${isRight},isTop:${isTop},isBottom:${isBottom}`);
             if (isLeft) {
-                let offset = ps1[3].x - ps2[0].x;
-                if (offset > 0) {
-                    this.entity.Transform.position.x -= offset;
+                let len = ps1[3].x - ps2[0].x;
+                if (len > 0) {
+                    this.entity.Transform.position.x -= len;
+                    // if(this.entity.Move.linearVelocity.x<0){
+                    //     this.entity.Move.linearVelocity.x = 0;
+                    // }
                 }
             } else if (isRight) {
-                let offset = ps2[3].x - ps1[0].x;
-                if (offset > 0) {
-                    this.entity.Transform.position.x += offset;
+                let len = ps2[3].x - ps1[0].x;
+                if (len > 0) {
+                    this.entity.Transform.position.x += len;
+                    // if(this.entity.Move.linearVelocity.x>0){
+                    //     this.entity.Move.linearVelocity.x = 0;
+                    // }
                 }
             }
             if (isTop) {
-                let offset = ps2[1].y - ps1[0].y;
-                if (offset > 0) {
-                    this.entity.Transform.position.y += offset;
+                let len = ps2[1].y - ps1[0].y;
+                if (len > 0) {
+                    this.entity.Transform.position.y += len;
+                    // if(this.entity.Move.linearVelocity.y<0){
+                    //     this.entity.Move.linearVelocity.y = 0;
+                    // }
                 }
             } else if (isBottom) {
-                let offset = ps1[1].y - ps2[0].y;
-                if (offset > 0) {
-                    this.entity.Transform.position.y -= offset;
+                let len = ps1[1].y - ps2[0].y;
+                if (len > 0) {
+                    this.entity.Transform.position.y -= len;
+                    // if(this.entity.Move.linearVelocity.y>0){
+                    //     this.entity.Move.linearVelocity.y = 0;
+                    // }
                 }
             }
             if (this.entity.NodeRender.node) {

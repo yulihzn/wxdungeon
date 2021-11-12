@@ -886,9 +886,10 @@
     "radius": 64,
     "w": 128,
     "h": 128,
+    "density": 0,
     "sensor": false,
-    "isStatic": false,
-    "isChild": false,
+    "isStatic": true,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       12,
@@ -912,10 +913,13 @@
     "radius": 64,
     "w": 128,
     "h": 64,
-    "sensor": false,
+    "density": 0,
+    "sensor": true,
     "isStatic": true,
-    "isChild": false,
-    "targetTagList": [],
+    "ignoreSameTag": false,
+    "targetTagList": [
+      3
+    ],
     "ignoreTagList": [],
     "_id": ""
   },

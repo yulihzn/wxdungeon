@@ -132,6 +132,7 @@ export default class BuildingManager extends BaseManager {
     doors: Door[] = new Array();
     airExits: AirExit[] = new Array();
     monsterGeneratorList: MonsterGenerator[] = new Array();
+    colliderCombineMap: Map<string, Wall> = new Map();
     savePointS: SavePoint;
     coastColliderList = ['128,128,0,0', '128,128,0,0', '128,128,0,0', '128,128,0,0', '128,64,0,-32', '128,64,0,32'
         , '64,128,32,0', '64,128,-32,0', '64,64,-32,32', '64,64,32,32', '64,64,-32,-32', '64,64,32,-32'];
@@ -160,6 +161,7 @@ export default class BuildingManager extends BaseManager {
         this.interactBuildings = new Array();
         this.shelvesFoodIndex = 0;
         this.shelvesDrinkIndex = 0;
+        this.colliderCombineMap.clear();
     }
 
     private isThe(mapStr: string, typeStr: string): boolean {
@@ -189,11 +191,11 @@ export default class BuildingManager extends BaseManager {
         }
         return building;
     }
-    public addBuildingsFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
+    public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
         if (this.isFirstEqual(mapDataStr, '*')) {
         } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
-            this.addDirWalls(mapDataStr, indexPos, levelData, false);
+            this.addDirWalls(mapDataStr, mapData, indexPos, levelData, false);
         } else if (this.isFirstEqual(mapDataStr, '-')) {
             let dn = this.addBuilding(Logic.getBuildings(BuildingManager.DARKNESS), indexPos);
             dn.zIndex = IndexZ.DARKNESS;
@@ -271,7 +273,7 @@ export default class BuildingManager extends BaseManager {
             head.opacity = 80;
             head.zIndex = IndexZ.ROOF;
         } else if (this.isFirstEqual(mapDataStr, 'P')) {
-            if(Logic.isCheatMode){
+            if (Logic.isCheatMode) {
                 let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
                 for (let e of exits) {
                     if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
@@ -285,7 +287,7 @@ export default class BuildingManager extends BaseManager {
                 portal.exitData.valueCopy(d);
                 this.portals.push(portal);
             }
-            
+
         } else if (mapDataStr == 'Q0') {
             //生成塔罗
             this.addBuilding(Logic.getBuildings(BuildingManager.TAROTTABLE), indexPos);
@@ -343,10 +345,10 @@ export default class BuildingManager extends BaseManager {
 
         }
     }
-    public addBuildingsFromSideMap(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData) {
+    public addBuildingsFromSideMap(mapDataStr: string, mapData: string[][], indexPos: cc.Vec3, levelData: LevelData) {
         if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
-            this.addDirWalls(mapDataStr, indexPos, levelData, true);
+            this.addDirWalls(mapDataStr, mapData, indexPos, levelData, true);
         } else if (this.isFirstEqual(mapDataStr, '-')) {
             //生成黑暗
             let dn = this.addBuilding(Logic.getBuildings(BuildingManager.DARKNESS), indexPos);
@@ -513,7 +515,7 @@ export default class BuildingManager extends BaseManager {
             pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])));
             pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
             co.zIndex = IndexZ.WATER;
-        }else if(mapDataStr == '~f'){
+        } else if (mapDataStr == '~f') {
             let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATERFALL), indexPos);
         } else {
             let dn = this.addBuilding(Logic.getBuildings(mapDataStr == '~#' ? BuildingManager.WATERCOLLIDER : BuildingManager.WATER), indexPos);
@@ -652,10 +654,39 @@ export default class BuildingManager extends BaseManager {
             }
         }
     }
-    private addDirWalls(mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, onlyShow: boolean) {
+    private addDirWalls(mapDataStr: string, mapData: string[][], indexPos: cc.Vec3, levelData: LevelData, onlyShow: boolean) {
         let node: cc.Node = this.addBuilding(Logic.getBuildings(BuildingManager.WALL), indexPos);
         let wall = node.getComponent(Wall);
-        wall.init(mapDataStr, levelData, onlyShow);
+        let combineCountX = 0;
+        let combineCountY = 0;
+        let isCombine = this.colliderCombineMap.has(`i${indexPos.x}j${indexPos.y}`);
+        if(isCombine){
+            wall.combineWall = this.colliderCombineMap.get(`i${indexPos.x}j${indexPos.y}`);
+        }
+        if (!isCombine && !onlyShow) {
+
+            for (let i = indexPos.x + 1; i < mapData.length; i++) {
+                let next = mapData[i][indexPos.y];
+                if (mapDataStr == next) {
+                    this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall);
+                    combineCountX++;
+                } else {
+                    break;
+                }
+            }
+            if (combineCountX < 1) {
+                for (let j = indexPos.y + 1; j < mapData[indexPos.x].length; j++) {
+                    let next = mapData[indexPos.x][j];
+                    if (mapDataStr == next) {
+                        this.colliderCombineMap.set(`i${indexPos.x}j${j}`, null);
+                        combineCountY++;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        wall.init(mapDataStr, levelData, onlyShow || isCombine, combineCountX, combineCountY);
     }
     private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let data = new FurnitureData();
@@ -689,7 +720,7 @@ export default class BuildingManager extends BaseManager {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
         } else if (mapDataStr == 'Z4') {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSOFA), indexPos);
-            building.zIndex =IndexZ.ACTOR;
+            building.zIndex = IndexZ.ACTOR;
         } else if (mapDataStr == 'Z9') {
             building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
             building.getComponent(RoomStool).init(indexPos, dungeon);
@@ -732,7 +763,7 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let stone = this.addBuilding(Logic.getBuildings(BuildingManager.FALLSTONE),pos);
+        let stone = this.addBuilding(Logic.getBuildings(BuildingManager.FALLSTONE), pos);
         let stoneScript = stone.getComponent(FallStone);
         stoneScript.isAuto = isAuto;
         stone.zIndex = IndexZ.FLOOR;
@@ -746,7 +777,7 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let fall = this.addBuilding(Logic.getBuildings(BuildingManager.LIGHTENINGFALL),pos);
+        let fall = this.addBuilding(Logic.getBuildings(BuildingManager.LIGHTENINGFALL), pos);
         let fallScript = fall.getComponent(MagicLightening);
         fall.zIndex = IndexZ.FLOOR;
         fallScript.isTrigger = isTrigger;
@@ -759,7 +790,7 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let grass = this.addBuilding(Logic.getBuildings(BuildingManager.DRYADTWINE),pos);
+        let grass = this.addBuilding(Logic.getBuildings(BuildingManager.DRYADTWINE), pos);
         let dryadGrassScript = grass.getComponent(DryadGrass);
         dryadGrassScript.isAuto = isAuto;
         grass.zIndex = IndexZ.getActorZIndex(pos);

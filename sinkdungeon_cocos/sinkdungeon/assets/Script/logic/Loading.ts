@@ -99,7 +99,7 @@ export default class Loading extends cc.Component {
             }
             AudioPlayer.play(AudioPlayer.TRANSPORTSHIP);
             Logic.shipTransportScene = 0;
-            this.scheduleOnce(() => { this.isTransportAnimFinished = true; }, 2)
+            this.scheduleOnce(() => { this.isTransportAnimFinished = true; }, 1.5)
         }
     }
     update(dt) {

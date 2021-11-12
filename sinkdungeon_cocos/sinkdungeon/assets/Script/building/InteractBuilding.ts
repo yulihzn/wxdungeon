@@ -75,7 +75,7 @@ export default class InteractBuilding extends Building {
     updateCollider() {
         let spriteFrame = Logic.spriteFrameRes(this.resName);
         let width = spriteFrame.getOriginalSize().width * this.sprite.node.scale;
-        let height = spriteFrame.getOriginalSize().height * this.sprite.node.scale / 4;
+        let height = spriteFrame.getOriginalSize().height * this.sprite.node.scale / 3;
         let offset = 5;
         let physicCollider = this.getComponent(CCollider);
         if (this.sprite.node.angle == 0) {

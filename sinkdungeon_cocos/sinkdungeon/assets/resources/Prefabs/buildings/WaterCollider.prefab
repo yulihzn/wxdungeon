@@ -147,15 +147,15 @@
     "radius": 64,
     "w": 128,
     "h": 128,
+    "density": 0,
     "sensor": false,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       18,
       1,
-      2,
-      12
+      2
     ],
     "_id": ""
   },

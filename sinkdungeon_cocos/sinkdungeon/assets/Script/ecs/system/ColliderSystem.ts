@@ -156,12 +156,12 @@ export default class ColliderSystem extends ecs.ComblockSystem<ActorEntity>{
             }
         }
         this.quadTree.clear();
-        if(this.isDebug&&this.allCount+this.collisionCount+this.activeCount != allCount+activeCount+collisionCount){
-            this.allCount = allCount;
-            this.activeCount = activeCount;
-            this.collisionCount = collisionCount;
-            cc.log(`碰撞体数量:${this.list.length},循环次数:${this.allCount},碰撞计算次数:${this.activeCount},已碰撞:${this.collisionCount},未碰撞:${this.activeCount-this.collisionCount}`)
-        }
+        // if(this.isDebug&&this.allCount+this.collisionCount+this.activeCount != allCount+activeCount+collisionCount){
+        //     this.allCount = allCount;
+        //     this.activeCount = activeCount;
+        //     this.collisionCount = collisionCount;
+        //     cc.log(`碰撞体数量:${this.list.length},循环次数:${this.allCount},碰撞计算次数:${this.activeCount},已碰撞:${this.collisionCount},未碰撞:${this.activeCount-this.collisionCount}`)
+        // }
     }
 
     private recHit(rect1: cc.Rect, rect2: cc.Rect) {

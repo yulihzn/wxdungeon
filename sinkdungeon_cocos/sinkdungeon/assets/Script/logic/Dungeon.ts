@@ -176,7 +176,7 @@ export default class Dungeon extends cc.Component {
                 //越往下层级越高，j是行，i是列
                 this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false);
                 //加载建筑
-                this.buildingManager.addBuildingsFromMap(this, mapData[i][j], cc.v3(i, j), leveldata, exits);
+                this.buildingManager.addBuildingsFromMap(this, mapData,mapData[i][j], cc.v3(i, j), leveldata, exits);
                 //房间未清理时加载物品
                 if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
                     this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j));
@@ -286,7 +286,7 @@ export default class Dungeon extends cc.Component {
                 if (needAdd) {
                     let indexPos = cc.v3(i + Dungeon.WIDTH_SIZE * offset.x, j + Dungeon.HEIGHT_SIZE * offset.y);
                     this.addTiles(mapData[i][j], indexPos.clone(), leveldata, true);
-                    this.buildingManager.addBuildingsFromSideMap(mapData[i][j], indexPos.clone(), leveldata);
+                    this.buildingManager.addBuildingsFromSideMap(mapData[i][j],mapData, indexPos.clone(), leveldata);
                 }
             }
         }

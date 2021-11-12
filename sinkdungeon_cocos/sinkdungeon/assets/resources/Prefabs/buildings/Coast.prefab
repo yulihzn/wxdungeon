@@ -331,18 +331,22 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 12,
     "offsetX": 0,
     "offsetY": 0,
     "type": 1,
     "radius": 64,
     "w": 128,
     "h": 128,
+    "density": 0,
     "sensor": false,
     "isStatic": true,
     "ignoreSameTag": false,
     "targetTagList": [],
-    "ignoreTagList": [],
+    "ignoreTagList": [
+      1,
+      2
+    ],
     "_id": ""
   },
   {

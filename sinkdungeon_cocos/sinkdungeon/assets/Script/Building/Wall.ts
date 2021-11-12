@@ -1,3 +1,4 @@
+import { EventHelper } from './../logic/EventHelper';
 import { ColliderComponent } from './../ecs/component/ColliderComponent';
 import Dungeon from "../logic/Dungeon";
 import Logic from "../logic/Logic";
@@ -45,6 +46,7 @@ export default class Wall extends Building {
     resNameSecond: string = '';
     type: number = Wall.TYPE_EMPTY;
     dir = 0;
+    combineWall:Wall;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -60,7 +62,7 @@ export default class Wall extends Building {
             return this.node.opacity = 0;
         }
         if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2
-            || this.type == Wall.TYPE_OTHER3|| this.type == Wall.TYPE_OTHER4) {
+            || this.type == Wall.TYPE_OTHER3 || this.type == Wall.TYPE_OTHER4) {
             this.roofsprite.node.opacity = 0;
             this.wallsprite.node.height = 256;
         }
@@ -97,7 +99,7 @@ export default class Wall extends Building {
     public isSide(): boolean {
         return this.type == Wall.TYPE_NORMAL && this.dir > 1;
     }
-    init(mapStr: string, leveldata: LevelData, onlyShow: boolean) {
+    init(mapStr: string, leveldata: LevelData, onlyShow: boolean, combineCountX: number, combineCountY: number) {
         this.mapStr = mapStr;
         let dir = parseInt(mapStr[2]);
         this.dir = dir;
@@ -192,26 +194,56 @@ export default class Wall extends Building {
                 break;
         }
         if (this.isTop()) {
-            for(let c of this.ccolliders){
+            for (let c of this.ccolliders) {
                 c.tag = CCollider.TAG.WALL_TOP;
             }
         }
-        this.setTargetTags(CCollider.TAG.PLAYER,CCollider.TAG.NONPLAYER,CCollider.TAG.GOODNONPLAYER
-            ,CCollider.TAG.BOSS,CCollider.TAG.BUILDING,CCollider.TAG.BULLET);
+        this.setTargetTags(CCollider.TAG.PLAYER, CCollider.TAG.NONPLAYER, CCollider.TAG.GOODNONPLAYER
+            , CCollider.TAG.BOSS, CCollider.TAG.BUILDING, CCollider.TAG.BULLET);
         if (onlyShow) {
-            this.entity.remove(ColliderComponent);
+            this.entity.destroy();
+        } else if (combineCountX > 0) {
+            for (let collider of this.ccolliders) {
+                let half = collider.w/2;
+                collider.w += collider.w * combineCountX;
+                collider.offsetX = collider.w / 2-half;
+            }
+        } else if (combineCountY > 0) {
+            for (let collider of this.ccolliders) {
+                if (collider.sensor) {
+                    collider.offsetY += combineCountY * collider.offsetY;
+                } else {
+                    let half = collider.h/2;
+                    collider.h += collider.h * combineCountY;
+                    collider.offsetY = collider.h / 2-half;
+                }
+            }
+        }
+        if(this.combineWall){
+            EventHelper.on(EventHelper.DUNGEON_WALL_COLLIDER,(detail)=>{
+                if(this.node){
+                    if(detail.type == 0){
+                        this.onColliderEnter(detail.other,detail.self);
+                    }else if(detail.type == 1){
+                        this.onColliderStay(detail.other,detail.self);
+                    }else if(detail.type == 2){
+                        this.onColliderExit(detail.other,detail.self);
+                    }
+                }
+            })
         }
     }
     private isInnerOrCorner(type: number): boolean {
         return type == Wall.TYPE_INNER || type == Wall.TYPE_CORNER || type == Wall.TYPE_INNER_CORNER;
     }
     onColliderEnter(other: CCollider, self: CCollider): void {
-        if(!self.sensor){
+        if (!self.sensor) {
             return;
         }
         if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
+            if(!this.combineWall)EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER,{type:0,other:other,self:self});
             if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2
-                || this.type == Wall.TYPE_OTHER3|| this.type == Wall.TYPE_OTHER4) {
+                || this.type == Wall.TYPE_OTHER3 || this.type == Wall.TYPE_OTHER4) {
                 this.wallsprite.node.opacity = 180;
             } else {
                 this.roofsprite.node.opacity = 180;
@@ -219,12 +251,13 @@ export default class Wall extends Building {
         }
     }
     onColliderStay(other: CCollider, self: CCollider): void {
-        if(!self.sensor){
+        if (!self.sensor) {
             return;
         }
         if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
+            if(!this.combineWall)EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER,{type:1,other:other,self:self});
             if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2
-                || this.type == Wall.TYPE_OTHER3|| this.type == Wall.TYPE_OTHER4) {
+                || this.type == Wall.TYPE_OTHER3 || this.type == Wall.TYPE_OTHER4) {
                 this.wallsprite.node.opacity = 180;
             } else {
                 this.roofsprite.node.opacity = 180;
@@ -232,18 +265,19 @@ export default class Wall extends Building {
         }
     }
     onColliderExit(other: CCollider, self: CCollider): void {
-        if(!self.sensor){
+        if (!self.sensor) {
             return;
         }
         if (this.type != Wall.TYPE_EMPTY && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
+            if(!this.combineWall)EventHelper.emit(EventHelper.DUNGEON_WALL_COLLIDER,{type:2,other:other,self:self});
             if (this.type == Wall.TYPE_OTHER1 || this.type == Wall.TYPE_OTHER2
-                || this.type == Wall.TYPE_OTHER3|| this.type == Wall.TYPE_OTHER4) {
+                || this.type == Wall.TYPE_OTHER3 || this.type == Wall.TYPE_OTHER4) {
                 this.wallsprite.node.opacity = 255;
             } else {
                 this.roofsprite.node.opacity = 255;
             }
         }
     }
-   
+
     // update (dt) {}
 }
