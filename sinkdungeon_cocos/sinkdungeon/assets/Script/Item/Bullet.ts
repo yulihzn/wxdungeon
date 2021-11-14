@@ -292,6 +292,14 @@ export default class Bullet extends BaseColliderComponent {
 
     }
 
+    onColliderPreSolve(other:CCollider,self:CCollider){
+        if (!this.isFromPlayer && (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS)) {
+            self.disabledOnce = true;
+        }
+        if (this.isFromPlayer && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.GOODNONPLAYER)) {
+            self.disabledOnce = true;
+        }
+    }
     onColliderEnter(other: CCollider, self: CCollider) {
         if (!other.sensor) {
             let isDestory = true;

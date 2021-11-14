@@ -247,13 +247,13 @@ export default class CCollider extends cc.Component {
             //四个点是以左下角开始顺时针的最小包围盒
             let ps1 = this._points;
             let ps2 = other._points;
-            if (this.isRotate) {
+            if (this.isRotate||this.type == CCollider.TYPE.CIRCLE) {
                 ps1 = [cc.v2(this.Aabb.x, this.Aabb.y)
                     , cc.v2(this.Aabb.x, this.Aabb.y + this.Aabb.height)
                     , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y + this.Aabb.height)
                     , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y)];
             }
-            if (other.isRotate) {
+            if (other.isRotate||other.type == CCollider.TYPE.CIRCLE) {
                 ps2 = [cc.v2(other.Aabb.x, other.Aabb.y)
                     , cc.v2(other.Aabb.x, other.Aabb.y + other.Aabb.height)
                     , cc.v2(other.Aabb.x + other.Aabb.width, other.Aabb.y + other.Aabb.height)
@@ -264,43 +264,48 @@ export default class CCollider extends cc.Component {
             let isTop = ps1[1].y > ps2[1].y && ps1[0].y < ps2[1].y;
             let isBottom = ps1[0].y < ps2[0].y && ps1[1].y > ps2[0].y;
             // cc.log(`isLeft:${isLeft},isRight:${isRight},isTop:${isTop},isBottom:${isBottom}`);
+            let offset = 100;
+            let pos = this.entity.Move.linearVelocity.clone();
+            let lenVertical = 0;
+            let lenHorizonal = 0;
             if (isLeft) {
-                let len = ps1[3].x - ps2[0].x;
-                if (len > 0) {
-                    this.entity.Transform.position.x -= len;
-                    // if(this.entity.Move.linearVelocity.x<0){
-                    //     this.entity.Move.linearVelocity.x = 0;
-                    // }
+                lenHorizonal = ps1[3].x - ps2[0].x;
+                if (lenHorizonal > 0) {
+                    // this.entity.Transform.position.x -= len;
+                    if(this.entity.Move.linearVelocity.x<0){
+                    }
+                    pos = cc.v2(-offset,0);
                 }
             } else if (isRight) {
-                let len = ps2[3].x - ps1[0].x;
-                if (len > 0) {
-                    this.entity.Transform.position.x += len;
-                    // if(this.entity.Move.linearVelocity.x>0){
-                    //     this.entity.Move.linearVelocity.x = 0;
-                    // }
+                lenHorizonal = ps2[3].x - ps1[0].x;
+                if (lenHorizonal > 0) {
+                    // this.entity.Transform.position.x += len;
+                    if(this.entity.Move.linearVelocity.x>0){
+                    }
+                    pos = cc.v2(offset,0);
                 }
             }
             if (isTop) {
-                let len = ps2[1].y - ps1[0].y;
-                if (len > 0) {
-                    this.entity.Transform.position.y += len;
-                    // if(this.entity.Move.linearVelocity.y<0){
-                    //     this.entity.Move.linearVelocity.y = 0;
-                    // }
+                lenVertical = ps2[1].y - ps1[0].y;
+                if (lenVertical > 0&&lenVertical>lenHorizonal) {
+                    // this.entity.Transform.position.y += len;
+                    if(this.entity.Move.linearVelocity.y<0){
+                    }
+                    pos = cc.v2(0,offset);
                 }
             } else if (isBottom) {
-                let len = ps1[1].y - ps2[0].y;
-                if (len > 0) {
-                    this.entity.Transform.position.y -= len;
-                    // if(this.entity.Move.linearVelocity.y>0){
-                    //     this.entity.Move.linearVelocity.y = 0;
-                    // }
+                lenVertical = ps1[1].y - ps2[0].y;
+                if (lenVertical > 0&&lenVertical>lenHorizonal) {
+                    // this.entity.Transform.position.y -= len;
+                    if(this.entity.Move.linearVelocity.y>0){
+                    }
+                    pos = cc.v2(0,-offset);
                 }
             }
-            if (this.entity.NodeRender.node) {
-                this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
-            }
+            this.entity.Move.linearVelocity = pos;
+            // if (this.entity.NodeRender.node) {
+            //     this.entity.NodeRender.node.setPosition(this.entity.Transform.position);
+            // }
 
         }
 
@@ -321,7 +326,7 @@ export default class CCollider extends cc.Component {
         }
         graphics.strokeColor = cc.color(255, 255, 255, 160);
         graphics.fillColor = cc.color(255, 255, 255, 60);
-        graphics.lineWidth = 8;
+        graphics.lineWidth = 4;
         if (this.type == CCollider.TYPE.CIRCLE) {
             let r1 = graphics.node.convertToNodeSpaceAR(cc.v3(this.w_radius, 0));
             let r2 = graphics.node.convertToNodeSpaceAR(cc.v3(0, 0));
