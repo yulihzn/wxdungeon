@@ -245,60 +245,52 @@ export default class CCollider extends cc.Component {
             //目前只考虑不旋转矩形和矩形之间的碰撞，碰撞时根据双方的位置和碰撞体的宽高抵消当前碰撞面的向量
             //比较双方同一侧的坐标位置情况来决定方向，然后给对应方向增加斥力
             //四个点是以左下角开始顺时针的最小包围盒
-            let ps1 = this._points;
-            let ps2 = other._points;
+            let tps = this._points;
+            let ops = other._points;
             if (this.isRotate||this.type == CCollider.TYPE.CIRCLE) {
-                ps1 = [cc.v2(this.Aabb.x, this.Aabb.y)
+                tps = [cc.v2(this.Aabb.x, this.Aabb.y)
                     , cc.v2(this.Aabb.x, this.Aabb.y + this.Aabb.height)
                     , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y + this.Aabb.height)
                     , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y)];
             }
             if (other.isRotate||other.type == CCollider.TYPE.CIRCLE) {
-                ps2 = [cc.v2(other.Aabb.x, other.Aabb.y)
+                ops = [cc.v2(other.Aabb.x, other.Aabb.y)
                     , cc.v2(other.Aabb.x, other.Aabb.y + other.Aabb.height)
                     , cc.v2(other.Aabb.x + other.Aabb.width, other.Aabb.y + other.Aabb.height)
                     , cc.v2(other.Aabb.x + other.Aabb.width, other.Aabb.y)];
             }
-            let isLeft = ps1[0].x < ps2[0].x && ps1[3].x > ps2[0].x;
-            let isRight = ps1[2].x > ps2[2].x && ps1[0].x < ps2[3].x;
-            let isTop = ps1[1].y > ps2[1].y && ps1[0].y < ps2[1].y;
-            let isBottom = ps1[0].y < ps2[0].y && ps1[1].y > ps2[0].y;
+            let w1 = tps[3].x-tps[0].x;
+            let w2 = ops[3].x-ops[0].x;
+            let h1 = tps[1].y-tps[0].y;
+            let h2 = ops[1].y-ops[0].y
+            let center1 = cc.v2(tps[0].x+w1/2,tps[0].y+h1/2);
+            let center2 = cc.v2(ops[0].x+w2/2,ops[0].y+h2/2);
+            // let isLeft = tps[0].x < ops[0].x && tps[3].x > ops[0].x;
+            // let isRight = tps[2].x > ops[2].x && tps[0].x < ops[3].x;
+            // let isTop = tps[1].y > ops[1].y && tps[0].y < ops[1].y;
+            // let isBottom = tps[0].y < ops[0].y && tps[1].y > ops[0].y;
+            let isLeft = center1.x<center2.x;
+            let isRight = center1.x > center2.x;
+            let isTop = center1.y>center2.y;
+            let isBottom = center1.y<center2.y;
             // cc.log(`isLeft:${isLeft},isRight:${isRight},isTop:${isTop},isBottom:${isBottom}`);
             let offset = 100;
             let pos = this.entity.Move.linearVelocity.clone();
-            let lenVertical = 0;
-            let lenHorizonal = 0;
+            let lenVertical = Math.abs(center1.x - center2.x);
+            let lenHorizonal = Math.abs(center1.y - center2.y);
+            let offsetVertical = (h1+h2)/2-lenVertical;
+            let offsetHorizonal = (w1+w2)/2-lenHorizonal;
             if (isLeft) {
-                lenHorizonal = ps1[3].x - ps2[0].x;
-                if (lenHorizonal > 0) {
-                    // this.entity.Transform.position.x -= len;
-                    if(this.entity.Move.linearVelocity.x<0){
-                    }
-                    pos = cc.v2(-offset,0);
-                }
+                pos = cc.v2(-offset,0);
             } else if (isRight) {
-                lenHorizonal = ps2[3].x - ps1[0].x;
-                if (lenHorizonal > 0) {
-                    // this.entity.Transform.position.x += len;
-                    if(this.entity.Move.linearVelocity.x>0){
-                    }
-                    pos = cc.v2(offset,0);
-                }
+                pos = cc.v2(offset,0);
             }
             if (isTop) {
-                lenVertical = ps2[1].y - ps1[0].y;
-                if (lenVertical > 0&&lenVertical>lenHorizonal) {
-                    // this.entity.Transform.position.y += len;
-                    if(this.entity.Move.linearVelocity.y<0){
-                    }
+                if (lenVertical>lenHorizonal) {
                     pos = cc.v2(0,offset);
                 }
             } else if (isBottom) {
-                lenVertical = ps1[1].y - ps2[0].y;
-                if (lenVertical > 0&&lenVertical>lenHorizonal) {
-                    // this.entity.Transform.position.y -= len;
-                    if(this.entity.Move.linearVelocity.y>0){
-                    }
+                if (lenVertical>lenHorizonal) {
                     pos = cc.v2(0,-offset);
                 }
             }

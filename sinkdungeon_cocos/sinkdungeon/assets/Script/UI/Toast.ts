@@ -35,11 +35,11 @@ export default class Toast extends cc.Component {
         this.label.node.width = isCenter?300:600;
         let node = this.node;
         node.stopAllActions();
-        let delay = 1.5;
+        let delay = 3;
         if(isTap){
-            delay = 0.05*msg.length;
-            if(delay<1.5){
-                delay = 1.5;
+            delay = 0.07*msg.length;
+            if(delay<3){
+                delay = 3;
             }
             let count = 0;
             this.schedule(()=>{

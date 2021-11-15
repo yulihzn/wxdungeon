@@ -36,7 +36,7 @@
         "melee": 0,
         "boxType":1,
         "isHeavy":1,
-        "sizeType":1.2,
+        "scale":1.2,
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0
@@ -60,7 +60,7 @@
         "melee": 1,
         "isPet":1,
         "boxType":1,
-        "sizeType":0.75,
+        "scale":0.75,
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0
@@ -84,7 +84,7 @@
         "melee": 1,
         "isPet":1,
         "boxType":1,
-        "sizeType":0.75,
+        "scale":0.75,
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0
@@ -108,7 +108,7 @@
         "melee": 1,
         "isPet":1,
         "boxType":1,
-        "sizeType":0.75,
+        "scale":0.75,
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0
@@ -135,7 +135,7 @@
         "melee": 0,
         "isPet":1,
         "boxType":1,
-        "sizeType":0.75,
+        "scale":0.5,
         "isEnemy":0,
         "isFollow":1,
         "lifeTime": 0

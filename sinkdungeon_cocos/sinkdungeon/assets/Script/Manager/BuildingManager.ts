@@ -711,7 +711,8 @@ export default class BuildingManager extends BaseManager {
             default: break;
         }
         let save = LocalStorage.getFurnitureData(data.id);
-        data.valueCopy(save);
+        data.isOpen = save.isOpen;
+        data.purchased = save.purchased;
         if (!data.purchased) {
             return;
         }
