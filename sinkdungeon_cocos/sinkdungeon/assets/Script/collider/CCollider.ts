@@ -265,35 +265,41 @@ export default class CCollider extends cc.Component {
             let h2 = ops[1].y-ops[0].y
             let center1 = cc.v2(tps[0].x+w1/2,tps[0].y+h1/2);
             let center2 = cc.v2(ops[0].x+w2/2,ops[0].y+h2/2);
-            // let isLeft = tps[0].x < ops[0].x && tps[3].x > ops[0].x;
-            // let isRight = tps[2].x > ops[2].x && tps[0].x < ops[3].x;
-            // let isTop = tps[1].y > ops[1].y && tps[0].y < ops[1].y;
-            // let isBottom = tps[0].y < ops[0].y && tps[1].y > ops[0].y;
-            let isLeft = center1.x<center2.x;
-            let isRight = center1.x > center2.x;
-            let isTop = center1.y>center2.y;
-            let isBottom = center1.y<center2.y;
-            // cc.log(`isLeft:${isLeft},isRight:${isRight},isTop:${isTop},isBottom:${isBottom}`);
+            let rect1 = cc.rect(tps[0].x,tps[0].y,w1,h1);
+            let rect2 = cc.rect(ops[0].x,ops[0].y,w2,h2);
+            let isLeft = tps[0].x < ops[0].x && tps[3].x > ops[0].x;
+            let isRight = tps[2].x > ops[2].x && tps[0].x < ops[3].x;
+            let isTop = tps[1].y > ops[1].y && tps[0].y < ops[1].y;
+            let isBottom = tps[0].y < ops[0].y && tps[1].y > ops[0].y;
             let offset = 100;
             let pos = this.entity.Move.linearVelocity.clone();
             let lenVertical = Math.abs(center1.x - center2.x);
             let lenHorizonal = Math.abs(center1.y - center2.y);
             let offsetVertical = (h1+h2)/2-lenVertical;
             let offsetHorizonal = (w1+w2)/2-lenHorizonal;
-            if (isLeft) {
-                pos = cc.v2(-offset,0);
-            } else if (isRight) {
-                pos = cc.v2(offset,0);
-            }
-            if (isTop) {
-                if (lenVertical>lenHorizonal) {
-                    pos = cc.v2(0,offset);
+            let isChecked = false;
+            //矩形互相包含的情况
+            if(rect1.containsRect(rect2)||rect2.containsRect(rect1)){
+                pos = center1.sub(center2).normalizeSelf().mul(offset);
+            }else{
+                if(isLeft||isRight){
+                    if(tps[0].y>ops[0].y&&tps[1].y<ops[1].y||tps[0].y<ops[0].y&&tps[1].y>ops[1].y){
+                        pos = cc.v2(isLeft?-offset:offset,0);
+                        isChecked = true;
+                    }else if(offsetHorizonal>0&&offsetHorizonal<offsetVertical){
+                        pos = cc.v2(isLeft?-offset:offset,0);
+                    }
                 }
-            } else if (isBottom) {
-                if (lenVertical>lenHorizonal) {
-                    pos = cc.v2(0,-offset);
+                if(isTop||isBottom){
+                    if(tps[0].x>ops[0].x&&tps[3].x<ops[3].x||tps[0].x<ops[0].x&&tps[3].x>ops[3].x){
+                        pos = cc.v2(0,isTop?offset:-offset);
+                        isChecked = true;
+                    }else if(offsetVertical>0&&offsetHorizonal>offsetVertical){
+                        pos = cc.v2(0,isTop?offset:-offset);
+                    }
                 }
             }
+         
             this.entity.Move.linearVelocity = pos;
             // if (this.entity.NodeRender.node) {
             //     this.entity.NodeRender.node.setPosition(this.entity.Transform.position);

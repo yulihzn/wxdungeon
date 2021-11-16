@@ -17,7 +17,7 @@
         "resName": "roombath",
         "info": "",
         "desc": "",
-        "scale": 8,
+        "scale": 4,
         "collider": "0,64,128,256",
         "price": 1000
     },

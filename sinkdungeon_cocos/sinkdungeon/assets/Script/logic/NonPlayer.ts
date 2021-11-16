@@ -736,6 +736,7 @@ export default class NonPlayer extends Actor {
         if (this.sc.isDied) {
             return;
         }
+        this.entity.Move.linearDamping = 10;
         this.sc.isDied = true;
         this.sc.isDisguising = false;
         this.dashStep.IsExcuting = false;

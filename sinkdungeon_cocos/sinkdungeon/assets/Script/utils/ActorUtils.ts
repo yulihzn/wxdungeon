@@ -127,20 +127,20 @@ export default class ActorUtils {
                 targetList = targetList.concat(dungeon.monsterManager.bossList);
             } else if (targetType == Actor.TARGET_NONPLAYER) {
                 for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (non.data.isEnemy < 1) {
+                    if (non&&non.node&&non.node.active&&non.data.isEnemy < 1) {
                         targetList.push(non);
                     }
                 }
             } else if (targetType == Actor.TARGET_NONPLAYER_ENEMY) {
                 for (let non of dungeon.nonPlayerManager.nonPlayerList) {
-                    if (non.data.isEnemy > 0) {
+                    if (non&&non.node&&non.node.active&&non.data.isEnemy > 0) {
                         targetList.push(non);
                     }
                 }
             }
         }
         for (let target of targetList) {
-            if (this.isTargetCanTrack(target)) {
+            if (target&&target.node&&target.node.active&&this.isTargetCanTrack(target)) {
                 let dis = Logic.getDistanceNoSqrt(selfPosition, target.getCenterPosition());
                 if (dis < shortdis) {
                     shortdis = dis;

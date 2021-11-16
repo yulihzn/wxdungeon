@@ -83,7 +83,7 @@ export default class InteractBuilding extends Building {
         } else {
             physicCollider.setSize(cc.size(height, width));
         }
-        this.entity.Move.linearDamping = this.isThrowing ? 1 : 2;
+        this.entity.Move.linearDamping = this.isThrowing ? 2 : 5;
         physicCollider.sensor = this.data.currentHealth <= 0 ? true : false;
     }
     changeRes(resName: string, suffix?: string) {

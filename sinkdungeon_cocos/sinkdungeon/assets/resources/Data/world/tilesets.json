@@ -1890,73 +1890,73 @@
         }, 
         {
          "id":403,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallsecond0.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint0.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#e"
+         "type":"+p0"
         }, 
         {
          "id":404,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallsecond1.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint1.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#f"
+         "type":"+p1"
         }, 
         {
          "id":405,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallsecond2.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint2.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#g"
+         "type":"+p2"
         }, 
         {
          "id":406,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallsecond3.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint3.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#h"
+         "type":"+p3"
         }, 
         {
          "id":407,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallcornersecond0.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint4.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#i"
+         "type":"+p4"
         }, 
         {
          "id":408,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallcornersecond1.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint5.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#j"
+         "type":"+p5"
         }, 
         {
          "id":409,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallcornersecond2.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint6.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#k"
+         "type":"+p6"
         }, 
         {
          "id":410,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallcornersecond3.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint7.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#l"
+         "type":"+p7"
         }, 
         {
          "id":411,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallinnersecond0.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint8.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#m"
+         "type":"+p8"
         }, 
         {
          "id":412,
-         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallinnersecond1.png",
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/wallpaint9.png",
          "imageheight":16,
          "imagewidth":16,
-         "type":"#n"
+         "type":"+p9"
         }, 
         {
          "id":413,

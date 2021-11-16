@@ -43,6 +43,7 @@ import LocalStorage from "../utils/LocalStorage";
 import RoomFishtank from "../building/RoomFishtank";
 import CCollider from "../collider/CCollider";
 import CampFire from "../building/CampFire";
+import WallPaint from "../building/WallPaint";
 
 
 // Learn TypeScript:
@@ -124,6 +125,7 @@ export default class BuildingManager extends BaseManager {
     static readonly WATERFALL = 'WaterFall';
     static readonly ENERGYSHIELD = 'EnergyShield';
     static readonly FURNITURE = 'Furniture';
+    static readonly WALLPAINT = 'WallPaint';
 
     // LIFE-CYCLE CALLBACKS:
     footboards: FootBoard[] = new Array();
@@ -481,6 +483,10 @@ export default class BuildingManager extends BaseManager {
             this.addBuilding(Logic.getBuildings(BuildingManager.GRASS03), indexPos);
         } else if (mapDataStr == '+d') {
             this.addBuilding(Logic.getBuildings(BuildingManager.GRASS04), indexPos);
+        }else if(this.isThe(mapDataStr,'+p')){
+           let wallpaint =  this.addBuilding(Logic.getBuildings(BuildingManager.WALLPAINT), indexPos).getComponent(WallPaint);
+           wallpaint.node.zIndex = IndexZ.getActorZIndex(wallpaint.node.position.add(cc.v3(0,120)));
+           wallpaint.init(mapDataStr);
         } else {
             let fd = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
             let df = fd.getComponent(DecorationFloor);

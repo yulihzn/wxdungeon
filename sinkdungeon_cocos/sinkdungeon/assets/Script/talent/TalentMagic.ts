@@ -185,7 +185,7 @@ export default class TalentMagic extends Talent {
         let shortdis = 99999;
         let targetNode:cc.Node;
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
-            if (!monster.sc.isDied) {
+            if (monster&&monster.node&&monster.node.active&&!monster.sc.isDied) {
                 let dis = Logic.getDistanceNoSqrt(this.node.position, monster.node.position);
                 if(dis<shortdis){
                     shortdis = dis;

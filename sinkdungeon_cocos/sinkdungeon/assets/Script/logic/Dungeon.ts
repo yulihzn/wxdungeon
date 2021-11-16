@@ -473,7 +473,7 @@ export default class Dungeon extends cc.Component {
     getMonsterAliveNum(): number {
         let count = 0;
         for (let monster of this.monsterManager.monsterList) {
-            if (monster.sc.isDied || monster.data.isTest > 0) {
+            if (!monster||!monster.node||monster.sc.isDied || monster.data.isTest > 0) {
                 count++;
             }
         }
@@ -557,7 +557,7 @@ export default class Dungeon extends cc.Component {
     }
     checkMonstersPos() {
         for (let monster of this.monsterManager.monsterList) {
-            if (monster.sc.isDied) {
+            if (monster&&monster.node&&monster.node.active&&monster.sc.isDied) {
                 return;
             }
         }

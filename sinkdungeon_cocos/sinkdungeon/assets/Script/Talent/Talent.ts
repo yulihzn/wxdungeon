@@ -194,7 +194,7 @@ export default abstract class Talent extends cc.Component {
         }
         for (let monster of this.player.weaponRight.meleeWeapon.dungeon.monsterManager.monsterList) {
             let dis = Logic.getDistanceNoSqrt(targetNode.position, monster.node.position);
-            if (dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
+            if (monster&&monster.node&&monster.node.active&&dis < range && !monster.sc.isDied && !monster.sc.isDisguising) {
                 monster.addStatus(statusName, new FromData());
             }
         }
