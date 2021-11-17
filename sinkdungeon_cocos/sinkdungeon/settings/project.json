@@ -102,6 +102,7 @@
   "excluded-modules": [
     "DragonBones",
     "Geom Utils",
+    "Physics",
     "PageView",
     "PageViewIndicator",
     "RichText",

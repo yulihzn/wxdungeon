@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         webSettings.loadsImagesAutomatically = true
         webSettings.databaseEnabled = true
         webSettings.allowFileAccessFromFileURLs = true
+        webSettings.mediaPlaybackRequiresUserGesture = false
+        webSettings.allowContentAccess = true
+        webSettings.allowFileAccess = true
+        webSettings.allowUniversalAccessFromFileURLs = true
         webView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
         webView.setBackgroundResource(R.color.black)
         webView.webChromeClient = WebChromeClient()
