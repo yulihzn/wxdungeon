@@ -1,3 +1,4 @@
+import { EventHelper } from './EventHelper';
 import PlayerData from "../data/PlayerData";
 import EquipmentData from "../data/EquipmentData";
 import MapManager from "../manager/MapManager";
@@ -116,8 +117,20 @@ export default class Logic extends cc.Component {
 
     onLoad() {
         //关闭调试
-        cc.game.setFrameRate(60);
+        Logic.settings.lowPower = LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_LOW_POWER);
+        if(Logic.settings.lowPower){
+            cc.game.setFrameRate(50);
+        }else{
+            cc.game.setFrameRate(59);
+        }
         cc.game.addPersistRootNode(this.node);
+        EventHelper.on(EventHelper.SETTINGS_LOW_POWER,()=>{
+            if(Logic.settings.lowPower){
+                cc.game.setFrameRate(50);
+            }else{
+                cc.game.setFrameRate(59);
+            }
+        })
         // cc.view.enableAntiAlias(false);
         // cc.macro.DOWNLOAD_MAX_CONCURRENT = 10;
         // cc.director.getCollisionManager().enabled = true;

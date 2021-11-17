@@ -25,10 +25,11 @@ export default class LocalStorage {
     public static KEY_COIN_DREAM_COUNT = 'KEY_DREAM_COIN_COUNT';
     public static KEY_SWITCH_SHOW_SHADOW = 'KEY_SWITCH_SHOW_SHADOW';
     public static KEY_SWITCH_SHOW_GAMEPAD = 'KEY_SWITCH_SHOW_GAMEPAD';
+    public static KEY_SWITCH_LOW_POWER = 'KEY_SWITCH_LOW_POWER';
     public static KEY_SWITCH_SHOW_EQUIPDIALOG = 'KEY_SWITCH_SHOW_EQUIPDIALOG';
     public static KEY_FURNITURES = 'KEY_FURNITURES';
     public static VAULE_OPEN = '1';
-    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 1 ,KEY_SWITCH_SHOW_GAMEPAD:0,KEY_SWITCH_SHOW_EQUIPDIALOG:0};
+    static DEFAULT_MAP = { KEY_SWITCH_SHOW_SHADOW: 1 ,KEY_SWITCH_SHOW_GAMEPAD:0,KEY_SWITCH_SHOW_EQUIPDIALOG:0,KEY_SWITCH_LOW_POWER:0};
 
     static getValue(key: string): string {
         return cc.sys.localStorage.getItem(key);

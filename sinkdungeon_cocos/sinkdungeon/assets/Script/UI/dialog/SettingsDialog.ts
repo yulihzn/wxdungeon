@@ -20,6 +20,8 @@ export default class SettingsDialog extends BaseDialog {
     tgShadow:cc.Toggle = null;
     @property(cc.Toggle)
     tgGamepad:cc.Toggle = null;
+    @property(cc.Toggle)
+    tgFps:cc.Toggle = null;
     onLoad () {
     }
 
@@ -30,6 +32,7 @@ export default class SettingsDialog extends BaseDialog {
         super.show();
         this.initToggle(this.tgShadow,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_SHADOW));
         this.initToggle(this.tgGamepad,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD));
+        this.initToggle(this.tgFps,LocalStorage.isSwitchOpen(LocalStorage.KEY_SWITCH_LOW_POWER));
         
     }
     private initToggle(toggle:cc.Toggle,isOpen:boolean){
@@ -52,6 +55,12 @@ export default class SettingsDialog extends BaseDialog {
         Logic.settings.showGamepad = toggle.isChecked;
         LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_SHOW_GAMEPAD,Logic.settings.showGamepad);
         cc.director.emit(EventHelper.HUD_CONTROLLER_UPDATE_GAMEPAD);
+    }
+    toggleFps(toggle:cc.Toggle, customEventData:string){
+        AudioPlayer.play(AudioPlayer.SELECT);
+        Logic.settings.lowPower = toggle.isChecked;
+        LocalStorage.saveSwitch(LocalStorage.KEY_SWITCH_LOW_POWER,Logic.settings.lowPower);
+        cc.director.emit(EventHelper.SETTINGS_LOW_POWER);
     }
     close(){
         AudioPlayer.play(AudioPlayer.SELECT);
