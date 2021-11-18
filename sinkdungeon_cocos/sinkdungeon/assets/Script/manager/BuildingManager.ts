@@ -460,7 +460,6 @@ export default class BuildingManager extends BaseManager {
             //生成营火
             let camp = this.addBuilding(Logic.getBuildings(BuildingManager.CAMPFIRE), indexPos);
             let shadow = camp.getChildByName('sprite').getChildByName('shadow');
-            let c = camp.getComponent(CampFire);
             shadow.position = Dungeon.getPosInMap(indexPos);
             shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
             shadow.parent = this.node;
@@ -660,6 +659,17 @@ export default class BuildingManager extends BaseManager {
             }
         }
     }
+    public getReachDir(){
+        let dirs:Map<Number,Boolean> = new Map();
+        for (let door of this.doors) {
+            if(!door.isLock){
+                if(Logic.mapManager.isNeighborRoomNew(door.dir)){
+                    dirs.set(door.dir,true);
+                }
+            }
+        }
+        return dirs;
+    }
     private addDirWalls(mapDataStr: string, mapData: string[][], indexPos: cc.Vec3, levelData: LevelData, onlyShow: boolean) {
         let node: cc.Node = this.addBuilding(Logic.getBuildings(BuildingManager.WALL), indexPos);
         let wall = node.getComponent(Wall);
@@ -714,15 +724,13 @@ export default class BuildingManager extends BaseManager {
             case 'Zg': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_1]); break;
             case 'Zh': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_2]); break;
             case 'Zi': data.valueCopy(Logic.furnitures[Furniture.FISHTANK]); break;
+            case 'Zj': data.valueCopy(Logic.furnitures[Furniture.BOOKSHELF]); break;
             default: break;
         }
         let save = LocalStorage.getFurnitureData(data.id);
         if(save){
             data.isOpen = save.isOpen;
             data.purchased = save.purchased;
-        }
-        if (!data.purchased) {
-            return;
         }
         let building: cc.Node;
         if (mapDataStr == 'Z3') {

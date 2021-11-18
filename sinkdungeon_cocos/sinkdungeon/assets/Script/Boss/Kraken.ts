@@ -199,7 +199,6 @@ export default class Kraken extends Boss {
         }
         if (this.shooter) {
             this.remoteSkill.next(() => {
-                this.shooter.skipTopwall = true;
                 let pos = this.entity.Transform.position.clone().add(this.shooter.node.position);
                 let hv = this.dungeon.player.getCenterPosition().sub(pos);
                 if (!hv.equals(cc.Vec3.ZERO)) {

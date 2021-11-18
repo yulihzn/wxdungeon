@@ -512,7 +512,7 @@ export default class Dungeon extends cc.Component {
         this.setDoors(this.isClear);
         if (this.isClear) {
             if (this.monsterManager.isRoomInitWithEnemy && Logic.mapManager.getCurrentRoomType().isNotEqual(RoomType.TEST_ROOM)) {
-                cc.director.emit(EventHelper.HUD_COMPLETE_SHOW);
+                EventHelper.emit(EventHelper.HUD_COMPLETE_SHOW,{map:this.buildingManager.getReachDir()});
                 if (!this.isComplete && this.player && this.player.data && this.player.data.StatusTotalData.clearHealth > 0) {
                     this.isComplete = true;
                     this.player.takeDamage(new DamageData(-this.player.data.StatusTotalData.clearHealth));

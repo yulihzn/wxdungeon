@@ -68,7 +68,6 @@ export default class Bullet extends BaseColliderComponent {
     isDecelerateDelay = false;//是否延迟减速
     isHit = false;
     isReserved = false;//是否已经反弹，防止多次碰撞弹射
-    skipTopwall = false;
     aoePrefab: cc.Prefab;
     aoeData = new AreaOfEffectData();
     shooter: Shooter;
@@ -310,7 +309,8 @@ export default class Bullet extends BaseColliderComponent {
                 || other.tag == CCollider.TAG.BULLET
                 || other.tag == CCollider.TAG.WARTER
                 || other.sensor
-                || this.data.isInvincible > 0) {
+                || this.data.isInvincible > 0
+                || other.tag == CCollider.TAG.WALL_TOP) {
                 isDestory = false;
             }
             if (isDestory) {
@@ -331,10 +331,10 @@ export default class Bullet extends BaseColliderComponent {
         }
 
         if (isAttack) {
-            this.attacking(other.node, other.tag);
+            this.attacking(other.node, other.tag,other.sensor);
         }
     }
-    private attacking(attackTarget: cc.Node, tag: number) {
+    private attacking(attackTarget: cc.Node, tag: number,sensor:boolean) {
         if (!attackTarget || this.isHit) {
             return;
         }
@@ -415,7 +415,7 @@ export default class Bullet extends BaseColliderComponent {
                 let wall = attackTarget.getComponent(Wall);
                 if (wall) {
                     if (wall.isTop()) {
-                        isDestory = !this.skipTopwall;
+                        isDestory = sensor;
                     } else {
                         isDestory = wall.isSide();
                     }

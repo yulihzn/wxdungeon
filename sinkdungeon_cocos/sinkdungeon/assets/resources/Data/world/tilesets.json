@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":334,
+ "tilecount":335,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3413,6 +3413,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"Zi"
+        }, 
+        {
+         "id":723,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/roombookshelf.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zj"
         }],
  "tilewidth":16,
  "type":"tileset",

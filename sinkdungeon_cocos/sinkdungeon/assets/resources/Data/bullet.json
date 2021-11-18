@@ -90,6 +90,19 @@
             "physicalDamage": 5
         }
     },
+    "bullet104": {
+        "name":"泡泡",
+        "resName": "bullet004",
+        "lightName": "bulletlight004",
+        "lightColor": "#ffffff",
+        "speed": 150,
+        "isRect": 0,
+        "isRotate": 0,
+        "size": 2,
+        "damage": {
+            "physicalDamage": 5
+        }
+    },
     "bullet005": {
         "name":"圆形冰",
         "resName": "bullet005",

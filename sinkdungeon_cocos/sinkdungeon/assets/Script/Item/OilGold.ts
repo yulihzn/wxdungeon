@@ -98,7 +98,7 @@ export default class OilGold extends BaseColliderComponent {
     }
     update(dt) {
         if (this.isCheckTimeDelay(dt)) {
-            if (this.player && this.getNearPlayerDistance(this.player.node) < 400 && this.node.active && this.isReady) {
+            if (this.player && this.getNearPlayerDistance(this.player.node) < 800 && this.node.active && this.isReady) {
                 let p = this.player.node.position.clone();
                 p.y += 10;
                 let pos = p.sub(this.node.position);

@@ -11,6 +11,7 @@ import RoomFishtank from "./RoomFishtank";
 import RoomStool from "./RoomStool";
 import RoomTv from "./RoomTv";
 import CCollider from "../collider/CCollider";
+import NextStep from "../utils/NextStep";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -46,13 +47,16 @@ export default class Furniture extends Building {
     static readonly STOOL = 'furniture015';
     static readonly TV = 'furniture016';
     static readonly FISHTANK = 'furniture017';
+    static readonly BOOKSHELF = 'furniture018';
     sprite: cc.Sprite;
     boxcover: cc.Sprite;
     boxback: cc.Sprite;
+    lock:cc.Sprite;
     tips: Tips;
     isOpening = false;
     anim: cc.Animation;
     furnitureData: FurnitureData;
+    unlockStep:NextStep = new NextStep();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -61,26 +65,34 @@ export default class Furniture extends Building {
         this.sprite = this.node.getChildByName('sprite').getComponent(cc.Sprite);
         this.boxcover = this.node.getChildByName('boxcover').getComponent(cc.Sprite);
         this.boxback = this.node.getChildByName('boxback').getComponent(cc.Sprite);
+        this.lock = this.node.getChildByName('lock').getComponent(cc.Sprite);
         this.tips = this.getComponentInChildren(Tips);
         this.tips.onInteract(() => {
             if (this.furnitureData) {
-                if (this.furnitureData.isOpen) {
-                    this.interact();
-                } else {
-                    this.openBox();
+                if(this.furnitureData.purchased){
+                    if (this.furnitureData.isOpen) {
+                        this.interact();
+                    } else {
+                        this.openBox();
+                    }
+                }else{
+                    this.unlockStep.next(()=>{
+                        this.getComponent(cc.Animation).play('FurnitureUnlock');
+                        Utils.toast(`暂未解锁，请打开右上角手机下单购买，请下次回来查收:-D`,true,true);
+                    },3,true);
                 }
             }
         });
         this.tips.onEnter(() => {
             if (this.furnitureData) {
-                if (this.furnitureData.isOpen) {
+                if (this.furnitureData.purchased&&this.furnitureData.isOpen) {
                     this.onEnter();
                 }
             }
         });
         this.tips.onExit(() => {
             if (this.furnitureData) {
-                if (this.furnitureData.isOpen) {
+                if (this.furnitureData.purchased&&this.furnitureData.isOpen) {
                     this.onExit();
                 }
             }
@@ -133,12 +145,21 @@ export default class Furniture extends Building {
     init(furnitureData: FurnitureData) {
         this.furnitureData = new FurnitureData();
         this.furnitureData.valueCopy(furnitureData);
-        if (this.furnitureData.isOpen) {
+        if(this.furnitureData.purchased){
+            this.sprite.node.color = cc.color(255,255,255,255);
+            this.lock.node.active = false;
+            if (this.furnitureData.isOpen) {
+                this.boxcover.node.active = false;
+                this.boxback.node.active = false;
+            } else {
+                this.boxcover.node.active = true;
+                this.boxback.node.active = true;
+            }
+        }else{
+            this.sprite.node.color = cc.color(128,128,128,128);
             this.boxcover.node.active = false;
-            this.boxback.node.active = false;
-        } else {
-            this.boxcover.node.active = true;
-            this.boxback.node.active = true;
+                this.boxback.node.active = false;
+                this.lock.node.active = true;
         }
         this.changeRes(this.furnitureData.resName);
         if (this.furnitureData.collider.length > 0) {
@@ -171,8 +192,9 @@ export default class Furniture extends Building {
                 && this.furnitureData.id != Furniture.TV
                 && this.furnitureData.id != Furniture.SOFA
                 && this.furnitureData.id != Furniture.FISHTANK) {
-                this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2)
-                let collider = this.tips.node.getComponent(CCollider);
+                    this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2);
+                    this.lock.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height/2 - Dungeon.TILE_SIZE / 2);
+                    let collider = this.tips.node.getComponent(CCollider);
                 collider.radius = width > height ? height / 2 : width / 2;
                 if (width > height) {
                     collider.radius = height / 2;

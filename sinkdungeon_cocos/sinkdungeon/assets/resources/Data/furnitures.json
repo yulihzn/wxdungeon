@@ -185,5 +185,16 @@
         "scale": 8,
         "collider": "64,64,256,256",
         "price": 1000
+    },
+    "furniture018": {
+        "id": "furniture018",
+        "nameCn": "书架",
+        "nameEn": "bookshelf",
+        "resName": "roombookshelf",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "64,0,256,128",
+        "price": 1000
     }
 }

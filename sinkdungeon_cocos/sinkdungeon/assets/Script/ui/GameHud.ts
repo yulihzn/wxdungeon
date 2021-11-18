@@ -50,6 +50,9 @@ export default class GameHud extends cc.Component {
     oilGoldLabel: cc.Label = null;
     @property(InventoryDialog)
     inventoryDialog: InventoryDialog = null;
+    @property(cc.Node)
+    followArrows:cc.Node = null;
+    private arrowList:cc.Node[]= [];
     private isCompleteShowed = false;
     private checkTimeDelay = 0;
     private startCountTime = true;
@@ -84,8 +87,8 @@ export default class GameHud extends cc.Component {
         cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG, (event) => {
             this.showMartShelvesDialog(event.detail.type, event.detail.goodsNameList);
         })
-        cc.director.on(EventHelper.HUD_COMPLETE_SHOW, (event) => {
-            this.showComplete();
+        EventHelper.on(EventHelper.HUD_COMPLETE_SHOW, (detail) => {
+            this.showComplete(detail.map);
         })
         cc.director.on(EventHelper.HUD_OILGOLD_LOSE_SHOW, (event) => {
             this.showOilGoldInfo(true);
@@ -132,6 +135,16 @@ export default class GameHud extends cc.Component {
         this.healthBarUpdate(Logic.playerData.currentHealth, Logic.playerData.getHealth().y);
         this.dreamBarUpdate(Logic.playerData.currentDream, Logic.playerData.getDream().y);
         this.fadeIn();
+        this.initFollowArrows();
+    }
+    private initFollowArrows(){
+        this.arrowList.push(this.followArrows.getChildByName('arrow0'));
+        this.arrowList.push(this.followArrows.getChildByName('arrow1'));
+        this.arrowList.push(this.followArrows.getChildByName('arrow2'));
+        this.arrowList.push(this.followArrows.getChildByName('arrow3'));
+        for(let arrow of this.arrowList){
+            arrow.active = false;
+        }
     }
     private showOilGoldInfo(isLose: boolean) {
         if (!this.oilGoldLabel) {
@@ -150,7 +163,7 @@ export default class GameHud extends cc.Component {
             }
         }, 0.15, arr.length);
     }
-    private showComplete() {
+    private showComplete(map:Map<Number,Boolean>) {
         if (!this.completeLabel || this.isCompleteShowed) {
             return;
         }
@@ -165,6 +178,16 @@ export default class GameHud extends cc.Component {
                 this.completeLabel.string = arr[i++];
             }
         }, 0.1, arr.length, 0.5);
+        if(map&&map.size>0){
+            for(let i = 0;i<4;i++){
+                if(map.has(i)){
+                    this.arrowList[i].active = true;
+                } else{
+                    this.arrowList[i].active = false;
+                }
+            }
+        }
+        
     }
     private fadeOut() {
         if (!this.node) {

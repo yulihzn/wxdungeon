@@ -57,7 +57,6 @@ export default class Shooter extends cc.Component {
     //玩家远程伤害
     remoteDamagePlayer = new DamageData();
     from: FromData = new FromData();
-    skipTopwall = false;
     isBuilding = false;
     anim: cc.Animation;
     private aoePools: { [key: string]: cc.NodePool } = {};
@@ -295,7 +294,6 @@ export default class Shooter extends cc.Component {
         bullet.node.zIndex = IndexZ.OVERHEAD;
         bullet.isFromPlayer = !this.isAI || this.isFromPlayer;
         bullet.dungeon = this.dungeon;
-        bullet.skipTopwall = this.skipTopwall;
         let bd = new BulletData();
         bd.valueCopy(Logic.bullets[bulletType])
         if (bullet.isFromPlayer && this.player && !this.isEx) {

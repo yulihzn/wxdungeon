@@ -120,7 +120,7 @@
         "chapter": 0,
         "stageLevel": 0,
         "specialAttack":10,
-        "bulletType": "bullet004",
+        "bulletType": "bullet104",
         "specialBulletArcExNum": 2,
         "specialAudio":"FISHTANK",
         "common": {
