@@ -7,6 +7,7 @@ import IndexZ from "../utils/IndexZ";
 import ExitData from "../data/ExitData";
 import Dungeon from "../logic/Dungeon";
 import CCollider from "../collider/CCollider";
+import Random from "../utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -141,5 +142,9 @@ export default class ExitDoor extends Building {
         this.bgSprite.spriteFrame = Logic.spriteFrameRes(resName + 'bg');
         this.openSprite.spriteFrame = Logic.spriteFrameRes(resName + 'open');
         this.closeSprite.spriteFrame = Logic.spriteFrameRes(resName + 'close');
+    }
+    disappear(): void {
+        super.disappear();
+        cc.tween(this.roof.node).to(0.5+Random.rand(),{scaleY:0}).start();
     }
 }

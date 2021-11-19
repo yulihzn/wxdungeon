@@ -78,6 +78,7 @@ export default class Furniture extends Building {
                 }else{
                     this.unlockStep.next(()=>{
                         this.getComponent(cc.Animation).play('FurnitureUnlock');
+                        AudioPlayer.play(AudioPlayer.SELECT_FAIL);
                         Utils.toast(`暂未解锁，请打开右上角手机下单购买，请下次回来查收:-D`,true,true);
                     },3,true);
                 }

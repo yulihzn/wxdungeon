@@ -18,6 +18,7 @@ import Utils from "../utils/Utils";
 import LightManager from "../manager/LightManager";
 import DamageData from "../data/DamageData";
 import GameWorldSystem from "../ecs/system/GameWorldSystem";
+import Random from "../utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -68,6 +69,7 @@ export default class Dungeon extends cc.Component {
     isClear = false;
     isComplete = false;
     currentPos = cc.v3(0, 0);
+    isDisappeared = false;
 
     rootSystem: GameWorldSystem = null;
 
@@ -125,6 +127,25 @@ export default class Dungeon extends cc.Component {
         })
         EventHelper.on(EventHelper.TEST_SHOW_NODE_COUNT, (detail) => {
             this.logNodeCount();
+        });
+        EventHelper.on(EventHelper.DUNGEON_DISAPPEAR, (detail) => {
+            if(this.node){
+                this.isDisappeared = true;
+                for(let b of this.buildingManager.buildingList){
+                    if(b&&b.node){
+                        b.disappear();
+                    }
+                }
+                for(let t of this.map){
+                    for(let tile of t){
+                        if(tile&&tile.node){
+                            tile.disappear();
+                        }
+                    }
+                }
+                cc.tween(this.dungeonStyleManager.floor).to(0.5+Random.rand(),{opacity:0}).start();
+            }
+
         });
         this.monsterManager = this.getComponent(MonsterManager);
         this.nonPlayerManager = this.getComponent(NonPlayerManager);
@@ -581,7 +602,7 @@ export default class Dungeon extends cc.Component {
     }
 
     update(dt) {
-        if (this.isInitFinish && !Logic.isGamePause) {
+        if (this.isInitFinish && !Logic.isGamePause&&!this.isDisappeared) {
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt);
                 this.monsterManager.updateLogic(dt);

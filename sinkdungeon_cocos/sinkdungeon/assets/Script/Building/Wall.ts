@@ -1,5 +1,4 @@
 import { EventHelper } from './../logic/EventHelper';
-import { ColliderComponent } from './../ecs/component/ColliderComponent';
 import Dungeon from "../logic/Dungeon";
 import Logic from "../logic/Logic";
 import Building from "./Building";

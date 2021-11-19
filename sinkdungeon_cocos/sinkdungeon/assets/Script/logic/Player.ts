@@ -971,6 +971,7 @@ export default class Player extends Actor {
         }, 1.5)
         AudioPlayer.play(AudioPlayer.DIE);
         EventHelper.emit(EventHelper.HUD_LOSE_OILGOLD);
+        EventHelper.emit(EventHelper.DUNGEON_DISAPPEAR);
         EventHelper.emit(EventHelper.HUD_OILGOLD_LOSE_SHOW);
         Achievement.addPlayerDiedLifesAchievement();
         this.weaponLeft.node.opacity = 0;

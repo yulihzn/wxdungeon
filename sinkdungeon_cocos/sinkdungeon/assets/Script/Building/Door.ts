@@ -2,6 +2,7 @@ import Logic from "../logic/Logic";
 import Building from "./Building";
 import IndexZ from "../utils/IndexZ";
 import CCollider from "../collider/CCollider";
+import Random from "../utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -163,7 +164,9 @@ export default class Door extends Building {
             }
         }
     }
-    checkLock() {
-
+    disappear(): void {
+        super.disappear();
+        cc.tween(this.roof.node).to(0.5+Random.rand(),{scaleY:0}).start();
     }
+    
 }

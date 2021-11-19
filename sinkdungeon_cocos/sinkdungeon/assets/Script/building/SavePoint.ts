@@ -32,9 +32,12 @@ export default class SavePoint extends Building {
                 }
                 Logic.savePonit(this.data.defaultPos);
                 Logic.resetData();
-                EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});
+                EventHelper.emit(EventHelper.DUNGEON_DISAPPEAR);
                 AudioPlayer.play(AudioPlayer.EXIT);
-                Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level));
+                this.scheduleOnce(()=>{
+                    EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});
+                    Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level));
+                },2)
             
             }
         });

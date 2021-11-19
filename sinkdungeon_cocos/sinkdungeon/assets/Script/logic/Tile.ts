@@ -1,3 +1,4 @@
+import Random from "../utils/Random";
 import Logic from "./Logic";
 
 // Learn TypeScript:
@@ -126,5 +127,8 @@ export default class Tile extends cc.Component {
         }
         this.floor.node.width = this.isSmall?17:33;
         this.floor.node.height = this.isSmall?17:33;
+    }
+    disappear(){
+        cc.tween(this.node).to(0.5+Random.rand(),{opacity:0}).start();
     }
 }

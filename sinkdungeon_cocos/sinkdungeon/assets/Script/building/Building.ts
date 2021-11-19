@@ -3,7 +3,7 @@ import DamageData from "../data/DamageData";
 import FromData from "../data/FromData";
 import BuildingData from "../data/BuildingData";
 import StatusData from "../data/StatusData";
-import CCollider from "../collider/CCollider";
+import Random from "../utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -49,6 +49,9 @@ export default abstract class Building extends Actor{
     }
     setLinearVelocity(movement: cc.Vec2) {
 
+    }
+    disappear(){
+        cc.tween(this.node).to(0.5+Random.rand(),{scaleY:0}).start();
     }
     // onColliderEnter(other: CCollider, self: CCollider): void {
     // }

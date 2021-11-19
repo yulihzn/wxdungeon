@@ -736,7 +736,7 @@ export default class NonPlayer extends Actor {
         if (this.sc.isDied) {
             return;
         }
-        this.entity.Move.linearDamping = 10;
+        this.entity.Move.linearDamping = 50;
         this.sc.isDied = true;
         this.sc.isDisguising = false;
         this.dashStep.IsExcuting = false;
@@ -831,7 +831,7 @@ export default class NonPlayer extends Actor {
 
     /**获取中心位置 */
     getCenterPosition(): cc.Vec3 {
-        return this.entity.Transform.position.clone();
+        return this.node.position.clone();
     }
     get isPassive() {
         return !this.dungeon || this.sc.isDied || this.sc.isHurting || this.sc.isFalling || this.sc.isAttacking
@@ -1062,7 +1062,6 @@ export default class NonPlayer extends Actor {
                 this.data.currentHealth = 0;
             }
         }
-
     }
     getMovePosFromTarget(target: Actor, isFlee?: boolean): cc.Vec3 {
         let newPos = cc.v3(0, 0);

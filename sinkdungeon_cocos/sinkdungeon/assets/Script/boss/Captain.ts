@@ -98,7 +98,7 @@ export default class Captain extends Boss {
         if (!this.dungeon || !this.exshooter) {
             return;
         }
-        let hv = this.dungeon.player.getCenterPosition().sub(this.entity.Transform.position);
+        let hv = this.dungeon.player.getCenterPosition().sub(this.node.position);
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.exshooter.setHv(hv);

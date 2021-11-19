@@ -145,6 +145,7 @@ export default class BuildingManager extends BaseManager {
     private foodList: string[] = [];
     private interactBuildings: InteractBuilding[] = [];
     public lastInteractBuilding: InteractBuilding;
+    public buildingList:Building[] = [];
 
     clear(): void {
         Utils.clearComponentArray(this.footboards);
@@ -161,6 +162,7 @@ export default class BuildingManager extends BaseManager {
         this.drinkList = new Array();
         this.foodList = new Array();
         this.interactBuildings = new Array();
+        this.buildingList = new Array();
         this.shelvesFoodIndex = 0;
         this.shelvesDrinkIndex = 0;
         this.colliderCombineMap.clear();
@@ -191,6 +193,7 @@ export default class BuildingManager extends BaseManager {
                 LightManager.registerLight(b.lights, b.node);
             }
         }
+        this.buildingList.push(b);
         return building;
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
@@ -662,11 +665,17 @@ export default class BuildingManager extends BaseManager {
     public getReachDir(){
         let dirs:Map<Number,Boolean> = new Map();
         for (let door of this.doors) {
-            if(!door.isLock){
+            if(!door.isLock&&!door.isDecorate){
                 if(Logic.mapManager.isNeighborRoomNew(door.dir)){
                     dirs.set(door.dir,true);
                 }
             }
+        }
+        for(let exit of this.exitdoors){
+            if(exit.dir < 8){
+                dirs.set(exit.dir%4,true);
+            }
+            
         }
         return dirs;
     }
