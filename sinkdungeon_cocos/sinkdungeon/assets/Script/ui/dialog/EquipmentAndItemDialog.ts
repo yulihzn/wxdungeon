@@ -29,6 +29,10 @@ export default class EquipmentAndItemDialog extends cc.Component {
     @property(cc.Label)
     labelTitle: cc.Label = null;
     @property(cc.Label)
+    requireLevel: cc.Label = null;
+    @property(cc.Label)
+    price: cc.Label = null;
+    @property(cc.Label)
     infoBase: cc.Label = null;//基础属性
     @property(cc.Label)
     info1: cc.Label = null;//附加词条1
@@ -83,6 +87,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
 
     private refreshEquipInfo(equipment: EquipmentData) {
         this.infoBase.node.active = true;
+        this.requireLevel.node.active = true;
         this.info1.node.active = true;
         this.info2.node.active = true;
         this.info3.node.active = true;
@@ -90,9 +95,11 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.infoSuit1.node.active = true;
         this.infoSuit2.node.active = true;
         this.infoSuit3.node.active = true;
+        this.requireLevel.string = `所需等级：${equipment.requireLevel}`;
+        this.price.string = `价格：${equipment.price}`;
         this.labelTitle.string = equipment.prefix + equipment.nameCn;
         this.labelTitle.node.color = this.labelTitle.node.color.fromHEX(equipment.titlecolor);
-        this.infoBase.string = `价格：${equipment.price}\n${equipment.infobase}`;
+        this.infoBase.string = `${equipment.infobase}`;
         this.infoBase.node.color = this.infoBase.node.color.fromHEX(equipment.infobasecolor);
         this.info1.string = equipment.info1;
         this.info1.node.color = this.info1.node.color.fromHEX(equipment.infocolor1);
@@ -137,6 +144,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.info1.node.active = false;
         this.info2.node.active = false;
         this.info3.node.active = false;
+        this.requireLevel.node.active = false;
         this.extraInfo.node.active = false;
         this.infoSuit1.node.active = false;
         this.infoSuit2.node.active = false;
@@ -158,6 +166,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
     }
     private refreshNonPlayerInfo(data: NonPlayerData) {
         this.infoBase.node.active = true;
+        this.requireLevel.node.active = false;
         this.info1.node.active = false;
         this.info2.node.active = false;
         this.info3.node.active = false;
@@ -180,6 +189,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.info1.node.active = false;
         this.info2.node.active = false;
         this.info3.node.active = false;
+        this.requireLevel.node.active = false;
         this.extraInfo.node.active = false;
         this.infoSuit1.node.active = false;
         this.infoSuit2.node.active = false;

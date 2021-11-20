@@ -27,6 +27,7 @@ export default class EquipmentData extends BaseData{
     titlecolor:string = '#ffffff';
     img:string = 'emptyequipment';
     level:number = 0;
+    requireLevel = 0;
     stab = 0;//是否突刺
     far = 0; //是否远距离
     blunt = 0;//是否钝器
@@ -174,6 +175,7 @@ export default class EquipmentData extends BaseData{
         this.remoteAudio = data.remoteAudio?data.remoteAudio:'';
         this.exBeatBack = data.exBeatBack?data.exBeatBack:0;
         this.test = data.test?data.test:0;
+        this.requireLevel = data.requireLevel?data.requireLevel:0;
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -251,6 +253,7 @@ export default class EquipmentData extends BaseData{
         e.remoteAudio = this.remoteAudio;
         e.exBeatBack = this.exBeatBack;
         e.test = this.test;
+        e.requireLevel = this.requireLevel;
         return e;
     }
     public add(data: EquipmentData): EquipmentData {
