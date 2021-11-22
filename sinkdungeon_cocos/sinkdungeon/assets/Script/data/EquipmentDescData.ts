@@ -18,6 +18,7 @@ export default class EquipmentDescData{
     color:string = '#ffffff'
     prefix:string = '';
     level:number = 0;
+    requireLevel:number = 0;
     common:CommonData = new CommonData();
     info1:string = '';
     info2:string = '';

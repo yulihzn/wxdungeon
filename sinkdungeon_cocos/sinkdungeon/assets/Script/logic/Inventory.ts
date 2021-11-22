@@ -415,6 +415,9 @@ export default class Inventory extends cc.Component {
             if(equipDataNew.equipmetType == InventoryManager.SHIELD&&this.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.EMPTY){
                 hasEquip = true;
             }
+            if(equipDataNew.requireLevel>Logic.playerData.OilGoldData.level){
+                hasEquip = true;
+            }
         }
         
         //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包

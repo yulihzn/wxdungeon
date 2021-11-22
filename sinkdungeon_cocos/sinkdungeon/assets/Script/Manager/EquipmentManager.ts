@@ -12,6 +12,7 @@ import { EventHelper } from "../logic/EventHelper";
 import Player from "../logic/Player";
 import InventoryManager from "./InventoryManager";
 import SuitData from "../data/SuitData";
+import Random from "../utils/Random";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -382,6 +383,7 @@ export default class EquipmentManager extends BaseManager {
         desc.common.toxicRate = toxicRate.x;
         desc.common.curseRate = curseRate.x;
         desc.common.maxDream = dream.x;
+        desc.requireLevel = Logic.playerData.OilGoldData.level;
         return desc;
     }
     static getRandomRange() {
@@ -502,6 +504,7 @@ export default class EquipmentManager extends BaseManager {
             }
         }
         data.level = desc.level;
+        data.requireLevel = desc.requireLevel;
         data.price += EquipmentManager.getPrice(data);
         return data;
     }

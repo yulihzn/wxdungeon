@@ -37,7 +37,7 @@ export default class SavePoint extends Building {
                 this.scheduleOnce(()=>{
                     EventHelper.emit(EventHelper.HUD_CAMERA_ZOOM_IN, {});
                     Logic.loadingNextLevel(ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level));
-                },2)
+                },1)
             
             }
         });

@@ -15,6 +15,8 @@ import AudioPlayer from "../../utils/AudioPlayer";
 import InventoryItem from "../InventoryItem";
 import BaseDialog from "./BaseDialog";
 import EquipmentAndItemDialog from "./EquipmentAndItemDialog";
+import Utils from "../../utils/Utils";
+import Talent from "../../talent/Talent";
 
 const { ccclass, property } = cc._decorator;
 
@@ -40,7 +42,7 @@ export default class InventoryDialog extends BaseDialog {
     @property(cc.Label)
     discountLabel: cc.Label = null;
     currentSelectIndex: number;
-    discount = 0.6;
+    discount = 0.5;
     equipmentAndItemDialog: EquipmentAndItemDialog = null;
     onLoad() {
         this.select.opacity = 0;
@@ -66,7 +68,10 @@ export default class InventoryDialog extends BaseDialog {
             });
         this.toggleContainer.toggleItems[Logic.bagSortIndex].isChecked = true;
         if (Logic.playerData.AvatarData.organizationIndex == AvatarData.HUNTER) {
-            this.discount = 0.8;
+            this.discount +=0.1;
+        }
+        if(Talent.TALENT_010 == Logic.playerData.AvatarData.professionData.talent){
+            this.discount +=0.1;
         }
     }
     private initDialog() {
@@ -183,6 +188,10 @@ export default class InventoryDialog extends BaseDialog {
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData.clone();
             if (equipData.equipmetType != InventoryManager.EMPTY) {
+                if(equipData.requireLevel>Logic.playerData.OilGoldData.level){
+                    Utils.toast(`当前人物等级太低，无法装备`);
+                    return;
+                }
                 //置空当前放下的数据，清除选中
                 Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
                 this.list[this.currentSelectIndex].setEmpty();

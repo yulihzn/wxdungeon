@@ -13,6 +13,7 @@ import EquipmentData from "../../data/EquipmentData";
 import FurnitureData from "../../data/FurnitureData";
 import ItemData from "../../data/ItemData";
 import NonPlayerData from "../../data/NonPlayerData";
+import Logic from "../../logic/Logic";
 import InventoryManager from "../../manager/InventoryManager";
 
 const { ccclass, property } = cc._decorator;
@@ -86,6 +87,8 @@ export default class EquipmentAndItemDialog extends cc.Component {
     }
 
     private refreshEquipInfo(equipment: EquipmentData) {
+        this.layout.color = equipment.requireLevel>Logic.playerData.OilGoldData.level?cc.Color.RED:this.layout.color.fromHEX(equipment.titlecolor);
+        this.requireLevel.node.color = equipment.requireLevel>Logic.playerData.OilGoldData.level?cc.Color.RED:cc.Color.WHITE;
         this.infoBase.node.active = true;
         this.requireLevel.node.active = true;
         this.info1.node.active = true;
@@ -140,6 +143,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         }
     }
     private refreshItemInfo(item: ItemData) {
+        this.layout.color = cc.Color.WHITE;
         this.infoBase.node.active = true;
         this.info1.node.active = false;
         this.info2.node.active = false;
@@ -165,6 +169,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.refreshNonPlayerInfo(data);
     }
     private refreshNonPlayerInfo(data: NonPlayerData) {
+        this.layout.color = cc.Color.WHITE;
         this.infoBase.node.active = true;
         this.requireLevel.node.active = false;
         this.info1.node.active = false;
@@ -185,6 +190,7 @@ export default class EquipmentAndItemDialog extends cc.Component {
         this.refreshFurnitureInfo(data);
     }
     private refreshFurnitureInfo(data: FurnitureData) {
+        this.layout.color = cc.Color.WHITE;
         this.infoBase.node.active = true;
         this.info1.node.active = false;
         this.info2.node.active = false;

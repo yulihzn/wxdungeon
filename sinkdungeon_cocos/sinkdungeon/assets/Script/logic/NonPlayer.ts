@@ -772,15 +772,17 @@ export default class NonPlayer extends Actor {
     getLoot() {
         let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
         let rand = rand4save.rand();
+        let equipPercent = 0.1;
         let percent = 0.75;
         if (this.IsVariation) {
             percent = 0.6;
+            equipPercent = 0.3;
         }
+        equipPercent = equipPercent+this.killPlayerCount / 10;
         percent = percent - this.killPlayerCount / 10;
         if (percent < 0.3) {
             percent = 0.3;
         }
-
         let offset = (1 - percent) / 10;
         let quality = 1 + this.killPlayerCount / 2;
         quality = Math.floor(quality);
@@ -800,6 +802,9 @@ export default class NonPlayer extends Actor {
                 count += this.dungeon.player.data.StatusTotalData.exOilGold;
             }
             EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: count });
+            if(rand<equipPercent&&!this.isSummon){
+                this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
+            }
             if (rand < percent) {
                 EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: rand4save.getRandomNum(1, 10) });
             } else if (rand >= percent && rand < percent + offset) {
@@ -817,9 +822,7 @@ export default class NonPlayer extends Actor {
             } else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                if (!this.isSummon) {
-                    this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
-                }
+                
             }
         }
     }
@@ -1038,7 +1041,7 @@ export default class NonPlayer extends Actor {
             this.pos = this.defautPos.clone();
             this.updatePlayerPos();
         }
-        if (this.parentNonPlayer) {
+        if (this.parentNonPlayer&&this.parentNonPlayer.data) {
             this.graphics.clear();
             this.graphics.strokeColor = cc.color(0, 255, 0, 128);
             this.graphics.lineWidth = 5;
