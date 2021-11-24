@@ -46,7 +46,7 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_GIRAFFE = 'monster018';
     public static readonly MONSTER_ZOOMBIE = 'monster019';
     public static readonly MONSTER_ELECTRICEYE = 'monster020';
-    public static readonly MONSTER_FISH = 'monster021';
+    public static readonly MONSTER_FISHMAN = 'monster021';
     public static readonly MONSTER_CROCODILE = 'monster022';
     public static readonly MONSTER_SNAKE = 'monster023';
     public static readonly MONSTER_DEMON = 'monster024';
@@ -63,19 +63,20 @@ export default class MonsterManager extends BaseManager {
     public static readonly MONSTER_HOLO = 'monster035';
     public static readonly MONSTER_LASRERDRONE = 'monster036';
     public static readonly MONSTER_GHOST = 'monster037';
+    public static readonly MONSTER_FISH = 'monster038';
     public static readonly MONSTERS_LAB = [MonsterManager.MONSTER_ZEBRA, MonsterManager.MONSTER_TERRORDRONE, MonsterManager.MONSTER_KILLER,
     MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_ELECTRICEYE, MonsterManager.MONSTER_GIRAFFE, MonsterManager.MONSTER_ICEDEMON, MonsterManager.MONSTER_BITE_ZOMBIE
         , MonsterManager.MONSTER_HOLO_DEVICE, MonsterManager.MONSTER_LASRERDRONE];
     public static readonly MONSTERS_SHIP = [MonsterManager.MONSTER_PIRATE, MonsterManager.MONSTER_SAILOR, MonsterManager.MONSTER_OCTOPUS
-        , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISH, MonsterManager.MONSTER_BOOMER, MonsterManager.MONSTER_GHOST];
+        , MonsterManager.MONSTER_STRONGSAILOR, MonsterManager.MONSTER_FISHMAN, MonsterManager.MONSTER_BOOMER, MonsterManager.MONSTER_GHOST];
     public static readonly MONSTERS_FOREST = [MonsterManager.MONSTER_SLIME, MonsterManager.MONSTER_GOBLIN, MonsterManager.MONSTER_GOBLIN_ARCHER
         , MonsterManager.MONSTER_WEREWOLF, MonsterManager.MONSTER_SNAKE, MonsterManager.MONSTER_CHICKEN, MonsterManager.MONSTER_HIPPO, MonsterManager.MONSTER_BANANA];
     public static readonly MONSTERS_PYRAMID = [MonsterManager.MONSTER_MUMMY, MonsterManager.MONSTER_ANUBIS, MonsterManager.MONSTER_SCARAB, MonsterManager.MONSTER_CROCODILE
         , MonsterManager.MONSTER_SANDSTATUE];
     public static readonly MONSTERS_DUNGEON = [MonsterManager.MONSTER_GARGOYLE, MonsterManager.MONSTER_WARLOCK, MonsterManager.MONSTER_DEMON, MonsterManager.MONSTER_CYCLOPS
         , MonsterManager.MONSTER_SPIDER, MonsterManager.MONSTER_CYCLOPS];
-    public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST];
-    // LIFE-CYCLE CALLBACKS:
+        public static readonly MONSTERS_SPECIAL = [MonsterManager.MONSTER_DUMMY, MonsterManager.MONSTER_CHEST,MonsterManager.MONSTER_FISH];
+        // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
 
@@ -433,7 +434,11 @@ export default class MonsterManager extends BaseManager {
             let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
             let pos = indexmap[randindex];
             indexmap.splice(randindex, 1);
-            this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false);
+            if(Logic.worldLoader.getCurrentLevelData().isWater){
+                this.addMonsterFromData(MonsterManager.MONSTER_FISH, cc.v3(pos.x, pos.y), dungeon, false);
+            }else{
+                this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false);
+            }
         }
     }
     updateLogic(dt: number) {

@@ -17,7 +17,7 @@
               "value": 0
             },
             {
-              "frame": 0.5166666666666667,
+              "frame": 0.5,
               "value": -90
             },
             {
@@ -35,6 +35,20 @@
             {
               "frame": 1,
               "value": -90
+            }
+          ]
+        }
+      },
+      "sprite/shadow": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 90
             }
           ]
         }

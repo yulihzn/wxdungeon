@@ -194,7 +194,7 @@ Mb 宝箱怪
 Mc
 Md
 Me
-Mf
+Mf 食人鱼
 Mg
 Mh
 Mi

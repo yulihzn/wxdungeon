@@ -861,5 +861,28 @@
         "scale": 1,
         "boxType": 2,
         "dash": 0
+    },
+    "monster038": {
+        "nameCn": "食人鱼",
+        "nameEn": "fish",
+        "resName": "monster038",
+        "chapter": 1,
+        "stageLevel": 0,
+        "specialAttack": 15,
+        "common": {
+            "moveSpeed": 60,
+            "maxHealth": 20,
+            "realRate":30,
+            "realDamage":1,
+            "damageMin": 6
+        },
+        "currentHealth": 60,
+        "invisible": 0,
+        "remote": 0,
+        "melee": 5,
+        "boxType": 0,
+        "attackFrames": 3,
+        "specialFrames": 3,
+        "fish": 1
     }
 }

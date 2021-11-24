@@ -1014,7 +1014,7 @@ export default class NonPlayer extends Actor {
         }
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
         if (this.shadow) {
-            this.shadow.opacity = this.sc.isDisguising ? 0 : 128;
+            this.shadow.opacity = (this.sc.isDisguising||this.data.water>0) ? 0 : 128;
         }
         if (this.sc.isDisguising && this.anim) { this.anim.pause(); }
         if (this.data.invisible > 0) {

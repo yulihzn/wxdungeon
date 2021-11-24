@@ -25,6 +25,7 @@ export default class LevelData {
     doorRes = '';//门资源名
     exitRes = '';//出入口资源名
     needRadomDecorate = false;
+    isWater = false;
     map: string[][] = [];
     roomTypes: string[][] = [];
     minimap:string[][] = [];
@@ -101,6 +102,7 @@ export default class LevelData {
         this.exitRes = data.exitRes;
         this.exits = data.exits;
         this.needRadomDecorate = data.needRadomDecorate;
+        this.isWater = data.isWater;
     }
     getRoomMap(x: number, y: number): string[][] {
         let temp: string[][] = new Array();
