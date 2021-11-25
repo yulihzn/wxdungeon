@@ -247,13 +247,13 @@ export default class CCollider extends cc.Component {
             //四个点是以左下角开始顺时针的最小包围盒
             let tps = this._points;
             let ops = other._points;
-            if (this.isRotate||this.type == CCollider.TYPE.CIRCLE) {
+            if (this.isRotate||this.type == CCollider.TYPE.CIRCLE||this.node.scaleX<0||this.node.scaleY<0) {
                 tps = [cc.v2(this.Aabb.x, this.Aabb.y)
                     , cc.v2(this.Aabb.x, this.Aabb.y + this.Aabb.height)
                     , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y + this.Aabb.height)
                     , cc.v2(this.Aabb.x + this.Aabb.width, this.Aabb.y)];
             }
-            if (other.isRotate||other.type == CCollider.TYPE.CIRCLE) {
+            if (other.isRotate||other.type == CCollider.TYPE.CIRCLE||other.node.scaleX<0||other.node.scaleY<0) {
                 ops = [cc.v2(other.Aabb.x, other.Aabb.y)
                     , cc.v2(other.Aabb.x, other.Aabb.y + other.Aabb.height)
                     , cc.v2(other.Aabb.x + other.Aabb.width, other.Aabb.y + other.Aabb.height)
@@ -277,7 +277,6 @@ export default class CCollider extends cc.Component {
             let lenHorizonal = Math.abs(center1.y - center2.y);
             let offsetVertical = (h1+h2)/2-lenVertical;
             let offsetHorizonal = (w1+w2)/2-lenHorizonal;
-            let isChecked = false;
             //矩形互相包含的情况
             if(rect1.containsRect(rect2)||rect2.containsRect(rect1)){
                 pos = center1.sub(center2).normalizeSelf().mul(offset);
@@ -285,7 +284,6 @@ export default class CCollider extends cc.Component {
                 if(isLeft||isRight){
                     if(tps[0].y>ops[0].y&&tps[1].y<ops[1].y||tps[0].y<ops[0].y&&tps[1].y>ops[1].y){
                         pos = cc.v2(isLeft?-offset:offset,0);
-                        isChecked = true;
                     }else if(offsetHorizonal>0&&offsetHorizonal<offsetVertical){
                         pos = cc.v2(isLeft?-offset:offset,0);
                     }
@@ -293,7 +291,6 @@ export default class CCollider extends cc.Component {
                 if(isTop||isBottom){
                     if(tps[0].x>ops[0].x&&tps[3].x<ops[3].x||tps[0].x<ops[0].x&&tps[3].x>ops[3].x){
                         pos = cc.v2(0,isTop?offset:-offset);
-                        isChecked = true;
                     }else if(offsetVertical>0&&offsetHorizonal>offsetVertical){
                         pos = cc.v2(0,isTop?offset:-offset);
                     }

@@ -40,9 +40,9 @@ export default class Dungeon extends cc.Component {
     playerPrefab: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
-
-    map: Tile[][] = new Array();//地图列表
-    floorIndexmap: cc.Vec3[] = new Array();//地板下标列表
+    mapData: string[][] = [];//地图数据
+    tilesmap: Tile[][] = new Array();//地面列表
+    floorIndexMap: cc.Vec3[] = new Array();//地板下标列表
     static WIDTH_SIZE: number = 7;
     static HEIGHT_SIZE: number = 7;
     static readonly MAPX: number = 64;
@@ -136,7 +136,7 @@ export default class Dungeon extends cc.Component {
                         b.disappear();
                     }
                 }
-                for(let t of this.map){
+                for(let t of this.tilesmap){
                     for(let tile of t){
                         if(tile&&tile.node){
                             tile.disappear();
@@ -174,25 +174,26 @@ export default class Dungeon extends cc.Component {
         this.lightManager.shadowRay.node.zIndex = IndexZ.SHADOW + 10;
         this.currentPos = cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y);
         let mapData: string[][] = Logic.mapManager.getCurrentMapStringArray();
+        this.mapData = mapData;
         let leveldata: LevelData = Logic.worldLoader.getCurrentLevelData();
         let exits = leveldata.getExitList();
         Logic.changeDungeonSize();
         this.dungeonStyleManager.addDecorations();
-        for (let arr of this.map) {
+        for (let arr of this.tilesmap) {
             Utils.clearComponentArray(arr);
         }
         let colliderdebug = this.node.getChildByName('colliderdebug');
         colliderdebug.zIndex = IndexZ.UI;
         this.rootSystem = new GameWorldSystem(Dungeon.WIDTH_SIZE * Dungeon.TILE_SIZE, Dungeon.HEIGHT_SIZE * Dungeon.TILE_SIZE,colliderdebug.getComponent(cc.Graphics));
         this.rootSystem.init();
-        this.map = new Array();
-        this.floorIndexmap = new Array();
+        this.tilesmap = new Array();
+        this.floorIndexMap = new Array();
         //放置之前留在地上的物品和装备
         this.addItemListOnGround();
         this.addEquipmentListOnGround();
         this.buildingManager.addAirExit(mapData);
         for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
-            this.map[i] = new Array(i);
+            this.tilesmap[i] = new Array(i);
             for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
                 //越往下层级越高，j是行，i是列
                 this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false);
@@ -219,7 +220,7 @@ export default class Dungeon extends cc.Component {
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
         this.player.node.parent = this.node;
-
+        this.fog.setPosition(this.player.node.position.clone());
         //加载随机怪物
         if ((!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoom().isReborn)
             && RoomType.isMonsterGenerateRoom(Logic.mapManager.getCurrentRoomType()) && !Logic.isTour) {
@@ -259,11 +260,11 @@ export default class Dungeon extends cc.Component {
             tile.cover5 = leveldata.floorCoverRes5;
             tile.floorPrefix = leveldata.floorRes;
             if (!onlyShow) {
-                this.map[indexPos.x][indexPos.y] = tile;
+                this.tilesmap[indexPos.x][indexPos.y] = tile;
             }
         }
         if (!onlyShow && Dungeon.isFirstEqual(mapDataStr, "*")) {
-            this.floorIndexmap.push(indexPos.clone());
+            this.floorIndexMap.push(indexPos.clone());
         }
     }
     private logNodeCount() {
@@ -478,7 +479,7 @@ export default class Dungeon extends cc.Component {
         }, 0.1)
     }
     breakTile(pos: cc.Vec3) {
-        let tile = this.map[pos.x][pos.y];
+        let tile = this.tilesmap[pos.x][pos.y];
         if (tile && !tile.isBroken) {
             tile.breakTile();
         }
@@ -552,15 +553,15 @@ export default class Dungeon extends cc.Component {
         this.buildingManager.setDoors(isClear, immediately);
     }
     checkPlayerPos(dt: number) {
-        if (!this.map || !this.player || !this.node) {
+        if (!this.tilesmap || !this.player || !this.node) {
             return;
         }
         this.fog.setPosition(this.lerp(this.fog.position, this.player.node.position, dt * 3));
         let pos = Dungeon.getIndexInMap(this.player.node.position);
-        if (!this.map[pos.x] || !this.map[pos.x][pos.y]) {
+        if (!this.tilesmap[pos.x] || !this.tilesmap[pos.x][pos.y]) {
             return;
         }
-        let tile = this.map[pos.x][pos.y];
+        let tile = this.tilesmap[pos.x][pos.y];
         if (tile && tile.isBroken) {
             this.player.fall();
         }

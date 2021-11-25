@@ -24,6 +24,7 @@ export default class Door extends Building {
     isHidden: boolean = false;//是否隐藏门，隐藏门有幻影
     isEmpty: boolean = false;//是否空门，空门始终打开
     isLock: boolean = false;//是否上锁
+    isTransparent: boolean = false;//是否透明门，透明门也是空门
     isDecorate: boolean = false;//是否是装饰，装饰不展示门
     //0top1bottom2left3right
     dir = 0;
@@ -84,9 +85,10 @@ export default class Door extends Building {
             case 2: break;
             case 3: this.sprite.node.scaleX = -1; break;
         }
-        if (this.lockInfo && this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir) && !this.isDecorate) {
+        if (this.lockInfo && this.isLock && !Logic.mapManager.isNeighborRoomStateClear(this.dir) && !this.isDecorate && !this.isTransparent) {
             this.lockInfo.opacity = 255;
-        } else if (this.dir == 1) {
+        }
+        if (this.dir == 1) {
             this.roof.node.opacity = 128;
         }
         let collider = this.boxCollider;
@@ -95,6 +97,10 @@ export default class Door extends Building {
         if (this.dir > 1) {
             collider.offset = cc.v2(0, -64);
             collider.setSize(cc.size(64, 256));
+        }
+        if (this.isTransparent) {
+            this.node.active = false;
+            this.roof.node.active= false;
         }
     }
 
@@ -133,7 +139,7 @@ export default class Door extends Building {
         }, immediately ? 0 : 0.15, 4);
     }
     closeGate(immediately?: boolean) {
-        if (!this.isOpen || this.isEmpty) {
+        if (!this.isOpen || this.isEmpty || this.isTransparent) {
             return;
         }
         this.isOpen = false;
@@ -148,25 +154,25 @@ export default class Door extends Building {
     }
     onColliderEnter(other: CCollider, self: CCollider) {
         if (this.dir < 2 && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            this.roof.node.opacity = 128;
+            this.roof.node.opacity = this.isTransparent ? 0 : 128;
         }
     }
     onColliderStay(other: CCollider, self: CCollider) {
         if (this.dir < 2 && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            this.roof.node.opacity = 128;
+            this.roof.node.opacity = this.isTransparent ? 0 : 128;
         }
     }
     onColliderExit(other: CCollider, self: CCollider) {
         if (this.dir < 2 && (other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.NONPLAYER)) {
-            this.roof.node.opacity = 255;
-            if (this.lockInfo && this.lockInfo.opacity < 1||this.isDecorate) {
-                this.roof.node.opacity = 180;
+            this.roof.node.opacity = this.isTransparent ? 0 : 255;
+            if (this.lockInfo && this.lockInfo.opacity < 1 || this.isDecorate) {
+                this.roof.node.opacity = this.isTransparent ? 0 : 180;
             }
         }
     }
     disappear(): void {
         super.disappear();
-        cc.tween(this.roof.node).to(0.5+Random.rand(),{scaleY:0}).start();
+        cc.tween(this.roof.node).to(0.5 + Random.rand(), { scaleY: 0 }).start();
     }
-    
+
 }

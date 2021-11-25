@@ -49,6 +49,7 @@ export default class PlayerAvatar extends cc.Component {
     avatarNode: cc.Node = null;
     spriteNode: cc.Node = null;
     data: AvatarData;
+    hideLeg = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -259,6 +260,8 @@ export default class PlayerAvatar extends cc.Component {
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
             this.handRightSprite.node.zIndex = dir == 0 ? this.bodySprite.node.zIndex - 1 : this.bodySprite.node.zIndex + 1;
         }
+        this.legLeftSprite.node.opacity = this.hideLeg?0:255;
+        this.legRightSprite.node.opacity = this.hideLeg?0:255;
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');

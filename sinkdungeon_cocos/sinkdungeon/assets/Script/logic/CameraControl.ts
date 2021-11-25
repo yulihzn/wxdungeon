@@ -1,5 +1,6 @@
 import Dungeon from "./Dungeon";
 import { EventHelper } from "./EventHelper";
+import Logic from "./Logic";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html

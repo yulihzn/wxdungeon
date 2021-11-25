@@ -75,6 +75,7 @@ export default class AirExit extends Building {
             let player = other.node.getComponent(Player);
             if (player&&this.status == AirExit.STATUS_OPEN) {
                 this.scheduleOnce(()=>{
+                    player.dungeon.isDisappeared = true;
                     Logic.playerData = player.data.clone();
                     Logic.loadingNextRoom(this.dir);
                 },0.1)

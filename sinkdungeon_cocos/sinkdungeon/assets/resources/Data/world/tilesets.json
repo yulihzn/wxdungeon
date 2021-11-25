@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":335,
+ "tilecount":343,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3420,6 +3420,62 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"Zj"
+        }, 
+        {
+         "id":724,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/hiddendoor0.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"De"
+        }, 
+        {
+         "id":725,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/hiddendoor1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Df"
+        }, 
+        {
+         "id":726,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/hiddendoor2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Dg"
+        }, 
+        {
+         "id":727,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/hiddendoor3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Dh"
+        }, 
+        {
+         "id":728,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/transparentdoor0.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Di"
+        }, 
+        {
+         "id":729,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/transparentdoor1.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Dj"
+        }, 
+        {
+         "id":730,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/transparentdoor2.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Dk"
+        }, 
+        {
+         "id":731,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/transparentdoor3.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Dl"
         }],
  "tilewidth":16,
  "type":"tileset",

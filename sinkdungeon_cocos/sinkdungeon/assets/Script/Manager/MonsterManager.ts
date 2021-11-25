@@ -424,22 +424,35 @@ export default class MonsterManager extends BaseManager {
             num = Math.floor(num / 2);
         }
         let indexmap = [];
-        for (let i = 0; i < dungeon.floorIndexmap.length; i++) {
-            indexmap.push(dungeon.floorIndexmap[i]);
+        let waterindexmap = [];
+        for (let i = 0; i < dungeon.floorIndexMap.length; i++) {
+            indexmap.push(dungeon.floorIndexMap[i]);
         }
-        for (let i = 0; i <= num + up; i++) {
-            if (indexmap.length < 1) {
-                continue;
-            }
-            let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
-            let pos = indexmap[randindex];
-            indexmap.splice(randindex, 1);
-            if(Logic.worldLoader.getCurrentLevelData().isWater){
+        for(let p of dungeon.buildingManager.waterIndexList){
+            waterindexmap.push(p);
+        }
+        if(Logic.worldLoader.getCurrentLevelData().isWater){
+            for (let i = 0; i <= num + up; i++) {
+                if (waterindexmap.length < 1) {
+                    continue;
+                }
+                let randindex = rand4save.getRandomNum(0, waterindexmap.length - 1);
+                let pos = waterindexmap[randindex];
+                waterindexmap.splice(randindex, 1);
                 this.addMonsterFromData(MonsterManager.MONSTER_FISH, cc.v3(pos.x, pos.y), dungeon, false);
-            }else{
+            }
+        }else{
+            for (let i = 0; i <= num + up; i++) {
+                if (indexmap.length < 1) {
+                    continue;
+                }
+                let randindex = rand4save.getRandomNum(0, indexmap.length - 1);
+                let pos = indexmap[randindex];
+                indexmap.splice(randindex, 1);
                 this.addMonsterFromData(arr[rand4save.getRandomNum(0, arr.length - 1)], cc.v3(pos.x, pos.y), dungeon, false);
             }
         }
+        
     }
     updateLogic(dt: number) {
         for (let i = this.monsters.length - 1; i >= 0; i--) {

@@ -42,7 +42,6 @@ import FurnitureData from "../data/FurnitureData";
 import LocalStorage from "../utils/LocalStorage";
 import RoomFishtank from "../building/RoomFishtank";
 import CCollider from "../collider/CCollider";
-import CampFire from "../building/CampFire";
 import WallPaint from "../building/WallPaint";
 
 
@@ -146,6 +145,8 @@ export default class BuildingManager extends BaseManager {
     private interactBuildings: InteractBuilding[] = [];
     public lastInteractBuilding: InteractBuilding;
     public buildingList:Building[] = [];
+    public waterIndexList: cc.Vec3[] = new Array();//水下标列表
+    
 
     clear(): void {
         Utils.clearComponentArray(this.footboards);
@@ -165,6 +166,7 @@ export default class BuildingManager extends BaseManager {
         this.buildingList = new Array();
         this.shelvesFoodIndex = 0;
         this.shelvesDrinkIndex = 0;
+        this.waterIndexList = new Array();
         this.colliderCombineMap.clear();
     }
 
@@ -209,6 +211,7 @@ export default class BuildingManager extends BaseManager {
             }
         } else if (this.isFirstEqual(mapDataStr, '~')) {
             this.addWater(mapDataStr, indexPos);
+            this.waterIndexList.push(indexPos);
         } else if (this.isFirstEqual(mapDataStr, '+')) {
             //生成装饰
             this.addDecorate(dungeon, mapDataStr, indexPos);
@@ -634,14 +637,32 @@ export default class BuildingManager extends BaseManager {
                 dir = 10;
             } else if (mapDataStr == 'Dd') {
                 dir = 11;
+            } else if (mapDataStr == 'De') {
+                dir = 12;
+            } else if (mapDataStr == 'Df') {
+                dir = 13;
+            } else if (mapDataStr == 'Dg') {
+                dir = 14;
+            } else if (mapDataStr == 'Dh') {
+                dir = 15;
+            } else if (mapDataStr == 'Di') {
+                dir = 16;
+            } else if (mapDataStr == 'Dj') {
+                dir = 17;
+            } else if (mapDataStr == 'Dk') {
+                dir = 18;
+            } else if (mapDataStr == 'Dl') {
+                dir = 19;
             }
         }
         let door = this.addBuilding(Logic.getBuildings(BuildingManager.DOOR), indexPos).getComponent(Door);
         door.isDoor = true;
         door.dir = dir % 4;
         door.isEmpty = dir > 3 && dir < 8;
-        door.isLock = dir > 7;
+        door.isLock = dir > 7&& dir< 12;
         door.isDecorate = isDecorate;
+        door.isHidden = dir>11&&dir<16;
+        door.isTransparent = dir>15;
         this.doors.push(door);
     }
     public setDoors(isOpen: boolean, immediately?: boolean) {
