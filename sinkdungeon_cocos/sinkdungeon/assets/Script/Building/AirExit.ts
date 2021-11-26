@@ -56,6 +56,9 @@ export default class AirExit extends Building {
     changeStatus(status: number) {
         this.status = status;
         let resName = '';
+        if(!Logic.mapManager.isNeighborRoomExist(this.dir)){
+            this.status = AirExit.STATUS_WAIT;
+        }
         switch (this.status) {
             case AirExit.STATUS_CLOSE: resName = 'outertips3'; break;
             case AirExit.STATUS_WAIT: resName = 'outertips2'; break;
@@ -75,7 +78,6 @@ export default class AirExit extends Building {
             let player = other.node.getComponent(Player);
             if (player&&this.status == AirExit.STATUS_OPEN) {
                 this.scheduleOnce(()=>{
-                    player.dungeon.isDisappeared = true;
                     Logic.playerData = player.data.clone();
                     Logic.loadingNextRoom(this.dir);
                 },0.1)

@@ -90,58 +90,69 @@ export default class DungeonStyleManager extends BaseManager {
         let room = Logic.mapManager.getCurrentRoom();
         let offset = 4;
         let pos = Dungeon.getPosInMap(cc.v3(-offset, -offset));
-        if(room.x == 0){
+        if (room.x == 0) {
             pos = Dungeon.getPosInMap(cc.v3(0, -offset));
-            if(room.y == 0){
+            if (room.y == 0) {
                 pos = Dungeon.getPosInMap(cc.v3(0, 0));
-            }else if(room.y == leveldata.height-1){
-                pos = Dungeon.getPosInMap(cc.v3(0, -offset*2));
+            } else if (room.y == leveldata.height - 1) {
+                pos = Dungeon.getPosInMap(cc.v3(0, -offset * 2));
             }
-        }else if(room.x == leveldata.width-1){
-            pos = Dungeon.getPosInMap(cc.v3(-offset*2, -offset));
-            if(room.y == 0){
-                pos = Dungeon.getPosInMap(cc.v3(-offset*2,-offset*2));
-            }else if(room.y == leveldata.height-1){
-                pos = Dungeon.getPosInMap(cc.v3(-offset*2, 0));
-            }
-        }
-        
-        if(room.x == 0){
-            pos = Dungeon.getPosInMap(cc.v3(0, -offset));
-            if(room.y == 0){
-                pos = Dungeon.getPosInMap(cc.v3(0, 0));
-            }else if(room.y == leveldata.height-1){
-                pos = Dungeon.getPosInMap(cc.v3(0, -offset*2));
-            }
-        }else if(room.x == leveldata.width-1){
-            pos = Dungeon.getPosInMap(cc.v3(-offset*2, -offset));
-            if(room.y == 0){
-                pos = Dungeon.getPosInMap(cc.v3(-offset*2,-offset*2));
-            }else if(room.y == leveldata.height-1){
-                pos = Dungeon.getPosInMap(cc.v3(-offset*2, 0));
+        } else if (room.x == leveldata.width - 1) {
+            pos = Dungeon.getPosInMap(cc.v3(-offset * 2, -offset));
+            if (room.y == 0) {
+                pos = Dungeon.getPosInMap(cc.v3(-offset * 2, -offset * 2));
+            } else if (room.y == leveldata.height - 1) {
+                pos = Dungeon.getPosInMap(cc.v3(-offset * 2, 0));
             }
         }
 
-        if(room.y == 0){
-            pos = Dungeon.getPosInMap(cc.v3(-offset, 0));
-            if(room.x == 0){
+        if (room.x == 0) {
+            pos = Dungeon.getPosInMap(cc.v3(0, -offset));
+            if (room.y == 0) {
                 pos = Dungeon.getPosInMap(cc.v3(0, 0));
-            }else if(room.x == leveldata.width-1){
-                pos = Dungeon.getPosInMap(cc.v3(-offset*2,-offset*2));
+            } else if (room.y == leveldata.height - 1) {
+                pos = Dungeon.getPosInMap(cc.v3(0, -offset * 2));
             }
-        }else if(room.y == leveldata.height-1){
-            pos = Dungeon.getPosInMap(cc.v3(-offset, -offset*2));
-            if(room.x == 0){
-                pos = Dungeon.getPosInMap(cc.v3(0, -offset*2));
-            }else if(room.x == leveldata.width-1){
-                pos = Dungeon.getPosInMap(cc.v3(-offset*2, 0));
+        } else if (room.x == leveldata.width - 1) {
+            pos = Dungeon.getPosInMap(cc.v3(-offset * 2, -offset));
+            if (room.y == 0) {
+                pos = Dungeon.getPosInMap(cc.v3(-offset * 2, -offset * 2));
+            } else if (room.y == leveldata.height - 1) {
+                pos = Dungeon.getPosInMap(cc.v3(-offset * 2, 0));
             }
         }
-        this.floor.width = Dungeon.TILE_SIZE / 4 * (Dungeon.WIDTH_SIZE + offset*3);
-        this.floor.height = Dungeon.TILE_SIZE / 4 * (Dungeon.HEIGHT_SIZE + offset*3);
+
+        if (room.y == 0) {
+            pos = Dungeon.getPosInMap(cc.v3(-offset, 0));
+            if (room.x == 0) {
+                pos = Dungeon.getPosInMap(cc.v3(0, 0));
+            } else if (room.x == leveldata.width - 1) {
+                pos = Dungeon.getPosInMap(cc.v3(-offset * 2, -offset * 2));
+            }
+        } else if (room.y == leveldata.height - 1) {
+            pos = Dungeon.getPosInMap(cc.v3(-offset, -offset * 2));
+            if (room.x == 0) {
+                pos = Dungeon.getPosInMap(cc.v3(0, -offset * 2));
+            } else if (room.x == leveldata.width - 1) {
+                pos = Dungeon.getPosInMap(cc.v3(-offset * 2, 0));
+            }
+        }
+        this.floor.width = Dungeon.TILE_SIZE / 4 * (Dungeon.WIDTH_SIZE + offset * 3);
+        this.floor.height = Dungeon.TILE_SIZE / 4 * (Dungeon.HEIGHT_SIZE + offset * 3);
         this.floor.position = cc.v3(pos.x - Dungeon.TILE_SIZE / 2, pos.y - Dungeon.TILE_SIZE / 2);
         this.floor.zIndex = IndexZ.BACKGROUNDFLOOR;
-        this.floor.getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`${leveldata.floorRes}001`);
+        let sprite = this.floor.getComponent(cc.Sprite);
+        sprite.spriteFrame = Logic.spriteFrameRes(`${leveldata.floorRes}001`);
+        if (leveldata.isWater) {
+            sprite.spriteFrame = Logic.spriteFrameRes(`wateridle000`);
+            let action = cc.tween()
+                .delay(0.2).call(() => { sprite.spriteFrame = Logic.spriteFrameRes(`wateridle000`); })
+                .delay(0.2).call(() => { sprite.spriteFrame = Logic.spriteFrameRes(`wateridle001`); })
+                .delay(0.2).call(() => { sprite.spriteFrame = Logic.spriteFrameRes(`wateridle002`); })
+                .delay(0.2).call(() => { sprite.spriteFrame = Logic.spriteFrameRes(`wateridle003`); });
+            this.floor.stopAllActions();
+            cc.tween(this.floor).repeatForever(action).start();
+        }
     }
 
 }

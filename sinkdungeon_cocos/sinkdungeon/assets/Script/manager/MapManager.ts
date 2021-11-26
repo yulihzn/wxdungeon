@@ -163,6 +163,13 @@ export default class MapManager {
     public getCurrentRoomType(): RoomType {
         return this.getCurrentRoom().roomType;
     }
+    public isNeighborRoomExist(dir:number){
+        let room = this.rectDungeon.getNeighborRoom(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y, dir);
+        if(!room){
+            return false;
+        }
+        return true;
+    }
     public isNeighborRoomNew(dir:number){
         let room = this.rectDungeon.getNeighborRoom(this.rectDungeon.currentPos.x, this.rectDungeon.currentPos.y, dir);
         if(!room){

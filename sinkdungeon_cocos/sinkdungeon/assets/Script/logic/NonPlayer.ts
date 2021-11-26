@@ -116,6 +116,7 @@ export default class NonPlayer extends Actor {
     leftLifeTime = 0;
     parentNonPlayer: NonPlayer;//父类npc
     childNonPlayerList: NonPlayer[] = [];//子类
+    private isLevelWater = false;
 
     public stateMachine: StateMachine<NonPlayer, State<NonPlayer>>;
     get IsVariation() {
@@ -144,6 +145,7 @@ export default class NonPlayer extends Actor {
         this.attrNode = this.node.getChildByName('attr');
         this.areaDetector = this.getComponentInChildren(AreaDetector);
         this.resetBodyColor();
+        this.isLevelWater = Logic.worldLoader.getCurrentLevelData().isWater;
         if (this.data.isStatic > 0) {
             this.entity.Collider.colliders[0].isStatic = true;
         }
@@ -1014,8 +1016,9 @@ export default class NonPlayer extends Actor {
         }
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
         if (this.shadow) {
-            this.shadow.opacity = (this.sc.isDisguising||this.data.water>0) ? 0 : 128;
+            this.shadow.opacity = (this.sc.isDisguising||this.data.water>0||this.isLevelWater) ? 0 : 128;
         }
+        this.bodySprite.getMaterial(0).setProperty('hideBottom', this.isLevelWater&&this.data.water<1 ? 1 : 0);
         if (this.sc.isDisguising && this.anim) { this.anim.pause(); }
         if (this.data.invisible > 0) {
             this.healthBar.node.opacity = this.sprite.opacity > 20 ? 255 : 9;

@@ -27,6 +27,7 @@ export default class PlayerAvatar extends cc.Component {
     dir = PlayerAvatar.DIR_RIGHT;
     status = PlayerAvatar.STATE_IDLE;
     anim: cc.Animation;
+    shadowSprite: cc.Sprite = null;
     cloakSprite: cc.Sprite = null;
     legLeftSprite: cc.Sprite = null;
     legRightSprite: cc.Sprite = null;
@@ -49,7 +50,6 @@ export default class PlayerAvatar extends cc.Component {
     avatarNode: cc.Node = null;
     spriteNode: cc.Node = null;
     data: AvatarData;
-    hideLeg = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -61,6 +61,7 @@ export default class PlayerAvatar extends cc.Component {
         this.avatarNode = this.getSpriteChildNode(['sprite', 'avatar']);
         this.spriteNode = this.getSpriteChildNode(['sprite']);
         this.cloakSprite = this.getSpriteChildSprite(['sprite', 'cloak']);
+        this.shadowSprite = this.getSpriteChildSprite(['sprite', 'shadow']);
         this.legLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft']);
         this.legRightSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legright']);
         this.footLeftSprite = this.getSpriteChildSprite(['sprite', 'avatar', 'legleft', 'foot']);
@@ -260,8 +261,14 @@ export default class PlayerAvatar extends cc.Component {
             this.cloakSprite.node.zIndex = dir == 0 ? this.avatarNode.zIndex + 1 : this.avatarNode.zIndex - 1;
             this.handRightSprite.node.zIndex = dir == 0 ? this.bodySprite.node.zIndex - 1 : this.bodySprite.node.zIndex + 1;
         }
-        this.legLeftSprite.node.opacity = this.hideLeg?0:255;
-        this.legRightSprite.node.opacity = this.hideLeg?0:255;
+    }
+    public showLegsWithWater(inWater:boolean){
+        this.legLeftSprite.node.opacity = inWater?0:255;
+        this.legRightSprite.node.opacity = inWater?0:255;
+        this.shadowSprite.node.opacity = inWater?0:255;
+        this.pantsSprite.node.opacity = inWater?0:255;
+        this.bodySprite.getMaterial(0).setProperty('hideBottom', inWater ? 1 : 0);
+        this.clothesSprite.getMaterial(0).setProperty('hideBottom', inWater ? 1 : 0);
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');

@@ -1,0 +1,21 @@
+{
+  "__type__": "cc.Material",
+  "_name": "WaterColorMat",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "097d8be1-4129-45e1-a339-7dcd7f726124"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "props": {
+        "hidebottom": 1
+      },
+      "defines": {
+        "USE_TEXTURE": true,
+        "USE_ALPHA_TEST": false
+      }
+    }
+  }
+}

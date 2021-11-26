@@ -108,6 +108,7 @@ export default class Player extends Actor {
     public shadowList: ShadowPlayer[] = [];
     private shadowTexture: cc.RenderTexture;
     private shadowSpriteframe: cc.SpriteFrame;
+    private isLevelWater = false;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -121,6 +122,7 @@ export default class Player extends Actor {
         this.sc.isDied = false;
         this.isStone = false;
         this.sc.isShow = false;
+        this.isLevelWater = Logic.worldLoader.getCurrentLevelData().isWater;
         this.scheduleOnce(() => {
             this.sc.isShow = true;
             this.addSaveStatusList();
@@ -699,6 +701,9 @@ export default class Player extends Actor {
         if (this.professionTalent.IsExcuting && this.professionTalent.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.01);
         }
+        if(this.isLevelWater && !this.sc.isJumping){
+            pos = pos.mul(0.5);
+        }
 
         if (!pos.equals(cc.Vec3.ZERO)) {
             this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
@@ -1093,6 +1098,7 @@ export default class Player extends Actor {
         }
         if (this.avatar) {
             this.avatar.showHandsWithInteract(showHands, isLift && !this.interactBuilding.isAttacking);
+            this.avatar.showLegsWithWater(this.isLevelWater && !this.sc.isJumping);
         }
         this.showUiButton();
         for (let s of this.shadowList) {

@@ -76,14 +76,14 @@ export default class RectDungeon {
                 if (levelData) {
                     this.map[i][j].roomType = RoomType.getTypeByName(levelData.roomTypes[i][j]);
                 }
-                if (this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
+                if (this.map[i][j]&&this.map[i][j].roomType.isEqual(RoomType.START_ROOM)) {
                     //开始房间默认被发现
                     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
                         this.map[i][j].state = RectRoom.STATE_FOUND;
                     }
                     this.startIndex = cc.v2(i, j);
                 }
-                if (this.map[i][j].roomType.isEqual(RoomType.END_ROOM)) {
+                if (this.map[i][j]&&this.map[i][j].roomType.isEqual(RoomType.END_ROOM)) {
                     if (this.map[i][j].state != RectRoom.STATE_CLEAR) {
                         this.map[i][j].state = RectRoom.STATE_FOUND;
                     }

@@ -84,22 +84,22 @@
         "__id__": 54
       },
       {
-        "__id__": 63
+        "__id__": 61
       }
     ],
     "_active": true,
     "_components": [
       {
+        "__id__": 68
+      },
+      {
+        "__id__": 69
+      },
+      {
         "__id__": 70
       },
       {
         "__id__": 71
-      },
-      {
-        "__id__": 72
-      },
-      {
-        "__id__": 73
       }
     ],
     "_prefab": null,
@@ -2019,7 +2019,7 @@
         "__id__": 55
       },
       {
-        "__id__": 59
+        "__id__": 58
       }
     ],
     "_active": false,
@@ -2089,9 +2089,7 @@
         "__id__": 57
       }
     ],
-    "_prefab": {
-      "__id__": 58
-    },
+    "_prefab": null,
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -2155,7 +2153,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "2b5316c9-a8ff-47d7-9870-d2ea678a2d11"
+      "__uuid__": "b4a2dbae-762c-493f-a59a-8c50589315fb"
     },
     "_type": 2,
     "_sizeMode": 0,
@@ -2193,17 +2191,6 @@
     "_id": "44J59Tl5lMlZmBtV9UFMXZ"
   },
   {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 55
-    },
-    "asset": {
-      "__uuid__": "da699162-32c8-4b03-8a28-13be50e14e08"
-    },
-    "fileId": "",
-    "sync": false
-  },
-  {
     "__type__": "cc.Node",
     "_name": "AirTransport",
     "_objFlags": 0,
@@ -2214,15 +2201,13 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 60
+        "__id__": 59
       },
       {
-        "__id__": 61
+        "__id__": 60
       }
     ],
-    "_prefab": {
-      "__id__": 62
-    },
+    "_prefab": null,
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
@@ -2275,7 +2260,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 59
+      "__id__": 58
     },
     "_enabled": true,
     "_materials": [
@@ -2309,7 +2294,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 59
+      "__id__": 58
     },
     "_enabled": true,
     "_defaultClip": {
@@ -2327,17 +2312,6 @@
     "_id": "e1rKWl+01CjrXMCnS2fq7u"
   },
   {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 59
-    },
-    "asset": {
-      "__uuid__": "24e5bd68-800d-457f-91f2-757318f5662d"
-    },
-    "fileId": "",
-    "sync": false
-  },
-  {
     "__type__": "cc.Node",
     "_name": "ElevatorScene",
     "_objFlags": 0,
@@ -2346,16 +2320,16 @@
     },
     "_children": [
       {
-        "__id__": 64
+        "__id__": 62
       }
     ],
     "_active": false,
     "_components": [
       {
-        "__id__": 68
+        "__id__": 66
       },
       {
-        "__id__": 69
+        "__id__": 67
       }
     ],
     "_prefab": null,
@@ -2411,17 +2385,17 @@
     "_name": "bg",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 63
+      "__id__": 61
     },
     "_children": [
       {
-        "__id__": 65
+        "__id__": 63
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 67
+        "__id__": 65
       }
     ],
     "_prefab": null,
@@ -2477,13 +2451,13 @@
     "_name": "elevator",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 64
+      "__id__": 62
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 66
+        "__id__": 64
       }
     ],
     "_prefab": null,
@@ -2539,7 +2513,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 65
+      "__id__": 63
     },
     "_enabled": true,
     "_materials": [
@@ -2571,7 +2545,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 64
+      "__id__": 62
     },
     "_enabled": true,
     "_materials": [
@@ -2603,7 +2577,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 63
+      "__id__": 61
     },
     "_enabled": true,
     "_materials": [
@@ -2635,7 +2609,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 63
+      "__id__": 61
     },
     "_enabled": true,
     "_defaultClip": {
@@ -2687,7 +2661,7 @@
       "__id__": 54
     },
     "elevatorScene": {
-      "__id__": 63
+      "__id__": 61
     },
     "_id": "40YUkkdDNAjI4hRtYpi+Bx"
   },

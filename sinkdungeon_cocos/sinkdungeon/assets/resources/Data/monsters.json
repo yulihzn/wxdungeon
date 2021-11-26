@@ -870,8 +870,8 @@
         "stageLevel": 0,
         "specialAttack": 15,
         "common": {
-            "moveSpeed": 60,
-            "maxHealth": 20,
+            "moveSpeed": 400,
+            "maxHealth": 60,
             "realRate":30,
             "realDamage":1,
             "damageMin": 6
@@ -883,6 +883,6 @@
         "boxType": 0,
         "attackFrames": 3,
         "specialFrames": 3,
-        "fish": 1
+        "water": 1
     }
 }

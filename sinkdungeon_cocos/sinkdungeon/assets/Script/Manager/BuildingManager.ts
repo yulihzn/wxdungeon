@@ -199,7 +199,10 @@ export default class BuildingManager extends BaseManager {
         return building;
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
-        if (this.isFirstEqual(mapDataStr, '*')) {
+        if(mapDataStr == '=='){
+            this.waterIndexList.push(indexPos);
+
+        }else if (this.isFirstEqual(mapDataStr, '*')) {
         } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
             this.addDirWalls(mapDataStr, mapData, indexPos, levelData, false);
@@ -211,7 +214,6 @@ export default class BuildingManager extends BaseManager {
             }
         } else if (this.isFirstEqual(mapDataStr, '~')) {
             this.addWater(mapDataStr, indexPos);
-            this.waterIndexList.push(indexPos);
         } else if (this.isFirstEqual(mapDataStr, '+')) {
             //生成装饰
             this.addDecorate(dungeon, mapDataStr, indexPos);
