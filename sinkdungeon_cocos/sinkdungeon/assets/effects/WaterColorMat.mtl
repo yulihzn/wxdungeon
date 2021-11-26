@@ -10,7 +10,7 @@
   "_techniqueData": {
     "0": {
       "props": {
-        "hidebottom": 1
+        "hidebottom": 0
       },
       "defines": {
         "USE_TEXTURE": true,

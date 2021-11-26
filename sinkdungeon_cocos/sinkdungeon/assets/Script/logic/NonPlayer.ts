@@ -292,6 +292,8 @@ export default class NonPlayer extends Actor {
             this.bodySprite.spriteFrame = spriteFrame;
             this.bodySprite.node.width = spriteFrame.getOriginalSize().width;
             this.bodySprite.node.height = spriteFrame.getOriginalSize().height;
+            this.setInWaterMat(this.bodySprite, this.isLevelWater && this.data.water < 1);
+
         } else {
             this.bodySprite.spriteFrame = null;
         }
@@ -309,11 +311,11 @@ export default class NonPlayer extends Actor {
         this.boxCollider.w = w;
         this.boxCollider.h = h;
         this.boxCollider.tag = this.data.isEnemy > 0 ? CCollider.TAG.NONPLAYER : CCollider.TAG.GOODNONPLAYER;
-        if(this.data.blink>0){
-            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL]); 
-            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL_TOP]); 
-            this.boxCollider.setIgnoreTags([CCollider.TAG.BUILDING]); 
-            this.boxCollider.setIgnoreTags([CCollider.TAG.WARTER]); 
+        if (this.data.blink > 0) {
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL]);
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WALL_TOP]);
+            this.boxCollider.setIgnoreTags([CCollider.TAG.BUILDING]);
+            this.boxCollider.setIgnoreTags([CCollider.TAG.WARTER]);
         }
         if (this.data.boxType > 2) {
             this.shadow.scale = 3;
@@ -780,7 +782,7 @@ export default class NonPlayer extends Actor {
             percent = 0.6;
             equipPercent = 0.3;
         }
-        equipPercent = equipPercent+this.killPlayerCount / 10;
+        equipPercent = equipPercent + this.killPlayerCount / 10;
         percent = percent - this.killPlayerCount / 10;
         if (percent < 0.3) {
             percent = 0.3;
@@ -804,7 +806,7 @@ export default class NonPlayer extends Actor {
                 count += this.dungeon.player.data.StatusTotalData.exOilGold;
             }
             EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: count });
-            if(rand<equipPercent&&!this.isSummon){
+            if (rand < equipPercent && !this.isSummon) {
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
             }
             if (rand < percent) {
@@ -824,7 +826,7 @@ export default class NonPlayer extends Actor {
             } else if (rand >= percent + offset * 6 && rand < percent + offset * 7) {
                 this.addLootSaveItem(Item.BOTTLE_REMOTE);
             } else if (rand >= percent + offset * 7 && rand < 1) {
-                
+
             }
         }
     }
@@ -1016,9 +1018,8 @@ export default class NonPlayer extends Actor {
         }
         this.healthBar.node.opacity = this.sc.isDisguising ? 0 : 255;
         if (this.shadow) {
-            this.shadow.opacity = (this.sc.isDisguising||this.data.water>0||this.isLevelWater) ? 0 : 128;
+            this.shadow.opacity = (this.sc.isDisguising || this.data.water > 0 || this.isLevelWater) ? 0 : 128;
         }
-        this.bodySprite.getMaterial(0).setProperty('hideBottom', this.isLevelWater&&this.data.water<1 ? 1 : 0);
         if (this.sc.isDisguising && this.anim) { this.anim.pause(); }
         if (this.data.invisible > 0) {
             this.healthBar.node.opacity = this.sprite.opacity > 20 ? 255 : 9;
@@ -1044,7 +1045,7 @@ export default class NonPlayer extends Actor {
             this.pos = this.defautPos.clone();
             this.updatePlayerPos();
         }
-        if (this.parentNonPlayer&&this.parentNonPlayer.data) {
+        if (this.parentNonPlayer && this.parentNonPlayer.data) {
             this.graphics.clear();
             this.graphics.strokeColor = cc.color(0, 255, 0, 128);
             this.graphics.lineWidth = 5;
@@ -1068,6 +1069,17 @@ export default class NonPlayer extends Actor {
                 this.data.currentHealth = 0;
             }
         }
+    }
+    private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
+        if (!sprite || !sprite.spriteFrame) {
+            return;
+        }
+        let offset = sprite.spriteFrame.getOffset();
+        let rect = sprite.spriteFrame.getRect();
+        let texture = sprite.spriteFrame.getTexture();
+        sprite.getMaterial(0).setProperty('rect', [(rect.x+offset.x) / texture.width, (rect.y+offset.y) / texture.height, rect.width / texture.width, rect.height / texture.height]);
+        sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1.0 : 0.0);
+        sprite.getMaterial(0).setProperty('rotated', sprite.spriteFrame.isRotated ? 1.0 : 0.0);
     }
     getMovePosFromTarget(target: Actor, isFlee?: boolean): cc.Vec3 {
         let newPos = cc.v3(0, 0);

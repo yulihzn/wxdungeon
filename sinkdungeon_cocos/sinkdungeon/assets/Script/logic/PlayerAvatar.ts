@@ -267,8 +267,19 @@ export default class PlayerAvatar extends cc.Component {
         this.legRightSprite.node.opacity = inWater?0:255;
         this.shadowSprite.node.opacity = inWater?0:255;
         this.pantsSprite.node.opacity = inWater?0:255;
-        this.bodySprite.getMaterial(0).setProperty('hideBottom', inWater ? 1 : 0);
-        this.clothesSprite.getMaterial(0).setProperty('hideBottom', inWater ? 1 : 0);
+        this.setInWaterMat(this.bodySprite,inWater);
+        this.setInWaterMat(this.clothesSprite,inWater);
+    }
+    private setInWaterMat(sprite:cc.Sprite,inWater:boolean){
+        if(!sprite||!sprite.spriteFrame){
+            return;
+        }
+        let rect = sprite.spriteFrame.getRect();
+        
+        let texture = sprite.spriteFrame.getTexture();
+        sprite.getMaterial(0).setProperty('rect', [rect.x/texture.width,rect.y/texture.height,rect.width/texture.width,rect.height/texture.height]);
+        sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1.0 : 0.0);
+        sprite.getMaterial(0).setProperty('rotated', sprite.spriteFrame.isRotated ? 1.0 : 0.0);
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');

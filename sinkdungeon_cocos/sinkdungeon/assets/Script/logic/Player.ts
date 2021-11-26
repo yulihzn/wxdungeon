@@ -336,6 +336,9 @@ export default class Player extends Actor {
         if (!smokePrefab || smokePrefab.active) {
             smokePrefab = cc.instantiate(this.walksmoke);
         }
+        if(this.isLevelWater && !this.sc.isJumping){
+            pos = pos.add(cc.v3(0,32));
+        }
         smokePrefab.parent = parentNode;
         smokePrefab.position = pos;
         smokePrefab.zIndex = IndexZ.ACTOR;
