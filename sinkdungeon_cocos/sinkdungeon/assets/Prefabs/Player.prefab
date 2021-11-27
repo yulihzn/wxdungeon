@@ -1005,8 +1005,8 @@
         0,
         0,
         0,
-        0,
-        1,
+        0.13052619222005157,
+        0.9914448613738104,
         4,
         4,
         1
@@ -1016,7 +1016,7 @@
       "__type__": "cc.Vec3",
       "x": 0,
       "y": 0,
-      "z": 0
+      "z": 15
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5089,7 +5089,9 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "a1d75c3c-fa4b-4fc3-9a09-3d95801f8897"
+    },
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -5101,7 +5103,9 @@
     "_fillStart": 0,
     "_fillRange": 0,
     "_isTrimmedMode": false,
-    "_atlas": null,
+    "_atlas": {
+      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+    },
     "_id": ""
   },
   {

@@ -75,7 +75,6 @@ export default class AreaOfEffect extends BaseColliderComponent {
         this.destoryCallBack = destoryCallBack;
         this.node.setPosition(postion);
         if (this.data.scale > 0) {
-            this.node.scale = this.data.scale;
             this.node.scaleX = this.node.scaleX>0?this.data.scale:-this.data.scale;
             this.node.scaleY = this.node.scaleY>0?this.data.scale:-this.data.scale;
         }

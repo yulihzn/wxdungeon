@@ -24,6 +24,7 @@ export default class ActorAttackBox extends cc.Component {
     static readonly ATTACK_NORMAL = 0;
     static readonly ATTACK_STAB = 1;//位移突刺
     static readonly ATTACK_AREA = 2;//范围攻击
+    static readonly ATTACK_DASH = 3;//冲刺攻击
     isEnemy = false;
     attackType = 0;
     collider: CCollider
@@ -102,6 +103,16 @@ export default class ActorAttackBox extends cc.Component {
                 this.collider.h = radius;
                 this.collider.offset = cc.v2(0, 0);
                 break;
+            case ActorAttackBox.ATTACK_DASH:
+                this.node.anchorX = 0.5;
+                radius = 64;
+                this.node.width = radius;
+                this.node.height = radius;
+                this.node.position = cc.v3(0, 32);
+                this.collider.w = radius;
+                this.collider.h = radius;
+                this.collider.offset = cc.v2(0, 0);
+                break;
         }
     }
     //隐藏
@@ -122,6 +133,7 @@ export default class ActorAttackBox extends cc.Component {
             let m = this.nonPlayer;
             let target = ActorUtils.getEnemyCollisionTarget(other,!this.isEnemy);
             if(target){
+                this.nonPlayer.sc.isDashing = false;
                 this.isAttacking = false;
                 let from = FromData.getClone(m.data.nameCn, m.data.resName+'anim000');
                 let dd = m.data.getAttackPoint();

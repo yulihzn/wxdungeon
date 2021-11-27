@@ -176,7 +176,7 @@ export default class NonPlayer extends Actor {
             })
         }
         this.addSaveStatusList();
-        this.node.position = this.entity.Transform.position.clone();
+        // this.node.position = this.entity.Transform.position.clone();
         this.entity.Move.linearDamping = 2;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
     }
@@ -346,7 +346,7 @@ export default class NonPlayer extends Actor {
         this.updatePlayerPos();
     }
     private changeZIndex() {
-        this.node.zIndex = IndexZ.getActorZIndex(this.entity.Transform.position);
+        this.node.zIndex = IndexZ.getActorZIndex(this.node.position);
     }
     private showFloatFont(dungeonNode: cc.Node, d: number, isDodge: boolean, isMiss: boolean, isCritical: boolean, isBackStab: boolean) {
         if (!this.floatinglabelManager) {
@@ -368,7 +368,7 @@ export default class NonPlayer extends Actor {
         this.remoteStep.IsExcuting = false;
         let p = this.shooter.node.position.clone();
         p.x = this.shooter.node.scaleX > 0 ? p.x + 30 : -p.x - 30;
-        let hv = target.getCenterPosition().sub(this.entity.Transform.position.add(p));
+        let hv = target.getCenterPosition().sub(this.node.position.add(p));
         if (!hv.equals(cc.Vec3.ZERO)) {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
@@ -400,7 +400,7 @@ export default class NonPlayer extends Actor {
         if (speedScale > 2) {
             speedScale = 2;
         }
-        let pos = target.node.position.clone().sub(this.entity.Transform.position);
+        let pos = target.node.position.clone().sub(this.node.position);
 
         if (!pos.equals(cc.Vec3.ZERO)) {
             pos = pos.normalizeSelf();
@@ -548,7 +548,7 @@ export default class NonPlayer extends Actor {
         }
         pos = pos.normalizeSelf();
         if (!pos.equals(cc.Vec3.ZERO)) {
-            this.pos = Dungeon.getIndexInMap(this.entity.Transform.position);
+            this.pos = Dungeon.getIndexInMap(this.node.position);
         }
         let h = pos.x;
         let v = pos.y;
@@ -579,7 +579,7 @@ export default class NonPlayer extends Actor {
      * 是否玩家背后攻击
      */
     isPlayerBehindAttack(): boolean {
-        let isPlayerRight = this.dungeon.player.node.position.x > this.entity.Transform.position.x;
+        let isPlayerRight = this.dungeon.player.node.position.x > this.node.position.x;
         let isSelfFaceRight = this.node.scaleX > 0;
         return (isPlayerRight && !isSelfFaceRight) || (!isPlayerRight && isSelfFaceRight);
     }
@@ -587,7 +587,7 @@ export default class NonPlayer extends Actor {
      * 攻击目标是否背面朝着怪物
      */
     isFaceTargetBehind(target: Actor): boolean {
-        let isTargetRight = target.node.position.x > this.entity.Transform.position.x;
+        let isTargetRight = target.node.position.x > this.node.position.x;
         let isTargetFaceRight = target.isFaceRight;
         return (isTargetRight && isTargetFaceRight) || (!isTargetRight && !isTargetFaceRight);
     }
@@ -740,7 +740,6 @@ export default class NonPlayer extends Actor {
         if (this.sc.isDied) {
             return;
         }
-        this.entity.Move.linearDamping = 50;
         this.sc.isDied = true;
         this.sc.isDisguising = false;
         this.dashStep.IsExcuting = false;
@@ -748,7 +747,6 @@ export default class NonPlayer extends Actor {
         this.dangerBox.finish();
         this.bodySprite.node.angle = 0;
         this.anim.play('MonsterDie');
-        this.setLinearVelocity(cc.Vec2.ZERO);
         this.changeBodyRes(this.data.resName, NonPlayer.RES_HIT003);
         let collider: CCollider = this.getComponent(CCollider);
         collider.sensor = true;
@@ -763,7 +761,7 @@ export default class NonPlayer extends Actor {
                 if (this.data.isBoom > 0) {
                     let boom = cc.instantiate(this.boom).getComponent(AreaOfEffect);
                     if (boom) {
-                        boom.show(this.node.parent, this.entity.Transform.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
+                        boom.show(this.node.parent, this.node.position, cc.v3(1, 0), 0, new AreaOfEffectData().init(1, 0.2, 0, 0, IndexZ.OVERHEAD, this.data.isEnemy > 0
                             , true, true, false, false, new DamageData(2), FromData.getClone('爆炸', 'boom000anim004'), []));
                         AudioPlayer.play(AudioPlayer.BOOM);
                         cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: true } });
@@ -805,12 +803,12 @@ export default class NonPlayer extends Actor {
             if (this.dungeon.player.data.StatusTotalData.exOilGold > 0) {
                 count += this.dungeon.player.data.StatusTotalData.exOilGold;
             }
-            EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.entity.Transform.position, count: count });
+            EventHelper.emit(EventHelper.DUNGEON_ADD_OILGOLD, { pos: this.node.position, count: count });
             if (rand < equipPercent && !this.isSummon) {
                 this.dungeon.addEquipment(Logic.getRandomEquipType(rand4save), Dungeon.getPosInMap(this.pos), null, quality);
             }
             if (rand < percent) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.entity.Transform.position, count: rand4save.getRandomNum(1, 10) });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_COIN, { pos: this.node.position, count: rand4save.getRandomNum(1, 10) });
             } else if (rand >= percent && rand < percent + offset) {
                 this.addLootSaveItem(Item.HEART, true);
             } else if (rand >= percent + offset && rand < percent + offset * 2) {
@@ -832,7 +830,7 @@ export default class NonPlayer extends Actor {
     }
     private addLootSaveItem(resName: string, isAuto?: boolean) {
         if (isAuto || !this.isSummon) {
-            this.dungeon.addItem(this.entity.Transform.position.clone(), resName);
+            this.dungeon.addItem(this.node.position.clone(), resName);
         }
     }
 
@@ -849,7 +847,7 @@ export default class NonPlayer extends Actor {
         if (this.isPassive) {
             return;
         }
-        let target = ActorUtils.getNearestEnemyActor(this.entity.Transform.position, this.data.isEnemy > 0, this.dungeon);
+        let target = ActorUtils.getNearestEnemyActor(this.node.position, this.data.isEnemy > 0, this.dungeon);
         let targetDis = ActorUtils.getTargetDistance(this, target);
         //目标不存在、死亡或者隐身直接返回
         if (!ActorUtils.isTargetAlive(target)) {
@@ -951,11 +949,13 @@ export default class NonPlayer extends Actor {
         if (this.data.dash > 0 && !this.isPassive && ActorUtils.isTargetAlive(target) && targetDis < 600 && targetDis > 100) {
             this.dashStep.next(() => {
                 this.sc.isDashing = true;
+                this.dangerBox.show(ActorAttackBox.ATTACK_DASH, false, this.data.boxType == 5, cc.v3(1, 0));
+                this.dangerBox.hide(false);
                 this.enterWalk();
                 cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.MELEE } });
                 this.showAttackEffect(true);
                 this.move(this.getMovePosFromTarget(target), speed);
-                this.scheduleOnce(() => { if (this.node) { this.sc.isDashing = false; } }, 2);
+                this.scheduleOnce(() => { if (this.node) { this.sc.isDashing = false; this.dangerBox.finish(); } }, 2);
             }, this.data.dash);
         }
 
@@ -1053,7 +1053,7 @@ export default class NonPlayer extends Actor {
                 this.data.currentHealth = 0;
             } else {
                 this.graphics.moveTo(0, 32);
-                let pos = cc.v3(this.parentNonPlayer.node.position.x - this.entity.Transform.position.x, this.parentNonPlayer.node.position.y - this.entity.Transform.position.y);
+                let pos = cc.v3(this.parentNonPlayer.node.position.x - this.node.position.x, this.parentNonPlayer.node.position.y - this.node.position.y);
                 this.graphics.lineTo(this.node.scaleX > 0 ? pos.x : -pos.x, pos.y + 32);
                 this.graphics.stroke();
             }
@@ -1069,6 +1069,9 @@ export default class NonPlayer extends Actor {
                 this.data.currentHealth = 0;
             }
         }
+        // if(this.sc.isDied){
+        //     cc.log(`x=${this.entity.Move.linearVelocity.x},y=${this.entity.Move.linearVelocity.y}`);
+        // }
     }
     private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
         if (!sprite || !sprite.spriteFrame) {
@@ -1077,7 +1080,7 @@ export default class NonPlayer extends Actor {
         let offset = sprite.spriteFrame.getOffset();
         let rect = sprite.spriteFrame.getRect();
         let texture = sprite.spriteFrame.getTexture();
-        sprite.getMaterial(0).setProperty('rect', [(rect.x+offset.x) / texture.width, (rect.y+offset.y) / texture.height, rect.width / texture.width, rect.height / texture.height]);
+        sprite.getMaterial(0).setProperty('rect', [(rect.x + offset.x) / texture.width, (rect.y + offset.y) / texture.height, rect.width / texture.width, rect.height / texture.height]);
         sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1.0 : 0.0);
         sprite.getMaterial(0).setProperty('rotated', sprite.spriteFrame.isRotated ? 1.0 : 0.0);
     }
@@ -1090,24 +1093,24 @@ export default class NonPlayer extends Actor {
         }
         newPos = target.node.position.clone();
         if (isFlee) {//保证逃跑的时候不碰到死角
-            if (newPos.y > this.entity.Transform.position.y) {
+            if (newPos.y > this.node.position.y) {
                 newPos = newPos.addSelf(cc.v3(0, -128));
             } else {
                 newPos = newPos.addSelf(cc.v3(0, 128));
             }
-            if (newPos.x > this.entity.Transform.position.x) {
+            if (newPos.x > this.node.position.x) {
                 newPos = newPos.addSelf(cc.v3(-64, 0));
             } else {
                 newPos = newPos.addSelf(cc.v3(64, 0));
             }
         }
-        if (newPos.x > this.entity.Transform.position.x) {
+        if (newPos.x > this.node.position.x) {
             newPos = newPos.addSelf(cc.v3(32, 0));
         } else {
             newPos = newPos.addSelf(cc.v3(-32, 0));
         }
 
-        let pos = newPos.sub(this.entity.Transform.position);
+        let pos = newPos.sub(this.node.position);
         if (!this.sc.isAttacking && !this.sc.isDisguising && this.data.isStatic < 1) {
             this.changeFaceRight(target);
         }
@@ -1115,7 +1118,7 @@ export default class NonPlayer extends Actor {
     }
     changeFaceRight(target: Actor) {
         let pos = target.node.position.clone();
-        pos = pos.sub(this.entity.Transform.position);
+        pos = pos.sub(this.node.position);
         let h = pos.x;
         this.isFaceRight = h >= 0;
     }
@@ -1123,19 +1126,14 @@ export default class NonPlayer extends Actor {
         return a + (b - a) * r;
     };
     onColliderEnter(other: CCollider, self: CCollider) {
-        if (self.tag == CCollider.TAG.NONPLAYER_HIT || self.tag == CCollider.TAG.GOODNONPLAYER_HIT) {
-            let target = ActorUtils.getEnemyCollisionTarget(other, this.data.isEnemy < 1);
-            if (target && this.sc.isDashing && this.dungeon && !this.sc.isHurting && !this.sc.isFalling && !this.sc.isDied) {
+        if (self.tag == CCollider.TAG.NONPLAYER || self.tag == CCollider.TAG.GOODNONPLAYER) {
+            if (this.dungeon && this.sc.isDashing && !other.sensor) {
                 this.sc.isDashing = false;
-                this.setLinearVelocity(cc.Vec2.ZERO);
-                let from = FromData.getClone(this.data.nameCn, this.data.resName + 'anim000', this.seed);
-                if (target.takeDamage(this.data.getAttackPoint(), from, this)) {
-                    this.addPlayerStatus(target, from);
-                }
+                this.dangerBox.finish();
             }
         } else if (self.tag == CCollider.TAG.DEFAULT) {
-            this.areaDetector.onColliderEnter(other, self);
-        }
+                this.areaDetector.onColliderEnter(other, self);
+            }
     }
     onColliderStay(other: CCollider, self: CCollider) {
         if (self.tag == CCollider.TAG.NONPLAYER_HIT || self.tag == CCollider.TAG.GOODNONPLAYER_HIT) {
@@ -1217,7 +1215,7 @@ export default class NonPlayer extends Actor {
         cc.director.emit(EventHelper.PLAY_AUDIO, { detail: { name: AudioPlayer.BLINK } });
         let body = this.bodySprite.node;
         cc.tween(body).to(0.2, { opacity: 0 }).call(() => {
-            let newPos = ActorUtils.getNearestEnemyPosition(this.entity.Transform.position, true, this.dungeon, true);
+            let newPos = ActorUtils.getNearestEnemyPosition(this.node.position, true, this.dungeon, true);
             newPos = Dungeon.getIndexInMap(newPos);
             if (newPos.x > this.pos.x) {
                 newPos = newPos.addSelf(cc.v3(1, 0));

@@ -264,7 +264,10 @@ export default class Dungeon extends cc.Component {
             }
         }
         if (!onlyShow && Dungeon.isFirstEqual(mapDataStr, "*")) {
-            this.floorIndexMap.push(indexPos.clone());
+            let index = parseInt(mapDataStr[1]);
+            if(isNaN(index)||index<5){
+                this.floorIndexMap.push(indexPos.clone());
+            }
         }
     }
     private logNodeCount() {

@@ -166,6 +166,10 @@
             {
               "frame": 0,
               "value": 40
+            },
+            {
+              "frame": 0.5,
+              "value": 100
             }
           ],
           "scaleX": [
@@ -327,6 +331,10 @@
           {
             "frame": 0,
             "value": 120
+          },
+          {
+            "frame": 0.5,
+            "value": 160
           }
         ],
         "offsetY": [

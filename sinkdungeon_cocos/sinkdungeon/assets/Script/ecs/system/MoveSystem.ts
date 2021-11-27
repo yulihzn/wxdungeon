@@ -17,15 +17,23 @@ export default class MoveSystem extends ecs.ComblockSystem<ActorEntity>{
             if (move.linearDamping < 0) {
                 move.linearDamping = 0;
             }
-            transform.position.x += this.dt * move.linearVelocity.x;
-            transform.position.y += this.dt * move.linearVelocity.y;
+            let temp = move.linearVelocity.mul(this.dt);
+            transform.position.x += temp.x;
+            transform.position.y += temp.y;
             let damp = move.linearDamping * this.dt;
-            move.linearVelocity.x = this.lerp(move.linearVelocity.x, 0, damp>1?1:damp);
-            move.linearVelocity.y = this.lerp(move.linearVelocity.y, 0, damp>1?1:damp);
+            move.linearVelocity = this.lerpPos(move.linearVelocity,cc.v2(0,0),damp>1?1:damp);
             if (e.NodeRender.node) {
                 e.NodeRender.node.setPosition(transform.position);
             }
         }
+    }
+    private lerpPos(self: cc.Vec2, to: cc.Vec2, ratio: number): cc.Vec2 {
+        let out = cc.v2(0, 0);
+        let x = self.x;
+        let y = self.y;
+        out.x = x + (to.x - x) * ratio;
+        out.y = y + (to.y - y) * ratio;
+        return out;
     }
 
     private lerp(a: number, b: number, r: number): number {

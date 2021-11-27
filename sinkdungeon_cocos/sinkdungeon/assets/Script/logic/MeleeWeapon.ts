@@ -442,12 +442,12 @@ export default class MeleeWeapon extends BaseColliderComponent {
             , finalCommon.magicDamage > 0 && ran < finalCommon.lighteningRate ? MeleeWeapon.ELEMENT_TYPE_LIGHTENING : 0
             , finalCommon.magicDamage > 0 && ran < finalCommon.toxicRate ? MeleeWeapon.ELEMENT_TYPE_TOXIC : 0
             , finalCommon.magicDamage > 0 && ran < finalCommon.curseRate ? MeleeWeapon.ELEMENT_TYPE_CURSE : 0];
-        let delay = (!this.isStab && this.isFar) ? 0.5 : 0;
+        // let delay = (!this.isStab && this.isFar) ? 0.5 : 0;
         this.scheduleOnce(() => {
             for (let w of waves) {
                 this.getWaveLight(this.dungeon.node, p, w, this.isStab, this.isFar);
             }
-        }, delay);
+        }, 0);
     }
 
     setHandAndWeaponInVisible(flag: boolean) {
@@ -525,6 +525,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
+            cc.log(`beat x=${pos.x},y=${pos.y}`);
             actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y);
         }, 0.05);
     }
