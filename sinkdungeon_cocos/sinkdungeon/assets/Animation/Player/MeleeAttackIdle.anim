@@ -69,29 +69,36 @@
               ]
             }
           ]
+        },
+        "comps": {
+          "CCollider": {
+            "radius": [
+              {
+                "frame": 0,
+                "value": 0
+              }
+            ],
+            "offsetX": [
+              {
+                "frame": 0,
+                "value": 0
+              }
+            ],
+            "offsetY": [
+              {
+                "frame": 0,
+                "value": 0
+              }
+            ]
+          }
         }
       }
     },
     "comps": {
       "CCollider": {
-        "radius": [
-          {
-            "frame": 0,
-            "value": 0
-          }
-        ],
-        "offsetX": [
-          {
-            "frame": 0,
-            "value": 32
-          }
-        ],
-        "offsetY": [
-          {
-            "frame": 0,
-            "value": 0
-          }
-        ]
+        "radius": [],
+        "offsetX": [],
+        "offsetY": []
       }
     }
   },

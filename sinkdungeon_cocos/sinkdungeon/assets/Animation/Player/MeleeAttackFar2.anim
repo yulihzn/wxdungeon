@@ -3,7 +3,7 @@
   "_name": "MeleeAttackFar2",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.0166666666666666,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -59,6 +59,36 @@
               ]
             }
           ]
+        },
+        "comps": {
+          "CCollider": {
+            "radius": [
+              {
+                "frame": 0,
+                "value": 16
+              },
+              {
+                "frame": 0.8333333333333334,
+                "value": 16
+              },
+              {
+                "frame": 0.85,
+                "value": 0
+              }
+            ],
+            "offsetX": [
+              {
+                "frame": 0,
+                "value": 0
+              }
+            ],
+            "offsetY": [
+              {
+                "frame": 0,
+                "value": 22
+              }
+            ]
+          }
         }
       },
       "sprite/meleelight": {
@@ -76,29 +106,25 @@
                 }
               },
               {
-                "frame": 0.5,
+                "frame": 0.4166666666666667,
                 "value": {
                   "__uuid__": "8aa899c0-e528-42b8-9f3e-edc9956dda0b"
                 }
               },
               {
-                "frame": 0.6666666666666666,
+                "frame": 0.5,
                 "value": {
                   "__uuid__": "c2d704cd-394a-4942-9d96-b1fc401377cb"
                 }
               },
               {
-                "frame": 0.75,
+                "frame": 0.5833333333333334,
                 "value": {
                   "__uuid__": "67fda04d-e5e4-46c4-a6ea-d6780f5bbb28"
                 }
               },
               {
-                "frame": 0.8333333333333334,
-                "value": null
-              },
-              {
-                "frame": 1,
+                "frame": 0.6666666666666666,
                 "value": null
               }
             ]
@@ -265,64 +291,9 @@
     },
     "comps": {
       "CCollider": {
-        "radius": [
-          {
-            "frame": 0,
-            "value": 0
-          },
-          {
-            "frame": 0.16666666666666666,
-            "value": 160
-          },
-          {
-            "frame": 0.3333333333333333,
-            "value": 171
-          },
-          {
-            "frame": 0.5,
-            "value": 155
-          },
-          {
-            "frame": 0.6666666666666666,
-            "value": 0
-          }
-        ],
-        "offsetX": [
-          {
-            "frame": 0,
-            "value": 106
-          },
-          {
-            "frame": 0.16666666666666666,
-            "value": 106
-          },
-          {
-            "frame": 0.3333333333333333,
-            "value": 90
-          },
-          {
-            "frame": 0.5,
-            "value": 74
-          }
-        ],
-        "offsetY": [
-          {
-            "frame": 0,
-            "value": 38
-          },
-          {
-            "frame": 0.16666666666666666,
-            "value": 38
-          },
-          {
-            "frame": 0.3333333333333333,
-            "value": 34
-          },
-          {
-            "frame": 0.5,
-            "value": 21
-          }
-        ]
+        "radius": [],
+        "offsetX": [],
+        "offsetY": []
       }
     }
   },
@@ -348,7 +319,7 @@
       "params": []
     },
     {
-      "frame": 0.8333333333333334,
+      "frame": 0.6666666666666666,
       "func": "ComboTime",
       "params": []
     },
