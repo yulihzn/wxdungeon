@@ -8,6 +8,7 @@ import GameHud from "../ui/GameHud";
 import MonsterRandomAttr from "./MonsterRandomAttr";
 import Random4Save from "../utils/Random4Save";
 import NonPlayerData from "../data/NonPlayerData";
+import LoadingManager from "./LoadingManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -117,6 +118,7 @@ export default class MonsterManager extends BaseManager {
     private monsters: NonPlayer[] = new Array();//房间怪物列表
     private bosses: Boss[] = new Array();
     isRoomInitWithEnemy = false;//初始化是否生成怪物
+    private loadingManager: LoadingManager = new LoadingManager();
     private seed = 0;
     get monsterList() {
         return this.monsters;
@@ -136,14 +138,17 @@ export default class MonsterManager extends BaseManager {
         this.bosses = new Array();
     }
     /**添加怪物 */
-    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean): NonPlayer {
-        let nonplayer = this.addMonster(this.getMonster(resName, dungeon, isSummon), indexPos, null);
-        if (nonplayer.data.childCount > 0 && nonplayer.data.childResName.length > 0) {
-            for (let i = 0; i < nonplayer.data.childCount; i++) {
-                nonplayer.childNonPlayerList.push(this.addMonster(this.getMonster(nonplayer.data.childResName, dungeon, isSummon), indexPos, nonplayer));
+    public addMonsterFromData(resName: string, indexPos: cc.Vec3, dungeon: Dungeon, isSummon: boolean){
+        this.getMonster(resName, dungeon, isSummon,(nonplayer:NonPlayer)=>{
+            nonplayer = this.addMonster(nonplayer, indexPos, null);
+            if (nonplayer.data.childCount > 0 && nonplayer.data.childResName.length > 0) {
+                for (let i = 0; i < nonplayer.data.childCount; i++) {
+                    this.getMonster(nonplayer.data.childResName, dungeon, isSummon,(childPlayer:NonPlayer)=>{
+                        nonplayer.childNonPlayerList.push(this.addMonster(childPlayer, indexPos, nonplayer));
+                    })
+                }
             }
-        }
-        return nonplayer;
+        })
     }
 
     public addMonstersAndBossFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
@@ -212,8 +217,9 @@ export default class MonsterManager extends BaseManager {
      * @param monsterNode Monster prefab的结点
      * @param parent 父节点
      */
-    private getMonster(resName: string, dungeon: Dungeon, isSummon: boolean): NonPlayer {
-        let monsterPrefab: cc.Node = null;
+    private getMonster(resName: string, dungeon: Dungeon, isSummon: boolean,callBack:Function){
+        this.loadingManager.loadNpcSpriteAtlas(resName,()=>{
+            let monsterPrefab: cc.Node = null;
         monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;
         monsterPrefab.parent = dungeon.node;
@@ -319,8 +325,9 @@ export default class MonsterManager extends BaseManager {
             monster.changeBodyRes(resName, NonPlayer.RES_IDLE000);
         }
         monster.addAttrIcon();
-
-        return monster;
+        callBack(monster);
+        });
+        
     }
     private addMonster(monster: NonPlayer, pos: cc.Vec3, parent: NonPlayer): NonPlayer {
         //激活

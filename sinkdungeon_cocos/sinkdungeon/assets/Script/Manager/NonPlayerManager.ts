@@ -5,6 +5,7 @@ import Utils from "../utils/Utils";
 import NonPlayer from "../logic/NonPlayer";
 import NonPlayerData from "../data/NonPlayerData";
 import Achievement from "../logic/Achievement";
+import LoadingManager from "./LoadingManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -23,6 +24,7 @@ export default class NonPlayerManager extends BaseManager {
     public static readonly NON_SHADOW = 'nonplayer001';
     public static readonly SHOP_KEEPER = 'nonplayer002';
     public static readonly DOG = 'nonplayer100';
+    private loadingManager: LoadingManager = new LoadingManager();
     // LIFE-CYCLE CALLBACKS:
 
     // update (dt) {}
@@ -43,7 +45,9 @@ export default class NonPlayerManager extends BaseManager {
     public addNonPlayerListFromSave(dungeon: Dungeon, list: NonPlayerData[], position: cc.Vec3) {
         for (let data of list) {
             if (data.isPet || data.lifeTime > 0) {
-                this.addNonPlayer(this.getNonPlayer(data, dungeon), position);
+                this.getNonPlayer(data, dungeon,(npc:NonPlayer)=>{
+                    this.addNonPlayer(npc, position);
+                });
             }
         }
     }
@@ -52,7 +56,9 @@ export default class NonPlayerManager extends BaseManager {
         let data = new NonPlayerData();
         data.valueCopy(Logic.nonplayers[resName]);
         Achievement.addNpcsAchievement(data.resName);
-        this.addNonPlayer(this.getNonPlayer(data, dungeon), pos);
+        this.getNonPlayer(data, dungeon,(npc:NonPlayer)=>{
+            this.addNonPlayer(npc, pos);
+        });
     }
 
     isPetAlive() {
@@ -72,7 +78,9 @@ export default class NonPlayerManager extends BaseManager {
             return;
         }
         Achievement.addNpcsAchievement(data.resName);
-        this.addNonPlayer(this.getNonPlayer(data, dungeon), pos);
+        this.getNonPlayer(data, dungeon,(npc:NonPlayer)=>{
+            this.addNonPlayer(npc, pos);
+        });
     }
 
     public addNonPlayerFromMap(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
@@ -80,24 +88,26 @@ export default class NonPlayerManager extends BaseManager {
             this.addNonPlayerFromData(NonPlayerManager.NON_SHADOW, Dungeon.getPosInMap(indexPos), dungeon);
         }
     }
-    private getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon): NonPlayer {
-        let nonPlayerPrefab: cc.Node = null;
-        nonPlayerPrefab = cc.instantiate(this.nonplayer);
-        nonPlayerPrefab.active = false;
-        nonPlayerPrefab.parent = dungeon.node;
-        let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer);
-        let data = new NonPlayerData();
-        nonPlayer.dungeon = dungeon;
-        data.valueCopy(nonPlayerData);
-        data.isEnemy = 0;
-        nonPlayer.data = data;
-        nonPlayer.sc.isDisguising = data.disguise > 0;
-        if (nonPlayer.sc.isDisguising) {
-            nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE);
-        } else {
-            nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_IDLE000);
-        }
-        return nonPlayer;
+    private getNonPlayer(nonPlayerData: NonPlayerData, dungeon: Dungeon,callback:Function): void {
+        this.loadingManager.loadNpcSpriteAtlas(nonPlayerData.resName,()=>{
+            let nonPlayerPrefab: cc.Node = null;
+            nonPlayerPrefab = cc.instantiate(this.nonplayer);
+            nonPlayerPrefab.active = false;
+            nonPlayerPrefab.parent = dungeon.node;
+            let nonPlayer = nonPlayerPrefab.getComponent(NonPlayer);
+            let data = new NonPlayerData();
+            nonPlayer.dungeon = dungeon;
+            data.valueCopy(nonPlayerData);
+            data.isEnemy = 0;
+            nonPlayer.data = data;
+            nonPlayer.sc.isDisguising = data.disguise > 0;
+            if (nonPlayer.sc.isDisguising) {
+                nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_DISGUISE);
+            } else {
+                nonPlayer.changeBodyRes(data.resName, NonPlayer.RES_IDLE000);
+            }
+            callback(nonPlayer);
+        })
     }
     private addNonPlayer(nonPlayer: NonPlayer, pos: cc.Vec3) {
         //激活

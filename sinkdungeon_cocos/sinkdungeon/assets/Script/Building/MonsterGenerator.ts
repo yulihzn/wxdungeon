@@ -22,7 +22,6 @@ export default abstract class MonsterGenerator extends Building {
     addFinish = false;
     count = 0;
     addDelay = 2;
-    nonplayerlist:NonPlayer[] = []
     init(dungeon:Dungeon,generatorInterval:number,generatorCount:number,generatorList:string[]){
         this.dungeon = dungeon;
         this.data.generatorCount = generatorCount;
@@ -73,7 +72,7 @@ export default abstract class MonsterGenerator extends Building {
     }
     showMonster() {
         let pos = Dungeon.getIndexInMap(this.entity.Transform.position.clone());
-        this.nonplayerlist.push(this.dungeon.monsterManager.addMonsterFromData(this.data.generatorList[Logic.getRandomNum(0, this.data.generatorList.length - 1)], pos, this.dungeon, true));
+        this.dungeon.monsterManager.addMonsterFromData(this.data.generatorList[Logic.getRandomNum(0, this.data.generatorList.length - 1)], pos, this.dungeon, true);
         this.count++;
     }
     open() {

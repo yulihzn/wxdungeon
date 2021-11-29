@@ -131,7 +131,7 @@ export default class PickAvatar extends cc.Component {
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg2', 'shoes']);
         this.loadingBackground.active = true;
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'monster000anim000');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow');
         this.loadingManager.loadProfession();
         this.loadingManager.loadEquipment();
         this.loadingManager.loadTalents();

@@ -79,7 +79,7 @@ export default class Achievement extends cc.Component {
         this.loadingManager.loadEquipment();
         this.loadingManager.loadAutoSpriteFrames();
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'monster000anim000');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow');
         this.loadingManager.loadMonsters();
         this.loadingManager.loadItems();
         this.loadingManager.loadNonplayer();
@@ -107,12 +107,14 @@ export default class Achievement extends cc.Component {
         this.content.removeAllChildren();
         let index = 0;
         for (let key in Logic.monsters) {
-            let data = new NonPlayerData();
-            data.valueCopy(Logic.monsters[key]);
-            let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
-            icon.init(this, this.currentListIndex, index++, this.data.monsters[data.resName]
-                , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
-            this.content.addChild(icon.node);
+            this.loadingManager.loadNpcSpriteAtlas(key,()=>{
+                let data = new NonPlayerData();
+                data.valueCopy(Logic.monsters[key]);
+                let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
+                icon.init(this, this.currentListIndex, index++, this.data.monsters[data.resName]
+                    , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
+                this.content.addChild(icon.node);
+            })
         }
     }
     private showBossList() {

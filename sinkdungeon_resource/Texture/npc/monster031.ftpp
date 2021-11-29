@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "version": "0.6.7"
+  },
+  "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture\\npc",
+  "images": [],
+  "folders": [
+    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/npc/monster031"
+  ],
+  "packOptions": {
+    "textureName": "monster031",
+    "textureFormat": "png",
+    "removeFileExtension": false,
+    "prependFolderName": false,
+    "base64Export": false,
+    "tinify": false,
+    "tinifyKey": "",
+    "scale": 1,
+    "filter": "none",
+    "exporter": "cocos2d",
+    "fileName": "pack-result",
+    "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture\\npc",
+    "width": 64,
+    "height": 0,
+    "fixedSize": false,
+    "powerOfTwo": false,
+    "padding": 1,
+    "extrude": 0,
+    "allowRotation": true,
+    "allowTrim": true,
+    "trimMode": "trim",
+    "alphaThreshold": "0",
+    "detectIdentical": true,
+    "packer": "MaxRectsBin",
+    "packerMethod": "BestShortSideFit"
+  }
+}

@@ -44,7 +44,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.loadEquipment();
         this.loadingManager.loadAutoSpriteFrames();
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'monster000anim000');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow');
         this.loadingManager.loadMonsters();
         this.loadingManager.loadStatus();
         this.loadingManager.loadBullets();

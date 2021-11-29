@@ -314,4 +314,21 @@ export default class LoadingManager {
             cc.log(`${typeKey} loaded`);
         })
     }
+    loadNpcSpriteAtlas(typeKey: string,callback:Function) {
+        if (Logic.spriteFrames && Logic.spriteFrames[typeKey+'anim000']) {
+            if(callback){
+                callback();
+            }
+            return;
+        }
+        cc.resources.load(`Texture/npc/${typeKey}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+            for (let frame of atlas.getSpriteFrames()) {
+                Logic.spriteFrames[frame.name] = frame;
+            }
+            cc.log(`${typeKey} loaded`);
+            if(callback){
+                callback();
+            }
+        })
+    }
 }
