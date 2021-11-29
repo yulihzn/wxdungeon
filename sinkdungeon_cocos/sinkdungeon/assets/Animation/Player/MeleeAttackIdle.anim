@@ -56,49 +56,34 @@
             }
           ]
         }
-      },
-      "sprite/weapon": {
-        "props": {
-          "position": [
-            {
-              "frame": 0,
-              "value": [
-                0,
-                0,
-                0
-              ]
-            }
-          ]
-        },
-        "comps": {
-          "CCollider": {
-            "radius": [
-              {
-                "frame": 0,
-                "value": 0
-              }
-            ],
-            "offsetX": [
-              {
-                "frame": 0,
-                "value": 0
-              }
-            ],
-            "offsetY": [
-              {
-                "frame": 0,
-                "value": 0
-              }
-            ]
-          }
-        }
       }
     },
     "comps": {
       "CCollider": {
-        "radius": [],
-        "offsetX": [],
-        "offsetY": []
+        "offsetX": [
+          {
+            "frame": 0,
+            "value": 36
+          }
+        ],
+        "offsetY": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ],
+        "w": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ],
+        "h": [
+          {
+            "frame": 0,
+            "value": 64
+          }
+        ]
       }
     }
   },

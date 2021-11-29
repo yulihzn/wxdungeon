@@ -247,13 +247,13 @@ export default class PlayerAvatar extends cc.Component {
                 break;
             case PlayerAvatar.DIR_LEFT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes('side'+eyesprefix);
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes('side'+faceprefix);
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes('side' + eyesprefix);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes('side' + faceprefix);
                 break;
             case PlayerAvatar.DIR_RIGHT:
                 this.idlehair = [4, 5];
-                this.eyesSprite.spriteFrame = Logic.spriteFrameRes('side'+eyesprefix);
-                this.faceSprite.spriteFrame = Logic.spriteFrameRes('side'+faceprefix);
+                this.eyesSprite.spriteFrame = Logic.spriteFrameRes('side' + eyesprefix);
+                this.faceSprite.spriteFrame = Logic.spriteFrameRes('side' + faceprefix);
                 break;
         }
         this.hairSprite.spriteFrame = Logic.spriteFrameRes(this.data.hairResName + this.idlehair[0]);
@@ -262,24 +262,24 @@ export default class PlayerAvatar extends cc.Component {
             this.handRightSprite.node.zIndex = dir == 0 ? this.bodySprite.node.zIndex - 1 : this.bodySprite.node.zIndex + 1;
         }
     }
-    public showLegsWithWater(inWater:boolean){
-        this.legLeftSprite.node.opacity = inWater?0:255;
-        this.legRightSprite.node.opacity = inWater?0:255;
-        this.shadowSprite.node.opacity = inWater?0:255;
-        this.pantsSprite.node.opacity = inWater?0:255;
-        this.setInWaterMat(this.bodySprite,inWater);
-        this.setInWaterMat(this.clothesSprite,inWater);
+    public showLegsWithWater(inWater: boolean) {
+        this.legLeftSprite.node.opacity = inWater ? 0 : 255;
+        this.legRightSprite.node.opacity = inWater ? 0 : 255;
+        this.shadowSprite.node.opacity = inWater ? 0 : 255;
+        this.pantsSprite.node.opacity = inWater ? 0 : 255;
+        this.setInWaterMat(this.bodySprite, inWater);
+        this.setInWaterMat(this.clothesSprite, inWater);
     }
-    private setInWaterMat(sprite:cc.Sprite,inWater:boolean){
-        if(!sprite||!sprite.spriteFrame){
+    private setInWaterMat(sprite: cc.Sprite, inWater: boolean) {
+        if (!sprite || !sprite.spriteFrame) {
             return;
         }
+        let offset = sprite.spriteFrame.getOffset();
         let rect = sprite.spriteFrame.getRect();
-        
         let texture = sprite.spriteFrame.getTexture();
-        sprite.getMaterial(0).setProperty('rect', [rect.x/texture.width,rect.y/texture.height,rect.width/texture.width,rect.height/texture.height]);
-        sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1.0 : 0.0);
-        sprite.getMaterial(0).setProperty('rotated', sprite.spriteFrame.isRotated ? 1.0 : 0.0);
+        sprite.getMaterial(0).setProperty('rect', [rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height/ texture.height]);
+        sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1 : 0);
+        sprite.getMaterial(0).setProperty('isRotated', sprite.spriteFrame.isRotated() ? 1.0 : 0.0);
     }
     private playWalk(dir: number) {
         this.anim.play(dir == PlayerAvatar.DIR_UP || dir == PlayerAvatar.DIR_DOWN ? 'AvatarWalkVertical' : 'AvatarWalkHorizontal');

@@ -60,8 +60,8 @@ export default class AirExit extends Building {
             this.status = AirExit.STATUS_WAIT;
         }
         switch (this.status) {
-            case AirExit.STATUS_CLOSE: resName = 'outertips3'; break;
-            case AirExit.STATUS_WAIT: resName = 'outertips2'; break;
+            case AirExit.STATUS_CLOSE: resName = 'outertips2'; break;
+            case AirExit.STATUS_WAIT: resName = 'outertips3'; break;
             case AirExit.STATUS_OPEN: resName = 'outertips1'; break;
         }
         for(let c of this.ccolliders){

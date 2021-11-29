@@ -1080,9 +1080,9 @@ export default class NonPlayer extends Actor {
         let offset = sprite.spriteFrame.getOffset();
         let rect = sprite.spriteFrame.getRect();
         let texture = sprite.spriteFrame.getTexture();
-        sprite.getMaterial(0).setProperty('rect', [(rect.x + offset.x) / texture.width, (rect.y + offset.y) / texture.height, rect.width / texture.width, rect.height / texture.height]);
+        sprite.getMaterial(0).setProperty('rect', [rect.x / texture.width, rect.y / texture.height, rect.width / texture.width, rect.height/ texture.height]);
         sprite.getMaterial(0).setProperty('hidebottom', inWater ? 1.0 : 0.0);
-        sprite.getMaterial(0).setProperty('rotated', sprite.spriteFrame.isRotated ? 1.0 : 0.0);
+        sprite.getMaterial(0).setProperty('isRotated', sprite.spriteFrame.isRotated() ? 1.0 : 0.0);
     }
     getMovePosFromTarget(target: Actor, isFlee?: boolean): cc.Vec3 {
         let newPos = cc.v3(0, 0);

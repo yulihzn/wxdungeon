@@ -493,7 +493,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     onColliderStay(other: CCollider, self: CCollider) {
-        if (self.radius > 0) {
+        if (self.w > 0&&self.h > 0) {
             if (this.hasTargetMap.has(other.id) && this.hasTargetMap.get(other.id) > 0) {
                 this.hasTargetMap.set(other.id, this.hasTargetMap.get(other.id) + 1);
                 return false;
@@ -525,7 +525,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
         pos = pos.normalizeSelf().mul(power);
         this.scheduleOnce(() => {
-            cc.log(`beat x=${pos.x},y=${pos.y}`);
+            // cc.log(`beat x=${pos.x},y=${pos.y}`);
             actor.entity.Move.linearVelocity = cc.v2(pos.x, pos.y);
         }, 0.05);
     }

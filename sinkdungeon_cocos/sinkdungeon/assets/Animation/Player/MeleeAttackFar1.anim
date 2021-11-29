@@ -63,36 +63,6 @@
               ]
             }
           ]
-        },
-        "comps": {
-          "CCollider": {
-            "radius": [
-              {
-                "frame": 0,
-                "value": 16
-              },
-              {
-                "frame": 0.16666666666666666,
-                "value": 16
-              },
-              {
-                "frame": 0.18333333333333332,
-                "value": 0
-              }
-            ],
-            "offsetX": [
-              {
-                "frame": 0,
-                "value": 0
-              }
-            ],
-            "offsetY": [
-              {
-                "frame": 0,
-                "value": 22
-              }
-            ]
-          }
         }
       },
       "sprite/meleelight": {
@@ -283,9 +253,78 @@
     },
     "comps": {
       "CCollider": {
-        "radius": [],
-        "offsetX": [],
-        "offsetY": []
+        "offsetX": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": 105
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": 105
+          },
+          {
+            "frame": 0.5,
+            "value": 0
+          }
+        ],
+        "offsetY": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": -22
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": -22
+          },
+          {
+            "frame": 0.5,
+            "value": 0
+          }
+        ],
+        "w": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": 250
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": 250
+          },
+          {
+            "frame": 0.5,
+            "value": 0
+          }
+        ],
+        "h": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 0.16666666666666666,
+            "value": 300
+          },
+          {
+            "frame": 0.4166666666666667,
+            "value": 300
+          },
+          {
+            "frame": 0.5,
+            "value": 0
+          }
+        ]
       }
     }
   },

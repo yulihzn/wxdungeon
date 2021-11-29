@@ -87,7 +87,7 @@ export default class Loading extends cc.Component {
 
             }
             Logic.elevatorScene = 0;
-            this.scheduleOnce(() => { this.isElevatorAnimFinished = true; }, 1.5)
+            this.scheduleOnce(() => { this.isElevatorAnimFinished = true; }, 1)
         }
     }
     showTransport() {
@@ -99,7 +99,7 @@ export default class Loading extends cc.Component {
             }
             AudioPlayer.play(AudioPlayer.TRANSPORTSHIP);
             Logic.shipTransportScene = 0;
-            this.scheduleOnce(() => { this.isTransportAnimFinished = true; }, 1.5)
+            this.scheduleOnce(() => { this.isTransportAnimFinished = true; }, 1)
         }
     }
     update(dt) {

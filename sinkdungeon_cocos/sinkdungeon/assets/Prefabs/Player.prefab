@@ -1875,10 +1875,10 @@
     "tag": 4,
     "offsetX": 32,
     "offsetY": 0,
-    "type": 0,
+    "type": 1,
     "radius": 0,
-    "w": 128,
-    "h": 128,
+    "w": 0,
+    "h": 0,
     "density": 0,
     "sensor": true,
     "isStatic": true,
@@ -4766,11 +4766,14 @@
         "__id__": 134
       },
       {
-        "__id__": 149
+        "__id__": 148
       }
     ],
     "_active": true,
     "_components": [
+      {
+        "__id__": 158
+      },
       {
         "__id__": 159
       },
@@ -4949,16 +4952,16 @@
         "__id__": 135
       },
       {
-        "__id__": 139
+        "__id__": 138
       },
       {
-        "__id__": 142
+        "__id__": 141
       }
     ],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 148
+      "__id__": 147
     },
     "_opacity": 255,
     "_color": {
@@ -5019,13 +5022,10 @@
     "_components": [
       {
         "__id__": 136
-      },
-      {
-        "__id__": 137
       }
     ],
     "_prefab": {
-      "__id__": 138
+      "__id__": 137
     },
     "_opacity": 255,
     "_color": {
@@ -5105,32 +5105,6 @@
     "_id": ""
   },
   {
-    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 135
-    },
-    "_enabled": true,
-    "tag": 4,
-    "offsetX": 32,
-    "offsetY": 0,
-    "type": 0,
-    "radius": 0,
-    "w": 128,
-    "h": 128,
-    "density": 0,
-    "sensor": true,
-    "isStatic": true,
-    "ignoreSameTag": false,
-    "targetTagList": [],
-    "ignoreTagList": [
-      3,
-      4
-    ],
-    "_id": ""
-  },
-  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -5152,11 +5126,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 140
+        "__id__": 139
       }
     ],
     "_prefab": {
-      "__id__": 141
+      "__id__": 140
     },
     "_opacity": 0,
     "_color": {
@@ -5210,7 +5184,7 @@
     "_name": "meleelight<Sprite>",
     "_objFlags": 0,
     "node": {
-      "__id__": 139
+      "__id__": 138
     },
     "_enabled": true,
     "_materials": [
@@ -5257,17 +5231,17 @@
     },
     "_children": [
       {
-        "__id__": 143
+        "__id__": 142
       }
     ],
     "_active": true,
     "_components": [
       {
-        "__id__": 146
+        "__id__": 145
       }
     ],
     "_prefab": {
-      "__id__": 147
+      "__id__": 146
     },
     "_opacity": 255,
     "_color": {
@@ -5321,17 +5295,17 @@
     "_name": "gloves",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 142
+      "__id__": 141
     },
     "_children": [],
     "_active": true,
     "_components": [
       {
-        "__id__": 144
+        "__id__": 143
       }
     ],
     "_prefab": {
-      "__id__": 145
+      "__id__": 144
     },
     "_opacity": 255,
     "_color": {
@@ -5385,7 +5359,7 @@
     "_name": "gloveleft<Sprite>",
     "_objFlags": 0,
     "node": {
-      "__id__": 143
+      "__id__": 142
     },
     "_enabled": true,
     "_materials": [
@@ -5426,7 +5400,7 @@
     "_name": "handleft<Sprite>",
     "_objFlags": 0,
     "node": {
-      "__id__": 142
+      "__id__": 141
     },
     "_enabled": true,
     "_materials": [
@@ -5486,22 +5460,22 @@
     },
     "_children": [
       {
-        "__id__": 150
+        "__id__": 149
       },
       {
-        "__id__": 152
+        "__id__": 151
       },
       {
-        "__id__": 154
+        "__id__": 153
       },
       {
-        "__id__": 156
+        "__id__": 155
       }
     ],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 158
+      "__id__": 157
     },
     "_opacity": 255,
     "_color": {
@@ -5555,13 +5529,13 @@
     "_name": "point0",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 149
+      "__id__": 148
     },
     "_children": [],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 151
+      "__id__": 150
     },
     "_opacity": 255,
     "_color": {
@@ -5626,13 +5600,13 @@
     "_name": "point1",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 149
+      "__id__": 148
     },
     "_children": [],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 153
+      "__id__": 152
     },
     "_opacity": 255,
     "_color": {
@@ -5697,13 +5671,13 @@
     "_name": "point2",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 149
+      "__id__": 148
     },
     "_children": [],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 155
+      "__id__": 154
     },
     "_opacity": 255,
     "_color": {
@@ -5768,13 +5742,13 @@
     "_name": "point3",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 149
+      "__id__": 148
     },
     "_children": [],
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 157
+      "__id__": 156
     },
     "_opacity": 255,
     "_color": {
@@ -5952,6 +5926,32 @@
     "curseLight": {
       "__uuid__": "2774fa59-52c8-412b-a176-d48794025c66"
     },
+    "_id": ""
+  },
+  {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 130
+    },
+    "_enabled": true,
+    "tag": 4,
+    "offsetX": 0,
+    "offsetY": 0,
+    "type": 1,
+    "radius": 0,
+    "w": 0,
+    "h": 0,
+    "density": 0,
+    "sensor": true,
+    "isStatic": true,
+    "ignoreSameTag": false,
+    "targetTagList": [],
+    "ignoreTagList": [
+      3,
+      4
+    ],
     "_id": ""
   },
   {
