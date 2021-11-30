@@ -4,12 +4,12 @@
   "importer": "texture",
   "type": "raw",
   "wrapMode": "clamp",
-  "filterMode": "bilinear",
+  "filterMode": "point",
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
-  "width": 1024,
-  "height": 1024,
+  "width": 126,
+  "height": 79,
   "platformSettings": {},
   "subMetas": {}
 }

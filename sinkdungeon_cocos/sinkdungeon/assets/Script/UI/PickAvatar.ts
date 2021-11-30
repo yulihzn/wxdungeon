@@ -261,7 +261,9 @@ export default class PickAvatar extends cc.Component {
         }
         this.petSelector = this.addAttributeSelector('宠物：', petList);
         this.petSelector.selectorCallback = (data: AttributeData) => {
-            this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
+            this.loadingManager.loadNpcSpriteAtlas(data.resName,()=>{
+                this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
+            })
             this.data.petName = `nonplayer1${data.id > 9 ? '' : '0'}${data.id}`;
         };
         this.petSelector.node.active = this.organizationSelector.CurrentData.id == AvatarData.HUNTER;
