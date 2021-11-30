@@ -31,6 +31,8 @@ export default class AchievementItem extends cc.Component {
     static readonly TYPE_ITEM = 8;
     static readonly COLORS = ['#ffffff', '#00ff00', '#0000ff', '#800080', '#ffa500'];
     isSelect = false;
+    @property(cc.Node)
+    labelBg: cc.Node = null;
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
     @property(cc.Label)

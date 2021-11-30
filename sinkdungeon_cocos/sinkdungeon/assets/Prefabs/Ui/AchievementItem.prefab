@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "MonsterIcon",
+    "_name": "AchievementItem",
     "_objFlags": 0,
     "_parent": null,
     "_children": [
@@ -253,7 +253,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "69c29cca-6b7d-45c6-b721-97b9e7b704dd"
+      "__id__": 0
     },
     "fileId": "76UHGK5aBNzbap4jmiqbBm",
     "sync": false
@@ -363,7 +363,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "69c29cca-6b7d-45c6-b721-97b9e7b704dd"
+      "__id__": 0
     },
     "fileId": "6cyQAc50JJ9bpu+pL9+45D",
     "sync": false
@@ -404,7 +404,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "69c29cca-6b7d-45c6-b721-97b9e7b704dd"
+      "__id__": 0
     },
     "fileId": "9eCf20asZE6YSUAODrKqZc",
     "sync": false
@@ -449,6 +449,12 @@
       "__id__": 1
     },
     "_enabled": true,
+    "bg": {
+      "__id__": 1
+    },
+    "labelBg": {
+      "__id__": 3
+    },
     "sprite": {
       "__id__": 9
     },
@@ -463,7 +469,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "69c29cca-6b7d-45c6-b721-97b9e7b704dd"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

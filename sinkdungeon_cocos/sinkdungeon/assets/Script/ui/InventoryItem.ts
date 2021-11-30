@@ -59,6 +59,7 @@ export default class InventoryItem extends cc.Component {
         this.data.valueCopy(data);
         this.label.string = ``;
         this.sprite.spriteFrame = null;
+        this.node.color = cc.Color.WHITE;
         if (this.data.type == InventoryItem.TYPE_ITEM && this.data.itemData) {
             this.label.string = `${data.itemData.count > 0 ? ('x' + data.itemData.count) : ''}`;
             this.sprite.spriteFrame = Logic.spriteFrameRes(this.data.itemData.resName);
@@ -72,6 +73,10 @@ export default class InventoryItem extends cc.Component {
                 spriteFrame = Logic.spriteFrameRes(this.data.equipmentData.img + 'anim0');
             }
             this.sprite.spriteFrame = spriteFrame;
+            let color1 = cc.color(255, 255, 255).fromHEX(this.data.equipmentData.color);
+            let color2 = cc.color(255, 255, 255).fromHEX(this.data.equipmentData.titlecolor);
+            this.sprite.node.color = color1;
+            this.node.color = color2;
         }
     }
     setEmpty() {

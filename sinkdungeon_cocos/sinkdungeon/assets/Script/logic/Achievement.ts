@@ -38,7 +38,13 @@ export default class Achievement extends cc.Component {
     static readonly TYPE_EQUIP = 6;
     static readonly TYPE_ITEM = 7;
     @property(cc.Node)
-    content: cc.Node = null;
+    contentBg: cc.Node = null;
+    @property(cc.Node)
+    contentSprite: cc.Node = null;
+    @property(cc.Node)
+    contentLabelBg: cc.Node = null;
+    @property(cc.Node)
+    contentLabel: cc.Node = null;
     @property(cc.Prefab)
     prefab: cc.Prefab = null;
     @property(cc.Label)
@@ -62,7 +68,7 @@ export default class Achievement extends cc.Component {
 
     onLoad() {
         this.loadingManager.init();
-        this.content.removeAllChildren();
+        this.removeContent();
         this.data = LocalStorage.getAchievementData();
         if (this.lifesLabel && this.data.playerLifes) {
             this.lifesLabel.string = `DIED ${this.data.playerLifes}`;
@@ -78,7 +84,9 @@ export default class Achievement extends cc.Component {
     start() {
         this.loadingManager.loadEquipment();
         this.loadingManager.loadAutoSpriteFrames();
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_ITEM, 'ammo');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment');
         this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow');
         this.loadingManager.loadMonsters();
         this.loadingManager.loadItems();
@@ -88,13 +96,22 @@ export default class Achievement extends cc.Component {
         this.loadBossSpriteFrames();
         this.loadingBackground.active = true;
     }
-
+    private removeContent(){
+        this.contentBg.removeAllChildren();
+        this.contentSprite.removeAllChildren();
+        this.contentLabelBg.removeAllChildren();
+        this.contentLabel.removeAllChildren();
+    }
+    private addItem(item:AchievementItem){
+        this.contentBg.addChild(item.node);
+    }
     //toggle
     changeList(toggle: cc.Toggle, index: string) {
         this.currentListIndex = parseInt(index);
+        this.unscheduleAllCallbacks();
         switch (this.currentListIndex) {
-            case Achievement.TYPE_CHALLENGE: this.content.removeAllChildren(); break;
-            case Achievement.TYPE_MAP: this.content.removeAllChildren(); break;
+            case Achievement.TYPE_CHALLENGE: this.removeContent(); break;
+            case Achievement.TYPE_MAP: this.removeContent(); break;
             case Achievement.TYPE_FURNITURE: this.showFurnitureList(); break;
             case Achievement.TYPE_NPC: this.showNpcList(); break;
             case Achievement.TYPE_BOSS: this.showBossList(); break;
@@ -102,9 +119,23 @@ export default class Achievement extends cc.Component {
             case Achievement.TYPE_EQUIP: this.showEquipList(); break;
             case Achievement.TYPE_ITEM: this.showItemList(); break;
         }
+        this.scheduleOnce(()=>{
+            for(let node of this.contentLabelBg.children){
+                let item = node.getComponent(AchievementItem);
+                let pos1 = this.contentSprite.convertToNodeSpaceAR(item.sprite.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+                let pos2 = this.contentLabelBg.convertToNodeSpaceAR(item.labelBg.convertToWorldSpaceAR(cc.Vec3.ZERO));
+                let pos3 = this.contentLabel.convertToNodeSpaceAR(item.label.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
+                item.sprite.node.parent =this.contentSprite;
+                item.labelBg.parent = this.contentLabelBg;
+                item.label.node.parent = this.contentLabel;
+                item.sprite.node.position = pos1;
+                item.labelBg.position = pos2;
+                item.label.node.position = pos3;
+            }
+        },0.1)
     }
     private showMonsterList() {
-        this.content.removeAllChildren();
+        this.removeContent();
         let index = 0;
         for (let key in Logic.monsters) {
             this.loadingManager.loadNpcSpriteAtlas(key,()=>{
@@ -113,21 +144,21 @@ export default class Achievement extends cc.Component {
                 let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
                 icon.init(this, this.currentListIndex, index++, this.data.monsters[data.resName]
                     , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
-                this.content.addChild(icon.node);
+                this.addItem(icon);
             })
         }
     }
     private showBossList() {
-        this.content.removeAllChildren();
+        this.removeContent();
         for (let i = 0; i < Achievement.BOSS_SIZE; i++) {
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
             icon.init(this, this.currentListIndex, i, this.data.monsters[`iconboss00${i}`]
                 , this.bossSpriteFrames[`iconboss00${i}`], null, null, null, null);
-            this.content.addChild(icon.node);
+                this.addItem(icon);
         }
     }
     private showNpcList() {
-        this.content.removeAllChildren();
+        this.removeContent();
         let index = 0;
         for (let key in Logic.nonplayers) {
             let data = new NonPlayerData();
@@ -135,11 +166,11 @@ export default class Achievement extends cc.Component {
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
             icon.init(this, this.currentListIndex, index++, this.data.npcs[data.resName]
                 , Logic.spriteFrameRes(data.resName + 'anim000'), data, null, null, null);
-            this.content.addChild(icon.node);
+                this.addItem(icon);
         }
     }
     private showItemList() {
-        this.content.removeAllChildren();
+        this.removeContent();
         let index = 0;
         for (let key in Logic.items) {
             let data = new ItemData();
@@ -148,12 +179,12 @@ export default class Achievement extends cc.Component {
             icon.init(this, this.currentListIndex, index++, this.data.items[data.resName]
                 , Logic.spriteFrameRes(data.resName), null, data, null, null);
             if (index > 5) {
-                this.content.addChild(icon.node)
+                this.addItem(icon);
             };
         }
     }
     private showEquipList() {
-        this.content.removeAllChildren();
+        this.removeContent();
         let index = 0;
         for (let key in Logic.equipments) {
             let data = new EquipmentData();
@@ -170,12 +201,12 @@ export default class Achievement extends cc.Component {
             icon.init(this, this.currentListIndex, index++, this.data.equips[data.img]
                 , spriteFrame, null, null, data, null);
             if (index > 1) {
-                this.content.addChild(icon.node)
+                this.addItem(icon);
             };
         }
     }
     private showFurnitureList() {
-        this.content.removeAllChildren();
+        this.removeContent();
         let index = 0;
         for (let key in Logic.furnitures) {
             let data = new FurnitureData();
@@ -183,7 +214,7 @@ export default class Achievement extends cc.Component {
             let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);
             icon.init(this, this.currentListIndex, index++, this.data.furnitures[data.id]
                 , Logic.spriteFrameRes(data.resName), null, null, null, data);
-            this.content.addChild(icon.node)
+                this.addItem(icon);
 
         }
     }

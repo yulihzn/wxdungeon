@@ -182,6 +182,7 @@ export default class GameHud extends cc.Component {
             for(let i = 0;i<4;i++){
                 if(map.has(i)){
                     this.arrowList[i].active = true;
+                    this.arrowList[i].color = map.get(i)?cc.Color.WHITE:cc.color(55,55,55,255);
                 } else{
                     this.arrowList[i].active = false;
                 }

@@ -282,7 +282,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "35eucv8hZICqFB8wVLF6D+",
     "sync": false
@@ -457,7 +457,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "6fS6J6VthA06brKqZTO3dZ",
     "sync": false
@@ -500,7 +500,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "carVEkWhJBwYfHg5XvwWdH",
     "sync": false
@@ -675,7 +675,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "3akULlTahLTI4IGFzjiERI",
     "sync": false
@@ -718,7 +718,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "39B+UZ7Z9NE5DXxwETMjNY",
     "sync": false
@@ -825,7 +825,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "9bW+/i/qdFVIqRcoPVWX3L",
     "sync": false
@@ -932,7 +932,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "0eWuU1OTZDmbj852OPb29H",
     "sync": false
@@ -1107,7 +1107,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "56apmCfBpIJ5P2P30DZqaJ",
     "sync": false
@@ -1150,7 +1150,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "bdV1+UOc5CJZTEaxhkzZ0I",
     "sync": false
@@ -1371,7 +1371,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "654b13d8-f6d1-444d-9012-158ed12857dc"
+      "__uuid__": "d388b403-c53d-43d6-8031-f6fd113ede25"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -1385,7 +1385,7 @@
     "_fillRange": 0,
     "_isTrimmedMode": false,
     "_atlas": {
-      "__uuid__": "65c7e188-c45b-49f8-938f-51fbe7f89b99"
+      "__uuid__": "667303ed-c12d-47fe-87b9-bfd6990e7799"
     },
     "_id": ""
   },
@@ -1395,7 +1395,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "2aW7VCt9tD1rqTpGErC3oI",
     "sync": false
@@ -1438,7 +1438,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "1dC0mMBd5L9IWT1k47w41b",
     "sync": false
@@ -1481,7 +1481,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "165FkXOpZOspEjIIQNI2vE",
     "sync": false
@@ -1588,7 +1588,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "c9jAO9mXlAgK7x+vDbKK6M",
     "sync": false
@@ -1599,7 +1599,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "d5S87p7AtJZ5jGZcb4CUls",
     "sync": false
@@ -1706,7 +1706,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "0eJdGjB09LoYQdnldGAtyZ",
     "sync": false
@@ -1795,7 +1795,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "622EIC20tKlpkFLH8ok5zS",
     "sync": false
@@ -1918,7 +1918,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "56/HCENMJKoJCcalFBd4i6",
     "sync": false
@@ -1980,9 +1980,10 @@
     "radius": 50,
     "w": 128,
     "h": 128,
+    "density": 0,
     "sensor": true,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -2005,9 +2006,10 @@
     "radius": 50,
     "w": 128,
     "h": 128,
+    "density": 0,
     "sensor": false,
     "isStatic": true,
-    "isChild": false,
+    "ignoreSameTag": false,
     "targetTagList": [],
     "ignoreTagList": [
       9,
@@ -2021,7 +2023,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "f68517b8-a60d-43bc-b2ee-4b05c615b9aa"
+      "__id__": 0
     },
     "fileId": "",
     "sync": false

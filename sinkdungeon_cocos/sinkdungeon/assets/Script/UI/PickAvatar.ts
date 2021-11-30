@@ -130,8 +130,8 @@ export default class PickAvatar extends cc.Component {
         this.shoesSprite1 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg1', 'shoes']);
         this.shoesSprite2 = this.getSpriteChildSprite(this.avatarTable, ['avatar', 'body', 'leg2', 'shoes']);
         this.loadingBackground.active = true;
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'ammo');
-        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_NPC, 'npcshadow');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_TEXTURES, 'singleColor');
+        this.loadingManager.loadSpriteAtlas(LoadingManager.KEY_EQUIPMENT, 'emptyequipment');
         this.loadingManager.loadProfession();
         this.loadingManager.loadEquipment();
         this.loadingManager.loadTalents();
@@ -257,12 +257,12 @@ export default class PickAvatar extends cc.Component {
         let petNames = ['柯基','家猫','橙子鱼'];
         let petList = [];
         for (let i = 0; i < petNames.length; i++) {
-            petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${i > 9 ? '' : '0'}${i}anim000`, '', '', ''));
+            petList.push(new AttributeData(i, `${petNames[i]}`, `nonplayer1${i > 9 ? '' : '0'}${i}`, '', '', ''));
         }
         this.petSelector = this.addAttributeSelector('宠物：', petList);
         this.petSelector.selectorCallback = (data: AttributeData) => {
             this.loadingManager.loadNpcSpriteAtlas(data.resName,()=>{
-                this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName);
+                this.petSprite.spriteFrame = Logic.spriteFrameRes(data.resName+'anim000');
             })
             this.data.petName = `nonplayer1${data.id > 9 ? '' : '0'}${data.id}`;
         };
@@ -353,7 +353,7 @@ export default class PickAvatar extends cc.Component {
     }
     update(dt) {
         if (this.loadingManager.isSpriteFramesLoaded(LoadingManager.KEY_TEXTURES)
-            && this.loadingManager.isSpriteFramesLoaded(LoadingManager.KEY_NPC)
+            && this.loadingManager.isSpriteFramesLoaded(LoadingManager.KEY_EQUIPMENT)
             && this.loadingManager.isProfessionLoaded
             && this.loadingManager.isEquipmentLoaded
             && this.loadingManager.isSkillsLoaded

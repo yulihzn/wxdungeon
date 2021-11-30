@@ -5,10 +5,10 @@
   "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
   "images": [],
   "folders": [
-    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/textures"
+    "D:/wxcx/wxdungeon/sinkdungeon_resource/Texture/textures/item"
   ],
   "packOptions": {
-    "textureName": "textures",
+    "textureName": "item",
     "textureFormat": "png",
     "removeFileExtension": false,
     "prependFolderName": false,
@@ -20,7 +20,7 @@
     "exporter": "cocos2d",
     "fileName": "pack-result",
     "savePath": "D:\\wxcx\\wxdungeon\\sinkdungeon_cocos\\sinkdungeon\\assets\\resources\\Texture",
-    "width": 1024,
+    "width": 128,
     "height": 0,
     "fixedSize": false,
     "powerOfTwo": false,

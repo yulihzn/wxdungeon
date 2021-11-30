@@ -176,6 +176,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         let color2 = cc.color(255, 255, 255).fromHEX(inventoryManager.equips[InventoryManager.WEAPON].lightcolor);
         this.weaponSprite.node.color = color1;
         this.weaponLightSprite.node.color = color2;
+        this.weaponLightSprite.node.opacity = 128;
         if (this.isStab) {
             this.weaponSprite.node.angle = 15;
         } else {

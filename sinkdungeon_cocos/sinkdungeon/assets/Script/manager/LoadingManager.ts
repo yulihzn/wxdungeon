@@ -20,6 +20,8 @@ export default class LoadingManager {
     public static readonly KEY_AUTO = 'auto';
     public static readonly KEY_TEXTURES = 'textures';
     public static readonly KEY_NPC = 'npc';
+    public static readonly KEY_EQUIPMENT ='equipment';
+    public static readonly KEY_ITEM ='item';
     private spriteFrameNames: { [key: string]: boolean } = null;
     public isEquipmentLoaded = false;
     public isMonsterLoaded = false;
@@ -86,6 +88,8 @@ export default class LoadingManager {
         this.spriteFrameNames[LoadingManager.KEY_AUTO] = false;
         this.spriteFrameNames[LoadingManager.KEY_TEXTURES] = false;
         this.spriteFrameNames[LoadingManager.KEY_NPC] = false;
+        this.spriteFrameNames[LoadingManager.KEY_EQUIPMENT] = false;
+        this.spriteFrameNames[LoadingManager.KEY_ITEM] = false;
     }
 
     loadWorld() {

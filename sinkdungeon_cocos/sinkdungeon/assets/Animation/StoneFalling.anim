@@ -46,20 +46,22 @@
               {
                 "frame": 0,
                 "value": {
-                  "__uuid__": "3342394c-c462-456b-930c-2fbc7cada682"
+                  "__uuid__": "5db9e647-5e79-48df-9362-029d4933cdde"
                 }
               },
               {
                 "frame": 2.1666666666666665,
                 "value": {
-                  "__uuid__": "3342394c-c462-456b-930c-2fbc7cada682"
+                  "__uuid__": "f5b92b37-260c-44ff-b290-ec8682ab576a"
                 }
               },
               {
                 "frame": 2.5,
-                "value": {
-                  "__uuid__": "187e1971-c77c-4735-917e-cdf27e0b6946"
-                }
+                "value": null
+              },
+              {
+                "frame": 2.5166666666666666,
+                "value": null
               }
             ]
           }

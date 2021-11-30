@@ -255,12 +255,12 @@ export default class BuildingManager extends BaseManager {
         } else if (mapDataStr == 'I0') {
             //生成通风管
             let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
-            p.init(dungeon, 5, 3, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
+            p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
             this.monsterGeneratorList.push(p);
         } else if (mapDataStr == 'I0') {
             //生成通风管
             let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
-            p.init(dungeon, 5, 3, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
+            p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
             this.monsterGeneratorList.push(p);
         } else if (mapDataStr == 'I6') {
             //生成墙缝
@@ -691,6 +691,8 @@ export default class BuildingManager extends BaseManager {
             if(!door.isLock&&!door.isDecorate){
                 if(Logic.mapManager.isNeighborRoomNew(door.dir)){
                     dirs.set(door.dir,true);
+                }else if(Logic.mapManager.isNeighborRoomExist(door.dir)){
+                    dirs.set(door.dir,false);
                 }
             }
         }
