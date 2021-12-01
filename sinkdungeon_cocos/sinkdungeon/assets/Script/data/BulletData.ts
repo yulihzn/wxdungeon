@@ -37,6 +37,9 @@ export default class BulletData {
     statusRate = 0;//状态几率
     canBreakBuilding = 0;//是否可以打破部分建筑
     isInvincible = 0;//是否无敌，无法被主动销毁
+    splitResName = '';//分裂子弹名
+    splitTime = 0;//分裂时间 如果为0表示不分裂
+    splitArcExNum = 0;//分裂额外数量
     damage:DamageData = new DamageData();
     from:FromData = new FromData();//来源
     valueCopy(data:BulletData){
@@ -61,7 +64,10 @@ export default class BulletData {
         this.statusType = data.statusType?data.statusType:'';
         this.statusRate = data.statusRate?data.statusRate:0;
         this.canBreakBuilding = data.canBreakBuilding?data.canBreakBuilding:0;
+        this.splitResName = data.splitResName?data.splitResName:'';
         this.isInvincible = data.isInvincible?data.isInvincible:0;
+        this.splitTime = data.splitTime?data.splitTime:0;
+        this.splitArcExNum = data.splitArcExNum?data.splitArcExNum:0;
         this.lightColor = data.lightColor?data.lightColor:'#ffffff'
         this.damage.valueCopy(data.damage);
         this.from.valueCopy(data.from);
@@ -91,6 +97,9 @@ export default class BulletData {
         e.statusRate = this.statusRate;
         e.canBreakBuilding = this.canBreakBuilding;
         e.isInvincible = this.isInvincible;
+        e.splitResName = this.splitResName;
+        e.splitTime = this.splitTime;
+        e.splitArcExNum = this.splitArcExNum;
         e.damage = this.damage.clone();
         e.from = this.from.clone();
         return e;
