@@ -1,5 +1,6 @@
 import Logic from "./Logic";
 import AudioPlayer from "../utils/AudioPlayer";
+import NoticeDialog from "../ui/dialog/NoticeDialog";
 
 const { ccclass, property } = cc._decorator;
 
@@ -15,12 +16,15 @@ export default class Start extends cc.Component {
     debugButton: cc.Node = null;
     @property(cc.Node)
     tourButton: cc.Node = null;
+    @property(NoticeDialog)
+    noticeDialog:NoticeDialog = null;
     cheatClickCount = 0;
     debugClickCount = 0;
     tourClickCount = 0;
     onLoad(): void {
         this.cheatButton.opacity = Logic.isCheatMode ? 255 : 0;
         this.debugButton.opacity = Logic.isDebug ? 255 : 0;
+        this.noticeDialog.node.active = false;
     }
 
     start() {
@@ -117,6 +121,12 @@ export default class Start extends cc.Component {
         this.tourClickCount++;
         if (this.tourClickCount > 2) {
             Logic.isTour = true;
+        }
+    }
+
+    showNotice(){
+        if(this.noticeDialog){
+            this.noticeDialog.show();
         }
     }
 

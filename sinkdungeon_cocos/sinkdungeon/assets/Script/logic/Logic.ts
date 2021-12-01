@@ -25,6 +25,7 @@ import InventoryData from "../data/InventoryData";
 import GroundOilGoldData from "../data/GroundOilGoldData";
 import OilGoldData from "../data/OilGoldData";
 import FurnitureData from "../data/FurnitureData";
+import LoadingManager from '../manager/LoadingManager';
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -404,8 +405,12 @@ export default class Logic extends cc.Component {
     static spriteFrameRes(spriteFrameName: string) {
         return Logic.spriteFrames[spriteFrameName] ? Logic.spriteFrames[spriteFrameName] : null;
     }
-    static getBuildings(name: string): cc.Prefab {
-        return Logic.buildings[name];
+    static getBuildings(name: string,callback:Function): void {
+        LoadingManager.loadBuilding(name,()=>{
+            if(callback){
+                callback(Logic.buildings[name]);
+            }
+        })
     }
     static getKillPlayerCount(seed: number) {
         if (Logic.killPlayerCounts[seed]) {

@@ -71,5 +71,6 @@ export default class SettingsDialog extends BaseDialog {
         AudioPlayer.play(AudioPlayer.SELECT);
         Logic.saveData();
         cc.director.loadScene('start');
+        cc.director.getScheduler().setTimeScale(1);
     }
 }

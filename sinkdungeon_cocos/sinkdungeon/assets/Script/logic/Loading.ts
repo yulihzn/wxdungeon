@@ -54,7 +54,7 @@ export default class Loading extends cc.Component {
         this.loadingManager.loadTalents();
         this.loadingManager.loadProfession();
         this.loadingManager.loadNonplayer();
-        this.loadingManager.loadBuildings();
+        // this.loadingManager.loadBuildings();
         this.loadingManager.loadSuits();
         this.loadingManager.loadFurnitures();
         this.showLoadingLabel();
@@ -121,7 +121,6 @@ export default class Loading extends cc.Component {
             && this.loadingManager.isItemsLoaded
             && this.loadingManager.isSkillsLoaded
             && this.loadingManager.isWorldLoaded
-            && this.loadingManager.isBuildingLoaded
             && this.loadingManager.isSuitsLoaded
             && this.loadingManager.isFurnituresLoaded
             && this.cutScene.isSkip

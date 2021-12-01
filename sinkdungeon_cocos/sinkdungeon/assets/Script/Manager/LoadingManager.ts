@@ -14,15 +14,15 @@ import Logic from "../logic/Logic";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class LoadingManager {
-
+export default class LoadingManager{
 
     public static readonly KEY_AUTO = 'auto';
     public static readonly KEY_TEXTURES = 'textures';
     public static readonly KEY_NPC = 'npc';
     public static readonly KEY_EQUIPMENT ='equipment';
     public static readonly KEY_ITEM ='item';
-    private spriteFrameNames: { [key: string]: boolean } = null;
+    private static resourceLoadMap = new Map<string,Array<Function>>();
+    private spriteFrameNames: { [key: number]: boolean } = null;
     public isEquipmentLoaded = false;
     public isMonsterLoaded = false;
     public isNonplayerLoaded = false;
@@ -267,6 +267,7 @@ export default class LoadingManager {
             cc.log('buildings loaded');
         })
     }
+    
     loadItems() {
         if (Logic.items) {
             this.isItemsLoaded = true;
@@ -318,21 +319,68 @@ export default class LoadingManager {
             cc.log(`${typeKey} loaded`);
         })
     }
-    static loadNpcSpriteAtlas(typeKey: string,callback?:Function) {
-        if (Logic.spriteFrames && Logic.spriteFrames[typeKey+'anim000']) {
+    static loadNpcSpriteAtlas(name: string,callback?:Function) {
+        if (Logic.spriteFrames && Logic.spriteFrames[name+'anim000']) {
             if(callback){
                 callback();
             }
             return;
         }
-        cc.resources.load(`Texture/npc/${typeKey}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
-            for (let frame of atlas.getSpriteFrames()) {
-                Logic.spriteFrames[frame.name] = frame;
-            }
-            cc.log(`${typeKey} loaded`);
+        
+        //判断是否有相同的资源正在加载，如果有等待加载完毕再执行
+        if(LoadingManager.resourceLoadMap.has(name)){
+            LoadingManager.resourceLoadMap.get(name).push(callback);
+        }else{
+            LoadingManager.resourceLoadMap.set(name,new Array());
+            cc.resources.load(`Texture/npc/${name}`, cc.SpriteAtlas, (err: Error, atlas: cc.SpriteAtlas) => {
+                for (let frame of atlas.getSpriteFrames()) {
+                    Logic.spriteFrames[frame.name] = frame;
+                }
+                cc.log(`${name} loaded`);
+                if(callback){
+                    callback();
+                }
+                if(LoadingManager.resourceLoadMap.has(name)){
+                    for(let call of LoadingManager.resourceLoadMap.get(name)){
+                        if(call){
+                            call();
+                        }
+                    }
+                    LoadingManager.resourceLoadMap.delete(name);
+                }
+            })
+           
+        }
+    }
+   
+    public static loadBuilding(name:string,callback?:Function){
+        
+        if(Logic.buildings[name]){
             if(callback){
                 callback();
             }
-        })
+            return;
+        }
+        //判断是否有相同的资源正在加载，如果有等待加载完毕再执行
+        if(LoadingManager.resourceLoadMap.has(name)){
+            LoadingManager.resourceLoadMap.get(name).push(callback);
+        }else{
+            LoadingManager.resourceLoadMap.set(name,new Array());
+            cc.resources.load(`Prefabs/buildings/${name}`, cc.Prefab, (err: Error, prefab: cc.Prefab) => {
+                Logic.buildings[name]=prefab;
+                cc.log(`${name} loaded`);
+                if(callback){
+                    callback();
+                }
+                if(LoadingManager.resourceLoadMap.has(name)){
+                    for(let call of LoadingManager.resourceLoadMap.get(name)){
+                        if(call){
+                            call();
+                        }
+                    }
+                    LoadingManager.resourceLoadMap.delete(name);
+                }
+            })
+        }
     }
 }

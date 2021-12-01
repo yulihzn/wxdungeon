@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         webSettings.allowContentAccess = true
         webSettings.allowFileAccess = true
         webSettings.allowUniversalAccessFromFileURLs = true
+        CookieManager.setAcceptFileSchemeCookies(true)
         webView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent))
         webView.setBackgroundResource(R.color.black)
         webView.webChromeClient = WebChromeClient()

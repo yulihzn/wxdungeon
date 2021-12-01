@@ -470,9 +470,9 @@ export default class ProfessionTalent extends Talent {
         let swordlight = shooterEx.fireAoe(this.daggerLightPrefab, new AreaOfEffectData()
             .init(0, duration/10, 0, scale, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.FROZEN]),cc.Vec3.ZERO);
         let color = cc.color(255, 255, 255).fromHEX(this.player.inventoryManager.equips[InventoryManager.WEAPON].lightcolor);
-        for(let node of swordlight.node.children){
-            node.color = shadowPlayer?cc.Color.BLACK:color;
-            node.opacity = 200;
+        for(let sprite of swordlight.node.getComponentsInChildren(cc.Sprite)){
+            sprite.node.color = shadowPlayer?cc.Color.BLACK:color;
+            sprite.node.opacity = 200;
         }
         this.player.vanish(duration);
         if(shadowPlayer){

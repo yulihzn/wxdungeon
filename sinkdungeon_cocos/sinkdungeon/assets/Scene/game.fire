@@ -10297,7 +10297,7 @@
     "component": "",
     "_componentId": "66439SRIlRDCK2s/WLS+qDi",
     "handler": "changeSort",
-    "customEventData": "2"
+    "customEventData": "3"
   },
   {
     "__type__": "cc.Layout",

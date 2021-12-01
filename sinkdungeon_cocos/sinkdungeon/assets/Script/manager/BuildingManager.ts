@@ -144,9 +144,8 @@ export default class BuildingManager extends BaseManager {
     private foodList: string[] = [];
     private interactBuildings: InteractBuilding[] = [];
     public lastInteractBuilding: InteractBuilding;
-    public buildingList:Building[] = [];
+    public buildingList: Building[] = [];
     public waterIndexList: cc.Vec3[] = new Array();//水下标列表
-    
 
     clear(): void {
         Utils.clearComponentArray(this.footboards);
@@ -199,33 +198,41 @@ export default class BuildingManager extends BaseManager {
         return building;
     }
     public addBuildingsFromMap(dungeon: Dungeon, mapData: string[][], mapDataStr: string, indexPos: cc.Vec3, levelData: LevelData, exits: ExitData[]) {
-        if(mapDataStr == '=='){
+        if (mapDataStr == '==') {
             this.waterIndexList.push(indexPos);
 
-        }else if (this.isFirstEqual(mapDataStr, '*')) {
+        } else if (this.isFirstEqual(mapDataStr, '*')) {
         } else if (this.isFirstEqual(mapDataStr, '#')) {
             //生成墙
             this.addDirWalls(mapDataStr, mapData, indexPos, levelData, false);
         } else if (this.isFirstEqual(mapDataStr, '-')) {
-            let dn = this.addBuilding(Logic.getBuildings(BuildingManager.DARKNESS), indexPos);
-            dn.zIndex = IndexZ.DARKNESS;
-            if (mapDataStr == '-0') {
-                dn.zIndex = IndexZ.ROOF;
-            }
+            Logic.getBuildings(BuildingManager.DARKNESS, (prefab: cc.Prefab) => {
+                let dn = this.addBuilding(prefab, indexPos);
+                dn.zIndex = IndexZ.DARKNESS;
+                if (mapDataStr == '-0') {
+                    dn.zIndex = IndexZ.ROOF;
+                }
+            });
         } else if (this.isFirstEqual(mapDataStr, '~')) {
             this.addWater(mapDataStr, indexPos);
         } else if (this.isFirstEqual(mapDataStr, '+')) {
             //生成装饰
             this.addDecorate(dungeon, mapDataStr, indexPos);
         } else if (mapDataStr == '@@') {
-            //生成踏板
-            let foot = this.addBuilding(Logic.getBuildings(BuildingManager.FOOTBOARD), indexPos);
-            foot.zIndex = IndexZ.FLOOR;
-            this.footboards.push(foot.getComponent(FootBoard));
+            Logic.getBuildings(BuildingManager.FOOTBOARD, (prefab: cc.Prefab) => {
+                //生成踏板
+                let foot = this.addBuilding(prefab, indexPos);
+                foot.zIndex = IndexZ.FLOOR;
+                this.footboards.push(foot.getComponent(FootBoard));
+            });
+
         } else if (mapDataStr == '@S') {
-            //生成存档点
-            let save = this.addBuilding(Logic.getBuildings(BuildingManager.SAVEPOINT), indexPos);
-            this.savePointS = save.getComponent(SavePoint);
+            Logic.getBuildings(BuildingManager.SAVEPOINT, (prefab: cc.Prefab) => {
+                //生成存档点
+                let save = this.addBuilding(prefab, indexPos);
+                this.savePointS = save.getComponent(SavePoint);
+            });
+
         } else if (this.isFirstEqual(mapDataStr, 'B')) {
             //生成木盒子 并且根据之前记录的位置放置
             this.addBox(mapDataStr, indexPos);
@@ -246,27 +253,38 @@ export default class BuildingManager extends BaseManager {
             this.addLighteningFall(indexPos, true, true, true);
         } else if (this.isFirstEqual(mapDataStr, 'G')) {
             //生成炮台
-            let em = this.addBuilding(Logic.getBuildings(BuildingManager.EMPLACEMENT), indexPos).getComponent(Emplacement);
-            em.setDirType(mapDataStr);
-            em.dungeon = dungeon;
+            Logic.getBuildings(BuildingManager.EMPLACEMENT, (prefab: cc.Prefab) => {
+                let em = this.addBuilding(prefab, indexPos).getComponent(Emplacement);
+                em.setDirType(mapDataStr);
+                em.dungeon = dungeon;
+            });
+
+
         } else if (this.isFirstEqual(mapDataStr, 'H')) {
             //生成可打击建筑
             this.addHitBuilding(dungeon, mapDataStr, indexPos)
         } else if (mapDataStr == 'I0') {
             //生成通风管
-            let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
-            p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
-            this.monsterGeneratorList.push(p);
+            Logic.getBuildings(BuildingManager.WENTLINE, (prefab: cc.Prefab) => {
+                let p = this.addBuilding(prefab, indexPos).getComponent(MgWentLine);
+                p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
+                this.monsterGeneratorList.push(p);
+            });
         } else if (mapDataStr == 'I0') {
             //生成通风管
-            let p = this.addBuilding(Logic.getBuildings(BuildingManager.WENTLINE), indexPos).getComponent(MgWentLine);
-            p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
-            this.monsterGeneratorList.push(p);
+            Logic.getBuildings(BuildingManager.WENTLINE, (prefab: cc.Prefab) => {
+                let p = this.addBuilding(prefab, indexPos).getComponent(MgWentLine);
+                p.init(dungeon, 1, 6, [MonsterManager.MONSTER_ZOOMBIE, MonsterManager.MONSTER_BITE_ZOMBIE]);
+                this.monsterGeneratorList.push(p);
+            });
+
         } else if (mapDataStr == 'I6') {
             //生成墙缝
-            let p = this.addBuilding(Logic.getBuildings(BuildingManager.CRACK), indexPos).getComponent(MgCrack);
-            p.init(dungeon, 0.5, 15, [MonsterManager.MONSTER_SCARAB]);
-            this.monsterGeneratorList.push(p);
+            Logic.getBuildings(BuildingManager.CRACK, (prefab: cc.Prefab) => {
+                let p = this.addBuilding(prefab, indexPos).getComponent(MgCrack);
+                p.init(dungeon, 0.5, 15, [MonsterManager.MONSTER_SCARAB]);
+                this.monsterGeneratorList.push(p);
+            });
         } else if (this.isFirstEqual(mapDataStr, 'J')) {
 
         } else if (this.isFirstEqual(mapDataStr, 'K')) {
@@ -276,78 +294,103 @@ export default class BuildingManager extends BaseManager {
             this.addLamp(mapDataStr, indexPos)
         } else if (this.isFirstEqual(mapDataStr, 'O')) {
             //生成顶部栏
-            let head = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONOVERHEAD), indexPos);
-            if (mapDataStr == 'O1') {
-                head.angle = 90;
-            }
-            head.opacity = 80;
-            head.zIndex = IndexZ.ROOF;
-        } else if (this.isFirstEqual(mapDataStr, 'P')) {
-            if (Logic.isCheatMode) {
-                let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
-                for (let e of exits) {
-                    if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
-                        d.valueCopy(e);
-                        break;
-                    }
+            Logic.getBuildings(BuildingManager.DECORATIONOVERHEAD, (prefab: cc.Prefab) => {
+                let head = this.addBuilding(prefab, indexPos);
+                if (mapDataStr == 'O1') {
+                    head.angle = 90;
                 }
-                //生成传送门
-                let p = this.addBuilding(Logic.getBuildings(BuildingManager.PORTAL), indexPos);
-                let portal = p.getComponent(Portal);
-                portal.exitData.valueCopy(d);
-                this.portals.push(portal);
-            }
+                head.opacity = 80;
+                head.zIndex = IndexZ.ROOF;
+            });
+        } else if (this.isFirstEqual(mapDataStr, 'P')) {
+            //生成传送门
+            Logic.getBuildings(BuildingManager.PORTAL, (prefab: cc.Prefab) => {
+                if (Logic.isCheatMode) {
+                    let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
+                    for (let e of exits) {
+                        if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
+                            d.valueCopy(e);
+                            break;
+                        }
+                    }
+                    let p = this.addBuilding(prefab, indexPos);
+                    let portal = p.getComponent(Portal);
+                    portal.exitData.valueCopy(d);
+                    this.portals.push(portal);
+                }
+            });
 
         } else if (mapDataStr == 'Q0') {
             //生成塔罗
-            this.addBuilding(Logic.getBuildings(BuildingManager.TAROTTABLE), indexPos);
+            Logic.getBuildings(BuildingManager.TAROTTABLE, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (mapDataStr == 'R0') {
-            let node = this.addBuilding(Logic.getBuildings(BuildingManager.SHIPSTAIRS), indexPos);
-            node.setScale(16);
-            node.zIndex = IndexZ.WALLINTERNAL;
-        }
-        else if (mapDataStr == 'R1') {
+            Logic.getBuildings(BuildingManager.SHIPSTAIRS, (prefab: cc.Prefab) => {
+                let node = this.addBuilding(prefab, indexPos);
+                node.setScale(16);
+                node.zIndex = IndexZ.WALLINTERNAL;
+            });
+
+        } else if (mapDataStr == 'R1') {
             //生成楼梯
-            let node = this.addBuilding(Logic.getBuildings(BuildingManager.SHIPSTAIRS), indexPos);
-            node.setScale(-16, 16);
-            node.getComponent(CCollider).offset = cc.v2(-8, 0);
-            node.zIndex = IndexZ.WALLINTERNAL;
+            Logic.getBuildings(BuildingManager.SHIPSTAIRS, (prefab: cc.Prefab) => {
+                let node = this.addBuilding(prefab, indexPos);
+                node.setScale(-16, 16);
+                node.getComponent(CCollider).offset = cc.v2(-8, 0);
+                node.zIndex = IndexZ.WALLINTERNAL;
+            });
+
         } else if (mapDataStr == 'S0') {
             //生成商店
             this.addShopTable(indexPos);
         } else if (mapDataStr == 'S1') {
             //生成店主
-            this.addBuilding(Logic.getBuildings(BuildingManager.SHOP), indexPos);
+            Logic.getBuildings(BuildingManager.SHOP, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (mapDataStr == 'S2') {
             //生成有家
-            let mart = this.addBuilding(Logic.getBuildings(BuildingManager.SHOPMART), indexPos);
-            mart.zIndex += 10;
+            Logic.getBuildings(BuildingManager.SHOPMART, (prefab: cc.Prefab) => {
+                let mart = this.addBuilding(prefab, indexPos);
+                mart.zIndex += 10;
+            });
         } else if (mapDataStr == 'Sa' || mapDataStr == 'Sb' || mapDataStr == 'Sc') {
             //生成货架
             this.addMartShelves(mapDataStr, indexPos);
         } else if (mapDataStr == 'Sd') {
             //生成收银台
-            this.addBuilding(Logic.getBuildings(BuildingManager.MARTCASHIER), indexPos);
-            let pos = Dungeon.getPosInMap(indexPos);
-            dungeon.nonPlayerManager.addNonPlayerFromData(NonPlayerManager.SHOP_KEEPER, cc.v3(pos.x - 60, pos.y + 180), dungeon);
+            Logic.getBuildings(BuildingManager.MARTCASHIER, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+                let pos = Dungeon.getPosInMap(indexPos);
+                dungeon.nonPlayerManager.addNonPlayerFromData(NonPlayerManager.SHOP_KEEPER, cc.v3(pos.x - 60, pos.y + 180), dungeon);
+            });
         } else if (mapDataStr == 'Se') {
             //生成餐桌
-            this.addBuilding(Logic.getBuildings(BuildingManager.MARTTABLE), indexPos);
+            Logic.getBuildings(BuildingManager.MARTTABLE, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (mapDataStr == 'T0') {
             //生成陷阱
-            this.addBuilding(Logic.getBuildings(BuildingManager.TRAP), indexPos);
+            Logic.getBuildings(BuildingManager.TRAP, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (this.isFirstEqual(mapDataStr, 'W')) {
             //生成可破坏装饰 并且根据之前记录的位置放置
             this.addInteractBuilding(mapDataStr, indexPos);
         } else if (mapDataStr == 'X0') {
             //生成电锯,占据5个格子
-            let saw = this.addBuilding(Logic.getBuildings(BuildingManager.SAW), indexPos);
-            saw.getComponent(Saw).setPos(indexPos);
+            Logic.getBuildings(BuildingManager.SAW, (prefab: cc.Prefab) => {
+                let saw = this.addBuilding(prefab, indexPos);
+                saw.getComponent(Saw).setPos(indexPos);
+            });
         } else if (this.isFirstEqual(mapDataStr, 'Z')) {
             if (parseInt(mapDataStr[1]) == 0 || parseInt(mapDataStr[1]) == 1) {
-                let p = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMBED), indexPos);
-                let rb = p.getComponent(RoomBed);
-                rb.init(dungeon, parseInt(mapDataStr[1]) == 1);
+                Logic.getBuildings(BuildingManager.ROOMBED, (prefab: cc.Prefab) => {
+                    let p = this.addBuilding(prefab, indexPos);
+                    let rb = p.getComponent(RoomBed);
+                    rb.init(dungeon, parseInt(mapDataStr[1]) == 1);
+                });
             } else {
                 //生成家具
                 this.addFurnitures(dungeon, mapDataStr, indexPos);
@@ -361,178 +404,219 @@ export default class BuildingManager extends BaseManager {
             this.addDirWalls(mapDataStr, mapData, indexPos, levelData, true);
         } else if (this.isFirstEqual(mapDataStr, '-')) {
             //生成黑暗
-            let dn = this.addBuilding(Logic.getBuildings(BuildingManager.DARKNESS), indexPos);
-            dn.zIndex = IndexZ.DARKNESS;
-            if (mapDataStr == '-0') {
-                dn.zIndex = IndexZ.ROOF;
-            }
+            Logic.getBuildings(BuildingManager.DARKNESS, (prefab: cc.Prefab) => {
+                let dn = this.addBuilding(prefab, indexPos);
+                dn.zIndex = IndexZ.DARKNESS;
+                if (mapDataStr == '-0') {
+                    dn.zIndex = IndexZ.ROOF;
+                }
+            });
+
         } else if (this.isFirstEqual(mapDataStr, '~')) {
             //生成水
             this.addWater(mapDataStr, indexPos);
         } else if (mapDataStr == '+3') {
             //生成汽艇
-            this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
+            Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (this.isFirstEqual(mapDataStr, 'D')) {
             //生成门
             this.addDoor(mapDataStr, indexPos, true);
         }
     }
     private addInteractBuilding(mapDataStr: string, indexPos: cc.Vec3) {
-        let saveBox = Logic.mapManager.getCurrentMapBuilding(indexPos);
-        let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
-        if (saveBox) {
-            //生命值大于0才生成
-            if (saveBox.currentHealth > 0 || isReborn) {
-                let interactBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.INTERACTBUILDING), indexPos);
-                let d = interactBuilding.getComponent(InteractBuilding);
-                d.node.position = saveBox.position.clone();
-                d.data.valueCopy(saveBox);
-                if (isReborn) {
-                    d.node.position = Dungeon.getPosInMap(d.data.defaultPos);
-                    d.data.currentHealth = d.data.maxHealth;
+        Logic.getBuildings(BuildingManager.INTERACTBUILDING, (prefab: cc.Prefab) => {
+            let saveBox = Logic.mapManager.getCurrentMapBuilding(indexPos);
+            let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
+            if (saveBox) {
+                //生命值大于0才生成
+                if (saveBox.currentHealth > 0 || isReborn) {
+
+                    let interactBuilding = this.addBuilding(prefab, indexPos);
+                    let d = interactBuilding.getComponent(InteractBuilding);
+                    d.node.position = saveBox.position.clone();
+                    d.data.valueCopy(saveBox);
+                    if (isReborn) {
+                        d.node.position = Dungeon.getPosInMap(d.data.defaultPos);
+                        d.data.currentHealth = d.data.maxHealth;
+                    }
+                    d.init(true, parseInt(mapDataStr[1]));
+                    this.interactBuildings.push(d);
                 }
+            } else {
+                let interactBuilding = this.addBuilding(prefab, indexPos);
+                let d = interactBuilding.getComponent(InteractBuilding);
+                d.data.currentHealth = 5;
+                Logic.mapManager.setCurrentBuildingData(d.data.clone());
                 d.init(true, parseInt(mapDataStr[1]));
                 this.interactBuildings.push(d);
             }
-        } else {
-            let interactBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.INTERACTBUILDING), indexPos);
-            let d = interactBuilding.getComponent(InteractBuilding);
-            d.data.currentHealth = 5;
-            Logic.mapManager.setCurrentBuildingData(d.data.clone());
-            d.init(true, parseInt(mapDataStr[1]));
-            this.interactBuildings.push(d);
-        }
+        });
     }
     private addBox(mapDataStr: string, indexPos: cc.Vec3) {
-        let box = this.addBuilding(Logic.getBuildings(BuildingManager.BOX), indexPos);
-        let b = box.getComponent(Box)
-        b.setDefaultPos(indexPos);
-        //生成植物
-        if (mapDataStr == 'B1') {
-            b.boxType = Box.PLANT;
-        }
-        //设置对应存档盒子的位置
-        let saveBox = Logic.mapManager.getCurrentMapBuilding(b.data.defaultPos);
-        if (saveBox) {
-            b.node.position = saveBox.position.clone();
-        } else {
-            Logic.mapManager.setCurrentBuildingData(b.data.clone());
-        }
+        Logic.getBuildings(BuildingManager.BOX, (prefab: cc.Prefab) => {
+            let box = this.addBuilding(prefab, indexPos);
+            let b = box.getComponent(Box)
+            b.setDefaultPos(indexPos);
+            //生成植物
+            if (mapDataStr == 'B1') {
+                b.boxType = Box.PLANT;
+            }
+            //设置对应存档盒子的位置
+            let saveBox = Logic.mapManager.getCurrentMapBuilding(b.data.defaultPos);
+            if (saveBox) {
+                b.node.position = saveBox.position.clone();
+            } else {
+                Logic.mapManager.setCurrentBuildingData(b.data.clone());
+            }
+        });
     }
     private addShopTable(indexPos: cc.Vec3) {
-        let table = this.addBuilding(Logic.getBuildings(BuildingManager.SHOPTABLE), indexPos);
-        let ta = table.getComponent(ShopTable);
-        ta.setDefaultPos(indexPos);
-        let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
-        let rand4save = Logic.mapManager.getRandom4Save(ta.seed);
-        ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
-        let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos);
-        if (saveTable) {
-            if (isReborn && saveTable.isSaled) {
-                saveTable.isSaled = false;
-                saveTable.equipdata = null;
-                saveTable.itemdata = null;
-                rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(ta.seed));
-                saveTable.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+        Logic.getBuildings(BuildingManager.SHOPTABLE, (prefab: cc.Prefab) => {
+            let table = this.addBuilding(prefab, indexPos);
+            let ta = table.getComponent(ShopTable);
+            ta.setDefaultPos(indexPos);
+            let isReborn = Logic.mapManager.getCurrentRoom().isReborn;
+            let rand4save = Logic.mapManager.getRandom4Save(ta.seed);
+            ta.data.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+            let saveTable = Logic.mapManager.getCurrentMapBuilding(ta.data.defaultPos);
+            if (saveTable) {
+                if (isReborn && saveTable.isSaled) {
+                    saveTable.isSaled = false;
+                    saveTable.equipdata = null;
+                    saveTable.itemdata = null;
+                    rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(ta.seed));
+                    saveTable.shopType = rand4save.getRandomNum(0, 100) > 10 ? ShopTable.EQUIPMENT : ShopTable.ITEM;
+                }
+                ta.data.valueCopy(saveTable);
+            } else {
+                Logic.mapManager.setCurrentBuildingData(ta.data.clone());
             }
-            ta.data.valueCopy(saveTable);
-        } else {
-            Logic.mapManager.setCurrentBuildingData(ta.data.clone());
-        }
-        ta.showItem();
+            ta.showItem();
+        });
     }
     private addChest(indexPos: cc.Vec3) {
-        let chest = this.addBuilding(Logic.getBuildings(BuildingManager.CHEST), indexPos);
-        let c = chest.getComponent(Chest)
-        c.seDefaultPos(indexPos);
-        let rand4save = Logic.mapManager.getRandom4Save(c.seed);
-        let rand = rand4save.rand();
-        let quality = 1;
-        if (rand > 0.5 && rand < 0.7) {
-            quality = 2;
-        } else if (rand > 0.7 && rand < 0.8) {
-            quality = 3;
-        } else if (rand > 0.8 && rand < 0.85) {
-            quality = 4;
-        }
-        c.setQuality(quality, false);
-        let saveChest = Logic.mapManager.getCurrentMapBuilding(c.data.defaultPos);
-        if (saveChest) {
-            c.setQuality(saveChest.quality, saveChest.isOpen);
-        } else {
-            Logic.mapManager.setCurrentBuildingData(c.data.clone());
-        }
+        Logic.getBuildings(BuildingManager.CHEST, (prefab: cc.Prefab) => {
+            let chest = this.addBuilding(prefab, indexPos);
+            let c = chest.getComponent(Chest)
+            c.seDefaultPos(indexPos);
+            let rand4save = Logic.mapManager.getRandom4Save(c.seed);
+            let rand = rand4save.rand();
+            let quality = 1;
+            if (rand > 0.5 && rand < 0.7) {
+                quality = 2;
+            } else if (rand > 0.7 && rand < 0.8) {
+                quality = 3;
+            } else if (rand > 0.8 && rand < 0.85) {
+                quality = 4;
+            }
+            c.setQuality(quality, false);
+            let saveChest = Logic.mapManager.getCurrentMapBuilding(c.data.defaultPos);
+            if (saveChest) {
+                c.setQuality(saveChest.quality, saveChest.isOpen);
+            } else {
+                Logic.mapManager.setCurrentBuildingData(c.data.clone());
+            }
+        });
     }
     private addDecorate(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         if (mapDataStr == '+0') {
             //生成营火
-            let camp = this.addBuilding(Logic.getBuildings(BuildingManager.CAMPFIRE), indexPos);
-            let shadow = camp.getChildByName('sprite').getChildByName('shadow');
-            shadow.position = Dungeon.getPosInMap(indexPos);
-            shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
-            shadow.parent = this.node;
-            shadow.zIndex = IndexZ.FLOOR;
-            let fallentree = camp.getChildByName('sprite').getChildByName('fallentree');
-            fallentree.position = Dungeon.getPosInMap(indexPos);
-            fallentree.position = cc.v3(shadow.position.x, shadow.position.y + 40);
-            fallentree.parent = this.node;
-            fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
-            fallentree.setScale(6, 4);
+            Logic.getBuildings(BuildingManager.CAMPFIRE, (prefab: cc.Prefab) => {
+                let camp = this.addBuilding(prefab, indexPos);
+                let shadow = camp.getChildByName('sprite').getChildByName('shadow');
+                shadow.position = Dungeon.getPosInMap(indexPos);
+                shadow.position = cc.v3(shadow.position.x, shadow.position.y + 40);
+                shadow.parent = this.node;
+                shadow.zIndex = IndexZ.FLOOR;
+                let fallentree = camp.getChildByName('sprite').getChildByName('fallentree');
+                fallentree.position = Dungeon.getPosInMap(indexPos);
+                fallentree.position = cc.v3(shadow.position.x, shadow.position.y + 40);
+                fallentree.parent = this.node;
+                fallentree.zIndex = IndexZ.getActorZIndex(fallentree.position);
+                fallentree.setScale(6, 4);
+            });
         } else if (mapDataStr == '+3') {
-            this.addBuilding(Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL), indexPos);
+            Logic.getBuildings(BuildingManager.AIRTRANSPORTMODEL, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (mapDataStr == '+4') {
             this.addPracticeEquipItem(dungeon, indexPos);
         } else if (mapDataStr == '+a') {
-            this.addBuilding(Logic.getBuildings(BuildingManager.GRASS01), indexPos);
+            Logic.getBuildings(BuildingManager.GRASS01, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (mapDataStr == '+b') {
-            this.addBuilding(Logic.getBuildings(BuildingManager.GRASS02), indexPos);
+            Logic.getBuildings(BuildingManager.GRASS02, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (mapDataStr == '+c') {
-            this.addBuilding(Logic.getBuildings(BuildingManager.GRASS03), indexPos);
+            Logic.getBuildings(BuildingManager.GRASS03, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
         } else if (mapDataStr == '+d') {
-            this.addBuilding(Logic.getBuildings(BuildingManager.GRASS04), indexPos);
-        }else if(this.isThe(mapDataStr,'+p')){
-           let wallpaint =  this.addBuilding(Logic.getBuildings(BuildingManager.WALLPAINT), indexPos).getComponent(WallPaint);
-           wallpaint.node.zIndex = IndexZ.getActorZIndex(wallpaint.node.position.add(cc.v3(0,120)));
-           wallpaint.init(mapDataStr);
+            Logic.getBuildings(BuildingManager.GRASS04, (prefab: cc.Prefab) => {
+                this.addBuilding(prefab, indexPos);
+            });
+        } else if (this.isThe(mapDataStr, '+p')) {
+            Logic.getBuildings(BuildingManager.WALLPAINT, (prefab: cc.Prefab) => {
+                let wallpaint = this.addBuilding(prefab, indexPos).getComponent(WallPaint);
+                wallpaint.node.zIndex = IndexZ.getActorZIndex(wallpaint.node.position.add(cc.v3(0, 120)));
+                wallpaint.init(mapDataStr);
+            });
         } else {
-            let fd = this.addBuilding(Logic.getBuildings(BuildingManager.DECORATIONFLOOR), indexPos);
-            let df = fd.getComponent(DecorationFloor);
-            if (mapDataStr == '++') {
-                df.init(dungeon, 'exitarrow', 4, 0);
-            } else if (mapDataStr == '+2') {
-                df.init(dungeon, 'exitarrow', 4, 0);
-            } else if (mapDataStr == '+5') {
-                df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE);
-            } else if (mapDataStr == '+6') {
-                df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE);
-            } else if (mapDataStr == '+7') {
-                df.init(dungeon, 'roomoutside2', 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE);
-            } else {
-                df.init(dungeon, 'dev', 4, 0);
-            }
+            Logic.getBuildings(BuildingManager.DECORATIONFLOOR, (prefab: cc.Prefab) => {
+                let fd = this.addBuilding(prefab, indexPos);
+                let df = fd.getComponent(DecorationFloor);
+                if (mapDataStr == '++') {
+                    df.init(dungeon, 'exitarrow', 4, 0);
+                } else if (mapDataStr == '+2') {
+                    df.init(dungeon, 'exitarrow', 4, 0);
+                } else if (mapDataStr == '+5') {
+                    df.init(dungeon, 'roomoutside0', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE);
+                } else if (mapDataStr == '+6') {
+                    df.init(dungeon, 'roomoutside1', 32, 1, cc.v3(0.95, 0.5), 255, IndexZ.BASE);
+                } else if (mapDataStr == '+7') {
+                    df.init(dungeon, 'roomoutside2', 32, 1, cc.v3(0, 0.5), 255, IndexZ.BASE);
+                } else {
+                    df.init(dungeon, 'dev', 4, 0);
+                }
+            });
         }
     }
     private addWater(mapDataStr: string, indexPos: cc.Vec3) {
         let pint = parseInt(mapDataStr[1]);
         if (pint >= 0 && pint <= 9 || mapDataStr == '~a' || mapDataStr == '~b') {
-            let co = this.addBuilding(Logic.getBuildings(BuildingManager.COAST), indexPos);
-            let pbc = co.getComponent(CCollider);
-            let fint = pint;
-            if (mapDataStr == '~a') {
-                fint = 10;
-            } else if (mapDataStr == '~b') {
-                fint = 11;
-            }
-            co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`);
-            let arr = this.coastColliderList[fint].split(',');
-            pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])));
-            pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
-            co.zIndex = IndexZ.WATER;
+            Logic.getBuildings(BuildingManager.COAST, (prefab: cc.Prefab) => {
+                let co = this.addBuilding(prefab, indexPos);
+                let pbc = co.getComponent(CCollider);
+                let fint = pint;
+                if (mapDataStr == '~a') {
+                    fint = 10;
+                } else if (mapDataStr == '~b') {
+                    fint = 11;
+                }
+                co.getChildByName('sprite').getComponent(cc.Sprite).spriteFrame = Logic.spriteFrameRes(`coast00${fint}`);
+                let arr = this.coastColliderList[fint].split(',');
+                pbc.setSize(cc.size(parseInt(arr[0]), parseInt(arr[1])));
+                pbc.offset = cc.v2(parseInt(arr[2]), parseInt(arr[3]));
+                co.zIndex = IndexZ.WATER;
+            });
         } else if (mapDataStr == '~f') {
-            let dn = this.addBuilding(Logic.getBuildings(BuildingManager.WATERFALL), indexPos);
+            Logic.getBuildings(BuildingManager.WATERFALL, (prefab: cc.Prefab) => {
+                let dn = this.addBuilding(prefab, indexPos);
+            });
+        } else if (mapDataStr == '~#') {
+            Logic.getBuildings(BuildingManager.WATERCOLLIDER, (prefab: cc.Prefab) => {
+                let dn = this.addBuilding(prefab, indexPos);
+                dn.zIndex = IndexZ.WATER;
+            });
         } else {
-            let dn = this.addBuilding(Logic.getBuildings(mapDataStr == '~#' ? BuildingManager.WATERCOLLIDER : BuildingManager.WATER), indexPos);
-            dn.zIndex = IndexZ.WATER;
+            Logic.getBuildings(BuildingManager.WATER, (prefab: cc.Prefab) => {
+                let dn = this.addBuilding(prefab, indexPos);
+                dn.zIndex = IndexZ.WATER;
+            });
         }
     }
     private addLamp(mapDataStr: string, indexPos: cc.Vec3) {
@@ -553,10 +637,12 @@ export default class BuildingManager extends BaseManager {
             case 'Lb': prefabName = BuildingManager.LAMPFIREFLY; break;
             case 'Lc': prefabName = BuildingManager.LAMPDIRECT; break;
         }
-        let node = this.addBuilding(Logic.getBuildings(prefabName), indexPos);
-        if (isOverHead) {
-            node.zIndex = IndexZ.OVERHEAD + 100;
-        }
+        Logic.getBuildings(prefabName, (prefab: cc.Prefab) => {
+            let node = this.addBuilding(prefab, indexPos);
+            if (isOverHead) {
+                node.zIndex = IndexZ.OVERHEAD + 100;
+            }
+        });
     }
     private getGoodsList(type: string): string[] {
         if (this.foodList.length < 1 && this.drinkList.length < 1) {
@@ -590,82 +676,98 @@ export default class BuildingManager extends BaseManager {
     }
     private addMartShelves(mapDataStr: string, indexPos: cc.Vec3) {
         //生成货架
-        let ms = this.addBuilding(mapDataStr == MartShelves.TYPE_FRIDGE ? Logic.getBuildings(BuildingManager.MARTFRIDGE) : Logic.getBuildings(BuildingManager.MARTSHELVES), indexPos).getComponent(MartShelves);
-        ms.init(mapDataStr, this.getGoodsList(mapDataStr));
+        if (mapDataStr == MartShelves.TYPE_FRIDGE) {
+            Logic.getBuildings(BuildingManager.MARTFRIDGE, (prefab: cc.Prefab) => {
+                let ms = this.addBuilding(prefab, indexPos).getComponent(MartShelves);
+                ms.init(mapDataStr, this.getGoodsList(mapDataStr));
+            });
+        } else {
+            Logic.getBuildings(BuildingManager.MARTSHELVES, (prefab: cc.Prefab) => {
+                let ms = this.addBuilding(prefab, indexPos).getComponent(MartShelves);
+                ms.init(mapDataStr, this.getGoodsList(mapDataStr));
+            });
+        }
     }
     private addExitDoor(mapDataStr: string, indexPos: cc.Vec3, exits: ExitData[]) {
-        let dir = parseInt(mapDataStr[1]);
-        if (isNaN(dir)) {
-            if (mapDataStr == 'Ea') {
-                dir = 10;
-            } else if (mapDataStr == 'Eb') {
-                dir = 11;
+        Logic.getBuildings(BuildingManager.EXITDOOR, (prefab: cc.Prefab) => {
+            let dir = parseInt(mapDataStr[1]);
+            if (isNaN(dir)) {
+                if (mapDataStr == 'Ea') {
+                    dir = 10;
+                } else if (mapDataStr == 'Eb') {
+                    dir = 11;
+                }
             }
-        }
-        let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
-        for (let e of exits) {
-            if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
-                d.valueCopy(e);
-                break;
+            let d = ExitData.getRealWorldExitDataFromDream(Logic.chapterIndex, Logic.level);
+            for (let e of exits) {
+                if (e.fromPos.equals(indexPos) && e.fromRoomPos.equals(cc.v3(Logic.mapManager.getCurrentRoom().x, Logic.mapManager.getCurrentRoom().y))) {
+                    d.valueCopy(e);
+                    break;
+                }
             }
-        }
-        let p = this.addBuilding(Logic.getBuildings(BuildingManager.EXITDOOR), indexPos);
-        let exitdoor = p.getComponent(ExitDoor);
-        exitdoor.init(dir, d);
-        this.exitdoors.push(exitdoor);
+            let p = this.addBuilding(prefab, indexPos);
+            let exitdoor = p.getComponent(ExitDoor);
+            exitdoor.init(dir, d);
+            this.exitdoors.push(exitdoor);
+        });
+
     }
     /**添加空气墙 */
     public addAirExit(mapData: string[][]) {
-        let top = this.addBuilding(Logic.getBuildings(BuildingManager.AIREXIT), cc.v3(Math.floor(mapData.length / 2), mapData[0].length)).getComponent(AirExit);
-        let bottom = this.addBuilding(Logic.getBuildings(BuildingManager.AIREXIT), cc.v3(Math.floor(mapData.length / 2), -1)).getComponent(AirExit);
-        let left = this.addBuilding(Logic.getBuildings(BuildingManager.AIREXIT), cc.v3(-1, Math.floor(mapData[0].length / 2))).getComponent(AirExit);
-        let right = this.addBuilding(Logic.getBuildings(BuildingManager.AIREXIT), cc.v3(mapData.length, Math.floor(mapData[0].length / 2))).getComponent(AirExit);
-        this.airExits.push(top);
-        this.airExits.push(bottom);
-        this.airExits.push(left);
-        this.airExits.push(right);
-        for (let i = 0; i < this.airExits.length; i++) {
-            this.airExits[i].init(i, i < 2 ? mapData.length + 2 : mapData[0].length + 2);
-        }
+        Logic.getBuildings(BuildingManager.AIREXIT, (prefab: cc.Prefab) => {
+            let top = this.addBuilding(prefab, cc.v3(Math.floor(mapData.length / 2), mapData[0].length)).getComponent(AirExit);
+            let bottom = this.addBuilding(prefab, cc.v3(Math.floor(mapData.length / 2), -1)).getComponent(AirExit);
+            let left = this.addBuilding(prefab, cc.v3(-1, Math.floor(mapData[0].length / 2))).getComponent(AirExit);
+            let right = this.addBuilding(prefab, cc.v3(mapData.length, Math.floor(mapData[0].length / 2))).getComponent(AirExit);
+            this.airExits.push(top);
+            this.airExits.push(bottom);
+            this.airExits.push(left);
+            this.airExits.push(right);
+            for (let i = 0; i < this.airExits.length; i++) {
+                this.airExits[i].init(i, i < 2 ? mapData.length + 2 : mapData[0].length + 2);
+            }
+        });
     }
     private addDoor(mapDataStr: string, indexPos: cc.Vec3, isDecorate: boolean) {
-        let dir = parseInt(mapDataStr[1]);
-        if (isNaN(dir)) {
-            if (mapDataStr == 'Da') {
-                dir = 8;
-            } else if (mapDataStr == 'Db') {
-                dir = 9;
-            } else if (mapDataStr == 'Dc') {
-                dir = 10;
-            } else if (mapDataStr == 'Dd') {
-                dir = 11;
-            } else if (mapDataStr == 'De') {
-                dir = 12;
-            } else if (mapDataStr == 'Df') {
-                dir = 13;
-            } else if (mapDataStr == 'Dg') {
-                dir = 14;
-            } else if (mapDataStr == 'Dh') {
-                dir = 15;
-            } else if (mapDataStr == 'Di') {
-                dir = 16;
-            } else if (mapDataStr == 'Dj') {
-                dir = 17;
-            } else if (mapDataStr == 'Dk') {
-                dir = 18;
-            } else if (mapDataStr == 'Dl') {
-                dir = 19;
+        Logic.getBuildings(BuildingManager.DOOR, (prefab: cc.Prefab) => {
+            let dir = parseInt(mapDataStr[1]);
+            if (isNaN(dir)) {
+                if (mapDataStr == 'Da') {
+                    dir = 8;
+                } else if (mapDataStr == 'Db') {
+                    dir = 9;
+                } else if (mapDataStr == 'Dc') {
+                    dir = 10;
+                } else if (mapDataStr == 'Dd') {
+                    dir = 11;
+                } else if (mapDataStr == 'De') {
+                    dir = 12;
+                } else if (mapDataStr == 'Df') {
+                    dir = 13;
+                } else if (mapDataStr == 'Dg') {
+                    dir = 14;
+                } else if (mapDataStr == 'Dh') {
+                    dir = 15;
+                } else if (mapDataStr == 'Di') {
+                    dir = 16;
+                } else if (mapDataStr == 'Dj') {
+                    dir = 17;
+                } else if (mapDataStr == 'Dk') {
+                    dir = 18;
+                } else if (mapDataStr == 'Dl') {
+                    dir = 19;
+                }
             }
-        }
-        let door = this.addBuilding(Logic.getBuildings(BuildingManager.DOOR), indexPos).getComponent(Door);
-        door.isDoor = true;
-        door.dir = dir % 4;
-        door.isEmpty = dir > 3 && dir < 8;
-        door.isLock = dir > 7&& dir< 12;
-        door.isDecorate = isDecorate;
-        door.isHidden = dir>11&&dir<16;
-        door.isTransparent = dir>15;
-        this.doors.push(door);
+            let door = this.addBuilding(prefab, indexPos).getComponent(Door);
+            door.isDoor = true;
+            door.dir = dir % 4;
+            door.isEmpty = dir > 3 && dir < 8;
+            door.isLock = dir > 7 && dir < 12;
+            door.isDecorate = isDecorate;
+            door.isHidden = dir > 11 && dir < 16;
+            door.isTransparent = dir > 15;
+            this.doors.push(door);
+        });
     }
     public setDoors(isOpen: boolean, immediately?: boolean) {
         for (let door of this.doors) {
@@ -685,58 +787,61 @@ export default class BuildingManager extends BaseManager {
             }
         }
     }
-    public getReachDir(){
-        let dirs:Map<Number,Boolean> = new Map();
+    public getReachDir() {
+        let dirs: Map<Number, Boolean> = new Map();
         for (let door of this.doors) {
-            if(!door.isLock&&!door.isDecorate){
-                if(Logic.mapManager.isNeighborRoomNew(door.dir)){
-                    dirs.set(door.dir,true);
-                }else if(Logic.mapManager.isNeighborRoomExist(door.dir)){
-                    dirs.set(door.dir,false);
+            if (!door.isLock && !door.isDecorate) {
+                if (Logic.mapManager.isNeighborRoomNew(door.dir)) {
+                    dirs.set(door.dir, true);
+                } else if (Logic.mapManager.isNeighborRoomExist(door.dir)) {
+                    dirs.set(door.dir, false);
                 }
             }
         }
-        for(let exit of this.exitdoors){
-            if(exit.dir < 8){
-                dirs.set(exit.dir%4,true);
+        for (let exit of this.exitdoors) {
+            if (exit.dir < 8) {
+                dirs.set(exit.dir % 4, true);
             }
-            
+
         }
         return dirs;
     }
     private addDirWalls(mapDataStr: string, mapData: string[][], indexPos: cc.Vec3, levelData: LevelData, onlyShow: boolean) {
-        let node: cc.Node = this.addBuilding(Logic.getBuildings(BuildingManager.WALL), indexPos);
-        let wall = node.getComponent(Wall);
-        let combineCountX = 0;
-        let combineCountY = 0;
-        let isCombine = this.colliderCombineMap.has(`i${indexPos.x}j${indexPos.y}`);
-        if(isCombine){
-            wall.combineWall = this.colliderCombineMap.get(`i${indexPos.x}j${indexPos.y}`);
-        }
-        if (!isCombine && !onlyShow) {
-
-            for (let i = indexPos.x + 1; i < mapData.length; i++) {
-                let next = mapData[i][indexPos.y];
-                if (mapDataStr == next) {
-                    this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall);
-                    combineCountX++;
-                } else {
-                    break;
-                }
+        Logic.getBuildings(BuildingManager.WALL, (prefab: cc.Prefab) => {
+            let node: cc.Node = this.addBuilding(prefab, indexPos);
+            let wall = node.getComponent(Wall);
+            let combineCountX = 0;
+            let combineCountY = 0;
+            let isCombine = this.colliderCombineMap.has(`i${indexPos.x}j${indexPos.y}`);
+            if (isCombine) {
+                wall.combineWall = this.colliderCombineMap.get(`i${indexPos.x}j${indexPos.y}`);
             }
-            if (combineCountX < 1) {
-                for (let j = indexPos.y + 1; j < mapData[indexPos.x].length; j++) {
-                    let next = mapData[indexPos.x][j];
+            if (!isCombine && !onlyShow) {
+
+                for (let i = indexPos.x + 1; i < mapData.length; i++) {
+                    let next = mapData[i][indexPos.y];
                     if (mapDataStr == next) {
-                        this.colliderCombineMap.set(`i${indexPos.x}j${j}`, null);
-                        combineCountY++;
+                        this.colliderCombineMap.set(`i${i}j${indexPos.y}`, wall);
+                        combineCountX++;
                     } else {
                         break;
                     }
                 }
+                if (combineCountX < 1) {
+                    for (let j = indexPos.y + 1; j < mapData[indexPos.x].length; j++) {
+                        let next = mapData[indexPos.x][j];
+                        if (mapDataStr == next) {
+                            this.colliderCombineMap.set(`i${indexPos.x}j${j}`, null);
+                            combineCountY++;
+                        } else {
+                            break;
+                        }
+                    }
+                }
             }
-        }
-        wall.init(mapDataStr, levelData, onlyShow || isCombine, combineCountX, combineCountY);
+            wall.init(mapDataStr, levelData, onlyShow || isCombine, combineCountX, combineCountY);
+        });
+
     }
     private addFurnitures(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
         let data = new FurnitureData();
@@ -762,32 +867,51 @@ export default class BuildingManager extends BaseManager {
             default: break;
         }
         let save = LocalStorage.getFurnitureData(data.id);
-        if(save){
+        if (save) {
             data.isOpen = save.isOpen;
             data.purchased = save.purchased;
         }
         let building: cc.Node;
         if (mapDataStr == 'Z3') {
-            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMTV), indexPos);
+            Logic.getBuildings(BuildingManager.ROOMTV, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
         } else if (mapDataStr == 'Z4') {
-            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSOFA), indexPos);
-            building.zIndex = IndexZ.ACTOR;
+            Logic.getBuildings(BuildingManager.ROOMSOFA, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                building.zIndex = IndexZ.ACTOR;
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
         } else if (mapDataStr == 'Z9') {
-            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMSTOOL), indexPos);
-            building.getComponent(RoomStool).init(indexPos, dungeon);
+            Logic.getBuildings(BuildingManager.ROOMSTOOL, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                building.getComponent(RoomStool).init(indexPos, dungeon);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
         } else if (mapDataStr == 'Zi') {
-            building = this.addBuilding(Logic.getBuildings(BuildingManager.ROOMFISHTANK), indexPos);
-            building.getComponent(RoomFishtank).init(indexPos);
+            Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                building.getComponent(RoomFishtank).init(indexPos);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
         } else {
-            building = this.addBuilding(Logic.getBuildings(BuildingManager.FURNITURE), indexPos);
+            Logic.getBuildings(BuildingManager.FURNITURE, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
         }
-        let script = building.getComponent(Furniture);
-        script.init(data);
     }
     /**生成可打击建筑 */
     private addHitBuilding(dungeon: Dungeon, mapDataStr: string, indexPos: cc.Vec3) {
-        let isCustom = false;
-        let hitBuilding = this.addBuilding(Logic.getBuildings(BuildingManager.HITBUILDING), indexPos);
+        Logic.getBuildings(BuildingManager.HITBUILDING, (prefab: cc.Prefab) => {
+            let isCustom = false;
+        let hitBuilding = this.addBuilding(prefab, indexPos);
         let h = hitBuilding.getComponent(HitBuilding);
         h.setDefaultPos(indexPos);
         let resName = 'car';
@@ -807,6 +931,8 @@ export default class BuildingManager extends BaseManager {
         } else {
             Logic.mapManager.setCurrentBuildingData(h.data.clone());
         }
+        });
+        
     }
 
     /**掉落石头 */
@@ -814,13 +940,16 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let stone = this.addBuilding(Logic.getBuildings(BuildingManager.FALLSTONE), pos);
+        Logic.getBuildings(BuildingManager.FALLSTONE, (prefab: cc.Prefab) => {
+            let stone = this.addBuilding(prefab, pos);
         let stoneScript = stone.getComponent(FallStone);
         stoneScript.isAuto = isAuto;
         stone.zIndex = IndexZ.FLOOR;
         if (stoneScript.isAuto) {
             stoneScript.fall(withFire);
         }
+        });
+        
 
     }
     /**落雷 */
@@ -828,38 +957,47 @@ export default class BuildingManager extends BaseManager {
         if (!this.node) {
             return;
         }
-        let fall = this.addBuilding(Logic.getBuildings(BuildingManager.LIGHTENINGFALL), pos);
-        let fallScript = fall.getComponent(MagicLightening);
-        fall.zIndex = IndexZ.FLOOR;
-        fallScript.isTrigger = isTrigger;
-        if (!fallScript.isTrigger) {
-            fallScript.fall(needPrepare, showArea, damagePoint);
-        }
+        Logic.getBuildings(BuildingManager.LIGHTENINGFALL, (prefab: cc.Prefab) => {
+            let fall = this.addBuilding(prefab, pos);
+            let fallScript = fall.getComponent(MagicLightening);
+            fall.zIndex = IndexZ.FLOOR;
+            fallScript.isTrigger = isTrigger;
+            if (!fallScript.isTrigger) {
+                fallScript.fall(needPrepare, showArea, damagePoint);
+            }
+        });
+        
     }
     /**树根缠绕 */
     public addTwineGrass(pos: cc.Vec3, isAuto: boolean) {
         if (!this.node) {
             return;
         }
-        let grass = this.addBuilding(Logic.getBuildings(BuildingManager.DRYADTWINE), pos);
-        let dryadGrassScript = grass.getComponent(DryadGrass);
-        dryadGrassScript.isAuto = isAuto;
-        grass.zIndex = IndexZ.getActorZIndex(pos);
-        if (dryadGrassScript.isAuto) {
-            dryadGrassScript.fall();
-        }
+        Logic.getBuildings(BuildingManager.DRYADTWINE, (prefab: cc.Prefab) => {
+            let grass = this.addBuilding(prefab, pos);
+            let dryadGrassScript = grass.getComponent(DryadGrass);
+            dryadGrassScript.isAuto = isAuto;
+            grass.zIndex = IndexZ.getActorZIndex(pos);
+            if (dryadGrassScript.isAuto) {
+                dryadGrassScript.fall();
+            }
+        });
+        
     }
     /**幽光护盾 */
     public addEnergyShield(player: Player): EnergyShield {
         if (!this.node) {
             return null;
         }
-        let shield = this.addBuilding(Logic.getBuildings(BuildingManager.ENERGYSHIELD), player.pos);
-        shield.position = player.node.position.clone();
-        let script = shield.getComponent(EnergyShield);
-        let scale = 8 + Math.floor(Logic.playerData.OilGoldData.level / 5);
-        script.init(player, 20 + Logic.playerData.OilGoldData.level * 5, scale);
-        return script;
+        Logic.getBuildings(BuildingManager.ENERGYSHIELD, (prefab: cc.Prefab) => {
+            let shield = this.addBuilding(prefab, player.pos);
+            shield.position = player.node.position.clone();
+            let script = shield.getComponent(EnergyShield);
+            let scale = 8 + Math.floor(Logic.playerData.OilGoldData.level / 5);
+            script.init(player, 20 + Logic.playerData.OilGoldData.level * 5, scale);
+            return script;
+        });
+        
     }
     private addPracticeEquipItem(dungeon: Dungeon, indexPos: cc.Vec3) {
         if (dungeon) {

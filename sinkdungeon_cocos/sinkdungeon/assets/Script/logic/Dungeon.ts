@@ -191,31 +191,35 @@ export default class Dungeon extends cc.Component {
         //放置之前留在地上的物品和装备
         this.addItemListOnGround();
         this.addEquipmentListOnGround();
-        this.buildingManager.addAirExit(mapData);
-        for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
-            this.tilesmap[i] = new Array(i);
-            for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
-                //越往下层级越高，j是行，i是列
-                this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false);
-                //加载建筑
-                this.buildingManager.addBuildingsFromMap(this, mapData,mapData[i][j], cc.v3(i, j), leveldata, exits);
-                //房间未清理时加载物品
-                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
-                    this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j));
+        Logic.getBuildings(BuildingManager.AIREXIT, (prefab: cc.Prefab) => {
+            Logic.getBuildings(BuildingManager.WALL, (prefab: cc.Prefab) => {
+                Logic.getBuildings(BuildingManager.DOOR, (prefab: cc.Prefab) => {
+                    this.buildingManager.addAirExit(mapData);
+                    for (let i = 0; i < Dungeon.WIDTH_SIZE; i++) {
+                this.tilesmap[i] = new Array(i);
+                for (let j = 0; j < Dungeon.HEIGHT_SIZE; j++) {
+                    //越往下层级越高，j是行，i是列
+                    this.addTiles(mapData[i][j], cc.v3(i, j), leveldata, false);
+                    //加载建筑
+                    this.buildingManager.addBuildingsFromMap(this, mapData,mapData[i][j], cc.v3(i, j), leveldata, exits);
+                    //房间未清理时加载物品
+                    if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)) {
+                        this.itemManager.addItemFromMap(mapData[i][j], cc.v3(i, j));
+                    }
+                    //房间未清理时加载怪物
+                    if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
+                        || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)) {
+                        this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
+                    }
+                    //加载npc
+                    this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j));
                 }
-                //房间未清理时加载怪物
-                if (!Logic.mapManager.isCurrentRoomStateClear() || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.TEST_ROOM)
-                    || Logic.mapManager.getCurrentRoomType().isEqual(RoomType.START_ROOM)) {
-                    this.monsterManager.addMonstersAndBossFromMap(this, mapData[i][j], cc.v3(i, j));
-                }
-                //加载npc
-                this.nonPlayerManager.addNonPlayerFromMap(this, mapData[i][j], cc.v3(i, j));
             }
-        }
-        let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)];
-        for (let offset of offsets) {
-            this.addBuildingsFromSideMap(offset);
-        }
+            let offsets = [cc.v3(-1, -1, 4), cc.v3(-1, 0, 2), cc.v3(-1, 1, 6), cc.v3(0, -1, 0), cc.v3(0, 1, 1), cc.v3(1, -1, 5), cc.v3(1, 0, 3), cc.v3(1, 1, 7)];
+            for (let offset of offsets) {
+                this.addBuildingsFromSideMap(offset);
+            }
+        })})});
 
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);

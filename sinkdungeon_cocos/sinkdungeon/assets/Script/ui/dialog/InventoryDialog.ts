@@ -164,7 +164,7 @@ export default class InventoryDialog extends BaseDialog {
             list = equiplist.concat(itemlist);
         } else if (sortIndex == 3) {//价格排序
             list.sort((a, b) => {
-                return a.price - b.price;
+                return b.price - a.price;
             });
         }
         for (let i = 0; i < InventoryManager.INVENTORY_MAX; i++) {
