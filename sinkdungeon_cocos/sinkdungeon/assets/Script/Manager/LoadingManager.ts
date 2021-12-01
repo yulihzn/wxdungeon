@@ -318,7 +318,7 @@ export default class LoadingManager {
             cc.log(`${typeKey} loaded`);
         })
     }
-    loadNpcSpriteAtlas(typeKey: string,callback:Function) {
+    static loadNpcSpriteAtlas(typeKey: string,callback?:Function) {
         if (Logic.spriteFrames && Logic.spriteFrames[typeKey+'anim000']) {
             if(callback){
                 callback();

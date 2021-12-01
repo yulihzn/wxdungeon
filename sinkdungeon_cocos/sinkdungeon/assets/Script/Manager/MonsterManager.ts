@@ -218,7 +218,7 @@ export default class MonsterManager extends BaseManager {
      * @param parent 父节点
      */
     private getMonster(resName: string, dungeon: Dungeon, isSummon: boolean,callBack:Function){
-        this.loadingManager.loadNpcSpriteAtlas(resName,()=>{
+        LoadingManager.loadNpcSpriteAtlas(resName,()=>{
             let monsterPrefab: cc.Node = null;
         monsterPrefab = cc.instantiate(this.monster);
         monsterPrefab.active = false;

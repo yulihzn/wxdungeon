@@ -7369,6 +7369,9 @@
     "skyhandPrefab": {
       "__uuid__": "f9272aa1-5fd9-4ae1-8a03-1aa192b0dcea"
     },
+    "daggerLightPrefab": {
+      "__uuid__": "1dd21587-fe08-4138-9e57-dc76647640f6"
+    },
     "_id": ""
   },
   {

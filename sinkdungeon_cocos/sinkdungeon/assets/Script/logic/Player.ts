@@ -336,8 +336,8 @@ export default class Player extends Actor {
         if (!smokePrefab || smokePrefab.active) {
             smokePrefab = cc.instantiate(this.walksmoke);
         }
-        if(this.isLevelWater && !this.sc.isJumping){
-            pos = pos.add(cc.v3(0,32));
+        if (this.isLevelWater && !this.sc.isJumping) {
+            pos = pos.add(cc.v3(0, 32));
         }
         smokePrefab.parent = parentNode;
         smokePrefab.position = pos;
@@ -480,6 +480,7 @@ export default class Player extends Actor {
     }
     meleeAttack() {
         if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
+            || this.sc.isVanishing
             || this.isInteractBuildingAniming
             || (this.weaponLeft.meleeWeapon.IsAttacking && this.weaponLeft.meleeWeapon.IsFist)
             || (this.weaponRight.meleeWeapon.IsAttacking && this.weaponRight.meleeWeapon.IsFist)
@@ -539,6 +540,7 @@ export default class Player extends Actor {
     }
     useShield() {
         if (!this.weaponRight || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isJumping
+            || this.sc.isVanishing
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking
             || this.isInteractBuildingAniming) {
@@ -563,7 +565,7 @@ export default class Player extends Actor {
         return true;
     }
     remoteAttack() {
-        if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling
+        if (!this.data || this.sc.isDizzing || this.sc.isDied || this.sc.isFalling || this.sc.isVanishing
             || !this.weaponLeft.shooter || this.sc.isJumping) {
             return;
         }
@@ -682,7 +684,7 @@ export default class Player extends Actor {
 
 
     move(dir: number, pos: cc.Vec3, dt: number) {
-        if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow) {
+        if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow || this.sc.isVanishing) {
             return;
         }
 
@@ -704,7 +706,7 @@ export default class Player extends Actor {
         if (this.professionTalent.IsExcuting && this.professionTalent.hashTalent(Talent.TALENT_007) && !pos.equals(cc.Vec3.ZERO)) {
             pos = pos.mul(0.01);
         }
-        if(this.isLevelWater && !this.sc.isJumping){
+        if (this.isLevelWater && !this.sc.isJumping) {
             pos = pos.mul(0.5);
         }
 
@@ -812,7 +814,7 @@ export default class Player extends Actor {
         this.updateInfoUi();
     }
     fall() {
-        if (this.sc.isFalling || this.sc.isJumping) {
+        if (this.sc.isFalling || this.sc.isJumping || this.sc.isVanishing) {
             return;
         }
         this.sc.isFalling = true;
@@ -828,12 +830,19 @@ export default class Player extends Actor {
     }
     get CanJump() {
         if (this.sc.isDied || this.sc.isFalling || this.sc.isDizzing || !this.sc.isShow || this.sc.isJumping
+            || this.sc.isVanishing
             || this.weaponRight.meleeWeapon.IsAttacking
             || this.weaponLeft.meleeWeapon.IsAttacking
             || this.isInteractBuildingAniming) {
             return false;
         }
         return true;
+    }
+    vanish(duration: number) {
+        this.sc.isVanishing = true;
+        this.scheduleOnce(() => {
+            this.sc.isVanishing = false;
+        }, duration)
     }
     jump() {
         if (!this.CanJump) {
@@ -860,7 +869,7 @@ export default class Player extends Actor {
      * @param actor 来源单位(目前只有monster和boss)
      */
     takeDamage(damageData: DamageData, from?: FromData, actor?: Actor): boolean {
-        if (!this.data || this.sc.isJumping || this.sc.isDied) {
+        if (!this.data || this.sc.isJumping || this.sc.isDied || this.sc.isVanishing) {
             return false;
         }
         //盾牌
@@ -1088,6 +1097,9 @@ export default class Player extends Actor {
         this.avatar.node.scaleX = this.isFaceRight ? 1 : -1;
         this.node.scaleY = this.getScaleSize();
         this.node.opacity = this.invisible ? 80 : 255;
+        if (this.sc.isVanishing) {
+            this.node.opacity = 0;
+        }
 
         let showHands = this.interactBuilding && this.interactBuilding.isTaken && !this.interactBuilding.isThrowing;
         let isLift = this.interactBuilding && this.interactBuilding.isTaken && this.interactBuilding.isLift;
@@ -1115,12 +1127,12 @@ export default class Player extends Actor {
         return sn;
     }
     private useSkill(): void {
-        if (this.professionTalent && !this.sc.isJumping && !this.sc.isAttacking) {
+        if (this.professionTalent && !this.sc.isJumping && !this.sc.isAttacking && !this.sc.isVanishing) {
             this.professionTalent.useSKill();
         }
     }
     private useSkill1(): void {
-        if (this.organizationTalent && !this.sc.isJumping && !this.sc.isAttacking) {
+        if (this.organizationTalent && !this.sc.isJumping && !this.sc.isAttacking && !this.sc.isVanishing) {
             this.organizationTalent.useSKill();
         }
     }

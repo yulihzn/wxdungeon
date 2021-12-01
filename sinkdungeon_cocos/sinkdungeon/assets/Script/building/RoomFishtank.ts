@@ -7,6 +7,8 @@
 
 import { EventHelper } from "../logic/EventHelper";
 import Logic from "../logic/Logic";
+import LoadingManager from "../manager/LoadingManager";
+import NonPlayerManager from "../manager/NonPlayerManager";
 import AudioPlayer from "../utils/AudioPlayer";
 import Utils from "../utils/Utils";
 import Building from "./Building";
@@ -31,6 +33,7 @@ export default class RoomFishtank extends Building {
         this.fishSprite = this.fish.getChildByName('sprite').getComponent(cc.Sprite);
         this.fishIdle();
         this.fishMove();
+        LoadingManager.loadNpcSpriteAtlas(NonPlayerManager.FISH);
     }
     init(indexPos: cc.Vec3) {
         this.data.defaultPos = indexPos;

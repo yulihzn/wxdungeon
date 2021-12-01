@@ -11,4 +11,5 @@ export default class StateContext{
     isFalling = false;//是否倒地
     isBlinking = false;//是否正在瞬移
     isJumping = false;//是否正在跳跃
+    isVanishing = false;//是否消失
 }

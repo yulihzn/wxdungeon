@@ -138,7 +138,7 @@ export default class Achievement extends cc.Component {
         this.removeContent();
         let index = 0;
         for (let key in Logic.monsters) {
-            this.loadingManager.loadNpcSpriteAtlas(key,()=>{
+            LoadingManager.loadNpcSpriteAtlas(key,()=>{
                 let data = new NonPlayerData();
                 data.valueCopy(Logic.monsters[key]);
                 let icon = cc.instantiate(this.prefab).getComponent(AchievementItem);

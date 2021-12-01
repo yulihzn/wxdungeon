@@ -38,6 +38,7 @@ export default class ShadowPlayer extends cc.Component {
     playerLastPos: cc.Vec3 = cc.v3(0, 0);
     moveList: cc.Vec3[] = [];
     readonly SCALE = 3;
+    isVanishing = false;
 
     init(player: Player, spriteframe: cc.SpriteFrame, index: number, lifeTime: number) {
         this.player = player;
@@ -61,6 +62,7 @@ export default class ShadowPlayer extends cc.Component {
         this.targetPos = this.player.node.position.clone();
         this.playerLastPos = this.player.node.position.clone();
         this.isStop = false;
+        this.isVanishing = false;
         this.lifeNext.next(() => {
         }, lifeTime ? lifeTime : 30, true, (secondCount: number) => {
             if (secondCount >= 0 && this.node && this.isValid && !this.isStop) {
@@ -105,6 +107,12 @@ export default class ShadowPlayer extends cc.Component {
     getCenterPosition(): cc.Vec3 {
         return this.node.position.clone().addSelf(cc.v3(0, 32 * this.node.scaleY));
     }
+    vanish(duration: number) {
+        this.isVanishing = true;
+        this.scheduleOnce(() => {
+            this.isVanishing = false;
+        }, duration)
+    }
     updateLogic(dt: number) {
         if (this.player) {
             this.movePos.x += Math.abs(this.player.node.position.x - this.playerLastPos.x);
@@ -130,6 +138,9 @@ export default class ShadowPlayer extends cc.Component {
             }
             this.node.zIndex = IndexZ.getActorZIndex(Dungeon.getIndexInMap(this.node.position));
             this.sprite.node.opacity = 200 - this.index * 20;
+            if(this.isVanishing){
+                this.sprite.node.opacity = 0;
+            }
             this.mat.setProperty('textureSizeWidth', this.sprite.spriteFrame.getTexture().width * this.SCALE);
             this.mat.setProperty('textureSizeHeight', this.sprite.spriteFrame.getTexture().height * this.SCALE);
             this.mat.setProperty('outlineColor', cc.color(200, 200, 200));

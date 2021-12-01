@@ -102,6 +102,9 @@ export default class MeleeWeapon extends BaseColliderComponent {
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
     }
+    get IsDagger(){
+        return this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
+    }
     set IsSecond(isSecond: boolean) {
         this.isSecond = isSecond;
     }

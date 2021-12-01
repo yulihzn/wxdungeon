@@ -15,7 +15,6 @@ import Boss from "../boss/Boss";
 import AreaOfEffectData from "../data/AreaOfEffectData";
 import NonPlayerManager from "../manager/NonPlayerManager";
 import ActorUtils from "../utils/ActorUtils";
-import Player from "../logic/Player";
 import CoolDownView from "../ui/CoolDownView";
 import TalentData from "../data/TalentData";
 import InventoryManager from "../manager/InventoryManager";
@@ -75,6 +74,8 @@ export default class ProfessionTalent extends Talent {
     smokePrefab: cc.Prefab = null;
     @property(cc.Prefab)
     skyhandPrefab: cc.Prefab = null;
+    @property(cc.Prefab)
+    daggerLightPrefab:cc.Prefab = null;
     fireGhostNum = 0;
     ghostPool: cc.NodePool;
     hv: cc.Vec3;
@@ -137,9 +138,8 @@ export default class ProfessionTalent extends Talent {
             case Talent.TALENT_006: this.flash(shadowPlayer); break;
             case Talent.TALENT_007: this.addSwordLight(shooterEx); break;
             case Talent.TALENT_008:
-                if (!shadowPlayer) {
-                    this.player.addStatus(StatusManager.TALENT_INVISIBLE, new FromData()); break;
-                }
+                this.addDaggerLight(shooterEx,shadowPlayer);
+                break;
             case Talent.TALENT_009: this.steal(shadowPlayer); break;
             case Talent.TALENT_010: Utils.toast('梦境开发中,无法使用');break;
             case Talent.TALENT_011: if (!shadowPlayer) { this.aimedShoot(); } break;
@@ -444,6 +444,43 @@ export default class ProfessionTalent extends Talent {
         this.scheduleOnce(() => {
             this.talentSkill.IsExcuting = false;
         }, 1)
+    }
+    private addDaggerLight(shooterEx: Shooter,shadowPlayer:ShadowPlayer) {
+        if (!this.player.weaponRight.meleeWeapon.IsDagger) {
+            if (!shadowPlayer) {
+                this.player.addStatus(StatusManager.TALENT_INVISIBLE, new FromData());
+            }
+            return;
+        }
+        let duration = 2.4;
+        if (!shadowPlayer) {
+            this.scheduleOnce(()=>{
+                this.player.addStatus(StatusManager.TALENT_INVISIBLE, new FromData());
+            },duration);
+        }
+        AudioPlayer.play(AudioPlayer.SKILL_MAGICBALL);
+        AudioPlayer.play(AudioPlayer.SWORD_SHOW);
+        let scale = 2;
+        let d = this.player.data.getFinalAttackPoint();
+        d.isMelee = true;
+        d.physicalDamage = d.physicalDamage/2;
+        if (this.player.IsVariation) {
+            scale += 1;
+        }
+        let swordlight = shooterEx.fireAoe(this.daggerLightPrefab, new AreaOfEffectData()
+            .init(0, duration/10, 0, scale, IndexZ.OVERHEAD, false, true, true, false, false, d, new FromData(), [StatusManager.FROZEN]),cc.Vec3.ZERO);
+        let color = cc.color(255, 255, 255).fromHEX(this.player.inventoryManager.equips[InventoryManager.WEAPON].lightcolor);
+        for(let node of swordlight.node.children){
+            node.color = shadowPlayer?cc.Color.BLACK:color;
+            node.opacity = 200;
+        }
+        this.player.vanish(duration);
+        if(shadowPlayer){
+            shadowPlayer.vanish(duration);
+        }
+        this.scheduleOnce(() => {
+            this.talentSkill.IsExcuting = false;
+        }, 3)
     }
 
     private initFireGhosts() {
