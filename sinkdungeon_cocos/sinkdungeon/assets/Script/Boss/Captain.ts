@@ -84,7 +84,7 @@ export default class Captain extends Boss {
     }
     //Animation
     FireSwordLight() {
-        this.shooter.setHv(cc.v3(this.isFaceRight?1:-1, 0));
+        this.shooter.setHv(cc.v3(this.isFaceRight ? 1 : -1, 0));
         this.shooter.dungeon = this.dungeon;
         this.shooter.data.bulletType = "bullet043";
         this.shooter.fireBullet(0, cc.v3(16, 0));
@@ -105,6 +105,7 @@ export default class Captain extends Boss {
             this.exshooter.dungeon = this.dungeon;
             this.exshooter.data.bulletType = "bullet033";
             this.exshooter.data.bulletArcExNum = 99;
+            this.exshooter.data.bulletArcOffset = 32;
             this.exshooter.data.bulletLineInterval = 1;
             if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
                 this.exshooter.data.bulletLineExNum = 1;
@@ -113,7 +114,7 @@ export default class Captain extends Boss {
 
         }
     }
-    fireWithAngles(angles: number[]) {
+    fireWithGun() {
         if (!this.dungeon || !this.shooter) {
             return;
         }
@@ -122,10 +123,8 @@ export default class Captain extends Boss {
             hv = hv.normalizeSelf();
             this.shooter.setHv(hv);
             this.shooter.dungeon = this.dungeon;
-            this.shooter.data.bulletType = "bullet002";
-            for (let angle of angles) {
-                this.shooter.fireBullet(angle, cc.v3(16, 0));
-            }
+            this.shooter.data.bulletType = "bullet102";
+            this.shooter.fireBullet(0, cc.v3(16, 0));
         }
     }
     //Animation
@@ -133,20 +132,16 @@ export default class Captain extends Boss {
         if (!this.dungeon || !this.shooter) {
             return;
         }
-        let angles1 = [0, 10, 15, -30, -40, -10, -15, 30, 40];
-        let angles2 = [5, 10, -10];
-        let angles3 = [-5, 10, 20, -10, -20, -30, -40, 30, 40];
         this.shooter.data.bulletArcExNum = 0;
-        this.fireWithAngles(angles1);
+        this.fireWithGun();
         if (this.data.currentHealth < this.data.Common.maxHealth / 2) {
-            this.scheduleOnce(() => { this.fireWithAngles(angles2); }, 0.3);
-            this.scheduleOnce(() => { this.fireWithAngles(angles3); }, 0.5);
+            this.scheduleOnce(() => { this.fireWithGun(); }, 0.5);
 
         }
     }
-    
+
     onColliderStay(other: CCollider, self: CCollider) {
-        if(self.tag == CCollider.TAG.BOSS_HIT){
+        if (self.tag == CCollider.TAG.BOSS_HIT) {
             let target = ActorUtils.getEnemyCollisionTarget(other);
             if (target) {
                 if (this.isFall && !this.sc.isDied) {
@@ -157,11 +152,11 @@ export default class Captain extends Boss {
                 }
             }
         }
-        
+
     }
 
-    updateLogic(dt:number) {
-        if(Logic.isGamePause){
+    updateLogic(dt: number) {
+        if (Logic.isGamePause) {
             return;
         }
         this.healthBar.node.active = !this.sc.isDied;
@@ -198,8 +193,8 @@ export default class Captain extends Boss {
 
         // this.anim.playAdditive('CaptainHit');
         this.healthBar.refreshHealth(this.data.currentHealth, this.data.Common.maxHealth);
-        let hitNames = [AudioPlayer.MONSTER_HIT,AudioPlayer.MONSTER_HIT1,AudioPlayer.MONSTER_HIT2];
-            AudioPlayer.play(hitNames[Logic.getRandomNum(0,2)]);
+        let hitNames = [AudioPlayer.MONSTER_HIT, AudioPlayer.MONSTER_HIT1, AudioPlayer.MONSTER_HIT2];
+        AudioPlayer.play(hitNames[Logic.getRandomNum(0, 2)]);
         return true;
     }
 

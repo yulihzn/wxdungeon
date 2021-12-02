@@ -19,6 +19,7 @@ import LightManager from "../manager/LightManager";
 import DamageData from "../data/DamageData";
 import GameWorldSystem from "../ecs/system/GameWorldSystem";
 import Random from "../utils/Random";
+import LoadingManager from "../manager/LoadingManager";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -245,7 +246,7 @@ export default class Dungeon extends cc.Component {
             cc.tween(blackcenter).delay(0.1).to(0.5, { opacity: 0 }).start();
             this.logNodeCount();
             this.addOilGoldOnGround();
-        }, 0.5)
+        }, 0.3)
     }
     private addTiles(mapDataStr: string, indexPos: cc.Vec3, leveldata: LevelData, onlyShow: boolean) {
         if (Dungeon.isFirstEqual(mapDataStr, "*") && mapDataStr != '**') {
@@ -610,7 +611,7 @@ export default class Dungeon extends cc.Component {
     }
 
     update(dt) {
-        if (this.isInitFinish && !Logic.isGamePause&&!this.isDisappeared) {
+        if (this.isInitFinish && !Logic.isGamePause&&!this.isDisappeared&&LoadingManager.allResourceDone()) {
             if (this.isTimeDelay(dt)) {
                 this.checkPlayerPos(dt);
                 this.monsterManager.updateLogic(dt);

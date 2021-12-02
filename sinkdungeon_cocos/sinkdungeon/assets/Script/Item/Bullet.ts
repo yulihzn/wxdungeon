@@ -284,6 +284,13 @@ export default class Bullet extends BaseColliderComponent {
         if (this.data.isDecelerate == 1) {
             this.scheduleOnce(() => { this.isDecelerateDelay = true; }, this.data.delayDecelerate);
         }
+        if (this.data.splitTime > 0 && this.data.splitBulletType.length > 0) {
+            this.scheduleOnce(() => {
+                this.bulletHit();
+                let pos = this.node.convertToWorldSpaceAR(cc.Vec3.ZERO);
+                this.shooter.fireSplitBullet(this.data.splitBulletType,this.node.angle, this.shooter.node.convertToNodeSpaceAR(pos), this.data.splitArcExNum, this.data.splitLineExNum);
+            }, this.data.splitTime);
+        }
 
     }
 
@@ -291,7 +298,7 @@ export default class Bullet extends BaseColliderComponent {
 
     }
 
-    onColliderPreSolve(other:CCollider,self:CCollider){
+    onColliderPreSolve(other: CCollider, self: CCollider) {
         if (!this.isFromPlayer && (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.BOSS)) {
             self.disabledOnce = true;
         }
@@ -331,10 +338,10 @@ export default class Bullet extends BaseColliderComponent {
         }
 
         if (isAttack) {
-            this.attacking(other.node, other.tag,other.sensor);
+            this.attacking(other.node, other.tag, other.sensor);
         }
     }
-    private attacking(attackTarget: cc.Node, tag: number,sensor:boolean) {
+    private attacking(attackTarget: cc.Node, tag: number, sensor: boolean) {
         if (!attackTarget || this.isHit) {
             return;
         }

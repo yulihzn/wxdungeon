@@ -37,6 +37,7 @@ export default class EquipmentData extends BaseData{
     bulletType = "";//子弹类别
     bulletSize = 0;//子弹增加大小 为0代表不改变 1代表加一倍
     bulletArcExNum = 0;//额外扇形喷射子弹数量,为0的时候不计入,最大18,超过的话是一个固定圆，为80的时候是个八方向
+    bulletArcOffset = 0;//扇形发射距离
     bulletLineExNum = 0;//额外线性喷射子弹数量，为0的时候不计入
     bulletLineInterval = 0;//线性喷射间隔时间（秒）
     bulletNets = 0;//是否排状子弹11发并排数量为发射次数 为0的时候不触发 
@@ -176,6 +177,7 @@ export default class EquipmentData extends BaseData{
         this.exBeatBack = data.exBeatBack?data.exBeatBack:0;
         this.test = data.test?data.test:0;
         this.requireLevel = data.requireLevel?data.requireLevel:0;
+        this.bulletArcOffset = data.bulletArcOffset?data.bulletArcOffset:0;
     }
     public clone():EquipmentData{
         let e = new EquipmentData();
@@ -254,6 +256,7 @@ export default class EquipmentData extends BaseData{
         e.exBeatBack = this.exBeatBack;
         e.test = this.test;
         e.requireLevel = this.requireLevel;
+        e.bulletArcOffset = this.bulletArcOffset;
         return e;
     }
     public add(data: EquipmentData): EquipmentData {

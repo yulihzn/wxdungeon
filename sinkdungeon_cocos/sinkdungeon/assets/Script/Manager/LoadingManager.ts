@@ -354,7 +354,6 @@ export default class LoadingManager{
     }
    
     public static loadBuilding(name:string,callback?:Function){
-        
         if(Logic.buildings[name]){
             if(callback){
                 callback();
@@ -382,5 +381,8 @@ export default class LoadingManager{
                 }
             })
         }
+    }
+    public static allResourceDone(){
+        return LoadingManager.resourceLoadMap.size<1;
     }
 }
