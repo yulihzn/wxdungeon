@@ -109,7 +109,7 @@ export default class Item extends cc.Component {
     private _taken(player: Player,isReplace:boolean){
         if (!this.data.isTaken && this.anim) {
             this.anim.play('ItemTaken');
-            Achievement.addEquipsAchievement(this.data.resName);
+            Achievement.addItemAchievement(this.data.resName);
             this.data.isTaken = true;
             AudioPlayer.play(AudioPlayer.PICK_ITEM);
             if (this.data.canSave < 1) {

@@ -318,6 +318,16 @@ export default class Inventory extends cc.Component {
             }
         }
     }
+    static bulidEquipInventoryData(equipmentData: EquipmentData){
+        let newdata = new InventoryData();
+        newdata.equipmentData = new EquipmentData();
+        newdata.equipmentData.valueCopy(equipmentData);
+        newdata.type = InventoryItem.TYPE_EQUIP;
+        newdata.price = newdata.equipmentData.price;
+        newdata.createTime = new Date().getTime();
+        newdata.id = newdata.equipmentData.id;
+        return newdata;
+    }
     private setEquipmentToBag(equipmentData: EquipmentData, isInit: boolean, indexFromBag?: number) {
         //来自初始化或者空装备直接返回
         if (isInit || equipmentData.equipmetType == InventoryManager.EMPTY) {
@@ -335,13 +345,7 @@ export default class Inventory extends cc.Component {
                 break;
             }
         }
-        let newdata = new InventoryData();
-        newdata.equipmentData = new EquipmentData();
-        newdata.equipmentData.valueCopy(equipmentData);
-        newdata.type = InventoryItem.TYPE_EQUIP;
-        newdata.price = newdata.equipmentData.price;
-        newdata.createTime = new Date().getTime();
-        newdata.id = newdata.equipmentData.id;
+        let newdata = Inventory.bulidEquipInventoryData(equipmentData);
         //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
         if (isFromBag) {
             list[indexFromBag] = new InventoryData();

@@ -16,7 +16,9 @@ import NextStep from "../utils/NextStep";
 
 
 export default class InventoryManager {
-    static readonly INVENTORY_MAX = 30;
+    static readonly INVENTORY_MAX = 32;
+    static readonly INVENTORY_EQUIP_MAX = 8;
+    static readonly INVENTORY_ITEM_MAX = 5;
     public static readonly EMPTY = 'empty';//10000000
     public static readonly WEAPON = 'weapon';//10010000
     public static readonly REMOTE = 'remote';//10020000

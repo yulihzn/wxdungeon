@@ -17,6 +17,7 @@ import BaseDialog from "./BaseDialog";
 import EquipmentAndItemDialog from "./EquipmentAndItemDialog";
 import Utils from "../../utils/Utils";
 import Talent from "../../talent/Talent";
+import Inventory from "../../logic/Inventory";
 
 const { ccclass, property } = cc._decorator;
 
@@ -26,6 +27,10 @@ export default class InventoryDialog extends BaseDialog {
     item: cc.Prefab = null;
     @property(cc.Node)
     layout: cc.Node = null;
+    @property(cc.Node)
+    layoutEquip: cc.Node = null;
+    @property(cc.Node)
+    layoutItem: cc.Node = null;
     @property(cc.ToggleContainer)
     toggleContainer: cc.ToggleContainer = null;
     @property(cc.Prefab)
@@ -37,6 +42,8 @@ export default class InventoryDialog extends BaseDialog {
     @property(cc.Node)
     saleButton: cc.Node = null;
     list: InventoryItem[] = [];
+    equipList:InventoryItem[]=[];
+    itemList:InventoryItem[]=[];
     @property(cc.Node)
     select: cc.Node = null;
     @property(cc.Label)
@@ -51,12 +58,25 @@ export default class InventoryDialog extends BaseDialog {
         for (let i = 0; i < InventoryManager.INVENTORY_MAX; i++) {
             let data = new InventoryData();
             data.createTime = new Date().getTime();
-            this.list.push(this.getItem(i, data));
+            this.list.push(this.getItem(i, data,this.layout));
+        }
+        this.layoutEquip.removeAllChildren();
+        for (let i = 0; i < InventoryManager.INVENTORY_EQUIP_MAX; i++) {
+            let data = new InventoryData();
+            data.createTime = new Date().getTime();
+            this.equipList.push(this.getItem(i, data,this.layoutEquip));
+        }
+        this.layoutItem.removeAllChildren();
+        for (let i = 0; i < InventoryManager.INVENTORY_ITEM_MAX; i++) {
+            let data = new InventoryData();
+            data.createTime = new Date().getTime();
+            this.itemList.push(this.getItem(i, data,this.layoutItem));
         }
         cc.director.on(EventHelper.HUD_INVENTORY_ALL_UPDATE
             , (event) => {
                 if (this.node) {
                     this.updateList(Logic.bagSortIndex);
+                    this.updateEquipList();
                 }
             });
         cc.director.on(EventHelper.HUD_INVENTORY_ITEM_UPDATE
@@ -82,9 +102,9 @@ export default class InventoryDialog extends BaseDialog {
         dialog.hideDialog();
         return dialog;
     }
-    private getItem(index: number, data: InventoryData) {
+    private getItem(index: number, data: InventoryData,layout:cc.Node) {
         let prefab = cc.instantiate(this.item);
-        prefab.parent = this.layout;
+        prefab.parent = layout;
         let item = prefab.getComponent(InventoryItem);
         item.init(this, index, data);
         return item;
@@ -96,6 +116,7 @@ export default class InventoryDialog extends BaseDialog {
     show() {
         super.show();
         this.updateList(Logic.bagSortIndex);
+        this.updateEquipList();
     }
     //toggle
     changeSort(toggle: cc.Toggle, index: number) {
@@ -120,13 +141,31 @@ export default class InventoryDialog extends BaseDialog {
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
-            this.equipmentAndItemDialog.showDialog(cc.v3(420, 160), null, null, item.data.equipmentData, null);
+            this.equipmentAndItemDialog.showDialog(cc.v3(420, 260), null, null, item.data.equipmentData, null);
         } else {
             this.discountLabel.string = `-${this.discount * 100}%(${Math.floor(item.data.itemData.count > 1 ? item.data.itemData.price * item.data.itemData.count * this.discount : item.data.itemData.price * this.discount)})`;
             this.useButton.active = true;
             this.dropButton.active = true;
             this.saleButton.active = true;
             this.equipmentAndItemDialog.showDialog(cc.v3(420, 160), null, item.data.itemData, null, null);
+        }
+    }
+    updateEquipList(){
+        let equiplist: InventoryData[] = [];
+        for(let key in Logic.inventoryManager.equips){
+            let equipdata = Logic.inventoryManager.equips[key];
+            let data = Inventory.bulidEquipInventoryData(equipdata);
+            if (data.type != InventoryItem.TYPE_EMPTY) {
+                equiplist.push(data);
+            }
+        }
+        for (let i = 0; i < InventoryManager.INVENTORY_EQUIP_MAX; i++) {
+            if (i < equiplist.length && equiplist[i].type != InventoryItem.TYPE_EMPTY) {
+                let data = equiplist[i];
+                this.equipList[i].updateData(data);
+            } else {
+                this.equipList[i].setEmpty();
+            }
         }
     }
     updateList(sortIndex: number) {
