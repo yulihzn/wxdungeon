@@ -57,14 +57,11 @@
         "__id__": 196
       },
       {
-        "__id__": 200
+        "__id__": 201
       }
     ],
     "_active": true,
     "_components": [
-      {
-        "__id__": 203
-      },
       {
         "__id__": 204
       },
@@ -76,10 +73,13 @@
       },
       {
         "__id__": 207
+      },
+      {
+        "__id__": 208
       }
     ],
     "_prefab": {
-      "__id__": 208
+      "__id__": 209
     },
     "_opacity": 255,
     "_color": {
@@ -7046,10 +7046,13 @@
       },
       {
         "__id__": 198
+      },
+      {
+        "__id__": 199
       }
     ],
     "_prefab": {
-      "__id__": 199
+      "__id__": 200
     },
     "_opacity": 255,
     "_color": {
@@ -7074,7 +7077,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        0,
+        36,
         0,
         0,
         0,
@@ -7117,7 +7120,7 @@
       "a": 40
     },
     "showLight": false,
-    "showRayCast": true,
+    "showRayCast": false,
     "fromSky": false,
     "_id": ""
   },
@@ -7155,6 +7158,29 @@
     "_id": ""
   },
   {
+    "__type__": "8b89bNPNd5CPpD7MGNVsQ0f",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 196
+    },
+    "_enabled": true,
+    "tag": 20,
+    "offsetX": 0,
+    "offsetY": 0,
+    "type": 0,
+    "radius": 80,
+    "w": 128,
+    "h": 128,
+    "density": 0,
+    "sensor": true,
+    "isStatic": true,
+    "ignoreSameTag": false,
+    "targetTagList": [],
+    "ignoreTagList": [],
+    "_id": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 196
@@ -7176,11 +7202,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 201
+        "__id__": 202
       }
     ],
     "_prefab": {
-      "__id__": 202
+      "__id__": 203
     },
     "_opacity": 255,
     "_color": {
@@ -7234,7 +7260,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 200
+      "__id__": 201
     },
     "_enabled": true,
     "_cullingMask": 32,
@@ -7318,7 +7344,7 @@
       "__id__": 187
     },
     "shadowCamera": {
-      "__id__": 201
+      "__id__": 202
     },
     "shadowPrefab": {
       "__uuid__": "50720887-e6e1-4e88-b947-709f7964caf5"

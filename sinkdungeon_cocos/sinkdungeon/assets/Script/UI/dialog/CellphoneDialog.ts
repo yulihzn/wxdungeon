@@ -166,7 +166,7 @@ export default class CellphoneDialog extends BaseDialog {
         }
     }
     update(dt) {
-        if(this.isCheckTimeChangeDelay(dt)){
+        if (this.isCheckTimeChangeDelay(dt)) {
             this.dayLabel.string = this.getDay(Logic.realTime);
             this.hourLabel.string = this.getHour(Logic.realTime);
         }
@@ -185,6 +185,11 @@ export default class CellphoneDialog extends BaseDialog {
         this.dismiss();
         this.content.removeAllChildren();
     }
+    waitOneHour() {
+        Logic.realTime += 60000 * 60;
+        this.dayLabel.string = this.getDay(Logic.realTime);
+        this.hourLabel.string = this.getHour(Logic.realTime);
+    }
 
     private getDay(time: number) {
         let date = new Date(time);
@@ -195,6 +200,9 @@ export default class CellphoneDialog extends BaseDialog {
     private getHour(time: number) {
         let date = new Date(time);
         let h = date.getHours() + 1;
+        if (h > 23) {
+            h = 0;
+        }
         let m = date.getMinutes();
         return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
     }

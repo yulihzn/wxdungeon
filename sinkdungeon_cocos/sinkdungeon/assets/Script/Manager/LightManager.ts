@@ -184,7 +184,9 @@ export default class LightManager extends BaseManager {
      * 每个室内的房间都有一个固定的环境光
      */
     private timeChange(){
-        this.shadowAlpha = LightManager.ALPHA_START+this.getShadowAlphaByTime();
+        let time = this.getShadowAlphaByTime();
+        // cc.log(time);
+        this.shadowAlpha = LightManager.ALPHA_START+time;
         if(this.shadowAlpha>LightManager.ALPHA_END){
             this.shadowAlpha =LightManager.ALPHA_END;
         }
@@ -200,10 +202,10 @@ export default class LightManager extends BaseManager {
         //将240等分为12份，先算出分钟比例的值
         let m = Math.floor(20*minute/60);
         if(hour>12){
-            let h = (hour-12)*2;
+            let h = (hour-12)*20;
             return h+m;
         }else{
-            let h = (12-hour)*2;
+            let h = (12-hour)*20;
             return h-m;
         }
     }
