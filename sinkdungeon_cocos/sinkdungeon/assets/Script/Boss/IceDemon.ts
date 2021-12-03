@@ -209,7 +209,7 @@ export default class IceDemon extends Boss {
         for (let i = 0; i < angles.length; i++) {
             this.shooter.dungeon = this.dungeon;
             this.shooter.fireAoe(this.selfThron, new AreaOfEffectData()
-                .init(0, 2, 0.4, 3, IndexZ.OVERHEAD, true, true, true, false, true, d, FromData.getClone(this.actorName(), 'bossicepart01'), [StatusManager.FROZEN]), cc.v3(this.isFaceRight ? posRight[i] : posLeft[i]), angles[i], null, true);
+                .init(0, 2, 0.4, 3, IndexZ.OVERHEAD, true, true, true, false, true, d, FromData.getClone(this.actorName(), 'bossicepart01'), [StatusManager.FROZEN]), cc.v3(posRight[i]), angles[i], null, true);
         }
     }
     attack() {

@@ -37,6 +37,10 @@ export default class CellphoneDialog extends BaseDialog {
     tabSelect: cc.Node = null;
     @property(cc.Label)
     priceLabel: cc.Label = null;
+    @property(cc.Label)
+    hourLabel: cc.Label = null;
+    @property(cc.Label)
+    dayLabel: cc.Label = null;
     currentSelectIndex: number;
     equipmentAndItemDialog: EquipmentAndItemDialog = null;
     itemList: ItemData[] = [];
@@ -44,7 +48,8 @@ export default class CellphoneDialog extends BaseDialog {
     onLoad() {
         this.itemSelect.opacity = 0;
         this.equipmentAndItemDialog = this.initDialog();
-
+        this.dayLabel.string = this.getDay(Logic.realTime);
+        this.hourLabel.string = this.getHour(Logic.realTime);
         this.updateList(this.tabIndex);
     }
     private initDialog() {
@@ -129,10 +134,10 @@ export default class CellphoneDialog extends BaseDialog {
             for (let i = 0; i < this.list.length; i++) {
                 this.list[i].updateData(dataList[i]);
             }
-        }else{
-            Utils.toast('这里空空如也',true);
+        } else {
+            Utils.toast('这里空空如也', true);
         }
-        
+
     }
 
     //button 购买
@@ -152,20 +157,60 @@ export default class CellphoneDialog extends BaseDialog {
                 Achievement.addFurnituresAchievement(fd.id);
                 LocalStorage.saveFurnitureData(fd);
                 this.clearSelect();
-                Utils.toast('购买成功,快递将在下次回家送达',true);
+                Utils.toast('购买成功,快递将在下次回家送达', true);
                 AudioPlayer.play(AudioPlayer.CASHIERING);
-            }else{
-                Utils.toast('购买失败，余额不足',true);
+            } else {
+                Utils.toast('购买失败，余额不足', true);
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
             }
         }
     }
-    // update (dt) {}
-
+    update(dt) {
+        if(this.isCheckTimeChangeDelay(dt)){
+            this.dayLabel.string = this.getDay(Logic.realTime);
+            this.hourLabel.string = this.getHour(Logic.realTime);
+        }
+    }
+    checkTimeChangeDelay = 0;
+    isCheckTimeChangeDelay(dt: number): boolean {
+        this.checkTimeChangeDelay += dt;
+        if (this.checkTimeChangeDelay > 1) {
+            this.checkTimeChangeDelay = 0;
+            return true;
+        }
+        return false;
+    }
     close() {
         AudioPlayer.play(AudioPlayer.SELECT);
         this.dismiss();
         this.content.removeAllChildren();
     }
 
+    private getDay(time: number) {
+        let date = new Date(time);
+        let m = date.getMonth() + 1;
+        let d = date.getDate();
+        return `${m < 10 ? '0' : ''}${m}月${d < 10 ? '0' : ''}${d}日 ${this.getWeek(date)}`;
+    }
+    private getHour(time: number) {
+        let date = new Date(time);
+        let h = date.getHours() + 1;
+        let m = date.getMinutes();
+        return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
+    }
+    private getFull(time: number) {
+        let date = new Date(time);
+        return date.getFullYear() + "." + (date.getMonth() + 1) + "." + date.getDate() + ". " + date.getHours() + "." + date.getMinutes() + "." + date.getSeconds() + ".";
+    }
+    private getWeek(date: Date) {
+        let week = '';
+        if (date.getDay() == 0) week = "星期日";
+        if (date.getDay() == 1) week = "星期一";
+        if (date.getDay() == 2) week = "星期二";
+        if (date.getDay() == 3) week = "星期三";
+        if (date.getDay() == 4) week = "星期四";
+        if (date.getDay() == 5) week = "星期五";
+        if (date.getDay() == 6) week = "星期六";
+        return week;
+    }
 }

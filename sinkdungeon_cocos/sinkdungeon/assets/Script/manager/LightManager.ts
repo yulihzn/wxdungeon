@@ -27,14 +27,18 @@ export default class LightManager extends BaseManager {
     @property(cc.Graphics)
     shadowRay: cc.Graphics = null;
     mat:cc.MaterialVariant;
-
     private shadowTexture: cc.RenderTexture;
+    static readonly ALPHA_START = 10;
+    static readonly ALPHA_END = 200;
+    static readonly ROOM_LIGHT = 50;
+    private shadowAlpha = LightManager.ALPHA_START;
 
     clear(): void {
         LightManager.lightList = [];
     }
     onLoad() {
         this.mat = this.shadow.getMaterial(0);
+        this.timeChange();
     }
     private render() {
         for (let i = 0; i < LightManager.lightList.length; i++) {
@@ -167,9 +171,48 @@ export default class LightManager extends BaseManager {
         }
         return false;
     }
+    checkTimeChangeDelay = 0;
+    isCheckTimeChangeDelay(dt: number): boolean {
+        this.checkTimeChangeDelay += dt;
+        if (this.checkTimeChangeDelay > 1) {
+            this.checkTimeChangeDelay = 0;
+            return true;
+        }
+        return false;
+    }
+    /**
+     * 每个室内的房间都有一个固定的环境光
+     */
+    private timeChange(){
+        this.shadowAlpha = LightManager.ALPHA_START+this.getShadowAlphaByTime();
+        if(this.shadowAlpha>LightManager.ALPHA_END){
+            this.shadowAlpha =LightManager.ALPHA_END;
+        }
+        if(this.shadowAlpha<LightManager.ALPHA_START){
+            this.shadowAlpha =LightManager.ALPHA_START;
+        }
+        this.mat.setProperty('lightColor', cc.color(0, 0, 50, this.shadowAlpha));
+    }
+    private getShadowAlphaByTime(){
+        let date = new Date(Logic.realTime);
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        //将240等分为12份，先算出分钟比例的值
+        let m = Math.floor(20*minute/60);
+        if(hour>12){
+            let h = (hour-12)*2;
+            return h+m;
+        }else{
+            let h = (12-hour)*2;
+            return h-m;
+        }
+    }
     update(dt: number) {
         if (this.isCheckTimeDelay(dt)) {
             this.render();
+        }
+        if(this.isCheckTimeChangeDelay(dt)){
+            this.timeChange();
         }
         this.fixShadowPos();
     }

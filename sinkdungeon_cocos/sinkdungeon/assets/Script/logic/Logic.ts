@@ -96,6 +96,7 @@ export default class Logic extends cc.Component {
     static killCount = 0;//杀敌数
     static coinDreamCount = 0;//金币累加数
     static time = '00:00:00';
+    static realTime = 1559145600000;
     static seed = 5;
     static isFirst = 1;
     static jumpChapter = 0;
@@ -164,6 +165,7 @@ export default class Logic extends cc.Component {
         Logic.profileManager.data.chapterIndex = Logic.chapterIndex;
         Logic.profileManager.data.chapterMaxIndex = Logic.chapterMaxIndex;
         Logic.profileManager.data.time = Logic.time;
+        Logic.profileManager.data.realTime = Logic.realTime;
         Logic.profileManager.data.savePointData = Logic.savePoinitData.clone();
         Logic.profileManager.data.groundOilGoldData = Logic.groundOilGoldData.clone();
         Logic.profileManager.data.killPlayerCounts = Logic.killPlayerCounts;
@@ -175,6 +177,7 @@ export default class Logic extends cc.Component {
     static resetData(chapter?: number) {
         //重置时间
         Logic.time = Logic.profileManager.data.time;
+        Logic.realTime = Logic.profileManager.data.realTime;
         //加载章节名
         Logic.profileManager.data.chapterIndex = chapter ? chapter : Logic.profileManager.data.chapterIndex;
         if (Logic.profileManager.data.chapterIndex > Logic.profileManager.data.chapterMaxIndex

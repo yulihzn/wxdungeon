@@ -817,6 +817,8 @@
         "bulletType": "laser101",
         "specialAttack": 15,
         "specialBulletArcExNum": 2,
+        "shooterOffsetX":0,
+        "shooterOffsetY":32,
         "common": {
             "moveSpeed": 500,
             "maxHealth": 10,

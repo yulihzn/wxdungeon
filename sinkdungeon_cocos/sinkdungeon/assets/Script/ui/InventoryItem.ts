@@ -83,6 +83,7 @@ export default class InventoryItem extends cc.Component {
         this.data.setEmpty();
         this.label.string = ``;
         this.sprite.spriteFrame = null;
+        this.node.color = cc.Color.WHITE;
     }
     start() {
 

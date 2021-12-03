@@ -147,6 +147,7 @@ export default class InteractBuilding extends Building {
                 this.changeRes(this.resName, 'anim003');
             }).delay(0.1).call(() => {
                 this.changeRes(this.resName, 'anim004');
+                this.sprite.node.angle = 0;
                 this.updateCollider();
                 let rand4save = Logic.mapManager.getRandom4Save(Logic.mapManager.getRebornSeed(this.seed));
                 let rand = rand4save.rand();
@@ -302,7 +303,7 @@ export default class InteractBuilding extends Building {
         return true;
     }
     onColliderPreSolve(other:CCollider,self:CCollider): void {
-        if (other.tag == CCollider.TAG.NONPLAYER || other.tag == CCollider.TAG.PLAYER || other.tag == CCollider.TAG.GOODNONPLAYER) {
+        if (other.tag == CCollider.TAG.PLAYER) {
             if (this.isTaken || this.isAttacking) {
                 self.disabledOnce = true;
             }

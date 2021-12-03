@@ -38,7 +38,7 @@ export default class GameOver extends cc.Component {
     start() {
         let ach = LocalStorage.getAchievementData();
         if (this.clock) {
-            this.clock.string = `用时：${Logic.time}`;
+            this.clock.string = `存活时间：${Logic.time}`;
         }
         if (this.level) {
             this.level.string = ``;

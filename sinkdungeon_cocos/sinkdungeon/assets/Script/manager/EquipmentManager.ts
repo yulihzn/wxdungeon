@@ -471,7 +471,7 @@ export default class EquipmentManager extends BaseManager {
         }
         let data = new EquipmentData();
         data.valueCopy(Logic.equipments[equipType]);
-        let tempid = data.img.substr(data.equipmetType.length);
+        let tempid = data.img.substring(data.equipmetType.length);
         if (tempid.length > 0) {
             data.id = data.id + parseInt(tempid);
         }

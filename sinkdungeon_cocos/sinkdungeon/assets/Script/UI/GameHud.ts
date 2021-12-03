@@ -282,8 +282,10 @@ export default class GameHud extends cc.Component {
         let strSecond = `${this.second}`;
         strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond;
         Logic.time = strHour + ':' + strMinute + ':' + strSecond;
+        Logic.realTime = Logic.realTime+60000;
 
     }
+    
     private cancelOrPause() {
         if (!this.node) {
             return;
