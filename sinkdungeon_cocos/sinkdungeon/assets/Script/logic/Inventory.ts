@@ -95,10 +95,10 @@ export default class Inventory extends cc.Component {
         this.equipmentAndItemDialog=this.initDialog(false);
         this.graphics = this.getComponent(cc.Graphics);
         this.inventoryManager = Logic.inventoryManager;
-        cc.director.on(EventHelper.PLAYER_CHANGEEQUIPMENT
-            , (event) => {
+        EventHelper.on(EventHelper.PLAYER_CHANGEEQUIPMENT
+            , (detail) => {
                 if (this.node) {
-                    this.refreshEquipment(event.detail.equipData, false, event.detail.isReplace, event.detail.index);
+                    this.refreshEquipment(detail.equipmetType,detail.equipData, false, detail.isReplace,detail.isDrop, detail.index);
                     this.refreshSuits();
                 }
             });
@@ -200,7 +200,7 @@ export default class Inventory extends cc.Component {
             this.addEquipSpriteTouchEvent(this.equipSprites[key], key);
         }
         for (let key in this.inventoryManager.equips) {
-            this.refreshEquipment(this.inventoryManager.equips[key], true);
+            this.refreshEquipment(key,this.inventoryManager.equips[key], true);
         }
         this.refreshItemRes();
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5];
@@ -219,6 +219,9 @@ export default class Inventory extends cc.Component {
             let equipData = new EquipmentData();
             if (this.inventoryManager.equips[equipmetType]) {
                 equipData = this.inventoryManager.equips[equipmetType].clone();
+            }
+            if(equipData.equipmetType == InventoryManager.EMPTY){
+                return;
             }
             let pos = this.node.convertToNodeSpaceAR(sprite.node.parent.convertToWorldSpaceAR(cc.Vec3.ZERO));
             this.equipmentAndItemDialog.showDialog(pos.add(cc.v3(-32,0)),null,null,equipData,null, this.inventoryManager,EquipmentAndItemDialog.BG_TYPE_ARROW_RIGHT);
@@ -283,7 +286,7 @@ export default class Inventory extends cc.Component {
                 idata.itemData.count = count;
                 idata.price = idata.itemData.price;
                 if (isFromBag) {
-                    EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
+                    EventHelper.emit(EventHelper.HUD_INVENTORY_SELECT_UPDATE, { index: indexFromBag });
                 }
                 return;
             }
@@ -298,7 +301,7 @@ export default class Inventory extends cc.Component {
         if (isFromBag) {
             list[indexFromBag] = new InventoryData();
             list[indexFromBag].valueCopy(newdata);
-            EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
+            EventHelper.emit(EventHelper.HUD_INVENTORY_SELECT_UPDATE, { index: indexFromBag });
         } else {
             //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包并通知背包全局刷新
             if (insertIndex == -1) {
@@ -322,15 +325,15 @@ export default class Inventory extends cc.Component {
         let newdata = new InventoryData();
         newdata.equipmentData = new EquipmentData();
         newdata.equipmentData.valueCopy(equipmentData);
-        newdata.type = InventoryItem.TYPE_EQUIP;
+        newdata.type = equipmentData.equipmetType==InventoryManager.EMPTY?InventoryItem.TYPE_EMPTY:InventoryItem.TYPE_EQUIP;
         newdata.price = newdata.equipmentData.price;
         newdata.createTime = new Date().getTime();
         newdata.id = newdata.equipmentData.id;
         return newdata;
     }
-    private setEquipmentToBag(equipmentData: EquipmentData, isInit: boolean, indexFromBag?: number) {
-        //来自初始化或者空装备直接返回
-        if (isInit || equipmentData.equipmetType == InventoryManager.EMPTY) {
+    private setEquipmentToBag(equipmentData: EquipmentData, isInit: boolean, isDrop?:boolean,indexFromBag?: number) {
+        //来自初始化，丢弃售出或者空装备直接返回
+        if (isInit || isDrop||equipmentData.equipmetType == InventoryManager.EMPTY) {
             return;
         }
         let list = Logic.inventoryManager.inventoryList;
@@ -350,7 +353,7 @@ export default class Inventory extends cc.Component {
         if (isFromBag) {
             list[indexFromBag] = new InventoryData();
             list[indexFromBag].valueCopy(newdata);
-            EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE, { index: indexFromBag });
+            EventHelper.emit(EventHelper.HUD_INVENTORY_SELECT_UPDATE, { index: indexFromBag });
         } else {
             //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包并通知背包全局刷新
             if (insertIndex == -1) {
@@ -406,17 +409,19 @@ export default class Inventory extends cc.Component {
         }
 
     }
-    refreshEquipment(equipDataNew: EquipmentData, isInit: boolean, isReplace?: boolean, indexFromBag?: number) {
-        if (!equipDataNew || !this.weapon) {
+
+    refreshEquipment(equipmetType:string,equipDataNew: EquipmentData, isInit: boolean, isReplace?: boolean, isDrop?:boolean,indexFromBag?: number) {
+        if (!equipDataNew || !this.weapon || !equipmetType) {
             return;
         }
-        let equip = this.inventoryManager.equips[equipDataNew.equipmetType];
+        
+        let equip = this.inventoryManager.equips[equipmetType];
         let hasEquip = equip&&equip.equipmetType != InventoryManager.EMPTY;
         if(!hasEquip){
-            if(equipDataNew.equipmetType == InventoryManager.REMOTE&&this.inventoryManager.equips[InventoryManager.SHIELD].equipmetType != InventoryManager.EMPTY){
+            if(equipmetType == InventoryManager.REMOTE&&this.inventoryManager.equips[InventoryManager.SHIELD].equipmetType != InventoryManager.EMPTY){
                 hasEquip = true;
             }
-            if(equipDataNew.equipmetType == InventoryManager.SHIELD&&this.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.EMPTY){
+            if(equipmetType == InventoryManager.SHIELD&&this.inventoryManager.equips[InventoryManager.REMOTE].equipmetType != InventoryManager.EMPTY){
                 hasEquip = true;
             }
             if(equipDataNew.requireLevel>Logic.playerData.OilGoldData.level){
@@ -424,9 +429,9 @@ export default class Inventory extends cc.Component {
             }
         }
         
-        //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
-        if (!isReplace && !isInit&&equip&&hasEquip) {
-            this.setEquipmentToBag(equipDataNew, isInit,indexFromBag);
+        //1.如果是捡起到背包或者购买（非替换非初始化非扔掉），且对应位置有装备，则直接放置到背包
+        if (!isReplace &&!isDrop&& !isInit&&equip&&hasEquip) {
+            this.setEquipmentToBag(equipDataNew, isInit,isDrop,indexFromBag);
             return;
         }
         //2.如果是长按或者来自背包装备的替换操作，替换新的，移出旧的到背包
@@ -441,24 +446,27 @@ export default class Inventory extends cc.Component {
         }
         //更新当前装备数据
         if(equip){
-            this.setEquipmentToBag(equip, isInit, indexFromBag);
+            this.setEquipmentToBag(equip, isInit,isDrop, indexFromBag);
             equip.valueCopy(equipDataNew);
+            if(!isInit){
+                EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE);
+            }
         }
         //更新贴图和颜色
-        let sprite = this.equipSprites[equipDataNew.equipmetType];
+        let sprite = this.equipSprites[equipmetType];
         if(sprite){
             sprite.node.color = color;
             sprite.spriteFrame = equipDataNew.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
-            if (equipDataNew.equipmetType == InventoryManager.TROUSERS && equipDataNew.trouserslong == 1) {
+            if (equipmetType == InventoryManager.TROUSERS && equipDataNew.trouserslong == 1) {
                 sprite.spriteFrame = Logic.spriteFrameRes('trousers000');
             }
         }
-        switch (equipDataNew.equipmetType) {
+        switch (equipmetType) {
             case InventoryManager.REMOTE:
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
                 //替换盾牌到背包
-                this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit, indexFromBag);
+                this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit,isDrop, indexFromBag);
                 //清空盾牌和贴图
                 this.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData());
                 this.shield.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.SHIELD].img);
@@ -468,9 +476,9 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
                 //替换远程到背包
-                this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, indexFromBag);
+                this.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, isDrop,indexFromBag);
                 //如果当前盾牌不为空清空远程和贴图并展示盾牌栏，否则显示远程隐藏盾牌栏
-                if (this.inventoryManager.equips[equipDataNew.equipmetType].equipmetType != InventoryManager.EMPTY) {
+                if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
                     this.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData());
                     this.remote.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.REMOTE].img);
                     this.remote.node.parent.active = false;
@@ -484,12 +492,13 @@ export default class Inventory extends cc.Component {
         //更新玩家装备贴图和状态
         if (this.dungeon&&this.dungeon.player) {
             this.dungeon.player.inventoryManager = this.inventoryManager;
-            this.dungeon.player.changeEquipment(equipDataNew, spriteFrame);
+            this.dungeon.player.changeEquipment(equipmetType,equipDataNew, spriteFrame);
             if (equipDataNew.statusInterval > 0 && equipDataNew.statusName.length > 0) {
                 this.dungeon.player.addStatus(equipDataNew.statusName, FromData.getClone(equipDataNew.nameCn, equipDataNew.img));
             }
         }
     }
+
     addPlayerStatus(equipmentData: EquipmentData) {
         if (!this.dungeon || !this.dungeon.player) {
             return;

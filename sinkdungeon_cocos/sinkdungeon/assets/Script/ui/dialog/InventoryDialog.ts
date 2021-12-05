@@ -18,6 +18,7 @@ import EquipmentAndItemDialog from "./EquipmentAndItemDialog";
 import Utils from "../../utils/Utils";
 import Talent from "../../talent/Talent";
 import Inventory from "../../logic/Inventory";
+import EquipmentData from "../../data/EquipmentData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -42,8 +43,8 @@ export default class InventoryDialog extends BaseDialog {
     @property(cc.Node)
     saleButton: cc.Node = null;
     list: InventoryItem[] = [];
-    equipList:InventoryItem[]=[];
-    itemList:InventoryItem[]=[];
+    equipList: InventoryItem[] = [];
+    itemList: InventoryItem[] = [];
     @property(cc.Node)
     select: cc.Node = null;
     @property(cc.Label)
@@ -58,40 +59,48 @@ export default class InventoryDialog extends BaseDialog {
         for (let i = 0; i < InventoryManager.INVENTORY_MAX; i++) {
             let data = new InventoryData();
             data.createTime = new Date().getTime();
-            this.list.push(this.getItem(i, data,this.layout));
+            this.list.push(this.getItem(i, data, this.layout));
         }
         this.layoutEquip.removeAllChildren();
         for (let i = 0; i < InventoryManager.INVENTORY_EQUIP_MAX; i++) {
             let data = new InventoryData();
             data.createTime = new Date().getTime();
-            this.equipList.push(this.getItem(i, data,this.layoutEquip));
+            data.tag = InventoryManager.TAG.EQUIP;
+            this.equipList.push(this.getItem(InventoryManager.INVENTORY_MAX + i, data, this.layoutEquip));
         }
         this.layoutItem.removeAllChildren();
         for (let i = 0; i < InventoryManager.INVENTORY_ITEM_MAX; i++) {
             let data = new InventoryData();
             data.createTime = new Date().getTime();
-            this.itemList.push(this.getItem(i, data,this.layoutItem));
+            data.tag = InventoryManager.TAG.ITEM;
+            this.itemList.push(this.getItem(InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + i, data, this.layoutItem));
         }
-        cc.director.on(EventHelper.HUD_INVENTORY_ALL_UPDATE
-            , (event) => {
+        EventHelper.on(EventHelper.HUD_INVENTORY_ALL_UPDATE
+            , (detail) => {
                 if (this.node) {
                     this.updateList(Logic.bagSortIndex);
                     this.updateEquipList();
                 }
             });
-        cc.director.on(EventHelper.HUD_INVENTORY_ITEM_UPDATE
-            , (event) => {
+        EventHelper.on(EventHelper.HUD_INVENTORY_EQUIP_UPDATE
+            , (detail) => {
                 if (this.node) {
-                    let data = Logic.inventoryManager.inventoryList[event.detail.index];
-                    this.list[event.detail.index].updateData(data);
+                    this.updateEquipList();
+                }
+            });
+        EventHelper.on(EventHelper.HUD_INVENTORY_SELECT_UPDATE
+            , (detail) => {
+                if (this.node) {
+                    let data = Logic.inventoryManager.inventoryList[detail.index];
+                    this.list[detail.index].updateData(data);
                 }
             });
         this.toggleContainer.toggleItems[Logic.bagSortIndex].isChecked = true;
         if (Logic.playerData.AvatarData.organizationIndex == AvatarData.HUNTER) {
-            this.discount +=0.1;
+            this.discount += 0.1;
         }
-        if(Talent.TALENT_010 == Logic.playerData.AvatarData.professionData.talent){
-            this.discount +=0.1;
+        if (Talent.TALENT_010 == Logic.playerData.AvatarData.professionData.talent) {
+            this.discount += 0.1;
         }
     }
     private initDialog() {
@@ -102,7 +111,7 @@ export default class InventoryDialog extends BaseDialog {
         dialog.hideDialog();
         return dialog;
     }
-    private getItem(index: number, data: InventoryData,layout:cc.Node) {
+    private getItem(index: number, data: InventoryData, layout: cc.Node) {
         let prefab = cc.instantiate(this.item);
         prefab.parent = layout;
         let item = prefab.getComponent(InventoryItem);
@@ -135,6 +144,7 @@ export default class InventoryDialog extends BaseDialog {
         this.currentSelectIndex = item.index;
         this.select.position = this.node.convertToNodeSpaceAR(item.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
         this.select.opacity = 200;
+        this.useButton.getComponentInChildren(cc.Label).string = this.currentSelectIndex >= InventoryManager.INVENTORY_MAX ? '卸下' : '装备';
         AudioPlayer.play(AudioPlayer.SELECT);
         if (item.data.type == InventoryItem.TYPE_EQUIP) {
             this.discountLabel.string = `-${this.discount * 100}%(${Math.floor(item.data.equipmentData.price * this.discount)})`;
@@ -150,12 +160,27 @@ export default class InventoryDialog extends BaseDialog {
             this.equipmentAndItemDialog.showDialog(cc.v3(420, 160), null, item.data.itemData, null, null);
         }
     }
-    updateEquipList(){
+    updateEquipList() {
         let equiplist: InventoryData[] = [];
-        for(let key in Logic.inventoryManager.equips){
+        for (let key in Logic.inventoryManager.equips) {
             let equipdata = Logic.inventoryManager.equips[key];
-            let data = Inventory.bulidEquipInventoryData(equipdata);
-            if (data.type != InventoryItem.TYPE_EMPTY) {
+            let needAdd = false;
+            if (key != InventoryManager.REMOTE && key != InventoryManager.SHIELD) {
+                needAdd = true;
+            } else {
+                if (key == InventoryManager.REMOTE) {
+                    if (equipdata.equipmetType == InventoryManager.REMOTE || Logic.inventoryManager.equips[InventoryManager.SHIELD].equipmetType == InventoryManager.EMPTY) {
+                        needAdd = true;
+                    }
+                } else if (key == InventoryManager.SHIELD) {
+                    if (equipdata.equipmetType == InventoryManager.SHIELD) {
+                        needAdd = true;
+                    }
+                }
+            }
+            if (needAdd) {
+                let data = Inventory.bulidEquipInventoryData(equipdata);
+                data.tag = InventoryManager.TAG.EQUIP;
                 equiplist.push(data);
             }
         }
@@ -219,7 +244,23 @@ export default class InventoryDialog extends BaseDialog {
     //button 装备
     use() {
         //未选中或者为空直接返回
-        if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+        if (this.currentSelectIndex == -1) {
+            return;
+        }
+        if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX && this.currentSelectIndex < InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX) {
+            AudioPlayer.play(AudioPlayer.SELECT);
+            let current = this.equipList[this.currentSelectIndex - InventoryManager.INVENTORY_MAX];
+            if (current.data.type == InventoryItem.TYPE_EMPTY) {
+                return;
+            }
+            let equipData = current.data.equipmentData;
+            EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true });
+            current.setEmpty();
+            this.clearSelect();
+            return;
+        }
+
+        if (this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
         AudioPlayer.play(AudioPlayer.SELECT);
@@ -227,14 +268,14 @@ export default class InventoryDialog extends BaseDialog {
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData.clone();
             if (equipData.equipmetType != InventoryManager.EMPTY) {
-                if(equipData.requireLevel>Logic.playerData.OilGoldData.level){
+                if (equipData.requireLevel > Logic.playerData.OilGoldData.level) {
                     Utils.toast(`当前人物等级太低，无法装备`);
                     return;
                 }
                 //置空当前放下的数据，清除选中
                 Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
                 this.list[this.currentSelectIndex].setEmpty();
-                EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipData: equipData, isReplace: true, index: this.currentSelectIndex });
+                EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: equipData, isReplace: true, index: this.currentSelectIndex });
             }
         } else {
             let itemData = current.data.itemData.clone();
@@ -251,7 +292,23 @@ export default class InventoryDialog extends BaseDialog {
     //button 放下
     drop() {
         //未选中或者为空直接返回
-        if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+        if (this.currentSelectIndex == -1) {
+            return;
+        }
+        if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX && this.currentSelectIndex < InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX) {
+            AudioPlayer.play(AudioPlayer.SELECT);
+            let current = this.equipList[this.currentSelectIndex - InventoryManager.INVENTORY_MAX];
+            if (current.data.type == InventoryItem.TYPE_EMPTY) {
+                return;
+            }
+            let equipData = current.data.equipmentData;
+            EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true, isDrop: true });
+            EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
+            current.setEmpty();
+            this.clearSelect();
+            return;
+        }
+        if (this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
         AudioPlayer.play(AudioPlayer.SELECT);
@@ -276,7 +333,24 @@ export default class InventoryDialog extends BaseDialog {
     //button 出售
     sale() {
         //未选中或者为空直接返回
-        if (this.currentSelectIndex == -1 || this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+        if (this.currentSelectIndex == -1) {
+            return;
+        }
+        if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX && this.currentSelectIndex < InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX) {
+            AudioPlayer.play(AudioPlayer.SELECT);
+            let current = this.equipList[this.currentSelectIndex - InventoryManager.INVENTORY_MAX];
+            if (current.data.type == InventoryItem.TYPE_EMPTY) {
+                return;
+            }
+            let equipData = current.data.equipmentData;
+            EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true, isDrop: true });
+            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) });
+            AudioPlayer.play(AudioPlayer.COIN);
+            current.setEmpty();
+            this.clearSelect();
+            return;
+        }
+        if (this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
         AudioPlayer.play(AudioPlayer.SELECT);

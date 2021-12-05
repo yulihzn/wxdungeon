@@ -29,8 +29,14 @@ export default class InventoryManager {
     public static readonly GLOVES = 'gloves';//10070000
     public static readonly SHOES = 'shoes';//10080000
     public static readonly CLOAK = 'cloak';//10090000
-    static readonly EQUIP_TAGS = [InventoryManager.WEAPON, InventoryManager.HELMET, InventoryManager.CLOTHES, InventoryManager.TROUSERS, InventoryManager.GLOVES
-        , InventoryManager.SHOES, InventoryManager.CLOAK, InventoryManager.SHIELD, InventoryManager.REMOTE];
+    static readonly EQUIP_TAGS = [InventoryManager.WEAPON, InventoryManager.REMOTE, InventoryManager.SHIELD, InventoryManager.HELMET, InventoryManager.CLOTHES, InventoryManager.TROUSERS, InventoryManager.GLOVES
+        , InventoryManager.SHOES, InventoryManager.CLOAK];
+    static readonly TAG = cc.Enum({
+        DEFAULT: 0,//默认
+        EQUIP: 1,//装备区
+        ITEM: 2,//物品区
+        CUPBOARD: 3//衣柜
+    })
     //buffer效果
     buffer: EquipmentData = new EquipmentData();
     itemList: ItemData[] = [];

@@ -356,11 +356,11 @@ export default class Player extends Actor {
         }
     }
 
-    public changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
-        let inventoryEquip = this.inventoryManager.equips[equipData.equipmetType];
-        switch (equipData.equipmetType) {
+    public changeEquipment(equipmetType:string,equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+        let inventoryEquip = this.inventoryManager.equips[equipmetType];
+        switch (equipmetType) {
             case InventoryManager.WEAPON:
-                this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame, this.inventoryManager);
+                this.weaponRight.meleeWeapon.changeEquipment(equipData, spriteFrame);
                 break;
             case InventoryManager.REMOTE:
                 this.weaponLeft.shooter.data = equipData.clone();

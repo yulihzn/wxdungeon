@@ -20,7 +20,7 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class Equipment extends cc.Component {
-    
+
     data: EquipmentData = new EquipmentData();
     anim: cc.Animation;
     private sprite: cc.Node;
@@ -28,13 +28,13 @@ export default class Equipment extends cc.Component {
     isTaken = false;
     shopTable: ShopTable;
     mat: cc.MaterialVariant;
-    taketips:cc.Node;
+    taketips: cc.Node;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.isTaken = false;
         this.sprite = this.node.getChildByName('sprite');
-        this.taketips =  this.node.getChildByName('sprite').getChildByName('taketips');
+        this.taketips = this.node.getChildByName('sprite').getChildByName('taketips');
     }
     refresh(data: EquipmentData) {
         this.data.valueCopy(data);
@@ -57,7 +57,7 @@ export default class Equipment extends cc.Component {
         this.mat = this.sprite.getComponent(cc.Sprite).getMaterial(0);
         this.mat.setProperty('textureSizeWidth', spriteFrame.getTexture().width * this.sprite.scaleX);
         this.mat.setProperty('textureSizeHeight', spriteFrame.getTexture().height * this.sprite.scaleY);
-        this.mat.setProperty('outlineColor', cc.color(200,200,200));
+        this.mat.setProperty('outlineColor', cc.color(200, 200, 200));
         this.highLight(false);
         if (data.equipmetType == 'remote') {
             this.sprite.width = this.sprite.width / 2;
@@ -81,7 +81,7 @@ export default class Equipment extends cc.Component {
     onEnable() {
 
     }
-    taken(isReplace:boolean):boolean{
+    taken(isReplace: boolean): boolean {
         if (this.isTaken) {
             return false;
         }
@@ -99,11 +99,11 @@ export default class Equipment extends cc.Component {
         }
         return false;
     }
-    private _taken(isReplace:boolean) {
+    private _taken(isReplace: boolean) {
         this.isTaken = true;
         this.anim.play('EquipmentTaken');
         Achievement.addEquipsAchievement(this.data.img);
-        cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipData: this.data ,isReplace:isReplace} })
+        cc.director.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { detail: { equipmetType: this.data.equipmetType, equipData: this.data, isReplace: isReplace } })
         this.node.getChildByName('shadow').active = false;
         cc.director.emit(EventHelper.HUD_GROUND_EQUIPMENT_INFO_HIDE);
         this.scheduleOnce(() => {

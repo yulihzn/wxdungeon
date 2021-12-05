@@ -163,20 +163,17 @@ export default class MeleeWeapon extends BaseColliderComponent {
         }
         return node.getComponent(cc.Sprite);
     }
-    changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame, inventoryManager: InventoryManager) {
-        if (InventoryManager.WEAPON != equipData.equipmetType) {
-            cc.log('its not a weapon');
-            return;
-        }
+    changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+      
         this.isStab = equipData.stab == 1;
         this.isFar = equipData.far == 1;
         this.isReflect = equipData.isReflect == 1;
-        this.isFist = false;
+        this.isFist = InventoryManager.WEAPON != equipData.equipmetType;
         this.isBlunt = equipData.blunt == 1;
-        this.exBeatBack = inventoryManager.getEquipBySuit(equipData).exBeatBack;
+        this.exBeatBack = Logic.inventoryManager.getEquipBySuit(equipData).exBeatBack;
         this.weaponSprite.spriteFrame = spriteFrame;
-        let color1 = cc.color(255, 255, 255).fromHEX(inventoryManager.equips[InventoryManager.WEAPON].color);
-        let color2 = cc.color(255, 255, 255).fromHEX(inventoryManager.equips[InventoryManager.WEAPON].lightcolor);
+        let color1 = cc.color(255, 255, 255).fromHEX(equipData.color);
+        let color2 = cc.color(255, 255, 255).fromHEX(equipData.lightcolor);
         this.weaponSprite.node.color = color1;
         this.weaponLightSprite.node.color = color2;
         if (this.isStab) {
@@ -281,7 +278,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
     public getAttackAnimName(comboType?: number): string {
         let name = "MeleeAttackStab";
-        if (!this.isFar && this.isStab) {
+        if (!this.isFar && this.isStab||this.isFist) {
             name = this.isFist ? "MeleeAttackFist" : "MeleeAttackStab";
         } else if (this.isFar && this.isStab) {
             name = "MeleeAttackStabFar";

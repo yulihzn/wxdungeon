@@ -271,7 +271,7 @@ export default class CCollider extends cc.Component {
             let isRight = tps[2].x > ops[2].x && tps[0].x < ops[3].x;
             let isTop = tps[1].y > ops[1].y && tps[0].y < ops[1].y;
             let isBottom = tps[0].y < ops[0].y && tps[1].y > ops[0].y;
-            let offset = 100;
+            let offset = other.isStatic?50:200;
             let pos = this.entity.Move.linearVelocity.clone();
             let lenVertical = Math.abs(center1.x - center2.x);
             let lenHorizonal = Math.abs(center1.y - center2.y);

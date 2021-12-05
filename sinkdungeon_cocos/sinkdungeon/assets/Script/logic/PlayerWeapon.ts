@@ -78,10 +78,10 @@ export default class PlayerWeapon extends cc.Component {
                 break;
         }
     }
-    changeWeapon(equipData: EquipmentData, spriteFrame: cc.SpriteFrame, inventoryManager: InventoryManager) {
+    changeWeapon(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         switch (equipData.equipmetType) {
             case InventoryManager.WEAPON:
-                this.meleeWeapon.changeEquipment(equipData,spriteFrame,inventoryManager);
+                this.meleeWeapon.changeEquipment(equipData,spriteFrame);
                 break;
             case InventoryManager.REMOTE: this.shooter.data = equipData.clone();
                 this.shooter.changeRes(this.shooter.data.img);
