@@ -6,6 +6,7 @@ import AudioPlayer from "../utils/AudioPlayer";
 import IndexZ from "../utils/IndexZ";
 import EquipmentManager from "../manager/EquipmentManager";
 import CCollider from "../collider/CCollider";
+import Item from "../item/Item";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -81,10 +82,15 @@ export default class Chest extends Building {
                     let dungeon = this.node.parent.getComponent(Dungeon);
                     if (dungeon) {
                         let rand4save = Logic.mapManager.getRandom4Save(this.seed);
-                        if(Logic.isCheatMode){
+                        if (Logic.isCheatMode) {
                             dungeon.addEquipment(EquipmentManager.CLOAK_WARRIOR, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
                             dungeon.addEquipment(EquipmentManager.REMOTE_BASKETBALL, Dungeon.getPosInMap(this.data.defaultPos), null, this.data.quality);
-
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_DREAM);
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_HEALING);
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_MOVESPEED);
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_REMOTE);
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.BOTTLE_ATTACK);
+                            dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.GOLDFINGER);
                         }
                         // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.HEART);
                         // dungeon.addItem(Dungeon.getPosInMap(this.data.defaultPos), Item.DREAM);
@@ -108,7 +114,7 @@ export default class Chest extends Building {
         if (saveChest) {
             saveChest.isOpen = this.data.isOpen;
             saveChest.quality = this.data.quality;
-        }else{
+        } else {
             Logic.mapManager.setCurrentBuildingData(this.data.clone());
         }
     }

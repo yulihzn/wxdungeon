@@ -87,7 +87,7 @@ export default class KeyboardController extends cc.Component {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW);
     }
     private openCellphone() {
-        if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW);
+        if (!Logic.isGamePause) EventHelper.emit(EventHelper.HUD_CELLPHONE_SHOW);
     }
     useItem(index: number) {
         if (!Logic.isGamePause) EventHelper.emit(EventHelper.USEITEM_KEYBOARD, { index: index });

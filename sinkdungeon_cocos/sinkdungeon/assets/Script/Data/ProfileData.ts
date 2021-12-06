@@ -2,7 +2,6 @@ import PlayerData from "./PlayerData";
 import RectDungeon from "../rect/RectDungeon";
 import EquipmentData from "./EquipmentData";
 import ItemData from "./ItemData";
-import TalentData from "./TalentData";
 import SavePointData from "./SavePointData";
 import InventoryData from "./InventoryData";
 import GroundOilGoldData from "./GroundOilGoldData";

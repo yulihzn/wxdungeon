@@ -1,3 +1,4 @@
+import { EventHelper } from './../logic/EventHelper';
 import Achievement from "../logic/Achievement";
 import FurnitureData from "../data/FurnitureData";
 import Dungeon from "../logic/Dungeon";
@@ -12,6 +13,7 @@ import RoomStool from "./RoomStool";
 import RoomTv from "./RoomTv";
 import CCollider from "../collider/CCollider";
 import NextStep from "../utils/NextStep";
+import InventoryData from '../data/InventoryData';
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -51,12 +53,12 @@ export default class Furniture extends Building {
     sprite: cc.Sprite;
     boxcover: cc.Sprite;
     boxback: cc.Sprite;
-    lock:cc.Sprite;
+    lock: cc.Sprite;
     tips: Tips;
     isOpening = false;
     anim: cc.Animation;
     furnitureData: FurnitureData;
-    unlockStep:NextStep = new NextStep();
+    unlockStep: NextStep = new NextStep();
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -69,31 +71,31 @@ export default class Furniture extends Building {
         this.tips = this.getComponentInChildren(Tips);
         this.tips.onInteract(() => {
             if (this.furnitureData) {
-                if(this.furnitureData.purchased){
+                if (this.furnitureData.purchased) {
                     if (this.furnitureData.isOpen) {
                         this.interact();
                     } else {
                         this.openBox();
                     }
-                }else{
-                    this.unlockStep.next(()=>{
+                } else {
+                    this.unlockStep.next(() => {
                         this.getComponent(cc.Animation).play('FurnitureUnlock');
                         AudioPlayer.play(AudioPlayer.SELECT_FAIL);
-                        Utils.toast(`暂未解锁，请打开右上角手机下单购买，请下次回来查收:-D`,true,true);
-                    },3,true);
+                        Utils.toast(`暂未解锁，请打开右上角手机下单购买，请下次回来查收:-D`, true, true);
+                    }, 3, true);
                 }
             }
         });
         this.tips.onEnter(() => {
             if (this.furnitureData) {
-                if (this.furnitureData.purchased&&this.furnitureData.isOpen) {
+                if (this.furnitureData.purchased && this.furnitureData.isOpen) {
                     this.onEnter();
                 }
             }
         });
         this.tips.onExit(() => {
             if (this.furnitureData) {
-                if (this.furnitureData.purchased&&this.furnitureData.isOpen) {
+                if (this.furnitureData.purchased && this.furnitureData.isOpen) {
                     this.onExit();
                 }
             }
@@ -117,6 +119,15 @@ export default class Furniture extends Building {
                 if (fishtank) {
                     fishtank.feed();
                 } break;
+            case Furniture.CUPBOARD:
+                if(this.furnitureData.storageList.length<1){
+                    for (let i = 0; i < this.furnitureData.storage; i++) {
+                        this.furnitureData.storageList.push(new InventoryData());
+                    }
+                    LocalStorage.saveFurnitureData(this.furnitureData);
+                }
+                EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id:this.furnitureData.id});
+                break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
                 Utils.toast('梦境开发中,无法使用');
@@ -146,8 +157,9 @@ export default class Furniture extends Building {
     init(furnitureData: FurnitureData) {
         this.furnitureData = new FurnitureData();
         this.furnitureData.valueCopy(furnitureData);
-        if(this.furnitureData.purchased){
-            this.sprite.node.color = cc.color(255,255,255,255);
+        Logic.inventoryManager.furnitureMap.set(furnitureData.id,this.furnitureData);
+        if (this.furnitureData.purchased) {
+            this.sprite.node.color = cc.color(255, 255, 255, 255);
             this.lock.node.active = false;
             if (this.furnitureData.isOpen) {
                 this.boxcover.node.active = false;
@@ -156,11 +168,11 @@ export default class Furniture extends Building {
                 this.boxcover.node.active = true;
                 this.boxback.node.active = true;
             }
-        }else{
-            this.sprite.node.color = cc.color(128,128,128,128);
+        } else {
+            this.sprite.node.color = cc.color(128, 128, 128, 128);
             this.boxcover.node.active = false;
-                this.boxback.node.active = false;
-                this.lock.node.active = true;
+            this.boxback.node.active = false;
+            this.lock.node.active = true;
         }
         this.changeRes(this.furnitureData.resName);
         if (this.furnitureData.collider.length > 0) {
@@ -193,9 +205,9 @@ export default class Furniture extends Building {
                 && this.furnitureData.id != Furniture.TV
                 && this.furnitureData.id != Furniture.SOFA
                 && this.furnitureData.id != Furniture.FISHTANK) {
-                    this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2);
-                    this.lock.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height/2 - Dungeon.TILE_SIZE / 2);
-                    let collider = this.tips.node.getComponent(CCollider);
+                this.tips.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height - Dungeon.TILE_SIZE / 2);
+                this.lock.node.position = cc.v3(width / 2 - Dungeon.TILE_SIZE / 2, height / 2 - Dungeon.TILE_SIZE / 2);
+                let collider = this.tips.node.getComponent(CCollider);
                 collider.radius = width > height ? height / 2 : width / 2;
                 if (width > height) {
                     collider.radius = height / 2;

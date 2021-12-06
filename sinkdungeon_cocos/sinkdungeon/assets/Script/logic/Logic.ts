@@ -113,7 +113,8 @@ export default class Logic extends cc.Component {
     static groundOilGoldData: GroundOilGoldData = new GroundOilGoldData();
     static killPlayerCounts: { [key: number]: number } = {};//玩家怪物击杀表
     static profileManager: ProfileManager = new ProfileManager();
-    static bagSortIndex = 0;//0时间,1类别,2品质
+    static bagSortIndex = 0;//0时间,1类别,2品质,3价格
+    static sortIndexs: { [key: string]: number } = {};//0时间,1类别,2品质,3价格
     static settings: Settings = new Settings();
     static nonPlayerList: NonPlayerData[] = [];
 
@@ -173,6 +174,9 @@ export default class Logic extends cc.Component {
         Logic.profileManager.saveData();
         LocalStorage.saveData(LocalStorage.KEY_COIN, Logic.coins);
         LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT, Logic.coinDreamCount);
+        for(let key in Logic.inventoryManager.furnitureMap){
+            LocalStorage.saveFurnitureData(Logic.inventoryManager.furnitureMap.get(key));
+        }
     }
     static resetData(chapter?: number) {
         //重置时间

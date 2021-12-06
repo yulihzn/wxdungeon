@@ -1,4 +1,5 @@
 import EquipmentData from "../data/EquipmentData";
+import FurnitureData from "../data/FurnitureData";
 import InventoryData from "../data/InventoryData";
 import ItemData from "../data/ItemData";
 import SuitData from "../data/SuitData";
@@ -45,6 +46,7 @@ export default class InventoryManager {
     equips: { [key: string]: EquipmentData } = {};
     suitMap: { [key: string]: SuitData } = {};
     suitEquipMap: { [key: string]: EquipmentData } = {};
+    furnitureMap:Map<String,FurnitureData> = new Map();
     emptyEquipData = new EquipmentData();
     clear(): void {
     }
@@ -60,6 +62,7 @@ export default class InventoryManager {
         }
         this.suitMap = {};
         this.suitEquipMap = {};
+        this.furnitureMap = new Map();
     }
     getEquipBySuit(e: EquipmentData): EquipmentData {
         if (e && this.suitEquipMap[e.suitType]) {

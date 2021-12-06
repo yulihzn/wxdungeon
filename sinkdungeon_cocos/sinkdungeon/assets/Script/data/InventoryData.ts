@@ -21,7 +21,6 @@ export default class InventoryData extends BaseData {
     itemData: ItemData;
     price: number;
     type: number = 0;
-    tag:number = 0;
 
     public valueCopy(data: InventoryData): void {
         if (!data) {
@@ -29,7 +28,6 @@ export default class InventoryData extends BaseData {
         }
         this.type = data.type ? data.type : 0;
         this.price = data.price ? data.price : 0;
-        this.tag = data.tag?data.tag:0;
         if (data.equipmentData) {
             this.equipmentData = new EquipmentData();
             this.equipmentData.valueCopy(data.equipmentData);
@@ -56,7 +54,6 @@ export default class InventoryData extends BaseData {
         e.type = this.type;
         e.price = this.price;
         e.level = this.level;
-        e.tag = this.tag;
         return e;
     }
     public setEmpty() {

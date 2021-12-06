@@ -9579,7 +9579,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        41.56200000000001,
+        0,
         24.245000000000005,
         0,
         0,
@@ -27056,8 +27056,8 @@
     "alignMode": 1,
     "_target": null,
     "_alignFlags": 45,
-    "_left": 41.562,
-    "_right": -41.562,
+    "_left": -1.4210854715202004e-14,
+    "_right": 1.4210854715202004e-14,
     "_top": -24.245000000000022,
     "_bottom": 24.245000000000022,
     "_verticalCenter": 0,
@@ -27093,6 +27093,9 @@
     "item": {
       "__uuid__": "94e5392f-fa2c-4691-ad3e-21bee074ef85"
     },
+    "layer": {
+      "__id__": 203
+    },
     "layout": {
       "__id__": 207
     },
@@ -27101,6 +27104,12 @@
     },
     "layoutItem": {
       "__id__": 343
+    },
+    "layoutOther": {
+      "__id__": 400
+    },
+    "otherDialog": {
+      "__id__": 396
     },
     "toggleContainer": {
       "__id__": 602

@@ -7,6 +7,8 @@ import SettingsDialog from "./dialog/SettingsDialog";
 import MartShelvesDialog from "./dialog/MartShelvesDialog";
 import InventoryDialog from "./dialog/InventoryDialog";
 import AudioPlayer from "../utils/AudioPlayer";
+import InventoryData from "../data/InventoryData";
+import FurnitureData from "../data/FurnitureData";
 
 // Learn TypeScript:
 //  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -51,8 +53,8 @@ export default class GameHud extends cc.Component {
     @property(InventoryDialog)
     inventoryDialog: InventoryDialog = null;
     @property(cc.Node)
-    followArrows:cc.Node = null;
-    private arrowList:cc.Node[]= [];
+    followArrows: cc.Node = null;
+    private arrowList: cc.Node[] = [];
     private isCompleteShowed = false;
     private checkTimeDelay = 0;
     private startCountTime = true;
@@ -62,52 +64,52 @@ export default class GameHud extends cc.Component {
     private second = 0;
 
     onLoad() {
-        cc.director.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, (event) => {
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_INFODIALOG, (detail) => {
             let data = new PlayerData();
-            data.valueCopy(event.detail.data);
+            data.valueCopy(detail.data);
             this.statusUpdate(data);
         })
-        cc.director.on(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, (event) => {
-            this.healthBarUpdate(event.detail.x, event.detail.y);
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_HEALTHBAR, (detail) => {
+            this.healthBarUpdate(detail.x, detail.y);
         })
-        cc.director.on(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, (event) => {
-            this.dreamBarUpdate(event.detail.x, event.detail.y);
+        EventHelper.on(EventHelper.HUD_UPDATE_PLAYER_DREAMBAR, (detail) => {
+            this.dreamBarUpdate(detail.x, detail.y);
         })
-        cc.director.on(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR, (event) => {
+        EventHelper.on(EventHelper.HUD_SHAKE_PLAYER_DREAMBAR, (detail) => {
             if (this.dreamBar) {
                 this.dreamBar.shake();
             }
         })
-        cc.director.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (event) => {
+        EventHelper.on(EventHelper.HUD_DAMAGE_CORNER_SHOW, (detail) => {
             this.showDamageCorner();
             if (this.healthBar) {
                 this.healthBar.shake();
             }
         })
-        cc.director.on(EventHelper.HUD_MART_SHELVES_DIALOG, (event) => {
-            this.showMartShelvesDialog(event.detail.type, event.detail.goodsNameList);
+        EventHelper.on(EventHelper.HUD_MART_SHELVES_DIALOG, (detail) => {
+            this.showMartShelvesDialog(detail.type, detail.goodsNameList);
         })
         EventHelper.on(EventHelper.HUD_COMPLETE_SHOW, (detail) => {
             this.showComplete(detail.map);
         })
-        cc.director.on(EventHelper.HUD_OILGOLD_LOSE_SHOW, (event) => {
+        EventHelper.on(EventHelper.HUD_OILGOLD_LOSE_SHOW, (detail) => {
             this.showOilGoldInfo(true);
         })
-        cc.director.on(EventHelper.HUD_OILGOLD_RECOVERY_SHOW, (event) => {
+        EventHelper.on(EventHelper.HUD_OILGOLD_RECOVERY_SHOW, (detail) => {
             this.showOilGoldInfo(false);
         })
-        cc.director.on(EventHelper.HUD_INVENTORY_SHOW, (event) => {
-            this.showInventoryDialog();
+        EventHelper.on(EventHelper.HUD_INVENTORY_SHOW, (detail) => {
+            this.showInventoryDialog(detail.id);
         })
-        cc.director.on(EventHelper.HUD_CANCEL_OR_PAUSE, (event) => {
+        EventHelper.on(EventHelper.HUD_CANCEL_OR_PAUSE, (detail) => {
             this.cancelOrPause();
         })
-        cc.director.on(EventHelper.HUD_STOP_COUNTTIME
-            , (event) => { this.startCountTime = false; });
-        cc.director.on(EventHelper.HUD_FADE_IN, (event) => {
+        EventHelper.on(EventHelper.HUD_STOP_COUNTTIME
+            , (detail) => { this.startCountTime = false; });
+        EventHelper.on(EventHelper.HUD_FADE_IN, (detail) => {
             this.fadeIn();
         })
-        cc.director.on(EventHelper.HUD_FADE_OUT, (event) => {
+        EventHelper.on(EventHelper.HUD_FADE_OUT, (detail) => {
             this.fadeOut();
         })
         if (this.clock) {
@@ -137,12 +139,12 @@ export default class GameHud extends cc.Component {
         this.fadeIn();
         this.initFollowArrows();
     }
-    private initFollowArrows(){
+    private initFollowArrows() {
         this.arrowList.push(this.followArrows.getChildByName('arrow0'));
         this.arrowList.push(this.followArrows.getChildByName('arrow1'));
         this.arrowList.push(this.followArrows.getChildByName('arrow2'));
         this.arrowList.push(this.followArrows.getChildByName('arrow3'));
-        for(let arrow of this.arrowList){
+        for (let arrow of this.arrowList) {
             arrow.active = false;
         }
     }
@@ -163,7 +165,7 @@ export default class GameHud extends cc.Component {
             }
         }, 0.15, arr.length);
     }
-    private showComplete(map:Map<Number,Boolean>) {
+    private showComplete(map: Map<Number, Boolean>) {
         if (!this.completeLabel || this.isCompleteShowed) {
             return;
         }
@@ -178,17 +180,17 @@ export default class GameHud extends cc.Component {
                 this.completeLabel.string = arr[i++];
             }
         }, 0.1, arr.length, 0.5);
-        if(map&&map.size>0){
-            for(let i = 0;i<4;i++){
-                if(map.has(i)){
+        if (map && map.size > 0) {
+            for (let i = 0; i < 4; i++) {
+                if (map.has(i)) {
                     this.arrowList[i].active = true;
-                    this.arrowList[i].getChildByName('sprite').color = map.get(i)?cc.Color.WHITE:cc.color(55,55,55,255);
-                } else{
+                    this.arrowList[i].getChildByName('sprite').color = map.get(i) ? cc.Color.WHITE : cc.color(55, 55, 55, 255);
+                } else {
                     this.arrowList[i].active = false;
                 }
             }
         }
-        
+
     }
     private fadeOut() {
         if (!this.node) {
@@ -282,10 +284,10 @@ export default class GameHud extends cc.Component {
         let strSecond = `${this.second}`;
         strSecond = strSecond.length > 1 ? strSecond : '0' + strSecond;
         Logic.time = strHour + ':' + strMinute + ':' + strSecond;
-        Logic.realTime = Logic.realTime+60000;
+        Logic.realTime = Logic.realTime + 60000;
 
     }
-    
+
     private cancelOrPause() {
         if (!this.node) {
             return;
@@ -305,13 +307,16 @@ export default class GameHud extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
         this.showSettingsDialog();
     }
-    showInventoryDialog() {
+    //button
+    showInventoryDialog(id:string) {
         if (!this.node) {
             return;
         }
         if (this.inventoryDialog.isShow) {
             this.inventoryDialog.dismiss();
-        } else {
+        } else if(id&&id.length>0){
+            this.inventoryDialog.showFurniture(id);
+        }else{
             this.inventoryDialog.show();
         }
     }
