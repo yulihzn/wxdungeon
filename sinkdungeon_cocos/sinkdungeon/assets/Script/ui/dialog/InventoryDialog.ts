@@ -29,7 +29,7 @@ export default class InventoryDialog extends BaseDialog {
     @property(cc.Prefab)
     item: cc.Prefab = null;
     @property(cc.Node)
-    layer:cc.Node = null;
+    layer: cc.Node = null;
     @property(cc.Node)
     layout: cc.Node = null;
     @property(cc.Node)
@@ -54,7 +54,7 @@ export default class InventoryDialog extends BaseDialog {
     equipList: InventoryItem[] = [];
     itemList: InventoryItem[] = [];
     otherList: InventoryItem[] = [];
-    furnitureId:string = '';
+    furnitureId: string = '';
     @property(cc.Node)
     select: cc.Node = null;
     @property(cc.Label)
@@ -90,7 +90,7 @@ export default class InventoryDialog extends BaseDialog {
                     this.updateList(Logic.bagSortIndex);
                     this.updateEquipList();
                     this.updateItemList();
-                    if(this.furnitureId.length>0){
+                    if (this.furnitureId.length > 0) {
                         this.updateOtherList(Logic.sortIndexs[this.furnitureId]);
                     }
                 }
@@ -111,7 +111,13 @@ export default class InventoryDialog extends BaseDialog {
             , (detail) => {
                 if (this.node) {
                     let data = Logic.inventoryManager.inventoryList[detail.index];
-                    this.list[detail.index].updateData(data);
+                    let furnitureId: string = detail.furnitureId;
+                    if (furnitureId && furnitureId.length > 0) {
+                        data = Logic.inventoryManager.furnitureMap.get(furnitureId).storageList[detail.index];
+                        this.otherList[detail.index].updateData(data);
+                    } else {
+                        this.list[detail.index].updateData(data);
+                    }
                 }
             });
         this.toggleContainer.toggleItems[Logic.bagSortIndex].isChecked = true;
@@ -151,12 +157,12 @@ export default class InventoryDialog extends BaseDialog {
         this.updateItemList();
         this.updateOtherList(0);
     }
-    showFurniture(id:string){
+    showFurniture(id: string) {
         this.layer.x = 0;
         this.otherDialog.active = true;
         this.furnitureId = id;
         super.show();
-        cc.tween(this.layer).delay(0.3).to(0.5,{x:145}).start();
+        cc.tween(this.layer).delay(0.3).to(0.5, { x: 145 }).start();
         this.updateList(Logic.bagSortIndex);
         this.updateEquipList();
         this.updateItemList();
@@ -184,16 +190,16 @@ export default class InventoryDialog extends BaseDialog {
         this.select.position = this.node.convertToNodeSpaceAR(item.node.convertToWorldSpaceAR(cc.Vec3.ZERO));
         this.select.opacity = 200;
         this.useButton.getComponentInChildren(cc.Label).string = this.currentSelectIndex >= InventoryManager.INVENTORY_MAX ? '卸下' : '装备';
-        if(this.furnitureId.length>0){
-            if(this.currentSelectIndex >= InventoryManager.INVENTORY_MAX+InventoryManager.INVENTORY_EQUIP_MAX+InventoryManager.INVENTORY_ITEM_MAX){
+        if (this.furnitureId.length > 0) {
+            if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + InventoryManager.INVENTORY_ITEM_MAX) {
                 this.dropButton.getComponentInChildren(cc.Label).string = '取出';
-            }else{
+            } else {
                 this.dropButton.getComponentInChildren(cc.Label).string = '存入';
             }
-        }else{
+        } else {
             this.dropButton.getComponentInChildren(cc.Label).string = '放下';
         }
-        
+
         AudioPlayer.play(AudioPlayer.SELECT);
         if (item.data.type == InventoryItem.TYPE_EQUIP) {
             this.discountLabel.string = `-${this.discount * 100}%(${Math.floor(item.data.equipmentData.price * this.discount)})`;
@@ -257,16 +263,16 @@ export default class InventoryDialog extends BaseDialog {
             }
         }
     }
-    
+
     private updateOtherList(sortIndex: number) {
         this.clearSelect();
         this.otherList = [];
         this.layoutOther.removeAllChildren();
-        if(this.furnitureId.length<1){
+        if (this.furnitureId.length < 1) {
             return;
         }
         let furnitureData = Logic.inventoryManager.furnitureMap.get(this.furnitureId);
-        if(!furnitureData){
+        if (!furnitureData) {
             return;
         }
         for (let i = 0; i < furnitureData.storageList.length; i++) {
@@ -274,7 +280,7 @@ export default class InventoryDialog extends BaseDialog {
             data.valueCopy(furnitureData.storageList[i]);
             this.otherList.push(this.getItem(InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + InventoryManager.INVENTORY_ITEM_MAX + i, data, this.layoutOther));
         }
-        let list = this.getSortList(sortIndex,furnitureData.storageList);
+        let list = this.getSortList(sortIndex, furnitureData.storageList);
         for (let i = 0; i < furnitureData.storage; i++) {
             if (i < list.length && list[i].type != InventoryItem.TYPE_EMPTY) {
                 let data = list[i];
@@ -301,7 +307,7 @@ export default class InventoryDialog extends BaseDialog {
         //         }
         //     }
         // }
-        let list = this.getSortList(sortIndex,Logic.inventoryManager.inventoryList);
+        let list = this.getSortList(sortIndex, Logic.inventoryManager.inventoryList);
         // if (sortIndex == 0) {//时间排序
         //     list.sort((a, b) => {
         //         return a.createTime - b.createTime;
@@ -333,7 +339,7 @@ export default class InventoryDialog extends BaseDialog {
         }
         Logic.inventoryManager.inventoryList = list;
     }
-    private getSortList(sortIndex: number,inventoryList:InventoryData[]){
+    private getSortList(sortIndex: number, inventoryList: InventoryData[]) {
         let itemlist: InventoryData[] = [];
         let equiplist: InventoryData[] = [];
         let list: InventoryData[] = [];
@@ -371,7 +377,7 @@ export default class InventoryDialog extends BaseDialog {
         }
         return list;
     }
-  
+
     //button 装备
     use() {
         //未选中或者为空直接返回
@@ -379,7 +385,7 @@ export default class InventoryDialog extends BaseDialog {
             return;
         }
         //装备栏卸下
-        if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX 
+        if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX
             && this.currentSelectIndex < InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX) {
             AudioPlayer.play(AudioPlayer.SELECT);
             let current = this.equipList[this.currentSelectIndex - InventoryManager.INVENTORY_MAX];
@@ -393,7 +399,7 @@ export default class InventoryDialog extends BaseDialog {
             return;
         }
         //物品栏卸下
-        if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX 
+        if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX
             && this.currentSelectIndex < InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + InventoryManager.INVENTORY_ITEM_MAX) {
             AudioPlayer.play(AudioPlayer.SELECT);
             let current = this.itemList[this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX];
@@ -406,13 +412,13 @@ export default class InventoryDialog extends BaseDialog {
             return;
         }
 
-        //背包物品装备
+        //背包和储物箱物品装备
         let list = this.list;
         let selectIndex = this.currentSelectIndex;
-        let isOther = this.currentSelectIndex >= InventoryManager.INVENTORY_MAX+InventoryManager.INVENTORY_EQUIP_MAX+InventoryManager.INVENTORY_ITEM_MAX;
-        if(isOther){
+        let isOther = this.currentSelectIndex >= InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + InventoryManager.INVENTORY_ITEM_MAX;
+        if (isOther) {
             list = this.otherList;
-            selectIndex = this.currentSelectIndex - InventoryManager.INVENTORY_MAX-InventoryManager.INVENTORY_EQUIP_MAX-InventoryManager.INVENTORY_ITEM_MAX;
+            selectIndex = this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX - InventoryManager.INVENTORY_ITEM_MAX;
         }
 
         if (list[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
@@ -430,10 +436,10 @@ export default class InventoryDialog extends BaseDialog {
                 }
                 //置空当前放下的数据，清除选中
                 list[this.currentSelectIndex].setEmpty();
-                if(isOther){
+                if (isOther) {
                     Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
                     EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: equipData, isReplace: true });
-                }else{
+                } else {
                     Logic.inventoryManager.inventoryList[selectIndex].setEmpty();
                     EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: equipData, isReplace: true, index: this.currentSelectIndex });
                 }
@@ -444,10 +450,10 @@ export default class InventoryDialog extends BaseDialog {
             if (itemData.resName != Item.EMPTY) {
                 //置空当前放下的数据，清除选中
                 list[selectIndex].setEmpty();
-                if(isOther){
+                if (isOther) {
                     Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
-                    EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: itemData, isReplace: true});
-                }else{
+                    EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: itemData, isReplace: true });
+                } else {
                     Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
                     EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: itemData, isReplace: true, index: this.currentSelectIndex });
                 }
@@ -462,7 +468,7 @@ export default class InventoryDialog extends BaseDialog {
         if (this.currentSelectIndex == -1) {
             return;
         }
-        //装备栏直接放下
+        //装备栏直接放下，如果是储物箱则是存入
         if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX && this.currentSelectIndex < InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX) {
             AudioPlayer.play(AudioPlayer.SELECT);
             let current = this.equipList[this.currentSelectIndex - InventoryManager.INVENTORY_MAX];
@@ -470,9 +476,9 @@ export default class InventoryDialog extends BaseDialog {
                 return;
             }
             let equipData = current.data.equipmentData;
-            if(this.furnitureId.length>0){
-                EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true ,isFurniture:true});
-            }else{
+            if (this.furnitureId.length > 0) {
+                EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true, furnitureId: this.furnitureId });
+            } else {
                 EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true, isDrop: true });
                 EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
             }
@@ -480,7 +486,7 @@ export default class InventoryDialog extends BaseDialog {
             this.clearSelect();
             return;
         }
-        //物品栏直接放下
+        //物品栏直接放下，如果是储物箱则是存入
         if (this.currentSelectIndex >= InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX && this.currentSelectIndex < InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + InventoryManager.INVENTORY_ITEM_MAX) {
             AudioPlayer.play(AudioPlayer.SELECT);
             let current = this.itemList[this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX];
@@ -488,34 +494,62 @@ export default class InventoryDialog extends BaseDialog {
                 return;
             }
             let itemData = current.data.itemData;
-            EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemIndex: this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX, isDrop: true });
-            EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM
-                , { res: itemData.resName, count: itemData.count })
+            if (this.furnitureId.length > 0) {
+                EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemIndex: this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX, isDrop: true });
+            } else {
+                EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemIndex: this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX, furnitureId: this.furnitureId });
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })
+            }
             current.setEmpty();
             this.clearSelect();
             return;
         }
         //背包放下
-        if (this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+        let list = this.list;
+        let selectIndex = this.currentSelectIndex;
+        let isOther = this.currentSelectIndex >= InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + InventoryManager.INVENTORY_ITEM_MAX;
+        if (isOther) {
+            list = this.otherList;
+            selectIndex = this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX - InventoryManager.INVENTORY_ITEM_MAX;
+        }
+        if (list[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
         AudioPlayer.play(AudioPlayer.SELECT);
-        let current = this.list[this.currentSelectIndex];
+        let current = list[selectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData;
             if (equipData.equipmetType != InventoryManager.EMPTY) {
-                EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
+                if (this.furnitureId.length > 0) {
+                    Inventory.setEquipmentToBag(equipData, false, false, selectIndex, this.furnitureId);
+                } else {
+                    if (this.furnitureId.length > 0) {
+                        Inventory.setEquipmentToBag(equipData, false, false, selectIndex, '');
+                    }
+                    EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
+                }
             }
         } else {
             let itemData = current.data.itemData;
             if (itemData.resName != Item.EMPTY) {
-                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM
-                    , { res: itemData.resName, count: itemData.count })
+                if (isOther) {
+                    Inventory.setItemToBag(itemData, selectIndex, this.furnitureId);
+                } else {
+                    if (this.furnitureId.length > 0) {
+                        Inventory.setItemToBag(itemData, selectIndex, '');
+                    } else {
+                        EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })
+                    }
+                }
             }
         }
         //置空当前放下的数据，清除选中
-        Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
-        this.list[this.currentSelectIndex].setEmpty();
+        if (isOther) {
+            Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
+        } else {
+            Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
+        }
+        list[selectIndex].setEmpty();
         this.clearSelect();
     }
     //button 出售
@@ -555,11 +589,18 @@ export default class InventoryDialog extends BaseDialog {
             return;
         }
         //背包售出
-        if (this.list[this.currentSelectIndex].data.type == InventoryItem.TYPE_EMPTY) {
+        let list = this.list;
+        let selectIndex = this.currentSelectIndex;
+        let isOther = this.currentSelectIndex >= InventoryManager.INVENTORY_MAX + InventoryManager.INVENTORY_EQUIP_MAX + InventoryManager.INVENTORY_ITEM_MAX;
+        if (isOther) {
+            list = this.otherList;
+            selectIndex = this.currentSelectIndex - InventoryManager.INVENTORY_MAX - InventoryManager.INVENTORY_EQUIP_MAX - InventoryManager.INVENTORY_ITEM_MAX;
+        }
+        if (list[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
         AudioPlayer.play(AudioPlayer.SELECT);
-        let current = this.list[this.currentSelectIndex];
+        let current = list[selectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             let equipData = current.data.equipmentData;
             if (equipData.equipmetType != InventoryManager.EMPTY) {
@@ -574,8 +615,12 @@ export default class InventoryDialog extends BaseDialog {
             }
         }
         //置空当前放下的数据，清除选中
-        Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
-        this.list[this.currentSelectIndex].setEmpty();
+        if (isOther) {
+            Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
+        } else {
+            Logic.inventoryManager.inventoryList[this.currentSelectIndex].setEmpty();
+        }
+        list[selectIndex].setEmpty();
         this.clearSelect();
     }
     // update (dt) {}
