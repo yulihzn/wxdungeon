@@ -23,6 +23,7 @@ import InventoryItem from '../ui/InventoryItem';
 import EquipmentAndItemDialog from '../ui/dialog/EquipmentAndItemDialog';
 import LocalStorage from '../utils/LocalStorage';
 import Utils from '../utils/Utils';
+import InventoryDialog from '../ui/dialog/InventoryDialog';
 @ccclass
 export default class Inventory extends cc.Component {
 
@@ -99,8 +100,21 @@ export default class Inventory extends cc.Component {
         EventHelper.on(EventHelper.PLAYER_CHANGEEQUIPMENT
             , (detail) => {
                 if (this.node) {
-                    this.refreshEquipment(detail.equipmetType, detail.equipData, false, detail.isReplace, detail.isDrop, detail.index,detail.furnitureId);
+                    this.refreshEquipment(detail.equipmetType, detail.equipData, false, detail.isReplace, detail.isDrop, detail.index, detail.furnitureId);
                     this.refreshSuits();
+                }
+            });
+        EventHelper.on(EventHelper.PLAYER_EQUIPMENT_REFRESH
+            , (detail) => {
+                if (this.node) {
+                    this.refreshEquipmentRes(detail.equipmetType);
+                    this.refreshSuits();
+                }
+            });
+        EventHelper.on(EventHelper.PLAYER_ITEM_REFRESH
+            , (detail) => {
+                if (this.node) {
+                    this.refreshItemRes();
                 }
             });
         if (this.equipmentGroundDialog) { this.equipmentGroundDialog.hideDialog(); }
@@ -108,7 +122,7 @@ export default class Inventory extends cc.Component {
         EventHelper.on(EventHelper.PLAYER_CHANGEITEM
             , (detail) => {
                 if (this.node) {
-                    this.refreshItem(detail.itemData, detail.isReplace,detail.isDrop, detail.index, detail.itemIndex,detail.furnitureId);
+                    this.refreshItem(detail.itemData, detail.isReplace, detail.isDrop, detail.index, detail.itemIndex, detail.furnitureId);
                 }
             });
         EventHelper.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
@@ -201,7 +215,7 @@ export default class Inventory extends cc.Component {
             this.addEquipSpriteTouchEvent(this.equipSprites[key], key);
         }
         for (let key in this.inventoryManager.equips) {
-            this.refreshEquipment(key, this.inventoryManager.equips[key], true,false,false,-1,'');
+            this.refreshEquipment(key, this.inventoryManager.equips[key], true, false, false, -1, '');
         }
         this.refreshItemRes();
         let itemSpriteList = [this.itemsprite1, this.itemsprite2, this.itemsprite3, this.itemsprite4, this.itemsprite5];
@@ -270,129 +284,8 @@ export default class Inventory extends cc.Component {
             isLongPress = false;
         })
     }
-    static setItemToBag(itemData: ItemData, indexFromBag: number,furnitureId:string) {
-        let list = Logic.inventoryManager.inventoryList;
-        let max = InventoryManager.INVENTORY_MAX;
-        if(furnitureId&&furnitureId.length>0){
-            list = Logic.inventoryManager.furnitureMap.get(furnitureId).storageList;
-            max = Logic.inventoryManager.furnitureMap.get(furnitureId).storage;
-        }
-        //可插入的下标,默认为列表末尾，如果已满为-1，遍历选中第一个空位
-        let insertIndex = list.length < max ? list.length : -1;
-        let isFromBag = indexFromBag && indexFromBag > -1 && indexFromBag < list.length||indexFromBag===0;
-        //遍历相同物品，如果有+1,如果是来自背包交换通知背包刷新
-        for (let i = list.length - 1; i >= 0; i--) {
-            let idata = list[i];
-            if (idata.type == InventoryItem.TYPE_EMPTY) {
-                insertIndex = i;
-            } else if (idata.type == InventoryItem.TYPE_ITEM && this.isItemEqualCanAdd(idata.itemData, itemData)) {
-                let count = idata.itemData.count + itemData.count;
-                idata.itemData = new ItemData();
-                idata.itemData.valueCopy(itemData);
-                idata.itemData.count = count;
-                idata.price = idata.itemData.price;
-                if(idata.itemData.count>0){
-                    idata.price = idata.itemData.price*idata.itemData.count;
-                }
-                if (isFromBag) {
-                    EventHelper.emit(EventHelper.HUD_INVENTORY_SELECT_UPDATE, { index: indexFromBag,furnitureId:furnitureId});
-                }
-                return;
-            }
-        }
-        let newdata = Inventory.buildItemInventoryData(itemData);
-        //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
-        if (isFromBag) {
-            list[indexFromBag] = new InventoryData();
-            list[indexFromBag].valueCopy(newdata);
-            EventHelper.emit(EventHelper.HUD_INVENTORY_SELECT_UPDATE, { index: indexFromBag });
-        } else {
-            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包并通知背包全局刷新
-            if (insertIndex == -1) {
-                if(furnitureId&&furnitureId.length>0){
-                    Utils.toast('该物品栏已满');
-                }else if (itemData.resName != Item.EMPTY) {
-                    EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, {res: itemData.resName, count: itemData.count });
-                }
-            } else {
-                let d = new InventoryData();
-                d.valueCopy(newdata);
-                if (insertIndex < list.length) {
-                    list[insertIndex] = d;
-                } else {
-                    list.push(d);
-                }
-                EventHelper.emit(EventHelper.HUD_INVENTORY_ALL_UPDATE);
-            }
-        }
-    }
-    static buildItemInventoryData(itemData: ItemData) {
-        let newdata = new InventoryData();
-        newdata.itemData = new ItemData();
-        newdata.itemData.valueCopy(itemData);
-        newdata.type = itemData.resName == Item.EMPTY ? InventoryItem.TYPE_EMPTY : InventoryItem.TYPE_ITEM;
-        newdata.createTime = new Date().getTime();
-        newdata.id = newdata.itemData.id;
-        return newdata;
-    }
-    static bulidEquipInventoryData(equipmentData: EquipmentData) {
-        let newdata = new InventoryData();
-        newdata.equipmentData = new EquipmentData();
-        newdata.equipmentData.valueCopy(equipmentData);
-        newdata.type = equipmentData.equipmetType == InventoryManager.EMPTY ? InventoryItem.TYPE_EMPTY : InventoryItem.TYPE_EQUIP;
-        newdata.price = newdata.equipmentData.price;
-        newdata.createTime = new Date().getTime();
-        newdata.id = newdata.equipmentData.id;
-        return newdata;
-    }
-    static setEquipmentToBag(equipmentData: EquipmentData, isInit: boolean, isDrop: boolean, indexFromBag: number,furnitureId:string) {
-        //来自初始化，isDrop(丢弃售出)或者空装备直接返回
-        if (isInit || isDrop || equipmentData.equipmetType == InventoryManager.EMPTY) {
-            return;
-        }
-        let list = Logic.inventoryManager.inventoryList;
-        let max = InventoryManager.INVENTORY_MAX;
-        if(furnitureId&&furnitureId.length>0){
-            list = Logic.inventoryManager.furnitureMap.get(furnitureId).storageList;
-            max = Logic.inventoryManager.furnitureMap.get(furnitureId).storage;
-        }
-        //可插入的下标,默认为列表末尾，如果已满为-1，遍历选中第一个空位
-        let insertIndex = list.length < max ? list.length : -1;
-        let isFromBag = indexFromBag && indexFromBag > -1 && indexFromBag < list.length||indexFromBag===0;
-        //遍历选中第一个空位
-        for (let i = 0; i < list.length; i++) {
-            let idata = list[i];
-            if (idata.type == InventoryItem.TYPE_EMPTY) {
-                insertIndex = i;
-                break;
-            }
-        }
-        let newdata = Inventory.bulidEquipInventoryData(equipmentData);
-        //如果是来自背包交换，填补交换下标的数据并通知背包刷新指定数据
-        if (isFromBag) {
-            list[indexFromBag] = new InventoryData();
-            list[indexFromBag].valueCopy(newdata);
-            EventHelper.emit(EventHelper.HUD_INVENTORY_SELECT_UPDATE, { index: indexFromBag,furnitureId:furnitureId });
-        } else {
-            //如果是拾取或者购买，判断插入下标是否为-1，如果为-1放在地上，否则添加到背包并通知背包全局刷新
-            if (insertIndex == -1) {
-                if(furnitureId&&furnitureId.length>0){
-                    Utils.toast('该物品栏已满');
-                }else if (equipmentData.equipmetType != InventoryManager.EMPTY) {
-                    EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, {res: equipmentData.img, equipmentData: equipmentData });
-                }
-            } else {
-                let d = new InventoryData();
-                d.valueCopy(newdata);
-                if (insertIndex < list.length) {
-                    list[insertIndex] = d;
-                } else {
-                    list.push(d);
-                }
-                EventHelper.emit(EventHelper.HUD_INVENTORY_ALL_UPDATE);
-            }
-        }
-    }
+
+
     refreshSuits() {
         this.inventoryManager.suitMap = {};
         this.inventoryManager.suitEquipMap = {};
@@ -429,8 +322,64 @@ export default class Inventory extends cc.Component {
         }
 
     }
+    private refreshEquipmentRes(equipmetType: string) {
+        if (!equipmetType) {
+            return;
+        }
+        let equip = this.inventoryManager.equips[equipmetType];
+        let color = cc.color(255, 255, 255).fromHEX(equip.color);
+        let spriteFrame = Logic.spriteFrameRes(equip.img);
+        if (equip.equipmetType == InventoryManager.CLOTHES) {
+            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0');
+        } else if (equip.equipmetType == InventoryManager.HELMET) {
+            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0');
+        } else if (equip.equipmetType == InventoryManager.REMOTE) {
+            spriteFrame = Logic.spriteFrameRes(equip.img + 'anim0');
+        }
+        //更新贴图和颜色
+        let sprite = this.equipSprites[equipmetType];
+        if (sprite) {
+            sprite.node.color = color;
+            sprite.spriteFrame = equip.trouserslong == 1 ? Logic.spriteFrameRes('trousers000') : spriteFrame;
+            if (equipmetType == InventoryManager.TROUSERS && equip.trouserslong == 1) {
+                sprite.spriteFrame = Logic.spriteFrameRes('trousers000');
+            }
+        }
+        switch (equipmetType) {
+            case InventoryManager.REMOTE:
+                this.remote.node.parent.active = true;
+                this.shield.node.parent.active = true;
+                //清空盾牌和贴图
+                this.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData());
+                this.shield.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.SHIELD].img);
+                this.shield.node.parent.active = false;
+                break;
+            case InventoryManager.SHIELD:
+                this.remote.node.parent.active = true;
+                this.shield.node.parent.active = true;
+                //如果当前盾牌不为空清空远程和贴图并展示盾牌栏，否则显示远程隐藏盾牌栏
+                if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
+                    this.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData());
+                    this.remote.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.REMOTE].img);
+                    this.remote.node.parent.active = false;
+                    this.shield.node.parent.active = true;
+                } else {
+                    this.remote.node.parent.active = true;
+                    this.shield.node.parent.active = false;
+                }
+                break;
+        }
+        //更新玩家装备贴图和状态
+        if (this.dungeon && this.dungeon.player) {
+            this.dungeon.player.inventoryManager = this.inventoryManager;
+            this.dungeon.player.changeEquipment(equipmetType, equip, spriteFrame);
+            if (equip.statusInterval > 0 && equip.statusName.length > 0) {
+                this.dungeon.player.addStatus(equip.statusName, FromData.getClone(equip.nameCn, equip.img));
+            }
+        }
+    }
 
-    refreshEquipment(equipmetType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean, isDrop: boolean, indexFromBag: number,furnitureId:string) {
+    refreshEquipment(equipmetType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean, isDrop: boolean, indexFromBag: number, furnitureId: string) {
         if (!equipDataNew || !this.weapon || !equipmetType) {
             return;
         }
@@ -451,7 +400,7 @@ export default class Inventory extends cc.Component {
 
         //1.如果是捡起到背包或者购买（非替换非初始化非扔掉），且对应位置有装备，则直接放置到背包
         if (!isReplace && !isDrop && !isInit && equip && hasEquip) {
-            Inventory.setEquipmentToBag(equipDataNew, isInit, isDrop, indexFromBag,furnitureId);
+            InventoryManager.setEquipmentToBag(equipDataNew, isInit, isDrop, indexFromBag, furnitureId);
             return;
         }
         //2.如果是长按或者来自背包装备的替换操作，替换新的，移出旧的到背包
@@ -466,7 +415,7 @@ export default class Inventory extends cc.Component {
         }
         //更新当前装备数据
         if (equip) {
-            Inventory.setEquipmentToBag(equip, isInit, isDrop, indexFromBag,furnitureId);
+            InventoryManager.setEquipmentToBag(equip, isInit, isDrop, indexFromBag, furnitureId);
             equip.valueCopy(equipDataNew);
             if (!isInit) {
                 EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE);
@@ -486,7 +435,7 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
                 //替换盾牌到背包
-                Inventory.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit, isDrop, indexFromBag,furnitureId);
+                InventoryManager.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit, isDrop, indexFromBag, furnitureId);
                 //清空盾牌和贴图
                 this.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData());
                 this.shield.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.SHIELD].img);
@@ -496,7 +445,7 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
                 //替换远程到背包
-                Inventory.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, isDrop, indexFromBag,furnitureId);
+                InventoryManager.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, isDrop, indexFromBag, furnitureId);
                 //如果当前盾牌不为空清空远程和贴图并展示盾牌栏，否则显示远程隐藏盾牌栏
                 if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
                     this.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData());
@@ -591,11 +540,11 @@ export default class Inventory extends cc.Component {
         }, item.cooldown, true)
 
     }
-    static isItemEqualCanAdd(item1: ItemData, item2: ItemData): boolean {
-        return item1.resName != Item.EMPTY && item1.resName == item2.resName
-            && item1.count > 0 && item2.count > 0;
+    private itemRefresh(itemIndex:number){
+
     }
-    refreshItem(itemDataNew: ItemData, isReplace: boolean, isDrop:boolean,indexFromBag: number, itemIndex: number,furnitureId:string) {
+
+    refreshItem(itemDataNew: ItemData, isReplace: boolean, isDrop: boolean, indexFromBag: number, itemIndex: number, furnitureId: string) {
         if (!this.node) {
             return;
         }
@@ -603,20 +552,20 @@ export default class Inventory extends cc.Component {
         let isRefreshed = false;
 
         //如果是来自卸下操作，直接交换
-        if (itemIndex||itemIndex===0) {
+        if (itemIndex || itemIndex === 0) {
             isRefreshed = true;
             let item = new ItemData();
             item.valueCopy(this.inventoryManager.itemList[itemIndex]);
             this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
-            if(!isDrop){
-                Inventory.setItemToBag(item, indexFromBag,furnitureId);
+            if (!isDrop) {
+                InventoryManager.setItemToBag(item, indexFromBag, furnitureId);
             }
         }
         //填补相同可叠加
         if (!isRefreshed) {
             for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
                 let item = this.inventoryManager.itemList[i];
-                if (Inventory.isItemEqualCanAdd(item, itemDataNew)) {
+                if (InventoryManager.isItemEqualCanAdd(item, itemDataNew)) {
                     let count = item.count + itemDataNew.count;
                     item.valueCopy(itemDataNew);
                     item.count = count;
@@ -649,10 +598,10 @@ export default class Inventory extends cc.Component {
                 for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
                     this.inventoryManager.itemList[i].valueCopy(arr[i]);
                 }
-                Inventory.setItemToBag(item0, indexFromBag,'');
+                InventoryManager.setItemToBag(item0, indexFromBag, '');
             } else {
                 //2.如果是捡起到背包或者购买，直接放置到背包
-                Inventory.setItemToBag(itemDataNew, indexFromBag,'');
+                InventoryManager.setItemToBag(itemDataNew, indexFromBag, '');
             }
         }
         this.refreshItemRes();
@@ -665,7 +614,6 @@ export default class Inventory extends cc.Component {
             itemSpriteList[i].spriteFrame = Logic.spriteFrameRes(item.resName);
             itemLabelList[i].string = `${item.count > 0 ? ('x' + item.count) : ''}`;
         }
-        EventHelper.emit(EventHelper.HUD_INVENTORY_ITEM_UPDATE);
     }
 
 
