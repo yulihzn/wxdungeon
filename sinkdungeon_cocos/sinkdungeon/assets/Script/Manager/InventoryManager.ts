@@ -9,6 +9,7 @@ import InventoryItem from "../ui/InventoryItem";
 import NextStep from "../utils/NextStep";
 import Utils from '../utils/Utils';
 import Item from '../item/Item';
+import InventoryDialog from '../ui/dialog/InventoryDialog';
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -166,12 +167,31 @@ export default class InventoryManager {
         newdata.id = newdata.equipmentData.id;
         return newdata;
     }
-    static setEquipmentToBag(equipmentData: EquipmentData, isInit: boolean, isDrop: boolean, indexFromBag: number, furnitureId: string) {
+    static setEquipmentToBag(equipmentData: EquipmentData, isInit: boolean) {
         //来自初始化，isDrop(丢弃售出)或者空装备直接返回
-        if (isInit || isDrop || equipmentData.equipmetType == InventoryManager.EMPTY) {
+        if (isInit || equipmentData.equipmetType == InventoryManager.EMPTY) {
             return;
         }
         let list = Logic.inventoryManager.inventoryList;
+        let newdata = InventoryManager.bulidEquipInventoryData(equipmentData);
+        //添加到背包
+        let isAdded = InventoryDialog.addEquipOrItemToBag(newdata, list, this.list, true,null);
+        //不是直接放下的情况先往背包里放
+        if (!isDrop) {
+            isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.list, true,null);
+        }
+        //背包已满检查是否打开储物箱，添加到储物箱
+        if (!isAdded && this.furnitureId && this.furnitureId.length > 0) {
+            list = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList;
+            isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.otherList, true,null);
+        }
+        //背包已满，或者打开的储物箱已满，直接放置到地上
+        if (!isAdded) {
+            if (!isDrop) {
+                Utils.toast('物品栏已满');
+            }
+            EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })
+        }
         let max = InventoryManager.MAX_BAG;
         if (furnitureId && furnitureId.length > 0) {
             list = Logic.inventoryManager.furnitureMap.get(furnitureId).storageList;

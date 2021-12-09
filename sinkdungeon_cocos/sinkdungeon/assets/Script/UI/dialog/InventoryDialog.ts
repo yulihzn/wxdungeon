@@ -333,23 +333,23 @@ export default class InventoryDialog extends BaseDialog {
         }
         return list;
     }
-    private getItemInsertIndex(itemData:ItemData,list: InventoryData[], max: number): number {
+    static getItemInsertIndex(itemData: ItemData, list: InventoryData[], max: number): number {
         //可插入的下标,默认为列表末尾，如果已满为-1，遍历选中第一个空位
         let insertIndex = list.length < max ? list.length : -1;
         //遍历选中相同item
         for (let i = 0; i < list.length; i++) {
             let idata = list[i];
-            if (InventoryManager.isItemEqualCanAdd(idata.itemData,itemData)) {
+            if (InventoryManager.isItemEqualCanAdd(idata.itemData, itemData)) {
                 insertIndex = i;
                 break;
             }
         }
-        if(insertIndex == -1){
-            return this.getEmptyInsertIndex(list,max);
+        if (insertIndex == -1) {
+            return InventoryDialog.getEmptyInsertIndex(list, max);
         }
         return insertIndex;
     }
-    private getEmptyInsertIndex(list: InventoryData[], max: number): number {
+    static getEmptyInsertIndex(list: InventoryData[], max: number): number {
         //可插入的下标,默认为列表末尾，如果已满为-1，遍历选中第一个空位
         let insertIndex = list.length < max ? list.length : -1;
         //遍历选中第一个空位
@@ -369,52 +369,40 @@ export default class InventoryDialog extends BaseDialog {
      * @param inventoryItemList 被添加的ui列表
      * @returns 是否添加成功
      */
-    private addEquipToBag(data: InventoryData, dataList: InventoryData[], inventoryItemList: InventoryItem[]): boolean {
-        let insertIndex = this.getEmptyInsertIndex(dataList, inventoryItemList.length);
+    static addEquipOrItemToBag(data: InventoryData, dataList: InventoryData[],max:number,  isItem: boolean,inventoryItemList: InventoryItem[]): boolean {
+        let insertIndex = isItem ? this.getItemInsertIndex(data.itemData, dataList, max)
+            : this.getEmptyInsertIndex(dataList, max);
         if (insertIndex == -1) {
             return false;
         } else {
             let d = new InventoryData();
             d.valueCopy(data);
             if (insertIndex < dataList.length) {
-                
-                dataList[insertIndex] = d;
-                inventoryItemList[insertIndex].updateData(d);
-            } else {
-                dataList.push(d);
-                inventoryItemList[dataList.length - 1].updateData(d);
-            }
-            return true;
-        }
-    }
-    private addItemToBag(data: InventoryData, dataList: InventoryData[], inventoryItemList: InventoryItem[]): boolean {
-        let insertIndex = this.getItemInsertIndex(data.itemData,dataList, inventoryItemList.length);
-        if (insertIndex == -1) {
-            return false;
-        } else {
-            let d = new InventoryData();
-            d.valueCopy(data);
-            if (insertIndex < dataList.length) {
-                let item1 = d.itemData
-                let item2 = dataList[insertIndex].itemData;
-                if(InventoryManager.isItemEqualCanAdd(item1,item2)){
-                    let count = item1.count+item2.count;
-                    d.itemData.valueCopy(item2);
-                    d.itemData.count = count;
+                if (isItem) {
+                    let item1 = d.itemData
+                    let item2 = dataList[insertIndex].itemData;
+                    if (InventoryManager.isItemEqualCanAdd(item1, item2)) {
+                        let count = item1.count + item2.count;
+                        d.itemData.valueCopy(item2);
+                        d.itemData.count = count;
+                    }
                 }
                 dataList[insertIndex] = d;
-                inventoryItemList[insertIndex].updateData(d);
+                if(inventoryItemList){
+                    inventoryItemList[insertIndex].updateData(d);
+                }
             } else {
                 dataList.push(d);
-                inventoryItemList[dataList.length - 1].updateData(d);
+                if(inventoryItemList){
+                    inventoryItemList[dataList.length - 1].updateData(d);
+                }
             }
             return true;
         }
     }
-    
 
     /**脱下装备 */
-    private takeOffEquip(): boolean {
+    private takeOffEquip(isDrop: boolean, isSale: boolean): boolean {
         let isSelectEquip = this.currentSelectIndex >= InventoryManager.MAX_BAG
             && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP;
         if (!isSelectEquip) {
@@ -427,17 +415,28 @@ export default class InventoryDialog extends BaseDialog {
         }
         let equipData = current.data.equipmentData.clone();
         let list = Logic.inventoryManager.inventoryList;
-        //添加到背包
-        let isAdded = this.addEquipToBag(current.data, list, this.list);
-        //背包已满检查是否打开储物箱，添加到储物箱
-        if (!isAdded && this.furnitureId && this.furnitureId.length > 0) {
-            list = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList;
-            isAdded = this.addEquipToBag(current.data, list, this.otherList);
-        }
-        //背包已满，或者打开的储物箱已满，直接放置到地上
-        if (!isAdded) {
-            Utils.toast('物品栏已满');
-            EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
+        if (isSale) {
+            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) });
+            AudioPlayer.play(AudioPlayer.COIN);
+        } else {
+            //添加到背包
+            let isAdded = false;
+            //不是直接放下的情况先往背包里放
+            if (!isDrop) {
+                isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.list.length, false, this.list);
+            }
+            //背包已满检查是否打开储物箱，添加到储物箱
+            if (!isAdded && this.furnitureId && this.furnitureId.length > 0) {
+                list = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList;
+                isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.otherList.length, false, this.otherList);
+            }
+            //背包已满，或者打开的储物箱已满，直接放置到地上
+            if (!isAdded) {
+                if (!isDrop) {
+                    Utils.toast('物品栏已满');
+                }
+                EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
+            }
         }
         //清空该装备栏并更新ui
         Logic.inventoryManager.equips[equipData.equipmetType] = new EquipmentData();
@@ -446,7 +445,8 @@ export default class InventoryDialog extends BaseDialog {
         this.clearSelect();
         return true;
     }
-    private takeOffItem(): boolean {
+    /**脱下物品 */
+    private takeOffItem(isDrop: boolean, isSale: boolean): boolean {
         let isSelectItem = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP
             && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM;
         if (!isSelectItem) {
@@ -459,13 +459,40 @@ export default class InventoryDialog extends BaseDialog {
         }
         let itemData = new ItemData();
         itemData.valueCopy(current.data.itemData);
-        EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemIndex: this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP });
+        let list = Logic.inventoryManager.inventoryList;
+        if (isSale) {
+            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count > 1 ? itemData.price * itemData.count * this.discount : itemData.price * this.discount) });
+            AudioPlayer.play(AudioPlayer.COIN);
+        } else {
+            //添加到背包
+            let isAdded = false;
+            //不是直接放下的情况先往背包里放
+            if (!isDrop) {
+                isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.list.length, true, this.list);
+            }
+            //背包已满检查是否打开储物箱，添加到储物箱
+            if (!isAdded && this.furnitureId && this.furnitureId.length > 0) {
+                list = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList;
+                isAdded = InventoryDialog.addEquipOrItemToBag(current.data, list, this.otherList.length, true, this.otherList);
+            }
+            //背包已满，或者打开的储物箱已满，直接放置到地上
+            if (!isAdded) {
+                if (!isDrop) {
+                    Utils.toast('物品栏已满');
+                }
+                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })
+            }
+        }
+        //清空该装备栏并更新ui
+        Logic.inventoryManager.itemList[this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP] = new ItemData();
+        EventHelper.emit(EventHelper.PLAYER_ITEM_REFRESH);
         current.setEmpty();
         this.clearSelect();
         return true;
     }
-    /**穿上装备 */
-    private takeOnEquip(selectIndex: number, dataList: InventoryData[], inventoryItemList: InventoryItem[]) {
+   
+    /**穿上装备或物品 */
+    private takeOnEquipOrItem(selectIndex: number, dataList: InventoryData[], inventoryItemList: InventoryItem[]) {
         if (inventoryItemList[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
@@ -494,78 +521,92 @@ export default class InventoryDialog extends BaseDialog {
                 inventoryItemList[selectIndex].setEmpty();
                 dataList[selectIndex].setEmpty();
                 //设置物品栏数据并更新ui
-                Logic.inventoryManager.itemList[itemData] = equipData;
-                EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipData.equipmetType });
+                Logic.inventoryManager.itemList[selectIndex] = itemData;
+                EventHelper.emit(EventHelper.PLAYER_ITEM_REFRESH);
             }
         }
         //清除选中
         this.clearSelect();
     }
-
-
-    //button 装备或者脱下
-    use() {
-        //未选中或者为空直接返回
-        if (this.currentSelectIndex == -1) {
+    /**放下装备或物品 */
+    private dropEquipOrItem(selectIndex: number, dataList: InventoryData[], inventoryItemList: InventoryItem[], isOther: boolean, isSale: boolean) {
+        if (inventoryItemList[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
             return;
         }
-        //装备栏卸下
-        if (this.takeOffEquip()) {
-            return;
-        }
-        //物品栏卸下
-        if (this.takeOffItem()) {
-            return;
-        }
-        //背包和储物箱物品装备
-        let list = this.list;
-        let selectIndex = this.currentSelectIndex;
-        let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM;
-        if (isOther) {
-            list = this.otherList;
-            selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM;
-        }
-
-        if (list[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
-            return;
-        }
+        let isAdded = false;
         AudioPlayer.play(AudioPlayer.SELECT);
-        let current = list[selectIndex];
+        let current = inventoryItemList[selectIndex];
         if (current.data.type == InventoryItem.TYPE_EQUIP) {
             //佩戴装备
             let equipData = current.data.equipmentData.clone();
             if (equipData.equipmetType != InventoryManager.EMPTY) {
-                if (equipData.requireLevel > Logic.playerData.OilGoldData.level) {
-                    Utils.toast(`当前人物等级太低，无法装备`);
-                    return;
-                }
-                //置空当前放下的数据，清除选中
-                list[this.currentSelectIndex].setEmpty();
-                if (isOther) {
-                    Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
-                    EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: equipData, isReplace: true });
+                if (isSale) {
+                    EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) });
+                    AudioPlayer.play(AudioPlayer.COIN);
                 } else {
-                    Logic.inventoryManager.inventoryList[selectIndex].setEmpty();
-                    EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: equipData, isReplace: true, index: this.currentSelectIndex });
+                    if (isOther) {
+                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.inventoryList, this.list.length, false,this.list);
+                    } else if (this.furnitureId && this.furnitureId.length > 0) {
+                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList, this.otherList.length, false, this.otherList);
+                    }
+                    //放置装备到地上
+                    if (!isAdded) {
+                        EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
+                    }
                 }
             }
         } else {
             let itemData = new ItemData();
             itemData.valueCopy(current.data.itemData);
             if (itemData.resName != Item.EMPTY) {
-                //置空当前放下的数据，清除选中
-                list[selectIndex].setEmpty();
-                if (isOther) {
-                    Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
-                    EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: itemData, isReplace: true });
+                if (isSale) {
+                    EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count > 1 ? itemData.price * itemData.count * this.discount : itemData.price * this.discount) });
+                    AudioPlayer.play(AudioPlayer.COIN);
                 } else {
-                    Logic.inventoryManager.inventoryList[selectIndex].setEmpty();
-                    EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemData: itemData, isReplace: true, index: this.currentSelectIndex });
+                    if (isOther) {
+                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.inventoryList, this.list.length, true, this.list);
+                    } else if (this.furnitureId && this.furnitureId.length > 0) {
+                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList, this.otherList.length, true, this.otherList);
+                    }
+                    //放置物品到地上
+                    if (!isAdded) {
+                        EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })
+                    }
                 }
+
             }
         }
-
+        //置空当前背包需要装备的数据
+        inventoryItemList[this.currentSelectIndex].setEmpty();
+        dataList[this.currentSelectIndex].setEmpty();
+        //清除选中
         this.clearSelect();
+    }
+    //button 装备或者脱下
+    use() {
+        //未选中或者为空直接返回
+        if (this.currentSelectIndex == -1) {
+            return;
+        }
+        //装备栏卸下,先放背包，放不下放打开的储物箱
+        if (this.takeOffEquip(false, false)) {
+            return;
+        }
+        //物品栏卸下,先放背包，放不下放打开的储物箱
+        if (this.takeOffItem(false, false)) {
+            return;
+        }
+        //背包和储物箱物品装备
+        let inventoryItemList = this.list;
+        let dataList = Logic.inventoryManager.inventoryList;
+        let selectIndex = this.currentSelectIndex;
+        let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM;
+        if (isOther) {
+            inventoryItemList = this.otherList;
+            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList;
+            selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM;
+        }
+        this.takeOnEquipOrItem(selectIndex, dataList, inventoryItemList)
     }
     //button 放下 存取
     drop() {
@@ -574,85 +615,24 @@ export default class InventoryDialog extends BaseDialog {
             return;
         }
         //装备栏直接放下，如果是储物箱则是存入
-        if (this.currentSelectIndex >= InventoryManager.MAX_BAG && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP) {
-            AudioPlayer.play(AudioPlayer.SELECT);
-            let current = this.equipList[this.currentSelectIndex - InventoryManager.MAX_BAG];
-            if (current.data.type == InventoryItem.TYPE_EMPTY) {
-                return;
-            }
-            let equipData = current.data.equipmentData;
-            if (this.furnitureId.length > 0) {
-                EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true, furnitureId: this.furnitureId });
-            } else {
-                EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true, isDrop: true });
-                EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
-            }
-            current.setEmpty();
-            this.clearSelect();
+        if (this.takeOffEquip(true, false)) {
             return;
         }
         //物品栏直接放下，如果是储物箱则是存入
-        if (this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM) {
-            AudioPlayer.play(AudioPlayer.SELECT);
-            let current = this.itemList[this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP];
-            if (current.data.type == InventoryItem.TYPE_EMPTY) {
-                return;
-            }
-            let itemData = current.data.itemData;
-            if (this.furnitureId.length > 0) {
-                EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemIndex: this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP, isDrop: true });
-            } else {
-                EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemIndex: this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP, furnitureId: this.furnitureId });
-                EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })
-            }
-            current.setEmpty();
-            this.clearSelect();
+        if (this.takeOffItem(true, false)) {
             return;
         }
         //背包放下
-        let list = this.list;
+        let inventoryItemList = this.list;
+        let dataList = Logic.inventoryManager.inventoryList;
         let selectIndex = this.currentSelectIndex;
         let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM;
         if (isOther) {
-            list = this.otherList;
+            inventoryItemList = this.otherList;
+            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList;
             selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM;
         }
-        if (list[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
-            return;
-        }
-        AudioPlayer.play(AudioPlayer.SELECT);
-        let current = list[selectIndex];
-        if (current.data.type == InventoryItem.TYPE_EQUIP) {
-            let equipData = current.data.equipmentData;
-            if (equipData.equipmetType != InventoryManager.EMPTY) {
-                if (this.furnitureId.length > 0) {
-                    InventoryManager.setEquipmentToBag(equipData, false, false, selectIndex, this.furnitureId);
-                } else {
-                    EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
-                }
-            }
-        } else {
-            let itemData = current.data.itemData;
-            if (itemData.resName != Item.EMPTY) {
-                if (isOther) {
-                    InventoryManager.setItemToBag(itemData, selectIndex, this.furnitureId);
-                } else {
-                    if (this.furnitureId.length > 0) {
-                        InventoryManager.setItemToBag(itemData, selectIndex, '');
-                    } else {
-                        EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count })
-                    }
-                }
-            }
-        }
-        //置空当前放下的数据，清除选中
-        if (isOther) {
-            Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
-        } else {
-            Logic.inventoryManager.inventoryList[selectIndex].setEmpty();
-        }
-        list[selectIndex].setEmpty();
-        this.clearSelect();
+        this.dropEquipOrItem(selectIndex, dataList, inventoryItemList, isOther, false);
     }
     //button 出售
     sale() {
@@ -661,69 +641,24 @@ export default class InventoryDialog extends BaseDialog {
             return;
         }
         //装备栏直接售出
-        if (this.currentSelectIndex >= InventoryManager.MAX_BAG && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP) {
-            AudioPlayer.play(AudioPlayer.SELECT);
-            let current = this.equipList[this.currentSelectIndex - InventoryManager.MAX_BAG];
-            if (current.data.type == InventoryItem.TYPE_EMPTY) {
-                return;
-            }
-            let equipData = current.data.equipmentData;
-            EventHelper.emit(EventHelper.PLAYER_CHANGEEQUIPMENT, { equipmetType: equipData.equipmetType, equipData: new EquipmentData(), isReplace: true, isDrop: true });
-            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) });
-            AudioPlayer.play(AudioPlayer.COIN);
-            current.setEmpty();
-            this.clearSelect();
+        if (this.takeOffEquip(false, true)) {
             return;
         }
         //物品栏直接售出
-        if (this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP && this.currentSelectIndex < InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM) {
-            AudioPlayer.play(AudioPlayer.SELECT);
-            let current = this.itemList[this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP];
-            if (current.data.type == InventoryItem.TYPE_EMPTY) {
-                return;
-            }
-            let itemData = current.data.itemData;
-            EventHelper.emit(EventHelper.PLAYER_CHANGEITEM, { itemIndex: this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP, isDrop: true });
-            EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count > 1 ? itemData.price * itemData.count * this.discount : itemData.price * this.discount) });
-            AudioPlayer.play(AudioPlayer.COIN);
-            current.setEmpty();
-            this.clearSelect();
+        if (this.takeOffItem(false, true)) {
             return;
         }
         //背包售出
-        let list = this.list;
+        let inventoryItemList = this.list;
+        let dataList = Logic.inventoryManager.inventoryList;
         let selectIndex = this.currentSelectIndex;
         let isOther = this.currentSelectIndex >= InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP + InventoryManager.MAX_ITEM;
         if (isOther) {
-            list = this.otherList;
+            inventoryItemList = this.otherList;
+            dataList = Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList;
             selectIndex = this.currentSelectIndex - InventoryManager.MAX_BAG - InventoryManager.MAX_EQUIP - InventoryManager.MAX_ITEM;
         }
-        if (list[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
-            return;
-        }
-        AudioPlayer.play(AudioPlayer.SELECT);
-        let current = list[selectIndex];
-        if (current.data.type == InventoryItem.TYPE_EQUIP) {
-            let equipData = current.data.equipmentData;
-            if (equipData.equipmetType != InventoryManager.EMPTY) {
-                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(equipData.price * this.discount) });
-                AudioPlayer.play(AudioPlayer.COIN);
-            }
-        } else {
-            let itemData = current.data.itemData;
-            if (itemData.resName != Item.EMPTY) {
-                EventHelper.emit(EventHelper.HUD_ADD_COIN, { count: Math.floor(itemData.count > 1 ? itemData.price * itemData.count * this.discount : itemData.price * this.discount) });
-                AudioPlayer.play(AudioPlayer.COIN);
-            }
-        }
-        //置空当前放下的数据，清除选中
-        if (isOther) {
-            Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList[selectIndex].setEmpty();
-        } else {
-            Logic.inventoryManager.inventoryList[selectIndex].setEmpty();
-        }
-        list[selectIndex].setEmpty();
-        this.clearSelect();
+        this.dropEquipOrItem(selectIndex, dataList, inventoryItemList, isOther, true);
     }
     // update (dt) {}
 

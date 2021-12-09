@@ -379,7 +379,7 @@ export default class Inventory extends cc.Component {
         }
     }
 
-    refreshEquipment(equipmetType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean, isDrop: boolean, indexFromBag: number, furnitureId: string) {
+    refreshEquipment(equipmetType: string, equipDataNew: EquipmentData, isInit: boolean, isReplace: boolean) {
         if (!equipDataNew || !this.weapon || !equipmetType) {
             return;
         }
@@ -398,9 +398,9 @@ export default class Inventory extends cc.Component {
             }
         }
 
-        //1.如果是捡起到背包或者购买（非替换非初始化非扔掉），且对应位置有装备，则直接放置到背包
-        if (!isReplace && !isDrop && !isInit && equip && hasEquip) {
-            InventoryManager.setEquipmentToBag(equipDataNew, isInit, isDrop, indexFromBag, furnitureId);
+        //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
+        if (!isReplace  && !isInit && equip && hasEquip) {
+            InventoryManager.setEquipmentToBag(equipDataNew, isInit);
             return;
         }
         //2.如果是长按或者来自背包装备的替换操作，替换新的，移出旧的到背包
@@ -415,7 +415,7 @@ export default class Inventory extends cc.Component {
         }
         //更新当前装备数据
         if (equip) {
-            InventoryManager.setEquipmentToBag(equip, isInit, isDrop, indexFromBag, furnitureId);
+            InventoryManager.setEquipmentToBag(equip, isInit);
             equip.valueCopy(equipDataNew);
             if (!isInit) {
                 EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE);
@@ -435,7 +435,7 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
                 //替换盾牌到背包
-                InventoryManager.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit, isDrop, indexFromBag, furnitureId);
+                InventoryManager.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.SHIELD], isInit);
                 //清空盾牌和贴图
                 this.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData());
                 this.shield.spriteFrame = Logic.spriteFrameRes(this.inventoryManager.equips[InventoryManager.SHIELD].img);
@@ -445,7 +445,7 @@ export default class Inventory extends cc.Component {
                 this.remote.node.parent.active = true;
                 this.shield.node.parent.active = true;
                 //替换远程到背包
-                InventoryManager.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit, isDrop, indexFromBag, furnitureId);
+                InventoryManager.setEquipmentToBag(this.inventoryManager.equips[InventoryManager.REMOTE], isInit);
                 //如果当前盾牌不为空清空远程和贴图并展示盾牌栏，否则显示远程隐藏盾牌栏
                 if (this.inventoryManager.equips[equipmetType].equipmetType != InventoryManager.EMPTY) {
                     this.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData());
@@ -538,9 +538,6 @@ export default class Inventory extends cc.Component {
                 cc.director.emit(EventHelper.PLAYER_USEITEM, { detail: { itemData: item } });
             }
         }, item.cooldown, true)
-
-    }
-    private itemRefresh(itemIndex:number){
 
     }
 
