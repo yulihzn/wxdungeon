@@ -60,14 +60,13 @@ export default class InventoryDialog extends BaseDialog {
     currentSelectIndex: number;
     discount = 0.5;
     equipmentAndItemDialog: EquipmentAndItemDialog = null;
-    static MAX_BAG: any;
     onLoad() {
         this.select.opacity = 0;
         this.equipmentAndItemDialog = this.initDialog();
-        this.initLayout(this.layout, InventoryManager.MAX_BAG, 0);
-        this.initLayout(this.layoutEquip, InventoryManager.MAX_EQUIP, InventoryManager.MAX_BAG);
-        this.initLayout(this.layoutItem, InventoryManager.MAX_ITEM, InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP);
-        this.initLayout(this.layoutOther, 0, 0);
+        this.initLayout(this.layout, this.list, InventoryManager.MAX_BAG, 0);
+        this.initLayout(this.layoutEquip, this.equipList, InventoryManager.MAX_EQUIP, InventoryManager.MAX_BAG);
+        this.initLayout(this.layoutItem, this.itemList, InventoryManager.MAX_ITEM, InventoryManager.MAX_BAG + InventoryManager.MAX_EQUIP);
+        this.initLayout(this.layoutOther, this.otherList, 0, 0);
         EventHelper.on(EventHelper.HUD_INVENTORY_ALL_UPDATE
             , (detail) => {
                 if (this.node) {
@@ -121,12 +120,12 @@ export default class InventoryDialog extends BaseDialog {
         dialog.hideDialog();
         return dialog;
     }
-    private initLayout(layout: cc.Node, max: number, extraMax: number) {
+    private initLayout(layout: cc.Node, inventoryItemList: InventoryItem[], max: number, extraMax: number) {
         layout.removeAllChildren();
         for (let i = 0; i < max; i++) {
             let data = new InventoryData();
             data.createTime = new Date().getTime();
-            this.equipList.push(this.getItem(extraMax + i, data, layout));
+            inventoryItemList.push(this.getItem(extraMax + i, data, layout));
         }
     }
     private getItem(index: number, data: InventoryData, layout: cc.Node) {
@@ -239,7 +238,7 @@ export default class InventoryDialog extends BaseDialog {
                 }
             }
             if (needAdd) {
-                let data = InventoryManager.bulidEquipInventoryData(equipdata);
+                let data = InventoryManager.buildEquipInventoryData(equipdata);
                 list.push(data);
             }
         }
@@ -369,7 +368,7 @@ export default class InventoryDialog extends BaseDialog {
      * @param inventoryItemList 被添加的ui列表
      * @returns 是否添加成功
      */
-    static addEquipOrItemToBag(data: InventoryData, dataList: InventoryData[],max:number,  isItem: boolean,inventoryItemList: InventoryItem[]): boolean {
+    static addEquipOrItemToBag(data: InventoryData, dataList: InventoryData[], max: number, isItem: boolean, inventoryItemList: InventoryItem[]): boolean {
         let insertIndex = isItem ? this.getItemInsertIndex(data.itemData, dataList, max)
             : this.getEmptyInsertIndex(dataList, max);
         if (insertIndex == -1) {
@@ -388,12 +387,12 @@ export default class InventoryDialog extends BaseDialog {
                     }
                 }
                 dataList[insertIndex] = d;
-                if(inventoryItemList){
+                if (inventoryItemList) {
                     inventoryItemList[insertIndex].updateData(d);
                 }
             } else {
                 dataList.push(d);
-                if(inventoryItemList){
+                if (inventoryItemList) {
                     inventoryItemList[dataList.length - 1].updateData(d);
                 }
             }
@@ -490,7 +489,7 @@ export default class InventoryDialog extends BaseDialog {
         this.clearSelect();
         return true;
     }
-   
+
     /**穿上装备或物品 */
     private takeOnEquipOrItem(selectIndex: number, dataList: InventoryData[], inventoryItemList: InventoryItem[]) {
         if (inventoryItemList[selectIndex].data.type == InventoryItem.TYPE_EMPTY) {
@@ -507,10 +506,28 @@ export default class InventoryDialog extends BaseDialog {
                     return;
                 }
                 //置空当前背包需要装备的数据
-                inventoryItemList[this.currentSelectIndex].setEmpty();
-                dataList[this.currentSelectIndex].setEmpty();
+                current.setEmpty();
+                dataList[selectIndex].setEmpty();
+
+                //交换当前装备
                 //设置装备栏数据并更新ui
                 Logic.inventoryManager.equips[equipData.equipmetType] = equipData;
+                if (equipData.equipmetType == InventoryManager.REMOTE) {
+                    //替换盾牌到背包
+                    InventoryDialog.addEquipOrItemToBag(InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.SHIELD]), dataList, inventoryItemList.length, false, inventoryItemList)
+                    //清空盾牌数据
+                    Logic.inventoryManager.equips[InventoryManager.SHIELD].valueCopy(new EquipmentData());
+                } else if (equipData.equipmetType == InventoryManager.SHIELD) {
+                    //替换远程到背包
+                    InventoryDialog.addEquipOrItemToBag(InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[InventoryManager.REMOTE]), dataList, inventoryItemList.length, false, inventoryItemList)
+                    //如果当前盾牌不为空清空远程并展示盾牌栏，否则显示远程隐藏盾牌栏
+                    if (Logic.inventoryManager.equips[equipData.equipmetType].equipmetType != InventoryManager.EMPTY) {
+                        Logic.inventoryManager.equips[InventoryManager.REMOTE].valueCopy(new EquipmentData());
+                    }
+                }else{
+                    InventoryDialog.addEquipOrItemToBag(InventoryManager.buildEquipInventoryData(Logic.inventoryManager.equips[equipData.equipmetType]), dataList, inventoryItemList.length, false, inventoryItemList)
+                }
+                this.updateEquipList();
                 EventHelper.emit(EventHelper.PLAYER_EQUIPMENT_REFRESH, { equipmetType: equipData.equipmetType });
             }
         } else {
@@ -518,10 +535,13 @@ export default class InventoryDialog extends BaseDialog {
             itemData.valueCopy(current.data.itemData);
             if (itemData.resName != Item.EMPTY) {
                 //置空当前背包需要装备的数据
-                inventoryItemList[selectIndex].setEmpty();
+                current.setEmpty();
                 dataList[selectIndex].setEmpty();
+                //交换当前物品
+                InventoryDialog.addEquipOrItemToBag(InventoryManager.buildItemInventoryData(Logic.inventoryManager.itemList[selectIndex]), dataList, inventoryItemList.length, true, inventoryItemList)
                 //设置物品栏数据并更新ui
                 Logic.inventoryManager.itemList[selectIndex] = itemData;
+                this.updateItemList();
                 EventHelper.emit(EventHelper.PLAYER_ITEM_REFRESH);
             }
         }
@@ -545,7 +565,7 @@ export default class InventoryDialog extends BaseDialog {
                     AudioPlayer.play(AudioPlayer.COIN);
                 } else {
                     if (isOther) {
-                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.inventoryList, this.list.length, false,this.list);
+                        isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.inventoryList, this.list.length, false, this.list);
                     } else if (this.furnitureId && this.furnitureId.length > 0) {
                         isAdded = InventoryDialog.addEquipOrItemToBag(current.data, Logic.inventoryManager.furnitureMap.get(this.furnitureId).storageList, this.otherList.length, false, this.otherList);
                     }

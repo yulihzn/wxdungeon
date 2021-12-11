@@ -29,17 +29,17 @@ export default class PlayerData {
     pos: cc.Vec3 = cc.v3(5, 5);
 
     currentHealth: number = PlayerData.DEFAULT_HEALTH;
-    currentDream:number = PlayerData.DEFAULT_DREAM;
+    currentDream: number = PlayerData.DEFAULT_DREAM;
 
     private common: CommonData;
     private equipmentTotalData: EquipmentData;
     private statusTotalData: StatusData;
-    private avatarData:AvatarData;
-    private oilGoldData:OilGoldData;
-    private organizationTalentData:TalentData;
-    private professionTalentData:TalentData;
-    private statusList:StatusData[];
-    private shadowList:number[];
+    private avatarData: AvatarData;
+    private oilGoldData: OilGoldData;
+    private organizationTalentData: TalentData;
+    private professionTalentData: TalentData;
+    private statusList: StatusData[];
+    private shadowList: number[];
 
     constructor() {
         this.equipmentTotalData = new EquipmentData();
@@ -57,18 +57,18 @@ export default class PlayerData {
         this.common.maxDream = PlayerData.DEFAULT_DREAM;
         this.shadowList = [];
     }
-    get ShadowList(){
+    get ShadowList() {
         return this.shadowList;
     }
-    get StatusList(){
+    get StatusList() {
         return this.statusList;
     }
-    set StatusList(list:StatusData[]){
-        if(!list){
+    set StatusList(list: StatusData[]) {
+        if (!list) {
             return;
         }
         this.statusList = new Array();
-        for(let s of list){
+        for (let s of list) {
             let data = new StatusData();
             data.valueCopy(s);
             this.statusList.push(data);
@@ -80,33 +80,33 @@ export default class PlayerData {
     get StatusTotalData() {
         return this.statusTotalData;
     }
-    get AvatarData(){
+    get AvatarData() {
         return this.avatarData;
     }
-    get OilGoldData(){
+    get OilGoldData() {
         return this.oilGoldData;
     }
-    get OrganizationTalentData(){
+    get OrganizationTalentData() {
         return this.organizationTalentData;
     }
-    get ProfessionTalentData(){
+    get ProfessionTalentData() {
         return this.professionTalentData;
     }
-    set AvatarData(data:AvatarData){
+    set AvatarData(data: AvatarData) {
         this.avatarData = data;
     }
     get Common() {
         return this.common;
     }
-    get FinalCommon(){
+    get FinalCommon() {
         let data = new CommonData().add(this.common).add(this.statusTotalData.Common)
-        .add(this.equipmentTotalData.Common).add(this.avatarData.professionData.Common).add(this.oilGoldData.Common);
+            .add(this.equipmentTotalData.Common).add(this.avatarData.professionData.Common).add(this.oilGoldData.Common);
         return data;
     }
 
     public valueCopy(data: PlayerData): void {
         this.common.valueCopy(data.common);
-        this.pos = data.pos ? cc.v3(data.pos.x,data.pos.y) : cc.v3(4, 7);
+        this.pos = data.pos ? cc.v3(data.pos.x, data.pos.y) : cc.v3(4, 7);
         this.name = data.name ? data.name : '';
         this.equipmentTotalData.valueCopy(data.equipmentTotalData);
         this.statusTotalData.valueCopy(data.statusTotalData);
@@ -145,7 +145,7 @@ export default class PlayerData {
         let dd = new DamageData();
         let damageMin = data.damageMin;
         let damageMax = data.damageMax;
-        let chance = data.criticalStrikeRate/100;
+        let chance = data.criticalStrikeRate / 100;
         let isCritical = Random.rand() < chance;
         let attack = isCritical ? damageMin + damageMax : damageMin;
         if (attack < 0) {
@@ -155,8 +155,8 @@ export default class PlayerData {
         dd.physicalDamage = attack;
         dd.realDamage = data.realDamage;
         dd.magicDamage = data.magicDamage;
-        if(this.avatarData.organizationIndex == AvatarData.TECH){
-            dd.physicalDamage+=this.currentDream*0.5;
+        if (this.avatarData.organizationIndex == AvatarData.TECH) {
+            dd.physicalDamage += this.currentDream * 0.5;
         }
         return dd;
     }
@@ -165,12 +165,12 @@ export default class PlayerData {
         let data = this.FinalCommon;
         let dd = new DamageData();
         let remoteDamage = data.remoteDamage;
-        if(this.avatarData.organizationIndex == AvatarData.HUNTER ){
-            remoteDamage += this.currentDream*0.5;
+        if (this.avatarData.organizationIndex == AvatarData.HUNTER) {
+            remoteDamage += this.currentDream * 0.5;
         }
-        let chance = data.remoteCritRate/100;
+        let chance = data.remoteCritRate / 100;
         let isCritical = Random.rand() < chance;
-        let attack = isCritical ? remoteDamage+remoteDamage : remoteDamage;
+        let attack = isCritical ? remoteDamage + remoteDamage : remoteDamage;
         if (attack < 0) {
             attack = 0;
         }
@@ -179,40 +179,40 @@ export default class PlayerData {
         return dd;
     }
     //伤害减免
-    public getDamage(damageData: DamageData,blockLevel:number): DamageData {
+    public getDamage(damageData: DamageData, blockLevel: number): DamageData {
         let data = this.FinalCommon;
         let finalDamageData = damageData.clone();
         let defence = data.defence;
-        let defenceMagic = data.magicDefence/100;
-        let blockPhysical = data.blockPhysical/100;
-        let blockMagic = data.blockMagic/100;
+        let defenceMagic = data.magicDefence / 100;
+        let blockPhysical = data.blockPhysical / 100;
+        let blockMagic = data.blockMagic / 100;
         //伤害=攻击*(1-(护甲*0.06)/(护甲*0.06+1))
         //伤害 = 攻击 + 2-0.94^(-护甲)
-        if(defence>=0){
-            finalDamageData.physicalDamage = finalDamageData.physicalDamage*(1-defence*0.06/(defence*0.06+1));
-        }else{
-            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (2-Math.pow(0.94,-defence));
+        if (defence >= 0) {
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - defence * 0.06 / (defence * 0.06 + 1));
+        } else {
+            finalDamageData.physicalDamage = finalDamageData.physicalDamage * (2 - Math.pow(0.94, -defence));
         }
         finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - defenceMagic);
-        if(finalDamageData.physicalDamage>0||finalDamageData.magicDamage>0){
-            if(blockLevel == Shield.BLOCK_NORMAL){
+        if (finalDamageData.physicalDamage > 0 || finalDamageData.magicDamage > 0) {
+            if (blockLevel == Shield.BLOCK_NORMAL) {
                 finalDamageData.physicalDamage = finalDamageData.physicalDamage * (1 - blockPhysical);
                 finalDamageData.magicDamage = finalDamageData.magicDamage * (1 - blockMagic);
-            }else if(blockLevel == Shield.BLOCK_PARRY){
+            } else if (blockLevel == Shield.BLOCK_PARRY) {
                 finalDamageData.physicalDamage = 0;
                 finalDamageData.magicDamage = 0;
                 finalDamageData.realDamage = 0;
             }
         }
-        
+
         return finalDamageData;
     }
 
     //吸血默认是1暴击时吸血翻倍
     public getLifeDrain(): number {
         let data = this.FinalCommon;
-        let chance = data.criticalStrikeRate/100;
-        let drainRate = data.lifeDrain/100;
+        let chance = data.criticalStrikeRate / 100;
+        let drainRate = data.lifeDrain / 100;
         let drain = 0;
         if (Random.rand() < drainRate) {
             drain = 0.2;
@@ -244,7 +244,7 @@ export default class PlayerData {
         }
         return cc.v3(maxHealth * rate, maxHealth);
     }
-    
+
     //梦境值
     public getDream(): cc.Vec3 {
         let data = this.FinalCommon;

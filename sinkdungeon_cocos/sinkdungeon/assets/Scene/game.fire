@@ -21711,7 +21711,7 @@
     },
     "component": "",
     "_componentId": "66439SRIlRDCK2s/WLS+qDi",
-    "handler": "changeSort",
+    "handler": "changeFurnitureSort",
     "customEventData": "0"
   },
   {
@@ -22158,7 +22158,7 @@
     },
     "component": "",
     "_componentId": "66439SRIlRDCK2s/WLS+qDi",
-    "handler": "changeSort",
+    "handler": "changeFurnitureSort",
     "customEventData": "1"
   },
   {
@@ -22605,7 +22605,7 @@
     },
     "component": "",
     "_componentId": "66439SRIlRDCK2s/WLS+qDi",
-    "handler": "changeSort",
+    "handler": "changeFurnitureSort",
     "customEventData": "2"
   },
   {
@@ -23052,7 +23052,7 @@
     },
     "component": "",
     "_componentId": "66439SRIlRDCK2s/WLS+qDi",
-    "handler": "changeSort",
+    "handler": "changeFurnitureSort",
     "customEventData": "3"
   },
   {
@@ -49828,7 +49828,7 @@
         "__id__": 1128
       }
     ],
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 1130

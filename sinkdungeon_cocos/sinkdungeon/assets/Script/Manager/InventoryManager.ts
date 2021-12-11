@@ -91,7 +91,7 @@ export default class InventoryManager {
         return e;
     }
 
-    
+
 
     static buildItemInventoryData(itemData: ItemData) {
         let newdata = new InventoryData();
@@ -102,7 +102,7 @@ export default class InventoryManager {
         newdata.id = newdata.itemData.id;
         return newdata;
     }
-    static bulidEquipInventoryData(equipmentData: EquipmentData) {
+    static buildEquipInventoryData(equipmentData: EquipmentData) {
         let newdata = new InventoryData();
         newdata.equipmentData = new EquipmentData();
         newdata.equipmentData.valueCopy(equipmentData);
@@ -112,9 +112,9 @@ export default class InventoryManager {
         newdata.id = newdata.equipmentData.id;
         return newdata;
     }
-    
+
     static isItemEqualCanAdd(item1: ItemData, item2: ItemData): boolean {
-        return item1&&item2&&item1.resName != Item.EMPTY && item1.resName == item2.resName
+        return item1 && item2 && item1.resName != Item.EMPTY && item1.resName == item2.resName
             && item1.count > 0 && item2.count > 0;
     }
 }

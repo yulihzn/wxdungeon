@@ -122,7 +122,7 @@ export default class Inventory extends cc.Component {
         EventHelper.on(EventHelper.PLAYER_CHANGEITEM
             , (detail) => {
                 if (this.node) {
-                    this.refreshItem(detail.itemData, detail.isReplace, detail.isDrop, detail.index, detail.itemIndex, detail.furnitureId);
+                    this.refreshItem(detail.itemData, detail.isReplace);
                 }
             });
         EventHelper.on(EventHelper.HUD_GROUND_EQUIPMENT_INFO_SHOW
@@ -399,12 +399,12 @@ export default class Inventory extends cc.Component {
         }
 
         //1.如果是捡起到背包或者购买（非替换非初始化），且对应位置有装备，则直接放置到背包
-        if (!isReplace  && !isInit && equip && hasEquip) {
+        if (!isReplace && !isInit && equip && hasEquip) {
             this.setEquipmentToBag(equipDataNew, isInit);
             return;
         }
         //2.如果是长按的替换操作，替换新的，移出旧的到背包
-     
+
         //更新当前装备数据
         if (equip) {
             this.setEquipmentToBag(equip, isInit);
@@ -413,7 +413,7 @@ export default class Inventory extends cc.Component {
                 EventHelper.emit(EventHelper.HUD_INVENTORY_EQUIP_UPDATE);
             }
         }
-     
+
         switch (equipmetType) {
             case InventoryManager.REMOTE:
                 //替换盾牌到背包
@@ -507,34 +507,22 @@ export default class Inventory extends cc.Component {
 
     }
 
-    refreshItem(itemDataNew: ItemData, isReplace: boolean, isDrop: boolean, indexFromBag: number, itemIndex: number, furnitureId: string) {
+    refreshItem(itemDataNew: ItemData, isReplace: boolean) {
         if (!this.node) {
             return;
         }
 
         let isRefreshed = false;
 
-        //如果是来自卸下操作，直接交换
-        if (itemIndex || itemIndex === 0) {
-            isRefreshed = true;
-            let item = new ItemData();
-            item.valueCopy(this.inventoryManager.itemList[itemIndex]);
-            this.inventoryManager.itemList[itemIndex].valueCopy(Logic.items[Item.EMPTY]);
-            if (!isDrop) {
-                this.setItemToBag(item);
-            }
-        }
         //填补相同可叠加
-        if (!isRefreshed) {
-            for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
-                let item = this.inventoryManager.itemList[i];
-                if (InventoryManager.isItemEqualCanAdd(item, itemDataNew)) {
-                    let count = item.count + itemDataNew.count;
-                    item.valueCopy(itemDataNew);
-                    item.count = count;
-                    isRefreshed = true;
-                    break;
-                }
+        for (let i = 0; i < this.inventoryManager.itemList.length; i++) {
+            let item = this.inventoryManager.itemList[i];
+            if (InventoryManager.isItemEqualCanAdd(item, itemDataNew)) {
+                let count = item.count + itemDataNew.count;
+                item.valueCopy(itemDataNew);
+                item.count = count;
+                isRefreshed = true;
+                break;
             }
         }
         //填补空缺位置
@@ -584,9 +572,9 @@ export default class Inventory extends cc.Component {
             return;
         }
         let list = Logic.inventoryManager.inventoryList;
-        let data = InventoryManager.bulidEquipInventoryData(equipData);
+        let data = InventoryManager.buildEquipInventoryData(equipData);
         //添加到背包
-        let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryDialog.MAX_BAG, false,null);
+        let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryManager.MAX_BAG, false, null);
         if (!isAdded) {
             Utils.toast('物品栏已满');
             EventHelper.emit(EventHelper.DUNGEON_SETEQUIPMENT, { res: equipData.img, equipmentData: equipData });
@@ -596,7 +584,7 @@ export default class Inventory extends cc.Component {
         let list = Logic.inventoryManager.inventoryList;
         let data = InventoryManager.buildItemInventoryData(itemData);
         //添加到背包
-        let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryDialog.MAX_BAG, true,null);
+        let isAdded = InventoryDialog.addEquipOrItemToBag(data, list, InventoryManager.MAX_BAG, true, null);
         if (!isAdded) {
             Utils.toast('物品栏已满');
             EventHelper.emit(EventHelper.DUNGEON_ADD_ITEM, { res: itemData.resName, count: itemData.count });

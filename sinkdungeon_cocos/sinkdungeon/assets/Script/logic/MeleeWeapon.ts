@@ -97,12 +97,12 @@ export default class MeleeWeapon extends BaseColliderComponent {
     private exBeatBack: number = 0;
     private isAttackPressed = false;
     private comboMiss = false;
-    private playerData: PlayerData = new PlayerData();
+    private playerData: PlayerData;
 
     get IsSword() {
         return !this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
     }
-    get IsDagger(){
+    get IsDagger() {
         return this.isStab && !this.isFar && !this.isFist && !this.isBlunt;
     }
     set IsSecond(isSecond: boolean) {
@@ -164,7 +164,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
         return node.getComponent(cc.Sprite);
     }
     changeEquipment(equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
-      
+
         this.isStab = equipData.stab == 1;
         this.isFar = equipData.far == 1;
         this.isReflect = equipData.isReflect == 1;
@@ -278,7 +278,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
 
     public getAttackAnimName(comboType?: number): string {
         let name = "MeleeAttackStab";
-        if (!this.isFar && this.isStab||this.isFist) {
+        if (!this.isFar && this.isStab || this.isFist) {
             name = this.isFist ? "MeleeAttackFist" : "MeleeAttackStab";
         } else if (this.isFar && this.isStab) {
             name = "MeleeAttackStabFar";
@@ -493,7 +493,7 @@ export default class MeleeWeapon extends BaseColliderComponent {
     }
 
     onColliderStay(other: CCollider, self: CCollider) {
-        if (self.w > 0&&self.h > 0) {
+        if (self.w > 0 && self.h > 0) {
             if (this.hasTargetMap.has(other.id) && this.hasTargetMap.get(other.id) > 0) {
                 this.hasTargetMap.set(other.id, this.hasTargetMap.get(other.id) + 1);
                 return false;
