@@ -870,8 +870,10 @@ export default class BuildingManager extends BaseManager {
         if (save) {
             data.isOpen = save.isOpen;
             data.purchased = save.purchased;
-            data.storage = save.storage;
-            data.storageList = save.storageList;
+            data.storage = save.storage?save.storage:data.storage;
+            if(save.storageList&&save.storageList.length>0){
+                data.storageList = save.storageList;
+            }
         }
         let building: cc.Node;
         if (mapDataStr == 'Z3') {
