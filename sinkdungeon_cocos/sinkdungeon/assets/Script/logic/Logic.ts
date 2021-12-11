@@ -174,9 +174,9 @@ export default class Logic extends cc.Component {
         Logic.profileManager.saveData();
         LocalStorage.saveData(LocalStorage.KEY_COIN, Logic.coins);
         LocalStorage.saveData(LocalStorage.KEY_COIN_DREAM_COUNT, Logic.coinDreamCount);
-        for(let key in Logic.inventoryManager.furnitureMap){
-            LocalStorage.saveFurnitureData(Logic.inventoryManager.furnitureMap.get(key));
-        }
+        Logic.inventoryManager.furnitureMap.forEach((value)=>{
+            LocalStorage.saveFurnitureData(value);
+        })
     }
     static resetData(chapter?: number) {
         //重置时间
