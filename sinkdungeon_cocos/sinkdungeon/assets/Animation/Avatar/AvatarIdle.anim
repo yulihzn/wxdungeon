@@ -194,6 +194,16 @@
             }
           ]
         }
+      },
+      "sprite/cup": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
       }
     }
   },
