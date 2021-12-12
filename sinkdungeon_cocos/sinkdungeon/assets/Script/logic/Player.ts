@@ -50,8 +50,6 @@ import Shield from './Shield';
 import CCollider from '../collider/CCollider';
 @ccclass
 export default class Player extends Actor {
-
-
     @property(FloatinglabelManager)
     floatinglabelManager: FloatinglabelManager = null;
     @property(cc.Vec3)
@@ -356,7 +354,7 @@ export default class Player extends Actor {
         }
     }
 
-    public changeEquipment(equipmetType:string,equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
+    public changeEquipment(equipmetType: string, equipData: EquipmentData, spriteFrame: cc.SpriteFrame) {
         let inventoryEquip = this.inventoryManager.equips[equipmetType];
         switch (equipmetType) {
             case InventoryManager.WEAPON:
@@ -762,7 +760,7 @@ export default class Player extends Actor {
         if (dir != 4) {
             this.changeZIndex(this.pos);
         }
-        if (dir != 4 && !this.shield.isAniming && !this.shield.isDefendOrParrying) {
+        if (dir != 4 && !this.shield.isAniming && !this.shield.isDefendOrParrying && !this.avatar.isAniming) {
             this.currentDir = dir;
             if (dir == PlayerAvatar.DIR_DOWN && this.isFaceUp) {
                 dir = PlayerAvatar.DIR_UP;
@@ -1026,7 +1024,7 @@ export default class Player extends Actor {
         }
         let isDashing = this.professionTalent.hashTalent(Talent.TALENT_015) && this.professionTalent.IsExcuting;
 
-        if (this.professionTalent && !isDashing && !this.isWeaponDashing) {
+        if (this.professionTalent && !isDashing && !this.isWeaponDashing && !this.avatar.isAniming) {
             this.move(dir, pos, dt);
         }
     }
@@ -1229,6 +1227,12 @@ export default class Player extends Actor {
 
     setLinearVelocity(movement: cc.Vec2) {
 
+    }
+
+    drink() {
+        this.avatar.drink();
+        this.addStatus(StatusManager.HEALING, new FromData());
+        this.avatar.changeAvatarByDir(PlayerAvatar.DIR_RIGHT);
     }
 
 }

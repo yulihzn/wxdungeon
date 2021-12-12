@@ -43,6 +43,7 @@ import LocalStorage from "../utils/LocalStorage";
 import RoomFishtank from "../building/RoomFishtank";
 import CCollider from "../collider/CCollider";
 import WallPaint from "../building/WallPaint";
+import RoomWaterDispenser from "../building/RoomWaterDispenser";
 
 
 // Learn TypeScript:
@@ -91,6 +92,7 @@ export default class BuildingManager extends BaseManager {
     static readonly ROOMSTOOL = 'RoomStool';
     static readonly ROOMSOFA = 'RoomSofa';
     static readonly ROOMFISHTANK = 'RoomFishtank';
+    static readonly ROOMWATERDISPENSER = 'RoomWaterDispenser';
     static readonly SAVEPOINT = 'SavePoint';
     static readonly SAW = 'Saw';
     static readonly SHIPSTAIRS = 'Shipstairs';
@@ -864,6 +866,7 @@ export default class BuildingManager extends BaseManager {
             case 'Zh': data.valueCopy(Logic.furnitures[Furniture.LITTLE_TABLE_2]); break;
             case 'Zi': data.valueCopy(Logic.furnitures[Furniture.FISHTANK]); break;
             case 'Zj': data.valueCopy(Logic.furnitures[Furniture.BOOKSHELF]); break;
+            case 'Zk': data.valueCopy(Logic.furnitures[Furniture.WATERDISPENER]); break;
             default: break;
         }
         let save = LocalStorage.getFurnitureData(data.id);
@@ -900,6 +903,13 @@ export default class BuildingManager extends BaseManager {
             Logic.getBuildings(BuildingManager.ROOMFISHTANK, (prefab: cc.Prefab) => {
                 building = this.addBuilding(prefab, indexPos);
                 building.getComponent(RoomFishtank).init(indexPos);
+                let script = building.getComponent(Furniture);
+                script.init(data);
+            });
+        } else if (mapDataStr == 'Zk') {
+            Logic.getBuildings(BuildingManager.ROOMWATERDISPENSER, (prefab: cc.Prefab) => {
+                building = this.addBuilding(prefab, indexPos);
+                building.getComponent(RoomWaterDispenser).init(indexPos);
                 let script = building.getComponent(Furniture);
                 script.init(data);
             });

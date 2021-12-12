@@ -16,7 +16,7 @@
  "margin":0,
  "name":"tileset",
  "spacing":0,
- "tilecount":343,
+ "tilecount":344,
  "tiledversion":"1.4.2",
  "tileheight":24,
  "tiles":[
@@ -3476,6 +3476,13 @@
          "imageheight":16,
          "imagewidth":16,
          "type":"Dl"
+        }, 
+        {
+         "id":732,
+         "image":"..\/..\/..\/..\/..\/..\/sinkdungeon_resource\/OtherTexure\/map\/tile\/waterdispenser.png",
+         "imageheight":16,
+         "imagewidth":16,
+         "type":"Zk"
         }],
  "tilewidth":16,
  "type":"tileset",

@@ -1,0 +1,77 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "RoomWaterDispenser",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.35,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "sprite": {
+        "comps": {
+          "cc.Sprite": {
+            "spriteFrame": [
+              {
+                "frame": 0,
+                "value": {
+                  "__uuid__": "c7892be3-bbe6-4a86-9f6b-84e06530521a"
+                }
+              },
+              {
+                "frame": 0.3333333333333333,
+                "value": {
+                  "__uuid__": "1701f47b-0fc0-4a7c-a839-a9ee4a626b55"
+                }
+              },
+              {
+                "frame": 0.6666666666666666,
+                "value": {
+                  "__uuid__": "201dac61-d732-4abe-bddf-13b0a9bd6888"
+                }
+              },
+              {
+                "frame": 1,
+                "value": {
+                  "__uuid__": "0e72b6ea-f29f-4eb6-82b7-8ac71832f85d"
+                }
+              },
+              {
+                "frame": 1.3333333333333333,
+                "value": {
+                  "__uuid__": "c7892be3-bbe6-4a86-9f6b-84e06530521a"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "sprite/cups01": {
+        "props": {
+          "opacity": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 0
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": 255
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 1.3333333333333333,
+      "func": "AnimFinish",
+      "params": []
+    }
+  ]
+}

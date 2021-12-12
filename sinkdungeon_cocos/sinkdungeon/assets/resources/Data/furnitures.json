@@ -197,5 +197,16 @@
         "scale": 8,
         "collider": "64,0,256,128",
         "price": 1000
+    },
+    "furniture019": {
+        "id": "furniture019",
+        "nameCn": "饮水机",
+        "nameEn": "waterdispenser",
+        "resName": "waterdispenser0",
+        "info": "",
+        "desc": "",
+        "scale": 8,
+        "collider": "60,40,96,128",
+        "price": 1000
     }
 }

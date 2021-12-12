@@ -157,7 +157,7 @@ export default class CellphoneDialog extends BaseDialog {
                 Achievement.addFurnituresAchievement(fd.id);
                 LocalStorage.saveFurnitureData(fd);
                 this.clearSelect();
-                Utils.toast('购买成功,快递将在下次回家送达', true);
+                Utils.toast('购买成功,快递将在下次进入房间送达', true);
                 AudioPlayer.play(AudioPlayer.CASHIERING);
             } else {
                 Utils.toast('购买失败，余额不足', true);

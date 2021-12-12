@@ -50,6 +50,7 @@ export default class PlayerAvatar extends cc.Component {
     avatarNode: cc.Node = null;
     spriteNode: cc.Node = null;
     data: AvatarData;
+    isAniming = false;
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
@@ -136,6 +137,9 @@ export default class PlayerAvatar extends cc.Component {
     playAnim(status: number, dir: number) {
         if (!this.anim) {
             this.init();
+        }
+        if(this.isAniming){
+            return;
         }
         switch (status) {
             case PlayerAvatar.STATE_IDLE:
@@ -308,6 +312,14 @@ export default class PlayerAvatar extends cc.Component {
             .to(0.1, { position: cc.v3(0, 0) }).delay(0.1).call(() => {
                 this.playAnim(PlayerAvatar.STATE_IDLE, dir);
             }).start();
+    }
+    public drink(){
+        this.anim.play('AvatarDrink');
+        this.isAniming = true;
+        this.scheduleOnce(()=>{
+            this.isAniming =false;
+        },1.5)
+        
     }
 
     start() {

@@ -14,6 +14,8 @@ import RoomTv from "./RoomTv";
 import CCollider from "../collider/CCollider";
 import NextStep from "../utils/NextStep";
 import InventoryData from '../data/InventoryData';
+import RoomWaterDispenser from './RoomWaterDispenser';
+import Player from '../logic/Player';
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -50,6 +52,7 @@ export default class Furniture extends Building {
     static readonly TV = 'furniture016';
     static readonly FISHTANK = 'furniture017';
     static readonly BOOKSHELF = 'furniture018';
+    static readonly WATERDISPENER = 'furniture019';
     sprite: cc.Sprite;
     boxcover: cc.Sprite;
     boxback: cc.Sprite;
@@ -69,11 +72,11 @@ export default class Furniture extends Building {
         this.boxback = this.node.getChildByName('boxback').getComponent(cc.Sprite);
         this.lock = this.node.getChildByName('lock').getComponent(cc.Sprite);
         this.tips = this.getComponentInChildren(Tips);
-        this.tips.onInteract(() => {
+        this.tips.onInteract((isLongPress: boolean, player: Player) => {
             if (this.furnitureData) {
                 if (this.furnitureData.purchased) {
                     if (this.furnitureData.isOpen) {
-                        this.interact();
+                        this.interact(player);
                     } else {
                         this.openBox();
                     }
@@ -101,7 +104,7 @@ export default class Furniture extends Building {
             }
         });
     }
-    interact() {
+    interact(player: Player) {
         switch (this.furnitureData.id) {
             case Furniture.TV:
                 let tv = this.getComponent(RoomTv);
@@ -119,14 +122,19 @@ export default class Furniture extends Building {
                 if (fishtank) {
                     fishtank.feed();
                 } break;
+            case Furniture.WATERDISPENER:
+                let waterdispenser = this.getComponent(RoomWaterDispenser);
+                if (waterdispenser) {
+                    waterdispenser.getWater(player);
+                } break;
             case Furniture.CUPBOARD:
-                if(this.furnitureData.storageList.length<1){
+                if (this.furnitureData.storageList.length < 1) {
                     for (let i = 0; i < this.furnitureData.storage; i++) {
                         this.furnitureData.storageList.push(new InventoryData());
                     }
                     LocalStorage.saveFurnitureData(this.furnitureData);
                 }
-                EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id:this.furnitureData.id});
+                EventHelper.emit(EventHelper.HUD_INVENTORY_SHOW, { id: this.furnitureData.id });
                 break;
             default:
                 AudioPlayer.play(AudioPlayer.SELECT_FAIL);
@@ -157,7 +165,7 @@ export default class Furniture extends Building {
     init(furnitureData: FurnitureData) {
         this.furnitureData = new FurnitureData();
         this.furnitureData.valueCopy(furnitureData);
-        Logic.inventoryManager.furnitureMap.set(furnitureData.id,this.furnitureData);
+        Logic.inventoryManager.furnitureMap.set(furnitureData.id, this.furnitureData);
         if (this.furnitureData.purchased) {
             this.sprite.node.color = cc.color(255, 255, 255, 255);
             this.lock.node.active = false;
