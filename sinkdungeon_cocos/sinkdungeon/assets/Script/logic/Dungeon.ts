@@ -20,6 +20,7 @@ import DamageData from "../data/DamageData";
 import GameWorldSystem from "../ecs/system/GameWorldSystem";
 import Random from "../utils/Random";
 import LoadingManager from "../manager/LoadingManager";
+import StatusIconList from "../ui/StatusIconList";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -41,6 +42,8 @@ export default class Dungeon extends cc.Component {
     playerPrefab: cc.Prefab = null;
     @property(cc.Node)
     fog: cc.Node = null;
+    @property(StatusIconList)
+    statusIconList:StatusIconList = null;
     mapData: string[][] = [];//地图数据
     tilesmap: Tile[][] = new Array();//地面列表
     floorIndexMap: cc.Vec3[] = new Array();//地板下标列表
@@ -224,6 +227,7 @@ export default class Dungeon extends cc.Component {
 
         //初始化玩家
         this.player = cc.instantiate(this.playerPrefab).getComponent(Player);
+        this.player.statusIconList = this.statusIconList;
         this.player.node.parent = this.node;
         this.fog.setPosition(this.player.node.position.clone());
         //加载随机怪物

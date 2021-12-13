@@ -478,10 +478,10 @@ export default class EquipmentManager extends BaseManager {
         data.uuid = data.genNonDuplicateID();
         let desc = EquipmentManager.getRandomDesc(data, chestQuality);
         let common = data.Common.clone().add(desc.common);
-        data.infobase = EquipmentManager.getEquipmentInfoBase(common);
-        data.info1 = EquipmentManager.getEquipmentInfo1(common);
-        data.info2 = EquipmentManager.getEquipmentInfo2(common, data);
-        data.info3 = EquipmentManager.getEquipmentInfo3(common);
+        data.infobase = EquipmentManager.getInfoBase(common);
+        data.info1 = EquipmentManager.getInfo1(common);
+        data.info2 = EquipmentManager.getInfo2(common, data);
+        data.info3 = EquipmentManager.getInfo3(common);
         data.suit1 = EquipmentManager.getSuitDesc(data.suitType, 0);
         data.suit2 = EquipmentManager.getSuitDesc(data.suitType, 1);
         data.suit3 = EquipmentManager.getSuitDesc(data.suitType, 2);
@@ -520,10 +520,10 @@ export default class EquipmentManager extends BaseManager {
         }
         data.uuid = data.genNonDuplicateID();
         let common = data.Common.clone();
-        data.infobase = EquipmentManager.getEquipmentInfoBase(common);
-        data.info1 = EquipmentManager.getEquipmentInfo1(common);
-        data.info2 = EquipmentManager.getEquipmentInfo2(common, data);
-        data.info3 = EquipmentManager.getEquipmentInfo3(common);
+        data.infobase = EquipmentManager.getInfoBase(common);
+        data.info1 = EquipmentManager.getInfo1(common);
+        data.info2 = EquipmentManager.getInfo2(common, data);
+        data.info3 = EquipmentManager.getInfo3(common);
         data.suit1 = EquipmentManager.getSuitDesc(data.suitType, 0);
         data.suit2 = EquipmentManager.getSuitDesc(data.suitType, 1);
         data.suit3 = EquipmentManager.getSuitDesc(data.suitType, 2);
@@ -550,10 +550,10 @@ export default class EquipmentManager extends BaseManager {
         }
         let info = ``;
         let title = suitIndex == 0 ? `${data.nameCn}\n` : ``;
-        let base = EquipmentManager.getEquipmentInfoBase(data.EquipList[suitIndex].Common);
-        let info1 = EquipmentManager.getEquipmentInfo1(data.EquipList[suitIndex].Common);
-        let info2 = EquipmentManager.getEquipmentInfo2(data.EquipList[suitIndex].Common, data.EquipList[suitIndex]);
-        let info3 = EquipmentManager.getEquipmentInfo3(data.EquipList[suitIndex].Common);
+        let base = EquipmentManager.getInfoBase(data.EquipList[suitIndex].Common);
+        let info1 = EquipmentManager.getInfo1(data.EquipList[suitIndex].Common);
+        let info2 = EquipmentManager.getInfo2(data.EquipList[suitIndex].Common, data.EquipList[suitIndex]);
+        let info3 = EquipmentManager.getInfo3(data.EquipList[suitIndex].Common);
         info += base + ` `;
         info += info1 + ` `;
         info += info2 + ` `;
@@ -562,7 +562,7 @@ export default class EquipmentManager extends BaseManager {
         return title + info.replace('\n', '');
 
     }
-    static getEquipmentInfoBase(common: CommonData): string {
+    static getInfoBase(common: CommonData): string {
         let info = ``;
         info += common.remoteDamage == 0 ? `` : `远程伤害${common.remoteDamage}\n`;
         info += common.remoteCritRate == 0 ? `` : `远程暴击率${common.remoteCritRate.toFixed(1).replace('.0', '')}\n`;
@@ -578,7 +578,7 @@ export default class EquipmentManager extends BaseManager {
         info = info.replace('+-', '-');
         return info;
     }
-    static getEquipmentInfo1(common: CommonData): string {
+    static getInfo1(common: CommonData): string {
         let info = ``;
         info += common.criticalStrikeRate == 0 ? `` : `暴击${common.criticalStrikeRate.toFixed(1).replace('.0', '')}%\n`;
         info += common.lifeDrain == 0 ? `` : `吸血${common.lifeDrain.toFixed(1).replace('.0', '')}%\n`;
@@ -595,9 +595,9 @@ export default class EquipmentManager extends BaseManager {
         info = info.replace('+-', '-');
         return info;
     }
-    static getEquipmentInfo2(common: CommonData, data: EquipmentData): string {
+    static getInfo2(common: CommonData, data: EquipmentData): string {
         let info = ``;
-        info += data && data.isReflect == 0 ? `` : `反弹子弹\n`;
+        info += data && data.isReflect > 0 ? `反弹子弹\n` : ``;
         info += common.realDamage == 0 ? `` : `攻击附加${common.realDamage}点流血伤害\n`;
         info += common.realRate == 0 ? `` : `攻击有${common.realRate}%几率释放流血\n`;
         info += common.magicDamage == 0 ? `` : `攻击附加${common.magicDamage}点元素伤害\n`;
@@ -612,7 +612,7 @@ export default class EquipmentManager extends BaseManager {
         info = info.replace('+-', '-');
         return info;
     }
-    static getEquipmentInfo3(common: CommonData): string {
+    static getInfo3(common: CommonData): string {
         let info = ``;
         info += common.magicDefence == 0 ? `` : `元素抗性${common.magicDefence}%\n`;
         if (info.length > 0 && info.lastIndexOf('\n') != -1) {

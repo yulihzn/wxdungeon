@@ -31,6 +31,15 @@ export default class StatusData {
     duration: number = 0;//持续时间
     desc: string = '';
     spriteFrameName:string = '';
+    info1:string = '';
+    info2:string = '';
+    info3:string = '';
+    extraInfo:string = '';
+    infobase:string = '';
+    infocolor1:string = '#ffffff';
+    infocolor2:string = '#ffffff';
+    infocolor3:string = '#ffffff';
+    infobasecolor:string = '#ffffff';
 
     physicalDamageDirect: number = 0;//瞬间伤害
     physicalDamageOvertime: number = 0;//持续伤害
@@ -95,6 +104,15 @@ export default class StatusData {
         this.clearHealth = data.clearHealth?data.clearHealth:0;
         this.avoidDeath = data.avoidDeath?data.avoidDeath:0;
         this.finishStatus = data.finishStatus?data.finishStatus:'';
+        this.info1 = data.info1?data.info1:'';
+        this.info2 = data.info2?data.info2:'';
+        this.info3 = data.info3?data.info3:'';
+        this.extraInfo = data.extraInfo?data.extraInfo:'';
+        this.infobase = data.infobase?data.infobase:'';
+        this.infocolor1 = data.infocolor1?data.infocolor1:'#ffffff';
+        this.infocolor2 = data.infocolor2?data.infocolor2:'#ffffff';
+        this.infocolor3 = data.infocolor3?data.infocolor3:'#ffffff';
+        this.infobasecolor = data.infobasecolor?data.infobasecolor:'#ffffff';
     }
     public clone(): StatusData {
         let e = new StatusData();
@@ -125,6 +143,15 @@ export default class StatusData {
         e.exOilGold = this.exOilGold;
         e.clearHealth = this.clearHealth;
         e.avoidDeath = this.avoidDeath;
+        e.info1 = this.info1;
+        e.info2 = this.info2;
+        e.info3 = this.info3;
+        e.extraInfo = this.extraInfo;
+        e.infobase = this.infobase;
+        e.infocolor1 = this.infocolor1;
+        e.infocolor2 = this.infocolor2;
+        e.infocolor3 = this.infocolor3;
+        e.infobasecolor = this.infobasecolor;
         return e;
     }
 }

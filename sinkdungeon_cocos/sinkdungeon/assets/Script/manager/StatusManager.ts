@@ -3,6 +3,8 @@ import Logic from "../logic/Logic";
 import FromData from "../data/FromData";
 import Status from "../status/Status";
 import Actor from "../base/Actor";
+import StatusIcon from "../ui/StatusIcon";
+import StatusIconList from "../ui/StatusIconList";
 
 // Learn TypeScript:
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/typescript.html
@@ -62,8 +64,8 @@ export default class StatusManager extends cc.Component {
     @property(cc.Prefab)
     statusPrefab: cc.Prefab = null;
     private statusList: Status[];
+    public statusIconList:StatusIconList;
     private totalStatusData: StatusData = new StatusData();
-
     private actor: Actor;
     // LIFE-CYCLE CALLBACKS:
 
@@ -190,6 +192,10 @@ export default class StatusManager extends cc.Component {
         statusNode.active = true;
         let status = statusNode.getComponent(Status);
         this.statusList.push(status);
+        if(this.statusIconList){
+            let icon = this.statusIconList.getIcon();
+            status.icon = icon;
+        }
         status.showStatus(data, this.actor, isFromSave);
     }
 

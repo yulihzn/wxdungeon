@@ -116,7 +116,7 @@ export default class OrganizationTalent extends Talent {
                 this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth = d.Common.maxHealth + Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3;
                 this.player.dungeon.nonPlayerManager.pet.addCustomStatus(data, new FromData());
                 AudioPlayer.play(d.specialAudio);
-                Utils.toast(`宠物增加了${Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3}点血量上限，当前血量上限为${this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth}，攻击力为${d.getAttackPoint().getTotalDamage()}`,false,true)
+                Utils.toast(`宠物获得${Logic.playerData.OilGoldData.level * 5 + this.data.useCount*3}点血量上限，当前为${this.player.dungeon.nonPlayerManager.pet.data.Common.maxHealth}，攻击力为${d.getAttackPoint().getTotalDamage()}`,false,true)
             } else {
                 if (this.data.useCount > 1) {
                     this.data.useCount = Math.floor(this.data.useCount / 2);

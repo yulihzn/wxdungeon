@@ -48,6 +48,7 @@ import Random from '../utils/Random';
 import MeleeWeapon from './MeleeWeapon';
 import Shield from './Shield';
 import CCollider from '../collider/CCollider';
+import StatusIconList from '../ui/StatusIconList';
 @ccclass
 export default class Player extends Actor {
     @property(FloatinglabelManager)
@@ -107,12 +108,14 @@ export default class Player extends Actor {
     private shadowTexture: cc.RenderTexture;
     private shadowSpriteframe: cc.SpriteFrame;
     private isLevelWater = false;
+    statusIconList:StatusIconList;
 
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
         this.entity.Move.linearDamping = 2;
         this.entity.Move.linearVelocity = cc.v2(0, 0);
+        this.statusManager.statusIconList = this.statusIconList;
         this.inventoryManager = Logic.inventoryManager;
         this.data = Logic.playerData.clone();
         this.updateStatus(this.data.StatusList, this.data.StatusTotalData);
@@ -124,6 +127,7 @@ export default class Player extends Actor {
         this.scheduleOnce(() => {
             this.sc.isShow = true;
             this.addSaveStatusList();
+
         }, 0.5)
         this.initTalent();
         this.initCollider();

@@ -13,6 +13,8 @@ import Actor from "../base/Actor";
 import DamageData from "../data/DamageData";
 import StatusData from "../data/StatusData";
 import Logic from "../logic/Logic";
+import EquipmentManager from "../manager/EquipmentManager";
+import StatusIcon from "../ui/StatusIcon";
 
 const { ccclass, property } = cc._decorator;
 
@@ -26,6 +28,7 @@ export default class Status extends cc.Component {
     sprite: cc.Sprite = null;
     data: StatusData = new StatusData();
     private actor: Actor;
+    icon: StatusIcon;
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -37,26 +40,58 @@ export default class Status extends cc.Component {
 
     start() {
     }
-    showStatus(data: StatusData, actor: Actor,isFromSave:boolean) {
+    showStatus(data: StatusData, actor: Actor, isFromSave: boolean) {
         if (!this.anim) { return; }
         this.data = data;
+
         this.actor = actor;
         this.sprite.spriteFrame = Logic.spriteFrameRes(data.spriteFrameName);
         this.anim.playAdditive('StatusShow');
-        if(!isFromSave){
+        if (!isFromSave) {
             this.doStatusDamage(true);//非数据保存状态执行瞬时效果
         }
         this.stateRunning = true;
         this.label.string = `${this.data.duration > 0 ? this.data.duration : ''}`;
         this.label.node.opacity = this.data.duration < 0 || this.data.duration > 500 ? 0 : 255;
+        if (this.icon) {
+            let common = data.Common;
+            data.infobase = EquipmentManager.getInfoBase(common);
+            data.info1 = EquipmentManager.getInfo1(common);
+            data.info2 = EquipmentManager.getInfo2(common, null);
+            data.info3 = EquipmentManager.getInfo3(common);
+            data.infobasecolor = '#fffff0';//象牙
+            data.infocolor1 = '#9370DB';//适中的紫色
+            data.infocolor2 = '#87CEFA';//淡蓝色
+            data.infocolor3 = '#BC8F8F';//玫瑰棕色
+            data.extraInfo = this.getInfo(data);
+            this.icon.showStatus(data);
+        }
+    }
+    private getInfo(data:StatusData){
+        let info = ``;
+        info += data.physicalDamageOvertime == 0 ? `` : `每秒受到${data.physicalDamageOvertime}点物理伤害\n`;
+        info += data.realDamageOvertime == 0 ? `` : `每秒受到${data.realDamageOvertime}点流血伤害\n`;
+        info += data.magicDamageOvertime == 0 ? `` : `每秒受到${data.magicDamageOvertime}点魔法伤害\n`;
+        info += data.missRate == 0 ? `` : `攻击丢失几率${data.missRate.toFixed(1).replace('.0', '')}%\n`;
+        info += data.dizzDurationOvertime == 0 ? `` : `眩晕${data.dizzDurationOvertime}秒\n`;
+        info += data.invisibleDuratonDirect == 0 ? `` : `隐身${data.invisibleDuratonDirect}秒\n`;
+        info += data.variation == 0 ? `` : `变异${data.variation}秒\n`;
+        info += data.dreamOvertime == 0 ? `` : `持续${data.dreamOvertime}秒恢复梦境\n`;
+        info += data.exOilGold == 0 ? `` : `额外经验获取${data.exOilGold}点\n`;
+        info += data.clearHealth == 0 ? `` : `清理完房间回复生命\n`;
+        info += data.avoidDeath == 0 ? `` : `抵挡致命伤`;
+        return info;
     }
     stopStatus() {
-        if(!this.node){
+        if (!this.node) {
             return;
         }
         this.data.duration = 0;
         if (this.stateRunning) {
             this.node.destroy();
+            if (this.icon) {
+                this.icon.node.destroy();
+            }
         }
     }
     isStatusRunning(): boolean {
@@ -72,15 +107,21 @@ export default class Status extends cc.Component {
         let dream = isDirect ? this.data.dreamDirect : this.data.dreamOvertime;
         if (this.actor) {
             if (dd.getTotalDamage() != 0) { this.actor.takeDamage(dd, this.data.From); }
-            if(dizzDuration>0)this.actor.takeDizz(dizzDuration);
-            if (dream&&dream != 0) this.actor.updateDream(dream);
-            if(this.data.invisibleDuratonDirect>0)this.actor.hideSelf(this.data.invisibleDuratonDirect);
+            if (dizzDuration > 0) this.actor.takeDizz(dizzDuration);
+            if (dream && dream != 0) this.actor.updateDream(dream);
+            if (this.data.invisibleDuratonDirect > 0) this.actor.hideSelf(this.data.invisibleDuratonDirect);
         }
     }
 
     public updateLogic() {
         this.label.string = `${this.data.duration > 0 ? this.data.duration : ''}`;
         this.label.node.opacity = this.data.duration < 0 || this.data.duration > 500 ? 0 : 255;
+        if (this.icon) {
+            this.icon.updateLogic(this.data);
+            if (this.data.duration == -1) {
+                this.node.active = false;
+            }
+        }
         if (this.data.duration > 0) {
             if (this.data.duration != -1) {
                 this.data.duration--;
@@ -93,6 +134,9 @@ export default class Status extends cc.Component {
             this.scheduleOnce(() => {
                 if (this.node) {
                     this.node.destroy();
+                    if (this.icon) {
+                        this.icon.node.destroy();
+                    }
                 }
             }, 0.5);
         }

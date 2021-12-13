@@ -18,8 +18,6 @@ import FromData from '../data/FromData';
 import ItemData from '../data/ItemData';
 import Item from '../item/Item';
 import SuitData from '../data/SuitData';
-import InventoryData from '../data/InventoryData';
-import InventoryItem from '../ui/InventoryItem';
 import EquipmentAndItemDialog from '../ui/dialog/EquipmentAndItemDialog';
 import LocalStorage from '../utils/LocalStorage';
 import Utils from '../utils/Utils';
