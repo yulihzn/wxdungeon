@@ -205,7 +205,7 @@
         "resName": "waterdispenser0",
         "info": "",
         "desc": "",
-        "scale": 8,
+        "scale": 5,
         "collider": "60,40,96,128",
         "price": 1000
     }

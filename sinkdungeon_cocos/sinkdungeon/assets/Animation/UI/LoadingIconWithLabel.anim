@@ -1,6 +1,6 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "LoadingIcon",
+  "_name": "LoadingIconWithLabel",
   "_objFlags": 0,
   "_native": "",
   "_duration": 1.5166666666666666,
@@ -40,7 +40,7 @@
               "value": 255
             },
             {
-              "frame": 1,
+              "frame": 0.5,
               "value": 0
             },
             {
@@ -52,8 +52,8 @@
             {
               "frame": 0,
               "value": [
-                0,
-                0,
+                288.8,
+                -250.293,
                 0
               ]
             }
@@ -95,7 +95,7 @@
           "opacity": [
             {
               "frame": 0,
-              "value": 0
+              "value": 255
             }
           ]
         }

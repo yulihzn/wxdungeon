@@ -52,7 +52,9 @@ export default class AudioPlayer extends cc.Component {
     public static readonly WENTLINE_OPEN = 'WENTLINE_OPEN';
     public static readonly WENTLINE_SHOW = 'WENTLINE_SHOW';
     public static readonly ZOMBIE_ATTACK = 'ZOMBIE_ATTACK';
+    public static readonly ZOMBIE_FALL = 'ZOMBIE_FALL';
     public static readonly ZOMBIE_SPITTING = 'ZOMBIE_SPITTING';
+    public static readonly ZOMBIE_SPITTING1 = 'ZOMBIE_SPITTING1';
     public static readonly SWORD_SHOW = 'SWORD_SHOW';
     public static readonly ELECTRIC_ATTACK = 'ELECTRIC_ATTACK';
     public static readonly PUNCH = 'PUNCH';
@@ -92,6 +94,8 @@ export default class AudioPlayer extends cc.Component {
     public static readonly FEED_FISH = 'FEED_FISH';
     public static readonly FISHTANK = 'FISHTANK';
     public static readonly CAT = 'CAT';
+    public static readonly WATERDISPENSER = 'WATERDISPENSER';
+    public static readonly DRINK = 'DRINK';
     @property({ type: cc.AudioClip })
     monsterHit: cc.AudioClip = null;
     @property({ type: cc.AudioClip })
@@ -157,7 +161,11 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     zombieattack: cc.AudioClip = null;
     @property(cc.AudioClip)
+    zombiefall: cc.AudioClip = null;
+    @property(cc.AudioClip)
     zombiespitting: cc.AudioClip = null;
+    @property(cc.AudioClip)
+    zombiespitting1: cc.AudioClip = null;
     @property(cc.AudioClip)
     swordshow: cc.AudioClip = null;
     @property(cc.AudioClip)
@@ -237,6 +245,10 @@ export default class AudioPlayer extends cc.Component {
     @property(cc.AudioClip)
     cat:cc.AudioClip = null;
     @property(cc.AudioClip)
+    waterdispenser:cc.AudioClip = null;
+    @property(cc.AudioClip)
+    drink:cc.AudioClip = null;
+    @property(cc.AudioClip)
     bg01: cc.AudioClip = null;
     @property(cc.AudioClip)
     bg02: cc.AudioClip = null;
@@ -283,7 +295,9 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.WENTLINE_OPEN] = this.wentlineopen;
         this.audioList[AudioPlayer.WENTLINE_SHOW] = this.wentlineshow;
         this.audioList[AudioPlayer.ZOMBIE_ATTACK] = this.zombieattack;
+        this.audioList[AudioPlayer.ZOMBIE_FALL] = this.zombiefall;
         this.audioList[AudioPlayer.ZOMBIE_SPITTING] = this.zombiespitting;
+        this.audioList[AudioPlayer.ZOMBIE_SPITTING1] = this.zombiespitting1;
         this.audioList[AudioPlayer.SWORD_SHOW] = this.swordshow;
         this.audioList[AudioPlayer.ELECTRIC_ATTACK] = this.electricattack;
         this.audioList[AudioPlayer.PUNCH] = this.punch;
@@ -323,6 +337,8 @@ export default class AudioPlayer extends cc.Component {
         this.audioList[AudioPlayer.FEED_FISH] = this.feedfish;
         this.audioList[AudioPlayer.FISHTANK] = this.fishtank;
         this.audioList[AudioPlayer.CAT] = this.cat;
+        this.audioList[AudioPlayer.WATERDISPENSER] = this.waterdispenser;
+        this.audioList[AudioPlayer.DRINK] = this.drink;
 
     }
     playbg() {

@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/manual/en/scripting/life-cycle-callbacks.html
 
 import Player from "../logic/Player";
+import AudioPlayer from "../utils/AudioPlayer";
 import Building from "./Building";
 
 const { ccclass, property } = cc._decorator;
@@ -35,6 +36,7 @@ export default class RoomWaterDispenser extends Building {
         }else{
             this.isAniming = true;
             this.anim.play('RoomWaterDispenser');
+            AudioPlayer.play(AudioPlayer.WATERDISPENSER);
         }
         
     }

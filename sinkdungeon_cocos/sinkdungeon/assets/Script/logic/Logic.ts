@@ -99,6 +99,7 @@ export default class Logic extends cc.Component {
     static realTime = 1559145600000;
     static seed = 5;
     static isFirst = 1;
+    static isFirstLoading = true;
     static jumpChapter = 0;
     static shipTransportScene = 0;
     static elevatorScene = 0;

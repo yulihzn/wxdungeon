@@ -133,7 +133,7 @@ export default class ShadowPlayer extends cc.Component {
                 }
                 if (this.moveList.length > 10 * (this.index + 1)) {
                     this.targetPos = this.moveList[0].clone();
-                    this.node.scaleX = this.targetPos.z;
+                    // this.node.scaleX = this.targetPos.z;
                 }
             }
             this.node.zIndex = IndexZ.getActorZIndex(Dungeon.getIndexInMap(this.node.position));

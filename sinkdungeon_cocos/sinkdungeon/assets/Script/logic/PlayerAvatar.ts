@@ -8,6 +8,7 @@
 import Logic from "./Logic";
 import InventoryManager from "../manager/InventoryManager";
 import AvatarData from "../data/AvatarData";
+import AudioPlayer from "../utils/AudioPlayer";
 
 const { ccclass, property } = cc._decorator;
 
@@ -315,10 +316,11 @@ export default class PlayerAvatar extends cc.Component {
     }
     public drink(){
         this.anim.play('AvatarDrink');
+        AudioPlayer.play(AudioPlayer.DRINK);
         this.isAniming = true;
         this.scheduleOnce(()=>{
             this.isAniming =false;
-        },1.5)
+        },2)
         
     }
 

@@ -1,6 +1,7 @@
 import Logic from "./Logic";
 import AudioPlayer from "../utils/AudioPlayer";
 import NoticeDialog from "../ui/dialog/NoticeDialog";
+import StartBackground from "../ui/StartBackground";
 
 const { ccclass, property } = cc._decorator;
 
@@ -18,6 +19,8 @@ export default class Start extends cc.Component {
     tourButton: cc.Node = null;
     @property(NoticeDialog)
     noticeDialog:NoticeDialog = null;
+    @property(StartBackground)
+    startBg:StartBackground= null;
     cheatClickCount = 0;
     debugClickCount = 0;
     tourClickCount = 0;
@@ -51,14 +54,17 @@ export default class Start extends cc.Component {
         AudioPlayer.play(AudioPlayer.SELECT);
         // cc.director.loadScene('loading');
         //进入选择页面
+        this.startBg.startPressed();
         cc.director.loadScene('pickavatar');
     }
     chooseChapter() {
         AudioPlayer.play(AudioPlayer.SELECT);
+        this.startBg.startPressed();
         cc.director.loadScene('chapter');
     }
     achievementScene() {
         AudioPlayer.play(AudioPlayer.SELECT);
+        this.startBg.startPressed();
         cc.director.loadScene('achievement');
     }
     continueGame() {
@@ -66,6 +72,7 @@ export default class Start extends cc.Component {
         Logic.resetData();
         Logic.isFirst = 1;
         AudioPlayer.play(AudioPlayer.SELECT);
+        this.startBg.startPressed();
         cc.director.loadScene('loading');
     }
     cheatModeChange() {

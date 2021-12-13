@@ -82,6 +82,7 @@ export default class SpecialManager extends cc.Component {
                 cc.director.emit(EventHelper.CAMERA_SHAKE, { detail: { isHeavyShaking: false } });
                 break;
             case SpecialManager.AFTER_DOWN:
+                AudioPlayer.play(AudioPlayer.ZOMBIE_FALL);
                 this.addAoe(pos, new AreaOfEffectData()
                 .init(0.3, 1, 0.1, isVariation?2:1, IndexZ.getActorZIndex(this.node.parent.position)
                     , true, true, true, false, false, new DamageData(1), from, [StatusManager.FALLEN_DOWN])
@@ -121,6 +122,7 @@ export default class SpecialManager extends cc.Component {
         venom.zIndex = IndexZ.ACTOR;
         venom.scale = 0;
         cc.tween(venom).to(0.5,{scale:isVariation?3:2}).start();
+        AudioPlayer.play(AudioPlayer.ZOMBIE_SPITTING1);
     }
     private addHowl(pos: cc.Vec3, isFaceRight: boolean, from: FromData,isVariation:boolean) {
         let monster = this.node.parent.getComponent(NonPlayer);

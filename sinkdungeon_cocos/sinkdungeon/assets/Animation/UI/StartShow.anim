@@ -1,0 +1,161 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "StartShow",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "startstone": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": [
+                0,
+                -200,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "startbg06": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                -600,
+                0
+              ]
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "startbg05": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": [
+                -360,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "startbg04": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": [
+                360,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "startbg03": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                800,
+                -120,
+                0
+              ]
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": [
+                600,
+                -120,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "startbg02": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                -120,
+                0
+              ]
+            }
+          ]
+        }
+      },
+      "startbg01": {
+        "props": {
+          "position": [
+            {
+              "frame": 0,
+              "value": [
+                0,
+                -120,
+                0
+              ]
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": [
+                120,
+                -120,
+                0
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
