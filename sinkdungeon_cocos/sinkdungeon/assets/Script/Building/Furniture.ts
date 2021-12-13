@@ -177,7 +177,8 @@ export default class Furniture extends Building {
                 this.boxback.node.active = true;
             }
         } else {
-            this.sprite.node.color = cc.color(128, 128, 128, 128);
+            this.sprite.node.color = cc.color(128, 128, 128, 255);
+            this.sprite.node.opacity =  128;
             this.boxcover.node.active = false;
             this.boxback.node.active = false;
             this.lock.node.active = true;
